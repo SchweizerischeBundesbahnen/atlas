@@ -22,16 +22,31 @@ import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
+import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.InformationDeskRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.RelationService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
 class InformationDeskVersionControllerApiTest extends BaseControllerApiTest {
@@ -39,16 +54,35 @@ class InformationDeskVersionControllerApiTest extends BaseControllerApiTest {
   private final InformationDeskRepository informationDeskRepository;
   private final StopPointRepository stopPointRepository;
   private final ReferencePointRepository referencePointRepository;
+  private final SharedServicePointRepository sharedServicePointRepository;
+//  @MockBean
+//  private SharedServicePointRepository sharedServicePointRepository;
   @MockBean
   private final RelationService relationService;
 
   @Autowired
   InformationDeskVersionControllerApiTest(InformationDeskRepository informationDeskRepository,
-      StopPointRepository stopPointRepository, ReferencePointRepository referencePointRepository, RelationService relationService){
+                                          StopPointRepository stopPointRepository, ReferencePointRepository referencePointRepository, SharedServicePointRepository sharedServicePointRepository, RelationService relationService){
     this.informationDeskRepository = informationDeskRepository;
     this.stopPointRepository = stopPointRepository;
     this.referencePointRepository = referencePointRepository;
+    this.sharedServicePointRepository = sharedServicePointRepository;
     this.relationService = relationService;
+  }
+
+  @BeforeEach
+  void setUp() {
+    SharedServicePoint servicePoint = SharedServicePoint.builder()
+            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],"
+                    + "\"trafficPointSloids\":[]}")
+            .sloid("ch:1:sloid:7000")
+            .build();
+    sharedServicePointRepository.saveAndFlush(servicePoint);
+  }
+
+  @AfterEach
+  void cleanUp() {
+    sharedServicePointRepository.deleteAll();
   }
 
   @Test
@@ -71,6 +105,13 @@ class InformationDeskVersionControllerApiTest extends BaseControllerApiTest {
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);
+//    SharedServicePoint servicePoint = SharedServicePoint.builder()
+//            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],"
+//                    + "\"trafficPointSloids\":[]}")
+//            .sloid("ch:1:sloid:7000")
+//            .build();
+//    sharedServicePointRepository.saveAndFlush(servicePoint);
+//    when(sharedServicePointRepository.findById(any())).thenReturn(Optional.of(servicePoint));
 
     CreateInformationDeskVersionModel createInformationDeskVersionModel = InformationDeskTestData.getCreateInformationDeskVersionModel();
     createInformationDeskVersionModel.setParentServicePointSloid(parentServicePointSloid);
