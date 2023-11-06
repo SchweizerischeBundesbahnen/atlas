@@ -1,15 +1,10 @@
 import { Component } from '@angular/core';
 import { TableColumn } from '../../../../core/components/table/table-column';
-import {
-  ReadTrafficPointElementVersion,
-  TrafficPointElementsService,
-  TrafficPointElementType,
-} from '../../../../api';
+import { ReadTrafficPointElementVersion, TrafficPointElementsService } from '../../../../api';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import { Pages } from '../../../pages';
-import { naturalCompare } from '../../../../core/util/sorting';
 
 @Component({
   selector: 'app-service-point-traffic-point-elements-table',
@@ -39,40 +34,12 @@ export class TrafficPointElementsTableComponent {
 
   getOverview(pagination: TablePagination) {
     this.trafficPointElementService
-      .getTrafficPointElements(
-        undefined,
-        [this.servicePointNumber],
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        TrafficPointElementType.Platform,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        500,
-        ['sloid,asc'],
-      )
+      .getPlatformsOfServicePoint(this.servicePointNumber, pagination.page, pagination.size, [
+        pagination.sort ?? 'designation,asc',
+      ])
       .subscribe((container) => {
-        const versions = container.objects!;
-        const trafficPointRows = this.groupDisplayRows(versions);
-
-        trafficPointRows.sort((a: any, b: any) => {
-          const sort =
-            pagination.sort?.substring(0, pagination.sort?.indexOf(',')) || 'designation';
-          const direction = (pagination.sort?.substring(pagination.sort?.indexOf(',') + 1) ||
-            'asc') as 'asc' | 'desc';
-
-          return naturalCompare(a[sort], b[sort], direction);
-        });
-
-        const start = pagination.page * pagination.size;
-        const end = start + pagination.size;
-        this.trafficPointElementRows = trafficPointRows.slice(start, end);
-        this.totalCount$ = trafficPointRows.length;
+        this.trafficPointElementRows = container.objects!;
+        this.totalCount$ = container.totalCount!;
       });
   }
 
