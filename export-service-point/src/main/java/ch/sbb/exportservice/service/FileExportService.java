@@ -93,8 +93,13 @@ public class FileExportService<T extends ExportTypeBase> {
     throw new IllegalArgumentException("The Given value is not allowed!");
   }
 
-  public String getLatestUploadedFileName(String filePathPrefix, String fileName) {
-    return amazonService.getLatestJsonUploadedObject(AmazonBucket.EXPORT, filePathPrefix, fileName);
+  public String getLatestUploadedFileName(ExportFileName exportFileName, ExportTypeBase exportTypeBase) {
+    String dirPathPrefix = s3BucketDirPathPrefix(exportFileName, exportTypeBase);
+    return amazonService.getLatestJsonUploadedObject(AmazonBucket.EXPORT, dirPathPrefix, exportTypeBase.getFileTypePrefix());
+  }
+
+  private static String s3BucketDirPathPrefix(ExportFileName exportFileName, ExportTypeBase exportTypeBase) {
+    return exportFileName.getBaseDir() + S3_BUCKET_PATH_SEPARATOR + exportTypeBase.getDir();
   }
 
 }

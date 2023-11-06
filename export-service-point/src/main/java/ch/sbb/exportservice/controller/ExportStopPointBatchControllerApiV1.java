@@ -1,11 +1,9 @@
 package ch.sbb.exportservice.controller;
 
 import static ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader.extractFileNameFromS3ObjectName;
-import static ch.sbb.exportservice.service.FileExportService.S3_BUCKET_PATH_SEPARATOR;
 
 import ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader;
 import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.atlas.export.enumeration.ExportFileName;
 import ch.sbb.exportservice.exception.NotAllowedExportFileException;
 import ch.sbb.exportservice.model.PrmBatchExportFileName;
 import ch.sbb.exportservice.model.PrmExportType;
@@ -62,9 +60,7 @@ public class ExportStopPointBatchControllerApiV1 {
   })
   public ResponseEntity<StreamingResponseBody> streamLatestExportJsonFile(@PathVariable PrmBatchExportFileName exportFileName,
       @PathVariable PrmExportType prmExportType) {
-    String buildBucketDirPathPrefix = s3BucketDirPathPrefix(exportFileName, prmExportType);
-    String fileName = fileExportService.getLatestUploadedFileName(buildBucketDirPathPrefix,
-        prmExportType.getFileTypePrefix());
+    String fileName = fileExportService.getLatestUploadedFileName(exportFileName, prmExportType);
     StreamingResponseBody body = fileExportService.streamLatestJsonFile(fileName);
     return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body);
   }
@@ -93,9 +89,7 @@ public class ExportStopPointBatchControllerApiV1 {
   public ResponseEntity<StreamingResponseBody> streamLatestExportGzFile(
       @PathVariable PrmBatchExportFileName exportFileName,
       @PathVariable PrmExportType prmExportType) throws NotAllowedExportFileException {
-    String buildBucketDirPathPrefix = s3BucketDirPathPrefix(exportFileName, prmExportType);
-    String fileName = fileExportService.getLatestUploadedFileName(buildBucketDirPathPrefix,
-        prmExportType.getFileTypePrefix());
+    String fileName = fileExportService.getLatestUploadedFileName(exportFileName, prmExportType);
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(extractFileNameFromS3ObjectName(fileName));
     StreamingResponseBody body = fileExportService.streamGzipFile(prmExportType, exportFileName);
     return ResponseEntity.ok().headers(headers).body(body);
@@ -109,10 +103,6 @@ public class ExportStopPointBatchControllerApiV1 {
   @Async
   public void startExportServicePointBatch() {
     exportStopPointJobService.startExportJobs();
-  }
-
-  private static String s3BucketDirPathPrefix(ExportFileName exportFileName, PrmExportType prmExportType) {
-    return exportFileName.getBaseDir() + S3_BUCKET_PATH_SEPARATOR + prmExportType.getDir();
   }
 
 }

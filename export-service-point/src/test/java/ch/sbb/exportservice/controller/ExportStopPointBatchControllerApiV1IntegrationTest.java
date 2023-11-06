@@ -25,7 +25,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
- class ExportStopPointBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
+class ExportStopPointBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
 
   @MockBean
   private FileExportService<PrmExportType> fileExportService;
@@ -35,7 +35,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 
   @Test
   @Order(1)
-   void shouldGetJsonSuccessfully() throws Exception {
+  void shouldGetJsonSuccessfully() throws Exception {
     //given
     try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json")) {
       StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
@@ -53,7 +53,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 
   @Test
   @Order(2)
-   void shouldGetJsonUnsuccessfully() throws Exception {
+  void shouldGetJsonUnsuccessfully() throws Exception {
     //given
     doThrow(FileException.class).when(fileExportService)
         .streamJsonFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
@@ -66,7 +66,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 
   @Test
   @Order(3)
-   void shouldDownloadGzipJsonSuccessfully() throws Exception {
+  void shouldDownloadGzipJsonSuccessfully() throws Exception {
     //given
     try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json.gz")) {
       StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
@@ -84,7 +84,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 
   @Test
   @Order(4)
-   void shouldDownloadGzipJsonUnsuccessfully() throws Exception {
+  void shouldDownloadGzipJsonUnsuccessfully() throws Exception {
     //given
     doThrow(FileException.class).when(fileExportService)
         .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
@@ -104,7 +104,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
       doReturn(streamingResponseBody).when(fileExportService)
           .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
       doReturn("prm/full/full_stop_point-2023-10-27.json.gz").when(fileExportService)
-          .getLatestUploadedFileName("prm/full",PrmExportType.FULL.getFileTypePrefix());
+          .getLatestUploadedFileName(PrmBatchExportFileName.STOP_POINT_VERSION, PrmExportType.FULL);
       //when & then
       mvc.perform(get("/v1/export/prm/download-gzip-json/latest/stop-point-version/full")
               .contentType(contentType))
@@ -125,7 +125,6 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
         .andExpect(status().isOk());
   }
 
-
   @Test
   @Order(7)
   void shouldDownloadLatestJsonSuccessfully() throws Exception {
@@ -135,7 +134,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
       doReturn(streamingResponseBody).when(fileExportService)
           .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
       doReturn("prm/full/full_stop_point-2023-10-27.json.gz").when(fileExportService)
-          .getLatestUploadedFileName("prm/full",PrmExportType.FULL.getFileTypePrefix());
+          .getLatestUploadedFileName(PrmBatchExportFileName.STOP_POINT_VERSION, PrmExportType.FULL);
       //when & then
       mvc.perform(get("/v1/export/prm/json/latest/stop-point-version/full")
               .contentType(contentType))
