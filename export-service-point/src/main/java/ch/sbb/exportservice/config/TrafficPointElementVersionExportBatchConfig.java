@@ -7,7 +7,7 @@ import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
 import ch.sbb.exportservice.entity.TrafficPointElementVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
-import ch.sbb.exportservice.model.BatchExportFileName;
+import ch.sbb.exportservice.model.SePoDiBatchExportFileName;
 import ch.sbb.exportservice.model.SePoDiExportType;
 import ch.sbb.exportservice.model.TrafficPointVersionCsvModel;
 import ch.sbb.exportservice.processor.TrafficPointElementVersionCsvProcessor;
@@ -75,14 +75,14 @@ public class TrafficPointElementVersionExportBatchConfig {
   @StepScope
   public JsonFileItemWriter<ReadTrafficPointElementVersionModel> trafficPointElementJsonFileItemWriter(
       @Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType) {
-    return jsonTrafficPointElementVersionWriter.getWriter(sePoDiExportType, BatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
+    return jsonTrafficPointElementVersionWriter.getWriter(sePoDiExportType, SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
 
   @Bean
   @StepScope
   public FlatFileItemWriter<TrafficPointVersionCsvModel> trafficPointElementCsvWriter(
       @Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType) {
-    return csvTrafficPointElementVersionWriter.csvWriter(sePoDiExportType, BatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
+    return csvTrafficPointElementVersionWriter.csvWriter(sePoDiExportType, SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
 
   @Bean
@@ -155,28 +155,28 @@ public class TrafficPointElementVersionExportBatchConfig {
   @StepScope
   public UploadCsvFileTasklet uploadTrafficPointElementCsvFileTasklet(
       @Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType) {
-    return new UploadCsvFileTasklet(sePoDiExportType, BatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
+    return new UploadCsvFileTasklet(sePoDiExportType, SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
 
   @Bean
   @StepScope
   public UploadJsonFileTasklet uploadTrafficPointElementJsonFileTasklet(
       @Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType) {
-    return new UploadJsonFileTasklet(sePoDiExportType, BatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
+    return new UploadJsonFileTasklet(sePoDiExportType, SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
 
   @Bean
   @StepScope
   public FileJsonDeletingTasklet fileTrafficPointElementJsonDeletingTasklet(
       @Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType) {
-    return new FileJsonDeletingTasklet(sePoDiExportType, BatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
+    return new FileJsonDeletingTasklet(sePoDiExportType, SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
 
   @Bean
   @StepScope
   public FileCsvDeletingTasklet fileTrafficPointElementCsvDeletingTasklet(
       @Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType) {
-    return new FileCsvDeletingTasklet(sePoDiExportType, BatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
+    return new FileCsvDeletingTasklet(sePoDiExportType, SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
   }
 
   @Bean
