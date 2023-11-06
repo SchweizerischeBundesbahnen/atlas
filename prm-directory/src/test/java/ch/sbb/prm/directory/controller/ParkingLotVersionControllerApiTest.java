@@ -22,16 +22,31 @@ import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
+import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.RelationService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
 class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
@@ -39,17 +54,34 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
   private final ParkingLotRepository parkingLotRepository;
   private final StopPointRepository stopPointRepository;
   private final ReferencePointRepository referencePointRepository;
+  private final SharedServicePointRepository sharedServicePointRepository;
 
   @MockBean
   private final RelationService relationService;
 
   @Autowired
   ParkingLotVersionControllerApiTest(ParkingLotRepository parkingLotRepository, StopPointRepository stopPointRepository,
-      ReferencePointRepository referencePointRepository, RelationService relationService){
+                                     ReferencePointRepository referencePointRepository, SharedServicePointRepository sharedServicePointRepository, RelationService relationService){
     this.parkingLotRepository = parkingLotRepository;
     this.stopPointRepository = stopPointRepository;
     this.referencePointRepository = referencePointRepository;
+    this.sharedServicePointRepository = sharedServicePointRepository;
     this.relationService = relationService;
+  }
+
+  @BeforeEach
+  void setUp() {
+    SharedServicePoint servicePoint = SharedServicePoint.builder()
+            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],"
+                    + "\"trafficPointSloids\":[]}")
+            .sloid("ch:1:sloid:7000")
+            .build();
+    sharedServicePointRepository.saveAndFlush(servicePoint);
+  }
+
+  @AfterEach
+  void cleanUp() {
+    sharedServicePointRepository.deleteAll();
   }
 
   @Test
@@ -138,6 +170,12 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
    */
   @Test
   void shouldUpdateParkingLot() throws Exception {
+    SharedServicePoint servicePoint = SharedServicePoint.builder()
+            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:70000\",\"sboids\":[\"ch:1:sboid:100602\"],"
+                    + "\"trafficPointSloids\":[]}")
+            .sloid("ch:1:sloid:70000")
+            .build();
+    sharedServicePointRepository.saveAndFlush(servicePoint);
     //given
     String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
