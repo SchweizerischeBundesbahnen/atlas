@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
-import { TimetableHearingService, TimetableHearingStatement } from '../../../api';
+import { TimetableHearingStatement, TimetableHearingStatementsService } from '../../../api';
 import { Pages } from '../../pages';
 
 @Injectable({ providedIn: 'root' })
 export class StatementDetailResolver implements Resolve<TimetableHearingStatement | undefined> {
   constructor(
-    private readonly timetableHearingService: TimetableHearingService,
-    private readonly router: Router
+    private readonly timetableHearingStatementsService: TimetableHearingStatementsService,
+    private readonly router: Router,
   ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<TimetableHearingStatement | undefined> {
@@ -16,7 +16,7 @@ export class StatementDetailResolver implements Resolve<TimetableHearingStatemen
     const hearingStatus = route.data['hearingStatus'];
     return idParameter === 'add'
       ? of(undefined)
-      : this.timetableHearingService.getStatement(parseInt(idParameter)).pipe(
+      : this.timetableHearingStatementsService.getStatement(parseInt(idParameter)).pipe(
           catchError(() => {
             this.router
               .navigate(
@@ -27,11 +27,11 @@ export class StatementDetailResolver implements Resolve<TimetableHearingStatemen
                 ],
                 {
                   state: { notDismissSnackBar: true },
-                }
+                },
               )
               .then();
             return of(undefined);
-          })
+          }),
         );
   }
 }

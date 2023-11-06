@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Tag(name = "User Administration")
+@Tag(name = "Client Credential Administration")
 @RequestMapping("/v1/client-credentials")
 public interface ClientCredentialAdministrationApiV1 {
 

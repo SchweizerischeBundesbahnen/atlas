@@ -10,7 +10,7 @@ import { Component, Input } from '@angular/core';
   template: '',
 })
 export class MockAtlasMapComponent {
-  @Input() showSearch = true;
+  @Input() isSidePanelOpen = false;
 }
 
 const authService: Partial<AuthService> = {};

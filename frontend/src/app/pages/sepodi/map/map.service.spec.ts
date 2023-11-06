@@ -77,7 +77,7 @@ describe('MapService', () => {
 
     expect(service.map.getSource).toHaveBeenCalledWith('current_coordinates');
     expect(
-      (service.map.getSource('current_coordinates') as GeoJSONSource).setData
+      (service.map.getSource('current_coordinates') as GeoJSONSource).setData,
     ).toHaveBeenCalledWith({
       type: 'Feature',
       geometry: {
@@ -123,7 +123,7 @@ describe('MapService', () => {
 
     const result = service.buildServicePointPopupInformation(features);
     expect(result).toEqual(
-      '<a href="service-point-directory/service-points/8507000"><b>85 07000</b> - Bern</a> <br/>'
+      '<a href="service-point-directory/service-points/8507000"><b>85 07000</b> - Bern</a> <br/>',
     );
   });
 

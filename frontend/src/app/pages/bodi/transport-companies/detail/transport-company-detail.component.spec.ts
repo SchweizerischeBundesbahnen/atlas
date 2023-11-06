@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   BusinessOrganisation,
   BusinessOrganisationsService,
+  ContainerBusinessOrganisation,
   TransportCompany,
   TransportCompanyBoRelation,
   TransportCompanyRelationsService,
@@ -11,7 +12,7 @@ import { AppTestingModule } from '../../../../app.testing.module';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { RelationComponent } from '../../../../core/components/relation/relation.component';
 import moment from 'moment';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import { Component } from '@angular/core';
 import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
@@ -108,12 +109,23 @@ describe('TransportCompanyDetailComponent', () => {
         organisationNumber: 5,
         abbreviationDe: 'testAbbreviation',
         descriptionDe: 'testDescription',
-      } as BusinessOrganisation)
+      } as BusinessOrganisation),
     ).toBe('5 - testAbbreviation - testDescription');
   });
 
   it('should call getAllBusinessOrganisations with correct params', () => {
-    spyOn(boService, 'getAllBusinessOrganisations').and.callThrough();
+    (boService.getAllBusinessOrganisations as () => Observable<ContainerBusinessOrganisation>) =
+      jasmine
+        .createSpy(
+          'getAllBusinessOrganisations',
+          boService.getAllBusinessOrganisations as () => Observable<ContainerBusinessOrganisation>,
+        )
+        .and.returnValue(
+          of({
+            objects: [],
+            totalCount: 0,
+          }),
+        );
     component.getBusinessOrganisations('testSearchString');
     expect(boService.getAllBusinessOrganisations).toHaveBeenCalledOnceWith(
       ['testSearchString'],
@@ -121,7 +133,7 @@ describe('TransportCompanyDetailComponent', () => {
       undefined,
       undefined,
       undefined,
-      100
+      100,
     );
   });
 
@@ -141,7 +153,7 @@ describe('TransportCompanyDetailComponent', () => {
     expect(component.form.untouched).toBeTrue();
     expect(component.editMode).toBeFalse();
     expect(
-      transportCompanyRelationsServiceSpy.createTransportCompanyRelation
+      transportCompanyRelationsServiceSpy.createTransportCompanyRelation,
     ).toHaveBeenCalledOnceWith({
       transportCompanyId: 1234,
       sboid: 'ch:1:sboid:100500',
@@ -149,7 +161,7 @@ describe('TransportCompanyDetailComponent', () => {
       validTo: moment('2021-05-05').toDate(),
     });
     expect(
-      transportCompanyRelationsServiceSpy.getTransportCompanyRelations
+      transportCompanyRelationsServiceSpy.getTransportCompanyRelations,
     ).toHaveBeenCalledOnceWith(1234);
   });
 
@@ -172,14 +184,14 @@ describe('TransportCompanyDetailComponent', () => {
     expect(component.editMode).toBeFalse();
     expect(component.isUpdateRelationSelected).toBeFalse();
     expect(
-      transportCompanyRelationsServiceSpy.updateTransportCompanyRelation
+      transportCompanyRelationsServiceSpy.updateTransportCompanyRelation,
     ).toHaveBeenCalledOnceWith({
       id: 1,
       validFrom: moment('2020-05-05').toDate(),
       validTo: moment('2021-05-05').toDate(),
     });
     expect(
-      transportCompanyRelationsServiceSpy.getTransportCompanyRelations
+      transportCompanyRelationsServiceSpy.getTransportCompanyRelations,
     ).toHaveBeenCalledOnceWith(1234);
   });
 
@@ -187,10 +199,10 @@ describe('TransportCompanyDetailComponent', () => {
     component.selectedTransportCompanyRelationIndex = 0;
     component.deleteRelation();
     expect(
-      transportCompanyRelationsServiceSpy.deleteTransportCompanyRelation
+      transportCompanyRelationsServiceSpy.deleteTransportCompanyRelation,
     ).toHaveBeenCalledOnceWith(1);
     expect(
-      transportCompanyRelationsServiceSpy.getTransportCompanyRelations
+      transportCompanyRelationsServiceSpy.getTransportCompanyRelations,
     ).toHaveBeenCalledOnceWith(1234);
   });
 });

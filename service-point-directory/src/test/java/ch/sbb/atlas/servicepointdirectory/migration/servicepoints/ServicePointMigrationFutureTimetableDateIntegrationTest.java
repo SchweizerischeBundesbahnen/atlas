@@ -3,9 +3,9 @@ package ch.sbb.atlas.servicepointdirectory.migration.servicepoints;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepointdirectory.migration.CsvReader;
+import ch.sbb.atlas.imports.util.CsvReader;
 import ch.sbb.atlas.model.DateRange;
+import ch.sbb.atlas.model.controller.IntegrationTest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
