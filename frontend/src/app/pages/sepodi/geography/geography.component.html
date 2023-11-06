@@ -40,7 +40,7 @@
               { label: '540.2', translate: false }
             ]"
             [formGroup]="formGroup"
-            [required]="true"
+            [required]="false"
             controlName="height"
             fieldLabel="SEPODI.GEOLOCATION.HEIGHT"
             [removeChars]="['\'']"
@@ -54,7 +54,7 @@
             {{ 'SEPODI.GEOLOCATION.LV95.EAST' | translate }}
           </div>
           <div class="color-gray-900">
-            {{ (transformedCoordinatePair?.east | decimalNumber : LV95_MAX_DIGITS) ?? '-' }}
+            {{ (transformedCoordinatePair?.east | decimalNumber: LV95_MAX_DIGITS) ?? '-' }}
           </div>
         </div>
         <div class="col-3 pe-3">
@@ -62,7 +62,7 @@
             {{ 'SEPODI.GEOLOCATION.LV95.NORTH' | translate }}
           </div>
           <div class="color-gray-900">
-            {{ (transformedCoordinatePair?.north | decimalNumber : LV95_MAX_DIGITS) ?? '-' }}
+            {{ (transformedCoordinatePair?.north | decimalNumber: LV95_MAX_DIGITS) ?? '-' }}
           </div>
         </div>
       </div>
@@ -106,7 +106,7 @@
               { label: '540.2', translate: false }
             ]"
             [formGroup]="formGroup"
-            [required]="true"
+            [required]="false"
             controlName="height"
             fieldLabel="SEPODI.GEOLOCATION.HEIGHT"
           >
@@ -119,7 +119,7 @@
             {{ 'SEPODI.GEOLOCATION.WGS84.EAST' | translate }}
           </div>
           <div class="color-gray-900">
-            {{ (transformedCoordinatePair?.east | decimalNumber : WGS84_MAX_DIGITS) ?? '-' }}
+            {{ (transformedCoordinatePair?.east | decimalNumber: WGS84_MAX_DIGITS) ?? '-' }}
           </div>
         </div>
         <div class="col-3 pe-3">
@@ -127,7 +127,7 @@
             {{ 'SEPODI.GEOLOCATION.WGS84.NORTH' | translate }}
           </div>
           <div class="color-gray-900">
-            {{ (transformedCoordinatePair?.north | decimalNumber : WGS84_MAX_DIGITS) ?? '-' }}
+            {{ (transformedCoordinatePair?.north | decimalNumber: WGS84_MAX_DIGITS) ?? '-' }}
           </div>
         </div>
       </div>

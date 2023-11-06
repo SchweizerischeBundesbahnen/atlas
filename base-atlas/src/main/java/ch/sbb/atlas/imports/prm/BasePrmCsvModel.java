@@ -39,9 +39,16 @@ public class BasePrmCsvModel {
   private LocalDateTime createdAt;
 
   @EqualsAndHashCode.Exclude
+  @JsonProperty("ADDED_BY")
+  private String addedBy;
+
+  @EqualsAndHashCode.Exclude
   @JsonProperty("MODIFIED_DATE")
   @JsonDeserialize(using = LocalDateTimeDeserializer.class)
   private LocalDateTime modifiedAt;
 
+  @EqualsAndHashCode.Exclude
+  @JsonProperty("MODIFIED_BY")
+  private String modifiedBy;
 
 }
