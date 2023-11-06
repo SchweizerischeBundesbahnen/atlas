@@ -244,7 +244,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
             .subscribe(() => {
               this.mapService.refreshMap();
               this.cancelMapEditMode();
-            this.hasAbbreviation = !!this.form.controls.abbreviation?.value;this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS');
+              this.hasAbbreviation = !!this.form.controls.abbreviation?.value;
+              this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS');
               this.router
                 .navigate(['..', this.selectedVersion.number.number], { relativeTo: this.route })
                 .then();

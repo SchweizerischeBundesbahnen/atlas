@@ -14,7 +14,6 @@ import { GeoJsonProperties, Point } from 'geojson';
 import { MAP_STYLES, MapOptionsService, MapStyle } from './map-options.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { CoordinatePair } from '../../../api';
-import { MapIconsService } from './map-icons.service';
 import { Pages } from '../../pages';
 
 export const mapZoomLocalStorageKey = 'map-zoom';
@@ -61,7 +60,6 @@ export class MapService {
         this.mapOptionsService.authoriseRequest(url, resourceType),
       minZoom: 5,
     });
-    MapIconsService.addAllIconsToMap(this.map);
     this.initMapEvents();
     this.map.resize();
     this.map.dragRotate.disable();
@@ -192,7 +190,7 @@ export class MapService {
 
   private initStoredMapStyle() {
     const storedStyle = MAP_STYLES.find(
-      (i) => i.id === localStorage.getItem(mapStyleLocalStorageKey)
+      (i) => i.id === localStorage.getItem(mapStyleLocalStorageKey),
     );
     if (storedStyle) {
       this.switchToStyle(storedStyle);
