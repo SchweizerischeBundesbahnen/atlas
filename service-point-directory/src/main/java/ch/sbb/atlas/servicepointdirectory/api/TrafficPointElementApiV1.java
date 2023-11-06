@@ -44,6 +44,18 @@ public interface TrafficPointElementApiV1 {
   @GetMapping("{sloid}")
   List<ReadTrafficPointElementVersionModel> getTrafficPointElement(@PathVariable String sloid);
 
+  @PageableAsQueryParam
+  @GetMapping("/areas/{servicePointNumber}")
+  Container<ReadTrafficPointElementVersionModel> getAreasOfServicePoint(@PathVariable Integer servicePointNumber,
+      @Parameter(hidden = true) @PageableDefault(sort = {Fields.sloid,
+          Fields.validFrom}, direction = Direction.ASC, size = 500) Pageable pageable);
+
+  @PageableAsQueryParam
+  @GetMapping("/platforms/{servicePointNumber}")
+  Container<ReadTrafficPointElementVersionModel> getPlatformsOfServicePoint(@PathVariable Integer servicePointNumber,
+      @Parameter(hidden = true) @PageableDefault(sort = {Fields.sloid,
+          Fields.validFrom}, direction = Direction.ASC, size = 500) Pageable pageable);
+
   @GetMapping("versions/{id}")
   ReadTrafficPointElementVersionModel getTrafficPointElementVersion(@PathVariable Long id);
 
