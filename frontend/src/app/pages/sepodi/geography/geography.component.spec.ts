@@ -24,11 +24,11 @@ const mapService = jasmine.createSpyObj<MapService>([
   'enterCoordinateSelectionMode',
   'exitCoordinateSelectionMode',
 ]);
+mapService.clickedGeographyCoordinates = new Subject<CoordinatePairWGS84>();
+
 const coordinateTransformationServiceSpy = jasmine.createSpyObj<CoordinateTransformationService>([
   'transform',
 ]);
-const clickedGeographyCoordinatesSubject = new Subject<CoordinatePairWGS84>();
-mapService.clickedGeographyCoordinates = clickedGeographyCoordinatesSubject;
 describe('GeographyComponent', () => {
   let component: GeographyComponent;
   let fixture: ComponentFixture<GeographyComponent>;
