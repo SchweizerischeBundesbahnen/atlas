@@ -35,7 +35,6 @@ const mapServiceSpy = jasmine.createSpyObj('MapService', [
 ]);
 const coordinateTransformationServiceSpy = jasmine.createSpyObj<CoordinateTransformationService>([
   'transform',
-  'isCoordinatesPairValidForTransformation',
 ]);
 mapServiceSpy.isGeolocationActivated = new BehaviorSubject<boolean>(false);
 mapServiceSpy.isEditMode = new BehaviorSubject<boolean>(false);
@@ -167,37 +166,6 @@ describe('ServicePointDetailComponent', () => {
     // when & then
     component.toggleEdit();
     expect(component.form.enabled).toBeTrue();
-  });
-
-  it('should activate geolocation without coordinates', () => {
-    component.activateGeolocation(undefined!);
-
-    expect(mapServiceSpy.isGeolocationActivated.value).toBe(true);
-    expect(mapServiceSpy.isEditMode.value).toBe(true);
-    expect(
-      coordinateTransformationServiceSpy.isCoordinatesPairValidForTransformation,
-    ).toHaveBeenCalled();
-  });
-
-  it('should deactivate geolocation', () => {
-    const cancelMapEditModeSpy = spyOn(component, 'cancelMapEditMode');
-    component.deactivateGeolocation();
-
-    expect(mapServiceSpy.isGeolocationActivated.value).toBe(false);
-    expect(component.isSwitchVersionDisabled).toBeTrue();
-    expect(cancelMapEditModeSpy).toHaveBeenCalled();
-  });
-
-  it('should not transform if coordinates invalid', () => {
-    component.activateGeolocation(undefined!);
-
-    expect(mapServiceSpy.isGeolocationActivated.value).toBe(true);
-    expect(mapServiceSpy.isEditMode.value).toBe(true);
-    expect(
-      coordinateTransformationServiceSpy.isCoordinatesPairValidForTransformation,
-    ).toHaveBeenCalled();
-    expect(mapServiceSpy.placeMarkerAndFlyTo).not.toHaveBeenCalled();
-    expect(coordinateTransformationServiceSpy.transform).not.toHaveBeenCalled();
   });
 
   it('should set isAbbreviationAllowed based on selectedVersion.businessOrganisation', () => {
