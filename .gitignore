@@ -103,7 +103,6 @@ frontend/.npmrc
 /frontend/out-tsc/
 /export/
 /amazon-s3/export/
-/frontend/src/app/api/
 
 
 # IntelliJ
