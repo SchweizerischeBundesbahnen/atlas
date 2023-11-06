@@ -12,6 +12,7 @@ api/importServicePointBatch.service.ts
 api/lines.service.ts
 api/loadingPoints.service.ts
 api/personWithReducedMobility.service.ts
+api/personWithReducedMobilityExport.service.ts
 api/servicePoints.service.ts
 api/sublines.service.ts
 api/timetableFieldNumbers.service.ts
@@ -31,7 +32,6 @@ index.ts
 model/applicationRole.ts
 model/applicationType.ts
 model/basicAttributeType.ts
-model/batchExportFileName.ts
 model/boardingDeviceAttributeType.ts
 model/booleanAttributeType.ts
 model/booleanOptionalAttributeType.ts
@@ -54,7 +54,7 @@ model/containerLineVersionSnapshot.ts
 model/containerReadLoadingPointVersion.ts
 model/containerReadServicePointVersion.ts
 model/containerReadStopPointVersion.ts
-model/containerReadTrafficPointElementVersionModel.ts
+model/containerReadTrafficPointElementVersion.ts
 model/containerSubline.ts
 model/containerTimetableFieldNumber.ts
 model/containerTimetableHearingStatement.ts
@@ -75,13 +75,12 @@ model/createServicePointVersion.ts
 model/createStopPointVersion.ts
 model/createTicketCounterVersion.ts
 model/createToiletVersion.ts
-model/createTrafficPointElementVersionModel.ts
+model/createTrafficPointElementVersion.ts
 model/displayInfo.ts
 model/district.ts
 model/errorDetail.ts
 model/errorResponse.ts
 model/examinantWorkflowCheck.ts
-model/exportType.ts
 model/geoReference.ts
 model/geolocation.ts
 model/geolocationCreate.ts
@@ -116,6 +115,8 @@ model/permission.ts
 model/permissionRestrictionObject.ts
 model/permissionRestrictionType.ts
 model/person.ts
+model/prmBatchExportFileName.ts
+model/prmExportType.ts
 model/readInformationDeskVersion.ts
 model/readLoadingPointVersion.ts
 model/readParkingLotVersion.ts
@@ -126,10 +127,12 @@ model/readServicePointVersion.ts
 model/readStopPointVersion.ts
 model/readTicketCounterVersion.ts
 model/readToiletVersion.ts
-model/readTrafficPointElementVersionModel.ts
+model/readTrafficPointElementVersion.ts
 model/referencePointAttributeType.ts
 model/referencePointElementType.ts
 model/sboidPermissionRestrictionModel.ts
+model/sePoDiBatchExportFileName.ts
+model/sePoDiExportType.ts
 model/servicePointCsvModel.ts
 model/servicePointCsvModelContainer.ts
 model/servicePointFotCommentModel.ts
