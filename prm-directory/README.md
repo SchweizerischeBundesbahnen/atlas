@@ -15,6 +15,7 @@
   * [Production](#production)
   * [Project Infrastructure](#project-infrastructure)
   * [Tech Stack](#tech-stack)
+- [Full clean import of stop points](#full-clean-import-of-stop-points)
 
 <!-- tocstop -->
 
@@ -99,3 +100,17 @@ This project uses [Semantic Versioning](https://semver.org/).
 ### Tech Stack
 
 See [Tech Stack Documentation](../documentation/tech-stack-service.md)
+
+## Full clean import of stop points
+
+To do a full import of stop points, from csv we need to delete all the existing data from the prm db:
+
+```sql
+-- Stop Points
+delete
+from stop_point_version;
+delete
+from stop_point_version_means_of_transport;
+```
+
+Further we need to clear the import-service-point db: see * [Reset Batch](../documentation/batch_util.md)

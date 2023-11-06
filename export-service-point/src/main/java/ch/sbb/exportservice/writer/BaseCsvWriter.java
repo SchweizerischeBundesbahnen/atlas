@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.writer;
 
+import ch.sbb.atlas.export.enumeration.ExportFileName;
 import ch.sbb.atlas.export.enumeration.ExportTypeBase;
-import ch.sbb.exportservice.model.BatchExportFileName;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.service.FileExportService;
 import java.nio.charset.StandardCharsets;
@@ -23,7 +23,7 @@ public abstract class BaseCsvWriter<T> {
   @Autowired
   private FileExportService<ExportTypeBase> fileExportService;
 
-  public FlatFileItemWriter<T> csvWriter(ExportTypeBase exportType, BatchExportFileName exportFileName) {
+  public FlatFileItemWriter<T> csvWriter(ExportTypeBase exportType, ExportFileName exportFileName) {
     WritableResource outputResource = new FileSystemResource(
         fileExportService.createFileNamePath(ExportExtensionFileType.CSV_EXTENSION,
             exportType, exportFileName));

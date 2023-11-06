@@ -141,3 +141,7 @@ See [ImportServicePointBatchControllerApiV1.java](src/main/java/ch/sbb/importser
 ### Tech Stack
 
 See [Tech Stack Documentation](../documentation/tech-stack-service.md)
+
+### Reset Batch 
+
+See [Batch Reset](../documentation/batch_util.md)
