@@ -2,8 +2,8 @@ package ch.sbb.exportservice.exception;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.exportservice.model.BatchExportFileName;
-import ch.sbb.exportservice.model.ExportType;
+import ch.sbb.exportservice.model.SePoDiBatchExportFileName;
+import ch.sbb.exportservice.model.SePoDiExportType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 
     // when
     NotAllowedExportFileException exception = Assertions.assertThrows(NotAllowedExportFileException.class, () -> {
-      throw new NotAllowedExportFileException(BatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION, ExportType.SWISS_ONLY_FULL);
+      throw new NotAllowedExportFileException(SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION, SePoDiExportType.SWISS_ONLY_FULL);
     });
 
     // then
