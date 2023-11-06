@@ -17,18 +17,17 @@ import { DecimalNumberPipe } from '../../../core/pipe/decimal-number.pipe';
 import { CoordinatePairWGS84, MapService } from '../map/map.service';
 import { CoordinateTransformationService } from './coordinate-transformation.service';
 import { AppTestingModule } from '../../../app.testing.module';
-import { BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
 
-const mapService = jasmine.createSpyObj<MapService>(['placeMarkerAndFlyTo']);
+const mapService = jasmine.createSpyObj<MapService>([
+  'placeMarkerAndFlyTo',
+  'enterCoordinateSelectionMode',
+  'exitCoordinateSelectionMode',
+]);
 const coordinateTransformationServiceSpy = jasmine.createSpyObj<CoordinateTransformationService>([
   'transform',
-  'isCoordinatesPairValidForTransformation',
-  'isValidCoordinatePair',
 ]);
-const clickedGeographyCoordinatesSubject = new BehaviorSubject<CoordinatePairWGS84>({
-  lat: 0,
-  lng: 0,
-});
+const clickedGeographyCoordinatesSubject = new Subject<CoordinatePairWGS84>();
 mapService.clickedGeographyCoordinates = clickedGeographyCoordinatesSubject;
 describe('GeographyComponent', () => {
   let component: GeographyComponent;
@@ -78,15 +77,11 @@ describe('GeographyComponent', () => {
       east: 10000,
       spatialReference: SpatialReference.Lv95,
     };
-    coordinateTransformationServiceSpy.isCoordinatesPairValidForTransformation.and.returnValue(
-      true,
-    );
     coordinateTransformationServiceSpy.transform.and.returnValue({
       north: 12,
       east: 12,
       spatialReference: SpatialReference.Wgs84,
     });
-    coordinateTransformationServiceSpy.isValidCoordinatePair.and.returnValue(true);
 
     component.onChangeCoordinatesManually(coordinates);
 
@@ -95,55 +90,5 @@ describe('GeographyComponent', () => {
       SpatialReference.Wgs84,
     );
     expect(mapService.placeMarkerAndFlyTo).toHaveBeenCalledWith({ lng: 12, lat: 12 });
-  });
-
-  it('should call isCoordinatesPairValidForTransformation and return false on invalid coordinates', () => {
-    coordinateTransformationServiceSpy.isCoordinatesPairValidForTransformation.and.returnValue(
-      false,
-    );
-    const isValid = coordinateTransformationServiceSpy.isCoordinatesPairValidForTransformation({
-      north: 0,
-      east: 0,
-      spatialReference: SpatialReference.Lv95,
-    });
-    expect(
-      coordinateTransformationServiceSpy.isCoordinatesPairValidForTransformation,
-    ).toHaveBeenCalledWith({
-      north: 0,
-      east: 0,
-      spatialReference: SpatialReference.Lv95,
-    });
-    expect(isValid).toBeFalse();
-  });
-
-  it('should transform coordinates & place marker and fly to on click map', () => {
-    const coordinates: CoordinatePairWGS84 = { lat: 10, lng: 10 };
-    coordinateTransformationServiceSpy.isCoordinatesPairValidForTransformation.and.returnValue(
-      true,
-    );
-    spyOn(component, 'setFormGroupValue');
-    spyOn(component, 'initTransformedCoordinatePair');
-    coordinateTransformationServiceSpy.transform.and.returnValue({
-      north: 12,
-      east: 12,
-      spatialReference: SpatialReference.Lv95,
-    });
-
-    component.onMapClick({
-      north: coordinates.lat,
-      east: coordinates.lng,
-      spatialReference: SpatialReference.Lv95,
-    });
-
-    expect(coordinateTransformationServiceSpy.transform).toHaveBeenCalledWith(
-      { north: 10, east: 10, spatialReference: SpatialReference.Lv95 },
-      SpatialReference.Lv95,
-    );
-    expect(component.setFormGroupValue).toHaveBeenCalledWith({
-      north: 12,
-      east: 12,
-      spatialReference: SpatialReference.Lv95,
-    });
-    expect(component.initTransformedCoordinatePair).toHaveBeenCalled();
   });
 });
