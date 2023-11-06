@@ -156,7 +156,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
       .navigate([
         Pages.SEPODI.path,
         Pages.SERVICE_POINTS.path,
-        this.selectedVersion.servicePointNumber.number,
+        this.servicePointNumber,
         'traffic-point-elements',
       ])
       .then();
