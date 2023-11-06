@@ -60,7 +60,6 @@ export class MapService {
         this.mapOptionsService.authoriseRequest(url, resourceType),
       minZoom: 5,
     });
-
     this.initMapEvents();
     this.map.resize();
     this.map.dragRotate.disable();
@@ -191,7 +190,7 @@ export class MapService {
 
   private initStoredMapStyle() {
     const storedStyle = MAP_STYLES.find(
-      (i) => i.id === localStorage.getItem(mapStyleLocalStorageKey)
+      (i) => i.id === localStorage.getItem(mapStyleLocalStorageKey),
     );
     if (storedStyle) {
       this.switchToStyle(storedStyle);
