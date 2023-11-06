@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
@@ -22,6 +23,7 @@ import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointNumberService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchResult;
@@ -45,6 +47,7 @@ public class ServicePointController implements ServicePointApiV1 {
   private final ServicePointImportService servicePointImportService;
   private final GeoReferenceService geoReferenceService;
   private final ServicePointDistributor servicePointDistributor;
+  private final ServicePointNumberService servicePointNumberService;
 
   @Override
   public Container<ReadServicePointVersionModel> getServicePoints(Pageable pageable,
@@ -98,9 +101,28 @@ public class ServicePointController implements ServicePointApiV1 {
   @Override
   public ReadServicePointVersionModel createServicePoint(CreateServicePointVersionModel createServicePointVersionModel) {
     ServicePointVersion servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
-    if (servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber())) {
+
+    if (!createServicePointVersionModel.shouldGenerateServicePointNumber()
+        && servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber())) {
       throw new ServicePointNumberAlreadyExistsException(servicePointVersion.getNumber());
     }
+
+    if (createServicePointVersionModel.shouldGenerateServicePointNumber()) {
+      int nextAvailableServicePointId = servicePointNumberService.getNextAvailableServicePointId(
+          createServicePointVersionModel.getCountry());
+
+      ServicePointNumber servicePointNumber = ServicePointNumber.of(createServicePointVersionModel.getCountry(),
+          nextAvailableServicePointId);
+      log.info("Generated new service point number={}", servicePointNumber);
+      servicePointVersion.setNumber(servicePointNumber);
+      servicePointVersion.setCountry(servicePointNumber.getCountry());
+      servicePointVersion.setNumberShort(servicePointNumber.getNumberShort());
+      servicePointVersion.setSloid(ServicePointNumber.calculateSloid(servicePointNumber));
+      if (createServicePointVersionModel.isOperatingPointRouteNetwork()) {
+        servicePointVersion.setOperatingPointKilometerMaster(servicePointNumber);
+      }
+    }
+
     addGeoReferenceInformation(servicePointVersion);
     ServicePointVersion createdVersion = servicePointService.save(servicePointVersion);
     servicePointDistributor.publishServicePointsWithNumbers(createdVersion.getNumber());
@@ -109,11 +131,11 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public List<ReadServicePointVersionModel> updateServicePoint(Long id,
-      CreateServicePointVersionModel createServicePointVersionModel) {
+      UpdateServicePointVersionModel updateServicePointVersionModel) {
     ServicePointVersion servicePointVersionToUpdate = servicePointService.findById(id)
         .orElseThrow(() -> new IdNotFoundException(id));
 
-    ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
+    ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(updateServicePointVersionModel);
     addGeoReferenceInformation(editedVersion);
 
     servicePointService.update(servicePointVersionToUpdate, editedVersion,

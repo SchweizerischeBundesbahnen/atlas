@@ -29,7 +29,7 @@ public class ServicePointVersionJsonServicePointProcessor extends BaseServicePoi
         .operatingPointTechnicalTimetableType(servicePointVersion.getOperatingPointTechnicalTimetableType())
         .operatingPointRouteNetwork(servicePointVersion.isOperatingPointRouteNetwork())
         .operatingPointKilometerMaster(servicePointVersion.getOperatingPointKilometerMaster())
-        .meansOfTransport(getMeansOfTransportSorted(servicePointVersion))
+        .meansOfTransport(getMeansOfTransportSorted(servicePointVersion.getMeansOfTransport()))
         .stopPointType(servicePointVersion.getStopPointType())
         .servicePointGeolocation(servicePointVersion.getServicePointGeolocation() != null ?
             fromEntity(servicePointVersion.getServicePointGeolocation()) : null)

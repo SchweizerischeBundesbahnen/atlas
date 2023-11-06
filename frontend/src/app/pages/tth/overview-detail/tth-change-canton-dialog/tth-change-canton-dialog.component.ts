@@ -4,11 +4,11 @@ import { AtlasFieldLengthValidator } from '../../../../core/validation/field-len
 import { Subject } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NotificationService } from '../../../../core/notification/notification.service';
-import { TimetableHearingService } from '../../../../api';
 import { TthChangeCantonFormGroup } from './model/tth-change-canton-form-group';
 import { ChangeCantonData } from './model/change-canton-data';
 import { takeUntil } from 'rxjs/operators';
 import { ValidationService } from 'src/app/core/validation/validation.service';
+import { TimetableHearingStatementsService } from '../../../../api';
 
 @Component({
   selector: 'app-tth-change-canton-dialog',
@@ -25,7 +25,7 @@ export class TthChangeCantonDialogComponent {
     public dialogRef: MatDialogRef<TthChangeCantonDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ChangeCantonData,
     private readonly notificationService: NotificationService,
-    private readonly timetableHearingService: TimetableHearingService
+    private readonly timetableHearingStatementsService: TimetableHearingStatementsService,
   ) {}
 
   onClick() {
@@ -35,7 +35,7 @@ export class TthChangeCantonDialogComponent {
       if (this.formGroup.controls['comment'].value) {
         comment = this.formGroup.controls['comment'].value;
       }
-      this.timetableHearingService
+      this.timetableHearingStatementsService
         .updateHearingCanton({
           ids: this.data.tths.map((value) => Number(value.id)),
           comment: comment,
