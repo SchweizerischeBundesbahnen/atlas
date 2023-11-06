@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.InformationDeskTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
@@ -21,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -55,9 +57,10 @@ class InformationDeskServiceTest {
     InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
     informationDesk.setParentServicePointSloid(parentServicePointSloid);
 
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when & then
     assertThrows(StopPointDoesNotExistsException.class,
-        () -> informationDeskService.createInformationDesk(informationDesk, null)).getLocalizedMessage();
+        () -> informationDeskService.createInformationDesk(informationDesk, sharedServicePointVersionModel)).getLocalizedMessage();
   }
 
   @Test
@@ -69,8 +72,9 @@ class InformationDeskServiceTest {
     stopPointRepository.save(stopPointVersion);
     InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
     informationDesk.setParentServicePointSloid(parentServicePointSloid);
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    informationDeskService.createInformationDesk(informationDesk, null);
+    informationDeskService.createInformationDesk(informationDesk, sharedServicePointVersionModel);
 
     //then
     List<InformationDeskVersion> informationDeskVersions = informationDeskRepository.findByParentServicePointSloid(
@@ -95,8 +99,9 @@ class InformationDeskServiceTest {
     InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
     informationDesk.setParentServicePointSloid(parentServicePointSloid);
 
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    informationDeskService.createInformationDesk(informationDesk, null);
+    informationDeskService.createInformationDesk(informationDesk, sharedServicePointVersionModel);
 
     //then
     List<InformationDeskVersion> informationDeskVersions = informationDeskRepository.findByParentServicePointSloid(
