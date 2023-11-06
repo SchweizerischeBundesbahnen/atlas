@@ -75,12 +75,12 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
         });
       });
 
-    merge(this.formGroup!.controls.east.valueChanges, this.formGroup!.controls.north.valueChanges)
+    merge(this.formGroup.controls.east.valueChanges, this.formGroup.controls.north.valueChanges)
       .pipe(takeUntil(this.destroySubscriptions$), debounceTime(500))
       .subscribe(() => {
         this.onChangeCoordinatesManually({
-          east: Number(this.formGroup!.controls.east.value),
-          north: Number(this.formGroup!.controls.north.value),
+          east: Number(this.formGroup.controls.east.value),
+          north: Number(this.formGroup.controls.north.value),
           spatialReference: this.currentSpatialReference!,
         });
       });
@@ -107,9 +107,9 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
     const roundedEast = Number(coordinates.east.toFixed(maxDigits));
     const roundedNorth = Number(coordinates.north.toFixed(maxDigits));
 
-    this.formGroup!.controls.east.setValue(roundedEast);
-    this.formGroup!.controls.north.setValue(roundedNorth);
-    this.formGroup!.markAsDirty();
+    this.formGroup.controls.east.setValue(roundedEast);
+    this.formGroup.controls.north.setValue(roundedNorth);
+    this.formGroup.markAsDirty();
   }
 
   ngOnDestroy() {
@@ -131,13 +131,13 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get currentSpatialReference(): SpatialReference {
-    return this.formGroup!.controls.spatialReference.value!;
+    return this.formGroup.controls.spatialReference.value!;
   }
 
   get currentCoordinates(): CoordinatePair {
     return {
-      east: Number(this.formGroup!.value.east),
-      north: Number(this.formGroup!.value.north),
+      east: Number(this.formGroup.value.east),
+      north: Number(this.formGroup.value.north),
       spatialReference: this.currentSpatialReference,
     };
   }
