@@ -1,10 +1,7 @@
 package ch.sbb.prm.directory.service;
 
-import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
@@ -23,6 +20,12 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
+
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @IntegrationTest
 @Transactional
@@ -54,10 +57,11 @@ class ParkingLotServiceTest {
     String parentServicePointSloid="ch:1:sloid:70000";
     ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLotVersion();
     parkingLot.setParentServicePointSloid(parentServicePointSloid);
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
 
     //when & then
     assertThrows(StopPointDoesNotExistsException.class,
-        () -> parkingLotService.createParkingLot(parkingLot)).getLocalizedMessage();
+        () -> parkingLotService.createParkingLot(parkingLot, sharedServicePointVersionModel)).getLocalizedMessage();
   }
 
   @Test
@@ -69,8 +73,9 @@ class ParkingLotServiceTest {
     stopPointRepository.save(stopPointVersion);
     ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLotVersion();
     parkingLot.setParentServicePointSloid(parentServicePointSloid);
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    parkingLotService.createParkingLot(parkingLot);
+    parkingLotService.createParkingLot(parkingLot, sharedServicePointVersionModel);
 
     //then
     List<ParkingLotVersion> parkingLotVersions = parkingLotRepository.findByParentServicePointSloid(
@@ -94,9 +99,10 @@ class ParkingLotServiceTest {
     referencePointRepository.save(referencePointVersion);
     ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLotVersion();
     parkingLot.setParentServicePointSloid(parentServicePointSloid);
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
 
     //when
-    parkingLotService.createParkingLot(parkingLot);
+    parkingLotService.createParkingLot(parkingLot, sharedServicePointVersionModel);
 
     //then
     List<ParkingLotVersion> parkingLotVersions = parkingLotRepository.findByParentServicePointSloid(
