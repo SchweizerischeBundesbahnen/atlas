@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.writer;
 
+import ch.sbb.atlas.export.enumeration.ExportFileName;
 import ch.sbb.atlas.export.enumeration.ExportTypeBase;
-import ch.sbb.exportservice.model.BatchExportFileName;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.service.FileExportService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +20,7 @@ public abstract class BaseJsonWriter<T> {
   @Autowired
   private FileExportService<ExportTypeBase> fileExportService;
 
-  public JsonFileItemWriter<T> getWriter(ExportTypeBase exportType, BatchExportFileName exportFileName) {
+  public JsonFileItemWriter<T> getWriter(ExportTypeBase exportType, ExportFileName exportFileName) {
     JacksonJsonObjectMarshaller<T> jacksonJsonObjectMarshaller = new JacksonJsonObjectMarshaller<>();
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.registerModule(new JavaTimeModule());

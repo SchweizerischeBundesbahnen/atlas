@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class TrafficPointCsvService extends CsvService<TrafficPointElementCsvModel> {
 
-  public static final String TRAFFIC_POINT_FILE_PREFIX = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_";
+  public static final String TRAFFIC_POINT_FILE_PREFIX = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1";
 
   protected TrafficPointCsvService(FileHelperService fileHelperService,
       JobHelperService jobHelperService) {

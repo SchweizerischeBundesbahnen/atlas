@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.amazon.exception.FileException;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.exportservice.model.BatchExportFileName;
+import ch.sbb.exportservice.model.PrmBatchExportFileName;
 import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.service.ExportStopPointJobService;
 import ch.sbb.exportservice.service.FileExportService;
@@ -25,7 +25,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
- class ExportStopPointBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
+class ExportStopPointBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
 
   @MockBean
   private FileExportService<PrmExportType> fileExportService;
@@ -35,13 +35,13 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 
   @Test
   @Order(1)
-   void shouldGetJsonSuccessfully() throws Exception {
+  void shouldGetJsonSuccessfully() throws Exception {
     //given
     try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json")) {
       StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
 
       doReturn(streamingResponseBody).when(fileExportService)
-          .streamJsonFile(PrmExportType.FULL, BatchExportFileName.STOP_POINT_VERSION);
+          .streamJsonFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
 
       //when & then
       mvc.perform(get("/v1/export/prm/json/stop-point-version/full")
@@ -53,10 +53,10 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 
   @Test
   @Order(2)
-   void shouldGetJsonUnsuccessfully() throws Exception {
+  void shouldGetJsonUnsuccessfully() throws Exception {
     //given
     doThrow(FileException.class).when(fileExportService)
-        .streamJsonFile(PrmExportType.FULL, BatchExportFileName.STOP_POINT_VERSION);
+        .streamJsonFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
 
     //when & then
     mvc.perform(get("/v1/export/prm/json/stop-point-version/full")
@@ -66,14 +66,14 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 
   @Test
   @Order(3)
-   void shouldDownloadGzipJsonSuccessfully() throws Exception {
+  void shouldDownloadGzipJsonSuccessfully() throws Exception {
     //given
     try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json.gz")) {
       StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
       doReturn(streamingResponseBody).when(fileExportService)
-          .streamGzipFile(PrmExportType.FULL, BatchExportFileName.STOP_POINT_VERSION);
+          .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
       doReturn("service-point").when(fileExportService)
-          .getBaseFileName(PrmExportType.FULL, BatchExportFileName.STOP_POINT_VERSION);
+          .getBaseFileName(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
       //when & then
       mvc.perform(get("/v1/export/prm/download-gzip-json/stop-point-version/full")
               .contentType(contentType))
@@ -84,10 +84,10 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 
   @Test
   @Order(4)
-   void shouldDownloadGzipJsonUnsuccessfully() throws Exception {
+  void shouldDownloadGzipJsonUnsuccessfully() throws Exception {
     //given
     doThrow(FileException.class).when(fileExportService)
-        .streamGzipFile(PrmExportType.FULL, BatchExportFileName.STOP_POINT_VERSION);
+        .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
 
     //when & then
     mvc.perform(get("/v1/export/prm/download-gzip-json/stop-point-version/full")
@@ -102,9 +102,9 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
     try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json.gz")) {
       StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
       doReturn(streamingResponseBody).when(fileExportService)
-          .streamGzipFile(PrmExportType.FULL, BatchExportFileName.STOP_POINT_VERSION);
+          .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
       doReturn("prm/full/full_stop_point-2023-10-27.json.gz").when(fileExportService)
-          .getLatestUploadedFileName("prm/full",PrmExportType.FULL.getFileTypePrefix());
+          .getLatestUploadedFileName(PrmBatchExportFileName.STOP_POINT_VERSION, PrmExportType.FULL);
       //when & then
       mvc.perform(get("/v1/export/prm/download-gzip-json/latest/stop-point-version/full")
               .contentType(contentType))
@@ -125,7 +125,6 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
         .andExpect(status().isOk());
   }
 
-
   @Test
   @Order(7)
   void shouldDownloadLatestJsonSuccessfully() throws Exception {
@@ -133,9 +132,9 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
     try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json.gz")) {
       StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
       doReturn(streamingResponseBody).when(fileExportService)
-          .streamGzipFile(PrmExportType.FULL, BatchExportFileName.STOP_POINT_VERSION);
+          .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
       doReturn("prm/full/full_stop_point-2023-10-27.json.gz").when(fileExportService)
-          .getLatestUploadedFileName("prm/full",PrmExportType.FULL.getFileTypePrefix());
+          .getLatestUploadedFileName(PrmBatchExportFileName.STOP_POINT_VERSION, PrmExportType.FULL);
       //when & then
       mvc.perform(get("/v1/export/prm/json/latest/stop-point-version/full")
               .contentType(contentType))
