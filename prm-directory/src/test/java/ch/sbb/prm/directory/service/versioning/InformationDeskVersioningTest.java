@@ -1,10 +1,9 @@
 package ch.sbb.prm.directory.service.versioning;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.prm.directory.InformationDeskTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
@@ -18,11 +17,15 @@ import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.InformationDeskService;
 import ch.sbb.prm.directory.service.RelationService;
-import java.time.LocalDate;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @Transactional
@@ -88,8 +91,9 @@ class InformationDeskVersioningTest {
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
 
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    informationDeskService.updateInformationDeskVersion(version2,editedVersion);
+    informationDeskService.updateInformationDeskVersion(version2, editedVersion, sharedServicePointVersionModel);
 
     //then
     List<InformationDeskVersion> result = informationDeskRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
@@ -149,8 +153,10 @@ class InformationDeskVersioningTest {
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
 
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
+
     //when
-    informationDeskService.updateInformationDeskVersion(version2,editedVersion);
+    informationDeskService.updateInformationDeskVersion(version2, editedVersion, sharedServicePointVersionModel);
 
     //then
     List<InformationDeskVersion> result = informationDeskRepository.findAllByNumberOrderByValidFrom(
@@ -226,8 +232,9 @@ class InformationDeskVersioningTest {
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
 
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    informationDeskService.updateInformationDeskVersion(version2,editedVersion);
+    informationDeskService.updateInformationDeskVersion(version2, editedVersion, sharedServicePointVersionModel);
 
     //then
     List<InformationDeskVersion> result = informationDeskRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
