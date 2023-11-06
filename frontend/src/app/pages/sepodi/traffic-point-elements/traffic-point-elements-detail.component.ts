@@ -54,6 +54,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
   servicePointNumber!: number;
   servicePoint: ReadServicePointVersion[] = [];
   servicePointBusinessOrganisations: string[] = [];
+  geographyActive = false;
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -171,6 +172,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
   private initSelectedVersion() {
     this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.trafficPointVersions);
     this.form = TrafficPointElementFormGroupBuilder.buildFormGroup(this.selectedVersion);
+    this.geographyActive = !!this.selectedVersion?.trafficPointElementGeolocation?.spatialReference;
     if (!this.isNew) {
       this.form.disable();
     }
@@ -194,6 +196,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
           this.initSelectedVersion();
           this.form.disable();
         }
+        this.isSwitchVersionDisabled = false;
       }
     });
   }
