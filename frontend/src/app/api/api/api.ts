@@ -18,6 +18,8 @@ export * from './loadingPoints.service';
 import { LoadingPointsService } from './loadingPoints.service';
 export * from './personWithReducedMobility.service';
 import { PersonWithReducedMobilityService } from './personWithReducedMobility.service';
+export * from './personWithReducedMobilityExport.service';
+import { PersonWithReducedMobilityExportService } from './personWithReducedMobilityExport.service';
 export * from './servicePoints.service';
 import { ServicePointsService } from './servicePoints.service';
 export * from './sublines.service';
@@ -53,6 +55,7 @@ export const APIS = [
   LinesService,
   LoadingPointsService,
   PersonWithReducedMobilityService,
+  PersonWithReducedMobilityExportService,
   ServicePointsService,
   SublinesService,
   TimetableFieldNumbersService,
