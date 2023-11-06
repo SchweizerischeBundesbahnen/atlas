@@ -3,7 +3,6 @@ package ch.sbb.importservice.service.csv;
 import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Data;
-//TODO: add tests
 @Data
 @Builder
 public class CsvFileNameModel {
@@ -15,20 +14,20 @@ public class CsvFileNameModel {
   private final String s3BucketDir;
   private final boolean addDateToPostfix;
 
-  private String getFileNameWithTodayDate(String csvImportFilePrefix) {
-    LocalDate today = LocalDate.now();
-    return csvImportFilePrefix + replaceHyphensWithUnderscores(today.toString());
-  }
-
-  private String replaceHyphensWithUnderscores(String input) {
-    return input.replace("-", "");
-  }
-
   public String getFileName(){
     if(addDateToPostfix){
       return getFileNameWithTodayDate(this.fileName);
     }
     return this.fileName;
+  }
+
+  private String getFileNameWithTodayDate(String csvImportFilePrefix) {
+    LocalDate today = LocalDate.now();
+    return csvImportFilePrefix + "_" + replaceHyphensWithUnderscores(today.toString());
+  }
+
+  String replaceHyphensWithUnderscores(String input) {
+    return input.replace("-", "");
   }
 
 }
