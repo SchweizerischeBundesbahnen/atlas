@@ -7,6 +7,7 @@ import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointImportRequestModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.api.TrafficPointElementApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
@@ -67,6 +68,18 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
       throw new SloidNotFoundException(sloid);
     }
     return trafficPointElementVersions;
+  }
+
+  @Override
+  public Container<ReadTrafficPointElementVersionModel> getAreasOfServicePoint(Integer servicePointNumber, Pageable pageable) {
+    return trafficPointElementService.getTrafficPointElementsByServicePointNumber(servicePointNumber, pageable,
+        TrafficPointElementType.BOARDING_AREA);
+  }
+
+  @Override
+  public Container<ReadTrafficPointElementVersionModel> getPlatformsOfServicePoint(Integer servicePointNumber, Pageable pageable) {
+    return trafficPointElementService.getTrafficPointElementsByServicePointNumber(servicePointNumber, pageable,
+        TrafficPointElementType.BOARDING_PLATFORM);
   }
 
   @Override
