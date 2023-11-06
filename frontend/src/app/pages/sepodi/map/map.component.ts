@@ -12,7 +12,7 @@ import { MapService } from './map.service';
 import { MAP_STYLES, MapStyle } from './map-options.service';
 import { Router } from '@angular/router';
 import { Pages } from '../../pages';
-import { Subscription, take } from 'rxjs';
+import { take } from 'rxjs';
 import { AuthService } from '../../../core/auth/auth.service';
 import { ApplicationType } from '../../../api';
 import { filter } from 'rxjs/operators';
@@ -37,9 +37,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   showMapStyleSelection = false;
   showMapLegend = false;
   legend!: MapIcon[];
-
-  private isEditModeSubsription!: Subscription;
-  private isGeoLocationActiveSubsription!: Subscription;
 
   map!: Map;
 
@@ -74,8 +71,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this.mapService.removeMap();
-    this.isEditModeSubsription.unsubscribe();
-    this.isGeoLocationActiveSubsription.unsubscribe();
   }
 
   toggleStyleSelection() {
