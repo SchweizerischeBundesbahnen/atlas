@@ -51,6 +51,7 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
       } else {
         this.formGroup.disable();
       }
+      this.formGroup.parent?.markAsDirty();
       this.updateMapInteractionMode();
     }
   }
