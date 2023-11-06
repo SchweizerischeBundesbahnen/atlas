@@ -184,21 +184,4 @@ delete
 from loading_point_version;
 ```
 
-Further we need to clear the import-service-point db:
-
-```sql
-DELETE
-FROM BATCH_STEP_EXECUTION_CONTEXT;
-DELETE
-FROM BATCH_STEP_EXECUTION;
-DELETE
-FROM BATCH_JOB_EXECUTION_PARAMS;
-DELETE
-FROM batch_job_execution_context;
-DELETE
-FROM BATCH_JOB_EXECUTION;
-DELETE
-FROM BATCH_JOB_INSTANCE;
-DELETE
-FROM import_process_item;
-```
+Further we need to clear the import-service-point db: see * [Reset Batch](../documentation/batch_util.md)

@@ -7,7 +7,9 @@
 
 <!-- tocstop -->
 
-## Delete specific batch job
+## Reset specific batch job
+
+In order to rerun a specific job, to import the initial data, use the following script: 
 
 ```sql
 DELETE from batch_job_execution_context where job_execution_id in (
@@ -28,10 +30,12 @@ DELETE from batch_job_execution where job_instance_id in (
     SELECT job_instance_id FROM batch_job_instance where job_name = '{job_name}'
     );
 DELETE FROM batch_job_instance where job_name = '{job_name}';
-
 ```
 
-## Reset batch db
+## Reset all batch db
+
+:warning: **If you use this script the all jobs are run from scratch!** Please consider to use the above script if you want to 
+delete just a specific job. 
 
 ```sql
 DELETE
