@@ -1,5 +1,5 @@
 import TthUtils from '../../support/util/tth-utils';
-import {DataCy} from '../../support/data-cy';
+import { DataCy } from '../../support/data-cy';
 import CommonUtils from '../../support/util/common-utils';
 import AngularMaterialConstants from '../../support/util/angular-material-constants';
 
@@ -26,7 +26,7 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
     CommonUtils.selectFirstItemFromDropDown(DataCy.ADD_NEW_TIMETABLE_HEARING_SELECT_YEAR_DROPDOWN);
     cy.get(
       DataCy.ADD_NEW_TIMETABLE_HEARING_SELECT_YEAR_DROPDOWN +
-        AngularMaterialConstants.MAT_SELECT_TEXT_DEEP_SELECT
+        AngularMaterialConstants.MAT_SELECT_TEXT_DEEP_SELECT,
     ).then((elem) => {
       selectedHearingYear = Number(elem.text());
       const validFrom = '01.01.' + (Number(elem.text()) - 1);
@@ -40,11 +40,13 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
   it('Step-5: Fahrplanjahr Starten', () => {
     cy.get(DataCy.TTH_SELECT_YEAR).wait(1000).should('be.visible');
     CommonUtils.selectItemFromDropDown(DataCy.TTH_SELECT_YEAR, String(selectedHearingYear));
-    cy.get(DataCy.START_TIMETABLE_HEARING_YEAR_BUTTON)
-      .click()
-      .then(() => {
-        cy.get(DataCy.DIALOG_CONFIRM_BUTTON).click();
-      });
+    cy.get(DataCy.START_TIMETABLE_HEARING_YEAR_BUTTON).click();
+
+    cy.intercept('POST', 'line-directory/v1/timetable-hearing/years/*/start').as(
+      'startTimetableHearingYear',
+    );
+    cy.get(DataCy.DIALOG_CONFIRM_BUTTON).click();
+    cy.wait('@startTimetableHearingYear').its('response.statusCode').should('eq', 200);
   });
 
   it('Step-6: Stellungnahmen erfassen', () => {
@@ -62,7 +64,10 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
     CommonUtils.getClearType(DataCy.STATEMENT_EMAIL, 'k@k.it');
     CommonUtils.getClearType(DataCy.STATEMENT_STATEMENT, 'Forza Napoli');
     CommonUtils.getClearType(DataCy.STATEMENT_JUSTIFICATION, 'Campioni in Italia');
+
+    cy.intercept('POST', 'line-directory/v1/timetable-hearing/statements').as('createStatement');
     cy.get(DataCy.SAVE_ITEM).click();
+    cy.wait('@createStatement').its('response.statusCode').should('eq', 201);
   });
 
   it('Step-7: Stellungnahmen editieren', () => {
@@ -73,7 +78,7 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
 
     cy.get(DataCy.TTH_TABLE + ' table tbody tr td').should(
       'not.contain',
-      'Es wurden keine Daten gefunden.'
+      'Es wurden keine Daten gefunden.',
     );
 
     CommonUtils.clickFirstRowInTable(DataCy.TTH_TABLE);
@@ -86,14 +91,14 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
   it('Step-8: Sammelaktion -> Status ändern -> angenommen', () => {
     cy.get(DataCy.TTH_TABLE + ' table tbody tr td').should(
       'not.contain',
-      'Es wurden keine Daten gefunden.'
+      'Es wurden keine Daten gefunden.',
     );
     CommonUtils.selectFirstItemFromDropDown(DataCy.TTH_COLLECT_ACTION_TYPE);
     cy.get(DataCy.TTH_TABLE_CHECKBOX_ALL).click();
     CommonUtils.selectItemFromDropDown(DataCy.COLLECT_STATUS_CHANGE_ACTION_TYPE, 'angenommen');
     CommonUtils.getClearType(
       DataCy.STATEMENT_JUSTIFICATION,
-      'Campioni in Italia!!!Forza Napoli!!!'
+      'Campioni in Italia!!!Forza Napoli!!!',
     );
     cy.get(DataCy.DIALOG_CONFIRM_BUTTON).click();
   });

@@ -130,6 +130,8 @@ scheduler:
       chron: "0 10 5 * * ?" #At 05:10:00am every day
     loading-point-trigger-batch:
       chron: "0 20 5 * * ?" #At 05:20:00am every day
+    stop-point-trigger-batch:
+      chron: "0 25 5 * * ?" #At 05:25:00am every day
 
 atlas:
   client:

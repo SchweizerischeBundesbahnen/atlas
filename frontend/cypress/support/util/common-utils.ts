@@ -135,7 +135,7 @@ export default class CommonUtils {
   static assertTableHeader(
     tableNumber: number,
     columnHeaderNumber: number,
-    columnHeaderContent: string
+    columnHeaderContent: string,
   ) {
     cy.get('table')
       .eq(tableNumber)
@@ -148,7 +148,7 @@ export default class CommonUtils {
   static assertTableSearch(
     tableNumber: number,
     fieldNumber: number,
-    fieldLabelExpectation: string
+    fieldLabelExpectation: string,
   ) {
     cy.get('app-table')
       .eq(tableNumber)
@@ -162,32 +162,23 @@ export default class CommonUtils {
   }
 
   static selectItemFromDropDown(selector: string, value: string) {
-    cy.get(selector)
-      .should('be.visible')
-      .first()
-      .click()
-      .then(() => {
-        // simulate click event on the drop down item (mat-option)
-        CommonUtils.chooseMatOptionByText(value);
-      });
+    cy.get(selector).should('be.visible').first().click();
+    // simulate click event on the drop down item (mat-option)
+    CommonUtils.chooseMatOptionByText(value);
   }
 
   static selectFirstItemFromDropDown(selector: string) {
     cy.get(selector).should('be.visible');
-    cy.get(selector)
-      .first()
-      .click()
-      .then((el) => {
-        // simulate click event on the drop down item (mat-option)
-        CommonUtils.chooseMatOptionByText(undefined);
-      });
+    cy.get(selector).first().click();
+    // simulate click event on the drop down item (mat-option)
+    CommonUtils.chooseMatOptionByText(undefined);
   }
 
   static chooseMatOptionByText(value: string | undefined) {
     cy.get('mat-option > span')
       .should('be.visible')
-      .then((options) => {
-        for (const option of options) {
+      .should(($options) => {
+        for (const option of $options) {
           if (value) {
             if (option.innerText === value) {
               option.click(); // this is jquery click() not cypress click()
@@ -204,8 +195,8 @@ export default class CommonUtils {
     // deselect all
 
     // Deselect all selected dropDownElements
-    cy.get('mat-option').then((options) => {
-      for (const option of options) {
+    cy.get('mat-option').should(($options) => {
+      for (const option of $options) {
         if (option.getAttribute('aria-selected') == 'true') {
           option.click(); // this is jquery click() not cypress click()
         }
@@ -252,22 +243,24 @@ export default class CommonUtils {
    * It is also checked if all options that are not given have the state unchecked.
    */
   static assertItemsFromDropdownAreChecked(selector: string, checkedOptionNames: string[]) {
-    cy.get(selector)
-      .click()
-      .get('mat-option')
-      .then(($dropDownElement) => {
-        for (const element of $dropDownElement) {
-          const elementName = element.innerText.trim();
-          const message = 'State of checkbox "' + elementName + '"';
+    const dropDownElements = cy
+      .get(selector)
+      .click() // open dropdown menu
+      .get('mat-option'); // get all dropdown-elements
 
-          const checkBoxState = element.getAttribute('aria-selected') == 'true';
-          if (checkedOptionNames.includes(elementName)) {
-            expect(checkBoxState, message).to.be.true;
-          } else {
-            expect(checkBoxState, message).to.be.false;
-          }
+    dropDownElements.should(($dropDownElement) => {
+      for (const element of $dropDownElement) {
+        const elementName = element.innerText.trim();
+        const message = 'State of checkbox "' + elementName + '"';
+
+        const checkBoxState = element.getAttribute('aria-selected') == 'true';
+        if (checkedOptionNames.includes(elementName)) {
+          expect(checkBoxState, message).to.be.true;
+        } else {
+          expect(checkBoxState, message).to.be.false;
         }
-      });
+      }
+    });
     // Workaround to close the dropDown-menu again after all checks are done
     cy.get(selector).type('{esc}');
   }
@@ -312,13 +305,5 @@ export default class CommonUtils {
   private static clickCancelOnDetailView(overviewPath: string) {
     cy.get(DataCy.CANCEL).click();
     cy.url().should('eq', Cypress.config().baseUrl + '/' + overviewPath);
-  }
-
-  private static openSideMenu() {
-    cy.get('.sidenav-menu-btn span').then(($sidemenuBtnSpan) => {
-      if ($sidemenuBtnSpan.text() === 'Menü') {
-        $sidemenuBtnSpan.trigger('click');
-      }
-    });
   }
 }
