@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.config;
 
-import static ch.sbb.exportservice.model.BatchExportFileName.STOP_POINT_VERSION;
+import static ch.sbb.exportservice.model.PrmBatchExportFileName.STOP_POINT_VERSION;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POINT_JSON_JOB_NAME;
 
