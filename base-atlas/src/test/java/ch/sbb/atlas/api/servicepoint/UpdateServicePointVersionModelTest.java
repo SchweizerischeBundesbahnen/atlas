@@ -276,4 +276,99 @@ class UpdateServicePointVersionModelTest {
         operatingPointKilometerMasterNumber);
   }
 
+  @Test
+  void whenRouteNetworkFalseThenIsKilometerMasterNotGivenIfOperatingPointRouteNetworkTrue() {
+    CreateServicePointVersionModel createServicePointVersionModel =
+            CreateServicePointVersionModel.builder()
+                    .numberShort(34510)
+                    .operatingPointRouteNetwork(false)
+                    .build();
+    assertThat(createServicePointVersionModel.isKilometerMasterNotGivenIfOperatingPointRouteNetwork()).isEqualTo(true);
+  }
+
+  @Test
+  void whenRouteNetworkTrueAndKilMasterNotNullThenIsKilometerMasterNotGivenIfOperatingPointRouteNetworkFalse() {
+    CreateServicePointVersionModel createServicePointVersionModel =
+            CreateServicePointVersionModel.builder()
+                    .numberShort(34510)
+                    .operatingPointRouteNetwork(true)
+                    .operatingPointKilometerMasterNumber(8034510)
+                    .build();
+    assertThat(createServicePointVersionModel.isKilometerMasterNotGivenIfOperatingPointRouteNetwork()).isEqualTo(false);
+  }
+
+  @Test
+  void whenRouteNetworkTrueAndKilMasterNullThenIsKilometerMasterNotGivenIfOperatingPointRouteNetworkTrue() {
+    CreateServicePointVersionModel createServicePointVersionModel =
+            CreateServicePointVersionModel.builder()
+                    .numberShort(34510)
+                    .operatingPointRouteNetwork(true)
+                    .build();
+    assertThat(createServicePointVersionModel.isKilometerMasterNotGivenIfOperatingPointRouteNetwork()).isEqualTo(true);
+  }
+
+  @Test
+  void whenRouteNetworkFalseAndKilMasterNullThenIsKilometerMasterNotGivenIfOperatingPointRouteNetworkTrue() {
+    CreateServicePointVersionModel createServicePointVersionModel =
+            CreateServicePointVersionModel.builder()
+                    .numberShort(34510)
+                    .operatingPointRouteNetwork(false)
+                    .build();
+    assertThat(createServicePointVersionModel.isKilometerMasterNotGivenIfOperatingPointRouteNetwork()).isEqualTo(true);
+  }
+
+  @Test
+  void whenRouteNetworkFalseAndKilMasterNotNullThenIsKilometerMasterNotGivenIfOperatingPointRouteNetworkTrue() {
+    CreateServicePointVersionModel createServicePointVersionModel =
+            CreateServicePointVersionModel.builder()
+                    .numberShort(34510)
+                    .operatingPointRouteNetwork(false)
+                    .operatingPointKilometerMasterNumber(8034510)
+                    .build();
+    assertThat(createServicePointVersionModel.isKilometerMasterNotGivenIfOperatingPointRouteNetwork()).isEqualTo(true);
+  }
+
+  @Test
+  void shouldSetIsRouteNetworkOrKilometerMasterNumberAllowedToFalse() {
+    CreateServicePointVersionModel createServicePointVersionModel =
+            CreateServicePointVersionModel.builder()
+                    .numberShort(34510)
+                    .operatingPointRouteNetwork(true)
+                    .build();
+    assertThat(createServicePointVersionModel.isRouteNetworkOrKilometerMasterNumberAllowed()).isEqualTo(false);
+  }
+
+  @Test
+  void shouldSetIsRouteNetworkOrKilometerMasterNumberAllowedToTrueWhenIsFreightSP() {
+    CreateServicePointVersionModel createServicePointVersionModel =
+            CreateServicePointVersionModel.builder()
+                    .numberShort(34510)
+                    .operatingPointRouteNetwork(true)
+                    .freightServicePoint(true)
+                    .build();
+    assertThat(createServicePointVersionModel.isRouteNetworkOrKilometerMasterNumberAllowed()).isEqualTo(true);
+  }
+
+  @Test
+  void shouldSetIsRouteNetworkOrKilometerMasterNumberAllowedToTrueWhenOperatingPoint() {
+    CreateServicePointVersionModel createServicePointVersionModel =
+            CreateServicePointVersionModel.builder()
+                    .numberShort(34510)
+                    .operatingPointRouteNetwork(true)
+                    .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.BRANCH)
+                    .build();
+    assertThat(createServicePointVersionModel.isRouteNetworkOrKilometerMasterNumberAllowed()).isEqualTo(true);
+  }
+
+  @Test
+  void shouldSetIsRouteNetworkOrKilometerMasterNumberAllowedToTrueWhenStopPoint() {
+    CreateServicePointVersionModel createServicePointVersionModel =
+            CreateServicePointVersionModel.builder()
+                    .numberShort(34510)
+                    .operatingPointRouteNetwork(true)
+                    .meansOfTransport(List.of(MeanOfTransport.BUS))
+                    .build();
+    assertThat(createServicePointVersionModel.isRouteNetworkOrKilometerMasterNumberAllowed()).isEqualTo(true);
+  }
+
 }
