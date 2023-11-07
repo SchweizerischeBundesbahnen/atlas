@@ -61,7 +61,7 @@ public class StopPointVersion extends BaseEntity {
 
   private String infoTicketMachine;
 
-  private boolean interoperable;
+  private Boolean interoperable;
 
   private String url;
 
