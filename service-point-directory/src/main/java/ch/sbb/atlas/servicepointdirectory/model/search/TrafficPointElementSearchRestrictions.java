@@ -7,6 +7,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion_;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import lombok.Getter;
@@ -36,6 +37,10 @@ public class TrafficPointElementSearchRestrictions {
             TrafficPointElementVersion.Fields.parentSloid))
         .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getServicePointNumbersWithoutCheckDigit(),
             TrafficPointElementVersion.Fields.servicePointNumber))
+        .and(specificationBuilder().enumSpecification(
+            trafficPointElementRequestParams.getTrafficPointElementType() == null ? Collections.emptyList()
+                : List.of(trafficPointElementRequestParams.getTrafficPointElementType()),
+            TrafficPointElementVersion_.trafficPointElementType))
         .and(new ServicePointNumberSboidSpecification<>(
             trafficPointElementRequestParams.getSboids(),
             trafficPointElementRequestParams.getServicePointNumbersShort().stream().flatMap(str -> Arrays.stream(str.split(",")).map(String::trim)).map(Integer::valueOf).toList(),

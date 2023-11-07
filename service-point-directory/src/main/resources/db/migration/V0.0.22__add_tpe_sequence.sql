@@ -1,0 +1,1 @@
+CREATE sequence sloid_platform_seq START WITH 100000 INCREMENT BY 1;

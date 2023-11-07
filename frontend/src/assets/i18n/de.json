@@ -102,6 +102,7 @@
   "FORM": {
     "MAX_CHARS": "{{numberOfChars}} Zeichen max.",
     "MAX_NUMBER_OF_DIGITS": "{{numberOfDigits}} Zahlen max.",
+    "MAX_DIGITS": "max. {{amount}} Nachkommastellen",
     "DROPDOWN_PLACEHOLDER": "auswählen",
     "FOR_EXAMPLE": "z.B.:",
     "DESIGN_INFORMATION": "Angaben zur Gestaltung",
@@ -945,7 +946,26 @@
       "TERMINATION_FORBIDDEN": "Sie sind nicht berechtigt die Haltestelle zu terminieren. Benutzen Sie hierzu bitte das Formular auf https://www.öv-info.ch/de/aufhebung-haltestelle."
     },
     "TRAFFIC_POINT_ELEMENTS": {
-      "TRAFFIC_POINT_ELEMENTS": "Haltekanten"
+      "TRAFFIC_POINT_ELEMENTS": "Haltekanten",
+      "NEW": "Neue Haltekante erfassen",
+      "DESIGNATION": "Bezeichnung Kunden",
+      "DESIGNATION_OPERATIONAL": "Bezeichnung betrieblich",
+      "HEADER": "Haltekante / Gleis",
+      "SERVICE_POINT_NAME": "Haltestellenname",
+      "DETAILS": "Angaben zur",
+      "PARENT_SLOID": "Gehört zu Bereich",
+      "CONSTRUCTION_INFORMATION": "Bauliche Informationen",
+      "LENGTH": "Länge [m]",
+      "BOARDING_AREA_HEIGHT": "Kantenhöhe [cm]",
+      "COMPASS_DIRECTION": "Kompassrichtung [°]",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Die Haltekante wurde erfolgreich hinzugefügt.",
+        "EDIT_SUCCESS": "Die Haltekante wurde erfolgreich gespeichert."
+      },
+      "VALIDITY_CONFIRMATION": {
+        "TITLE": "Gültigkeit",
+        "MESSAGE": "Achtung, die zugeordnete Haltestelle ist von {{validFrom}} bis {{validTo}} gültig. Bitte passen Sie die Gültigkeit entsprechend an."
+      }
     },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Ladestellen"
@@ -984,6 +1004,8 @@
       "OPERATING_POINT_TECHNICAL": "Fahrplanpunkt",
       "SERVICE_POINT": "Dienststelle"
     },
-    "BACK_TO_MAP": "Schliessen"
+    "BACK_TO_MAP": "Schliessen",
+    "AUTOMATIC_SLOID": "wird automatisch vergeben",
+    "SLOID_ALREADY_USED": "{{sloid}} ist bereits vergeben."
   }
 }

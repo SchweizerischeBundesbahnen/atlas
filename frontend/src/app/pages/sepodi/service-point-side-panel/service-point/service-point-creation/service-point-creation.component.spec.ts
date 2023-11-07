@@ -1,25 +1,22 @@
 import { ServicePointCreationComponent } from './service-point-creation.component';
-import SpyObj = jasmine.SpyObj;
-import { CoordinateTransformationService } from '../geography/coordinate-transformation.service';
 import {
   ApplicationRole,
   ApplicationType,
   Country,
   CreateServicePointVersion,
   PermissionRestrictionType,
-  SpatialReference,
   SwissCanton,
-} from '../../../api';
-import { MapService } from '../map/map.service';
+} from '../../../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { of } from 'rxjs';
-import { NotificationService } from '../../../core/notification/notification.service';
-import anything = jasmine.anything;
-import { ServicePointFormGroupBuilder } from '../service-point-side-panel/service-point/service-point-detail-form-group';
-import Spy = jasmine.Spy;
+import { NotificationService } from '../../../../../core/notification/notification.service';
+import { ServicePointFormGroupBuilder } from '../service-point-detail-form-group';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../core/auth/auth.service';
-import { Countries } from '../../../core/country/Countries';
+import { AuthService } from '../../../../../core/auth/auth.service';
+import { Countries } from '../../../../../core/country/Countries';
+import SpyObj = jasmine.SpyObj;
+import anything = jasmine.anything;
+import Spy = jasmine.Spy;
 
 class AuthServiceMock implements Partial<AuthService> {
   getApplicationUserPermission = jasmine.createSpy();
@@ -29,8 +26,6 @@ class AuthServiceMock implements Partial<AuthService> {
 describe('ServicePointCreationComponent', () => {
   let component: ServicePointCreationComponent;
   let spy: SpyObj<any>;
-  let coordinateTransformationServiceSpy: SpyObj<CoordinateTransformationService>;
-  let mapServiceSpy: SpyObj<MapService>;
   let servicePointServiceSpy: SpyObj<any>;
   let notificationServiceSpy: SpyObj<NotificationService>;
   let routerSpy: SpyObj<Router>;
@@ -38,14 +33,6 @@ describe('ServicePointCreationComponent', () => {
 
   beforeEach(() => {
     spy = jasmine.createSpyObj(['mock']);
-    coordinateTransformationServiceSpy = jasmine.createSpyObj<CoordinateTransformationService>([
-      'isCoordinatesPairValidForTransformation',
-      'transform',
-    ]);
-    mapServiceSpy = jasmine.createSpyObj(['placeMarkerAndFlyTo'], {
-      isEditMode: { next: jasmine.createSpy() },
-      isGeolocationActivated: { next: jasmine.createSpy() },
-    });
     servicePointServiceSpy = jasmine.createSpyObj(['createServicePoint']);
     notificationServiceSpy = jasmine.createSpyObj(['success']);
     routerSpy = jasmine.createSpyObj(['navigate']);
@@ -55,8 +42,6 @@ describe('ServicePointCreationComponent', () => {
       spy,
       routerSpy,
       spy,
-      mapServiceSpy,
-      coordinateTransformationServiceSpy,
       servicePointServiceSpy,
       notificationServiceSpy,
     );
@@ -64,27 +49,6 @@ describe('ServicePointCreationComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should activateGeolocation', () => {
-    coordinateTransformationServiceSpy.isCoordinatesPairValidForTransformation.and.returnValue(
-      true,
-    );
-    coordinateTransformationServiceSpy.transform.and.returnValue({
-      east: 2,
-      north: 2,
-      spatialReference: SpatialReference.Wgs84,
-    });
-
-    component.activateGeolocation({
-      north: 1,
-      east: 1,
-      spatialReference: SpatialReference.Lv95,
-    });
-
-    expect(mapServiceSpy.placeMarkerAndFlyTo).toHaveBeenCalledOnceWith({ lat: 2, lng: 2 });
-    expect(mapServiceSpy.isGeolocationActivated.next).toHaveBeenCalledOnceWith(true);
-    expect(mapServiceSpy.isEditMode.next).toHaveBeenCalledOnceWith(true);
   });
 
   it('should save', () => {
