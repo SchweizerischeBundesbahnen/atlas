@@ -9,7 +9,7 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.prm.directory.service.PrmVersionable;
-import ch.sbb.prm.directory.validation.NotForReduced;
+import ch.sbb.prm.directory.validation.NotForReducedPRM;
 import ch.sbb.prm.directory.validation.PrmMeansOfTransportHelper;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -83,88 +83,88 @@ public class StopPointVersion extends BasePrmImportEntity implements PrmVersiona
   @AtlasVersionableProperty
   private String freeText;
 
-  @NotForReduced
+  @NotForReducedPRM
   @AtlasVersionableProperty
   private String address;
 
-  @NotForReduced
+  @NotForReducedPRM
   @AtlasVersionableProperty
   private String zipCode;
 
-  @NotForReduced
+  @NotForReducedPRM
   @AtlasVersionableProperty
   private String city;
 
-  @NotForReduced
+  @NotForReducedPRM(defaultValueMandatory = true)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType alternativeTransport;
 
-  @NotForReduced
+  @NotForReducedPRM
   @AtlasVersionableProperty
   private String alternativeTransportCondition;
 
-  @NotForReduced
+  @NotForReducedPRM(defaultValueMandatory = true)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType assistanceAvailability;
 
-  @NotForReduced
+  @NotForReducedPRM
   @AtlasVersionableProperty
   private String assistanceCondition;
 
-  @NotForReduced
+  @NotForReducedPRM(defaultValueMandatory = true)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType assistanceService;
 
-  @NotForReduced
+  @NotForReducedPRM(defaultValueMandatory = true)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType audioTicketMachine;
 
-  @NotForReduced
+  @NotForReducedPRM(defaultValueMandatory = true)
   @AtlasVersionableProperty
   private String additionalInformation;
 
-  @NotForReduced
+  @NotForReducedPRM(defaultValueMandatory = true)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType dynamicAudioSystem;
 
-  @NotForReduced
+  @NotForReducedPRM(defaultValueMandatory = true)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType dynamicOpticSystem;
 
-  @NotForReduced
+  @NotForReducedPRM
   @AtlasVersionableProperty
   private String infoTicketMachine;
 
-  @NotForReduced
+  @NotForReducedPRM
   @AtlasVersionableProperty
-  private boolean interoperable;
+  private Boolean interoperable;
 
-  @NotForReduced
+  @NotForReducedPRM
   @AtlasVersionableProperty
   private String url;
 
-  @NotForReduced
+  @NotForReducedPRM(defaultValueMandatory = true)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType visualInfo;
 
-  @NotForReduced
+  @NotForReducedPRM(defaultValueMandatory = true)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType wheelchairTicketMachine;
 
-  @NotForReduced
+  @NotForReducedPRM(defaultValueMandatory = true)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType assistanceRequestFulfilled;
 
-  @NotForReduced
+  @NotForReducedPRM(defaultValueMandatory = true)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType ticketMachine;
