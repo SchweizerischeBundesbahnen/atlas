@@ -1,136 +1,148 @@
-<form [formGroup]="formGroup">
-  <mat-radio-group formControlName="spatialReference" (change)="switchSpatialReference($event)">
-    <mat-radio-button [value]="'LV95'">
-      {{ 'SEPODI.GEOLOCATION.SYSTEM_LV95' | translate }}
-    </mat-radio-button>
-    <div class="col-12 ps-5">
-      <div *ngIf="currentSpatialReference === 'LV95'" class="d-flex flex-row">
-        <div class="col-3 pe-3">
-          <atlas-text-field
-            [fieldExamples]="[
-              { label: 'FORM.FOR_EXAMPLE', translate: true },
-              { label: '2600037.0', translate: false }
-            ]"
-            [formGroup]="formGroup"
-            [required]="true"
-            controlName="east"
-            fieldLabel="SEPODI.GEOLOCATION.LV95.EAST"
-            [removeChars]="['\'']"
-          >
-          </atlas-text-field>
-        </div>
-        <div class="col-3 pe-3">
-          <atlas-text-field
-            [fieldExamples]="[
-              { label: 'FORM.FOR_EXAMPLE', translate: true },
-              { label: '1199749.0', translate: false }
-            ]"
-            [formGroup]="formGroup"
-            [required]="true"
-            controlName="north"
-            fieldLabel="SEPODI.GEOLOCATION.LV95.NORTH"
-            [removeChars]="['\'']"
-          >
-          </atlas-text-field>
-        </div>
-        <div class="col-3">
-          <atlas-text-field
-            [fieldExamples]="[
-              { label: 'FORM.FOR_EXAMPLE', translate: true },
-              { label: '540.2', translate: false }
-            ]"
-            [formGroup]="formGroup"
-            [required]="false"
-            controlName="height"
-            fieldLabel="SEPODI.GEOLOCATION.HEIGHT"
-            [removeChars]="['\'']"
-          >
-          </atlas-text-field>
-        </div>
-      </div>
-      <div *ngIf="currentSpatialReference === 'WGS84'" class="d-flex flex-row">
-        <div class="col-3 pe-3 flex-column">
-          <div class="font-bold-lg color-gray-900">
-            {{ 'SEPODI.GEOLOCATION.LV95.EAST' | translate }}
-          </div>
-          <div class="color-gray-900">
-            {{ (transformedCoordinatePair?.east | decimalNumber: LV95_MAX_DIGITS) ?? '-' }}
-          </div>
-        </div>
-        <div class="col-3 pe-3">
-          <div class="font-bold-lg color-gray-900">
-            {{ 'SEPODI.GEOLOCATION.LV95.NORTH' | translate }}
-          </div>
-          <div class="color-gray-900">
-            {{ (transformedCoordinatePair?.north | decimalNumber: LV95_MAX_DIGITS) ?? '-' }}
-          </div>
-        </div>
-      </div>
-    </div>
+<div class="font-bold-2xl mt-5">
+  {{ 'SEPODI.GEOLOCATION.GEOGRAPHY' | translate }}
 
-    <mat-radio-button [value]="'WGS84'">
-      {{ 'SEPODI.GEOLOCATION.SYSTEM_WGS84' | translate }}
-    </mat-radio-button>
-    <div class="col-12 ps-5">
-      <div *ngIf="currentSpatialReference === 'WGS84'" class="d-flex flex-row">
-        <div class="col-3 pe-3">
-          <atlas-text-field
-            [fieldExamples]="[
-              { label: 'FORM.FOR_EXAMPLE', translate: true },
-              { label: '7.43913088992', translate: false }
-            ]"
-            [formGroup]="formGroup"
-            [required]="true"
-            controlName="east"
-            fieldLabel="SEPODI.GEOLOCATION.WGS84.EAST"
-          >
-          </atlas-text-field>
+  <form-info-icon
+    infoTitle="{{ 'SEPODI.GEOLOCATION.GEOGRAPHY_INFORMATION' | translate }}"
+  ></form-info-icon>
+
+  <atlas-slide-toggle [(toggle)]="geographyActive" [disabled]="!editMode"></atlas-slide-toggle>
+</div>
+
+<ng-container *ngIf="geographyActive">
+  <form [formGroup]="formGroup">
+    <mat-radio-group formControlName="spatialReference" (change)="switchSpatialReference($event)">
+      <mat-radio-button [value]="'LV95'">
+        {{ 'SEPODI.GEOLOCATION.SYSTEM_LV95' | translate }}
+      </mat-radio-button>
+      <div class="col-12 ps-5">
+        <div *ngIf="currentSpatialReference === 'LV95'" class="d-flex flex-row">
+          <div class="col-3 pe-3">
+            <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: '2600037.0', translate: false }
+              ]"
+              [formGroup]="formGroup"
+              [required]="true"
+              controlName="east"
+              fieldLabel="SEPODI.GEOLOCATION.LV95.EAST"
+              [removeChars]="['\'']"
+            >
+            </atlas-text-field>
+          </div>
+          <div class="col-3 pe-3">
+            <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: '1199749.0', translate: false }
+              ]"
+              [formGroup]="formGroup"
+              [required]="true"
+              controlName="north"
+              fieldLabel="SEPODI.GEOLOCATION.LV95.NORTH"
+              [removeChars]="['\'']"
+            >
+            </atlas-text-field>
+          </div>
+          <div class="col-3">
+            <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: '540.2', translate: false }
+              ]"
+              [formGroup]="formGroup"
+              [required]="false"
+              controlName="height"
+              fieldLabel="SEPODI.GEOLOCATION.HEIGHT"
+              [removeChars]="['\'']"
+            >
+            </atlas-text-field>
+          </div>
         </div>
-        <div class="col-3 pe-3">
-          <atlas-text-field
-            [fieldExamples]="[
-              { label: 'FORM.FOR_EXAMPLE', translate: true },
-              { label: '46.94883229051', translate: false }
-            ]"
-            [formGroup]="formGroup"
-            [required]="true"
-            controlName="north"
-            fieldLabel="SEPODI.GEOLOCATION.WGS84.NORTH"
-          >
-          </atlas-text-field>
-        </div>
-        <div class="col-3">
-          <atlas-text-field
-            [fieldExamples]="[
-              { label: 'FORM.FOR_EXAMPLE', translate: true },
-              { label: '540.2', translate: false }
-            ]"
-            [formGroup]="formGroup"
-            [required]="false"
-            controlName="height"
-            fieldLabel="SEPODI.GEOLOCATION.HEIGHT"
-          >
-          </atlas-text-field>
+        <div *ngIf="currentSpatialReference === 'WGS84'" class="d-flex flex-row">
+          <div class="col-3 pe-3 flex-column">
+            <div class="font-bold-lg color-gray-900">
+              {{ 'SEPODI.GEOLOCATION.LV95.EAST' | translate }}
+            </div>
+            <div class="color-gray-900">
+              {{ (transformedCoordinatePair?.east | decimalNumber: LV95_MAX_DIGITS) ?? '-' }}
+            </div>
+          </div>
+          <div class="col-3 pe-3">
+            <div class="font-bold-lg color-gray-900">
+              {{ 'SEPODI.GEOLOCATION.LV95.NORTH' | translate }}
+            </div>
+            <div class="color-gray-900">
+              {{ (transformedCoordinatePair?.north | decimalNumber: LV95_MAX_DIGITS) ?? '-' }}
+            </div>
+          </div>
         </div>
       </div>
-      <div *ngIf="currentSpatialReference === 'LV95'" class="d-flex flex-row">
-        <div class="col-3 pe-3 flex-column">
-          <div class="font-bold-lg color-gray-900">
-            {{ 'SEPODI.GEOLOCATION.WGS84.EAST' | translate }}
+
+      <mat-radio-button [value]="'WGS84'">
+        {{ 'SEPODI.GEOLOCATION.SYSTEM_WGS84' | translate }}
+      </mat-radio-button>
+      <div class="col-12 ps-5">
+        <div *ngIf="currentSpatialReference === 'WGS84'" class="d-flex flex-row">
+          <div class="col-3 pe-3">
+            <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: '7.43913088992', translate: false }
+              ]"
+              [formGroup]="formGroup"
+              [required]="true"
+              controlName="east"
+              fieldLabel="SEPODI.GEOLOCATION.WGS84.EAST"
+            >
+            </atlas-text-field>
           </div>
-          <div class="color-gray-900">
-            {{ (transformedCoordinatePair?.east | decimalNumber: WGS84_MAX_DIGITS) ?? '-' }}
+          <div class="col-3 pe-3">
+            <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: '46.94883229051', translate: false }
+              ]"
+              [formGroup]="formGroup"
+              [required]="true"
+              controlName="north"
+              fieldLabel="SEPODI.GEOLOCATION.WGS84.NORTH"
+            >
+            </atlas-text-field>
+          </div>
+          <div class="col-3">
+            <atlas-text-field
+              [fieldExamples]="[
+                { label: 'FORM.FOR_EXAMPLE', translate: true },
+                { label: '540.2', translate: false }
+              ]"
+              [formGroup]="formGroup"
+              [required]="false"
+              controlName="height"
+              fieldLabel="SEPODI.GEOLOCATION.HEIGHT"
+            >
+            </atlas-text-field>
           </div>
         </div>
-        <div class="col-3 pe-3">
-          <div class="font-bold-lg color-gray-900">
-            {{ 'SEPODI.GEOLOCATION.WGS84.NORTH' | translate }}
+        <div *ngIf="currentSpatialReference === 'LV95'" class="d-flex flex-row">
+          <div class="col-3 pe-3 flex-column">
+            <div class="font-bold-lg color-gray-900">
+              {{ 'SEPODI.GEOLOCATION.WGS84.EAST' | translate }}
+            </div>
+            <div class="color-gray-900">
+              {{ (transformedCoordinatePair?.east | decimalNumber: WGS84_MAX_DIGITS) ?? '-' }}
+            </div>
           </div>
-          <div class="color-gray-900">
-            {{ (transformedCoordinatePair?.north | decimalNumber: WGS84_MAX_DIGITS) ?? '-' }}
+          <div class="col-3 pe-3">
+            <div class="font-bold-lg color-gray-900">
+              {{ 'SEPODI.GEOLOCATION.WGS84.NORTH' | translate }}
+            </div>
+            <div class="color-gray-900">
+              {{ (transformedCoordinatePair?.north | decimalNumber: WGS84_MAX_DIGITS) ?? '-' }}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </mat-radio-group>
-</form>
+    </mat-radio-group>
+  </form>
+</ng-container>

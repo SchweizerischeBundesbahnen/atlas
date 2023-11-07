@@ -7,6 +7,7 @@ import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointImportRequestModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.api.TrafficPointElementApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
@@ -70,6 +71,18 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   }
 
   @Override
+  public Container<ReadTrafficPointElementVersionModel> getAreasOfServicePoint(Integer servicePointNumber, Pageable pageable) {
+    return trafficPointElementService.getTrafficPointElementsByServicePointNumber(servicePointNumber, pageable,
+        TrafficPointElementType.BOARDING_AREA);
+  }
+
+  @Override
+  public Container<ReadTrafficPointElementVersionModel> getPlatformsOfServicePoint(Integer servicePointNumber, Pageable pageable) {
+    return trafficPointElementService.getTrafficPointElementsByServicePointNumber(servicePointNumber, pageable,
+        TrafficPointElementType.BOARDING_PLATFORM);
+  }
+
+  @Override
   public ReadTrafficPointElementVersionModel getTrafficPointElementVersion(Long id) {
     return trafficPointElementService.findById(id).map(TrafficPointElementVersionMapper::toModel)
         .orElseThrow(() -> new IdNotFoundException(id));
@@ -84,9 +97,10 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   @Override
   public ReadTrafficPointElementVersionModel createTrafficPoint(
       CreateTrafficPointElementVersionModel trafficPointElementVersionModel) {
-    TrafficPointElementVersion createdTrafficPoint = createTrafficPoint(        TrafficPointElementVersionMapper.toEntity(trafficPointElementVersionModel));
+    TrafficPointElementVersion createdTrafficPoint = createTrafficPoint(
+        TrafficPointElementVersionMapper.toEntity(trafficPointElementVersionModel));
     servicePointDistributor.publishTrafficPointElement(createdTrafficPoint);
-    return TrafficPointElementVersionMapper.toModel(        createdTrafficPoint);
+    return TrafficPointElementVersionMapper.toModel(createdTrafficPoint);
   }
 
   @Override
@@ -115,16 +129,15 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
 
   private TrafficPointElementVersion createTrafficPoint(TrafficPointElementVersion trafficPointElementVersion) {
     ServicePointNumber servicePointNumber = trafficPointElementVersion.getServicePointNumber();
-    crossValidationService.validateServicePointNumberExists(trafficPointElementVersion.getServicePointNumber());
-    return trafficPointElementService.checkPermissionRightsAndSave(trafficPointElementVersion,
-        servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber));
+    crossValidationService.validateServicePointNumberExists(servicePointNumber);
+    return trafficPointElementService.create(trafficPointElementVersion, servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber));
   }
 
   private void update(TrafficPointElementVersion currentVersion, TrafficPointElementVersion editedVersion) {
     ServicePointNumber servicePointNumber = editedVersion.getServicePointNumber();
     crossValidationService.validateServicePointNumberExists(editedVersion.getServicePointNumber());
     List<ServicePointVersion> allServicePointVersions = servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber);
-    trafficPointElementService.checkPermissionRightsAndUpdate(currentVersion, editedVersion, allServicePointVersions);
+    trafficPointElementService.update(currentVersion, editedVersion, allServicePointVersions);
   }
 
 }

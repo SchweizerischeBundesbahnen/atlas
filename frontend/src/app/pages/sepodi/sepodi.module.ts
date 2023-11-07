@@ -7,7 +7,7 @@ import { ServicePointSidePanelComponent } from './service-point-side-panel/servi
 import { CoreModule } from '../../core/module/core.module';
 import { ServicePointDetailComponent } from './service-point-side-panel/service-point/service-point-detail.component';
 import { AreasDetailComponent } from './service-point-side-panel/areas/areas-detail.component';
-import { TrafficPointElementsDetailComponent } from './service-point-side-panel/traffic-point-elements/traffic-point-elements-detail.component';
+import { TrafficPointElementsTableComponent } from './service-point-side-panel/traffic-point-elements/traffic-point-elements-table.component';
 import { LoadingPointsDetailComponent } from './service-point-side-panel/loading-points/loading-points-detail.component';
 import { FormModule } from '../../core/module/form.module';
 import { FormsModule } from '@angular/forms';
@@ -17,8 +17,9 @@ import { SearchServicePointComponent } from './search-service-point/search-servi
 import { SearchResultHighlightPipe } from './search-service-point/search-result-highlight.pipe';
 import { SplitServicePointNumberPipe } from './search-service-point/split-service-point-number.pipe';
 import { KilometerMasterSearchComponent } from './service-point-side-panel/service-point/search/kilometer-master-search.component';
-import { ServicePointCreationComponent } from './service-point-creation/service-point-creation.component';
-import { ServicePointFormComponent } from './service-point-form/service-point-form.component';
+import { ServicePointCreationComponent } from './service-point-side-panel/service-point/service-point-creation/service-point-creation.component';
+import { ServicePointFormComponent } from './service-point-side-panel/service-point/service-point-form/service-point-form.component';
+import { TrafficPointElementsDetailComponent } from './traffic-point-elements/traffic-point-elements-detail.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,7 @@ import { ServicePointFormComponent } from './service-point-form/service-point-fo
     ServicePointDetailComponent,
     KilometerMasterSearchComponent,
     AreasDetailComponent,
-    TrafficPointElementsDetailComponent,
+    TrafficPointElementsTableComponent,
     LoadingPointsDetailComponent,
     MapComponent,
     MeansOfTransportPickerComponent,
@@ -37,6 +38,7 @@ import { ServicePointFormComponent } from './service-point-form/service-point-fo
     SplitServicePointNumberPipe,
     ServicePointCreationComponent,
     ServicePointFormComponent,
+    TrafficPointElementsDetailComponent,
   ],
   imports: [CoreModule, FormModule, FormsModule, SepodiRoutingModule],
 })
