@@ -3,8 +3,8 @@ import { FormGroup } from '@angular/forms';
 import {
   ServicePointDetailFormGroup,
   ServicePointFormGroupBuilder,
-} from '../service-point-side-panel/service-point/service-point-detail-form-group';
-import { AuthService } from '../../../core/auth/auth.service';
+} from '../service-point-detail-form-group';
+import { AuthService } from '../../../../../core/auth/auth.service';
 import {
   ApplicationRole,
   ApplicationType,
@@ -12,15 +12,15 @@ import {
   Permission,
   PermissionRestrictionType,
   ServicePointsService,
-} from '../../../api';
-import { Countries } from '../../../core/country/Countries';
+} from '../../../../../api';
+import { Countries } from '../../../../../core/country/Countries';
 import { catchError, EMPTY, mergeWith, Observable, Subject, take } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
-import { DialogService } from '../../../core/components/dialog/dialog.service';
+import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ServicePointType } from '../service-point-side-panel/service-point/service-point-type';
+import { ServicePointType } from '../service-point-type';
 import { ServicePointFormComponent } from '../service-point-form/service-point-form.component';
-import { NotificationService } from '../../../core/notification/notification.service';
+import { NotificationService } from '../../../../../core/notification/notification.service';
 
 @Component({
   selector: 'app-service-point-creation',

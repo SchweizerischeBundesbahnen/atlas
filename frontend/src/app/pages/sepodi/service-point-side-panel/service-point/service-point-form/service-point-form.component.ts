@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ServicePointDetailFormGroup } from '../service-point-side-panel/service-point/service-point-detail-form-group';
-import { ServicePointType } from '../service-point-side-panel/service-point/service-point-type';
-import { TranslationSortingService } from '../../../core/translation/translation-sorting.service';
+import { ServicePointDetailFormGroup } from '../service-point-detail-form-group';
+import { ServicePointType } from '../service-point-type';
+import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
 import { debounceTime, merge, Subject, Subscription, take } from 'rxjs';
 import {
   Category,
@@ -11,12 +11,12 @@ import {
   OperatingPointType,
   ReadServicePointVersion,
   StopPointType,
-} from '../../../api';
-import { LocationInformation } from '../service-point-side-panel/service-point/location-information';
+} from '../../../../../api';
+import { LocationInformation } from '../location-information';
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
-import { Countries } from '../../../core/country/Countries';
-import { GeographyFormGroup } from '../geography/geography-form-group';
-import { DialogService } from '../../../core/components/dialog/dialog.service';
+import { Countries } from '../../../../../core/country/Countries';
+import { GeographyFormGroup } from '../../../geography/geography-form-group';
+import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 
 @Component({
   selector: 'service-point-form',
