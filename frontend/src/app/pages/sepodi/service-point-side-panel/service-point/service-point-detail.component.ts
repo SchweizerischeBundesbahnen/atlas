@@ -214,7 +214,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
         this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.ADD_SUCCESS');
         this.router
           .navigate(['..', servicePointVersion.number.number], { relativeTo: this.route })
-          .then();
+          .then(() => this.mapService.refreshMap());
       });
   }
 
@@ -228,12 +228,11 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
             .updateServicePoint(id, servicePointVersion)
             .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
             .subscribe(() => {
-              this.mapService.refreshMap();
               this.hasAbbreviation = !!this.form.controls.abbreviation?.value;
               this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS');
               this.router
                 .navigate(['..', this.selectedVersion.number.number], { relativeTo: this.route })
-                .then();
+                .then(() => this.mapService.refreshMap());
             });
         } else {
           this.enableForm();

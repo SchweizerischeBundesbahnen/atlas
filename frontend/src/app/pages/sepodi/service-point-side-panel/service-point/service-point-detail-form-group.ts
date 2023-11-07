@@ -208,6 +208,8 @@ export class ServicePointFormGroupBuilder {
         formGroup.addValidators(AtLeastOneValidator.of('stopPoint', 'freightServicePoint'));
       } else {
         formGroup.clearValidators();
+        formGroup.controls.stopPoint.updateValueAndValidity();
+        formGroup.controls.freightServicePoint.updateValueAndValidity();
         formGroup.updateValueAndValidity();
       }
     });
