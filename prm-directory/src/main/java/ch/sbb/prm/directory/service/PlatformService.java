@@ -8,8 +8,11 @@ import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.PlatformVersion;
+import ch.sbb.prm.directory.entity.StopPointVersion;
+import ch.sbb.prm.directory.exception.StopPointDoesNotExistsException;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.validation.PlatformValidationService;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -21,13 +24,16 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
 
   private final PlatformRepository platformRepository;
   private final SharedServicePointService sharedServicePointService;
+  private final PlatformValidationService platformValidationService;
 
   public PlatformService(StopPointService stopPointService, RelationService relationService,
       PlatformRepository platformRepository, ReferencePointRepository referencePointRepository,
-      VersionableService versionableService, SharedServicePointService sharedServicePointService) {
+      VersionableService versionableService, SharedServicePointService sharedServicePointService,
+      PlatformValidationService platformValidationService) {
     super(versionableService, stopPointService, relationService, referencePointRepository);
     this.platformRepository = platformRepository;
     this.sharedServicePointService = sharedServicePointService;
+    this.platformValidationService = platformValidationService;
   }
 
   @Override
@@ -42,6 +48,10 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
 
   @Override
   protected PlatformVersion save(PlatformVersion version) {
+    StopPointVersion parentServicePoint =
+        stopPointService.findAllBySloid(version.getParentServicePointSloid()).stream().findFirst()
+            .orElseThrow(() -> new StopPointDoesNotExistsException(version.getParentServicePointSloid()));
+    platformValidationService.validatePlatformRecordingVariants(version, parentServicePoint);
     return platformRepository.saveAndFlush(version);
   }
 
@@ -62,9 +72,9 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
 
   public PlatformVersion createPlatformVersion(PlatformVersion version) {
     sharedServicePointService.validateTrafficPointElementExists(version.getParentServicePointSloid(), version.getSloid());
-
-    createRelation(version);
-    return save(version);
+    PlatformVersion savedVersion = save(version);
+    createRelation(savedVersion);
+    return savedVersion;
   }
 
   public PlatformVersion updatePlatformVersion(PlatformVersion currentVersion, PlatformVersion editedVersion) {
