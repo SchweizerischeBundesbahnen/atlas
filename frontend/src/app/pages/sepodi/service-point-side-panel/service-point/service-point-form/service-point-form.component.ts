@@ -66,6 +66,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
   public categories = Object.values(Category);
   public locationInformation?: LocationInformation;
   public geographyActive = false;
+  public isNew = false;
 
   private langChangeSubscription?: Subscription;
   private formSubscriptionDestroy$: Subject<void> = new Subject<void>();
@@ -78,6 +79,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initSortedOperatingPointTypes();
+    this.isNew = !this.currentVersion?.id;
   }
 
   ngOnDestroy() {
@@ -142,10 +144,6 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
           localityName: geoReference.swissLocalityName,
         };
       });
-  }
-
-  get isNew(): boolean {
-    return !this.currentVersion?.id;
   }
 
   private initTypeChangeInformationDialog(

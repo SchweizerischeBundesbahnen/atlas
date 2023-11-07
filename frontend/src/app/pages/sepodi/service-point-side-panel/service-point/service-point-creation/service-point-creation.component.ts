@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
   ServicePointDetailFormGroup,
@@ -26,6 +26,7 @@ import { NotificationService } from '../../../../../core/notification/notificati
   selector: 'app-service-point-creation',
   templateUrl: './service-point-creation.component.html',
   styleUrls: ['./service-point-creation.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ServicePointCreationComponent implements OnInit, OnDestroy {
   @ViewChild(ServicePointFormComponent) servicePointFormComponent!: ServicePointFormComponent;

@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -63,6 +64,7 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
   constructor(
     private coordinateTransformationService: CoordinateTransformationService,
     private mapService: MapService,
+    private changeDetector: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -123,6 +125,7 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
       this.currentCoordinates,
       this.transformedSpatialReference,
     );
+    this.changeDetector.detectChanges();
   }
 
   get transformedSpatialReference() {
