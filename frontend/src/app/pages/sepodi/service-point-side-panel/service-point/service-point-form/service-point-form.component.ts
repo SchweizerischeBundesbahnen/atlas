@@ -1,24 +1,22 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
-import { ServicePointDetailFormGroup } from '../service-point-side-panel/service-point/service-point-detail-form-group';
-import { ServicePointType } from '../service-point-side-panel/service-point/service-point-type';
-import { TranslationSortingService } from '../../../core/translation/translation-sorting.service';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ServicePointDetailFormGroup } from '../service-point-detail-form-group';
+import { ServicePointType } from '../service-point-type';
+import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
 import { debounceTime, merge, Subject, Subscription, take } from 'rxjs';
 import {
   Category,
-  CoordinatePair,
   GeoDataService,
   OperatingPointTechnicalTimetableType,
   OperatingPointType,
   ReadServicePointVersion,
-  SpatialReference,
   StopPointType,
-} from '../../../api';
-import { LocationInformation } from '../service-point-side-panel/service-point/location-information';
+} from '../../../../../api';
+import { LocationInformation } from '../location-information';
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
-import { Countries } from '../../../core/country/Countries';
-import { GeographyFormGroup } from '../geography/geography-form-group';
-import { DialogService } from '../../../core/components/dialog/dialog.service';
+import { Countries } from '../../../../../core/country/Countries';
+import { GeographyFormGroup } from '../../../geography/geography-form-group';
+import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 
 @Component({
   selector: 'service-point-form',
@@ -26,9 +24,6 @@ import { DialogService } from '../../../core/components/dialog/dialog.service';
   styleUrls: ['./service-point-form.component.scss'],
 })
 export class ServicePointFormComponent implements OnInit, OnDestroy {
-  @Output()
-  geolocationToggleChange: EventEmitter<CoordinatePair> = new EventEmitter<CoordinatePair>();
-
   @Output()
   selectedServicePointTypeChange: EventEmitter<ServicePointType | null | undefined> =
     new EventEmitter<ServicePointType | null | undefined>();
@@ -53,6 +48,9 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
 
   @Input() set currentVersion(version: ReadServicePointVersion) {
     this._currentVersion = version;
+    if (this.currentVersion?.servicePointGeolocation?.spatialReference) {
+      this.geographyActive = true;
+    }
 
     this.initLocationInformationDisplay();
   }
@@ -61,13 +59,14 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
   }
 
   private _currentVersion?: ReadServicePointVersion;
-  private activeSpatialReference?: SpatialReference;
 
   public servicePointTypes = Object.values(ServicePointType);
   public operatingPointTypes: string[] = [];
   public stopPointTypes = Object.values(StopPointType);
   public categories = Object.values(Category);
   public locationInformation?: LocationInformation;
+  public geographyActive = false;
+  public isNew = false;
 
   private langChangeSubscription?: Subscription;
   private formSubscriptionDestroy$: Subject<void> = new Subject<void>();
@@ -80,6 +79,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initSortedOperatingPointTypes();
+    this.isNew = !this.currentVersion?.id;
   }
 
   ngOnDestroy() {
@@ -103,37 +103,6 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
       'SEPODI.SERVICE_POINTS.OPERATING_POINT_TYPES.',
     );
   };
-
-  onGeolocationToggleChange(hasGeolocation: boolean): void {
-    const spatialRefCtrl = this.spatialRefCtrl;
-    if (!spatialRefCtrl) return;
-    if (hasGeolocation) {
-      const locationControls = this.locationControls;
-      if (!locationControls) return;
-
-      const coordinates: CoordinatePair = {
-        north: Number(locationControls.north.value),
-        east: Number(locationControls.east.value),
-        spatialReference: this.activeSpatialReference!,
-      };
-
-      this.spatialRefCtrl?.setValue(this.activeSpatialReference ?? SpatialReference.Lv95);
-      this.geolocationToggleChange.emit(coordinates);
-    } else {
-      this.activeSpatialReference = this.spatialRefCtrl?.value;
-      this.spatialRefCtrl?.setValue(null);
-      this.geolocationToggleChange.emit();
-    }
-    this.form?.markAsDirty();
-  }
-
-  get spatialRefCtrl(): AbstractControl | undefined {
-    return this.form?.controls.servicePointGeolocation.controls.spatialReference;
-  }
-
-  get locationControls(): GeographyFormGroup | undefined {
-    return this.form?.controls.servicePointGeolocation.controls;
-  }
 
   private initLocationInformationDisplay() {
     const servicePointGeolocation = this.currentVersion?.servicePointGeolocation;
@@ -183,7 +152,11 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
     selectedTypeCtrl.valueChanges
       .pipe(takeUntil(this.formSubscriptionDestroy$))
       .subscribe((newType) => {
-        if (this._currentSelectedServicePointType != newType) {
+        if (this.isNew) {
+          this._currentSelectedServicePointType = newType;
+          this.selectedServicePointTypeChange.emit(this._currentSelectedServicePointType);
+        }
+        if (!this.isNew && this._currentSelectedServicePointType != newType) {
           if (this._currentSelectedServicePointType != ServicePointType.ServicePoint) {
             this.dialogService
               .confirm({

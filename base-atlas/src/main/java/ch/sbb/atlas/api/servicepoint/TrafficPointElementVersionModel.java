@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.validation.DatesValidator;
+import ch.sbb.atlas.versioning.model.Versionable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.Digits;
@@ -24,7 +25,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "TrafficPointElementVersion")
-public abstract class TrafficPointElementVersionModel extends BaseVersionModel implements DatesValidator {
+public abstract class TrafficPointElementVersionModel extends BaseVersionModel implements DatesValidator, Versionable {
 
   @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;
@@ -49,9 +50,9 @@ public abstract class TrafficPointElementVersionModel extends BaseVersionModel i
   @Digits(integer = 5, fraction = 2)
   private Double compassDirection;
 
+  @NotNull
   private TrafficPointElementType trafficPointElementType;
 
-  @NotNull
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_128)
   @Schema(description = "Unique code for traffic point element (TPE) that is used in customer information.\n" +
       "By means of this ID, the connection between stops and bus / station stop area or boarding area can be established.\n\n" +

@@ -26,11 +26,7 @@
     </div>
   </div>
 
-  <service-point-form
-    [form]="form"
-    [currentVersion]="selectedVersion"
-    (geolocationToggleChange)="$event ? activateGeolocation($event) : deactivateGeolocation()"
-  >
+  <service-point-form [form]="form" [currentVersion]="selectedVersion">
     <div class="color-gray-900" abbreviation>
       <atlas-text-field
         *ngIf="!hasAbbreviation && isAbbreviationAllowed && isLatestVersionSelected"

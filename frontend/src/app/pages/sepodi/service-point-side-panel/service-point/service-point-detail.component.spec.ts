@@ -18,12 +18,16 @@ import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-s
 import { Record } from '../../../../core/components/base-detail/record';
 import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { Country, ReadServicePointVersion, Status } from '../../../../api';
-import { ApplicationRole, ServicePointsService } from '../../../../api';
+import {
+  ApplicationRole,
+  Country,
+  ReadServicePointVersion,
+  ServicePointsService,
+  Status,
+} from '../../../../api';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DisplayCantonPipe } from '../../../../core/cantons/display-canton.pipe';
 import { MapService } from '../../map/map.service';
-import { CoordinateTransformationService } from '../../geography/coordinate-transformation.service';
 import { Component, Input } from '@angular/core';
 
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
@@ -32,13 +36,8 @@ const notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['suc
 const mapServiceSpy = jasmine.createSpyObj('MapService', [
   'placeMarkerAndFlyTo',
   'deselectServicePoint',
+  'refreshMap',
 ]);
-const coordinateTransformationServiceSpy = jasmine.createSpyObj<CoordinateTransformationService>([
-  'transform',
-  'isCoordinatesPairValidForTransformation',
-]);
-mapServiceSpy.isGeolocationActivated = new BehaviorSubject<boolean>(false);
-mapServiceSpy.isEditMode = new BehaviorSubject<boolean>(false);
 mapServiceSpy.mapInitialized = new BehaviorSubject<boolean>(false);
 
 const authServiceMock: Partial<AuthService> = {
@@ -95,7 +94,6 @@ describe('ServicePointDetailComponent', () => {
         { provide: NotificationService, useValue: notificationServiceSpy },
         { provide: TranslatePipe },
         { provide: MapService, useValue: mapServiceSpy },
-        { provide: CoordinateTransformationService, useValue: coordinateTransformationServiceSpy },
       ],
     }).compileComponents();
 
@@ -167,37 +165,6 @@ describe('ServicePointDetailComponent', () => {
     // when & then
     component.toggleEdit();
     expect(component.form.enabled).toBeTrue();
-  });
-
-  it('should activate geolocation without coordinates', () => {
-    component.activateGeolocation(undefined!);
-
-    expect(mapServiceSpy.isGeolocationActivated.value).toBe(true);
-    expect(mapServiceSpy.isEditMode.value).toBe(true);
-    expect(
-      coordinateTransformationServiceSpy.isCoordinatesPairValidForTransformation,
-    ).toHaveBeenCalled();
-  });
-
-  it('should deactivate geolocation', () => {
-    const cancelMapEditModeSpy = spyOn(component, 'cancelMapEditMode');
-    component.deactivateGeolocation();
-
-    expect(mapServiceSpy.isGeolocationActivated.value).toBe(false);
-    expect(component.isSwitchVersionDisabled).toBeTrue();
-    expect(cancelMapEditModeSpy).toHaveBeenCalled();
-  });
-
-  it('should not transform if coordinates invalid', () => {
-    component.activateGeolocation(undefined!);
-
-    expect(mapServiceSpy.isGeolocationActivated.value).toBe(true);
-    expect(mapServiceSpy.isEditMode.value).toBe(true);
-    expect(
-      coordinateTransformationServiceSpy.isCoordinatesPairValidForTransformation,
-    ).toHaveBeenCalled();
-    expect(mapServiceSpy.placeMarkerAndFlyTo).not.toHaveBeenCalled();
-    expect(coordinateTransformationServiceSpy.transform).not.toHaveBeenCalled();
   });
 
   it('should set isAbbreviationAllowed based on selectedVersion.businessOrganisation', () => {
@@ -304,5 +271,16 @@ describe('ServicePointDetailComponent', () => {
     component.isSelectedVersionHighDate(versions, selectedVersion);
 
     expect(component.isLatestVersionSelected).toBeFalse();
+  });
+
+  it('should update service point on save', () => {
+    dialogServiceSpy.confirm.and.returnValue(of(true));
+    servicePointsServiceSpy.updateServicePoint.and.returnValue(of(BERN));
+
+    component.toggleEdit();
+    component.form.controls.designationOfficial.setValue('New YB Station');
+    component.save();
+
+    expect(servicePointsServiceSpy.updateServicePoint).toHaveBeenCalled();
   });
 });

@@ -9,6 +9,16 @@ export class AtlasCharsetsValidator {
     return AtlasCharsetsValidator.validateAllowedCharacters(control, '[.0-9]*', '.0-9');
   }
 
+  static colonSeperatedNumbers(amountOfColons: number): ValidatorFn {
+    return (control) => {
+      return AtlasCharsetsValidator.validateAllowedCharacters(
+        control,
+        '\\d+(:\\d+){' + amountOfColons + '}',
+        '0-9 :',
+      );
+    };
+  }
+
   static decimalWithDigits(decimalDigits: number): ValidatorFn {
     return (control) => {
       const patternErrors = Validators.pattern('^-?[0-9]*\\.?[0-9]{0,' + decimalDigits + '}')(

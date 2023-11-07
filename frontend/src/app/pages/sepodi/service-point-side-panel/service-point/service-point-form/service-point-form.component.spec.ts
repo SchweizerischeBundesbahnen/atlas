@@ -1,8 +1,6 @@
 import { ServicePointFormComponent } from './service-point-form.component';
+import { FormControl, FormGroup } from '@angular/forms';
 import SpyObj = jasmine.SpyObj;
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
-import { SpatialReference } from '../../../api';
-import { GeographyFormGroup } from '../geography/geography-form-group';
 
 describe('ServicePointFormComponent', () => {
   let component: ServicePointFormComponent;
@@ -109,54 +107,5 @@ describe('ServicePointFormComponent', () => {
 
     expect(component.form?.controls.operatingPointKilometer.value).toBe(false);
     expect(component.form?.controls.operatingPointKilometerMaster.value).toBe(null);
-  });
-
-  it('hasGeolocation false', () => {
-    const spatialRefCtrl = new FormControl(SpatialReference.Lv95);
-    (
-      spyOnProperty<ServicePointFormComponent, 'spatialRefCtrl'>(
-        component,
-        'spatialRefCtrl',
-        'get',
-      ) as jasmine.Spy<(this: ServicePointFormComponent) => AbstractControl>
-    ).and.returnValue(spatialRefCtrl);
-    spyOn(component.geolocationToggleChange, 'emit');
-
-    component.onGeolocationToggleChange(false);
-
-    expect(component.spatialRefCtrl?.value).toBe(null);
-    expect(component.geolocationToggleChange.emit).toHaveBeenCalledOnceWith();
-  });
-
-  it('hasGeolocation true', () => {
-    const locationCtrls = {
-      east: new FormControl(1),
-      north: new FormControl(1),
-    };
-    const spatialRefCtrl = new FormControl(SpatialReference.Wgs84);
-    (
-      spyOnProperty<ServicePointFormComponent, 'spatialRefCtrl'>(
-        component,
-        'spatialRefCtrl',
-        'get',
-      ) as jasmine.Spy<(this: ServicePointFormComponent) => AbstractControl>
-    ).and.returnValue(spatialRefCtrl);
-    (
-      spyOnProperty<ServicePointFormComponent, 'locationControls'>(
-        component,
-        'locationControls',
-        'get',
-      ) as jasmine.Spy<(this: ServicePointFormComponent) => Partial<GeographyFormGroup>>
-    ).and.returnValue(locationCtrls);
-    spyOn(component.geolocationToggleChange, 'emit');
-
-    component.onGeolocationToggleChange(true);
-
-    expect(component.spatialRefCtrl?.value).toBe(SpatialReference.Lv95);
-    expect(component.geolocationToggleChange.emit).toHaveBeenCalledOnceWith({
-      north: 1,
-      east: 1,
-      spatialReference: undefined!,
-    });
   });
 });
