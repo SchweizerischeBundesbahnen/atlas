@@ -54,7 +54,7 @@ export class VersionsHandlingService {
 
   private static findRecordByTodayDate<TYPE extends Record>(
     records: Array<TYPE>,
-    now: moment.Moment
+    now: moment.Moment,
   ) {
     return records.filter((record) => {
       const currentValidFrom = moment(record.validFrom);
@@ -68,7 +68,7 @@ export class VersionsHandlingService {
 
   private static findRecordBetweenGap<TYPE extends Record>(
     records: Array<TYPE>,
-    now: moment.Moment
+    now: moment.Moment,
   ) {
     const startRecordsDateRange = records[0].validFrom;
     const endRecordsDateRange = records[records.length - 1].validTo;
@@ -82,5 +82,16 @@ export class VersionsHandlingService {
       }
     }
     return null;
+  }
+
+  static groupVersionsByKey<TYPE extends Record>(
+    records: Array<TYPE>,
+    groupByKey: string,
+  ): Map<string, Array<TYPE>> {
+    return records.reduce((group: any, currentData) => {
+      const id = (currentData as any)[groupByKey];
+      group[id] = [...(group[id] || []), currentData];
+      return group;
+    }, {});
   }
 }

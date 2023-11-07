@@ -1,0 +1,38 @@
+<div class="traffic-point-element-table p-5 position-relative">
+  <atlas-button
+    (buttonClicked)="newTrafficPointElement()"
+    applicationType="SEPODI"
+    buttonDataCy="new-traffic-point-element"
+    buttonText="SEPODI.TRAFFIC_POINT_ELEMENTS.NEW"
+    buttonType="createCheckingPermission"
+    wrapperStyleClass="mb-3"
+  ></atlas-button>
+
+  <div class="font-bold-2xl mt-5">
+    {{ 'SEPODI.TRAFFIC_POINT_ELEMENTS.TRAFFIC_POINT_ELEMENTS' | translate }}
+  </div>
+
+  <app-table
+    data-cy="traffic-point-elements-table"
+    [tableData]="trafficPointElementRows"
+    [totalCount]="totalCount$"
+    [tableColumns]="tableColumns"
+    [canEdit]="true"
+    [tableFilterConfig]="[]"
+    (editElementEvent)="editVersion($event)"
+    (tableChanged)="getOverview($event)"
+    (tableInitialized)="getOverview($event)"
+  ></app-table>
+</div>
+
+<div class="page-footer">
+  <div class="page-footer-actions align-items-center justify-content-center d-flex">
+    <atlas-button
+      buttonDataCy="close-detail"
+      buttonText="SEPODI.BACK_TO_MAP"
+      buttonType="whiteFooterNonEdit"
+      (buttonClicked)="closeSidePanel()"
+    >
+    </atlas-button>
+  </div>
+</div>

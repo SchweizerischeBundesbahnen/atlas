@@ -12,8 +12,7 @@ import { MapService } from './map.service';
 import { MAP_STYLES, MapStyle } from './map-options.service';
 import { Router } from '@angular/router';
 import { Pages } from '../../pages';
-import { MAP_SOURCE_NAME } from './map-style';
-import { Subscription, take } from 'rxjs';
+import { take } from 'rxjs';
 import { AuthService } from '../../../core/auth/auth.service';
 import { ApplicationType } from '../../../api';
 import { filter } from 'rxjs/operators';
@@ -38,9 +37,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   showMapStyleSelection = false;
   showMapLegend = false;
   legend!: MapIcon[];
-
-  private isEditModeSubsription!: Subscription;
-  private isGeoLocationActiveSubsription!: Subscription;
 
   map!: Map;
 
@@ -70,13 +66,10 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.map = this.mapService.initMap(this.mapContainer.nativeElement);
     this.currentMapStyle = this.mapService.currentMapStyle;
     this.getIconsAsImages().then((icons) => (this.legend = icons));
-    this.handleMapClick();
   }
 
   ngOnDestroy() {
     this.mapService.removeMap();
-    this.isEditModeSubsription.unsubscribe();
-    this.isGeoLocationActiveSubsription.unsubscribe();
   }
 
   toggleStyleSelection() {
@@ -104,49 +97,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   switchToStyle(style: MapStyle) {
     this.currentMapStyle = this.mapService.switchToStyle(style);
     this.showMapStyleSelection = false;
-  }
-
-  onMapClicked = (e: any) => {
-    const clickedCoordinates = e.lngLat;
-    this.mapService.placeMarkerAndFlyTo(clickedCoordinates);
-    this.mapService.clickedGeographyCoordinates.next(clickedCoordinates);
-  };
-
-  enterEditMode() {
-    this.map.getCanvas().style.cursor = 'crosshair';
-    this.map.on(
-      'mouseleave',
-      MAP_SOURCE_NAME,
-      () => (this.map.getCanvas().style.cursor = 'crosshair'),
-    );
-    this.map.on('click', this.onMapClicked);
-    this.mapService.initMapEvents();
-  }
-
-  exitEditMode() {
-    this.mapService.marker.remove();
-    this.map.off('click', this.onMapClicked);
-    this.map.getCanvas().style.cursor = '';
-    this.map.on('mouseleave', MAP_SOURCE_NAME, () => (this.map.getCanvas().style.cursor = ''));
-    this.mapService.clickedGeographyCoordinates.next({ lng: 0, lat: 0 });
-    this.mapService.initMapEvents();
-  }
-
-  handleMapClick() {
-    let isActiveGeolocation = true;
-
-    this.isGeoLocationActiveSubsription = this.mapService.isGeolocationActivated.subscribe(
-      (value) => {
-        isActiveGeolocation = value;
-      },
-    );
-    this.isEditModeSubsription = this.mapService.isEditMode.subscribe((isEditMode) => {
-      if (isEditMode && isActiveGeolocation) {
-        this.enterEditMode();
-      } else {
-        this.exitEditMode();
-      }
-    });
   }
 
   zoomIn() {
