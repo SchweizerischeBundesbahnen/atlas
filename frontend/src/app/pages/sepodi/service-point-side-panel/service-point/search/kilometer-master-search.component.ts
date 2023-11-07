@@ -14,7 +14,7 @@ import { map } from 'rxjs/operators';
 import { FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'service-point-search',
+  selector: 'kilometer-master-search',
   templateUrl: './kilometer-master-search.component.html',
   styleUrls: ['./kilometer-master-search.component.scss'],
 })

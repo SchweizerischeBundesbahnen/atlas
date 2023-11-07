@@ -54,6 +54,11 @@ public class UpdateServicePointVersionModel extends ServicePointVersionModel {
   }
 
   @JsonIgnore
+  public boolean isPureOperatingPoint() {
+    return getOperatingPointTechnicalTimetableType() != null;
+  }
+
+  @JsonIgnore
   public boolean isOperatingPointWithTimetable() {
     return isOperatingPoint() && getOperatingPointType() == null;
   }
@@ -61,11 +66,11 @@ public class UpdateServicePointVersionModel extends ServicePointVersionModel {
   @JsonIgnore
   @AssertTrue(message = "If OperatingPointRouteNetwork is true, then operatingPointKilometerMaster will be set to the same "
       + "value as numberWithoutCheckDigit and it should not be sent in the request")
-  public boolean isKilometerMasterNotGivenIfOperatingPointRouteNetwork() {
+  public boolean isOperatingPointRouteNetworkTrueAndKilometerMasterNumberNull() {
     return !isOperatingPointRouteNetwork() || operatingPointKilometerMasterNumber == null;
   }
 
-  public Integer setKilomMasterNumberDependingOnRouteNetworkValue() {
+  public Integer setKilometerMasterNumberDependingOnRouteNetworkValue() {
     if (!isOperatingPointRouteNetwork()) {
       return operatingPointKilometerMasterNumber;
     } else if (numberShort != null) {
@@ -80,7 +85,7 @@ public class UpdateServicePointVersionModel extends ServicePointVersionModel {
     if (numberShort == null) {
       return true;
     }
-    return !(getCountry() == Country.SWITZERLAND && super.isFreightServicePoint() && !getValidFrom().isBefore(
+    return !(getCountry() == Country.SWITZERLAND && isFreightServicePoint() && !getValidFrom().isBefore(
         LocalDate.now()))
         || StringUtils.isNotBlank(super.getSortCodeOfDestinationStation());
   }
@@ -105,11 +110,7 @@ public class UpdateServicePointVersionModel extends ServicePointVersionModel {
   @AssertTrue(message = "OperatingPointRouteNetwork true is allowed only for StopPoint, ControlPoint and OperatingPoint." +
           " OperatingPointKilometerMasterNumber can be set only for StopPoint, ControlPoint and OperatingPoint.")
   public boolean isRouteNetworkOrKilometerMasterNumberAllowed() {
-    if (isOperatingPointRouteNetwork() || operatingPointKilometerMasterNumber != null) {
-      return isStopPoint() || isOperatingPoint() || isFreightServicePoint();
-    } else {
-      return true;
-    }
+    return !isOperatingPointRouteNetwork() && operatingPointKilometerMasterNumber == null || (isStopPoint() || isPureOperatingPoint() || isFreightServicePoint());
   }
 
 }
