@@ -1,0 +1,22 @@
+package ch.sbb.prm.directory.validation;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * Mark a property to be not used by Reduced PRM objects see
+ * <a href="https://confluence.sbb.ch/x/vgdpl#DataFactMatrix-ErfassungsvariantenjeVerkehrsmittel">Erfassungsvarianten je
+ * Verkehrsmittel</a>
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.FIELD})
+public @interface NotForReducedPRM {
+
+  /**
+   * Used to specify if the annotated value is mandatory with a default value
+   */
+  boolean defaultValueMandatory() default false;
+
+}
