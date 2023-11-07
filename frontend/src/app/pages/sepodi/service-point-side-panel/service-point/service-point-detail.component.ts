@@ -4,11 +4,9 @@ import { VersionsHandlingService } from '../../../../core/versioning/versions-ha
 import {
   ApplicationRole,
   ApplicationType,
-  CoordinatePair,
   CreateServicePointVersion,
   ReadServicePointVersion,
   ServicePointsService,
-  SpatialReference,
 } from '../../../../api';
 import { FormGroup } from '@angular/forms';
 import {
@@ -24,7 +22,6 @@ import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { AuthService } from '../../../../core/auth/auth.service';
-import { CoordinateTransformationService } from '../../geography/coordinate-transformation.service';
 import { ServicePointAbbreviationAllowList } from './service-point-abbreviation-allow-list';
 
 @Component({
@@ -58,7 +55,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     private notificationService: NotificationService,
     private mapService: MapService,
     private authService: AuthService,
-    private coordinateTransformationService: CoordinateTransformationService,
   ) {}
 
   ngOnInit() {
@@ -68,10 +64,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       this.initServicePoint();
       this.displayAndSelectServicePointOnMap();
     });
-
-    this.mapService.isGeolocationActivated.next(
-      !!this.form.controls.servicePointGeolocation.controls.spatialReference.value,
-    );
   }
 
   ngOnDestroy() {
@@ -124,19 +116,15 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   }
 
   private displayAndSelectServicePointOnMap() {
-    this.cancelMapEditMode();
     this.mapService.mapInitialized.pipe(takeUntil(this.ngUnsubscribe)).subscribe((initialized) => {
       if (initialized) {
         if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
           this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
         }
-        this.mapService
-          .centerOn(this.selectedVersion.servicePointGeolocation?.wgs84)
-          .then(() =>
-            this.mapService.displayCurrentCoordinates(
-              this.selectedVersion.servicePointGeolocation?.wgs84,
-            ),
-          );
+        this.mapService.centerOn(this.selectedVersion.servicePointGeolocation?.wgs84);
+        this.mapService.displayCurrentCoordinates(
+          this.selectedVersion.servicePointGeolocation?.wgs84,
+        );
       }
     });
   }
@@ -145,7 +133,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     if (this.form.enabled) {
       this.showConfirmationDialog();
     } else {
-      this.mapService.isEditMode.next(true);
       this.isSwitchVersionDisabled = true;
       this.enableForm();
       if (this.form.controls.operatingPointRouteNetwork.value) {
@@ -164,7 +151,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
           } else {
             this.initSelectedVersion();
             this.disableForm();
-            this.cancelMapEditMode();
           }
         }
       });
@@ -228,7 +214,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
         this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.ADD_SUCCESS');
         this.router
           .navigate(['..', servicePointVersion.number.number], { relativeTo: this.route })
-          .then();
+          .then(() => this.mapService.refreshMap());
       });
   }
 
@@ -242,13 +228,11 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
             .updateServicePoint(id, servicePointVersion)
             .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
             .subscribe(() => {
-              this.mapService.refreshMap();
-              this.cancelMapEditMode();
               this.hasAbbreviation = !!this.form.controls.abbreviation?.value;
               this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS');
               this.router
                 .navigate(['..', this.selectedVersion.number.number], { relativeTo: this.route })
-                .then();
+                .then(() => this.mapService.refreshMap());
             });
         } else {
           this.enableForm();
@@ -266,46 +250,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
   isFormDirty(): boolean {
     return this.form.dirty;
-  }
-
-  get currentSpatialReference(): SpatialReference | null | undefined {
-    return this.form.controls.servicePointGeolocation.controls.spatialReference.value;
-  }
-
-  activateGeolocation(coordinates: CoordinatePair) {
-    this.mapService.isGeolocationActivated.next(true);
-    this.mapService.isEditMode.next(true);
-
-    if (
-      !this.coordinateTransformationService.isCoordinatesPairValidForTransformation(coordinates)
-    ) {
-      return;
-    }
-
-    if (this.currentSpatialReference === SpatialReference.Lv95) {
-      coordinates = this.coordinateTransformationService.transform(
-        coordinates,
-        SpatialReference.Wgs84,
-      );
-    }
-
-    const coordinatePairWGS84 = { lat: coordinates.north, lng: coordinates.east };
-    this.mapService.placeMarkerAndFlyTo(coordinatePairWGS84);
-    this.isSwitchVersionDisabled = true;
-  }
-
-  deactivateGeolocation() {
-    this.mapService.isGeolocationActivated.next(false);
-    this.cancelMapEditMode();
-    this.isSwitchVersionDisabled = true;
-  }
-
-  cancelMapEditMode() {
-    this.mapService.isEditMode.next(false);
-    this.isSwitchVersionDisabled = false;
-    this.mapService.isGeolocationActivated.next(
-      !!this.form.controls.servicePointGeolocation.controls.spatialReference.value,
-    );
   }
 
   checkIfAbbreviationIsAllowed() {

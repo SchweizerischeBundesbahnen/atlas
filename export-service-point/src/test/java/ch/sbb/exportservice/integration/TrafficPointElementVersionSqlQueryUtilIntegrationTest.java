@@ -114,7 +114,7 @@ import org.junit.jupiter.api.Test;
         insert into traffic_point_element_version (id, sloid, parent_sloid, designation,
         designation_operational, traffic_point_element_type, length, boarding_area_height, compass_direction,
         service_point_number, valid_from, valid_to, creation_date, creator, edition_date, editor, version)
-        values (nextval('traffic_point_element_version_seq'), '%s', null, null, '2', '0', 18.000, 2.00, null, 1205887,
+        values (nextval('traffic_point_element_version_seq'), '%s', null, null, '2', 'BOARDING_PLATFORM', 18.000, 2.00, null, 1205887,
         '%s', '%s', '2022-03-03 07:56:42.000000', 'fs45117', '2022-05-03 11:50:46.000000', 'e536178', 0);
         """
         .formatted(sloid, formatDate(validFrom), formatDate(validTo));
