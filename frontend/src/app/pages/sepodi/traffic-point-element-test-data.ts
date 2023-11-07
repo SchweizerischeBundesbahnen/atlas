@@ -1,4 +1,4 @@
-import { ReadTrafficPointElementVersion } from '../../api';
+import { ContainerReadTrafficPointElementVersion, ReadTrafficPointElementVersion } from '../../api';
 
 export const BERN_WYLEREGG_TRAFFIC_POINTS: ReadTrafficPointElementVersion[] = [
   {
@@ -92,3 +92,8 @@ export const BERN_WYLEREGG_TRAFFIC_POINTS: ReadTrafficPointElementVersion[] = [
     hasGeolocation: true,
   },
 ];
+
+export const BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER: ContainerReadTrafficPointElementVersion = {
+  objects: BERN_WYLEREGG_TRAFFIC_POINTS,
+  totalCount: 2,
+};
