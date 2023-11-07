@@ -18,8 +18,8 @@ public class StopPointTestData {
 
   public static StopPointVersion getStopPointVersion(){
     Set<MeanOfTransport> meanOfTransport = new HashSet<>();
-    meanOfTransport.add(MeanOfTransport.BUS);
-    meanOfTransport.add(MeanOfTransport.BOAT);
+    meanOfTransport.add(MeanOfTransport.TRAIN);
+    meanOfTransport.add(MeanOfTransport.METRO);
 
     return StopPointVersion.builder()
         .sloid("ch:1:sloid:12345")
