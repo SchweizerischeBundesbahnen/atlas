@@ -36,6 +36,7 @@ const notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['suc
 const mapServiceSpy = jasmine.createSpyObj('MapService', [
   'placeMarkerAndFlyTo',
   'deselectServicePoint',
+  'refreshMap',
 ]);
 mapServiceSpy.mapInitialized = new BehaviorSubject<boolean>(false);
 
@@ -270,5 +271,16 @@ describe('ServicePointDetailComponent', () => {
     component.isSelectedVersionHighDate(versions, selectedVersion);
 
     expect(component.isLatestVersionSelected).toBeFalse();
+  });
+
+  it('should update service point on save', () => {
+    dialogServiceSpy.confirm.and.returnValue(of(true));
+    servicePointsServiceSpy.updateServicePoint.and.returnValue(of(BERN));
+
+    component.toggleEdit();
+    component.form.controls.designationOfficial.setValue('New YB Station');
+    component.save();
+
+    expect(servicePointsServiceSpy.updateServicePoint).toHaveBeenCalled();
   });
 });
