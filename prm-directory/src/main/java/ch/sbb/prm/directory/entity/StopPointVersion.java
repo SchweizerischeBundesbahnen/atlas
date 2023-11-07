@@ -9,6 +9,8 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.prm.directory.service.PrmVersionable;
+import ch.sbb.prm.directory.validation.NotForReduced;
+import ch.sbb.prm.directory.validation.PrmMeansOfTransportHelper;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
@@ -20,6 +22,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Transient;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -80,69 +83,88 @@ public class StopPointVersion extends BasePrmImportEntity implements PrmVersiona
   @AtlasVersionableProperty
   private String freeText;
 
+  @NotForReduced
   @AtlasVersionableProperty
   private String address;
 
+  @NotForReduced
   @AtlasVersionableProperty
   private String zipCode;
 
+  @NotForReduced
   @AtlasVersionableProperty
   private String city;
 
+  @NotForReduced
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType alternativeTransport;
 
+  @NotForReduced
   @AtlasVersionableProperty
   private String alternativeTransportCondition;
 
+  @NotForReduced
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType assistanceAvailability;
 
+  @NotForReduced
   @AtlasVersionableProperty
   private String assistanceCondition;
 
+  @NotForReduced
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType assistanceService;
 
+  @NotForReduced
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType audioTicketMachine;
 
+  @NotForReduced
   @AtlasVersionableProperty
   private String additionalInformation;
 
+  @NotForReduced
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType dynamicAudioSystem;
 
+  @NotForReduced
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType dynamicOpticSystem;
 
+  @NotForReduced
   @AtlasVersionableProperty
   private String infoTicketMachine;
 
+  @NotForReduced
   @AtlasVersionableProperty
   private boolean interoperable;
 
+  @NotForReduced
   @AtlasVersionableProperty
   private String url;
 
+  @NotForReduced
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType visualInfo;
 
+  @NotForReduced
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType wheelchairTicketMachine;
 
+  @NotForReduced
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType assistanceRequestFulfilled;
 
+  @NotForReduced
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType ticketMachine;
@@ -153,4 +175,9 @@ public class StopPointVersion extends BasePrmImportEntity implements PrmVersiona
     }
     return meansOfTransport;
   }
+  @Transient
+  public boolean isReduced(){
+    return PrmMeansOfTransportHelper.isReduced(meansOfTransport);
+  }
+
 }
