@@ -8,6 +8,8 @@ import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistsException;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
+import ch.sbb.prm.directory.validation.StopPointValidationService;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +24,14 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
 
   private final StopPointRepository stopPointRepository;
   private final SharedServicePointService sharedServicePointService;
+  private final StopPointValidationService stopPointValidationService;
 
   public StopPointService(StopPointRepository stopPointRepository, VersionableService versionableService,
-      SharedServicePointService sharedServicePointService) {
+      SharedServicePointService sharedServicePointService, StopPointValidationService stopPointValidationService) {
     super(versionableService);
     this.stopPointRepository = stopPointRepository;
     this.sharedServicePointService = sharedServicePointService;
+    this.stopPointValidationService = stopPointValidationService;
   }
 
   @Override
@@ -36,8 +40,9 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
   }
 
   @Override
-  public StopPointVersion save(StopPointVersion version) {
+  public StopPointVersion save(@Valid StopPointVersion version) {
     sharedServicePointService.validateServicePointExists(version.getSloid());
+    stopPointValidationService.validateStopPointRecordingVariants(version);
     return stopPointRepository.saveAndFlush(version);
   }
 
@@ -73,4 +78,6 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
   public Page<StopPointVersion> findAll(StopPointSearchRestrictions searchRestrictions) {
     return stopPointRepository.findAll(searchRestrictions.getSpecification(),searchRestrictions.getPageable());
   }
+
+
 }
