@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.mapper;
 
-import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -50,7 +50,7 @@ public class ServicePointVersionMapper {
 
   public static ServicePointVersion toEntity(UpdateServicePointVersionModel updateServicePointVersionModel) {
     ServicePointNumber operatingPointKilometerMasterNumber =
-        Optional.ofNullable(updateServicePointVersionModel.setKilomMasterNumberDependingOnRouteNetworkValue())
+        Optional.ofNullable(updateServicePointVersionModel.setKilometerMasterNumberDependingOnRouteNetworkValue())
             .map(ServicePointNumber::ofNumberWithoutCheckDigit)
             .orElse(null);
 
