@@ -66,7 +66,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.map = this.mapService.initMap(this.mapContainer.nativeElement);
     this.currentMapStyle = this.mapService.currentMapStyle;
     this.getIconsAsImages().then((icons) => (this.legend = icons));
-    this.handleMapClick();
   }
 
   ngOnDestroy() {
