@@ -22,7 +22,7 @@
   "name": "atlas-frontend",
   "repository": {
     "type": "git",
-    "url": "git+https://code.sbb.ch/scm/ki_atlas/atlas-frontend.git"
+    "url": "git+https://code.sbb.ch/scm/ki_atlas/atlas.git"
   },
   "version": "1.488.0",
   "files": [
