@@ -6,14 +6,14 @@ import {
   CreateServicePointVersion,
   PermissionRestrictionType,
   SwissCanton,
-} from '../../../api';
+} from '../../../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { of } from 'rxjs';
-import { NotificationService } from '../../../core/notification/notification.service';
-import { ServicePointFormGroupBuilder } from '../service-point-side-panel/service-point/service-point-detail-form-group';
+import { NotificationService } from '../../../../../core/notification/notification.service';
+import { ServicePointFormGroupBuilder } from '../service-point-detail-form-group';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../core/auth/auth.service';
-import { Countries } from '../../../core/country/Countries';
+import { AuthService } from '../../../../../core/auth/auth.service';
+import { Countries } from '../../../../../core/country/Countries';
 import SpyObj = jasmine.SpyObj;
 import anything = jasmine.anything;
 import Spy = jasmine.Spy;

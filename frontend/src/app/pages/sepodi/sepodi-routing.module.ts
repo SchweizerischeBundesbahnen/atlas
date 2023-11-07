@@ -10,11 +10,11 @@ import { TrafficPointElementsTableComponent } from './service-point-side-panel/t
 import { LoadingPointsDetailComponent } from './service-point-side-panel/loading-points/loading-points-detail.component';
 import { FotCommentDetailComponent } from './service-point-side-panel/comment/fot-comment-detail.component';
 import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
-import { ServicePointCreationComponent } from './service-point-creation/service-point-creation.component';
+import { ServicePointCreationComponent } from './service-point-side-panel/service-point/service-point-creation/service-point-creation.component';
 import { AuthService } from '../../core/auth/auth.service';
 import { ApplicationType } from '../../api';
-import {TrafficPointElementsDetailComponent} from "./traffic-point-elements/traffic-point-elements-detail.component";
-import {trafficPointResolver} from "./traffic-point-elements/traffic-point-elements-detail-resolver.service";
+import { TrafficPointElementsDetailComponent } from './traffic-point-elements/traffic-point-elements-detail.component';
+import { trafficPointResolver } from './traffic-point-elements/traffic-point-elements-detail-resolver.service';
 
 @Injectable()
 class CanActivateServicePointCreationGuard {
