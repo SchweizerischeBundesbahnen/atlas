@@ -46,7 +46,7 @@ public class StopPointVersionRowMapper extends BaseRowMapper implements RowMappe
         rs.getObject("dynamic_optic_system") != null ?
             StandardAttributeType.valueOf(rs.getString("dynamic_optic_system")) : null);
     builder.infoTicketMachine(rs.getString("info_ticket_machine"));
-    builder.interoperable(rs.getBoolean("interoperable"));
+    builder.interoperable(rs.getObject("interoperable") != null ? rs.getBoolean("interoperable") : null);
     builder.url(rs.getString("url"));
     builder.wheelchairTicketMachine(
         rs.getObject("wheelchair_ticket_machine") != null ?

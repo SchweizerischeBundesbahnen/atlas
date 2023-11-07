@@ -6,6 +6,7 @@ import static ch.sbb.prm.directory.validation.PrmMeansOfTransportHelper.REDUCED_
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import java.util.Comparator;
 import java.util.Set;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +23,14 @@ public class StopPointMeansOfTransportNotAllowedException extends AtlasException
     return ErrorResponse.builder()
         .status(HttpStatus.BAD_REQUEST.value())
         .message("Means of Transport combination not allowed!")
-        .error("""
+        .error(""" 
             The given Means of Transport combination %s is not allowed.
             Allowed combination:
             Reduced: %s
-            Complete: %s
-            """.formatted(meanOfTransports.toString(), REDUCED_MEANS_OF_TRANSPORT, COMPLETE_MEANS_OF_TRANSPORT))
+            Complete: %s"""
+            .formatted(meanOfTransports.stream().sorted(Comparator.comparing(MeanOfTransport::getName)).toList().toString(),
+            REDUCED_MEANS_OF_TRANSPORT,
+            COMPLETE_MEANS_OF_TRANSPORT))
         .build();
   }
 }

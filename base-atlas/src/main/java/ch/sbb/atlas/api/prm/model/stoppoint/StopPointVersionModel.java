@@ -70,7 +70,7 @@ public abstract class StopPointVersionModel extends BasePrmVersionModel implemen
   private String infoTicketMachine;
 
   @Schema(description = "Interoperable station")
-  private boolean interoperable;
+  private Boolean interoperable;
 
   @Schema(description = "Website with additional information")
   private String url;

@@ -158,7 +158,7 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setDynamicOpticSystem(version2.getDynamicOpticSystem());
     editedVersionModel.setInfoTicketMachine(version2.getInfoTicketMachine());
     editedVersionModel.setAdditionalInformation(version2.getAdditionalInformation());
-    editedVersionModel.setInteroperable(version2.isInteroperable());
+    editedVersionModel.setInteroperable(version2.getInteroperable());
     editedVersionModel.setUrl(version2.getUrl());
     editedVersionModel.setVisualInfo(version2.getVisualInfo());
     editedVersionModel.setWheelchairTicketMachine(version2.getWheelchairTicketMachine());
