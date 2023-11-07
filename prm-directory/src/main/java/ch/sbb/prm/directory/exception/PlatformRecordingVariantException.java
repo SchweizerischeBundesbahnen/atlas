@@ -4,11 +4,11 @@ import java.util.Map;
 import lombok.Getter;
 
 @Getter
-public class StopPointRecordingVariantException extends RecordingVariantException {
+public class PlatformRecordingVariantException extends RecordingVariantException {
 
   private static final String ERROR = "StopPoint precondition failed";
 
-  public StopPointRecordingVariantException(Map<String, String> errorConstraintMap, String objectName) {
+  public PlatformRecordingVariantException(Map<String, String> errorConstraintMap, String objectName) {
     super(errorConstraintMap, objectName);
   }
 

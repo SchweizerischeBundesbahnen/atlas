@@ -9,7 +9,6 @@ import ch.sbb.prm.directory.exception.StopPointDoesNotExistsException;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
 import ch.sbb.prm.directory.validation.StopPointValidationService;
-import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +39,7 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
   }
 
   @Override
-  public StopPointVersion save(@Valid StopPointVersion version) {
+  public StopPointVersion save(StopPointVersion version) {
     sharedServicePointService.validateServicePointExists(version.getSloid());
     stopPointValidationService.validateStopPointRecordingVariants(version);
     return stopPointRepository.saveAndFlush(version);
@@ -59,6 +58,10 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
 
   public List<StopPointVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number) {
     return stopPointRepository.findAllByNumberOrderByValidFrom(number);
+  }
+
+  public List<StopPointVersion> findAllBySloid(String sloid){
+    return stopPointRepository.findAllBySloid(sloid);
   }
 
   public Optional<StopPointVersion> getStopPointById(Long id) {

@@ -1,0 +1,85 @@
+package ch.sbb.prm.directory.validation;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
+import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.api.model.ErrorResponse.Detail;
+import ch.sbb.prm.directory.PlatformTestData;
+import ch.sbb.prm.directory.entity.PlatformVersion;
+import ch.sbb.prm.directory.exception.RecordingVariantException;
+import java.util.SortedSet;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
+import org.mockito.MockitoAnnotations;
+
+class PlatformValidationServiceTest {
+  private PlatformValidationService platformValidationService;
+
+  @BeforeEach
+  void init() {
+    MockitoAnnotations.openMocks(this);
+    this.platformValidationService = new PlatformValidationService();
+  }
+
+  @Test
+  void shouldNotValidateWhenReducedPRMContainsAllFields() {
+    //given
+    PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
+
+    //when
+    RecordingVariantException result = Assertions.assertThrows(
+        RecordingVariantException.class,
+        () -> platformValidationService.validateRecordingVariants(platformVersion, true));
+
+    //then
+    assertThat(result).isNotNull();
+    ErrorResponse errorResponse = result.getErrorResponse();
+    assertThat(errorResponse.getStatus()).isEqualTo(400);
+    assertThat(errorResponse.getMessage()).isEqualTo("PlatformVersion cannot be save!");
+    assertThat(errorResponse.getError()).isEqualTo("Precondition failed");
+    assertThat(errorResponse.getDetails()).hasSize(9);
+  }
+
+  @Test
+  void shouldNotValidateWhenCompletePRMDoesNotContainsAllMandatoryFields() {
+    //given
+    PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
+    platformVersion.setBoardingDevice(null);
+
+    //when
+    RecordingVariantException result = Assertions.assertThrows(
+        RecordingVariantException.class,
+        () -> platformValidationService.validateRecordingVariants(platformVersion, false));
+
+    //then
+    assertThat(result).isNotNull();
+    ErrorResponse errorResponse = result.getErrorResponse();
+    assertThat(errorResponse.getStatus()).isEqualTo(400);
+    assertThat(errorResponse.getMessage()).isEqualTo("PlatformVersion cannot be save!");
+    assertThat(errorResponse.getError()).isEqualTo("Precondition failed");
+    SortedSet<Detail> errorResponseDetails = errorResponse.getDetails();
+    assertThat(errorResponseDetails).hasSize(1);
+    Detail detail = errorResponseDetails.stream().toList().get(0);
+    assertThat(detail.getMessage()).isEqualTo("Must not be null for Completed Object. At least a default value is mandatory");
+    assertThat(detail.getField()).isEqualTo("boardingDevice");
+  }
+
+
+  @Test
+  void shouldValidateWhenCompleteContainsAllFields() {
+    //given
+    PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
+
+    //when
+    Executable executable = () -> platformValidationService.validateRecordingVariants(platformVersion, false);
+
+    //then
+    assertDoesNotThrow(executable);
+  }
+
+
+
+}
