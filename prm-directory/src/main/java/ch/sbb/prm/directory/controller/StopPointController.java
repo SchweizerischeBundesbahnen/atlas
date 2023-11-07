@@ -12,6 +12,7 @@ import ch.sbb.prm.directory.mapper.StopPointVersionMapper;
 import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
 import ch.sbb.prm.directory.service.StopPointService;
 import ch.sbb.prm.directory.service.dataimport.StopPointImportService;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +45,7 @@ public class StopPointController implements StopPointApiV1 {
   }
 
   @Override
-  public ReadStopPointVersionModel createStopPoint(CreateStopPointVersionModel stopPointVersionModel) {
+  public ReadStopPointVersionModel createStopPoint(@Valid CreateStopPointVersionModel stopPointVersionModel) {
     StopPointVersion stopPointVersion = StopPointVersionMapper.toEntity(stopPointVersionModel);
     StopPointVersion savedVersion = stopPointService.save(stopPointVersion);
     return StopPointVersionMapper.toModel(savedVersion);
