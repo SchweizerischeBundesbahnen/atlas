@@ -71,4 +71,15 @@ describe('Atlas Charsets Validator', () => {
     expect(decimalWithDigits(new FormControl('a'))).toBeDefined();
     expect(decimalWithDigits(new FormControl('1.0002'))).toBeDefined();
   });
+
+  it('should allow numbers with 1 colon', () => {
+    const decimalWithDigits = AtlasCharsetsValidator.colonSeperatedNumbers(1);
+
+    expect(decimalWithDigits(new FormControl('1:002'))).toBeNull();
+    expect(decimalWithDigits(new FormControl('5:000'))).toBeNull();
+
+    expect(decimalWithDigits(new FormControl('a'))).toBeDefined();
+    expect(decimalWithDigits(new FormControl(':a'))).toBeDefined();
+    expect(decimalWithDigits(new FormControl('1:00:02'))).toBeDefined();
+  });
 });
