@@ -11,7 +11,7 @@ import {
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
 import { MapService } from '../map/map.service';
-import { catchError, EMPTY, Observable, of, Subject } from 'rxjs';
+import { catchError, EMPTY, Observable, of, pipe, Subject } from 'rxjs';
 import { Pages } from '../../pages';
 import { FormGroup } from '@angular/forms';
 import {
@@ -107,6 +107,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
     } else {
       this.servicePointService
         .getServicePointVersions(this.servicePointNumber)
+        .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((servicePoint) => {
           this.servicePoint = servicePoint;
           this.servicePointName =
@@ -120,6 +121,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
 
       this.trafficPointElementsService
         .getAreasOfServicePoint(this.servicePointNumber)
+        .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((areas) => {
           const options: AreaOption[] = [{ sloid: undefined, displayText: '' }];
           options.push(
