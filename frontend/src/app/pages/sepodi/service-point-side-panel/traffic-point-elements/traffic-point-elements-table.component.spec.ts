@@ -4,9 +4,6 @@ import { TrafficPointElementsTableComponent } from './traffic-point-elements-tab
 import { AuthService } from '../../../../core/auth/auth.service';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { MockAtlasButtonComponent, MockTableComponent } from '../../../../app.testing.mocks';
-import { TableComponent } from '../../../../core/components/table/table.component';
-import { TableFilterComponent } from '../../../../core/components/table-filter/table-filter.component';
-import { LoadingSpinnerComponent } from '../../../../core/components/loading-spinner/loading-spinner.component';
 import { TrafficPointElementsService } from '../../../../api';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
