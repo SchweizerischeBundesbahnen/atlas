@@ -1,7 +1,5 @@
 package ch.sbb.prm.directory.service.versioning;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanAttributeType;
@@ -9,6 +7,7 @@ import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
@@ -17,12 +16,16 @@ import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.PlatformService;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @Transactional
@@ -89,8 +92,9 @@ class PlatformVersioningTest {
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
 
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    platformService.updatePlatformVersion(version2,editedVersion);
+    platformService.updatePlatformVersion(version2,editedVersion, sharedServicePointVersionModel);
 
     //then
     List<PlatformVersion> result = platformRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
@@ -146,10 +150,10 @@ class PlatformVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
 
     //when
-    platformService.updatePlatformVersion(version2, editedVersion);
+    platformService.updatePlatformVersion(version2, editedVersion, sharedServicePointVersionModel);
     //then
     List<PlatformVersion> result = platformRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
     assertThat(result).isNotNull().hasSize(5);
@@ -214,10 +218,11 @@ class PlatformVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
 
 
     //when
-    platformService.updatePlatformVersion(version2, editedVersion);
+    platformService.updatePlatformVersion(version2, editedVersion, sharedServicePointVersionModel);
     //then
     List<PlatformVersion> result = platformRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
     assertThat(result).isNotNull().hasSize(2);
