@@ -35,13 +35,10 @@ public abstract class RelationVersionModel extends BasePrmVersionModel implement
       + "https://transportdatamanagement.ch/standards/", example = "ch:1:sloid:18771")
   private String referencePointSloid;
 
-  @Schema(description = "Tactile-visual markings")
   private TactileVisualAttributeType tactileVisualMarks;
 
-  @Schema(description = "High contrast markings")
   private StandardAttributeType contrastingAreas;
 
-  @Schema(description = "Step-free access")
   private StepFreeAccessAttributeType stepFreeAccess;
 
 
