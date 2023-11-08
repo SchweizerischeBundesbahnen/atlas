@@ -55,7 +55,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
   servicePointNumber!: number;
   servicePoint: ReadServicePointVersion[] = [];
   servicePointBusinessOrganisations: string[] = [];
-  geographyActive = false;
+  geographyActive = true;
 
   private ngUnsubscribe = new Subject<void>();
 
