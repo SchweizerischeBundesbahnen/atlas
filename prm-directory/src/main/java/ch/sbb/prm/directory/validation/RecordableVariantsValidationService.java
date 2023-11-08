@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.validation;
 
 import ch.sbb.prm.directory.exception.RecordingVariantException;
+import ch.sbb.prm.directory.validation.annotation.NotForReducedPRM;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -9,7 +10,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 @Service
-public abstract class RecordableVariantsValidationService<T extends VariantsRecordable> {
+public abstract class RecordableVariantsValidationService<T extends VariantsReducedCompleteRecordable> {
 
   public static final String MUST_BE_NULL_ERROR_MSG = "Must be null for Reduced Object";
   public static final String MUST_NOT_BE_NULL_ERROR_MSG = "Must not be null for Completed Object. At least a default value "
@@ -31,7 +32,7 @@ public abstract class RecordableVariantsValidationService<T extends VariantsReco
             errorConstraintMap.put(field.getName(), MUST_BE_NULL_ERROR_MSG);
           }
         } catch (IllegalAccessException e) {
-          throw new RuntimeException(e);
+          throw new IllegalStateException(e);
         }
       });
     } else {
@@ -44,7 +45,7 @@ public abstract class RecordableVariantsValidationService<T extends VariantsReco
             errorConstraintMap.put(field.getName(), MUST_NOT_BE_NULL_ERROR_MSG);
           }
         } catch (IllegalAccessException e) {
-          throw new RuntimeException(e);
+          throw new IllegalStateException(e);
         }
       });
     }
