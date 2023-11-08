@@ -13,23 +13,31 @@ In order to rerun a specific job, to import the initial data, use the following 
 
 ```sql
 DELETE from batch_job_execution_context where job_execution_id in (
-    SELECT job_instance_id FROM batch_job_instance where job_name = '{job_name}'
-    );
+    select job_execution_id from batch_job_execution where job_instance_id in (
+        SELECT job_instance_id FROM batch_job_instance where job_name = '{{jobname}}'
+    )
+);
 DELETE from batch_job_execution_params where job_execution_id in (
-    SELECT job_instance_id FROM batch_job_instance where job_name = '{job_name}'
-    );
+    select job_execution_id from batch_job_execution where job_instance_id in (
+        SELECT job_instance_id FROM batch_job_instance where job_name = '{{jobname}}'
+    )
+);
 DELETE from batch_step_execution_context where step_execution_id in (
     SELECT batch_step_execution.step_execution_id FROM batch_step_execution where job_execution_id in (
-        SELECT job_instance_id FROM batch_job_instance where job_name = '{job_name}'
+        select job_execution_id from batch_job_execution where job_instance_id in (
+            SELECT job_instance_id FROM batch_job_instance where job_name = '{{jobname}}'
         )
-    );
+    )
+);
 DELETE from batch_step_execution where job_execution_id in (
-    SELECT job_instance_id FROM batch_job_instance where job_name = '{job_name}'
-    );
+    select job_execution_id from batch_job_execution where job_instance_id in (
+        SELECT job_instance_id FROM batch_job_instance where job_name = '{{jobname}}'
+    )
+);
 DELETE from batch_job_execution where job_instance_id in (
-    SELECT job_instance_id FROM batch_job_instance where job_name = '{job_name}'
-    );
-DELETE FROM batch_job_instance where job_name = '{job_name}';
+    SELECT job_instance_id FROM batch_job_instance where job_name = '{{jobname}}'
+);
+DELETE FROM batch_job_instance where job_name = '{{jobname}}';
 ```
 
 ## Reset all batch db
