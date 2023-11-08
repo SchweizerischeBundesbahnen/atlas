@@ -1,17 +1,20 @@
 package ch.sbb.prm.directory.controller;
 
-import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.prm.directory.api.RelationApiV1;
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.relation.CreateRelationVersionModel;
 import ch.sbb.atlas.api.prm.model.relation.ReadRelationVersionModel;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
+import ch.sbb.prm.directory.api.RelationApiV1;
 import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.prm.directory.mapper.RelationVersionMapper;
 import ch.sbb.prm.directory.service.RelationService;
-import java.util.List;
+import ch.sbb.prm.directory.service.SharedServicePointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class RelationController implements RelationApiV1 {
 
   private final RelationService relationService;
+
+  private final SharedServicePointService sharedServicePointService;
 
   @Override
   public List<ReadRelationVersionModel> getRelationsBySloid(String sloid) {
@@ -47,9 +52,9 @@ public class RelationController implements RelationApiV1 {
   public List<ReadRelationVersionModel> updateRelation(Long id, CreateRelationVersionModel model) {
     RelationVersion relationVersionToUpdate =
         relationService.getRelationById(id).orElseThrow(() -> new IdNotFoundException(id));
-
+    SharedServicePointVersionModel sharedServicePointVersionModel = sharedServicePointService.findServicePoint(model.getParentServicePointSloid()).orElseThrow();
     RelationVersion editedVersion = RelationVersionMapper.toEntity(model);
-    relationService.updateRelationVersion(relationVersionToUpdate, editedVersion);
+    relationService.updateRelationVersion(relationVersionToUpdate, editedVersion, sharedServicePointVersionModel);
 
     return relationService.findAllByNumberOrderByValidFrom(relationVersionToUpdate.getNumber()).stream()
         .map(RelationVersionMapper::toModel).toList();

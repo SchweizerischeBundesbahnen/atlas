@@ -1,5 +1,25 @@
 package ch.sbb.prm.directory.controller;
 
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
+import ch.sbb.atlas.api.prm.model.relation.CreateRelationVersionModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
+import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.prm.directory.RelationTestData;
+import ch.sbb.prm.directory.StopPointTestData;
+import ch.sbb.prm.directory.entity.RelationVersion;
+import ch.sbb.prm.directory.entity.SharedServicePoint;
+import ch.sbb.prm.directory.repository.RelationRepository;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import ch.sbb.prm.directory.repository.StopPointRepository;
+import java.time.LocalDate;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
 import static org.hamcrest.Matchers.hasSize;
@@ -9,30 +29,33 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
-import ch.sbb.atlas.api.prm.model.relation.CreateRelationVersionModel;
-import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
-import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.prm.directory.RelationTestData;
-import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.repository.RelationRepository;
-import ch.sbb.prm.directory.repository.StopPointRepository;
-import java.time.LocalDate;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
 @Transactional
 class RelationVersionControllerApiTest extends BaseControllerApiTest {
 
   private final RelationRepository relationRepository;
   private final StopPointRepository stopPointRepository;
+  private final SharedServicePointRepository sharedServicePointRepository;
 
   @Autowired
-  RelationVersionControllerApiTest(RelationRepository relationRepository, StopPointRepository stopPointRepository){
+  RelationVersionControllerApiTest(RelationRepository relationRepository, StopPointRepository stopPointRepository, SharedServicePointRepository sharedServicePointRepository){
     this.relationRepository = relationRepository;
     this.stopPointRepository = stopPointRepository;
+    this.sharedServicePointRepository = sharedServicePointRepository;
+  }
+
+  @BeforeEach
+  void setUp() {
+//    SharedServicePoint servicePoint = SharedServicePoint.builder()
+//            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],"
+//                    + "\"trafficPointSloids\":[]}")
+//            .sloid("ch:1:sloid:7000")
+//            .build();
+//    sharedServicePointRepository.saveAndFlush(servicePoint);
+  }
+
+  @AfterEach
+  void cleanUp() {
+    sharedServicePointRepository.deleteAll();
   }
 
   @Test
@@ -161,6 +184,13 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setCreator(version2.getCreator());
     editedVersionModel.setEditor(version2.getEditor());
     editedVersionModel.setEtagVersion(version2.getVersion());
+
+    SharedServicePoint servicePoint = SharedServicePoint.builder()
+            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:8507000\",\"sboids\":[\"ch:1:sboid:100602\"],"
+                    + "\"trafficPointSloids\":[]}")
+            .sloid("ch:1:sloid:8507000")
+            .build();
+    sharedServicePointRepository.saveAndFlush(servicePoint);
 
     //when & then
     mvc.perform(put("/v1/relations/" + version2.getId()).contentType(contentType)
