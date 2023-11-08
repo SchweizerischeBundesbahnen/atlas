@@ -12,7 +12,7 @@ import static ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport.TRAIN;
 import static ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport.TRAM;
 
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.prm.directory.exception.StopPointMeansOfTransportNotAllowedException;
+import ch.sbb.prm.directory.exception.StopPointMeansOfTransportCombinationNotAllowedException;
 import java.util.List;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
@@ -28,10 +28,9 @@ public class PrmMeansOfTransportHelper {
     boolean containsReduced = REDUCED_MEANS_OF_TRANSPORT.stream().anyMatch(meanOfTransports::contains);
     boolean containsComplete = COMPLETE_MEANS_OF_TRANSPORT.stream().anyMatch(meanOfTransports::contains);
     if(containsReduced && containsComplete){
-      throw new StopPointMeansOfTransportNotAllowedException(meanOfTransports);
+      throw new StopPointMeansOfTransportCombinationNotAllowedException(meanOfTransports);
     }
     return containsReduced;
   }
-
 
 }

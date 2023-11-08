@@ -26,8 +26,8 @@ public abstract class RecordableVariantsValidationService<T extends VariantsReco
       notForReducedFields.forEach(field -> {
         try {
           field.setAccessible(true);
-          Object fieldWithValue = field.get(version);
-          if (fieldWithValue != null) {
+          Object value = field.get(version);
+          if (value != null) {
             errorConstraintMap.put(field.getName(), MUST_BE_NULL_ERROR_MSG);
           }
         } catch (IllegalAccessException e) {
@@ -39,8 +39,8 @@ public abstract class RecordableVariantsValidationService<T extends VariantsReco
         try {
           boolean isDefaultValueMandatory = field.getAnnotation(NotForReducedPRM.class).defaultValueMandatory();
           field.setAccessible(true);
-          Object fieldWithValue = field.get(version);
-          if (isDefaultValueMandatory && fieldWithValue == null) {
+          Object value = field.get(version);
+          if (isDefaultValueMandatory && value == null) {
             errorConstraintMap.put(field.getName(), MUST_NOT_BE_NULL_ERROR_MSG);
           }
         } catch (IllegalAccessException e) {
