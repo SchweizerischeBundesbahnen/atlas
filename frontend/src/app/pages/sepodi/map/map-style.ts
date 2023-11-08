@@ -4,6 +4,7 @@ import { environment } from '../../../../environments/environment';
 export const MAP_ZOOM_DETAILS = 10.5;
 export const MAP_SOURCE_NAME = 'geodata';
 export const MAP_LAYER_NAME = 'service-points';
+export const MAP_TRAFFIC_POINT_LAYER_NAME = 'traffic_points';
 export const MAP_STYLE_SPEC: StyleSpecification = {
   version: 8,
   sources: {
@@ -57,6 +58,26 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       promoteId: 'number',
     },
     current_coordinates: {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [0, 0],
+        },
+      },
+    },
+    traffic_points: {
+      type: 'geojson',
+      data: {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [0, 0],
+        },
+      },
+    },
+    current_traffic_point: {
       type: 'geojson',
       data: {
         type: 'Feature',
@@ -122,7 +143,7 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
           14,
           0.8 * 10,
           16,
-          1 * 10,
+          10,
         ],
         'circle-color': [
           'match',
@@ -152,6 +173,53 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
         'circle-stroke-color': 'hotpink',
         'circle-stroke-opacity': 1,
         'circle-stroke-width': 3,
+      },
+    },
+    {
+      id: MAP_TRAFFIC_POINT_LAYER_NAME,
+      source: MAP_TRAFFIC_POINT_LAYER_NAME,
+      type: 'symbol',
+      layout: {
+        'icon-allow-overlap': true,
+        'icon-image': ['get', 'type'],
+        'icon-size': [
+          'interpolate',
+          ['linear'],
+          ['zoom'],
+          9,
+          0.2,
+          10,
+          0.4,
+          12,
+          0.6,
+          14,
+          0.8,
+          16,
+          1,
+        ],
+      },
+    },
+    {
+      id: 'current_traffic_point',
+      source: 'current_traffic_point',
+      type: 'symbol',
+      layout: {
+        'icon-image': 'SELECTED_TP_INDICATOR',
+        'icon-size': [
+          'interpolate',
+          ['linear'],
+          ['zoom'],
+          9,
+          0.2,
+          10,
+          0.4,
+          12,
+          0.6,
+          14,
+          0.8,
+          16,
+          1.4,
+        ],
       },
     },
   ],
