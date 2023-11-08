@@ -9,6 +9,7 @@ import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.RelationTestData;
 import ch.sbb.prm.directory.StopPointTestData;
@@ -23,6 +24,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @Transactional
@@ -51,6 +58,7 @@ class RelationServiceTest {
     stopPointRepository.save(stopPointVersion);
     RelationVersion relationVersion = RelationTestData.builderVersion1().parentServicePointSloid(parentServicePointSloid).build();
 
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
     ReducedVariantException result = Assertions.assertThrows(
         ReducedVariantException.class,
@@ -87,10 +95,12 @@ class RelationServiceTest {
     editedVersion.setCreator(version1.getCreator());
     editedVersion.setEditor(version1.getEditor());
     editedVersion.setVersion(version1.getVersion());
+
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
     ReducedVariantException result = Assertions.assertThrows(
         ReducedVariantException.class,
-        () -> relationService.updateVersion(version1,editedVersion));
+        () -> relationService.updateVersion(version1, editedVersion, sharedServicePointVersionModel));
 
     //then
     assertThat(result).isNotNull();
