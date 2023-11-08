@@ -1,10 +1,8 @@
 package ch.sbb.prm.directory.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
@@ -24,6 +22,12 @@ import org.assertj.core.api.AbstractComparableAssert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @IntegrationTest
 @Transactional
@@ -53,10 +57,10 @@ class ToiletServiceTest {
     String parentServicePointSloid = "ch:1:sloid:70000";
     ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
     toiletVersion.setParentServicePointSloid(parentServicePointSloid);
-
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when & then
     assertThrows(StopPointDoesNotExistsException.class,
-        () -> toiletService.createToilet(toiletVersion)).getLocalizedMessage();
+        () -> toiletService.createToilet(toiletVersion, sharedServicePointVersionModel)).getLocalizedMessage();
   }
 
   @Test
@@ -96,8 +100,9 @@ class ToiletServiceTest {
     stopPointRepository.save(stopPointVersion);
     ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
     toiletVersion.setParentServicePointSloid(parentServicePointSloid);
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    toiletService.createToilet(toiletVersion);
+    toiletService.createToilet(toiletVersion, sharedServicePointVersionModel);
 
     //then
     List<ToiletVersion> toiletVersions = toiletRepository.findByParentServicePointSloid(
@@ -122,9 +127,9 @@ class ToiletServiceTest {
 
     ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
     toiletVersion.setParentServicePointSloid(parentServicePointSloid);
-
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    toiletService.createToilet(toiletVersion);
+    toiletService.createToilet(toiletVersion, sharedServicePointVersionModel);
 
     //then
     List<ToiletVersion> toiletVersions = toiletRepository.findByParentServicePointSloid(
