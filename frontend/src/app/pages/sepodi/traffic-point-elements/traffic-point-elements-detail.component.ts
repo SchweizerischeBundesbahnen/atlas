@@ -80,6 +80,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
     this.mapService.clearDisplayedTrafficPoints();
+    this.mapService.clearCurrentTrafficPoint();
   }
 
   private initTrafficPoint() {
@@ -107,6 +108,8 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
     if (!this.servicePointNumber) {
       this.router.navigate([Pages.SEPODI.path]).then();
     } else {
+      this.displayTrafficPointsOnMap();
+
       this.servicePointService
         .getServicePointVersions(this.servicePointNumber)
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -164,26 +167,31 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
     if (!this.isNew) {
       this.form.disable();
     }
-
-    this.mapService.mapInitialized.pipe(takeUntil(this.ngUnsubscribe)).subscribe((initialized) => {
+    this.mapService.mapInitialized.subscribe((initialized) => {
       if (initialized) {
-        // this.trafficPointElementsService.getTrafficPointsOfServicePointValidToday(this.servicePointNumber)
-        //   .subscribe(points => {
-        //     const trafficPoints: DisplayableTrafficPoint[] = points
-        //       .filter(point => !!point.trafficPointElementGeolocation?.wgs84)
-        //       .map(point => {
-        //         return {
-        //           type: point.trafficPointElementType,
-        //           coordinates: point.trafficPointElementGeolocation!.wgs84!
-        //         }
-        //       });
-        //     this.mapService.setDisplayedTrafficPoints(trafficPoints);
-        //   });
-
         this.mapService.setCurrentTrafficPoint(
           this.selectedVersion.trafficPointElementGeolocation?.wgs84,
         );
-        this.mapService.centerOn(this.selectedVersion.trafficPointElementGeolocation?.wgs84);
+      }
+    });
+  }
+
+  private displayTrafficPointsOnMap() {
+    this.mapService.mapInitialized.subscribe((initialized) => {
+      if (initialized) {
+        this.trafficPointElementsService
+          .getTrafficPointsOfServicePointValidToday(this.servicePointNumber)
+          .subscribe((points) => {
+            const trafficPoints: DisplayableTrafficPoint[] = points
+              .filter((point) => !!point.trafficPointElementGeolocation?.wgs84)
+              .map((point) => {
+                return {
+                  type: point.trafficPointElementType,
+                  coordinates: point.trafficPointElementGeolocation!.wgs84!,
+                };
+              });
+            this.mapService.setDisplayedTrafficPoints(trafficPoints);
+          });
       }
     });
   }
