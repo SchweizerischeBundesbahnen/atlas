@@ -12,7 +12,7 @@ public class PlatformValidationService extends RecordableVariantsValidationServi
     return PlatformVersion.class.getSimpleName();
   }
 
-  public void validatePlatformRecordingVariants(PlatformVersion platformVersion, StopPointVersion stopPointVersion){
-    validateRecordingVariants(platformVersion,stopPointVersion.isReduced());
+  public void validatePlatformRecordingVariants(PlatformVersion platformVersion, StopPointVersion stopPointVersion) {
+    validateRecordingVariants(platformVersion, stopPointVersion.isReduced());
   }
 }
