@@ -21,23 +21,24 @@ import {
   HttpParameterCodec,
 } from '@angular/common/http';
 import { CustomHttpParameterCodec } from '../encoder';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { ContainerReadTrafficPointElementVersion } from '../model/models';
 import { CreateTrafficPointElementVersion } from '../model/models';
-import { ErrorResponse } from '../model/models';
 import { ItemImportResult } from '../model/models';
 import { ReadTrafficPointElementVersion } from '../model/models';
 import { TrafficPointElementType } from '../model/models';
 import { TrafficPointImportRequest } from '../model/models';
 
-import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
+import { BASE_PATH } from '../variables';
 import { Configuration } from '../configuration';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TrafficPointElementsService {
+  isTrafficPointArea = new BehaviorSubject<boolean>(false);
+
   protected basePath = 'http://localhost';
   public defaultHeaders = new HttpHeaders();
   public configuration = new Configuration();
