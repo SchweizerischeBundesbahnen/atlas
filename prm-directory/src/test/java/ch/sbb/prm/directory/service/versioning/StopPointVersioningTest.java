@@ -1,9 +1,8 @@
 package ch.sbb.prm.directory.service.versioning;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
@@ -12,13 +11,17 @@ import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.StopPointService;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @Transactional
@@ -92,9 +95,9 @@ class StopPointVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(editedVersion.getSloid(), Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    stopPointService.updateStopPointVersion(version2, editedVersion);
+    stopPointService.updateStopPointVersion(version2, editedVersion, sharedServicePointVersionModel);
     //then
     List<StopPointVersion> result = stopPointRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
     assertThat(result).isNotNull().hasSize(2);
@@ -141,10 +144,10 @@ class StopPointVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(editedVersion.getSloid(), Collections.singleton("sboid"), Collections.singleton(""));
 
     //when
-    stopPointService.updateStopPointVersion(version2, editedVersion);
+    stopPointService.updateStopPointVersion(version2, editedVersion, sharedServicePointVersionModel);
     //then
     List<StopPointVersion> result = stopPointRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
     assertThat(result).isNotNull().hasSize(5);
@@ -202,9 +205,9 @@ class StopPointVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(editedVersion.getSloid(), Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    stopPointService.updateStopPointVersion(version2, editedVersion);
+    stopPointService.updateStopPointVersion(version2, editedVersion, sharedServicePointVersionModel);
     //then
     List<StopPointVersion> result = stopPointRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
     assertThat(result).isNotNull().hasSize(2);
