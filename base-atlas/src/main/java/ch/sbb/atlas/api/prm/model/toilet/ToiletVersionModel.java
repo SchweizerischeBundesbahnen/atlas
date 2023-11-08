@@ -33,7 +33,6 @@ public abstract class ToiletVersionModel extends BasePrmVersionModel implements 
   @Schema(description = "Additional Information")
   private String additionalInformation;
 
-  @Schema(description = "Wheelchair accessible toilet available")
   private StandardAttributeType wheelchairToilet;
 
 }
