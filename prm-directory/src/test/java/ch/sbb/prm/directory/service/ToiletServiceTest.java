@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.ToiletTestData;
@@ -18,6 +19,7 @@ import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import java.util.List;
+import java.util.Set;
 import org.assertj.core.api.AbstractComparableAssert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +57,34 @@ class ToiletServiceTest {
     //when & then
     assertThrows(StopPointDoesNotExistsException.class,
         () -> toiletService.createToilet(toiletVersion)).getLocalizedMessage();
+  }
+
+  @Test
+  void shouldNotCreateToiletRelationWhenStopPointIsReduced() {
+    //given
+    String parentServicePointSloid = "ch:1:sloid:70000";
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setMeansOfTransport(Set.of(MeanOfTransport.BUS));
+    stopPointRepository.save(stopPointVersion);
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointRepository.save(referencePointVersion);
+    ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
+    toiletVersion.setParentServicePointSloid(parentServicePointSloid);
+
+    //when & then
+    //when
+    toiletService.createToilet(toiletVersion);
+
+    //then
+    List<ToiletVersion> toiletVersions = toiletRepository.findByParentServicePointSloid(
+        toiletVersion.getParentServicePointSloid());
+    assertThat(toiletVersions).hasSize(1);
+    assertThat(toiletVersions.get(0).getParentServicePointSloid()).isEqualTo(toiletVersion.getParentServicePointSloid());
+    List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
+        toiletVersion.getParentServicePointSloid());
+    assertThat(relationVersions).isEmpty();
   }
 
   @Test
