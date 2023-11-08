@@ -9,6 +9,7 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.RecordingVariantException;
+import ch.sbb.prm.directory.exception.StopPointVariantChangingNotAllowedException;
 import java.util.Set;
 import java.util.SortedSet;
 import org.junit.jupiter.api.Assertions;
@@ -85,26 +86,83 @@ class StopPointValidationServiceTest {
     assertDoesNotThrow(executable);
   }
 
-//  @Test
-//  void shouldNotValidateWhenMeansOfTransportCombinationIsNotAllowed() {
-//    //given
-//    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-//    stopPointVersion.setMeansOfTransport(Set.of(MeanOfTransport.BUS, MeanOfTransport.TRAIN));
-//
-//    //when
-//    StopPointMeansOfTransportNotAllowedException result = Assertions.assertThrows(
-//        StopPointMeansOfTransportNotAllowedException.class,
-//        () -> stopPointValidationService.validateRecordingVariants(stopPointVersion, true));
-//
-//    //then
-//    assertThat(result).isNotNull();
-//    ErrorResponse errorResponse = result.getErrorResponse();
-//    assertThat(errorResponse.getStatus()).isEqualTo(400);
-//    assertThat(errorResponse.getMessage()).isEqualTo("Means of Transport combination not allowed!");
-//    assertThat(errorResponse.getError()).isEqualTo("The given Means of Transport combination [BUS, TRAIN] is not allowed.\n"
-//        + "Allowed combination:\n"
-//        + "Reduced: [ELEVATOR, BUS, CHAIRLIFT, CABLE_CAR, CABLE_RAILWAY, BOAT, TRAM]\n"
-//        + "Complete: [METRO, TRAIN, RACK_RAILWAY]");
-//  }
+  @Test
+  void shouldNotValidateWhenChangingFromCompleteToReduced() {
+    //given
+    StopPointVersion stopPointVersionComplete = StopPointTestData.builderVersion1()
+        .meansOfTransport(Set.of(MeanOfTransport.TRAIN))
+        .build();
+    StopPointVersion stopPointVersionReduced = StopPointTestData.builderVersion1()
+        .meansOfTransport(Set.of(MeanOfTransport.TRAM))
+        .build();
+    //when
+    StopPointVariantChangingNotAllowedException result = Assertions.assertThrows(
+        StopPointVariantChangingNotAllowedException.class,
+        () -> stopPointValidationService.validateMeansOfTransportChanging(stopPointVersionComplete, stopPointVersionReduced));
+    //then
+    assertThat(result).isNotNull();
+    ErrorResponse errorResponse = result.getErrorResponse();
+    assertThat(errorResponse.getStatus()).isEqualTo(412);
+    assertThat(errorResponse.getMessage()).isEqualTo(
+        "Changing from Complete to Reduced not allowed! Allowed means of transport: [METRO, TRAIN, RACK_RAILWAY]");
+  }
+
+  @Test
+  void shouldNotValidateWhenChangingFromReducedToComplete() {
+    //given
+    StopPointVersion stopPointVersionComplete = StopPointTestData.builderVersion1()
+        .meansOfTransport(Set.of(MeanOfTransport.TRAM))
+        .build();
+    StopPointVersion stopPointVersionReduced = StopPointTestData.builderVersion1()
+        .meansOfTransport(Set.of(MeanOfTransport.TRAIN))
+        .build();
+    //when
+    StopPointVariantChangingNotAllowedException result = Assertions.assertThrows(
+        StopPointVariantChangingNotAllowedException.class,
+        () -> stopPointValidationService.validateMeansOfTransportChanging(stopPointVersionComplete, stopPointVersionReduced));
+    //then
+    assertThat(result).isNotNull();
+    ErrorResponse errorResponse = result.getErrorResponse();
+    assertThat(errorResponse.getStatus()).isEqualTo(412);
+    assertThat(errorResponse.getMessage()).isEqualTo(
+        "Changing from Reduced to Complete not allowed! Allowed means of transport: [ELEVATOR, BUS, CHAIRLIFT, CABLE_CAR, "
+            + "CABLE_RAILWAY, BOAT, TRAM]");
+  }
+
+  @Test
+  void shouldValidateWhenChangingFromReducedToReduced() {
+    //given
+    StopPointVersion stopPointVersionComplete = StopPointTestData.builderVersion1()
+        .meansOfTransport(Set.of(MeanOfTransport.TRAM))
+        .build();
+    StopPointVersion stopPointVersionReduced = StopPointTestData.builderVersion1()
+        .meansOfTransport(Set.of(MeanOfTransport.BUS))
+        .build();
+
+    //when
+    Executable executable = () -> stopPointValidationService.validateMeansOfTransportChanging(stopPointVersionComplete,
+        stopPointVersionReduced);
+
+    //then
+    assertDoesNotThrow(executable);
+  }
+
+  @Test
+  void shouldValidateWhenChangingFromCompleteToComplete() {
+    //given
+    StopPointVersion stopPointVersionComplete = StopPointTestData.builderVersion1()
+        .meansOfTransport(Set.of(MeanOfTransport.TRAIN))
+        .build();
+    StopPointVersion stopPointVersionReduced = StopPointTestData.builderVersion1()
+        .meansOfTransport(Set.of(MeanOfTransport.RACK_RAILWAY))
+        .build();
+
+    //when
+    Executable executable = () -> stopPointValidationService.validateMeansOfTransportChanging(stopPointVersionComplete,
+        stopPointVersionReduced);
+
+    //then
+    assertDoesNotThrow(executable);
+  }
 
 }
