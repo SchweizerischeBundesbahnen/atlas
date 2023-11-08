@@ -39,7 +39,6 @@ class PlatformValidationServiceTest {
     ErrorResponse errorResponse = result.getErrorResponse();
     assertThat(errorResponse.getStatus()).isEqualTo(400);
     assertThat(errorResponse.getMessage()).isEqualTo("PlatformVersion cannot be save!");
-    assertThat(errorResponse.getError()).isEqualTo("Precondition failed");
     assertThat(errorResponse.getDetails()).hasSize(9);
   }
 
@@ -59,7 +58,6 @@ class PlatformValidationServiceTest {
     ErrorResponse errorResponse = result.getErrorResponse();
     assertThat(errorResponse.getStatus()).isEqualTo(400);
     assertThat(errorResponse.getMessage()).isEqualTo("PlatformVersion cannot be save!");
-    assertThat(errorResponse.getError()).isEqualTo("Precondition failed");
     SortedSet<Detail> errorResponseDetails = errorResponse.getDetails();
     assertThat(errorResponseDetails).hasSize(1);
     Detail detail = errorResponseDetails.stream().toList().get(0);

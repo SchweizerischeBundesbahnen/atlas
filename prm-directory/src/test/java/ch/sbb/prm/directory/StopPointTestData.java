@@ -82,6 +82,37 @@ public class StopPointTestData {
 
   }
 
+  public static CreateStopPointVersionModel getWrongStopPointReducedCreateVersionModel(){
+    return CreateStopPointVersionModel.builder()
+        .sloid("ch:1:sloid:7000")
+        .numberWithoutCheckDigit(8507000)
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .meansOfTransport(of(MeanOfTransport.TRAM))
+        .freeText("I am a free text!!!")
+        .address("Wylerstrasse 123")
+        .zipCode("3014")
+        .city("Bern")
+        .alternativeTransport(StandardAttributeType.TO_BE_COMPLETED)
+        .alternativeTransportCondition("No way dude!!")
+        .assistanceAvailability(StandardAttributeType.YES)
+        .assistanceCondition("No alternative Bro!")
+        .assistanceService(StandardAttributeType.NO)
+        .audioTicketMachine(StandardAttributeType.PARTIALLY)
+        .dynamicAudioSystem(StandardAttributeType.TO_BE_COMPLETED)
+        .dynamicOpticSystem(StandardAttributeType.TO_BE_COMPLETED)
+        .infoTicketMachine("tick")
+        .additionalInformation("additional")
+        .interoperable(true)
+        .url("https://www.prm.sbb")
+        .visualInfo(StandardAttributeType.TO_BE_COMPLETED)
+        .wheelchairTicketMachine(StandardAttributeType.TO_BE_COMPLETED)
+        .assistanceRequestFulfilled(StandardAttributeType.TO_BE_COMPLETED)
+        .ticketMachine(StandardAttributeType.TO_BE_COMPLETED)
+        .build();
+
+  }
+
 
   public StopPointVersionBuilder<?, ?> builderVersion1() {
     return StopPointVersion.builder()
