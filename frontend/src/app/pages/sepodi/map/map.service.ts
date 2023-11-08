@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import maplibregl, {
   GeoJSONSource,
   LngLat,
@@ -9,12 +9,19 @@ import maplibregl, {
   Popup,
   ResourceType,
 } from 'maplibre-gl';
-import {MAP_SOURCE_NAME, MAP_STYLE_SPEC, MAP_ZOOM_DETAILS} from './map-style';
-import {GeoJsonProperties, Point} from 'geojson';
-import {MAP_STYLES, MapOptionsService, MapStyle} from './map-options.service';
-import {BehaviorSubject, Subject} from 'rxjs';
-import {CoordinatePair, SpatialReference} from '../../../api';
-import {Pages} from '../../pages';
+import {
+  MAP_SOURCE_NAME,
+  MAP_STYLE_SPEC,
+  MAP_TRAFFIC_POINT_LAYER_NAME,
+  MAP_ZOOM_DETAILS,
+} from './map-style';
+import { Feature, GeoJsonProperties, Point } from 'geojson';
+import { MAP_STYLES, MapOptionsService, MapStyle } from './map-options.service';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { CoordinatePair, SpatialReference } from '../../../api';
+import { Pages } from '../../pages';
+import { MapIconsService } from './map-icons.service';
+import { DisplayableTrafficPoint } from '../service-point-side-panel/traffic-point-elements/displayable-traffic-point';
 
 export const mapZoomLocalStorageKey = 'map-zoom';
 export const mapLocationLocalStorageKey = 'map-location';
@@ -56,6 +63,7 @@ export class MapService {
         this.mapOptionsService.authoriseRequest(url, resourceType),
       minZoom: 5,
     });
+    MapIconsService.addTrafficPointIconToMap(this.map);
     this.initMapEvents();
     this.map.resize();
     this.map.dragRotate.disable();
@@ -280,4 +288,43 @@ export class MapService {
       this.clickedGeographyCoordinates.next(clickedCoordinates);
     }
   };
+
+  setDisplayedTrafficPoints(trafficPoints: DisplayableTrafficPoint[]) {
+    const source = this.map.getSource(MAP_TRAFFIC_POINT_LAYER_NAME) as GeoJSONSource;
+
+    const trafficPointGeoInformation: Feature[] = trafficPoints.map((point) => {
+      return {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [point.coordinates.east, point.coordinates.north],
+        },
+        properties: {
+          type: point.type,
+        },
+      };
+    });
+    source.setData({
+      type: 'FeatureCollection',
+      features: trafficPointGeoInformation,
+    });
+  }
+
+  clearDisplayedTrafficPoints() {
+    this.setDisplayedTrafficPoints([]);
+  }
+
+  setCurrentTrafficPoint(coordinates?: CoordinatePair) {
+    const source = this.map.getSource('current_traffic_point') as GeoJSONSource;
+    const coordinatesToSet = [coordinates?.east ?? 0, coordinates?.north ?? 0];
+    source.setData({
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: coordinatesToSet,
+      },
+      properties: {},
+    });
+    console.log('setting curren traffipcoint', coordinates);
+  }
 }
