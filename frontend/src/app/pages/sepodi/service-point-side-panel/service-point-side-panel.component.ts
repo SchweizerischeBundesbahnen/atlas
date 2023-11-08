@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ReadServicePointVersion } from '../../../api';
+import { ReadServicePointVersion, TrafficPointElementsService } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
 import { MapService } from '../map/map.service';
 import { Subscription } from 'rxjs';
+import { DisplayableTrafficPoint } from './traffic-point-elements/displayable-traffic-point';
 
 export const TABS = [
   {
@@ -43,24 +44,47 @@ export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
 
   private servicePointSubscription?: Subscription;
 
-  constructor(private route: ActivatedRoute, private mapService: MapService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private mapService: MapService,
+    private trafficPointElementsService: TrafficPointElementsService,
+  ) {}
 
   ngOnInit() {
     this.servicePointSubscription = this.route.data.subscribe((next) => {
       this.servicePointVersions = next.servicePoint;
       this.initVersioning();
+
+      this.displayTrafficPointsOnMap();
     });
+  }
+
+  private displayTrafficPointsOnMap() {
+    this.trafficPointElementsService
+      .getTrafficPointsOfServicePointValidToday(this.servicePointVersions[0].number.number)
+      .subscribe((points) => {
+        const trafficPoints: DisplayableTrafficPoint[] = points
+          .filter((point) => !!point.trafficPointElementGeolocation?.wgs84)
+          .map((point) => {
+            return {
+              type: point.trafficPointElementType,
+              coordinates: point.trafficPointElementGeolocation!.wgs84!,
+            };
+          });
+        this.mapService.setDisplayedTrafficPoints(trafficPoints);
+      });
   }
 
   ngOnDestroy() {
     this.mapService.deselectServicePoint();
+    this.mapService.clearDisplayedTrafficPoints();
     this.servicePointSubscription?.unsubscribe();
   }
 
   private initVersioning() {
     this.maxValidity = VersionsHandlingService.getMaxValidity(this.servicePointVersions);
     this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
-      this.servicePointVersions
+      this.servicePointVersions,
     );
   }
 }
