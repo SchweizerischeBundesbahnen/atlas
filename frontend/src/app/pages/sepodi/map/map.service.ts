@@ -22,6 +22,7 @@ import { CoordinatePair, SpatialReference } from '../../../api';
 import { Pages } from '../../pages';
 import { MapIconsService } from './map-icons.service';
 import { DisplayableTrafficPoint } from '../service-point-side-panel/traffic-point-elements/displayable-traffic-point';
+import { Router } from '@angular/router';
 
 export const mapZoomLocalStorageKey = 'map-zoom';
 export const mapLocationLocalStorageKey = 'map-location';
@@ -52,7 +53,10 @@ export class MapService {
   });
   private _keepPopup = false;
 
-  constructor(private mapOptionsService: MapOptionsService) {}
+  constructor(
+    private mapOptionsService: MapOptionsService,
+    private router: Router,
+  ) {}
 
   initMap(mapContainer: HTMLElement) {
     this.map = new Map({
@@ -140,9 +144,24 @@ export class MapService {
       });
       this.map.on('mousemove', MAP_SOURCE_NAME, (e) => {
         if (this.showDetails()) {
-          this.showPopup(e);
+          this.showPopup(e, this.buildServicePointPopupInformation);
         }
       });
+
+      this.map.on('mouseenter', MAP_TRAFFIC_POINT_LAYER_NAME, () => {
+        if (this.showDetails() && !this.coordinateSelectionMode) {
+          this.map.getCanvas().style.cursor = 'pointer';
+        }
+      });
+      this.map.on('mouseleave', MAP_TRAFFIC_POINT_LAYER_NAME, () => {
+        this.map.getCanvas().style.cursor = '';
+      });
+      this.map.on('mousemove', MAP_TRAFFIC_POINT_LAYER_NAME, (e) => {
+        if (this.showDetails()) {
+          this.showPopup(e, this.buildTrafficPointPopupInformation);
+        }
+      });
+      this.map.on('click', MAP_TRAFFIC_POINT_LAYER_NAME, (e) => this.onTrafficPointClicked(e));
     });
     this.map.once('load', () => {
       this.mapInitialized.next(true);
@@ -160,6 +179,24 @@ export class MapService {
     if (e.features.length == 1) {
       this.popup.remove();
       this.selectedElement.next(e.features[0].properties);
+    } else {
+      this.keepPopup = true;
+    }
+  }
+
+  onTrafficPointClicked(e: MapMouseEvent & { features?: GeoJSON.Feature[] }) {
+    if (!this.showDetails() || !e.features || this.coordinateSelectionMode) {
+      return;
+    }
+    if (e.features.length == 1) {
+      this.popup.remove();
+      this.router
+        .navigate([
+          Pages.SEPODI.path,
+          Pages.TRAFFIC_POINT_ELEMENTS.path,
+          e.features[0].properties!.sloid,
+        ])
+        .then();
     } else {
       this.keepPopup = true;
     }
@@ -198,15 +235,15 @@ export class MapService {
     }
   }
 
-  showPopup(event: MapMouseEvent & { features?: MapGeoJSONFeature[] }) {
+  showPopup(
+    event: MapMouseEvent & { features?: MapGeoJSONFeature[] },
+    htmlContentBuilder: (features: MapGeoJSONFeature[]) => string,
+  ) {
     if (!event.features || this.keepPopup || this.coordinateSelectionMode) {
       return;
     }
     const coordinates = (event.features[0].geometry as Point).coordinates.slice() as LngLatLike;
-    this.popup
-      .setLngLat(coordinates)
-      .setHTML(this.buildServicePointPopupInformation(event.features))
-      .addTo(this.map);
+    this.popup.setLngLat(coordinates).setHTML(htmlContentBuilder(event.features)).addTo(this.map);
     this.popup.on('close', () => {
       this.keepPopup = false;
     });
@@ -224,6 +261,21 @@ export class MapService {
       popupHtml +=
         `<a href="${Pages.SEPODI.path}/${Pages.SERVICE_POINTS.path}/${point.properties.number}">` +
         `<b>${formattedNumber}</b> - ${point.properties.designationOfficial}</a> <br/>`;
+    });
+
+    return popupHtml;
+  }
+
+  buildTrafficPointPopupInformation(features: MapGeoJSONFeature[]) {
+    let popupHtml = '';
+
+    features.forEach((point) => {
+      const description = point.properties.designation
+        ? `${point.properties.designation} - ${point.properties.sloid}`
+        : point.properties.sloid;
+      popupHtml +=
+        `<a href="${Pages.SEPODI.path}/${Pages.TRAFFIC_POINT_ELEMENTS.path}/${point.properties.sloid}">` +
+        `${description}</a> <br/>`;
     });
 
     return popupHtml;
@@ -301,6 +353,8 @@ export class MapService {
         },
         properties: {
           type: point.type,
+          sloid: point.sloid,
+          designation: point.designation,
         },
       };
     });
