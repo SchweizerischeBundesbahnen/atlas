@@ -11,8 +11,8 @@ import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.prm.directory.converter.InfoOpportunityTypeConverter;
 import ch.sbb.prm.directory.service.PrmVersionable;
 import ch.sbb.prm.directory.service.Relatable;
-import ch.sbb.prm.directory.validation.NotForReducedPRM;
-import ch.sbb.prm.directory.validation.VariantsRecordable;
+import ch.sbb.prm.directory.validation.VariantsReducedCompleteRecordable;
+import ch.sbb.prm.directory.validation.annotation.NotForReducedPRM;
 import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -41,7 +41,8 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "platform_version")
 @AtlasVersionable
-public class PlatformVersion extends BasePrmEntityVersion implements Relatable, PrmVersionable, VariantsRecordable {
+public class PlatformVersion extends BasePrmEntityVersion implements Relatable, PrmVersionable,
+    VariantsReducedCompleteRecordable {
 
   private static final String VERSION_SEQ = "platform_version_seq";
 
