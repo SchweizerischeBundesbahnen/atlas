@@ -325,6 +325,9 @@ export class MapService {
       },
       properties: {},
     });
-    console.log('setting curren traffipcoint', coordinates);
+  }
+
+  clearCurrentTrafficPoint() {
+    this.setCurrentTrafficPoint();
   }
 }

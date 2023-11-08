@@ -60,19 +60,23 @@ export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
   }
 
   private displayTrafficPointsOnMap() {
-    this.trafficPointElementsService
-      .getTrafficPointsOfServicePointValidToday(this.servicePointVersions[0].number.number)
-      .subscribe((points) => {
-        const trafficPoints: DisplayableTrafficPoint[] = points
-          .filter((point) => !!point.trafficPointElementGeolocation?.wgs84)
-          .map((point) => {
-            return {
-              type: point.trafficPointElementType,
-              coordinates: point.trafficPointElementGeolocation!.wgs84!,
-            };
+    this.mapService.mapInitialized.subscribe((initialized) => {
+      if (initialized) {
+        this.trafficPointElementsService
+          .getTrafficPointsOfServicePointValidToday(this.servicePointVersions[0].number.number)
+          .subscribe((points) => {
+            const trafficPoints: DisplayableTrafficPoint[] = points
+              .filter((point) => !!point.trafficPointElementGeolocation?.wgs84)
+              .map((point) => {
+                return {
+                  type: point.trafficPointElementType,
+                  coordinates: point.trafficPointElementGeolocation!.wgs84!,
+                };
+              });
+            this.mapService.setDisplayedTrafficPoints(trafficPoints);
           });
-        this.mapService.setDisplayedTrafficPoints(trafficPoints);
-      });
+      }
+    });
   }
 
   ngOnDestroy() {
