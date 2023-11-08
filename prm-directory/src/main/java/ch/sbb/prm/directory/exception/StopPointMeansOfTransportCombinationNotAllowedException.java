@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
 @Getter
-public class StopPointMeansOfTransportNotAllowedException extends AtlasException {
+public class StopPointMeansOfTransportCombinationNotAllowedException extends AtlasException {
 
   private final Set<MeanOfTransport> meanOfTransports;
 
