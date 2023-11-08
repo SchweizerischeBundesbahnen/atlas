@@ -54,7 +54,7 @@ const routes: Routes = [
           },
           {
             path: 'areas',
-            component: AreasDetailComponent,
+            component: TrafficPointElementsTableComponent,
           },
           {
             path: 'traffic-point-elements',
