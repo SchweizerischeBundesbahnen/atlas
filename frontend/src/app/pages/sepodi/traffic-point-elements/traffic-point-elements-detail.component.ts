@@ -23,6 +23,7 @@ import { ValidationService } from '../../../core/validation/validation.service';
 import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { DateService } from '../../../core/date/date.service';
+import { DisplayableTrafficPoint } from '../service-point-side-panel/traffic-point-elements/displayable-traffic-point';
 
 interface AreaOption {
   sloid: string | undefined;
@@ -78,6 +79,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+    this.mapService.clearDisplayedTrafficPoints();
   }
 
   private initTrafficPoint() {
@@ -162,6 +164,28 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
     if (!this.isNew) {
       this.form.disable();
     }
+
+    this.mapService.mapInitialized.pipe(takeUntil(this.ngUnsubscribe)).subscribe((initialized) => {
+      if (initialized) {
+        // this.trafficPointElementsService.getTrafficPointsOfServicePointValidToday(this.servicePointNumber)
+        //   .subscribe(points => {
+        //     const trafficPoints: DisplayableTrafficPoint[] = points
+        //       .filter(point => !!point.trafficPointElementGeolocation?.wgs84)
+        //       .map(point => {
+        //         return {
+        //           type: point.trafficPointElementType,
+        //           coordinates: point.trafficPointElementGeolocation!.wgs84!
+        //         }
+        //       });
+        //     this.mapService.setDisplayedTrafficPoints(trafficPoints);
+        //   });
+
+        this.mapService.setCurrentTrafficPoint(
+          this.selectedVersion.trafficPointElementGeolocation?.wgs84,
+        );
+        this.mapService.centerOn(this.selectedVersion.trafficPointElementGeolocation?.wgs84);
+      }
+    });
   }
 
   toggleEdit() {
