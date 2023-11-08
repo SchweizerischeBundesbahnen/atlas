@@ -15,8 +15,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 public class RecordingVariantException extends AtlasException {
 
-  protected final Map<String, String> errorConstraintMap;
-  protected final String objectName;
+  private final Map<String, String> errorConstraintMap;
+  private final String objectName;
 
   private static final String ERROR = "Precondition failed";
 
@@ -25,7 +25,6 @@ public class RecordingVariantException extends AtlasException {
     return ErrorResponse.builder()
         .status(HttpStatus.BAD_REQUEST.value())
         .message(objectName + " cannot be save!")
-        .error(ERROR)
         .details(getErrorDetails())
         .build();
   }
@@ -36,7 +35,7 @@ public class RecordingVariantException extends AtlasException {
       Detail detail = Detail.builder()
           .field(key)
           .message(value)
-          .displayInfo(DisplayInfo.builder().code("ERROR.PRM.RECODING_VARIANTS.PRECONDITION_FAILED").build())
+          .displayInfo(DisplayInfo.builder().code("ERROR.PRM.RECODING_VARIANTS.BAD_REQUEST").build())
           .build();
       errorsDetail.add(detail);
     });
