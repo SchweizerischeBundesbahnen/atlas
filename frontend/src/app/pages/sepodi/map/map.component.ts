@@ -16,12 +16,7 @@ import { take } from 'rxjs';
 import { AuthService } from '../../../core/auth/auth.service';
 import { ApplicationType } from '../../../api';
 import { filter } from 'rxjs/operators';
-import { ServicePointIconType } from './service-point-icon-type';
-
-export interface MapIcon {
-  id: string;
-  icon: HTMLImageElement;
-}
+import { MapIcon, MapIconsService } from './map-icons.service';
 
 @Component({
   selector: 'atlas-map',
@@ -65,7 +60,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.map = this.mapService.initMap(this.mapContainer.nativeElement);
     this.currentMapStyle = this.mapService.currentMapStyle;
-    this.getIconsAsImages().then((icons) => (this.legend = icons));
+    MapIconsService.getServicePointIconsAsImages().then((icons) => (this.legend = icons));
   }
 
   ngOnDestroy() {
@@ -125,20 +120,5 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       .navigate([Pages.SEPODI.path, Pages.SERVICE_POINTS.path])
       .then()
       .catch((reason) => console.error('Navigation failed:', reason));
-  }
-
-  private getIconsAsImages() {
-    const types = Object.keys(ServicePointIconType).map((type) => this.getIconAsImage(type));
-    return Promise.all(types);
-  }
-
-  private getIconAsImage(type: string) {
-    const ICONS_BASE_PATH = '../../../../assets/images/service-point-symbols/';
-
-    return new Promise<MapIcon>((resolve) => {
-      const image = new Image(20, 20);
-      image.addEventListener('load', () => resolve({ id: type, icon: image }));
-      image.src = ICONS_BASE_PATH + type + '.svg';
-    });
   }
 }
