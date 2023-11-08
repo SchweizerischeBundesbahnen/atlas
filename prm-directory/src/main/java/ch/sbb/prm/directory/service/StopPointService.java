@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -14,8 +15,12 @@ import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -37,6 +42,13 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
   @Override
   protected void incrementVersion(ServicePointNumber servicePointNumber) {
     stopPointRepository.incrementVersion(servicePointNumber);
+  }
+
+  @PreAuthorize("@prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations"
+          + "(#sharedServicePointVersionModel, "
+          + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)")
+  public StopPointVersion saveAndCheckRights(StopPointVersion version, SharedServicePointVersionModel sharedServicePointVersionModel) {
+    return this.save(version);
   }
 
   @Override
@@ -87,6 +99,10 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
     }
   }
 
+  @PreAuthorize("@prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations"
+          + "(#sharedServicePointVersionModel, "
+          + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)")
+  public StopPointVersion updateStopPointVersion(StopPointVersion currentVersion, StopPointVersion editedVersion, SharedServicePointVersionModel sharedServicePointVersionModel) {
   public boolean isStopPointExisting(String sloid) {
     return stopPointRepository.existsBySloid(sloid);
   }
