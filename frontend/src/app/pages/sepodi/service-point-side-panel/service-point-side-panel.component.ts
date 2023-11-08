@@ -69,6 +69,8 @@ export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
               .filter((point) => !!point.trafficPointElementGeolocation?.wgs84)
               .map((point) => {
                 return {
+                  sloid: point.sloid!,
+                  designation: point.designation!,
                   type: point.trafficPointElementType,
                   coordinates: point.trafficPointElementGeolocation!.wgs84!,
                 };
