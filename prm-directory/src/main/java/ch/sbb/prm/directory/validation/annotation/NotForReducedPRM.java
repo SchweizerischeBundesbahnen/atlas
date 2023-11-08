@@ -1,4 +1,4 @@
-package ch.sbb.prm.directory.validation;
+package ch.sbb.prm.directory.validation.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
