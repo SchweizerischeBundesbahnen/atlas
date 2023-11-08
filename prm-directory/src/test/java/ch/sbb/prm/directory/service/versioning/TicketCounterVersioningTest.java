@@ -1,10 +1,9 @@
 package ch.sbb.prm.directory.service.versioning;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.TicketCounterTestData;
@@ -18,11 +17,15 @@ import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import ch.sbb.prm.directory.service.RelationService;
 import ch.sbb.prm.directory.service.TicketCounterService;
-import java.time.LocalDate;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @Transactional
@@ -87,9 +90,9 @@ class TicketCounterVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    ticketCounterService.updateTicketCounterVersion(version2,editedVersion);
+    ticketCounterService.updateTicketCounterVersion(version2, editedVersion, sharedServicePointVersionModel);
 
     //then
     List<TicketCounterVersion> result = ticketCounterRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
@@ -150,9 +153,9 @@ class TicketCounterVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    ticketCounterService.updateTicketCounterVersion(version2,editedVersion);
+    ticketCounterService.updateTicketCounterVersion(version2, editedVersion, sharedServicePointVersionModel);
 
     //then
     List<TicketCounterVersion> result = ticketCounterRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
@@ -220,9 +223,9 @@ class TicketCounterVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    ticketCounterService.updateTicketCounterVersion(version2,editedVersion);
+    ticketCounterService.updateTicketCounterVersion(version2, editedVersion, sharedServicePointVersionModel);
 
     //then
     List<TicketCounterVersion> result = ticketCounterRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
