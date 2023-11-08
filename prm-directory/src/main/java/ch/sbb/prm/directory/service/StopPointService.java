@@ -75,6 +75,7 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
   }
 
   public StopPointVersion updateStopPointVersion(StopPointVersion currentVersion, StopPointVersion editedVersion) {
+    stopPointValidationService.validateMeansOfTransportChanging(currentVersion,editedVersion);
     return updateVersion(currentVersion, editedVersion);
   }
 
