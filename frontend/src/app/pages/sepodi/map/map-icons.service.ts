@@ -16,7 +16,6 @@ export class MapIconsService {
     MapIconsService.getTrafficPointIconsAsImages().then((icons) => {
       icons.forEach((icon) => {
         if (!map.hasImage(icon.id)) {
-          console.log('adding ' + icon.id);
           map.addImage(icon.id, icon.icon);
         }
       });
