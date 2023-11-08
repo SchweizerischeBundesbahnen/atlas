@@ -1,7 +1,6 @@
 package ch.sbb.prm.directory.validation;
 
 import ch.sbb.prm.directory.entity.PlatformVersion;
-import ch.sbb.prm.directory.entity.StopPointVersion;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,7 +11,4 @@ public class PlatformValidationService extends RecordableVariantsValidationServi
     return PlatformVersion.class.getSimpleName();
   }
 
-  public void validatePlatformRecordingVariants(PlatformVersion platformVersion, StopPointVersion stopPointVersion) {
-    validateRecordingVariants(platformVersion, stopPointVersion.isReduced());
-  }
 }
