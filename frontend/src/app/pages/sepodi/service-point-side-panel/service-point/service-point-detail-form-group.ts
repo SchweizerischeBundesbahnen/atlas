@@ -294,7 +294,13 @@ export class ServicePointFormGroupBuilder {
       }
     }
     if (value.selectedType == ServicePointType.FareStop) {
+      writableForm.operatingPointKilometerMasterNumber = undefined;
+      writableForm.operatingPointRouteNetwork = false;
       writableForm.operatingPointTrafficPointType = OperatingPointTrafficPointType.TariffPoint;
+    }
+    if (value.selectedType == ServicePointType.ServicePoint) {
+      writableForm.operatingPointKilometerMasterNumber = undefined;
+      writableForm.operatingPointRouteNetwork = false;
     }
     if (value.servicePointGeolocation?.spatialReference) {
       writableForm.servicePointGeolocation = {
