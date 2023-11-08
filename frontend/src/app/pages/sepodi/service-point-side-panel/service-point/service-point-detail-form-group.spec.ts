@@ -4,7 +4,12 @@ import {
   ServicePointFormGroupBuilder,
 } from './service-point-detail-form-group';
 import { ServicePointType } from './service-point-type';
-import { Country, MeanOfTransport, OperatingPointType } from '../../../../api';
+import {
+  Country,
+  CreateServicePointVersion,
+  MeanOfTransport,
+  OperatingPointType,
+} from '../../../../api';
 import moment from 'moment';
 
 describe('ServicePointFormGroup', () => {
@@ -20,6 +25,8 @@ describe('ServicePointFormGroup', () => {
     servicePointFormGroup.controls.designationOfficial.setValue('YB Stadion');
     servicePointFormGroup.controls.validFrom.setValue(moment(new Date(2000 - 1 - 1)));
     servicePointFormGroup.controls.validTo.setValue(moment(new Date(2099 - 10 - 1)));
+    servicePointFormGroup.controls.operatingPointRouteNetwork.setValue(true);
+    servicePointFormGroup.controls.operatingPointKilometerMaster.setValue(7000);
   });
 
   it('should add validators to include one of stopPoint, freightServicePoint. stopPoints needs meansOfTransport', () => {
@@ -55,5 +62,41 @@ describe('ServicePointFormGroup', () => {
 
     servicePointFormGroup.controls.operatingPointType.setValue(OperatingPointType.InventoryPoint);
     expect(servicePointFormGroup.valid).toBeTrue();
+  });
+
+  it('should set RouteNetwork false and KilometerMaster undefined when ServicePint', () => {
+    servicePointFormGroup.controls.selectedType.setValue(ServicePointType.ServicePoint);
+    const createServicePointVersion: CreateServicePointVersion =
+      ServicePointFormGroupBuilder.getWritableServicePoint(servicePointFormGroup);
+
+    expect(createServicePointVersion.operatingPointKilometerMasterNumber).toEqual(undefined);
+    expect(createServicePointVersion.operatingPointRouteNetwork).toEqual(false);
+  });
+
+  it('should set RouteNetwork false and KilometerMaster undefined when FareStop', () => {
+    servicePointFormGroup.controls.selectedType.setValue(ServicePointType.FareStop);
+    const createServicePointVersion: CreateServicePointVersion =
+      ServicePointFormGroupBuilder.getWritableServicePoint(servicePointFormGroup);
+
+    expect(createServicePointVersion.operatingPointKilometerMasterNumber).toEqual(undefined);
+    expect(createServicePointVersion.operatingPointRouteNetwork).toEqual(false);
+  });
+
+  it('should set RouteNetwork true and KilometerMaster undefined when OperatingPoint', () => {
+    servicePointFormGroup.controls.selectedType.setValue(ServicePointType.OperatingPoint);
+    const createServicePointVersion: CreateServicePointVersion =
+      ServicePointFormGroupBuilder.getWritableServicePoint(servicePointFormGroup);
+
+    expect(createServicePointVersion.operatingPointKilometerMasterNumber).toEqual(undefined);
+    expect(createServicePointVersion.operatingPointRouteNetwork).toEqual(true);
+  });
+
+  it('should set RouteNetwork true and KilometerMaster undefined when StopPoint', () => {
+    servicePointFormGroup.controls.selectedType.setValue(ServicePointType.StopPoint);
+    const createServicePointVersion: CreateServicePointVersion =
+      ServicePointFormGroupBuilder.getWritableServicePoint(servicePointFormGroup);
+
+    expect(createServicePointVersion.operatingPointKilometerMasterNumber).toEqual(undefined);
+    expect(createServicePointVersion.operatingPointRouteNetwork).toEqual(true);
   });
 });
