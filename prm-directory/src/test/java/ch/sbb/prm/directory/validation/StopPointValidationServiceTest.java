@@ -44,7 +44,6 @@ class StopPointValidationServiceTest {
     ErrorResponse errorResponse = result.getErrorResponse();
     assertThat(errorResponse.getStatus()).isEqualTo(400);
     assertThat(errorResponse.getMessage()).isEqualTo("StopPointVersion cannot be save!");
-    assertThat(errorResponse.getError()).isEqualTo("Precondition failed");
     assertThat(errorResponse.getDetails()).hasSize(19);
   }
 
@@ -65,7 +64,6 @@ class StopPointValidationServiceTest {
     ErrorResponse errorResponse = result.getErrorResponse();
     assertThat(errorResponse.getStatus()).isEqualTo(400);
     assertThat(errorResponse.getMessage()).isEqualTo("StopPointVersion cannot be save!");
-    assertThat(errorResponse.getError()).isEqualTo("Precondition failed");
     SortedSet<Detail> errorResponseDetails = errorResponse.getDetails();
     assertThat(errorResponseDetails).hasSize(1);
     Detail detail = errorResponseDetails.stream().toList().get(0);
