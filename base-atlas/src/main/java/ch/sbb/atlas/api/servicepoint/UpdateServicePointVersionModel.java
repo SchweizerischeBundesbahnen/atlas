@@ -64,22 +64,6 @@ public class UpdateServicePointVersionModel extends ServicePointVersionModel {
   }
 
   @JsonIgnore
-  @AssertTrue(message = "If OperatingPointRouteNetwork is true, then operatingPointKilometerMaster will be set to the same "
-      + "value as numberWithoutCheckDigit and it should not be sent in the request")
-  public boolean isOperatingPointRouteNetworkTrueAndKilometerMasterNumberNull() {
-    return !isOperatingPointRouteNetwork() || operatingPointKilometerMasterNumber == null;
-  }
-
-  public Integer setKilometerMasterNumberDependingOnRouteNetworkValue() {
-    if (!isOperatingPointRouteNetwork()) {
-      return operatingPointKilometerMasterNumber;
-    } else if (numberShort != null) {
-      return ServicePointNumber.of(country, numberShort).getNumber();
-    }
-    return null;
-  }
-
-  @JsonIgnore
   @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
   public boolean isValidFreightServicePoint() {
     if (numberShort == null) {
@@ -104,6 +88,22 @@ public class UpdateServicePointVersionModel extends ServicePointVersionModel {
   @JsonIgnore
   public boolean shouldGenerateServicePointNumber() {
     return ServicePointConstants.AUTOMATIC_SERVICE_POINT_ID.contains(country);
+  }
+
+  @JsonIgnore
+  @AssertTrue(message = "If OperatingPointRouteNetwork is true, then operatingPointKilometerMaster will be set to the same "
+          + "value as numberWithoutCheckDigit and it should not be sent in the request")
+  public boolean isOperatingPointRouteNetworkTrueAndKilometerMasterNumberNull() {
+    return !isOperatingPointRouteNetwork() || operatingPointKilometerMasterNumber == null;
+  }
+
+  public Integer setKilometerMasterNumberDependingOnRouteNetworkValue() {
+    if (!isOperatingPointRouteNetwork()) {
+      return operatingPointKilometerMasterNumber;
+    } else if (numberShort != null) {
+      return ServicePointNumber.of(country, numberShort).getNumber();
+    }
+    return null;
   }
 
   @JsonIgnore
