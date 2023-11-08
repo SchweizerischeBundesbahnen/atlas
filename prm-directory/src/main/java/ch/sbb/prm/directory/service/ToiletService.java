@@ -1,19 +1,22 @@
 package ch.sbb.prm.directory.service;
 
-import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TOILET;
-
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TOILET;
 
 @Service
 @Transactional
@@ -57,12 +60,18 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
     return toiletRepository.findAll();
   }
 
-  public ToiletVersion createToilet(ToiletVersion version) {
+  @PreAuthorize("@prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations"
+          + "(#sharedServicePointVersionModel, "
+          + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)")
+  public ToiletVersion createToilet(ToiletVersion version, SharedServicePointVersionModel sharedServicePointVersionModel) {
     createRelation(version);
     return save(version);
   }
 
-  public ToiletVersion updateToiletVersion(ToiletVersion currentVersion, ToiletVersion editedVersion) {
+  @PreAuthorize("@prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations"
+          + "(#sharedServicePointVersionModel, "
+          + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)")
+  public ToiletVersion updateToiletVersion(ToiletVersion currentVersion, ToiletVersion editedVersion, SharedServicePointVersionModel sharedServicePointVersionModel) {
     return updateVersion(currentVersion, editedVersion);
   }
 
