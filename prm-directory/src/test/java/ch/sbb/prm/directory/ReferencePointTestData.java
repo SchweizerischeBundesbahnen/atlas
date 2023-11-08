@@ -24,6 +24,7 @@ public class ReferencePointTestData {
         .referencePointType(ReferencePointAttributeType.PLATFORM)
         .build();
   }
+
   public static ReferencePointVersionBuilder<?, ?> builderVersion1(){
     return ReferencePointVersion.builder()
         .sloid("ch:1.sloid:12345:1")

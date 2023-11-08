@@ -8,8 +8,6 @@ import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.PlatformVersion;
-import ch.sbb.prm.directory.entity.StopPointVersion;
-import ch.sbb.prm.directory.exception.StopPointDoesNotExistsException;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.validation.PlatformValidationService;
@@ -48,10 +46,8 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
 
   @Override
   protected PlatformVersion save(PlatformVersion version) {
-    StopPointVersion parentServicePoint =
-        stopPointService.findAllBySloid(version.getParentServicePointSloid()).stream().findFirst()
-            .orElseThrow(() -> new StopPointDoesNotExistsException(version.getParentServicePointSloid()));
-    platformValidationService.validatePlatformRecordingVariants(version, parentServicePoint);
+    boolean reduced = stopPointService.isReduced(version.getParentServicePointSloid());
+    platformValidationService.validateRecordingVariants(version,reduced);
     return platformRepository.saveAndFlush(version);
   }
 

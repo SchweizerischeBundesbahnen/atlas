@@ -5,6 +5,7 @@ import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.StopPointVersion;
+import ch.sbb.prm.directory.exception.ReducedVariantException;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistsException;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
@@ -58,6 +59,18 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
 
   public List<StopPointVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number) {
     return stopPointRepository.findAllByNumberOrderByValidFrom(number);
+  }
+
+  boolean isReduced(String servicePointSloid){
+    StopPointVersion parentServicePoint = findAllBySloid(servicePointSloid).stream().findFirst()
+            .orElseThrow(() -> new StopPointDoesNotExistsException(servicePointSloid));
+    return parentServicePoint.isReduced();
+  }
+
+  void validateIsNotReduced(String servicePointSloid){
+    if(isReduced(servicePointSloid)){
+      throw new ReducedVariantException();
+    }
   }
 
   public List<StopPointVersion> findAllBySloid(String sloid){
