@@ -1,10 +1,7 @@
 package ch.sbb.prm.directory.service;
 
-import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TICKET_COUNTER;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
@@ -23,6 +20,13 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
+import java.util.List;
+
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TICKET_COUNTER;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @IntegrationTest
 @Transactional
@@ -53,9 +57,11 @@ class TicketCounterServiceTest {
     TicketCounterVersion ticketCounterVersion = TicketCounterTestData.getTicketCounterVersion();
     ticketCounterVersion.setParentServicePointSloid(parentServicePointSloid);
 
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
+
     //when & then
     assertThrows(StopPointDoesNotExistsException.class,
-        () -> ticketCounterService.createTicketCounter(ticketCounterVersion)).getLocalizedMessage();
+        () -> ticketCounterService.createTicketCounter(ticketCounterVersion, sharedServicePointVersionModel)).getLocalizedMessage();
   }
 
   @Test
@@ -67,9 +73,9 @@ class TicketCounterServiceTest {
     stopPointRepository.save(stopPointVersion);
     TicketCounterVersion ticketCounterVersion = TicketCounterTestData.getTicketCounterVersion();
     ticketCounterVersion.setParentServicePointSloid(parentServicePointSloid);
-
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    ticketCounterService.createTicketCounter(ticketCounterVersion);
+    ticketCounterService.createTicketCounter(ticketCounterVersion, sharedServicePointVersionModel);
 
     //then
     List<TicketCounterVersion> ticketCounterVersions = ticketCounterRepository.findByParentServicePointSloid(
@@ -95,9 +101,9 @@ class TicketCounterServiceTest {
     referencePointRepository.save(referencePointVersion);
     TicketCounterVersion ticketCounterVersion = TicketCounterTestData.getTicketCounterVersion();
     ticketCounterVersion.setParentServicePointSloid(parentServicePointSloid);
-
+    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    ticketCounterService.createTicketCounter(ticketCounterVersion);
+    ticketCounterService.createTicketCounter(ticketCounterVersion, sharedServicePointVersionModel);
 
     //then
     List<TicketCounterVersion> ticketCounterVersions = ticketCounterRepository.findByParentServicePointSloid(
