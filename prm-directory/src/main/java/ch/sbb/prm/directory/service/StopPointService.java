@@ -44,10 +44,11 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
     stopPointRepository.incrementVersion(servicePointNumber);
   }
 
-  @PreAuthorize("@prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations"
-          + "(#sharedServicePointVersionModel, "
-          + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)")
-  public StopPointVersion saveAndCheckRights(StopPointVersion version, SharedServicePointVersionModel sharedServicePointVersionModel) {
+  @PreAuthorize("""
+      @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
+      (#sharedServicePointVersionModel, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+  public StopPointVersion checkUserRightsAndSave(StopPointVersion version,
+                                                 SharedServicePointVersionModel sharedServicePointVersionModel) {
     return this.save(version);
   }
 
@@ -99,22 +100,15 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
     }
   }
 
-  @PreAuthorize("@prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations"
-          + "(#sharedServicePointVersionModel, "
-          + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)")
-  public StopPointVersion updateStopPointVersion(StopPointVersion currentVersion, StopPointVersion editedVersion, SharedServicePointVersionModel sharedServicePointVersionModel) {
-  public boolean isStopPointExisting(String sloid) {
-    return stopPointRepository.existsBySloid(sloid);
-  }
-
-  public StopPointVersion updateStopPointVersion(StopPointVersion currentVersion, StopPointVersion editedVersion) {
-    stopPointValidationService.validateMeansOfTransportChanging(currentVersion,editedVersion);
+  @PreAuthorize("""
+      @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
+      (#sharedServicePointVersionModel, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+  public StopPointVersion updateStopPointVersion(StopPointVersion currentVersion, StopPointVersion editedVersion,
+                                                 SharedServicePointVersionModel sharedServicePointVersionModel) {
     return updateVersion(currentVersion, editedVersion);
   }
 
   public Page<StopPointVersion> findAll(StopPointSearchRestrictions searchRestrictions) {
     return stopPointRepository.findAll(searchRestrictions.getSpecification(),searchRestrictions.getPageable());
   }
-
-
 }

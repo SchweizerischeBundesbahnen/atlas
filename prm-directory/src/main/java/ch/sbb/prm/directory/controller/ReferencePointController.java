@@ -3,7 +3,6 @@ package ch.sbb.prm.directory.controller;
 import ch.sbb.atlas.api.prm.model.referencepoint.CreateReferencePointVersionModel;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.prm.directory.api.ReferencePointApiV1;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.mapper.ReferencePointVersionMapper;
@@ -31,9 +30,9 @@ public class ReferencePointController implements ReferencePointApiV1 {
 
   @Override
   public ReadReferencePointVersionModel createReferencePoint(CreateReferencePointVersionModel model) {
-    SharedServicePointVersionModel sharedServicePointVersionModel = sharedServicePointService.findServicePoint(model.getParentServicePointSloid()).orElseThrow();
     ReferencePointVersion referencePointVersion = ReferencePointVersionMapper.toEntity(model);
-    ReferencePointVersion savedReferencePointVersion = referencePointService.createReferencePoint(referencePointVersion, sharedServicePointVersionModel);
+    ReferencePointVersion savedReferencePointVersion = referencePointService.createReferencePoint(referencePointVersion,
+            sharedServicePointService.getSharedServicePointVersionModel(model.getParentServicePointSloid()));
     return ReferencePointVersionMapper.toModel(savedReferencePointVersion);
   }
 
@@ -41,10 +40,10 @@ public class ReferencePointController implements ReferencePointApiV1 {
   public List<ReadReferencePointVersionModel> updateReferencePoint(Long id, CreateReferencePointVersionModel model) {
     ReferencePointVersion referencePointVersion =
         referencePointService.getReferencePointById(id).orElseThrow(() -> new IdNotFoundException(id));
-    SharedServicePointVersionModel sharedServicePointVersionModel = sharedServicePointService.findServicePoint(model.getParentServicePointSloid()).orElseThrow();
 
     ReferencePointVersion editedVersion = ReferencePointVersionMapper.toEntity(model);
-    referencePointService.updateReferencePointVersion(referencePointVersion, editedVersion, sharedServicePointVersionModel);
+    referencePointService.updateReferencePointVersion(referencePointVersion, editedVersion,
+            sharedServicePointService.getSharedServicePointVersionModel(model.getParentServicePointSloid()));
 
     return referencePointService.findAllByNumberOrderByValidFrom(referencePointVersion.getNumber()).stream()
         .map(ReferencePointVersionMapper::toModel).toList();
