@@ -31,12 +31,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 class TicketCounterVersioningTest {
 
+  private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
+  private static final SharedServicePointVersionModel SHARED_SERVICE_POINT_VERSION_MODEL =
+          new SharedServicePointVersionModel(PARENT_SERVICE_POINT_SLOID,
+                  Collections.singleton("sboid"),
+                  Collections.singleton(""));
+
   private final TicketCounterService ticketCounterService;
   private final TicketCounterRepository ticketCounterRepository;
   private final StopPointRepository stopPointRepository;
-
   private final ReferencePointRepository referencePointRepository;
-
   private final RelationService relationService;
 
   @Autowired
@@ -62,24 +66,23 @@ class TicketCounterVersioningTest {
   @Test
   void scenario1a() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
     TicketCounterVersion version1 = TicketCounterTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     ticketCounterRepository.saveAndFlush(version1);
     TicketCounterVersion version2 = TicketCounterTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     ticketCounterRepository.saveAndFlush(version2);
 
     TicketCounterVersion editedVersion = TicketCounterTestData.builderVersion2().build();
     editedVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567));
-    editedVersion.setParentServicePointSloid(parentServicePointSloid);
+    editedVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersion.setDesignation("My designation");
     editedVersion.setInductionLoop(StandardAttributeType.NOT_APPLICABLE);
     editedVersion.setOpeningHours("24/7");
@@ -90,9 +93,8 @@ class TicketCounterVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    ticketCounterService.updateTicketCounterVersion(version2, editedVersion, sharedServicePointVersionModel);
+    ticketCounterService.updateTicketCounterVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
 
     //then
     List<TicketCounterVersion> result = ticketCounterRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
@@ -109,7 +111,6 @@ class TicketCounterVersioningTest {
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.id)
         .isEqualTo(editedVersion);
-
   }
 
   /**
@@ -124,27 +125,26 @@ class TicketCounterVersioningTest {
   @Test
   void scenario2() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
     TicketCounterVersion version1 = TicketCounterTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     ticketCounterRepository.saveAndFlush(version1);
     TicketCounterVersion version2 = TicketCounterTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     ticketCounterRepository.saveAndFlush(version2);
     TicketCounterVersion version3 = TicketCounterTestData.builderVersion3().build();
-    version3.setParentServicePointSloid(parentServicePointSloid);
+    version3.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     ticketCounterRepository.saveAndFlush(version3);
 
     TicketCounterVersion editedVersion = TicketCounterTestData.builderVersion2().build();
     editedVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567));
-    editedVersion.setParentServicePointSloid(parentServicePointSloid);
+    editedVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersion.setValidFrom(LocalDate.of(2001, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2002, 6, 1));
     editedVersion.setDesignation("My designation");
@@ -153,9 +153,8 @@ class TicketCounterVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    ticketCounterService.updateTicketCounterVersion(version2, editedVersion, sharedServicePointVersionModel);
+    ticketCounterService.updateTicketCounterVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
 
     //then
     List<TicketCounterVersion> result = ticketCounterRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
@@ -183,7 +182,7 @@ class TicketCounterVersioningTest {
         .isEqualTo(version3);
 
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
-        parentServicePointSloid);
+            PARENT_SERVICE_POINT_SLOID);
     assertThat(relations).isEmpty();
   }
 
@@ -199,33 +198,31 @@ class TicketCounterVersioningTest {
   @Test
   void scenario8a() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
     TicketCounterVersion version1 = TicketCounterTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     ticketCounterRepository.saveAndFlush(version1);
     TicketCounterVersion version2 = TicketCounterTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     ticketCounterRepository.saveAndFlush(version2);
 
     TicketCounterVersion editedVersion = TicketCounterTestData.builderVersion2().build();
     editedVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567));
-    editedVersion.setParentServicePointSloid(parentServicePointSloid);
+    editedVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersion.setValidTo(LocalDate.of(2001, 12, 31));
     editedVersion.setCreationDate(version2.getCreationDate());
     editedVersion.setEditionDate(version2.getEditionDate());
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    ticketCounterService.updateTicketCounterVersion(version2, editedVersion, sharedServicePointVersionModel);
+    ticketCounterService.updateTicketCounterVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
 
     //then
     List<TicketCounterVersion> result = ticketCounterRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
@@ -244,4 +241,5 @@ class TicketCounterVersioningTest {
         .isEqualTo(version2);
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2001, 12, 31));
   }
+
 }

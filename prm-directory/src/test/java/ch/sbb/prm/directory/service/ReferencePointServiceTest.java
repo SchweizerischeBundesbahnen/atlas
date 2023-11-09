@@ -45,59 +45,60 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 class ReferencePointServiceTest {
 
+  private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
+  private static final SharedServicePointVersionModel SHARED_SERVICE_POINT_VERSION_MODEL =
+          new SharedServicePointVersionModel(PARENT_SERVICE_POINT_SLOID,
+                  Collections.singleton("sboid"),
+                  Collections.singleton(""));
+
   private final ReferencePointService referencePointService;
-  private final PlatformRepository platformRepository;
-  private final TicketCounterRepository ticketCounterRepository;
-  private final ToiletRepository toiletRepository;
-  private final InformationDeskRepository informationDeskRepository;
-  private final ParkingLotRepository parkingLotRepository;
-
   private final RelationService relationService;
-
+  private final ToiletRepository toiletRepository;
+  private final PlatformRepository platformRepository;
   private final StopPointRepository stopPointRepository;
+  private final ParkingLotRepository parkingLotRepository;
+  private final TicketCounterRepository ticketCounterRepository;
+  private final InformationDeskRepository informationDeskRepository;
 
   @Autowired
-  ReferencePointServiceTest(ReferencePointService referencePointService, PlatformRepository platformRepository,
-      TicketCounterRepository ticketCounterRepository, ToiletRepository toiletRepository,
-      InformationDeskRepository informationDeskRepository, ParkingLotRepository parkingLotRepository,
-      RelationService relationService,
-      StopPointRepository stopPointRepository) {
+  ReferencePointServiceTest(ReferencePointService referencePointService, RelationService relationService,
+                            ToiletRepository toiletRepository, PlatformRepository platformRepository,
+                            StopPointRepository stopPointRepository, ParkingLotRepository parkingLotRepository,
+                            TicketCounterRepository ticketCounterRepository,
+                            InformationDeskRepository informationDeskRepository) {
     this.referencePointService = referencePointService;
-    this.platformRepository = platformRepository;
-    this.ticketCounterRepository = ticketCounterRepository;
-    this.toiletRepository = toiletRepository;
-    this.informationDeskRepository = informationDeskRepository;
-    this.parkingLotRepository = parkingLotRepository;
     this.relationService = relationService;
+    this.toiletRepository = toiletRepository;
+    this.platformRepository = platformRepository;
     this.stopPointRepository = stopPointRepository;
+    this.parkingLotRepository = parkingLotRepository;
+    this.ticketCounterRepository = ticketCounterRepository;
+    this.informationDeskRepository = informationDeskRepository;
   }
 
   @Test
   void shouldCreateReferencePoint() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
-    createAndSavePlatformVersion(parentServicePointSloid);
-    createAndSaveTicketCounterVersion(parentServicePointSloid);
-    createAndSaveToiletVersion(parentServicePointSloid);
-    createAndSaveInformationDeskVersion(parentServicePointSloid);
-    createAndSaveParkingLotVersion(parentServicePointSloid);
+    createAndSavePlatformVersion(PARENT_SERVICE_POINT_SLOID);
+    createAndSaveTicketCounterVersion(PARENT_SERVICE_POINT_SLOID);
+    createAndSaveToiletVersion(PARENT_SERVICE_POINT_SLOID);
+    createAndSaveInformationDeskVersion(PARENT_SERVICE_POINT_SLOID);
+    createAndSaveParkingLotVersion(PARENT_SERVICE_POINT_SLOID);
 
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when
-    referencePointService.createReferencePoint(referencePointVersion, sharedServicePointVersionModel);
+    referencePointService.createReferencePoint(referencePointVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
 
     //then
-    List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
-        parentServicePointSloid);
+    List<RelationVersion> relations = relationService
+            .getRelationsByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     assertThat(relations).hasSize(5);
-    assertThat(relations.stream().map(RelationVersion::getReferencePointElementType)).containsExactlyInAnyOrder(
-        ReferencePointElementType.values());
-
+    assertThat(relations.stream().map(RelationVersion::getReferencePointElementType))
+            .containsExactlyInAnyOrder(ReferencePointElementType.values());
   }
 
   @Test

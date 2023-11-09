@@ -31,13 +31,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 class InformationDeskVersioningTest {
 
+  private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
+  private static final SharedServicePointVersionModel SHARED_SERVICE_POINT_VERSION_MODEL =
+          new SharedServicePointVersionModel(PARENT_SERVICE_POINT_SLOID,
+                  Collections.singleton("sboid"),
+                  Collections.singleton(""));
+
   private final ReferencePointRepository referencePointRepository;
-
   private final StopPointRepository stopPointRepository;
-
   private final InformationDeskRepository informationDeskRepository;
   private final InformationDeskService informationDeskService;
-
   private final RelationService relationService;
 
   @Autowired
@@ -63,23 +66,22 @@ class InformationDeskVersioningTest {
   @Test
   void scenario1a() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
     InformationDeskVersion version1 = InformationDeskTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     InformationDeskVersion savedVersion1 = informationDeskRepository.saveAndFlush(version1);
     InformationDeskVersion version2 = InformationDeskTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     InformationDeskVersion savedVersion2 = informationDeskRepository.saveAndFlush(version2);
 
     InformationDeskVersion editedVersion = InformationDeskTestData.builderVersion2().build();
     editedVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567));
-    editedVersion.setParentServicePointSloid(parentServicePointSloid);
+    editedVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersion.setDesignation("My designation");
     editedVersion.setInductionLoop(StandardAttributeType.NOT_APPLICABLE);
     editedVersion.setOpeningHours("24/7");
@@ -91,9 +93,8 @@ class InformationDeskVersioningTest {
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
 
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    informationDeskService.updateInformationDeskVersion(version2, editedVersion, sharedServicePointVersionModel);
+    informationDeskService.updateInformationDeskVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
 
     //then
     List<InformationDeskVersion> result = informationDeskRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
@@ -110,8 +111,8 @@ class InformationDeskVersioningTest {
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.id)
         .isEqualTo(editedVersion);
-
   }
+
   /**
    * Szenario 2: Update innerhalb existierender Version
    * NEU:                       |___________|
@@ -123,26 +124,25 @@ class InformationDeskVersioningTest {
    */
   @Test
   void scenario2() {
-    String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
     InformationDeskVersion version1 = InformationDeskTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     informationDeskRepository.saveAndFlush(version1);
     InformationDeskVersion version2 = InformationDeskTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     informationDeskRepository.saveAndFlush(version2);
     InformationDeskVersion version3 = InformationDeskTestData.builderVersion3().build();
-    version3.setParentServicePointSloid(parentServicePointSloid);
+    version3.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     informationDeskRepository.saveAndFlush(version3);
 
     InformationDeskVersion editedVersion = InformationDeskTestData.builderVersion2().build();
     editedVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567));
-    editedVersion.setParentServicePointSloid(parentServicePointSloid);
+    editedVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersion.setValidFrom(LocalDate.of(2001, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2002, 6, 1));
     editedVersion.setDesignation("My designation");
@@ -153,10 +153,8 @@ class InformationDeskVersioningTest {
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
 
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
-
     //when
-    informationDeskService.updateInformationDeskVersion(version2, editedVersion, sharedServicePointVersionModel);
+    informationDeskService.updateInformationDeskVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
 
     //then
     List<InformationDeskVersion> result = informationDeskRepository.findAllByNumberOrderByValidFrom(
@@ -191,9 +189,8 @@ class InformationDeskVersioningTest {
         .isEqualTo(version3);
 
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
-        parentServicePointSloid);
+            PARENT_SERVICE_POINT_SLOID);
     assertThat(relations).isEmpty();
-
   }
 
   /**
@@ -208,23 +205,22 @@ class InformationDeskVersioningTest {
   @Test
   void scenario8a() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
     InformationDeskVersion version1 = InformationDeskTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     informationDeskRepository.saveAndFlush(version1);
     InformationDeskVersion version2 = InformationDeskTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     informationDeskRepository.saveAndFlush(version2);
 
     InformationDeskVersion editedVersion = InformationDeskTestData.builderVersion2().build();
     editedVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567));
-    editedVersion.setParentServicePointSloid(parentServicePointSloid);
+    editedVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersion.setValidTo(LocalDate.of(2001, 12, 31));
     editedVersion.setCreationDate(version2.getCreationDate());
     editedVersion.setEditionDate(version2.getEditionDate());
@@ -232,9 +228,8 @@ class InformationDeskVersioningTest {
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
 
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    informationDeskService.updateInformationDeskVersion(version2, editedVersion, sharedServicePointVersionModel);
+    informationDeskService.updateInformationDeskVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
 
     //then
     List<InformationDeskVersion> result = informationDeskRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
