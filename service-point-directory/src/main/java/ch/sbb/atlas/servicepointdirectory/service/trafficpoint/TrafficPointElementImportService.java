@@ -118,7 +118,7 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
     TrafficPointElementVersion current = ImportUtils.getCurrentPointVersion(dbVersions, edited);
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(current, edited,
         dbVersions);
-    BasePointUtility.overrideEditionDateAndEditorOnVersionedObjects(edited, versionedObjects);
+    ImportUtils.overrideEditionDateAndEditorOnVersionedObjects(edited, versionedObjects);
     BasePointUtility.addCreateAndEditDetailsToGeolocationPropertyFromVersionedObjects(versionedObjects,
         TrafficPointElementVersion.Fields.trafficPointElementGeolocation);
     versionableService.applyVersioning(TrafficPointElementVersion.class, versionedObjects, trafficPointElementService::save,

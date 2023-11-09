@@ -124,7 +124,7 @@ public class StopPointVersion extends BasePrmImportEntity implements PrmVersiona
   @AtlasVersionableProperty
   private StandardAttributeType audioTicketMachine;
 
-  @NotForReducedPRM(defaultValueMandatory = true)
+  @NotForReducedPRM
   @AtlasVersionableProperty
   private String additionalInformation;
 
