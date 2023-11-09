@@ -60,17 +60,18 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
     return parkingLotRepository.findAll();
   }
 
-  @PreAuthorize("@prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations"
-          + "(#sharedServicePointVersionModel, "
-          + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)")
-  public ParkingLotVersion createParkingLot(ParkingLotVersion version, SharedServicePointVersionModel sharedServicePointVersionModel) {
+  @PreAuthorize("""
+      @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
+      (#sharedServicePointVersionModel, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+  public ParkingLotVersion createParkingLot(ParkingLotVersion version,
+                                            SharedServicePointVersionModel sharedServicePointVersionModel) {
     createRelation(version);
     return save(version);
   }
 
-  @PreAuthorize("@prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations"
-          + "(#sharedServicePointVersionModel, "
-          + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)")
+  @PreAuthorize("""
+      @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
+      (#sharedServicePointVersionModel, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
   public ParkingLotVersion updateParkingLotVersion(ParkingLotVersion currentVersion, ParkingLotVersion editedVersion,
                                                    SharedServicePointVersionModel sharedServicePointVersionModel) {
     return updateVersion(currentVersion, editedVersion);
