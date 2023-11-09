@@ -43,7 +43,9 @@ class StopPointValidationServiceTest {
     assertThat(result).isNotNull();
     ErrorResponse errorResponse = result.getErrorResponse();
     assertThat(errorResponse.getStatus()).isEqualTo(400);
-    assertThat(errorResponse.getMessage()).isEqualTo("StopPointVersion cannot be save!");
+    assertThat(errorResponse.getMessage()).isEqualTo(
+        "StopPointVersionwith sloid [ch:1:sloid:12345] cannot be save: Attempting to save a Reduced object that contains "
+            + "Complete properties!");
     assertThat(errorResponse.getDetails()).hasSize(19);
   }
 
@@ -63,7 +65,9 @@ class StopPointValidationServiceTest {
     assertThat(result).isNotNull();
     ErrorResponse errorResponse = result.getErrorResponse();
     assertThat(errorResponse.getStatus()).isEqualTo(400);
-    assertThat(errorResponse.getMessage()).isEqualTo("StopPointVersion cannot be save!");
+    assertThat(errorResponse.getMessage()).isEqualTo(
+        "StopPointVersionwith sloid [ch:1:sloid:12345] cannot be save: Attempting to save a Complete object that does not "
+            + "contains all mandatory properties!");
     SortedSet<Detail> errorResponseDetails = errorResponse.getDetails();
     assertThat(errorResponseDetails).hasSize(1);
     Detail detail = errorResponseDetails.stream().toList().get(0);
