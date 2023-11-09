@@ -99,7 +99,7 @@ class RelationServiceTest {
     assertThat(errorResponse.getMessage()).isEqualTo("Object creation not allowed for reduced variant!");
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
         parentServicePointSloid);
-    assertThat(relations.size()).isEqualTo(1);
+    assertThat(relations).hasSize(1);
   }
 
 }
