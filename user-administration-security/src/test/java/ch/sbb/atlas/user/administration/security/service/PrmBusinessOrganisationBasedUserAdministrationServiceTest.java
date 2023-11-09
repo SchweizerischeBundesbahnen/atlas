@@ -54,7 +54,7 @@ public class PrmBusinessOrganisationBasedUserAdministrationServiceTest {
     }
 
     @Test
-    void shouldAllowCreateToSuperVisorUser() {
+    void shouldAllowCreateToSupervisorUser() {
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
                 .userId("e123456")
                 .permissions(Set.of(
@@ -154,8 +154,13 @@ public class PrmBusinessOrganisationBasedUserAdministrationServiceTest {
                         UserAdministrationPermissionModel.builder()
                                 .application(ApplicationType.PRM)
                                 .role(ApplicationRole.WRITER)
-                                .restrictions(Set.of(UserAdministrationPermissionRestrictionModel.builder()
+                                .restrictions(Set.of(
+                                        UserAdministrationPermissionRestrictionModel.builder()
                                         .value("ch:1:sboid:100005")
+                                        .restrictionType(PermissionRestrictionType.BUSINESS_ORGANISATION)
+                                        .build(),
+                                        UserAdministrationPermissionRestrictionModel.builder()
+                                        .value("ch:1:sboid:100001")
                                         .restrictionType(PermissionRestrictionType.BUSINESS_ORGANISATION)
                                         .build()))
                                 .build()))
