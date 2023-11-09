@@ -23,7 +23,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
@@ -35,7 +34,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Getter
 @Slf4j
-@RequiredArgsConstructor
 @Transactional
 public class TrafficPointElementService {
 
@@ -43,6 +41,15 @@ public class TrafficPointElementService {
   private final VersionableService versionableService;
   private final CrossValidationService crossValidationService;
   private final TrafficPointElementSloidService trafficPointElementSloidService;
+
+  public TrafficPointElementService(TrafficPointElementVersionRepository trafficPointElementVersionRepository,
+      VersionableService versionableService, CrossValidationService crossValidationService,
+      TrafficPointElementSloidService trafficPointElementSloidService) {
+    this.trafficPointElementVersionRepository = trafficPointElementVersionRepository;
+    this.versionableService = versionableService;
+    this.crossValidationService = crossValidationService;
+    this.trafficPointElementSloidService = trafficPointElementSloidService;
+  }
 
   public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
     return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
@@ -133,7 +140,8 @@ public class TrafficPointElementService {
         .build();
   }
 
-  private List<ReadTrafficPointElementVersionModel> mergeVersionsForDisplay(List<ReadTrafficPointElementVersionModel> trafficPointElements) {
+  private List<ReadTrafficPointElementVersionModel> mergeVersionsForDisplay(
+      List<ReadTrafficPointElementVersionModel> trafficPointElements) {
     if (trafficPointElements.isEmpty()) {
       return Collections.emptyList();
     }
@@ -150,7 +158,7 @@ public class TrafficPointElementService {
       current = iterator.next();
       if (previous.getSloid().equals(current.getSloid())) {
         versions.add(current);
-      }else {
+      } else {
         result.add(getDisplayModel(versions));
         versions.clear();
         versions.add(current);
