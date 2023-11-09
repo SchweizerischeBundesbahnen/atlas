@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -14,7 +15,6 @@ import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.validation.StopPointValidationService;
 import java.util.List;
 import java.util.Set;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
@@ -67,7 +67,7 @@ class StopPointServiceTest {
   @Test
   void shouldThrowExceptionWhenSloidDoesNotExists() {
     //when
-    StopPointDoesNotExistsException result = Assertions.assertThrows(
+    StopPointDoesNotExistsException result = assertThrows(
         StopPointDoesNotExistsException.class,
         () -> stopPointService.isReduced("ch:1:sloid:8507000"));
 
@@ -85,7 +85,7 @@ class StopPointServiceTest {
     StopPointVersion reduced = StopPointTestData.builderVersion1().meansOfTransport(Set.of(MeanOfTransport.BUS)).build();
     Mockito.doReturn(List.of(reduced)).when(stopPointRepository).findAllBySloid(reduced.getSloid());
     //when
-    ReducedVariantException result = Assertions.assertThrows(
+    ReducedVariantException result = assertThrows(
         ReducedVariantException.class,
         () -> stopPointService.validateIsNotReduced(reduced.getSloid()));
 
