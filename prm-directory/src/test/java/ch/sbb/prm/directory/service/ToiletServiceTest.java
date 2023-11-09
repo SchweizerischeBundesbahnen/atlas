@@ -33,34 +33,36 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @Transactional
 class ToiletServiceTest {
 
-  private final ReferencePointRepository referencePointRepository;
-  private final RelationRepository relationRepository;
-
-  private final StopPointRepository stopPointRepository;
-  private final ToiletRepository toiletRepository;
+  private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
+  private static final SharedServicePointVersionModel SHARED_SERVICE_POINT_VERSION_MODEL =
+          new SharedServicePointVersionModel(PARENT_SERVICE_POINT_SLOID,
+                  Collections.singleton("sboid"),
+                  Collections.singleton(""));
 
   private final ToiletService toiletService;
+  private final ToiletRepository toiletRepository;
+  private final RelationRepository relationRepository;
+  private final StopPointRepository stopPointRepository;
+  private final ReferencePointRepository referencePointRepository;
 
   @Autowired
-  ToiletServiceTest(ReferencePointRepository referencePointRepository, RelationRepository relationRepository,
-      StopPointRepository stopPointRepository, ToiletRepository toiletRepository, ToiletService toiletService) {
-    this.referencePointRepository = referencePointRepository;
+  ToiletServiceTest(ToiletService toiletService, ToiletRepository toiletRepository, RelationRepository relationRepository,
+                    StopPointRepository stopPointRepository, ReferencePointRepository referencePointRepository) {
+    this.toiletService = toiletService;
+    this.toiletRepository = toiletRepository;
     this.relationRepository = relationRepository;
     this.stopPointRepository = stopPointRepository;
-    this.toiletRepository = toiletRepository;
-    this.toiletService = toiletService;
+    this.referencePointRepository = referencePointRepository;
   }
 
   @Test
-  void shouldNotCreateToiletWhenStopPointDoesNotExists() {
+  void shouldNotCreateToiletWhenStopPointDoesNotExist() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:70000";
     ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
-    toiletVersion.setParentServicePointSloid(parentServicePointSloid);
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
+    toiletVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when & then
     assertThrows(StopPointDoesNotExistsException.class,
-        () -> toiletService.createToilet(toiletVersion, sharedServicePointVersionModel)).getLocalizedMessage();
+        () -> toiletService.createToilet(toiletVersion, SHARED_SERVICE_POINT_VERSION_MODEL)).getLocalizedMessage();
   }
 
   @Test
@@ -94,19 +96,16 @@ class ToiletServiceTest {
   @Test
   void shouldCreateToiletWhenNoReferencePointExists() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
-    toiletVersion.setParentServicePointSloid(parentServicePointSloid);
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
+    toiletVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when
-    toiletService.createToilet(toiletVersion, sharedServicePointVersionModel);
-
+    toiletService.createToilet(toiletVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
     //then
-    List<ToiletVersion> toiletVersions = toiletRepository.findByParentServicePointSloid(
-        toiletVersion.getParentServicePointSloid());
+    List<ToiletVersion> toiletVersions = toiletRepository
+            .findByParentServicePointSloid(toiletVersion.getParentServicePointSloid());
     assertThat(toiletVersions).hasSize(1);
     assertThat(toiletVersions.get(0).getParentServicePointSloid()).isEqualTo(toiletVersion.getParentServicePointSloid());
     List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
@@ -117,31 +116,27 @@ class ToiletServiceTest {
   @Test
   void shouldCreateToiletWhenReferencePointExists() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
     ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
-    toiletVersion.setParentServicePointSloid(parentServicePointSloid);
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
+    toiletVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when
-    toiletService.createToilet(toiletVersion, sharedServicePointVersionModel);
-
+    toiletService.createToilet(toiletVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
     //then
     List<ToiletVersion> toiletVersions = toiletRepository.findByParentServicePointSloid(
         toiletVersion.getParentServicePointSloid());
     assertThat(toiletVersions).hasSize(1);
     assertThat(toiletVersions.get(0).getParentServicePointSloid()).isEqualTo(toiletVersion.getParentServicePointSloid());
     List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
-        parentServicePointSloid);
+            PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions).hasSize(1);
-    assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(parentServicePointSloid);
-    AbstractComparableAssert<?, ReferencePointElementType> equalTo = assertThat(
-        relationVersions.get(0).getReferencePointElementType()).isEqualTo(ReferencePointElementType.TOILET);
+    assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
+    assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(ReferencePointElementType.TOILET);
   }
 
 }

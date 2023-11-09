@@ -30,10 +30,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 class ParkingLotVersioningTest {
 
+  private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
+  private static final SharedServicePointVersionModel SHARED_SERVICE_POINT_VERSION_MODEL =
+          new SharedServicePointVersionModel(PARENT_SERVICE_POINT_SLOID,
+                  Collections.singleton("sboid"),
+                  Collections.singleton(""));
+
   private final ReferencePointRepository referencePointRepository;
-
   private final StopPointRepository stopPointRepository;
-
   private final ParkingLotService parkingLotService;
   private final ParkingLotRepository parkingLotRepository;
   private final RelationService relationService;
@@ -61,22 +65,21 @@ class ParkingLotVersioningTest {
   @Test
   void scenario1a() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
     ParkingLotVersion version1 = ParkingLotTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     parkingLotRepository.saveAndFlush(version1);
     ParkingLotVersion version2 = ParkingLotTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     parkingLotRepository.saveAndFlush(version2);
 
     ParkingLotVersion editedVersion = ParkingLotTestData.builderVersion2().build();
-    editedVersion.setParentServicePointSloid(parentServicePointSloid);
+    editedVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersion.setDesignation("hop yb!");
     editedVersion.setAdditionalInformation("No Info");
     editedVersion.setPlacesAvailable(BooleanOptionalAttributeType.NO);
@@ -86,10 +89,8 @@ class ParkingLotVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
-
     //when
-    parkingLotService.updateParkingLotVersion(version2, editedVersion, sharedServicePointVersionModel);
+    parkingLotService.updateParkingLotVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
 
     //then
     List<ParkingLotVersion> result = parkingLotRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
@@ -106,8 +107,8 @@ class ParkingLotVersioningTest {
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.id)
         .isEqualTo(editedVersion);
-
   }
+
   /**
    * Szenario 2: Update innerhalb existierender Version
    * NEU:                       |___________|
@@ -120,25 +121,24 @@ class ParkingLotVersioningTest {
   @Test
   void scenario2() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
     ParkingLotVersion version1 = ParkingLotTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     parkingLotRepository.saveAndFlush(version1);
     ParkingLotVersion version2 = ParkingLotTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     parkingLotRepository.saveAndFlush(version2);
     ParkingLotVersion version3 = ParkingLotTestData.builderVersion3().build();
-    version3.setParentServicePointSloid(parentServicePointSloid);
+    version3.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     parkingLotRepository.saveAndFlush(version3);
 
     ParkingLotVersion editedVersion = ParkingLotTestData.builderVersion2().build();
-    editedVersion.setParentServicePointSloid(parentServicePointSloid);
+    editedVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersion.setValidFrom(LocalDate.of(2001, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2002, 6, 1));
     editedVersion.setDesignation("hop yb!");
@@ -149,9 +149,8 @@ class ParkingLotVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
-
-    parkingLotService.updateParkingLotVersion(version2, editedVersion, sharedServicePointVersionModel);
+    //when
+    parkingLotService.updateParkingLotVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
 
     //then
     List<ParkingLotVersion> result = parkingLotRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
@@ -185,9 +184,8 @@ class ParkingLotVersioningTest {
         .isEqualTo(version3);
 
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
-        parentServicePointSloid);
+            PARENT_SERVICE_POINT_SLOID);
     assertThat(relations).isEmpty();
-
   }
 
   /**
@@ -201,32 +199,30 @@ class ParkingLotVersioningTest {
    */
   @Test
   void scenario8a() {
-    String parentServicePointSloid = "ch:1:sloid:70000";
+    //given
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
     ParkingLotVersion version1 = ParkingLotTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     parkingLotRepository.saveAndFlush(version1);
     ParkingLotVersion version2 = ParkingLotTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     parkingLotRepository.saveAndFlush(version2);
 
     ParkingLotVersion editedVersion = ParkingLotTestData.builderVersion2().build();
-    editedVersion.setParentServicePointSloid(parentServicePointSloid);
+    editedVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersion.setValidTo(LocalDate.of(2001, 12, 31));
     editedVersion.setCreationDate(version2.getCreationDate());
     editedVersion.setEditionDate(version2.getEditionDate());
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
-
     //when
-    parkingLotService.updateParkingLotVersion(version2, editedVersion, sharedServicePointVersionModel);
+    parkingLotService.updateParkingLotVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
 
     //then
     List<ParkingLotVersion> result = parkingLotRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
