@@ -5,6 +5,7 @@ import { VersionsHandlingService } from '../../../core/versioning/versions-handl
 import { DateRange } from '../../../core/versioning/date-range';
 import { MapService } from '../map/map.service';
 import { Subscription } from 'rxjs';
+import { TrafficPointMapService } from '../map/traffic-point-map.service';
 
 export const TABS = [
   {
@@ -43,24 +44,33 @@ export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
 
   private servicePointSubscription?: Subscription;
 
-  constructor(private route: ActivatedRoute, private mapService: MapService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private mapService: MapService,
+    private trafficPointMapService: TrafficPointMapService,
+  ) {}
 
   ngOnInit() {
     this.servicePointSubscription = this.route.data.subscribe((next) => {
       this.servicePointVersions = next.servicePoint;
       this.initVersioning();
+
+      this.trafficPointMapService.displayTrafficPointsOnMap(
+        this.servicePointVersions[0].number.number,
+      );
     });
   }
 
   ngOnDestroy() {
     this.mapService.deselectServicePoint();
+    this.trafficPointMapService.clearDisplayedTrafficPoints();
     this.servicePointSubscription?.unsubscribe();
   }
 
   private initVersioning() {
     this.maxValidity = VersionsHandlingService.getMaxValidity(this.servicePointVersions);
     this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
-      this.servicePointVersions
+      this.servicePointVersions,
     );
   }
 }

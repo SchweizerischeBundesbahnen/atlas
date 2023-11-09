@@ -5,7 +5,6 @@ import { ActivatedRoute } from '@angular/router';
 import { AppTestingModule } from '../../../app.testing.module';
 import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
 import { BehaviorSubject, of, Subject } from 'rxjs';
-import { AuthService } from '../../../core/auth/auth.service';
 import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 import { SplitServicePointNumberPipe } from '../search-service-point/split-service-point-number.pipe';
@@ -22,10 +21,18 @@ import { DecimalNumberPipe } from '../../../core/pipe/decimal-number.pipe';
 import { AtlasSlideToggleComponent } from '../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
 import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
 import { RemoveCharsDirective } from '../../../core/form-components/text-field/remove-chars.directive';
+import { TrafficPointMapService } from '../map/traffic-point-map.service';
 import { CoordinatePairWGS84, MapService } from '../map/map.service';
 import { CoordinateTransformationService } from '../geography/coordinate-transformation.service';
+import { AuthService } from '../../../core/auth/auth.service';
 
 const authService: Partial<AuthService> = {};
+const trafficPointMapService = jasmine.createSpyObj<TrafficPointMapService>([
+  'displayTrafficPointsOnMap',
+  'clearDisplayedTrafficPoints',
+  'displayCurrentTrafficPoint',
+  'clearCurrentTrafficPoint',
+]);
 
 describe('TrafficPointElementsDetailComponent', () => {
   let component: TrafficPointElementsDetailComponent;
@@ -68,6 +75,7 @@ describe('TrafficPointElementsDetailComponent', () => {
       imports: [AppTestingModule],
       providers: [
         { provide: AuthService, useValue: authService },
+        { provide: TrafficPointMapService, useValue: trafficPointMapService },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: MapService, useValue: mapService },
         { provide: CoordinateTransformationService, useValue: coordinateTransformationService },
