@@ -31,6 +31,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 class PlatformVersioningTest {
 
+  private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
+  private static final SharedServicePointVersionModel SHARED_SERVICE_POINT_VERSION_MODEL =
+          new SharedServicePointVersionModel(PARENT_SERVICE_POINT_SLOID,
+                  Collections.singleton("sboid"),
+                  Collections.singleton(""));
+
   private final PlatformRepository platformRepository;
   private final PlatformService platformService;
   private final StopPointRepository stopPointRepository;
@@ -55,19 +61,18 @@ class PlatformVersioningTest {
   @Test
   void scenario1a() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:7000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     PlatformVersion version1 = PlatformTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     PlatformVersion version2 = PlatformTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     PlatformVersion savedVersion1 = platformRepository.saveAndFlush(version1);
     PlatformVersion savedVersion2 = platformRepository.saveAndFlush(version2);
 
     PlatformVersion editedVersion = PlatformTestData.builderVersion2().build();
-    editedVersion.setParentServicePointSloid(parentServicePointSloid);
+    editedVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersion.setBoardingDevice(BoardingDeviceAttributeType.NO);
     editedVersion.setAdviceAccessInfo("No no Access Information Advice");
     editedVersion.setContrastingAreas(BooleanOptionalAttributeType.NO);
@@ -91,10 +96,8 @@ class PlatformVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    platformService.updatePlatformVersion(version2,editedVersion, sharedServicePointVersionModel);
+    platformService.updatePlatformVersion(version2,editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
 
     //then
     List<PlatformVersion> result = platformRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
@@ -111,7 +114,6 @@ class PlatformVersioningTest {
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.id)
         .isEqualTo(editedVersion);
-
   }
 
   /**
@@ -126,22 +128,21 @@ class PlatformVersioningTest {
   @Test
   void scenario2a() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:7000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     PlatformVersion version1 = PlatformTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     PlatformVersion version2 = PlatformTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     PlatformVersion version3 = PlatformTestData.builderVersion3().build();
-    version3.setParentServicePointSloid(parentServicePointSloid);
+    version3.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     PlatformVersion savedVersion1 = platformRepository.saveAndFlush(version1);
     PlatformVersion savedVersion2 = platformRepository.saveAndFlush(version2);
     PlatformVersion savedVersion3 = platformRepository.saveAndFlush(version3);
 
     PlatformVersion editedVersion = PlatformTestData.builderVersion2().build();
-    editedVersion.setParentServicePointSloid(parentServicePointSloid);
+    editedVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersion.setAdditionalInformation("additionalInfo");
     editedVersion.setValidFrom(LocalDate.of(2001, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2002, 6, 1));
@@ -150,10 +151,8 @@ class PlatformVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
-
     //when
-    platformService.updatePlatformVersion(version2, editedVersion, sharedServicePointVersionModel);
+    platformService.updatePlatformVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
     //then
     List<PlatformVersion> result = platformRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
     assertThat(result).isNotNull().hasSize(5);
@@ -184,7 +183,6 @@ class PlatformVersioningTest {
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
         .isEqualTo(savedVersion3);
-
   }
 
   /**
@@ -199,30 +197,26 @@ class PlatformVersioningTest {
   @Test
   void scenario8a() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:7000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     PlatformVersion version1 = PlatformTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     PlatformVersion version2 = PlatformTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     PlatformVersion savedVersion1 = platformRepository.saveAndFlush(version1);
     PlatformVersion savedVersion2 = platformRepository.saveAndFlush(version2);
 
     PlatformVersion editedVersion = PlatformTestData.builderVersion2().build();
-    editedVersion.setParentServicePointSloid(parentServicePointSloid);
+    editedVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersion.setValidTo(LocalDate.of(2001, 12, 31));
     editedVersion.setCreationDate(version2.getCreationDate());
     editedVersion.setEditionDate(version2.getEditionDate());
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
-
-
     //when
-    platformService.updatePlatformVersion(version2, editedVersion, sharedServicePointVersionModel);
+    platformService.updatePlatformVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
     //then
     List<PlatformVersion> result = platformRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
     assertThat(result).isNotNull().hasSize(2);
@@ -239,7 +233,6 @@ class PlatformVersioningTest {
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.validTo)
         .isEqualTo(savedVersion2);
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2001, 12, 31));
-
   }
 
 }

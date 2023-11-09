@@ -30,14 +30,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 class ToiletVersioningTest {
 
-  private final ReferencePointRepository referencePointRepository;
+  private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
+  private static final SharedServicePointVersionModel SHARED_SERVICE_POINT_VERSION_MODEL =
+          new SharedServicePointVersionModel(PARENT_SERVICE_POINT_SLOID,
+                  Collections.singleton("sboid"),
+                  Collections.singleton(""));
 
+  private final ReferencePointRepository referencePointRepository;
   private final StopPointRepository stopPointRepository;
   private final ToiletRepository toiletRepository;
-
   private final ToiletService toiletService;
   private final RelationService relationService;
-
 
   @Autowired
   ToiletVersioningTest(ReferencePointRepository referencePointRepository, StopPointRepository stopPointRepository,
@@ -61,24 +64,23 @@ class ToiletVersioningTest {
   @Test
   void scenario1a() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
     ToiletVersion version1 = ToiletTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     toiletRepository.saveAndFlush(version1);
     ToiletVersion version2 = ToiletTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     toiletRepository.saveAndFlush(version2);
 
     ToiletVersion editedVersion = ToiletTestData.builderVersion2().build();
     editedVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567));
-    editedVersion.setParentServicePointSloid(parentServicePointSloid);
+    editedVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersion.setDesignation("My designation");
     editedVersion.setAdditionalInformation("info");
     editedVersion.setCreationDate(version2.getCreationDate());
@@ -86,10 +88,8 @@ class ToiletVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    toiletService.updateToiletVersion(version2, editedVersion, sharedServicePointVersionModel);
+    toiletService.updateToiletVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
 
     //then
     List<ToiletVersion> result = toiletRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
@@ -106,7 +106,6 @@ class ToiletVersioningTest {
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.id)
         .isEqualTo(editedVersion);
-
   }
 
   /**
@@ -150,9 +149,8 @@ class ToiletVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    toiletService.updateToiletVersion(version2, editedVersion, sharedServicePointVersionModel);
+    toiletService.updateToiletVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
 
     //then
     List<ToiletVersion> result = toiletRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
@@ -182,7 +180,6 @@ class ToiletVersioningTest {
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
         parentServicePointSloid);
     assertThat(relations).isEmpty();
-
   }
 
 }
