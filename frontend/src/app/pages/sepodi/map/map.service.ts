@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import maplibregl, {
   GeoJSONSource,
   LngLat,
@@ -9,12 +9,20 @@ import maplibregl, {
   Popup,
   ResourceType,
 } from 'maplibre-gl';
-import {MAP_SOURCE_NAME, MAP_STYLE_SPEC, MAP_ZOOM_DETAILS} from './map-style';
-import {GeoJsonProperties, Point} from 'geojson';
-import {MAP_STYLES, MapOptionsService, MapStyle} from './map-options.service';
-import {BehaviorSubject, Subject} from 'rxjs';
-import {CoordinatePair, SpatialReference} from '../../../api';
-import {Pages} from '../../pages';
+import {
+  MAP_SOURCE_NAME,
+  MAP_STYLE_SPEC,
+  MAP_TRAFFIC_POINT_LAYER_NAME,
+  MAP_ZOOM_DETAILS,
+} from './map-style';
+import { GeoJsonProperties, Point } from 'geojson';
+import { MAP_STYLES, MapOptionsService, MapStyle } from './map-options.service';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { CoordinatePair, SpatialReference } from '../../../api';
+import { Pages } from '../../pages';
+import { MapIconsService } from './map-icons.service';
+import { Router } from '@angular/router';
+import { TrafficPointMapService } from './traffic-point-map.service';
 
 export const mapZoomLocalStorageKey = 'map-zoom';
 export const mapLocationLocalStorageKey = 'map-location';
@@ -45,7 +53,10 @@ export class MapService {
   });
   private _keepPopup = false;
 
-  constructor(private mapOptionsService: MapOptionsService) {}
+  constructor(
+    private mapOptionsService: MapOptionsService,
+    private router: Router,
+  ) {}
 
   initMap(mapContainer: HTMLElement) {
     this.map = new Map({
@@ -56,6 +67,7 @@ export class MapService {
         this.mapOptionsService.authoriseRequest(url, resourceType),
       minZoom: 5,
     });
+    MapIconsService.addTrafficPointIconToMap(this.map);
     this.initMapEvents();
     this.map.resize();
     this.map.dragRotate.disable();
@@ -132,16 +144,31 @@ export class MapService {
       });
       this.map.on('mousemove', MAP_SOURCE_NAME, (e) => {
         if (this.showDetails()) {
-          this.showPopup(e);
+          this.showServicePointPopup(e);
         }
       });
+
+      this.map.on('mouseenter', MAP_TRAFFIC_POINT_LAYER_NAME, () => {
+        if (this.showDetails() && !this.coordinateSelectionMode) {
+          this.map.getCanvas().style.cursor = 'pointer';
+        }
+      });
+      this.map.on('mouseleave', MAP_TRAFFIC_POINT_LAYER_NAME, () => {
+        this.map.getCanvas().style.cursor = '';
+      });
+      this.map.on('mousemove', MAP_TRAFFIC_POINT_LAYER_NAME, (e) => {
+        if (this.showDetails()) {
+          this.showTrafficPointPopup(e);
+        }
+      });
+      this.map.on('click', MAP_TRAFFIC_POINT_LAYER_NAME, (e) => this.onTrafficPointClicked(e));
     });
     this.map.once('load', () => {
       this.mapInitialized.next(true);
     });
   }
 
-  private showDetails(): boolean {
+  showDetails(): boolean {
     return this.map.getZoom() >= MAP_ZOOM_DETAILS;
   }
 
@@ -152,6 +179,24 @@ export class MapService {
     if (e.features.length == 1) {
       this.popup.remove();
       this.selectedElement.next(e.features[0].properties);
+    } else {
+      this.keepPopup = true;
+    }
+  }
+
+  onTrafficPointClicked(e: MapMouseEvent & { features?: GeoJSON.Feature[] }) {
+    if (!this.showDetails() || !e.features || this.coordinateSelectionMode) {
+      return;
+    }
+    if (e.features.length == 1) {
+      this.popup.remove();
+      this.router
+        .navigate([
+          Pages.SEPODI.path,
+          Pages.TRAFFIC_POINT_ELEMENTS.path,
+          e.features[0].properties!.sloid,
+        ])
+        .then();
     } else {
       this.keepPopup = true;
     }
@@ -190,15 +235,23 @@ export class MapService {
     }
   }
 
-  showPopup(event: MapMouseEvent & { features?: MapGeoJSONFeature[] }) {
+  showServicePointPopup(event: MapMouseEvent & { features?: MapGeoJSONFeature[] }) {
+    this.showPopup(event, this.buildServicePointPopupInformation);
+  }
+
+  showTrafficPointPopup(event: MapMouseEvent & { features?: MapGeoJSONFeature[] }) {
+    this.showPopup(event, TrafficPointMapService.buildTrafficPointPopupInformation);
+  }
+
+  private showPopup(
+    event: MapMouseEvent & { features?: MapGeoJSONFeature[] },
+    htmlContentBuilder: (features: MapGeoJSONFeature[]) => string,
+  ) {
     if (!event.features || this.keepPopup || this.coordinateSelectionMode) {
       return;
     }
     const coordinates = (event.features[0].geometry as Point).coordinates.slice() as LngLatLike;
-    this.popup
-      .setLngLat(coordinates)
-      .setHTML(this.buildServicePointPopupInformation(event.features))
-      .addTo(this.map);
+    this.popup.setLngLat(coordinates).setHTML(htmlContentBuilder(event.features)).addTo(this.map);
     this.popup.on('close', () => {
       this.keepPopup = false;
     });

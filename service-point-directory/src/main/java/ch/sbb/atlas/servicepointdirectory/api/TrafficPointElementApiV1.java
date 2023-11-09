@@ -56,6 +56,9 @@ public interface TrafficPointElementApiV1 {
       @Parameter(hidden = true) @PageableDefault(sort = {Fields.sloid,
           Fields.validFrom}, direction = Direction.ASC, size = 500) Pageable pageable);
 
+  @GetMapping("actual-date/{servicePointNumber}")
+  List<ReadTrafficPointElementVersionModel> getTrafficPointsOfServicePointValidToday(@PathVariable Integer servicePointNumber);
+
   @GetMapping("versions/{id}")
   ReadTrafficPointElementVersionModel getTrafficPointElementVersion(@PathVariable Long id);
 

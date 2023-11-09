@@ -98,6 +98,7 @@ public class TrafficPointElementService {
 
     editedVersion.setServicePointNumber(currentVersion.getServicePointNumber());
     editedVersion.setSloid(currentVersion.getSloid());
+    editedVersion.setTrafficPointElementType(currentVersion.getTrafficPointElementType());
 
     List<TrafficPointElementVersion> dbVersions = findBySloidOrderByValidFrom(currentVersion.getSloid());
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
@@ -177,4 +178,13 @@ public class TrafficPointElementService {
     return validToday.orElse(validInFuture.orElse(versions.get(versions.size() - 1)));
   }
 
+  public List<TrafficPointElementVersion> getTrafficPointElementsByServicePointNumber(Integer servicePointNumber,
+      LocalDate validOn) {
+    return trafficPointElementVersionRepository.findAll(TrafficPointElementSearchRestrictions.builder()
+        .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
+            .servicePointNumbers(List.of(String.valueOf(servicePointNumber)))
+            .validOn(validOn)
+            .build())
+        .build().getSpecification());
+  }
 }
