@@ -24,13 +24,10 @@ public abstract class RecordableVariantsValidationService<T extends VariantsRedu
     List<Field> notForReducedFields = Arrays.stream(version.getClass().getDeclaredFields())
         .filter(field -> field.isAnnotationPresent(NotForReducedVariant.class)).toList();
     if (isReduced) {
-      notForReducedFields.forEach(field -> {
-        checkReducedVariantDoesNotProvideCompleteProperties(version, errorConstraintMap, field);
-      });
+      notForReducedFields.forEach(
+          field -> checkReducedVariantDoesNotProvideCompleteProperties(version, errorConstraintMap, field));
     } else {
-      notForReducedFields.forEach(field -> {
-        checkCompleteVariantProvideAllMandatoryProperties(version, errorConstraintMap, field);
-      });
+      notForReducedFields.forEach(field -> checkCompleteVariantProvideAllMandatoryProperties(version, errorConstraintMap, field));
     }
 
     if (!errorConstraintMap.isEmpty()) {
@@ -52,7 +49,8 @@ public abstract class RecordableVariantsValidationService<T extends VariantsRedu
     }
   }
 
-  private void checkReducedVariantDoesNotProvideCompleteProperties(T version, Map<String, String> errorConstraintMap, Field field) {
+  private void checkReducedVariantDoesNotProvideCompleteProperties(T version, Map<String, String> errorConstraintMap,
+      Field field) {
     try {
       field.setAccessible(true);
       Object value = field.get(version);
