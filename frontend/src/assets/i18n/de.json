@@ -969,6 +969,8 @@
     },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Ladestellen",
+      "LOADING_POINT": "Ladestelle",
+      "FREIGHT_SERVICE_POINT_NAME": "Bedienpunktname",
       "NEW": "Neue Ladestelle erfassen",
       "NUMBER": "Nummer",
       "DESIGNATION": "Bezeichnung",
