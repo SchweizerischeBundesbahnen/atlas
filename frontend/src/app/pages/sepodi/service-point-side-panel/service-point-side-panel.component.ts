@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ReadServicePointVersion, TrafficPointElementsService } from '../../../api';
+import { ReadServicePointVersion } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
 import { MapService } from '../map/map.service';
 import { Subscription } from 'rxjs';
-import { DisplayableTrafficPoint } from './traffic-point-elements/displayable-traffic-point';
+import { TrafficPointMapService } from '../map/traffic-point-map.service';
 
 export const TABS = [
   {
@@ -47,7 +47,7 @@ export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private mapService: MapService,
-    private trafficPointElementsService: TrafficPointElementsService,
+    private trafficPointMapService: TrafficPointMapService,
   ) {}
 
   ngOnInit() {
@@ -55,35 +55,15 @@ export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
       this.servicePointVersions = next.servicePoint;
       this.initVersioning();
 
-      this.displayTrafficPointsOnMap();
-    });
-  }
-
-  private displayTrafficPointsOnMap() {
-    this.mapService.mapInitialized.subscribe((initialized) => {
-      if (initialized) {
-        this.trafficPointElementsService
-          .getTrafficPointsOfServicePointValidToday(this.servicePointVersions[0].number.number)
-          .subscribe((points) => {
-            const trafficPoints: DisplayableTrafficPoint[] = points
-              .filter((point) => !!point.trafficPointElementGeolocation?.wgs84)
-              .map((point) => {
-                return {
-                  sloid: point.sloid!,
-                  designation: point.designation!,
-                  type: point.trafficPointElementType,
-                  coordinates: point.trafficPointElementGeolocation!.wgs84!,
-                };
-              });
-            this.mapService.setDisplayedTrafficPoints(trafficPoints);
-          });
-      }
+      this.trafficPointMapService.displayTrafficPointsOnMap(
+        this.servicePointVersions[0].number.number,
+      );
     });
   }
 
   ngOnDestroy() {
     this.mapService.deselectServicePoint();
-    this.mapService.clearDisplayedTrafficPoints();
+    this.trafficPointMapService.clearDisplayedTrafficPoints();
     this.servicePointSubscription?.unsubscribe();
   }
 
