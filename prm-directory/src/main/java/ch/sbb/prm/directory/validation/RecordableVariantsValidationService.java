@@ -51,7 +51,7 @@ public abstract class RecordableVariantsValidationService<T extends VariantsRedu
     }
 
     if (!errorConstraintMap.isEmpty()) {
-      throw new RecordingVariantException(errorConstraintMap, getObjectName());
+      throw new RecordingVariantException(errorConstraintMap, getObjectName(), version.getSloid(), isReduced);
     }
 
   }
