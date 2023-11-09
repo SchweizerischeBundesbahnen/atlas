@@ -86,7 +86,7 @@ export class TrafficPointMapService {
     this.setDisplayedTrafficPoints([]);
   }
 
-  setCurrentTrafficPoint(coordinates?: CoordinatePair) {
+  displayCurrentTrafficPoint(coordinates?: CoordinatePair) {
     this.mapService.mapInitialized.subscribe((initialized) => {
       if (initialized) {
         const source = this.mapService.map.getSource('current_traffic_point') as GeoJSONSource;
@@ -104,6 +104,6 @@ export class TrafficPointMapService {
   }
 
   clearCurrentTrafficPoint() {
-    this.setCurrentTrafficPoint();
+    this.displayCurrentTrafficPoint();
   }
 }

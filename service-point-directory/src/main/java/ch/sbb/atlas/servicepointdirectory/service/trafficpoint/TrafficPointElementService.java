@@ -98,6 +98,7 @@ public class TrafficPointElementService {
 
     editedVersion.setServicePointNumber(currentVersion.getServicePointNumber());
     editedVersion.setSloid(currentVersion.getSloid());
+    editedVersion.setTrafficPointElementType(currentVersion.getTrafficPointElementType());
 
     List<TrafficPointElementVersion> dbVersions = findBySloidOrderByValidFrom(currentVersion.getSloid());
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
