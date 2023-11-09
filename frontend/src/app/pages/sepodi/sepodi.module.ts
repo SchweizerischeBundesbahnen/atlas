@@ -6,7 +6,6 @@ import { MapComponent } from './map/map.component';
 import { ServicePointSidePanelComponent } from './service-point-side-panel/service-point-side-panel.component';
 import { CoreModule } from '../../core/module/core.module';
 import { ServicePointDetailComponent } from './service-point-side-panel/service-point/service-point-detail.component';
-import { AreasDetailComponent } from './service-point-side-panel/areas/areas-detail.component';
 import { TrafficPointElementsTableComponent } from './service-point-side-panel/traffic-point-elements/traffic-point-elements-table.component';
 import { LoadingPointsDetailComponent } from './service-point-side-panel/loading-points/loading-points-detail.component';
 import { FormModule } from '../../core/module/form.module';
@@ -27,7 +26,6 @@ import { TrafficPointElementsDetailComponent } from './traffic-point-elements/tr
     ServicePointSidePanelComponent,
     ServicePointDetailComponent,
     KilometerMasterSearchComponent,
-    AreasDetailComponent,
     TrafficPointElementsTableComponent,
     LoadingPointsDetailComponent,
     MapComponent,
