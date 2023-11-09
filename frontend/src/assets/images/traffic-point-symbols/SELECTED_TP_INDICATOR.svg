@@ -1,0 +1,6 @@
+<svg width="120" height="120" xmlns="http://www.w3.org/2000/svg">
+  <g>
+    <rect fill-opacity="0" stroke-width="15" stroke="hotpink" x="25" y="25" width="70" height="70"
+          transform="rotate(45, 60, 60)"/>
+  </g>
+</svg>
