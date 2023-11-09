@@ -10,7 +10,6 @@ import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,6 +17,8 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.StringUtils;
+
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -53,24 +54,13 @@ public class UpdateServicePointVersionModel extends ServicePointVersionModel {
   }
 
   @JsonIgnore
-  public boolean isOperatingPointWithTimetable() {
-    return isOperatingPoint() && getOperatingPointType() == null;
+  public boolean isPureOperatingPoint() {
+    return getOperatingPointTechnicalTimetableType() != null;
   }
 
   @JsonIgnore
-  @AssertTrue(message = "If OperatingPointRouteNetwork is true, then operatingPointKilometerMaster will be set to the same "
-      + "value as numberWithoutCheckDigit and it should not be sent in the request")
-  public boolean isKilometerMasterNotGivenIfOperatingPointRouteNetworkTrue() {
-    return !isOperatingPointRouteNetwork() || operatingPointKilometerMasterNumber == null;
-  }
-
-  public Integer setKilomMasterNumberDependingOnRouteNetworkValue() {
-    if (!isOperatingPointRouteNetwork()) {
-      return operatingPointKilometerMasterNumber;
-    } else if (numberShort != null) {
-      return ServicePointNumber.of(country, numberShort).getNumber();
-    }
-    return null;
+  public boolean isOperatingPointWithTimetable() {
+    return isOperatingPoint() && getOperatingPointType() == null;
   }
 
   @JsonIgnore
@@ -79,7 +69,7 @@ public class UpdateServicePointVersionModel extends ServicePointVersionModel {
     if (numberShort == null) {
       return true;
     }
-    return !(getCountry() == Country.SWITZERLAND && super.isFreightServicePoint() && !getValidFrom().isBefore(
+    return !(getCountry() == Country.SWITZERLAND && isFreightServicePoint() && !getValidFrom().isBefore(
         LocalDate.now()))
         || StringUtils.isNotBlank(super.getSortCodeOfDestinationStation());
   }
@@ -98,6 +88,29 @@ public class UpdateServicePointVersionModel extends ServicePointVersionModel {
   @JsonIgnore
   public boolean shouldGenerateServicePointNumber() {
     return ServicePointConstants.AUTOMATIC_SERVICE_POINT_ID.contains(country);
+  }
+
+  @JsonIgnore
+  @AssertTrue(message = "If OperatingPointRouteNetwork is true, then operatingPointKilometerMaster will be set to the same "
+          + "value as numberWithoutCheckDigit and it should not be sent in the request")
+  public boolean isOperatingPointRouteNetworkTrueAndKilometerMasterNumberNull() {
+    return !isOperatingPointRouteNetwork() || operatingPointKilometerMasterNumber == null;
+  }
+
+  public Integer setKilometerMasterNumberDependingOnRouteNetworkValue() {
+    if (!isOperatingPointRouteNetwork()) {
+      return operatingPointKilometerMasterNumber;
+    } else if (numberShort != null) {
+      return ServicePointNumber.of(country, numberShort).getNumber();
+    }
+    return null;
+  }
+
+  @JsonIgnore
+  @AssertTrue(message = "OperatingPointRouteNetwork true is allowed only for StopPoint, ControlPoint and OperatingPoint." +
+          " OperatingPointKilometerMasterNumber can be set only for StopPoint, ControlPoint and OperatingPoint.")
+  public boolean isRouteNetworkOrKilometerMasterNumberAllowed() {
+    return !isOperatingPointRouteNetwork() && operatingPointKilometerMasterNumber == null || (isStopPoint() || isPureOperatingPoint() || isFreightServicePoint());
   }
 
 }
