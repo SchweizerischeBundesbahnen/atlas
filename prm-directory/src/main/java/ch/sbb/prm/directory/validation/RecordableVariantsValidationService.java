@@ -25,28 +25,11 @@ public abstract class RecordableVariantsValidationService<T extends VariantsRedu
         .filter(field -> field.isAnnotationPresent(NotForReducedVariant.class)).toList();
     if (isReduced) {
       notForReducedFields.forEach(field -> {
-        try {
-          field.setAccessible(true);
-          Object value = field.get(version);
-          if (value != null) {
-            errorConstraintMap.put(field.getName(), MUST_BE_NULL_ERROR_MSG);
-          }
-        } catch (IllegalAccessException e) {
-          throw new IllegalStateException(e);
-        }
+        checkReducedVariantDoesNotProvideCompleteProperties(version, errorConstraintMap, field);
       });
     } else {
       notForReducedFields.forEach(field -> {
-        try {
-          boolean nullable = field.getAnnotation(NotForReducedVariant.class).nullable();
-          field.setAccessible(true);
-          Object value = field.get(version);
-          if (!nullable && value == null) {
-            errorConstraintMap.put(field.getName(), MUST_NOT_BE_NULL_ERROR_MSG);
-          }
-        } catch (IllegalAccessException e) {
-          throw new IllegalStateException(e);
-        }
+        checkCompleteVariantProvideAllMandatoryProperties(version, errorConstraintMap, field);
       });
     }
 
@@ -54,6 +37,31 @@ public abstract class RecordableVariantsValidationService<T extends VariantsRedu
       throw new RecordingVariantException(errorConstraintMap, getObjectName(), version.getSloid(), isReduced);
     }
 
+  }
+
+  private void checkCompleteVariantProvideAllMandatoryProperties(T version, Map<String, String> errorConstraintMap, Field field) {
+    try {
+      boolean nullable = field.getAnnotation(NotForReducedVariant.class).nullable();
+      field.setAccessible(true);
+      Object value = field.get(version);
+      if (!nullable && value == null) {
+        errorConstraintMap.put(field.getName(), MUST_NOT_BE_NULL_ERROR_MSG);
+      }
+    } catch (IllegalAccessException e) {
+      throw new IllegalStateException(e);
+    }
+  }
+
+  private void checkReducedVariantDoesNotProvideCompleteProperties(T version, Map<String, String> errorConstraintMap, Field field) {
+    try {
+      field.setAccessible(true);
+      Object value = field.get(version);
+      if (value != null) {
+        errorConstraintMap.put(field.getName(), MUST_BE_NULL_ERROR_MSG);
+      }
+    } catch (IllegalAccessException e) {
+      throw new IllegalStateException(e);
+    }
   }
 
 }

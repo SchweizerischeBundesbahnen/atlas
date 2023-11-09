@@ -69,19 +69,19 @@ public class StopPointVersionRowMapper extends BaseRowMapper implements RowMappe
     return builder.build();
   }
 
-  private String mapBooleanObject(ResultSet rs) throws SQLException {
-    if (rs.getObject("interoperable") != null) {
-      return String.valueOf(rs.getBoolean("interoperable"));
-    }
-    return StringUtils.EMPTY;
-  }
-
   void setMeansOfTransport(StopPointVersionBuilder<?, ?> stopPointVersionBuilder, String listOfMeansOfTransport) {
     if (listOfMeansOfTransport != null) {
       Set<MeanOfTransport> meansOfTransport = RowMapperUtil.stringToSet(listOfMeansOfTransport, MeanOfTransport::valueOf);
       stopPointVersionBuilder.meansOfTransport(meansOfTransport);
       stopPointVersionBuilder.meansOfTransportPipeList(RowMapperUtil.toPipedString(meansOfTransport));
     }
+  }
+
+  private String mapBooleanObject(ResultSet rs) throws SQLException {
+    if (rs.getObject("interoperable") != null) {
+      return String.valueOf(rs.getBoolean("interoperable"));
+    }
+    return StringUtils.EMPTY;
   }
 
 }
