@@ -6,6 +6,8 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
@@ -22,7 +24,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
@@ -1242,5 +1246,45 @@ import org.springframework.transaction.annotation.Transactional;
     assertThat(result.getContent()).doesNotContain(loadingPointVersion1);
     assertThat(result.getContent()).doesNotContain(loadingPointVersion3);
   }
+
+ @Test
+ void shouldLoadOverviewTableCorrectly() {
+  // given
+  ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
+  int loadingPointNumber1 = 77777;
+  LoadingPointVersion loadingPointVersion1 = LoadingPointVersion.builder()
+      .servicePointNumber(servicePointVersion.getNumber())
+      .validFrom(LocalDate.of(2014, 12, 14))
+      .validTo(LocalDate.of(2021, 3, 31))
+      .connectionPoint(true)
+      .designationLong("DesignLong")
+      .designation("design 1")
+      .number(loadingPointNumber1)
+      .build();
+  loadingPointVersionRepository.saveAndFlush(loadingPointVersion1);
+  LoadingPointVersion loadingPointVersion2 = LoadingPointVersion.builder()
+      .servicePointNumber(servicePointVersion.getNumber())
+      .validFrom(LocalDate.of(2021, 4, 1))
+      .validTo(LocalDate.of(2099, 3, 31))
+      .connectionPoint(true)
+      .designationLong("DesignLong")
+      .designation("design 2")
+      .number(loadingPointNumber1)
+      .build();
+  loadingPointVersionRepository.saveAndFlush(loadingPointVersion2);
+
+  // when
+  Container<ReadLoadingPointVersionModel> result =
+      loadingPointService.getOverview(servicePointVersion.getNumber().getNumber(),
+          PageRequest.of(0, 10, Sort.by("designation")));
+
+  // then
+  assertThat(result.getObjects()).hasSize(1);
+
+  ReadLoadingPointVersionModel first = result.getObjects().get(0);
+  assertThat(first.getDesignation()).isEqualTo("design 2");
+  assertThat(first.getValidFrom()).isEqualTo(LocalDate.of(2014, 12, 14));
+  assertThat(first.getValidTo()).isEqualTo(LocalDate.of(2099, 3, 31));
+ }
 
 }
