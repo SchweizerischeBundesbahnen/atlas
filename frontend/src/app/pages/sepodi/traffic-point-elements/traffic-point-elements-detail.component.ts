@@ -10,7 +10,6 @@ import {
 } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
-import { MapService } from '../map/map.service';
 import { catchError, EMPTY, Observable, of, Subject } from 'rxjs';
 import { Pages } from '../../pages';
 import { FormGroup } from '@angular/forms';
@@ -23,6 +22,7 @@ import { ValidationService } from '../../../core/validation/validation.service';
 import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { DateService } from '../../../core/date/date.service';
+import { TrafficPointMapService } from '../map/traffic-point-map.service';
 
 interface AreaOption {
   sloid: string | undefined;
@@ -54,14 +54,15 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
   servicePointNumber!: number;
   servicePoint: ReadServicePointVersion[] = [];
   servicePointBusinessOrganisations: string[] = [];
-  geographyActive = false;
   isTrafficPointArea = false;
+  geographyActive = true;
 
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private trafficPointMapService: TrafficPointMapService,
     private servicePointService: ServicePointsService,
     private trafficPointElementsService: TrafficPointElementsService,
     private dialogService: DialogService,
@@ -89,6 +90,8 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+    this.trafficPointMapService.clearDisplayedTrafficPoints();
+    this.trafficPointMapService.clearCurrentTrafficPoint();
   }
 
   private initTrafficPoint() {
@@ -116,6 +119,8 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
     if (!this.servicePointNumber) {
       this.router.navigate([Pages.SEPODI.path]).then();
     } else {
+      this.trafficPointMapService.displayTrafficPointsOnMap(this.servicePointNumber);
+
       this.servicePointService
         .getServicePointVersions(this.servicePointNumber)
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -183,6 +188,9 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
     if (!this.isNew) {
       this.form.disable();
     }
+    this.trafficPointMapService.displayCurrentTrafficPoint(
+      this.selectedVersion.trafficPointElementGeolocation?.wgs84,
+    );
   }
 
   toggleEdit() {
