@@ -4,7 +4,6 @@ import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.relation.CreateRelationVersionModel;
 import ch.sbb.atlas.api.prm.model.relation.ReadRelationVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.prm.directory.api.RelationApiV1;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.mapper.RelationVersionMapper;
@@ -52,9 +51,9 @@ public class RelationController implements RelationApiV1 {
   public List<ReadRelationVersionModel> updateRelation(Long id, CreateRelationVersionModel model) {
     RelationVersion relationVersionToUpdate =
         relationService.getRelationById(id).orElseThrow(() -> new IdNotFoundException(id));
-    SharedServicePointVersionModel sharedServicePointVersionModel = sharedServicePointService.findServicePoint(model.getParentServicePointSloid()).orElseThrow();
     RelationVersion editedVersion = RelationVersionMapper.toEntity(model);
-    relationService.updateRelationVersion(relationVersionToUpdate, editedVersion, sharedServicePointVersionModel);
+    relationService.updateRelationVersion(relationVersionToUpdate, editedVersion,
+            sharedServicePointService.getSharedServicePointVersionModel(model.getParentServicePointSloid()));
 
     return relationService.findAllByNumberOrderByValidFrom(relationVersionToUpdate.getNumber()).stream()
         .map(RelationVersionMapper::toModel).toList();

@@ -3,7 +3,6 @@ package ch.sbb.prm.directory.controller;
 import ch.sbb.atlas.api.prm.model.informationdesk.CreateInformationDeskVersionModel;
 import ch.sbb.atlas.api.prm.model.informationdesk.ReadInformationDeskVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.prm.directory.api.InformationDeskApiV1;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import ch.sbb.prm.directory.mapper.InformationDeskVersionMapper;
@@ -31,9 +30,9 @@ public class InformationDeskController implements InformationDeskApiV1 {
 
   @Override
   public ReadInformationDeskVersionModel createInformationDesk(CreateInformationDeskVersionModel model) {
-    SharedServicePointVersionModel sharedServicePointVersionModel = sharedServicePointService.findServicePoint(model.getParentServicePointSloid()).orElseThrow();
     InformationDeskVersion informationDeskVersion = informationDeskService.createInformationDesk(
-        InformationDeskVersionMapper.toEntity(model), sharedServicePointVersionModel);
+        InformationDeskVersionMapper.toEntity(model),
+            sharedServicePointService.getSharedServicePointVersionModel(model.getParentServicePointSloid()));
     return InformationDeskVersionMapper.toModel(informationDeskVersion);
   }
 
@@ -43,8 +42,8 @@ public class InformationDeskController implements InformationDeskApiV1 {
         informationDeskService.getInformationDeskVersionById(id).orElseThrow(() -> new IdNotFoundException(id));
 
     InformationDeskVersion editedVersion = InformationDeskVersionMapper.toEntity(model);
-    SharedServicePointVersionModel sharedServicePointVersionModel = sharedServicePointService.findServicePoint(model.getParentServicePointSloid()).orElseThrow();
-    informationDeskService.updateInformationDeskVersion(informationDeskVersion, editedVersion, sharedServicePointVersionModel);
+    informationDeskService.updateInformationDeskVersion(informationDeskVersion, editedVersion,
+            sharedServicePointService.getSharedServicePointVersionModel(model.getParentServicePointSloid()));
 
     return informationDeskService.findAllByNumberOrderByValidFrom(informationDeskVersion.getNumber()).stream()
         .map(InformationDeskVersionMapper::toModel).toList();

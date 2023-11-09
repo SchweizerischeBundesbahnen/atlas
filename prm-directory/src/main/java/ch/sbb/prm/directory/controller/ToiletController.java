@@ -3,7 +3,6 @@ package ch.sbb.prm.directory.controller;
 import ch.sbb.atlas.api.prm.model.toilet.CreateToiletVersionModel;
 import ch.sbb.atlas.api.prm.model.toilet.ReadToiletVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.prm.directory.api.ToiletApiV1;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.mapper.ToiletVersionMapper;
@@ -30,9 +29,9 @@ public class ToiletController implements ToiletApiV1 {
   }
 
   @Override
-  public ReadToiletVersionModel createToiletVersion(CreateToiletVersionModel toiletVersionModel) {
-    SharedServicePointVersionModel sharedServicePointVersionModel = sharedServicePointService.findServicePoint(toiletVersionModel.getParentServicePointSloid()).orElseThrow();
-    ToiletVersion toiletVersion = toiletService.createToilet(ToiletVersionMapper.toEntity(toiletVersionModel), sharedServicePointVersionModel);
+  public ReadToiletVersionModel createToiletVersion(CreateToiletVersionModel model) {
+    ToiletVersion toiletVersion = toiletService.createToilet(ToiletVersionMapper.toEntity(model),
+            sharedServicePointService.getSharedServicePointVersionModel(model.getParentServicePointSloid()));
     return ToiletVersionMapper.toModel(toiletVersion);
   }
 
@@ -40,9 +39,9 @@ public class ToiletController implements ToiletApiV1 {
   public List<ReadToiletVersionModel> updateToiletVersion(Long id, CreateToiletVersionModel model) {
     ToiletVersion toiletVersion =
         toiletService.getToiletVersionById(id).orElseThrow(() -> new IdNotFoundException(id));
-    SharedServicePointVersionModel sharedServicePointVersionModel = sharedServicePointService.findServicePoint(model.getParentServicePointSloid()).orElseThrow();
     ToiletVersion editedVersion = ToiletVersionMapper.toEntity(model);
-    toiletService.updateToiletVersion(toiletVersion, editedVersion, sharedServicePointVersionModel);
+    toiletService.updateToiletVersion(toiletVersion, editedVersion,
+            sharedServicePointService.getSharedServicePointVersionModel(model.getParentServicePointSloid()));
 
     return toiletService.findAllByNumberOrderByValidFrom(toiletVersion.getNumber()).stream()
         .map(ToiletVersionMapper::toModel).toList();

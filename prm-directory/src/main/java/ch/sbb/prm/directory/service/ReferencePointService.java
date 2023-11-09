@@ -85,10 +85,11 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
     return referencePointRepository.findAll();
   }
 
-  @PreAuthorize("@prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations"
-          + "(#sharedServicePointVersionModel, "
-          + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)")
-  public ReferencePointVersion createReferencePoint(ReferencePointVersion referencePointVersion, SharedServicePointVersionModel sharedServicePointVersionModel) {
+  @PreAuthorize("""
+      @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
+      (#sharedServicePointVersionModel, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+  public ReferencePointVersion createReferencePoint(ReferencePointVersion referencePointVersion,
+                                                    SharedServicePointVersionModel sharedServicePointVersionModel) {
     stopPointService.checkStopPointExists(referencePointVersion.getParentServicePointSloid());
     stopPointService.validateIsNotReduced(referencePointVersion.getParentServicePointSloid());
     searchAndUpdatePlatformRelation(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
@@ -99,9 +100,9 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
     return referencePointRepository.saveAndFlush(referencePointVersion);
   }
 
-  @PreAuthorize("@prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations"
-          + "(#sharedServicePointVersionModel, "
-          + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)")
+  @PreAuthorize("""
+      @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
+      (#sharedServicePointVersionModel, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
   public ReferencePointVersion updateReferencePointVersion(ReferencePointVersion currentVersion,
       ReferencePointVersion editedVersion, SharedServicePointVersionModel sharedServicePointVersionModel) {
     return updateVersion(currentVersion, editedVersion);
