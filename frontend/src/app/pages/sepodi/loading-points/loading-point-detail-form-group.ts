@@ -22,16 +22,13 @@ export class LoadingPointFormGroupBuilder {
         servicePointNumber: new FormControl(version?.servicePointNumber.number),
         designation: new FormControl(version?.designation, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          Validators.maxLength(40),
+          Validators.maxLength(12),
         ]),
         designationLong: new FormControl(version?.designationLong, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          Validators.maxLength(40),
+          Validators.maxLength(35),
         ]),
-        connectionPoint: new FormControl(version?.connectionPoint, [
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          Validators.maxLength(40),
-        ]),
+        connectionPoint: new FormControl(version?.connectionPoint),
         validFrom: new FormControl(version?.validFrom ? moment(version.validFrom) : null, [
           Validators.required,
         ]),
