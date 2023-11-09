@@ -1,6 +1,6 @@
 <div class="p-3 position-relative">
   <div class="font-bold-4xl detail-title mb-3">
-    {{ 'SEPODI.TRAFFIC_POINT_ELEMENTS.HEADER' | translate }}
+    {{ 'SEPODI.LOADING_POINTS.LOADING_POINT' | translate }}
     {{ isNew ? '' : selectedVersion.designation }}
   </div>
   <div class="font-xl mb-2" *ngIf="!isNew">
@@ -10,12 +10,12 @@
   </div>
   <div class="d-flex flex-row mb-3">
     <div class="d-flex flex-column me-5" *ngIf="!isNew">
-      <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.SLOID' | translate }}</div>
-      <div>{{ selectedVersion.sloid }}</div>
+      <div class="font-bold-base">{{ 'SEPODI.LOADING_POINTS.NUMBER' | translate }}</div>
+      <div>{{ selectedVersion.number }}</div>
     </div>
     <div class="d-flex flex-column">
       <div class="font-bold-base">
-        {{ 'SEPODI.TRAFFIC_POINT_ELEMENTS.SERVICE_POINT_NAME' | translate }}
+        {{ 'SEPODI.LOADING_POINTS.FREIGHT_SERVICE_POINT_NAME' | translate }}
       </div>
       <div>{{ servicePointName }}</div>
     </div>
@@ -59,13 +59,13 @@
         <atlas-text-field
           [fieldExamples]="[
             { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: 'A |', translate: false },
-            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '40' } }
+            { label: 'FVL |', translate: false },
+            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '12' } }
           ]"
           [formGroup]="form"
           [required]="false"
           controlName="designation"
-          fieldLabel="SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION"
+          fieldLabel="SEPODI.LOADING_POINTS.DESIGNATION"
         >
         </atlas-text-field>
       </div>
@@ -74,89 +74,20 @@
           [fieldExamples]="[
             { label: 'FORM.FOR_EXAMPLE', translate: true },
             { label: '10 |', translate: false },
-            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '20' } }
+            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '35' } }
           ]"
           [formGroup]="form"
           [required]="false"
-          controlName="designationOperational"
-          fieldLabel="SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION_OPERATIONAL"
+          controlName="designationLong"
+          fieldLabel="SEPODI.LOADING_POINTS.DESIGNATION_LONG"
         >
         </atlas-text-field>
-      </div>
-      <div class="d-flex flex-column col-4">
-        <atlas-select
-          [formGroup]="form"
-          controlName="parentSloid"
-          dataCy="parentSloid"
-          label="SEPODI.TRAFFIC_POINT_ELEMENTS.PARENT_SLOID"
-          [options]="areaOptions"
-          [required]="false"
-          [valueExtractor]="extractSloid"
-          [displayExtractor]="displayExtractor"
-          placeHolderLabel=""
-          [additionalLabelspace]="25"
-        >
-        </atlas-select>
       </div>
     </div>
 
     <div class="font-bold-2xl mt-5">{{ 'FORM.KEY_DATA' | translate }}</div>
     <div class="col-12 d-flex">
       <form-date-range [formGroup]="form"></form-date-range>
-    </div>
-
-    <sepodi-geography
-      [formGroup]="form.controls.trafficPointElementGeolocation"
-      [editMode]="form.enabled"
-      [(geographyActive)]="geographyActive"
-    ></sepodi-geography>
-
-    <div class="font-bold-2xl mt-5">
-      {{ 'SEPODI.TRAFFIC_POINT_ELEMENTS.CONSTRUCTION_INFORMATION' | translate }}
-    </div>
-    <div class="col-12 d-flex mt-3">
-      <div class="d-flex flex-column col-4 pe-3">
-        <atlas-text-field
-          [fieldExamples]="[
-            { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: '15.123 |', translate: false },
-            { label: 'FORM.MAX_DIGITS', translate: true, arg: { key: 'amount', value: '3' } }
-          ]"
-          [formGroup]="form"
-          [required]="false"
-          controlName="length"
-          fieldLabel="SEPODI.TRAFFIC_POINT_ELEMENTS.LENGTH"
-        >
-        </atlas-text-field>
-      </div>
-      <div class="d-flex flex-column col-4 pe-3">
-        <atlas-text-field
-          [fieldExamples]="[
-            { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: '22 |', translate: false },
-            { label: 'FORM.MAX_DIGITS', translate: true, arg: { key: 'amount', value: '2' } }
-          ]"
-          [formGroup]="form"
-          [required]="false"
-          controlName="boardingAreaHeight"
-          fieldLabel="SEPODI.TRAFFIC_POINT_ELEMENTS.BOARDING_AREA_HEIGHT"
-        >
-        </atlas-text-field>
-      </div>
-      <div class="d-flex flex-column col-4">
-        <atlas-text-field
-          [fieldExamples]="[
-            { label: 'FORM.FOR_EXAMPLE', translate: true },
-            { label: '360 |', translate: false },
-            { label: 'FORM.MAX_DIGITS', translate: true, arg: { key: 'amount', value: '2' } }
-          ]"
-          [formGroup]="form"
-          [required]="false"
-          controlName="compassDirection"
-          fieldLabel="SEPODI.TRAFFIC_POINT_ELEMENTS.COMPASS_DIRECTION"
-        >
-        </atlas-text-field>
-      </div>
     </div>
   </div>
 
