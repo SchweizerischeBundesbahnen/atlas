@@ -12,11 +12,11 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
-public @interface NotForReducedPRM {
+public @interface NotForReducedVariant {
 
   /**
-   * Used to specify if the annotated value is mandatory with a default value
+   * Used to specify if the annotated value is mandatory
    */
-  boolean defaultValueMandatory() default false;
+  boolean nullable() default true;
 
 }
