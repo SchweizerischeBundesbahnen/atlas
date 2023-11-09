@@ -3,7 +3,6 @@ package ch.sbb.prm.directory.controller;
 import ch.sbb.atlas.api.prm.model.ticketcounter.CreateTicketCounterVersionModel;
 import ch.sbb.atlas.api.prm.model.ticketcounter.ReadTicketCounterVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.prm.directory.api.TicketCounterApiV1;
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
 import ch.sbb.prm.directory.mapper.TicketCounterVersionMapper;
@@ -29,10 +28,10 @@ public class TicketCounterController implements TicketCounterApiV1 {
   }
 
   @Override
-  public ReadTicketCounterVersionModel createTicketCounter(CreateTicketCounterVersionModel ticketCounterVersionModel) {
-    SharedServicePointVersionModel sharedServicePointVersionModel = sharedServicePointService.findServicePoint(ticketCounterVersionModel.getParentServicePointSloid()).orElseThrow();
+  public ReadTicketCounterVersionModel createTicketCounter(CreateTicketCounterVersionModel model) {
     TicketCounterVersion ticketCounterVersion = ticketCounterService.createTicketCounter(
-        TicketCounterVersionMapper.toEntity(ticketCounterVersionModel), sharedServicePointVersionModel);
+        TicketCounterVersionMapper.toEntity(model),
+            sharedServicePointService.getSharedServicePointVersionModel(model.getParentServicePointSloid()));
     return TicketCounterVersionMapper.toModel(ticketCounterVersion);
   }
 
@@ -40,9 +39,9 @@ public class TicketCounterController implements TicketCounterApiV1 {
   public List<ReadTicketCounterVersionModel> updateTicketCounter(Long id, CreateTicketCounterVersionModel model) {
     TicketCounterVersion ticketCounterVersionToUpdate =
         ticketCounterService.getTicketCounterVersionById(id).orElseThrow(() -> new IdNotFoundException(id));
-    SharedServicePointVersionModel sharedServicePointVersionModel = sharedServicePointService.findServicePoint(model.getParentServicePointSloid()).orElseThrow();
     TicketCounterVersion editedVersion = TicketCounterVersionMapper.toEntity(model);
-    ticketCounterService.updateTicketCounterVersion(ticketCounterVersionToUpdate, editedVersion, sharedServicePointVersionModel);
+    ticketCounterService.updateTicketCounterVersion(ticketCounterVersionToUpdate, editedVersion,
+            sharedServicePointService.getSharedServicePointVersionModel(model.getParentServicePointSloid()));
 
     return ticketCounterService.findAllByNumberOrderByValidFrom(ticketCounterVersionToUpdate.getNumber()).stream()
         .map(TicketCounterVersionMapper::toModel).toList();
