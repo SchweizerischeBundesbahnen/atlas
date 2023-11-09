@@ -88,6 +88,13 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
         .andExpect(jsonPath("$[0].creator", is("fs45117")));
   }
 
+   @Test
+   void shouldGetTrafficPointElementValidTodayByServicePointNumber() throws Exception {
+     mvc.perform(get("/v1/traffic-point-elements/actual-date/" + trafficPointElementVersion.getServicePointNumber().getNumber()))
+         .andExpect(status().isOk())
+         .andExpect(jsonPath("$[0]." + Fields.sloid, is("ch:1:sloid:1400015:0:310240")));
+   }
+
   @Test
   void shouldGetTrafficPointElementVersions() throws Exception {
     mvc.perform(get("/v1/traffic-point-elements")).andExpect(status().isOk())
