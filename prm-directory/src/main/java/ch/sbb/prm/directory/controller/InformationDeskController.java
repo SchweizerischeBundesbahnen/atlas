@@ -31,11 +31,6 @@ public class InformationDeskController implements InformationDeskApiV1 {
 
   @Override
   public ReadInformationDeskVersionModel createInformationDesk(CreateInformationDeskVersionModel model) {
-    // here I need to get all servicePontVersions, or more precisely sharedServicePoints and to pass this one to service.createInformationDesk
-    // out of sharedServicePoints I need to extract only for each version from String servicePoint, which looks like this {"servicePointSloid":"ch:1:sloid:6","sboids":["ch:1:sboid:100313"],"trafficPointSloids":[]}
-    // I need per each version only sboids ch:1:sboid:101698 and then to put it in ServicePointVersion, or some smaller Entity which implements CountryAndBusinessOrganisationAssociated and then I can pass it to CountryAndBusinessOrganisationBasedUserAdministrationService
-    // then there I can adjust check only for bo and without validFrom, validTo
-    // maybe I can also implement different interface CountryAndBusinessOrganisationAssociated and write different CountryAndBusinessOrganisationBasedUserAdministrationService, but I don't think it is necessary
     SharedServicePointVersionModel sharedServicePointVersionModel = sharedServicePointService.findServicePoint(model.getParentServicePointSloid()).orElseThrow();
     InformationDeskVersion informationDeskVersion = informationDeskService.createInformationDesk(
         InformationDeskVersionMapper.toEntity(model), sharedServicePointVersionModel);
