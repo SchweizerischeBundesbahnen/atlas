@@ -37,20 +37,12 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
   private final SharedServicePointRepository sharedServicePointRepository;
 
   @Autowired
-  RelationVersionControllerApiTest(RelationRepository relationRepository, StopPointRepository stopPointRepository, SharedServicePointRepository sharedServicePointRepository){
+  RelationVersionControllerApiTest(RelationRepository relationRepository,
+                                   StopPointRepository stopPointRepository,
+                                   SharedServicePointRepository sharedServicePointRepository) {
     this.relationRepository = relationRepository;
     this.stopPointRepository = stopPointRepository;
     this.sharedServicePointRepository = sharedServicePointRepository;
-  }
-
-  @BeforeEach
-  void setUp() {
-//    SharedServicePoint servicePoint = SharedServicePoint.builder()
-//            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],"
-//                    + "\"trafficPointSloids\":[]}")
-//            .sloid("ch:1:sloid:7000")
-//            .build();
-//    sharedServicePointRepository.saveAndFlush(servicePoint);
   }
 
   @AfterEach
@@ -201,7 +193,6 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2000-12-31")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2001-01-01")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2001-12-31")));
-
   }
 
 }
