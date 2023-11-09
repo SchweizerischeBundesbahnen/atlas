@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.validation;
 
 import ch.sbb.prm.directory.exception.RecordingVariantException;
-import ch.sbb.prm.directory.validation.annotation.NotForReducedPRM;
+import ch.sbb.prm.directory.validation.annotation.NotForReducedVariant;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public abstract class RecordableVariantsValidationService<T extends VariantsRedu
 
     Map<String, String> errorConstraintMap = new HashMap<>();
     List<Field> notForReducedFields = Arrays.stream(version.getClass().getDeclaredFields())
-        .filter(field -> field.isAnnotationPresent(NotForReducedPRM.class)).toList();
+        .filter(field -> field.isAnnotationPresent(NotForReducedVariant.class)).toList();
     if (isReduced) {
       notForReducedFields.forEach(field -> {
         try {
@@ -38,10 +38,10 @@ public abstract class RecordableVariantsValidationService<T extends VariantsRedu
     } else {
       notForReducedFields.forEach(field -> {
         try {
-          boolean isDefaultValueMandatory = field.getAnnotation(NotForReducedPRM.class).defaultValueMandatory();
+          boolean nullable = field.getAnnotation(NotForReducedVariant.class).nullable();
           field.setAccessible(true);
           Object value = field.get(version);
-          if (isDefaultValueMandatory && value == null) {
+          if (!nullable && value == null) {
             errorConstraintMap.put(field.getName(), MUST_NOT_BE_NULL_ERROR_MSG);
           }
         } catch (IllegalAccessException e) {
