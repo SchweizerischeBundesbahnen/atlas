@@ -1006,7 +1006,9 @@
       "STOP_POINT": "Haltestelle",
       "FREIGHT_SERVICE_POINT": "Bedienpunkt",
       "OPERATING_POINT_TECHNICAL": "Fahrplanpunkt",
-      "SERVICE_POINT": "Dienststelle"
+      "SERVICE_POINT": "Dienststelle",
+      "BOARDING_PLATFORM": "Haltekante",
+      "BOARDING_AREA": "Haltestellenbereich"
     },
     "BACK_TO_MAP": "Schliessen",
     "AUTOMATIC_SLOID": "wird automatisch vergeben",
