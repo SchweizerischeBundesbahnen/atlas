@@ -184,7 +184,7 @@ class PlatformServiceTest {
     //when Stop Point is reduced no one Relation must be added even if referencePoint exists
     List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
         PARENT_SERVICE_POINT_SLOID);
-    assertThat(relationVersions).hasSize(0);
+    assertThat(relationVersions).isEmpty();
   }
 
   @Test
