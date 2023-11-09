@@ -166,7 +166,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
     if (!this.isNew) {
       this.form.disable();
     }
-    this.trafficPointMapService.setCurrentTrafficPoint(
+    this.trafficPointMapService.displayCurrentTrafficPoint(
       this.selectedVersion.trafficPointElementGeolocation?.wgs84,
     );
   }
