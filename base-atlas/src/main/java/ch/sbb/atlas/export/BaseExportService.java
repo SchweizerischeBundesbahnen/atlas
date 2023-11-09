@@ -34,7 +34,6 @@ public abstract class BaseExportService<T extends BaseVersion> {
   public List<URL> exportFullVersions() {
     List<URL> urls = new ArrayList<>();
     File fullVersionsCsv = getFullVersionsCsv();
-    urls.add(putCsvFile(fullVersionsCsv));
     urls.add(putZipFile(fullVersionsCsv));
     return urls;
   }
@@ -49,7 +48,6 @@ public abstract class BaseExportService<T extends BaseVersion> {
   public List<URL> exportActualVersions() {
     List<URL> urls = new ArrayList<>();
     File actualVersionsCsv = getActualVersionsCsv();
-    urls.add(putCsvFile(actualVersionsCsv));
     urls.add(putZipFile(actualVersionsCsv));
     return urls;
   }
@@ -64,7 +62,6 @@ public abstract class BaseExportService<T extends BaseVersion> {
   public List<URL> exportFutureTimetableVersions() {
     List<URL> urls = new ArrayList<>();
     File futureTimetableVersionsCsv = getFutureTimetableVersionsCsv();
-    urls.add(putCsvFile(futureTimetableVersionsCsv));
     urls.add(putZipFile(futureTimetableVersionsCsv));
     return urls;
   }
@@ -74,17 +71,6 @@ public abstract class BaseExportService<T extends BaseVersion> {
     File futureTimetableVersionsJson = getFutureTimetableVersionsJson();
     urls.add(putGzFile(futureTimetableVersionsJson));
     return urls;
-  }
-
-  URL putCsvFile(File csvFile) {
-    try {
-      URL url = amazonService.putFile(AmazonBucket.EXPORT, csvFile, getDirectory());
-      log.info("Export - CSV File {} Successfully Put to the directory {}: {}", csvFile.getName(), getDirectory(), url);
-      return url;
-    } catch (IOException e) {
-      log.error(e.getMessage());
-      throw new ExportException(csvFile, e);
-    }
   }
 
   URL putZipFile(File zipFile) {

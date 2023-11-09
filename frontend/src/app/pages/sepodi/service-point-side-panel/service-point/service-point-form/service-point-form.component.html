@@ -238,13 +238,14 @@
     </div>
 
     <div class="col-6 service-point-search">
-      <service-point-search
+      <kilometer-master-search
         [disabled]="form.disabled || form.controls.operatingPointRouteNetwork.value!"
         class="mt-3 col-12"
         [formGroup]="form"
         controlName="operatingPointKilometerMaster"
         data-cy="operatingPointKilometerMaster"
-      ></service-point-search>
+      ></kilometer-master-search>
     </div>
   </div>
+  <br />
 </ng-container>
