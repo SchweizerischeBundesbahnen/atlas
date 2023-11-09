@@ -144,7 +144,7 @@ describe('MapService', () => {
     } as unknown as MapMouseEvent & { features?: MapGeoJSONFeature[] };
 
     spyOn(service.popup, 'addTo');
-    service.showPopup(mouseEvent);
+    service.showServicePointPopup(mouseEvent);
 
     expect(service.popup.getLngLat().lat).toEqual(46.94883407094761);
     expect(service.popup.getLngLat().lng).toEqual(7.439133524894714);
