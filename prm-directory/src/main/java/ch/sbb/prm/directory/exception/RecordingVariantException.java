@@ -17,6 +17,8 @@ public class RecordingVariantException extends AtlasException {
 
   private final Map<String, String> errorConstraintMap;
   private final String objectName;
+  private final String sloid;
+  private final boolean isReduced;
 
   private static final String ERROR = "Precondition failed";
 
@@ -24,9 +26,19 @@ public class RecordingVariantException extends AtlasException {
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
         .status(HttpStatus.BAD_REQUEST.value())
-        .message(objectName + " cannot be save!")
+        .message(buildErrorMsg())
         .details(getErrorDetails())
         .build();
+  }
+
+  private String buildErrorMsg() {
+    StringBuilder builder = new StringBuilder(objectName + "with sloid [" + sloid + "] cannot be save: ");
+    if(isReduced){
+      builder.append("Attempting to save a Reduced object that contains Complete properties!");
+    }else {
+      builder.append("Attempting to save a Complete object that does not contains all mandatory properties!");
+    }
+    return builder.toString();
   }
 
   private SortedSet<Detail> getErrorDetails() {

@@ -1,6 +1,10 @@
 package ch.sbb.atlas.imports.util;
 
+import ch.sbb.atlas.imports.Importable;
+import ch.sbb.atlas.versioning.model.Property;
 import ch.sbb.atlas.versioning.model.Versionable;
+import ch.sbb.atlas.versioning.model.VersionedObject;
+import ch.sbb.atlas.versioning.model.VersioningAction;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,6 +14,9 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ImportUtils {
+
+  public static final String EDITION_DATE_FIELD_NAME = "editionDate";
+  public static final String EDITOR_FIELD_NAME = "editor";
 
   public <T extends Versionable> T getCurrentPointVersion(List<T> dbVersions, T edited) {
     dbVersions.sort(Comparator.comparing(Versionable::getValidFrom));
@@ -67,6 +74,35 @@ public class ImportUtils {
       return collected;
     }
     return Collections.emptyList();
+  }
+
+  public <T extends Importable> void overrideEditionDateAndEditorOnVersionedObjects(
+      T version,
+      List<VersionedObject> versionedObjects) {
+    versionedObjects.stream().filter(versionedObject -> {
+      final VersioningAction action = versionedObject.getAction();
+      return action == VersioningAction.UPDATE || action == VersioningAction.NEW;
+    }).forEach(versionedObject -> {
+      final Property editionDate = getPropertyFromFieldOnVersionedObject(
+          EDITION_DATE_FIELD_NAME,
+          versionedObject
+      );
+      final Property editor = getPropertyFromFieldOnVersionedObject(
+          EDITOR_FIELD_NAME,
+          versionedObject
+      );
+      editionDate.setValue(version.getEditionDate());
+      editor.setValue(version.getEditor());
+    });
+  }
+
+  private Property getPropertyFromFieldOnVersionedObject(String fieldName, VersionedObject versionedObject) {
+    return versionedObject
+        .getEntity()
+        .getProperties()
+        .stream()
+        .filter(property -> property.getKey().equals(fieldName))
+        .findFirst().orElseThrow();
   }
 
 }
