@@ -10,7 +10,6 @@ import {
 } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
-import { MapService } from '../map/map.service';
 import { catchError, EMPTY, Observable, of, Subject } from 'rxjs';
 import { Pages } from '../../pages';
 import { FormGroup } from '@angular/forms';
@@ -23,7 +22,7 @@ import { ValidationService } from '../../../core/validation/validation.service';
 import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { DateService } from '../../../core/date/date.service';
-import { DisplayableTrafficPoint } from '../service-point-side-panel/traffic-point-elements/displayable-traffic-point';
+import { TrafficPointMapService } from '../map/traffic-point-map.service';
 
 interface AreaOption {
   sloid: string | undefined;
@@ -62,7 +61,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private mapService: MapService,
+    private trafficPointMapService: TrafficPointMapService,
     private servicePointService: ServicePointsService,
     private trafficPointElementsService: TrafficPointElementsService,
     private dialogService: DialogService,
@@ -79,8 +78,8 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-    this.mapService.clearDisplayedTrafficPoints();
-    this.mapService.clearCurrentTrafficPoint();
+    this.trafficPointMapService.clearDisplayedTrafficPoints();
+    this.trafficPointMapService.clearCurrentTrafficPoint();
   }
 
   private initTrafficPoint() {
@@ -108,7 +107,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
     if (!this.servicePointNumber) {
       this.router.navigate([Pages.SEPODI.path]).then();
     } else {
-      this.displayTrafficPointsOnMap();
+      this.trafficPointMapService.displayTrafficPointsOnMap(this.servicePointNumber);
 
       this.servicePointService
         .getServicePointVersions(this.servicePointNumber)
@@ -167,35 +166,9 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
     if (!this.isNew) {
       this.form.disable();
     }
-    this.mapService.mapInitialized.subscribe((initialized) => {
-      if (initialized) {
-        this.mapService.setCurrentTrafficPoint(
-          this.selectedVersion.trafficPointElementGeolocation?.wgs84,
-        );
-      }
-    });
-  }
-
-  private displayTrafficPointsOnMap() {
-    this.mapService.mapInitialized.subscribe((initialized) => {
-      if (initialized) {
-        this.trafficPointElementsService
-          .getTrafficPointsOfServicePointValidToday(this.servicePointNumber)
-          .subscribe((points) => {
-            const trafficPoints: DisplayableTrafficPoint[] = points
-              .filter((point) => !!point.trafficPointElementGeolocation?.wgs84)
-              .map((point) => {
-                return {
-                  sloid: point.sloid!,
-                  designation: point.designation!,
-                  type: point.trafficPointElementType,
-                  coordinates: point.trafficPointElementGeolocation!.wgs84!,
-                };
-              });
-            this.mapService.setDisplayedTrafficPoints(trafficPoints);
-          });
-      }
-    });
+    this.trafficPointMapService.setCurrentTrafficPoint(
+      this.selectedVersion.trafficPointElementGeolocation?.wgs84,
+    );
   }
 
   toggleEdit() {
