@@ -51,18 +51,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 class InformationDeskVersionControllerApiTest extends BaseControllerApiTest {
 
+  private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:7000";
   private final InformationDeskRepository informationDeskRepository;
   private final StopPointRepository stopPointRepository;
   private final ReferencePointRepository referencePointRepository;
   private final SharedServicePointRepository sharedServicePointRepository;
-//  @MockBean
-//  private SharedServicePointRepository sharedServicePointRepository;
+
   @MockBean
   private final RelationService relationService;
 
   @Autowired
   InformationDeskVersionControllerApiTest(InformationDeskRepository informationDeskRepository,
-                                          StopPointRepository stopPointRepository, ReferencePointRepository referencePointRepository, SharedServicePointRepository sharedServicePointRepository, RelationService relationService){
+                                          StopPointRepository stopPointRepository,
+                                          ReferencePointRepository referencePointRepository,
+                                          SharedServicePointRepository sharedServicePointRepository,
+                                          RelationService relationService) {
     this.informationDeskRepository = informationDeskRepository;
     this.stopPointRepository = stopPointRepository;
     this.referencePointRepository = referencePointRepository;
@@ -98,23 +101,15 @@ class InformationDeskVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldCreateInformationDesk() throws Exception {
     //given
-    String parentServicePointSloid = "ch:1:sloid:7000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
-//    SharedServicePoint servicePoint = SharedServicePoint.builder()
-//            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],"
-//                    + "\"trafficPointSloids\":[]}")
-//            .sloid("ch:1:sloid:7000")
-//            .build();
-//    sharedServicePointRepository.saveAndFlush(servicePoint);
-//    when(sharedServicePointRepository.findById(any())).thenReturn(Optional.of(servicePoint));
 
     CreateInformationDeskVersionModel createInformationDeskVersionModel = InformationDeskTestData.getCreateInformationDeskVersionModel();
-    createInformationDeskVersionModel.setParentServicePointSloid(parentServicePointSloid);
+    createInformationDeskVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when && then
     mvc.perform(post("/v1/information-desks")
             .contentType(contentType)
@@ -143,15 +138,14 @@ class InformationDeskVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldNotCreateInformationDeskWhenStopPointDoesExists() throws Exception {
+  void shouldNotCreateInformationDeskWhenStopPointDoesExist() throws Exception {
     //given
-    String parentServicePointSloid = "ch:1:sloid:7000";
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
     CreateInformationDeskVersionModel createInformationDeskVersionModel = InformationDeskTestData.getCreateInformationDeskVersionModel();
-    createInformationDeskVersionModel.setParentServicePointSloid(parentServicePointSloid);
+    createInformationDeskVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when && then
     mvc.perform(post("/v1/information-desks")
             .contentType(contentType)
@@ -173,23 +167,22 @@ class InformationDeskVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldUpdateInformationDesk() throws Exception {
     // given
-    String parentServicePointSloid = "ch:1:sloid:7000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
     InformationDeskVersion version1 = InformationDeskTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     informationDeskRepository.saveAndFlush(version1);
     InformationDeskVersion version2 = InformationDeskTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     informationDeskRepository.saveAndFlush(version2);
 
     CreateInformationDeskVersionModel editedVersionModel = new CreateInformationDeskVersionModel();
-    editedVersionModel.setParentServicePointSloid(parentServicePointSloid);
+    editedVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersionModel.setSloid(version2.getSloid());
     editedVersionModel.setValidFrom(version2.getValidFrom());
     editedVersionModel.setValidTo(version2.getValidTo().minusYears(1));
@@ -214,6 +207,23 @@ class InformationDeskVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2000-12-31")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2001-01-01")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2001-12-31")));
+  }
+
+  @Test
+  void shouldNotCreateInformationDeskVersionWhenParentSloidDoesNotExist() throws Exception {
+    //given
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid("ch:1:sloid:7001");
+    referencePointRepository.save(referencePointVersion);
+
+    CreateInformationDeskVersionModel createInformationDeskVersionModel = InformationDeskTestData.getCreateInformationDeskVersionModel();
+    createInformationDeskVersionModel.setParentServicePointSloid("ch:1:sloid:7001");
+    //when && then
+    mvc.perform(post("/v1/information-desks")
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(createInformationDeskVersionModel)))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.message", is("Entity not found")));
   }
 
 }
