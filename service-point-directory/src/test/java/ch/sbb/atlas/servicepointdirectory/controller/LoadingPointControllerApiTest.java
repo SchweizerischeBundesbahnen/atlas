@@ -159,12 +159,12 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldGetLoadingPointVersionById() throws Exception {
-    mvc.perform(get("/v1/loading-points/" + loadingPointVersion.getId())).andExpect(status().isOk());
+    mvc.perform(get("/v1/loading-points/versions/" + loadingPointVersion.getId())).andExpect(status().isOk());
   }
 
   @Test
   void shouldFailOnInvalidLoadingPointNumber() throws Exception {
-    mvc.perform(get("/v1/loading-points/9123"))
+    mvc.perform(get("/v1/loading-points/versions/9123"))
         .andExpect(status().isNotFound());
   }
 
