@@ -68,8 +68,7 @@ public class TrafficPointElementService {
     if (trafficPointElementVersion.getSloid() != null && isTrafficPointElementExisting(trafficPointElementVersion.getSloid())) {
       throw new SloidAlreadyExistsException(trafficPointElementVersion.getSloid());
     }
-    if (trafficPointElementVersion.getSloid() == null
-        && trafficPointElementVersion.getTrafficPointElementType() == TrafficPointElementType.BOARDING_PLATFORM) {
+    if (isSloidNullAndTypeBoardingPlatformOrBoardingArea(trafficPointElementVersion)) {
       trafficPointElementVersion.setSloid(
           trafficPointElementSloidService.getNextSloidForPlatform(trafficPointElementVersion.getServicePointNumber()));
     }
@@ -175,6 +174,12 @@ public class TrafficPointElementService {
     Optional<T> validToday = versions.stream().filter(i -> DateRange.fromVersionable(i).contains(LocalDate.now())).findFirst();
     Optional<T> validInFuture = versions.stream().filter(i -> i.getValidFrom().isAfter(LocalDate.now())).findFirst();
     return validToday.orElse(validInFuture.orElse(versions.get(versions.size() - 1)));
+  }
+
+  private boolean isSloidNullAndTypeBoardingPlatformOrBoardingArea(TrafficPointElementVersion trafficPointElementVersion) {
+    return trafficPointElementVersion.getSloid() == null &&
+        (trafficPointElementVersion.getTrafficPointElementType() == TrafficPointElementType.BOARDING_PLATFORM ||
+            trafficPointElementVersion.getTrafficPointElementType() == TrafficPointElementType.BOARDING_AREA);
   }
 
 }
