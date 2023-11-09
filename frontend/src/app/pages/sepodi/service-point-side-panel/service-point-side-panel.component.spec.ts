@@ -10,8 +10,13 @@ import { AuthService } from '../../../core/auth/auth.service';
 import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 import { SplitServicePointNumberPipe } from '../search-service-point/split-service-point-number.pipe';
+import { TrafficPointMapService } from '../map/traffic-point-map.service';
 
 const authService: Partial<AuthService> = {};
+const trafficPointMapService = jasmine.createSpyObj<TrafficPointMapService>([
+  'displayTrafficPointsOnMap',
+  'clearDisplayedTrafficPoints',
+]);
 
 describe('ServicePointSidePanelComponent', () => {
   let component: ServicePointSidePanelComponent;
@@ -32,6 +37,7 @@ describe('ServicePointSidePanelComponent', () => {
       providers: [
         { provide: AuthService, useValue: authService },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: TrafficPointMapService, useValue: trafficPointMapService },
         SplitServicePointNumberPipe,
       ],
     }).compileComponents();
@@ -51,5 +57,7 @@ describe('ServicePointSidePanelComponent', () => {
     expect(component.selectedVersion.designationOfficial).toEqual('Bern, Wyleregg');
     expect(component.maxValidity.validFrom).toEqual(new Date('2014-12-14'));
     expect(component.maxValidity.validTo).toEqual(new Date('2021-03-31'));
+
+    expect(trafficPointMapService.displayTrafficPointsOnMap).toHaveBeenCalled();
   });
 });
