@@ -11,7 +11,7 @@ import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.prm.directory.service.PrmVersionable;
 import ch.sbb.prm.directory.validation.PrmMeansOfTransportHelper;
 import ch.sbb.prm.directory.validation.VariantsReducedCompleteRecordable;
-import ch.sbb.prm.directory.validation.annotation.NotForReducedPRM;
+import ch.sbb.prm.directory.validation.annotation.NotForReducedVariant;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
@@ -84,88 +84,88 @@ public class StopPointVersion extends BasePrmImportEntity implements PrmVersiona
   @AtlasVersionableProperty
   private String freeText;
 
-  @NotForReducedPRM
+  @NotForReducedVariant
   @AtlasVersionableProperty
   private String address;
 
-  @NotForReducedPRM
+  @NotForReducedVariant
   @AtlasVersionableProperty
   private String zipCode;
 
-  @NotForReducedPRM
+  @NotForReducedVariant
   @AtlasVersionableProperty
   private String city;
 
-  @NotForReducedPRM(defaultValueMandatory = true)
+  @NotForReducedVariant(nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType alternativeTransport;
 
-  @NotForReducedPRM
+  @NotForReducedVariant
   @AtlasVersionableProperty
   private String alternativeTransportCondition;
 
-  @NotForReducedPRM(defaultValueMandatory = true)
+  @NotForReducedVariant(nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType assistanceAvailability;
 
-  @NotForReducedPRM
+  @NotForReducedVariant
   @AtlasVersionableProperty
   private String assistanceCondition;
 
-  @NotForReducedPRM(defaultValueMandatory = true)
+  @NotForReducedVariant(nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType assistanceService;
 
-  @NotForReducedPRM(defaultValueMandatory = true)
+  @NotForReducedVariant(nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType audioTicketMachine;
 
-  @NotForReducedPRM
+  @NotForReducedVariant
   @AtlasVersionableProperty
   private String additionalInformation;
 
-  @NotForReducedPRM(defaultValueMandatory = true)
+  @NotForReducedVariant(nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType dynamicAudioSystem;
 
-  @NotForReducedPRM(defaultValueMandatory = true)
+  @NotForReducedVariant(nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType dynamicOpticSystem;
 
-  @NotForReducedPRM
+  @NotForReducedVariant
   @AtlasVersionableProperty
   private String infoTicketMachine;
 
-  @NotForReducedPRM
+  @NotForReducedVariant
   @AtlasVersionableProperty
   private Boolean interoperable;
 
-  @NotForReducedPRM
+  @NotForReducedVariant
   @AtlasVersionableProperty
   private String url;
 
-  @NotForReducedPRM(defaultValueMandatory = true)
+  @NotForReducedVariant(nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType visualInfo;
 
-  @NotForReducedPRM(defaultValueMandatory = true)
+  @NotForReducedVariant(nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType wheelchairTicketMachine;
 
-  @NotForReducedPRM(defaultValueMandatory = true)
+  @NotForReducedVariant(nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType assistanceRequestFulfilled;
 
-  @NotForReducedPRM(defaultValueMandatory = true)
+  @NotForReducedVariant(nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType ticketMachine;
