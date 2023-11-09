@@ -1,27 +1,13 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.WGS84;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.endsWith;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
-import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel.Fields;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
@@ -40,16 +26,6 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointNumberService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
-import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -57,6 +33,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
+
+import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.WGS84;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class ServicePointControllerApiTest extends BaseControllerApiTest {
 
@@ -504,6 +506,26 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldThrowExceptionWhenCreateServicePointWithRouteNetworkTrueAndNotStopOrControlOrOperatingPoint() throws Exception {
+    CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    aargauServicePointVersionModel.setOperatingPointRouteNetwork(true);
+    aargauServicePointVersionModel.setMeansOfTransport(new ArrayList<>());
+    aargauServicePointVersionModel.setStopPointType(null);
+    aargauServicePointVersionModel.setFreightServicePoint(false);
+    aargauServicePointVersionModel.setOperatingPointType(null);
+    aargauServicePointVersionModel.setOperatingPointTechnicalTimetableType(null);
+    aargauServicePointVersionModel.setOperatingPointTrafficPointType(null);
+    mvc.perform(post("/v1/service-points")
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+            .andExpect(jsonPath("$.details.[0].message", endsWith(
+                    "OperatingPointRouteNetwork true is allowed only for StopPoint, ControlPoint and OperatingPoint." +
+                    " OperatingPointKilometerMasterNumber can be set only for StopPoint, ControlPoint and OperatingPoint.")));
+  }
+
+  @Test
   void shouldCreateServicePointWithRouteNetworkTrue() throws Exception {
     CreateServicePointVersionModel servicePointWithOperationPointRouteNetworkTrue =
         ServicePointTestData.getAargauServicePointVersionModel();
@@ -594,6 +616,30 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[2].servicePointGeolocation.lv95.east", is(2600783.0)))
         .andExpect(jsonPath("$[2].servicePointGeolocation.wgs84.north", is(46.96096808019)))
         .andExpect(jsonPath("$[2].servicePointGeolocation.wgs84.east", is(7.44891972221)));
+  }
+
+  @Test
+  void shouldThrowExceptionWhenUpdateServicePointWithRouteNetworkTrueAndNotStopOrControlOrOperatingPoint() throws Exception {
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+            ServicePointTestData.getAargauServicePointVersionModelWithRouteNetworkFalse());
+    Long id = servicePointVersionModel.getId();
+
+    CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    aargauServicePointVersionModel.setOperatingPointRouteNetwork(true);
+    aargauServicePointVersionModel.setMeansOfTransport(new ArrayList<>());
+    aargauServicePointVersionModel.setStopPointType(null);
+    aargauServicePointVersionModel.setFreightServicePoint(false);
+    aargauServicePointVersionModel.setOperatingPointType(null);
+    aargauServicePointVersionModel.setOperatingPointTechnicalTimetableType(null);
+    aargauServicePointVersionModel.setOperatingPointTrafficPointType(null);
+    mvc.perform(put("/v1/service-points/" + id)
+                  .contentType(contentType)
+                  .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
+          .andExpect(status().isBadRequest())
+          .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+          .andExpect(jsonPath("$.details.[0].message", endsWith(
+                  "OperatingPointRouteNetwork true is allowed only for StopPoint, ControlPoint and OperatingPoint." +
+                  " OperatingPointKilometerMasterNumber can be set only for StopPoint, ControlPoint and OperatingPoint.")));
   }
 
   @Test
