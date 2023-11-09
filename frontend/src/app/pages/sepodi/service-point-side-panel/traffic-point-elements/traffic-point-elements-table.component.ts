@@ -49,7 +49,6 @@ export class TrafficPointElementsTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    //TODO mit hannes besprechen, ob nicht bessere lösung gibt
     this.router.url.includes('/areas')
       ? (this.isTrafficPointArea = true)
       : (this.isTrafficPointArea = false);

@@ -4,7 +4,9 @@
     applicationType="SEPODI"
     buttonDataCy="new-traffic-point-element"
     buttonText="{{
-      isTrafficPointArea ? 'SEPODI.AREAS.NEW' : ('SEPODI.TRAFFIC_POINT_ELEMENTS.NEW' | translate)
+      isTrafficPointArea
+        ? ('SEPODI.BOARDING_AREAS.NEW' | translate)
+        : ('SEPODI.TRAFFIC_POINT_ELEMENTS.NEW' | translate)
     }}"
     buttonType="createCheckingPermission"
     wrapperStyleClass="mb-3"
@@ -13,7 +15,7 @@
   <div class="font-bold-2xl mt-5">
     {{
       isTrafficPointArea
-        ? ('SEPODI.AREAS.AREAS' | translate)
+        ? ('SEPODI.BOARDING_AREAS.BOARDING_AREAS' | translate)
         : ('SEPODI.TRAFFIC_POINT_ELEMENTS.TRAFFIC_POINT_ELEMENTS' | translate)
     }}
   </div>

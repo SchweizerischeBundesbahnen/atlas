@@ -57,8 +57,6 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
   geographyActive = false;
   isTrafficPointArea = false;
 
-  //TODO Titles etc anhand typ oder boolean prüfen
-
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
@@ -73,14 +71,19 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.data.pipe(takeUntil(this.ngUnsubscribe)).subscribe((next) => {
       this.trafficPointVersions = next.trafficPoint;
+      this.isTrafficPointArea =
+        this.trafficPointVersions.length > 0 &&
+        this.trafficPointVersions[0].trafficPointElementType === TrafficPointElementType.Area;
       this.initTrafficPoint();
     });
 
-    this.trafficPointElementsService.isTrafficPointArea
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((value) => {
-        this.isTrafficPointArea = value;
-      });
+    if (this.isNew) {
+      this.trafficPointElementsService.isTrafficPointArea
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((value) => {
+          this.isTrafficPointArea = value;
+        });
+    }
   }
 
   ngOnDestroy() {
@@ -163,7 +166,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
       .then();
   }
 
-  cancel() {
+  confirmCancel() {
     this.isTrafficPointArea ? this.backToTrafficPointAreas() : this.backToTrafficPointElements();
   }
 
@@ -195,7 +198,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
     this.confirmLeave().subscribe((confirmed) => {
       if (confirmed) {
         if (this.isNew) {
-          this.cancel();
+          this.confirmCancel();
         } else {
           this.initSelectedVersion();
           this.form.disable();
@@ -227,8 +230,6 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
             ? (trafficPointElementVersion.trafficPointElementType = TrafficPointElementType.Area)
             : (trafficPointElementVersion.trafficPointElementType =
                 TrafficPointElementType.Platform);
-
-          console.log('trafficPoint ', trafficPointElementVersion);
 
           this.form.disable();
           trafficPointElementVersion.numberWithoutCheckDigit = this.servicePointNumber;
