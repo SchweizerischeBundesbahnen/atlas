@@ -31,7 +31,7 @@ public class StopPointVersionJsonProcessor extends BaseServicePointProcessor imp
         .dynamicAudioSystem(version.getDynamicAudioSystem())
         .dynamicOpticSystem(version.getDynamicOpticSystem())
         .infoTicketMachine(version.getInfoTicketMachine())
-        .interoperable(version.getInteroperable())
+        .interoperable(Boolean.valueOf(version.getInteroperable()))
         .url(version.getUrl())
         .visualInfo(version.getVisualInfo())
         .wheelchairTicketMachine(version.getWheelchairTicketMachine())

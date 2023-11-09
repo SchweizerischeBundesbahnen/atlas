@@ -79,6 +79,7 @@ public class StopPointImportService extends BasePrmImportService<StopPointVersio
     StopPointVersion current = ImportUtils.getCurrentPointVersion(dbVersions, edited);
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(current, edited,
         dbVersions);
+    ImportUtils.overrideEditionDateAndEditorOnVersionedObjects(edited, versionedObjects);
     versionableService.applyVersioning(StopPointVersion.class, versionedObjects, this::save,
         new ApplyVersioningDeleteByIdLongConsumer(stopPointRepository));
   }
@@ -106,5 +107,6 @@ public class StopPointImportService extends BasePrmImportService<StopPointVersio
       return buildFailedImportResult(servicePointVersion, exception);
     }
   }
+
 
 }
