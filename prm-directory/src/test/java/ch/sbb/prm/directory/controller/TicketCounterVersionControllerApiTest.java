@@ -13,12 +13,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.api.prm.model.ticketcounter.CreateTicketCounterVersionModel;
+import ch.sbb.atlas.api.prm.model.toilet.CreateToiletVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.TicketCounterTestData;
+import ch.sbb.prm.directory.ToiletTestData;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.SharedServicePoint;
@@ -51,9 +53,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
 
+  private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:7000";
   private final TicketCounterRepository ticketCounterRepository;
   private final StopPointRepository stopPointRepository;
-
   private final ReferencePointRepository referencePointRepository;
   private final SharedServicePointRepository sharedServicePointRepository;
 
@@ -61,8 +63,11 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
   private final RelationService relationService;
 
   @Autowired
-  TicketCounterVersionControllerApiTest(TicketCounterRepository ticketCounterRepository, StopPointRepository stopPointRepository,
-                                        ReferencePointRepository referencePointRepository, SharedServicePointRepository sharedServicePointRepository, RelationService relationService){
+  TicketCounterVersionControllerApiTest(TicketCounterRepository ticketCounterRepository,
+                                        StopPointRepository stopPointRepository,
+                                        ReferencePointRepository referencePointRepository,
+                                        SharedServicePointRepository sharedServicePointRepository,
+                                        RelationService relationService) {
     this.ticketCounterRepository = ticketCounterRepository;
     this.stopPointRepository = stopPointRepository;
     this.referencePointRepository = referencePointRepository;
@@ -99,23 +104,21 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldCreateTicketCounter() throws Exception {
     //given
-    String parentServicePointSloid = "ch:1:sloid:7000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
     CreateTicketCounterVersionModel model = TicketCounterTestData.getCreateTicketCounterVersionVersionModel();
-    model.setParentServicePointSloid(parentServicePointSloid);
+    model.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //when && then
     mvc.perform(post("/v1/ticket-counters").contentType(contentType)
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isCreated());
     verify(relationService, times(1)).save(any(RelationVersion.class));
-
   }
 
   @Test
@@ -139,15 +142,14 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldNotCreateTicketCounterWhenStopPointDoesNotExists() throws Exception {
+  void shouldNotCreateTicketCounterWhenStopPointDoesNotExist() throws Exception {
     //given
-    String parentServicePointSloid = "ch:1:sloid:7000";
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
     CreateTicketCounterVersionModel model = TicketCounterTestData.getCreateTicketCounterVersionVersionModel();
-    model.setParentServicePointSloid(parentServicePointSloid);
+    model.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //when && then
     mvc.perform(post("/v1/ticket-counters").contentType(contentType)
@@ -155,8 +157,8 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(status().isPreconditionFailed())
         .andExpect(jsonPath("$.message", is("The stop place with sloid ch:1:sloid:7000 does not exists.")));
     verify(relationService, times(0)).save(any(RelationVersion.class));
-
   }
+
   /**
    * Szenario 8a: Letzte Version terminieren wenn nur validTo ist updated
    * NEU:      |______________________|
@@ -169,23 +171,22 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldUpdateTicketCounter() throws Exception {
     //given
-    String parentServicePointSloid = "ch:1:sloid:7000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
     TicketCounterVersion version1 = TicketCounterTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     ticketCounterRepository.saveAndFlush(version1);
     TicketCounterVersion version2 = TicketCounterTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     ticketCounterRepository.saveAndFlush(version2);
 
     CreateTicketCounterVersionModel editedVersionModel = new CreateTicketCounterVersionModel();
-    editedVersionModel.setParentServicePointSloid(parentServicePointSloid);
+    editedVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersionModel.setSloid(version2.getSloid());
     editedVersionModel.setValidFrom(version2.getValidFrom());
     editedVersionModel.setValidTo(version2.getValidTo().minusYears(1));
@@ -210,8 +211,24 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2000-12-31")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2001-01-01")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2001-12-31")));
-
   }
 
+  @Test
+  void shouldNotCreateTicketCounterVersionWhenParentSloidDoesNotExist() throws Exception {
+    //given
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid("ch:1:sloid:7001");
+    referencePointRepository.save(referencePointVersion);
+
+    CreateToiletVersionModel model = ToiletTestData.getCreateToiletVersionModel();
+    model.setParentServicePointSloid("ch:1:sloid:7001");
+
+    //when && then
+    mvc.perform(post("/v1/toilets").contentType(contentType)
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(model)))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.message", is("Entity not found")));
+  }
 
 }

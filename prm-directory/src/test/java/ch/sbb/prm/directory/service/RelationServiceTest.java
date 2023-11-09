@@ -35,10 +35,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 class RelationServiceTest {
 
+  private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
+  private static final SharedServicePointVersionModel SHARED_SERVICE_POINT_VERSION_MODEL =
+          new SharedServicePointVersionModel(PARENT_SERVICE_POINT_SLOID,
+                  Collections.singleton("sboid"),
+                  Collections.singleton(""));
+
   private final RelationService relationService;
-
   private final RelationRepository relationRepository;
-
   private final StopPointRepository stopPointRepository;
 
   @Autowired
@@ -81,7 +85,7 @@ class RelationServiceTest {
     stopPointVersion.setSloid(parentServicePointSloid);
     stopPointRepository.save(stopPointVersion);
     RelationVersion version1 = RelationTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     relationRepository.saveAndFlush(version1);
     RelationVersion editedVersion = RelationTestData.builderVersion2().build();
     editedVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567));

@@ -32,85 +32,85 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @Transactional
 class InformationDeskServiceTest {
 
-  private final ReferencePointRepository referencePointRepository;
-  private final RelationRepository relationRepository;
+  private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
+  private static final SharedServicePointVersionModel SHARED_SERVICE_POINT_VERSION_MODEL =
+          new SharedServicePointVersionModel(PARENT_SERVICE_POINT_SLOID,
+                  Collections.singleton("sboid"),
+                  Collections.singleton(""));
 
-  private final StopPointRepository stopPointRepository;
-
-  private final InformationDeskRepository informationDeskRepository;
   private final InformationDeskService informationDeskService;
+  private final InformationDeskRepository informationDeskRepository;
+  private final RelationRepository relationRepository;
+  private final StopPointRepository stopPointRepository;
+  private final ReferencePointRepository referencePointRepository;
 
   @Autowired
-  InformationDeskServiceTest(ReferencePointRepository referencePointRepository, RelationRepository relationRepository,
-      StopPointRepository stopPointRepository, InformationDeskRepository informationDeskRepository, InformationDeskService informationDeskService) {
-    this.referencePointRepository = referencePointRepository;
+  InformationDeskServiceTest(InformationDeskService informationDeskService, InformationDeskRepository informationDeskRepository,
+                             RelationRepository relationRepository, StopPointRepository stopPointRepository,
+                             ReferencePointRepository referencePointRepository) {
+    this.informationDeskService = informationDeskService;
+    this.informationDeskRepository = informationDeskRepository;
     this.relationRepository = relationRepository;
     this.stopPointRepository = stopPointRepository;
-    this.informationDeskRepository = informationDeskRepository;
-    this.informationDeskService = informationDeskService;
+    this.referencePointRepository = referencePointRepository;
   }
 
   @Test
-  void shouldNotCreateInformationDeskWhenStopPointDoesNotExists() {
+  void shouldNotCreateInformationDeskWhenStopPointDoesNotExist() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:70000";
     InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
-    informationDesk.setParentServicePointSloid(parentServicePointSloid);
-
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
+    informationDesk.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when & then
     assertThrows(StopPointDoesNotExistsException.class,
-        () -> informationDeskService.createInformationDesk(informationDesk, sharedServicePointVersionModel)).getLocalizedMessage();
+        () -> informationDeskService.createInformationDesk(informationDesk, SHARED_SERVICE_POINT_VERSION_MODEL)).getLocalizedMessage();
   }
 
   @Test
   void shouldCreateInformationDeskWhenNoReferencePointExists() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
-    informationDesk.setParentServicePointSloid(parentServicePointSloid);
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
+    informationDesk.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when
-    informationDeskService.createInformationDesk(informationDesk, sharedServicePointVersionModel);
+    informationDeskService.createInformationDesk(informationDesk, SHARED_SERVICE_POINT_VERSION_MODEL);
 
     //then
-    List<InformationDeskVersion> informationDeskVersions = informationDeskRepository.findByParentServicePointSloid(
-        informationDesk.getParentServicePointSloid());
+    List<InformationDeskVersion> informationDeskVersions = informationDeskRepository
+            .findByParentServicePointSloid(informationDesk.getParentServicePointSloid());
     assertThat(informationDeskVersions).hasSize(1);
     assertThat(informationDeskVersions.get(0).getParentServicePointSloid()).isEqualTo(informationDesk.getParentServicePointSloid());
-    List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
-        informationDesk.getParentServicePointSloid());
+    List<RelationVersion> relationVersions = relationRepository
+            .findAllByParentServicePointSloid(informationDesk.getParentServicePointSloid());
     assertThat(relationVersions).isEmpty();
   }
 
   @Test
   void shouldCreateToiletWhenReferencePointExists() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
     InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
-    informationDesk.setParentServicePointSloid(parentServicePointSloid);
-
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
+    informationDesk.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when
-    informationDeskService.createInformationDesk(informationDesk, sharedServicePointVersionModel);
+    informationDeskService.createInformationDesk(informationDesk, SHARED_SERVICE_POINT_VERSION_MODEL);
 
     //then
-    List<InformationDeskVersion> informationDeskVersions = informationDeskRepository.findByParentServicePointSloid(
-        informationDesk.getParentServicePointSloid());
+    List<InformationDeskVersion> informationDeskVersions = informationDeskRepository
+            .findByParentServicePointSloid(informationDesk.getParentServicePointSloid());
     assertThat(informationDeskVersions).hasSize(1);
     assertThat(informationDeskVersions.get(0).getParentServicePointSloid()).isEqualTo(informationDesk.getParentServicePointSloid());
-    List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
-        parentServicePointSloid);
+    List<RelationVersion> relationVersions = relationRepository
+            .findAllByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions).hasSize(1);
+    assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
+    AbstractComparableAssert<?, ReferencePointElementType> equalTo = assertThat(
+        relationVersions.get(0).getReferencePointElementType()).isEqualTo(ReferencePointElementType.INFORMATION_DESK);
     assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(parentServicePointSloid);
     assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(ReferencePointElementType.INFORMATION_DESK);
   }

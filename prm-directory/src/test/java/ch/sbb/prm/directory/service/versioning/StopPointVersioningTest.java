@@ -27,11 +27,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 class StopPointVersioningTest {
 
+  private static final SharedServicePointVersionModel SHARED_SERVICE_POINT_VERSION_MODEL =
+          new SharedServicePointVersionModel("ch:1:sloid:12345",
+                  Collections.singleton("sboid"),
+                  Collections.singleton(""));
+
   private final StopPointRepository stopPointRepository;
   private final StopPointService stopPointService;
-
   private final SharedServicePointRepository sharedServicePointRepository;
-
 
   @Autowired
   StopPointVersioningTest(StopPointRepository stopPointRepository, StopPointService stopPointService,
@@ -95,9 +98,8 @@ class StopPointVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(editedVersion.getSloid(), Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    stopPointService.updateStopPointVersion(version2, editedVersion, sharedServicePointVersionModel);
+    stopPointService.updateStopPointVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
     //then
     List<StopPointVersion> result = stopPointRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
     assertThat(result).isNotNull().hasSize(2);
@@ -113,7 +115,6 @@ class StopPointVersioningTest {
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.id)
         .isEqualTo(editedVersion);
-
   }
 
   /**
@@ -144,10 +145,8 @@ class StopPointVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(editedVersion.getSloid(), Collections.singleton("sboid"), Collections.singleton(""));
-
     //when
-    stopPointService.updateStopPointVersion(version2, editedVersion, sharedServicePointVersionModel);
+    stopPointService.updateStopPointVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
     //then
     List<StopPointVersion> result = stopPointRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
     assertThat(result).isNotNull().hasSize(5);
@@ -178,7 +177,6 @@ class StopPointVersioningTest {
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
         .isEqualTo(savedVersion3);
-
   }
 
   /**
@@ -205,9 +203,8 @@ class StopPointVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(editedVersion.getSloid(), Collections.singleton("sboid"), Collections.singleton(""));
     //when
-    stopPointService.updateStopPointVersion(version2, editedVersion, sharedServicePointVersionModel);
+    stopPointService.updateStopPointVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
     //then
     List<StopPointVersion> result = stopPointRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
     assertThat(result).isNotNull().hasSize(2);
@@ -224,7 +221,6 @@ class StopPointVersioningTest {
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.validTo)
         .isEqualTo(savedVersion2);
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2001, 12, 31));
-
   }
 
 }
