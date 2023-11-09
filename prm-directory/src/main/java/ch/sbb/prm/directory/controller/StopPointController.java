@@ -6,7 +6,6 @@ import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointImportRequestModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.prm.directory.api.StopPointApiV1;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.StopPointAlreadyExistsException;
@@ -60,12 +59,12 @@ public class StopPointController implements StopPointApiV1 {
   }
 
   @Override
-  public List<ReadStopPointVersionModel> updateStopPoint(Long id, CreateStopPointVersionModel stopPointVersionModel) {
+  public List<ReadStopPointVersionModel> updateStopPoint(Long id, CreateStopPointVersionModel model) {
     StopPointVersion stopPointVersionToUpdate =
         stopPointService.getStopPointById(id).orElseThrow(() -> new IdNotFoundException(id));
-    SharedServicePointVersionModel sharedServicePointVersionModel = sharedServicePointService.findServicePoint(stopPointVersionModel.getSloid()).orElseThrow();
-    StopPointVersion editedVersion = StopPointVersionMapper.toEntity(stopPointVersionModel);
-    stopPointService.updateStopPointVersion(stopPointVersionToUpdate, editedVersion, sharedServicePointVersionModel);
+    StopPointVersion editedVersion = StopPointVersionMapper.toEntity(model);
+    stopPointService.updateStopPointVersion(stopPointVersionToUpdate, editedVersion,
+            sharedServicePointService.getSharedServicePointVersionModel(model.getSloid()));
 
     return stopPointService.findAllByNumberOrderByValidFrom(stopPointVersionToUpdate.getNumber()).stream()
         .map(StopPointVersionMapper::toModel).toList();

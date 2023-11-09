@@ -3,7 +3,6 @@ package ch.sbb.prm.directory.controller;
 import ch.sbb.atlas.api.prm.model.parkinglot.CreateParkingLotVersionModel;
 import ch.sbb.atlas.api.prm.model.parkinglot.ReadParkingLotVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.prm.directory.api.ParkingLotApiV1;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.mapper.ParkingLotVersionMapper;
@@ -31,9 +30,8 @@ public class ParkingLotsController implements ParkingLotApiV1 {
 
   @Override
   public ReadParkingLotVersionModel createParkingLot(CreateParkingLotVersionModel model) {
-    SharedServicePointVersionModel sharedServicePointVersionModel = sharedServicePointService.findServicePoint(model.getParentServicePointSloid()).orElseThrow();
     ParkingLotVersion parkingLotVersion = parkingLotService.createParkingLot(ParkingLotVersionMapper.toEntity(model),
-            sharedServicePointVersionModel);
+            sharedServicePointService.getSharedServicePointVersionModel(model.getParentServicePointSloid()));
     return ParkingLotVersionMapper.toModel(parkingLotVersion);
   }
 
@@ -43,8 +41,8 @@ public class ParkingLotsController implements ParkingLotApiV1 {
         parkingLotService.getPlatformVersionById(id).orElseThrow(() -> new IdNotFoundException(id));
 
     ParkingLotVersion editedVersion = ParkingLotVersionMapper.toEntity(model);
-    SharedServicePointVersionModel sharedServicePointVersionModel = sharedServicePointService.findServicePoint(model.getParentServicePointSloid()).orElseThrow();
-    parkingLotService.updateParkingLotVersion(parkingLotVersion, editedVersion, sharedServicePointVersionModel);
+    parkingLotService.updateParkingLotVersion(parkingLotVersion, editedVersion,
+            sharedServicePointService.getSharedServicePointVersionModel(model.getParentServicePointSloid()));
 
     return parkingLotService.findAllByNumberOrderByValidFrom(parkingLotVersion.getNumber()).stream()
         .map(ParkingLotVersionMapper::toModel).toList();

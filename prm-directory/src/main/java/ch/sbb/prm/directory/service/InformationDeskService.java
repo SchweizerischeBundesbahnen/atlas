@@ -61,17 +61,18 @@ public class InformationDeskService extends PrmRelatableVersionableService<Infor
     return informationDeskRepository.findAll();
   }
 
-  @PreAuthorize("@prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations"
-                  + "(#sharedServicePointVersionModel, "
-                  + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)")
-  public InformationDeskVersion createInformationDesk(InformationDeskVersion version, SharedServicePointVersionModel sharedServicePointVersionModel) {
+  @PreAuthorize("""
+      @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
+      (#sharedServicePointVersionModel, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+  public InformationDeskVersion createInformationDesk(InformationDeskVersion version,
+                                                      SharedServicePointVersionModel sharedServicePointVersionModel) {
     createRelation(version);
     return save(version);
   }
 
-  @PreAuthorize("@prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations"
-          + "(#sharedServicePointVersionModel, "
-          + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)")
+  @PreAuthorize("""
+      @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
+      (#sharedServicePointVersionModel, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
   public InformationDeskVersion updateInformationDeskVersion(InformationDeskVersion currentVersion,
       InformationDeskVersion editedVersion, SharedServicePointVersionModel sharedServicePointVersionModel) {
     return updateVersion(currentVersion, editedVersion);
