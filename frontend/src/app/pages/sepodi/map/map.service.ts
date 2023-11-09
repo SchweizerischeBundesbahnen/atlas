@@ -15,14 +15,14 @@ import {
   MAP_TRAFFIC_POINT_LAYER_NAME,
   MAP_ZOOM_DETAILS,
 } from './map-style';
-import { Feature, GeoJsonProperties, Point } from 'geojson';
+import { GeoJsonProperties, Point } from 'geojson';
 import { MAP_STYLES, MapOptionsService, MapStyle } from './map-options.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { CoordinatePair, SpatialReference } from '../../../api';
 import { Pages } from '../../pages';
 import { MapIconsService } from './map-icons.service';
-import { DisplayableTrafficPoint } from '../service-point-side-panel/traffic-point-elements/displayable-traffic-point';
 import { Router } from '@angular/router';
+import { TrafficPointMapService } from './traffic-point-map.service';
 
 export const mapZoomLocalStorageKey = 'map-zoom';
 export const mapLocationLocalStorageKey = 'map-location';
@@ -144,7 +144,7 @@ export class MapService {
       });
       this.map.on('mousemove', MAP_SOURCE_NAME, (e) => {
         if (this.showDetails()) {
-          this.showPopup(e, this.buildServicePointPopupInformation);
+          this.showServicePointPopup(e);
         }
       });
 
@@ -158,7 +158,7 @@ export class MapService {
       });
       this.map.on('mousemove', MAP_TRAFFIC_POINT_LAYER_NAME, (e) => {
         if (this.showDetails()) {
-          this.showPopup(e, this.buildTrafficPointPopupInformation);
+          this.showTrafficPointPopup(e);
         }
       });
       this.map.on('click', MAP_TRAFFIC_POINT_LAYER_NAME, (e) => this.onTrafficPointClicked(e));
@@ -168,7 +168,7 @@ export class MapService {
     });
   }
 
-  private showDetails(): boolean {
+  showDetails(): boolean {
     return this.map.getZoom() >= MAP_ZOOM_DETAILS;
   }
 
@@ -235,7 +235,15 @@ export class MapService {
     }
   }
 
-  showPopup(
+  showServicePointPopup(event: MapMouseEvent & { features?: MapGeoJSONFeature[] }) {
+    this.showPopup(event, this.buildServicePointPopupInformation);
+  }
+
+  showTrafficPointPopup(event: MapMouseEvent & { features?: MapGeoJSONFeature[] }) {
+    this.showPopup(event, TrafficPointMapService.buildTrafficPointPopupInformation);
+  }
+
+  private showPopup(
     event: MapMouseEvent & { features?: MapGeoJSONFeature[] },
     htmlContentBuilder: (features: MapGeoJSONFeature[]) => string,
   ) {
@@ -261,21 +269,6 @@ export class MapService {
       popupHtml +=
         `<a href="${Pages.SEPODI.path}/${Pages.SERVICE_POINTS.path}/${point.properties.number}">` +
         `<b>${formattedNumber}</b> - ${point.properties.designationOfficial}</a> <br/>`;
-    });
-
-    return popupHtml;
-  }
-
-  buildTrafficPointPopupInformation(features: MapGeoJSONFeature[]) {
-    let popupHtml = '';
-
-    features.forEach((point) => {
-      const description = point.properties.designation
-        ? `${point.properties.designation} - ${point.properties.sloid}`
-        : point.properties.sloid;
-      popupHtml +=
-        `<a href="${Pages.SEPODI.path}/${Pages.TRAFFIC_POINT_ELEMENTS.path}/${point.properties.sloid}">` +
-        `${description}</a> <br/>`;
     });
 
     return popupHtml;
@@ -340,48 +333,4 @@ export class MapService {
       this.clickedGeographyCoordinates.next(clickedCoordinates);
     }
   };
-
-  setDisplayedTrafficPoints(trafficPoints: DisplayableTrafficPoint[]) {
-    const source = this.map.getSource(MAP_TRAFFIC_POINT_LAYER_NAME) as GeoJSONSource;
-
-    const trafficPointGeoInformation: Feature[] = trafficPoints.map((point) => {
-      return {
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [point.coordinates.east, point.coordinates.north],
-        },
-        properties: {
-          type: point.type,
-          sloid: point.sloid,
-          designation: point.designation,
-        },
-      };
-    });
-    source.setData({
-      type: 'FeatureCollection',
-      features: trafficPointGeoInformation,
-    });
-  }
-
-  clearDisplayedTrafficPoints() {
-    this.setDisplayedTrafficPoints([]);
-  }
-
-  setCurrentTrafficPoint(coordinates?: CoordinatePair) {
-    const source = this.map.getSource('current_traffic_point') as GeoJSONSource;
-    const coordinatesToSet = [coordinates?.east ?? 0, coordinates?.north ?? 0];
-    source.setData({
-      type: 'Feature',
-      geometry: {
-        type: 'Point',
-        coordinates: coordinatesToSet,
-      },
-      properties: {},
-    });
-  }
-
-  clearCurrentTrafficPoint() {
-    this.setCurrentTrafficPoint();
-  }
 }
