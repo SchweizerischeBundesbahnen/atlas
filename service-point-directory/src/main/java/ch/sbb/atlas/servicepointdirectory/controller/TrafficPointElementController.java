@@ -21,6 +21,7 @@ import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointServi
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementImportService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -80,6 +81,12 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   public Container<ReadTrafficPointElementVersionModel> getPlatformsOfServicePoint(Integer servicePointNumber, Pageable pageable) {
     return trafficPointElementService.getTrafficPointElementsByServicePointNumber(servicePointNumber, pageable,
         TrafficPointElementType.BOARDING_PLATFORM);
+  }
+
+  @Override
+  public List<ReadTrafficPointElementVersionModel> getTrafficPointsOfServicePointValidToday(Integer servicePointNumber) {
+    return trafficPointElementService.getTrafficPointElementsByServicePointNumber(servicePointNumber, LocalDate.now()).stream()
+        .map(TrafficPointElementVersionMapper::toModel).toList();
   }
 
   @Override

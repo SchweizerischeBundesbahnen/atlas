@@ -711,6 +711,74 @@ export class TrafficPointElementsService {
   }
 
   /**
+   * @param servicePointNumber
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public getTrafficPointsOfServicePointValidToday(
+    servicePointNumber: number,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' },
+  ): Observable<Array<ReadTrafficPointElementVersion>>;
+  public getTrafficPointsOfServicePointValidToday(
+    servicePointNumber: number,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' },
+  ): Observable<HttpResponse<Array<ReadTrafficPointElementVersion>>>;
+  public getTrafficPointsOfServicePointValidToday(
+    servicePointNumber: number,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' },
+  ): Observable<HttpEvent<Array<ReadTrafficPointElementVersion>>>;
+  public getTrafficPointsOfServicePointValidToday(
+    servicePointNumber: number,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: '*/*' },
+  ): Observable<any> {
+    if (servicePointNumber === null || servicePointNumber === undefined) {
+      throw new Error(
+        'Required parameter servicePointNumber was null or undefined when calling getTrafficPointsOfServicePointValidToday.',
+      );
+    }
+
+    let headers = this.defaultHeaders;
+
+    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+    if (httpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = ['*/*'];
+      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (httpHeaderAcceptSelected !== undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    let responseType_: 'text' | 'json' = 'json';
+    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+      responseType_ = 'text';
+    }
+
+    return this.httpClient.get<Array<ReadTrafficPointElementVersion>>(
+      `${
+        this.configuration.basePath
+      }/service-point-directory/v1/traffic-point-elements/actual-date/${encodeURIComponent(
+        String(servicePointNumber),
+      )}`,
+      {
+        responseType: <any>responseType_,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress,
+      },
+    );
+  }
+
+  /**
    * @param trafficPointImportRequest
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.

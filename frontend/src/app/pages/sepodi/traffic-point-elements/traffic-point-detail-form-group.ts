@@ -31,12 +31,18 @@ export class TrafficPointElementFormGroupBuilder {
           Validators.maxLength(20),
         ]),
         parentSloid: new FormControl(version?.parentSloid),
-        length: new FormControl(version?.length, [AtlasCharsetsValidator.decimalWithDigits(3)]),
+        length: new FormControl(version?.length, [
+          AtlasCharsetsValidator.decimalWithDigits(3),
+          Validators.min(0),
+        ]),
         boardingAreaHeight: new FormControl(version?.boardingAreaHeight, [
           AtlasCharsetsValidator.decimalWithDigits(2),
+          Validators.min(0),
         ]),
         compassDirection: new FormControl(version?.compassDirection, [
           AtlasCharsetsValidator.decimalWithDigits(2),
+          Validators.min(0),
+          Validators.max(360),
         ]),
         designation: new FormControl(version?.designation, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
