@@ -968,7 +968,16 @@
       }
     },
     "LOADING_POINTS": {
-      "LOADING_POINTS": "Ladestellen"
+      "LOADING_POINTS": "Ladestellen",
+      "NEW": "Neue Ladestelle erfassen",
+      "NUMBER": "Nummer",
+      "DESIGNATION": "Bezeichnung",
+      "DESIGNATION_LONG": "Bezeichnung Lang",
+      "CONNECTION_POINT": "Anschlusspunkt",
+      "CONNECTION_POINT_VALUE": {
+        "true": "Ja",
+        "false": "Nein"
+      }
     },
     "GEOLOCATION": {
       "INVALID": "Die angegebenen Koordinaten sind ungültig. Bitte korrigieren Sie Ihre Eingabe.",

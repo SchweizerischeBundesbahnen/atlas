@@ -8,7 +8,7 @@ import { CoreModule } from '../../core/module/core.module';
 import { ServicePointDetailComponent } from './service-point-side-panel/service-point/service-point-detail.component';
 import { AreasDetailComponent } from './service-point-side-panel/areas/areas-detail.component';
 import { TrafficPointElementsTableComponent } from './service-point-side-panel/traffic-point-elements/traffic-point-elements-table.component';
-import { LoadingPointsDetailComponent } from './service-point-side-panel/loading-points/loading-points-detail.component';
+import { LoadingPointsTableComponent } from './service-point-side-panel/loading-points/loading-points-table.component';
 import { FormModule } from '../../core/module/form.module';
 import { FormsModule } from '@angular/forms';
 import { MeansOfTransportPickerComponent } from './means-of-transport-picker/means-of-transport-picker.component';
@@ -20,6 +20,7 @@ import { KilometerMasterSearchComponent } from './service-point-side-panel/servi
 import { ServicePointCreationComponent } from './service-point-side-panel/service-point/service-point-creation/service-point-creation.component';
 import { ServicePointFormComponent } from './service-point-side-panel/service-point/service-point-form/service-point-form.component';
 import { TrafficPointElementsDetailComponent } from './traffic-point-elements/traffic-point-elements-detail.component';
+import { LoadingPointsDetailComponent } from './loading-points/loading-points-detail.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,7 @@ import { TrafficPointElementsDetailComponent } from './traffic-point-elements/tr
     KilometerMasterSearchComponent,
     AreasDetailComponent,
     TrafficPointElementsTableComponent,
-    LoadingPointsDetailComponent,
+    LoadingPointsTableComponent,
     MapComponent,
     MeansOfTransportPickerComponent,
     GeographyComponent,
@@ -39,6 +40,7 @@ import { TrafficPointElementsDetailComponent } from './traffic-point-elements/tr
     ServicePointCreationComponent,
     ServicePointFormComponent,
     TrafficPointElementsDetailComponent,
+    LoadingPointsDetailComponent,
   ],
   imports: [CoreModule, FormModule, FormsModule, SepodiRoutingModule],
 })

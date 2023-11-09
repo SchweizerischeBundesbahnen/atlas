@@ -181,6 +181,15 @@ export class Pages {
     description: 'PAGES.SERVICE_POINTS.DESCRIPTION',
   };
 
+  public static LOADING_POINTS: Page = {
+    title: 'PAGES.SERVICE_POINTS.TITLE',
+    titleMenu: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
+    headerTitle: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
+    path: 'loading-points',
+    pathText: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
+    description: 'PAGES.SERVICE_POINTS.DESCRIPTION',
+  };
+
   public static pages: Page[] = [Pages.HOME, Pages.TTFN, Pages.LIDI, Pages.BODI, Pages.SEPODI];
   public static adminPages: Page[] = [Pages.USER_ADMINISTRATION];
   public static viewablePages: Page[] = this.pages;

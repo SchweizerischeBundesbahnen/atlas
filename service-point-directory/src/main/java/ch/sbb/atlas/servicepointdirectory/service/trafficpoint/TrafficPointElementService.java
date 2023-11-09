@@ -14,7 +14,6 @@ import ch.sbb.atlas.servicepointdirectory.service.OverviewService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import lombok.Getter;
