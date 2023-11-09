@@ -1002,7 +1002,9 @@
       "STOP_POINT": "Arrêt",
       "FREIGHT_SERVICE_POINT": "Point de chargement",
       "OPERATING_POINT_TECHNICAL": "Point horaire",
-      "SERVICE_POINT": "Service"
+      "SERVICE_POINT": "Service",
+      "BOARDING_PLATFORM": "Bord d'arrêt",
+      "BOARDING_AREA": "Zone d’arrêt"
     },
     "BACK_TO_MAP": "Fermer",
     "AUTOMATIC_SLOID": "Elle est indiquée automatiquement.",
