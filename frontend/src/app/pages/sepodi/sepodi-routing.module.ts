@@ -5,7 +5,6 @@ import { ServicePointSidePanelComponent } from './service-point-side-panel/servi
 import { Pages } from '../pages';
 import { servicePointResolver } from './service-point-side-panel/service-point-detail.resolver';
 import { ServicePointDetailComponent } from './service-point-side-panel/service-point/service-point-detail.component';
-import { AreasDetailComponent } from './service-point-side-panel/areas/areas-detail.component';
 import { TrafficPointElementsTableComponent } from './service-point-side-panel/traffic-point-elements/traffic-point-elements-table.component';
 import { LoadingPointsDetailComponent } from './service-point-side-panel/loading-points/loading-points-detail.component';
 import { FotCommentDetailComponent } from './service-point-side-panel/comment/fot-comment-detail.component';
