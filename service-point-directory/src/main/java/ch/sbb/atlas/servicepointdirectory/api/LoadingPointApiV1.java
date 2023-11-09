@@ -55,7 +55,7 @@ public interface LoadingPointApiV1 {
   List<ReadLoadingPointVersionModel> getLoadingPoint(@PathVariable Integer servicePointNumber,
       @PathVariable Integer loadingPointNumber);
 
-  @GetMapping("{id}")
+  @GetMapping("versions/{id}")
   ReadLoadingPointVersionModel getLoadingPointVersion(@PathVariable Long id);
 
   @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
