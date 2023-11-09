@@ -43,6 +43,14 @@ public interface LoadingPointApiV1 {
           LoadingPointVersion.Fields.number, LoadingPointVersion.Fields.validFrom}) Pageable pageable,
       @Valid @ParameterObject LoadingPointElementRequestParams loadingPointElementRequestParams);
 
+  @GetMapping("{servicePointNumber}")
+  @PageableAsQueryParam
+  Container<ReadLoadingPointVersionModel> getLoadingPointOverview(
+      @PathVariable Integer servicePointNumber,
+      @Parameter(hidden = true) @PageableDefault(sort = {
+          LoadingPointVersion.Fields.servicePointNumber,
+          LoadingPointVersion.Fields.number, LoadingPointVersion.Fields.validFrom}) Pageable pageable);
+
   @GetMapping("{servicePointNumber}/{loadingPointNumber}")
   List<ReadLoadingPointVersionModel> getLoadingPoint(@PathVariable Integer servicePointNumber,
       @PathVariable Integer loadingPointNumber);
