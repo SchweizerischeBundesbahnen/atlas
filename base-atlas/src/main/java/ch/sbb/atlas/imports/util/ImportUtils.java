@@ -15,8 +15,8 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ImportUtils {
 
-  public static final String EDITION_DATE_FIELD_NAME = "editionDate";
-  public static final String EDITOR_FIELD_NAME = "editor";
+  private static final String EDITION_DATE_FIELD_NAME = "editionDate";
+  private static final String EDITOR_FIELD_NAME = "editor";
 
   public <T extends Versionable> T getCurrentPointVersion(List<T> dbVersions, T edited) {
     dbVersions.sort(Comparator.comparing(Versionable::getValidFrom));
