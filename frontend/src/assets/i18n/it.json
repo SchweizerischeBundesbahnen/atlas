@@ -1002,7 +1002,9 @@
       "STOP_POINT": "Fermata",
       "FREIGHT_SERVICE_POINT": "Punto di servizio",
       "OPERATING_POINT_TECHNICAL": "Punto d'orario",
-      "SERVICE_POINT": "Posto di servizio"
+      "SERVICE_POINT": "Posto di servizio",
+      "BOARDING_PLATFORM": "Bordo fermata",
+      "BOARDING_AREA": "Zona di fermata"
     },
     "BACK_TO_MAP": "Chiudere",
     "AUTOMATIC_SLOID": "viene assegnato automaticamente.",
