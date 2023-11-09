@@ -5,6 +5,8 @@ import { Feature } from 'geojson';
 import { CoordinatePair, TrafficPointElementsService, TrafficPointElementType } from '../../../api';
 import { Pages } from '../../pages';
 import { MapService } from './map.service';
+import { filter } from 'rxjs/operators';
+import { take } from 'rxjs';
 
 export interface DisplayableTrafficPoint {
   type: TrafficPointElementType;
@@ -38,8 +40,12 @@ export class TrafficPointMapService {
   }
 
   displayTrafficPointsOnMap(servicePointNumber: number) {
-    this.mapService.mapInitialized.subscribe((initialized) => {
-      if (initialized) {
+    this.mapService.mapInitialized
+      .pipe(
+        filter((initialized) => initialized),
+        take(1),
+      )
+      .subscribe(() => {
         this.trafficPointElementsService
           .getTrafficPointsOfServicePointValidToday(servicePointNumber)
           .subscribe((points) => {
@@ -55,8 +61,7 @@ export class TrafficPointMapService {
               });
             this.setDisplayedTrafficPoints(trafficPoints);
           });
-      }
-    });
+      });
   }
 
   setDisplayedTrafficPoints(trafficPoints: DisplayableTrafficPoint[]) {
@@ -87,8 +92,12 @@ export class TrafficPointMapService {
   }
 
   displayCurrentTrafficPoint(coordinates?: CoordinatePair) {
-    this.mapService.mapInitialized.subscribe((initialized) => {
-      if (initialized) {
+    this.mapService.mapInitialized
+      .pipe(
+        filter((initialized) => initialized),
+        take(1),
+      )
+      .subscribe(() => {
         const source = this.mapService.map.getSource('current_traffic_point') as GeoJSONSource;
         const coordinatesToSet = [coordinates?.east ?? 0, coordinates?.north ?? 0];
         source.setData({
@@ -99,8 +108,7 @@ export class TrafficPointMapService {
           },
           properties: {},
         });
-      }
-    });
+      });
   }
 
   clearCurrentTrafficPoint() {
