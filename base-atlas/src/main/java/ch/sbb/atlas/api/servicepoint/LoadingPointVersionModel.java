@@ -3,6 +3,7 @@ package ch.sbb.atlas.api.servicepoint;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.validation.DatesValidator;
+import ch.sbb.atlas.versioning.model.Versionable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.NotNull;
@@ -22,7 +23,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "LoadingPointVersion")
-public abstract class LoadingPointVersionModel extends BaseVersionModel implements DatesValidator {
+public abstract class LoadingPointVersionModel extends BaseVersionModel implements DatesValidator, Versionable {
 
   @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;

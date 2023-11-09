@@ -51,6 +51,11 @@ public class LoadingPointController implements LoadingPointApiV1 {
   }
 
   @Override
+  public Container<ReadLoadingPointVersionModel> getLoadingPointOverview(Integer servicePointNumber, Pageable pageable) {
+    return loadingPointService.getOverview(servicePointNumber, pageable);
+  }
+
+  @Override
   public List<ReadLoadingPointVersionModel> getLoadingPoint(Integer servicePointNumber, Integer loadingPointNumber) {
     ServicePointNumber number = ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber);
     List<ReadLoadingPointVersionModel> loadingPointVersions = loadingPointService.findLoadingPoint(number,
