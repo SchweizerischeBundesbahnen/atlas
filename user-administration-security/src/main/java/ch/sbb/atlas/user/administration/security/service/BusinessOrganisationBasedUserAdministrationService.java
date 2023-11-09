@@ -7,34 +7,40 @@ import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionRestrictionModel;
 import ch.sbb.atlas.user.administration.security.UserPermissionHolder;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
 public class BusinessOrganisationBasedUserAdministrationService extends BaseUserAdministrationService {
 
-  private static final Predicate<UserAdministrationPermissionRestrictionModel> IS_BUSINESS_ORGANISATION_RESTRICTION =
-      i -> i.getRestrictionType() == PermissionRestrictionType.BUSINESS_ORGANISATION;
+  protected static final Predicate<UserAdministrationPermissionRestrictionModel> IS_BUSINESS_ORGANISATION_RESTRICTION =
+          i -> i.getRestrictionType() == PermissionRestrictionType.BUSINESS_ORGANISATION;
 
   public BusinessOrganisationBasedUserAdministrationService(UserPermissionHolder userPermissionHolder) {
     super(userPermissionHolder);
   }
 
   public boolean hasUserPermissionsToCreate(BusinessOrganisationAssociated businessObject,
+                                            ApplicationType applicationType) {
+    return hasUserPermissionsForBusinessOrganisation(businessObject.getBusinessOrganisation(), applicationType);
+  }
+
+  public boolean hasUserPermissionsForBusinessOrganisation(String sboid,
       ApplicationType applicationType) {
-    log.info("Checking if user {} may create object with sboid {}",
+    log.info("Checking if user {} has enough rights for an object with sboid {}",
         getCurrentUserSbbUid(),
-        businessObject.getBusinessOrganisation());
+        sboid);
 
     boolean permissionsToCreate = hasUserPermissions(applicationType,
-        permissions -> permissions.getRestrictions().stream()
-            .filter(IS_BUSINESS_ORGANISATION_RESTRICTION)
-            .map(UserAdministrationPermissionRestrictionModel::getValue).collect(Collectors.toSet())
-            .contains(businessObject.getBusinessOrganisation()));
+            permissions -> permissions.getRestrictions().stream()
+                    .filter(IS_BUSINESS_ORGANISATION_RESTRICTION)
+                    .map(UserAdministrationPermissionRestrictionModel::getValue).collect(Collectors.toSet())
+                    .contains(sboid));
 
     log.info("User {} has permissions: {}", getCurrentUserSbbUid(), permissionsToCreate);
     return permissionsToCreate;
