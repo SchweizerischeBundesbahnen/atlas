@@ -1,45 +1,49 @@
 package ch.sbb.prm.directory.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.controller.StopPointRequestParams;
 import ch.sbb.prm.directory.entity.StopPointVersion;
+import ch.sbb.prm.directory.exception.ServicePointDoesNotExistsException;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistsException;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 @IntegrationTest
 @Transactional
 class StopPointVersionServiceTest {
 
-  private final StopPointRepository stopPointRepository;
+  private static final String SLOID = "ch:1:sloid:70000";
+
   private final StopPointService stopPointService;
+  private final StopPointRepository stopPointRepository;
 
   @Autowired
-  StopPointVersionServiceTest(StopPointRepository stopPointRepository, StopPointService stopPointService) {
-    this.stopPointRepository = stopPointRepository;
+  StopPointVersionServiceTest(StopPointService stopPointService, StopPointRepository stopPointRepository) {
     this.stopPointService = stopPointService;
+    this.stopPointRepository = stopPointRepository;
   }
 
   @Test
-  void shouldThrowsExceptionWhenStopPointDoesNotExists() {
+  void shouldThrowExceptionWhenStopPointDoesNotExist() {
     assertThrows(StopPointDoesNotExistsException.class,
-        () -> stopPointService.checkStopPointExists("ch:1:sloid:70000")).getLocalizedMessage();
+        () -> stopPointService.checkStopPointExists(SLOID)).getLocalizedMessage();
   }
 
   @Test
-  void shouldNotThrowsExceptionWhenStopPointExists() {
+  void shouldNotThrowExceptionWhenStopPointExist() {
     //given
     StopPointVersion version = stopPointRepository.save(StopPointTestData.getStopPointVersion());
     //when && then
@@ -58,13 +62,11 @@ class StopPointVersionServiceTest {
         .stopPointRequestParams(params)
         .build();
     Page<StopPointVersion> result = stopPointService.findAll(restrictions);
-
     //then
     assertThat(result).isNotNull();
     assertThat(result.getContent()).isNotNull();
     assertThat(result.getTotalElements()).isEqualTo(1);
     assertThat(result.getContent().get(0).getNumber()).isEqualTo(version.getNumber());
-
   }
 
   @Test
@@ -79,7 +81,6 @@ class StopPointVersionServiceTest {
         .stopPointRequestParams(params)
         .build();
     Page<StopPointVersion> result = stopPointService.findAll(restrictions);
-
     //then
     assertThat(result).isNotNull();
     assertThat(result.getContent()).isNotNull();
@@ -116,7 +117,6 @@ class StopPointVersionServiceTest {
     assertThat(result.getContent()).contains(stopPoint1);
     assertThat(result.getContent()).contains(stopPoint2);
     assertThat(result.getContent()).doesNotContain(stopPoint3);
-
   }
 
   @Test
@@ -189,7 +189,14 @@ class StopPointVersionServiceTest {
     assertThat(result.getContent()).contains(stopPoint1);
     assertThat(result.getContent()).contains(stopPoint2);
     assertThat(result.getContent()).doesNotContain(stopPoint3);
+  }
 
+  @Test
+  void shouldThrowServicePointSloidDoesNotExist() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    //when & then
+    assertThrows(ServicePointDoesNotExistsException.class, () -> stopPointService.save(stopPointVersion));
   }
 
 }

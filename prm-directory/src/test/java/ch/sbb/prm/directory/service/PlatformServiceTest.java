@@ -34,31 +34,32 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class PlatformServiceTest {
 
   private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
+  private static final SharedServicePointVersionModel SHARED_SERVICE_POINT_VERSION_MODEL =
+          new SharedServicePointVersionModel(PARENT_SERVICE_POINT_SLOID,
+                  Collections.singleton("sboid"),
+                  Collections.singleton(""));
 
-  private final PlatformRepository platformRepository;
-  private final ReferencePointRepository referencePointRepository;
-  private final RelationRepository relationRepository;
-
-  private final StopPointRepository stopPointRepository;
   private final PlatformService platformService;
   private final SharedServicePointConsumer sharedServicePointConsumer;
-  private SharedServicePointVersionModel sharedServicePointVersionModel;
+  private final PlatformRepository platformRepository;
+  private final RelationRepository relationRepository;
+  private final StopPointRepository stopPointRepository;
+  private final ReferencePointRepository referencePointRepository;
 
   @Autowired
-  PlatformServiceTest(PlatformRepository platformRepository, ReferencePointRepository referencePointRepository,
-      RelationRepository relationRepository, StopPointRepository stopPointRepository, PlatformService platformService,
-      SharedServicePointConsumer sharedServicePointConsumer) {
-    this.platformRepository = platformRepository;
-    this.referencePointRepository = referencePointRepository;
-    this.relationRepository = relationRepository;
-    this.stopPointRepository = stopPointRepository;
+  PlatformServiceTest(PlatformService platformService, SharedServicePointConsumer sharedServicePointConsumer,
+                      PlatformRepository platformRepository, RelationRepository relationRepository,
+                      StopPointRepository stopPointRepository, ReferencePointRepository referencePointRepository) {
     this.platformService = platformService;
     this.sharedServicePointConsumer = sharedServicePointConsumer;
+    this.platformRepository = platformRepository;
+    this.relationRepository = relationRepository;
+    this.stopPointRepository = stopPointRepository;
+    this.referencePointRepository = referencePointRepository;
   }
 
   @BeforeEach
   void setUp() {
-    sharedServicePointVersionModel = new SharedServicePointVersionModel(PARENT_SERVICE_POINT_SLOID, Collections.singleton("sboid"), Collections.singleton(""));
     sharedServicePointConsumer.readServicePointFromKafka(SharedServicePointVersionModel.builder()
         .servicePointSloid(PARENT_SERVICE_POINT_SLOID)
         .sboids(Set.of("ch:1:sboid:100001"))
@@ -67,13 +68,13 @@ class PlatformServiceTest {
   }
 
   @Test
-  void shouldNotCreatePlatformWhenStopPointDoesNotExists() {
+  void shouldNotCreatePlatformWhenStopPointDoesNotExist() {
     //given
     PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
     platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when & then
     assertThrows(StopPointDoesNotExistsException.class,
-        () -> platformService.createPlatformVersion(platformVersion, sharedServicePointVersionModel)).getLocalizedMessage();
+        () -> platformService.createPlatformVersion(platformVersion, SHARED_SERVICE_POINT_VERSION_MODEL)).getLocalizedMessage();
   }
 
   @Test
@@ -85,15 +86,15 @@ class PlatformServiceTest {
     PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
     platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when
-    platformService.createPlatformVersion(platformVersion, sharedServicePointVersionModel);
+    platformService.createPlatformVersion(platformVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
 
     //then
-    List<PlatformVersion> platformVersions = platformRepository.findByParentServicePointSloid(
-        platformVersion.getParentServicePointSloid());
+    List<PlatformVersion> platformVersions = platformRepository
+            .findByParentServicePointSloid(platformVersion.getParentServicePointSloid());
     assertThat(platformVersions).hasSize(1);
     assertThat(platformVersions.get(0).getParentServicePointSloid()).isEqualTo(platformVersion.getParentServicePointSloid());
-    List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
-        platformVersion.getParentServicePointSloid());
+    List<RelationVersion> relationVersions = relationRepository
+            .findAllByParentServicePointSloid(platformVersion.getParentServicePointSloid());
     assertThat(relationVersions).isEmpty();
   }
 
@@ -111,15 +112,15 @@ class PlatformServiceTest {
     platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //when
-    platformService.createPlatformVersion(platformVersion, sharedServicePointVersionModel);
+    platformService.createPlatformVersion(platformVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
 
     //then
     List<PlatformVersion> platformVersions = platformRepository.findByParentServicePointSloid(
         platformVersion.getParentServicePointSloid());
     assertThat(platformVersions).hasSize(1);
     assertThat(platformVersions.get(0).getParentServicePointSloid()).isEqualTo(platformVersion.getParentServicePointSloid());
-    List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
-        PARENT_SERVICE_POINT_SLOID);
+    List<RelationVersion> relationVersions = relationRepository
+            .findAllByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions).hasSize(1);
     assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(PLATFORM);
@@ -199,7 +200,7 @@ class PlatformServiceTest {
 
     //when & then
     assertThrows(TrafficPointElementDoesNotExistsException.class,
-        () -> platformService.createPlatformVersion(platformVersion, sharedServicePointVersionModel)).getLocalizedMessage();
+        () -> platformService.createPlatformVersion(platformVersion, SHARED_SERVICE_POINT_VERSION_MODEL)).getLocalizedMessage();
   }
 
 }
