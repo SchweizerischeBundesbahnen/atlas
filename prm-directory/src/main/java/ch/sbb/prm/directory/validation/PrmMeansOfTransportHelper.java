@@ -13,6 +13,7 @@ import static ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport.TRAM;
 
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.exception.StopPointMeansOfTransportCombinationNotAllowedException;
+import ch.sbb.prm.directory.exception.UnknownMeanOfTransportNotAllowedException;
 import java.util.List;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
@@ -25,6 +26,7 @@ public class PrmMeansOfTransportHelper {
   public static final List<MeanOfTransport> COMPLETE_MEANS_OF_TRANSPORT = List.of(METRO, TRAIN, RACK_RAILWAY);
 
   public boolean isReduced(Set<MeanOfTransport> meanOfTransports){
+    validateDoesNotContainsUnknownMeanOfTransport(meanOfTransports);
     boolean containsReduced = REDUCED_MEANS_OF_TRANSPORT.stream().anyMatch(meanOfTransports::contains);
     boolean containsComplete = COMPLETE_MEANS_OF_TRANSPORT.stream().anyMatch(meanOfTransports::contains);
     if(containsReduced && containsComplete){
@@ -32,5 +34,9 @@ public class PrmMeansOfTransportHelper {
     }
     return containsReduced;
   }
-
+  private void validateDoesNotContainsUnknownMeanOfTransport(Set<MeanOfTransport> meanOfTransports){
+    if(meanOfTransports.contains(MeanOfTransport.UNKNOWN)){
+      throw new UnknownMeanOfTransportNotAllowedException();
+    }
+  }
 }

@@ -16,6 +16,7 @@ import org.junit.jupiter.api.function.Executable;
 import org.mockito.MockitoAnnotations;
 
 class PlatformValidationServiceTest {
+
   private PlatformValidationService platformValidationService;
 
   @BeforeEach
@@ -38,7 +39,9 @@ class PlatformValidationServiceTest {
     assertThat(result).isNotNull();
     ErrorResponse errorResponse = result.getErrorResponse();
     assertThat(errorResponse.getStatus()).isEqualTo(400);
-    assertThat(errorResponse.getMessage()).isEqualTo("PlatformVersion cannot be save!");
+    assertThat(errorResponse.getMessage()).isEqualTo(
+        "PlatformVersionwith sloid [ch:1:sloid:12345:1] cannot be save: Attempting to save a Reduced object that contains "
+            + "Complete properties!");
     assertThat(errorResponse.getDetails()).hasSize(9);
   }
 
@@ -57,14 +60,15 @@ class PlatformValidationServiceTest {
     assertThat(result).isNotNull();
     ErrorResponse errorResponse = result.getErrorResponse();
     assertThat(errorResponse.getStatus()).isEqualTo(400);
-    assertThat(errorResponse.getMessage()).isEqualTo("PlatformVersion cannot be save!");
+    assertThat(errorResponse.getMessage()).isEqualTo(
+        "PlatformVersionwith sloid [ch:1:sloid:12345:1] cannot be save: Attempting to save a Complete object that does not "
+            + "contains all mandatory properties!");
     SortedSet<Detail> errorResponseDetails = errorResponse.getDetails();
     assertThat(errorResponseDetails).hasSize(1);
     Detail detail = errorResponseDetails.stream().toList().get(0);
     assertThat(detail.getMessage()).isEqualTo("Must not be null for Completed Object. At least a default value is mandatory");
     assertThat(detail.getField()).isEqualTo("boardingDevice");
   }
-
 
   @Test
   void shouldValidateWhenCompleteContainsAllFields() {
@@ -77,7 +81,5 @@ class PlatformValidationServiceTest {
     //then
     assertDoesNotThrow(executable);
   }
-
-
 
 }
