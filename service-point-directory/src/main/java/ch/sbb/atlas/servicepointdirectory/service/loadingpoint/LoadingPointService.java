@@ -88,7 +88,7 @@ public class LoadingPointService {
 
   public Container<ReadLoadingPointVersionModel> getOverview(Integer servicePointNumber, Pageable pageable) {
     LoadingPointSearchRestrictions loadingPointSearchRestrictions = LoadingPointSearchRestrictions.builder()
-        .loadingPointElementRequestParams(LoadingPointElementRequestParams.builder()
+        .loadingPointRequestParams(LoadingPointRequestParams.builder()
             .servicePointNumbers(List.of(servicePointNumber)).build()).build();
 
     List<ReadLoadingPointVersionModel> loadingPointVersions = loadingPointVersionRepository.findAll(
