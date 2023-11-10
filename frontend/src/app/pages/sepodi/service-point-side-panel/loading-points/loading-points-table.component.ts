@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Pages } from '../../../pages';
 import { LoadingPointsService, ReadLoadingPointVersion } from '../../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,13 +6,15 @@ import { TableColumn } from '../../../../core/components/table/table-column';
 import { Subject } from 'rxjs';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { takeUntil } from 'rxjs/operators';
+import { TableService } from '../../../../core/components/table/table.service';
+import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
 
 @Component({
   selector: 'app-service-point-loading-points',
   templateUrl: './loading-points-table.component.html',
   styleUrls: ['./loading-points-table.component.scss'],
 })
-export class LoadingPointsTableComponent {
+export class LoadingPointsTableComponent implements OnInit {
   tableColumns: TableColumn<ReadLoadingPointVersion>[] = [
     { headerTitle: 'SEPODI.LOADING_POINTS.NUMBER', value: 'number' },
     { headerTitle: 'SEPODI.LOADING_POINTS.DESIGNATION', value: 'designation' },
@@ -25,16 +27,21 @@ export class LoadingPointsTableComponent {
     { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
-
+  tableFilterConfig!: TableFilter<unknown>[][];
   elements: ReadLoadingPointVersion[] = [];
   totalCount$ = 0;
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
     private loadingPointsService: LoadingPointsService,
+    private tableService: TableService,
     private route: ActivatedRoute,
     private router: Router,
   ) {}
+
+  ngOnInit() {
+    this.tableFilterConfig = this.tableService.initializeFilterConfig({}, Pages.LOADING_POINTS);
+  }
 
   getOverview(pagination: TablePagination) {
     this.loadingPointsService
@@ -50,9 +57,7 @@ export class LoadingPointsTableComponent {
 
   newLoadingPoint() {
     this.router
-      .navigate([Pages.SEPODI.path, Pages.LOADING_POINTS.path, 'add'], {
-        state: { servicePointNumber: this.servicePointNumber },
-      })
+      .navigate([Pages.SEPODI.path, Pages.LOADING_POINTS.path, this.servicePointNumber, 'add'])
       .then();
   }
 
