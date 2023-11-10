@@ -1,18 +1,14 @@
 import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
-import { TrafficPointElementsService } from '../../../api';
+import { LoadingPointsService } from '../../../api';
 import { TestBed } from '@angular/core/testing';
 import { AppTestingModule } from '../../../app.testing.module';
 import { LoadingPointsDetailResolver } from './loading-points-detail-resolver.service';
-import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../traffic-point-element-test-data';
+import { LOADING_POINT } from '../loading-point-test-data';
 
-describe('TrafficPointElementsDetailResolver', () => {
-  const trafficPointServiceSpy = jasmine.createSpyObj('trafficPointElementsService', [
-    'getTrafficPointElement',
-  ]);
-  trafficPointServiceSpy.getTrafficPointElement.and.returnValue(
-    of([BERN_WYLEREGG_TRAFFIC_POINTS[0]]),
-  );
+describe('LoadingPointsDetailResolver', () => {
+  const loadingPointsService = jasmine.createSpyObj('loadingPointsService', ['getLoadingPoint']);
+  loadingPointsService.getLoadingPoint.and.returnValue(of(LOADING_POINT));
 
   let resolver: LoadingPointsDetailResolver;
 
@@ -21,25 +17,23 @@ describe('TrafficPointElementsDetailResolver', () => {
       imports: [AppTestingModule],
       providers: [
         LoadingPointsDetailResolver,
-        { provide: TrafficPointElementsService, useValue: trafficPointServiceSpy },
+        { provide: LoadingPointsService, useValue: loadingPointsService },
       ],
     });
     resolver = TestBed.inject(LoadingPointsDetailResolver);
   });
 
-  it('should create', () => {
-    expect(resolver).toBeTruthy();
-  });
-
   it('should get versions from service to display', () => {
-    const mockRoute = { paramMap: convertToParamMap({ id: '1000' }) } as ActivatedRouteSnapshot;
+    const mockRoute = {
+      paramMap: convertToParamMap({ servicePointNumber: '8504414', number: 1231 }),
+    } as ActivatedRouteSnapshot;
 
     const resolvedVersion = resolver.resolve(mockRoute);
 
     resolvedVersion.subscribe((versions) => {
-      expect(versions.length).toBe(1);
-      expect(versions[0].id).toBe(9298);
-      expect(versions[0].sloid).toBe('ch:1:sloid:89008:0:1');
+      expect(versions.length).toBe(2);
+      expect(versions[0].number).toBe(1231);
+      expect(versions[0].id).toBe(1255);
     });
   });
 });
