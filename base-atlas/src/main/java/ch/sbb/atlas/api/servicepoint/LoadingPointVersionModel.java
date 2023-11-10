@@ -6,6 +6,8 @@ import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.versioning.model.Versionable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
@@ -30,6 +32,8 @@ public abstract class LoadingPointVersionModel extends BaseVersionModel implemen
 
   @NotNull
   @Schema(description = "Loading Point Number", example = "4201")
+  @Min(0)
+  @Max(9999)
   private Integer number;
 
   @NotNull
