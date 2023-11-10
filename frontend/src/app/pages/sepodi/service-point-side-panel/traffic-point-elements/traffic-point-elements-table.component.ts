@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { ReadTrafficPointElementVersion, TrafficPointElementsService } from '../../../../api';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
@@ -6,13 +6,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../pages';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
+import { TableService } from '../../../../core/components/table/table.service';
 
 @Component({
   selector: 'app-service-point-traffic-point-elements-table',
   templateUrl: './traffic-point-elements-table.component.html',
   styleUrls: ['./traffic-point-elements-table.component.scss'],
 })
-export class TrafficPointElementsTableComponent implements OnDestroy {
+export class TrafficPointElementsTableComponent implements OnInit, OnDestroy {
   tableColumns: TableColumn<ReadTrafficPointElementVersion>[] = [
     { headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION', value: 'designation' },
     { headerTitle: 'SEPODI.SERVICE_POINTS.SLOID', value: 'sloid' },
@@ -26,13 +28,22 @@ export class TrafficPointElementsTableComponent implements OnDestroy {
 
   trafficPointElementRows: ReadTrafficPointElementVersion[] = [];
   totalCount$ = 0;
+  tableFilterConfig!: TableFilter<unknown>[][];
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
     private trafficPointElementService: TrafficPointElementsService,
+    private tableService: TableService,
     private route: ActivatedRoute,
     private router: Router,
   ) {}
+
+  ngOnInit() {
+    this.tableFilterConfig = this.tableService.initializeFilterConfig(
+      {},
+      Pages.TRAFFIC_POINT_ELEMENTS,
+    );
+  }
 
   ngOnDestroy() {
     this.ngUnsubscribe.next();
