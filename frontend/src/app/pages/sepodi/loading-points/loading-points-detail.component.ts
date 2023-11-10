@@ -39,7 +39,6 @@ export class LoadingPointsDetailComponent implements OnInit, OnDestroy {
 
   form!: FormGroup<LoadingPointDetailFormGroup>;
   isNew = false;
-  isSwitchVersionDisabled = false;
   servicePointNumber!: number;
   servicePoint: ReadServicePointVersion[] = [];
   servicePointBusinessOrganisations: string[] = [];
@@ -86,8 +85,7 @@ export class LoadingPointsDetailComponent implements OnInit, OnDestroy {
   }
 
   private initServicePointInformation() {
-    this.servicePointNumber =
-      history.state.servicePointNumber ?? this.selectedVersion?.servicePointNumber?.number;
+    this.servicePointNumber = this.route.snapshot.params['servicePointNumber'];
 
     if (!this.servicePointNumber) {
       this.router.navigate([Pages.SEPODI.path]).then();
@@ -106,10 +104,6 @@ export class LoadingPointsDetailComponent implements OnInit, OnDestroy {
           });
         });
     }
-  }
-
-  get servicePointNumberAsString() {
-    return String(this.servicePointNumber);
   }
 
   backToServicePoint() {
@@ -141,7 +135,6 @@ export class LoadingPointsDetailComponent implements OnInit, OnDestroy {
     if (this.form.enabled) {
       this.showConfirmationDialog();
     } else {
-      this.isSwitchVersionDisabled = true;
       this.form.enable();
     }
   }
@@ -155,7 +148,6 @@ export class LoadingPointsDetailComponent implements OnInit, OnDestroy {
           this.initSelectedVersion();
           this.form.disable();
         }
-        this.isSwitchVersionDisabled = false;
       }
     });
   }
@@ -176,6 +168,7 @@ export class LoadingPointsDetailComponent implements OnInit, OnDestroy {
       this.confirmValidityOverServicePoint().subscribe((confirmed) => {
         if (confirmed) {
           const loadingPointVersion = this.form.value as unknown as CreateLoadingPointVersion;
+          loadingPointVersion.servicePointNumber = this.servicePointNumber;
           this.form.disable();
           if (this.isNew) {
             this.create(loadingPointVersion);
@@ -211,17 +204,15 @@ export class LoadingPointsDetailComponent implements OnInit, OnDestroy {
     this.loadingPointsService
       .createLoadingPoint(loadingPointVersion)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
-      .subscribe((trafficPointElementVersion) => {
-        this.notificationService.success('SEPODI.TRAFFIC_POINT_ELEMENTS.NOTIFICATION.ADD_SUCCESS');
+      .subscribe((loadingPointVersion) => {
+        this.notificationService.success('SEPODI.LOADING_POINTS.NOTIFICATION.ADD_SUCCESS');
         this.router
-          .navigate(
-            [
-              '..',
-              trafficPointElementVersion.servicePointNumber.number,
-              trafficPointElementVersion.number,
-            ],
-            { relativeTo: this.route },
-          )
+          .navigate([
+            Pages.SEPODI.path,
+            Pages.LOADING_POINTS.path,
+            loadingPointVersion.servicePointNumber.number,
+            loadingPointVersion.number,
+          ])
           .then();
       });
   }
@@ -231,12 +222,14 @@ export class LoadingPointsDetailComponent implements OnInit, OnDestroy {
       .updateLoadingPoint(id, loadingPointVersion)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe(() => {
-        this.notificationService.success('SEPODI.TRAFFIC_POINT_ELEMENTS.NOTIFICATION.EDIT_SUCCESS');
+        this.notificationService.success('SEPODI.LOADING_POINTS.NOTIFICATION.EDIT_SUCCESS');
         this.router
-          .navigate(
-            ['..', this.selectedVersion.servicePointNumber.number, this.selectedVersion.number],
-            { relativeTo: this.route },
-          )
+          .navigate([
+            Pages.SEPODI.path,
+            Pages.LOADING_POINTS.path,
+            this.selectedVersion.servicePointNumber.number,
+            this.selectedVersion.number,
+          ])
           .then();
       });
   }

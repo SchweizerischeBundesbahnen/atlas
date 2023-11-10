@@ -979,6 +979,14 @@
       "CONNECTION_POINT_VALUE": {
         "true": "Ja",
         "false": "Nein"
+      },
+      "DETAILS": "Angaben zur",
+      "CONFLICT": {
+        "NUMBER": "Es existiert bereits eine Ladestelle mit Nummer {{number}} in der Dienststelle mit Nummer {{servicePointNumber}}."
+      },
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Die Ladestelle wurde erfolgreich hinzugefügt.",
+        "EDIT_SUCCESS": "Die Ladestelle wurde erfolgreich gespeichert."
       }
     },
     "GEOLOCATION": {
