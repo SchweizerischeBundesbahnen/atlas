@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LoadingPointsTableComponent } from './loading-points-table.component';
 import { AppTestingModule } from '../../../../app.testing.module';
+import { MockAtlasButtonComponent, MockTableComponent } from '../../../../app.testing.mocks';
 
 describe('LoadingPointsTableComponent', () => {
   let component: LoadingPointsTableComponent;
@@ -9,7 +10,7 @@ describe('LoadingPointsTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LoadingPointsTableComponent],
+      declarations: [LoadingPointsTableComponent, MockTableComponent, MockAtlasButtonComponent],
       imports: [AppTestingModule],
     }).compileComponents();
 
