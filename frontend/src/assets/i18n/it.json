@@ -968,7 +968,26 @@
       }
     },
     "LOADING_POINTS": {
-      "LOADING_POINTS": "Posti di carico"
+      "LOADING_POINTS": "Posti di carico",
+      "LOADING_POINT": "Posto di carico",
+      "FREIGHT_SERVICE_POINT_NAME": "Nome del punto di controllo",
+      "NEW": "Inserire un nuovo punto di ricarica",
+      "NUMBER": "Numero",
+      "DESIGNATION": "Denominazione",
+      "DESIGNATION_LONG": "Denominazione lunga",
+      "CONNECTION_POINT": "Punto di collegamento",
+      "CONNECTION_POINT_VALUE": {
+        "true": "Sì",
+        "false": "No"
+      },
+      "DETAILS": "Informazioni sul",
+      "CONFLICT": {
+        "NUMBER": "C'è già un punto di carico con numero {{number}} nel punto di servizio con numero {{servicePointNumber}}."
+      },
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Il punto di carico è stato aggiunto con successo.",
+        "EDIT_SUCCESS": "Il punto di ricarica è stato salvato con successo."
+      }
     },
     "GEOLOCATION": {
       "INVALID": "Le coordinate fornite non sono valide. Correggere l’inserimento.",
