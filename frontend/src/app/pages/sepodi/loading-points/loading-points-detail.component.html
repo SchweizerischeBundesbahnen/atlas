@@ -24,11 +24,23 @@
 
 <div class="p-3">
   <div class="detail-content position-relative">
-    <div class="new-sloid d-flex flex-column" *ngIf="isNew">
-      <atlas-sloid
+    <div class="new-sloid d-flex flex-column col-4 pe-3" *ngIf="isNew">
+      <atlas-text-field
+        [fieldExamples]="[
+          { label: 'FORM.FOR_EXAMPLE', translate: true },
+          { label: '1 |', translate: false },
+          {
+            label: 'FORM.MAX_NUMBER_OF_DIGITS',
+            translate: true,
+            arg: { key: 'numberOfDigits', value: '4' }
+          }
+        ]"
         [formGroup]="form"
-        [givenParts]="[this.servicePointNumberAsString]"
-      ></atlas-sloid>
+        [required]="true"
+        controlName="number"
+        fieldLabel="SEPODI.LOADING_POINTS.NUMBER"
+      >
+      </atlas-text-field>
     </div>
 
     <div class="col-12 d-flex mt-3">
@@ -38,7 +50,7 @@
           *ngIf="showVersionSwitch"
           [currentRecord]="selectedVersion"
           [records]="loadingPointVersions"
-          [switchDisabled]="isSwitchVersionDisabled"
+          [switchDisabled]="form.enabled"
           [showStatus]="false"
         ></app-switch-version>
       </div>
@@ -47,7 +59,7 @@
     <div class="col-12 d-flex mt-5">
       <div *ngIf="!isNew" class="form-title-section">
         <h2 class="font-bold-2xl color-gray-900">
-          {{ 'SEPODI.TRAFFIC_POINT_ELEMENTS.DETAILS' | translate }}
+          {{ 'SEPODI.LOADING_POINTS.DETAILS' | translate }}
           {{ 'COMMON.VERSION' | translate }}
           {{ selectedVersionIndex + 1 }}
         </h2>
