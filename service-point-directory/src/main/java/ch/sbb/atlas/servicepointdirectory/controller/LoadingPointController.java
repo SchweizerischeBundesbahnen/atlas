@@ -14,7 +14,7 @@ import ch.sbb.atlas.servicepointdirectory.exception.LoadingPointNumberNotFoundEx
 import ch.sbb.atlas.servicepointdirectory.mapper.LoadingPointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.LoadingPointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
-import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointElementRequestParams;
+import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
@@ -37,10 +37,10 @@ public class LoadingPointController implements LoadingPointApiV1 {
 
   @Override
   public Container<ReadLoadingPointVersionModel> getLoadingPoints(Pageable pageable,
-      LoadingPointElementRequestParams loadingPointElementRequestParams) {
+      LoadingPointRequestParams loadingPointRequestParams) {
     LoadingPointSearchRestrictions loadingPointSearchRestrictions = LoadingPointSearchRestrictions.builder()
         .pageable(pageable)
-        .loadingPointElementRequestParams(loadingPointElementRequestParams)
+        .loadingPointRequestParams(loadingPointRequestParams)
         .build();
 
     Page<LoadingPointVersion> loadingPointVersions = loadingPointService.findAll(loadingPointSearchRestrictions);

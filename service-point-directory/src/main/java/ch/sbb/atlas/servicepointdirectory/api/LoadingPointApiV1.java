@@ -8,7 +8,7 @@ import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointImportRequestModel;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
-import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointElementRequestParams;
+import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointRequestParams;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -41,7 +41,7 @@ public interface LoadingPointApiV1 {
       @Parameter(hidden = true) @PageableDefault(sort = {
           LoadingPointVersion.Fields.servicePointNumber,
           LoadingPointVersion.Fields.number, LoadingPointVersion.Fields.validFrom}) Pageable pageable,
-      @Valid @ParameterObject LoadingPointElementRequestParams loadingPointElementRequestParams);
+      @Valid @ParameterObject LoadingPointRequestParams loadingPointRequestParams);
 
   @GetMapping("{servicePointNumber}")
   @PageableAsQueryParam

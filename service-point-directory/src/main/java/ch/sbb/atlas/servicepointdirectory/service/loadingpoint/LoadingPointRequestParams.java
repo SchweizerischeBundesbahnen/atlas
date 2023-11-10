@@ -22,13 +22,11 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder
 @ToString
-public class LoadingPointElementRequestParams extends VersionedObjectDateRequestParams {
+public class LoadingPointRequestParams extends VersionedObjectDateRequestParams {
 
     @Parameter(description = "Number")
     @Singular(ignoreNullCollections = true)
-    private List<
-        @Min(AtlasFieldLengths.MIN_SEVEN_DIGITS_NUMBER)
-        @Max(AtlasFieldLengths.MAX_SEVEN_DIGITS_NUMBER) Integer> numbers = new ArrayList<>();
+    private List<@Min(0) @Max(9999) Integer> numbers = new ArrayList<>();
 
     @Parameter(description = "Unique key for service points which is used in the customer information.")
     @Singular(ignoreNullCollections = true)
