@@ -6,14 +6,11 @@ import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.StopPointVersion;
-import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.exception.ReducedVariantException;
-import ch.sbb.prm.directory.exception.StopPointDoesNotExistsException;
+import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
 import ch.sbb.prm.directory.validation.StopPointValidationService;
-import java.util.List;
-import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,8 +29,10 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
   private final SharedServicePointService sharedServicePointService;
   private final StopPointValidationService stopPointValidationService;
 
-  public StopPointService(StopPointRepository stopPointRepository, VersionableService versionableService,
-      SharedServicePointService sharedServicePointService, StopPointValidationService stopPointValidationService) {
+  public StopPointService(StopPointRepository stopPointRepository,
+                          VersionableService versionableService,
+                          SharedServicePointService sharedServicePointService,
+                          StopPointValidationService stopPointValidationService) {
     super(versionableService);
     this.stopPointRepository = stopPointRepository;
     this.sharedServicePointService = sharedServicePointService;
@@ -77,7 +76,7 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
 
   boolean isReduced(String servicePointSloid){
     StopPointVersion parentServicePoint = findAllBySloid(servicePointSloid).stream().findFirst()
-            .orElseThrow(() -> new StopPointDoesNotExistsException(servicePointSloid));
+            .orElseThrow(() -> new StopPointDoesNotExistException(servicePointSloid));
     return parentServicePoint.isReduced();
   }
 
@@ -101,11 +100,17 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
     }
   }
 
+  public boolean isStopPointExisting(String sloid) {
+    return stopPointRepository.existsBySloid(sloid);
+  }
+
   @PreAuthorize("""
       @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
       (#sharedServicePointVersionModel, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
-  public StopPointVersion updateStopPointVersion(StopPointVersion currentVersion, StopPointVersion editedVersion,
+  public StopPointVersion updateStopPointVersion(StopPointVersion currentVersion,
+                                                 StopPointVersion editedVersion,
                                                  SharedServicePointVersionModel sharedServicePointVersionModel) {
+    stopPointValidationService.validateMeansOfTransportChanging(currentVersion,editedVersion);
     return updateVersion(currentVersion, editedVersion);
   }
 
