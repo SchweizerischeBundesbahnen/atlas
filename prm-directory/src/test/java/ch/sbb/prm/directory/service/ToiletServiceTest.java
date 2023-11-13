@@ -16,15 +16,13 @@ import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
-import java.util.List;
-import java.util.Set;
-import org.assertj.core.api.AbstractComparableAssert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -81,7 +79,7 @@ class ToiletServiceTest {
 
     //when & then
     //when
-    toiletService.createToilet(toiletVersion);
+    toiletService.createToilet(toiletVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
 
     //then
     List<ToiletVersion> toiletVersions = toiletRepository.findByParentServicePointSloid(
