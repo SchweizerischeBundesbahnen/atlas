@@ -181,21 +181,23 @@ export class LoadingPointsDetailComponent implements OnInit, OnDestroy {
   }
 
   private confirmValidityOverServicePoint(): Observable<boolean> {
-    const servicePointValidity = VersionsHandlingService.getMaxValidity(this.servicePoint);
-    if (
-      this.form.controls.validFrom.value?.isBefore(servicePointValidity.validFrom) ||
-      this.form.controls.validTo.value?.isAfter(servicePointValidity.validTo)
-    ) {
-      return this.dialogService.confirm({
-        title: 'SEPODI.TRAFFIC_POINT_ELEMENTS.VALIDITY_CONFIRMATION.TITLE',
-        message: 'SEPODI.TRAFFIC_POINT_ELEMENTS.VALIDITY_CONFIRMATION.MESSAGE',
-        messageArgs: {
-          validFrom: DateService.getDateFormatted(servicePointValidity.validFrom),
-          validTo: DateService.getDateFormatted(servicePointValidity.validTo),
-        },
-        confirmText: 'COMMON.SAVE',
-        cancelText: 'COMMON.CANCEL',
-      });
+    if (this.servicePoint.length > 0) {
+      const servicePointValidity = VersionsHandlingService.getMaxValidity(this.servicePoint);
+      if (
+        this.form.controls.validFrom.value?.isBefore(servicePointValidity.validFrom) ||
+        this.form.controls.validTo.value?.isAfter(servicePointValidity.validTo)
+      ) {
+        return this.dialogService.confirm({
+          title: 'SEPODI.TRAFFIC_POINT_ELEMENTS.VALIDITY_CONFIRMATION.TITLE',
+          message: 'SEPODI.TRAFFIC_POINT_ELEMENTS.VALIDITY_CONFIRMATION.MESSAGE',
+          messageArgs: {
+            validFrom: DateService.getDateFormatted(servicePointValidity.validFrom),
+            validTo: DateService.getDateFormatted(servicePointValidity.validTo),
+          },
+          confirmText: 'COMMON.SAVE',
+          cancelText: 'COMMON.CANCEL',
+        });
+      }
     }
     return of(true);
   }
