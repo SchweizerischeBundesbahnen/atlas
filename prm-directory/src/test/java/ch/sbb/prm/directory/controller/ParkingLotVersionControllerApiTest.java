@@ -3,6 +3,7 @@ package ch.sbb.prm.directory.controller;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -14,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.api.prm.model.parkinglot.CreateParkingLotVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
@@ -25,6 +27,7 @@ import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.RelationService;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -79,6 +82,27 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isCreated());
     verify(relationService, times(1)).save(any(RelationVersion.class));
+
+  }
+
+  @Test
+  void shouldCreateParkingLotWithReducedStopPoint() throws Exception {
+    //given
+    String parentServicePointSloid = "ch:1:sloid:7000";
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setMeansOfTransport(Set.of(MeanOfTransport.BUS));
+    stopPointRepository.save(stopPointVersion);
+
+    CreateParkingLotVersionModel model = ParkingLotTestData.getCreateParkingLotVersionModel();
+    model.setParentServicePointSloid(parentServicePointSloid);
+
+    //when && then
+    mvc.perform(post("/v1/parking-lots")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(model)))
+        .andExpect(status().isCreated());
+    verify(relationService, never()).save(any(RelationVersion.class));
 
   }
 

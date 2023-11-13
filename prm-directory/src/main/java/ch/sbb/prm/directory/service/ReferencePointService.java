@@ -84,6 +84,7 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
 
   public ReferencePointVersion createReferencePoint(ReferencePointVersion referencePointVersion) {
     stopPointService.checkStopPointExists(referencePointVersion.getParentServicePointSloid());
+    stopPointService.validateIsNotReduced(referencePointVersion.getParentServicePointSloid());
     searchAndUpdatePlatformRelation(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
     searchAndUpdateTicketCounter(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
     searchAndUpdateToiletRelation(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
@@ -106,6 +107,7 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   }
 
   private ReferencePointVersion saveReferencePoint(ReferencePointVersion referencePointVersion) {
+    stopPointService.validateIsNotReduced(referencePointVersion.getParentServicePointSloid());
     return referencePointRepository.saveAndFlush(referencePointVersion);
   }
 
