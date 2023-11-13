@@ -25,6 +25,15 @@
         "patch",
         "minor"
       ]
+    },
+    {
+      "groupName": "NPM Major Upgrades",
+      "matchManagers": [
+        "npm"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ]
     }
   ]
 }
