@@ -70,21 +70,11 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.isTrafficPointArea = history.state.isTrafficPointArea;
     this.route.data.pipe(takeUntil(this.ngUnsubscribe)).subscribe((next) => {
       this.trafficPointVersions = next.trafficPoint;
-      this.isTrafficPointArea =
-        this.trafficPointVersions.length > 0 &&
-        this.trafficPointVersions[0].trafficPointElementType === TrafficPointElementType.Area;
       this.initTrafficPoint();
     });
-
-    if (this.isNew) {
-      this.trafficPointElementsService.isTrafficPointArea
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((value) => {
-          this.isTrafficPointArea = value;
-        });
-    }
   }
 
   ngOnDestroy() {
