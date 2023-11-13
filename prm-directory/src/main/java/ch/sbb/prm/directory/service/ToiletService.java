@@ -2,7 +2,6 @@ package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -62,18 +61,16 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
 
   @PreAuthorize("""
       @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
-      (#sharedServicePointVersionModel, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
-  public ToiletVersion createToilet(ToiletVersion version,
-                                    SharedServicePointVersionModel sharedServicePointVersionModel) {
+      (#version, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+  public ToiletVersion createToilet(ToiletVersion version) {
     createRelation(version);
     return save(version);
   }
 
   @PreAuthorize("""
       @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
-      (#sharedServicePointVersionModel, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
-  public ToiletVersion updateToiletVersion(ToiletVersion currentVersion, ToiletVersion editedVersion,
-                                           SharedServicePointVersionModel sharedServicePointVersionModel) {
+      (#editedVersion, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+  public ToiletVersion updateToiletVersion(ToiletVersion currentVersion, ToiletVersion editedVersion) {
     return updateVersion(currentVersion, editedVersion);
   }
 

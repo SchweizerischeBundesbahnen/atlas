@@ -2,7 +2,6 @@ package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -71,9 +70,8 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
 
   @PreAuthorize("""
       @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
-      (#sharedServicePointVersionModel, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
-  public RelationVersion updateRelationVersion(RelationVersion currentVersion, RelationVersion editedVersion,
-                                               SharedServicePointVersionModel sharedServicePointVersionModel) {
+      (#editedVersion, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+  public RelationVersion updateRelationVersion(RelationVersion currentVersion, RelationVersion editedVersion) {
     //the referencePointTypeElement cannot be updated. We have to set it from the current version
     editedVersion.setReferencePointElementType(currentVersion.getReferencePointElementType());
     return updateVersion(currentVersion, editedVersion);
