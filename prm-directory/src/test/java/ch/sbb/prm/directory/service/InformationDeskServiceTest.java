@@ -17,13 +17,13 @@ import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import org.assertj.core.api.AbstractComparableAssert;
-import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -111,7 +111,7 @@ class InformationDeskServiceTest {
     assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
     AbstractComparableAssert<?, ReferencePointElementType> equalTo = assertThat(
         relationVersions.get(0).getReferencePointElementType()).isEqualTo(ReferencePointElementType.INFORMATION_DESK);
-    assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(parentServicePointSloid);
+    assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(ReferencePointElementType.INFORMATION_DESK);
   }
   @Test
@@ -129,7 +129,7 @@ class InformationDeskServiceTest {
     informationDesk.setParentServicePointSloid(parentServicePointSloid);
 
     //when
-    informationDeskService.createInformationDesk(informationDesk);
+    informationDeskService.createInformationDesk(informationDesk, SHARED_SERVICE_POINT_VERSION_MODEL);
 
     //then
     List<InformationDeskVersion> informationDeskVersions = informationDeskRepository.findByParentServicePointSloid(
