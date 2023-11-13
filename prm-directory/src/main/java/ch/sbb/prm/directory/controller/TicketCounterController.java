@@ -31,7 +31,7 @@ public class TicketCounterController implements TicketCounterApiV1 {
   public ReadTicketCounterVersionModel createTicketCounter(CreateTicketCounterVersionModel model) {
     TicketCounterVersion ticketCounterVersion = ticketCounterService.createTicketCounter(
         TicketCounterVersionMapper.toEntity(model),
-            sharedServicePointService.getSharedServicePointVersionModel(model.getParentServicePointSloid()));
+            sharedServicePointService.validateServicePointExists(model.getParentServicePointSloid()));
     return TicketCounterVersionMapper.toModel(ticketCounterVersion);
   }
 
@@ -41,7 +41,7 @@ public class TicketCounterController implements TicketCounterApiV1 {
         ticketCounterService.getTicketCounterVersionById(id).orElseThrow(() -> new IdNotFoundException(id));
     TicketCounterVersion editedVersion = TicketCounterVersionMapper.toEntity(model);
     ticketCounterService.updateTicketCounterVersion(ticketCounterVersionToUpdate, editedVersion,
-            sharedServicePointService.getSharedServicePointVersionModel(model.getParentServicePointSloid()));
+            sharedServicePointService.validateServicePointExists(model.getParentServicePointSloid()));
 
     return ticketCounterService.findAllByNumberOrderByValidFrom(ticketCounterVersionToUpdate.getNumber()).stream()
         .map(TicketCounterVersionMapper::toModel).toList();

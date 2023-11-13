@@ -48,13 +48,13 @@ public class StopPointController implements StopPointApiV1 {
 
   @Override
   public ReadStopPointVersionModel createStopPoint(CreateStopPointVersionModel stopPointVersionModel) {
-    SharedServicePointVersionModel sharedServicePointVersionModel = sharedServicePointService.findServicePoint(stopPointVersionModel.getSloid()).orElseThrow();
     boolean stopPointExisting = stopPointService.isStopPointExisting(stopPointVersionModel.getSloid());
     if (stopPointExisting) {
       throw new StopPointAlreadyExistsException(stopPointVersionModel.getSloid());
     }
     StopPointVersion stopPointVersion = StopPointVersionMapper.toEntity(stopPointVersionModel);
-    StopPointVersion savedVersion = stopPointService.saveAndCheckRights(stopPointVersion, sharedServicePointVersionModel);
+    StopPointVersion savedVersion = stopPointService.saveAndCheckRights(stopPointVersion,
+            sharedServicePointService.validateServicePointExists(stopPointVersionModel.getSloid()));
     return StopPointVersionMapper.toModel(savedVersion);
   }
 
@@ -64,7 +64,7 @@ public class StopPointController implements StopPointApiV1 {
         stopPointService.getStopPointById(id).orElseThrow(() -> new IdNotFoundException(id));
     StopPointVersion editedVersion = StopPointVersionMapper.toEntity(model);
     stopPointService.updateStopPointVersion(stopPointVersionToUpdate, editedVersion,
-            sharedServicePointService.getSharedServicePointVersionModel(model.getSloid()));
+            sharedServicePointService.validateServicePointExists(model.getSloid()));
 
     return stopPointService.findAllByNumberOrderByValidFrom(stopPointVersionToUpdate.getNumber()).stream()
         .map(StopPointVersionMapper::toModel).toList();

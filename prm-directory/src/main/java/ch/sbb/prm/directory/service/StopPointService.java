@@ -6,6 +6,7 @@ import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.StopPointVersion;
+import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.exception.ReducedVariantException;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistsException;
 import ch.sbb.prm.directory.repository.StopPointRepository;
@@ -96,7 +97,7 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
 
   public void checkStopPointExists(String sloid) {
     if (!stopPointRepository.existsBySloid(sloid)) {
-      throw new StopPointDoesNotExistsException(sloid);
+      throw new StopPointDoesNotExistException(sloid);
     }
   }
 

@@ -32,7 +32,7 @@ public class InformationDeskController implements InformationDeskApiV1 {
   public ReadInformationDeskVersionModel createInformationDesk(CreateInformationDeskVersionModel model) {
     InformationDeskVersion informationDeskVersion = informationDeskService.createInformationDesk(
         InformationDeskVersionMapper.toEntity(model),
-            sharedServicePointService.getSharedServicePointVersionModel(model.getParentServicePointSloid()));
+            sharedServicePointService.validateServicePointExists(model.getParentServicePointSloid()));
     return InformationDeskVersionMapper.toModel(informationDeskVersion);
   }
 
@@ -43,7 +43,7 @@ public class InformationDeskController implements InformationDeskApiV1 {
 
     InformationDeskVersion editedVersion = InformationDeskVersionMapper.toEntity(model);
     informationDeskService.updateInformationDeskVersion(informationDeskVersion, editedVersion,
-            sharedServicePointService.getSharedServicePointVersionModel(model.getParentServicePointSloid()));
+            sharedServicePointService.validateServicePointExists(model.getParentServicePointSloid()));
 
     return informationDeskService.findAllByNumberOrderByValidFrom(informationDeskVersion.getNumber()).stream()
         .map(InformationDeskVersionMapper::toModel).toList();
