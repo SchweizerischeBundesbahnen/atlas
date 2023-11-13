@@ -81,17 +81,21 @@ public class StopPointVersion extends BasePrmImportEntity implements PrmVersiona
   @Convert(converter = MeanOfTransportConverter.class)
   private Set<MeanOfTransport> meansOfTransport;
 
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   @AtlasVersionableProperty
   private String freeText;
 
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   @NotForReducedVariant
   @AtlasVersionableProperty
   private String address;
 
+  @Size(max = AtlasFieldLengths.LENGTH_50)
   @NotForReducedVariant
   @AtlasVersionableProperty
   private String zipCode;
 
+  @Size(max = AtlasFieldLengths.LENGTH_75)
   @NotForReducedVariant
   @AtlasVersionableProperty
   private String city;
@@ -101,6 +105,7 @@ public class StopPointVersion extends BasePrmImportEntity implements PrmVersiona
   @AtlasVersionableProperty
   private StandardAttributeType alternativeTransport;
 
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   @NotForReducedVariant
   @AtlasVersionableProperty
   private String alternativeTransportCondition;
@@ -110,6 +115,7 @@ public class StopPointVersion extends BasePrmImportEntity implements PrmVersiona
   @AtlasVersionableProperty
   private StandardAttributeType assistanceAvailability;
 
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   @NotForReducedVariant
   @AtlasVersionableProperty
   private String assistanceCondition;
@@ -124,6 +130,7 @@ public class StopPointVersion extends BasePrmImportEntity implements PrmVersiona
   @AtlasVersionableProperty
   private StandardAttributeType audioTicketMachine;
 
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   @NotForReducedVariant
   @AtlasVersionableProperty
   private String additionalInformation;
@@ -146,6 +153,7 @@ public class StopPointVersion extends BasePrmImportEntity implements PrmVersiona
   @AtlasVersionableProperty
   private Boolean interoperable;
 
+  @Size(max = AtlasFieldLengths.LENGTH_500)
   @NotForReducedVariant
   @AtlasVersionableProperty
   private String url;
