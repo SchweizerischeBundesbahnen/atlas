@@ -37,8 +37,6 @@ import { Configuration } from '../configuration';
   providedIn: 'root',
 })
 export class TrafficPointElementsService {
-  isTrafficPointArea = new BehaviorSubject<boolean>(false);
-
   protected basePath = 'http://localhost';
   public defaultHeaders = new HttpHeaders();
   public configuration = new Configuration();
