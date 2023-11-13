@@ -30,8 +30,7 @@ public class ToiletController implements ToiletApiV1 {
 
   @Override
   public ReadToiletVersionModel createToiletVersion(CreateToiletVersionModel model) {
-    ToiletVersion toiletVersion = toiletService.createToilet(ToiletVersionMapper.toEntity(model),
-            sharedServicePointService.validateServicePointExists(model.getParentServicePointSloid()));
+    ToiletVersion toiletVersion = toiletService.createToilet(ToiletVersionMapper.toEntity(model));
     return ToiletVersionMapper.toModel(toiletVersion);
   }
 
@@ -40,8 +39,7 @@ public class ToiletController implements ToiletApiV1 {
     ToiletVersion toiletVersion =
         toiletService.getToiletVersionById(id).orElseThrow(() -> new IdNotFoundException(id));
     ToiletVersion editedVersion = ToiletVersionMapper.toEntity(model);
-    toiletService.updateToiletVersion(toiletVersion, editedVersion,
-            sharedServicePointService.validateServicePointExists(model.getParentServicePointSloid()));
+    toiletService.updateToiletVersion(toiletVersion, editedVersion);
 
     return toiletService.findAllByNumberOrderByValidFrom(toiletVersion.getNumber()).stream()
         .map(ToiletVersionMapper::toModel).toList();
