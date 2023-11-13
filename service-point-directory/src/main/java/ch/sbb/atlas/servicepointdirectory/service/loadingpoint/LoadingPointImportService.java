@@ -10,7 +10,6 @@ import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportServicePointDirectoryService;
-import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -109,7 +108,7 @@ public class LoadingPointImportService extends BaseImportServicePointDirectorySe
     final LoadingPointVersion current = ImportUtils.getCurrentPointVersion(dbVersions, loadingPointVersionEdited);
     final List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(current,
         loadingPointVersionEdited, dbVersions);
-    BasePointUtility.overrideEditionDateAndEditorOnVersionedObjects(loadingPointVersionEdited, versionedObjects);
+    ImportUtils.overrideEditionDateAndEditorOnVersionedObjects(loadingPointVersionEdited, versionedObjects);
     versionableService.applyVersioning(LoadingPointVersion.class, versionedObjects, loadingPointService::save,
         new ApplyVersioningDeleteByIdLongConsumer(loadingPointService.getLoadingPointVersionRepository()));
   }

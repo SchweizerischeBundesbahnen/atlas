@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../pages';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
+import { TableService } from '../../../../core/components/table/table.service';
 
 @Component({
   selector: 'app-service-point-traffic-point-elements-table',
@@ -35,10 +37,12 @@ export class TrafficPointElementsTableComponent implements OnInit, OnDestroy {
   totalCount$ = 0;
   isTrafficPointArea = false;
 
+  tableFilterConfig!: TableFilter<unknown>[][];
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
     private trafficPointElementService: TrafficPointElementsService,
+    private tableService: TableService,
     private route: ActivatedRoute,
     private router: Router,
   ) {}
@@ -52,6 +56,11 @@ export class TrafficPointElementsTableComponent implements OnInit, OnDestroy {
     this.route.data.pipe(takeUntil(this.ngUnsubscribe)).subscribe((next) => {
       this.isTrafficPointArea = next.isTrafficPointArea;
     });
+
+    this.tableFilterConfig = this.tableService.initializeFilterConfig(
+      {},
+      Pages.TRAFFIC_POINT_ELEMENTS,
+    );
   }
 
   getOverview(pagination: TablePagination) {

@@ -14,6 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.api.prm.model.referencepoint.CreateReferencePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.InformationDeskTestData;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.PlatformTestData;
@@ -38,6 +39,7 @@ import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.service.RelationService;
 import java.time.LocalDate;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -118,6 +120,26 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(status().isCreated());
     //verify that the reference point create 5 relation
     verify(relationService, times(5)).save(any(RelationVersion.class));
+
+  }
+
+  @Test
+  void shouldNotCreateReferencePointWhenStopPointIsReduced() throws Exception {
+    //given
+    String parentServicePointSloid = "ch:1:sloid:7000";
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setMeansOfTransport(Set.of(MeanOfTransport.BUS));
+    stopPointRepository.save(stopPointVersion);
+    CreateReferencePointVersionModel createReferencePointVersionModel = ReferencePointTestData.getCreateReferencePointVersionModel();
+    createReferencePointVersionModel.setParentServicePointSloid(parentServicePointSloid);
+
+    //when && then
+    mvc.perform(post("/v1/reference-points")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(createReferencePointVersionModel)))
+        .andExpect(status().isPreconditionFailed());
+    verify(relationService, times(0)).save(any(RelationVersion.class));
 
   }
 
