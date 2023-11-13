@@ -102,7 +102,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
 
   private initServicePointInformation() {
     this.servicePointNumber =
-      history.state.servicePointNumber ?? this.selectedVersion?.servicePointNumber?.number;
+      history.state?.servicePointNumber ?? this.selectedVersion?.servicePointNumber?.number;
 
     if (!this.servicePointNumber) {
       this.router.navigate([Pages.SEPODI.path]).then();
@@ -225,21 +225,24 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
   }
 
   private confirmValidityOverServicePoint(): Observable<boolean> {
-    const servicePointValidity = VersionsHandlingService.getMaxValidity(this.servicePoint);
-    if (
-      this.form.controls.validFrom.value?.isBefore(servicePointValidity.validFrom) ||
-      this.form.controls.validTo.value?.isAfter(servicePointValidity.validTo)
-    ) {
-      return this.dialogService.confirm({
-        title: 'SEPODI.TRAFFIC_POINT_ELEMENTS.VALIDITY_CONFIRMATION.TITLE',
-        message: 'SEPODI.TRAFFIC_POINT_ELEMENTS.VALIDITY_CONFIRMATION.MESSAGE',
-        messageArgs: {
-          validFrom: DateService.getDateFormatted(servicePointValidity.validFrom),
-          validTo: DateService.getDateFormatted(servicePointValidity.validTo),
-        },
-        confirmText: 'COMMON.SAVE',
-        cancelText: 'COMMON.CANCEL',
-      });
+    const stopPoint = this.servicePoint.filter((i) => i.stopPoint);
+    if (stopPoint.length > 0) {
+      const stopPointValidity = VersionsHandlingService.getMaxValidity(stopPoint);
+      if (
+        this.form.controls.validFrom.value?.isBefore(stopPointValidity.validFrom) ||
+        this.form.controls.validTo.value?.isAfter(stopPointValidity.validTo)
+      ) {
+        return this.dialogService.confirm({
+          title: 'SEPODI.TRAFFIC_POINT_ELEMENTS.VALIDITY_CONFIRMATION.TITLE',
+          message: 'SEPODI.TRAFFIC_POINT_ELEMENTS.VALIDITY_CONFIRMATION.MESSAGE',
+          messageArgs: {
+            validFrom: DateService.getDateFormatted(stopPointValidity.validFrom),
+            validTo: DateService.getDateFormatted(stopPointValidity.validTo),
+          },
+          confirmText: 'COMMON.SAVE',
+          cancelText: 'COMMON.CANCEL',
+        });
+      }
     }
     return of(true);
   }

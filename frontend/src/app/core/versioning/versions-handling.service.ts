@@ -83,15 +83,4 @@ export class VersionsHandlingService {
     }
     return null;
   }
-
-  static groupVersionsByKey<TYPE extends Record>(
-    records: Array<TYPE>,
-    groupByKey: string,
-  ): Map<string, Array<TYPE>> {
-    return records.reduce((group: any, currentData) => {
-      const id = (currentData as any)[groupByKey];
-      group[id] = [...(group[id] || []), currentData];
-      return group;
-    }, {});
-  }
 }
