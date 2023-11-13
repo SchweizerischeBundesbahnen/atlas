@@ -53,7 +53,7 @@ public class RelationController implements RelationApiV1 {
         relationService.getRelationById(id).orElseThrow(() -> new IdNotFoundException(id));
     RelationVersion editedVersion = RelationVersionMapper.toEntity(model);
     relationService.updateRelationVersion(relationVersionToUpdate, editedVersion,
-            sharedServicePointService.getSharedServicePointVersionModel(model.getParentServicePointSloid()));
+            sharedServicePointService.validateServicePointExists(model.getParentServicePointSloid()));
 
     return relationService.findAllByNumberOrderByValidFrom(relationVersionToUpdate.getNumber()).stream()
         .map(RelationVersionMapper::toModel).toList();

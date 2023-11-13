@@ -3,7 +3,7 @@ package ch.sbb.prm.directory.service;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.prm.directory.entity.SharedServicePoint;
-import ch.sbb.prm.directory.exception.ServicePointDoesNotExistsException;
+import ch.sbb.prm.directory.exception.ServicePointDoesNotExistException;
 import ch.sbb.prm.directory.exception.TrafficPointElementDoesNotExistsException;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -39,7 +39,7 @@ public class SharedServicePointService {
   public SharedServicePointVersionModel validateServicePointExists(String sloid) {
     Optional<SharedServicePointVersionModel> servicePoint = findServicePoint(sloid);
     if (servicePoint.isEmpty()) {
-      throw new ServicePointDoesNotExistsException(sloid);
+      throw new ServicePointDoesNotExistException(sloid);
     }
     return servicePoint.get();
   }
