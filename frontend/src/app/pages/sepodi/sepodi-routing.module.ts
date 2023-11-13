@@ -54,10 +54,12 @@ const routes: Routes = [
           {
             path: 'areas',
             component: TrafficPointElementsTableComponent,
+            data: { isTrafficPointArea: true },
           },
           {
             path: 'traffic-point-elements',
             component: TrafficPointElementsTableComponent,
+            data: { isTrafficPointArea: false },
           },
           {
             path: 'loading-points',
