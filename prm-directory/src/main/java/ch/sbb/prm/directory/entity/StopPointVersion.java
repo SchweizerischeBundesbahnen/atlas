@@ -28,9 +28,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,6 +35,10 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
+
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -48,7 +49,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "stop_point_version")
 @AtlasVersionable
-public class StopPointVersion extends BasePrmImportEntity implements PrmVersionable, VariantsReducedCompleteRecordable {
+public class StopPointVersion extends BasePrmImportEntity implements PrmVersionable, VariantsReducedCompleteRecordable, PrmShared {
 
   private static final String VERSION_SEQ = "stop_point_version_seq";
 
@@ -189,4 +190,8 @@ public class StopPointVersion extends BasePrmImportEntity implements PrmVersiona
     return PrmMeansOfTransportHelper.isReduced(meansOfTransport);
   }
 
+  @Override
+  public String getParentServicePointSloid() {
+    return this.sloid;
+  }
 }

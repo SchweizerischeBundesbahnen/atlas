@@ -63,8 +63,7 @@ public class StopPointController implements StopPointApiV1 {
     StopPointVersion stopPointVersionToUpdate =
         stopPointService.getStopPointById(id).orElseThrow(() -> new IdNotFoundException(id));
     StopPointVersion editedVersion = StopPointVersionMapper.toEntity(model);
-    stopPointService.updateStopPointVersion(stopPointVersionToUpdate, editedVersion,
-            sharedServicePointService.validateServicePointExists(model.getSloid()));
+    stopPointService.updateStopPointVersion(stopPointVersionToUpdate, editedVersion);
 
     return stopPointService.findAllByNumberOrderByValidFrom(stopPointVersionToUpdate.getNumber()).stream()
         .map(StopPointVersionMapper::toModel).toList();

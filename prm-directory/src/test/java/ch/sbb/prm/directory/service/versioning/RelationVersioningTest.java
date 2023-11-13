@@ -4,9 +4,9 @@ import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
+import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.prm.directory.RelationTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
@@ -85,7 +85,7 @@ class RelationVersioningTest {
     editedVersion.setVersion(version2.getVersion());
 
     //when
-    relationService.updateRelationVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    relationService.updateRelationVersion(version2, editedVersion);
 
     //then
     List<RelationVersion> result = relationRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
@@ -143,7 +143,7 @@ class RelationVersioningTest {
     editedVersion.setVersion(version2.getVersion());
 
     //when
-    relationService.updateRelationVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    relationService.updateRelationVersion(version2, editedVersion);
 
     //then
     List<RelationVersion> result = relationRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
@@ -212,7 +212,7 @@ class RelationVersioningTest {
     editedVersion.setVersion(version2.getVersion());
 
     //when
-    relationService.updateRelationVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    relationService.updateRelationVersion(version2, editedVersion);
 
     //then
     List<RelationVersion> result = relationRepository.findAllByNumberOrderByValidFrom(version2.getNumber());

@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.service;
 
+import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
@@ -61,7 +61,7 @@ class TicketCounterServiceTest {
     ticketCounterVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when & then
     assertThrows(StopPointDoesNotExistException.class, () -> ticketCounterService
-                .createTicketCounter(ticketCounterVersion, SHARED_SERVICE_POINT_VERSION_MODEL)).getLocalizedMessage();
+                .createTicketCounter(ticketCounterVersion)).getLocalizedMessage();
   }
 
   @Test
@@ -73,7 +73,7 @@ class TicketCounterServiceTest {
     TicketCounterVersion ticketCounterVersion = TicketCounterTestData.getTicketCounterVersion();
     ticketCounterVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when
-    ticketCounterService.createTicketCounter(ticketCounterVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    ticketCounterService.createTicketCounter(ticketCounterVersion);
     //then
     List<TicketCounterVersion> ticketCounterVersions = ticketCounterRepository
             .findByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
@@ -98,7 +98,7 @@ class TicketCounterServiceTest {
     TicketCounterVersion ticketCounterVersion = TicketCounterTestData.getTicketCounterVersion();
     ticketCounterVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when
-    ticketCounterService.createTicketCounter(ticketCounterVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    ticketCounterService.createTicketCounter(ticketCounterVersion);
     //then
     List<TicketCounterVersion> ticketCounterVersions = ticketCounterRepository
             .findByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
@@ -126,7 +126,7 @@ class TicketCounterServiceTest {
     ticketCounterVersion.setParentServicePointSloid(parentServicePointSloid);
 
     //when
-    ticketCounterService.createTicketCounter(ticketCounterVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    ticketCounterService.createTicketCounter(ticketCounterVersion);
 
     //then
     List<TicketCounterVersion> ticketCounterVersions = ticketCounterRepository.findByParentServicePointSloid(

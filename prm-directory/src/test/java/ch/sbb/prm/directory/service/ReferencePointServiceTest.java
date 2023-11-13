@@ -2,8 +2,8 @@ package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.InformationDeskTestData;
 import ch.sbb.prm.directory.ParkingLotTestData;
@@ -88,7 +88,7 @@ class ReferencePointServiceTest {
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when
-    referencePointService.createReferencePoint(referencePointVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    referencePointService.createReferencePoint(referencePointVersion);
 
     //then
     List<RelationVersion> relations = relationService
@@ -117,7 +117,7 @@ class ReferencePointServiceTest {
     //when
     ReducedVariantException result = Assertions.assertThrows(
         ReducedVariantException.class,
-        () -> referencePointService.createReferencePoint(referencePointVersion, SHARED_SERVICE_POINT_VERSION_MODEL));
+        () -> referencePointService.createReferencePoint(referencePointVersion));
 
     //then
     assertThat(result).isNotNull();

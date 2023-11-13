@@ -30,8 +30,7 @@ public class ParkingLotsController implements ParkingLotApiV1 {
 
   @Override
   public ReadParkingLotVersionModel createParkingLot(CreateParkingLotVersionModel model) {
-    ParkingLotVersion parkingLotVersion = parkingLotService.createParkingLot(ParkingLotVersionMapper.toEntity(model),
-            sharedServicePointService.validateServicePointExists(model.getParentServicePointSloid()));
+    ParkingLotVersion parkingLotVersion = parkingLotService.createParkingLot(ParkingLotVersionMapper.toEntity(model));
     return ParkingLotVersionMapper.toModel(parkingLotVersion);
   }
 
@@ -41,8 +40,7 @@ public class ParkingLotsController implements ParkingLotApiV1 {
         parkingLotService.getPlatformVersionById(id).orElseThrow(() -> new IdNotFoundException(id));
 
     ParkingLotVersion editedVersion = ParkingLotVersionMapper.toEntity(model);
-    parkingLotService.updateParkingLotVersion(parkingLotVersion, editedVersion,
-            sharedServicePointService.validateServicePointExists(model.getParentServicePointSloid()));
+    parkingLotService.updateParkingLotVersion(parkingLotVersion, editedVersion);
 
     return parkingLotService.findAllByNumberOrderByValidFrom(parkingLotVersion.getNumber()).stream()
         .map(ParkingLotVersionMapper::toModel).toList();

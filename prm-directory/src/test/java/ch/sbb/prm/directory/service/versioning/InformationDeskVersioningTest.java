@@ -1,9 +1,9 @@
 package ch.sbb.prm.directory.service.versioning;
 
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
+import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.prm.directory.InformationDeskTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
@@ -11,12 +11,16 @@ import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
+import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.InformationDeskRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.InformationDeskService;
 import ch.sbb.prm.directory.service.RelationService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,16 +46,33 @@ class InformationDeskVersioningTest {
   private final InformationDeskRepository informationDeskRepository;
   private final InformationDeskService informationDeskService;
   private final RelationService relationService;
+  private final SharedServicePointRepository sharedServicePointRepository;
 
   @Autowired
   InformationDeskVersioningTest(ReferencePointRepository referencePointRepository, StopPointRepository stopPointRepository,
-      InformationDeskRepository informationDeskRepository, InformationDeskService informationDeskService,
-      RelationService relationService) {
+                                InformationDeskRepository informationDeskRepository, InformationDeskService informationDeskService,
+                                RelationService relationService, SharedServicePointRepository sharedServicePointRepository) {
     this.referencePointRepository = referencePointRepository;
     this.stopPointRepository = stopPointRepository;
     this.informationDeskRepository = informationDeskRepository;
     this.informationDeskService = informationDeskService;
     this.relationService = relationService;
+    this.sharedServicePointRepository = sharedServicePointRepository;
+  }
+
+  @BeforeEach
+  void setUp() {
+    SharedServicePoint servicePoint = SharedServicePoint.builder()
+            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],"
+                    + "\"trafficPointSloids\":[]}")
+            .sloid("ch:1:sloid:7000")
+            .build();
+    sharedServicePointRepository.saveAndFlush(servicePoint);
+  }
+
+  @AfterEach
+  void cleanUp() {
+    sharedServicePointRepository.deleteAll();
   }
 
   /**
@@ -94,7 +115,7 @@ class InformationDeskVersioningTest {
     editedVersion.setVersion(version2.getVersion());
 
     //when
-    informationDeskService.updateInformationDeskVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    informationDeskService.updateInformationDeskVersion(version2, editedVersion);
 
     //then
     List<InformationDeskVersion> result = informationDeskRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
@@ -154,7 +175,7 @@ class InformationDeskVersioningTest {
     editedVersion.setVersion(version2.getVersion());
 
     //when
-    informationDeskService.updateInformationDeskVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    informationDeskService.updateInformationDeskVersion(version2, editedVersion);
 
     //then
     List<InformationDeskVersion> result = informationDeskRepository.findAllByNumberOrderByValidFrom(
@@ -229,7 +250,7 @@ class InformationDeskVersioningTest {
     editedVersion.setVersion(version2.getVersion());
 
     //when
-    informationDeskService.updateInformationDeskVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    informationDeskService.updateInformationDeskVersion(version2, editedVersion);
 
     //then
     List<InformationDeskVersion> result = informationDeskRepository.findAllByNumberOrderByValidFrom(version2.getNumber());

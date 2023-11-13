@@ -2,7 +2,6 @@ package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -87,9 +86,8 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
 
   @PreAuthorize("""
       @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
-      (#sharedServicePointVersionModel, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
-  public ReferencePointVersion createReferencePoint(ReferencePointVersion referencePointVersion,
-                                                    SharedServicePointVersionModel sharedServicePointVersionModel) {
+      (#referencePointVersion, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+  public ReferencePointVersion createReferencePoint(ReferencePointVersion referencePointVersion) {
     stopPointService.checkStopPointExists(referencePointVersion.getParentServicePointSloid());
     stopPointService.validateIsNotReduced(referencePointVersion.getParentServicePointSloid());
     searchAndUpdatePlatformRelation(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
@@ -102,9 +100,9 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
 
   @PreAuthorize("""
       @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
-      (#sharedServicePointVersionModel, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+      (#editedVersion, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
   public ReferencePointVersion updateReferencePointVersion(ReferencePointVersion currentVersion,
-      ReferencePointVersion editedVersion, SharedServicePointVersionModel sharedServicePointVersionModel) {
+                                                           ReferencePointVersion editedVersion) {
     return updateVersion(currentVersion, editedVersion);
   }
 
