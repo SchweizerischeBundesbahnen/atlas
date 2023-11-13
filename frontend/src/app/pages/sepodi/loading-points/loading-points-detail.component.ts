@@ -20,7 +20,7 @@ import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { ValidationService } from '../../../core/validation/validation.service';
 import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { DateService } from '../../../core/date/date.service';
+import { ValidityConfirmationService } from '../validity/validity-confirmation.service';
 
 @Component({
   selector: 'app-loading-points',
@@ -51,6 +51,7 @@ export class LoadingPointsDetailComponent implements OnInit, OnDestroy {
     private servicePointService: ServicePointsService,
     private loadingPointsService: LoadingPointsService,
     private dialogService: DialogService,
+    private validityConfirmationService: ValidityConfirmationService,
     private notificationService: NotificationService,
   ) {}
 
@@ -165,41 +166,25 @@ export class LoadingPointsDetailComponent implements OnInit, OnDestroy {
   save() {
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
-      this.confirmValidityOverServicePoint().subscribe((confirmed) => {
-        if (confirmed) {
-          const loadingPointVersion = this.form.value as unknown as CreateLoadingPointVersion;
-          loadingPointVersion.servicePointNumber = this.servicePointNumber;
-          this.form.disable();
-          if (this.isNew) {
-            this.create(loadingPointVersion);
-          } else {
-            this.update(this.selectedVersion.id!, loadingPointVersion);
+      this.validityConfirmationService
+        .confirmValidityOverServicePoint(
+          this.servicePoint,
+          this.form.controls.validFrom.value!,
+          this.form.controls.validTo.value!,
+        )
+        .subscribe((confirmed) => {
+          if (confirmed) {
+            const loadingPointVersion = this.form.value as unknown as CreateLoadingPointVersion;
+            loadingPointVersion.servicePointNumber = this.servicePointNumber;
+            this.form.disable();
+            if (this.isNew) {
+              this.create(loadingPointVersion);
+            } else {
+              this.update(this.selectedVersion.id!, loadingPointVersion);
+            }
           }
-        }
-      });
-    }
-  }
-
-  private confirmValidityOverServicePoint(): Observable<boolean> {
-    if (this.servicePoint.length > 0) {
-      const servicePointValidity = VersionsHandlingService.getMaxValidity(this.servicePoint);
-      if (
-        this.form.controls.validFrom.value?.isBefore(servicePointValidity.validFrom) ||
-        this.form.controls.validTo.value?.isAfter(servicePointValidity.validTo)
-      ) {
-        return this.dialogService.confirm({
-          title: 'SEPODI.TRAFFIC_POINT_ELEMENTS.VALIDITY_CONFIRMATION.TITLE',
-          message: 'SEPODI.TRAFFIC_POINT_ELEMENTS.VALIDITY_CONFIRMATION.MESSAGE',
-          messageArgs: {
-            validFrom: DateService.getDateFormatted(servicePointValidity.validFrom),
-            validTo: DateService.getDateFormatted(servicePointValidity.validTo),
-          },
-          confirmText: 'COMMON.SAVE',
-          cancelText: 'COMMON.CANCEL',
         });
-      }
     }
-    return of(true);
   }
 
   private create(loadingPointVersion: CreateLoadingPointVersion) {

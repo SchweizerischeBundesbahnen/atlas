@@ -971,7 +971,7 @@
       "LOADING_POINTS": "Posti di carico",
       "LOADING_POINT": "Posto di carico",
       "FREIGHT_SERVICE_POINT_NAME": "Nome del punto di controllo",
-      "NEW": "Inserire un nuovo punto di ricarica",
+      "NEW": "Inserire un nuovo punto di carico",
       "NUMBER": "Numero",
       "DESIGNATION": "Denominazione",
       "DESIGNATION_LONG": "Denominazione lunga",
@@ -986,7 +986,7 @@
       },
       "NOTIFICATION": {
         "ADD_SUCCESS": "Il punto di carico è stato aggiunto con successo.",
-        "EDIT_SUCCESS": "Il punto di ricarica è stato salvato con successo."
+        "EDIT_SUCCESS": "Il punto di carico è stato salvato con successo."
       }
     },
     "GEOLOCATION": {
