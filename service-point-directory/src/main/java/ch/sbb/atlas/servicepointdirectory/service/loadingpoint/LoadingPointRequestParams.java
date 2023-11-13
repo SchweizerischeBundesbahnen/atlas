@@ -1,5 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
+import static ch.sbb.atlas.api.servicepoint.ServicePointConstants.LOADING_POINT_NUMBER_MAX;
+import static ch.sbb.atlas.api.servicepoint.ServicePointConstants.LOADING_POINT_NUMBER_MIN;
+
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.VersionedObjectDateRequestParams;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -26,7 +29,7 @@ public class LoadingPointRequestParams extends VersionedObjectDateRequestParams 
 
     @Parameter(description = "Number")
     @Singular(ignoreNullCollections = true)
-    private List<@Min(0) @Max(9999) Integer> numbers = new ArrayList<>();
+    private List<@Min(LOADING_POINT_NUMBER_MIN) @Max(LOADING_POINT_NUMBER_MAX) Integer> numbers = new ArrayList<>();
 
     @Parameter(description = "Unique key for service points which is used in the customer information.")
     @Singular(ignoreNullCollections = true)
