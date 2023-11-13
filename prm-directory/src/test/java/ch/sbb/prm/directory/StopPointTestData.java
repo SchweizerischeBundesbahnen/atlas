@@ -18,8 +18,8 @@ public class StopPointTestData {
 
   public static StopPointVersion getStopPointVersion(){
     Set<MeanOfTransport> meanOfTransport = new HashSet<>();
-    meanOfTransport.add(MeanOfTransport.BUS);
-    meanOfTransport.add(MeanOfTransport.BOAT);
+    meanOfTransport.add(MeanOfTransport.TRAIN);
+    meanOfTransport.add(MeanOfTransport.METRO);
 
     return StopPointVersion.builder()
         .sloid("ch:1:sloid:12345")
@@ -57,7 +57,38 @@ public class StopPointTestData {
         .numberWithoutCheckDigit(8507000)
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
-        .meansOfTransport(of(MeanOfTransport.BUS, MeanOfTransport.BOAT))
+        .meansOfTransport(of(MeanOfTransport.TRAIN, MeanOfTransport.METRO))
+        .freeText("I am a free text!!!")
+        .address("Wylerstrasse 123")
+        .zipCode("3014")
+        .city("Bern")
+        .alternativeTransport(StandardAttributeType.TO_BE_COMPLETED)
+        .alternativeTransportCondition("No way dude!!")
+        .assistanceAvailability(StandardAttributeType.YES)
+        .assistanceCondition("No alternative Bro!")
+        .assistanceService(StandardAttributeType.NO)
+        .audioTicketMachine(StandardAttributeType.PARTIALLY)
+        .dynamicAudioSystem(StandardAttributeType.TO_BE_COMPLETED)
+        .dynamicOpticSystem(StandardAttributeType.TO_BE_COMPLETED)
+        .infoTicketMachine("tick")
+        .additionalInformation("additional")
+        .interoperable(true)
+        .url("https://www.prm.sbb")
+        .visualInfo(StandardAttributeType.TO_BE_COMPLETED)
+        .wheelchairTicketMachine(StandardAttributeType.TO_BE_COMPLETED)
+        .assistanceRequestFulfilled(StandardAttributeType.TO_BE_COMPLETED)
+        .ticketMachine(StandardAttributeType.TO_BE_COMPLETED)
+        .build();
+
+  }
+
+  public static CreateStopPointVersionModel getWrongStopPointReducedCreateVersionModel(){
+    return CreateStopPointVersionModel.builder()
+        .sloid("ch:1:sloid:7000")
+        .numberWithoutCheckDigit(8507000)
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .meansOfTransport(of(MeanOfTransport.TRAM))
         .freeText("I am a free text!!!")
         .address("Wylerstrasse 123")
         .zipCode("3014")
@@ -89,7 +120,7 @@ public class StopPointTestData {
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
-        .meansOfTransport(Set.of(MeanOfTransport.BUS, MeanOfTransport.BOAT))
+        .meansOfTransport(Set.of(MeanOfTransport.TRAIN, MeanOfTransport.METRO))
         .freeText("I am a free text!!!")
         .address("Wylerstrasse 123")
         .zipCode("3014")
@@ -118,7 +149,7 @@ public class StopPointTestData {
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2002, 12, 31))
-        .meansOfTransport(Set.of(MeanOfTransport.BUS, MeanOfTransport.BOAT))
+        .meansOfTransport(Set.of(MeanOfTransport.TRAIN, MeanOfTransport.METRO))
         .freeText("I am a free text!!!")
         .address("Wylerstrasse 312")
         .zipCode("3014")
