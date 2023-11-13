@@ -49,9 +49,9 @@ export class TrafficPointElementsTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.router.url.includes('/areas')
-      ? (this.isTrafficPointArea = true)
-      : (this.isTrafficPointArea = false);
+    this.route.data.pipe(takeUntil(this.ngUnsubscribe)).subscribe((next) => {
+      this.isTrafficPointArea = next.isTrafficPointArea;
+    });
   }
 
   getOverview(pagination: TablePagination) {
@@ -60,20 +60,24 @@ export class TrafficPointElementsTableComponent implements OnInit, OnDestroy {
       : this.getPlatformsOfServicePoint(pagination);
   }
 
-  newTrafficPointElement() {
+  addNewTrafficPointElement() {
     this.router
       .navigate([Pages.SEPODI.path, Pages.TRAFFIC_POINT_ELEMENTS.path, 'add'], {
-        state: { servicePointNumber: this.servicePointNumber },
+        state: {
+          servicePointNumber: this.servicePointNumber,
+          isTrafficPointArea: this.isTrafficPointArea,
+        },
       })
-      .then(() => {
-        this.trafficPointElementService.isTrafficPointArea.next(this.isTrafficPointArea);
-      });
+      .then();
   }
 
   editVersion($event: ReadTrafficPointElementVersion) {
     this.router
       .navigate([Pages.SEPODI.path, Pages.TRAFFIC_POINT_ELEMENTS.path, $event.sloid], {
-        state: { servicePointNumber: this.servicePointNumber },
+        state: {
+          servicePointNumber: this.servicePointNumber,
+          isTrafficPointArea: this.isTrafficPointArea,
+        },
       })
       .then();
   }
