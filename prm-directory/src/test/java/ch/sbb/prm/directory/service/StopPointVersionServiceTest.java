@@ -5,8 +5,8 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.controller.StopPointRequestParams;
 import ch.sbb.prm.directory.entity.StopPointVersion;
-import ch.sbb.prm.directory.exception.ServicePointDoesNotExistsException;
-import ch.sbb.prm.directory.exception.StopPointDoesNotExistsException;
+import ch.sbb.prm.directory.exception.ServicePointDoesNotExistException;
+import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
 import org.junit.jupiter.api.Test;
@@ -38,7 +38,7 @@ class StopPointVersionServiceTest {
 
   @Test
   void shouldThrowExceptionWhenStopPointDoesNotExist() {
-    assertThrows(StopPointDoesNotExistsException.class,
+    assertThrows(StopPointDoesNotExistException.class,
         () -> stopPointService.checkStopPointExists(SLOID)).getLocalizedMessage();
   }
 
@@ -196,7 +196,7 @@ class StopPointVersionServiceTest {
     //given
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
     //when & then
-    assertThrows(ServicePointDoesNotExistsException.class, () -> stopPointService.save(stopPointVersion));
+    assertThrows(ServicePointDoesNotExistException.class, () -> stopPointService.save(stopPointVersion));
   }
 
 }
