@@ -28,13 +28,15 @@ public abstract class PrmRelatableVersionableService<T extends Relatable & PrmVe
 
   protected void createRelation(T version) {
     stopPointService.checkStopPointExists(version.getParentServicePointSloid());
-    List<ReferencePointVersion> referencePointVersions = referencePointRepository.findByParentServicePointSloid(
-        version.getParentServicePointSloid());
-    referencePointVersions.forEach(referencePointVersion -> {
-      RelationVersion relationVersion = RelationUtil.buildRelationVersion(version,
-          referencePointVersion.getSloid(), getReferencePointElementType());
-      relationService.save(relationVersion);
-    });
+    if (!stopPointService.isReduced(version.getParentServicePointSloid())) {
+      List<ReferencePointVersion> referencePointVersions = referencePointRepository.findByParentServicePointSloid(
+          version.getParentServicePointSloid());
+      referencePointVersions.forEach(referencePointVersion -> {
+        RelationVersion relationVersion = RelationUtil.buildRelationVersion(version,
+            referencePointVersion.getSloid(), getReferencePointElementType());
+        relationService.save(relationVersion);
+      });
+    }
   }
 
 }

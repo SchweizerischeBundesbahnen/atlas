@@ -26,7 +26,6 @@ public class ReadRelationVersionModel extends RelationVersionModel implements Da
   @Valid
   private ServicePointNumber number;
 
-  @Schema(description = "Reference Point Element Type")
   private ReferencePointElementType referencePointElementType;
 
 }
