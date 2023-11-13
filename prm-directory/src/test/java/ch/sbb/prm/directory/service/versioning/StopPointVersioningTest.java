@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.service.versioning;
 
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
+import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
@@ -99,7 +99,7 @@ class StopPointVersioningTest {
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
     //when
-    stopPointService.updateStopPointVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    stopPointService.updateStopPointVersion(version2, editedVersion);
     //then
     List<StopPointVersion> result = stopPointRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
     assertThat(result).isNotNull().hasSize(2);
@@ -146,7 +146,7 @@ class StopPointVersioningTest {
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
     //when
-    stopPointService.updateStopPointVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    stopPointService.updateStopPointVersion(version2, editedVersion);
     //then
     List<StopPointVersion> result = stopPointRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
     assertThat(result).isNotNull().hasSize(5);
@@ -204,7 +204,7 @@ class StopPointVersioningTest {
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
     //when
-    stopPointService.updateStopPointVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    stopPointService.updateStopPointVersion(version2, editedVersion);
     //then
     List<StopPointVersion> result = stopPointRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
     assertThat(result).isNotNull().hasSize(2);

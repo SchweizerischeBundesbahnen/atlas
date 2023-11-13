@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.service;
 
+import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
@@ -61,7 +61,7 @@ class ParkingLotServiceTest {
     parkingLot.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when & then
     assertThrows(StopPointDoesNotExistException.class,
-        () -> parkingLotService.createParkingLot(parkingLot, SHARED_SERVICE_POINT_VERSION_MODEL)).getLocalizedMessage();
+        () -> parkingLotService.createParkingLot(parkingLot)).getLocalizedMessage();
   }
 
   @Test
@@ -73,7 +73,7 @@ class ParkingLotServiceTest {
     ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLotVersion();
     parkingLot.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when
-    parkingLotService.createParkingLot(parkingLot, SHARED_SERVICE_POINT_VERSION_MODEL);
+    parkingLotService.createParkingLot(parkingLot);
 
     //then
     List<ParkingLotVersion> parkingLotVersions = parkingLotRepository
@@ -97,7 +97,7 @@ class ParkingLotServiceTest {
     ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLotVersion();
     parkingLot.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when
-    parkingLotService.createParkingLot(parkingLot, SHARED_SERVICE_POINT_VERSION_MODEL);
+    parkingLotService.createParkingLot(parkingLot);
 
     //then
     List<ParkingLotVersion> parkingLotVersions = parkingLotRepository
@@ -126,7 +126,7 @@ class ParkingLotServiceTest {
     parkingLot.setParentServicePointSloid(parentServicePointSloid);
 
     //when
-    parkingLotService.createParkingLot(parkingLot, SHARED_SERVICE_POINT_VERSION_MODEL);
+    parkingLotService.createParkingLot(parkingLot);
 
     //then
     List<ParkingLotVersion> parkingLotVersions = parkingLotRepository.findByParentServicePointSloid(
