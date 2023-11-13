@@ -144,25 +144,21 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
     return String(this.servicePointNumber);
   }
 
-  backToTrafficPointElements() {
+  backToTrafficPoint(destination: string) {
     this.router
       .navigate([
         Pages.SEPODI.path,
         Pages.SERVICE_POINTS.path,
         this.servicePointNumber,
-        'traffic-point-elements',
+        destination,
       ])
       .then();
   }
 
-  backToTrafficPointAreas() {
-    this.router
-      .navigate([Pages.SEPODI.path, Pages.SERVICE_POINTS.path, this.servicePointNumber, 'areas'])
-      .then();
-  }
-
   confirmCancel() {
-    this.isTrafficPointArea ? this.backToTrafficPointAreas() : this.backToTrafficPointElements();
+    this.isTrafficPointArea
+      ? this.backToTrafficPoint('areas')
+      : this.backToTrafficPoint('traffic-point-elements');
   }
 
   switchVersion(newIndex: number) {
