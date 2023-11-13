@@ -48,11 +48,11 @@ public class StopPointCsvToModelMapper {
   StandardAttributeType mapStandardAttributeType(Integer standardAttributeTypeCode){
     return standardAttributeTypeCode!=null ? StandardAttributeType.from(standardAttributeTypeCode) : null;
   }
-  boolean mapInteroperable(Integer interoperable){
-    if(interoperable == null || interoperable.equals(0)){
-      return false;
+  Boolean mapInteroperable(Integer interoperable){
+    if (interoperable == null){
+      return null;
     }
-    return true;
+    return !interoperable.equals(0);
   }
 
 }

@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.imports.Importable;
 import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
@@ -21,7 +22,7 @@ import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
 /**
- * Switch back to ch.sbb.atlas.model.entity.BaseEntity once Didok dies.
+ * @deprecated   Switch back to ch.sbb.atlas.model.entity.BaseEntity once Didok dies.
  */
 @NoArgsConstructor
 @Getter
@@ -32,7 +33,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @AtlasVersionable
 @Deprecated
-public abstract class BaseDidokImportEntity {
+public abstract class BaseDidokImportEntity implements Importable {
 
   @Column(columnDefinition = "TIMESTAMP", updatable = false)
   @AtlasVersionableProperty(ignoreDiff = true)

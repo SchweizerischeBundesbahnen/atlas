@@ -33,13 +33,11 @@ public abstract class InformationDeskVersionModel extends BasePrmVersionModel im
   @Schema(description = "Additional Information")
   private String additionalInformation;
 
-  @Schema(description = "Induction amplifier")
   private StandardAttributeType inductionLoop;
 
   @Schema(description = "Opening hours")
   private String openingHours;
 
-  @Schema(description = "Wheelchair accessibility")
   private StandardAttributeType wheelchairAccess;
 
 }
