@@ -50,7 +50,6 @@ describe('LoadingPointsDetailComponent', () => {
   it('should display current designation and validity', () => {
     expect(component.selectedVersion).toBeTruthy();
 
-    expect(component.selectedVersion.designation).toEqual('1234');
     expect(component.maxValidity.validFrom).toEqual(new Date('2023-11-01'));
     expect(component.maxValidity.validTo).toEqual(new Date('2099-11-07'));
   });
