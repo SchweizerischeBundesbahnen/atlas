@@ -65,12 +65,18 @@ public class TrafficPointElementService {
       (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public TrafficPointElementVersion create(TrafficPointElementVersion trafficPointElementVersion,
       List<ServicePointVersion> servicePointVersions) {
+
     if (trafficPointElementVersion.getSloid() != null && isTrafficPointElementExisting(trafficPointElementVersion.getSloid())) {
       throw new SloidAlreadyExistsException(trafficPointElementVersion.getSloid());
     }
-    if (isSloidNullAndTypeBoardingPlatformOrBoardingArea(trafficPointElementVersion)) {
+
+    if (checkIfSloidIsNullAndMatchType(trafficPointElementVersion, TrafficPointElementType.BOARDING_PLATFORM) ||
+        checkIfSloidIsNullAndMatchType(trafficPointElementVersion, TrafficPointElementType.BOARDING_AREA)) {
+      boolean isBoardingArea = (trafficPointElementVersion.getTrafficPointElementType() == TrafficPointElementType.BOARDING_AREA);
+
       trafficPointElementVersion.setSloid(
-          trafficPointElementSloidService.getNextSloidForPlatform(trafficPointElementVersion.getServicePointNumber()));
+          trafficPointElementSloidService.getNextSloid(trafficPointElementVersion.getServicePointNumber(), isBoardingArea)
+      );
     }
     return save(trafficPointElementVersion);
   }
@@ -177,10 +183,8 @@ public class TrafficPointElementService {
     return validToday.orElse(validInFuture.orElse(versions.get(versions.size() - 1)));
   }
 
-  private boolean isSloidNullAndTypeBoardingPlatformOrBoardingArea(TrafficPointElementVersion trafficPointElementVersion) {
-    return trafficPointElementVersion.getSloid() == null &&
-        (trafficPointElementVersion.getTrafficPointElementType() == TrafficPointElementType.BOARDING_PLATFORM ||
-            trafficPointElementVersion.getTrafficPointElementType() == TrafficPointElementType.BOARDING_AREA);
+  private boolean checkIfSloidIsNullAndMatchType(TrafficPointElementVersion trafficPointElementVersion, TrafficPointElementType trafficPointElementType) {
+      return trafficPointElementVersion.getSloid() == null && trafficPointElementVersion.getTrafficPointElementType() == trafficPointElementType;
   }
 
   public List<TrafficPointElementVersion> getTrafficPointElementsByServicePointNumber(Integer servicePointNumber,
