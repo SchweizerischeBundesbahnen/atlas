@@ -1,6 +1,5 @@
-package ch.sbb.atlas.servicepoint;
+package ch.sbb.atlas.kafka.model.service.point;
 
-import ch.sbb.atlas.api.model.SboidsAssociated;
 import ch.sbb.atlas.kafka.model.AtlasEvent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +16,7 @@ import java.util.Set;
 @Setter
 @ToString
 @Builder
-public class SharedServicePointVersionModel implements AtlasEvent, SboidsAssociated {
+public class SharedServicePointVersionModel implements AtlasEvent {
 
   private String servicePointSloid;
   private Set<String> sboids;

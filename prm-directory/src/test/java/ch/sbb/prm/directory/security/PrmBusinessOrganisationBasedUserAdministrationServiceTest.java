@@ -1,4 +1,4 @@
-package ch.sbb.atlas.user.administration.security.service;
+package ch.sbb.prm.directory.security;
 
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationRole;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
@@ -6,12 +6,17 @@ import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionRestrictionModel;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
+import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.user.administration.security.UserPermissionHolder;
+import ch.sbb.prm.directory.ToiletTestData;
+import ch.sbb.prm.directory.entity.SharedServicePoint;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
+import ch.sbb.prm.directory.service.SharedServicePointService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Optional;
 import java.util.Set;
@@ -19,36 +24,48 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+@IntegrationTest
 public class PrmBusinessOrganisationBasedUserAdministrationServiceTest {
 
-    @Mock
+    @MockBean
     private UserPermissionHolder userPermissionHolder;
 
-    private PrmBusinessOrganisationBasedUserAdministrationService prmBOBasedUserAdministrationService;
+    private final SharedServicePointRepository sharedServicePointRepository;
+    private final SharedServicePointService sharedServicePointService;
+
+    private final PrmBusinessOrganisationBasedUserAdministrationService prmBOBasedUserAdministrationService;
+
+    @Autowired
+    public PrmBusinessOrganisationBasedUserAdministrationServiceTest(SharedServicePointRepository sharedServicePointRepository,
+                                                                     SharedServicePointService sharedServicePointService,
+                                                                     PrmBusinessOrganisationBasedUserAdministrationService prmBOBasedUserAdministrationService,
+                                                                     UserPermissionHolder userPermissionHolder) {
+        this.sharedServicePointRepository = sharedServicePointRepository;
+        this.sharedServicePointService = sharedServicePointService;
+        this.prmBOBasedUserAdministrationService = prmBOBasedUserAdministrationService;
+        this.userPermissionHolder = userPermissionHolder;
+    }
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        prmBOBasedUserAdministrationService =
-                new PrmBusinessOrganisationBasedUserAdministrationService(userPermissionHolder);
         when(userPermissionHolder.isAdmin()).thenReturn(false);
         when(userPermissionHolder.getCurrentUserSbbUid()).thenReturn("e123456");
-    }
 
-    private SharedServicePointVersionModel getSomeSharedServicePointVersionModels() {
-        return SharedServicePointVersionModel.builder()
-                .servicePointSloid("ch:1:sloid:90499")
-                .sboids(Set.of("ch:1:sboid:100001","ch:1:sboid:100002","ch:1:sboid:100003","ch:1:sboid:100004","ch:1:sboid:100005"))
-                .trafficPointSloids(Set.of("ch:1:sloid:12345:1"))
+        SharedServicePoint servicePoint = SharedServicePoint.builder()
+                .servicePoint("{\"servicePointSloid\":\"ch:1.sloid:12345\",\"sboids\":[\"ch:1:sboid:100001\",\"ch:1:sboid:100002\",\"ch:1:sboid:100003\",\"ch:1:sboid:100004\",\"ch:1:sboid:100005\"],"
+                        + "\"trafficPointSloids\":[\"ch:1.sloid:12345:1\"]}")
+                .sloid("ch:1.sloid:12345")
                 .build();
+        sharedServicePointRepository.saveAndFlush(servicePoint);
     }
 
     @Test
     void shouldAllowCreateToAdminUser() {
         when(userPermissionHolder.isAdmin()).thenReturn(true);
 
-        boolean permissionsToCreate = prmBOBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations(
-                getSomeSharedServicePointVersionModels(), ApplicationType.PRM);
+        boolean permissionsToCreate = prmBOBasedUserAdministrationService
+                .hasUserPermissionsForBusinessOrganisations(ToiletTestData.getToiletVersion(), ApplicationType.PRM);
 
         assertThat(permissionsToCreate).isTrue();
     }
@@ -64,8 +81,8 @@ public class PrmBusinessOrganisationBasedUserAdministrationServiceTest {
                                 .build()))
                 .build()));
 
-        boolean permissionsToCreate = prmBOBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations(
-                getSomeSharedServicePointVersionModels(), ApplicationType.PRM);
+        boolean permissionsToCreate = prmBOBasedUserAdministrationService
+                .hasUserPermissionsForBusinessOrganisations(ToiletTestData.getToiletVersion(), ApplicationType.PRM);
 
         assertThat(permissionsToCreate).isTrue();
     }
@@ -81,8 +98,8 @@ public class PrmBusinessOrganisationBasedUserAdministrationServiceTest {
                                 .build()))
                 .build()));
 
-        boolean permissionsToCreate = prmBOBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations(
-                getSomeSharedServicePointVersionModels(), ApplicationType.PRM);
+        boolean permissionsToCreate = prmBOBasedUserAdministrationService
+                .hasUserPermissionsForBusinessOrganisations(ToiletTestData.getToiletVersion(), ApplicationType.PRM);
 
         assertThat(permissionsToCreate).isTrue();
     }
@@ -98,8 +115,8 @@ public class PrmBusinessOrganisationBasedUserAdministrationServiceTest {
                                 .build()))
                 .build()));
 
-        boolean permissionsToCreate = prmBOBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations(
-                getSomeSharedServicePointVersionModels(), ApplicationType.PRM);
+        boolean permissionsToCreate = prmBOBasedUserAdministrationService
+                .hasUserPermissionsForBusinessOrganisations(ToiletTestData.getToiletVersion(), ApplicationType.PRM);
 
         assertThat(permissionsToCreate).isFalse();
     }
@@ -119,8 +136,8 @@ public class PrmBusinessOrganisationBasedUserAdministrationServiceTest {
                                 .build()))
                 .build()));
 
-        boolean permissionsToCreate = prmBOBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations(
-                getSomeSharedServicePointVersionModels(), ApplicationType.PRM);
+        boolean permissionsToCreate = prmBOBasedUserAdministrationService
+                .hasUserPermissionsForBusinessOrganisations(ToiletTestData.getToiletVersion(), ApplicationType.PRM);
 
         assertThat(permissionsToCreate).isTrue();
     }
@@ -140,8 +157,8 @@ public class PrmBusinessOrganisationBasedUserAdministrationServiceTest {
                                 .build()))
                 .build()));
 
-        boolean permissionsToCreate = prmBOBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations(
-                getSomeSharedServicePointVersionModels(), ApplicationType.PRM);
+        boolean permissionsToCreate = prmBOBasedUserAdministrationService
+                .hasUserPermissionsForBusinessOrganisations(ToiletTestData.getToiletVersion(), ApplicationType.PRM);
 
         assertThat(permissionsToCreate).isFalse();
     }
@@ -166,8 +183,8 @@ public class PrmBusinessOrganisationBasedUserAdministrationServiceTest {
                                 .build()))
                 .build()));
 
-        boolean permissionsToCreate = prmBOBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations(
-                getSomeSharedServicePointVersionModels(), ApplicationType.PRM);
+        boolean permissionsToCreate = prmBOBasedUserAdministrationService
+                .hasUserPermissionsForBusinessOrganisations(ToiletTestData.getToiletVersion(), ApplicationType.PRM);
 
         assertThat(permissionsToCreate).isTrue();
     }
