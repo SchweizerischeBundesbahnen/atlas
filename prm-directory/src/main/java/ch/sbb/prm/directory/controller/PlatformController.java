@@ -32,7 +32,7 @@ public class PlatformController implements PlatformApiV1 {
   public ReadPlatformVersionModel createPlatform(CreatePlatformVersionModel model) {
     PlatformVersion platformVersion = PlatformVersionMapper.toEntity(model);
     PlatformVersion savedVersion = platformService.createPlatformVersion(platformVersion,
-            sharedServicePointService.getSharedServicePointVersionModel(model.getParentServicePointSloid()));
+            sharedServicePointService.validateServicePointExists(model.getParentServicePointSloid()));
     return PlatformVersionMapper.toModel(savedVersion);
   }
 
@@ -42,7 +42,7 @@ public class PlatformController implements PlatformApiV1 {
         platformService.getPlatformVersionById(id).orElseThrow(() -> new IdNotFoundException(id));
     PlatformVersion editedVersion = PlatformVersionMapper.toEntity(model);
     platformService.updatePlatformVersion(platformVersion, editedVersion,
-            sharedServicePointService.getSharedServicePointVersionModel(model.getParentServicePointSloid()));
+            sharedServicePointService.validateServicePointExists(model.getParentServicePointSloid()));
 
     return platformService.findAllByNumberOrderByValidFrom(platformVersion.getNumber()).stream()
         .map(PlatformVersionMapper::toModel).toList();

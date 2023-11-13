@@ -32,7 +32,7 @@ public class ReferencePointController implements ReferencePointApiV1 {
   public ReadReferencePointVersionModel createReferencePoint(CreateReferencePointVersionModel model) {
     ReferencePointVersion referencePointVersion = ReferencePointVersionMapper.toEntity(model);
     ReferencePointVersion savedReferencePointVersion = referencePointService.createReferencePoint(referencePointVersion,
-            sharedServicePointService.getSharedServicePointVersionModel(model.getParentServicePointSloid()));
+            sharedServicePointService.validateServicePointExists(model.getParentServicePointSloid()));
     return ReferencePointVersionMapper.toModel(savedReferencePointVersion);
   }
 
@@ -43,7 +43,7 @@ public class ReferencePointController implements ReferencePointApiV1 {
 
     ReferencePointVersion editedVersion = ReferencePointVersionMapper.toEntity(model);
     referencePointService.updateReferencePointVersion(referencePointVersion, editedVersion,
-            sharedServicePointService.getSharedServicePointVersionModel(model.getParentServicePointSloid()));
+            sharedServicePointService.validateServicePointExists(model.getParentServicePointSloid()));
 
     return referencePointService.findAllByNumberOrderByValidFrom(referencePointVersion.getNumber()).stream()
         .map(ReferencePointVersionMapper::toModel).toList();

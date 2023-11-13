@@ -187,15 +187,20 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldNotCreateStopPointWhenServicePointDoesNotExists() throws Exception {
+  void shouldNotCreateStopPointVersionWhenServicePointDoesNotExist() throws Exception {
     //given
     CreateStopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
+    SharedServicePoint servicePoint = SharedServicePoint.builder()
+            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7001\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
+            .sloid("ch:1:sloid:7001")
+            .build();
+    sharedServicePointRepository.saveAndFlush(servicePoint);
+
     //when && then
     mvc.perform(post("/v1/stop-points").contentType(contentType)
-            .content(mapper.writeValueAsString(stopPointCreateVersionModel)))
-        .andExpect(status().isPreconditionFailed())
-        .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7000 does not exists.")));
-
+                    .content(mapper.writeValueAsString(stopPointCreateVersionModel)))
+            .andExpect(status().isPreconditionFailed())
+            .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7000 does not exist.")));
   }
 
   /**
@@ -261,23 +266,6 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2000-12-31")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2001-01-01")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2001-12-31")));
-  }
-
-  @Test
-  void shouldNotCreateStopPointVersionWhenServicePointDoesNotExist() throws Exception {
-    //given
-    CreateStopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
-    SharedServicePoint servicePoint = SharedServicePoint.builder()
-            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7001\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
-            .sloid("ch:1:sloid:7001")
-            .build();
-    sharedServicePointRepository.saveAndFlush(servicePoint);
-
-    //when && then
-    mvc.perform(post("/v1/stop-points").contentType(contentType)
-                    .content(mapper.writeValueAsString(stopPointCreateVersionModel)))
-            .andExpect(status().isNotFound())
-            .andExpect(jsonPath("$.message", is("Entity not found")));
   }
 
 }
