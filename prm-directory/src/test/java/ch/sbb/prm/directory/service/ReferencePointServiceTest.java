@@ -1,7 +1,5 @@
 package ch.sbb.prm.directory.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -29,8 +27,6 @@ import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
-import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -120,7 +117,7 @@ class ReferencePointServiceTest {
     //when
     ReducedVariantException result = Assertions.assertThrows(
         ReducedVariantException.class,
-        () -> referencePointService.createReferencePoint(referencePointVersion));
+        () -> referencePointService.createReferencePoint(referencePointVersion, SHARED_SERVICE_POINT_VERSION_MODEL));
 
     //then
     assertThat(result).isNotNull();

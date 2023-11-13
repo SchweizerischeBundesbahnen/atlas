@@ -15,13 +15,13 @@ import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
-import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -126,7 +126,7 @@ class ParkingLotServiceTest {
     parkingLot.setParentServicePointSloid(parentServicePointSloid);
 
     //when
-    parkingLotService.createParkingLot(parkingLot);
+    parkingLotService.createParkingLot(parkingLot, SHARED_SERVICE_POINT_VERSION_MODEL);
 
     //then
     List<ParkingLotVersion> parkingLotVersions = parkingLotRepository.findByParentServicePointSloid(
