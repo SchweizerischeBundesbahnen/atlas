@@ -150,6 +150,8 @@ describe('TrafficPointElementsDetailComponent', () => {
       component.form.controls.designation.setValue('Designation');
       component.form.controls.validFrom.setValue(moment(new Date(2000 - 10 - 1)));
       component.form.controls.validTo.setValue(moment(new Date(2099 - 10 - 1)));
+
+      component.form.controls.trafficPointElementGeolocation.disable();
       component.save();
 
       expect(trafficPointService.createTrafficPoint).toHaveBeenCalled();
