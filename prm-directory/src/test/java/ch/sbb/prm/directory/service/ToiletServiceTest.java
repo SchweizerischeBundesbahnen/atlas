@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
@@ -60,7 +60,7 @@ class ToiletServiceTest {
     toiletVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when & then
     assertThrows(StopPointDoesNotExistException.class,
-        () -> toiletService.createToilet(toiletVersion, SHARED_SERVICE_POINT_VERSION_MODEL)).getLocalizedMessage();
+        () -> toiletService.createToilet(toiletVersion)).getLocalizedMessage();
   }
 
   @Test
@@ -79,7 +79,7 @@ class ToiletServiceTest {
 
     //when & then
     //when
-    toiletService.createToilet(toiletVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    toiletService.createToilet(toiletVersion);
 
     //then
     List<ToiletVersion> toiletVersions = toiletRepository.findByParentServicePointSloid(
@@ -100,7 +100,7 @@ class ToiletServiceTest {
     ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
     toiletVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when
-    toiletService.createToilet(toiletVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    toiletService.createToilet(toiletVersion);
     //then
     List<ToiletVersion> toiletVersions = toiletRepository
             .findByParentServicePointSloid(toiletVersion.getParentServicePointSloid());
@@ -124,7 +124,7 @@ class ToiletServiceTest {
     ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
     toiletVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when
-    toiletService.createToilet(toiletVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    toiletService.createToilet(toiletVersion);
     //then
     List<ToiletVersion> toiletVersions = toiletRepository.findByParentServicePointSloid(
         toiletVersion.getParentServicePointSloid());

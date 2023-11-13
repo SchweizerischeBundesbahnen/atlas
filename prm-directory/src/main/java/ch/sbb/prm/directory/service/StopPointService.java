@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.service;
 
+import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -106,10 +106,9 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
 
   @PreAuthorize("""
       @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
-      (#sharedServicePointVersionModel, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+      (#editedVersion, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
   public StopPointVersion updateStopPointVersion(StopPointVersion currentVersion,
-                                                 StopPointVersion editedVersion,
-                                                 SharedServicePointVersionModel sharedServicePointVersionModel) {
+                                                 StopPointVersion editedVersion) {
     stopPointValidationService.validateMeansOfTransportChanging(currentVersion,editedVersion);
     return updateVersion(currentVersion, editedVersion);
   }
