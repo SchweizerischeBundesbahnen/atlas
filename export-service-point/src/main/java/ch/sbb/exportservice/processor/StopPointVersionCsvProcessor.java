@@ -29,7 +29,7 @@ public class StopPointVersionCsvProcessor extends BaseServicePointProcessor impl
         .dynamicAudioSystem(mapStandardAttributeType(version.getDynamicAudioSystem()))
         .dynamicOpticSystem(mapStandardAttributeType(version.getDynamicOpticSystem()))
         .infoTicketMachine(version.getInfoTicketMachine())
-        .interoperable(String.valueOf(version.getInteroperable()))
+        .interoperable(version.getInteroperable())
         .url(version.getUrl())
         .visualInfo(mapStandardAttributeType(version.getVisualInfo()))
         .wheelchairTicketMachine(mapStandardAttributeType(version.getWheelchairTicketMachine()))
