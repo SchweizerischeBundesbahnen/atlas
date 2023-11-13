@@ -11,7 +11,7 @@ import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
-import ch.sbb.prm.directory.exception.StopPointDoesNotExistsException;
+import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.repository.InformationDeskRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
@@ -61,7 +61,7 @@ class InformationDeskServiceTest {
     InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
     informationDesk.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when & then
-    assertThrows(StopPointDoesNotExistsException.class,
+    assertThrows(StopPointDoesNotExistException.class,
         () -> informationDeskService.createInformationDesk(informationDesk, SHARED_SERVICE_POINT_VERSION_MODEL)).getLocalizedMessage();
   }
 

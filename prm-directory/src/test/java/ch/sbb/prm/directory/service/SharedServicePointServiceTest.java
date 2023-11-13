@@ -2,7 +2,7 @@ package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
-import ch.sbb.prm.directory.exception.ServicePointDoesNotExistsException;
+import ch.sbb.prm.directory.exception.ServicePointDoesNotExistException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +47,7 @@ class SharedServicePointServiceTest {
 
   @Test
   void shouldValidateServicePointExistsAndThrowException() {
-    assertThatExceptionOfType(ServicePointDoesNotExistsException.class).isThrownBy(
+    assertThatExceptionOfType(ServicePointDoesNotExistException.class).isThrownBy(
         () -> sharedServicePointService.validateServicePointExists("spinatknödel"));
   }
 }

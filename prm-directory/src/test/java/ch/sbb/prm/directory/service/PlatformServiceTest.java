@@ -10,7 +10,7 @@ import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
-import ch.sbb.prm.directory.exception.StopPointDoesNotExistsException;
+import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.exception.TrafficPointElementDoesNotExistsException;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
@@ -73,7 +73,7 @@ class PlatformServiceTest {
     PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
     platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when & then
-    assertThrows(StopPointDoesNotExistsException.class,
+    assertThrows(StopPointDoesNotExistException.class,
         () -> platformService.createPlatformVersion(platformVersion, SHARED_SERVICE_POINT_VERSION_MODEL)).getLocalizedMessage();
   }
 
