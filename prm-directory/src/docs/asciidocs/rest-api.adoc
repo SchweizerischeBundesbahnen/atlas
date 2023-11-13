@@ -66,6 +66,18 @@ include::{snippets}/stop-point-version-controller-api-test/should-create-stop-po
 
 include::{snippets}/stop-point-version-controller-api-test/should-not-create-stop-point-when-service-point-does-not-exists/auto-section.adoc[]
 
+=== Create Stop Points - Properties Validation Unsuccessfully
+
+include::{snippets}/stop-point-version-controller-api-test/should-not-create-stop-point-complete-with-not-validatable-properties/auto-section.adoc[]
+
+=== Create Stop Points - Reduced provide complete properties Unsuccessfully
+
+include::{snippets}/stop-point-version-controller-api-test/should-not-create-stop-point-reduced-if-complete-properties-provided/auto-section.adoc[]
+
+=== Create Stop Points - Not Swiss ServicePoint provided Unsuccessfully
+
+include::{snippets}/stop-point-version-controller-api-test/should-not-create-stop-point-reduced-if-service-point-has-as-country-not-swiss/auto-section.adoc[]
+
 === Update Stop Points - Successfully
 
 include::{snippets}/stop-point-version-controller-api-test/should-update-stop-point/auto-section.adoc[]
