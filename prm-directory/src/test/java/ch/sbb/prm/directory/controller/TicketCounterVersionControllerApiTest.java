@@ -155,8 +155,26 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/ticket-counters").contentType(contentType)
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isPreconditionFailed())
-        .andExpect(jsonPath("$.message", is("The stop place with sloid ch:1:sloid:7000 does not exists.")));
+        .andExpect(jsonPath("$.message", is("The stop place with sloid ch:1:sloid:7000 does not exist.")));
     verify(relationService, times(0)).save(any(RelationVersion.class));
+  }
+
+  @Test
+  void shouldNotCreateTicketCounterVersionWhenParentSloidDoesNotExist() throws Exception {
+    //given
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid("ch:1:sloid:7001");
+    referencePointRepository.save(referencePointVersion);
+
+    CreateToiletVersionModel model = ToiletTestData.getCreateToiletVersionModel();
+    model.setParentServicePointSloid("ch:1:sloid:7001");
+
+    //when && then
+    mvc.perform(post("/v1/toilets").contentType(contentType)
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(model)))
+            .andExpect(status().isPreconditionFailed())
+            .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7001 does not exist.")));
   }
 
   /**
@@ -211,24 +229,6 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2000-12-31")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2001-01-01")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2001-12-31")));
-  }
-
-  @Test
-  void shouldNotCreateTicketCounterVersionWhenParentSloidDoesNotExist() throws Exception {
-    //given
-    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid("ch:1:sloid:7001");
-    referencePointRepository.save(referencePointVersion);
-
-    CreateToiletVersionModel model = ToiletTestData.getCreateToiletVersionModel();
-    model.setParentServicePointSloid("ch:1:sloid:7001");
-
-    //when && then
-    mvc.perform(post("/v1/toilets").contentType(contentType)
-                    .contentType(contentType)
-                    .content(mapper.writeValueAsString(model)))
-            .andExpect(status().isNotFound())
-            .andExpect(jsonPath("$.message", is("Entity not found")));
   }
 
 }

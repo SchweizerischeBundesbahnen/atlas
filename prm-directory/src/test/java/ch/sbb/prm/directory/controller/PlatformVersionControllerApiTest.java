@@ -159,8 +159,26 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(createPlatformVersionModel)))
         .andExpect(status().isPreconditionFailed())
-        .andExpect(jsonPath("$.message", is("The stop place with sloid ch:1:sloid:7000 does not exists.")));
+        .andExpect(jsonPath("$.message", is("The stop place with sloid ch:1:sloid:7000 does not exist.")));
     verify(relationService, times(0)).save(any(RelationVersion.class));
+  }
+
+  @Test
+  void shouldNotCreatePlatformVersionWhenParentSloidDoesNotExist() throws Exception {
+    //given
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid("ch:1:sloid:7001");
+    referencePointRepository.save(referencePointVersion);
+
+    CreatePlatformVersionModel createPlatformVersionModel = PlatformTestData.getCreatePlatformVersionModel();
+    createPlatformVersionModel.setParentServicePointSloid("ch:1:sloid:7001");
+
+    //when && then
+    mvc.perform(post("/v1/platforms")
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(createPlatformVersionModel)))
+            .andExpect(status().isPreconditionFailed())
+            .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7001 does not exist.")));
   }
 
   /**
@@ -225,24 +243,6 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2000-12-31")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2001-01-01")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2001-12-31")));
-  }
-
-  @Test
-  void shouldNotCreatePlatformVersionWhenParentSloidDoesNotExist() throws Exception {
-    //given
-    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid("ch:1:sloid:7001");
-    referencePointRepository.save(referencePointVersion);
-
-    CreatePlatformVersionModel createPlatformVersionModel = PlatformTestData.getCreatePlatformVersionModel();
-    createPlatformVersionModel.setParentServicePointSloid("ch:1:sloid:7001");
-
-    //when && then
-    mvc.perform(post("/v1/platforms")
-                    .contentType(contentType)
-                    .content(mapper.writeValueAsString(createPlatformVersionModel)))
-            .andExpect(status().isNotFound())
-            .andExpect(jsonPath("$.message", is("Entity not found")));
   }
 
 }
