@@ -41,7 +41,6 @@ public abstract class ReferencePointVersionModel extends BasePrmVersionModel imp
   @NotNull
   private boolean mainReferencePoint;
 
-  @Schema(description = "Type of reference point")
   @NotNull
   private ReferencePointAttributeType referencePointType;
 

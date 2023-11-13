@@ -1,11 +1,13 @@
 package ch.sbb.atlas.api.prm.model.stoppoint;
 
+import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.BasePrmVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,64 +29,63 @@ public abstract class StopPointVersionModel extends BasePrmVersionModel implemen
       + "StopPoints")
   private List<MeanOfTransport> meansOfTransport;
 
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   @Schema(description = "Observations on the stop")
   private String freeText;
 
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   @Schema(description = "Stop Place Address")
   private String address;
 
+  @Size(max = AtlasFieldLengths.LENGTH_50)
   @Schema(description = "Stop Place Zip Code")
   private String zipCode;
 
+  @Size(max = AtlasFieldLengths.LENGTH_75)
   @Schema(description = "Stop Place City")
   private String city;
 
-  @Schema(description = "Shuttle service or alternative public transport offer")
   private StandardAttributeType alternativeTransport;
 
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   @Schema(description = "Information about the shuttle service or alternative public transport options")
   private String alternativeTransportCondition;
 
-  @Schema(description = "Advance registration required for assistance")
   private StandardAttributeType assistanceAvailability;
 
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   @Schema(description = "Notes for assistance")
   private String assistanceCondition;
 
-  @Schema(description = "Assistance from staff")
   private StandardAttributeType assistanceService;
 
-  @Schema(description = "Acoustic and tactile equipment")
   private StandardAttributeType audioTicketMachine;
 
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   @Schema(description = "Additional information")
   private String additionalInformation;
 
-  @Schema(description = "Acoustically")
   private StandardAttributeType dynamicAudioSystem;
 
-  @Schema(description = "Dynamic/optical")
   private StandardAttributeType dynamicOpticSystem;
 
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   @Schema(description = "Information about the ticket machine")
   private String infoTicketMachine;
 
   @Schema(description = "Interoperable station")
-  private boolean interoperable;
+  private Boolean interoperable;
 
+  @Size(max = AtlasFieldLengths.LENGTH_500)
   @Schema(description = "Website with additional information")
   private String url;
 
-  @Schema(description = "Static/optical")
   private StandardAttributeType visualInfo;
 
-  @Schema(description = "Barrier-free")
   private StandardAttributeType wheelchairTicketMachine;
 
-  @Schema(description = "requirements fulfilled")
   private StandardAttributeType assistanceRequestFulfilled;
 
-  @Schema(description = "Ticket machine available")
   private StandardAttributeType ticketMachine;
 
 }
