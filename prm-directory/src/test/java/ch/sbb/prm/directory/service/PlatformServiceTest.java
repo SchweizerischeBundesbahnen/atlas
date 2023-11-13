@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
@@ -119,6 +120,71 @@ class PlatformServiceTest {
     assertThat(relationVersions).hasSize(1);
     assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(PLATFORM);
+  }
+
+  /**
+   * When Stop Point is reduced no one Relation must be added even if referencePoint exists
+   */
+  @Test
+  void shouldCreatePlatformWhenStopPointIsComplete() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.builderVersion1().meansOfTransport(Set.of(MeanOfTransport.TRAIN)).build();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    referencePointRepository.save(referencePointVersion);
+
+    PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
+    platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+
+    //when
+    platformService.createPlatformVersion(platformVersion);
+
+    //then
+    List<PlatformVersion> platformVersions = platformRepository.findByParentServicePointSloid(
+        platformVersion.getParentServicePointSloid());
+    assertThat(platformVersions).hasSize(1);
+    PlatformVersion platformVersionResult = platformVersions.get(0);
+    assertThat(platformVersionResult).isEqualTo(platformVersion);
+    assertThat(platformVersionResult.getParentServicePointSloid()).isEqualTo(platformVersion.getParentServicePointSloid());
+    List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
+        PARENT_SERVICE_POINT_SLOID);
+    assertThat(relationVersions).hasSize(1);
+    assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
+    assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(PLATFORM);
+  }
+
+  /**
+   * When Stop Point is reduced no one Relation must be added even if referencePoint exists
+   */
+  @Test
+  void shouldCreatePlatformWhenStopPointIsReduced() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.builderVersion1().meansOfTransport(Set.of(MeanOfTransport.BUS)).build();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    referencePointRepository.save(referencePointVersion);
+
+    PlatformVersion platformVersion = PlatformTestData.getReducedPlatformVersion();
+    platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+
+    //when
+    platformService.createPlatformVersion(platformVersion);
+
+    //then
+    List<PlatformVersion> platformVersions = platformRepository.findByParentServicePointSloid(
+        platformVersion.getParentServicePointSloid());
+    assertThat(platformVersions).hasSize(1);
+    PlatformVersion platformVersionResult = platformVersions.get(0);
+    assertThat(platformVersionResult).isEqualTo(platformVersion);
+    assertThat(platformVersionResult.getParentServicePointSloid()).isEqualTo(platformVersion.getParentServicePointSloid());
+    //when Stop Point is reduced no one Relation must be added even if referencePoint exists
+    List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
+        PARENT_SERVICE_POINT_SLOID);
+    assertThat(relationVersions).isEmpty();
   }
 
   @Test

@@ -1,9 +1,12 @@
 package ch.sbb.prm.directory.mapper;
 
+import static ch.sbb.atlas.servicepoint.Country.SWITZERLAND;
+
 import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.StopPointVersion;
+import ch.sbb.prm.directory.exception.ServicePointNonSwissCountryNotAllowedException;
 import java.util.HashSet;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +37,7 @@ public class StopPointVersionMapper {
         .dynamicAudioSystem(version.getDynamicAudioSystem())
         .dynamicOpticSystem(version.getDynamicOpticSystem())
         .infoTicketMachine(version.getInfoTicketMachine())
-        .interoperable(version.isInteroperable())
+        .interoperable(version.getInteroperable())
         .url(version.getUrl())
         .visualInfo(version.getVisualInfo())
         .wheelchairTicketMachine(version.getWheelchairTicketMachine())
@@ -51,7 +54,7 @@ public class StopPointVersionMapper {
     return StopPointVersion.builder()
         .id(model.getId())
         .sloid(model.getSloid())
-        .number(ServicePointNumber.ofNumberWithoutCheckDigit(model.getNumberWithoutCheckDigit()))
+        .number(convertToServicePointNumber(model))
         .validFrom(model.getValidFrom())
         .validTo(model.getValidTo())
         .meansOfTransport(new HashSet<>(model.getMeansOfTransport()))
@@ -69,7 +72,7 @@ public class StopPointVersionMapper {
         .dynamicAudioSystem(model.getDynamicAudioSystem())
         .dynamicOpticSystem(model.getDynamicOpticSystem())
         .infoTicketMachine(model.getInfoTicketMachine())
-        .interoperable(model.isInteroperable())
+        .interoperable(model.getInteroperable())
         .url(model.getUrl())
         .visualInfo(model.getVisualInfo())
         .wheelchairTicketMachine(model.getWheelchairTicketMachine())
@@ -81,6 +84,15 @@ public class StopPointVersionMapper {
         .editionDate(model.getEditionDate())
         .version(model.getEtagVersion())
         .build();
+  }
+
+  private static ServicePointNumber convertToServicePointNumber(CreateStopPointVersionModel stopPointVersion) {
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(
+        stopPointVersion.getNumberWithoutCheckDigit());
+    if(!SWITZERLAND.equals(servicePointNumber.getCountry())){
+      throw new ServicePointNonSwissCountryNotAllowedException(servicePointNumber);
+    }
+    return servicePointNumber;
   }
 
 }

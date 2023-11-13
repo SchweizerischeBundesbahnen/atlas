@@ -6,6 +6,8 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
@@ -22,7 +24,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
@@ -87,11 +91,11 @@ import org.springframework.transaction.annotation.Transactional;
     loadingPointVersionRepository.saveAndFlush(loadingPointVersion);
 
     //when
-    LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
+    LoadingPointRequestParams params = LoadingPointRequestParams.builder()
         .numbers(List.of(loadingPointNumber)).build();
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .loadingPointElementRequestParams(params)
+        .loadingPointRequestParams(params)
         .build();
     Page<LoadingPointVersion> result = loadingPointService.findAll(restrictions);
 
@@ -120,11 +124,11 @@ import org.springframework.transaction.annotation.Transactional;
     loadingPointVersionRepository.saveAndFlush(loadingPointVersion);
 
     //when
-    LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
+    LoadingPointRequestParams params = LoadingPointRequestParams.builder()
         .numbers(List.of(66666)).build();
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .loadingPointElementRequestParams(params)
+        .loadingPointRequestParams(params)
         .build();
     Page<LoadingPointVersion> result = loadingPointService.findAll(restrictions);
 
@@ -174,12 +178,12 @@ import org.springframework.transaction.annotation.Transactional;
     loadingPointVersionRepository.saveAndFlush(loadingPointVersion3);
 
     //when
-    LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
+    LoadingPointRequestParams params = LoadingPointRequestParams.builder()
         .numbers(List.of(loadingPointNumber1, loadingPointNumber2)).build();
 
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .loadingPointElementRequestParams(params)
+        .loadingPointRequestParams(params)
         .build();
     Page<LoadingPointVersion> result = loadingPointService.findAll(restrictions);
 
@@ -220,12 +224,12 @@ import org.springframework.transaction.annotation.Transactional;
     loadingPointVersionRepository.saveAndFlush(loadingPointVersion2);
 
     //when
-    LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
+    LoadingPointRequestParams params = LoadingPointRequestParams.builder()
         .servicePointSloids(List.of(servicePointVersion.getSloid())).build();
 
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .loadingPointElementRequestParams(params)
+        .loadingPointRequestParams(params)
         .build();
     Page<LoadingPointVersion> result = loadingPointService.findAll(restrictions);
 
@@ -253,12 +257,12 @@ import org.springframework.transaction.annotation.Transactional;
         .build();
     loadingPointVersionRepository.saveAndFlush(loadingPointVersion1);
     //when
-    LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
+    LoadingPointRequestParams params = LoadingPointRequestParams.builder()
         .servicePointSloids(List.of("ch:1:sloid:76237:1")).build();
 
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .loadingPointElementRequestParams(params)
+        .loadingPointRequestParams(params)
         .build();
     Page<LoadingPointVersion> result = loadingPointService.findAll(restrictions);
 
@@ -314,12 +318,12 @@ import org.springframework.transaction.annotation.Transactional;
     loadingPointVersionRepository.saveAndFlush(loadingPointVersion3);
 
     //when
-    LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
+    LoadingPointRequestParams params = LoadingPointRequestParams.builder()
         .servicePointSloids(List.of(servicePointVersion.getSloid(), servicePointVersion1.getSloid())).build();
 
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .loadingPointElementRequestParams(params)
+        .loadingPointRequestParams(params)
         .build();
     Page<LoadingPointVersion> result = loadingPointService.findAll(restrictions);
 
@@ -362,12 +366,12 @@ import org.springframework.transaction.annotation.Transactional;
     loadingPointVersionRepository.saveAndFlush(loadingPointVersion2);
 
     //when
-    LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
+    LoadingPointRequestParams params = LoadingPointRequestParams.builder()
         .servicePointUicCountryCode(servicePointVersion.getCountry().getUicCode()).build();
 
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .loadingPointElementRequestParams(params)
+        .loadingPointRequestParams(params)
         .build();
     Page<LoadingPointVersion> result = loadingPointService.findAll(restrictions);
 
@@ -408,14 +412,14 @@ import org.springframework.transaction.annotation.Transactional;
     loadingPointVersionRepository.saveAndFlush(loadingPointVersion2);
 
     //when
-    LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
+    LoadingPointRequestParams params = LoadingPointRequestParams.builder()
         .servicePointUicCountryCodes(List.of(servicePointVersion.getCountry().getUicCode()
             , servicePointVersion1.getCountry().getUicCode())
         ).build();
 
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .loadingPointElementRequestParams(params)
+        .loadingPointRequestParams(params)
         .build();
     Page<LoadingPointVersion> result = loadingPointService.findAll(restrictions);
 
@@ -444,12 +448,12 @@ import org.springframework.transaction.annotation.Transactional;
     loadingPointVersionRepository.saveAndFlush(loadingPointVersion1);
 
     //when
-    LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
+    LoadingPointRequestParams params = LoadingPointRequestParams.builder()
         .servicePointUicCountryCode(25).build();
 
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .loadingPointElementRequestParams(params)
+        .loadingPointRequestParams(params)
         .build();
     Page<LoadingPointVersion> result = loadingPointService.findAll(restrictions);
 
@@ -489,12 +493,12 @@ import org.springframework.transaction.annotation.Transactional;
     loadingPointVersionRepository.saveAndFlush(loadingPointVersion2);
 
     //when
-    LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
+    LoadingPointRequestParams params = LoadingPointRequestParams.builder()
         .servicePointNumbersShort(servicePointVersion.getNumber().getNumberShort()).build();
 
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .loadingPointElementRequestParams(params)
+        .loadingPointRequestParams(params)
         .build();
     Page<LoadingPointVersion> result = loadingPointService.findAll(restrictions);
 
@@ -521,12 +525,12 @@ import org.springframework.transaction.annotation.Transactional;
         .build();
     loadingPointVersionRepository.saveAndFlush(loadingPointVersion1);
 
-    LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
+    LoadingPointRequestParams params = LoadingPointRequestParams.builder()
         .servicePointNumbersShort(80000).build();
 
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .loadingPointElementRequestParams(params)
+        .loadingPointRequestParams(params)
         .build();
     Page<LoadingPointVersion> result = loadingPointService.findAll(restrictions);
 
@@ -579,7 +583,7 @@ import org.springframework.transaction.annotation.Transactional;
     loadingPointVersionRepository.saveAndFlush(loadingPointVersion3);
 
     //when
-    LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
+    LoadingPointRequestParams params = LoadingPointRequestParams.builder()
         .servicePointNumbersShorts(
             List.of(servicePointVersion.getNumber().getNumberShort()
                 , servicePointVersion1.getNumber().getNumberShort()
@@ -587,7 +591,7 @@ import org.springframework.transaction.annotation.Transactional;
 
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .loadingPointElementRequestParams(params)
+        .loadingPointRequestParams(params)
         .build();
     Page<LoadingPointVersion> result = loadingPointService.findAll(restrictions);
 
@@ -630,12 +634,12 @@ import org.springframework.transaction.annotation.Transactional;
     loadingPointVersionRepository.saveAndFlush(loadingPointVersion2);
 
     //when
-    LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
+    LoadingPointRequestParams params = LoadingPointRequestParams.builder()
         .servicePointNumber(servicePointVersion.getNumber().getNumber()).build();
 
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .loadingPointElementRequestParams(params)
+        .loadingPointRequestParams(params)
         .build();
     Page<LoadingPointVersion> result = loadingPointService.findAll(restrictions);
 
@@ -662,12 +666,12 @@ import org.springframework.transaction.annotation.Transactional;
         .build();
     loadingPointVersionRepository.saveAndFlush(loadingPointVersion1);
 
-    LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
+    LoadingPointRequestParams params = LoadingPointRequestParams.builder()
         .servicePointNumber(8000007).build();
 
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .loadingPointElementRequestParams(params)
+        .loadingPointRequestParams(params)
         .build();
     Page<LoadingPointVersion> result = loadingPointService.findAll(restrictions);
 
@@ -720,7 +724,7 @@ import org.springframework.transaction.annotation.Transactional;
     loadingPointVersionRepository.saveAndFlush(loadingPointVersion3);
 
     //when
-    LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
+    LoadingPointRequestParams params = LoadingPointRequestParams.builder()
         .servicePointNumbers(
             List.of(loadingPointVersion1.getServicePointNumber().getNumber()
                 , loadingPointVersion2.getServicePointNumber().getNumber()
@@ -728,7 +732,7 @@ import org.springframework.transaction.annotation.Transactional;
 
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .loadingPointElementRequestParams(params)
+        .loadingPointRequestParams(params)
         .build();
     Page<LoadingPointVersion> result = loadingPointService.findAll(restrictions);
 
@@ -771,12 +775,12 @@ import org.springframework.transaction.annotation.Transactional;
     loadingPointVersionRepository.saveAndFlush(loadingPointVersion2);
 
     //when
-    LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
+    LoadingPointRequestParams params = LoadingPointRequestParams.builder()
         .sboid(servicePointVersion.getBusinessOrganisation()).build();
 
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .loadingPointElementRequestParams(params)
+        .loadingPointRequestParams(params)
         .build();
     Page<LoadingPointVersion> result = loadingPointService.findAll(restrictions);
 
@@ -831,12 +835,12 @@ import org.springframework.transaction.annotation.Transactional;
     loadingPointVersionRepository.saveAndFlush(loadingPointVersion3);
 
     //when
-    LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
+    LoadingPointRequestParams params = LoadingPointRequestParams.builder()
         .sboids(List.of("ch:1:sboid:100626")).build();
 
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .loadingPointElementRequestParams(params)
+        .loadingPointRequestParams(params)
         .build();
     Page<LoadingPointVersion> result = loadingPointService.findAll(restrictions);
 
@@ -893,12 +897,12 @@ import org.springframework.transaction.annotation.Transactional;
 
     //when
     LocalDate validFrom = LocalDate.of(2014, 12, 14);
-    LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
+    LoadingPointRequestParams params = LoadingPointRequestParams.builder()
         .fromDate(validFrom).build();
 
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .loadingPointElementRequestParams(params)
+        .loadingPointRequestParams(params)
         .build();
     Page<LoadingPointVersion> result = loadingPointService.findAll(restrictions);
 
@@ -955,12 +959,12 @@ import org.springframework.transaction.annotation.Transactional;
 
     //when
     LocalDate validTo = LocalDate.of(2021, 3, 31);
-    LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
+    LoadingPointRequestParams params = LoadingPointRequestParams.builder()
         .toDate(validTo).build();
 
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .loadingPointElementRequestParams(params)
+        .loadingPointRequestParams(params)
         .build();
     Page<LoadingPointVersion> result = loadingPointService.findAll(restrictions);
 
@@ -1017,12 +1021,12 @@ import org.springframework.transaction.annotation.Transactional;
 
     //when
     LocalDate validOn = LocalDate.of(2015, 12, 14);
-    LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
+    LoadingPointRequestParams params = LoadingPointRequestParams.builder()
         .validOn(validOn).build();
 
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .loadingPointElementRequestParams(params)
+        .loadingPointRequestParams(params)
         .build();
     Page<LoadingPointVersion> result = loadingPointService.findAll(restrictions);
 
@@ -1082,12 +1086,12 @@ import org.springframework.transaction.annotation.Transactional;
 
     //when
     LocalDateTime createdAt = LocalDateTime.of(2015, 12, 14, 10, 10, 10);
-    LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
+    LoadingPointRequestParams params = LoadingPointRequestParams.builder()
         .createdAfter(createdAt).build();
 
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .loadingPointElementRequestParams(params)
+        .loadingPointRequestParams(params)
         .build();
     Page<LoadingPointVersion> result = loadingPointService.findAll(restrictions);
 
@@ -1147,12 +1151,12 @@ import org.springframework.transaction.annotation.Transactional;
 
     //when
     LocalDateTime modifiedAfter = LocalDateTime.of(2015, 12, 14, 10, 10, 10);
-    LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
+    LoadingPointRequestParams params = LoadingPointRequestParams.builder()
         .modifiedAfter(modifiedAfter).build();
 
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .loadingPointElementRequestParams(params)
+        .loadingPointRequestParams(params)
         .build();
     Page<LoadingPointVersion> result = loadingPointService.findAll(restrictions);
 
@@ -1214,7 +1218,7 @@ import org.springframework.transaction.annotation.Transactional;
     //when
     LocalDateTime modifiedAfter = LocalDateTime.of(2015, 12, 14, 10, 10, 10);
     LocalDateTime createdAfter = LocalDateTime.of(2015, 12, 14, 10, 10, 10);
-    LoadingPointElementRequestParams params = LoadingPointElementRequestParams.builder()
+    LoadingPointRequestParams params = LoadingPointRequestParams.builder()
         .servicePointNumber(loadingPointVersion2.getServicePointNumber().getNumber())
         .servicePointSloid(servicePointVersion1.getSloid())
         .number(loadingPointNumber2)
@@ -1230,7 +1234,7 @@ import org.springframework.transaction.annotation.Transactional;
 
     LoadingPointSearchRestrictions restrictions = LoadingPointSearchRestrictions.builder()
         .pageable(Pageable.unpaged())
-        .loadingPointElementRequestParams(params)
+        .loadingPointRequestParams(params)
         .build();
     Page<LoadingPointVersion> result = loadingPointService.findAll(restrictions);
 
@@ -1242,5 +1246,45 @@ import org.springframework.transaction.annotation.Transactional;
     assertThat(result.getContent()).doesNotContain(loadingPointVersion1);
     assertThat(result.getContent()).doesNotContain(loadingPointVersion3);
   }
+
+ @Test
+ void shouldLoadOverviewTableCorrectly() {
+  // given
+  ServicePointVersion servicePointVersion = servicePointVersionRepository.save(ServicePointTestData.getBernWyleregg());
+  int loadingPointNumber1 = 77777;
+  LoadingPointVersion loadingPointVersion1 = LoadingPointVersion.builder()
+      .servicePointNumber(servicePointVersion.getNumber())
+      .validFrom(LocalDate.of(2014, 12, 14))
+      .validTo(LocalDate.of(2021, 3, 31))
+      .connectionPoint(true)
+      .designationLong("DesignLong")
+      .designation("design 1")
+      .number(loadingPointNumber1)
+      .build();
+  loadingPointVersionRepository.saveAndFlush(loadingPointVersion1);
+  LoadingPointVersion loadingPointVersion2 = LoadingPointVersion.builder()
+      .servicePointNumber(servicePointVersion.getNumber())
+      .validFrom(LocalDate.of(2021, 4, 1))
+      .validTo(LocalDate.of(2099, 3, 31))
+      .connectionPoint(true)
+      .designationLong("DesignLong")
+      .designation("design 2")
+      .number(loadingPointNumber1)
+      .build();
+  loadingPointVersionRepository.saveAndFlush(loadingPointVersion2);
+
+  // when
+  Container<ReadLoadingPointVersionModel> result =
+      loadingPointService.getOverview(servicePointVersion.getNumber().getNumber(),
+          PageRequest.of(0, 10, Sort.by("designation")));
+
+  // then
+  assertThat(result.getObjects()).hasSize(1);
+
+  ReadLoadingPointVersionModel first = result.getObjects().get(0);
+  assertThat(first.getDesignation()).isEqualTo("design 2");
+  assertThat(first.getValidFrom()).isEqualTo(LocalDate.of(2014, 12, 14));
+  assertThat(first.getValidTo()).isEqualTo(LocalDate.of(2099, 3, 31));
+ }
 
 }

@@ -71,20 +71,16 @@ public abstract class PlatformVersionModel extends BasePrmVersionModel implement
   @Schema(description = "Information options")
   private List<InfoOpportunityAttributeType> infoOpportunities;
 
-  @Schema(description = "Level access")
   private BasicAttributeType levelAccessWheelchair;
 
-  @Schema(description = "Partial elevation")
   private BooleanAttributeType partialElevation;
 
   @Schema(description = "Track superelevation value [mm]")
   @Digits(integer = 10, fraction = 3)
   private Double superelevation;
 
-  @Schema(description = "Tactile guidance system")
   private BooleanOptionalAttributeType tactileSystem;
 
-  @Schema(description = "Access to the platform. Getting into the vehicle")
   private VehicleAccessAttributeType vehicleAccess;
 
   @Schema(description = "Wheelchair Area Length [mm]")
