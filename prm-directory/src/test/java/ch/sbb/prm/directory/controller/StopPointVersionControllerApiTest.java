@@ -128,6 +128,65 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldNotCreateStopPointCompleteWithNotValidatableProperties() throws Exception {
+    //given
+    CreateStopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getCompleteNotValidatableStopPointReducedCreateVersionModel();
+    SharedServicePoint servicePoint = SharedServicePoint.builder()
+        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
+        .sloid("ch:1:sloid:7000")
+        .build();
+    sharedServicePointRepository.saveAndFlush(servicePoint);
+    //when && then
+    mvc.perform(post("/v1/stop-points").contentType(contentType)
+            .content(mapper.writeValueAsString(stopPointCreateVersionModel)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.details.size()", is(9)));
+
+  }
+
+  @Test
+  void shouldNotCreateStopPointIsAlreadyExists() throws Exception {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointRepository.save(stopPointVersion);
+    CreateStopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
+    stopPointCreateVersionModel.setNumberWithoutCheckDigit(stopPointVersion.getNumber().getNumber());
+    stopPointCreateVersionModel.setSloid(stopPointVersion.getSloid());
+    SharedServicePoint servicePoint = SharedServicePoint.builder()
+        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:12345\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
+        .sloid("ch:1:sloid:12345")
+        .build();
+    sharedServicePointRepository.saveAndFlush(servicePoint);
+    //when && then
+    mvc.perform(post("/v1/stop-points").contentType(contentType)
+            .content(mapper.writeValueAsString(stopPointCreateVersionModel)))
+        .andExpect(status().isConflict())
+        .andExpect(jsonPath("$.message", is("The stop place with sloid ch:1:sloid:12345 already exists.")));
+
+  }
+
+  @Test
+  void shouldNotCreateStopPointReducedIfServicePointHasAsCountryNotSwiss() throws Exception {
+    //given
+    CreateStopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
+    stopPointCreateVersionModel.setSloid("ch:1:sloid:1101407");
+    stopPointCreateVersionModel.setNumberWithoutCheckDigit(1101407);
+    SharedServicePoint servicePoint = SharedServicePoint.builder()
+        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:1101407\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
+        .sloid("ch:1:sloid:1101407")
+        .build();
+    sharedServicePointRepository.saveAndFlush(servicePoint);
+    //when && then
+    mvc.perform(post("/v1/stop-points").contentType(contentType)
+            .content(mapper.writeValueAsString(stopPointCreateVersionModel)))
+        .andExpect(status().isPreconditionFailed())
+        .andExpect(jsonPath("$.message", is("PRM does not allow to create StopPoints from non-Swiss ServicePoints!")))
+        .andExpect(jsonPath("$.error", is("The given SLOID [ch:1:sloid:1101407], with ServicePointNumber(value=1101407) has "
+            + "GERMANY_BUS as its Country!")));
+
+  }
+
+  @Test
   void shouldNotCreateStopPointWhenServicePointDoesNotExists() throws Exception {
     //given
     CreateStopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
