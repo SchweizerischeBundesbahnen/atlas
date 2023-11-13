@@ -112,6 +112,22 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldNotCreateStopPointReducedIfCompletePropertiesProvided() throws Exception {
+    //given
+    CreateStopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getWrongStopPointReducedCreateVersionModel();
+    SharedServicePoint servicePoint = SharedServicePoint.builder()
+        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
+        .sloid("ch:1:sloid:7000")
+        .build();
+    sharedServicePointRepository.saveAndFlush(servicePoint);
+    //when && then
+    mvc.perform(post("/v1/stop-points").contentType(contentType)
+            .content(mapper.writeValueAsString(stopPointCreateVersionModel)))
+        .andExpect(status().isBadRequest());
+
+  }
+
+  @Test
   void shouldNotCreateStopPointWhenServicePointDoesNotExists() throws Exception {
     //given
     CreateStopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
@@ -158,7 +174,7 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setDynamicOpticSystem(version2.getDynamicOpticSystem());
     editedVersionModel.setInfoTicketMachine(version2.getInfoTicketMachine());
     editedVersionModel.setAdditionalInformation(version2.getAdditionalInformation());
-    editedVersionModel.setInteroperable(version2.isInteroperable());
+    editedVersionModel.setInteroperable(version2.getInteroperable());
     editedVersionModel.setUrl(version2.getUrl());
     editedVersionModel.setVisualInfo(version2.getVisualInfo());
     editedVersionModel.setWheelchairTicketMachine(version2.getWheelchairTicketMachine());

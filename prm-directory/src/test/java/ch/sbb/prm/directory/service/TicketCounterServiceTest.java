@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.TicketCounterTestData;
@@ -18,6 +19,7 @@ import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -109,6 +111,35 @@ class TicketCounterServiceTest {
     assertThat(relationVersions).hasSize(1);
     assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(parentServicePointSloid);
     assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(TICKET_COUNTER);
+
+  }
+  @Test
+  void shouldNotCreateTicketCounterRelationWhenStopPointIsReduced() {
+    //given
+    String parentServicePointSloid = "ch:1:sloid:70000";
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setMeansOfTransport(Set.of(MeanOfTransport.BUS));
+    stopPointRepository.save(stopPointVersion);
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointRepository.save(referencePointVersion);
+    TicketCounterVersion ticketCounterVersion = TicketCounterTestData.getTicketCounterVersion();
+    ticketCounterVersion.setParentServicePointSloid(parentServicePointSloid);
+
+    //when
+    ticketCounterService.createTicketCounter(ticketCounterVersion);
+
+    //then
+    List<TicketCounterVersion> ticketCounterVersions = ticketCounterRepository.findByParentServicePointSloid(
+        parentServicePointSloid);
+    assertThat(ticketCounterVersions).hasSize(1);
+    assertThat(ticketCounterVersions.get(0).getParentServicePointSloid()).isEqualTo(
+        ticketCounterVersion.getParentServicePointSloid());
+
+    List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
+        parentServicePointSloid);
+    assertThat(relationVersions).isEmpty();
 
   }
 

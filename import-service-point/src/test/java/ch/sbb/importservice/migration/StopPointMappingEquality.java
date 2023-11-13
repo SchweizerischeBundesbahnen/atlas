@@ -57,8 +57,7 @@ public record StopPointMappingEquality(StopPointCsvModel didokCsvLine, StopPoint
           StandardAttributeType.from(didokCsvLine.getDynamicOpticSys()).toString());
     }
     assertThat(atlasCsvLine.getInfoTicketMachine()).isEqualTo(didokCsvLine.getInfoTickMach());
-    assertThat(atlasCsvLine.getInteroperable()).isEqualTo(
-        didokCsvLine.getInteroperable() == null || didokCsvLine.getInteroperable().equals(0) ? "false" : "true");
+    assertThat(atlasCsvLine.getInteroperable()).isEqualTo(mapInteroperableFromDidok(didokCsvLine.getInteroperable()));
     assertThat(atlasCsvLine.getUrl()).isEqualTo(didokCsvLine.getUrl());
     if (atlasCsvLine.getVisualInfo() != null && didokCsvLine.getVisualInfos() != null) {
       assertThat(atlasCsvLine.getVisualInfo()).isEqualTo(
@@ -80,9 +79,21 @@ public record StopPointMappingEquality(StopPointCsvModel didokCsvLine, StopPoint
     assertThat(mapPipedMeansOfTransport(atlasCsvLine.getMeansOfTransport())).containsAll(MeanOfTransport.fromCode(didokCsvLine.getTransportationMeans()));
     assertThat(dateFromString(atlasCsvLine.getValidFrom())).isEqualTo(didokCsvLine.getValidFrom());
     assertThat(dateFromString(atlasCsvLine.getValidTo())).isEqualTo(didokCsvLine.getValidTo());
-//    assertThat(localDateFromString(atlasCsvLine.getCreationDate())).isEqualTo(didokCsvLine.getCreatedAt());
-//    assertThat(localDateFromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getModifiedAt());
+    assertThat(atlasCsvLine.getCreator()).isEqualTo(didokCsvLine.getAddedBy());
+    assertThat(atlasCsvLine.getEditor()).isEqualTo(didokCsvLine.getModifiedBy());
+    assertThat(localDateFromString(atlasCsvLine.getCreationDate())).isEqualTo(didokCsvLine.getCreatedAt());
+    assertThat(localDateFromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getModifiedAt());
 
+  }
+
+  String mapInteroperableFromDidok(Integer integer){
+    if(integer == null){
+      return null;
+    }
+    if(integer.equals(0)){
+      return "false";
+    }
+    return "true";
   }
 
   private List<MeanOfTransport> mapPipedMeansOfTransport(String meansOfTransport){
