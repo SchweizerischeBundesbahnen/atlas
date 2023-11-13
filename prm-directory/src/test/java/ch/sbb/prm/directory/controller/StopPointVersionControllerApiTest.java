@@ -181,8 +181,7 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(stopPointCreateVersionModel)))
         .andExpect(status().isPreconditionFailed())
         .andExpect(jsonPath("$.message", is("PRM does not allow to create StopPoints from non-Swiss ServicePoints!")))
-        .andExpect(jsonPath("$.error", is("The given SLOID [ch:1:sloid:1101407], with ServicePointNumber(value=1101407) has "
-            + "GERMANY_BUS as its Country!")));
+        .andExpect(jsonPath("$.error", is("The given ServicePointNumber 1101407 has GERMANY_BUS as its Country!")));
 
   }
 
@@ -210,7 +209,8 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldUpdateStopPoint() throws Exception {
     //given
-    StopPointVersion version1 = stopPointRepository.saveAndFlush(StopPointTestData.builderVersion1().build());
+    StopPointVersion version1 =
+        stopPointRepository.saveAndFlush(StopPointTestData.builderVersion1().build());
     StopPointVersion version2 = stopPointRepository.saveAndFlush(StopPointTestData.builderVersion2().build());
 
     CreateStopPointVersionModel editedVersionModel = new CreateStopPointVersionModel();
