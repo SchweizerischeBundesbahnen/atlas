@@ -63,7 +63,7 @@ class StopPointImportServiceTest {
     //then
     assertThat(result).hasSize(1);
     assertThat(result.get(0).getMessage()).isEqualTo("[SUCCESS]: This version was imported successfully");
-    assertThat(result.get(0).getItemNumber()).isEqualTo("1234567");
+    assertThat(result.get(0).getItemNumber()).isEqualTo("8534567");
     assertThat(result.get(0).getValidFrom()).isEqualTo(LocalDate.of(2000, 1, 1));
     assertThat(result.get(0).getValidTo()).isEqualTo(LocalDate.of(2000, 12, 31));
     assertThat(result.get(0).getStatus()).isEqualTo(ItemImportResponseStatus.SUCCESS);
@@ -80,7 +80,7 @@ class StopPointImportServiceTest {
 
     //then
     assertThat(result).hasSize(1);
-    assertThat(result.get(0).getItemNumber()).isEqualTo("1234567");
+    assertThat(result.get(0).getItemNumber()).isEqualTo("8534567");
     assertThat(result.get(0).getStatus()).isEqualTo(ItemImportResponseStatus.FAILED);
   }
 
@@ -95,7 +95,7 @@ class StopPointImportServiceTest {
 
     //then
     assertThat(result).hasSize(1);
-    assertThat(result.get(0).getItemNumber()).isEqualTo("1234567");
+    assertThat(result.get(0).getItemNumber()).isEqualTo("8534567");
     assertThat(result.get(0).getStatus()).isEqualTo(ItemImportResponseStatus.FAILED);
   }
 
@@ -120,7 +120,7 @@ class StopPointImportServiceTest {
     //then
     assertThat(result).hasSize(1);
     assertThat(result.get(0).getMessage()).isEqualTo("[SUCCESS]: This version was imported successfully");
-    assertThat(result.get(0).getItemNumber()).isEqualTo("1234567");
+    assertThat(result.get(0).getItemNumber()).isEqualTo("8534567");
     assertThat(result.get(0).getValidFrom()).isEqualTo(LocalDate.of(2000, 1, 1));
     assertThat(result.get(0).getValidTo()).isEqualTo(LocalDate.of(2000, 12, 31));
     assertThat(result.get(0).getStatus()).isEqualTo(ItemImportResponseStatus.SUCCESS);
