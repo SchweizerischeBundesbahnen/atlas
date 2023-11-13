@@ -18,6 +18,7 @@ public class AtlasFieldLengths {
   public static final int LENGTH_40 = 40;
   public static final int LENGTH_50 = 50;
   public static final int LENGTH_60 = 60;
+  public static final int LENGTH_75 = 75;
   public static final int LENGTH_100 = 100;
   public static final int LENGTH_128 = 128;
   public static final int LENGTH_255 = 255;
