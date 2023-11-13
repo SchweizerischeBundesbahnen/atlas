@@ -2,7 +2,6 @@ package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -62,18 +61,17 @@ public class TicketCounterService extends PrmRelatableVersionableService<TicketC
 
   @PreAuthorize("""
       @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
-      (#sharedServicePointVersionModel, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
-  public TicketCounterVersion createTicketCounter(TicketCounterVersion version,
-                                                  SharedServicePointVersionModel sharedServicePointVersionModel) {
+      (#version, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+  public TicketCounterVersion createTicketCounter(TicketCounterVersion version) {
     createRelation(version);
     return save(version);
   }
 
   @PreAuthorize("""
       @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
-      (#sharedServicePointVersionModel, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+      (#editedVersion, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
   public TicketCounterVersion updateTicketCounterVersion(TicketCounterVersion currentVersion,
-      TicketCounterVersion editedVersion, SharedServicePointVersionModel sharedServicePointVersionModel) {
+                                                         TicketCounterVersion editedVersion) {
     return updateVersion(currentVersion, editedVersion);
   }
 

@@ -6,8 +6,8 @@ import ch.sbb.atlas.api.prm.enumeration.BooleanAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
+import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
@@ -97,7 +97,7 @@ class PlatformVersioningTest {
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
     //when
-    platformService.updatePlatformVersion(version2,editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    platformService.updatePlatformVersion(version2,editedVersion);
 
     //then
     List<PlatformVersion> result = platformRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
@@ -152,7 +152,7 @@ class PlatformVersioningTest {
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
     //when
-    platformService.updatePlatformVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    platformService.updatePlatformVersion(version2, editedVersion);
     //then
     List<PlatformVersion> result = platformRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
     assertThat(result).isNotNull().hasSize(5);
@@ -216,7 +216,7 @@ class PlatformVersioningTest {
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
     //when
-    platformService.updatePlatformVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    platformService.updatePlatformVersion(version2, editedVersion);
     //then
     List<PlatformVersion> result = platformRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
     assertThat(result).isNotNull().hasSize(2);

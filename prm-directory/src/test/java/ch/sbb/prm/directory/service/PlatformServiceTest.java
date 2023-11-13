@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.service;
 
+import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
@@ -74,7 +74,7 @@ class PlatformServiceTest {
     platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when & then
     assertThrows(StopPointDoesNotExistException.class,
-        () -> platformService.createPlatformVersion(platformVersion, SHARED_SERVICE_POINT_VERSION_MODEL)).getLocalizedMessage();
+        () -> platformService.createPlatformVersion(platformVersion)).getLocalizedMessage();
   }
 
   @Test
@@ -86,7 +86,7 @@ class PlatformServiceTest {
     PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
     platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when
-    platformService.createPlatformVersion(platformVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    platformService.createPlatformVersion(platformVersion);
 
     //then
     List<PlatformVersion> platformVersions = platformRepository
@@ -112,7 +112,7 @@ class PlatformServiceTest {
     platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //when
-    platformService.createPlatformVersion(platformVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    platformService.createPlatformVersion(platformVersion);
 
     //then
     List<PlatformVersion> platformVersions = platformRepository.findByParentServicePointSloid(
@@ -143,7 +143,7 @@ class PlatformServiceTest {
     platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //when
-    platformService.createPlatformVersion(platformVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    platformService.createPlatformVersion(platformVersion);
 
     //then
     List<PlatformVersion> platformVersions = platformRepository.findByParentServicePointSloid(
@@ -176,7 +176,7 @@ class PlatformServiceTest {
     platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //when
-    platformService.createPlatformVersion(platformVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    platformService.createPlatformVersion(platformVersion);
 
     //then
     List<PlatformVersion> platformVersions = platformRepository.findByParentServicePointSloid(
@@ -200,7 +200,7 @@ class PlatformServiceTest {
 
     //when & then
     assertThrows(TrafficPointElementDoesNotExistsException.class,
-        () -> platformService.createPlatformVersion(platformVersion, SHARED_SERVICE_POINT_VERSION_MODEL)).getLocalizedMessage();
+        () -> platformService.createPlatformVersion(platformVersion)).getLocalizedMessage();
   }
 
 }

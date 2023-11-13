@@ -2,17 +2,14 @@ package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
-import org.springframework.security.access.prepost.PreAuthorize;
 import ch.sbb.prm.directory.validation.PlatformValidationService;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,9 +70,8 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
 
   @PreAuthorize("""
       @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
-      (#sharedServicePointVersionModel, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
-  public PlatformVersion createPlatformVersion(PlatformVersion version,
-                                               SharedServicePointVersionModel sharedServicePointVersionModel) {
+      (#version, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+  public PlatformVersion createPlatformVersion(PlatformVersion version) {
     sharedServicePointService.validateTrafficPointElementExists(version.getParentServicePointSloid(), version.getSloid());
     PlatformVersion savedVersion = save(version);
     createRelation(savedVersion);
@@ -84,9 +80,8 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
 
   @PreAuthorize("""
       @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
-      (#sharedServicePointVersionModel, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
-  public PlatformVersion updatePlatformVersion(PlatformVersion currentVersion, PlatformVersion editedVersion,
-                                               SharedServicePointVersionModel sharedServicePointVersionModel) {
+      (#editedVersion, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+  public PlatformVersion updatePlatformVersion(PlatformVersion currentVersion, PlatformVersion editedVersion) {
     return updateVersion(currentVersion, editedVersion);
   }
 
