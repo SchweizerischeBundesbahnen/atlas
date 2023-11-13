@@ -66,7 +66,7 @@ class StopPointVersioningTest {
 
     StopPointVersion editedVersion = StopPointTestData.builderVersion2().build();
     editedVersion.setFreeText("I'm no more Free :-(!!!");
-    editedVersion.setMeansOfTransport(Set.of(MeanOfTransport.METRO, MeanOfTransport.CABLE_CAR));
+    editedVersion.setMeansOfTransport(Set.of(MeanOfTransport.METRO, MeanOfTransport.TRAIN));
     editedVersion.setAddress("Wylerstrasse 123");
     editedVersion.setZipCode("3014");
     editedVersion.setCity("Bern");

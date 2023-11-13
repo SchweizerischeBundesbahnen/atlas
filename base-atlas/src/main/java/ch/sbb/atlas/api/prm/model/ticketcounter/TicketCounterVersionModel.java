@@ -33,13 +33,11 @@ public abstract class TicketCounterVersionModel extends BasePrmVersionModel impl
   @Schema(description = "Additional Information")
   private String additionalInformation;
 
-  @Schema(description = "Induction amplifier")
   private StandardAttributeType inductionLoop;
 
   @Schema(description = "Opening hours")
   private String openingHours;
 
-  @Schema(description = "Wheelchair accessibility")
   private StandardAttributeType wheelchairAccess;
 
 }

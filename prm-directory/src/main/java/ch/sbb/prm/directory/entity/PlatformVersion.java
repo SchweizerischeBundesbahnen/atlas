@@ -11,6 +11,8 @@ import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.prm.directory.converter.InfoOpportunityTypeConverter;
 import ch.sbb.prm.directory.service.PrmVersionable;
 import ch.sbb.prm.directory.service.Relatable;
+import ch.sbb.prm.directory.validation.VariantsReducedCompleteRecordable;
+import ch.sbb.prm.directory.validation.annotation.NotForReducedVariant;
 import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -39,7 +41,8 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "platform_version")
 @AtlasVersionable
-public class PlatformVersion extends BasePrmEntityVersion implements Relatable, PrmVersionable {
+public class PlatformVersion extends BasePrmEntityVersion implements Relatable, PrmVersionable,
+    VariantsReducedCompleteRecordable {
 
   private static final String VERSION_SEQ = "platform_version_seq";
 
@@ -48,6 +51,7 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
+  @NotForReducedVariant(nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private BoardingDeviceAttributeType boardingDevice;
@@ -55,17 +59,21 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
   @AtlasVersionableProperty
   private String additionalInformation;
 
+  @NotForReducedVariant
   @AtlasVersionableProperty
   private String adviceAccessInfo;
 
+  @NotForReducedVariant(nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private BooleanOptionalAttributeType contrastingAreas;
 
+  @NotForReducedVariant(nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private BasicAttributeType dynamicAudio;
 
+  @NotForReducedVariant(nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private BasicAttributeType dynamicVisual;
@@ -73,12 +81,14 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
   @AtlasVersionableProperty
   private Double height;
 
+  @NotForReducedVariant
   @AtlasVersionableProperty
   private Double inclination;
 
   @AtlasVersionableProperty
   private Double inclinationLongitudinal;
 
+  @NotForReducedVariant
   @AtlasVersionableProperty
   private Double inclinationWidth;
 
@@ -87,6 +97,7 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
   @Convert(converter = InfoOpportunityTypeConverter.class)
   private Set<InfoOpportunityAttributeType> infoOpportunities;
 
+  @NotForReducedVariant(nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private BasicAttributeType levelAccessWheelchair;
@@ -95,6 +106,7 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
   @AtlasVersionableProperty
   private BooleanAttributeType partialElevation;
 
+  @NotForReducedVariant
   @AtlasVersionableProperty
   private Double superelevation;
 
