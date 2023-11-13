@@ -23,7 +23,7 @@ public class StopPointCsvTestData {
   public StopPointCsvModel getStopPointCsvModel() {
     return StopPointCsvModel.builder()
         .address("address")
-        .didokCode(1234567)
+        .didokCode(8534567)
         .alternativeTransport(0)
         .transportationMeans("~Z~")
         .wheelchairTickMach(0)
