@@ -18,7 +18,7 @@ public class ServicePointWithNotSwissCountryNotAllowedException extends AtlasExc
     return ErrorResponse.builder()
         .status(HttpStatus.PRECONDITION_FAILED.value())
         .message("PRM does not allow to create StopPoints from non-Swiss ServicePoints!")
-        .error("The given Sloid [" + stopPointVersion.getSloid() + "], with " + stopPointVersion.getNumber()+ " has " + stopPointVersion.getNumber().getCountry() + " as its Country!")
+        .error("The given SLOID [" + stopPointVersion.getSloid() + "], with " + stopPointVersion.getNumber()+ " has " + stopPointVersion.getNumber().getCountry() + " as its Country!")
         .build();
   }
 
