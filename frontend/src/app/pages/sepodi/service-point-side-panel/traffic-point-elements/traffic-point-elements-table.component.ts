@@ -55,9 +55,7 @@ export class TrafficPointElementsTableComponent implements OnInit, OnDestroy {
   }
 
   getOverview(pagination: TablePagination) {
-    this.isTrafficPointArea
-      ? this.getAreasOfServicePoint(pagination)
-      : this.getPlatformsOfServicePoint(pagination);
+    this.getTrafficPointElements(pagination, this.isTrafficPointArea);
   }
 
   addNewTrafficPointElement() {
@@ -90,23 +88,15 @@ export class TrafficPointElementsTableComponent implements OnInit, OnDestroy {
     this.router.navigate([Pages.SEPODI.path]).then();
   }
 
-  getPlatformsOfServicePoint(pagination: TablePagination) {
-    this.trafficPointElementService
-      .getPlatformsOfServicePoint(this.servicePointNumber, pagination.page, pagination.size, [
-        pagination.sort ?? 'designation,asc',
-      ])
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((container) => {
-        this.trafficPointElementRows = container.objects!;
-        this.totalCount$ = container.totalCount!;
-      });
-  }
+  getTrafficPointElements(pagination: TablePagination, isArea: boolean) {
+    const getEndpoint = isArea ? 'getAreasOfServicePoint' : 'getPlatformsOfServicePoint';
 
-  getAreasOfServicePoint(pagination: TablePagination) {
-    this.trafficPointElementService
-      .getAreasOfServicePoint(this.servicePointNumber, pagination.page, pagination.size, [
-        pagination.sort ?? 'designation,asc',
-      ])
+    this.trafficPointElementService[getEndpoint](
+      this.servicePointNumber,
+      pagination.page,
+      pagination.size,
+      [pagination.sort ?? 'designation,asc'],
+    )
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((container) => {
         this.trafficPointElementRows = container.objects!;

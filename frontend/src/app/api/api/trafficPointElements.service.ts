@@ -21,7 +21,7 @@ import {
   HttpParameterCodec,
 } from '@angular/common/http';
 import { CustomHttpParameterCodec } from '../encoder';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { ContainerReadTrafficPointElementVersion } from '../model/models';
 import { CreateTrafficPointElementVersion } from '../model/models';
