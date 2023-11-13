@@ -1,7 +1,5 @@
 package ch.sbb.prm.directory.controller;
 
-import static ch.sbb.atlas.servicepoint.Country.SWITZERLAND;
-
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
@@ -10,7 +8,6 @@ import ch.sbb.atlas.imports.prm.stoppoint.StopPointImportRequestModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.StopPointApiV1;
 import ch.sbb.prm.directory.entity.StopPointVersion;
-import ch.sbb.prm.directory.exception.ServicePointWithNotSwissCountryNotAllowedException;
 import ch.sbb.prm.directory.exception.StopPointAlreadyExistsException;
 import ch.sbb.prm.directory.mapper.StopPointVersionMapper;
 import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
@@ -53,9 +50,6 @@ public class StopPointController implements StopPointApiV1 {
       throw new StopPointAlreadyExistsException(stopPointVersionModel.getSloid());
     }
     StopPointVersion stopPointVersion = StopPointVersionMapper.toEntity(stopPointVersionModel);
-    if(!SWITZERLAND.equals(stopPointVersion.getNumber().getCountry())){
-      throw new ServicePointWithNotSwissCountryNotAllowedException(stopPointVersion);
-    }
     StopPointVersion savedVersion = stopPointService.save(stopPointVersion);
     return StopPointVersionMapper.toModel(savedVersion);
   }
