@@ -14,8 +14,10 @@ import ch.sbb.atlas.api.prm.model.relation.CreateRelationVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.RelationTestData;
+import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.repository.RelationRepository;
+import ch.sbb.prm.directory.repository.StopPointRepository;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +27,12 @@ import org.springframework.transaction.annotation.Transactional;
 class RelationVersionControllerApiTest extends BaseControllerApiTest {
 
   private final RelationRepository relationRepository;
+  private final StopPointRepository stopPointRepository;
 
   @Autowired
-  RelationVersionControllerApiTest(RelationRepository relationRepository){
+  RelationVersionControllerApiTest(RelationRepository relationRepository, StopPointRepository stopPointRepository){
     this.relationRepository = relationRepository;
+    this.stopPointRepository = stopPointRepository;
   }
 
   @Test
@@ -132,6 +136,7 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
   void shouldUpdateRelation() throws Exception {
     //given
     String parentServicePointSloid = "ch:1:sloid:8507000";
+    stopPointRepository.save(StopPointTestData.builderVersion1().sloid(parentServicePointSloid).build());
     String referencePointSloid = "ch:1:sloid:8507000:1";
     RelationVersion version1 = RelationTestData.builderVersion1().build();
     version1.setParentServicePointSloid(parentServicePointSloid);

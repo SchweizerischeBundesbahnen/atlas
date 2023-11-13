@@ -39,52 +39,42 @@ public abstract class StopPointVersionModel extends BasePrmVersionModel implemen
   @Schema(description = "Stop Place City")
   private String city;
 
-  @Schema(description = "Shuttle service or alternative public transport offer")
   private StandardAttributeType alternativeTransport;
 
   @Schema(description = "Information about the shuttle service or alternative public transport options")
   private String alternativeTransportCondition;
 
-  @Schema(description = "Advance registration required for assistance")
   private StandardAttributeType assistanceAvailability;
 
   @Schema(description = "Notes for assistance")
   private String assistanceCondition;
 
-  @Schema(description = "Assistance from staff")
   private StandardAttributeType assistanceService;
 
-  @Schema(description = "Acoustic and tactile equipment")
   private StandardAttributeType audioTicketMachine;
 
   @Schema(description = "Additional information")
   private String additionalInformation;
 
-  @Schema(description = "Acoustically")
   private StandardAttributeType dynamicAudioSystem;
 
-  @Schema(description = "Dynamic/optical")
   private StandardAttributeType dynamicOpticSystem;
 
   @Schema(description = "Information about the ticket machine")
   private String infoTicketMachine;
 
   @Schema(description = "Interoperable station")
-  private boolean interoperable;
+  private Boolean interoperable;
 
   @Schema(description = "Website with additional information")
   private String url;
 
-  @Schema(description = "Static/optical")
   private StandardAttributeType visualInfo;
 
-  @Schema(description = "Barrier-free")
   private StandardAttributeType wheelchairTicketMachine;
 
-  @Schema(description = "requirements fulfilled")
   private StandardAttributeType assistanceRequestFulfilled;
 
-  @Schema(description = "Ticket machine available")
   private StandardAttributeType ticketMachine;
 
 }

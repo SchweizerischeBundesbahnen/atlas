@@ -2,8 +2,10 @@ package ch.sbb.prm.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.InformationDeskTestData;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.PlatformTestData;
@@ -19,6 +21,7 @@ import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
 import ch.sbb.prm.directory.entity.ToiletVersion;
+import ch.sbb.prm.directory.exception.ReducedVariantException;
 import ch.sbb.prm.directory.repository.InformationDeskRepository;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.PlatformRepository;
@@ -26,6 +29,8 @@ import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import java.util.List;
+import java.util.Set;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,6 +92,37 @@ class ReferencePointServiceTest {
     assertThat(relations.stream().map(RelationVersion::getReferencePointElementType)).containsExactlyInAnyOrder(
         ReferencePointElementType.values());
 
+  }
+
+  @Test
+  void shouldNotCreateReferencePointWhenStopPointIsReduced() {
+    //given
+    String parentServicePointSloid = "ch:1:sloid:70000";
+    StopPointVersion stopPointVersion = StopPointTestData.builderVersion1().meansOfTransport(Set.of(MeanOfTransport.BUS)).build();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointRepository.save(stopPointVersion);
+    createAndSavePlatformVersion(parentServicePointSloid);
+    createAndSaveTicketCounterVersion(parentServicePointSloid);
+    createAndSaveToiletVersion(parentServicePointSloid);
+    createAndSaveInformationDeskVersion(parentServicePointSloid);
+    createAndSaveParkingLotVersion(parentServicePointSloid);
+
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+
+    //when
+    ReducedVariantException result = Assertions.assertThrows(
+        ReducedVariantException.class,
+        () -> referencePointService.createReferencePoint(referencePointVersion));
+
+    //then
+    assertThat(result).isNotNull();
+    ErrorResponse errorResponse = result.getErrorResponse();
+    assertThat(errorResponse.getStatus()).isEqualTo(412);
+    assertThat(errorResponse.getMessage()).isEqualTo("Object creation not allowed for reduced variant!");
+    List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
+        parentServicePointSloid);
+    assertThat(relations).isEmpty();
   }
 
   private void createAndSaveParkingLotVersion(String parentServicePointSloid) {
