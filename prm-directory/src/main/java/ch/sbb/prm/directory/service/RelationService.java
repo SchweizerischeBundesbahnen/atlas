@@ -16,11 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class RelationService extends PrmVersionableService<RelationVersion> {
 
+  private final StopPointService stopPointService;
   private final RelationRepository relationRepository;
 
-  public RelationService(RelationRepository relationRepository, VersionableService versionableService) {
+  public RelationService(RelationRepository relationRepository, VersionableService versionableService,
+      StopPointService stopPointService) {
     super(versionableService);
     this.relationRepository = relationRepository;
+    this.stopPointService = stopPointService;
   }
 
   public List<RelationVersion> getRelationsBySloid(String sloid) {
@@ -48,6 +51,7 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
 
   @Override
   public RelationVersion save(RelationVersion relationVersion) {
+    stopPointService.validateIsNotReduced(relationVersion.getParentServicePointSloid());
     return relationRepository.saveAndFlush(relationVersion);
   }
 

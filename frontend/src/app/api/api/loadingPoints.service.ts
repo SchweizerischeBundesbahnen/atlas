@@ -254,6 +254,103 @@ export class LoadingPointsService {
   }
 
   /**
+   * @param servicePointNumber
+   * @param page Zero-based page index (0..N)
+   * @param size The size of the page to be returned
+   * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public getLoadingPointOverview(
+    servicePointNumber: number,
+    page?: number,
+    size?: number,
+    sort?: Array<string>,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' },
+  ): Observable<ContainerReadLoadingPointVersion>;
+  public getLoadingPointOverview(
+    servicePointNumber: number,
+    page?: number,
+    size?: number,
+    sort?: Array<string>,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' },
+  ): Observable<HttpResponse<ContainerReadLoadingPointVersion>>;
+  public getLoadingPointOverview(
+    servicePointNumber: number,
+    page?: number,
+    size?: number,
+    sort?: Array<string>,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' },
+  ): Observable<HttpEvent<ContainerReadLoadingPointVersion>>;
+  public getLoadingPointOverview(
+    servicePointNumber: number,
+    page?: number,
+    size?: number,
+    sort?: Array<string>,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: '*/*' },
+  ): Observable<any> {
+    if (servicePointNumber === null || servicePointNumber === undefined) {
+      throw new Error(
+        'Required parameter servicePointNumber was null or undefined when calling getLoadingPointOverview.',
+      );
+    }
+
+    let queryParameters = new HttpParams({ encoder: this.encoder });
+    if (page !== undefined && page !== null) {
+      queryParameters = this.addToHttpParams(queryParameters, <any>page, 'page');
+    }
+    if (size !== undefined && size !== null) {
+      queryParameters = this.addToHttpParams(queryParameters, <any>size, 'size');
+    }
+    if (sort) {
+      sort.forEach((element) => {
+        queryParameters = this.addToHttpParams(queryParameters, <any>element, 'sort');
+      });
+    }
+
+    let headers = this.defaultHeaders;
+
+    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+    if (httpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = ['*/*'];
+      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (httpHeaderAcceptSelected !== undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    let responseType_: 'text' | 'json' = 'json';
+    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+      responseType_ = 'text';
+    }
+
+    return this.httpClient.get<ContainerReadLoadingPointVersion>(
+      `${
+        this.configuration.basePath
+      }/service-point-directory/v1/loading-points/${encodeURIComponent(
+        String(servicePointNumber),
+      )}`,
+      {
+        params: queryParameters,
+        responseType: <any>responseType_,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress,
+      },
+    );
+  }
+
+  /**
    * @param id
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.

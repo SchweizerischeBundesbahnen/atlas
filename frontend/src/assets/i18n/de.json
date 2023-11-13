@@ -972,7 +972,26 @@
       "NEW": "Neuen Haltebereich erfassen"
     },
     "LOADING_POINTS": {
-      "LOADING_POINTS": "Ladestellen"
+      "LOADING_POINTS": "Ladestellen",
+      "LOADING_POINT": "Ladestelle",
+      "FREIGHT_SERVICE_POINT_NAME": "Bedienpunktname",
+      "NEW": "Neue Ladestelle erfassen",
+      "NUMBER": "Nummer",
+      "DESIGNATION": "Bezeichnung",
+      "DESIGNATION_LONG": "Bezeichnung Lang",
+      "CONNECTION_POINT": "Anschlusspunkt",
+      "CONNECTION_POINT_VALUE": {
+        "true": "Ja",
+        "false": "Nein"
+      },
+      "DETAILS": "Angaben zur",
+      "CONFLICT": {
+        "NUMBER": "Es existiert bereits eine Ladestelle mit Nummer {{number}} in der Dienststelle mit Nummer {{servicePointNumber}}."
+      },
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Die Ladestelle wurde erfolgreich hinzugefügt.",
+        "EDIT_SUCCESS": "Die Ladestelle wurde erfolgreich gespeichert."
+      }
     },
     "GEOLOCATION": {
       "INVALID": "Die angegebenen Koordinaten sind ungültig. Bitte korrigieren Sie Ihre Eingabe.",

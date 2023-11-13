@@ -112,6 +112,80 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldNotCreateStopPointReducedIfCompletePropertiesProvided() throws Exception {
+    //given
+    CreateStopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getWrongStopPointReducedCreateVersionModel();
+    SharedServicePoint servicePoint = SharedServicePoint.builder()
+        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
+        .sloid("ch:1:sloid:7000")
+        .build();
+    sharedServicePointRepository.saveAndFlush(servicePoint);
+    //when && then
+    mvc.perform(post("/v1/stop-points").contentType(contentType)
+            .content(mapper.writeValueAsString(stopPointCreateVersionModel)))
+        .andExpect(status().isBadRequest());
+
+  }
+
+  @Test
+  void shouldNotCreateStopPointCompleteWithNotValidatableProperties() throws Exception {
+    //given
+    CreateStopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getCompleteNotValidatableStopPointReducedCreateVersionModel();
+    SharedServicePoint servicePoint = SharedServicePoint.builder()
+        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
+        .sloid("ch:1:sloid:7000")
+        .build();
+    sharedServicePointRepository.saveAndFlush(servicePoint);
+    //when && then
+    mvc.perform(post("/v1/stop-points").contentType(contentType)
+            .content(mapper.writeValueAsString(stopPointCreateVersionModel)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.details.size()", is(9)));
+
+  }
+
+  @Test
+  void shouldNotCreateStopPointIsAlreadyExists() throws Exception {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointRepository.save(stopPointVersion);
+    CreateStopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
+    stopPointCreateVersionModel.setNumberWithoutCheckDigit(stopPointVersion.getNumber().getNumber());
+    stopPointCreateVersionModel.setSloid(stopPointVersion.getSloid());
+    SharedServicePoint servicePoint = SharedServicePoint.builder()
+        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:12345\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
+        .sloid("ch:1:sloid:12345")
+        .build();
+    sharedServicePointRepository.saveAndFlush(servicePoint);
+    //when && then
+    mvc.perform(post("/v1/stop-points").contentType(contentType)
+            .content(mapper.writeValueAsString(stopPointCreateVersionModel)))
+        .andExpect(status().isConflict())
+        .andExpect(jsonPath("$.message", is("The stop place with sloid ch:1:sloid:12345 already exists.")));
+
+  }
+
+  @Test
+  void shouldNotCreateStopPointReducedIfServicePointHasAsCountryNotSwiss() throws Exception {
+    //given
+    CreateStopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
+    stopPointCreateVersionModel.setSloid("ch:1:sloid:1101407");
+    stopPointCreateVersionModel.setNumberWithoutCheckDigit(1101407);
+    SharedServicePoint servicePoint = SharedServicePoint.builder()
+        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:1101407\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
+        .sloid("ch:1:sloid:1101407")
+        .build();
+    sharedServicePointRepository.saveAndFlush(servicePoint);
+    //when && then
+    mvc.perform(post("/v1/stop-points").contentType(contentType)
+            .content(mapper.writeValueAsString(stopPointCreateVersionModel)))
+        .andExpect(status().isPreconditionFailed())
+        .andExpect(jsonPath("$.message", is("PRM does not allow to create StopPoints from non-Swiss ServicePoints!")))
+        .andExpect(jsonPath("$.error", is("The given ServicePointNumber 1101407 has GERMANY_BUS as its Country!")));
+
+  }
+
+  @Test
   void shouldNotCreateStopPointWhenServicePointDoesNotExists() throws Exception {
     //given
     CreateStopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
@@ -135,7 +209,8 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldUpdateStopPoint() throws Exception {
     //given
-    StopPointVersion version1 = stopPointRepository.saveAndFlush(StopPointTestData.builderVersion1().build());
+    StopPointVersion version1 =
+        stopPointRepository.saveAndFlush(StopPointTestData.builderVersion1().build());
     StopPointVersion version2 = stopPointRepository.saveAndFlush(StopPointTestData.builderVersion2().build());
 
     CreateStopPointVersionModel editedVersionModel = new CreateStopPointVersionModel();
@@ -158,7 +233,7 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setDynamicOpticSystem(version2.getDynamicOpticSystem());
     editedVersionModel.setInfoTicketMachine(version2.getInfoTicketMachine());
     editedVersionModel.setAdditionalInformation(version2.getAdditionalInformation());
-    editedVersionModel.setInteroperable(version2.isInteroperable());
+    editedVersionModel.setInteroperable(version2.getInteroperable());
     editedVersionModel.setUrl(version2.getUrl());
     editedVersionModel.setVisualInfo(version2.getVisualInfo());
     editedVersionModel.setWheelchairTicketMachine(version2.getWheelchairTicketMachine());

@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
 
 public class StopPointVersionRowMapper extends BaseRowMapper implements RowMapper<StopPointVersion> {
@@ -26,11 +27,11 @@ public class StopPointVersionRowMapper extends BaseRowMapper implements RowMappe
     builder.city(rs.getString("city"));
     builder.alternativeTransport(
         rs.getObject("alternative_transport") != null ?
-            StandardAttributeType.valueOf(rs.getString("alternative_transport")): null);
+            StandardAttributeType.valueOf(rs.getString("alternative_transport")) : null);
     builder.alternativeTransportCondition(rs.getString("alternative_transport_condition"));
     builder.assistanceAvailability(
         rs.getObject("assistance_availability") != null ?
-            StandardAttributeType.valueOf(rs.getString("assistance_availability")): null);
+            StandardAttributeType.valueOf(rs.getString("assistance_availability")) : null);
     builder.assistanceCondition(rs.getString("assistance_condition"));
     builder.assistanceService(
         rs.getObject("assistance_service") != null ?
@@ -46,7 +47,7 @@ public class StopPointVersionRowMapper extends BaseRowMapper implements RowMappe
         rs.getObject("dynamic_optic_system") != null ?
             StandardAttributeType.valueOf(rs.getString("dynamic_optic_system")) : null);
     builder.infoTicketMachine(rs.getString("info_ticket_machine"));
-    builder.interoperable(rs.getBoolean("interoperable"));
+    builder.interoperable(mapBooleanObject(rs));
     builder.url(rs.getString("url"));
     builder.wheelchairTicketMachine(
         rs.getObject("wheelchair_ticket_machine") != null ?
@@ -74,6 +75,13 @@ public class StopPointVersionRowMapper extends BaseRowMapper implements RowMappe
       stopPointVersionBuilder.meansOfTransport(meansOfTransport);
       stopPointVersionBuilder.meansOfTransportPipeList(RowMapperUtil.toPipedString(meansOfTransport));
     }
+  }
+
+  private String mapBooleanObject(ResultSet rs) throws SQLException {
+    if (rs.getObject("interoperable") != null) {
+      return String.valueOf(rs.getBoolean("interoperable"));
+    }
+    return StringUtils.EMPTY;
   }
 
 }
