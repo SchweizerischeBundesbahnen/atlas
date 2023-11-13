@@ -15,7 +15,7 @@ export class FormatPipe implements PipeTransform {
       return DateService.getDateFormatted(value as Date);
     }
     if (column.translate?.withPrefix) {
-      return value ? this.translatePipe.transform(column.translate.withPrefix + value) : null;
+      return this.translatePipe.transform(column.translate.withPrefix + value);
     }
     if (column.callback) {
       return column.callback(value);
