@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.service.versioning;
 
+import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.ToiletTestData;
@@ -89,7 +89,7 @@ class ToiletVersioningTest {
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
     //when
-    toiletService.updateToiletVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    toiletService.updateToiletVersion(version2, editedVersion);
 
     //then
     List<ToiletVersion> result = toiletRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
@@ -150,7 +150,7 @@ class ToiletVersioningTest {
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
     //when
-    toiletService.updateToiletVersion(version2, editedVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
+    toiletService.updateToiletVersion(version2, editedVersion);
 
     //then
     List<ToiletVersion> result = toiletRepository.findAllByNumberOrderByValidFrom(version2.getNumber());

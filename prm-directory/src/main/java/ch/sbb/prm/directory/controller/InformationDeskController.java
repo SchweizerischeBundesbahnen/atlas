@@ -31,8 +31,7 @@ public class InformationDeskController implements InformationDeskApiV1 {
   @Override
   public ReadInformationDeskVersionModel createInformationDesk(CreateInformationDeskVersionModel model) {
     InformationDeskVersion informationDeskVersion = informationDeskService.createInformationDesk(
-        InformationDeskVersionMapper.toEntity(model),
-            sharedServicePointService.validateServicePointExists(model.getParentServicePointSloid()));
+        InformationDeskVersionMapper.toEntity(model));
     return InformationDeskVersionMapper.toModel(informationDeskVersion);
   }
 
@@ -42,8 +41,7 @@ public class InformationDeskController implements InformationDeskApiV1 {
         informationDeskService.getInformationDeskVersionById(id).orElseThrow(() -> new IdNotFoundException(id));
 
     InformationDeskVersion editedVersion = InformationDeskVersionMapper.toEntity(model);
-    informationDeskService.updateInformationDeskVersion(informationDeskVersion, editedVersion,
-            sharedServicePointService.validateServicePointExists(model.getParentServicePointSloid()));
+    informationDeskService.updateInformationDeskVersion(informationDeskVersion, editedVersion);
 
     return informationDeskService.findAllByNumberOrderByValidFrom(informationDeskVersion.getNumber()).stream()
         .map(InformationDeskVersionMapper::toModel).toList();

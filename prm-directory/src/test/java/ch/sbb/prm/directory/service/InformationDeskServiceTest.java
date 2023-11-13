@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.InformationDeskTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
@@ -62,7 +62,7 @@ class InformationDeskServiceTest {
     informationDesk.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when & then
     assertThrows(StopPointDoesNotExistException.class,
-        () -> informationDeskService.createInformationDesk(informationDesk, SHARED_SERVICE_POINT_VERSION_MODEL)).getLocalizedMessage();
+        () -> informationDeskService.createInformationDesk(informationDesk)).getLocalizedMessage();
   }
 
   @Test
@@ -74,7 +74,7 @@ class InformationDeskServiceTest {
     InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
     informationDesk.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when
-    informationDeskService.createInformationDesk(informationDesk, SHARED_SERVICE_POINT_VERSION_MODEL);
+    informationDeskService.createInformationDesk(informationDesk);
 
     //then
     List<InformationDeskVersion> informationDeskVersions = informationDeskRepository
@@ -98,7 +98,7 @@ class InformationDeskServiceTest {
     InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
     informationDesk.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when
-    informationDeskService.createInformationDesk(informationDesk, SHARED_SERVICE_POINT_VERSION_MODEL);
+    informationDeskService.createInformationDesk(informationDesk);
 
     //then
     List<InformationDeskVersion> informationDeskVersions = informationDeskRepository
@@ -129,7 +129,7 @@ class InformationDeskServiceTest {
     informationDesk.setParentServicePointSloid(parentServicePointSloid);
 
     //when
-    informationDeskService.createInformationDesk(informationDesk, SHARED_SERVICE_POINT_VERSION_MODEL);
+    informationDeskService.createInformationDesk(informationDesk);
 
     //then
     List<InformationDeskVersion> informationDeskVersions = informationDeskRepository.findByParentServicePointSloid(
