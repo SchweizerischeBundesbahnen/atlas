@@ -32,8 +32,8 @@ public abstract class LoadingPointVersionModel extends BaseVersionModel implemen
 
   @NotNull
   @Schema(description = "Loading Point Number", example = "4201")
-  @Min(0)
-  @Max(9999)
+  @Min(ServicePointConstants.LOADING_POINT_NUMBER_MIN)
+  @Max(ServicePointConstants.LOADING_POINT_NUMBER_MAX)
   private Integer number;
 
   @NotNull
