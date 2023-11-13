@@ -87,6 +87,10 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
     }
   }
 
+  public boolean isStopPointExisting(String sloid) {
+    return stopPointRepository.existsBySloid(sloid);
+  }
+
   public StopPointVersion updateStopPointVersion(StopPointVersion currentVersion, StopPointVersion editedVersion) {
     stopPointValidationService.validateMeansOfTransportChanging(currentVersion,editedVersion);
     return updateVersion(currentVersion, editedVersion);
