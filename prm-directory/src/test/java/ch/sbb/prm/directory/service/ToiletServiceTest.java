@@ -11,7 +11,7 @@ import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.entity.ToiletVersion;
-import ch.sbb.prm.directory.exception.StopPointDoesNotExistsException;
+import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
@@ -61,7 +61,7 @@ class ToiletServiceTest {
     ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
     toiletVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when & then
-    assertThrows(StopPointDoesNotExistsException.class,
+    assertThrows(StopPointDoesNotExistException.class,
         () -> toiletService.createToilet(toiletVersion, SHARED_SERVICE_POINT_VERSION_MODEL)).getLocalizedMessage();
   }
 
