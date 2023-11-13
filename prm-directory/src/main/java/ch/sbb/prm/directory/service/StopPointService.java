@@ -5,9 +5,11 @@ import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.StopPointVersion;
+import ch.sbb.prm.directory.exception.ReducedVariantException;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistsException;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
+import ch.sbb.prm.directory.validation.StopPointValidationService;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +24,14 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
 
   private final StopPointRepository stopPointRepository;
   private final SharedServicePointService sharedServicePointService;
+  private final StopPointValidationService stopPointValidationService;
 
   public StopPointService(StopPointRepository stopPointRepository, VersionableService versionableService,
-      SharedServicePointService sharedServicePointService) {
+      SharedServicePointService sharedServicePointService, StopPointValidationService stopPointValidationService) {
     super(versionableService);
     this.stopPointRepository = stopPointRepository;
     this.sharedServicePointService = sharedServicePointService;
+    this.stopPointValidationService = stopPointValidationService;
   }
 
   @Override
@@ -38,6 +42,7 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
   @Override
   public StopPointVersion save(StopPointVersion version) {
     sharedServicePointService.validateServicePointExists(version.getSloid());
+    stopPointValidationService.validateStopPointRecordingVariants(version);
     return stopPointRepository.saveAndFlush(version);
   }
 
@@ -56,6 +61,22 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
     return stopPointRepository.findAllByNumberOrderByValidFrom(number);
   }
 
+  boolean isReduced(String servicePointSloid){
+    StopPointVersion parentServicePoint = findAllBySloid(servicePointSloid).stream().findFirst()
+            .orElseThrow(() -> new StopPointDoesNotExistsException(servicePointSloid));
+    return parentServicePoint.isReduced();
+  }
+
+  void validateIsNotReduced(String servicePointSloid){
+    if(isReduced(servicePointSloid)){
+      throw new ReducedVariantException();
+    }
+  }
+
+  public List<StopPointVersion> findAllBySloid(String sloid){
+    return stopPointRepository.findAllBySloid(sloid);
+  }
+
   public Optional<StopPointVersion> getStopPointById(Long id) {
     return stopPointRepository.findById(id);
   }
@@ -67,10 +88,13 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
   }
 
   public StopPointVersion updateStopPointVersion(StopPointVersion currentVersion, StopPointVersion editedVersion) {
+    stopPointValidationService.validateMeansOfTransportChanging(currentVersion,editedVersion);
     return updateVersion(currentVersion, editedVersion);
   }
 
   public Page<StopPointVersion> findAll(StopPointSearchRestrictions searchRestrictions) {
     return stopPointRepository.findAll(searchRestrictions.getSpecification(),searchRestrictions.getPageable());
   }
+
+
 }

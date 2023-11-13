@@ -4,7 +4,7 @@ import ch.sbb.atlas.imports.BaseImportService;
 import ch.sbb.atlas.imports.util.BeanCopyUtil;
 import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.versioning.model.Versionable;
-import ch.sbb.prm.directory.entity.StopPointVersion.Fields;
+import ch.sbb.prm.directory.entity.StopPointVersion;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,7 +42,8 @@ public abstract class BasePrmImportService<T extends Versionable> extends BaseIm
     log.info("The properties of the following versions: {}", dbVersionsFoundToBeReplaced);
     for (T dbVersion : dbVersionsFoundToBeReplaced) {
       log.info("will be overridden with (expect [validFrom, validTo, id]): {}", dbVersion);
-      BeanCopyUtil.copyNonNullProperties(csvVersion, dbVersion, Fields.validFrom, Fields.validTo, Fields.id);
+      BeanCopyUtil.copyNonNullProperties(csvVersion, dbVersion, StopPointVersion.Fields.validFrom, StopPointVersion.Fields.validTo,
+          StopPointVersion.Fields.id);
       save(dbVersion);
     }
   }
