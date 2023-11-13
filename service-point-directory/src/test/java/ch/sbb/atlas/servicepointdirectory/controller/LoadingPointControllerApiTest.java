@@ -8,6 +8,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -44,7 +45,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
 
- class LoadingPointControllerApiTest extends BaseControllerApiTest {
+class LoadingPointControllerApiTest extends BaseControllerApiTest {
+
+  private static final int NUMBER = 4201;
 
   @MockBean
   private CrossValidationService crossValidationServiceMock;
@@ -70,7 +73,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
     LoadingPointVersion loadingPointVersion = LoadingPointVersion
         .builder()
-        .number(4201000)
+        .number(NUMBER)
         .designation("Piazzale")
         .designationLong("Piazzaleee")
         .connectionPoint(false)
@@ -98,7 +101,7 @@ import org.springframework.test.web.servlet.MvcResult;
     Integer number = loadingPointVersion.getNumber();
     mvc.perform(get("/v1/loading-points/"+servicePointNumber+"/"+ number)).andExpect(status().isOk())
         .andExpect(jsonPath("$[0]." + Fields.id, is(loadingPointVersion.getId().intValue())))
-        .andExpect(jsonPath("$[0]." + Fields.number, is(4201000)))
+        .andExpect(jsonPath("$[0]." + Fields.number, is(NUMBER)))
         .andExpect(jsonPath("$[0]." + Fields.connectionPoint, is(false)))
         .andExpect(jsonPath("$[0].servicePointNumber.number", is(ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber).getNumber())))
         .andExpect(jsonPath("$[0].creationDate", is("2017-12-04T13:11:03")))
@@ -116,7 +119,7 @@ import org.springframework.test.web.servlet.MvcResult;
   @Test
   void shouldGetLoadingPointVersionsWithFilter() throws Exception {
     mvc.perform(get("/v1/loading-points" +
-                    "?numbers=4201000" +
+                    "?numbers=4201" +
                     "&servicePointSloids=ch:1:sloid:19768" +
                     "&servicePointUicCountryCodes=58" +
                     "&servicePointNumbersShorts=1976" +
@@ -134,7 +137,7 @@ import org.springframework.test.web.servlet.MvcResult;
   @Test
   void shouldGetLoadingPointVersionsWithArrayInFilter() throws Exception {
     mvc.perform(get("/v1/loading-points" +
-                    "?numbers=4201000&numbers=1000000" +
+                    "?numbers=4201&numbers=1000" +
                     "&servicePointSloids=ch:1:sloid:19768&servicePointSloids=ch:1:sloid:19769" +
                     "&servicePointUicCountryCodes=58&servicePointUicCountryCodes=85" +
                     "&servicePointNumbersShorts=19768&servicePointNumbersShorts=12768" +
@@ -152,19 +155,19 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldNotGetLoadingPointVersionsWithFilter() throws Exception {
-    mvc.perform(get("/v1/loading-points?numbers=1000000"))
+    mvc.perform(get("/v1/loading-points?numbers=1000"))
          .andExpect(status().isOk())
          .andExpect(jsonPath("$.totalCount", is(0)));
   }
 
   @Test
   void shouldGetLoadingPointVersionById() throws Exception {
-    mvc.perform(get("/v1/loading-points/" + loadingPointVersion.getId())).andExpect(status().isOk());
+    mvc.perform(get("/v1/loading-points/versions/" + loadingPointVersion.getId())).andExpect(status().isOk());
   }
 
   @Test
   void shouldFailOnInvalidLoadingPointNumber() throws Exception {
-    mvc.perform(get("/v1/loading-points/9123"))
+    mvc.perform(get("/v1/loading-points/versions/9123"))
         .andExpect(status().isNotFound());
   }
 
@@ -305,6 +308,7 @@ import org.springframework.test.web.servlet.MvcResult;
     mvc.perform(put("/v1/loading-points/" + loadingPointVersion.getId())
             .contentType(contentType)
             .content(mapper.writeValueAsString(update)))
+        .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].id", is(notNullValue())))
         .andExpect(jsonPath("$[0].designation", is("Piazzale")))
@@ -365,15 +369,6 @@ import org.springframework.test.web.servlet.MvcResult;
   @Test
   void shouldFailOnFindWithInvalidServicePointNumber() throws Exception {
     mvc.perform(get("/v1/loading-points?servicePointNumbers=12345678"))
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
-        .andExpect(jsonPath("$.details[0].message",
-            is("Value 12345678 rejected due to must be less than or equal to 9999999")));
-  }
-
-  @Test
-  void shouldFailOnFindWithInvalidNumber() throws Exception {
-    mvc.perform(get("/v1/loading-points?numbers=12345678"))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
         .andExpect(jsonPath("$.details[0].message",

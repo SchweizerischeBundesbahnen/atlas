@@ -8,15 +8,15 @@ import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
-class LoadingPointElementRequestParamsTest extends BaseValidatorTest {
+class LoadingPointRequestParamsTest extends BaseValidatorTest {
 
   @Test
-  void shouldNotAcceptWhenNumberLessThan1000000(){
+  void shouldNotAcceptWhenNumberLessThan0(){
     //given
-    LoadingPointElementRequestParams requestParams = LoadingPointElementRequestParams.builder().numbers(List.of(123))
+    LoadingPointRequestParams requestParams = LoadingPointRequestParams.builder().numbers(List.of(-1))
         .build();
     //when
-    Set<ConstraintViolation<LoadingPointElementRequestParams>> violations = validator.validate(requestParams);
+    Set<ConstraintViolation<LoadingPointRequestParams>> violations = validator.validate(requestParams);
 
     //then
     assertThat(violations).hasSize(1);
@@ -24,17 +24,17 @@ class LoadingPointElementRequestParamsTest extends BaseValidatorTest {
         .map(ConstraintViolation::getMessage)
         .toList();
     assertThat(violationMessages).hasSize(1);
-    assertThat(violationMessages.get(0)).isEqualTo("must be greater than or equal to 1000000");
+    assertThat(violationMessages.get(0)).isEqualTo("must be greater than or equal to 0");
 
   }
   @Test
   void shouldNotAcceptWhenNumberBiggerThan9999999(){
     //given
-    LoadingPointElementRequestParams requestParams = LoadingPointElementRequestParams.builder().numbers(List.of(
-            10000000))
+    LoadingPointRequestParams requestParams = LoadingPointRequestParams.builder().numbers(List.of(
+            10000))
         .build();
     //when
-    Set<ConstraintViolation<LoadingPointElementRequestParams>> violations = validator.validate(requestParams);
+    Set<ConstraintViolation<LoadingPointRequestParams>> violations = validator.validate(requestParams);
 
     //then
     assertThat(violations).hasSize(1);
@@ -42,18 +42,18 @@ class LoadingPointElementRequestParamsTest extends BaseValidatorTest {
         .map(ConstraintViolation::getMessage)
         .toList();
     assertThat(violationMessages).hasSize(1);
-    assertThat(violationMessages.get(0)).isEqualTo("must be less than or equal to 9999999");
+    assertThat(violationMessages.get(0)).isEqualTo("must be less than or equal to 9999");
 
   }
 
   @Test
   void shouldAcceptNumberWith7Digits(){
     //given
-    LoadingPointElementRequestParams requestParams = LoadingPointElementRequestParams.builder().numbers(List.of(
-            8507000))
+    LoadingPointRequestParams requestParams = LoadingPointRequestParams.builder().numbers(List.of(
+            8507))
         .build();
     //when
-    Set<ConstraintViolation<LoadingPointElementRequestParams>> violations = validator.validate(requestParams);
+    Set<ConstraintViolation<LoadingPointRequestParams>> violations = validator.validate(requestParams);
 
     //then
     assertThat(violations).isEmpty();
@@ -62,10 +62,10 @@ class LoadingPointElementRequestParamsTest extends BaseValidatorTest {
   @Test
   void shouldNotAcceptWhenServicePointNumberLessThan1000000(){
     //given
-    LoadingPointElementRequestParams requestParams = LoadingPointElementRequestParams.builder().servicePointNumbers(List.of(123))
+    LoadingPointRequestParams requestParams = LoadingPointRequestParams.builder().servicePointNumbers(List.of(123))
         .build();
     //when
-    Set<ConstraintViolation<LoadingPointElementRequestParams>> violations = validator.validate(requestParams);
+    Set<ConstraintViolation<LoadingPointRequestParams>> violations = validator.validate(requestParams);
 
     //then
     assertThat(violations).hasSize(1);
@@ -79,11 +79,11 @@ class LoadingPointElementRequestParamsTest extends BaseValidatorTest {
   @Test
   void shouldNotAcceptWhenServicePointNumberBiggerThan9999999(){
     //given
-    LoadingPointElementRequestParams requestParams = LoadingPointElementRequestParams.builder().servicePointNumbers(List.of(
+    LoadingPointRequestParams requestParams = LoadingPointRequestParams.builder().servicePointNumbers(List.of(
             10000000))
         .build();
     //when
-    Set<ConstraintViolation<LoadingPointElementRequestParams>> violations = validator.validate(requestParams);
+    Set<ConstraintViolation<LoadingPointRequestParams>> violations = validator.validate(requestParams);
 
     //then
     assertThat(violations).hasSize(1);
@@ -98,11 +98,11 @@ class LoadingPointElementRequestParamsTest extends BaseValidatorTest {
   @Test
   void shouldAcceptServicePointNumberWith7Digits(){
     //given
-    LoadingPointElementRequestParams requestParams = LoadingPointElementRequestParams.builder().servicePointNumbers(List.of(
+    LoadingPointRequestParams requestParams = LoadingPointRequestParams.builder().servicePointNumbers(List.of(
             8507000))
         .build();
     //when
-    Set<ConstraintViolation<LoadingPointElementRequestParams>> violations = validator.validate(requestParams);
+    Set<ConstraintViolation<LoadingPointRequestParams>> violations = validator.validate(requestParams);
 
     //then
     assertThat(violations).isEmpty();

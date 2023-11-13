@@ -6,7 +6,7 @@ import { Pages } from '../pages';
 import { servicePointResolver } from './service-point-side-panel/service-point-detail.resolver';
 import { ServicePointDetailComponent } from './service-point-side-panel/service-point/service-point-detail.component';
 import { TrafficPointElementsTableComponent } from './service-point-side-panel/traffic-point-elements/traffic-point-elements-table.component';
-import { LoadingPointsDetailComponent } from './service-point-side-panel/loading-points/loading-points-detail.component';
+import { LoadingPointsTableComponent } from './service-point-side-panel/loading-points/loading-points-table.component';
 import { FotCommentDetailComponent } from './service-point-side-panel/comment/fot-comment-detail.component';
 import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
 import { ServicePointCreationComponent } from './service-point-side-panel/service-point/service-point-creation/service-point-creation.component';
@@ -14,6 +14,11 @@ import { AuthService } from '../../core/auth/auth.service';
 import { ApplicationType } from '../../api';
 import { TrafficPointElementsDetailComponent } from './traffic-point-elements/traffic-point-elements-detail.component';
 import { trafficPointResolver } from './traffic-point-elements/traffic-point-elements-detail-resolver.service';
+import {
+  loadingPointResolver,
+  LoadingPointsDetailResolver,
+} from './loading-points/loading-points-detail-resolver.service';
+import { LoadingPointsDetailComponent } from './loading-points/loading-points-detail.component';
 
 @Injectable()
 class CanActivateServicePointCreationGuard {
@@ -63,7 +68,7 @@ const routes: Routes = [
           },
           {
             path: 'loading-points',
-            component: LoadingPointsDetailComponent,
+            component: LoadingPointsTableComponent,
           },
           {
             path: 'comment',
@@ -79,6 +84,12 @@ const routes: Routes = [
         path: Pages.TRAFFIC_POINT_ELEMENTS.path + '/:id',
         component: TrafficPointElementsDetailComponent,
         resolve: { trafficPoint: trafficPointResolver },
+        runGuardsAndResolvers: 'always',
+      },
+      {
+        path: Pages.LOADING_POINTS.path + '/:servicePointNumber/:number',
+        component: LoadingPointsDetailComponent,
+        resolve: { loadingPoint: loadingPointResolver },
         runGuardsAndResolvers: 'always',
       },
     ],
