@@ -55,7 +55,7 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
 
   @Override
   public StopPointVersion save(StopPointVersion version) {
-    sharedServicePointService.validateServicePointExists(version.getSloid());
+    sharedServicePointService.validateServicePointExists(version.getSloid()); // This check is still needed because of import StopPoint
     stopPointValidationService.validateStopPointRecordingVariants(version);
     return stopPointRepository.saveAndFlush(version);
   }
