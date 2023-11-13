@@ -63,7 +63,7 @@ class StopPointImportServiceTest {
     //then
     assertThat(result).hasSize(1);
     assertThat(result.get(0).getMessage()).isEqualTo("[SUCCESS]: This version was imported successfully");
-    assertThat(result.get(0).getItemNumber()).isEqualTo("1234567");
+    assertThat(result.get(0).getItemNumber()).isEqualTo("8534567");
     assertThat(result.get(0).getValidFrom()).isEqualTo(LocalDate.of(2000, 1, 1));
     assertThat(result.get(0).getValidTo()).isEqualTo(LocalDate.of(2000, 12, 31));
     assertThat(result.get(0).getStatus()).isEqualTo(ItemImportResponseStatus.SUCCESS);
@@ -80,7 +80,7 @@ class StopPointImportServiceTest {
 
     //then
     assertThat(result).hasSize(1);
-    assertThat(result.get(0).getItemNumber()).isEqualTo("1234567");
+    assertThat(result.get(0).getItemNumber()).isEqualTo("8534567");
     assertThat(result.get(0).getStatus()).isEqualTo(ItemImportResponseStatus.FAILED);
   }
 
@@ -95,7 +95,7 @@ class StopPointImportServiceTest {
 
     //then
     assertThat(result).hasSize(1);
-    assertThat(result.get(0).getItemNumber()).isEqualTo("1234567");
+    assertThat(result.get(0).getItemNumber()).isEqualTo("8534567");
     assertThat(result.get(0).getStatus()).isEqualTo(ItemImportResponseStatus.FAILED);
   }
 
@@ -120,7 +120,7 @@ class StopPointImportServiceTest {
     //then
     assertThat(result).hasSize(1);
     assertThat(result.get(0).getMessage()).isEqualTo("[SUCCESS]: This version was imported successfully");
-    assertThat(result.get(0).getItemNumber()).isEqualTo("1234567");
+    assertThat(result.get(0).getItemNumber()).isEqualTo("8534567");
     assertThat(result.get(0).getValidFrom()).isEqualTo(LocalDate.of(2000, 1, 1));
     assertThat(result.get(0).getValidTo()).isEqualTo(LocalDate.of(2000, 12, 31));
     assertThat(result.get(0).getStatus()).isEqualTo(ItemImportResponseStatus.SUCCESS);
@@ -140,7 +140,6 @@ class StopPointImportServiceTest {
         .sloid("ch:1:sloid:4761")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(8504761))
         .freeText("[Shuttle][Shuttle]")
-        .interoperable(false)
         .validFrom(LocalDate.of(1900,1,1))
         .validTo(LocalDate.of(2023,8,23))
         .creator("123456")
@@ -153,7 +152,6 @@ class StopPointImportServiceTest {
         .sloid("ch:1:sloid:4761")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(8504761))
         .freeText("[Shuttle]")
-        .interoperable(false)
         .validFrom(LocalDate.of(2023,8,24))
         .validTo(LocalDate.of(2099,12,31))
         .creator("123456")
@@ -172,7 +170,6 @@ class StopPointImportServiceTest {
         .dsSloid("ch:1:sloid:4761")
         .didokCode(8504761)
         .freeText("[Shuttle]")
-        .interoperable(0)
         .validFrom(LocalDate.of(1900,1,1))
         .validTo(LocalDate.of(2099, 12, 31))
         .modifiedAt(LocalDateTime.of(1900, 2, 1, 10, 10))

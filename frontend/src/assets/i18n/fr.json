@@ -972,7 +972,26 @@
       "NEW": "Saisir une nouvelle zone d'arrêt"
     },
     "LOADING_POINTS": {
-      "LOADING_POINTS": "Places de chargement"
+      "LOADING_POINTS": "Places de chargement",
+      "LOADING_POINT": "Placs de chargement",
+      "FREIGHT_SERVICE_POINT_NAME": "Nom du point de commande",
+      "NEW": "Saisir un nouveau point de chargement",
+      "NUMBER": "Numéro",
+      "DESIGNATION": "Dénomination",
+      "DESIGNATION_LONG": "Désignation détaillée",
+      "CONNECTION_POINT": "Point de liaison",
+      "CONNECTION_POINT_VALUE": {
+        "true": "Oui",
+        "false": "Non"
+      },
+      "DETAILS": "Données relatives à la",
+      "CONFLICT": {
+        "NUMBER": "Il existe déjà un point de chargement portant le numéro {{number}} dans le service portant le numéro {{servicePointNumber}}."
+      },
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Le point de chargement a été ajouté avec succès.",
+        "EDIT_SUCCESS": "Le point de chargement a été enregistré avec succès."
+      }
     },
     "GEOLOCATION": {
       "INVALID": "Les coordonnées indiquées ne sont pas valables. Veuillez corriger les données saisies! ",

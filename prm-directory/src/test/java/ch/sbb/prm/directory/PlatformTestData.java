@@ -50,6 +50,24 @@ public class PlatformTestData {
 
   }
 
+  public static PlatformVersion getReducedPlatformVersion() {
+    return PlatformVersion.builder()
+        .sloid("ch:1:sloid:12345:1")
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .parentServicePointSloid("ch:1:sloid:12345")
+        .height(123.12)
+        .inclinationLongitudinal(123.12)
+        .infoOpportunities(Set.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
+        .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
+        .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
+        .wheelchairAreaLength(456.321)
+        .wheelchairAreaWidth(321.123)
+        .build();
+
+  }
+
   public static CreatePlatformVersionModel getCreatePlatformVersionModel() {
     return CreatePlatformVersionModel.builder()
         .sloid("ch:1:sloid:12345:1")

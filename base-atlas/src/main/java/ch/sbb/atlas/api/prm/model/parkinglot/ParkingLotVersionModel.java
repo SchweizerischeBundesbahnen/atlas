@@ -33,10 +33,8 @@ public abstract class ParkingLotVersionModel extends BasePrmVersionModel impleme
   @Schema(description = "Additional Information")
   private String additionalInformation;
 
-  @Schema(description = "Availability of parking spaces")
   private BooleanOptionalAttributeType placesAvailable;
 
-  @Schema(description = "Parking spaces for Person with Reduced Mobility")
   private BooleanOptionalAttributeType prmPlacesAvailable;
 
 }
