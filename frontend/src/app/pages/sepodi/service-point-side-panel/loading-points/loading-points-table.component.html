@@ -1,20 +1,20 @@
-<div class="traffic-point-element-table p-5 position-relative">
+<div class="loading-point-table p-5 position-relative">
   <atlas-button
-    (buttonClicked)="newTrafficPointElement()"
+    (buttonClicked)="newLoadingPoint()"
     applicationType="SEPODI"
-    buttonDataCy="new-traffic-point-element"
-    buttonText="SEPODI.TRAFFIC_POINT_ELEMENTS.NEW"
+    buttonDataCy="new-loading-point"
+    buttonText="SEPODI.LOADING_POINTS.NEW"
     buttonType="createCheckingPermission"
     wrapperStyleClass="mb-3"
   ></atlas-button>
 
   <div class="font-bold-2xl mt-5">
-    {{ 'SEPODI.TRAFFIC_POINT_ELEMENTS.TRAFFIC_POINT_ELEMENTS' | translate }}
+    {{ 'SEPODI.LOADING_POINTS.LOADING_POINTS' | translate }}
   </div>
 
   <app-table
-    data-cy="traffic-point-elements-table"
-    [tableData]="trafficPointElementRows"
+    data-cy="loading-point-table"
+    [tableData]="elements"
     [totalCount]="totalCount$"
     [tableColumns]="tableColumns"
     [canEdit]="true"

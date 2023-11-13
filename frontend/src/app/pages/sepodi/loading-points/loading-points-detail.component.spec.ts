@@ -1,14 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TrafficPointElementsDetailComponent } from './traffic-point-elements-detail.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppTestingModule } from '../../../app.testing.module';
 import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
-import { BehaviorSubject, of, Subject } from 'rxjs';
+import { of } from 'rxjs';
+import { AuthService } from '../../../core/auth/auth.service';
 import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 import { SplitServicePointNumberPipe } from '../search-service-point/split-service-point-number.pipe';
-import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../traffic-point-element-test-data';
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
 import { SelectComponent } from '../../../core/form-components/select/select.component';
 import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
@@ -21,71 +20,51 @@ import { DecimalNumberPipe } from '../../../core/pipe/decimal-number.pipe';
 import { AtlasSlideToggleComponent } from '../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
 import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
 import { RemoveCharsDirective } from '../../../core/form-components/text-field/remove-chars.directive';
-import { TrafficPointMapService } from '../map/traffic-point-map.service';
-import { CoordinatePairWGS84, MapService } from '../map/map.service';
-import { CoordinateTransformationService } from '../geography/coordinate-transformation.service';
-import { AuthService } from '../../../core/auth/auth.service';
 import { SloidComponent } from '../../../core/form-components/sloid/sloid.component';
-import { ServicePointsService, TrafficPointElementsService } from '../../../api';
+import { LoadingPointsService, ServicePointsService } from '../../../api';
 import { BERN_WYLEREGG } from '../service-point-test-data';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import moment from 'moment/moment';
+import { LoadingPointsDetailComponent } from './loading-points-detail.component';
+import { LOADING_POINT } from '../loading-point-test-data';
 
 const authService: Partial<AuthService> = {};
-const trafficPointMapService = jasmine.createSpyObj<TrafficPointMapService>([
-  'displayTrafficPointsOnMap',
-  'clearDisplayedTrafficPoints',
-  'displayCurrentTrafficPoint',
-  'clearCurrentTrafficPoint',
-]);
 
-describe('TrafficPointElementsDetailComponent', () => {
-  let component: TrafficPointElementsDetailComponent;
-  let fixture: ComponentFixture<TrafficPointElementsDetailComponent>;
+describe('LoadingPointsDetailComponent', () => {
+  let component: LoadingPointsDetailComponent;
+  let fixture: ComponentFixture<LoadingPointsDetailComponent>;
   let router: Router;
-
-  const mapService = jasmine.createSpyObj<MapService>([
-    'placeMarkerAndFlyTo',
-    'enterCoordinateSelectionMode',
-    'exitCoordinateSelectionMode',
-  ]);
-  mapService.mapInitialized = new BehaviorSubject<boolean>(true);
-  mapService.clickedGeographyCoordinates = new Subject<CoordinatePairWGS84>();
-
-  const coordinateTransformationService = jasmine.createSpyObj<CoordinateTransformationService>([
-    'transform',
-  ]);
 
   const servicePointService = jasmine.createSpyObj(['getServicePointVersions']);
   servicePointService.getServicePointVersions.and.returnValue(of([BERN_WYLEREGG]));
-  const trafficPointService = jasmine.createSpyObj('trafficPointElementsService', [
-    'getAreasOfServicePoint',
-    'updateTrafficPoint',
-    'createTrafficPoint',
+  const loadingPointService = jasmine.createSpyObj('loadingPointService', [
+    'createLoadingPoint',
+    'updateLoadingPoint',
   ]);
-  trafficPointService.getAreasOfServicePoint.and.returnValue(of(BERN_WYLEREGG_TRAFFIC_POINTS));
-  trafficPointService.updateTrafficPoint.and.returnValue(of(BERN_WYLEREGG_TRAFFIC_POINTS));
-  trafficPointService.createTrafficPoint.and.returnValue(of(BERN_WYLEREGG_TRAFFIC_POINTS[0]));
+  loadingPointService.createLoadingPoint.and.returnValue(of(LOADING_POINT[0]));
+  loadingPointService.updateLoadingPoint.and.returnValue(of(LOADING_POINT));
 
   const dialogService = jasmine.createSpyObj('dialogService', ['confirm']);
   dialogService.confirm.and.returnValue(of(true));
 
   describe('for existing Version', () => {
     beforeEach(() => {
-      const activatedRouteMock = { data: of({ trafficPoint: [BERN_WYLEREGG_TRAFFIC_POINTS[0]] }) };
+      const activatedRouteMock = {
+        data: of({ loadingPoint: LOADING_POINT }),
+        snapshot: { params: { servicePointNumber: 8504414 } },
+      };
       setupTestBed(activatedRouteMock);
-      fixture = TestBed.createComponent(TrafficPointElementsDetailComponent);
+      fixture = TestBed.createComponent(LoadingPointsDetailComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
       router = TestBed.inject(Router);
     });
 
-    it('should display current designationOperational and validity', () => {
+    it('should display validity', () => {
       expect(component.selectedVersion).toBeTruthy();
 
-      expect(component.selectedVersion.designationOperational).toEqual('1');
-      expect(component.maxValidity.validFrom).toEqual(new Date('2019-07-22'));
-      expect(component.maxValidity.validTo).toEqual(new Date('2099-12-31'));
+      expect(component.maxValidity.validFrom).toEqual(new Date('2023-11-01'));
+      expect(component.maxValidity.validTo).toEqual(new Date('2099-11-07'));
     });
 
     it('should init selected servicepoint', () => {
@@ -96,12 +75,6 @@ describe('TrafficPointElementsDetailComponent', () => {
       expect(servicePointService.getServicePointVersions).toHaveBeenCalled();
     });
 
-    it('should init selectable areas', () => {
-      expect(component.areaOptions).toBeTruthy();
-
-      expect(trafficPointService.getAreasOfServicePoint).toHaveBeenCalled();
-    });
-
     it('should go back to servicepoint', () => {
       spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
       component.backToServicePoint();
@@ -109,8 +82,8 @@ describe('TrafficPointElementsDetailComponent', () => {
       expect(router.navigate).toHaveBeenCalledWith([
         'service-point-directory',
         'service-points',
-        8589008,
-        'traffic-point-elements',
+        8504414,
+        'loading-points',
       ]);
     });
 
@@ -125,18 +98,22 @@ describe('TrafficPointElementsDetailComponent', () => {
     });
 
     it('should update via service', () => {
+      spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
       component.toggleEdit();
       component.save();
 
-      expect(trafficPointService.updateTrafficPoint).toHaveBeenCalled();
+      expect(loadingPointService.updateLoadingPoint).toHaveBeenCalled();
     });
   });
 
   describe('for new Version', () => {
     beforeEach(() => {
-      const activatedRouteMock = { data: of({ trafficPoint: [] }) };
+      const activatedRouteMock = {
+        data: of({ loadingPoint: [] }),
+        snapshot: { params: { servicePointNumber: 8504414 } },
+      };
       setupTestBed(activatedRouteMock);
-      fixture = TestBed.createComponent(TrafficPointElementsDetailComponent);
+      fixture = TestBed.createComponent(LoadingPointsDetailComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
       router = TestBed.inject(Router);
@@ -147,21 +124,23 @@ describe('TrafficPointElementsDetailComponent', () => {
     });
 
     it('should save version', () => {
-      component.form.controls.designation.setValue('Designation');
+      spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+
+      component.form.controls.number.setValue(5);
+      component.form.controls.designation.setValue('456');
+
       component.form.controls.validFrom.setValue(moment(new Date(2000 - 10 - 1)));
       component.form.controls.validTo.setValue(moment(new Date(2099 - 10 - 1)));
-
-      component.form.controls.trafficPointElementGeolocation.disable();
       component.save();
 
-      expect(trafficPointService.createTrafficPoint).toHaveBeenCalled();
+      expect(loadingPointService.createLoadingPoint).toHaveBeenCalled();
     });
   });
 
   function setupTestBed(activatedRoute: any) {
     TestBed.configureTestingModule({
       declarations: [
-        TrafficPointElementsDetailComponent,
+        LoadingPointsDetailComponent,
         DisplayDatePipe,
         SplitServicePointNumberPipe,
         MockAtlasButtonComponent,
@@ -182,12 +161,9 @@ describe('TrafficPointElementsDetailComponent', () => {
       imports: [AppTestingModule],
       providers: [
         { provide: AuthService, useValue: authService },
-        { provide: TrafficPointMapService, useValue: trafficPointMapService },
         { provide: ActivatedRoute, useValue: activatedRoute },
-        { provide: MapService, useValue: mapService },
-        { provide: CoordinateTransformationService, useValue: coordinateTransformationService },
         { provide: ServicePointsService, useValue: servicePointService },
-        { provide: TrafficPointElementsService, useValue: trafficPointService },
+        { provide: LoadingPointsService, useValue: loadingPointService },
         { provide: DialogService, useValue: dialogService },
         SplitServicePointNumberPipe,
         TranslatePipe,
