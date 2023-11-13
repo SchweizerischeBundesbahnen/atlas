@@ -171,5 +171,27 @@ describe('AtlasButtonComponent', () => {
       const button = fixture.debugElement.query(By.css('button'));
       expect(button).toBeFalsy();
     });
+
+    it('should not be visible for type EDIT_SERVICE_POINT_DEPENDENT', () => {
+      hasPermissionsToWrite = false;
+      component.buttonType = AtlasButtonType.EDIT_SERVICE_POINT_DEPENDENT;
+      component.applicationType = ApplicationType.Sepodi;
+      component.businessOrganisations = ['sboid'];
+      fixture.detectChanges();
+
+      const button = fixture.debugElement.query(By.css('button'));
+      expect(button).toBeFalsy();
+    });
+
+    it('should be visible for type EDIT_SERVICE_POINT_DEPENDENT', () => {
+      hasPermissionsToWrite = true;
+      component.buttonType = AtlasButtonType.EDIT_SERVICE_POINT_DEPENDENT;
+      component.applicationType = ApplicationType.Sepodi;
+      component.businessOrganisations = ['sboid'];
+      fixture.detectChanges();
+
+      const button = fixture.debugElement.query(By.css('button'));
+      expect(button).toBeTruthy();
+    });
   });
 });
