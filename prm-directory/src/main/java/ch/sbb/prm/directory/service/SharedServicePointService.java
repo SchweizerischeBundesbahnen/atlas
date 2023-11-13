@@ -1,6 +1,5 @@
 package ch.sbb.prm.directory.service;
 
-import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
 import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.exception.ServicePointDoesNotExistException;
@@ -19,11 +18,6 @@ public class SharedServicePointService {
 
   private final SharedServicePointRepository sharedServicePointRepository;
   private final ObjectMapper objectMapper;
-
-  public SharedServicePointVersionModel getSharedServicePointVersionModel(String sloid) {
-    return this.findServicePoint(sloid)
-            .orElseThrow(() -> new SloidNotFoundException(sloid));
-  }
 
   public Optional<SharedServicePointVersionModel> findServicePoint(String sloid) {
     Optional<SharedServicePoint> servicePoint = sharedServicePointRepository.findById(sloid);
