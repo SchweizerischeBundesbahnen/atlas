@@ -256,6 +256,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
         this.router
           .navigate(['..', trafficPointElementVersion.sloid], { relativeTo: this.route })
           .then();
+        this.isSwitchVersionDisabled = false;
       });
   }
 
@@ -266,6 +267,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.notificationService.success('SEPODI.TRAFFIC_POINT_ELEMENTS.NOTIFICATION.EDIT_SUCCESS');
         this.router.navigate(['..', this.selectedVersion.sloid], { relativeTo: this.route }).then();
+        this.isSwitchVersionDisabled = false;
       });
   }
 
