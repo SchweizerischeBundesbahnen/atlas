@@ -1,12 +1,16 @@
 package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
+import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.LoadingPointNumberAlreadyExistsException;
+import ch.sbb.atlas.servicepointdirectory.mapper.LoadingPointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.LoadingPointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
+import ch.sbb.atlas.servicepointdirectory.service.OverviewService;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import java.util.List;
@@ -15,6 +19,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,4 +86,19 @@ public class LoadingPointService {
         loadingPointVersionRepository::deleteById);
   }
 
+  public Container<ReadLoadingPointVersionModel> getOverview(Integer servicePointNumber, Pageable pageable) {
+    LoadingPointSearchRestrictions loadingPointSearchRestrictions = LoadingPointSearchRestrictions.builder()
+        .loadingPointRequestParams(LoadingPointRequestParams.builder()
+            .servicePointNumbers(List.of(servicePointNumber)).build()).build();
+
+    List<ReadLoadingPointVersionModel> loadingPointVersions = loadingPointVersionRepository.findAll(
+            loadingPointSearchRestrictions.getSpecification(), pageable.getSort()).stream().map(LoadingPointVersionMapper::fromEntity)
+        .toList();
+
+    List<ReadLoadingPointVersionModel> displayableVersions = OverviewService.mergeVersionsForDisplay(loadingPointVersions,
+        (previous, current) -> previous.getServicePointNumber().equals(current.getServicePointNumber())
+            && previous.getNumber().equals(current.getNumber()));
+
+    return OverviewService.toPagedContainer(displayableVersions, pageable);
+  }
 }

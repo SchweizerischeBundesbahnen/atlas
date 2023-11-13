@@ -21,8 +21,8 @@ import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { ValidationService } from '../../../core/validation/validation.service';
 import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { DateService } from '../../../core/date/date.service';
 import { TrafficPointMapService } from '../map/traffic-point-map.service';
+import { ValidityConfirmationService } from '../validity/validity-confirmation.service';
 
 interface AreaOption {
   sloid: string | undefined;
@@ -65,6 +65,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
     private servicePointService: ServicePointsService,
     private trafficPointElementsService: TrafficPointElementsService,
     private dialogService: DialogService,
+    private validityConfirmationService: ValidityConfirmationService,
     private notificationService: NotificationService,
   ) {}
 
@@ -102,7 +103,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
 
   private initServicePointInformation() {
     this.servicePointNumber =
-      history.state.servicePointNumber ?? this.selectedVersion?.servicePointNumber?.number;
+      history.state?.servicePointNumber ?? this.selectedVersion?.servicePointNumber?.number;
 
     if (!this.servicePointNumber) {
       this.router.navigate([Pages.SEPODI.path]).then();
@@ -225,23 +226,12 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
   }
 
   private confirmValidityOverServicePoint(): Observable<boolean> {
-    const servicePointValidity = VersionsHandlingService.getMaxValidity(this.servicePoint);
-    if (
-      this.form.controls.validFrom.value?.isBefore(servicePointValidity.validFrom) ||
-      this.form.controls.validTo.value?.isAfter(servicePointValidity.validTo)
-    ) {
-      return this.dialogService.confirm({
-        title: 'SEPODI.TRAFFIC_POINT_ELEMENTS.VALIDITY_CONFIRMATION.TITLE',
-        message: 'SEPODI.TRAFFIC_POINT_ELEMENTS.VALIDITY_CONFIRMATION.MESSAGE',
-        messageArgs: {
-          validFrom: DateService.getDateFormatted(servicePointValidity.validFrom),
-          validTo: DateService.getDateFormatted(servicePointValidity.validTo),
-        },
-        confirmText: 'COMMON.SAVE',
-        cancelText: 'COMMON.CANCEL',
-      });
-    }
-    return of(true);
+    const stopPoint = this.servicePoint.filter((i) => i.stopPoint);
+    return this.validityConfirmationService.confirmValidityOverServicePoint(
+      stopPoint,
+      this.form.controls.validFrom.value!,
+      this.form.controls.validTo.value!,
+    );
   }
 
   private create(trafficPointElementVersion: CreateTrafficPointElementVersion) {
@@ -253,6 +243,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
         this.router
           .navigate(['..', trafficPointElementVersion.sloid], { relativeTo: this.route })
           .then();
+        this.isSwitchVersionDisabled = false;
       });
   }
 
@@ -263,6 +254,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.notificationService.success('SEPODI.TRAFFIC_POINT_ELEMENTS.NOTIFICATION.EDIT_SUCCESS');
         this.router.navigate(['..', this.selectedVersion.sloid], { relativeTo: this.route }).then();
+        this.isSwitchVersionDisabled = false;
       });
   }
 
