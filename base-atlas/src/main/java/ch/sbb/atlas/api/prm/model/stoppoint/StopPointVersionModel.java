@@ -69,6 +69,7 @@ public abstract class StopPointVersionModel extends BasePrmVersionModel implemen
 
   private StandardAttributeType dynamicOpticSystem;
 
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   @Schema(description = "Information about the ticket machine")
   private String infoTicketMachine;
 
