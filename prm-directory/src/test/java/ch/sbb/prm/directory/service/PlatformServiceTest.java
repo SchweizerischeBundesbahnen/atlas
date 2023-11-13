@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.SharedServicePointVersionModel;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
@@ -143,7 +143,7 @@ class PlatformServiceTest {
     platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //when
-    platformService.createPlatformVersion(platformVersion);
+    platformService.createPlatformVersion(platformVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
 
     //then
     List<PlatformVersion> platformVersions = platformRepository.findByParentServicePointSloid(
@@ -176,7 +176,7 @@ class PlatformServiceTest {
     platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //when
-    platformService.createPlatformVersion(platformVersion);
+    platformService.createPlatformVersion(platformVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
 
     //then
     List<PlatformVersion> platformVersions = platformRepository.findByParentServicePointSloid(

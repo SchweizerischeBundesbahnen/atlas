@@ -15,14 +15,13 @@ import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.TicketCounterRepository;
-import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TICKET_COUNTER;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -127,7 +126,7 @@ class TicketCounterServiceTest {
     ticketCounterVersion.setParentServicePointSloid(parentServicePointSloid);
 
     //when
-    ticketCounterService.createTicketCounter(ticketCounterVersion);
+    ticketCounterService.createTicketCounter(ticketCounterVersion, SHARED_SERVICE_POINT_VERSION_MODEL);
 
     //then
     List<TicketCounterVersion> ticketCounterVersions = ticketCounterRepository.findByParentServicePointSloid(
