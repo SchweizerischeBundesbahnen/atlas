@@ -13,7 +13,7 @@ import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
-import ch.sbb.prm.directory.service.BaseServiceTest;
+import ch.sbb.prm.directory.service.BasePrmServiceTest;
 import ch.sbb.prm.directory.service.RelationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RelationVersioningTest extends BaseServiceTest {
+class RelationVersioningTest extends BasePrmServiceTest {
 
   private final RelationService relationService;
   private final RelationRepository relationRepository;

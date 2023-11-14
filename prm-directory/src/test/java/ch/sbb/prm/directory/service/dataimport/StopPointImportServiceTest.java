@@ -1,7 +1,5 @@
 package ch.sbb.prm.directory.service.dataimport;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModel;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModelContainer;
@@ -16,14 +14,18 @@ import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @Transactional
@@ -44,6 +46,11 @@ class StopPointImportServiceTest {
     this.versionableService = versionableService;
     this.stopPointImportService = stopPointImportService;
     this.sharedServicePointRepository = sharedServicePointRepository;
+  }
+
+  @AfterEach
+  void cleanUp() {
+    sharedServicePointRepository.deleteAll();
   }
 
   @Test

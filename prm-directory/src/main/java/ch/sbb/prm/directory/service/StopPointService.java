@@ -43,16 +43,11 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
     stopPointRepository.incrementVersion(servicePointNumber);
   }
 
+  @Override
   @PreAuthorize("""
       @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
       (#version, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
-  public StopPointVersion checkUserRightsAndSave(StopPointVersion version) {
-    return this.save(version);
-  }
-
-  @Override
   public StopPointVersion save(StopPointVersion version) {
-    sharedServicePointService.validateServicePointExists(version.getSloid()); // This check is still needed because of import StopPoint
     stopPointValidationService.validateStopPointRecordingVariants(version);
     return stopPointRepository.saveAndFlush(version);
   }

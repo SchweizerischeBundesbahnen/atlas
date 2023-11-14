@@ -12,6 +12,7 @@ import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.service.SharedServicePointService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -58,6 +59,11 @@ public class PrmStopPointBusinessOrganisationBasedUserAdministrationServiceTest 
                 .sloid("ch:1:sloid:12345")
                 .build();
         sharedServicePointRepository.saveAndFlush(servicePoint);
+    }
+
+    @AfterEach
+    void cleanUp() {
+        sharedServicePointRepository.deleteAll();
     }
 
     @Test
