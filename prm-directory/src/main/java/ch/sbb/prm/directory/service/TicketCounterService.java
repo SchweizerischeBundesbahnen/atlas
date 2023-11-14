@@ -60,7 +60,7 @@ public class TicketCounterService extends PrmRelatableVersionableService<TicketC
   }
 
   @PreAuthorize("""
-      @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
+      @prmUserAdministrationService.hasUserPermissionsForBusinessOrganisations
       (#version, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
   public TicketCounterVersion createTicketCounter(TicketCounterVersion version) {
     createRelation(version);
@@ -68,7 +68,7 @@ public class TicketCounterService extends PrmRelatableVersionableService<TicketC
   }
 
   @PreAuthorize("""
-      @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
+      @prmUserAdministrationService.hasUserPermissionsForBusinessOrganisations
       (#editedVersion, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
   public TicketCounterVersion updateTicketCounterVersion(TicketCounterVersion currentVersion,
                                                          TicketCounterVersion editedVersion) {
