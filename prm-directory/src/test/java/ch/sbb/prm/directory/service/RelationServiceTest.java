@@ -5,8 +5,6 @@ import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
-import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
-import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.RelationTestData;
@@ -15,35 +13,29 @@ import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.ReducedVariantException;
 import ch.sbb.prm.directory.repository.RelationRepository;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@IntegrationTest
-@Transactional
-class RelationServiceTest {
-
-  private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
-  private static final SharedServicePointVersionModel SHARED_SERVICE_POINT_VERSION_MODEL =
-          new SharedServicePointVersionModel(PARENT_SERVICE_POINT_SLOID,
-                  Collections.singleton("sboid"),
-                  Collections.singleton(""));
+class RelationServiceTest extends BasePrmServiceTest {
 
   private final RelationService relationService;
   private final RelationRepository relationRepository;
   private final StopPointRepository stopPointRepository;
 
   @Autowired
-  RelationServiceTest(RelationService relationService, RelationRepository relationRepository,
-      StopPointRepository stopPointRepository) {
+  RelationServiceTest(RelationService relationService,
+                      RelationRepository relationRepository,
+                      StopPointRepository stopPointRepository,
+                      SharedServicePointRepository sharedServicePointRepository) {
+    super(sharedServicePointRepository);
     this.relationService = relationService;
     this.relationRepository = relationRepository;
     this.stopPointRepository = stopPointRepository;
@@ -58,7 +50,6 @@ class RelationServiceTest {
     stopPointRepository.save(stopPointVersion);
     RelationVersion relationVersion = RelationTestData.builderVersion1().parentServicePointSloid(parentServicePointSloid).build();
 
-    SharedServicePointVersionModel sharedServicePointVersionModel = new SharedServicePointVersionModel(parentServicePointSloid, Collections.singleton("sboid"), Collections.singleton(""));
     //when
     ReducedVariantException result = Assertions.assertThrows(
         ReducedVariantException.class,

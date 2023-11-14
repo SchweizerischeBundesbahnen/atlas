@@ -1,7 +1,6 @@
 package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
-import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
@@ -15,13 +14,12 @@ import ch.sbb.prm.directory.exception.TrafficPointElementDoesNotExistsException;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -29,35 +27,33 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFOR
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@IntegrationTest
-@Transactional
-class PlatformServiceTest {
-
-  private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
-  private static final SharedServicePointVersionModel SHARED_SERVICE_POINT_VERSION_MODEL =
-          new SharedServicePointVersionModel(PARENT_SERVICE_POINT_SLOID,
-                  Collections.singleton("sboid"),
-                  Collections.singleton(""));
+class PlatformServiceTest extends BasePrmServiceTest {
 
   private final PlatformService platformService;
-  private final SharedServicePointConsumer sharedServicePointConsumer;
   private final PlatformRepository platformRepository;
+  private final SharedServicePointConsumer sharedServicePointConsumer;
   private final RelationRepository relationRepository;
   private final StopPointRepository stopPointRepository;
   private final ReferencePointRepository referencePointRepository;
 
   @Autowired
-  PlatformServiceTest(PlatformService platformService, SharedServicePointConsumer sharedServicePointConsumer,
-                      PlatformRepository platformRepository, RelationRepository relationRepository,
-                      StopPointRepository stopPointRepository, ReferencePointRepository referencePointRepository) {
+  PlatformServiceTest(PlatformService platformService,
+                      PlatformRepository platformRepository,
+                      SharedServicePointConsumer sharedServicePointConsumer,
+                      RelationRepository relationRepository,
+                      StopPointRepository stopPointRepository,
+                      ReferencePointRepository referencePointRepository,
+                      SharedServicePointRepository sharedServicePointRepository) {
+    super(sharedServicePointRepository);
     this.platformService = platformService;
-    this.sharedServicePointConsumer = sharedServicePointConsumer;
     this.platformRepository = platformRepository;
+    this.sharedServicePointConsumer = sharedServicePointConsumer;
     this.relationRepository = relationRepository;
     this.stopPointRepository = stopPointRepository;
     this.referencePointRepository = referencePointRepository;
   }
 
+  @Override
   @BeforeEach
   void setUp() {
     sharedServicePointConsumer.readServicePointFromKafka(SharedServicePointVersionModel.builder()

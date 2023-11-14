@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class BusinessOrganisationBasedUserAdministrationService extends BaseUserAdministrationService {
 
-  protected static final Predicate<UserAdministrationPermissionRestrictionModel> IS_BUSINESS_ORGANISATION_RESTRICTION =
+  private static final Predicate<UserAdministrationPermissionRestrictionModel> IS_BUSINESS_ORGANISATION_RESTRICTION =
           i -> i.getRestrictionType() == PermissionRestrictionType.BUSINESS_ORGANISATION;
 
   public BusinessOrganisationBasedUserAdministrationService(UserPermissionHolder userPermissionHolder) {

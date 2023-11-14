@@ -14,7 +14,7 @@ import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
-import ch.sbb.prm.directory.service.BaseServiceTest;
+import ch.sbb.prm.directory.service.BasePrmServiceTest;
 import ch.sbb.prm.directory.service.PlatformService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +25,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class PlatformVersioningTest extends BaseServiceTest {
-
-  private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
+class PlatformVersioningTest extends BasePrmServiceTest {
 
   private final PlatformService platformService;
   private final PlatformRepository platformRepository;

@@ -10,12 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-public class BaseServiceTest {
+public class BasePrmServiceTest {
+
+    protected static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
 
     private final SharedServicePointRepository sharedServicePointRepository;
 
     @Autowired
-    public BaseServiceTest(SharedServicePointRepository sharedServicePointRepository) {
+    public BasePrmServiceTest(SharedServicePointRepository sharedServicePointRepository) {
         this.sharedServicePointRepository = sharedServicePointRepository;
     }
 
