@@ -71,11 +71,11 @@ include::{snippets}/service-point-controller-api-test/should-return-empty-list-w
 
 == Search ServicePoint when try to search with less than 2 digits
 
-include::{snippets}/service-point-controller-api-test/should-return-bad-request-when-search-se-po-with-network-true-with-less-than-two-digit/auto-section.adoc[]
+include::{snippets}/service-point-controller-api-test/should-return-bad-request-when-search-whit-less-than-two-digit/auto-section.adoc[]
 
 == Search ServicePoint with route network true successfully
 
-include::{snippets}/service-point-controller-api-test/should-search-service-point-with-operation-point-route-network-true-successfully/auto-section.adoc[]
+include::{snippets}/service-point-controller-api-test/when-search-request-for-search-se-po-with-network-true-valid-then-should-find-service-point-successfully/auto-section.adoc[]
 
 == Search ServicePoint when no match
 
@@ -84,6 +84,10 @@ include::{snippets}/service-point-controller-api-test/should-return-empty-list-w
 == Search ServicePoint when try to search with less than 2 digits
 
 include::{snippets}/service-point-controller-api-test/should-return-bad-request-when-search-whit-less-than-two-digit/auto-section.adoc[]
+
+== Search SwissOnly ServicePoint successfully
+
+include::{snippets}/service-point-controller-api-test/should-search-swiss-only-service-point-successfully/auto-section.adoc[]
 
 == Create ServicePoint
 
@@ -125,9 +129,13 @@ include::{snippets}/traffic-point-element-controller-api-test/should-fail-on-inv
 
 include::{snippets}/traffic-point-element-controller-api-test/should-fail-on-invalid-traffic-point-element-number/auto-section.adoc[]
 
-== Create TrafficPointElement - Successfully
+== Create TrafficPointElement with automatic SLOID generation - Successfully
 
-include::{snippets}/traffic-point-element-controller-api-test/should-create-traffic-point-element/auto-section.adoc[]
+include::{snippets}/traffic-point-element-controller-api-test/should-create-traffic-point-element-platform-with-automatic-sloid/auto-section.adoc[]
+
+== Create TrafficPointElement with given SLOID - Successfully
+
+include::{snippets}/traffic-point-element-controller-api-test/should-create-traffic-point-element-platform-with-given-sloid/auto-section.adoc[]
 
 == Update TrafficPointElement - Successfully
 
