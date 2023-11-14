@@ -3,11 +3,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FotCommentDetailComponent } from './fot-comment-detail.component';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ActivatedRoute } from '@angular/router';
-import { ServicePointsService } from '../../../../api';
 import { of } from 'rxjs';
 import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { ServicePointsService } from '../../../../api';
 
 describe('FotCommentDetailComponent', () => {
   let component: FotCommentDetailComponent;
