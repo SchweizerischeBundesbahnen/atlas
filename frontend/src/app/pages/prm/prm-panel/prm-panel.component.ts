@@ -1,0 +1,81 @@
+import {Component} from '@angular/core';
+import {ReadStopPointVersion} from "../../../api";
+import {DateRange} from "../../../core/versioning/date-range";
+import {Subscription} from "rxjs";
+import {VersionsHandlingService} from "../../../core/versioning/versions-handling.service";
+import {ActivatedRoute} from "@angular/router";
+
+export const TABS = [
+  {
+    link: 'stop-point',
+    title: 'PRM.STOP_POINT',
+  },
+  {
+    link: 'reference-point',
+    title: 'PRM.REFERENCE_POINT',
+  },
+  {
+    link: 'platform',
+    title: 'PRM.PLATFORM',
+  },
+  {
+    link: 'ticket-counter',
+    title: 'PRM.TICKET_COUNTER',
+  },
+  {
+    link: 'information-desk',
+    title: 'PRM.INFORMATION_DESK',
+  },
+  {
+    link: 'toilette',
+    title: 'PRM.TOILETTE',
+  },
+  {
+    link: 'parking-lot',
+    title: 'PRM.PARKING_LOT',
+  },
+  {
+    link: 'connection',
+    title: 'PRM.CONNECTION',
+  }
+];
+
+@Component({
+  selector: 'app-prm-panel',
+  templateUrl: './prm-panel.component.html',
+  styleUrls: ['./prm-panel.component.scss']
+})
+export class PrmPanelComponent {
+
+  stopPointVersions!: ReadStopPointVersion[];
+  selectedVersion!: ReadStopPointVersion;
+  maxValidity!: DateRange;
+
+  tabs = TABS;
+
+  private stopPointSubscription?: Subscription;
+
+  constructor(
+    private route: ActivatedRoute,
+  ) {}
+
+  ngOnInit() {
+    this.stopPointSubscription = this.route.data.subscribe((next) => {
+      this.stopPointVersions = next.stopPoint;
+      this.initVersioning();
+
+    });
+  }
+
+  ngOnDestroy() {
+    this.stopPointSubscription?.unsubscribe();
+  }
+
+  private initVersioning() {
+    this.maxValidity = VersionsHandlingService.getMaxValidity(this.stopPointVersions);
+    this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
+      this.stopPointVersions,
+    );
+  }
+
+}
