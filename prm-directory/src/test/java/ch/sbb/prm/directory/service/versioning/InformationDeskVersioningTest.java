@@ -1,8 +1,6 @@
 package ch.sbb.prm.directory.service.versioning;
 
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
-import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
-import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.InformationDeskTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
@@ -11,7 +9,6 @@ import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.InformationDeskRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
@@ -19,60 +16,37 @@ import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.InformationDeskService;
 import ch.sbb.prm.directory.service.RelationService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@IntegrationTest
-@Transactional
-class InformationDeskVersioningTest {
+class InformationDeskVersioningTest extends BaseVersioningTest {
 
   private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
-  private static final SharedServicePointVersionModel SHARED_SERVICE_POINT_VERSION_MODEL =
-          new SharedServicePointVersionModel(PARENT_SERVICE_POINT_SLOID,
-                  Collections.singleton("sboid"),
-                  Collections.singleton(""));
 
-  private final ReferencePointRepository referencePointRepository;
-  private final StopPointRepository stopPointRepository;
-  private final InformationDeskRepository informationDeskRepository;
   private final InformationDeskService informationDeskService;
+  private final InformationDeskRepository informationDeskRepository;
   private final RelationService relationService;
-  private final SharedServicePointRepository sharedServicePointRepository;
+  private final StopPointRepository stopPointRepository;
+  private final ReferencePointRepository referencePointRepository;
 
   @Autowired
-  InformationDeskVersioningTest(ReferencePointRepository referencePointRepository, StopPointRepository stopPointRepository,
-                                InformationDeskRepository informationDeskRepository, InformationDeskService informationDeskService,
-                                RelationService relationService, SharedServicePointRepository sharedServicePointRepository) {
-    this.referencePointRepository = referencePointRepository;
-    this.stopPointRepository = stopPointRepository;
-    this.informationDeskRepository = informationDeskRepository;
+  InformationDeskVersioningTest(InformationDeskService informationDeskService,
+                                InformationDeskRepository informationDeskRepository,
+                                RelationService relationService,
+                                StopPointRepository stopPointRepository,
+                                ReferencePointRepository referencePointRepository,
+                                SharedServicePointRepository sharedServicePointRepository) {
+    super(sharedServicePointRepository);
     this.informationDeskService = informationDeskService;
+    this.informationDeskRepository = informationDeskRepository;
     this.relationService = relationService;
-    this.sharedServicePointRepository = sharedServicePointRepository;
-  }
-
-  @BeforeEach
-  void setUp() {
-    SharedServicePoint servicePoint = SharedServicePoint.builder()
-            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],"
-                    + "\"trafficPointSloids\":[]}")
-            .sloid("ch:1:sloid:7000")
-            .build();
-    sharedServicePointRepository.saveAndFlush(servicePoint);
-  }
-
-  @AfterEach
-  void cleanUp() {
-    sharedServicePointRepository.deleteAll();
+    this.stopPointRepository = stopPointRepository;
+    this.referencePointRepository = referencePointRepository;
   }
 
   /**
