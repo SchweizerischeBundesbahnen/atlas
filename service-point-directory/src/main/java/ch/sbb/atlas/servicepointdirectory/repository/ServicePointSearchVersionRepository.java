@@ -1,32 +1,41 @@
 package ch.sbb.atlas.servicepointdirectory.repository;
 
+import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchResult;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-
 @Component
 @RequiredArgsConstructor
 public class ServicePointSearchVersionRepository {
-    public static final int FETCH_SIZE = 10;
-    public static final int MIN_DIGIT_SEARCH = 2;
+    private static final int FETCH_SIZE = 10;
+    private static final int MIN_DIGIT_SEARCH = 2;
+
+    private static final List<String> SWISS_ONLY_COUNTRIES = Stream.of(Country.SWITZERLAND).map(Enum::name).toList();
+
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     public List<ServicePointSearchResult> searchServicePoints(String value) {
-        return searchServicePoints(value, false);
+        return searchServicePoints(value, false,false);
     }
 
     public List<ServicePointSearchResult> searchServicePointsWithRouteNetworkTrue(String value) {
-        return searchServicePoints(value, true);
+        return searchServicePoints(value, true,false);
     }
 
-    private List<ServicePointSearchResult> searchServicePoints(String value, boolean isOperationPointRouteNetworkTrue) {
+    public List<ServicePointSearchResult> searchSwissOnlyServicePoints(String value) {
+        return searchServicePoints(value, false,true);
+    }
+
+    private List<ServicePointSearchResult> searchServicePoints(String value, boolean isOperationPointRouteNetworkTrue,
+        boolean isSwissOnly) {
 
         validateInput(value);
         String sanitizeValue = sanitizeValue(value);
@@ -38,7 +47,11 @@ public class ServicePointSearchVersionRepository {
         mapSqlParameterSource.addValue("ends_with_space", "% " + sanitizeValue);
         mapSqlParameterSource.addValue("contains_value", "%" + sanitizeValue + "%");
 
-        String query = getSqlQuery(value, isOperationPointRouteNetworkTrue);
+        if(isSwissOnly){
+            mapSqlParameterSource.addValue("countries", SWISS_ONLY_COUNTRIES);
+        }
+
+        String query = getSqlQuery(value, isOperationPointRouteNetworkTrue, isSwissOnly);
 
         List<ServicePointSearchResult> servicePointSearchResults = jdbcTemplate.query(
                 query,
@@ -77,7 +90,7 @@ public class ServicePointSearchVersionRepository {
         return value.replaceAll("%", "\\\\%");
     }
 
-    private String getSqlQuery(String value, boolean isOperationPointRouteNetworkTrue) {
+    private String getSqlQuery(String value, boolean isOperationPointRouteNetworkTrue, boolean isSwissOnly) {
         String sqlQuery = """
                 select number, designation_official
                 from service_point_version
@@ -87,6 +100,9 @@ public class ServicePointSearchVersionRepository {
                 """;
         if (isOperationPointRouteNetworkTrue) {
             sqlQuery += " and operating_point_route_network = true ";
+        }
+        if (isSwissOnly) {
+            sqlQuery += " and country in (:countries) ";
         }
         sqlQuery += """
                 order by
