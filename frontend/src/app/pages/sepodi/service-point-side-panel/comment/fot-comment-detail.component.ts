@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
-import { ServicePointFotCommentModel, ServicePointsService } from '../../../../api';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, EMPTY, Observable, of, Subject, take } from 'rxjs';
@@ -9,6 +8,7 @@ import { Pages } from '../../../pages';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
+import { ServicePointFotComment, ServicePointsService } from '../../../../api';
 
 export interface FotCommentFormGroup {
   fotComment: FormControl<string | null | undefined>;
@@ -58,7 +58,7 @@ export class FotCommentDetailComponent implements DetailFormComponent, OnInit, O
     return this.form.dirty;
   }
 
-  initFormGroup(fotComment?: ServicePointFotCommentModel) {
+  initFormGroup(fotComment?: ServicePointFotComment) {
     this.form = new FormGroup<FotCommentFormGroup>({
       fotComment: new FormControl(fotComment?.fotComment, [Validators.maxLength(2000)]),
       etagVersion: new FormControl(fotComment?.etagVersion),
@@ -115,7 +115,7 @@ export class FotCommentDetailComponent implements DetailFormComponent, OnInit, O
     }
   }
 
-  get currentComment(): ServicePointFotCommentModel {
+  get currentComment(): ServicePointFotComment {
     return {
       fotComment: this.form.controls.fotComment.value
         ? this.form.controls.fotComment.value
