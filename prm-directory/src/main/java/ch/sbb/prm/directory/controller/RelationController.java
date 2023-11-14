@@ -8,7 +8,6 @@ import ch.sbb.prm.directory.api.RelationApiV1;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.mapper.RelationVersionMapper;
 import ch.sbb.prm.directory.service.RelationService;
-import ch.sbb.prm.directory.service.SharedServicePointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,8 +20,6 @@ import java.util.List;
 public class RelationController implements RelationApiV1 {
 
   private final RelationService relationService;
-
-  private final SharedServicePointService sharedServicePointService;
 
   @Override
   public List<ReadRelationVersionModel> getRelationsBySloid(String sloid) {
