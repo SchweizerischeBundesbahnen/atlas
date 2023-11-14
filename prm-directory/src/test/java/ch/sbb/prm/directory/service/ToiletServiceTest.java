@@ -1,8 +1,6 @@
 package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
-import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
-import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
@@ -14,28 +12,19 @@ import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@IntegrationTest
-@Transactional
-class ToiletServiceTest {
-
-  private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
-  private static final SharedServicePointVersionModel SHARED_SERVICE_POINT_VERSION_MODEL =
-          new SharedServicePointVersionModel(PARENT_SERVICE_POINT_SLOID,
-                  Collections.singleton("sboid"),
-                  Collections.singleton(""));
+class ToiletServiceTest extends BasePrmServiceTest {
 
   private final ToiletService toiletService;
   private final ToiletRepository toiletRepository;
@@ -44,8 +33,13 @@ class ToiletServiceTest {
   private final ReferencePointRepository referencePointRepository;
 
   @Autowired
-  ToiletServiceTest(ToiletService toiletService, ToiletRepository toiletRepository, RelationRepository relationRepository,
-                    StopPointRepository stopPointRepository, ReferencePointRepository referencePointRepository) {
+  ToiletServiceTest(ToiletService toiletService,
+                    ToiletRepository toiletRepository,
+                    RelationRepository relationRepository,
+                    StopPointRepository stopPointRepository,
+                    ReferencePointRepository referencePointRepository,
+                    SharedServicePointRepository sharedServicePointRepository) {
+    super(sharedServicePointRepository);
     this.toiletService = toiletService;
     this.toiletRepository = toiletRepository;
     this.relationRepository = relationRepository;

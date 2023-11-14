@@ -35,9 +35,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ReferencePointServiceTest extends BaseServiceTest {
-
-  private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
+class ReferencePointServiceTest extends BasePrmServiceTest {
 
   private final ReferencePointService referencePointService;
   private final RelationService relationService;
