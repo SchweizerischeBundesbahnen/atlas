@@ -2,10 +2,10 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
-import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
+import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
@@ -28,14 +28,13 @@ import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointReque
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchResult;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @Slf4j
@@ -73,6 +72,11 @@ public class ServicePointController implements ServicePointApiV1 {
   @Override
   public List<ServicePointSearchResult> searchServicePointsWithRouteNetworkTrue(ServicePointSearchRequest searchRequest) {
     return servicePointService.searchServicePointsWithRouteNetworkTrue(searchRequest.getValue());
+  }
+
+  @Override
+  public List<ServicePointSearchResult> searchSwissOnlyServicePoints(ServicePointSearchRequest searchRequest) {
+    return servicePointService.searchSwissOnlyServicePointVersion(searchRequest.getValue());
   }
 
   @Override
