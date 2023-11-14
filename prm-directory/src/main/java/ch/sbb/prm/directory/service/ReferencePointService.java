@@ -85,7 +85,7 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   }
 
   @PreAuthorize("""
-      @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
+      @prmUserAdministrationService.hasUserPermissionsForBusinessOrganisations
       (#referencePointVersion, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
   public ReferencePointVersion createReferencePoint(ReferencePointVersion referencePointVersion) {
     stopPointService.checkStopPointExists(referencePointVersion.getParentServicePointSloid());
@@ -99,7 +99,7 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   }
 
   @PreAuthorize("""
-      @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
+      @prmUserAdministrationService.hasUserPermissionsForBusinessOrganisations
       (#editedVersion, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
   public ReferencePointVersion updateReferencePointVersion(ReferencePointVersion currentVersion,
                                                            ReferencePointVersion editedVersion) {
