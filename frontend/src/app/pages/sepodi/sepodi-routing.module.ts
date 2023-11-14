@@ -72,6 +72,7 @@ const routes: Routes = [
           {
             path: 'comment',
             component: FotCommentDetailComponent,
+            canDeactivate: [canLeaveDirtyForm],
           },
           {
             path: '**',
@@ -84,12 +85,14 @@ const routes: Routes = [
         component: TrafficPointElementsDetailComponent,
         resolve: { trafficPoint: trafficPointResolver },
         runGuardsAndResolvers: 'always',
+        canDeactivate: [canLeaveDirtyForm],
       },
       {
         path: Pages.LOADING_POINTS.path + '/:servicePointNumber/:number',
         component: LoadingPointsDetailComponent,
         resolve: { loadingPoint: loadingPointResolver },
         runGuardsAndResolvers: 'always',
+        canDeactivate: [canLeaveDirtyForm],
       },
     ],
   },

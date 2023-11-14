@@ -937,7 +937,8 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Die Dienststelle wurde erfolgreich hinzugefügt.",
         "EDIT_SUCCESS": "Die Dienststelle wurde erfolgreich gespeichert.",
-        "OPERATION_NOT_ALLOWED_DUE_TO_VALIDATION_PERIOD": "Das Speichern ist nicht möglich. Der referenzierte BP-S (Master) ist nicht während der gesamten Gültigkeit des BP-K gültig."
+        "OPERATION_NOT_ALLOWED_DUE_TO_VALIDATION_PERIOD": "Das Speichern ist nicht möglich. Der referenzierte BP-S (Master) ist nicht während der gesamten Gültigkeit des BP-K gültig.",
+        "COMMENT_SAVED": "Der Kommentar wurder erfolgreich gespeichert."
       },
       "CONFLICT": {
         "DESIGNATION_OFFICIAL": "Die offizielle Bezeichnung {{designationOfficial}} ist bereits von {{validFrom}} bis {{validTo}} durch {{number}} vergeben.",

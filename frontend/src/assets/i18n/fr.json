@@ -937,7 +937,8 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Le service a été ajouté avec succès.",
         "EDIT_SUCCESS": "Le service a été enregistré avec succès.",
-        "OPERATION_NOT_ALLOWED_DUE_TO_VALIDATION_PERIOD": "L'enregistrement n'est pas possible. Le BP-S (master) référencé n'est pas valable pendant toute la période de validité du BP-K."
+        "OPERATION_NOT_ALLOWED_DUE_TO_VALIDATION_PERIOD": "L'enregistrement n'est pas possible. Le BP-S (master) référencé n'est pas valable pendant toute la période de validité du BP-K.",
+        "COMMENT_SAVED": "Le commentaire a été enregistré avec succès."
       },
       "CONFLICT": {
         "DESIGNATION_OFFICIAL": "Le désignation officielle {{designationOfficial}} est déjà attribué de {{validFrom}} à {{validTo}} par {{number}}.",
