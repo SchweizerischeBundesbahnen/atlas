@@ -25,16 +25,13 @@ import java.util.Optional;
 public class StopPointService extends PrmVersionableService<StopPointVersion> {
 
   private final StopPointRepository stopPointRepository;
-  private final SharedServicePointService sharedServicePointService;
   private final StopPointValidationService stopPointValidationService;
 
   public StopPointService(StopPointRepository stopPointRepository,
                           VersionableService versionableService,
-                          SharedServicePointService sharedServicePointService,
                           StopPointValidationService stopPointValidationService) {
     super(versionableService);
     this.stopPointRepository = stopPointRepository;
-    this.sharedServicePointService = sharedServicePointService;
     this.stopPointValidationService = stopPointValidationService;
   }
 
