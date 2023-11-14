@@ -190,6 +190,11 @@
       "DESCRIPTION": "Qui potete trovare tutte le informazioni sull'orario dell'udienza in Svizzera.",
       "PATH_TEXT": "Orario Audizione"
     },
+    "PRM": {
+      "TITLE": "Gestire dei dati BehiG",
+      "TITLE_HEADER": "Inventario LDis",
+      "DESCRIPTION": "Registrare, gestire e visualizzare i dati del servizio nell'ambito dell'inventario BehiG."
+    },
     "DETAILS": "Precisazioni"
   },
   "PAGINATOR": {
