@@ -61,7 +61,7 @@ public class InformationDeskService extends PrmRelatableVersionableService<Infor
   }
 
   @PreAuthorize("""
-      @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
+      @prmUserAdministrationService.hasUserPermissionsForBusinessOrganisations
       (#version, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
   public InformationDeskVersion createInformationDesk(InformationDeskVersion version) {
     createRelation(version);
@@ -69,7 +69,7 @@ public class InformationDeskService extends PrmRelatableVersionableService<Infor
   }
 
   @PreAuthorize("""
-      @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
+      @prmUserAdministrationService.hasUserPermissionsForBusinessOrganisations
       (#editedVersion, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
   public InformationDeskVersion updateInformationDeskVersion(InformationDeskVersion currentVersion,
                                                              InformationDeskVersion editedVersion) {
