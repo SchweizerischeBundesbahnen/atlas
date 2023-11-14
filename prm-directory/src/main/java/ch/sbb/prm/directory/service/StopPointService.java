@@ -42,7 +42,7 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
 
   @Override
   @PreAuthorize("""
-      @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
+      @prmUserAdministrationService.hasUserPermissionsForBusinessOrganisations
       (#version, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
   public StopPointVersion save(StopPointVersion version) {
     stopPointValidationService.validateStopPointRecordingVariants(version);
@@ -95,7 +95,7 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
   }
 
   @PreAuthorize("""
-      @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
+      @prmUserAdministrationService.hasUserPermissionsForBusinessOrganisations
       (#editedVersion, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
   public StopPointVersion updateStopPointVersion(StopPointVersion currentVersion,
                                                  StopPointVersion editedVersion) {

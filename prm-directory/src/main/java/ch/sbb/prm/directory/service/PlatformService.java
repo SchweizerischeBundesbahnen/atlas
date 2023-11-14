@@ -69,7 +69,7 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
   }
 
   @PreAuthorize("""
-      @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
+      @prmUserAdministrationService.hasUserPermissionsForBusinessOrganisations
       (#version, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
   public PlatformVersion createPlatformVersion(PlatformVersion version) {
     sharedServicePointService.validateTrafficPointElementExists(version.getParentServicePointSloid(), version.getSloid());
@@ -79,7 +79,7 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
   }
 
   @PreAuthorize("""
-      @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
+      @prmUserAdministrationService.hasUserPermissionsForBusinessOrganisations
       (#editedVersion, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
   public PlatformVersion updatePlatformVersion(PlatformVersion currentVersion, PlatformVersion editedVersion) {
     return updateVersion(currentVersion, editedVersion);

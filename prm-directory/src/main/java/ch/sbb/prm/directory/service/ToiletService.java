@@ -60,7 +60,7 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
   }
 
   @PreAuthorize("""
-      @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
+      @prmUserAdministrationService.hasUserPermissionsForBusinessOrganisations
       (#version, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
   public ToiletVersion createToilet(ToiletVersion version) {
     createRelation(version);
@@ -68,7 +68,7 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
   }
 
   @PreAuthorize("""
-      @prmBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisations
+      @prmUserAdministrationService.hasUserPermissionsForBusinessOrganisations
       (#editedVersion, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
   public ToiletVersion updateToiletVersion(ToiletVersion currentVersion, ToiletVersion editedVersion) {
     return updateVersion(currentVersion, editedVersion);

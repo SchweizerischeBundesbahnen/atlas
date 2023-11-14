@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class PrmBusinessOrganisationBasedUserAdministrationService extends BusinessOrganisationBasedUserAdministrationService {
+public class PrmUserAdministrationService extends BusinessOrganisationBasedUserAdministrationService {
 
     private final SharedServicePointService sharedServicePointService;
 
-    public PrmBusinessOrganisationBasedUserAdministrationService(UserPermissionHolder userPermissionHolder, SharedServicePointService sharedServicePointService) {
+    public PrmUserAdministrationService(UserPermissionHolder userPermissionHolder, SharedServicePointService sharedServicePointService) {
         super(userPermissionHolder);
         this.sharedServicePointService = sharedServicePointService;
     }
