@@ -24,9 +24,7 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TICKET_
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class TicketCounterServiceTest extends BaseServiceTest {
-
-  private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
+class TicketCounterServiceTest extends BasePrmServiceTest {
 
   private final TicketCounterService ticketCounterService;
   private final TicketCounterRepository ticketCounterRepository;

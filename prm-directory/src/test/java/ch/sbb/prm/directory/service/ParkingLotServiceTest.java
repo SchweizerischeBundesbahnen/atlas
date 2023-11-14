@@ -1,7 +1,5 @@
 package ch.sbb.prm.directory.service;
 
-import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
-import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
@@ -14,12 +12,11 @@ import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -27,15 +24,7 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@IntegrationTest
-@Transactional
-class ParkingLotServiceTest {
-
-  private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
-  private static final SharedServicePointVersionModel SHARED_SERVICE_POINT_VERSION_MODEL =
-          new SharedServicePointVersionModel(PARENT_SERVICE_POINT_SLOID,
-                  Collections.singleton("sboid"),
-                  Collections.singleton(""));
+class ParkingLotServiceTest extends BasePrmServiceTest {
 
   private final ParkingLotService parkingLotService;
   private final ParkingLotRepository parkingLotRepository;
@@ -44,9 +33,13 @@ class ParkingLotServiceTest {
   private final ReferencePointRepository referencePointRepository;
 
   @Autowired
-  ParkingLotServiceTest(ParkingLotService parkingLotService, ParkingLotRepository parkingLotRepository,
-                        RelationRepository relationRepository, StopPointRepository stopPointRepository,
-                        ReferencePointRepository referencePointRepository) {
+  ParkingLotServiceTest(ParkingLotService parkingLotService,
+                        ParkingLotRepository parkingLotRepository,
+                        RelationRepository relationRepository,
+                        StopPointRepository stopPointRepository,
+                        ReferencePointRepository referencePointRepository,
+                        SharedServicePointRepository sharedServicePointRepository) {
+    super(sharedServicePointRepository);
     this.parkingLotService = parkingLotService;
     this.parkingLotRepository = parkingLotRepository;
     this.relationRepository = relationRepository;
