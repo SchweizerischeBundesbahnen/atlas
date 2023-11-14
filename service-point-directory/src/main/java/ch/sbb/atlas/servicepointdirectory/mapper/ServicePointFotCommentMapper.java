@@ -9,6 +9,9 @@ import lombok.experimental.UtilityClass;
 public class ServicePointFotCommentMapper {
 
   public static ServicePointFotCommentModel toModel(ServicePointFotComment entity) {
+    if (entity == null) {
+      return null;
+    }
     return ServicePointFotCommentModel.builder()
         .fotComment(entity.getFotComment())
         .creationDate(entity.getCreationDate())

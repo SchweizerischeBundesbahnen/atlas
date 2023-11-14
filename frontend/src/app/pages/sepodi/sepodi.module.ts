@@ -21,6 +21,7 @@ import { ServicePointCreationComponent } from './service-point-side-panel/servic
 import { ServicePointFormComponent } from './service-point-side-panel/service-point/service-point-form/service-point-form.component';
 import { TrafficPointElementsDetailComponent } from './traffic-point-elements/traffic-point-elements-detail.component';
 import { LoadingPointsDetailComponent } from './loading-points/loading-points-detail.component';
+import { FotCommentDetailComponent } from './service-point-side-panel/comment/fot-comment-detail.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { LoadingPointsDetailComponent } from './loading-points/loading-points-de
     ServicePointFormComponent,
     TrafficPointElementsDetailComponent,
     LoadingPointsDetailComponent,
+    FotCommentDetailComponent,
   ],
   imports: [CoreModule, FormModule, FormsModule, SepodiRoutingModule],
 })
