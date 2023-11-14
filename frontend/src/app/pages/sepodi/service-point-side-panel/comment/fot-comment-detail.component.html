@@ -1,1 +1,54 @@
-BAV-Kommentar
+<form [formGroup]="form">
+  <div class="detail-content p-5">
+    <span class="font-bold-2xl">{{ 'SEPODI.SERVICE_POINTS.FOT_COMMENT' | translate }}</span>
+    <div class="col-12 d-flex mt-3">
+      <form-comment
+        [formGroup]="form"
+        maxChars="2000"
+        controlName="fotComment"
+        [displayLabel]="false"
+      ></form-comment>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <div class="page-footer-actions align-items-center justify-content-center d-flex">
+      <atlas-button
+        buttonDataCy="close-detail"
+        buttonText="SEPODI.BACK_TO_MAP"
+        buttonType="whiteFooterNonEdit"
+        (buttonClicked)="closeSidePanel()"
+        [footerEdit]="form.enabled"
+      >
+      </atlas-button>
+      <atlas-button
+        *ngIf="form.disabled"
+        (buttonClicked)="toggleEdit()"
+        applicationType="SEPODI"
+        buttonDataCy="edit"
+        buttonText="COMMON.EDIT"
+        buttonType="supervisorButton"
+        wrapperStyleClass="ms-3"
+      ></atlas-button>
+      <atlas-button
+        [footerEdit]="form.enabled"
+        (buttonClicked)="toggleEdit()"
+        buttonDataCy="cancel"
+        buttonText="COMMON.CANCEL"
+        buttonType="whiteFooterEdit"
+        wrapperStyleClass="ms-3"
+      ></atlas-button>
+      <atlas-button
+        (click)="save()"
+        [disabled]="!this.form.dirty"
+        [footerEdit]="form.enabled"
+        [submitButton]="true"
+        buttonDataCy="save-item"
+        buttonText="COMMON.SAVE"
+        buttonType="whiteFooterEdit"
+        wrapperStyleClass="ms-3"
+      >
+      </atlas-button>
+    </div>
+  </div>
+</form>
