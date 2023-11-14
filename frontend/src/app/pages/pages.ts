@@ -199,14 +199,30 @@ export class Pages {
     description: 'PAGES.SERVICE_POINTS.DESCRIPTION',
   };
 
-  public static pages: Page[] = [Pages.HOME, Pages.TTFN, Pages.LIDI, Pages.BODI, Pages.SEPODI];
+  public static PRM: Page = {
+    title: 'PAGES.PRM.TITLE',
+    titleMenu: 'PAGES.PRM.TITLE_HEADER',
+    headerTitle: 'PAGES.PRM.TITLE_HEADER',
+    path: 'prm-directory',
+    pathText: 'PAGES.PRM.TITLE_HEADER',
+    description: 'PAGES.PRM.DESCRIPTION',
+  };
+
+  public static pages: Page[] = [
+    Pages.HOME,
+    Pages.TTFN,
+    Pages.LIDI,
+    Pages.BODI,
+    Pages.SEPODI,
+    Pages.PRM,
+  ];
   public static adminPages: Page[] = [Pages.USER_ADMINISTRATION];
   public static viewablePages: Page[] = this.pages;
 
   public static get enabledPages(): Page[] {
     let enabledPages = this.viewablePages;
     if (!environment.pageSepodiEnabled) {
-      enabledPages = enabledPages.filter((page) => page !== Pages.SEPODI);
+      enabledPages = enabledPages.filter((page) => page !== Pages.SEPODI || page !== Pages.PRM);
     }
     return enabledPages;
   }
