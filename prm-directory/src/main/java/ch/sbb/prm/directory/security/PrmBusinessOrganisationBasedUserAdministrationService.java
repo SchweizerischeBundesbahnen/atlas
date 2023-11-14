@@ -4,7 +4,7 @@ import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.user.administration.security.UserPermissionHolder;
 import ch.sbb.atlas.user.administration.security.service.BusinessOrganisationBasedUserAdministrationService;
-import ch.sbb.prm.directory.entity.PrmShared;
+import ch.sbb.prm.directory.entity.PrmSharedVersion;
 import ch.sbb.prm.directory.service.SharedServicePointService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class PrmBusinessOrganisationBasedUserAdministrationService extends Busin
         this.sharedServicePointService = sharedServicePointService;
     }
 
-    public boolean hasUserPermissionsForBusinessOrganisations(PrmShared version, ApplicationType applicationType) {
+    public boolean hasUserPermissionsForBusinessOrganisations(PrmSharedVersion version, ApplicationType applicationType) {
 
         SharedServicePointVersionModel sharedServicePointVersionModel = sharedServicePointService.validateServicePointExists(version.getParentServicePointSloid());
 

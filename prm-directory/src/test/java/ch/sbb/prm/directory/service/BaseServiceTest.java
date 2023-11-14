@@ -1,4 +1,4 @@
-package ch.sbb.prm.directory.service.versioning;
+package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.prm.directory.entity.SharedServicePoint;
@@ -10,12 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-public class BaseVersioningTest {
+public class BaseServiceTest {
 
     private final SharedServicePointRepository sharedServicePointRepository;
 
     @Autowired
-    BaseVersioningTest(SharedServicePointRepository sharedServicePointRepository) {
+    public BaseServiceTest(SharedServicePointRepository sharedServicePointRepository) {
         this.sharedServicePointRepository = sharedServicePointRepository;
     }
 

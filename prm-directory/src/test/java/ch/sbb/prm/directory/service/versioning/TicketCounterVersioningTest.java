@@ -1,7 +1,6 @@
 package ch.sbb.prm.directory.service.versioning;
 
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
-import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
@@ -9,58 +8,46 @@ import ch.sbb.prm.directory.TicketCounterTestData;
 import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.TicketCounterRepository;
+import ch.sbb.prm.directory.service.BaseServiceTest;
 import ch.sbb.prm.directory.service.RelationService;
 import ch.sbb.prm.directory.service.TicketCounterService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@IntegrationTest
-@Transactional
-class TicketCounterVersioningTest {
+class TicketCounterVersioningTest extends BaseServiceTest {
 
   private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
 
   private final TicketCounterService ticketCounterService;
   private final TicketCounterRepository ticketCounterRepository;
+  private final RelationService relationService;
   private final StopPointRepository stopPointRepository;
   private final ReferencePointRepository referencePointRepository;
-  private final RelationService relationService;
-  private final SharedServicePointRepository sharedServicePointRepository;
 
   @Autowired
-  TicketCounterVersioningTest(TicketCounterService ticketCounterService, TicketCounterRepository ticketCounterRepository,
-                              StopPointRepository stopPointRepository, ReferencePointRepository referencePointRepository,
-                              RelationService relationService, SharedServicePointRepository sharedServicePointRepository) {
+  TicketCounterVersioningTest(TicketCounterService ticketCounterService,
+                              TicketCounterRepository ticketCounterRepository,
+                              RelationService relationService,
+                              StopPointRepository stopPointRepository,
+                              ReferencePointRepository referencePointRepository,
+                              SharedServicePointRepository sharedServicePointRepository) {
+    super(sharedServicePointRepository);
     this.ticketCounterService = ticketCounterService;
     this.ticketCounterRepository = ticketCounterRepository;
+    this.relationService = relationService;
     this.stopPointRepository = stopPointRepository;
     this.referencePointRepository = referencePointRepository;
-    this.relationService = relationService;
-    this.sharedServicePointRepository = sharedServicePointRepository;
-  }
-
-  @BeforeEach
-  void setUp() {
-    SharedServicePoint servicePoint = SharedServicePoint.builder()
-            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:70000\",\"sboids\":[\"ch:1:sboid:100602\"],"
-                    + "\"trafficPointSloids\":[]}")
-            .sloid("ch:1:sloid:70000")
-            .build();
-    sharedServicePointRepository.saveAndFlush(servicePoint);
   }
 
   /**
