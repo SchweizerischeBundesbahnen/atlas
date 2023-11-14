@@ -1,7 +1,6 @@
 package ch.sbb.prm.directory.service.versioning;
 
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
-import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.ReferencePointTestData;
@@ -9,17 +8,19 @@ import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
+import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.ReferencePointService;
 import ch.sbb.prm.directory.service.RelationService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,23 +30,34 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ReferencePointVersioningTest {
 
   private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
-  private static final SharedServicePointVersionModel SHARED_SERVICE_POINT_VERSION_MODEL =
-          new SharedServicePointVersionModel(PARENT_SERVICE_POINT_SLOID,
-                  Collections.singleton("sboid"),
-                  Collections.singleton(""));
 
   private final ReferencePointService referencePointService;
   private final ReferencePointRepository referencePointRepository;
   private final RelationService relationService;
   private final StopPointRepository stopPointRepository;
+  private final SharedServicePointRepository sharedServicePointRepository;
 
   @Autowired
-  ReferencePointVersioningTest(ReferencePointService referencePointService, ReferencePointRepository referencePointRepository,
-      RelationService relationService, StopPointRepository stopPointRepository) {
+  ReferencePointVersioningTest(ReferencePointService referencePointService,
+                               ReferencePointRepository referencePointRepository,
+                               RelationService relationService,
+                               StopPointRepository stopPointRepository,
+                               SharedServicePointRepository sharedServicePointRepository) {
     this.referencePointService = referencePointService;
     this.referencePointRepository = referencePointRepository;
     this.relationService = relationService;
     this.stopPointRepository = stopPointRepository;
+    this.sharedServicePointRepository = sharedServicePointRepository;
+  }
+
+  @BeforeEach
+  void setUp() {
+    SharedServicePoint servicePoint = SharedServicePoint.builder()
+            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:70000\",\"sboids\":[\"ch:1:sboid:100602\"],"
+                    + "\"trafficPointSloids\":[]}")
+            .sloid("ch:1:sloid:70000")
+            .build();
+    sharedServicePointRepository.saveAndFlush(servicePoint);
   }
 
   /**

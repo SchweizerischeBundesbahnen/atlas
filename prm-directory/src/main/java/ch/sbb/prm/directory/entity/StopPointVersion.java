@@ -12,6 +12,7 @@ import ch.sbb.prm.directory.service.PrmVersionable;
 import ch.sbb.prm.directory.validation.PrmMeansOfTransportHelper;
 import ch.sbb.prm.directory.validation.VariantsReducedCompleteRecordable;
 import ch.sbb.prm.directory.validation.annotation.NotForReducedVariant;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
@@ -191,6 +192,7 @@ public class StopPointVersion extends BasePrmImportEntity implements PrmVersiona
   }
 
   @Override
+  @JsonIgnore
   public String getParentServicePointSloid() {
     return this.sloid;
   }
