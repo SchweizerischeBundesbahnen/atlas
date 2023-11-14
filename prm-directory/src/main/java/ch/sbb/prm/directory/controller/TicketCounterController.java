@@ -6,7 +6,6 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.TicketCounterApiV1;
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
 import ch.sbb.prm.directory.mapper.TicketCounterVersionMapper;
-import ch.sbb.prm.directory.service.SharedServicePointService;
 import ch.sbb.prm.directory.service.TicketCounterService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +19,6 @@ import java.util.List;
 public class TicketCounterController implements TicketCounterApiV1 {
 
   private final TicketCounterService ticketCounterService;
-  private final SharedServicePointService sharedServicePointService;
 
   @Override
   public List<ReadTicketCounterVersionModel> getTicketCounters() {

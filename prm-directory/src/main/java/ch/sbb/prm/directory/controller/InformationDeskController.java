@@ -7,7 +7,6 @@ import ch.sbb.prm.directory.api.InformationDeskApiV1;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import ch.sbb.prm.directory.mapper.InformationDeskVersionMapper;
 import ch.sbb.prm.directory.service.InformationDeskService;
-import ch.sbb.prm.directory.service.SharedServicePointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,8 +19,6 @@ import java.util.List;
 public class InformationDeskController implements InformationDeskApiV1 {
 
   private final InformationDeskService informationDeskService;
-
-  private final SharedServicePointService sharedServicePointService;
 
   @Override
   public List<ReadInformationDeskVersionModel> getInformationDesks() {

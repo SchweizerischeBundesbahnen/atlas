@@ -7,7 +7,6 @@ import ch.sbb.prm.directory.api.ReferencePointApiV1;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.mapper.ReferencePointVersionMapper;
 import ch.sbb.prm.directory.service.ReferencePointService;
-import ch.sbb.prm.directory.service.SharedServicePointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,8 +19,6 @@ import java.util.List;
 public class ReferencePointController implements ReferencePointApiV1 {
 
   private final ReferencePointService referencePointService;
-
-  private final SharedServicePointService sharedServicePointService;
 
   @Override
   public List<ReadReferencePointVersionModel> getReferencePoints() {
