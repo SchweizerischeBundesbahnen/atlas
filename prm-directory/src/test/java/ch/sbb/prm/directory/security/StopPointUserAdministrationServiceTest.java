@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @IntegrationTest
-public class PrmStopPointBusinessOrganisationBasedUserAdministrationServiceTest {
+public class StopPointUserAdministrationServiceTest {
 
     @MockBean
     private UserPermissionHolder userPermissionHolder;
@@ -37,10 +37,10 @@ public class PrmStopPointBusinessOrganisationBasedUserAdministrationServiceTest 
     private final PrmBusinessOrganisationBasedUserAdministrationService prmBOBasedUserAdministrationService;
 
     @Autowired
-    public PrmStopPointBusinessOrganisationBasedUserAdministrationServiceTest(SharedServicePointRepository sharedServicePointRepository,
-                                                                              SharedServicePointService sharedServicePointService,
-                                                                              PrmBusinessOrganisationBasedUserAdministrationService prmBOBasedUserAdministrationService,
-                                                                              UserPermissionHolder userPermissionHolder) {
+    public StopPointUserAdministrationServiceTest(SharedServicePointRepository sharedServicePointRepository,
+                                                  SharedServicePointService sharedServicePointService,
+                                                  PrmBusinessOrganisationBasedUserAdministrationService prmBOBasedUserAdministrationService,
+                                                  UserPermissionHolder userPermissionHolder) {
         this.sharedServicePointRepository = sharedServicePointRepository;
         this.sharedServicePointService = sharedServicePointService;
         this.prmBOBasedUserAdministrationService = prmBOBasedUserAdministrationService;
