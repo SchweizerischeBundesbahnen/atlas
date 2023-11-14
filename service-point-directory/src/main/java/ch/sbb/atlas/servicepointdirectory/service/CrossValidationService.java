@@ -21,15 +21,4 @@ public class CrossValidationService {
       throw new ServicePointNumberNotFoundException(servicePointNumber);
     }
   }
-
-  public void validateManuallyEnteredSloid(String sloid, TrafficPointElementType trafficPointElementType){
-    int expectedColons = (trafficPointElementType.equals(TrafficPointElementType.BOARDING_AREA)) ? 4 : 5;
-    String[] parts = sloid.split(":");
-
-    if (parts.length != expectedColons + 1) {
-      throw new SloidsNotEqualException("The SLOID does not correspond to the specified pattern");
-    }
-
-  }
-
 }

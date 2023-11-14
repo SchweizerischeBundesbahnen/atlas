@@ -138,10 +138,6 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
     ServicePointNumber servicePointNumber = trafficPointElementVersion.getServicePointNumber();
     crossValidationService.validateServicePointNumberExists(servicePointNumber);
 
-    if(trafficPointElementVersion.getSloid() != null){
-      crossValidationService.validateManuallyEnteredSloid(trafficPointElementVersion.getSloid(), trafficPointElementVersion.getTrafficPointElementType());
-    }
-
     return trafficPointElementService.create(trafficPointElementVersion, servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber));
   }
 

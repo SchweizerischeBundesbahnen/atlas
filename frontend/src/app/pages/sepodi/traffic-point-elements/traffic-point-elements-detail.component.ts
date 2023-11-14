@@ -29,6 +29,9 @@ interface AreaOption {
   displayText: string;
 }
 
+const NUMBER_COLONS_PLATFORM = 1;
+const NUMBER_COLONS_AREA = 0;
+
 @Component({
   selector: 'app-traffic-point-elements',
   templateUrl: './traffic-point-elements-detail.component.html',
@@ -56,6 +59,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
   servicePointBusinessOrganisations: string[] = [];
   isTrafficPointArea = false;
   geographyActive = true;
+  numberColons!: number;
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -72,6 +76,8 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isTrafficPointArea = history.state.isTrafficPointArea;
+    this.numberColons = this.isTrafficPointArea ? NUMBER_COLONS_AREA : NUMBER_COLONS_PLATFORM;
+
     this.route.data.pipe(takeUntil(this.ngUnsubscribe)).subscribe((next) => {
       this.trafficPointVersions = next.trafficPoint;
       this.initTrafficPoint();
