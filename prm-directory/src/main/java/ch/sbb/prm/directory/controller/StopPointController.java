@@ -45,6 +45,16 @@ public class StopPointController implements StopPointApiV1 {
   }
 
   @Override
+  public List<ReadStopPointVersionModel> getStopPointVersions(String sloid) {
+    //TODO: if empty check sloid exists in sharedServicePoint
+
+    //    if (stopPointVersions.isEmpty()) {
+    //      throw new StopPointDoesNotExistsException(sloid);
+    //    }
+    return stopPointService.findAllBySloidOrderByValidFrom(sloid).stream().map(StopPointVersionMapper::toModel).toList();
+  }
+
+  @Override
   public ReadStopPointVersionModel createStopPoint(CreateStopPointVersionModel model) {
     boolean stopPointExisting = stopPointService.isStopPointExisting(model.getSloid());
     if (stopPointExisting) {
