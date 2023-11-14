@@ -25,15 +25,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 class StopPointVersioningTest {
 
-  private final StopPointRepository stopPointRepository;
   private final StopPointService stopPointService;
+  private final StopPointRepository stopPointRepository;
   private final SharedServicePointRepository sharedServicePointRepository;
 
   @Autowired
-  StopPointVersioningTest(StopPointRepository stopPointRepository, StopPointService stopPointService,
-      SharedServicePointRepository sharedServicePointRepository) {
-    this.stopPointRepository = stopPointRepository;
+  StopPointVersioningTest(StopPointService stopPointService,
+                          StopPointRepository stopPointRepository,
+                          SharedServicePointRepository sharedServicePointRepository) {
     this.stopPointService = stopPointService;
+    this.stopPointRepository = stopPointRepository;
     this.sharedServicePointRepository = sharedServicePointRepository;
   }
 
