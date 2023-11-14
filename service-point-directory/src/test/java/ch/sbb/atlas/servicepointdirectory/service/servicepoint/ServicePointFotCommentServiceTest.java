@@ -38,4 +38,16 @@ class ServicePointFotCommentServiceTest {
     assertThat(comment).isNotNull();
     assertThat(comment.getFotComment()).isEqualTo("Updated");
   }
+
+  @Test
+  void shouldDeleteFotCommentBySavingWithNull() {
+    servicePointFotCommentService.save(
+        ServicePointFotComment.builder().servicePointNumber(SERVICE_POINT_NUMBER).fotComment("Beste FOT").build());
+
+    ServicePointFotComment comment = servicePointFotCommentService.save(
+        ServicePointFotComment.builder().servicePointNumber(SERVICE_POINT_NUMBER).fotComment(null).build());
+
+    assertThat(comment).isNull();
+    assertThat(servicePointFotCommentService.findByServicePointNumber(SERVICE_POINT_NUMBER)).isEmpty();
+  }
 }
