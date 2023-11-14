@@ -1,7 +1,6 @@
 package ch.sbb.prm.directory.service.versioning;
 
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
-import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.StopPointTestData;
@@ -17,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -26,11 +24,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @IntegrationTest
 @Transactional
 class StopPointVersioningTest {
-
-  private static final SharedServicePointVersionModel SHARED_SERVICE_POINT_VERSION_MODEL =
-          new SharedServicePointVersionModel("ch:1:sloid:12345",
-                  Collections.singleton("sboid"),
-                  Collections.singleton(""));
 
   private final StopPointRepository stopPointRepository;
   private final StopPointService stopPointService;

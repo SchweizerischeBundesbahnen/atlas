@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 class ParkingLotVersioningTest {
 
-  private static final String PARENT_SERVICE_POINT_SLOID = "ch:1.sloid:12345:1";
+  private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
 
   private final ParkingLotService parkingLotService;
   private final ParkingLotRepository parkingLotRepository;
@@ -58,9 +58,9 @@ class ParkingLotVersioningTest {
   @BeforeEach
   void setUp() {
     SharedServicePoint servicePoint = SharedServicePoint.builder()
-            .servicePoint("{\"servicePointSloid\":\"ch:1.sloid:12345:1\",\"sboids\":[\"ch:1:sboid:100602\"],"
+            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:70000\",\"sboids\":[\"ch:1:sboid:100602\"],"
                     + "\"trafficPointSloids\":[]}")
-            .sloid("ch:1.sloid:12345:1")
+            .sloid("ch:1:sloid:70000")
             .build();
     sharedServicePointRepository.saveAndFlush(servicePoint);
   }
