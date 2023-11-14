@@ -5,7 +5,6 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.controller.StopPointRequestParams;
 import ch.sbb.prm.directory.entity.StopPointVersion;
-import ch.sbb.prm.directory.exception.ServicePointDoesNotExistException;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
@@ -189,14 +188,6 @@ class StopPointVersionServiceTest {
     assertThat(result.getContent()).contains(stopPoint1);
     assertThat(result.getContent()).contains(stopPoint2);
     assertThat(result.getContent()).doesNotContain(stopPoint3);
-  }
-
-  @Test
-  void shouldThrowServicePointSloidDoesNotExist() {
-    //given
-    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    //when & then
-    assertThrows(ServicePointDoesNotExistException.class, () -> stopPointService.save(stopPointVersion));
   }
 
 }

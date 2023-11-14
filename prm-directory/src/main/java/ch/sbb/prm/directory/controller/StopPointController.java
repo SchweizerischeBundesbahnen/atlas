@@ -53,8 +53,7 @@ public class StopPointController implements StopPointApiV1 {
       throw new StopPointAlreadyExistsException(stopPointVersionModel.getSloid());
     }
     StopPointVersion stopPointVersion = StopPointVersionMapper.toEntity(stopPointVersionModel);
-    StopPointVersion savedVersion = stopPointService.checkUserRightsAndSave(stopPointVersion,
-            sharedServicePointService.validateServicePointExists(stopPointVersionModel.getSloid()));
+    StopPointVersion savedVersion = stopPointService.checkUserRightsAndSave(stopPointVersion);
     return StopPointVersionMapper.toModel(savedVersion);
   }
 
