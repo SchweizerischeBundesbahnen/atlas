@@ -14,6 +14,7 @@ import ch.sbb.prm.directory.repository.InformationDeskRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
+import ch.sbb.prm.directory.service.BaseServiceTest;
 import ch.sbb.prm.directory.service.InformationDeskService;
 import ch.sbb.prm.directory.service.RelationService;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class InformationDeskVersioningTest extends BaseVersioningTest {
+class InformationDeskVersioningTest extends BaseServiceTest {
 
   private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
 

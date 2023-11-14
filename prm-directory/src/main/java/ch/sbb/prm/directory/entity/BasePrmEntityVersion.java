@@ -28,7 +28,7 @@ import java.time.LocalDate;
 @MappedSuperclass
 @FieldNameConstants
 @AtlasVersionable
-public abstract class BasePrmEntityVersion extends BasePrmImportEntity implements PrmShared {
+public abstract class BasePrmEntityVersion extends BasePrmImportEntity implements PrmSharedVersion {
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @AtlasVersionableProperty

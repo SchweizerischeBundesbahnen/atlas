@@ -6,21 +6,18 @@ import ch.sbb.atlas.api.prm.enumeration.BooleanAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
-import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.PlatformVersion;
-import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
+import ch.sbb.prm.directory.service.BaseServiceTest;
 import ch.sbb.prm.directory.service.PlatformService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,36 +25,23 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@IntegrationTest
-@Transactional
-class PlatformVersioningTest {
+class PlatformVersioningTest extends BaseServiceTest {
 
   private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
 
   private final PlatformService platformService;
   private final PlatformRepository platformRepository;
   private final StopPointRepository stopPointRepository;
-  private final SharedServicePointRepository sharedServicePointRepository;
 
   @Autowired
   PlatformVersioningTest(PlatformService platformService,
                          PlatformRepository platformRepository,
                          StopPointRepository stopPointRepository,
                          SharedServicePointRepository sharedServicePointRepository) {
+    super(sharedServicePointRepository);
     this.platformService = platformService;
     this.platformRepository = platformRepository;
     this.stopPointRepository = stopPointRepository;
-    this.sharedServicePointRepository = sharedServicePointRepository;
-  }
-
-  @BeforeEach
-  void setUp() {
-    SharedServicePoint servicePoint = SharedServicePoint.builder()
-            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:70000\",\"sboids\":[\"ch:1:sboid:100602\"],"
-                    + "\"trafficPointSloids\":[]}")
-            .sloid("ch:1:sloid:70000")
-            .build();
-    sharedServicePointRepository.saveAndFlush(servicePoint);
   }
 
   /**
