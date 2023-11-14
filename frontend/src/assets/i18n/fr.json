@@ -1042,5 +1042,15 @@
     "BACK_TO_MAP": "Fermer",
     "AUTOMATIC_SLOID": "Elle est indiquée automatiquement.",
     "SLOID_ALREADY_USED": "{{sloid}} est déjà pris."
+  },
+  "PRM": {
+    "STOP_POINT": "Informations de base sur l’arrêt",
+    "REFERENCE_POINT": "Point de référence",
+    "PLATFORM": "Bordure d’arrêt",
+    "TICKET_COUNTER": "Guichet des billets",
+    "INFORMATION_DESK": "Guichet d’information",
+    "TOILETTE": "Toilettes",
+    "PARKING_LOT": "Place de stationnement",
+    "CONNECTION": "Relations "
   }
 }
