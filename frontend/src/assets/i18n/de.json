@@ -190,6 +190,11 @@
       "DESCRIPTION": "Hier finden Sie alle Informationen zur Fahrplananhörung Schweiz.",
       "PATH_TEXT": "Fahrplananhörung"
     },
+    "PRM": {
+      "TITLE": "BehiG-Daten verwalten",
+      "TITLE_HEADER": "Bestandsaufnahem BehiG",
+      "DESCRIPTION": "Erfassen, bearbeiten und einsehen der Dienststellendaten im Rahmen der Bestandsaufnahme BehiG."
+    },
     "DETAILS": "Details"
   },
   "PAGINATOR": {
