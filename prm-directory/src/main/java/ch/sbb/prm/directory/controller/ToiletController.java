@@ -6,7 +6,6 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.ToiletApiV1;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.mapper.ToiletVersionMapper;
-import ch.sbb.prm.directory.service.SharedServicePointService;
 import ch.sbb.prm.directory.service.ToiletService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +19,6 @@ import java.util.List;
 public class ToiletController implements ToiletApiV1 {
 
   private final ToiletService toiletService;
-
-  private final SharedServicePointService sharedServicePointService;
 
   @Override
   public List<ReadToiletVersionModel> getToilets() {
