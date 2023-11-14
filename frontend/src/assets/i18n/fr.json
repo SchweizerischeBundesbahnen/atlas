@@ -190,6 +190,11 @@
       "DESCRIPTION": "Vous trouverez ici toutes les informations relatives à la consultation sur le projet d'horaire en Suisse.",
       "PATH_TEXT": "Consultation sur le projet d'horaire"
     },
+    "PRM": {
+      "TITLE": "Gérer les données LHand",
+      "TITLE_HEADER": "Inventaire des actifs LHand",
+      "DESCRIPTION": "Saisir, modifier et consulter les données des services dans le cadre de I'inventaire LHand."
+    },
     "DETAILS": "Précisions"
   },
   "PAGINATOR": {
