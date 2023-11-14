@@ -1042,5 +1042,15 @@
     "BACK_TO_MAP": "Schliessen",
     "AUTOMATIC_SLOID": "wird automatisch vergeben",
     "SLOID_ALREADY_USED": "{{sloid}} ist bereits vergeben."
+  },
+  "PRM": {
+    "STOP_POINT": "Basisinformationen Haltestelle",
+    "REFERENCE_POINT": "Referenzpunkt",
+    "PLATFORM": "Haltekante",
+    "TICKET_COUNTER": "Billettschalter",
+    "INFORMATION_DESK": "Informationsschalter",
+    "TOILETTE": "Toilette",
+    "PARKING_LOT": "Parkplatz",
+    "CONNECTION": "Verbindungen"
   }
 }
