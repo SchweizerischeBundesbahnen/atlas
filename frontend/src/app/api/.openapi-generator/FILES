@@ -1,4 +1,5 @@
 .gitignore
+.openapi-generator-ignore
 README.md
 api.module.ts
 api/api.ts
@@ -135,7 +136,7 @@ model/sePoDiBatchExportFileName.ts
 model/sePoDiExportType.ts
 model/servicePointCsvModel.ts
 model/servicePointCsvModelContainer.ts
-model/servicePointFotCommentModel.ts
+model/servicePointFotComment.ts
 model/servicePointGeolocation.ts
 model/servicePointImportRequest.ts
 model/servicePointNumber.ts
