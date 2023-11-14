@@ -56,13 +56,15 @@ const routes: Routes = [
             component: ServicePointDetailComponent,
             canDeactivate: [canLeaveDirtyForm],
           },
+
+          //TODO NAming
           {
-            path: 'areas',
+            path: Pages.TRAFFIC_POINT_ELEMENTS_AREA.path,
             component: TrafficPointElementsTableComponent,
             data: { isTrafficPointArea: true },
           },
           {
-            path: 'traffic-point-elements',
+            path: Pages.TRAFFIC_POINT_ELEMENTS.path,
             component: TrafficPointElementsTableComponent,
             data: { isTrafficPointArea: false },
           },
@@ -80,6 +82,8 @@ const routes: Routes = [
           },
         ],
       },
+
+      //Oder hier
       {
         path: Pages.TRAFFIC_POINT_ELEMENTS.path + '/:id',
         component: TrafficPointElementsDetailComponent,
