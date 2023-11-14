@@ -23,4 +23,8 @@ public class ServicePointSearchResult {
             , example = "Biel/Bienne Bözingenfeld/Champ")
     private String designationOfficial;
 
+    @Schema(description = "Unique key for service points which is used in the customer information."
+            , example = "ch:1:sloid:7000")
+    private String sloid;
+
 }
