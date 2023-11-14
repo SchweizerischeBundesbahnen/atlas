@@ -62,4 +62,13 @@ describe('FotCommentDetailComponent', () => {
     expect(servicePointService.saveFotComment).toHaveBeenCalled();
     expect(component.form.controls.fotComment.value).toBe('New comment');
   });
+
+  it('should display confirmation on dirty leave', () => {
+    component.toggleEdit();
+    expect(component.form.enabled).toBeTrue();
+
+    component.form.controls.fotComment.setValue('New comment');
+    component.toggleEdit();
+    expect(component.form.enabled).toBeFalse();
+  });
 });
