@@ -24,5 +24,5 @@ public interface StopPointRepository extends JpaRepository<StopPointVersion, Lon
 
     boolean existsByNumber(ServicePointNumber number);
 
-    List<StopPointVersion> findAllBySloid(String sloid);
+    List<StopPointVersion> findAllBySloidOrderByValidFrom(String sloid);
 }

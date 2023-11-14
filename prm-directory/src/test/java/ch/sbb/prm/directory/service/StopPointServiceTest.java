@@ -47,7 +47,7 @@ class StopPointServiceTest {
   void shouldReturnIsReduced() {
     //given
     StopPointVersion reduced = StopPointTestData.builderVersion1().meansOfTransport(Set.of(MeanOfTransport.BUS)).build();
-    Mockito.doReturn(List.of(reduced)).when(stopPointRepository).findAllBySloid(reduced.getSloid());
+    Mockito.doReturn(List.of(reduced)).when(stopPointRepository).findAllBySloidOrderByValidFrom(reduced.getSloid());
     //when
     boolean result = stopPointService.isReduced(reduced.getSloid());
     //then
@@ -58,7 +58,7 @@ class StopPointServiceTest {
   void shouldReturnIsNotReduced() {
     //given
     StopPointVersion reduced = StopPointTestData.builderVersion1().meansOfTransport(Set.of(MeanOfTransport.TRAIN)).build();
-    Mockito.doReturn(List.of(reduced)).when(stopPointRepository).findAllBySloid(reduced.getSloid());
+    Mockito.doReturn(List.of(reduced)).when(stopPointRepository).findAllBySloidOrderByValidFrom(reduced.getSloid());
     //when
     boolean result = stopPointService.isReduced(reduced.getSloid());
     //then
@@ -84,7 +84,7 @@ class StopPointServiceTest {
   void shouldThrowExceptionWhenIsReduced() {
     //given
     StopPointVersion reduced = StopPointTestData.builderVersion1().meansOfTransport(Set.of(MeanOfTransport.BUS)).build();
-    Mockito.doReturn(List.of(reduced)).when(stopPointRepository).findAllBySloid(reduced.getSloid());
+    Mockito.doReturn(List.of(reduced)).when(stopPointRepository).findAllBySloidOrderByValidFrom(reduced.getSloid());
     //when
     ReducedVariantException result = assertThrows(
         ReducedVariantException.class,
@@ -104,7 +104,7 @@ class StopPointServiceTest {
   void shouldNotThrowExceptionWhenIsComplete() {
     //given
     StopPointVersion reduced = StopPointTestData.builderVersion1().meansOfTransport(Set.of(MeanOfTransport.TRAIN)).build();
-    Mockito.doReturn(List.of(reduced)).when(stopPointRepository).findAllBySloid(reduced.getSloid());
+    Mockito.doReturn(List.of(reduced)).when(stopPointRepository).findAllBySloidOrderByValidFrom(reduced.getSloid());
     //when
     Executable executable = () -> stopPointService.validateIsNotReduced(reduced.getSloid());
 

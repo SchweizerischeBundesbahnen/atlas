@@ -1,18 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { ServicePointSearchResult, ServicePointsService } from '../../../api';
-import {
-  catchError,
-  concat,
-  debounceTime,
-  distinctUntilChanged,
-  Observable,
-  of,
-  Subject,
-} from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Pages } from '../../pages';
-import { filter, switchMap, tap } from 'rxjs/operators';
-import { TranslatePipe } from '@ngx-translate/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {ServicePointSearchResult, ServicePointsService} from '../../../api';
+import {catchError, concat, debounceTime, distinctUntilChanged, Observable, of, Subject,} from 'rxjs';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Pages} from '../../pages';
+import {filter, switchMap, tap} from 'rxjs/operators';
+import {TranslatePipe} from '@ngx-translate/core';
+
+
+export enum ServicePointSearchType {
+  PRM,
+  SERVICE_POINT
+}
 
 @Component({
   selector: 'app-search-service-point',
@@ -23,12 +21,15 @@ export class SearchServicePointComponent implements OnInit {
   private readonly MIN_LENGTH_TERM = 2;
   private readonly _DEBOUNCE_TIME = 500;
 
+  @Input() searchType: ServicePointSearchType = ServicePointSearchType.SERVICE_POINT;
+
   constructor(
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly servicePointService: ServicePointsService,
     private readonly translatePipe: TranslatePipe,
-  ) {}
+  ) {
+  }
 
   private _searchValue = '';
 
@@ -42,6 +43,7 @@ export class SearchServicePointComponent implements OnInit {
     }
     return this.getNotFoundTranslatedLabel();
   }
+
   get notFoundText(): string {
     if (!this._searchValue || this._searchValue.length >= this.MIN_LENGTH_TERM) {
       return this.getNotFoundTranslatedLabel();
@@ -61,16 +63,32 @@ export class SearchServicePointComponent implements OnInit {
   searchInput$ = new Subject<string>();
   loading = false;
 
-  navigateToServicePoint(searchResultSelected: ServicePointSearchResult) {
+  navigateTo(searchResultSelected: ServicePointSearchResult) {
     if (searchResultSelected) {
-      this.router
-        .navigate([Pages.SERVICE_POINTS.path, searchResultSelected.number], {
-          relativeTo: this.route,
-        })
-        .then();
+      if(this.searchType === ServicePointSearchType.SERVICE_POINT) {
+        this.navigateToServicePoint(searchResultSelected);
+      }else {
+        this.navigatePrm(searchResultSelected);
+      }
     } else {
       this.servicePointSearchResult$ = of([]);
     }
+  }
+
+  private navigatePrm(searchResultSelected: ServicePointSearchResult) {
+    this.router
+      .navigate([searchResultSelected.sloid], {
+        relativeTo: this.route,
+      })
+      .then();
+  }
+
+  private navigateToServicePoint(searchResultSelected: ServicePointSearchResult) {
+    this.router
+      .navigate([Pages.SERVICE_POINTS.path, searchResultSelected.number], {
+        relativeTo: this.route,
+      })
+      .then();
   }
 
   ngOnInit(): void {
@@ -94,13 +112,25 @@ export class SearchServicePointComponent implements OnInit {
           if (term.length < this.MIN_LENGTH_TERM) {
             return of([]).pipe(tap(() => (this.loading = false)));
           }
-          return this.servicePointService.searchServicePoints({ value: term }).pipe(
-            catchError(() => of([])),
-            tap(() => (this.loading = false)),
-          );
+          return this.doSearch(term);
         }),
       ),
     );
+  }
+
+
+  private doSearch(term: string) {
+    if (this.searchType === ServicePointSearchType.SERVICE_POINT) {
+      return this.servicePointService.searchServicePoints({value: term}).pipe(
+        catchError(() => of([])),
+        tap(() => (this.loading = false)),
+      );
+    }
+    return this.servicePointService.searchSwissOnlyServicePoints({value: term}).pipe(
+      catchError(() => of([])),
+      tap(() => (this.loading = false)),
+    );
+
   }
 
   initSearchValue(searchValue: string) {

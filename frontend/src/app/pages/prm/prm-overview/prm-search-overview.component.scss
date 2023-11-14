@@ -1,0 +1,26 @@
+@use 'src/styles/variables' as variables;
+
+$map-overlay-element-shadow: 0 0 5px 1px variables.$gray-700;
+
+.container-sp-create-and-search {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  display: flex;
+
+  button {
+    margin-left: 1rem;
+    border: none;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    height: fit-content;
+    padding: 0.5rem 0.5rem 0.5rem 0;
+    border-radius: variables.$border-radius-small;
+    box-shadow: $map-overlay-element-shadow;
+
+    i {
+      font-size: 2rem;
+    }
+  }
+}
