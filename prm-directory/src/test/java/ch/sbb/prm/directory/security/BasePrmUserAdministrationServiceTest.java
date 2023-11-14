@@ -24,19 +24,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @IntegrationTest
-public class BaseUserAdministrationServiceTest {
+public class BasePrmUserAdministrationServiceTest {
 
     @MockBean
     private UserPermissionHolder userPermissionHolder;
 
     private final SharedServicePointRepository sharedServicePointRepository;
 
-    private final PrmBusinessOrganisationBasedUserAdministrationService prmBOBasedUserAdministrationService;
+    private final PrmUserAdministrationService prmBOBasedUserAdministrationService;
 
     @Autowired
-    public BaseUserAdministrationServiceTest(SharedServicePointRepository sharedServicePointRepository,
-                                               PrmBusinessOrganisationBasedUserAdministrationService prmBOBasedUserAdministrationService,
-                                               UserPermissionHolder userPermissionHolder) {
+    public BasePrmUserAdministrationServiceTest(SharedServicePointRepository sharedServicePointRepository,
+                                                PrmUserAdministrationService prmBOBasedUserAdministrationService,
+                                                UserPermissionHolder userPermissionHolder) {
         this.sharedServicePointRepository = sharedServicePointRepository;
         this.prmBOBasedUserAdministrationService = prmBOBasedUserAdministrationService;
         this.userPermissionHolder = userPermissionHolder;
