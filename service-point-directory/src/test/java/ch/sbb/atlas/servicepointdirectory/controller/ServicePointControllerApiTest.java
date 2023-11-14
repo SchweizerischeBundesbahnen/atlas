@@ -179,6 +179,24 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldSearchSwissOnlyServicePointSuccessfully() throws Exception {
+    // given
+    repository.save(ServicePointTestData.createAbroadServicePointVersion());
+
+    ServicePointSearchRequest request = new ServicePointSearchRequest("bern");
+    String jsonString = mapper.writeValueAsString(request);
+
+    // when
+    mvc.perform(post("/v1/service-points/search-swiss-only")
+            .content(jsonString)
+            .contentType(contentType))
+        // then
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].number", is(8589008)))
+        .andExpect(jsonPath("$[0].designationOfficial", is("Bern, Wyleregg")));
+  }
+
+  @Test
   void shouldReturnEmptyListWhenNoMatchFound() throws Exception {
     // given
     ServicePointSearchRequest request = new ServicePointSearchRequest("zug");
