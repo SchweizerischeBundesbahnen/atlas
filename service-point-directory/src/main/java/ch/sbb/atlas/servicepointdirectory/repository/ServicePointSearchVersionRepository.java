@@ -60,7 +60,9 @@ public class ServicePointSearchVersionRepository {
                     rs.setFetchSize(FETCH_SIZE);
                     return new ServicePointSearchResult(
                             rs.getInt("number"),
-                            rs.getString("designation_official"));
+                            rs.getString("designation_official"),
+                            rs.getString("sloid")
+                    );
                 }
         );
 
@@ -92,7 +94,7 @@ public class ServicePointSearchVersionRepository {
 
     private String getSqlQuery(String value, boolean isOperationPointRouteNetworkTrue, boolean isSwissOnly) {
         String sqlQuery = """
-                select number, designation_official
+                select number, designation_official, sloid
                 from service_point_version
                 where (upper(cast(number as text)) like upper( :contains_value)
                     or replace(upper(designation_official), ',','') like replace(upper(:contains_value), ',','')

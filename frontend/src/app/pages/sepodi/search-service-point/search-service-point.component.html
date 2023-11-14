@@ -10,7 +10,7 @@
     [items]="servicePointSearchResult$ | async"
     [typeahead]="searchInput$"
     [loading]="loading"
-    (change)="navigateToServicePoint($event)"
+    (change)="navigateTo($event)"
     (clear)="clearResult()"
     placeholder="{{ 'SEPODI.SERVICE_POINTS.SERVICE_POINT' | translate }}"
     appearance="outline"

@@ -1,7 +1,9 @@
 <div class="map-wrapper d-flex">
   <div class="map" #map></div>
   <div *ngIf="!isSidePanelOpen" class="container-sp-create-and-search">
-    <app-search-service-point></app-search-service-point>
+    <app-search-service-point
+      [searchType]="ServicePointSearchType.SERVICE_POINT"
+    ></app-search-service-point>
     <button *ngIf="canCreateServicePoint" (click)="routeToNewSP()" class="font-regular-base">
       <i class="bi bi-plus"></i>
       {{ 'SEPODI.SERVICE_POINTS.NEW_SERVICE_POINT' | translate }}
