@@ -2,8 +2,6 @@ package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
-import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
-import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.InformationDeskTestData;
 import ch.sbb.prm.directory.ParkingLotTestData;
@@ -24,29 +22,22 @@ import ch.sbb.prm.directory.exception.ReducedVariantException;
 import ch.sbb.prm.directory.repository.InformationDeskRepository;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.PlatformRepository;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@IntegrationTest
-@Transactional
-class ReferencePointServiceTest {
+class ReferencePointServiceTest extends BaseServiceTest {
 
   private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
-  private static final SharedServicePointVersionModel SHARED_SERVICE_POINT_VERSION_MODEL =
-          new SharedServicePointVersionModel(PARENT_SERVICE_POINT_SLOID,
-                  Collections.singleton("sboid"),
-                  Collections.singleton(""));
 
   private final ReferencePointService referencePointService;
   private final RelationService relationService;
@@ -62,7 +53,9 @@ class ReferencePointServiceTest {
                             ToiletRepository toiletRepository, PlatformRepository platformRepository,
                             StopPointRepository stopPointRepository, ParkingLotRepository parkingLotRepository,
                             TicketCounterRepository ticketCounterRepository,
-                            InformationDeskRepository informationDeskRepository) {
+                            InformationDeskRepository informationDeskRepository,
+                            SharedServicePointRepository sharedServicePointRepository) {
+    super(sharedServicePointRepository);
     this.referencePointService = referencePointService;
     this.relationService = relationService;
     this.toiletRepository = toiletRepository;

@@ -1,5 +1,7 @@
 package ch.sbb.prm.directory.entity;
 
-public interface PrmShared {
+public interface PrmSharedVersion {
+
     String getParentServicePointSloid();
+
 }

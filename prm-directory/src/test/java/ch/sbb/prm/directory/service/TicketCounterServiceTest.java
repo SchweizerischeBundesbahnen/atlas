@@ -1,7 +1,5 @@
 package ch.sbb.prm.directory.service;
 
-import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
-import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
@@ -13,13 +11,12 @@ import ch.sbb.prm.directory.entity.TicketCounterVersion;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -27,15 +24,9 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TICKET_
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@IntegrationTest
-@Transactional
-class TicketCounterServiceTest {
+class TicketCounterServiceTest extends BaseServiceTest {
 
   private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
-  private static final SharedServicePointVersionModel SHARED_SERVICE_POINT_VERSION_MODEL =
-          new SharedServicePointVersionModel(PARENT_SERVICE_POINT_SLOID,
-                  Collections.singleton("sboid"),
-                  Collections.singleton(""));
 
   private final TicketCounterService ticketCounterService;
   private final TicketCounterRepository ticketCounterRepository;
@@ -44,9 +35,13 @@ class TicketCounterServiceTest {
   private final ReferencePointRepository referencePointRepository;
 
   @Autowired
-  TicketCounterServiceTest(TicketCounterService ticketCounterService, TicketCounterRepository ticketCounterRepository,
-      StopPointRepository stopPointRepository, RelationRepository relationRepository,
-      ReferencePointRepository referencePointRepository) {
+  TicketCounterServiceTest(TicketCounterService ticketCounterService,
+                           TicketCounterRepository ticketCounterRepository,
+                           StopPointRepository stopPointRepository,
+                           RelationRepository relationRepository,
+                           ReferencePointRepository referencePointRepository,
+                           SharedServicePointRepository sharedServicePointRepository) {
+    super(sharedServicePointRepository);
     this.ticketCounterService = ticketCounterService;
     this.ticketCounterRepository = ticketCounterRepository;
     this.stopPointRepository = stopPointRepository;
