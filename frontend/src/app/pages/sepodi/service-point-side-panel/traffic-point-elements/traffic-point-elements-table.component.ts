@@ -55,12 +55,12 @@ export class TrafficPointElementsTableComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.route.data.pipe(takeUntil(this.ngUnsubscribe)).subscribe((next) => {
       this.isTrafficPointArea = next.isTrafficPointArea;
-    });
 
-    this.tableFilterConfig = this.tableService.initializeFilterConfig(
-      {},
-      Pages.TRAFFIC_POINT_ELEMENTS,
-    );
+      this.tableFilterConfig = this.tableService.initializeFilterConfig(
+        {},
+        this.isTrafficPointArea ? Pages.TRAFFIC_POINT_ELEMENTS_AREA : Pages.TRAFFIC_POINT_ELEMENTS,
+      );
+    });
   }
 
   getOverview(pagination: TablePagination) {

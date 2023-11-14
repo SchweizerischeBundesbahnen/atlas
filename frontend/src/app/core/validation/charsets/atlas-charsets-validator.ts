@@ -19,12 +19,6 @@ export class AtlasCharsetsValidator {
     };
   }
 
-  static validateDigitsOnly(): ValidatorFn {
-    return (control) => {
-      return AtlasCharsetsValidator.validateAllowedCharacters(control, '\\d+', '0-9 :');
-    };
-  }
-
   static decimalWithDigits(decimalDigits: number): ValidatorFn {
     return (control) => {
       const patternErrors = Validators.pattern('^-?[0-9]*\\.?[0-9]{0,' + decimalDigits + '}')(

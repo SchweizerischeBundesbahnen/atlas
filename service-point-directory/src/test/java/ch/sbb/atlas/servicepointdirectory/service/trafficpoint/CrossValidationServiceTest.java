@@ -46,30 +46,4 @@ import org.mockito.junit.jupiter.MockitoExtension;
     ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(1234567);
     assertDoesNotThrow(() -> crossValidationService.validateServicePointNumberExists(servicePointNumber));
   }
-
- @Test
- void shouldThrowExceptionWhenSLOIDIsNotValidForPlatform() {
-  String sloid = "ch:1:sloid:72839:0:100007:431234";
-  assertThrows(SloidsNotEqualException.class,
-      () -> crossValidationService.validateManuallyEnteredSloid(sloid, TrafficPointElementType.BOARDING_PLATFORM));
- }
- @Test
- void shouldNotThrowExceptionWhenSLOIDIsValidForPlatform() {
-  String sloid = "ch:1:sloid:72839:0:100007";
-  assertDoesNotThrow(() -> crossValidationService.validateManuallyEnteredSloid(sloid, TrafficPointElementType.BOARDING_PLATFORM));
- }
- @Test
- void shouldThrowExceptionWhenSLOIDIsNotValidForArea() {
-  String sloid = "ch:1:sloid:72839:0:100007";
-
-  assertThrows(SloidsNotEqualException.class,
-      () -> crossValidationService.validateManuallyEnteredSloid(sloid, TrafficPointElementType.BOARDING_AREA));
- }
-
- @Test
- void shouldNotThrowExceptionWhenSLOIDIsValidForArea() {
-  String sloid = "ch:1:sloid:72839:123";
-  assertDoesNotThrow(() -> crossValidationService.validateManuallyEnteredSloid(sloid, TrafficPointElementType.BOARDING_AREA));
- }
-
 }
