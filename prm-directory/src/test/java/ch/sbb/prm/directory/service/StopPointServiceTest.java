@@ -29,17 +29,17 @@ class StopPointServiceTest {
 
   @Mock
   private StopPointRepository stopPointRepository;
-  @Mock
-  private SharedServicePointService sharedServicePointService;
+
   @Mock
   private StopPointValidationService stopPointValidationService;
+
   @Mock
   private VersionableService versionableService;
 
   @BeforeEach
   void init() {
     MockitoAnnotations.openMocks(this);
-    this.stopPointService = new StopPointService(stopPointRepository, versionableService, sharedServicePointService,
+    this.stopPointService = new StopPointService(stopPointRepository, versionableService,
         stopPointValidationService);
   }
 
