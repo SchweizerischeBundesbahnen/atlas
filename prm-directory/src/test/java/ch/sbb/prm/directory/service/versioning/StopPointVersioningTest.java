@@ -10,6 +10,7 @@ import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.StopPointService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,11 @@ class StopPointVersioningTest {
         .sloid("ch:1:sloid:12345")
         .build();
     sharedServicePointRepository.saveAndFlush(servicePoint);
+  }
+
+  @AfterEach
+  void cleanUp() {
+    sharedServicePointRepository.deleteAll();
   }
 
   /**
