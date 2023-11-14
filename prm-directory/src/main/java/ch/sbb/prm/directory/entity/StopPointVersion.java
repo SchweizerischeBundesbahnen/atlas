@@ -50,7 +50,7 @@ import java.util.Set;
 @FieldNameConstants
 @Entity(name = "stop_point_version")
 @AtlasVersionable
-public class StopPointVersion extends BasePrmImportEntity implements PrmVersionable, VariantsReducedCompleteRecordable, PrmShared {
+public class StopPointVersion extends BasePrmImportEntity implements PrmVersionable, VariantsReducedCompleteRecordable, PrmSharedVersion {
 
   private static final String VERSION_SEQ = "stop_point_version_seq";
 
