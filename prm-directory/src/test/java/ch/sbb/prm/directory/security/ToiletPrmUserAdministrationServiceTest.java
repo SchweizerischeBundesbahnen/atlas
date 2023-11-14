@@ -7,12 +7,12 @@ import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class ToiletUserAdministrationServiceTest extends BaseUserAdministrationServiceTest {
+public class ToiletPrmUserAdministrationServiceTest extends BasePrmUserAdministrationServiceTest {
 
     @Autowired
-    public ToiletUserAdministrationServiceTest(SharedServicePointRepository sharedServicePointRepository,
-                                               PrmBusinessOrganisationBasedUserAdministrationService prmBOBasedUserAdministrationService,
-                                               UserPermissionHolder userPermissionHolder) {
+    public ToiletPrmUserAdministrationServiceTest(SharedServicePointRepository sharedServicePointRepository,
+                                                  PrmUserAdministrationService prmBOBasedUserAdministrationService,
+                                                  UserPermissionHolder userPermissionHolder) {
         super(sharedServicePointRepository, prmBOBasedUserAdministrationService, userPermissionHolder);
     }
 
