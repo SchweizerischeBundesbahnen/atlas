@@ -11,7 +11,6 @@ import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.StopPointAlreadyExistsException;
 import ch.sbb.prm.directory.mapper.StopPointVersionMapper;
 import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
-import ch.sbb.prm.directory.service.SharedServicePointService;
 import ch.sbb.prm.directory.service.StopPointService;
 import ch.sbb.prm.directory.service.dataimport.StopPointImportService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +28,6 @@ public class StopPointController implements StopPointApiV1 {
 
   private final StopPointService stopPointService;
   private final StopPointImportService stopPointImportService;
-  private final SharedServicePointService sharedServicePointService;
 
   @Override
   public Container<ReadStopPointVersionModel> getStopPoints(Pageable pageable,
@@ -47,12 +45,12 @@ public class StopPointController implements StopPointApiV1 {
   }
 
   @Override
-  public ReadStopPointVersionModel createStopPoint(CreateStopPointVersionModel stopPointVersionModel) {
-    boolean stopPointExisting = stopPointService.isStopPointExisting(stopPointVersionModel.getSloid());
+  public ReadStopPointVersionModel createStopPoint(CreateStopPointVersionModel model) {
+    boolean stopPointExisting = stopPointService.isStopPointExisting(model.getSloid());
     if (stopPointExisting) {
-      throw new StopPointAlreadyExistsException(stopPointVersionModel.getSloid());
+      throw new StopPointAlreadyExistsException(model.getSloid());
     }
-    StopPointVersion stopPointVersion = StopPointVersionMapper.toEntity(stopPointVersionModel);
+    StopPointVersion stopPointVersion = StopPointVersionMapper.toEntity(model);
     StopPointVersion savedVersion = stopPointService.checkUserRightsAndSave(stopPointVersion);
     return StopPointVersionMapper.toModel(savedVersion);
   }
