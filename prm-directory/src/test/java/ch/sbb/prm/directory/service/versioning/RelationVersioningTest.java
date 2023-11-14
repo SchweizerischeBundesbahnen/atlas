@@ -4,55 +4,40 @@ import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
-import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.RelationTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
+import ch.sbb.prm.directory.service.BaseServiceTest;
 import ch.sbb.prm.directory.service.RelationService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@IntegrationTest
-@Transactional
-class RelationVersioningTest {
+class RelationVersioningTest extends BaseServiceTest {
 
   private final RelationService relationService;
   private final RelationRepository relationRepository;
   private final StopPointRepository stopPointRepository;
-  private final SharedServicePointRepository sharedServicePointRepository;
 
   @Autowired
   RelationVersioningTest(RelationService relationService,
                          RelationRepository relationRepository,
-                         StopPointRepository stopPointRepository, SharedServicePointRepository sharedServicePointRepository) {
+                         StopPointRepository stopPointRepository,
+                         SharedServicePointRepository sharedServicePointRepository) {
+    super(sharedServicePointRepository);
     this.relationService = relationService;
     this.relationRepository = relationRepository;
     this.stopPointRepository = stopPointRepository;
-    this.sharedServicePointRepository = sharedServicePointRepository;
-  }
-
-  @BeforeEach
-  void setUp() {
-    SharedServicePoint servicePoint = SharedServicePoint.builder()
-            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:70000\",\"sboids\":[\"ch:1:sboid:100602\"],"
-                    + "\"trafficPointSloids\":[]}")
-            .sloid("ch:1:sloid:70000")
-            .build();
-    sharedServicePointRepository.saveAndFlush(servicePoint);
   }
 
   /**
