@@ -1,7 +1,5 @@
 package ch.sbb.prm.directory.service;
 
-import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.INFORMATION_DESK;
-
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
@@ -10,10 +8,14 @@ import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import ch.sbb.prm.directory.repository.InformationDeskRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.INFORMATION_DESK;
 
 @Service
 @Transactional
@@ -58,13 +60,15 @@ public class InformationDeskService extends PrmRelatableVersionableService<Infor
     return informationDeskRepository.findAll();
   }
 
+  @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#version)")
   public InformationDeskVersion createInformationDesk(InformationDeskVersion version) {
     createRelation(version);
     return save(version);
   }
 
+  @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#editedVersion)")
   public InformationDeskVersion updateInformationDeskVersion(InformationDeskVersion currentVersion,
-      InformationDeskVersion editedVersion) {
+                                                             InformationDeskVersion editedVersion) {
     return updateVersion(currentVersion, editedVersion);
   }
 

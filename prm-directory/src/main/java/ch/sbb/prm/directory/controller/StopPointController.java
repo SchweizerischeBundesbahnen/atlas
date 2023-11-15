@@ -13,12 +13,13 @@ import ch.sbb.prm.directory.mapper.StopPointVersionMapper;
 import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
 import ch.sbb.prm.directory.service.StopPointService;
 import ch.sbb.prm.directory.service.dataimport.StopPointImportService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -44,22 +45,21 @@ public class StopPointController implements StopPointApiV1 {
   }
 
   @Override
-  public ReadStopPointVersionModel createStopPoint(CreateStopPointVersionModel stopPointVersionModel) {
-    boolean stopPointExisting = stopPointService.isStopPointExisting(stopPointVersionModel.getSloid());
+  public ReadStopPointVersionModel createStopPoint(CreateStopPointVersionModel model) {
+    boolean stopPointExisting = stopPointService.isStopPointExisting(model.getSloid());
     if (stopPointExisting) {
-      throw new StopPointAlreadyExistsException(stopPointVersionModel.getSloid());
+      throw new StopPointAlreadyExistsException(model.getSloid());
     }
-    StopPointVersion stopPointVersion = StopPointVersionMapper.toEntity(stopPointVersionModel);
+    StopPointVersion stopPointVersion = StopPointVersionMapper.toEntity(model);
     StopPointVersion savedVersion = stopPointService.save(stopPointVersion);
     return StopPointVersionMapper.toModel(savedVersion);
   }
 
   @Override
-  public List<ReadStopPointVersionModel> updateStopPoint(Long id, CreateStopPointVersionModel stopPointVersionModel) {
+  public List<ReadStopPointVersionModel> updateStopPoint(Long id, CreateStopPointVersionModel model) {
     StopPointVersion stopPointVersionToUpdate =
         stopPointService.getStopPointById(id).orElseThrow(() -> new IdNotFoundException(id));
-
-    StopPointVersion editedVersion = StopPointVersionMapper.toEntity(stopPointVersionModel);
+    StopPointVersion editedVersion = StopPointVersionMapper.toEntity(model);
     stopPointService.updateStopPointVersion(stopPointVersionToUpdate, editedVersion);
 
     return stopPointService.findAllByNumberOrderByValidFrom(stopPointVersionToUpdate.getNumber()).stream()

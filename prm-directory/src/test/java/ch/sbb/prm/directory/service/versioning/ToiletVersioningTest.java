@@ -1,8 +1,5 @@
 package ch.sbb.prm.directory.service.versioning;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
@@ -13,37 +10,41 @@ import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
+import ch.sbb.prm.directory.service.BasePrmServiceTest;
 import ch.sbb.prm.directory.service.RelationService;
 import ch.sbb.prm.directory.service.ToiletService;
-import java.time.LocalDate;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
-@IntegrationTest
-@Transactional
-class ToiletVersioningTest {
+import java.time.LocalDate;
+import java.util.List;
 
-  private final ReferencePointRepository referencePointRepository;
+import static org.assertj.core.api.Assertions.assertThat;
 
-  private final StopPointRepository stopPointRepository;
-  private final ToiletRepository toiletRepository;
+class ToiletVersioningTest extends BasePrmServiceTest {
 
   private final ToiletService toiletService;
+  private final ToiletRepository toiletRepository;
   private final RelationService relationService;
-
+  private final StopPointRepository stopPointRepository;
+  private final ReferencePointRepository referencePointRepository;
 
   @Autowired
-  ToiletVersioningTest(ReferencePointRepository referencePointRepository, StopPointRepository stopPointRepository,
-      ToiletRepository toiletRepository, ToiletService toiletService, RelationService relationService) {
-    this.referencePointRepository = referencePointRepository;
-    this.stopPointRepository = stopPointRepository;
-    this.toiletRepository = toiletRepository;
+  ToiletVersioningTest(ToiletService toiletService,
+                       ToiletRepository toiletRepository,
+                       RelationService relationService,
+                       StopPointRepository stopPointRepository,
+                       ReferencePointRepository referencePointRepository,
+                       SharedServicePointRepository sharedServicePointRepository) {
+    super(sharedServicePointRepository);
     this.toiletService = toiletService;
+    this.toiletRepository = toiletRepository;
     this.relationService = relationService;
+    this.stopPointRepository = stopPointRepository;
+    this.referencePointRepository = referencePointRepository;
   }
 
   /**
@@ -58,24 +59,23 @@ class ToiletVersioningTest {
   @Test
   void scenario1a() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
     ToiletVersion version1 = ToiletTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     toiletRepository.saveAndFlush(version1);
     ToiletVersion version2 = ToiletTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     toiletRepository.saveAndFlush(version2);
 
     ToiletVersion editedVersion = ToiletTestData.builderVersion2().build();
     editedVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567));
-    editedVersion.setParentServicePointSloid(parentServicePointSloid);
+    editedVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersion.setDesignation("My designation");
     editedVersion.setAdditionalInformation("info");
     editedVersion.setCreationDate(version2.getCreationDate());
@@ -83,9 +83,8 @@ class ToiletVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-
     //when
-    toiletService.updateToiletVersion(version2,editedVersion);
+    toiletService.updateToiletVersion(version2, editedVersion);
 
     //then
     List<ToiletVersion> result = toiletRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
@@ -102,7 +101,6 @@ class ToiletVersioningTest {
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.id)
         .isEqualTo(editedVersion);
-
   }
 
   /**
@@ -146,9 +144,8 @@ class ToiletVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-
     //when
-    toiletService.updateToiletVersion(version2,editedVersion);
+    toiletService.updateToiletVersion(version2, editedVersion);
 
     //then
     List<ToiletVersion> result = toiletRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
@@ -178,7 +175,6 @@ class ToiletVersioningTest {
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
         parentServicePointSloid);
     assertThat(relations).isEmpty();
-
   }
 
 }
