@@ -1,6 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.exception;
-
-import ch.sbb.atlas.model.exception.NotFoundException;
+package ch.sbb.atlas.model.exception;
 
 public class SloidNotFoundException extends NotFoundException {
 

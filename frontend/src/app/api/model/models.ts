@@ -103,7 +103,7 @@ export * from './sePoDiBatchExportFileName';
 export * from './sePoDiExportType';
 export * from './servicePointCsvModel';
 export * from './servicePointCsvModelContainer';
-export * from './servicePointFotCommentModel';
+export * from './servicePointFotComment';
 export * from './servicePointGeolocation';
 export * from './servicePointImportRequest';
 export * from './servicePointNumber';

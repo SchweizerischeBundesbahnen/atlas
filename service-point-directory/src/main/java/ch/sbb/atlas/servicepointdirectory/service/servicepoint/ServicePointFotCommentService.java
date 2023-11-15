@@ -18,11 +18,20 @@ public class ServicePointFotCommentService {
   public ServicePointFotComment save(ServicePointFotComment fotComment) {
     Optional<ServicePointFotComment> currentComment = findByServicePointNumber(fotComment.getServicePointNumber());
     if (currentComment.isPresent()) {
-      ServicePointFotComment existingComment = currentComment.get();
-      existingComment.setFotComment(fotComment.getFotComment());
-      return existingComment;
+      if (StringUtils.isBlank(fotComment.getFotComment())) {
+        servicePointFotCommentRepository.deleteById(fotComment.getServicePointNumber());
+        return null;
+      } else {
+        ServicePointFotComment existingComment = currentComment.get();
+        existingComment.setFotComment(fotComment.getFotComment());
+        return existingComment;
+      }
     } else {
-      return servicePointFotCommentRepository.save(fotComment);
+      if (StringUtils.isBlank(fotComment.getFotComment())) {
+        return null;
+      } else {
+        return servicePointFotCommentRepository.save(fotComment);
+      }
     }
   }
 
