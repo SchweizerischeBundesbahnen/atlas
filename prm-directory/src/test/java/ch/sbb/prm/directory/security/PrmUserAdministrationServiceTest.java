@@ -8,23 +8,29 @@ import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionRestrictionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.user.administration.security.UserPermissionHolder;
+import ch.sbb.prm.directory.StopPointTestData;
+import ch.sbb.prm.directory.ToiletTestData;
 import ch.sbb.prm.directory.entity.PrmSharedVersion;
 import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @IntegrationTest
-public class BasePrmUserAdministrationServiceTest {
+public class PrmUserAdministrationServiceTest {
 
     @MockBean
     private UserPermissionHolder userPermissionHolder;
@@ -33,8 +39,20 @@ public class BasePrmUserAdministrationServiceTest {
 
     private final PrmUserAdministrationService prmBOBasedUserAdministrationService;
 
+    private static final SharedServicePoint sharedServicePointForToilet =  SharedServicePoint.builder()
+            .servicePoint("{\"servicePointSloid\":\"ch:1.sloid:12345\",\"sboids\":[\"ch:1:sboid:100001\",\"ch:1:sboid:100002\",\"ch:1:sboid:100003\",\"ch:1:sboid:100004\",\"ch:1:sboid:100005\"],"
+                    + "\"trafficPointSloids\":[\"ch:1.sloid:12345:1\"]}")
+            .sloid("ch:1.sloid:12345")
+            .build();
+
+    private static final SharedServicePoint sharedServicePointForStopPoint =  SharedServicePoint.builder()
+            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:12345\",\"sboids\":[\"ch:1:sboid:100001\",\"ch:1:sboid:100002\",\"ch:1:sboid:100003\",\"ch:1:sboid:100004\",\"ch:1:sboid:100005\"],"
+                    + "\"trafficPointSloids\":[\"ch:1:sloid:12345:1\"]}")
+            .sloid("ch:1:sloid:12345")
+            .build();
+
     @Autowired
-    public BasePrmUserAdministrationServiceTest(SharedServicePointRepository sharedServicePointRepository,
+    public PrmUserAdministrationServiceTest(SharedServicePointRepository sharedServicePointRepository,
                                                 PrmUserAdministrationService prmBOBasedUserAdministrationService,
                                                 UserPermissionHolder userPermissionHolder) {
         this.sharedServicePointRepository = sharedServicePointRepository;
@@ -47,18 +65,6 @@ public class BasePrmUserAdministrationServiceTest {
         MockitoAnnotations.openMocks(this);
         when(userPermissionHolder.isAdmin()).thenReturn(false);
         when(userPermissionHolder.getCurrentUserSbbUid()).thenReturn("e123456");
-
-        SharedServicePoint servicePoint = getSharedServicePoint();
-        sharedServicePointRepository.saveAndFlush(servicePoint);
-    }
-
-    protected SharedServicePoint getSharedServicePoint() {
-        SharedServicePoint servicePoint = SharedServicePoint.builder()
-                .servicePoint("{\"servicePointSloid\":\"ch:1.sloid:12345\",\"sboids\":[\"ch:1:sboid:100001\",\"ch:1:sboid:100002\",\"ch:1:sboid:100003\",\"ch:1:sboid:100004\",\"ch:1:sboid:100005\"],"
-                        + "\"trafficPointSloids\":[\"ch:1.sloid:12345:1\"]}")
-                .sloid("ch:1.sloid:12345")
-                .build();
-        return servicePoint;
     }
 
     @AfterEach
@@ -66,7 +72,17 @@ public class BasePrmUserAdministrationServiceTest {
         sharedServicePointRepository.deleteAll();
     }
 
-    protected void allowCreateToAdminUser(PrmSharedVersion prmSharedVersion) {
+    private static Stream<Arguments> provideParameters() {
+        return Stream.of(
+                Arguments.of(StopPointTestData.getStopPointVersion(), sharedServicePointForStopPoint),
+                Arguments.of(ToiletTestData.getToiletVersion(), sharedServicePointForToilet)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideParameters")
+    void shouldAllowCreateToAdminUser(PrmSharedVersion prmSharedVersion, SharedServicePoint sharedServicePoint) {
+        sharedServicePointRepository.saveAndFlush(sharedServicePoint);
         when(userPermissionHolder.isAdmin()).thenReturn(true);
 
         boolean permissionsToCreate = prmBOBasedUserAdministrationService
@@ -75,7 +91,10 @@ public class BasePrmUserAdministrationServiceTest {
         assertThat(permissionsToCreate).isTrue();
     }
 
-    protected void allowCreateToSupervisorUser(PrmSharedVersion prmSharedVersion) {
+    @ParameterizedTest
+    @MethodSource("provideParameters")
+    void shouldAllowCreateToSupervisorUser(PrmSharedVersion prmSharedVersion, SharedServicePoint sharedServicePoint) {
+        sharedServicePointRepository.saveAndFlush(sharedServicePoint);
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
                 .userId("e123456")
                 .permissions(Set.of(
@@ -91,7 +110,10 @@ public class BasePrmUserAdministrationServiceTest {
         assertThat(permissionsToCreate).isTrue();
     }
 
-    protected void allowCreateToSuperUser(PrmSharedVersion prmSharedVersion) {
+    @ParameterizedTest
+    @MethodSource("provideParameters")
+    void shouldAllowCreateToSuperUser(PrmSharedVersion prmSharedVersion, SharedServicePoint sharedServicePoint) {
+        sharedServicePointRepository.saveAndFlush(sharedServicePoint);
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
                 .userId("e123456")
                 .permissions(Set.of(
@@ -107,7 +129,10 @@ public class BasePrmUserAdministrationServiceTest {
         assertThat(permissionsToCreate).isTrue();
     }
 
-    protected void notAllowCreateToReaderUser(PrmSharedVersion prmSharedVersion) {
+    @ParameterizedTest
+    @MethodSource("provideParameters")
+    void shouldNotAllowCreateToReaderUser(PrmSharedVersion prmSharedVersion, SharedServicePoint sharedServicePoint) {
+        sharedServicePointRepository.saveAndFlush(sharedServicePoint);
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
                 .userId("e123456")
                 .permissions(Set.of(
@@ -123,7 +148,10 @@ public class BasePrmUserAdministrationServiceTest {
         assertThat(permissionsToCreate).isFalse();
     }
 
-    protected void allowCreateToWriterUserWithAppropriateBO(PrmSharedVersion prmSharedVersion) {
+    @ParameterizedTest
+    @MethodSource("provideParameters")
+    void shouldAllowCreateToWriterUserWithAppropriateBO(PrmSharedVersion prmSharedVersion, SharedServicePoint sharedServicePoint) {
+        sharedServicePointRepository.saveAndFlush(sharedServicePoint);
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
                 .userId("e123456")
                 .permissions(Set.of(
@@ -143,7 +171,10 @@ public class BasePrmUserAdministrationServiceTest {
         assertThat(permissionsToCreate).isTrue();
     }
 
-    protected void notAllowCreateToWriterUserWithInappropriateBO(PrmSharedVersion prmSharedVersion) {
+    @ParameterizedTest
+    @MethodSource("provideParameters")
+    void shouldNotAllowCreateToWriterUserWithInappropriateBO(PrmSharedVersion prmSharedVersion, SharedServicePoint sharedServicePoint) {
+        sharedServicePointRepository.saveAndFlush(sharedServicePoint);
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
                 .userId("e123456")
                 .permissions(Set.of(
@@ -163,7 +194,10 @@ public class BasePrmUserAdministrationServiceTest {
         assertThat(permissionsToCreate).isFalse();
     }
 
-    protected void allowCreateToWriterUserWithAppropriateBOs(PrmSharedVersion prmSharedVersion) {
+    @ParameterizedTest
+    @MethodSource("provideParameters")
+    void shouldAllowCreateToWriterUserWithAppropriateBOs(PrmSharedVersion prmSharedVersion, SharedServicePoint sharedServicePoint) {
+        sharedServicePointRepository.saveAndFlush(sharedServicePoint);
         when(userPermissionHolder.getCurrentUser()).thenReturn(Optional.of(UserAdministrationModel.builder()
                 .userId("e123456")
                 .permissions(Set.of(
