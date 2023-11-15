@@ -30,8 +30,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StopPointMigrationIntegrationTest {
 
-  private static final String DIDOK_STOP_PLACE_CSV_FILE = "PRM_STOP_PLACES_20231109021756.csv";
-  private static final String ATLAS_STOP_POINT_CSV_FILE = "full-stop-point-2023-11-09.csv";
+  private static final String DIDOK_STOP_PLACE_CSV_FILE = "PRM_STOP_PLACES_20231115022314.csv";
+  private static final String ATLAS_STOP_POINT_CSV_FILE = "full-stop-point-2023-11-15.csv";
   private static final List<StopPointCsvModel> didokStopPointCsvLines = new ArrayList<>();
   private static final List<StopPointVersionCsvModel> atlasStopPointCsvLines = new ArrayList<>();
 
@@ -64,7 +64,7 @@ class StopPointMigrationIntegrationTest {
 
   @Test
   @Order(2)
-  void shouldHaveSameLoadingPointNumbersInBothCsvs() {
+  void shouldHaveSameStopPointNumbersInBothCsvs() {
 
     Set<Integer> didokStopPointNumbers =
         didokStopPointCsvLines.stream().filter(stopPointCsvModel -> stopPointCsvModel.getStatus().equals(1))
@@ -85,7 +85,6 @@ class StopPointMigrationIntegrationTest {
 
     assertThat(didokStopPointNumbers).containsExactlyInAnyOrderElementsOf(atlasStopPointNumbers);
   }
-
 
   @Test
   @Order(3)
