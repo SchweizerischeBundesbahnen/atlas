@@ -1,6 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
-import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.converter.ServicePointNumberConverter;
@@ -144,7 +143,6 @@ public class TrafficPointElementVersion extends BasePointVersion<TrafficPointEle
     return parts.length == expectedColons + 1;
   }
 
-  //TODO: Test dazu schreiben
   @JsonIgnore
   @AssertTrue(message = """
       The following properties must be null or empty if trafficPointElementType is BOARDING_AREA: \n
