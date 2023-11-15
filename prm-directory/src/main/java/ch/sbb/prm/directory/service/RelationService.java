@@ -7,10 +7,12 @@ import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.repository.RelationRepository;
-import java.util.List;
-import java.util.Optional;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -66,6 +68,7 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
         new ApplyVersioningDeleteByIdLongConsumer(relationRepository));
   }
 
+  @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#editedVersion)")
   public RelationVersion updateRelationVersion(RelationVersion currentVersion, RelationVersion editedVersion) {
     //the referencePointTypeElement cannot be updated. We have to set it from the current version
     editedVersion.setReferencePointElementType(currentVersion.getReferencePointElementType());

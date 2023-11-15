@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
 @Getter
-public class ServicePointDoesNotExistsException extends AtlasException {
+public class StopPointDoesNotExistException extends AtlasException {
 
   private final String sloid;
 
@@ -16,7 +16,7 @@ public class ServicePointDoesNotExistsException extends AtlasException {
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
         .status(HttpStatus.PRECONDITION_FAILED.value())
-        .message("The service point with sloid " + getSloid() + " does not exists.")
+        .message("The stop place with sloid " + getSloid() + " does not exist.")
         .build();
   }
 
