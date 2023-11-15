@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ValidatorFn } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
+import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets-validator';
 
 @Component({
   selector: 'atlas-sloid',
@@ -42,7 +43,9 @@ export class SloidComponent implements OnInit {
 
   private initFormgroup() {
     this.form = new FormGroup({
-      sloid: new FormControl(null),
+      sloid: new FormControl(null, [
+        AtlasCharsetsValidator.colonSeperatedNumbers(this.numberColons),
+      ]),
     });
   }
 }
