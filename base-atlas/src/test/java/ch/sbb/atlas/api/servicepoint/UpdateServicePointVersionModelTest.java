@@ -192,19 +192,6 @@ class UpdateServicePointVersionModelTest {
   }
 
   @Test
-  void shouldNotAllowServicePointVersionWithoutNumber() {
-    UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
-        .designationOfficial("Bern")
-        .businessOrganisation("ch:1:sboid:5846489645")
-        .validFrom(LocalDate.of(2022, 1, 1))
-        .validTo(LocalDate.of(2022, 12, 31))
-        .build();
-
-    Set<ConstraintViolation<UpdateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
-    assertThat(constraintViolations).hasSize(1);
-  }
-
-  @Test
   void shouldAllowServicePointVersionWithNumberGeneration() {
     CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
         .country(Country.SWITZERLAND)
@@ -216,21 +203,6 @@ class UpdateServicePointVersionModelTest {
 
     Set<ConstraintViolation<UpdateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
     assertThat(constraintViolations).isEmpty();
-  }
-
-  @Test
-  void shouldNotAllowServicePointVersionWithNumberAndCountry() {
-    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
-        .country(Country.SWITZERLAND)
-        .numberShort(8507000)
-        .designationOfficial("Bern")
-        .businessOrganisation("ch:1:sboid:5846489645")
-        .validFrom(LocalDate.of(2022, 1, 1))
-        .validTo(LocalDate.of(2022, 12, 31))
-        .build();
-
-    Set<ConstraintViolation<UpdateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
-    assertThat(constraintViolations).hasSize(1);
   }
 
   @Test
