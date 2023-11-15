@@ -21,13 +21,14 @@ import { ValidationService } from '../../../core/validation/validation.service';
 import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { ValidityConfirmationService } from '../validity/validity-confirmation.service';
+import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
 
 @Component({
   selector: 'app-loading-points',
   templateUrl: './loading-points-detail.component.html',
   styleUrls: ['./loading-points-detail.component.scss'],
 })
-export class LoadingPointsDetailComponent implements OnInit, OnDestroy {
+export class LoadingPointsDetailComponent implements OnInit, OnDestroy, DetailFormComponent {
   loadingPointVersions!: ReadLoadingPointVersion[];
   selectedVersion!: ReadLoadingPointVersion;
 
@@ -226,5 +227,9 @@ export class LoadingPointsDetailComponent implements OnInit, OnDestroy {
       this.form.enable();
       return EMPTY;
     };
+  }
+
+  isFormDirty(): boolean {
+    return this.form.dirty;
   }
 }

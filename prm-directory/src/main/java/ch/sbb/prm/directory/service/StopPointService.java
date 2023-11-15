@@ -6,16 +6,18 @@ import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.ReducedVariantException;
-import ch.sbb.prm.directory.exception.StopPointDoesNotExistsException;
+import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
 import ch.sbb.prm.directory.validation.StopPointValidationService;
-import java.util.List;
-import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -23,14 +25,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class StopPointService extends PrmVersionableService<StopPointVersion> {
 
   private final StopPointRepository stopPointRepository;
-  private final SharedServicePointService sharedServicePointService;
   private final StopPointValidationService stopPointValidationService;
 
-  public StopPointService(StopPointRepository stopPointRepository, VersionableService versionableService,
-      SharedServicePointService sharedServicePointService, StopPointValidationService stopPointValidationService) {
+  public StopPointService(StopPointRepository stopPointRepository,
+                          VersionableService versionableService,
+                          StopPointValidationService stopPointValidationService) {
     super(versionableService);
     this.stopPointRepository = stopPointRepository;
-    this.sharedServicePointService = sharedServicePointService;
     this.stopPointValidationService = stopPointValidationService;
   }
 
@@ -40,8 +41,8 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
   }
 
   @Override
+  @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#version)")
   public StopPointVersion save(StopPointVersion version) {
-    sharedServicePointService.validateServicePointExists(version.getSloid());
     stopPointValidationService.validateStopPointRecordingVariants(version);
     return stopPointRepository.saveAndFlush(version);
   }
@@ -63,7 +64,7 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
 
   boolean isReduced(String servicePointSloid){
     StopPointVersion parentServicePoint = findAllBySloid(servicePointSloid).stream().findFirst()
-            .orElseThrow(() -> new StopPointDoesNotExistsException(servicePointSloid));
+            .orElseThrow(() -> new StopPointDoesNotExistException(servicePointSloid));
     return parentServicePoint.isReduced();
   }
 
@@ -83,7 +84,7 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
 
   public void checkStopPointExists(String sloid) {
     if (!stopPointRepository.existsBySloid(sloid)) {
-      throw new StopPointDoesNotExistsException(sloid);
+      throw new StopPointDoesNotExistException(sloid);
     }
   }
 
@@ -91,7 +92,9 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
     return stopPointRepository.existsBySloid(sloid);
   }
 
-  public StopPointVersion updateStopPointVersion(StopPointVersion currentVersion, StopPointVersion editedVersion) {
+  @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#editedVersion)")
+  public StopPointVersion updateStopPointVersion(StopPointVersion currentVersion,
+                                                 StopPointVersion editedVersion) {
     stopPointValidationService.validateMeansOfTransportChanging(currentVersion,editedVersion);
     return updateVersion(currentVersion, editedVersion);
   }
@@ -99,6 +102,4 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
   public Page<StopPointVersion> findAll(StopPointSearchRestrictions searchRestrictions) {
     return stopPointRepository.findAll(searchRestrictions.getSpecification(),searchRestrictions.getPageable());
   }
-
-
 }

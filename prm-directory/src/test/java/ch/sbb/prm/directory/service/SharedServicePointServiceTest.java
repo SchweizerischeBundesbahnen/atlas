@@ -1,17 +1,18 @@
 package ch.sbb.prm.directory.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatNoException;
-
 import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.prm.directory.exception.ServicePointDoesNotExistsException;
-import java.util.Optional;
-import java.util.Set;
+import ch.sbb.prm.directory.exception.ServicePointDoesNotExistException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Optional;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 @IntegrationTest
 class SharedServicePointServiceTest {
@@ -46,7 +47,7 @@ class SharedServicePointServiceTest {
 
   @Test
   void shouldValidateServicePointExistsAndThrowException() {
-    assertThatExceptionOfType(ServicePointDoesNotExistsException.class).isThrownBy(
+    assertThatExceptionOfType(ServicePointDoesNotExistException.class).isThrownBy(
         () -> sharedServicePointService.validateServicePointExists("spinatknödel"));
   }
 }

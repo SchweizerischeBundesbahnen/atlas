@@ -1,5 +1,33 @@
 package ch.sbb.prm.directory.controller;
 
+import ch.sbb.atlas.api.prm.model.ticketcounter.CreateTicketCounterVersionModel;
+import ch.sbb.atlas.api.prm.model.toilet.CreateToiletVersionModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
+import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.prm.directory.ReferencePointTestData;
+import ch.sbb.prm.directory.StopPointTestData;
+import ch.sbb.prm.directory.TicketCounterTestData;
+import ch.sbb.prm.directory.ToiletTestData;
+import ch.sbb.prm.directory.entity.ReferencePointVersion;
+import ch.sbb.prm.directory.entity.RelationVersion;
+import ch.sbb.prm.directory.entity.SharedServicePoint;
+import ch.sbb.prm.directory.entity.StopPointVersion;
+import ch.sbb.prm.directory.entity.ToiletVersion;
+import ch.sbb.prm.directory.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
+import ch.sbb.prm.directory.repository.StopPointRepository;
+import ch.sbb.prm.directory.repository.ToiletRepository;
+import ch.sbb.prm.directory.service.RelationService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
+
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -12,46 +40,45 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.api.prm.model.toilet.CreateToiletVersionModel;
-import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
-import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.prm.directory.ReferencePointTestData;
-import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.ToiletTestData;
-import ch.sbb.prm.directory.entity.ReferencePointVersion;
-import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.StopPointVersion;
-import ch.sbb.prm.directory.entity.ToiletVersion;
-import ch.sbb.prm.directory.repository.ReferencePointRepository;
-import ch.sbb.prm.directory.repository.StopPointRepository;
-import ch.sbb.prm.directory.repository.ToiletRepository;
-import ch.sbb.prm.directory.service.RelationService;
-import java.util.Set;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.transaction.annotation.Transactional;
-
 @Transactional
 class ToiletVersionControllerApiTest extends BaseControllerApiTest {
 
+  private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:7000";
   private final ToiletRepository toiletRepository;
   private final StopPointRepository stopPointRepository;
-
   private final ReferencePointRepository referencePointRepository;
+  private final SharedServicePointRepository sharedServicePointRepository;
 
   @MockBean
   private final RelationService relationService;
 
 
   @Autowired
-  ToiletVersionControllerApiTest(ToiletRepository toiletRepository, StopPointRepository stopPointRepository,
-      ReferencePointRepository referencePointRepository, RelationService relationService){
+  ToiletVersionControllerApiTest(ToiletRepository toiletRepository,
+                                 StopPointRepository stopPointRepository,
+                                 ReferencePointRepository referencePointRepository,
+                                 SharedServicePointRepository sharedServicePointRepository,
+                                 RelationService relationService) {
     this.toiletRepository = toiletRepository;
     this.stopPointRepository = stopPointRepository;
     this.referencePointRepository = referencePointRepository;
+    this.sharedServicePointRepository = sharedServicePointRepository;
     this.relationService = relationService;
+  }
+
+  @BeforeEach
+  void setUp() {
+    SharedServicePoint servicePoint = SharedServicePoint.builder()
+            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],"
+                    + "\"trafficPointSloids\":[\"ch:1:sloid:12345:1\"]}")
+            .sloid("ch:1:sloid:7000")
+            .build();
+    sharedServicePointRepository.saveAndFlush(servicePoint);
+  }
+
+  @AfterEach
+  void cleanUp() {
+    sharedServicePointRepository.deleteAll();
   }
 
   @Test
@@ -68,23 +95,21 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldCreateToilet() throws Exception {
     //given
-    String parentServicePointSloid = "ch:1:sloid:7000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
     CreateToiletVersionModel model = ToiletTestData.getCreateToiletVersionModel();
-    model.setParentServicePointSloid(parentServicePointSloid);
+    model.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //when && then
     mvc.perform(post("/v1/toilets").contentType(contentType)
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isCreated());
     verify(relationService, times(1)).save(any(RelationVersion.class));
-
   }
   @Test
   void shouldCreateToiletWhenStopPointIsReduced() throws Exception {
@@ -110,23 +135,39 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldNotCreateToiletWhenStopPointDoesNotExists() throws Exception {
+  void shouldNotCreateToiletWhenStopPointDoesNotExist() throws Exception {
     //given
-    String parentServicePointSloid = "ch:1:sloid:7000";
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
     CreateToiletVersionModel model = ToiletTestData.getCreateToiletVersionModel();
-    model.setParentServicePointSloid(parentServicePointSloid);
+    model.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //when && then
     mvc.perform(post("/v1/toilets").contentType(contentType)
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isPreconditionFailed())
-        .andExpect(jsonPath("$.message", is("The stop place with sloid ch:1:sloid:7000 does not exists.")));
+        .andExpect(jsonPath("$.message", is("The stop place with sloid ch:1:sloid:7000 does not exist.")));
     verify(relationService, times(0)).save(any(RelationVersion.class));
+  }
 
+  @Test
+  void shouldNotCreateToiletVersionWhenParentSloidDoesNotExist() throws Exception {
+    //given
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid("ch:1:sloid:7001");
+    referencePointRepository.save(referencePointVersion);
+
+    CreateTicketCounterVersionModel model = TicketCounterTestData.getCreateTicketCounterVersionVersionModel();
+    model.setParentServicePointSloid("ch:1:sloid:7001");
+
+    //when && then
+    mvc.perform(post("/v1/ticket-counters").contentType(contentType)
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(model)))
+            .andExpect(status().isPreconditionFailed())
+            .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7001 does not exist.")));
   }
 
   /**
@@ -141,23 +182,22 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldUpdateTicketCounter() throws Exception {
     //given
-    String parentServicePointSloid = "ch:1:sloid:7000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
     ToiletVersion version1 = ToiletTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     toiletRepository.saveAndFlush(version1);
     ToiletVersion version2 = ToiletTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     toiletRepository.saveAndFlush(version2);
 
     CreateToiletVersionModel editedVersionModel = new CreateToiletVersionModel();
-    editedVersionModel.setParentServicePointSloid(parentServicePointSloid);
+    editedVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersionModel.setSloid(version2.getSloid());
     editedVersionModel.setValidFrom(version2.getValidFrom());
     editedVersionModel.setValidTo(version2.getValidTo().minusYears(1));
