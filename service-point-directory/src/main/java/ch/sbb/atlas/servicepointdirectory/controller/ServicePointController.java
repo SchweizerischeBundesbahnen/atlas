@@ -100,12 +100,7 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public ReadServicePointVersionModel createServicePoint(CreateServicePointVersionModel createServicePointVersionModel) {
-    ServicePointVersion servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
-
-    if (!createServicePointVersionModel.shouldGenerateServicePointNumber()
-        && servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber())) {
-      throw new ServicePointNumberAlreadyExistsException(servicePointVersion.getNumber());
-    }
+    ServicePointVersion servicePointVersion;
 
     if (createServicePointVersionModel.shouldGenerateServicePointNumber()) {
       int nextAvailableServicePointId = servicePointNumberService.getNextAvailableServicePointId(
@@ -114,13 +109,16 @@ public class ServicePointController implements ServicePointApiV1 {
       ServicePointNumber servicePointNumber = ServicePointNumber.of(createServicePointVersionModel.getCountry(),
           nextAvailableServicePointId);
       log.info("Generated new service point number={}", servicePointNumber);
-      servicePointVersion.setNumber(servicePointNumber);
-      servicePointVersion.setCountry(servicePointNumber.getCountry());
-      servicePointVersion.setNumberShort(servicePointNumber.getNumberShort());
-      servicePointVersion.setSloid(ServicePointNumber.calculateSloid(servicePointNumber));
-      if (createServicePointVersionModel.isOperatingPointRouteNetwork()) {
-        servicePointVersion.setOperatingPointKilometerMaster(servicePointNumber);
+
+      servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel, servicePointNumber);
+    } else {
+      ServicePointNumber manualServicePointNumber = ServicePointNumber.of(createServicePointVersionModel.getCountry(),
+          createServicePointVersionModel.getNumberShort());
+      if (servicePointService.isServicePointNumberExisting(manualServicePointNumber)) {
+        throw new ServicePointNumberAlreadyExistsException(manualServicePointNumber);
       }
+
+      servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel, manualServicePointNumber);
     }
 
     addGeoReferenceInformation(servicePointVersion);
@@ -135,7 +133,8 @@ public class ServicePointController implements ServicePointApiV1 {
     ServicePointVersion servicePointVersionToUpdate = servicePointService.findById(id)
         .orElseThrow(() -> new IdNotFoundException(id));
 
-    ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(updateServicePointVersionModel);
+    ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(updateServicePointVersionModel,
+        servicePointVersionToUpdate.getNumber());
     addGeoReferenceInformation(editedVersion);
 
     servicePointService.update(servicePointVersionToUpdate, editedVersion,
