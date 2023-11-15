@@ -90,6 +90,7 @@ public class TrafficPointElementVersion extends BasePointVersion<TrafficPointEle
   @AtlasVersionableProperty
   private Double compassDirection;
 
+  @NotNull
   @AtlasVersionableProperty
   @Enumerated(EnumType.STRING)
   private TrafficPointElementType trafficPointElementType;
@@ -134,6 +135,9 @@ public class TrafficPointElementVersion extends BasePointVersion<TrafficPointEle
       ch:1:sloid:7000:1234:088946 for stop points! 
       """)
   public boolean isValidSloid(){
+    if (trafficPointElementType == null) {
+      return true;
+    }
     int expectedColonsArea = 4;
     int expectedColonsPlatform = 5;
 
@@ -152,6 +156,9 @@ public class TrafficPointElementVersion extends BasePointVersion<TrafficPointEle
       compassDirection
       """)
   public boolean isValidForBoardingArea(){
+    if (trafficPointElementType == null) {
+      return true;
+    }
       if(trafficPointElementType.equals(TrafficPointElementType.BOARDING_AREA)) {
         return Objects.isNull(designationOperational) &&
             Objects.isNull(length) &&
