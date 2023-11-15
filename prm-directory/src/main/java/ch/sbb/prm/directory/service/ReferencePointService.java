@@ -84,9 +84,7 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
     return referencePointRepository.findAll();
   }
 
-  @PreAuthorize("""
-      @prmUserAdministrationService.hasUserPermissionsForBusinessOrganisations
-      (#referencePointVersion, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+  @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#referencePointVersion)")
   public ReferencePointVersion createReferencePoint(ReferencePointVersion referencePointVersion) {
     stopPointService.checkStopPointExists(referencePointVersion.getParentServicePointSloid());
     stopPointService.validateIsNotReduced(referencePointVersion.getParentServicePointSloid());
@@ -98,9 +96,7 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
     return referencePointRepository.saveAndFlush(referencePointVersion);
   }
 
-  @PreAuthorize("""
-      @prmUserAdministrationService.hasUserPermissionsForBusinessOrganisations
-      (#editedVersion, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+  @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#editedVersion)")
   public ReferencePointVersion updateReferencePointVersion(ReferencePointVersion currentVersion,
                                                            ReferencePointVersion editedVersion) {
     return updateVersion(currentVersion, editedVersion);
