@@ -1,3 +1,28 @@
+@use 'src/styles/variables' as variables;
+
 .stop-point-detail {
   padding: 30px 30px 0 30px;
+  background-color: white;
+  margin-right: 5px;
+
+  width: 100%;
+  border-top-right-radius: variables.$border-radius;
+
+  min-height: calc(100vh - #{variables.$footerHeight} - #{variables.$headerHeight} - 300px);
+}
+
+footer {
+  height: variables.$footerHeight;
+  background-color: white;
+
+  box-shadow: 0px -4px 10px -4px rgba(0, 0, 0, 0.1);
+  border-bottom-left-radius: variables.$border-radius;
+  border-bottom-right-radius: variables.$border-radius;
+}
+
+.footer-box {
+  position: sticky;
+  bottom: 0;
+  height: calc(#{variables.$footerHeight} + 1rem);
+  background-color: variables.$background;
 }
