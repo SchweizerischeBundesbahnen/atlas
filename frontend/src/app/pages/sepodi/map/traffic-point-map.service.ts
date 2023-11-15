@@ -32,7 +32,7 @@ export class TrafficPointMapService {
         ? `${point.properties.designation} - ${point.properties.sloid}`
         : point.properties.sloid;
       popupHtml +=
-        `<a href="${Pages.SEPODI.path}/${Pages.TRAFFIC_POINT_ELEMENTS.path}/${point.properties.sloid}">` +
+        `<a href="${Pages.SEPODI.path}/${Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path}/${point.properties.sloid}">` +
         `${description}</a> <br/>`;
     });
 

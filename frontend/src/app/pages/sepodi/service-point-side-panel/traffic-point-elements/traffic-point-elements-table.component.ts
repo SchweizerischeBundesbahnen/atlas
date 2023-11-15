@@ -58,7 +58,9 @@ export class TrafficPointElementsTableComponent implements OnInit, OnDestroy {
 
       this.tableFilterConfig = this.tableService.initializeFilterConfig(
         {},
-        this.isTrafficPointArea ? Pages.TRAFFIC_POINT_ELEMENTS_AREA : Pages.TRAFFIC_POINT_ELEMENTS,
+        this.isTrafficPointArea
+          ? Pages.TRAFFIC_POINT_ELEMENTS_AREA
+          : Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM,
       );
     });
   }
@@ -69,7 +71,7 @@ export class TrafficPointElementsTableComponent implements OnInit, OnDestroy {
 
   addNewTrafficPointElement() {
     this.router
-      .navigate([Pages.SEPODI.path, Pages.TRAFFIC_POINT_ELEMENTS.path, 'add'], {
+      .navigate([Pages.SEPODI.path, Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path, 'add'], {
         state: {
           servicePointNumber: this.servicePointNumber,
           isTrafficPointArea: this.isTrafficPointArea,
@@ -80,7 +82,7 @@ export class TrafficPointElementsTableComponent implements OnInit, OnDestroy {
 
   editVersion($event: ReadTrafficPointElementVersion) {
     this.router
-      .navigate([Pages.SEPODI.path, Pages.TRAFFIC_POINT_ELEMENTS.path, $event.sloid], {
+      .navigate([Pages.SEPODI.path, Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path, $event.sloid], {
         state: {
           servicePointNumber: this.servicePointNumber,
           isTrafficPointArea: this.isTrafficPointArea,
