@@ -1,11 +1,6 @@
 package ch.sbb.prm.directory.service;
 
-import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
-import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
@@ -14,45 +9,51 @@ import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
-import ch.sbb.prm.directory.exception.StopPointDoesNotExistsException;
+import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.exception.TrafficPointElementDoesNotExistsException;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
-import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
-@IntegrationTest
-@Transactional
-class PlatformServiceTest {
+import java.util.List;
+import java.util.Set;
 
-  private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-  private final PlatformRepository platformRepository;
-  private final ReferencePointRepository referencePointRepository;
-  private final RelationRepository relationRepository;
+class PlatformServiceTest extends BasePrmServiceTest {
 
-  private final StopPointRepository stopPointRepository;
   private final PlatformService platformService;
+  private final PlatformRepository platformRepository;
   private final SharedServicePointConsumer sharedServicePointConsumer;
+  private final RelationRepository relationRepository;
+  private final StopPointRepository stopPointRepository;
+  private final ReferencePointRepository referencePointRepository;
 
   @Autowired
-  PlatformServiceTest(PlatformRepository platformRepository, ReferencePointRepository referencePointRepository,
-      RelationRepository relationRepository, StopPointRepository stopPointRepository, PlatformService platformService,
-      SharedServicePointConsumer sharedServicePointConsumer) {
+  PlatformServiceTest(PlatformService platformService,
+                      PlatformRepository platformRepository,
+                      SharedServicePointConsumer sharedServicePointConsumer,
+                      RelationRepository relationRepository,
+                      StopPointRepository stopPointRepository,
+                      ReferencePointRepository referencePointRepository,
+                      SharedServicePointRepository sharedServicePointRepository) {
+    super(sharedServicePointRepository);
+    this.platformService = platformService;
     this.platformRepository = platformRepository;
-    this.referencePointRepository = referencePointRepository;
+    this.sharedServicePointConsumer = sharedServicePointConsumer;
     this.relationRepository = relationRepository;
     this.stopPointRepository = stopPointRepository;
-    this.platformService = platformService;
-    this.sharedServicePointConsumer = sharedServicePointConsumer;
+    this.referencePointRepository = referencePointRepository;
   }
 
+  @Override
   @BeforeEach
   void setUp() {
     sharedServicePointConsumer.readServicePointFromKafka(SharedServicePointVersionModel.builder()
@@ -63,13 +64,12 @@ class PlatformServiceTest {
   }
 
   @Test
-  void shouldNotCreatePlatformWhenStopPointDoesNotExists() {
+  void shouldNotCreatePlatformWhenStopPointDoesNotExist() {
     //given
     PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
     platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
-
     //when & then
-    assertThrows(StopPointDoesNotExistsException.class,
+    assertThrows(StopPointDoesNotExistException.class,
         () -> platformService.createPlatformVersion(platformVersion)).getLocalizedMessage();
   }
 
@@ -85,12 +85,12 @@ class PlatformServiceTest {
     platformService.createPlatformVersion(platformVersion);
 
     //then
-    List<PlatformVersion> platformVersions = platformRepository.findByParentServicePointSloid(
-        platformVersion.getParentServicePointSloid());
+    List<PlatformVersion> platformVersions = platformRepository
+            .findByParentServicePointSloid(platformVersion.getParentServicePointSloid());
     assertThat(platformVersions).hasSize(1);
     assertThat(platformVersions.get(0).getParentServicePointSloid()).isEqualTo(platformVersion.getParentServicePointSloid());
-    List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
-        platformVersion.getParentServicePointSloid());
+    List<RelationVersion> relationVersions = relationRepository
+            .findAllByParentServicePointSloid(platformVersion.getParentServicePointSloid());
     assertThat(relationVersions).isEmpty();
   }
 
@@ -115,8 +115,8 @@ class PlatformServiceTest {
         platformVersion.getParentServicePointSloid());
     assertThat(platformVersions).hasSize(1);
     assertThat(platformVersions.get(0).getParentServicePointSloid()).isEqualTo(platformVersion.getParentServicePointSloid());
-    List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
-        PARENT_SERVICE_POINT_SLOID);
+    List<RelationVersion> relationVersions = relationRepository
+            .findAllByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions).hasSize(1);
     assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(PLATFORM);
