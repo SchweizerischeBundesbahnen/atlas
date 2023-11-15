@@ -15,22 +15,24 @@ public class PrmUserAdministrationService extends BusinessOrganisationBasedUserA
 
     private final SharedServicePointService sharedServicePointService;
 
-    public PrmUserAdministrationService(UserPermissionHolder userPermissionHolder, SharedServicePointService sharedServicePointService) {
+    public PrmUserAdministrationService(UserPermissionHolder userPermissionHolder,
+                                        SharedServicePointService sharedServicePointService) {
         super(userPermissionHolder);
         this.sharedServicePointService = sharedServicePointService;
     }
 
-    public boolean hasUserPermissionsForBusinessOrganisations(PrmSharedVersion version, ApplicationType applicationType) {
+    public boolean hasUserRightsToCreateOrEditPrmObject(PrmSharedVersion version) {
 
-        SharedServicePointVersionModel sharedServicePointVersionModel = sharedServicePointService.validateServicePointExists(version.getParentServicePointSloid());
+        SharedServicePointVersionModel sharedServicePointVersionModel = sharedServicePointService
+                .validateServicePointExists(version.getParentServicePointSloid());
 
         if (sharedServicePointVersionModel == null || sharedServicePointVersionModel.getSboids().isEmpty()) {
-            log.error("List of provided SboidsAssociated (SBOIDs) was empty. Cannot perform check permissions. Will deny operation");
+            log.error("List of provided SBOIDs was empty. Cannot perform check permissions. Will deny operation");
             return false;
         }
-        log.info("Checking if user has enough rights to perform edit or create of PRM object");
+        log.info("Checking if user has appropriate BusinessOrganisation permissions to perform edit or create of PRM object");
         return sharedServicePointVersionModel.getSboids().stream()
-                .anyMatch(sboid -> hasUserPermissionsForBusinessOrganisation(sboid, applicationType));
+                .anyMatch(sboid -> hasUserPermissionsForBusinessOrganisation(sboid, ApplicationType.PRM));
     }
 
 }
