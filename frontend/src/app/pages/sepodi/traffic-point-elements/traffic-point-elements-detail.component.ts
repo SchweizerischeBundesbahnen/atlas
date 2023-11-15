@@ -151,7 +151,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
     return String(this.servicePointNumber);
   }
 
-  backToTrafficPoint(destination: string) {
+  backToTrafficPointElements(destination: string) {
     this.router
       .navigate([
         Pages.SEPODI.path,
@@ -164,8 +164,8 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
 
   confirmCancel() {
     this.isTrafficPointArea
-      ? this.backToTrafficPoint('areas')
-      : this.backToTrafficPoint('traffic-point-elements');
+      ? this.backToTrafficPointElements(Pages.TRAFFIC_POINT_ELEMENTS_AREA.path)
+      : this.backToTrafficPointElements(Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path);
   }
 
   switchVersion(newIndex: number) {
