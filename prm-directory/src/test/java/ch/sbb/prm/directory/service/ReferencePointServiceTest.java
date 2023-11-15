@@ -1,10 +1,7 @@
 package ch.sbb.prm.directory.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
-import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.InformationDeskTestData;
 import ch.sbb.prm.directory.ParkingLotTestData;
@@ -25,73 +22,71 @@ import ch.sbb.prm.directory.exception.ReducedVariantException;
 import ch.sbb.prm.directory.repository.InformationDeskRepository;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.PlatformRepository;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
-import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
-@IntegrationTest
-@Transactional
-class ReferencePointServiceTest {
+import java.util.List;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+class ReferencePointServiceTest extends BasePrmServiceTest {
 
   private final ReferencePointService referencePointService;
-  private final PlatformRepository platformRepository;
-  private final TicketCounterRepository ticketCounterRepository;
-  private final ToiletRepository toiletRepository;
-  private final InformationDeskRepository informationDeskRepository;
-  private final ParkingLotRepository parkingLotRepository;
-
   private final RelationService relationService;
-
+  private final ToiletRepository toiletRepository;
+  private final PlatformRepository platformRepository;
   private final StopPointRepository stopPointRepository;
+  private final ParkingLotRepository parkingLotRepository;
+  private final TicketCounterRepository ticketCounterRepository;
+  private final InformationDeskRepository informationDeskRepository;
 
   @Autowired
-  ReferencePointServiceTest(ReferencePointService referencePointService, PlatformRepository platformRepository,
-      TicketCounterRepository ticketCounterRepository, ToiletRepository toiletRepository,
-      InformationDeskRepository informationDeskRepository, ParkingLotRepository parkingLotRepository,
-      RelationService relationService,
-      StopPointRepository stopPointRepository) {
+  ReferencePointServiceTest(ReferencePointService referencePointService, RelationService relationService,
+                            ToiletRepository toiletRepository, PlatformRepository platformRepository,
+                            StopPointRepository stopPointRepository, ParkingLotRepository parkingLotRepository,
+                            TicketCounterRepository ticketCounterRepository,
+                            InformationDeskRepository informationDeskRepository,
+                            SharedServicePointRepository sharedServicePointRepository) {
+    super(sharedServicePointRepository);
     this.referencePointService = referencePointService;
-    this.platformRepository = platformRepository;
-    this.ticketCounterRepository = ticketCounterRepository;
-    this.toiletRepository = toiletRepository;
-    this.informationDeskRepository = informationDeskRepository;
-    this.parkingLotRepository = parkingLotRepository;
     this.relationService = relationService;
+    this.toiletRepository = toiletRepository;
+    this.platformRepository = platformRepository;
     this.stopPointRepository = stopPointRepository;
+    this.parkingLotRepository = parkingLotRepository;
+    this.ticketCounterRepository = ticketCounterRepository;
+    this.informationDeskRepository = informationDeskRepository;
   }
 
   @Test
   void shouldCreateReferencePoint() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
-    createAndSavePlatformVersion(parentServicePointSloid);
-    createAndSaveTicketCounterVersion(parentServicePointSloid);
-    createAndSaveToiletVersion(parentServicePointSloid);
-    createAndSaveInformationDeskVersion(parentServicePointSloid);
-    createAndSaveParkingLotVersion(parentServicePointSloid);
+    createAndSavePlatformVersion(PARENT_SERVICE_POINT_SLOID);
+    createAndSaveTicketCounterVersion(PARENT_SERVICE_POINT_SLOID);
+    createAndSaveToiletVersion(PARENT_SERVICE_POINT_SLOID);
+    createAndSaveInformationDeskVersion(PARENT_SERVICE_POINT_SLOID);
+    createAndSaveParkingLotVersion(PARENT_SERVICE_POINT_SLOID);
 
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
-
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when
     referencePointService.createReferencePoint(referencePointVersion);
 
     //then
-    List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
-        parentServicePointSloid);
+    List<RelationVersion> relations = relationService
+            .getRelationsByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     assertThat(relations).hasSize(5);
-    assertThat(relations.stream().map(RelationVersion::getReferencePointElementType)).containsExactlyInAnyOrder(
-        ReferencePointElementType.values());
-
+    assertThat(relations.stream().map(RelationVersion::getReferencePointElementType))
+            .containsExactlyInAnyOrder(ReferencePointElementType.values());
   }
 
   @Test
