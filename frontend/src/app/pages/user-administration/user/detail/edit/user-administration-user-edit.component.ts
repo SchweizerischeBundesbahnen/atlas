@@ -1,13 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { UserPermissionManager } from '../../../service/user-permission-manager';
-import { BusinessOrganisationsService, User } from '../../../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
 import { UserService } from '../../../service/user.service';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { CreationEditionRecord } from '../../../../../core/components/base-detail/user-edit-info/creation-edition-record';
 import moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BusinessOrganisationsService, User } from '../../../../../api';
 
 @Component({
   selector: 'app-user-administration-edit',
@@ -28,12 +28,12 @@ export class UserAdministrationUserEditComponent implements OnInit {
     private readonly dialogService: DialogService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    readonly userPermissionManager: UserPermissionManager
+    readonly userPermissionManager: UserPermissionManager,
   ) {}
 
   ngOnInit() {
     const permissionsFromUserModelAsArray = this.userService.getPermissionsFromUserModelAsArray(
-      this.user!
+      this.user!,
     );
     if (permissionsFromUserModelAsArray.length === 0) {
       this.user = undefined;
@@ -54,7 +54,7 @@ export class UserAdministrationUserEditComponent implements OnInit {
         this.user = user;
         this.editMode = false;
         this.userPermissionManager.setPermissions(
-          this.userService.getPermissionsFromUserModelAsArray(this.user)
+          this.userService.getPermissionsFromUserModelAsArray(this.user),
         );
         this.notificationService.success('USER_ADMIN.NOTIFICATIONS.EDIT_SUCCESS');
         this.convertUserPermissionToRecord();
@@ -72,7 +72,7 @@ export class UserAdministrationUserEditComponent implements OnInit {
       if (result) {
         this.editMode = false;
         this.userPermissionManager.setPermissions(
-          this.userService.getPermissionsFromUserModelAsArray(this.user!)
+          this.userService.getPermissionsFromUserModelAsArray(this.user!),
         );
         this.userPermissionManager.emitBoFormResetEvent();
       }
@@ -81,19 +81,19 @@ export class UserAdministrationUserEditComponent implements OnInit {
 
   private convertUserPermissionToRecord(): void {
     const permissionsFromUserModelAsArray = this.userService.getPermissionsFromUserModelAsArray(
-      this.user!
+      this.user!,
     );
     if (permissionsFromUserModelAsArray.length > 0) {
       const firstCreated = permissionsFromUserModelAsArray.reduce((previousValue, currentValue) => {
         return moment(new Date(previousValue.creationDate!)).isBefore(
-          moment(new Date(currentValue.creationDate!))
+          moment(new Date(currentValue.creationDate!)),
         )
           ? previousValue
           : currentValue;
       });
       const lastEdited = permissionsFromUserModelAsArray.reduce((previousValue, currentValue) => {
         return moment(new Date(previousValue.editionDate!)).isAfter(
-          moment(new Date(currentValue.editionDate!))
+          moment(new Date(currentValue.editionDate!)),
         )
           ? previousValue
           : currentValue;

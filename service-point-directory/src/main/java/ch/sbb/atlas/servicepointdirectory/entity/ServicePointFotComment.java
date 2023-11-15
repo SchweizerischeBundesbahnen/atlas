@@ -1,8 +1,10 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
+import ch.sbb.atlas.api.AtlasFieldLengths;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +27,7 @@ public class ServicePointFotComment extends BaseDidokImportEntity {
   private Integer servicePointNumber;
 
   @NotBlank
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_2000)
   private String fotComment;
 
 }
