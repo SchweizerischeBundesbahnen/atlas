@@ -23,6 +23,7 @@ import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { TrafficPointMapService } from '../map/traffic-point-map.service';
 import { ValidityConfirmationService } from '../validity/validity-confirmation.service';
+import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
 
 interface AreaOption {
   sloid: string | undefined;
@@ -37,7 +38,7 @@ const NUMBER_COLONS_AREA = 0;
   templateUrl: './traffic-point-elements-detail.component.html',
   styleUrls: ['./traffic-point-elements-detail.component.scss'],
 })
-export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
+export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, DetailFormComponent {
   readonly extractSloid = (option: AreaOption) => option.sloid;
   readonly displayExtractor = (option: AreaOption) => option.displayText;
 
@@ -282,5 +283,9 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy {
       this.form.enable();
       return EMPTY;
     };
+  }
+
+  isFormDirty(): boolean {
+    return this.form.dirty;
   }
 }
