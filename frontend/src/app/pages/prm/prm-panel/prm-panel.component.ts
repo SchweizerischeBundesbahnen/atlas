@@ -1,9 +1,9 @@
-import {Component} from '@angular/core';
-import {ReadStopPointVersion} from "../../../api";
-import {DateRange} from "../../../core/versioning/date-range";
-import {Subscription} from "rxjs";
-import {VersionsHandlingService} from "../../../core/versioning/versions-handling.service";
-import {ActivatedRoute} from "@angular/router";
+import { Component } from '@angular/core';
+import { ReadServicePointVersion, ReadStopPointVersion, ServicePointsService } from '../../../api';
+import { DateRange } from '../../../core/versioning/date-range';
+import { Subscription } from 'rxjs';
+import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
+import { ActivatedRoute } from '@angular/router';
 
 export const TABS = [
   {
@@ -37,16 +37,16 @@ export const TABS = [
   {
     link: 'connection',
     title: 'PRM.CONNECTION',
-  }
+  },
 ];
 
 @Component({
   selector: 'app-prm-panel',
   templateUrl: './prm-panel.component.html',
-  styleUrls: ['./prm-panel.component.scss']
+  styleUrls: ['./prm-panel.component.scss'],
 })
 export class PrmPanelComponent {
-
+  selectedServicePointVersion!: ReadServicePointVersion;
   stopPointVersions!: ReadStopPointVersion[];
   selectedVersion!: ReadStopPointVersion;
   maxValidity!: DateRange;
@@ -57,13 +57,18 @@ export class PrmPanelComponent {
 
   constructor(
     private route: ActivatedRoute,
+    private servicePointsService: ServicePointsService,
   ) {}
 
   ngOnInit() {
     this.stopPointSubscription = this.route.data.subscribe((next) => {
       this.stopPointVersions = next.stopPoint;
-      this.initVersioning();
-
+      this.initStopPointVersioning();
+      this.servicePointsService
+        .getServicePointVersions(this.selectedVersion.number.number)
+        .subscribe((servicePointVersions: ReadServicePointVersion[]) => {
+          this.initServicePointVersioning(servicePointVersions);
+        });
     });
   }
 
@@ -71,11 +76,15 @@ export class PrmPanelComponent {
     this.stopPointSubscription?.unsubscribe();
   }
 
-  private initVersioning() {
+  private initStopPointVersioning() {
     this.maxValidity = VersionsHandlingService.getMaxValidity(this.stopPointVersions);
     this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
       this.stopPointVersions,
     );
   }
 
+  private initServicePointVersioning(servicePointVersions: ReadServicePointVersion[]) {
+    this.selectedServicePointVersion =
+      VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
+  }
 }

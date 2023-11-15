@@ -1045,6 +1045,40 @@
   },
   "PRM": {
     "STOP_POINT": "Basisinformationen Haltestelle",
+    "STOP_POINTS": {
+      "DETAILS": "Angabe zur Haltestelle",
+      "MEANS_OF_TRANSPORT_SUB_LABEL": "Steurt die Auswahl der zu erfassenden Krieterien für die Bestandsaufnahme BehiG",
+      "INTEROPERABLE": "Aktivieren wenn der Bahnhof für den interoperablen Verkehr zugelassen ist.",
+      "FREE_TEXT": "Hinweise zur Haltestelle",
+      "URL": "Webseite mit zusätzlichen Informationen",
+      "ADDRESS_KEY_DATA": "Adresse",
+      "ADDRESS": "Strasse / Nummer",
+      "ZIP": "Postleitzahl",
+      "CITY": "Ort",
+      "VISUAL_INFO": "Statish/optisch",
+      "VISUAL_INFO_EXAMPLE": "z.B. Aushangfahrpläne, Netzplöne, Tarifbestimmungen, etc.",
+      "CUSTOMER_INFORMATION": "Kundeninformation Haltestelle",
+      "DYNAMIC_OPTIC_SYSTEM": "Dynamisch/optisch",
+      "DYNAMIC_AUDIO_SYSTEM": "Akustisch",
+      "ADDITIONAL_INFORMATION": "Züsätzliche Informationen",
+      "AUTONOMUS_USABILITY": "Autonome Benutzbarkeit",
+      "ASSISTANCE_REQUEST_FULFILLED": "Voraussetzungen erfüllt",
+      "ASSISTANCE_SERVICE": "Hilfestellung durch Personal",
+      "ASSISTANCE_AVAILABILITY": "Voranmeldung für Hilfestellung nötig",
+      "ASSISTANCE_CONDITION": "Hinweise zur Hilfestellung",
+      "ALTERNATIVE_TRANSPORT": "Shuttledienst bzw. alternatives öV-Angebot",
+      "ALTERNATIVE_TRANSPORT_CONDITION": "Hinweise zum Shuttledienst bzw. alternativen öV-Angebot"
+    },
+    "ENUMS": {
+      "STANDARD_ATTRIBUTE_TYPES": {
+        "TO_BE_COMPLETED": "Zu vervollständigen",
+        "YES": "Ja",
+        "NO": "Nein",
+        "NOT_APPLICABLE": "Nicht anwendbar",
+        "PARTIALLY": "Teilweise"
+      }
+    },
+
     "REFERENCE_POINT": "Referenzpunkt",
     "PLATFORM": "Haltekante",
     "TICKET_COUNTER": "Billettschalter",
