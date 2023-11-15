@@ -1,19 +1,23 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {ReadStopPointVersion} from "../../../api";
-import {Subject, Subscription} from "rxjs";
-import {FormGroup} from "@angular/forms";
-import {StopPointDetailFormGroup} from "./stop-point/stop-point-detail-form-group";
-import {VersionsHandlingService} from "../../../core/versioning/versions-handling.service";
-import {takeUntil} from "rxjs/operators";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ReadStopPointVersion, StandardAttributeType } from '../../../api';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { FormGroup } from '@angular/forms';
+import {
+  StopPointDetailFormGroup,
+  StopPointFormGroupBuilder,
+} from './stop-point/stop-point-detail-form-group';
+import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
+import { takeUntil } from 'rxjs/operators';
+import { TranslationSortingService } from '../../../core/translation/translation-sorting.service';
+import { Pages } from '../../pages';
 
 @Component({
   selector: 'app-prm-detail-panel',
   templateUrl: './prm-detail-panel.component.html',
-  styleUrls: ['./prm-detail-panel.component.scss']
+  styleUrls: ['./prm-detail-panel.component.scss'],
 })
 export class PrmDetailPanelComponent implements OnInit {
-
   stopPointVersions!: ReadStopPointVersion[];
   selectedVersionIndex!: number;
   selectedVersion!: ReadStopPointVersion;
@@ -24,24 +28,24 @@ export class PrmDetailPanelComponent implements OnInit {
   isSwitchVersionDisabled = false;
   preferredId?: number;
   private ngUnsubscribe = new Subject<void>();
+  public isFormEnabled$ = new BehaviorSubject<boolean>(false);
 
   constructor(
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-  ) {
-  }
+    private readonly translationSortingService: TranslationSortingService,
+  ) {}
 
   private stopPointSubscription?: Subscription;
-  private StopPointFormGroupBuilder: any;
+  standardAttributeTypes: string[] = [];
 
   ngOnInit(): void {
     this.stopPointSubscription = this.route.parent?.data
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((next) => {
-        console.log(next)
         this.stopPointVersions = next.stopPoint;
         this.initStopPoint();
-
+        this.setSortedOperatingPointTypes();
       });
   }
 
@@ -56,7 +60,7 @@ export class PrmDetailPanelComponent implements OnInit {
       this.isNew = false;
     }
 
-    this.form = this.StopPointFormGroupBuilder.buildFormGroup(this.selectedVersion);
+    this.form = StopPointFormGroupBuilder.buildFormGroup(this.selectedVersion);
     if (!this.isNew) {
       this.disableForm();
     }
@@ -64,7 +68,7 @@ export class PrmDetailPanelComponent implements OnInit {
   }
 
   private disableForm(): void {
-    this.form.disable({emitEvent: false});
+    this.form.disable({ emitEvent: false });
   }
 
   isSelectedVersionHighDate(
@@ -92,4 +96,18 @@ export class PrmDetailPanelComponent implements OnInit {
     this.selectedVersionIndex = this.stopPointVersions.indexOf(this.selectedVersion);
     this.initSelectedVersion();
   }
+  private setSortedOperatingPointTypes = (): void => {
+    this.standardAttributeTypes = this.translationSortingService.sort(
+      Object.values(StandardAttributeType),
+      'PRM.STOP_POINTS.STANDARD_ATTRIBUTE_TYPES.',
+    );
+  };
+
+  closeSidePanel() {
+    this.router.navigate([Pages.PRM.path]).then();
+  }
+
+  toggleEdit() {}
+
+  save() {}
 }
