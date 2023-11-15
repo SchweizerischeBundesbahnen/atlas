@@ -137,7 +137,6 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   private TrafficPointElementVersion createTrafficPoint(TrafficPointElementVersion trafficPointElementVersion) {
     ServicePointNumber servicePointNumber = trafficPointElementVersion.getServicePointNumber();
     crossValidationService.validateServicePointNumberExists(servicePointNumber);
-
     return trafficPointElementService.create(trafficPointElementVersion, servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber));
   }
 
