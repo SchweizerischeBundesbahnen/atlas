@@ -29,6 +29,7 @@ import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -126,7 +127,6 @@ public class TrafficPointElementVersion extends BasePointVersion<TrafficPointEle
   @Column(columnDefinition = "DATE")
   private LocalDate validTo;
 
-  //TODO: Test dazu schreiben
   @JsonIgnore
   @AssertTrue(message = """
       SLOID does not match the specified pattern of: 
@@ -153,15 +153,11 @@ public class TrafficPointElementVersion extends BasePointVersion<TrafficPointEle
       """)
   public boolean isValidForBoardingArea(){
       if(trafficPointElementType.equals(TrafficPointElementType.BOARDING_AREA)) {
-        return isNull(designationOperational) &&
-            isNull(length) &&
-            isNull(boardingAreaHeight) &&
-            isNull(compassDirection);
+        return Objects.isNull(designationOperational) &&
+            Objects.isNull(length) &&
+            Objects.isNull(boardingAreaHeight) &&
+            Objects.isNull(compassDirection);
       }
     return true;
-  }
-
-  private boolean isNull(Object obj) {
-      return obj == null;
   }
 }
