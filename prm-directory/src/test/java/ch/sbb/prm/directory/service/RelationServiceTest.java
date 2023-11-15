@@ -1,13 +1,10 @@
 package ch.sbb.prm.directory.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
-import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.RelationTestData;
@@ -16,27 +13,29 @@ import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.ReducedVariantException;
 import ch.sbb.prm.directory.repository.RelationRepository;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
-import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
-@IntegrationTest
-@Transactional
-class RelationServiceTest {
+import java.util.List;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+class RelationServiceTest extends BasePrmServiceTest {
 
   private final RelationService relationService;
-
   private final RelationRepository relationRepository;
-
   private final StopPointRepository stopPointRepository;
 
   @Autowired
-  RelationServiceTest(RelationService relationService, RelationRepository relationRepository,
-      StopPointRepository stopPointRepository) {
+  RelationServiceTest(RelationService relationService,
+                      RelationRepository relationRepository,
+                      StopPointRepository stopPointRepository,
+                      SharedServicePointRepository sharedServicePointRepository) {
+    super(sharedServicePointRepository);
     this.relationService = relationService;
     this.relationRepository = relationRepository;
     this.stopPointRepository = stopPointRepository;
@@ -73,7 +72,7 @@ class RelationServiceTest {
     stopPointVersion.setSloid(parentServicePointSloid);
     stopPointRepository.save(stopPointVersion);
     RelationVersion version1 = RelationTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     relationRepository.saveAndFlush(version1);
     RelationVersion editedVersion = RelationTestData.builderVersion2().build();
     editedVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567));
@@ -87,10 +86,11 @@ class RelationServiceTest {
     editedVersion.setCreator(version1.getCreator());
     editedVersion.setEditor(version1.getEditor());
     editedVersion.setVersion(version1.getVersion());
+
     //when
     ReducedVariantException result = Assertions.assertThrows(
         ReducedVariantException.class,
-        () -> relationService.updateVersion(version1,editedVersion));
+        () -> relationService.updateVersion(version1, editedVersion));
 
     //then
     assertThat(result).isNotNull();

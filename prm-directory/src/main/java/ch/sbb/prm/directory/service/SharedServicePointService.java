@@ -2,14 +2,15 @@ package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.prm.directory.entity.SharedServicePoint;
-import ch.sbb.prm.directory.exception.ServicePointDoesNotExistsException;
+import ch.sbb.prm.directory.exception.ServicePointDoesNotExistException;
 import ch.sbb.prm.directory.exception.TrafficPointElementDoesNotExistsException;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +33,7 @@ public class SharedServicePointService {
   public SharedServicePointVersionModel validateServicePointExists(String sloid) {
     Optional<SharedServicePointVersionModel> servicePoint = findServicePoint(sloid);
     if (servicePoint.isEmpty()) {
-      throw new ServicePointDoesNotExistsException(sloid);
+      throw new ServicePointDoesNotExistException(sloid);
     }
     return servicePoint.get();
   }

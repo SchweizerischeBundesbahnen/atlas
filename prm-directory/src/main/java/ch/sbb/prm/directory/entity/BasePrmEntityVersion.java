@@ -11,13 +11,14 @@ import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.time.LocalDate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
+
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @Getter
@@ -27,7 +28,7 @@ import lombok.experimental.SuperBuilder;
 @MappedSuperclass
 @FieldNameConstants
 @AtlasVersionable
-public abstract class BasePrmEntityVersion extends BasePrmImportEntity {
+public abstract class BasePrmEntityVersion extends BasePrmImportEntity implements PrmSharedVersion {
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @AtlasVersionableProperty
@@ -50,5 +51,10 @@ public abstract class BasePrmEntityVersion extends BasePrmImportEntity {
   @NotNull
   @Column(columnDefinition = "TIMESTAMP")
   private LocalDate validTo;
+
+  @Override
+  public String getParentServicePointSloid() {
+    return parentServicePointSloid;
+  }
 
 }

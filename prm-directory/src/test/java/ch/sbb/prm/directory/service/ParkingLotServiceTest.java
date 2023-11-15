@@ -1,10 +1,5 @@
 package ch.sbb.prm.directory.service;
 
-import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
@@ -13,100 +8,99 @@ import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
-import ch.sbb.prm.directory.exception.StopPointDoesNotExistsException;
+import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
-import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
-@IntegrationTest
-@Transactional
-class ParkingLotServiceTest {
+import java.util.List;
+import java.util.Set;
 
-  private final ReferencePointRepository referencePointRepository;
-  private final RelationRepository relationRepository;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-  private final StopPointRepository stopPointRepository;
-
-  private final ParkingLotRepository parkingLotRepository;
+class ParkingLotServiceTest extends BasePrmServiceTest {
 
   private final ParkingLotService parkingLotService;
+  private final ParkingLotRepository parkingLotRepository;
+  private final RelationRepository relationRepository;
+  private final StopPointRepository stopPointRepository;
+  private final ReferencePointRepository referencePointRepository;
 
   @Autowired
-  ParkingLotServiceTest(ReferencePointRepository referencePointRepository,
-      RelationRepository relationRepository, StopPointRepository stopPointRepository,
-      ParkingLotRepository parkingLotRepository, ParkingLotService parkingLotService) {
-    this.referencePointRepository = referencePointRepository;
+  ParkingLotServiceTest(ParkingLotService parkingLotService,
+                        ParkingLotRepository parkingLotRepository,
+                        RelationRepository relationRepository,
+                        StopPointRepository stopPointRepository,
+                        ReferencePointRepository referencePointRepository,
+                        SharedServicePointRepository sharedServicePointRepository) {
+    super(sharedServicePointRepository);
+    this.parkingLotService = parkingLotService;
+    this.parkingLotRepository = parkingLotRepository;
     this.relationRepository = relationRepository;
     this.stopPointRepository = stopPointRepository;
-    this.parkingLotRepository = parkingLotRepository;
-    this.parkingLotService = parkingLotService;
+    this.referencePointRepository = referencePointRepository;
   }
 
   @Test
-  void shouldNotCreateParkingLotWhenStopPointDoesNotExists() {
+  void shouldNotCreateParkingLotWhenStopPointDoesNotExist() {
     //given
-    String parentServicePointSloid="ch:1:sloid:70000";
     ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLotVersion();
-    parkingLot.setParentServicePointSloid(parentServicePointSloid);
-
+    parkingLot.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when & then
-    assertThrows(StopPointDoesNotExistsException.class,
+    assertThrows(StopPointDoesNotExistException.class,
         () -> parkingLotService.createParkingLot(parkingLot)).getLocalizedMessage();
   }
 
   @Test
   void shouldCreateParkingLotWhenNoReferencePointExists() {
     //given
-    String parentServicePointSloid="ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLotVersion();
-    parkingLot.setParentServicePointSloid(parentServicePointSloid);
+    parkingLot.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when
     parkingLotService.createParkingLot(parkingLot);
 
     //then
-    List<ParkingLotVersion> parkingLotVersions = parkingLotRepository.findByParentServicePointSloid(
-        parkingLot.getParentServicePointSloid());
+    List<ParkingLotVersion> parkingLotVersions = parkingLotRepository
+            .findByParentServicePointSloid(parkingLot.getParentServicePointSloid());
     assertThat(parkingLotVersions).hasSize(1);
     assertThat(parkingLotVersions.get(0).getParentServicePointSloid()).isEqualTo(parkingLot.getParentServicePointSloid());
-    List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
-        parkingLot.getParentServicePointSloid());
+    List<RelationVersion> relationVersions = relationRepository
+            .findAllByParentServicePointSloid(parkingLot.getParentServicePointSloid());
     assertThat(relationVersions).isEmpty();
   }
 
   @Test
   void shouldCreateParkingLotWhenReferencePointExists() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
-    referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
     ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLotVersion();
-    parkingLot.setParentServicePointSloid(parentServicePointSloid);
-
+    parkingLot.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when
     parkingLotService.createParkingLot(parkingLot);
 
     //then
-    List<ParkingLotVersion> parkingLotVersions = parkingLotRepository.findByParentServicePointSloid(
-        parkingLot.getParentServicePointSloid());
+    List<ParkingLotVersion> parkingLotVersions = parkingLotRepository
+            .findByParentServicePointSloid(parkingLot.getParentServicePointSloid());
     assertThat(parkingLotVersions).hasSize(1);
     assertThat(parkingLotVersions.get(0).getParentServicePointSloid()).isEqualTo(parkingLot.getParentServicePointSloid());
-    List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
-        parentServicePointSloid);
+    List<RelationVersion> relationVersions = relationRepository
+            .findAllByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions).hasSize(1);
-    assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(parentServicePointSloid);
+    assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(PARKING_LOT);
   }
 
