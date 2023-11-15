@@ -1,7 +1,5 @@
 package ch.sbb.prm.directory.service.versioning;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -12,29 +10,32 @@ import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.StopPointService;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 @IntegrationTest
 @Transactional
 class StopPointVersioningTest {
 
-  private final StopPointRepository stopPointRepository;
   private final StopPointService stopPointService;
-
+  private final StopPointRepository stopPointRepository;
   private final SharedServicePointRepository sharedServicePointRepository;
 
-
   @Autowired
-  StopPointVersioningTest(StopPointRepository stopPointRepository, StopPointService stopPointService,
-      SharedServicePointRepository sharedServicePointRepository) {
-    this.stopPointRepository = stopPointRepository;
+  StopPointVersioningTest(StopPointService stopPointService,
+                          StopPointRepository stopPointRepository,
+                          SharedServicePointRepository sharedServicePointRepository) {
     this.stopPointService = stopPointService;
+    this.stopPointRepository = stopPointRepository;
     this.sharedServicePointRepository = sharedServicePointRepository;
   }
 
@@ -45,6 +46,11 @@ class StopPointVersioningTest {
         .sloid("ch:1:sloid:12345")
         .build();
     sharedServicePointRepository.saveAndFlush(servicePoint);
+  }
+
+  @AfterEach
+  void cleanUp() {
+    sharedServicePointRepository.deleteAll();
   }
 
   /**
@@ -92,7 +98,6 @@ class StopPointVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-
     //when
     stopPointService.updateStopPointVersion(version2, editedVersion);
     //then
@@ -110,7 +115,6 @@ class StopPointVersioningTest {
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.id)
         .isEqualTo(editedVersion);
-
   }
 
   /**
@@ -141,8 +145,6 @@ class StopPointVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-
-
     //when
     stopPointService.updateStopPointVersion(version2, editedVersion);
     //then
@@ -175,7 +177,6 @@ class StopPointVersioningTest {
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
         .isEqualTo(savedVersion3);
-
   }
 
   /**
@@ -202,7 +203,6 @@ class StopPointVersioningTest {
     editedVersion.setCreator(version2.getCreator());
     editedVersion.setEditor(version2.getEditor());
     editedVersion.setVersion(version2.getVersion());
-
     //when
     stopPointService.updateStopPointVersion(version2, editedVersion);
     //then
@@ -221,7 +221,6 @@ class StopPointVersioningTest {
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.validTo)
         .isEqualTo(savedVersion2);
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2001, 12, 31));
-
   }
 
 }

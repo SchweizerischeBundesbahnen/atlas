@@ -1,9 +1,6 @@
 package ch.sbb.prm.directory.service.versioning;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
-import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
@@ -12,18 +9,20 @@ import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
+import ch.sbb.prm.directory.service.BasePrmServiceTest;
 import ch.sbb.prm.directory.service.ReferencePointService;
 import ch.sbb.prm.directory.service.RelationService;
-import java.time.LocalDate;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
-@IntegrationTest
-@Transactional
-class ReferencePointVersioningTest {
+import java.time.LocalDate;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+class ReferencePointVersioningTest extends BasePrmServiceTest {
 
   private final ReferencePointService referencePointService;
   private final ReferencePointRepository referencePointRepository;
@@ -31,8 +30,12 @@ class ReferencePointVersioningTest {
   private final StopPointRepository stopPointRepository;
 
   @Autowired
-  ReferencePointVersioningTest(ReferencePointService referencePointService, ReferencePointRepository referencePointRepository,
-      RelationService relationService, StopPointRepository stopPointRepository) {
+  ReferencePointVersioningTest(ReferencePointService referencePointService,
+                               ReferencePointRepository referencePointRepository,
+                               RelationService relationService,
+                               StopPointRepository stopPointRepository,
+                               SharedServicePointRepository sharedServicePointRepository) {
+    super(sharedServicePointRepository);
     this.referencePointService = referencePointService;
     this.referencePointRepository = referencePointRepository;
     this.relationService = relationService;
@@ -51,24 +54,23 @@ class ReferencePointVersioningTest {
   @Test
   void scenario1a() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
 
     ReferencePointVersion version1 = ReferencePointTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointService.createReferencePoint(version1);
 
     ReferencePointVersion version2 = ReferencePointTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointService.createReferencePoint(version2);
 
     ReferencePointVersion editedVersion = ReferencePointTestData.builderVersion2().build();
     editedVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567));
     editedVersion.setDesignation("designation never");
     editedVersion.setMainReferencePoint(false);
-    editedVersion.setParentServicePointSloid(parentServicePointSloid);
+    editedVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersion.setReferencePointType(ReferencePointAttributeType.PLATFORM);
     editedVersion.setCreationDate(version2.getCreationDate());
     editedVersion.setEditionDate(version2.getEditionDate());
@@ -77,7 +79,7 @@ class ReferencePointVersioningTest {
     editedVersion.setVersion(version2.getVersion());
 
     //when
-    referencePointService.updateReferencePointVersion(version2,editedVersion);
+    referencePointService.updateReferencePointVersion(version2, editedVersion);
 
     //then
     List<ReferencePointVersion> result = referencePointRepository.findAllByNumberOrderByValidFrom(
@@ -97,9 +99,8 @@ class ReferencePointVersioningTest {
         .isEqualTo(editedVersion);
 
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
-        parentServicePointSloid);
+            PARENT_SERVICE_POINT_SLOID);
     assertThat(relations).isEmpty();
-
   }
 
   /**
@@ -114,25 +115,24 @@ class ReferencePointVersioningTest {
   @Test
   void scenario2() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
 
     ReferencePointVersion version1 = ReferencePointTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointService.createReferencePoint(version1);
 
     ReferencePointVersion version2 = ReferencePointTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointService.createReferencePoint(version2);
 
     ReferencePointVersion version3 = ReferencePointTestData.builderVersion3().build();
-    version3.setParentServicePointSloid(parentServicePointSloid);
+    version3.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointService.createReferencePoint(version3);
 
     ReferencePointVersion editedVersion = ReferencePointTestData.builderVersion2().build();
-    editedVersion.setParentServicePointSloid(parentServicePointSloid);
+    editedVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567));
     editedVersion.setValidFrom(LocalDate.of(2001, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2002, 6, 1));
@@ -144,7 +144,7 @@ class ReferencePointVersioningTest {
     editedVersion.setVersion(version2.getVersion());
 
     //when
-    referencePointService.updateReferencePointVersion(version2,editedVersion);
+    referencePointService.updateReferencePointVersion(version2, editedVersion);
 
     //then
     List<ReferencePointVersion> result = referencePointRepository.findAllByNumberOrderByValidFrom(
@@ -179,9 +179,8 @@ class ReferencePointVersioningTest {
         .isEqualTo(version3);
 
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
-        parentServicePointSloid);
+            PARENT_SERVICE_POINT_SLOID);
     assertThat(relations).isEmpty();
-
   }
 
   /**
@@ -196,21 +195,20 @@ class ReferencePointVersioningTest {
   @Test
   void scenario8a() {
     //given
-    String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
 
     ReferencePointVersion version1 = ReferencePointTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointService.createReferencePoint(version1);
 
     ReferencePointVersion version2 = ReferencePointTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointService.createReferencePoint(version2);
 
     ReferencePointVersion editedVersion = ReferencePointTestData.builderVersion2().build();
-    editedVersion.setParentServicePointSloid(parentServicePointSloid);
+    editedVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567));
     editedVersion.setValidTo(LocalDate.of(2001, 12, 31));
     editedVersion.setCreationDate(version2.getCreationDate());
@@ -220,7 +218,7 @@ class ReferencePointVersioningTest {
     editedVersion.setVersion(version2.getVersion());
 
     //when
-    referencePointService.updateReferencePointVersion(version2,editedVersion);
+    referencePointService.updateReferencePointVersion(version2, editedVersion);
 
     //then
     List<ReferencePointVersion> result = referencePointRepository.findAllByNumberOrderByValidFrom(
@@ -241,11 +239,8 @@ class ReferencePointVersioningTest {
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2001, 12, 31));
 
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
-        parentServicePointSloid);
+            PARENT_SERVICE_POINT_SLOID);
     assertThat(relations).isEmpty();
-
   }
-
-
 
 }

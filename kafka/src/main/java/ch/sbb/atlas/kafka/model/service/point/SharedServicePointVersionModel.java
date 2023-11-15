@@ -1,13 +1,14 @@
 package ch.sbb.atlas.kafka.model.service.point;
 
 import ch.sbb.atlas.kafka.model.AtlasEvent;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor

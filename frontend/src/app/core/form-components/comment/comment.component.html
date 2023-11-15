@@ -8,6 +8,7 @@
     [required]="required"
     fieldLabel="{{ label }}"
     infoIconTitle="{{ info }}"
+    *ngIf="displayLabel"
   ></app-atlas-label-field>
   <textarea
     [attr.data-cy]="controlName"

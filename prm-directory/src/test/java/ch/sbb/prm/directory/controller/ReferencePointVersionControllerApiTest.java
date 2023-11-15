@@ -1,16 +1,5 @@
 package ch.sbb.prm.directory.controller;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import ch.sbb.atlas.api.prm.model.referencepoint.CreateReferencePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -27,6 +16,7 @@ import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
+import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
 import ch.sbb.prm.directory.entity.ToiletVersion;
@@ -34,46 +24,82 @@ import ch.sbb.prm.directory.repository.InformationDeskRepository;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.service.RelationService;
-import java.time.LocalDate;
-import java.util.Set;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.Set;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @Transactional
 class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
 
+  private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:7000";
   private final ReferencePointRepository referencePointRepository;
-
   private final StopPointRepository stopPointRepository;
-
   private final InformationDeskRepository informationDeskRepository;
   private final TicketCounterRepository ticketCounterRepository;
   private final ParkingLotRepository parkingLotRepository;
   private final ToiletRepository toiletRepository;
-
+  private final SharedServicePointRepository sharedServicePointRepository;
   private final PlatformRepository platformRepository;
+
   @MockBean
   private final RelationService relationService;
 
   @Autowired
   ReferencePointVersionControllerApiTest(ReferencePointRepository referencePointRepository,
-      StopPointRepository stopPointRepository, InformationDeskRepository informationDeskRepository,
-      TicketCounterRepository ticketCounterRepository, ParkingLotRepository parkingLotRepository,
-      ToiletRepository toiletRepository, PlatformRepository platformRepository, RelationService relationService){
+                                         StopPointRepository stopPointRepository,
+                                         InformationDeskRepository informationDeskRepository,
+                                         TicketCounterRepository ticketCounterRepository,
+                                         ParkingLotRepository parkingLotRepository,
+                                         ToiletRepository toiletRepository,
+                                         SharedServicePointRepository sharedServicePointRepository,
+                                         PlatformRepository platformRepository,
+                                         RelationService relationService) {
     this.referencePointRepository = referencePointRepository;
     this.stopPointRepository = stopPointRepository;
     this.informationDeskRepository = informationDeskRepository;
     this.ticketCounterRepository = ticketCounterRepository;
     this.parkingLotRepository = parkingLotRepository;
     this.toiletRepository = toiletRepository;
+    this.sharedServicePointRepository = sharedServicePointRepository;
     this.platformRepository = platformRepository;
     this.relationService = relationService;
+  }
+
+  @BeforeEach
+  void setUp() {
+    SharedServicePoint servicePoint = SharedServicePoint.builder()
+            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],"
+                    + "\"trafficPointSloids\":[]}")
+            .sloid("ch:1:sloid:7000")
+            .build();
+    sharedServicePointRepository.saveAndFlush(servicePoint);
+  }
+
+  @AfterEach
+  void cleanUp() {
+    sharedServicePointRepository.deleteAll();
   }
 
   @Test
@@ -89,28 +115,27 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldCreateReferencePoint() throws Exception {
     //given
-    String parentServicePointSloid = "ch:1:sloid:7000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     CreateReferencePointVersionModel createReferencePointVersionModel = ReferencePointTestData.getCreateReferencePointVersionModel();
-    createReferencePointVersionModel.setParentServicePointSloid(parentServicePointSloid);
+    createReferencePointVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //Init PRM Relations
     InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
-    informationDesk.setParentServicePointSloid(parentServicePointSloid);
+    informationDesk.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     informationDeskRepository.save(informationDesk);
     TicketCounterVersion ticketCounterVersion = TicketCounterTestData.getTicketCounterVersion();
-    ticketCounterVersion.setParentServicePointSloid(parentServicePointSloid);
+    ticketCounterVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     ticketCounterRepository.save(ticketCounterVersion);
     ParkingLotVersion parkingLotVersion = ParkingLotTestData.getParkingLotVersion();
-    parkingLotVersion.setParentServicePointSloid(parentServicePointSloid);
+    parkingLotVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     parkingLotRepository.save(parkingLotVersion);
     ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
-    toiletVersion.setParentServicePointSloid(parentServicePointSloid);
+    toiletVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     toiletRepository.save(toiletVersion);
     PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
-    platformVersion.setParentServicePointSloid(parentServicePointSloid);
+    platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     platformRepository.save(platformVersion);
 
     //when && then
@@ -120,7 +145,6 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(status().isCreated());
     //verify that the reference point create 5 relation
     verify(relationService, times(5)).save(any(RelationVersion.class));
-
   }
 
   @Test
@@ -144,27 +168,26 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldNotCreateReferencePointWhenStopPointDoesNotExists() throws Exception {
+  void shouldNotCreateReferencePointWhenStopPointDoesNotExist() throws Exception {
     //given
-    String parentServicePointSloid = "ch:1:sloid:7000";
     CreateReferencePointVersionModel createReferencePointVersionModel = ReferencePointTestData.getCreateReferencePointVersionModel();
-    createReferencePointVersionModel.setParentServicePointSloid(parentServicePointSloid);
+    createReferencePointVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //Init PRM Relations
     InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
-    informationDesk.setParentServicePointSloid(parentServicePointSloid);
+    informationDesk.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     informationDeskRepository.save(informationDesk);
     TicketCounterVersion ticketCounterVersion = TicketCounterTestData.getTicketCounterVersion();
-    ticketCounterVersion.setParentServicePointSloid(parentServicePointSloid);
+    ticketCounterVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     ticketCounterRepository.save(ticketCounterVersion);
     ParkingLotVersion parkingLotVersion = ParkingLotTestData.getParkingLotVersion();
-    parkingLotVersion.setParentServicePointSloid(parentServicePointSloid);
+    parkingLotVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     parkingLotRepository.save(parkingLotVersion);
     ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
-    toiletVersion.setParentServicePointSloid(parentServicePointSloid);
+    toiletVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     toiletRepository.save(toiletVersion);
     PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
-    platformVersion.setParentServicePointSloid(parentServicePointSloid);
+    platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     platformRepository.save(platformVersion);
 
     //when && then
@@ -172,7 +195,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(createReferencePointVersionModel)))
         .andExpect(status().isPreconditionFailed())
-        .andExpect(jsonPath("$.message", is("The stop place with sloid ch:1:sloid:7000 does not exists.")));
+        .andExpect(jsonPath("$.message", is("The stop place with sloid ch:1:sloid:7000 does not exist.")));
     verify(relationService, times(0)).save(any(RelationVersion.class));
   }
 
@@ -188,21 +211,20 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldUpdateReferencePoint() throws Exception {
     //given
-    String parentServicePointSloid = "ch:1:sloid:7000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
 
     ReferencePointVersion version1 = ReferencePointTestData.builderVersion1().build();
-    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.saveAndFlush(version1);
 
     ReferencePointVersion version2 = ReferencePointTestData.builderVersion2().build();
-    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.saveAndFlush(version2);
 
     CreateReferencePointVersionModel editedVersionModel = new CreateReferencePointVersionModel();
-    editedVersionModel.setParentServicePointSloid(parentServicePointSloid);
+    editedVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersionModel.setNumberWithoutCheckDigit(1234567);
     editedVersionModel.setMainReferencePoint(version2.isMainReferencePoint());
     editedVersionModel.setReferencePointType(version2.getReferencePointType());
@@ -225,8 +247,6 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2000-12-31")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2001-01-01")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2001-12-31")));
-
   }
-
 
 }
