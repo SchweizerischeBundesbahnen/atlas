@@ -104,7 +104,7 @@ describe('TrafficPointElementsDetailComponent', () => {
 
     it('should go back to servicepoint', () => {
       spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
-      component.backToTrafficPoint('traffic-point-elements');
+      component.backToTrafficPointElements('traffic-point-elements');
 
       expect(router.navigate).toHaveBeenCalledWith([
         'service-point-directory',
