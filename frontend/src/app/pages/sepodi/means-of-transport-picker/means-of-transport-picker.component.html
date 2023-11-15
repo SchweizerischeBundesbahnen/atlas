@@ -1,5 +1,6 @@
 <form [formGroup]="formGroup">
   <div class="picker">
+    <span class="font-regular-sm">{{ label | translate }}</span>
     <div class="means-of-transport-wrapper">
       <ng-container *ngFor="let mean of means">
         <img

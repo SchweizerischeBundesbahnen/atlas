@@ -7,6 +7,7 @@
     *ngIf="additionalLabelspace"
     height="{{ additionalLabelspace + 'px' }}"
   ></atlas-spacer>
+
   <mat-select
     class="atlas-select-dropdown"
     (selectionChange)="selectChanged.emit($event)"
