@@ -107,7 +107,7 @@ public class PrmUserAdministrationServiceTest {
         when(userPermissionHolder.isAdmin()).thenReturn(true);
 
         boolean permissionsToCreate = prmBOBasedUserAdministrationService
-                .hasUserPermissionsForBusinessOrganisations(prmSharedVersion, ApplicationType.PRM);
+                .hasUserRightsToCreateOrEditPrmObject(prmSharedVersion);
 
         assertThat(permissionsToCreate).isTrue();
     }
@@ -126,7 +126,7 @@ public class PrmUserAdministrationServiceTest {
                 .build()));
 
         boolean permissionsToCreate = prmBOBasedUserAdministrationService
-                .hasUserPermissionsForBusinessOrganisations(prmSharedVersion, ApplicationType.PRM);
+                .hasUserRightsToCreateOrEditPrmObject(prmSharedVersion);
 
         assertThat(permissionsToCreate).isTrue();
     }
@@ -145,7 +145,7 @@ public class PrmUserAdministrationServiceTest {
                 .build()));
 
         boolean permissionsToCreate = prmBOBasedUserAdministrationService
-                .hasUserPermissionsForBusinessOrganisations(prmSharedVersion, ApplicationType.PRM);
+                .hasUserRightsToCreateOrEditPrmObject(prmSharedVersion);
 
         assertThat(permissionsToCreate).isTrue();
     }
@@ -164,7 +164,7 @@ public class PrmUserAdministrationServiceTest {
                 .build()));
 
         boolean permissionsToCreate = prmBOBasedUserAdministrationService
-                .hasUserPermissionsForBusinessOrganisations(prmSharedVersion, ApplicationType.PRM);
+                .hasUserRightsToCreateOrEditPrmObject(prmSharedVersion);
 
         assertThat(permissionsToCreate).isFalse();
     }
@@ -187,7 +187,7 @@ public class PrmUserAdministrationServiceTest {
                 .build()));
 
         boolean permissionsToCreate = prmBOBasedUserAdministrationService
-                .hasUserPermissionsForBusinessOrganisations(prmSharedVersion, ApplicationType.PRM);
+                .hasUserRightsToCreateOrEditPrmObject(prmSharedVersion);
 
         assertThat(permissionsToCreate).isTrue();
     }
@@ -210,7 +210,7 @@ public class PrmUserAdministrationServiceTest {
                 .build()));
 
         boolean permissionsToCreate = prmBOBasedUserAdministrationService
-                .hasUserPermissionsForBusinessOrganisations(prmSharedVersion, ApplicationType.PRM);
+                .hasUserRightsToCreateOrEditPrmObject(prmSharedVersion);
 
         assertThat(permissionsToCreate).isFalse();
     }
@@ -238,7 +238,7 @@ public class PrmUserAdministrationServiceTest {
                 .build()));
 
         boolean permissionsToCreate = prmBOBasedUserAdministrationService
-                .hasUserPermissionsForBusinessOrganisations(prmSharedVersion, ApplicationType.PRM);
+                .hasUserRightsToCreateOrEditPrmObject(prmSharedVersion);
 
         assertThat(permissionsToCreate).isTrue();
     }
