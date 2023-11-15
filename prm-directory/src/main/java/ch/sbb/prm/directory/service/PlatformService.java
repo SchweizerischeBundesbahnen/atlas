@@ -68,9 +68,7 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
     return platformRepository.findAll();
   }
 
-  @PreAuthorize("""
-      @prmUserAdministrationService.hasUserPermissionsForBusinessOrganisations
-      (#version, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+  @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#version)")
   public PlatformVersion createPlatformVersion(PlatformVersion version) {
     sharedServicePointService.validateTrafficPointElementExists(version.getParentServicePointSloid(), version.getSloid());
     PlatformVersion savedVersion = save(version);
@@ -78,9 +76,7 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
     return savedVersion;
   }
 
-  @PreAuthorize("""
-      @prmUserAdministrationService.hasUserPermissionsForBusinessOrganisations
-      (#editedVersion, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+  @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#editedVersion)")
   public PlatformVersion updatePlatformVersion(PlatformVersion currentVersion, PlatformVersion editedVersion) {
     return updateVersion(currentVersion, editedVersion);
   }

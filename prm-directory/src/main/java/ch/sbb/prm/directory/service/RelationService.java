@@ -68,9 +68,7 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
         new ApplyVersioningDeleteByIdLongConsumer(relationRepository));
   }
 
-  @PreAuthorize("""
-      @prmUserAdministrationService.hasUserPermissionsForBusinessOrganisations
-      (#editedVersion, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).PRM)""")
+  @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#editedVersion)")
   public RelationVersion updateRelationVersion(RelationVersion currentVersion, RelationVersion editedVersion) {
     //the referencePointTypeElement cannot be updated. We have to set it from the current version
     editedVersion.setReferencePointElementType(currentVersion.getReferencePointElementType());
