@@ -1,13 +1,5 @@
 package ch.sbb.prm.directory.controller;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
@@ -17,21 +9,30 @@ import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
 class StopPointVersionControllerApiTest extends BaseControllerApiTest {
 
   private final SharedServicePointRepository sharedServicePointRepository;
-
   private final StopPointRepository stopPointRepository;
 
   @Autowired
-  StopPointVersionControllerApiTest(SharedServicePointRepository sharedServicePointRepository, StopPointRepository stopPointRepository) {
+  StopPointVersionControllerApiTest(SharedServicePointRepository sharedServicePointRepository,
+                                    StopPointRepository stopPointRepository) {
     this.sharedServicePointRepository = sharedServicePointRepository;
     this.stopPointRepository = stopPointRepository;
   }
@@ -95,6 +96,7 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount", is(0)));
   }
+
   @Test
   void shouldCreateStopPoint() throws Exception {
     //given
@@ -108,7 +110,6 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/stop-points").contentType(contentType)
             .content(mapper.writeValueAsString(stopPointCreateVersionModel)))
         .andExpect(status().isCreated());
-
   }
 
   @Test
@@ -186,15 +187,20 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldNotCreateStopPointWhenServicePointDoesNotExists() throws Exception {
+  void shouldNotCreateStopPointVersionWhenServicePointDoesNotExist() throws Exception {
     //given
     CreateStopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
+    SharedServicePoint servicePoint = SharedServicePoint.builder()
+            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7001\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
+            .sloid("ch:1:sloid:7001")
+            .build();
+    sharedServicePointRepository.saveAndFlush(servicePoint);
+
     //when && then
     mvc.perform(post("/v1/stop-points").contentType(contentType)
-            .content(mapper.writeValueAsString(stopPointCreateVersionModel)))
-        .andExpect(status().isPreconditionFailed())
-        .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7000 does not exists.")));
-
+                    .content(mapper.writeValueAsString(stopPointCreateVersionModel)))
+            .andExpect(status().isPreconditionFailed())
+            .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7000 does not exist.")));
   }
 
   /**
@@ -244,6 +250,7 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setCreator(version2.getCreator());
     editedVersionModel.setEditor(version2.getEditor());
     editedVersionModel.setEtagVersion(version2.getVersion());
+    editedVersionModel.setSloid("ch:1:sloid:12345");
     SharedServicePoint servicePoint = SharedServicePoint.builder()
         .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:12345\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
         .sloid("ch:1:sloid:12345")
@@ -259,7 +266,6 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2000-12-31")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2001-01-01")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2001-12-31")));
-
   }
 
 }
