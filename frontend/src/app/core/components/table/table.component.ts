@@ -29,6 +29,7 @@ export class TableComponent<DATATYPE> implements OnInit {
   @Output() tableChanged = new EventEmitter<TablePagination>();
   @Output() tableInitialized: EventEmitter<TablePagination> = new EventEmitter<TablePagination>();
   @Output() changeDropdownEvent = new EventEmitter<ColumnDropDownEvent>();
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @Output() buttonClickEvent = new EventEmitter<any>();
   @Output() checkedBoxEvent = new EventEmitter<SelectionModel<DATATYPE>>();
   isLoading = false;
@@ -139,6 +140,7 @@ export class TableComponent<DATATYPE> implements OnInit {
     this.checkedBoxEvent.emit(this.checkBoxSelection);
   }
 
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   stopPropagation($event: any) {
     if (!this.checkBoxModeEnabled) {
       $event.stopPropagation();

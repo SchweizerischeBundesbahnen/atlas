@@ -28,6 +28,7 @@ export class AtlasButtonComponent {
   @Input() buttonStyleClass: string | undefined;
 
   @Output() buttonClicked = new EventEmitter<void>();
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @ContentChild('rightIcon') rightIcon!: TemplateRef<any>;
 
   constructor(private authService: AuthService) {}
