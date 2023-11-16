@@ -128,6 +128,7 @@ class ServicePointTypeTest extends BaseControllerApiTest {
   void shouldCreateServicePointAsFreightServicePoint() {
     CreateServicePointVersionModel servicePoint = CreateServicePointVersionModel.builder()
         .country(Country.SWITZERLAND)
+        .numberShort(18771)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .freightServicePoint(true)
