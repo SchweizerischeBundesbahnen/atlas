@@ -1,9 +1,17 @@
 import { Component } from '@angular/core';
-import { ReadServicePointVersion, ReadStopPointVersion, ServicePointsService } from '../../../api';
+import {
+  BusinessOrganisationsService,
+  BusinessOrganisationVersion,
+  ReadServicePointVersion,
+  ReadStopPointVersion,
+  ServicePointsService,
+} from '../../../api';
 import { DateRange } from '../../../core/versioning/date-range';
 import { Subscription } from 'rxjs';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { ActivatedRoute } from '@angular/router';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
 
 export const TABS = [
   {
@@ -46,30 +54,48 @@ export const TABS = [
   styleUrls: ['./prm-panel.component.scss'],
 })
 export class PrmPanelComponent {
-  selectedServicePointVersion!: ReadServicePointVersion;
+  selectedServicePointVersion?: ReadServicePointVersion;
+  selectedBusinessOrganisation?: BusinessOrganisationVersion;
   stopPointVersions!: ReadStopPointVersion[];
   selectedVersion!: ReadStopPointVersion;
   maxValidity!: DateRange;
+  boDescription!: string;
 
   tabs = TABS;
-
   private stopPointSubscription?: Subscription;
 
   constructor(
     private route: ActivatedRoute,
     private servicePointsService: ServicePointsService,
-  ) {}
+    private businessOrganisationsService: BusinessOrganisationsService,
+    private businessOrganisationLanguageService: BusinessOrganisationLanguageService,
+  ) {
+    this.businessOrganisationLanguageService
+      .languageChanged()
+      .subscribe(() => this.translateBoDescription());
+  }
 
   ngOnInit() {
-    this.stopPointSubscription = this.route.data.subscribe((next) => {
-      this.stopPointVersions = next.stopPoint;
-      this.initStopPointVersioning();
-      this.servicePointsService
-        .getServicePointVersions(this.selectedVersion.number.number)
-        .subscribe((servicePointVersions: ReadServicePointVersion[]) => {
-          this.initServicePointVersioning(servicePointVersions);
-        });
-    });
+    this.route.data
+      .pipe(
+        map((next) => {
+          this.stopPointVersions = next.stopPoint;
+          this.initStopPointVersioning();
+        }),
+        switchMap((asd) =>
+          this.servicePointsService
+            .getServicePointVersions(this.selectedVersion.number.number)
+            .pipe(
+              tap((servicePointVersions) => this.initServicePointVersioning(servicePointVersions)),
+            ),
+        ),
+        switchMap((asd) =>
+          this.businessOrganisationsService
+            .getVersions(this.selectedServicePointVersion!.businessOrganisation)
+            .pipe(tap((bo) => this.initSelectedBusinessOrganisationVersion(bo))),
+        ),
+      )
+      .subscribe();
   }
 
   ngOnDestroy() {
@@ -86,5 +112,19 @@ export class PrmPanelComponent {
   private initServicePointVersioning(servicePointVersions: ReadServicePointVersion[]) {
     this.selectedServicePointVersion =
       VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
+  }
+
+  private initSelectedBusinessOrganisationVersion(bos: BusinessOrganisationVersion[]) {
+    this.selectedBusinessOrganisation =
+      VersionsHandlingService.determineDefaultVersionByValidity(bos);
+
+    this.translateBoDescription();
+  }
+
+  private translateBoDescription() {
+    this.boDescription =
+      this.selectedBusinessOrganisation![
+        this.businessOrganisationLanguageService.getCurrentLanguageDescription()
+      ];
   }
 }
