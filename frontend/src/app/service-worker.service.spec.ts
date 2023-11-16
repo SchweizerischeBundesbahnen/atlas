@@ -5,23 +5,26 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DialogComponent } from './core/components/dialog/dialog.component';
 import { of, Subject } from 'rxjs';
 
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 describe('ServiceWorkerService', () => {
   let service: ServiceWorkerService;
 
-  const matDialogSpy = jasmine.createSpyObj<MatDialog>('MatDialog', ['open']);
-  const matDialogRefSpy = jasmine.createSpyObj<MatDialogRef<DialogComponent>>('MatDialogRef', [
-    'afterClosed',
-  ]);
+  const matDialogSpy = jasmine.createSpyObj<MatDialog>(['open']);
+  const matDialogRefSpy = jasmine.createSpyObj<MatDialogRef<DialogComponent>>(['afterClosed']);
   matDialogSpy.open.and.returnValue(matDialogRefSpy);
-  matDialogSpy.open.calls.reset();
 
-  const swUpdateMock = jasmine.createSpyObj('SwUpdate', ['checkForUpdate']);
-  swUpdateMock.checkForUpdate.and.callFake(() => Promise.resolve(false));
-  swUpdateMock.versionUpdates = new Subject<{ type: string }>();
-  swUpdateMock.unrecoverable = new Subject<void>();
-  swUpdateMock.isEnabled = true;
+  class SwUpdateMock {
+    versionUpdates = new Subject<{ type: string }>();
+    unrecoverable = new Subject<void>();
+    isEnabled = true;
+    checkForUpdate = () => Promise.resolve(false);
+  }
+
+  let swUpdateMock: SwUpdateMock;
 
   beforeEach(() => {
+    swUpdateMock = new SwUpdateMock();
+
     TestBed.configureTestingModule({
       providers: [
         ServiceWorkerService,
@@ -29,10 +32,11 @@ describe('ServiceWorkerService', () => {
         { provide: MatDialog, useValue: matDialogSpy },
       ],
     });
+
     service = TestBed.inject(ServiceWorkerService);
 
-    spyOn(service, 'openSWDialog').and.callThrough();
-    spyOn(service, 'reloadPage');
+    spyOn<any>(service, 'openSWDialog').and.callThrough();
+    spyOn<any>(ServiceWorkerService, 'reloadPage');
     matDialogSpy.open.calls.reset();
   });
 
@@ -45,7 +49,7 @@ describe('ServiceWorkerService', () => {
     swUpdateMock.versionUpdates.next({
       type: 'VERSION_READY',
     });
-    expect(service.openSWDialog).toHaveBeenCalledOnceWith(
+    expect(service['openSWDialog']).toHaveBeenCalledOnceWith(
       'SW_DIALOG.UPDATE_TITLE',
       'SW_DIALOG.UPDATE_MESSAGE',
     );
@@ -58,7 +62,7 @@ describe('ServiceWorkerService', () => {
       panelClass: 'atlas-dialog-panel',
       backdropClass: 'atlas-dialog-backdrop',
     });
-    expect(service.reloadPage).toHaveBeenCalledOnceWith();
+    expect(ServiceWorkerService['reloadPage']).toHaveBeenCalledOnceWith();
   });
 
   it('should not open dialog on versionUpdate event', () => {
@@ -70,15 +74,12 @@ describe('ServiceWorkerService', () => {
 
   it('should open dialog on unrecoverable event', () => {
     matDialogRefSpy.afterClosed.and.returnValue(of(false));
-    matDialogSpy.open.calls.reset();
-
     swUpdateMock.unrecoverable.next();
-
-    expect(service.openSWDialog).toHaveBeenCalledOnceWith(
+    expect(service['openSWDialog']).toHaveBeenCalledOnceWith(
       'SW_DIALOG.UNRECOVERABLE_TITLE',
       'SW_DIALOG.UNRECOVERABLE_MESSAGE',
     );
-    expect(matDialogSpy.open).toHaveBeenCalledWith(DialogComponent, {
+    expect(matDialogSpy.open).toHaveBeenCalledOnceWith(DialogComponent, {
       data: {
         confirmText: 'DIALOG.RELOAD',
         title: 'SW_DIALOG.UNRECOVERABLE_TITLE',
@@ -87,6 +88,6 @@ describe('ServiceWorkerService', () => {
       panelClass: 'atlas-dialog-panel',
       backdropClass: 'atlas-dialog-backdrop',
     });
-    expect(service.reloadPage).not.toHaveBeenCalled();
+    expect(ServiceWorkerService['reloadPage']).not.toHaveBeenCalled();
   });
 });
