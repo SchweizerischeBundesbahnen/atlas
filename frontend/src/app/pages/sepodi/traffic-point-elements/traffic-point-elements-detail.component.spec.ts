@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppTestingModule } from '../../../app.testing.module';
 import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
 import { BehaviorSubject, of, Subject } from 'rxjs';
-import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
+import { ActivatedRouteMockType, MockAtlasButtonComponent } from '../../../app.testing.mocks';
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 import { SplitServicePointNumberPipe } from '../search-service-point/split-service-point-number.pipe';
 import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../traffic-point-element-test-data';
@@ -160,7 +160,7 @@ describe('TrafficPointElementsDetailComponent', () => {
     });
   });
 
-  function setupTestBed(activatedRoute: any) {
+  function setupTestBed(activatedRoute: ActivatedRouteMockType) {
     TestBed.configureTestingModule({
       declarations: [
         TrafficPointElementsDetailComponent,

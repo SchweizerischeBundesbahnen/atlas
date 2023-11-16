@@ -6,7 +6,9 @@ import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('TransportCompanyRelationComponent', () => {
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   let component: RelationComponent<any>;
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   let fixture: ComponentFixture<RelationComponent<any>>;
 
   beforeEach(async () => {

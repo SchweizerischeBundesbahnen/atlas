@@ -18,8 +18,11 @@ export class TextFieldComponent {
   @Input() customInputNgStyle!: Record<string, string | undefined | null>;
   @Input() customError!: AtlasFieldCustomError;
   @ContentChild('customChildInputPostfixTemplate')
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   customChildInputPostfixTemplate!: TemplateRef<any>;
-  @ContentChild('customChildInputPrefixTemplate') customChildInputPrefixTemplate!: TemplateRef<any>;
+  @ContentChild('customChildInputPrefixTemplate')
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  customChildInputPrefixTemplate!: TemplateRef<any>;
   @Input() formGroup!: FormGroup;
   @Input() placeholder = '';
 }
