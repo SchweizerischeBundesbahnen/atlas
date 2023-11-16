@@ -29,7 +29,7 @@ export class ServiceWorkerService {
     }
   }
 
-  openSWDialog(titleTranslateKey: string, messageTranslateKey: string): void {
+  private openSWDialog(titleTranslateKey: string, messageTranslateKey: string): void {
     this.dialog
       .open(DialogComponent, {
         data: {
@@ -43,12 +43,12 @@ export class ServiceWorkerService {
       .afterClosed()
       .subscribe((result) => {
         if (result) {
-          this.reloadPage();
+          ServiceWorkerService.reloadPage();
         }
       });
   }
 
-  reloadPage(): void {
+  private static reloadPage(): void {
     location.reload();
   }
 }

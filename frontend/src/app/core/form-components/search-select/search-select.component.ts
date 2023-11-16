@@ -30,6 +30,8 @@ export class SearchSelectComponent<TYPE> {
 
   @Output() changeTrigger = new EventEmitter<TYPE>();
   @ViewChild('ngSelect') ngSelect?: NgSelectComponent;
+
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @ContentChild('labelOptionTemplates') labelOptionTemplates!: TemplateRef<any>;
 
   isDropdownOpen(): boolean {

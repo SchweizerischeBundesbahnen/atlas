@@ -15,14 +15,16 @@ import { NotificationService } from '../../notification/notification.service';
 import { DetailPageContainerComponent } from '../detail-page-container/detail-page-container.component';
 import { DetailFooterComponent } from '../detail-footer/detail-footer.component';
 import { DateRangeTextComponent } from '../../versioning/date-range-text/date-range-text.component';
+import { Record } from './record';
+import { Page } from '../../model/page';
 
 @Component({
   selector: 'app-coverage',
   template: '<p>Mock Product Editor Component</p>',
 })
 class MockAppCoverageComponent {
-  @Input() pageType!: any;
-  @Input() currentRecord!: any;
+  @Input() pageType!: Record;
+  @Input() currentRecord!: Page;
 }
 
 describe('BaseDetailComponent', () => {
@@ -169,7 +171,7 @@ function createDummyForm(enabledForm: boolean) {
       form: form,
       record: { id: 1, status: Status.Validated },
       selectedRecordChange: selectedRecordChange,
-    }
+    },
   );
   dummyController.getId.and.callFake(BaseDetailController.prototype.getId);
   dummyController.isNewRecord.and.callFake(BaseDetailController.prototype.isNewRecord);
