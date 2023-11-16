@@ -72,6 +72,7 @@ describe('TrafficPointElementsDetailComponent', () => {
 
   describe('for existing Version', () => {
     beforeEach(() => {
+      window.history.pushState({ isTrafficPointArea: false }, '', '');
       const activatedRouteMock = { data: of({ trafficPoint: [BERN_WYLEREGG_TRAFFIC_POINTS[0]] }) };
       setupTestBed(activatedRouteMock);
       fixture = TestBed.createComponent(TrafficPointElementsDetailComponent);
@@ -104,7 +105,7 @@ describe('TrafficPointElementsDetailComponent', () => {
 
     it('should go back to servicepoint', () => {
       spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
-      component.backToServicePoint();
+      component.backToTrafficPointElements('traffic-point-elements');
 
       expect(router.navigate).toHaveBeenCalledWith([
         'service-point-directory',
@@ -134,6 +135,7 @@ describe('TrafficPointElementsDetailComponent', () => {
 
   describe('for new Version', () => {
     beforeEach(() => {
+      window.history.pushState({ isTrafficPointArea: false }, '', '');
       const activatedRouteMock = { data: of({ trafficPoint: [] }) };
       setupTestBed(activatedRouteMock);
       fixture = TestBed.createComponent(TrafficPointElementsDetailComponent);
