@@ -15,7 +15,7 @@ import { TableService } from '../../../../core/components/table/table.service';
   styleUrls: ['./traffic-point-elements-table.component.scss'],
 })
 export class TrafficPointElementsTableComponent implements OnInit, OnDestroy {
-  tableColumns: TableColumn<ReadTrafficPointElementVersion>[] = [
+  tableColumnsPlatforms: TableColumn<ReadTrafficPointElementVersion>[] = [
     { headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION', value: 'designation' },
     { headerTitle: 'SEPODI.SERVICE_POINTS.SLOID', value: 'sloid' },
     {
@@ -26,8 +26,17 @@ export class TrafficPointElementsTableComponent implements OnInit, OnDestroy {
     { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
   ];
 
+  tableColumnsAreas: TableColumn<ReadTrafficPointElementVersion>[] = [
+    { headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION', value: 'designation' },
+    { headerTitle: 'SEPODI.SERVICE_POINTS.SLOID', value: 'sloid' },
+    { headerTitle: 'COMMON.VALID_FROM', value: 'validFrom', formatAsDate: true },
+    { headerTitle: 'COMMON.VALID_TO', value: 'validTo', formatAsDate: true },
+  ];
+
   trafficPointElementRows: ReadTrafficPointElementVersion[] = [];
   totalCount$ = 0;
+  isTrafficPointArea = false;
+
   tableFilterConfig!: TableFilter<unknown>[][];
   private ngUnsubscribe = new Subject<void>();
 
@@ -38,42 +47,46 @@ export class TrafficPointElementsTableComponent implements OnInit, OnDestroy {
     private router: Router,
   ) {}
 
-  ngOnInit() {
-    this.tableFilterConfig = this.tableService.initializeFilterConfig(
-      {},
-      Pages.TRAFFIC_POINT_ELEMENTS,
-    );
-  }
-
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
 
-  getOverview(pagination: TablePagination) {
-    this.trafficPointElementService
-      .getPlatformsOfServicePoint(this.servicePointNumber, pagination.page, pagination.size, [
-        pagination.sort ?? 'designation,asc',
-      ])
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((container) => {
-        this.trafficPointElementRows = container.objects!;
-        this.totalCount$ = container.totalCount!;
-      });
+  ngOnInit(): void {
+    this.route.data.pipe(takeUntil(this.ngUnsubscribe)).subscribe((next) => {
+      this.isTrafficPointArea = next.isTrafficPointArea;
+
+      this.tableFilterConfig = this.tableService.initializeFilterConfig(
+        {},
+        this.isTrafficPointArea
+          ? Pages.TRAFFIC_POINT_ELEMENTS_AREA
+          : Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM,
+      );
+    });
   }
 
-  newTrafficPointElement() {
+  getOverview(pagination: TablePagination) {
+    this.getTrafficPointElements(pagination, this.isTrafficPointArea);
+  }
+
+  addNewTrafficPointElement() {
     this.router
-      .navigate([Pages.SEPODI.path, Pages.TRAFFIC_POINT_ELEMENTS.path, 'add'], {
-        state: { servicePointNumber: this.servicePointNumber },
+      .navigate([Pages.SEPODI.path, Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path, 'add'], {
+        state: {
+          servicePointNumber: this.servicePointNumber,
+          isTrafficPointArea: this.isTrafficPointArea,
+        },
       })
       .then();
   }
 
   editVersion($event: ReadTrafficPointElementVersion) {
     this.router
-      .navigate([Pages.SEPODI.path, Pages.TRAFFIC_POINT_ELEMENTS.path, $event.sloid], {
-        state: { servicePointNumber: this.servicePointNumber },
+      .navigate([Pages.SEPODI.path, Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path, $event.sloid], {
+        state: {
+          servicePointNumber: this.servicePointNumber,
+          isTrafficPointArea: this.isTrafficPointArea,
+        },
       })
       .then();
   }
@@ -84,5 +97,21 @@ export class TrafficPointElementsTableComponent implements OnInit, OnDestroy {
 
   closeSidePanel() {
     this.router.navigate([Pages.SEPODI.path]).then();
+  }
+
+  getTrafficPointElements(pagination: TablePagination, isArea: boolean) {
+    const getEndpoint = isArea ? 'getAreasOfServicePoint' : 'getPlatformsOfServicePoint';
+
+    this.trafficPointElementService[getEndpoint](
+      this.servicePointNumber,
+      pagination.page,
+      pagination.size,
+      [pagination.sort ?? 'designation,asc'],
+    )
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((container) => {
+        this.trafficPointElementRows = container.objects!;
+        this.totalCount$ = container.totalCount!;
+      });
   }
 }

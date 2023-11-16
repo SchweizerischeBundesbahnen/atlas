@@ -70,10 +70,13 @@ public class TrafficPointElementService {
     if (trafficPointElementVersion.getSloid() != null && isTrafficPointElementExisting(trafficPointElementVersion.getSloid())) {
       throw new SloidAlreadyExistsException(trafficPointElementVersion.getSloid());
     }
-    if (trafficPointElementVersion.getSloid() == null
-        && trafficPointElementVersion.getTrafficPointElementType() == TrafficPointElementType.BOARDING_PLATFORM) {
+
+    if (trafficPointElementVersion.getSloid() == null) {
+      boolean isBoardingArea = trafficPointElementVersion.getTrafficPointElementType() == TrafficPointElementType.BOARDING_AREA;
+
       trafficPointElementVersion.setSloid(
-          trafficPointElementSloidService.getNextSloidForPlatform(trafficPointElementVersion.getServicePointNumber()));
+          trafficPointElementSloidService.getNextSloid(trafficPointElementVersion.getServicePointNumber(), isBoardingArea)
+      );
     }
     return save(trafficPointElementVersion);
   }
