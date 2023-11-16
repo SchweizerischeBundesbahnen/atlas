@@ -78,10 +78,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "atlas-frontend:build:production"
+              "buildTarget": "atlas-frontend:build:production"
             },
             "development": {
-              "browserTarget": "atlas-frontend:build:development"
+              "buildTarget": "atlas-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -138,13 +138,13 @@
             "additionalEnvironmentVariables": [
               "INSTANA_KEY"
             ],
-            "browserTarget": "atlas-frontend:build",
+            "buildTarget": "atlas-frontend:build",
             "ngsscEnvironmentFile": "src/environments/environment.prod.ts",
             "filePattern": "**/index.html"
           },
           "configurations": {
             "production": {
-              "browserTarget": "atlas-frontend:build:production"
+              "buildTarget": "atlas-frontend:build:production"
             }
           }
         },

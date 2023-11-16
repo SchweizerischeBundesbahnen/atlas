@@ -3,8 +3,6 @@ import { HearingStatus, TimetableHearingYear } from '../../../api';
 import moment from 'moment';
 
 describe('TthUtils', () => {
-  let util: TthUtils;
-
   it('should return true when HearingStatus is ACTIVE', () => {
     //when
     const result = TthUtils.isHearingStatusActive(HearingStatus.Active);
