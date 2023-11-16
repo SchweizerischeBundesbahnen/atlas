@@ -1,7 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.util.DidokCsvMapper;
@@ -19,6 +17,8 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointStatus;
 import com.fasterxml.jackson.databind.MappingIterator;
+import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,7 +27,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
  class ServicePointCsvToEntityMapperTest {
 
@@ -1102,4 +1103,29 @@ import org.junit.jupiter.api.Test;
         .usingRecursiveComparison()
         .ignoringFields("servicePointVersion").isEqualTo(expectedServicePointGeolocation);
   }
+
+  @Test
+  void shouldSetStatusCorrectly() {
+      ServicePointStatus toBeRequestedStatus = ServicePointStatus.TO_BE_REQUESTED;
+      assertThat(servicePointCsvToEntityMapper.calculateStatus(toBeRequestedStatus)).isEqualTo(Status.DRAFT);
+
+      ServicePointStatus requestedStatus = ServicePointStatus.REQUESTED;
+      assertThat(servicePointCsvToEntityMapper.calculateStatus(requestedStatus)).isEqualTo(Status.IN_REVIEW);
+
+      ServicePointStatus plannedStatus = ServicePointStatus.PLANNED;
+      assertThat(servicePointCsvToEntityMapper.calculateStatus(plannedStatus)).isEqualTo(Status.VALIDATED);
+
+      ServicePointStatus inOperationStatus = ServicePointStatus.IN_OPERATION;
+      assertThat(servicePointCsvToEntityMapper.calculateStatus(inOperationStatus)).isEqualTo(Status.VALIDATED);
+
+      ServicePointStatus terminatedStatus = ServicePointStatus.TERMINATED;
+      assertThat(servicePointCsvToEntityMapper.calculateStatus(terminatedStatus)).isEqualTo(Status.VALIDATED);
+
+      ServicePointStatus inPostOperationalPhaseStatus = ServicePointStatus.IN_POST_OPERATIONAL_PHASE;
+      assertThat(servicePointCsvToEntityMapper.calculateStatus(inPostOperationalPhaseStatus)).isEqualTo(Status.VALIDATED);
+
+      ServicePointStatus historicalStatus = ServicePointStatus.HISTORICAL;
+      assertThat(servicePointCsvToEntityMapper.calculateStatus(historicalStatus)).isEqualTo(Status.VALIDATED);
+  }
+
 }
