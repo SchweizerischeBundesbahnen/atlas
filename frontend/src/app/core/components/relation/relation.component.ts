@@ -9,6 +9,7 @@ import { MatTable } from '@angular/material/table';
   templateUrl: './relation.component.html',
   styleUrls: ['./relation.component.scss'],
 })
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 export class RelationComponent<RECORD_TYPE> {
   @ViewChild(MatTable) table!: MatTable<any>;
   @ViewChild(MatSort) matSort!: MatSort;
@@ -50,7 +51,7 @@ export class RelationComponent<RECORD_TYPE> {
   getValue(row: RECORD_TYPE, column: TableColumn<RECORD_TYPE>): string | Date | number {
     if (column.formatAsDate) {
       return this.formatDate(
-        this.readValueFromObject(row, column.value ?? column.valuePath!) as Date
+        this.readValueFromObject(row, column.value ?? column.valuePath!) as Date,
       );
     }
     return this.readValueFromObject(row, column.value ?? column.valuePath!);

@@ -6,7 +6,9 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
 
 describe('SearchSelectComponent', () => {
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   let component: SearchSelectComponent<any>;
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   let fixture: ComponentFixture<SearchSelectComponent<any>>;
 
   beforeEach(async () => {

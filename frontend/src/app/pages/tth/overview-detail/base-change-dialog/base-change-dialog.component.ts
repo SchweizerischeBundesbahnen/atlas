@@ -14,6 +14,7 @@ export class BaseChangeDialogComponent {
   @Input() controlName!: string;
   @Input() maxChars!: string;
   @Output() changeEvent = new EventEmitter();
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @Input() dialogRef!: MatDialogRef<any>;
 
   constructor(
