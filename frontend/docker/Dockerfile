@@ -5,7 +5,7 @@ ARG APP_RELEASE_VERSION=latest
 ENV APP_VERSION=$APP_RELEASE_VERSION
 
 # Download ngssc binary
-ADD https://github.com/kyubisation/angular-server-side-configuration/releases/download/v14.0.1/ngssc_64bit /usr/sbin/ngssc
+ADD https://github.com/kyubisation/angular-server-side-configuration/releases/download/v17.0.0/ngssc_64bit /usr/sbin/ngssc
 RUN chmod +x /usr/sbin/ngssc
 
 # Add ngssc script
