@@ -1,0 +1,29 @@
+<div class="col-12 d-flex">
+  <div class="col-6">
+    <mat-label class="font-bold-lg required-indicator">
+      {{ 'SEPODI.SERVICE_POINTS.MEANS_OF_TRANSPORT' | translate }}
+    </mat-label>
+    <atlas-spacer height="3px"></atlas-spacer>
+    <means-of-transport-picker
+      [formGroup]="form"
+      controlName="meansOfTransport"
+      [disabled]="form.disabled"
+      label="PRM.STOP_POINTS.MEANS_OF_TRANSPORT_SUB_LABEL"
+      [showUnknown]="false"
+    ></means-of-transport-picker>
+  </div>
+</div>
+<div class="col-12 d-flex mt-4">
+  <div class="d-flex flex-column col-6 pe-3">
+    <form-comment
+      [formGroup]="form"
+      label="PRM.STOP_POINTS.FREE_TEXT"
+      controlName="freeText"
+      maxChars="2000"
+    ></form-comment>
+  </div>
+</div>
+<div class="font-bold-2xl mt-3">{{ 'FORM.KEY_DATA' | translate }}</div>
+<div class="col-6 pb-3">
+  <form-date-range [formGroup]="form"></form-date-range>
+</div>
