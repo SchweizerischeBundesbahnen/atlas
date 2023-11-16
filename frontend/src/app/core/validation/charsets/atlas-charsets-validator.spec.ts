@@ -82,4 +82,15 @@ describe('Atlas Charsets Validator', () => {
     expect(decimalWithDigits(new FormControl(':a'))).toBeDefined();
     expect(decimalWithDigits(new FormControl('1:00:02'))).toBeDefined();
   });
+
+  it('should allow only numbers without colon or other chars', () => {
+    const decimalWithDigits = AtlasCharsetsValidator.colonSeperatedNumbers(0);
+
+    expect(decimalWithDigits(new FormControl('002'))).toBeNull();
+    expect(decimalWithDigits(new FormControl('000'))).toBeNull();
+
+    expect(decimalWithDigits(new FormControl('a'))).toBeDefined();
+    expect(decimalWithDigits(new FormControl(':a'))).toBeDefined();
+    expect(decimalWithDigits(new FormControl('1:00:02'))).toBeDefined();
+  });
 });

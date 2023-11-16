@@ -968,6 +968,10 @@
         "MESSAGE": "Attenzione, la fermata assegnata è valida da {{validFrom}} a {{validTo}}. Si prega di regolare la validità di conseguenza."
       }
     },
+    "BOARDING_AREAS": {
+      "BOARDING_AREAS": "Aree",
+      "NEW": "Entrare nella nuova area di detenzione"
+    },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Posti di carico",
       "LOADING_POINT": "Posto di carico",
