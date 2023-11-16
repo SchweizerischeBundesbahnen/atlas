@@ -23,8 +23,6 @@ class UpdateServicePointVersionModelTest {
   @Test
   void shouldAllowMinimalServicePointVersion() {
     UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
-        .numberShort(7000)
-        .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
@@ -43,8 +41,6 @@ class UpdateServicePointVersionModelTest {
   @Test
   void shouldNotAllowMinimalServicePointVersionWithMissingNorth() {
     UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
-        .numberShort(7000)
-        .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
@@ -62,8 +58,6 @@ class UpdateServicePointVersionModelTest {
   @Test
   void shouldAllowMinimalServicePointVersionWithLv95Coordinates() {
     UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
-        .numberShort(7000)
-        .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
@@ -83,8 +77,6 @@ class UpdateServicePointVersionModelTest {
   @Test
   void shouldNotAllowMinimalServicePointVersionWithLv95CoordinatesMoreThanFiveFractions() {
     UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
-        .numberShort(7000)
-        .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
@@ -104,8 +96,6 @@ class UpdateServicePointVersionModelTest {
   @Test
   void shouldAllowMinimalServicePointVersionWithWgs84Coordinates() {
     UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
-        .numberShort(7000)
-        .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
@@ -125,8 +115,6 @@ class UpdateServicePointVersionModelTest {
   @Test
   void shouldNotAllowMinimalServicePointVersionWithWgs84CoordinatesMoreThanElevenFractions() {
     UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
-        .numberShort(7000)
-        .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .validFrom(LocalDate.of(2022, 1, 1))
@@ -146,7 +134,6 @@ class UpdateServicePointVersionModelTest {
   @Test
   void shouldNotAllowServiceWithOperatingPointTypeAndTechnical() {
     UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
-        .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .operatingPointType(OperatingPointType.INVENTORY_POINT)
@@ -162,7 +149,6 @@ class UpdateServicePointVersionModelTest {
   @Test
   void shouldNotAllowServiceWithOperatingPointTypeAndTariffPoint() {
     UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
-        .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .operatingPointType(OperatingPointType.INVENTORY_POINT)
@@ -178,7 +164,6 @@ class UpdateServicePointVersionModelTest {
   @Test
   void shouldNotAllowServiceWithPlainOperatingPointAndStopPoint() {
     UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
-        .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .operatingPointType(OperatingPointType.INVENTORY_POINT)
@@ -194,7 +179,6 @@ class UpdateServicePointVersionModelTest {
   @Test
   void shouldNotAllowServiceWithPlainOperatingPointAndFreightServicePoint() {
     UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
-        .numberShort(8507000)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
         .operatingPointType(OperatingPointType.INVENTORY_POINT)
@@ -208,21 +192,8 @@ class UpdateServicePointVersionModelTest {
   }
 
   @Test
-  void shouldNotAllowServicePointVersionWithoutNumber() {
-    UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
-        .designationOfficial("Bern")
-        .businessOrganisation("ch:1:sboid:5846489645")
-        .validFrom(LocalDate.of(2022, 1, 1))
-        .validTo(LocalDate.of(2022, 12, 31))
-        .build();
-
-    Set<ConstraintViolation<UpdateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
-    assertThat(constraintViolations).hasSize(1);
-  }
-
-  @Test
   void shouldAllowServicePointVersionWithNumberGeneration() {
-    UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
+    CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
         .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:5846489645")
@@ -232,47 +203,6 @@ class UpdateServicePointVersionModelTest {
 
     Set<ConstraintViolation<UpdateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
     assertThat(constraintViolations).isEmpty();
-  }
-
-  @Test
-  void shouldNotAllowServicePointVersionWithNumberAndCountry() {
-    UpdateServicePointVersionModel servicePointVersionModel = UpdateServicePointVersionModel.builder()
-        .country(Country.SWITZERLAND)
-        .numberShort(8507000)
-        .designationOfficial("Bern")
-        .businessOrganisation("ch:1:sboid:5846489645")
-        .validFrom(LocalDate.of(2022, 1, 1))
-        .validTo(LocalDate.of(2022, 12, 31))
-        .build();
-
-    Set<ConstraintViolation<UpdateServicePointVersionModel>> constraintViolations = validator.validate(servicePointVersionModel);
-    assertThat(constraintViolations).hasSize(1);
-  }
-
-  @Test
-  void shouldSetOperatingPointKilometerMasterToNumberWithoutCheckDigitIfRouteNetworkTrue() {
-    UpdateServicePointVersionModel updateServicePointVersionModel =
-        UpdateServicePointVersionModel.builder()
-            .country(Country.GERMANY)
-            .numberShort(34510)
-            .operatingPointRouteNetwork(true)
-            .operatingPointKilometerMasterNumber(8034511)
-            .build();
-    assertThat(updateServicePointVersionModel.setKilometerMasterNumberDependingOnRouteNetworkValue()).isEqualTo(8034510);
-  }
-
-  @Test
-  void shouldSetOperatingPointKilometerMasterToOperatingPointKilometerMasterIfRouteNetworkFalse() {
-    int operatingPointKilometerMasterNumber = 8034511;
-    UpdateServicePointVersionModel updateServicePointVersionModel =
-        UpdateServicePointVersionModel.builder()
-            .country(Country.GERMANY)
-            .numberShort(34510)
-            .operatingPointRouteNetwork(false)
-            .operatingPointKilometerMasterNumber(operatingPointKilometerMasterNumber)
-            .build();
-    assertThat(updateServicePointVersionModel.setKilometerMasterNumberDependingOnRouteNetworkValue()).isEqualTo(
-        operatingPointKilometerMasterNumber);
   }
 
   @Test

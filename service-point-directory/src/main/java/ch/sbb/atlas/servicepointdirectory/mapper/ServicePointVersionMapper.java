@@ -6,11 +6,10 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import lombok.experimental.UtilityClass;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ServicePointVersionMapper {
@@ -48,11 +47,13 @@ public class ServicePointVersionMapper {
         .build();
   }
 
-  public static ServicePointVersion toEntity(UpdateServicePointVersionModel updateServicePointVersionModel) {
+  public static ServicePointVersion toEntity(UpdateServicePointVersionModel updateServicePointVersionModel,
+      ServicePointNumber servicePointNumber) {
     ServicePointNumber operatingPointKilometerMasterNumber =
-        Optional.ofNullable(updateServicePointVersionModel.setKilometerMasterNumberDependingOnRouteNetworkValue())
-            .map(ServicePointNumber::ofNumberWithoutCheckDigit)
-            .orElse(null);
+        updateServicePointVersionModel.isOperatingPointRouteNetwork() ? servicePointNumber :
+            Optional.ofNullable(updateServicePointVersionModel.getOperatingPointKilometerMasterNumber())
+                .map(ServicePointNumber::ofNumberWithoutCheckDigit)
+                .orElse(null);
 
     ServicePointVersion servicePointVersion = ServicePointVersion.builder()
         .id(updateServicePointVersionModel.getId())
@@ -83,16 +84,10 @@ public class ServicePointVersionMapper {
         .creationDate(updateServicePointVersionModel.getCreationDate())
         .build();
 
-    if (updateServicePointVersionModel.getNumberShort() != null) {
-      ServicePointNumber servicePointNumber = ServicePointNumber.of(
-          updateServicePointVersionModel.getCountry(),
-          updateServicePointVersionModel.getNumberShort()
-      );
-      servicePointVersion.setNumber(servicePointNumber);
-      servicePointVersion.setSloid(ServicePointNumber.calculateSloid(servicePointNumber));
-      servicePointVersion.setNumberShort(servicePointNumber.getNumberShort());
-      servicePointVersion.setCountry(servicePointNumber.getCountry());
-    }
+    servicePointVersion.setNumber(servicePointNumber);
+    servicePointVersion.setSloid(ServicePointNumber.calculateSloid(servicePointNumber));
+    servicePointVersion.setNumberShort(servicePointNumber.getNumberShort());
+    servicePointVersion.setCountry(servicePointNumber.getCountry());
 
     return servicePointVersion;
   }
