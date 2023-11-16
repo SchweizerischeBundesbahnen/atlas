@@ -970,6 +970,10 @@
         "MESSAGE": "Achtung, die zugeordnete Haltestelle ist von {{validFrom}} bis {{validTo}} gültig. Bitte passen Sie die Gültigkeit entsprechend an."
       }
     },
+    "BOARDING_AREAS": {
+      "BOARDING_AREAS": "Bereiche",
+      "NEW": "Neuen Haltebereich erfassen"
+    },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Ladestellen",
       "LOADING_POINT": "Ladestelle",

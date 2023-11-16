@@ -172,11 +172,20 @@ export class Pages {
     description: 'PAGES.SERVICE_POINTS.DESCRIPTION',
   };
 
-  public static TRAFFIC_POINT_ELEMENTS: Page = {
+  public static TRAFFIC_POINT_ELEMENTS_PLATFORM: Page = {
     title: 'PAGES.SERVICE_POINTS.TITLE',
     titleMenu: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
     headerTitle: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
     path: 'traffic-point-elements',
+    pathText: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
+    description: 'PAGES.SERVICE_POINTS.DESCRIPTION',
+  };
+
+  public static TRAFFIC_POINT_ELEMENTS_AREA: Page = {
+    title: 'PAGES.SERVICE_POINTS.TITLE',
+    titleMenu: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
+    headerTitle: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
+    path: 'areas',
     pathText: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
     description: 'PAGES.SERVICE_POINTS.DESCRIPTION',
   };

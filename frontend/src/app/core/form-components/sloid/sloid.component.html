@@ -13,7 +13,10 @@
       <atlas-text-field
         [fieldExamples]="[
           { label: 'FORM.FOR_EXAMPLE', translate: true },
-          { label: 'ch:1:sloid:7000:1234:088946', translate: false }
+          {
+            label: numberColons === 0 ? 'ch:1:sloid:7000:088946' : 'ch:1:sloid:7000:1234:088946',
+            translate: false
+          }
         ]"
         [formGroup]="form"
         [required]="false"
