@@ -72,6 +72,10 @@ export class MapService {
     this.map.resize();
     this.map.dragRotate.disable();
     this.map.touchZoomRotate.disableRotation();
+    this.map.setMaxZoom(19);
+    this.map.setMinZoom(5);
+    this.map.scrollZoom.setWheelZoomRate(1 / 950);
+    this.map.scrollZoom.setZoomRate(1 / 150);
     return this.map;
   }
 
@@ -193,7 +197,7 @@ export class MapService {
       this.router
         .navigate([
           Pages.SEPODI.path,
-          Pages.TRAFFIC_POINT_ELEMENTS.path,
+          Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
           e.features[0].properties!.sloid,
         ])
         .then();

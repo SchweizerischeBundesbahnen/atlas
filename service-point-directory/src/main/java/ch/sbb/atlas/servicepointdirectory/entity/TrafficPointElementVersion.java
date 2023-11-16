@@ -11,6 +11,7 @@ import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionableProperty.RelationType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -24,9 +25,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -87,6 +90,7 @@ public class TrafficPointElementVersion extends BasePointVersion<TrafficPointEle
   @AtlasVersionableProperty
   private Double compassDirection;
 
+  @NotNull
   @AtlasVersionableProperty
   @Enumerated(EnumType.STRING)
   private TrafficPointElementType trafficPointElementType;
@@ -124,4 +128,43 @@ public class TrafficPointElementVersion extends BasePointVersion<TrafficPointEle
   @Column(columnDefinition = "DATE")
   private LocalDate validTo;
 
+  @JsonIgnore
+  @AssertTrue(message = """
+      SLOID does not match the specified pattern of: 
+      ch:1:sloid:7000:088946 for area or 
+      ch:1:sloid:7000:1234:088946 for stop points! 
+      """)
+  public boolean isValidSloid(){
+    if (trafficPointElementType == null) {
+      return true;
+    }
+    int expectedColonsArea = 4;
+    int expectedColonsPlatform = 5;
+
+    int expectedColons = (trafficPointElementType.equals(TrafficPointElementType.BOARDING_AREA)) ? expectedColonsArea : expectedColonsPlatform;
+    String[] parts = sloid.split(":");
+
+    return parts.length == expectedColons + 1;
+  }
+
+  @JsonIgnore
+  @AssertTrue(message = """
+      The following properties must be null or empty if trafficPointElementType is BOARDING_AREA: \n
+      designationOperational \n
+      length \n
+      boardingAreaHeight \n
+      compassDirection
+      """)
+  public boolean isValidForBoardingArea(){
+    if (trafficPointElementType == null) {
+      return true;
+    }
+      if(trafficPointElementType.equals(TrafficPointElementType.BOARDING_AREA)) {
+        return Objects.isNull(designationOperational) &&
+            Objects.isNull(length) &&
+            Objects.isNull(boardingAreaHeight) &&
+            Objects.isNull(compassDirection);
+      }
+    return true;
+  }
 }
