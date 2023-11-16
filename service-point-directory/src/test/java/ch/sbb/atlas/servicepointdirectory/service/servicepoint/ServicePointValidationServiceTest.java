@@ -130,14 +130,14 @@ class ServicePointValidationServiceTest {
   @Test
   public void shouldNotThrowExceptionWhenAbbreviationEmpty() {
     CreateServicePointVersionModel createServicePointVersionModel = CreateServicePointVersionModel.builder()
-        .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:123456")
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
 
-    ServicePointVersion servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
+    ServicePointVersion servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel,
+        ServicePointNumber.of(Country.SWITZERLAND, 1234));
 
     assertDoesNotThrow(() -> servicePointValidationService.validateAndSetAbbreviation(servicePointVersion));
   }
@@ -145,7 +145,6 @@ class ServicePointValidationServiceTest {
   @Test
   void shouldThrowExceptionWhenServicePointBusinessOrganisationIsNotInAllowedList() {
     CreateServicePointVersionModel createServicePointVersionModel = CreateServicePointVersionModel.builder()
-        .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:123456")
         .abbreviation("TEST")
@@ -153,7 +152,8 @@ class ServicePointValidationServiceTest {
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
 
-    ServicePointVersion servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
+    ServicePointVersion servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel,
+        ServicePointNumber.of(Country.SWITZERLAND, 1234));
 
     assertThrows(AbbreviationUpdateNotAllowedException.class,
         () -> servicePointValidationService.validateAndSetAbbreviation(servicePointVersion));
@@ -162,7 +162,6 @@ class ServicePointValidationServiceTest {
   @Test
   public void shouldThrowExceptionWhenAbbreviationIsNotUnique() {
     CreateServicePointVersionModel createServicePointVersionModel = CreateServicePointVersionModel.builder()
-        .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
         .businessOrganisation("ch:1:sboid:100016")
         .abbreviation("TEST")
@@ -170,7 +169,8 @@ class ServicePointValidationServiceTest {
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
 
-    ServicePointVersion servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel);
+    ServicePointVersion servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel,
+        ServicePointNumber.of(Country.SWITZERLAND, 1234));
 
     assertThrows(InvalidAbbreviationException.class,
         () -> servicePointValidationService.validateAndSetAbbreviation(servicePointVersion));
