@@ -58,6 +58,6 @@ class SharedServicePointRepositoryTest {
     SharedServicePointVersionModel servicePoint = sharedServicePoints.iterator().next();
     assertThat(servicePoint.getServicePointSloid()).isEqualTo("ch:1:sloid:89008");
     assertThat(servicePoint.getSboids()).containsExactly("ch:1:sboid:100626");
-    assertThat(servicePoint.getTrafficPointSloids()).containsExactly("ch:1:sloid:123");
+    assertThat(servicePoint.getTrafficPointSloids()).containsExactly("ch:1:sloid:123:123:123");
   }
 }
