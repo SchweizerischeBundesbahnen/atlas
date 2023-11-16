@@ -1,15 +1,22 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {ServicePointSearchResult, ServicePointsService} from '../../../api';
-import {catchError, concat, debounceTime, distinctUntilChanged, Observable, of, Subject,} from 'rxjs';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Pages} from '../../pages';
-import {filter, switchMap, tap} from 'rxjs/operators';
-import {TranslatePipe} from '@ngx-translate/core';
-
+import { Component, Input, OnInit } from '@angular/core';
+import { ServicePointSearchResult, ServicePointsService } from '../../../api';
+import {
+  catchError,
+  concat,
+  debounceTime,
+  distinctUntilChanged,
+  Observable,
+  of,
+  Subject,
+} from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Pages } from '../../pages';
+import { filter, switchMap, tap } from 'rxjs/operators';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export enum ServicePointSearchType {
   PRM,
-  SERVICE_POINT
+  SERVICE_POINT,
 }
 
 @Component({
@@ -28,8 +35,7 @@ export class SearchServicePointComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly servicePointService: ServicePointsService,
     private readonly translatePipe: TranslatePipe,
-  ) {
-  }
+  ) {}
 
   private _searchValue = '';
 
@@ -65,9 +71,9 @@ export class SearchServicePointComponent implements OnInit {
 
   navigateTo(searchResultSelected: ServicePointSearchResult) {
     if (searchResultSelected) {
-      if(this.searchType === ServicePointSearchType.SERVICE_POINT) {
+      if (this.searchType === ServicePointSearchType.SERVICE_POINT) {
         this.navigateToServicePoint(searchResultSelected);
-      }else {
+      } else {
         this.navigatePrm(searchResultSelected);
       }
     } else {
@@ -77,7 +83,7 @@ export class SearchServicePointComponent implements OnInit {
 
   private navigatePrm(searchResultSelected: ServicePointSearchResult) {
     this.router
-      .navigate([searchResultSelected.sloid], {
+      .navigate([Pages.STOP_POINTS.path, searchResultSelected.sloid], {
         relativeTo: this.route,
       })
       .then();
@@ -118,19 +124,17 @@ export class SearchServicePointComponent implements OnInit {
     );
   }
 
-
   private doSearch(term: string) {
     if (this.searchType === ServicePointSearchType.SERVICE_POINT) {
-      return this.servicePointService.searchServicePoints({value: term}).pipe(
+      return this.servicePointService.searchServicePoints({ value: term }).pipe(
         catchError(() => of([])),
         tap(() => (this.loading = false)),
       );
     }
-    return this.servicePointService.searchSwissOnlyServicePoints({value: term}).pipe(
+    return this.servicePointService.searchSwissOnlyServicePoints({ value: term }).pipe(
       catchError(() => of([])),
       tap(() => (this.loading = false)),
     );
-
   }
 
   initSearchValue(searchValue: string) {
