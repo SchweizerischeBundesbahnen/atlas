@@ -72,6 +72,10 @@ export class MapService {
     this.map.resize();
     this.map.dragRotate.disable();
     this.map.touchZoomRotate.disableRotation();
+    this.map.setMaxZoom(19);
+    this.map.setMinZoom(5);
+    this.map.scrollZoom.setWheelZoomRate(1 / 950);
+    this.map.scrollZoom.setZoomRate(1 / 150);
     return this.map;
   }
 
