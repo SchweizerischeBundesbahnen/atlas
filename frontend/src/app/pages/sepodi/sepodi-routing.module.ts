@@ -5,7 +5,6 @@ import { ServicePointSidePanelComponent } from './service-point-side-panel/servi
 import { Pages } from '../pages';
 import { servicePointResolver } from './service-point-side-panel/service-point-detail.resolver';
 import { ServicePointDetailComponent } from './service-point-side-panel/service-point/service-point-detail.component';
-import { AreasDetailComponent } from './service-point-side-panel/areas/areas-detail.component';
 import { TrafficPointElementsTableComponent } from './service-point-side-panel/traffic-point-elements/traffic-point-elements-table.component';
 import { LoadingPointsTableComponent } from './service-point-side-panel/loading-points/loading-points-table.component';
 import { FotCommentDetailComponent } from './service-point-side-panel/comment/fot-comment-detail.component';
@@ -58,12 +57,14 @@ const routes: Routes = [
             canDeactivate: [canLeaveDirtyForm],
           },
           {
-            path: 'areas',
-            component: AreasDetailComponent,
+            path: Pages.TRAFFIC_POINT_ELEMENTS_AREA.path,
+            component: TrafficPointElementsTableComponent,
+            data: { isTrafficPointArea: true },
           },
           {
-            path: 'traffic-point-elements',
+            path: Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
             component: TrafficPointElementsTableComponent,
+            data: { isTrafficPointArea: false },
           },
           {
             path: 'loading-points',
@@ -80,8 +81,9 @@ const routes: Routes = [
           },
         ],
       },
+
       {
-        path: Pages.TRAFFIC_POINT_ELEMENTS.path + '/:id',
+        path: Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path + '/:id',
         component: TrafficPointElementsDetailComponent,
         resolve: { trafficPoint: trafficPointResolver },
         runGuardsAndResolvers: 'always',
