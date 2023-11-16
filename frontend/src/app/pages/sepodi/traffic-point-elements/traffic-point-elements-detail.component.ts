@@ -30,6 +30,9 @@ interface AreaOption {
   displayText: string;
 }
 
+const NUMBER_COLONS_PLATFORM = 1;
+const NUMBER_COLONS_AREA = 0;
+
 @Component({
   selector: 'app-traffic-point-elements',
   templateUrl: './traffic-point-elements-detail.component.html',
@@ -55,7 +58,9 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
   servicePointNumber!: number;
   servicePoint: ReadServicePointVersion[] = [];
   servicePointBusinessOrganisations: string[] = [];
+  isTrafficPointArea = false;
   geographyActive = true;
+  numberColons!: number;
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -71,6 +76,9 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
   ) {}
 
   ngOnInit() {
+    this.isTrafficPointArea = history.state.isTrafficPointArea;
+    this.numberColons = this.isTrafficPointArea ? NUMBER_COLONS_AREA : NUMBER_COLONS_PLATFORM;
+
     this.route.data.pipe(takeUntil(this.ngUnsubscribe)).subscribe((next) => {
       this.trafficPointVersions = next.trafficPoint;
       this.initTrafficPoint();
@@ -144,15 +152,21 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
     return String(this.servicePointNumber);
   }
 
-  backToServicePoint() {
+  backToTrafficPointElements(destination: string) {
     this.router
       .navigate([
         Pages.SEPODI.path,
         Pages.SERVICE_POINTS.path,
         this.servicePointNumber,
-        'traffic-point-elements',
+        destination,
       ])
       .then();
+  }
+
+  confirmCancel() {
+    this.isTrafficPointArea
+      ? this.backToTrafficPointElements(Pages.TRAFFIC_POINT_ELEMENTS_AREA.path)
+      : this.backToTrafficPointElements(Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path);
   }
 
   switchVersion(newIndex: number) {
@@ -186,7 +200,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
     this.confirmLeave().subscribe((confirmed) => {
       if (confirmed) {
         if (this.isNew) {
-          this.backToServicePoint();
+          this.confirmCancel();
         } else {
           this.initSelectedVersion();
           this.form.disable();
@@ -213,7 +227,12 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
         if (confirmed) {
           const trafficPointElementVersion = this.form
             .value as unknown as CreateTrafficPointElementVersion;
-          trafficPointElementVersion.trafficPointElementType = TrafficPointElementType.Platform;
+
+          this.isTrafficPointArea
+            ? (trafficPointElementVersion.trafficPointElementType = TrafficPointElementType.Area)
+            : (trafficPointElementVersion.trafficPointElementType =
+                TrafficPointElementType.Platform);
+
           this.form.disable();
           trafficPointElementVersion.numberWithoutCheckDigit = this.servicePointNumber;
           if (this.isNew) {
