@@ -24,7 +24,7 @@ export interface Obj {
   pure: true,
 })
 class ShowTitlePipeMock implements PipeTransform {
-  transform<T>(value: string | Date, column: TableColumn<T>): string {
+  transform(value: string | Date): string {
     return value as string;
   }
 }
@@ -197,7 +197,7 @@ describe('TableComponent', () => {
         page: 0,
         size: 5,
         sort: 'validFrom,asc',
-      })
+      }),
     );
   });
 
@@ -214,7 +214,7 @@ describe('TableComponent', () => {
         page: 0,
         size: 10,
         sort: 'validFrom,desc',
-      })
+      }),
     );
   });
 

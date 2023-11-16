@@ -1,12 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DateRangeTextComponent } from './date-range-text.component';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslatePipe,
-} from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { AppTestingModule } from '../../../app.testing.module';
 import { DisplayDatePipe } from '../../pipe/display-date.pipe';
 
