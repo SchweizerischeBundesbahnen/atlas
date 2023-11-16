@@ -72,6 +72,7 @@ describe('TrafficPointElementsDetailComponent', () => {
 
   describe('for existing Version', () => {
     beforeEach(() => {
+      window.history.pushState({ isTrafficPointArea: false }, '', '');
       const activatedRouteMock = { data: of({ trafficPoint: [BERN_WYLEREGG_TRAFFIC_POINTS[0]] }) };
       setupTestBed(activatedRouteMock);
       fixture = TestBed.createComponent(TrafficPointElementsDetailComponent);
