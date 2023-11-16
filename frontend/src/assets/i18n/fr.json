@@ -968,6 +968,10 @@
         "MESSAGE": "Attention, l'arrêt attribué est valable de {{validFrom}} à {{validTo}}. Veuillez adapter la validité en conséquence."
       }
     },
+    "BOARDING_AREAS": {
+      "BOARDING_AREAS": "Domaines",
+      "NEW": "Saisir une nouvelle zone d'arrêt"
+    },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Places de chargement",
       "LOADING_POINT": "Placs de chargement",
