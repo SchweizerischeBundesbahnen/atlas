@@ -1,5 +1,5 @@
-import {Page} from '../core/model/page';
-import {environment} from '../../environments/environment';
+import { Page } from '../core/model/page';
+import { environment } from '../../environments/environment';
 
 export class Pages {
   public static HOME: Page = {
@@ -203,10 +203,20 @@ export class Pages {
     title: 'PAGES.PRM.TITLE',
     titleMenu: 'PAGES.PRM.TITLE_HEADER',
     headerTitle: 'PAGES.PRM.TITLE_HEADER',
-    path: 'prm',
+    path: 'prm-directory',
     pathText: 'PAGES.PRM.TITLE_HEADER',
     description: 'PAGES.PRM.DESCRIPTION',
   };
+
+  public static STOP_POINTS: Page = {
+    title: 'PRM.STOP_POINTS.TITLE',
+    titleMenu: 'PAGES.STOP_POINTS.TITLE_HEADER',
+    headerTitle: 'PAGES.STOP_POINTS.TITLE_HEADER',
+    path: 'stop-points',
+    pathText: 'PAGES.STOP_POINTS.TITLE_HEADER',
+    description: 'PAGES.STOP_POINTS.DESCRIPTION',
+  };
+
   public static PRM_STOP_POINT: Page = {
     title: 'PAGES.DETAILS',
     path: 'stop-point',
