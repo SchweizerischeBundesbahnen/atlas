@@ -1,24 +1,18 @@
 package ch.sbb.atlas.api.servicepoint;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.servicepoint.Country;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
-import org.apache.commons.lang3.StringUtils;
-
-import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,16 +22,6 @@ import java.time.LocalDate;
 @FieldNameConstants
 @Schema(name = "UpdateServicePointVersion")
 public class UpdateServicePointVersionModel extends ServicePointVersionModel {
-
-  @Schema(description = "Five digits number. Represent service point ID.", example = "34505")
-  @Min(AtlasFieldLengths.MIN_NUMBER)
-  @Max(AtlasFieldLengths.MAX_FIVE_DIGITS_NUMBER)
-  private Integer numberShort;
-
-  @Schema(description = "The country for the service point. Only needed if ServicePointNumber is created automatically",
-      example = "SWITZERLAND")
-  @NotNull
-  private Country country;
 
   @Min(value = AtlasFieldLengths.MIN_SEVEN_DIGITS_NUMBER, message = "Minimum value for number.")
   @Max(value = AtlasFieldLengths.MAX_SEVEN_DIGITS_NUMBER, message = "Maximum value for number.")
@@ -64,17 +48,6 @@ public class UpdateServicePointVersionModel extends ServicePointVersionModel {
   }
 
   @JsonIgnore
-  @AssertTrue(message = "FreightServicePoint in CH needs sortCodeOfDestinationStation")
-  public boolean isValidFreightServicePoint() {
-    if (numberShort == null) {
-      return true;
-    }
-    return !(getCountry() == Country.SWITZERLAND && isFreightServicePoint() && !getValidFrom().isBefore(
-        LocalDate.now()))
-        || StringUtils.isNotBlank(super.getSortCodeOfDestinationStation());
-  }
-
-  @JsonIgnore
   public boolean isStopPoint() {
     return !getMeansOfTransport().isEmpty();
   }
@@ -86,24 +59,10 @@ public class UpdateServicePointVersionModel extends ServicePointVersionModel {
   }
 
   @JsonIgnore
-  public boolean shouldGenerateServicePointNumber() {
-    return ServicePointConstants.AUTOMATIC_SERVICE_POINT_ID.contains(country);
-  }
-
-  @JsonIgnore
   @AssertTrue(message = "If OperatingPointRouteNetwork is true, then operatingPointKilometerMaster will be set to the same "
           + "value as numberWithoutCheckDigit and it should not be sent in the request")
   public boolean isOperatingPointRouteNetworkTrueAndKilometerMasterNumberNull() {
     return !isOperatingPointRouteNetwork() || operatingPointKilometerMasterNumber == null;
-  }
-
-  public Integer setKilometerMasterNumberDependingOnRouteNetworkValue() {
-    if (!isOperatingPointRouteNetwork()) {
-      return operatingPointKilometerMasterNumber;
-    } else if (numberShort != null) {
-      return ServicePointNumber.of(country, numberShort).getNumber();
-    }
-    return null;
   }
 
   @JsonIgnore

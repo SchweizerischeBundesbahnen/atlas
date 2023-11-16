@@ -40,12 +40,6 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
   @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;
 
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
-  @Schema(description = "Unique code for locations that is used in customer information. The structure is described in the "
-          + "“Swiss Location ID” specification, chapter 4.2. The document is available here. "
-          + "https://transportdatamanagement.ch/standards/", example = "ch:1:sloid:18771")
-  private String sloid;
-
   @Schema(description = "Long designation of a location. Used primarily in customer information. "
           + "Not all systems can process names of this length.", example = "Biel/Bienne Bözingenfeld/Champs-de-Boujean")
   @Size(min = 2, max = AtlasFieldLengths.LENGTH_50)
