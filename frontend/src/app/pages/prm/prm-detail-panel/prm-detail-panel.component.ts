@@ -29,6 +29,7 @@ export class PrmDetailPanelComponent implements OnInit {
   preferredId?: number;
   private ngUnsubscribe = new Subject<void>();
   public isFormEnabled$ = new BehaviorSubject<boolean>(false);
+  isReduced!: boolean | undefined;
 
   constructor(
     private readonly router: Router,
@@ -93,6 +94,7 @@ export class PrmDetailPanelComponent implements OnInit {
         this.stopPointVersions,
       );
     }
+    this.isReduced = this.selectedVersion.reduced;
     this.selectedVersionIndex = this.stopPointVersions.indexOf(this.selectedVersion);
     this.initSelectedVersion();
   }
