@@ -25,7 +25,9 @@ class AuthServiceMock implements Partial<AuthService> {
 
 describe('ServicePointCreationComponent', () => {
   let component: ServicePointCreationComponent;
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   let spy: SpyObj<any>;
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   let servicePointServiceSpy: SpyObj<any>;
   let notificationServiceSpy: SpyObj<NotificationService>;
   let routerSpy: SpyObj<Router>;
