@@ -197,7 +197,7 @@ export class MapService {
       this.router
         .navigate([
           Pages.SEPODI.path,
-          Pages.TRAFFIC_POINT_ELEMENTS.path,
+          Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path,
           e.features[0].properties!.sloid,
         ])
         .then();

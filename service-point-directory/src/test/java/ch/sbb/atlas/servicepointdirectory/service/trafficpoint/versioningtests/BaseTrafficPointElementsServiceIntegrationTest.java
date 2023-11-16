@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
   @MockBean
   private CrossValidationService crossValidationService;
 
-  protected static final String SLOID = "ch:1:sloid:123";
+  protected static final String SLOID = "ch:1:sloid:123:123:123";
   protected TrafficPointElementVersionRepository trafficPointElementVersionRepository;
   protected TrafficPointElementService trafficPointElementService;
 
