@@ -5,7 +5,7 @@ import { AppTestingModule } from '../../../app.testing.module';
 import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
 import { of } from 'rxjs';
 import { AuthService } from '../../../core/auth/auth.service';
-import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
+import { ActivatedRouteMockType, MockAtlasButtonComponent } from '../../../app.testing.mocks';
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 import { SplitServicePointNumberPipe } from '../search-service-point/split-service-point-number.pipe';
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
@@ -137,7 +137,7 @@ describe('LoadingPointsDetailComponent', () => {
     });
   });
 
-  function setupTestBed(activatedRoute: any) {
+  function setupTestBed(activatedRoute: ActivatedRouteMockType) {
     TestBed.configureTestingModule({
       declarations: [
         LoadingPointsDetailComponent,
