@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
+import { inject, Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
 import { UserService } from '../../service/user.service';
 import { Pages } from '../../../pages';
@@ -8,8 +8,11 @@ import { User } from '../../../../api';
 @Injectable({
   providedIn: 'root',
 })
-export class UserAdministrationResolver implements Resolve<User> {
-  constructor(private readonly userService: UserService, private readonly router: Router) {}
+export class UserAdministrationResolver {
+  constructor(
+    private readonly userService: UserService,
+    private readonly router: Router,
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<User> {
     const sbbUserIdParam = route.paramMap.get('sbbUserId');
@@ -24,7 +27,10 @@ export class UserAdministrationResolver implements Resolve<User> {
           })
           .then();
         return of({});
-      })
+      }),
     );
   }
 }
+
+export const userResolver: ResolveFn<User> = (route: ActivatedRouteSnapshot) =>
+  inject(UserAdministrationResolver).resolve(route);
