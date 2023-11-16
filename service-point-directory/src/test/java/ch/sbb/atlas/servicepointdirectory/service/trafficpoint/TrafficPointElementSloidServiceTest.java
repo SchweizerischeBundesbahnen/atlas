@@ -14,14 +14,26 @@ class TrafficPointElementSloidServiceTest {
   private TrafficPointElementSloidService trafficPointElementSloidService;
 
   @Test
-  void shouldGenerateNewSloidInSwitzerland() {
-    String sloid = trafficPointElementSloidService.getNextSloidForPlatform(ServicePointNumber.ofNumberWithoutCheckDigit(8507000));
+  void shouldGenerateNewSloidInSwitzerlandForPlatform() {
+    String sloid = trafficPointElementSloidService.getNextSloid(ServicePointNumber.ofNumberWithoutCheckDigit(8507000), false);
     assertThat(sloid).isNotNull().startsWith("ch:1:sloid:7000:0:");
   }
 
   @Test
-  void shouldGenerateNewSloidNotInSwitzerland() {
-    String sloid = trafficPointElementSloidService.getNextSloidForPlatform(ServicePointNumber.ofNumberWithoutCheckDigit(1407000));
+  void shouldGenerateNewSloidNotInSwitzerlandForPlatform() {
+    String sloid = trafficPointElementSloidService.getNextSloid(ServicePointNumber.ofNumberWithoutCheckDigit(1407000), false);
     assertThat(sloid).isNotNull().startsWith("ch:1:sloid:1407000:0:");
+  }
+
+  @Test
+  void shouldGenerateNewSloidInSwitzerlandForArea() {
+    String sloid = trafficPointElementSloidService.getNextSloid(ServicePointNumber.ofNumberWithoutCheckDigit(8507000), true);
+    assertThat(sloid).isNotNull().startsWith("ch:1:sloid:7000:");
+  }
+
+  @Test
+  void shouldGenerateNewSloidNotInSwitzerlandForArea() {
+    String sloid = trafficPointElementSloidService.getNextSloid(ServicePointNumber.ofNumberWithoutCheckDigit(1407000), true);
+    assertThat(sloid).isNotNull().startsWith("ch:1:sloid:1407000:");
   }
 }
