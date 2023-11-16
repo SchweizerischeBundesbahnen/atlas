@@ -1,20 +1,19 @@
-import {Injectable, NgModule} from '@angular/core';
-import {Router, RouterModule, Routes, UrlTree} from '@angular/router';
-import {Pages} from '../pages';
-import {AuthService} from '../../core/auth/auth.service';
-import {ApplicationType} from '../../api';
-import {PrmSearchOverviewComponent} from './prm-overview/prm-search-overview.component';
-import {stopPointResolver} from "./stop-point/stop-point.resolver";
-import {PrmPanelComponent} from "./prm-panel/prm-panel.component";
-import {PrmDetailPanelComponent} from "./prm-detail-panel/prm-detail-panel.component";
+import { Injectable, NgModule } from '@angular/core';
+import { Router, RouterModule, Routes, UrlTree } from '@angular/router';
+import { Pages } from '../pages';
+import { AuthService } from '../../core/auth/auth.service';
+import { ApplicationType } from '../../api';
+import { PrmSearchOverviewComponent } from './prm-overview/prm-search-overview.component';
+import { stopPointResolver } from './stop-point/stop-point.resolver';
+import { PrmPanelComponent } from './prm-panel/prm-panel.component';
+import { PrmDetailPanelComponent } from './prm-detail-panel/prm-detail-panel.component';
 
 @Injectable()
 class CanActivatePrmCreationGuard {
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router,
-  ) {
-  }
+  ) {}
 
   canActivate(): true | UrlTree {
     if (this.authService.hasPermissionsToCreate(ApplicationType.Prm)) {
@@ -27,24 +26,23 @@ class CanActivatePrmCreationGuard {
 const routes: Routes = [
   {
     path: '',
-    component: PrmSearchOverviewComponent
+    component: PrmSearchOverviewComponent,
   },
   {
-    path: ':sloid',
+    path: Pages.STOP_POINTS.path + '/:sloid',
     component: PrmPanelComponent,
-    resolve: {stopPoint: stopPointResolver},
+    resolve: { stopPoint: stopPointResolver },
     runGuardsAndResolvers: 'always',
     children: [
       {
         path: Pages.PRM_STOP_POINT.path,
         component: PrmDetailPanelComponent,
-        runGuardsAndResolvers: 'always'
+        runGuardsAndResolvers: 'always',
       },
-      {path: '**', redirectTo: Pages.PRM_STOP_POINT.path},
-    ]
+      { path: '**', redirectTo: Pages.PRM_STOP_POINT.path },
+    ],
   },
-  {path: '**', redirectTo: Pages.PRM.path},
-
+  { path: '**', redirectTo: Pages.PRM.path },
 ];
 
 @NgModule({
@@ -52,5 +50,4 @@ const routes: Routes = [
   exports: [RouterModule],
   providers: [CanActivatePrmCreationGuard],
 })
-export class PrmRoutingModule {
-}
+export class PrmRoutingModule {}
