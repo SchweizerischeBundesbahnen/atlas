@@ -25,13 +25,12 @@ import { Observable } from 'rxjs';
 
 import { ContainerReadTrafficPointElementVersion } from '../model/models';
 import { CreateTrafficPointElementVersion } from '../model/models';
-import { ErrorResponse } from '../model/models';
 import { ItemImportResult } from '../model/models';
 import { ReadTrafficPointElementVersion } from '../model/models';
 import { TrafficPointElementType } from '../model/models';
 import { TrafficPointImportRequest } from '../model/models';
 
-import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
+import { BASE_PATH } from '../variables';
 import { Configuration } from '../configuration';
 
 @Injectable({
