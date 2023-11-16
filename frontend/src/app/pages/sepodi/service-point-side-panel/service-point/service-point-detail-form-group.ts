@@ -61,7 +61,11 @@ export class ServicePointFormGroupBuilder {
         ]),
         country: new FormControl(null, [Validators.required]),
         sloid: new FormControl(),
-        abbreviation: new FormControl(),
+        abbreviation: new FormControl(null, [
+          Validators.maxLength(6),
+          Validators.minLength(2),
+          AtlasCharsetsValidator.uppercaseNumericLength2To6Validator,
+        ]),
         status: new FormControl(),
         designationOfficial: new FormControl(null, [
           Validators.required,
