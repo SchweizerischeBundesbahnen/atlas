@@ -2,7 +2,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { TimetableFieldNumberOverviewComponent } from './overview/timetable-field-number-overview.component';
 import { TimetableFieldNumberDetailComponent } from './detail/timetable-field-number-detail.component';
-import { TimetableFieldNumberDetailResolver } from './detail/timetable-field-number-detail.resolver';
+import { timetableFieldNumberResolver } from './detail/timetable-field-number-detail.resolver';
 import { Pages } from '../pages';
 import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
 
@@ -12,7 +12,7 @@ const routes: Routes = [
     component: TimetableFieldNumberDetailComponent,
     canDeactivate: [canLeaveDirtyForm],
     resolve: {
-      timetableFieldNumberDetail: TimetableFieldNumberDetailResolver,
+      timetableFieldNumberDetail: timetableFieldNumberResolver,
     },
     runGuardsAndResolvers: 'always',
   },
