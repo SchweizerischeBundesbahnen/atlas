@@ -6,7 +6,7 @@ import { AppTestingModule } from '../../../../app.testing.module';
 import { MockAtlasButtonComponent, MockTableComponent } from '../../../../app.testing.mocks';
 import { TrafficPointElementsService } from '../../../../api';
 import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER } from '../../traffic-point-element-test-data';
 
 describe('TrafficPointElementsTableComponent', () => {
@@ -20,7 +20,10 @@ describe('TrafficPointElementsTableComponent', () => {
   trafficPointElementsService.getPlatformsOfServicePoint.and.returnValue(
     of(BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER),
   );
-  const activatedRouteMock = { parent: { snapshot: { params: { id: 8507000 } } } };
+  const activatedRouteMock = {
+    parent: { snapshot: { params: { id: 8507000 } } },
+    data: of({ id: 8507000, isTrafficPointArea: false }),
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
