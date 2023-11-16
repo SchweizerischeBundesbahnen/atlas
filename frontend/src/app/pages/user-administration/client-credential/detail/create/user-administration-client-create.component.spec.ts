@@ -12,7 +12,6 @@ import {
 } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
-import { Component } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MaterialModule } from '../../../../../core/module/material.module';
@@ -41,11 +40,11 @@ describe('UserAdministrationClientCreateComponent', () => {
           sbbUserId: '',
           permissions: [],
         },
-      }
+      },
     );
     boServiceSpy = jasmine.createSpyObj<BusinessOrganisationsService>(
       'BusinessOrganisationsService',
-      ['getAllBusinessOrganisations']
+      ['getAllBusinessOrganisations'],
     );
     await TestBed.overrideComponent(UserAdministrationClientCreateComponent, {
       set: {
@@ -115,18 +114,18 @@ describe('UserAdministrationClientCreateComponent', () => {
     userServiceSpy.createClientCredentialPermission.and.returnValue(
       of({
         clientCredentialId: 'client-id',
-      })
+      }),
     );
     spyOn(router, 'navigate').and.resolveTo(true);
     component.create();
     expect(
-      userPermissionManagerSpy.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser
+      userPermissionManagerSpy.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser,
     ).toHaveBeenCalledOnceWith();
     expect(userServiceSpy.createClientCredentialPermission).toHaveBeenCalledTimes(1);
     expect(router.navigate).toHaveBeenCalledTimes(1);
     tick();
     expect(notificationServiceSpy.success).toHaveBeenCalledOnceWith(
-      'USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'
+      'USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS',
     );
   }));
 });
