@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
+import { inject, Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
 import { UserService } from '../../service/user.service';
 import { Pages } from '../../../pages';
@@ -8,8 +8,11 @@ import { ClientCredential } from '../../../../api';
 @Injectable({
   providedIn: 'root',
 })
-export class ClientCredentialAdministrationResolver implements Resolve<ClientCredential> {
-  constructor(private readonly userService: UserService, private readonly router: Router) {}
+export class ClientCredentialAdministrationResolver {
+  constructor(
+    private readonly userService: UserService,
+    private readonly router: Router,
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<ClientCredential> {
     const clientIdParam = route.paramMap.get('clientId');
@@ -24,7 +27,11 @@ export class ClientCredentialAdministrationResolver implements Resolve<ClientCre
           })
           .then();
         return of({});
-      })
+      }),
     );
   }
 }
+
+export const clientCredentialResolver: ResolveFn<ClientCredential> = (
+  route: ActivatedRouteSnapshot,
+) => inject(ClientCredentialAdministrationResolver).resolve(route);
