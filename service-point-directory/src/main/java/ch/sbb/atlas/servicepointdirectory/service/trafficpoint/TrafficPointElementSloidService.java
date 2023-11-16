@@ -12,12 +12,13 @@ public class TrafficPointElementSloidService {
 
   private final TrafficPointElementVersionRepository trafficPointElementVersionRepository;
 
-  public String getNextSloidForPlatform(ServicePointNumber servicePointNumber) {
+  public String getNextSloid(ServicePointNumber servicePointNumber, boolean isBoardingArea) {
     Long randomSixDigits = trafficPointElementVersionRepository.getNextRandomNumberForSloid();
+    String suffix = isBoardingArea ? ":" + randomSixDigits : ":0:" + randomSixDigits;
     String result;
+
     do {
-      result =
-          "ch:1:sloid:" + getServicePointIdentifier(servicePointNumber) + ":0:" + randomSixDigits;
+      result = "ch:1:sloid:" + getServicePointIdentifier(servicePointNumber) + suffix;
     } while (trafficPointElementVersionRepository.existsBySloid(result));
     return result;
   }
