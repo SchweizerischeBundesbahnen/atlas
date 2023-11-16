@@ -44,5 +44,4 @@ import org.mockito.junit.jupiter.MockitoExtension;
     ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(1234567);
     assertDoesNotThrow(() -> crossValidationService.validateServicePointNumberExists(servicePointNumber));
   }
-
 }
