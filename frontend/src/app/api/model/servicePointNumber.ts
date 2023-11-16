@@ -20,6 +20,10 @@ export interface ServicePointNumber {
    */
   uicCountryCode: number;
   /**
+   * NumberShort - 5 chars identifying number. Range: 1-99.999
+   */
+  numberShort: number;
+  /**
    * Calculated value formed from the numberShort. Range: 0-9
    */
   checkDigit: number;
