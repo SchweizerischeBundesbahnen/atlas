@@ -105,4 +105,5 @@ export interface ReadStopPointVersion {
   assistanceRequestFulfilled?: StandardAttributeType;
   ticketMachine?: StandardAttributeType;
   number: ServicePointNumber;
+  reduced?: boolean;
 }
