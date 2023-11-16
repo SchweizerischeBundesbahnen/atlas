@@ -6,7 +6,7 @@ import { AppTestingModule } from '../../../../app.testing.module';
 import { MockAtlasButtonComponent, MockTableComponent } from '../../../../app.testing.mocks';
 import { TrafficPointElementsService } from '../../../../api';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER } from '../../traffic-point-element-test-data';
 
 describe('TrafficPointElementsTableComponent', () => {
