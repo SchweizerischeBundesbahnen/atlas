@@ -61,21 +61,10 @@
     "proj4": "^2.9.0",
     "rxjs": "^7.8",
     "tslib": "^2.6",
-    "zone.js": "^0.13"
+    "zone.js": "^0.14.2"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "@angular-devkit/architect": "^0.1700.1",
-    "@angular-devkit/build-angular": "16.2.10",
-    "@angular-eslint/builder": "^16.0",
-    "@angular-eslint/eslint-plugin": "^16.0",
-    "@angular-eslint/eslint-plugin-template": "^16.0",
-    "@angular-eslint/schematics": "^16.0",
-    "@angular-eslint/template-parser": "^16.0",
-    "@angular/cli": "16.2.10",
-    "@angular/localize": "16.2.12",
-=======
-    "@angular-devkit/architect": "0.x",
     "@angular-devkit/build-angular": "17.0.1",
     "@angular-eslint/builder": "^17.0.0",
     "@angular-eslint/eslint-plugin": "^17.0.0",
@@ -84,22 +73,17 @@
     "@angular-eslint/template-parser": "^17.0.0",
     "@angular/cli": "17.0.1",
     "@angular/localize": "17.0.3",
->>>>>>> 2d8f9c468 (chore(deps): update npm major upgrades)
     "@cypress/schematic": "^2.5",
     "@openapitools/openapi-generator-cli": "~2.7.0",
     "@playwright/test": "^1.40.0",
     "@types/jasmine": "^5.0.0",
     "@types/node": "^20.3",
     "@types/proj4": "^2.5.2",
-<<<<<<< HEAD
-    "@typescript-eslint/eslint-plugin": "^5.60",
-    "@typescript-eslint/parser": "^5.60",
-    "cypress": "^13.5.1",
-=======
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
-    "cypress": "^13.0.0",
->>>>>>> 2d8f9c468 (chore(deps): update npm major upgrades)
+    "@typescript-eslint/eslint-plugin": "^6.11.0",
+    "@typescript-eslint/parser": "^6.11.0",
+    "cypress": "^13.5.1",
     "cypress-failed-log": "^2.10",
     "cypress-high-resolution": "^1.0",
     "eslint": "^8.54.0",

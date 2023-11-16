@@ -18,7 +18,6 @@ import {
   MockBoSelectComponent,
 } from '../../../../app.testing.mocks';
 import { AuthService } from '../../../../core/auth/auth.service';
-import { Component } from '@angular/core';
 import { LineDetailFormComponent } from '../../lines/detail/line-detail-form/line-detail-form.component';
 import { LinkIconComponent } from '../../../../core/form-components/link-icon/link-icon.component';
 import { of } from 'rxjs';
@@ -107,7 +106,7 @@ describe('LineVersionSnapshotDetailComponent', () => {
 
 function setupTestBed(
   linesService: LinesService,
-  data: { lineVersionSnapshot: string | LineVersionSnapshot }
+  data: { lineVersionSnapshot: string | LineVersionSnapshot },
 ) {
   TestBed.configureTestingModule({
     declarations: [
