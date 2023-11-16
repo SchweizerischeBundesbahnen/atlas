@@ -22,7 +22,7 @@ describe('TrafficPointElementsTableComponent', () => {
   );
   const activatedRouteMock = {
     parent: { snapshot: { params: { id: 8507000 } } },
-    data: of({ id: 8507000, isTrafficPointArea: false }),
+    data: of({ isTrafficPointArea: false }),
   };
 
   beforeEach(async () => {
