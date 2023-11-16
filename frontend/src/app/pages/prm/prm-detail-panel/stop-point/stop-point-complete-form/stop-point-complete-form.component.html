@@ -1,0 +1,242 @@
+<div class="col-12 d-flex">
+  <div class="col-6">
+    <mat-label class="font-bold-lg required-indicator">
+      {{ 'SEPODI.SERVICE_POINTS.MEANS_OF_TRANSPORT' | translate }}
+    </mat-label>
+    <atlas-spacer height="3px"></atlas-spacer>
+    <means-of-transport-picker
+      [formGroup]="form"
+      controlName="meansOfTransport"
+      [disabled]="form.disabled"
+      label="PRM.STOP_POINTS.FORM.MEANS_OF_TRANSPORT_SUB_LABEL"
+      [showUnknown]="false"
+    ></means-of-transport-picker>
+  </div>
+  <div class="col-6" [formGroup]="form">
+    <mat-checkbox formControlName="interoperable" data-cy="interoperable">
+      {{ 'PRM.STOP_POINTS.FORM.INTEROPERABLE' | translate }}
+    </mat-checkbox>
+    <app-atlas-field-error [form]="form" controlName="interoperable"></app-atlas-field-error>
+  </div>
+</div>
+<div class="col-12 d-flex mt-4">
+  <div class="d-flex flex-column col-6 pe-3">
+    <form-comment
+      [formGroup]="form"
+      label="PRM.STOP_POINTS.FORM.FREE_TEXT"
+      controlName="freeText"
+      maxChars="2000"
+    ></form-comment>
+  </div>
+  <div class="d-flex flex-column col-6">
+    <atlas-text-field
+      [fieldExamples]="[
+        { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '500' } }
+      ]"
+      [formGroup]="form"
+      controlName="url"
+      fieldLabel="PRM.STOP_POINTS.FORM.URL"
+    >
+    </atlas-text-field>
+  </div>
+</div>
+<div class="font-bold-2xl mt-3">{{ 'FORM.KEY_DATA' | translate }}</div>
+<div class="col-6 pb-3">
+  <form-date-range [formGroup]="form"></form-date-range>
+</div>
+<div class="font-bold-2xl mt-3">{{ 'PRM.STOP_POINTS.FORM.ADDRESS_KEY_DATA' | translate }}</div>
+<div class="col-12 d-flex mt-3">
+  <div class="d-flex flex-column col-6 pe-3">
+    <atlas-text-field
+      [fieldExamples]="[
+        { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '2000' } }
+      ]"
+      [formGroup]="form"
+      controlName="address"
+      fieldLabel="PRM.STOP_POINTS.FORM.ADDRESS"
+    >
+    </atlas-text-field>
+  </div>
+  <div class="d-flex flex-column col-3 pe-2">
+    <atlas-text-field
+      [fieldExamples]="[
+        { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+      ]"
+      [formGroup]="form"
+      controlName="zipCode"
+      fieldLabel="PRM.STOP_POINTS.FORM.ZIP"
+    >
+    </atlas-text-field>
+  </div>
+  <div class="d-flex flex-column col-3 ps-2">
+    <atlas-text-field
+      [fieldExamples]="[
+        { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+      ]"
+      [formGroup]="form"
+      controlName="city"
+      fieldLabel="PRM.STOP_POINTS.FORM.CITY"
+    >
+    </atlas-text-field>
+  </div>
+</div>
+<div class="font-bold-2xl mt-3">{{ 'PRM.STOP_POINTS.CUSTOMER_INFORMATION' | translate }}</div>
+<div class="col-12 d-flex mt-3">
+  <atlas-select
+    class="col-4 pe-3"
+    [formGroup]="form"
+    controlName="visualInfo"
+    dataCy="visualInfo"
+    label="PRM.STOP_POINTS.FORM.VISUAL_INFO"
+    optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
+    [options]="standardAttributeTypes"
+    [additionalLabelspace]="0"
+  >
+  </atlas-select>
+  <atlas-select
+    class="col-4 ps-3 pe-2"
+    [formGroup]="form"
+    controlName="dynamicOpticSystem"
+    dataCy="dynamicOpticSystem"
+    label="PRM.STOP_POINTS.FORM.DYNAMIC_OPTIC_SYSTEM"
+    optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
+    [options]="standardAttributeTypes"
+    [additionalLabelspace]="0"
+  >
+  </atlas-select>
+  <atlas-select
+    class="col-4 ps-3"
+    [formGroup]="form"
+    controlName="dynamicAudioSystem"
+    dataCy="dynamicAudioSystem"
+    label="PRM.STOP_POINTS.FORM.DYNAMIC_AUDIO_SYSTEM"
+    optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
+    [options]="standardAttributeTypes"
+    [additionalLabelspace]="0"
+  >
+  </atlas-select>
+</div>
+<div class="col-12 d-flex mt-4">
+  <div class="d-flex flex-column col-6 pe-3">
+    <form-comment
+      [formGroup]="form"
+      label="PRM.STOP_POINTS.FORM.ADDITIONAL_INFORMATION"
+      controlName="additionalInformation"
+      maxChars="2000"
+    ></form-comment>
+  </div>
+</div>
+<div class="font-bold-2xl mt-3">{{ 'PRM.STOP_POINTS.AUTOMATIC_TICKET' | translate }}</div>
+<div class="col-12 d-flex mt-3">
+  <atlas-select
+    class="col-4 pe-3"
+    [formGroup]="form"
+    controlName="ticketMachine"
+    dataCy="ticketMachine"
+    label="PRM.STOP_POINTS.FORM.TICKET_MACHINE"
+    optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
+    [options]="standardAttributeTypes"
+    [additionalLabelspace]="0"
+  >
+  </atlas-select>
+  <atlas-select
+    class="col-4 ps-3 pe-2"
+    [formGroup]="form"
+    controlName="wheelchairTicketMachine"
+    dataCy="wheelchairTicketMachine"
+    label="PRM.STOP_POINTS.FORM.WHEELCHAIR_TICKET_MACHINE"
+    optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
+    [options]="standardAttributeTypes"
+    [additionalLabelspace]="0"
+  >
+  </atlas-select>
+  <atlas-select
+    class="col-4 ps-3"
+    [formGroup]="form"
+    controlName="audioTicketMachine"
+    dataCy="audioTicketMachine"
+    label="PRM.STOP_POINTS.FORM.AUDIO_TICKET_MACHINE"
+    optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
+    [options]="standardAttributeTypes"
+    [additionalLabelspace]="0"
+  >
+  </atlas-select>
+</div>
+<div class="col-12 d-flex mt-4">
+  <div class="d-flex flex-column col-6 pe-3">
+    <form-comment
+      [formGroup]="form"
+      label="PRM.STOP_POINTS.FORM.INFO_TICKET_MACHINE"
+      controlName="infoTicketMachine"
+      maxChars="2000"
+    ></form-comment>
+  </div>
+</div>
+
+<div class="font-bold-2xl mt-3">{{ 'PRM.STOP_POINTS.AUTONOMUS_USABILITY' | translate }}</div>
+<div class="col-12 d-flex mt-3">
+  <atlas-select
+    class="col-4 pe-2"
+    [formGroup]="form"
+    controlName="assistanceRequestFulfilled"
+    dataCy="assistanceRequestFulfilled"
+    label="PRM.STOP_POINTS.FORM.ASSISTANCE_REQUEST_FULFILLED"
+    optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
+    [options]="standardAttributeTypes"
+    [additionalLabelspace]="0"
+  >
+  </atlas-select>
+  <atlas-select
+    class="col-4 ps-3 pe-2"
+    [formGroup]="form"
+    controlName="assistanceService"
+    dataCy="assistanceService"
+    label="PRM.STOP_POINTS.FORM.ASSISTANCE_SERVICE"
+    optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
+    [options]="standardAttributeTypes"
+    [additionalLabelspace]="0"
+  >
+  </atlas-select>
+  <atlas-select
+    class="col-4 ps-3"
+    [formGroup]="form"
+    controlName="assistanceAvailability"
+    dataCy="assistanceAvailability"
+    label="PRM.STOP_POINTS.FORM.ASSISTANCE_AVAILABILITY"
+    optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
+    [options]="standardAttributeTypes"
+    [additionalLabelspace]="0"
+  >
+  </atlas-select>
+</div>
+<div class="col-12 d-flex mt-4">
+  <div class="d-flex flex-column col-6 pe-3">
+    <form-comment
+      [formGroup]="form"
+      label="PRM.STOP_POINTS.FORM.ASSISTANCE_CONDITION"
+      controlName="assistanceCondition"
+      maxChars="2000"
+    ></form-comment>
+  </div>
+</div>
+<div class="col-12 d-flex mt-5">
+  <atlas-select
+    class="col-6 pe-3"
+    [formGroup]="form"
+    controlName="alternativeTransport"
+    dataCy="alternativeTransport"
+    label="PRM.STOP_POINTS.FORM.ALTERNATIVE_TRANSPORT"
+    optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
+    [options]="standardAttributeTypes"
+    [additionalLabelspace]="28"
+  >
+  </atlas-select>
+  <div class="d-flex flex-column col-6">
+    <form-comment
+      [formGroup]="form"
+      label="PRM.STOP_POINTS.FORM.ALTERNATIVE_TRANSPORT_CONDITION"
+      controlName="alternativeTransportCondition"
+      maxChars="2000"
+    ></form-comment>
+  </div>
+</div>
