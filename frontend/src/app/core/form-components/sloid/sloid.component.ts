@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets-validator';
 
 @Component({
@@ -10,10 +10,9 @@ import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets
 export class SloidComponent implements OnInit {
   @Input() formGroup!: FormGroup;
   @Input() givenParts: string[] = [];
+  @Input() numberColons!: number;
 
-  form = new FormGroup({
-    sloid: new FormControl(null, [AtlasCharsetsValidator.colonSeperatedNumbers(1)]),
-  });
+  form!: FormGroup;
 
   private _automaticSloid = true;
   get automaticSloid() {
@@ -32,6 +31,7 @@ export class SloidComponent implements OnInit {
   ngOnInit() {
     this.fixedSloidPart = 'ch:1:sloid:' + this.givenParts.join(':') + ':';
 
+    this.initFormgroup();
     this.form.controls.sloid.valueChanges.subscribe((value) => {
       this.patchSloidValue(this.fixedSloidPart + value);
     });
@@ -39,5 +39,13 @@ export class SloidComponent implements OnInit {
 
   private patchSloidValue(sloid?: string) {
     this.formGroup.patchValue({ sloid: sloid ? sloid : undefined });
+  }
+
+  private initFormgroup() {
+    this.form = new FormGroup({
+      sloid: new FormControl(null, [
+        AtlasCharsetsValidator.colonSeperatedNumbers(this.numberColons),
+      ]),
+    });
   }
 }
