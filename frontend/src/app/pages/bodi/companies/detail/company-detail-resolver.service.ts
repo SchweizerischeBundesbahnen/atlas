@@ -1,16 +1,16 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
+import { inject, Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, EMPTY, Observable } from 'rxjs';
 import { CompaniesService, Company } from '../../../../api';
 import { Pages } from '../../../pages';
 import { NotificationService } from '../../../../core/notification/notification.service';
 
 @Injectable({ providedIn: 'root' })
-export class CompanyDetailResolver implements Resolve<Company> {
+export class CompanyDetailResolver {
   constructor(
     private readonly companiesService: CompaniesService,
     private notificationService: NotificationService,
-    private readonly router: Router
+    private readonly router: Router,
   ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<Company> {
@@ -22,7 +22,7 @@ export class CompanyDetailResolver implements Resolve<Company> {
     return this.companiesService.getCompany(idParameter).pipe(
       catchError(() => {
         return this.routeOnFailure();
-      })
+      }),
     );
   }
 
@@ -35,3 +35,6 @@ export class CompanyDetailResolver implements Resolve<Company> {
     return EMPTY;
   }
 }
+
+export const companyResolver: ResolveFn<Company> = (route: ActivatedRouteSnapshot) =>
+  inject(CompanyDetailResolver).resolve(route);
