@@ -20,7 +20,10 @@ describe('TrafficPointElementsTableComponent', () => {
   trafficPointElementsService.getPlatformsOfServicePoint.and.returnValue(
     of(BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER),
   );
-  const activatedRouteMock = { parent: { snapshot: { params: { id: 8507000 } } } };
+  const activatedRouteMock = {
+    parent: { snapshot: { params: { id: 8507000 } } },
+    data: of({ isTrafficPointArea: false }),
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

@@ -1,22 +1,30 @@
 <div class="traffic-point-element-table p-5 position-relative">
   <atlas-button
-    (buttonClicked)="newTrafficPointElement()"
+    (buttonClicked)="addNewTrafficPointElement()"
     applicationType="SEPODI"
     buttonDataCy="new-traffic-point-element"
-    buttonText="SEPODI.TRAFFIC_POINT_ELEMENTS.NEW"
+    buttonText="{{
+      isTrafficPointArea
+        ? ('SEPODI.BOARDING_AREAS.NEW' | translate)
+        : ('SEPODI.TRAFFIC_POINT_ELEMENTS.NEW' | translate)
+    }}"
     buttonType="createCheckingPermission"
     wrapperStyleClass="mb-3"
   ></atlas-button>
 
   <div class="font-bold-2xl mt-5">
-    {{ 'SEPODI.TRAFFIC_POINT_ELEMENTS.TRAFFIC_POINT_ELEMENTS' | translate }}
+    {{
+      isTrafficPointArea
+        ? ('SEPODI.BOARDING_AREAS.BOARDING_AREAS' | translate)
+        : ('SEPODI.TRAFFIC_POINT_ELEMENTS.TRAFFIC_POINT_ELEMENTS' | translate)
+    }}
   </div>
 
   <app-table
     data-cy="traffic-point-elements-table"
     [tableData]="trafficPointElementRows"
     [totalCount]="totalCount$"
-    [tableColumns]="tableColumns"
+    [tableColumns]="isTrafficPointArea ? tableColumnsAreas : tableColumnsPlatforms"
     [canEdit]="true"
     [tableFilterConfig]="tableFilterConfig"
     (editElementEvent)="editVersion($event)"
