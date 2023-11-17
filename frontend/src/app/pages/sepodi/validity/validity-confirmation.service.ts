@@ -28,7 +28,7 @@ export class ValidityConfirmationService {
             validFrom: DateService.getDateFormatted(servicePointValidity.validFrom),
             validTo: DateService.getDateFormatted(servicePointValidity.validTo),
           },
-          confirmText: 'COMMON.SAVE',
+          confirmText: 'COMMON.SAVE_ANYWAY',
           cancelText: 'COMMON.CANCEL',
         });
       }
