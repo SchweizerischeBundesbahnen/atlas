@@ -37,6 +37,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
+import lombok.extern.slf4j.Slf4j;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -47,8 +48,12 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "traffic_point_element_version")
 @AtlasVersionable
+@Slf4j
 public class TrafficPointElementVersion extends BasePointVersion<TrafficPointElementVersion> implements Versionable,
     DatesValidator {
+
+  private static final int EXPECTED_COLONS_AREA = 4;
+  private static final int EXPECTED_COLONS_PLATFORM = 5;
 
   private static final String VERSION_SEQ = "traffic_point_element_version_seq";
 
@@ -130,29 +135,33 @@ public class TrafficPointElementVersion extends BasePointVersion<TrafficPointEle
 
   @JsonIgnore
   @AssertTrue(message = """
-      SLOID does not match the specified pattern of: 
-      ch:1:sloid:7000:088946 for area or 
-      ch:1:sloid:7000:1234:088946 for stop points! 
+      SLOID does not match the specified pattern of:
+      ch:1:sloid:7000:088946 for area or
+      ch:1:sloid:7000:1234:088946 for stop points!
       """)
-  public boolean isValidSloid(){
+  public boolean isValidSloid() {
     if (trafficPointElementType == null) {
       return true;
     }
-    int expectedColonsArea = 4;
-    int expectedColonsPlatform = 5;
 
-    int expectedColons = (trafficPointElementType.equals(TrafficPointElementType.BOARDING_AREA)) ? expectedColonsArea : expectedColonsPlatform;
-    String[] parts = sloid.split(":");
+    int expectedColons = trafficPointElementType == TrafficPointElementType.BOARDING_AREA ?
+        EXPECTED_COLONS_AREA : EXPECTED_COLONS_PLATFORM;
+    int actualColons = sloid.split(":").length - 1;
 
-    return parts.length == expectedColons + 1;
+    boolean result = actualColons == expectedColons;
+
+    if (!result) {
+      log.error("SLOID {} did not have {} colons as expected", sloid, expectedColons);
+    }
+    return result;
   }
 
   @JsonIgnore
   @AssertTrue(message = """
-      The following properties must be null or empty if trafficPointElementType is BOARDING_AREA: \n
-      designationOperational \n
-      length \n
-      boardingAreaHeight \n
+      The following properties must be null or empty if trafficPointElementType is BOARDING_AREA:
+      designationOperational
+      length
+      boardingAreaHeight
       compassDirection
       """)
   public boolean isValidForBoardingArea(){

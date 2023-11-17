@@ -20,6 +20,7 @@
     "BACK_TO_OVERVIEW": "Zurück zur Übersicht",
     "BACK": "Zurück",
     "SAVE": "Speichern",
+    "SAVE_ANYWAY": "Trotzdem speichern",
     "SAVE_AND_CLOSE": "Speichern & Schliessen",
     "ADD": "Hinzufügen",
     "EDIT": "Editieren",
@@ -215,7 +216,8 @@
     "MIN": "Die Zahl muss mindestens {{min}} sein.",
     "MAX": "Die Zahl darf maximal {{max}} sein.",
     "AT_LEAST_ONE": "Wählen Sie mindestens eine Ausprägung aus.",
-    "DECIMAL_NUMBER": "Geben Sie eine Dezimalzahl mit maximal {{maxDecimalDigits}} Nachkommastellen ein."
+    "DECIMAL_NUMBER": "Geben Sie eine Dezimalzahl mit maximal {{maxDecimalDigits}} Nachkommastellen ein.",
+    "COLON_SEPERATED_NUMBERS": "Geben Sie Zahlen getrennt von genau {{numbersWithColons}} Doppelpunkten ein."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Geschäftsorganisationen und Applikationen",
