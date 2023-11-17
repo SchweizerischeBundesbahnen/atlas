@@ -19,6 +19,7 @@ export class ValidationService {
             length: controlErrors[keyError]['requiredLength'],
             allowedChars: controlErrors[keyError]['allowedCharacters'],
             maxDecimalDigits: controlErrors[keyError]['maxDecimalDigits'],
+            numbersWithColons: controlErrors[keyError]['numbersWithColons'],
             max: controlErrors[keyError]['max'],
             min: controlErrors[keyError]['min'],
             number: controlErrors[keyError]['number'],
@@ -29,7 +30,7 @@ export class ValidationService {
 
     // On a date parsing error, we only need that error and can ignore required etc.
     const matDatePickerParseErrors = result.filter(
-      (errors) => errors.error === 'VALIDATION.MATDATEPICKERPARSE'
+      (errors) => errors.error === 'VALIDATION.MATDATEPICKERPARSE',
     );
     if (matDatePickerParseErrors.length > 0) {
       return matDatePickerParseErrors;
