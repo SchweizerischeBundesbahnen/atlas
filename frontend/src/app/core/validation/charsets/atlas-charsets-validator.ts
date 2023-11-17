@@ -11,11 +11,16 @@ export class AtlasCharsetsValidator {
 
   static colonSeperatedNumbers(amountOfColons: number): ValidatorFn {
     return (control) => {
-      return AtlasCharsetsValidator.validateAllowedCharacters(
-        control,
-        '\\d+(:\\d+){' + amountOfColons + '}',
-        '0-9 :',
-      );
+      const patternErrors = Validators.pattern('\\d+(:\\d+){' + amountOfColons + '}')(control);
+      if (patternErrors) {
+        const error: ValidationErrors = {
+          colon_seperated_numbers: {
+            numbersWithColons: amountOfColons,
+          },
+        };
+        return error;
+      }
+      return patternErrors;
     };
   }
 
