@@ -78,6 +78,9 @@ public class LoadingPointService {
       throw new StaleObjectStateException(LoadingPointVersion.class.getSimpleName(), "version");
     }
 
+    editedVersion.setNumber(currentVersion.getNumber());
+    editedVersion.setServicePointNumber(currentVersion.getServicePointNumber());
+
     List<LoadingPointVersion> currentVersions = findLoadingPoint(currentVersion.getServicePointNumber(),
         currentVersion.getNumber());
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion, editedVersion, currentVersions);
