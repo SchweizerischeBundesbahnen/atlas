@@ -1,8 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
-import { of } from 'rxjs';
+import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
+import { Observable, of } from 'rxjs';
 import { BusinessOrganisationsService, BusinessOrganisationVersion, Status } from '../../../../api';
-import { BusinessOrganisationDetailResolver } from './business-organisation-detail-resolver.service';
+import {
+  BusinessOrganisationDetailResolver,
+  businessOrganisationResolver,
+} from './business-organisation-detail-resolver.service';
 import { AppTestingModule } from '../../../../app.testing.module';
 
 const version: BusinessOrganisationVersion = {
@@ -48,9 +51,11 @@ describe('BusinessOrganisationDetailResolver', () => {
   it('should get version from service to display', () => {
     const mockRoute = { paramMap: convertToParamMap({ id: '1234' }) } as ActivatedRouteSnapshot;
 
-    const resolvedVersion = resolver.resolve(mockRoute);
+    const result = TestBed.runInInjectionContext(() =>
+      businessOrganisationResolver(mockRoute, {} as RouterStateSnapshot),
+    ) as Observable<BusinessOrganisationVersion[]>;
 
-    resolvedVersion.subscribe((versions) => {
+    result.subscribe((versions) => {
       expect(versions.length).toBe(1);
       expect(versions[0].id).toBe(1234);
       expect(versions[0].status).toBe(Status.Validated);
