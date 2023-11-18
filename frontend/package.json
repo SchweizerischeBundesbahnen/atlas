@@ -55,7 +55,7 @@
     "angular-server-side-configuration": "^16.0",
     "bootstrap": "^5.3",
     "jwt-decode": "^4.0.0",
-    "maplibre-gl": "^3.1",
+    "maplibre-gl": "^3.6.1",
     "moment": "^2.29",
     "ngx-color-picker": "^15.0.0",
     "proj4": "^2.9.0",
@@ -64,7 +64,7 @@
     "zone.js": "^0.13"
   },
   "devDependencies": {
-    "@angular-devkit/architect": "0.x",
+    "@angular-devkit/architect": "^0.1700.1",
     "@angular-devkit/build-angular": "16.2.10",
     "@angular-eslint/builder": "^16.0",
     "@angular-eslint/eslint-plugin": "^16.0",
@@ -75,16 +75,16 @@
     "@angular/localize": "16.2.12",
     "@cypress/schematic": "^2.5",
     "@openapitools/openapi-generator-cli": "~2.7.0",
-    "@playwright/test": "^1.35",
+    "@playwright/test": "^1.40.0",
     "@types/jasmine": "^5.0.0",
     "@types/node": "^20.3",
     "@types/proj4": "^2.5.2",
     "@typescript-eslint/eslint-plugin": "^5.60",
     "@typescript-eslint/parser": "^5.60",
-    "cypress": "^13.0.0",
+    "cypress": "^13.5.1",
     "cypress-failed-log": "^2.10",
     "cypress-high-resolution": "^1.0",
-    "eslint": "^8.43",
+    "eslint": "^8.54.0",
     "eslint-config-prettier": "^9.0.0",
     "husky": "^8.0",
     "jasmine-core": "^5.0",
@@ -95,11 +95,11 @@
     "karma-jasmine": "^5.1",
     "karma-jasmine-html-reporter": "^2.1",
     "karma-sonarqube-reporter": "^1.4",
-    "lint-staged": "^15.0.0",
-    "prettier": "^3.0.0",
+    "lint-staged": "^15.1.0",
+    "prettier": "^3.1.0",
     "typescript": "^5.1"
   },
   "optionalDependencies": {
-    "puppeteer": "^21.0.0"
+    "puppeteer": "^21.5.2"
   }
 }
