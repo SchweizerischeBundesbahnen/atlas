@@ -27,13 +27,15 @@ import java.util.Set;
 @UtilityClass
 public class ServicePointTestData {
 
+  public static final int WYLEREGG_NUMBER = 8589008;
+
   public static ServicePointVersion getBernWyleregg() {
     ServicePointGeolocation geolocation = getServicePointGeolocationBernMittelland();
 
     ServicePointVersion servicePoint = ServicePointVersion
         .builder()
         .servicePointGeolocation(geolocation)
-        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8589008))
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(WYLEREGG_NUMBER))
         .sloid("ch:1:sloid:89008")
         .numberShort(89008)
         .country(Country.SWITZERLAND)
