@@ -946,7 +946,7 @@
       },
       "TERMINATION_FORBIDDEN": "Non siete autorizzati a terminare la fermata. Utilizzate il modulo all'indirizzo https://www.tp-info.ch/it/soppressione-fermata.",
       "ABBREVIATION_UPDATE_NOT_ALLOWED": "L'organizzazione aziendale del servizio non è autorizzata ad aggiungere abbreviazioni, oppure il servizio ha già un'abbreviazione che non può essere modificata o cancellata.",
-      "ABBREVIATION_NOT_UNIQUE": "L'abbreviazione è già in uso o non corrisponde al modello specificato ({2-6}, A-Z e 0-9)."
+      "ABBREVIATION_NOT_UNIQUE": "La sigla è già in uso o la versione del servizio selezionata non è la più aggiornata."
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Bordi fermata",
