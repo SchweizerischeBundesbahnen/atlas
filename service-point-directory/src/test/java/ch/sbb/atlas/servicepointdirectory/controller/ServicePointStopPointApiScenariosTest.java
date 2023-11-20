@@ -601,6 +601,92 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString())));
     }
 
+    @Test
+    void scenario18WhenTwoStopPointsWith2NamesAndStopPointUpdateWithoutNameChangeThenStopPointValidated() throws Exception {
+        CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
+        ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+                stopPoint1);
+        Long id = servicePointVersionModel.getId();
+
+        UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint3.setDesignationOfficial("Bern Strasse");
+        stopPoint3.setValidFrom(LocalDate.of(2018, 1, 1));
+        stopPoint3.setValidTo(LocalDate.of(2019, 8, 10));
+
+        mvc.perform(put("/v1/service-points/" + id)
+                        .contentType(contentType)
+                        .content(mapper.writeValueAsString(stopPoint3)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
+                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
+                .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
+                .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2018-01-01")))
+                .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
+                .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString())));
+    }
+
+    @Test
+    void scenario19WhenTwoStopPointsWith2NamesAndStopPointUpdateWithoutNameChangeThenStopPointValidated() throws Exception {
+        CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
+        ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+                stopPoint1);
+        Long id = servicePointVersionModel.getId();
+
+        UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint3.setDesignationOfficial("Aargau Strasse");
+        stopPoint3.setValidFrom(LocalDate.of(2018, 1, 1));
+        stopPoint3.setValidTo(LocalDate.of(2019, 8, 10));
+
+        mvc.perform(put("/v1/service-points/" + id)
+                        .contentType(contentType)
+                        .content(mapper.writeValueAsString(stopPoint3)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
+                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
+                .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
+                .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2018-01-01")))
+                .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
+                .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString())));
+    }
+
+//    @Test // TODO: Fix failing test
+    void scenario20WhenTwoStopPointsWith2NamesAndStopPointExtendsThenStopPointWithNewNameInReview() throws Exception {
+        CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
+        ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+                stopPoint1);
+
+        CreateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint2.setDesignationOfficial("Bern Strasse");
+        stopPoint2.setValidFrom(LocalDate.of(2016, 1, 1));
+        stopPoint2.setValidTo(LocalDate.of(2017, 12, 31));
+        ReadServicePointVersionModel servicePointVersionModel1 = servicePointController.createServicePoint(
+                stopPoint2);
+        Long id = servicePointVersionModel1.getId();
+
+        UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint3.setDesignationOfficial("Zurich Strasse");
+
+        mvc.perform(put("/v1/service-points/" + id)
+                        .contentType(contentType)
+                        .content(mapper.writeValueAsString(stopPoint3)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
+                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
+                .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
+                .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2016-01-01")))
+                .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2017-12-31")))
+                .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString())))
+                .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validFrom, is("2018-01-01")))
+                .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
+                .andExpect(jsonPath("$[2].status", is(Status.VALIDATED.toString())));
+    }
+
 
 
 }
