@@ -18,6 +18,7 @@ import { Pages } from '../../pages';
   styleUrls: ['./stop-point-detail.component.scss'],
 })
 export class StopPointDetailComponent implements OnInit {
+  isStopPointExisting = true;
   stopPointVersions!: ReadStopPointVersion[];
   selectedVersionIndex!: number;
   selectedVersion!: ReadStopPointVersion;
@@ -45,10 +46,17 @@ export class StopPointDetailComponent implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((next) => {
         this.stopPointVersions = next.stopPoint;
-        this.initStopPoint();
+        if (this.stopPointVersions.length > 0) {
+          this.initExistingStopPoint();
+        } else {
+          this.isStopPointExisting = false;
+          this.initNotExistingStopPoint();
+        }
         this.setSortedOperatingPointTypes();
       });
   }
+
+  private initNotExistingStopPoint() {}
 
   switchVersion(newIndex: number) {
     this.selectedVersionIndex = newIndex;
@@ -81,7 +89,7 @@ export class StopPointDetailComponent implements OnInit {
     );
   }
 
-  private initStopPoint() {
+  private initExistingStopPoint() {
     VersionsHandlingService.addVersionNumbers(this.stopPointVersions);
     this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.stopPointVersions);
     if (this.preferredId) {
@@ -98,6 +106,7 @@ export class StopPointDetailComponent implements OnInit {
     this.selectedVersionIndex = this.stopPointVersions.indexOf(this.selectedVersion);
     this.initSelectedVersion();
   }
+
   private setSortedOperatingPointTypes = (): void => {
     this.standardAttributeTypes = this.translationSortingService.sort(
       Object.values(StandardAttributeType),
