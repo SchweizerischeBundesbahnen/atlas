@@ -207,20 +207,26 @@ describe('TransportCompanyDetailComponent', () => {
   });
 });
 
-let transportCompanyRelationsServiceSpy: any;
-
-function setupTestBed(data: (TransportCompany | TransportCompanyBoRelation[])[]) {
-  transportCompanyRelationsServiceSpy = jasmine.createSpyObj('TransportCompanyRelationsService', [
+const transportCompanyRelationsServiceSpy = jasmine.createSpyObj(
+  'TransportCompanyRelationsService',
+  [
     'createTransportCompanyRelation',
     'getTransportCompanyRelations',
     'updateTransportCompanyRelation',
     'deleteTransportCompanyRelation',
-  ]);
+  ],
+);
 
+function setupTestBed(data: (TransportCompany | TransportCompanyBoRelation[])[]) {
   transportCompanyRelationsServiceSpy.createTransportCompanyRelation.and.returnValue(of({}));
   transportCompanyRelationsServiceSpy.getTransportCompanyRelations.and.returnValue(of([]));
   transportCompanyRelationsServiceSpy.updateTransportCompanyRelation.and.returnValue(of({}));
   transportCompanyRelationsServiceSpy.deleteTransportCompanyRelation.and.returnValue(of({}));
+
+  transportCompanyRelationsServiceSpy.createTransportCompanyRelation.calls.reset();
+  transportCompanyRelationsServiceSpy.getTransportCompanyRelations.calls.reset();
+  transportCompanyRelationsServiceSpy.updateTransportCompanyRelation.calls.reset();
+  transportCompanyRelationsServiceSpy.deleteTransportCompanyRelation.calls.reset();
 
   TestBed.configureTestingModule({
     declarations: [

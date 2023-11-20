@@ -6,7 +6,7 @@ import { OverviewTabComponent } from './overview-tab/overview-tab.component';
 import { OverviewDetailComponent } from './overview-detail/overview-detail.component';
 import { HearingStatus } from '../../api';
 import { StatementDetailComponent } from './statement/statement-detail.component';
-import { StatementDetailResolver } from './statement/statement-detail.resolver';
+import { statementResolver } from './statement/statement-detail.resolver';
 import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
 
 const statementActiveDetailPath = `${Pages.TTH_OVERVIEW_DETAIL.path}/${Pages.TTH_ACTIVE.path}/${Pages.TTH_STATEMENT_DETAILS.path}`;
@@ -23,7 +23,7 @@ const routes: Routes = [
     component: StatementDetailComponent,
     canDeactivate: [canLeaveDirtyForm],
     resolve: {
-      statement: StatementDetailResolver,
+      statement: statementResolver,
     },
     data: {
       hearingStatus: HearingStatus.Active,
@@ -35,7 +35,7 @@ const routes: Routes = [
     component: StatementDetailComponent,
     canDeactivate: [canLeaveDirtyForm],
     resolve: {
-      statement: StatementDetailResolver,
+      statement: statementResolver,
     },
     data: {
       hearingStatus: HearingStatus.Planned,
@@ -47,7 +47,7 @@ const routes: Routes = [
     component: StatementDetailComponent,
     canDeactivate: [canLeaveDirtyForm],
     resolve: {
-      statement: StatementDetailResolver,
+      statement: statementResolver,
     },
     data: {
       hearingStatus: HearingStatus.Archived,

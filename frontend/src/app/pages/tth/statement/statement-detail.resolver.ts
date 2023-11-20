@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
+import { inject, Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
 import { TimetableHearingStatement, TimetableHearingStatementsService } from '../../../api';
 import { Pages } from '../../pages';
 
 @Injectable({ providedIn: 'root' })
-export class StatementDetailResolver implements Resolve<TimetableHearingStatement | undefined> {
+export class StatementDetailResolver {
   constructor(
     private readonly timetableHearingStatementsService: TimetableHearingStatementsService,
     private readonly router: Router,
@@ -35,3 +35,7 @@ export class StatementDetailResolver implements Resolve<TimetableHearingStatemen
         );
   }
 }
+
+export const statementResolver: ResolveFn<TimetableHearingStatement | undefined> = (
+  route: ActivatedRouteSnapshot,
+) => inject(StatementDetailResolver).resolve(route);

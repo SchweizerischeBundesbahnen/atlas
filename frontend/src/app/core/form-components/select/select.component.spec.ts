@@ -5,7 +5,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ReactiveFormsModule } from '@angular/forms';
 
 describe('SelectComponent', () => {
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   let component: SelectComponent<any>;
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   let fixture: ComponentFixture<SelectComponent<any>>;
 
   beforeEach(async () => {
