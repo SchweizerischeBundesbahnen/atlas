@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 
 public class InvalidAbbreviationException extends AtlasException {
 
-    private static final String ABBREVIATION_NOT_UNIQUE = "The abbreviation must be between 2 and 6 characters long, be in uppercase, and be unique";
+    private static final String ABBREVIATION_NOT_UNIQUE = "The abbreviation must be unique and the chosen servicepoint version should be the most recent version.";
     @Override
     public ErrorResponse getErrorResponse() {
         return ErrorResponse.builder()
