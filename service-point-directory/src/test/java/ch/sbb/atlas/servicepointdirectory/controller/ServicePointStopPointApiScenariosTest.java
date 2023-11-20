@@ -10,6 +10,7 @@ import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointFotCommentRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointNumberService;
@@ -320,6 +321,86 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
                 .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
                 .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString()))); // TODO: Change to InReview
+    }
+
+    @Test
+    void scenario10WhenTwoStopPointsWith2CoordinatesAndChangeStopPointNameAndCoordinateAtTheEndThenStopPointWithNewNameInReview() throws Exception {
+        CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint1.setValidFrom(LocalDate.of(2010, 12, 11));
+        stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
+        ReadServicePointVersionModel servicePointVersionModel1 = servicePointController.createServicePoint(
+                stopPoint1);
+
+        CreateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint2.setValidFrom(LocalDate.of(2016, 1, 1));
+        stopPoint2.setValidTo(LocalDate.of(2019, 8, 10));
+        stopPoint2.setServicePointGeolocation(
+                ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
+        ReadServicePointVersionModel servicePointVersionModel2 = servicePointController.createServicePoint(
+                stopPoint2);
+        Long id = servicePointVersionModel2.getId();
+
+        UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint3.setDesignationOfficial("Zurich Strasse");
+        stopPoint3.setValidFrom(LocalDate.of(2018, 1, 1));
+        stopPoint3.setValidTo(LocalDate.of(2019, 8, 10));
+        stopPoint3.setServicePointGeolocation(
+                ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getZurichServicePointGeolocation()));
+
+        mvc.perform(put("/v1/service-points/" + id)
+                        .contentType(contentType)
+                        .content(mapper.writeValueAsString(stopPoint3)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
+                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
+                .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
+                .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2016-01-01")))
+                .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2017-12-31")))
+                .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString())))
+                .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validFrom, is("2018-01-01")))
+                .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
+                .andExpect(jsonPath("$[2].status", is(Status.VALIDATED.toString()))); // TODO: Change to InReview
+    }
+
+//    @Test // TODO: Check why is not working
+    void scenario11WhenTwoStopPointsWith2CoordinatesAndChangeStopPointNameAndCoordinateThenStopPointWithNewNameInReview() throws Exception {
+        CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint1.setValidFrom(LocalDate.of(2010, 12, 11));
+        stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
+        ReadServicePointVersionModel servicePointVersionModel1 = servicePointController.createServicePoint(
+                stopPoint1);
+
+        CreateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint2.setValidFrom(LocalDate.of(2016, 1, 1));
+        stopPoint2.setValidTo(LocalDate.of(2019, 8, 10));
+        stopPoint2.setServicePointGeolocation(
+                ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
+        ReadServicePointVersionModel servicePointVersionModel2 = servicePointController.createServicePoint(
+                stopPoint2);
+        Long id = servicePointVersionModel2.getId();
+
+        UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint3.setDesignationOfficial("Zurich Strasse");
+        stopPoint3.setValidFrom(LocalDate.of(2015, 1, 1));
+        stopPoint3.setValidTo(LocalDate.of(2019, 8, 10));
+        stopPoint3.setServicePointGeolocation(
+                ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getZurichServicePointGeolocation()));
+
+        mvc.perform(put("/v1/service-points/" + id)
+                        .contentType(contentType)
+                        .content(mapper.writeValueAsString(stopPoint3)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
+                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2014-12-31")))
+                .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
+                .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2015-01-01")))
+                .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
+                .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString()))) // TODO: Change to InReview
+                .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validFrom, is("2016-01-01")))
+                .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
+                .andExpect(jsonPath("$[2].status", is(Status.VALIDATED.toString()))); // TODO: Change to InReview
     }
 
 
