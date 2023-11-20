@@ -13,24 +13,21 @@ import { of } from 'rxjs';
 
 describe('UserService', () => {
   let service: UserService;
-  let userAdministrationServiceMock: UserAdministrationServiceMock;
-  let userInformationServiceMock: UserInformationServiceMock;
-
-  class UserAdministrationServiceMock {
-    getUsers: any = undefined;
-    getUser: any = undefined;
-    createUserPermission: any = undefined;
-  }
-
-  class UserInformationServiceMock {
-    searchUsers: any = undefined;
-  }
+  const userAdministrationServiceMock = jasmine.createSpyObj('userAdministrationService', [
+    'getUsers',
+    'getUser',
+  ]);
+  const userInformationServiceMock = jasmine.createSpyObj('userInformationService', [
+    'searchUsers',
+  ]);
 
   let clientCredentialAdministrationServiceSpy;
 
   beforeEach(() => {
-    userAdministrationServiceMock = new UserAdministrationServiceMock();
-    userInformationServiceMock = new UserInformationServiceMock();
+    userAdministrationServiceMock.getUsers.calls.reset();
+    userAdministrationServiceMock.getUser.calls.reset();
+    userInformationServiceMock.searchUsers.calls.reset();
+
     clientCredentialAdministrationServiceSpy = jasmine.createSpyObj([
       'getClientCredential',
       'createClientCredential',
@@ -60,7 +57,7 @@ describe('UserService', () => {
   });
 
   it('test getUsers', (done) => {
-    userAdministrationServiceMock.getUsers = jasmine.createSpy().and.returnValue(
+    userAdministrationServiceMock.getUsers.and.returnValue(
       of<ContainerUser>({
         totalCount: 5,
         objects: [{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }],
@@ -77,9 +74,7 @@ describe('UserService', () => {
   });
 
   it('test getUser', (done) => {
-    userAdministrationServiceMock.getUser = jasmine
-      .createSpy()
-      .and.returnValue(of({ sbbUserId: 'u123456' }));
+    userAdministrationServiceMock.getUser.and.returnValue(of({ sbbUserId: 'u123456' }));
 
     service.getUser('u123456').subscribe((res) => {
       expect(userAdministrationServiceMock.getUser).toHaveBeenCalledOnceWith('u123456');
@@ -89,9 +84,9 @@ describe('UserService', () => {
   });
 
   it('test searchUsers', (done) => {
-    userInformationServiceMock.searchUsers = jasmine
-      .createSpy()
-      .and.returnValue(of([{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }]));
+    userInformationServiceMock.searchUsers.and.returnValue(
+      of([{ sbbUserId: 'u123456' }, { sbbUserId: 'u654321' }]),
+    );
 
     service.searchUsers('test').subscribe((res) => {
       expect(userInformationServiceMock.searchUsers).toHaveBeenCalledOnceWith('test');
@@ -101,9 +96,9 @@ describe('UserService', () => {
   });
 
   it('test hasUserPermissions false', (done) => {
-    userAdministrationServiceMock.getUser = jasmine
-      .createSpy()
-      .and.callFake((userId) => of({ sbbUserId: userId }));
+    userAdministrationServiceMock.getUser.and.callFake((userId: string) =>
+      of({ sbbUserId: userId }),
+    );
     const hasUserPermissions = service.hasUserPermissions('u123456');
     hasUserPermissions.subscribe((val) => {
       expect(val).toBe(false);
@@ -113,7 +108,7 @@ describe('UserService', () => {
   });
 
   it('test hasUserPermissions true', (done) => {
-    userAdministrationServiceMock.getUser = jasmine.createSpy().and.callFake((userId) =>
+    userAdministrationServiceMock.getUser.and.callFake((userId: string) =>
       of({
         sbbUserId: userId,
         permissions: [

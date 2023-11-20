@@ -25,11 +25,7 @@ const mapSpy = jasmine.createSpyObj<Map>([
 mapSpy.getSource = jasmine.createSpy('getSource').and.returnValue({
   setData: jasmine.createSpy('setData'),
 });
-let clickCallback: any;
-mapSpy.on.and.callFake((event: string, callback: any) => {
-  if (event === 'click') {
-    clickCallback = callback;
-  }
+mapSpy.on.and.callFake(() => {
   return mapSpy;
 });
 describe('MapService', () => {
