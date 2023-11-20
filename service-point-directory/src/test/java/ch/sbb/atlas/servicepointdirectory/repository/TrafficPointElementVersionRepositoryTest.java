@@ -41,7 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
         .designation("Bezeichnung")
         .designationOperational("Betriebliche Bezeich")
         .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
-        .sloid("ch:1:sloid:123:123:123")
+        .sloid("ch:1:sloid:7000:123:123")
         .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
@@ -64,8 +64,8 @@ import org.springframework.transaction.annotation.Transactional;
         .designation("Bezeichnung")
         .designationOperational("Betriebliche Bezeich")
         .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
-        .sloid("ch:1:sloid:123:123:123")
-        .parentSloid("ch:1:sloid:1:123:123")
+        .sloid("ch:1:sloid:7000:123:123")
+        .parentSloid("ch:1:sloid:7000:123:123")
         .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
@@ -98,7 +98,7 @@ import org.springframework.transaction.annotation.Transactional;
         .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
         .trafficPointElementGeolocation(trafficPointElementGeolocation)
         .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
-        .sloid("ch:1:sloid:123:123:123")
+        .sloid("ch:1:sloid:7000:123:123")
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
@@ -124,7 +124,7 @@ import org.springframework.transaction.annotation.Transactional;
     trafficPointElementVersion2.setValidTo(LocalDate.of(2022, 1, 1));
 
     TrafficPointElementVersion trafficPointElementVersion3 = TrafficPointTestData.getBasicTrafficPoint();
-    trafficPointElementVersion3.setSloid("ch:1:sloid:321:321:431");
+    trafficPointElementVersion3.setSloid("ch:1:sloid:7000:321:431");
 
     trafficPointElementVersionRepository.save(trafficPointElementVersion1);
     trafficPointElementVersionRepository.save(trafficPointElementVersion2);
@@ -132,13 +132,13 @@ import org.springframework.transaction.annotation.Transactional;
 
     // when
     List<TrafficPointElementVersion> found = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
-        "ch:1:sloid:123:123:123");
+        "ch:1:sloid:89108:123:123");
 
     // then
     assertThat(found).hasSize(2);
-    assertThat(found.get(0).getSloid()).isEqualTo("ch:1:sloid:123:123:123");
+    assertThat(found.get(0).getSloid()).isEqualTo("ch:1:sloid:89108:123:123");
     assertThat(found.get(0).getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
-    assertThat(found.get(1).getSloid()).isEqualTo("ch:1:sloid:123:123:123");
+    assertThat(found.get(1).getSloid()).isEqualTo("ch:1:sloid:89108:123:123");
     assertThat(found.get(1).getValidFrom()).isEqualTo(LocalDate.of(2022, 1, 1));
   }
 
@@ -151,7 +151,7 @@ import org.springframework.transaction.annotation.Transactional;
         .designationOperational("Betriebliche Bezeich")
         .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
         .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8507000))
-        .sloid("ch:1:sloid:123:123:123")
+        .sloid("ch:1:sloid:7000:123:123")
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
         .build();
@@ -159,7 +159,7 @@ import org.springframework.transaction.annotation.Transactional;
     trafficPointElementVersionRepository.save(trafficPointElementVersion);
 
     // when
-    boolean result = trafficPointElementVersionRepository.existsBySloid("ch:1:sloid:123:123:123");
+    boolean result = trafficPointElementVersionRepository.existsBySloid("ch:1:sloid:7000:123:123");
 
     // then
     assertThat(result).isTrue();
