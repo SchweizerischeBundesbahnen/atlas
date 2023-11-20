@@ -14,17 +14,30 @@ import org.junit.jupiter.api.Test;
 class CreateTrafficPointElementVersionModelTest extends BaseValidatorTest {
 
   @Test
-  void shouldValidateSloidForEndingColon() {
+  void shouldValidateSloidForNotEndingColon() {
     CreateTrafficPointElementVersionModel model = getCreateTrafficPointVersionModel();
     model.setSloid("ch:1:sloid::1");
 
     Set<ConstraintViolation<CreateTrafficPointElementVersionModel>> result = validator.validate(model);
     assertThat(result).isEmpty();
+  }
 
+  @Test
+  void shouldValidateSloidForEndingColon() {
+    CreateTrafficPointElementVersionModel model = getCreateTrafficPointVersionModel();
     model.setSloid("ch:1:sloid::");
 
-    result = validator.validate(model);
+    Set<ConstraintViolation<CreateTrafficPointElementVersionModel>> result = validator.validate(model);
     assertThat(result).hasSize(1);
+  }
+
+  @Test
+  void shouldValidateSloidForAutomaticAssign() {
+    CreateTrafficPointElementVersionModel model = getCreateTrafficPointVersionModel();
+    model.setSloid(null);
+
+    Set<ConstraintViolation<CreateTrafficPointElementVersionModel>> result = validator.validate(model);
+    assertThat(result).isEmpty();
   }
 
   private static CreateTrafficPointElementVersionModel getCreateTrafficPointVersionModel() {
