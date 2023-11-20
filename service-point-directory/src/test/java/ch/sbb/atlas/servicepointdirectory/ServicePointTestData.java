@@ -264,6 +264,26 @@ public class ServicePointTestData {
     return geolocation;
   }
 
+  public static ServicePointGeolocation getZurichServicePointGeolocation() {
+    ServicePointGeolocation geolocation = ServicePointGeolocation
+        .builder()
+        .spatialReference(SpatialReference.LV95)
+        .east(2571984.26107)
+        .north(1585245.92913)
+        .country(Country.SWITZERLAND)
+        .swissCanton(SwissCanton.ZURICH)
+        .swissDistrictName("ZurichZentrum")
+        .swissDistrictNumber(1500)
+        .swissMunicipalityName("Zurich")
+        .swissLocalityName("Zurich")
+        .creationDate(LocalDateTime.of(LocalDate.of(2000, 3, 22), LocalTime.of(9, 26, 29)))
+        .creator("fs45117")
+        .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
+        .editor("fs45117")
+        .build();
+    return geolocation;
+  }
+
   public static ServicePointVersion createServicePointVersionWithCountryBorder() {
     ServicePointGeolocation servicePointGeolocation = getServicePointGeolocation();
 
