@@ -20,6 +20,7 @@
     "BACK_TO_OVERVIEW": "Retour au sommaire",
     "BACK": "Retour",
     "SAVE": "Sauvegarder",
+    "SAVE_ANYWAY": "Enregistrer quand même",
     "SAVE_AND_CLOSE": "Enregistrer & fermer",
     "ADD": "Ajouter",
     "EDIT": "Modifier",
@@ -215,7 +216,8 @@
     "MIN": "La valeur doit être au minimum {{min}}.",
     "MAX": "La valeur doit être au maximum {{max}}.",
     "AT_LEAST_ONE": "Sélectionnez au moins une modalité.",
-    "DECIMAL_NUMBER": "Saisissez un nombre décimal avec un maximum de {{maxDecimalDigits}} chiffres après la virgule."
+    "DECIMAL_NUMBER": "Saisissez un nombre décimal avec un maximum de {{maxDecimalDigits}} chiffres après la virgule.",
+    "COLON_SEPERATED_NUMBERS": "Saisissez des nombres séparés par des deux-points exactement {{numbersWithColons}}."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organisations commerciales et Applications",
