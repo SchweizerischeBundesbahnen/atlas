@@ -54,9 +54,9 @@ export const TABS = [
   styleUrls: ['./prm-panel.component.scss'],
 })
 export class PrmPanelComponent {
-  selectedServicePointVersion?: ReadServicePointVersion;
+  selectedServicePointVersion!: ReadServicePointVersion;
   selectedBusinessOrganisation?: BusinessOrganisationVersion;
-  stopPointVersions!: ReadStopPointVersion[];
+  servicePointVersions!: ReadServicePointVersion[];
   selectedVersion!: ReadStopPointVersion;
   maxValidity!: DateRange;
   boDescription!: string;
@@ -79,16 +79,9 @@ export class PrmPanelComponent {
     this.route.data
       .pipe(
         map((next) => {
-          this.stopPointVersions = next.stopPoint;
-          this.initStopPointVersioning();
+          this.servicePointVersions = next.servicePoints;
+          this.initServicePointVersioning(this.servicePointVersions);
         }),
-        switchMap((asd) =>
-          this.servicePointsService
-            .getServicePointVersions(this.selectedVersion.number.number)
-            .pipe(
-              tap((servicePointVersions) => this.initServicePointVersioning(servicePointVersions)),
-            ),
-        ),
         switchMap((asd) =>
           this.businessOrganisationsService
             .getVersions(this.selectedServicePointVersion!.businessOrganisation)
@@ -102,14 +95,8 @@ export class PrmPanelComponent {
     this.stopPointSubscription?.unsubscribe();
   }
 
-  private initStopPointVersioning() {
-    this.maxValidity = VersionsHandlingService.getMaxValidity(this.stopPointVersions);
-    this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
-      this.stopPointVersions,
-    );
-  }
-
   private initServicePointVersioning(servicePointVersions: ReadServicePointVersion[]) {
+    this.maxValidity = VersionsHandlingService.getMaxValidity(this.servicePointVersions);
     this.selectedServicePointVersion =
       VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
   }
