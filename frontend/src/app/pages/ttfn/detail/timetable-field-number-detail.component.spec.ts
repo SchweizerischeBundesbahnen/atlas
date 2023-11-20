@@ -21,6 +21,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { AtlasFieldErrorComponent } from '../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
+import { Page } from '../../../core/model/page';
+import { Record } from '../../../core/components/base-detail/record';
 
 const version: TimetableFieldNumberVersion = {
   id: 1,
@@ -77,8 +79,8 @@ const mockData = {
   template: '<p>Mock Product Editor Component</p>',
 })
 class MockAppCoverageComponent {
-  @Input() pageType!: any;
-  @Input() currentRecord!: any;
+  @Input() pageType!: Page;
+  @Input() currentRecord!: Record;
 }
 
 let component: TimetableFieldNumberDetailComponent;
@@ -144,7 +146,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
 
   it('should not update Version', () => {
     mockTimetableFieldNumbersService.updateVersionWithVersioning.and.returnValue(
-      throwError(() => error)
+      throwError(() => error),
     );
     fixture.componentInstance.updateRecord();
     fixture.detectChanges();

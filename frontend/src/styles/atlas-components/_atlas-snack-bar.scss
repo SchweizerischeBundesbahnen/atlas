@@ -5,23 +5,25 @@
   margin-right: 1.5rem !important;
   max-width: 33vw;
   min-width: 344px;
-  --mdc-snackbar-container-color: unset;
-  border-radius: 0.2rem;
+  border-radius: 0.5rem;
 }
 
 .success {
   @extend %snack-bar-container;
   background-color: variables.$successColor;
+  --mdc-snackbar-container-color: #{variables.$successColor};
 }
 
 .error {
   @extend %snack-bar-container;
   background-color: variables.$errorColor;
+  --mdc-snackbar-container-color: #{variables.$errorColor};
   white-space: unset !important;
 }
 
 .warning {
   @extend %snack-bar-container;
   background-color: variables.$warnColor;
+  --mdc-snackbar-container-color: #{variables.$warnColor};
   white-space: unset !important;
 }

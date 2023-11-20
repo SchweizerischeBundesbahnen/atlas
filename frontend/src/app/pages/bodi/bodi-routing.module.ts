@@ -6,11 +6,11 @@ import { Pages } from '../pages';
 import { BusinessOrganisationComponent } from './business-organisations/business-organisation.component';
 import { TransportCompaniesComponent } from './transport-companies/transport-companies.component';
 import { TransportCompanyDetailComponent } from './transport-companies/detail/transport-company-detail.component';
-import { TransportCompanyDetailResolver } from './transport-companies/detail/transport-company-detail-resolver.service';
+import { transportCompanyResolver } from './transport-companies/detail/transport-company-detail-resolver.service';
 import { CompaniesComponent } from './companies/companies.component';
 import { CompanyDetailComponent } from './companies/detail/company-detail.component';
-import { CompanyDetailResolver } from './companies/detail/company-detail-resolver.service';
-import { BusinessOrganisationDetailResolver } from './business-organisations/detail/business-organisation-detail-resolver.service';
+import { companyResolver } from './companies/detail/company-detail-resolver.service';
+import { businessOrganisationResolver } from './business-organisations/detail/business-organisation-detail-resolver.service';
 import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
 
 const routes: Routes = [
@@ -19,7 +19,7 @@ const routes: Routes = [
     component: BusinessOrganisationDetailComponent,
     canDeactivate: [canLeaveDirtyForm],
     resolve: {
-      businessOrganisationDetail: BusinessOrganisationDetailResolver,
+      businessOrganisationDetail: businessOrganisationResolver,
     },
     runGuardsAndResolvers: 'always',
   },
@@ -28,7 +28,7 @@ const routes: Routes = [
     component: TransportCompanyDetailComponent,
     canDeactivate: [canLeaveDirtyForm],
     resolve: {
-      transportCompanyDetail: TransportCompanyDetailResolver,
+      transportCompanyDetail: transportCompanyResolver,
     },
     runGuardsAndResolvers: 'always',
   },
@@ -36,7 +36,7 @@ const routes: Routes = [
     path: Pages.COMPANIES.path + '/:id',
     component: CompanyDetailComponent,
     resolve: {
-      companyDetail: CompanyDetailResolver,
+      companyDetail: companyResolver,
     },
     runGuardsAndResolvers: 'always',
   },
