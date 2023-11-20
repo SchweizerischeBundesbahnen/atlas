@@ -148,8 +148,12 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
     }
   }
 
-  get servicePointNumberAsString() {
-    return String(this.servicePointNumber);
+  get servicePointNumberPartForSloid() {
+    const numberAsString = String(this.servicePointNumber);
+    if (numberAsString.startsWith('85')) {
+      return String(this.servicePointNumber % 100);
+    }
+    return numberAsString;
   }
 
   backToTrafficPointElements(destination: string) {
