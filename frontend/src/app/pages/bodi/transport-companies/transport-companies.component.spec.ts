@@ -11,8 +11,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { MockTableComponent } from '../../../app.testing.mocks';
 import SpyObj = jasmine.SpyObj;
 import Spy = jasmine.Spy;
-import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
-import { DetailFooterComponent } from '../../../core/components/detail-footer/detail-footer.component';
 
 const transportCompany: ContainerTransportCompany = {
   objects: [
@@ -33,7 +31,7 @@ describe('TransportCompaniesComponent', () => {
   beforeEach(() => {
     transportCompaniesServiceSpy = jasmine.createSpyObj<TransportCompaniesService>(
       'TransportCompaniesServiceSpy',
-      ['getTransportCompanies']
+      ['getTransportCompanies'],
     );
     (
       transportCompaniesServiceSpy.getTransportCompanies as Spy<
@@ -75,7 +73,7 @@ describe('TransportCompaniesComponent', () => {
       ],
       0,
       10,
-      ['number,asc']
+      ['number,asc'],
     );
 
     expect(component.transportCompanies.length).toEqual(1);

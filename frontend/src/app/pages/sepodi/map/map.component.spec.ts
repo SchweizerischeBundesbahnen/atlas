@@ -10,7 +10,6 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../../core/auth/auth.service';
 import SpyObj = jasmine.SpyObj;
 
-const isEditModeSubject = new BehaviorSubject<boolean>(true);
 const clickedGeographyCoordinatesSubject = new BehaviorSubject<CoordinatePairWGS84>({
   lat: 0,
   lng: 0,
@@ -43,11 +42,7 @@ mapService.clickedGeographyCoordinates = clickedGeographyCoordinatesSubject; // 
 
 mapService.initMap.and.returnValue(mapSpy);
 
-let clickCallback: any;
-mapSpy.on.and.callFake((event: string, callback: any) => {
-  if (event === 'click') {
-    clickCallback = callback;
-  }
+mapSpy.on.and.callFake(() => {
   return mapSpy;
 });
 
