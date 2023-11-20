@@ -15,9 +15,9 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "es2020",
+    "module": "ES2022",
     "lib": [
-      "es2020",
+      "ES2022",
       "dom"
     ],
     "resolveJsonModule": true,
@@ -32,5 +32,5 @@
     "strictTemplates": true
   },
   // without this inclusion jasmine expect does not work correctly with intellij
-  "include": ["src/**/*.spec.ts"]
+  "include": ["src/**/*.spec.ts", "src/**/*.ts"]
 }

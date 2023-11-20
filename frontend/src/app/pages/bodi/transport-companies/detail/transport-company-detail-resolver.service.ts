@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
+import { inject, Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, EMPTY, forkJoin, Observable } from 'rxjs';
 import {
   TransportCompaniesService,
@@ -9,22 +9,18 @@ import {
 } from '../../../../api';
 import { Pages } from '../../../pages';
 import { NotificationService } from '../../../../core/notification/notification.service';
-import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({ providedIn: 'root' })
-export class TransportCompanyDetailResolver
-  implements Resolve<[TransportCompany, TransportCompanyBoRelation[]]>
-{
+export class TransportCompanyDetailResolver {
   constructor(
     private readonly transportCompaniesService: TransportCompaniesService,
     private notificationService: NotificationService,
     private readonly router: Router,
     private readonly transportCompanyRelationsService: TransportCompanyRelationsService,
-    private readonly translateService: TranslateService
   ) {}
 
   resolve(
-    route: ActivatedRouteSnapshot
+    route: ActivatedRouteSnapshot,
   ): Observable<[TransportCompany, TransportCompanyBoRelation[]]> {
     const idParameter = parseInt(route.paramMap.get('id') || '0');
     if (Number.isNaN(idParameter)) {
@@ -35,11 +31,11 @@ export class TransportCompanyDetailResolver
       this.transportCompaniesService.getTransportCompany(idParameter).pipe(
         catchError(() => {
           return this.routeOnFailure();
-        })
+        }),
       ),
       this.transportCompanyRelationsService
         .getTransportCompanyRelations(idParameter)
-        .pipe(catchError(() => this.routeOnFailure()))
+        .pipe(catchError(() => this.routeOnFailure())),
     );
   }
 
@@ -52,3 +48,7 @@ export class TransportCompanyDetailResolver
     return EMPTY;
   }
 }
+
+export const transportCompanyResolver: ResolveFn<
+  [TransportCompany, TransportCompanyBoRelation[]]
+> = (route: ActivatedRouteSnapshot) => inject(TransportCompanyDetailResolver).resolve(route);

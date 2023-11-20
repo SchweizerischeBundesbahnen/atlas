@@ -2,14 +2,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { LidiOverviewComponent } from './overview/lidi-overview.component';
 import { LineDetailComponent } from './lines/detail/line-detail.component';
-import { LineDetailResolver } from './lines/detail/line-detail.resolver';
+import { lineResolver } from './lines/detail/line-detail.resolver';
 import { Pages } from '../pages';
 import { SublineDetailComponent } from './sublines/detail/subline-detail.component';
-import { SublineDetailResolver } from './sublines/detail/subline-detail.resolver';
+import { sublineResolver } from './sublines/detail/subline-detail.resolver';
 import { LinesComponent } from './lines/lines.component';
 import { SublinesComponent } from './sublines/sublines.component';
 import { LidiWorkflowOverviewComponent } from './workflow/overview/lidi-workflow-overview.component';
-import { LineVersionSnapshotResolver } from './workflow/detail/line-version-snapshot.resolver';
+import { lineVersionSnapshotResolver } from './workflow/detail/line-version-snapshot.resolver';
 import { LineVersionSnapshotDetailComponent } from './workflow/detail/line-version-snapshot-detail.component';
 import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
 
@@ -19,7 +19,7 @@ const routes: Routes = [
     component: LineDetailComponent,
     canDeactivate: [canLeaveDirtyForm],
     resolve: {
-      lineDetail: LineDetailResolver,
+      lineDetail: lineResolver,
     },
     runGuardsAndResolvers: 'always',
   },
@@ -28,7 +28,7 @@ const routes: Routes = [
     component: SublineDetailComponent,
     canDeactivate: [canLeaveDirtyForm],
     resolve: {
-      sublineDetail: SublineDetailResolver,
+      sublineDetail: sublineResolver,
     },
     runGuardsAndResolvers: 'always',
   },
@@ -36,7 +36,7 @@ const routes: Routes = [
     path: Pages.WORKFLOWS.path + '/:id',
     component: LineVersionSnapshotDetailComponent,
     resolve: {
-      lineVersionSnapshot: LineVersionSnapshotResolver,
+      lineVersionSnapshot: lineVersionSnapshotResolver,
     },
     runGuardsAndResolvers: 'always',
   },
