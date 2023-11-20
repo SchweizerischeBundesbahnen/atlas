@@ -403,6 +403,76 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[2].status", is(Status.VALIDATED.toString()))); // TODO: Change to InReview
     }
 
+    @Test
+    void scenario12WhenTwoStopPointsWith2NamesAndStopPointExtendsThenStopPointWithNewNameInReview() throws Exception {
+        CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
+        ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+                stopPoint1);
+
+        CreateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint2.setDesignationOfficial("Bern Strasse");
+        stopPoint2.setValidFrom(LocalDate.of(2016, 1, 1));
+        ReadServicePointVersionModel servicePointVersionModel1 = servicePointController.createServicePoint(
+                stopPoint2);
+        Long id = servicePointVersionModel1.getId();
+
+        UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint3.setDesignationOfficial("Zurich Strasse");
+        stopPoint3.setValidFrom(LocalDate.of(2019, 8, 11));
+        stopPoint3.setValidTo(LocalDate.of(2020, 12, 31));
+
+        mvc.perform(put("/v1/service-points/" + id)
+                        .contentType(contentType)
+                        .content(mapper.writeValueAsString(stopPoint3)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
+                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
+                .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
+                .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2016-01-01")))
+                .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
+                .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString())))
+                .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validFrom, is("2019-08-11")))
+                .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validTo, is("2020-12-31")))
+                .andExpect(jsonPath("$[2].status", is(Status.VALIDATED.toString()))); // TODO: Change to InReview
+    }
+
+    @Test
+    void scenario13WhenTwoStopPointsWith2NamesAndStopPointExtendsThenStopPointWithNewNameInReview() throws Exception {
+        CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
+        ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+                stopPoint1);
+
+        CreateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint2.setDesignationOfficial("Bern Strasse");
+        stopPoint2.setValidFrom(LocalDate.of(2016, 1, 1));
+        ReadServicePointVersionModel servicePointVersionModel1 = servicePointController.createServicePoint(
+                stopPoint2);
+        Long id = servicePointVersionModel1.getId();
+
+        UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint3.setDesignationOfficial("Zurich Strasse");
+        stopPoint3.setValidFrom(LocalDate.of(2009, 1, 1));
+        stopPoint3.setValidTo(LocalDate.of(2010, 12, 10));
+
+        mvc.perform(put("/v1/service-points/" + id)
+                        .contentType(contentType)
+                        .content(mapper.writeValueAsString(stopPoint3)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2009-01-01")))
+                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2010-12-10")))
+                .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString()))) // TODO: Change to InReview
+                .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
+                .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
+                .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString())))
+                .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validFrom, is("2016-01-01")))
+                .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
+                .andExpect(jsonPath("$[2].status", is(Status.VALIDATED.toString())));
+    }
+
 
 
 }
