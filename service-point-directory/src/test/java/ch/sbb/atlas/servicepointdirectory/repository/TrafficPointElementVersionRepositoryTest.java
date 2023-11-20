@@ -125,6 +125,7 @@ import org.springframework.transaction.annotation.Transactional;
 
     TrafficPointElementVersion trafficPointElementVersion3 = TrafficPointTestData.getBasicTrafficPoint();
     trafficPointElementVersion3.setSloid("ch:1:sloid:7000:321:431");
+    trafficPointElementVersion3.setServicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8507000));
 
     trafficPointElementVersionRepository.save(trafficPointElementVersion1);
     trafficPointElementVersionRepository.save(trafficPointElementVersion2);
