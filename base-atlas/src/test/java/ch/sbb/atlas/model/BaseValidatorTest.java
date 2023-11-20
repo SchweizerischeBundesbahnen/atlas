@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.service;
+package ch.sbb.atlas.model;
 
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
