@@ -6,18 +6,18 @@ import { FormGroup } from '@angular/forms';
 import {
   StopPointDetailFormGroup,
   StopPointFormGroupBuilder,
-} from './stop-point/stop-point-detail-form-group';
+} from './form/stop-point-detail-form-group';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { takeUntil } from 'rxjs/operators';
 import { TranslationSortingService } from '../../../core/translation/translation-sorting.service';
 import { Pages } from '../../pages';
 
 @Component({
-  selector: 'app-prm-detail-panel',
-  templateUrl: './prm-detail-panel.component.html',
-  styleUrls: ['./prm-detail-panel.component.scss'],
+  selector: 'app-stop-point-detail',
+  templateUrl: './stop-point-detail.component.html',
+  styleUrls: ['./stop-point-detail.component.scss'],
 })
-export class PrmDetailPanelComponent implements OnInit {
+export class StopPointDetailComponent implements OnInit {
   stopPointVersions!: ReadStopPointVersion[];
   selectedVersionIndex!: number;
   selectedVersion!: ReadStopPointVersion;

@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PrmDetailPanelComponent } from './prm-detail-panel.component';
+import { StopPointDetailComponent } from './stop-point-detail.component';
 
 describe('PrmDetailPanelComponent', () => {
-  let component: PrmDetailPanelComponent;
-  let fixture: ComponentFixture<PrmDetailPanelComponent>;
+  let component: StopPointDetailComponent;
+  let fixture: ComponentFixture<StopPointDetailComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [PrmDetailPanelComponent]
+      declarations: [StopPointDetailComponent],
     });
-    fixture = TestBed.createComponent(PrmDetailPanelComponent);
+    fixture = TestBed.createComponent(StopPointDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
