@@ -24,7 +24,7 @@
     "type": "git",
     "url": "git+https://code.sbb.ch/scm/ki_atlas/atlas.git"
   },
-  "version": "1.513.0",
+  "version": "1.514.0",
   "files": [
     "dist/*"
   ],
@@ -79,8 +79,6 @@
     "@types/jasmine": "^5.0.0",
     "@types/node": "^20.3",
     "@types/proj4": "^2.5.2",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
     "@typescript-eslint/parser": "^6.11.0",
     "cypress": "^13.5.1",
