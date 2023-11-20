@@ -221,6 +221,7 @@
     "MIN": "Die Zahl muss mindestens {{min}} sein.",
     "MAX": "Die Zahl darf maximal {{max}} sein.",
     "AT_LEAST_ONE": "Wählen Sie mindestens eine Ausprägung aus.",
+    "MEANSOFTRANSPORTWRONGCOMBINATION": "Diese Verkehrsmittelkombination ist nicht zulässig.",
     "DECIMAL_NUMBER": "Geben Sie eine Dezimalzahl mit maximal {{maxDecimalDigits}} Nachkommastellen ein.",
     "COLON_SEPERATED_SID4PT": "Verwenden Sie den SID4PT Zeichensatz (-._0-9a-zA-Z) mit genau {{numbersWithColons}} trennenden Doppelpunkten."
   },
@@ -1074,7 +1075,10 @@
       "VISUAL_INFO_EXAMPLE": "z.B. Aushangfahrpläne, Netzplöne, Tarifbestimmungen, etc.",
       "CUSTOMER_INFORMATION": "Kundeninformation Haltestelle",
       "AUTONOMUS_USABILITY": "Autonome Benutzbarkeit",
-      "AUTOMATIC_TICKET": "Billettautomat"
+      "AUTOMATIC_TICKET": "Billettautomat",
+      "MEANS_OF_TRAFFIC_SELECTION": "Verkehrsmittel selektieren",
+      "POPULATE_DATA": "Daten erfassen",
+      "NEW_STOP_POINT": "Neue Haltestelle"
     },
     "ENUMS": {
       "STANDARD_ATTRIBUTE_TYPES": {
