@@ -120,9 +120,9 @@ import org.junit.jupiter.api.Test;
   public void shouldBeValidIfSloidMatchGivenSloidPatternForArea(){
    TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
        .designation("Test")
-       .sloid("ch:1:sloid:2311:1233")
+       .sloid("ch:1:sloid:1183913:1233")
        .trafficPointElementType(TrafficPointElementType.BOARDING_AREA)
-       .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(7283913))
+       .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1183913))
        .validFrom(LocalDate.of(2022, 1, 1))
        .validTo(LocalDate.of(2022, 12, 31))
        .build();
@@ -166,9 +166,9 @@ import org.junit.jupiter.api.Test;
   public void shouldBeValidIfSloidMatchGivenSloidPatternForPlattform(){
    TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
        .designation("Test")
-       .sloid("ch:1:sloid:2311:1233:321")
+       .sloid("ch:1:sloid:1183913:1233:321")
        .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
-       .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(7283913))
+       .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1183913))
        .validFrom(LocalDate.of(2022, 1, 1))
        .validTo(LocalDate.of(2022, 12, 31))
        .build();
