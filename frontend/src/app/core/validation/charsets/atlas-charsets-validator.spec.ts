@@ -72,25 +72,35 @@ describe('Atlas Charsets Validator', () => {
     expect(decimalWithDigits(new FormControl('1.0002'))).toBeDefined();
   });
 
-  it('should allow numbers with 1 colon', () => {
-    const decimalWithDigits = AtlasCharsetsValidator.colonSeperatedNumbers(1);
+  it('should allow sid4pt with 1 colon', () => {
+    const colonSeperatedSid4pt = AtlasCharsetsValidator.colonSeperatedSid4pt(1);
 
-    expect(decimalWithDigits(new FormControl('1:002'))).toBeNull();
-    expect(decimalWithDigits(new FormControl('5:000'))).toBeNull();
+    // Valid
+    expect(colonSeperatedSid4pt(new FormControl('1:002'))).toBeNull();
+    expect(colonSeperatedSid4pt(new FormControl('5:000'))).toBeNull();
+    expect(colonSeperatedSid4pt(new FormControl('a:.'))).toBeNull();
+    expect(colonSeperatedSid4pt(new FormControl('.:.'))).toBeNull();
+    expect(colonSeperatedSid4pt(new FormControl(':.'))).toBeNull();
+    expect(colonSeperatedSid4pt(new FormControl(':a'))).toBeNull();
 
-    expect(decimalWithDigits(new FormControl('a'))).toBeDefined();
-    expect(decimalWithDigits(new FormControl(':a'))).toBeDefined();
-    expect(decimalWithDigits(new FormControl('1:00:02'))).toBeDefined();
+    // Not Valid
+    expect(colonSeperatedSid4pt(new FormControl('a'))).toBeDefined();
+    expect(colonSeperatedSid4pt(new FormControl('a:'))).toBeDefined();
+    expect(colonSeperatedSid4pt(new FormControl(':'))).toBeDefined();
+    expect(colonSeperatedSid4pt(new FormControl('::'))).toBeDefined();
+    expect(colonSeperatedSid4pt(new FormControl('1:00:a'))).toBeDefined();
   });
 
-  it('should allow only numbers without colon or other chars', () => {
-    const decimalWithDigits = AtlasCharsetsValidator.colonSeperatedNumbers(0);
+  it('should allow only sid4pt without colon or other chars', () => {
+    const colonSeperatedSid4pt = AtlasCharsetsValidator.colonSeperatedSid4pt(0);
 
-    expect(decimalWithDigits(new FormControl('002'))).toBeNull();
-    expect(decimalWithDigits(new FormControl('000'))).toBeNull();
+    expect(colonSeperatedSid4pt(new FormControl('002'))).toBeNull();
+    expect(colonSeperatedSid4pt(new FormControl('000'))).toBeNull();
+    expect(colonSeperatedSid4pt(new FormControl('a'))).toBeNull();
+    expect(colonSeperatedSid4pt(new FormControl('.'))).toBeNull();
 
-    expect(decimalWithDigits(new FormControl('a'))).toBeDefined();
-    expect(decimalWithDigits(new FormControl(':a'))).toBeDefined();
-    expect(decimalWithDigits(new FormControl('1:00:02'))).toBeDefined();
+    expect(colonSeperatedSid4pt(new FormControl(':a'))).toBeDefined();
+    expect(colonSeperatedSid4pt(new FormControl(':'))).toBeDefined();
+    expect(colonSeperatedSid4pt(new FormControl('1:00:02'))).toBeDefined();
   });
 });
