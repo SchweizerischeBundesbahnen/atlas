@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PrmSearchOverviewComponent } from './prm-overview/prm-search-overview.component';
+import { PrmHomeSearchComponent } from './prm-home-search/prm-home-search.component';
 import { FormModule } from '../../core/module/form.module';
 import { FormsModule } from '@angular/forms';
 import { PrmRoutingModule } from './prm-routing.module';
@@ -20,7 +20,7 @@ import { ConnectionComponent } from './connection/connection.component';
 
 @NgModule({
   declarations: [
-    PrmSearchOverviewComponent,
+    PrmHomeSearchComponent,
     StopPointDetailComponent,
     PrmPanelComponent,
     StopPointReducedFormComponent,
