@@ -55,6 +55,8 @@ public interface ServicePointApiV1 {
 
   @GetMapping("{servicePointNumber}")
   List<ReadServicePointVersionModel> getServicePointVersions(@PathVariable Integer servicePointNumber);
+  @GetMapping("sloid/{sloid}")
+  List<ReadServicePointVersionModel> getServicePointVersionsBySloid(@PathVariable String sloid);
 
   @GetMapping("versions/{id}")
   ReadServicePointVersionModel getServicePointVersion(@PathVariable Long id);

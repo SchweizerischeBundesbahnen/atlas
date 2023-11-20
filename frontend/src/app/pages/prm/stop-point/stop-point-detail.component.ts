@@ -41,7 +41,7 @@ export class StopPointDetailComponent implements OnInit {
   standardAttributeTypes: string[] = [];
 
   ngOnInit(): void {
-    this.stopPointSubscription = this.route.parent?.data
+    this.stopPointSubscription = this.route.data
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((next) => {
         this.stopPointVersions = next.stopPoint;

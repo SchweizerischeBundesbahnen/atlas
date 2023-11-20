@@ -92,6 +92,14 @@ public class ServicePointController implements ServicePointApiV1 {
   }
 
   @Override
+  public List<ReadServicePointVersionModel> getServicePointVersionsBySloid(String sloid) {
+    return servicePointService.findBySloidAndOrderByValidFrom(sloid)
+        .stream()
+        .map(ServicePointVersionMapper::toModel)
+        .toList();
+  }
+
+  @Override
   public ReadServicePointVersionModel getServicePointVersion(Long id) {
     return servicePointService.findById(id).map(ServicePointVersionMapper::toModel)
         .orElseThrow(() -> new IdNotFoundException(id));
