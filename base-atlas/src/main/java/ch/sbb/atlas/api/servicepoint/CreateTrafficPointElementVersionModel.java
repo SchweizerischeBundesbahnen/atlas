@@ -1,9 +1,11 @@
 package ch.sbb.atlas.api.servicepoint;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -37,5 +39,13 @@ public class CreateTrafficPointElementVersionModel extends TrafficPointElementVe
     @Schema(description = "TrafficPointElementVersion has a Geolocation")
     public boolean isHasGeolocation() {
         return trafficPointElementGeolocation != null;
+    }
+
+    @JsonIgnore
+    @AssertTrue(message = """
+        SLOID has to end in SID4PT character, not a :
+        """)
+    public boolean isSloidNotEndingInColon() {
+        return !getSloid().endsWith(":");
     }
 }
