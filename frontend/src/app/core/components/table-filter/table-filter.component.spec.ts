@@ -29,6 +29,8 @@ import { TableFilterChip } from './config/table-filter-chip';
 import { TableFilterSearchSelect } from './config/table-filter-search-select';
 import { TableFilterSearchType } from './config/table-filter-search-type';
 
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 @Component({
   selector: 'input [matChipInputFor]',
   template: '',
@@ -197,7 +199,7 @@ describe('TableFilterComponent', () => {
 
     spyOn(component.searchEvent, 'emit');
     const mockAtlasSelectComponent: MockAtlasSelectComponent = fixture.debugElement.query(
-      By.directive(MockAtlasSelectComponent)
+      By.directive(MockAtlasSelectComponent),
     ).componentInstance;
     mockAtlasSelectComponent.selectChanged.emit({ value: ['one'] });
 
@@ -256,7 +258,7 @@ describe('TableFilterComponent', () => {
     fixture.detectChanges();
 
     const mockMatChipInputComponent: MockMatChipInputComponent = fixture.debugElement.query(
-      By.directive(MockMatChipInputComponent)
+      By.directive(MockMatChipInputComponent),
     ).componentInstance;
 
     spyOn(component.searchEvent, 'emit');
@@ -281,7 +283,7 @@ describe('TableFilterComponent', () => {
     fixture.detectChanges();
 
     const mockMatChipInputComponent: MockMatChipInputComponent = fixture.debugElement.query(
-      By.directive(MockMatChipInputComponent)
+      By.directive(MockMatChipInputComponent),
     ).componentInstance;
 
     spyOn(component.searchEvent, 'emit');
@@ -307,7 +309,7 @@ describe('TableFilterComponent', () => {
 
     spyOn(component.searchEvent, 'emit');
     const mockMatChipRowComponent: MockMatChipRowComponent = fixture.debugElement.query(
-      By.directive(MockMatChipRowComponent)
+      By.directive(MockMatChipRowComponent),
     ).componentInstance;
     mockMatChipRowComponent.removed.emit();
 
@@ -322,14 +324,14 @@ describe('TableFilterComponent', () => {
       'col-3',
       new FormGroup({
         businessOrganisation: new FormControl(),
-      })
+      }),
     );
     component.filterConfigurations = [[searchSelect]];
     fixture.detectChanges();
 
     spyOn(component.searchEvent, 'emit');
     const mockBoSelectComponent: MockBoSelectComponent = fixture.debugElement.query(
-      By.directive(MockBoSelectComponent)
+      By.directive(MockBoSelectComponent),
     ).componentInstance;
     mockBoSelectComponent.boSelectionChanged.emit({ sboid: 'Test' } as BusinessOrganisation);
 
@@ -344,14 +346,14 @@ describe('TableFilterComponent', () => {
       'col-3',
       new FormGroup({
         ttfnid: new FormControl(),
-      })
+      }),
     );
     component.filterConfigurations = [[searchSelect]];
     fixture.detectChanges();
 
     spyOn(component.searchEvent, 'emit');
     const mockTtfnSelectComponent: MockTtfnSelectComponent = fixture.debugElement.query(
-      By.directive(MockTtfnSelectComponent)
+      By.directive(MockTtfnSelectComponent),
     ).componentInstance;
     mockTtfnSelectComponent.ttfnSelectionChanged.emit({ ttfnid: 'Test' } as TimetableFieldNumber);
 
@@ -366,14 +368,14 @@ describe('TableFilterComponent', () => {
       'col-3',
       new FormGroup({
         transportCompany: new FormControl(),
-      })
+      }),
     );
     component.filterConfigurations = [[searchSelect]];
     fixture.detectChanges();
 
     spyOn(component.searchEvent, 'emit');
     const mockTuSelectComponent: MockTuSelectComponent = fixture.debugElement.query(
-      By.directive(MockTuSelectComponent)
+      By.directive(MockTuSelectComponent),
     ).componentInstance;
     mockTuSelectComponent.tuSelectionChanged.emit({ number: 'Test' });
 

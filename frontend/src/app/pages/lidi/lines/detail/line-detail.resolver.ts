@@ -1,12 +1,15 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
+import { inject, Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
 import { LinesService, LineVersion } from '../../../../api';
 import { Pages } from '../../../pages';
 
 @Injectable({ providedIn: 'root' })
-export class LineDetailResolver implements Resolve<Array<LineVersion>> {
-  constructor(private readonly linesService: LinesService, private readonly router: Router) {}
+export class LineDetailResolver {
+  constructor(
+    private readonly linesService: LinesService,
+    private readonly router: Router,
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<LineVersion>> {
     const idParameter = route.paramMap.get('id') || '';
@@ -18,8 +21,11 @@ export class LineDetailResolver implements Resolve<Array<LineVersion>> {
               .navigate([Pages.LIDI.path], {
                 state: { notDismissSnackBar: true },
               })
-              .then(() => [])
-          )
+              .then(() => []),
+          ),
         );
   }
 }
+
+export const lineResolver: ResolveFn<Array<LineVersion>> = (route: ActivatedRouteSnapshot) =>
+  inject(LineDetailResolver).resolve(route);

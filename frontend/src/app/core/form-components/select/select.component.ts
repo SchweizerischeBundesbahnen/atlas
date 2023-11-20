@@ -18,6 +18,7 @@ import { MatOption } from '@angular/material/core';
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss'],
 })
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 export class SelectComponent<TYPE> implements OnInit, OnChanges {
   @Input() label: string | undefined;
   @Input() placeHolderLabel = 'FORM.DROPDOWN_PLACEHOLDER';
