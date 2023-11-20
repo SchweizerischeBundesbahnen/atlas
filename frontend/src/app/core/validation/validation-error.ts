@@ -11,6 +11,7 @@ export interface TranslationParameter {
   length?: string;
   allowedChars?: string;
   maxDecimalDigits?: string;
+  numbersWithColons?: string;
   max?: string;
   min?: string;
   number?: string;
