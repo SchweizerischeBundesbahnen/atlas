@@ -217,7 +217,7 @@
     "MAX": "La valeur doit être au maximum {{max}}.",
     "AT_LEAST_ONE": "Sélectionnez au moins une modalité.",
     "DECIMAL_NUMBER": "Saisissez un nombre décimal avec un maximum de {{maxDecimalDigits}} chiffres après la virgule.",
-    "COLON_SEPERATED_NUMBERS": "Saisissez des nombres séparés par des deux-points exactement {{numbersWithColons}}."
+    "COLON_SEPERATED_SID4PT": "Utilisez le jeu de caractères SID4PT (-._0-9a-zA-Z) avec des deux-points séparant exactement {{numbersWithColons}}."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organisations commerciales et Applications",
