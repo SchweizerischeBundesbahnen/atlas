@@ -17,6 +17,7 @@ import { InformationDeskComponent } from './information-desk/information-desk.co
 import { ToiletteComponent } from './toilette/toilette.component';
 import { ParkingLotComponent } from './parking-lot/parking-lot.component';
 import { ConnectionComponent } from './connection/connection.component';
+import { CreateStopPointComponent } from './stop-point/create-stop-point/create-stop-point.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { ConnectionComponent } from './connection/connection.component';
     ToiletteComponent,
     ParkingLotComponent,
     ConnectionComponent,
+    CreateStopPointComponent,
   ],
   imports: [CommonModule, FormModule, FormsModule, PrmRoutingModule, SepodiModule, CoreModule],
 })
