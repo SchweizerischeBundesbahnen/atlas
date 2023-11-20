@@ -46,6 +46,9 @@ public class CreateTrafficPointElementVersionModel extends TrafficPointElementVe
         SLOID has to end in SID4PT character, not a :
         """)
     public boolean isSloidNotEndingInColon() {
+        if (getSloid() == null) {
+            return true;
+        }
         return !getSloid().endsWith(":");
     }
 }

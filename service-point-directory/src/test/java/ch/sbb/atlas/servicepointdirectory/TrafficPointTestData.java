@@ -1,5 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory;
 
+import static ch.sbb.atlas.servicepointdirectory.ServicePointTestData.WYLEREGG_NUMBER;
+
 import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
 import ch.sbb.atlas.api.servicepoint.GeolocationBaseCreateModel;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
@@ -27,8 +29,29 @@ public class TrafficPointTestData {
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
         .trafficPointElementGeolocation(geolocation)
         .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8589108))
-        .sloid("ch:1:sloid:123:123:123")
-        .parentSloid("ch:1:sloid:123:123:123")
+        .sloid("ch:1:sloid:89108:123:123")
+        .parentSloid("ch:1:sloid:89108:123:123")
+        .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2024, 1, 1))
+        .creationDate(LocalDateTime.of(LocalDate.of(2021, 3, 22), LocalTime.of(9, 26, 29)))
+        .creator("fs45117")
+        .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
+        .editor("fs45117")
+        .build();
+
+    geolocation.setTrafficPointElementVersion(trafficPointElementVersion);
+    return trafficPointElementVersion;
+  }
+
+  public static TrafficPointElementVersion getWylerEggPlatform() {
+    TrafficPointElementGeolocation geolocation = getTrafficPointGeolocationBernMittelland();
+
+    TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
+        .trafficPointElementGeolocation(geolocation)
+        .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(WYLEREGG_NUMBER))
+        .sloid("ch:1:sloid:89008:123:123")
+        .parentSloid("ch:1:sloid:89008:123:123")
         .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2024, 1, 1))
