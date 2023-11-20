@@ -14,10 +14,7 @@ import { AuthService } from '../../core/auth/auth.service';
 import { ApplicationType } from '../../api';
 import { TrafficPointElementsDetailComponent } from './traffic-point-elements/traffic-point-elements-detail.component';
 import { trafficPointResolver } from './traffic-point-elements/traffic-point-elements-detail-resolver.service';
-import {
-  loadingPointResolver,
-  LoadingPointsDetailResolver,
-} from './loading-points/loading-points-detail-resolver.service';
+import { loadingPointResolver } from './loading-points/loading-points-detail-resolver.service';
 import { LoadingPointsDetailComponent } from './loading-points/loading-points-detail.component';
 
 @Injectable()

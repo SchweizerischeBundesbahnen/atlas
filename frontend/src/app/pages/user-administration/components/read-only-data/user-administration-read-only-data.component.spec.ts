@@ -9,7 +9,10 @@ import {
 } from '@ngx-translate/core';
 
 describe('UserAdministrationReadOnlyDataComponent', () => {
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   let component: UserAdministrationReadOnlyDataComponent<any>;
+
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   let fixture: ComponentFixture<UserAdministrationReadOnlyDataComponent<any>>;
 
   beforeEach(async () => {

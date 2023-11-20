@@ -3,17 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { TthChangeStatusDialogService } from './tth-change-status-dialog.service';
-import { StatementStatus, SwissCanton, TimetableHearingStatement } from '../../../../../api';
-
-const statement: TimetableHearingStatement = {
-  id: 1,
-  swissCanton: SwissCanton.Bern,
-  statement: 'Luca is am yb match gsi',
-  justification: 'Napoli ist besser als YB',
-  statementSender: {
-    email: 'luca@yb.ch',
-  },
-};
+import { StatementStatus } from '../../../../../api';
 
 describe('TthChangeStatusDialogService', () => {
   let service: TthChangeStatusDialogService;

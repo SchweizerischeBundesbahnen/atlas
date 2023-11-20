@@ -36,17 +36,12 @@ describe('UserAdministrationUserOverviewComponent', () => {
   let component: UserAdministrationUserOverviewComponent;
   let fixture: ComponentFixture<UserAdministrationUserOverviewComponent>;
 
-  let userServiceMock: UserServiceMock;
+  const userServiceMock = jasmine.createSpyObj(['getUsers']);
+  userServiceMock.getUsers.and.returnValue(of({ users: [], totalCount: 0 }));
+
   let tableService: TableService;
 
-  class UserServiceMock {
-    getUsers: any = jasmine.createSpy().and.returnValue(of({ users: [], totalCount: 0 }));
-    hasUserPermissions: any = undefined;
-  }
-
   beforeEach(async () => {
-    userServiceMock = new UserServiceMock();
-
     await TestBed.configureTestingModule({
       declarations: [
         UserAdministrationUserOverviewComponent,
@@ -96,7 +91,7 @@ describe('UserAdministrationUserOverviewComponent', () => {
       of({
         users: [{ sbbUserId: 'u123456' }, { sbbUserId: 'e654321' }] as User[],
         totalCount: 50,
-      })
+      }),
     );
     tableService.pageSize = 10;
     tableService.pageIndex = 10;
@@ -160,7 +155,7 @@ describe('UserAdministrationUserOverviewComponent', () => {
       10,
       new Set([null]),
       'CANTON',
-      new Set([])
+      new Set([]),
     );
     expect(component.userPageResult).toEqual({ totalCount: 1, users: [{ sbbUserId: 'u123456' }] });
     expect(tableService.pageIndex).toBe(0);

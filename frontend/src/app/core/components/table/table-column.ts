@@ -2,6 +2,7 @@ import { ApplicationType } from '../../../api';
 import { AtlasButtonType } from '../button/atlas-button.type';
 import { Observable } from 'rxjs';
 
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 export interface TableColumn<TYPE> {
   headerTitle: string;
   value?: keyof TYPE & string;

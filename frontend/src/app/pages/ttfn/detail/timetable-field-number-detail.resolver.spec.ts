@@ -1,8 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
+import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
 import { Status, TimetableFieldNumbersService, TimetableFieldNumberVersion } from '../../../api';
-import { TimetableFieldNumberDetailResolver } from './timetable-field-number-detail.resolver';
-import { of } from 'rxjs';
+import {
+  TimetableFieldNumberDetailResolver,
+  timetableFieldNumberResolver,
+} from './timetable-field-number-detail.resolver';
+import { Observable, of } from 'rxjs';
 import { AppTestingModule } from '../../../app.testing.module';
 
 const version: TimetableFieldNumberVersion = {
@@ -43,9 +46,11 @@ describe('TimetableFieldNumberDetailResolver', () => {
   it('should get version from service to display', () => {
     const mockRoute = { paramMap: convertToParamMap({ id: '1234' }) } as ActivatedRouteSnapshot;
 
-    const resolvedVersion = resolver.resolve(mockRoute);
+    const result = TestBed.runInInjectionContext(() =>
+      timetableFieldNumberResolver(mockRoute, {} as RouterStateSnapshot),
+    ) as Observable<TimetableFieldNumberVersion[]>;
 
-    resolvedVersion.subscribe((versions) => {
+    result.subscribe((versions) => {
       expect(versions.length).toBe(1);
       expect(versions[0].id).toBe(1234);
       expect(versions[0].status).toBe(Status.Validated);
