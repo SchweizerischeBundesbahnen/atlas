@@ -1,0 +1,59 @@
+<div class="font-bold-3xl mb-3">
+  {{ 'PRM.STOP_POINTS.NEW_STOP_POINT' | translate }}
+</div>
+
+<mat-stepper [linear]="true" #stepper>
+  <mat-step [stepControl]="formMeanOfTransport" state="meansOfTransportSelection">
+    <ng-template matStepLabel>{{
+      'PRM.STOP_POINTS.MEANS_OF_TRAFFIC_SELECTION' | translate
+    }}</ng-template>
+    <means-of-transport-picker
+      [formGroup]="formMeanOfTransport"
+      controlName="meansOfTransport"
+      [disabled]="false"
+      label="PRM.STOP_POINTS.MEANS_OF_TRANSPORT_SUB_LABEL"
+      [showUnknown]="false"
+    ></means-of-transport-picker>
+    <div class="mt-5">
+      <atlas-button
+        (click)="checkSelection()"
+        [disabled]="false"
+        [submitButton]="true"
+        buttonDataCy="save-item"
+        buttonText="Next"
+        buttonType="confirm"
+        wrapperStyleClass="ms-3"
+      ></atlas-button>
+    </div>
+  </mat-step>
+  <mat-step>
+    <div class="d-flex mb-2">
+      <atlas-button
+        (click)="backSelection()"
+        [disabled]="false"
+        [submitButton]="true"
+        buttonDataCy="save-item"
+        buttonText="Back"
+        buttonType="confirm"
+        wrapperStyleClass="ms-3"
+      >
+      </atlas-button>
+    </div>
+    <ng-template matStepLabel>{{ 'PRM.STOP_POINTS.POPULATE_DATA' | translate }}</ng-template>
+    <div *ngIf="isReduced">
+      <app-stop-point-reduced-form
+        [selectedMeansOfTransport]="selectedMeansOfTransport"
+        [form]="form"
+      >
+      </app-stop-point-reduced-form>
+    </div>
+    <div *ngIf="!isReduced">
+      <app-stop-point-complete-form
+        [selectedMeansOfTransport]="selectedMeansOfTransport"
+        [form]="form"
+      >
+      </app-stop-point-complete-form>
+    </div>
+    <p>You are now done.</p>
+  </mat-step>
+</mat-stepper>

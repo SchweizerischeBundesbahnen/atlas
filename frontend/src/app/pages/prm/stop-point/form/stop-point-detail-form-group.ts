@@ -2,6 +2,8 @@ import { BaseDetailFormGroup } from '../../../../core/components/base-detail/bas
 import { MeanOfTransport, ReadStopPointVersion, StandardAttributeType } from '../../../../api';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import moment from 'moment';
+import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
+import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 
 export interface StopPointDetailFormGroup extends BaseDetailFormGroup {
   sloid: FormControl<string | null | undefined>;
@@ -96,4 +98,33 @@ export class StopPointFormGroupBuilder {
       creator: new FormControl(version.creator),
     });
   }
+
+  static buildEmptyReducedFormGroup(): FormGroup {
+    return new FormGroup<ReducedStopPointDetailFormGroup>(
+      {
+        //it comes from ServicePoint
+        number: new FormControl(),
+        //it comes from ServicePoint
+        sloid: new FormControl(),
+        //it comes from step1
+        meansOfTransport: new FormControl(),
+        freeText: new FormControl(null, [
+          WhitespaceValidator.blankOrEmptySpaceSurrounding,
+          Validators.maxLength(200),
+        ]),
+        validFrom: new FormControl(null, [Validators.required]),
+        validTo: new FormControl(null, [Validators.required]),
+        etagVersion: new FormControl(),
+        creationDate: new FormControl(),
+        editionDate: new FormControl(),
+        editor: new FormControl(),
+        creator: new FormControl(),
+      },
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
+    );
+  }
+}
+
+export interface MeanOfTransportFormGroup {
+  meansOfTransport: FormControl<Array<MeanOfTransport> | null | undefined>;
 }
