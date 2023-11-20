@@ -38,6 +38,10 @@ public class LoadingPointVersionMapper {
         .validFrom(model.getValidFrom())
         .validTo(model.getValidTo())
         .version(model.getEtagVersion())
+        .editor(model.getEditor())
+        .editionDate(model.getEditionDate())
+        .creator(model.getCreator())
+        .creationDate(model.getCreationDate())
         .build();
   }
 }
