@@ -73,6 +73,10 @@ public class ServicePointService {
     return servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
   }
 
+  public List<ServicePointVersion> findBySloidAndOrderByValidFrom(String sloid){
+    return servicePointVersionRepository.findBySloidOrderByValidFrom(sloid);
+  }
+
   public List<ServicePointVersion> findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(
       ServicePointNumber servicePointNumber) {
     return servicePointVersionRepository.findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(servicePointNumber);
