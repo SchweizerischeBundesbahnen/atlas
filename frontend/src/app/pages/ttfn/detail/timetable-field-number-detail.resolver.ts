@@ -1,16 +1,14 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
+import { inject, Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { catchError, Observable, of } from 'rxjs';
 import { TimetableFieldNumbersService, TimetableFieldNumberVersion } from '../../../api';
 import { Pages } from '../../pages';
 
 @Injectable({ providedIn: 'root' })
-export class TimetableFieldNumberDetailResolver
-  implements Resolve<Array<TimetableFieldNumberVersion>>
-{
+export class TimetableFieldNumberDetailResolver {
   constructor(
     private readonly timetableFieldNumbersService: TimetableFieldNumbersService,
-    private readonly router: Router
+    private readonly router: Router,
   ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<TimetableFieldNumberVersion>> {
@@ -23,8 +21,12 @@ export class TimetableFieldNumberDetailResolver
               .navigate([Pages.TTFN.path], {
                 state: { notDismissSnackBar: true },
               })
-              .then(() => [])
-          )
+              .then(() => []),
+          ),
         );
   }
 }
+
+export const timetableFieldNumberResolver: ResolveFn<Array<TimetableFieldNumberVersion>> = (
+  route: ActivatedRouteSnapshot,
+) => inject(TimetableFieldNumberDetailResolver).resolve(route);

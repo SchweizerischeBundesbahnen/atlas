@@ -4,6 +4,7 @@ import SpyObj = jasmine.SpyObj;
 
 describe('ServicePointFormComponent', () => {
   let component: ServicePointFormComponent;
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   let spy: SpyObj<any>;
 
   beforeEach(() => {

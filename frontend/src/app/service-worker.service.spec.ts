@@ -5,6 +5,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DialogComponent } from './core/components/dialog/dialog.component';
 import { of, Subject } from 'rxjs';
 
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 describe('ServiceWorkerService', () => {
   let service: ServiceWorkerService;
 
