@@ -2,7 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.servicepointdirectory.service.BaseValidatorTest;
+import ch.sbb.atlas.model.BaseValidatorTest;
 import jakarta.validation.ConstraintViolation;
 import java.util.List;
 import java.util.Set;
