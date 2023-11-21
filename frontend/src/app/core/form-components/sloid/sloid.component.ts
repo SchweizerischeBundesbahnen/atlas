@@ -44,7 +44,7 @@ export class SloidComponent implements OnInit {
   private initFormgroup() {
     this.form = new FormGroup({
       sloid: new FormControl(null, [
-        AtlasCharsetsValidator.colonSeperatedNumbers(this.numberColons),
+        AtlasCharsetsValidator.colonSeperatedSid4pt(this.numberColons),
       ]),
     });
   }

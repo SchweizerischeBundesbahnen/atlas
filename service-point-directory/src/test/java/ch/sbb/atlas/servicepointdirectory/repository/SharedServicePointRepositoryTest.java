@@ -1,18 +1,17 @@
 package ch.sbb.atlas.servicepointdirectory.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
+import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 class SharedServicePointRepositoryTest {
@@ -48,8 +47,7 @@ class SharedServicePointRepositoryTest {
   void shouldFindServicePointWithTrafficPoint() {
     ServicePointVersion bernWyleregg = ServicePointTestData.getBernWyleregg();
     servicePointVersionRepository.saveAndFlush(bernWyleregg);
-    TrafficPointElementVersion trafficPoint = TrafficPointTestData.getBasicTrafficPoint();
-    trafficPoint.setServicePointNumber(bernWyleregg.getNumber());
+    TrafficPointElementVersion trafficPoint = TrafficPointTestData.getWylerEggPlatform();
     trafficPointElementVersionRepository.saveAndFlush(trafficPoint);
 
     Set<SharedServicePointVersionModel> sharedServicePoints =
@@ -58,6 +56,6 @@ class SharedServicePointRepositoryTest {
     SharedServicePointVersionModel servicePoint = sharedServicePoints.iterator().next();
     assertThat(servicePoint.getServicePointSloid()).isEqualTo("ch:1:sloid:89008");
     assertThat(servicePoint.getSboids()).containsExactly("ch:1:sboid:100626");
-    assertThat(servicePoint.getTrafficPointSloids()).containsExactly("ch:1:sloid:123:123:123");
+    assertThat(servicePoint.getTrafficPointSloids()).containsExactly("ch:1:sloid:89008:123:123");
   }
 }
