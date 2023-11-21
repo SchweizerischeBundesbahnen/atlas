@@ -94,6 +94,9 @@ describe('TrafficPointElementsDetailComponent', () => {
       expect(component.servicePoint).toBeTruthy();
       expect(component.servicePointBusinessOrganisations).toBeTruthy();
 
+      expect(component.servicePointNumber).toEqual(8589008);
+      expect(component.servicePointNumberPartForSloid).toEqual('89008');
+
       expect(servicePointService.getServicePointVersions).toHaveBeenCalled();
     });
 

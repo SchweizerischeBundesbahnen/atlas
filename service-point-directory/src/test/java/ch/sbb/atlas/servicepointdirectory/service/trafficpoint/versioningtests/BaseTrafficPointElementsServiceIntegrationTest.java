@@ -22,10 +22,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
  abstract class BaseTrafficPointElementsServiceIntegrationTest {
 
+  private static final ServicePointNumber SERVICE_POINT_NUMBER = ServicePointNumber.ofNumberWithoutCheckDigit(8589109);
+
   @MockBean
   private CrossValidationService crossValidationService;
 
-  protected static final String SLOID = "ch:1:sloid:123:123:123";
+  protected static final String SLOID = "ch:1:sloid:89109:123:123";
   protected TrafficPointElementVersionRepository trafficPointElementVersionRepository;
   protected TrafficPointElementService trafficPointElementService;
 
@@ -49,7 +51,7 @@ import org.springframework.transaction.annotation.Transactional;
     version3 = version3Builder().build();
 
     version4 = TrafficPointElementVersion.builder()
-        .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8589109))
+        .servicePointNumber(SERVICE_POINT_NUMBER)
         .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
         .designation("Bezeichnung")
         .designationOperational("Betriebliche Bezeich")
@@ -65,7 +67,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
     version5 = TrafficPointElementVersion.builder()
-        .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8589109))
+        .servicePointNumber(SERVICE_POINT_NUMBER)
         .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
         .designation("Bezeichnung")
         .designationOperational("Betriebliche Bezeich")
@@ -83,7 +85,7 @@ import org.springframework.transaction.annotation.Transactional;
 
   static TrafficPointElementVersionBuilder<?, ?> version1Builder() {
     return TrafficPointElementVersion.builder()
-            .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8589108))
+            .servicePointNumber(SERVICE_POINT_NUMBER)
             .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
             .designation("Bezeichnung")
             .designationOperational("Betriebliche Bezeich")
@@ -99,7 +101,7 @@ import org.springframework.transaction.annotation.Transactional;
 
   static TrafficPointElementVersionBuilder<?, ?> version3Builder() {
     return TrafficPointElementVersion.builder()
-            .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8589108))
+            .servicePointNumber(SERVICE_POINT_NUMBER)
             .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
             .designation("Bezeichnung")
             .designationOperational("Betriebliche Bezeich")
@@ -115,7 +117,7 @@ import org.springframework.transaction.annotation.Transactional;
 
   static TrafficPointElementVersionBuilder<?, ?> version2Builder() {
     return TrafficPointElementVersion.builder()
-            .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8589108))
+            .servicePointNumber(SERVICE_POINT_NUMBER)
             .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
             .designation("Bezeichnung")
             .designationOperational("Betriebliche Bezeich")

@@ -9,13 +9,15 @@ export class AtlasCharsetsValidator {
     return AtlasCharsetsValidator.validateAllowedCharacters(control, '[.0-9]*', '.0-9');
   }
 
-  static colonSeperatedNumbers(amountOfColons: number): ValidatorFn {
+  static colonSeperatedSid4pt(amountOfColons: number): ValidatorFn {
     return (control) => {
-      const patternErrors = Validators.pattern('\\d+(:\\d+){' + amountOfColons + '}')(control);
+      const patternErrors = Validators.pattern(
+        '[-._0-9a-zA-Z]*(:[-._0-9a-zA-Z]+){' + amountOfColons + '}',
+      )(control);
       if (patternErrors) {
         const error: ValidationErrors = {
-          colon_seperated_numbers: {
-            numbersWithColons: amountOfColons,
+          colon_seperated_sid4pt: {
+            sid4ptWithColons: amountOfColons,
           },
         };
         return error;
