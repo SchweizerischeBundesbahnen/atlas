@@ -1,7 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import {
   MeanOfTransportFormGroup,
-  StopPointDetailFormGroup,
+  StopPointFormGroupBuilder,
 } from '../form/stop-point-detail-form-group';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
@@ -16,43 +16,11 @@ import { MeanOfTransport } from '../../../../api';
 })
 export class CreateStopPointComponent {
   @ViewChild('stepper') stepper!: MatStepper;
-
   selectedMeansOfTransport!: MeanOfTransport[];
 
-  form = new FormGroup<StopPointDetailFormGroup>({
-    number: new FormControl(),
-    sloid: new FormControl(),
-    meansOfTransport: new FormControl(),
-    freeText: new FormControl(),
-    address: new FormControl(),
-    zipCode: new FormControl(),
-    city: new FormControl(),
-    alternativeTransport: new FormControl(),
-    alternativeTransportCondition: new FormControl(),
-    assistanceAvailability: new FormControl(),
-    assistanceCondition: new FormControl(),
-    assistanceService: new FormControl(),
-    audioTicketMachine: new FormControl(),
-    additionalInformation: new FormControl(),
-    dynamicAudioSystem: new FormControl(),
-    dynamicOpticSystem: new FormControl(),
-    infoTicketMachine: new FormControl(),
-    interoperable: new FormControl(),
-    url: new FormControl(),
-    visualInfo: new FormControl(),
-    wheelchairTicketMachine: new FormControl(),
-    assistanceRequestFulfilled: new FormControl(),
-    ticketMachine: new FormControl(),
-    validFrom: new FormControl(),
-    validTo: new FormControl(),
-    etagVersion: new FormControl(),
-    creationDate: new FormControl(),
-    editionDate: new FormControl(),
-    editor: new FormControl(),
-    creator: new FormControl(),
-  });
-
+  @Input() form = StopPointFormGroupBuilder.buildEmptyCompleteFormGroup();
   isReduced = false;
+  isDataEditable = false;
 
   formMeanOfTransport = new FormGroup<MeanOfTransportFormGroup>({
     meansOfTransport: new FormControl(
@@ -66,13 +34,15 @@ export class CreateStopPointComponent {
     if (selectedMeansOfTransport && selectedMeansOfTransport.length > 0) {
       this.selectedMeansOfTransport = selectedMeansOfTransport;
       this.isReduced = PrmMeanOfTransportHelper.isReduced(selectedMeansOfTransport);
+      this.isDataEditable = true;
       this.stepper.next();
+      this.form.enable();
     } else {
       this.formMeanOfTransport.controls['meansOfTransport'].setErrors({ required: '' });
     }
   }
   backSelection() {
-    this.formMeanOfTransport.controls['meansOfTransport'].setValue([]);
+    this.isDataEditable = false;
     this.stepper.previous();
   }
 }
