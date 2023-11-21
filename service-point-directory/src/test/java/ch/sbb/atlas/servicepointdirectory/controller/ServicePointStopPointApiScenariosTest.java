@@ -23,6 +23,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -77,6 +78,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
 
     @Test
     void scenario2WhenServicePointAndUpdateToStopPointThenStopPointInReview() throws Exception {
+        repository.deleteAll();
         CreateServicePointVersionModel servicePoint = ServicePointTestData.getAargauServicePointVersionModel();
         servicePoint.setMeansOfTransport(new ArrayList<>());
         servicePoint.setStopPointType(null);
@@ -84,6 +86,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 servicePoint);
         Long id = servicePointVersionModel.getId();
         Integer numberShort = servicePointVersionModel.getNumber().getNumberShort();
+
+        Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
+        servicePointVersion1.get().setStatus(Status.VALIDATED);
+        repository.save(servicePointVersion1.get());
 
         UpdateServicePointVersionModel stopPoint = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint.setValidFrom(LocalDate.of(2011, 12, 11));
@@ -158,10 +164,15 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
 
     @Test
     void scenario4WhenStopPointAndChangeStopPointNameOnSecondPartThenStopPointWithNewNameInReview() throws Exception {
+        repository.deleteAll();
         CreateServicePointVersionModel servicePoint = ServicePointTestData.getAargauServicePointVersionModel();
         ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
                 servicePoint);
         Long id = servicePointVersionModel.getId();
+
+        Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
+        servicePointVersion1.get().setStatus(Status.VALIDATED);
+        repository.save(servicePointVersion1.get());
 
         UpdateServicePointVersionModel stopPoint = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint.setDesignationOfficial("Bern Strasse");
@@ -178,15 +189,20 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2015-12-11")))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
-                .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString()))); // TODO: Change to InReview
+                .andExpect(jsonPath("$[1].status", is(Status.IN_REVIEW.toString()))); // TODO: Change to InReview
     }
 
     @Test
     void scenario5WhenStopPointAndChangeStopPointNameOnFirstPartThenStopPointWithNewNameInReview() throws Exception {
+        repository.deleteAll();
         CreateServicePointVersionModel servicePoint = ServicePointTestData.getAargauServicePointVersionModel();
         ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
                 servicePoint);
         Long id = servicePointVersionModel.getId();
+
+        Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
+        servicePointVersion1.get().setStatus(Status.VALIDATED);
+        repository.save(servicePointVersion1.get());
 
         UpdateServicePointVersionModel stopPoint = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint.setDesignationOfficial("Bern Strasse");
@@ -200,7 +216,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
                 .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
-                .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString()))) // TODO: Change to InReview
+                .andExpect(jsonPath("$[0].status", is(Status.IN_REVIEW.toString()))) // TODO: Change to InReview
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2016-01-01")))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
                 .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString())));
@@ -208,23 +224,31 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
 
     @Test
     void scenario6WhenTwoStopPointsAndChangeStopPointNameOnLastPartThenStopPointWithNewNameInReview() throws Exception {
+        repository.deleteAll();
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
         ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
                 stopPoint1);
+        Long id = servicePointVersionModel.getId();
+        Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
+        servicePointVersion1.get().setStatus(Status.VALIDATED);
+        repository.save(servicePointVersion1.get());
 
         CreateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint2.setDesignationOfficial("Bern Strasse");
         stopPoint2.setValidFrom(LocalDate.of(2016, 1, 1));
         ReadServicePointVersionModel servicePointVersionModel1 = servicePointController.createServicePoint(
                 stopPoint2);
-        Long id = servicePointVersionModel1.getId();
+        Long id1 = servicePointVersionModel1.getId();
+        Optional<ServicePointVersion> servicePointVersion2 = repository.findById(id1);
+        servicePointVersion2.get().setStatus(Status.VALIDATED);
+        repository.save(servicePointVersion2.get());
 
         UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint3.setDesignationOfficial("Zurich Strasse");
         stopPoint3.setValidFrom(LocalDate.of(2017, 1, 1));
 
-        mvc.perform(put("/v1/service-points/" + id)
+        mvc.perform(put("/v1/service-points/" + id1)
                         .contentType(contentType)
                         .content(mapper.writeValueAsString(stopPoint3)))
                 .andExpect(status().isOk())
@@ -237,29 +261,37 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString())))
                 .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validFrom, is("2017-01-01")))
                 .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
-                .andExpect(jsonPath("$[2].status", is(Status.VALIDATED.toString())));// TODO: Change to InReview
+                .andExpect(jsonPath("$[2].status", is(Status.IN_REVIEW.toString())));// TODO: Change to InReview
     }
 
     @Test
     void scenario7WhenTwoStopPointsAndChangeStopPointNameInTheMiddleThenStopPointWithNewNameInReview() throws Exception {
+        repository.deleteAll();
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
         ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
                 stopPoint1);
+        Long id = servicePointVersionModel.getId();
+        Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
+        servicePointVersion1.get().setStatus(Status.VALIDATED);
+        repository.save(servicePointVersion1.get());
 
         CreateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint2.setDesignationOfficial("Bern Strasse");
         stopPoint2.setValidFrom(LocalDate.of(2016, 1, 1));
         ReadServicePointVersionModel servicePointVersionModel1 = servicePointController.createServicePoint(
                 stopPoint2);
-        Long id = servicePointVersionModel1.getId();
+        Long id1 = servicePointVersionModel1.getId();
+        Optional<ServicePointVersion> servicePointVersion2 = repository.findById(id1);
+        servicePointVersion2.get().setStatus(Status.VALIDATED);
+        repository.save(servicePointVersion2.get());
 
         UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint3.setDesignationOfficial("Zurich Strasse");
         stopPoint3.setValidFrom(LocalDate.of(2014, 1, 1));
         stopPoint3.setValidTo(LocalDate.of(2016, 12, 31));
 
-        mvc.perform(put("/v1/service-points/" + id)
+        mvc.perform(put("/v1/service-points/" + id1)
                         .contentType(contentType)
                         .content(mapper.writeValueAsString(stopPoint3)))
                 .andExpect(status().isOk())
@@ -297,7 +329,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2014-01-01")))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2016-12-31"))) // TODO: Change to InReview
-                .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString())))
+                .andExpect(jsonPath("$[1].status", is(Status.IN_REVIEW.toString())))
                 .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validFrom, is("2017-01-01")))
                 .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
                 .andExpect(jsonPath("$[2].status", is(Status.VALIDATED.toString())));
@@ -320,7 +352,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
                 .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
-                .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString()))); // TODO: Change to InReview
+                .andExpect(jsonPath("$[0].status", is(Status.IN_REVIEW.toString()))); // TODO: Change to InReview
     }
 
     @Test
@@ -534,7 +566,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2016-01-01")))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
-                .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString())));
+                .andExpect(jsonPath("$[1].status", is(Status.IN_REVIEW.toString())));
     }
 
     @Test
