@@ -36,6 +36,7 @@ public class ServicePointService {
   private final ServicePointValidationService servicePointValidationService;
   private final ServicePointSearchVersionRepository servicePointSearchVersionRepository;
   private final ServicePointTerminationService servicePointTerminationService;
+  private final ServicePointStatusDecider servicePointStatusDecider;
 
   public List<ServicePointSearchResult> searchServicePointVersion(String value) {
     List<ServicePointSearchResult> servicePointSearchResults = servicePointSearchVersionRepository.searchServicePoints(value);
@@ -84,8 +85,12 @@ public class ServicePointService {
 
   @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#servicePointVersion, "
       + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
-  public ServicePointVersion save(ServicePointVersion servicePointVersion) {
-    servicePointVersion.setStatus(Status.VALIDATED);
+  public ServicePointVersion save(ServicePointVersion servicePointVersion,
+                                  Optional<ServicePointVersion> currentVersion,
+                                  List<ServicePointVersion> currentVersions) {
+//    servicePointVersion.setStatus(Status.VALIDATED);
+    servicePointVersion.setStatus(servicePointStatusDecider
+            .getStatusForServicePoint(servicePointVersion, currentVersion, currentVersions));
     servicePointVersion.setEditionDate(LocalDateTime.now());
     servicePointVersion.setEditor(UserService.getUserIdentifier());
 
@@ -124,7 +129,7 @@ public class ServicePointService {
         editedVersion, existingDbVersions);
 
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
-        this::save, new ApplyVersioningDeleteByIdLongConsumer(servicePointVersionRepository));
+        version -> save(version, Optional.of(currentVersion), currentVersions), new ApplyVersioningDeleteByIdLongConsumer(servicePointVersionRepository));
 
     List<ServicePointVersion> afterUpdateServicePoint = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
     servicePointTerminationService.checkTerminationAllowed(currentVersions, afterUpdateServicePoint);
