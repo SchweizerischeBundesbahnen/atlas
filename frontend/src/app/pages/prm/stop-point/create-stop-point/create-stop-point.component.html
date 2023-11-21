@@ -7,23 +7,27 @@
     <ng-template matStepLabel>{{
       'PRM.STOP_POINTS.MEANS_OF_TRAFFIC_SELECTION' | translate
     }}</ng-template>
-    <means-of-transport-picker
-      [formGroup]="formMeanOfTransport"
-      controlName="meansOfTransport"
-      [disabled]="false"
-      label="PRM.STOP_POINTS.MEANS_OF_TRANSPORT_SUB_LABEL"
-      [showUnknown]="false"
-    ></means-of-transport-picker>
-    <div class="mt-5">
-      <atlas-button
-        (click)="checkSelection()"
-        [disabled]="false"
-        [submitButton]="true"
-        buttonDataCy="save-item"
-        buttonText="Next"
-        buttonType="confirm"
-        wrapperStyleClass="ms-3"
-      ></atlas-button>
+    <div class="col-12 d-flex mt-4">
+      <div class="d-flex flex-column col-5">
+        <means-of-transport-picker
+          [formGroup]="formMeanOfTransport"
+          controlName="meansOfTransport"
+          [disabled]="false"
+          label="PRM.STOP_POINTS.MEANS_OF_TRANSPORT_SUB_LABEL"
+          [showUnknown]="false"
+        ></means-of-transport-picker>
+      </div>
+      <div class="d-flex flex-column col-2">
+        <atlas-button
+          (click)="checkSelection()"
+          [disabled]="false"
+          [submitButton]="true"
+          buttonDataCy="save-item"
+          buttonText="Next"
+          buttonType="confirm"
+          wrapperStyleClass="ms-3"
+        ></atlas-button>
+      </div>
     </div>
   </mat-step>
   <mat-step [stepControl]="form">
@@ -43,6 +47,7 @@
       </div>
       <ng-container *ngIf="isReduced">
         <app-stop-point-reduced-form
+          [isNew]="true"
           [selectedMeansOfTransport]="selectedMeansOfTransport"
           [form]="form"
         >
