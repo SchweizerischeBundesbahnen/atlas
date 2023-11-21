@@ -15,6 +15,7 @@ import { ParkingLotComponent } from './parking-lot/parking-lot.component';
 import { ConnectionComponent } from './connection/connection.component';
 import { prmOverviewResolver } from './prm-panel/prm-overview-resolver.service';
 import { stopPointResolver } from './stop-point/stop-point.resolver';
+import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
 
 @Injectable()
 class CanActivatePrmCreationGuard {
@@ -47,6 +48,7 @@ const routes: Routes = [
         component: StopPointDetailComponent,
         resolve: { stopPoint: stopPointResolver },
         runGuardsAndResolvers: 'always',
+        canDeactivate: [canLeaveDirtyForm],
       },
       {
         path: 'reference-point',
