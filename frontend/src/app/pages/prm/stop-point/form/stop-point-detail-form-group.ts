@@ -267,47 +267,47 @@ export class StopPointFormGroupBuilder {
   }
 
   static addCompleteRecordingValidation(form: FormGroup<StopPointDetailFormGroup>) {
-    form.controls['address'].addValidators([
+    form.controls.address.addValidators([
       WhitespaceValidator.blankOrEmptySpaceSurrounding,
       Validators.maxLength(2000),
     ]);
-    form.controls['zipCode'].addValidators([
+    form.controls.zipCode.addValidators([
       WhitespaceValidator.blankOrEmptySpaceSurrounding,
       Validators.maxLength(50),
     ]);
-    form.controls['city'].addValidators([
+    form.controls.city.addValidators([
       WhitespaceValidator.blankOrEmptySpaceSurrounding,
       Validators.maxLength(50),
     ]);
-    form.controls['alternativeTransport'].addValidators([Validators.required]);
-    form.controls['alternativeTransportCondition'].addValidators([
+    form.controls.alternativeTransport.addValidators([Validators.required]);
+    form.controls.alternativeTransportCondition.addValidators([
       WhitespaceValidator.blankOrEmptySpaceSurrounding,
       Validators.maxLength(2000),
     ]);
-    form.controls['assistanceAvailability'].addValidators([Validators.required]);
-    form.controls['assistanceCondition'].addValidators([
+    form.controls.assistanceAvailability.addValidators([Validators.required]);
+    form.controls.assistanceCondition.addValidators([
       WhitespaceValidator.blankOrEmptySpaceSurrounding,
       Validators.maxLength(2000),
     ]);
-    form.controls['assistanceService'].addValidators([Validators.required]);
-    form.controls['audioTicketMachine'].addValidators([Validators.required]);
-    form.controls['additionalInformation'].addValidators([
+    form.controls.assistanceService.addValidators([Validators.required]);
+    form.controls.audioTicketMachine.addValidators([Validators.required]);
+    form.controls.additionalInformation.addValidators([
       WhitespaceValidator.blankOrEmptySpaceSurrounding,
       Validators.maxLength(2000),
     ]);
-    form.controls['dynamicAudioSystem'].addValidators([Validators.required]);
-    form.controls['dynamicOpticSystem'].addValidators([Validators.required]);
-    form.controls['infoTicketMachine'].addValidators([
+    form.controls.dynamicAudioSystem.addValidators([Validators.required]);
+    form.controls.dynamicOpticSystem.addValidators([Validators.required]);
+    form.controls.infoTicketMachine.addValidators([
       WhitespaceValidator.blankOrEmptySpaceSurrounding,
       Validators.maxLength(2000),
     ]);
-    form.controls['url'].addValidators([
+    form.controls.url.addValidators([
       WhitespaceValidator.blankOrEmptySpaceSurrounding,
       Validators.maxLength(500),
     ]);
-    form.controls['visualInfo'].addValidators([Validators.required]);
-    form.controls['wheelchairTicketMachine'].addValidators([Validators.required]);
-    form.controls['assistanceRequestFulfilled'].addValidators([Validators.required]);
-    form.controls['ticketMachine'].addValidators([Validators.required]);
+    form.controls.visualInfo.addValidators([Validators.required]);
+    form.controls.wheelchairTicketMachine.addValidators([Validators.required]);
+    form.controls.assistanceRequestFulfilled.addValidators([Validators.required]);
+    form.controls.ticketMachine.addValidators([Validators.required]);
   }
 }
