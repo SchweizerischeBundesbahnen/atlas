@@ -3,7 +3,7 @@
 </div>
 
 <mat-stepper [linear]="true" #stepper>
-  <mat-step [stepControl]="formMeanOfTransport" state="meansOfTransportSelection">
+  <mat-step [stepControl]="formMeanOfTransport">
     <ng-template matStepLabel>{{
       'PRM.STOP_POINTS.MEANS_OF_TRAFFIC_SELECTION' | translate
     }}</ng-template>
@@ -26,34 +26,36 @@
       ></atlas-button>
     </div>
   </mat-step>
-  <mat-step>
-    <div class="d-flex mb-2">
-      <atlas-button
-        (click)="backSelection()"
-        [disabled]="false"
-        [submitButton]="true"
-        buttonDataCy="save-item"
-        buttonText="Back"
-        buttonType="confirm"
-        wrapperStyleClass="ms-3"
-      >
-      </atlas-button>
-    </div>
+  <mat-step [stepControl]="form">
     <ng-template matStepLabel>{{ 'PRM.STOP_POINTS.POPULATE_DATA' | translate }}</ng-template>
-    <div *ngIf="isReduced">
-      <app-stop-point-reduced-form
-        [selectedMeansOfTransport]="selectedMeansOfTransport"
-        [form]="form"
-      >
-      </app-stop-point-reduced-form>
-    </div>
-    <div *ngIf="!isReduced">
-      <app-stop-point-complete-form
-        [selectedMeansOfTransport]="selectedMeansOfTransport"
-        [form]="form"
-      >
-      </app-stop-point-complete-form>
-    </div>
-    <p>You are now done.</p>
+    <ng-container *ngIf="isDataEditable">
+      <div class="d-flex mb-2">
+        <atlas-button
+          (click)="backSelection()"
+          [disabled]="false"
+          [submitButton]="true"
+          buttonDataCy="save-item"
+          buttonText="Back"
+          buttonType="confirm"
+          wrapperStyleClass="ms-3"
+        >
+        </atlas-button>
+      </div>
+      <ng-container *ngIf="isReduced">
+        <app-stop-point-reduced-form
+          [selectedMeansOfTransport]="selectedMeansOfTransport"
+          [form]="form"
+        >
+        </app-stop-point-reduced-form>
+      </ng-container>
+      <ng-container *ngIf="!isReduced">
+        <app-stop-point-complete-form
+          [isNew]="true"
+          [selectedMeansOfTransport]="selectedMeansOfTransport"
+          [form]="form"
+        >
+        </app-stop-point-complete-form>
+      </ng-container>
+    </ng-container>
   </mat-step>
 </mat-stepper>
