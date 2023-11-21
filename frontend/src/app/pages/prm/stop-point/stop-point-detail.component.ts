@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  PersonWithReducedMobilityService,
-  ReadStopPointVersion,
-  StandardAttributeType,
-} from '../../../api';
+import { PersonWithReducedMobilityService, ReadStopPointVersion } from '../../../api';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import {
@@ -13,7 +9,6 @@ import {
 } from './form/stop-point-detail-form-group';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { takeUntil } from 'rxjs/operators';
-import { TranslationSortingService } from '../../../core/translation/translation-sorting.service';
 import { Pages } from '../../pages';
 import { NotificationService } from '../../../core/notification/notification.service';
 
@@ -39,13 +34,11 @@ export class StopPointDetailComponent implements OnInit {
   constructor(
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly translationSortingService: TranslationSortingService,
     private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
     private notificationService: NotificationService,
   ) {}
 
   private stopPointSubscription?: Subscription;
-  standardAttributeTypes: string[] = [];
 
   ngOnInit(): void {
     this.stopPointSubscription = this.route.data
@@ -57,13 +50,12 @@ export class StopPointDetailComponent implements OnInit {
         } else {
           this.initNotExistingStopPoint();
         }
-        this.setSortedOperatingPointTypes();
       });
   }
 
   private initNotExistingStopPoint() {
     this.isNew = true;
-    this.form = StopPointFormGroupBuilder.buildEmptyCompleteFormGroup();
+    this.form = StopPointFormGroupBuilder.buildEmptyWithReducedValidationFormGroup();
     this.disableForm();
   }
 
@@ -74,8 +66,8 @@ export class StopPointDetailComponent implements OnInit {
   }
 
   public initSelectedVersion() {
-    this.isNew = false;
     this.form = StopPointFormGroupBuilder.buildFormGroup(this.selectedVersion);
+    this.disableForm();
     this.isSelectedVersionHighDate(this.stopPointVersions, this.selectedVersion);
   }
 
@@ -112,13 +104,6 @@ export class StopPointDetailComponent implements OnInit {
     this.disableForm();
   }
 
-  private setSortedOperatingPointTypes = (): void => {
-    this.standardAttributeTypes = this.translationSortingService.sort(
-      Object.values(StandardAttributeType),
-      'PRM.STOP_POINTS.STANDARD_ATTRIBUTE_TYPES.',
-    );
-  };
-
   closeSidePanel() {
     this.router.navigate([Pages.PRM.path]).then();
   }
@@ -133,6 +118,7 @@ export class StopPointDetailComponent implements OnInit {
   }
 
   save() {
+    this.form.markAllAsTouched();
     if (this.form.valid) {
       const writableStopPoint = StopPointFormGroupBuilder.getWritableStopPoint(this.form);
       if (!this.isNew) {
