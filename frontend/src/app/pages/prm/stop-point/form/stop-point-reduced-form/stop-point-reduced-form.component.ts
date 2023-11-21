@@ -20,6 +20,6 @@ export class StopPointReducedFormComponent implements OnInit {
   }
 
   private initForm() {
-    this.form.controls['meansOfTransport'].setValue(this.selectedMeansOfTransport);
+    this.form.controls.meansOfTransport.setValue(this.selectedMeansOfTransport);
   }
 }
