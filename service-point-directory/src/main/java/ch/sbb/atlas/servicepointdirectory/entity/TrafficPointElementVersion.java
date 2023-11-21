@@ -6,6 +6,7 @@ import ch.sbb.atlas.servicepoint.converter.ServicePointNumberConverter;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.GeolocationBaseEntity;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
+import ch.sbb.atlas.servicepoint.SloidValidation;
 import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
@@ -37,7 +38,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
-import lombok.extern.slf4j.Slf4j;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -48,12 +48,8 @@ import lombok.extern.slf4j.Slf4j;
 @FieldNameConstants
 @Entity(name = "traffic_point_element_version")
 @AtlasVersionable
-@Slf4j
 public class TrafficPointElementVersion extends BasePointVersion<TrafficPointElementVersion> implements Versionable,
     DatesValidator {
-
-  private static final int EXPECTED_COLONS_AREA = 4;
-  private static final int EXPECTED_COLONS_PLATFORM = 5;
 
   private static final String VERSION_SEQ = "traffic_point_element_version_seq";
 
@@ -143,17 +139,10 @@ public class TrafficPointElementVersion extends BasePointVersion<TrafficPointEle
     if (trafficPointElementType == null) {
       return true;
     }
-
     int expectedColons = trafficPointElementType == TrafficPointElementType.BOARDING_AREA ?
-        EXPECTED_COLONS_AREA : EXPECTED_COLONS_PLATFORM;
-    int actualColons = sloid.split(":").length - 1;
+        SloidValidation.EXPECTED_COLONS_AREA : SloidValidation.EXPECTED_COLONS_PLATFORM;
 
-    boolean result = actualColons == expectedColons;
-
-    if (!result) {
-      log.error("SLOID {} did not have {} colons as expected", sloid, expectedColons);
-    }
-    return result;
+    return SloidValidation.isSloidValid(sloid, expectedColons, servicePointNumber);
   }
 
   @JsonIgnore
