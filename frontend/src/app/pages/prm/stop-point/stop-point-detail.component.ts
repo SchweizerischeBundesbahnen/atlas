@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ReadStopPointVersion, StandardAttributeType } from '../../../api';
+import {
+  PersonWithReducedMobilityService,
+  ReadStopPointVersion,
+  StandardAttributeType,
+} from '../../../api';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import {
@@ -11,6 +15,7 @@ import { VersionsHandlingService } from '../../../core/versioning/versions-handl
 import { takeUntil } from 'rxjs/operators';
 import { TranslationSortingService } from '../../../core/translation/translation-sorting.service';
 import { Pages } from '../../pages';
+import { NotificationService } from '../../../core/notification/notification.service';
 
 @Component({
   selector: 'app-stop-point-detail',
@@ -18,12 +23,11 @@ import { Pages } from '../../pages';
   styleUrls: ['./stop-point-detail.component.scss'],
 })
 export class StopPointDetailComponent implements OnInit {
-  isStopPointExisting = true;
+  isNew = false;
   stopPointVersions!: ReadStopPointVersion[];
   selectedVersionIndex!: number;
   selectedVersion!: ReadStopPointVersion;
   form!: FormGroup<StopPointDetailFormGroup>;
-  isNew = true;
   isLatestVersionSelected = false;
   showVersionSwitch = false;
   isSwitchVersionDisabled = false;
@@ -36,6 +40,8 @@ export class StopPointDetailComponent implements OnInit {
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly translationSortingService: TranslationSortingService,
+    private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
+    private notificationService: NotificationService,
   ) {}
 
   private stopPointSubscription?: Subscription;
@@ -49,14 +55,17 @@ export class StopPointDetailComponent implements OnInit {
         if (this.stopPointVersions.length > 0) {
           this.initExistingStopPoint();
         } else {
-          this.isStopPointExisting = false;
           this.initNotExistingStopPoint();
         }
         this.setSortedOperatingPointTypes();
       });
   }
 
-  private initNotExistingStopPoint() {}
+  private initNotExistingStopPoint() {
+    this.isNew = true;
+    this.form = StopPointFormGroupBuilder.buildEmptyCompleteFormGroup();
+    this.disableForm();
+  }
 
   switchVersion(newIndex: number) {
     this.selectedVersionIndex = newIndex;
@@ -65,19 +74,14 @@ export class StopPointDetailComponent implements OnInit {
   }
 
   public initSelectedVersion() {
-    if (this.selectedVersion.id) {
-      this.isNew = false;
-    }
-
+    this.isNew = false;
     this.form = StopPointFormGroupBuilder.buildFormGroup(this.selectedVersion);
-    if (!this.isNew) {
-      this.disableForm();
-    }
     this.isSelectedVersionHighDate(this.stopPointVersions, this.selectedVersion);
   }
 
   private disableForm(): void {
     this.form.disable({ emitEvent: false });
+    this.isFormEnabled$.next(false);
   }
 
   isSelectedVersionHighDate(
@@ -105,6 +109,7 @@ export class StopPointDetailComponent implements OnInit {
     this.isReduced = this.selectedVersion.reduced;
     this.selectedVersionIndex = this.stopPointVersions.indexOf(this.selectedVersion);
     this.initSelectedVersion();
+    this.disableForm();
   }
 
   private setSortedOperatingPointTypes = (): void => {
@@ -118,7 +123,39 @@ export class StopPointDetailComponent implements OnInit {
     this.router.navigate([Pages.PRM.path]).then();
   }
 
-  toggleEdit() {}
+  toggleEdit() {
+    if (this.form.enabled) {
+      this.disableForm();
+    } else {
+      this.form.enable({ emitEvent: false });
+      this.isFormEnabled$.next(true);
+    }
+  }
 
-  save() {}
+  save() {
+    if (this.form.valid) {
+      const writableStopPoint = StopPointFormGroupBuilder.getWritableStopPoint(this.form);
+      if (!this.isNew) {
+        this.personWithReducedMobilityService
+          .updateStopPoint(this.selectedVersion.id!, writableStopPoint)
+          .pipe(takeUntil(this.ngUnsubscribe))
+          .subscribe(() => {
+            this.notificationService.success('PRM.STOP_POINTS.NOTIFICATION.EDIT_SUCCESS');
+            this.router
+              .navigate(['..', this.selectedVersion.number.number], { relativeTo: this.route })
+              .then();
+          });
+      } else {
+        this.personWithReducedMobilityService
+          .createStopPoint(writableStopPoint)
+          .pipe(takeUntil(this.ngUnsubscribe))
+          .subscribe(() => {
+            this.notificationService.success('PRM.STOP_POINTS.NOTIFICATION.EDIT_SUCCESS');
+            this.router
+              .navigate(['..', this.selectedVersion.number.number], { relativeTo: this.route })
+              .then();
+          });
+      }
+    }
+  }
 }
