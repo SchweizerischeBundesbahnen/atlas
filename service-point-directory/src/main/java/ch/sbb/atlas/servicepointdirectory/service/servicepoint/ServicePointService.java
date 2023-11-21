@@ -83,6 +83,12 @@ public class ServicePointService {
     return servicePointVersionRepository.findById(id);
   }
 
+  public List<ServicePointVersion> revokeServicePoint(ServicePointNumber servicePointNumber) {
+    List<ServicePointVersion> servicePointVersions = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
+    servicePointVersions.forEach(servicePointVersion -> servicePointVersion.setStatus(Status.REVOKED));
+    return servicePointVersions;
+  }
+
   @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#servicePointVersion, "
       + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   public ServicePointVersion save(ServicePointVersion servicePointVersion,

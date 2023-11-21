@@ -111,6 +111,18 @@ public class ServicePointController implements ServicePointApiV1 {
   }
 
   @Override
+  public List<ReadServicePointVersionModel> revokeServicePoint(Integer servicePointNumber) {
+    List<ReadServicePointVersionModel> servicePointVersionModels = servicePointService.revokeServicePoint(ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber))
+            .stream()
+            .map(servicePointVersion -> ServicePointVersionMapper.toModel(servicePointVersion))
+            .toList();
+    if (servicePointVersionModels.isEmpty()) {
+      throw new ServicePointNumberNotFoundException(ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber));
+    }
+    return servicePointVersionModels;
+  }
+
+  @Override
   public ReadServicePointVersionModel createServicePoint(CreateServicePointVersionModel createServicePointVersionModel) {
     ServicePointVersion servicePointVersion;
 
