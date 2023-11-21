@@ -10,9 +10,6 @@
  * Do not edit the class manually.
  */
 
-/**
- * The country for the service point. Only needed if ServicePointNumber is created automatically
- */
 export type Country =
   | 'AZERBAIJAN'
   | 'BELGIUM'
