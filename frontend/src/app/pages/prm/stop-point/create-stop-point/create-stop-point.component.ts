@@ -1,11 +1,10 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import {
-  MeanOfTransportFormGroup,
+  StopPointDetailFormGroup,
   StopPointFormGroupBuilder,
 } from '../form/stop-point-detail-form-group';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
-import { PrmMeanOfTransportValidator } from './prm-mean-of-transport-validator';
 import { PrmMeanOfTransportHelper } from '../../prm-mean-of-transport-helper';
 import { MeanOfTransport } from '../../../../api';
 
@@ -18,17 +17,11 @@ export class CreateStopPointComponent {
   @ViewChild('stepper') stepper!: MatStepper;
   selectedMeansOfTransport!: MeanOfTransport[];
 
-  @Input() form = StopPointFormGroupBuilder.buildEmptyCompleteFormGroup();
+  @Input() form!: FormGroup<StopPointDetailFormGroup>;
   isReduced = false;
   isDataEditable = false;
 
-  formMeanOfTransport = new FormGroup<MeanOfTransportFormGroup>({
-    meansOfTransport: new FormControl(
-      [],
-      [Validators.required, PrmMeanOfTransportValidator.isReducedOrComplete],
-    ),
-  });
-
+  formMeanOfTransport = StopPointFormGroupBuilder.buildMeansOfTransportForm();
   checkSelection() {
     const selectedMeansOfTransport = this.formMeanOfTransport.controls['meansOfTransport'].value;
     if (selectedMeansOfTransport && selectedMeansOfTransport.length > 0) {
@@ -42,6 +35,7 @@ export class CreateStopPointComponent {
     }
   }
   backSelection() {
+    //todo: prune form
     this.isDataEditable = false;
     this.stepper.previous();
   }
