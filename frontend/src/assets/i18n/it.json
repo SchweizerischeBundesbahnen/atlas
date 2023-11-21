@@ -217,7 +217,7 @@
     "MAX": "Il valore può essere massimo {{max}}",
     "AT_LEAST_ONE": "Selezionare almeno un'espressione.",
     "DECIMAL_NUMBER": "Inserire un numero decimale con un massimo di {{maxDecimalDigits}} cifre decimali.",
-    "COLON_SEPERATED_NUMBERS": "Inserire i numeri separati esattamente da {{numbersWithColons}} coloni."
+    "COLON_SEPERATED_SID4PT": "Utilizzare i caratteri SID4PT (-._0-9a-zA-Z) con esattamente {{numbersWithColons}} due punti."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organizzazioni aziendali e Applicazioni",
