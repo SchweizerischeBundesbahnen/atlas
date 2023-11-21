@@ -1,10 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-
 import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -19,10 +14,15 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Collections;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 
  class ServicePointServiceTest {
 
@@ -43,11 +43,14 @@ import java.util.List;
   @Mock
   private ServicePointSearchVersionRepository servicePointSearchVersionRepository;
 
+  @Mock
+  private ServicePointStatusDecider servicePointStatusDecider;
+
   @BeforeEach
   void initMocksAndService() {
     MockitoAnnotations.openMocks(this);
     servicePointService = new ServicePointService(servicePointVersionRepositoryMock, versionableServiceMock,
-        servicePointValidationService, servicePointSearchVersionRepository, servicePointTerminationService);
+        servicePointValidationService, servicePointSearchVersionRepository, servicePointTerminationService, servicePointStatusDecider);
   }
 
   @Test

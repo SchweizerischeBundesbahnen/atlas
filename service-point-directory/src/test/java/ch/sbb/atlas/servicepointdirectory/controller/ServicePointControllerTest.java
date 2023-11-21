@@ -1,9 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -14,11 +10,16 @@ import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCo
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointNumberService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
-import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 class ServicePointControllerTest {
 
@@ -43,7 +44,7 @@ class ServicePointControllerTest {
     servicePointController = new ServicePointController(servicePointService, servicePointFotCommentService,
         servicePointImportService, geoReferenceService, servicePointDistributor, servicePointNumberService);
 
-    when(servicePointService.save(any())).then(i -> i.getArgument(0, ServicePointVersion.class));
+    when(servicePointService.save(any(), any(), any())).then(i -> i.getArgument(0, ServicePointVersion.class));
   }
 
   @Test
