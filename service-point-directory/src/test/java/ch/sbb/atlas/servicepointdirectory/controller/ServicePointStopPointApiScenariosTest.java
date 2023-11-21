@@ -72,7 +72,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                         .content(mapper.writeValueAsString(ServicePointTestData.getAargauServicePointVersionModel())))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue() + 1)))
-                .andExpect(jsonPath("$.status", is(Status.VALIDATED.toString()))); // TODO: Here status should be InReview
+                .andExpect(jsonPath("$.status", is(Status.IN_REVIEW.toString()))); // TODO: Here status should be InReview
     }
 
     @Test
@@ -99,7 +99,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2011-12-11")))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
-                .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString()))); // TODO: Change to InReview
+                .andExpect(jsonPath("$[1].status", is(Status.IN_REVIEW.toString()))); // TODO: Change to InReview
     }
 
 //    @Test
