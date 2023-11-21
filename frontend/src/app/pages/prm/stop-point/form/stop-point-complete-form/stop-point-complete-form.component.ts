@@ -1,18 +1,21 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { StopPointDetailFormGroup } from '../stop-point-detail-form-group';
+import { Component, Input, OnInit } from '@angular/core';
+import {
+  StopPointDetailFormGroup,
+  StopPointFormGroupBuilder,
+} from '../stop-point-detail-form-group';
 import { MeanOfTransport, StandardAttributeType } from '../../../../../api';
 import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
-import { FormGroup } from '@angular/forms';
+import { ControlContainer, FormGroup, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-stop-point-complete-form',
   templateUrl: './stop-point-complete-form.component.html',
   styleUrls: ['./stop-point-complete-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
 })
 export class StopPointCompleteFormComponent implements OnInit {
   @Input() form!: FormGroup<StopPointDetailFormGroup>;
-  @Input() standardAttributeTypes!: any;
+  standardAttributeTypes: string[] = [];
   @Input() selectedMeansOfTransport!: MeanOfTransport[];
   @Input() isNew = false;
 
@@ -26,6 +29,11 @@ export class StopPointCompleteFormComponent implements OnInit {
   }
 
   private initForm() {
+    this.populateDropdownsWithDefaultValue();
+    StopPointFormGroupBuilder.addCompleteRecordingValidation(this.form);
+  }
+
+  private populateDropdownsWithDefaultValue() {
     this.form.controls['meansOfTransport'].setValue(this.selectedMeansOfTransport);
     this.form.controls['alternativeTransport'].setValue(StandardAttributeType.ToBeCompleted);
     this.form.controls['assistanceAvailability'].setValue(StandardAttributeType.ToBeCompleted);
