@@ -27,10 +27,7 @@
       <app-stop-point-reduced-form [form]="form"></app-stop-point-reduced-form>
     </div>
     <div *ngIf="!isReduced">
-      <app-stop-point-complete-form
-        [form]="form"
-        [standardAttributeTypes]="standardAttributeTypes"
-      ></app-stop-point-complete-form>
+      <app-stop-point-complete-form [form]="form"></app-stop-point-complete-form>
     </div>
   </ng-container>
 </div>

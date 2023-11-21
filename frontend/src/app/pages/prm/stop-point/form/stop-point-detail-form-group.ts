@@ -10,6 +10,7 @@ import moment from 'moment';
 import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import { PrmMeanOfTransportHelper } from '../../prm-mean-of-transport-helper';
+import { PrmMeanOfTransportValidator } from '../create-stop-point/prm-mean-of-transport-validator';
 
 export interface StopPointDetailFormGroup extends BaseDetailFormGroup {
   sloid: FormControl<string | null | undefined>;
@@ -44,31 +45,19 @@ export interface ReducedStopPointDetailFormGroup extends BaseDetailFormGroup {
   freeText: FormControl<string | null | undefined>;
 }
 
+export interface MeanOfTransportFormGroup {
+  meansOfTransport: FormControl<Array<MeanOfTransport> | null | undefined>;
+}
+
 export class StopPointFormGroupBuilder {
   static buildFormGroup(version: ReadStopPointVersion): FormGroup {
     if (version.reduced) {
-      return new FormGroup<ReducedStopPointDetailFormGroup>({
-        number: new FormControl(version.number.number),
-        sloid: new FormControl(version.sloid),
-        meansOfTransport: new FormControl(version.meansOfTransport, [Validators.required]),
-        freeText: new FormControl(version.freeText, [
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          Validators.maxLength(2000),
-        ]),
-        validFrom: new FormControl(
-          version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required],
-        ),
-        validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [
-          Validators.required,
-        ]),
-        etagVersion: new FormControl(version.etagVersion),
-        creationDate: new FormControl(version.creationDate),
-        editionDate: new FormControl(version.editionDate),
-        editor: new FormControl(version.editor),
-        creator: new FormControl(version.creator),
-      });
+      return this.buildReducedFormGroup(version);
     }
+    return this.buildCompleteFormGrouo(version);
+  }
+
+  private static buildCompleteFormGrouo(version: ReadStopPointVersion) {
     return new FormGroup<StopPointDetailFormGroup>({
       number: new FormControl(version.number.number),
       sloid: new FormControl(version.sloid),
@@ -141,59 +130,59 @@ export class StopPointFormGroupBuilder {
     });
   }
 
-  static buildEmptyCompleteFormGroup(): FormGroup {
+  private static buildReducedFormGroup(version: ReadStopPointVersion) {
+    return new FormGroup<ReducedStopPointDetailFormGroup>({
+      number: new FormControl(version.number.number),
+      sloid: new FormControl(version.sloid),
+      meansOfTransport: new FormControl(version.meansOfTransport, [Validators.required]),
+      freeText: new FormControl(version.freeText, [
+        WhitespaceValidator.blankOrEmptySpaceSurrounding,
+        Validators.maxLength(2000),
+      ]),
+      validFrom: new FormControl(
+        version.validFrom ? moment(version.validFrom) : version.validFrom,
+        [Validators.required],
+      ),
+      validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [
+        Validators.required,
+      ]),
+      etagVersion: new FormControl(version.etagVersion),
+      creationDate: new FormControl(version.creationDate),
+      editionDate: new FormControl(version.editionDate),
+      editor: new FormControl(version.editor),
+      creator: new FormControl(version.creator),
+    });
+  }
+
+  static buildEmptyWithReducedValidationFormGroup(): FormGroup {
     return new FormGroup<StopPointDetailFormGroup>(
       {
         number: new FormControl(null),
         sloid: new FormControl(null),
-        meansOfTransport: new FormControl(),
+        meansOfTransport: new FormControl(null, [Validators.required]),
         freeText: new FormControl(null, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(2000),
         ]),
-        address: new FormControl(null, [
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          Validators.maxLength(2000),
-        ]),
-        zipCode: new FormControl(null, [
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          Validators.maxLength(2000),
-        ]),
-        city: new FormControl(null, [
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          Validators.maxLength(2000),
-        ]),
-        alternativeTransport: new FormControl(null, [Validators.required]),
-        alternativeTransportCondition: new FormControl(null, [
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          Validators.maxLength(2000),
-        ]),
-        assistanceAvailability: new FormControl(null, [Validators.required]),
-        assistanceCondition: new FormControl(null, [
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          Validators.maxLength(2000),
-        ]),
-        assistanceService: new FormControl(null, [Validators.required]),
-        audioTicketMachine: new FormControl(null, [Validators.required]),
-        additionalInformation: new FormControl(null, [
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          Validators.maxLength(2000),
-        ]),
-        dynamicAudioSystem: new FormControl(null, [Validators.required]),
-        dynamicOpticSystem: new FormControl(null, [Validators.required]),
-        infoTicketMachine: new FormControl(null, [
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          Validators.maxLength(2000),
-        ]),
+        address: new FormControl(),
+        zipCode: new FormControl(null),
+        city: new FormControl(null),
+        alternativeTransport: new FormControl(null),
+        alternativeTransportCondition: new FormControl(null),
+        assistanceAvailability: new FormControl(null),
+        assistanceCondition: new FormControl(null),
+        assistanceService: new FormControl(null),
+        audioTicketMachine: new FormControl(null),
+        additionalInformation: new FormControl(null),
+        dynamicAudioSystem: new FormControl(null),
+        dynamicOpticSystem: new FormControl(null),
+        infoTicketMachine: new FormControl(null),
         interoperable: new FormControl(null),
-        url: new FormControl(null, [
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          Validators.maxLength(500),
-        ]),
-        visualInfo: new FormControl(null, [Validators.required]),
-        wheelchairTicketMachine: new FormControl(null, [Validators.required]),
-        assistanceRequestFulfilled: new FormControl(null, [Validators.required]),
-        ticketMachine: new FormControl(null, [Validators.required]),
+        url: new FormControl(null),
+        visualInfo: new FormControl(null),
+        wheelchairTicketMachine: new FormControl(null),
+        assistanceRequestFulfilled: new FormControl(null),
+        ticketMachine: new FormControl(null),
         validFrom: new FormControl(null, [Validators.required]),
         validTo: new FormControl(null, [Validators.required]),
         etagVersion: new FormControl(),
@@ -210,20 +199,13 @@ export class StopPointFormGroupBuilder {
     const value = form.value;
     const isReduced = PrmMeanOfTransportHelper.isReduced(value.meansOfTransport!);
     if (isReduced) {
-      return {
-        sloid: value.sloid!,
-        freeText: value.freeText!,
-        numberWithoutCheckDigit: value.number!,
-        meansOfTransport: value.meansOfTransport!,
-        validFrom: value.validFrom!.toDate(),
-        validTo: value.validTo!.toDate(),
-        etagVersion: value.etagVersion!,
-        creationDate: value.creationDate!,
-        editionDate: value.editionDate!,
-        editor: value.editor!,
-        creator: value.creator!,
-      };
+      return this.getWritableReducedStopPoint(form);
     }
+    return this.getWritableCompleteStopPoint(form);
+  }
+
+  private static getWritableCompleteStopPoint(form: FormGroup<StopPointDetailFormGroup>) {
+    const value = form.value;
     return {
       sloid: value.sloid!,
       freeText: value.freeText!,
@@ -257,8 +239,75 @@ export class StopPointFormGroupBuilder {
       creator: value.creator!,
     };
   }
-}
 
-export interface MeanOfTransportFormGroup {
-  meansOfTransport: FormControl<Array<MeanOfTransport> | null | undefined>;
+  private static getWritableReducedStopPoint(form: FormGroup<StopPointDetailFormGroup>) {
+    const value = form.value;
+    return {
+      sloid: value.sloid!,
+      freeText: value.freeText!,
+      numberWithoutCheckDigit: value.number!,
+      meansOfTransport: value.meansOfTransport!,
+      validFrom: value.validFrom!.toDate(),
+      validTo: value.validTo!.toDate(),
+      etagVersion: value.etagVersion!,
+      creationDate: value.creationDate!,
+      editionDate: value.editionDate!,
+      editor: value.editor!,
+      creator: value.creator!,
+    };
+  }
+
+  static buildMeansOfTransportForm() {
+    return new FormGroup<MeanOfTransportFormGroup>({
+      meansOfTransport: new FormControl(
+        [],
+        [Validators.required, PrmMeanOfTransportValidator.isReducedOrComplete],
+      ),
+    });
+  }
+
+  static addCompleteRecordingValidation(form: FormGroup<StopPointDetailFormGroup>) {
+    form.controls['address'].addValidators([
+      WhitespaceValidator.blankOrEmptySpaceSurrounding,
+      Validators.maxLength(2000),
+    ]);
+    form.controls['zipCode'].addValidators([
+      WhitespaceValidator.blankOrEmptySpaceSurrounding,
+      Validators.maxLength(50),
+    ]);
+    form.controls['city'].addValidators([
+      WhitespaceValidator.blankOrEmptySpaceSurrounding,
+      Validators.maxLength(50),
+    ]);
+    form.controls['alternativeTransport'].addValidators([Validators.required]);
+    form.controls['alternativeTransportCondition'].addValidators([
+      WhitespaceValidator.blankOrEmptySpaceSurrounding,
+      Validators.maxLength(2000),
+    ]);
+    form.controls['assistanceAvailability'].addValidators([Validators.required]);
+    form.controls['assistanceCondition'].addValidators([
+      WhitespaceValidator.blankOrEmptySpaceSurrounding,
+      Validators.maxLength(2000),
+    ]);
+    form.controls['assistanceService'].addValidators([Validators.required]);
+    form.controls['audioTicketMachine'].addValidators([Validators.required]);
+    form.controls['additionalInformation'].addValidators([
+      WhitespaceValidator.blankOrEmptySpaceSurrounding,
+      Validators.maxLength(2000),
+    ]);
+    form.controls['dynamicAudioSystem'].addValidators([Validators.required]);
+    form.controls['dynamicOpticSystem'].addValidators([Validators.required]);
+    form.controls['infoTicketMachine'].addValidators([
+      WhitespaceValidator.blankOrEmptySpaceSurrounding,
+      Validators.maxLength(2000),
+    ]);
+    form.controls['url'].addValidators([
+      WhitespaceValidator.blankOrEmptySpaceSurrounding,
+      Validators.maxLength(500),
+    ]);
+    form.controls['visualInfo'].addValidators([Validators.required]);
+    form.controls['wheelchairTicketMachine'].addValidators([Validators.required]);
+    form.controls['assistanceRequestFulfilled'].addValidators([Validators.required]);
+    form.controls['ticketMachine'].addValidators([Validators.required]);
+  }
 }
