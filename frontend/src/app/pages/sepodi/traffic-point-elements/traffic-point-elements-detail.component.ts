@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
+  Country,
   CreateTrafficPointElementVersion,
   ReadServicePointVersion,
   ReadTrafficPointElementVersion,
@@ -24,6 +25,7 @@ import { NotificationService } from '../../../core/notification/notification.ser
 import { TrafficPointMapService } from '../map/traffic-point-map.service';
 import { ValidityConfirmationService } from '../validity/validity-confirmation.service';
 import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
+import { Countries } from '../../../core/country/Countries';
 
 interface AreaOption {
   sloid: string | undefined;
@@ -150,8 +152,8 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
 
   get servicePointNumberPartForSloid() {
     const numberAsString = String(this.servicePointNumber);
-    if (numberAsString.startsWith('85')) {
-      return String(this.servicePointNumber % 100);
+    if (numberAsString.startsWith(String(Countries.fromCountry(Country.Switzerland)!.uicCode!))) {
+      return String(this.servicePointNumber % 100000);
     }
     return numberAsString;
   }
