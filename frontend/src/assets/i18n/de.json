@@ -1074,6 +1074,10 @@
         "ADD_SUCCESS": "Die Haltestelle wurde erfolgreich hinzugefügt.",
         "EDIT_SUCCESS": "Die Haltestelle wurde erfolgreich gespeichert."
       },
+      "DIALOG": {
+        "RECORDING_VARIANT_CHANGES": "Erfassungsvariante wechseln?",
+        "CONFIRM_RECORDING_VARIANT_CHANGES": "Wenn Sie die Erfassungsvariante wechseln Ihre erfasste Daten werden gelöscht."
+      },
       "DETAILS": "Angabe zur Haltestelle",
       "MEANS_OF_TRANSPORT_SUB_LABEL": "Steurt die Auswahl der zu erfassenden Krieterien für die Bestandsaufnahme BehiG",
       "VISUAL_INFO_EXAMPLE": "z.B. Aushangfahrpläne, Netzplöne, Tarifbestimmungen, etc.",
