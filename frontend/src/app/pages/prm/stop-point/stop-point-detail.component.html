@@ -1,8 +1,8 @@
 <div class="tab-detail-container">
-  <ng-container *ngIf="!isStopPointExisting">
-    <app-create-stop-point></app-create-stop-point>
+  <ng-container *ngIf="isNew">
+    <app-create-stop-point [form]="form"></app-create-stop-point>
   </ng-container>
-  <ng-container *ngIf="isStopPointExisting">
+  <ng-container *ngIf="!isNew">
     <div class="col-12 d-flex mt-3">
       <div class="d-flex flex-column pe-3">
         <app-switch-version
@@ -44,18 +44,30 @@
       [footerEdit]="(isFormEnabled$ | async) ?? false"
     >
     </atlas-button>
-    <atlas-button
-      [footerEdit]="(isFormEnabled$ | async) ?? false"
-      (buttonClicked)="toggleEdit()"
-      buttonDataCy="cancel"
-      buttonText="COMMON.CANCEL"
-      buttonType="whiteFooterEdit"
-      wrapperStyleClass="ms-3"
-    ></atlas-button>
+    <ng-container *ngIf="!isNew">
+      <atlas-button
+        *ngIf="(isFormEnabled$ | async) === false"
+        (buttonClicked)="toggleEdit()"
+        applicationType="SEPODI"
+        [businessOrganisation]="'ch:1:sboid:123'"
+        buttonDataCy="edit"
+        buttonText="COMMON.EDIT"
+        buttonType="edit"
+        wrapperStyleClass="ms-3"
+      ></atlas-button>
+      <atlas-button
+        [footerEdit]="(isFormEnabled$ | async) ?? false"
+        (buttonClicked)="toggleEdit()"
+        buttonDataCy="cancel"
+        buttonText="COMMON.CANCEL"
+        buttonType="whiteFooterEdit"
+        wrapperStyleClass="ms-3"
+      ></atlas-button>
+    </ng-container>
     <atlas-button
       (click)="save()"
-      [footerEdit]="(isFormEnabled$ | async) ?? false"
-      [disabled]="false"
+      [footerEdit]="isNew || ((isFormEnabled$ | async) ?? false)"
+      [disabled]="!form.dirty"
       [submitButton]="true"
       buttonDataCy="save-item"
       buttonText="COMMON.SAVE"
