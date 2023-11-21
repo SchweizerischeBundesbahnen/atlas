@@ -71,7 +71,7 @@ import org.springframework.data.domain.Sort;
     trafficPointElementService.updateTrafficPointElementVersion(trafficPointElementVersion, edited);
 
     // then
-    assertThat(trafficPointElementService.findBySloidOrderByValidFrom("ch:1:sloid:123:123:123")).hasSize(1);
+    assertThat(trafficPointElementService.findBySloidOrderByValidFrom("ch:1:sloid:89108:123:123")).hasSize(1);
   }
 
   @Test
@@ -582,7 +582,7 @@ import org.springframework.data.domain.Sort;
     trafficPointElementVersionRepository.save(TrafficPointElementVersion
         .builder()
         .designation("Bezeichnung")
-        .sloid("ch:1:sloid:123:123:123")
+        .sloid("ch:1:sloid:1400015:123:123")
         .servicePointNumber(SERVICE_POINT_NUMBER)
         .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
         .validFrom(LocalDate.of(2020, 1, 6))
@@ -591,7 +591,7 @@ import org.springframework.data.domain.Sort;
     trafficPointElementVersionRepository.save(TrafficPointElementVersion
         .builder()
         .designation("Bezeichnung 2")
-        .sloid("ch:1:sloid:123:123:123")
+        .sloid("ch:1:sloid:1400015:123:123")
         .servicePointNumber(SERVICE_POINT_NUMBER)
         .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
         .validFrom(LocalDate.of(2021, 1, 6))
@@ -602,7 +602,7 @@ import org.springframework.data.domain.Sort;
     trafficPointElementVersionRepository.save(TrafficPointElementVersion
         .builder()
         .designation("Bezeichnung")
-        .sloid("ch:1:sloid:345:345:345")
+        .sloid("ch:1:sloid:1400015:345:345")
         .servicePointNumber(SERVICE_POINT_NUMBER)
         .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
         .validFrom(LocalDate.now().minusDays(15))
@@ -611,7 +611,7 @@ import org.springframework.data.domain.Sort;
     trafficPointElementVersionRepository.save(TrafficPointElementVersion
         .builder()
         .designation("Bezeichnung 2")
-        .sloid("ch:1:sloid:345:345:345")
+        .sloid("ch:1:sloid:1400015:345:345")
         .servicePointNumber(SERVICE_POINT_NUMBER)
         .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
         .validFrom(LocalDate.now().minusDays(5))
