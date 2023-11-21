@@ -7,6 +7,7 @@ import { FormGroup } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import { PrmMeanOfTransportHelper } from '../../prm-mean-of-transport-helper';
 import { MeanOfTransport } from '../../../../api';
+import { DialogService } from '../../../../core/components/dialog/dialog.service';
 
 @Component({
   selector: 'app-create-stop-point',
@@ -15,28 +16,69 @@ import { MeanOfTransport } from '../../../../api';
 })
 export class CreateStopPointComponent {
   @ViewChild('stepper') stepper!: MatStepper;
-  selectedMeansOfTransport!: MeanOfTransport[];
-
   @Input() form!: FormGroup<StopPointDetailFormGroup>;
+
+  selectedMeansOfTransport!: MeanOfTransport[];
   isReduced = false;
   isDataEditable = false;
-
+  isPreviousSelectionReduced: Boolean | undefined;
+  isMeanOfTransportSelected: Boolean | undefined;
   formMeanOfTransport = StopPointFormGroupBuilder.buildMeansOfTransportForm();
+
+  constructor(private dialogService: DialogService) {}
+
   checkSelection() {
-    const selectedMeansOfTransport = this.formMeanOfTransport.controls['meansOfTransport'].value;
+    const selectedMeansOfTransport = this.formMeanOfTransport.controls.meansOfTransport.value;
+
     if (selectedMeansOfTransport && selectedMeansOfTransport.length > 0) {
-      this.selectedMeansOfTransport = selectedMeansOfTransport;
       this.isReduced = PrmMeanOfTransportHelper.isReduced(selectedMeansOfTransport);
-      this.isDataEditable = true;
-      this.stepper.next();
-      this.form.enable();
+      this.selectedMeansOfTransport = selectedMeansOfTransport;
+      if (!this.isMeanOfTransportSelected || this.isReduced === this.isPreviousSelectionReduced) {
+        this.initForm();
+      } else if (this.isReduced !== this.isPreviousSelectionReduced) {
+        this.confirmChangingRecodingVariant();
+      }
     } else {
-      this.formMeanOfTransport.controls['meansOfTransport'].setErrors({ required: '' });
+      this.formMeanOfTransport.controls.meansOfTransport.setErrors({ required: '' });
     }
   }
+
+  private initForm() {
+    this.isDataEditable = true;
+    this.form.enable();
+    this.stepper.next();
+  }
+
   backSelection() {
-    //todo: prune form
+    this.isPreviousSelectionReduced = PrmMeanOfTransportHelper.isReduced(
+      this.selectedMeansOfTransport,
+    );
+    this.isMeanOfTransportSelected = true;
     this.isDataEditable = false;
     this.stepper.previous();
+  }
+
+  private confirmChangingRecodingVariant() {
+    return this.dialogService
+      .confirm({
+        title: 'PRM.STOP_POINTS.DIALOG.RECORDING_VARIANT_CHANGES',
+        message: 'PRM.STOP_POINTS.DIALOG.CONFIRM_RECORDING_VARIANT_CHANGES',
+      })
+      .subscribe((isConfirmed) => {
+        if (isConfirmed) {
+          const number = this.form.controls.number.value;
+          const sloid = this.form.controls.sloid.value;
+          this.form.reset();
+          this.form.controls.meansOfTransport.setValue(this.selectedMeansOfTransport);
+          this.form.controls.number.setValue(number);
+          this.form.controls.sloid.setValue(sloid);
+          if (!this.isReduced) {
+            StopPointFormGroupBuilder.addCompleteRecordingValidation(this.form);
+          } else {
+            StopPointFormGroupBuilder.removeCompleteRecordingValidation(this.form);
+          }
+          this.initForm();
+        }
+      });
   }
 }
