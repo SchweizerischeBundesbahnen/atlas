@@ -1070,6 +1070,10 @@
         "AUDIO_TICKET_MACHINE": "Akustische und taktile Ausrüstung",
         "INFO_TICKET_MACHINE": "Hinweise zu den Billettautomaten"
       },
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Die Haltestelle wurde erfolgreich hinzugefügt.",
+        "EDIT_SUCCESS": "Die Haltestelle wurde erfolgreich gespeichert."
+      },
       "DETAILS": "Angabe zur Haltestelle",
       "MEANS_OF_TRANSPORT_SUB_LABEL": "Steurt die Auswahl der zu erfassenden Krieterien für die Bestandsaufnahme BehiG",
       "VISUAL_INFO_EXAMPLE": "z.B. Aushangfahrpläne, Netzplöne, Tarifbestimmungen, etc.",
@@ -1078,7 +1082,9 @@
       "AUTOMATIC_TICKET": "Billettautomat",
       "MEANS_OF_TRAFFIC_SELECTION": "Verkehrsmittel selektieren",
       "POPULATE_DATA": "Daten erfassen",
-      "NEW_STOP_POINT": "Neue Haltestelle"
+      "NEW_STOP_POINT": "Neue Haltestelle",
+      "NEXT": "Weiter",
+      "BACK": "Zurück"
     },
     "ENUMS": {
       "STANDARD_ATTRIBUTE_TYPES": {
