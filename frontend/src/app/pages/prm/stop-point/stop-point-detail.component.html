@@ -29,6 +29,10 @@
     <div *ngIf="!isReduced">
       <app-stop-point-complete-form [form]="form"></app-stop-point-complete-form>
     </div>
+    <div>
+      <mat-divider class="mt-4 mb-4"></mat-divider>
+      <app-user-detail-info *ngIf="!isNew" [record]="this.selectedVersion"></app-user-detail-info>
+    </div>
   </ng-container>
 </div>
 <div class="footer-box">
