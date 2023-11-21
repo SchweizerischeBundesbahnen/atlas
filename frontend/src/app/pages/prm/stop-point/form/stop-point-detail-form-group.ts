@@ -310,4 +310,24 @@ export class StopPointFormGroupBuilder {
     form.controls.assistanceRequestFulfilled.addValidators([Validators.required]);
     form.controls.ticketMachine.addValidators([Validators.required]);
   }
+  static removeCompleteRecordingValidation(form: FormGroup<StopPointDetailFormGroup>) {
+    form.controls.address.clearValidators();
+    form.controls.zipCode.clearValidators();
+    form.controls.city.clearValidators();
+    form.controls.alternativeTransport.clearValidators();
+    form.controls.alternativeTransportCondition.clearValidators();
+    form.controls.assistanceAvailability.clearValidators();
+    form.controls.assistanceCondition.clearValidators();
+    form.controls.assistanceService.clearValidators();
+    form.controls.audioTicketMachine.clearValidators();
+    form.controls.additionalInformation.clearValidators();
+    form.controls.dynamicAudioSystem.clearValidators();
+    form.controls.dynamicOpticSystem.clearValidators();
+    form.controls.infoTicketMachine.clearValidators();
+    form.controls.url.clearValidators();
+    form.controls.visualInfo.clearValidators();
+    form.controls.wheelchairTicketMachine.clearValidators();
+    form.controls.assistanceRequestFulfilled.clearValidators();
+    form.controls.ticketMachine.clearValidators();
+  }
 }
