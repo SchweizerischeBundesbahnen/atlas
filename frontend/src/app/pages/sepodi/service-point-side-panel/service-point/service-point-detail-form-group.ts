@@ -260,7 +260,6 @@ export class ServicePointFormGroupBuilder {
     const writableForm: CreateServicePointVersion = {
       country: value.country!,
       numberShort: value.number!,
-      sloid: value.sloid!,
       designationOfficial: value.designationOfficial!,
       designationLong: value.designationLong ? value.designationLong : undefined,
       abbreviation:
