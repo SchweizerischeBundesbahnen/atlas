@@ -81,6 +81,8 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
     merge(this.formGroup.controls.east.valueChanges, this.formGroup.controls.north.valueChanges)
       .pipe(takeUntil(this.destroySubscriptions$), debounceTime(500))
       .subscribe(() => {
+        console.log('this forim ', this.formGroup);
+
         this.onChangeCoordinatesManually({
           east: Number(this.formGroup.controls.east.value),
           north: Number(this.formGroup.controls.north.value),
