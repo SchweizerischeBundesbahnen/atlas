@@ -1,66 +1,72 @@
-<div class="font-bold-3xl mb-3">
-  {{ 'PRM.STOP_POINTS.NEW_STOP_POINT' | translate }}
-</div>
-
-<mat-stepper [linear]="true" #stepper>
-  <mat-step [stepControl]="formMeanOfTransport">
-    <ng-template matStepLabel>{{
-      'PRM.STOP_POINTS.MEANS_OF_TRAFFIC_SELECTION' | translate
-    }}</ng-template>
-    <div class="col-12 d-flex mt-4">
-      <div class="d-flex flex-column col-5">
-        <means-of-transport-picker
-          [formGroup]="formMeanOfTransport"
-          controlName="meansOfTransport"
-          [disabled]="false"
-          label="PRM.STOP_POINTS.MEANS_OF_TRANSPORT_SUB_LABEL"
-          [showUnknown]="false"
-        ></means-of-transport-picker>
+<ng-container *ngIf="!isAuthorizedToCreateStopPoint">
+  <div class="font-regular mb-3">
+    {{ 'PRM.STOP_POINTS.NO_STOP_POINT_FOUND' | translate }}
+  </div>
+</ng-container>
+<ng-container *ngIf="isAuthorizedToCreateStopPoint">
+  <div class="font-bold-3xl mb-3">
+    {{ 'PRM.STOP_POINTS.NEW_STOP_POINT' | translate }}
+  </div>
+  <mat-stepper [linear]="true" #stepper>
+    <mat-step [stepControl]="formMeanOfTransport">
+      <ng-template matStepLabel>{{
+        'PRM.STOP_POINTS.MEANS_OF_TRAFFIC_SELECTION' | translate
+      }}</ng-template>
+      <div class="col-12 d-flex mt-4">
+        <div class="d-flex flex-column col-5">
+          <means-of-transport-picker
+            [formGroup]="formMeanOfTransport"
+            controlName="meansOfTransport"
+            [disabled]="false"
+            label="PRM.STOP_POINTS.MEANS_OF_TRANSPORT_SUB_LABEL"
+            [showUnknown]="false"
+          ></means-of-transport-picker>
+        </div>
+        <div class="d-flex flex-column col-2">
+          <atlas-button
+            (click)="checkSelection()"
+            [disabled]="false"
+            [submitButton]="true"
+            buttonDataCy="save-item"
+            buttonText="PRM.STOP_POINTS.NEXT"
+            buttonType="confirm"
+            wrapperStyleClass="ms-3"
+          ></atlas-button>
+        </div>
       </div>
-      <div class="d-flex flex-column col-2">
-        <atlas-button
-          (click)="checkSelection()"
-          [disabled]="false"
-          [submitButton]="true"
-          buttonDataCy="save-item"
-          buttonText="PRM.STOP_POINTS.NEXT"
-          buttonType="confirm"
-          wrapperStyleClass="ms-3"
-        ></atlas-button>
-      </div>
-    </div>
-  </mat-step>
-  <mat-step [stepControl]="form">
-    <ng-template matStepLabel>{{ 'PRM.STOP_POINTS.POPULATE_DATA' | translate }}</ng-template>
-    <ng-container *ngIf="isDataEditable">
-      <div class="d-flex mb-2">
-        <atlas-button
-          (click)="backSelection()"
-          [disabled]="false"
-          [submitButton]="true"
-          buttonDataCy="save-item"
-          buttonText="PRM.STOP_POINTS.BACK"
-          buttonType="confirm"
-          wrapperStyleClass="ms-3"
-        >
-        </atlas-button>
-      </div>
-      <ng-container *ngIf="isReduced">
-        <app-stop-point-reduced-form
-          [isNew]="true"
-          [selectedMeansOfTransport]="selectedMeansOfTransport"
-          [form]="form"
-        >
-        </app-stop-point-reduced-form>
+    </mat-step>
+    <mat-step [stepControl]="form">
+      <ng-template matStepLabel>{{ 'PRM.STOP_POINTS.POPULATE_DATA' | translate }}</ng-template>
+      <ng-container *ngIf="isDataEditable">
+        <div class="d-flex mb-2">
+          <atlas-button
+            (click)="backSelection()"
+            [disabled]="false"
+            [submitButton]="true"
+            buttonDataCy="save-item"
+            buttonText="PRM.STOP_POINTS.BACK"
+            buttonType="confirm"
+            wrapperStyleClass="ms-3"
+          >
+          </atlas-button>
+        </div>
+        <ng-container *ngIf="isReduced">
+          <app-stop-point-reduced-form
+            [isNew]="true"
+            [selectedMeansOfTransport]="selectedMeansOfTransport"
+            [form]="form"
+          >
+          </app-stop-point-reduced-form>
+        </ng-container>
+        <ng-container *ngIf="!isReduced">
+          <app-stop-point-complete-form
+            [isNew]="true"
+            [selectedMeansOfTransport]="selectedMeansOfTransport"
+            [form]="form"
+          >
+          </app-stop-point-complete-form>
+        </ng-container>
       </ng-container>
-      <ng-container *ngIf="!isReduced">
-        <app-stop-point-complete-form
-          [isNew]="true"
-          [selectedMeansOfTransport]="selectedMeansOfTransport"
-          [form]="form"
-        >
-        </app-stop-point-complete-form>
-      </ng-container>
-    </ng-container>
-  </mat-step>
-</mat-stepper>
+    </mat-step>
+  </mat-stepper>
+</ng-container>
