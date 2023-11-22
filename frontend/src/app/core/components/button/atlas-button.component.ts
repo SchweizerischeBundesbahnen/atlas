@@ -77,7 +77,7 @@ export class AtlasButtonComponent {
 
   mayEdit() {
     if (!this.applicationType) {
-      throw new Error('Edit button needs applicationtype');
+      throw new Error('Edit button needs applicationType');
     }
     if (this.applicationType !== ApplicationType.Bodi && !this.businessOrganisation) {
       throw new Error('Edit button needs businessOrganisation');
