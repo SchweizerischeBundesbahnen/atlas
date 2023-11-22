@@ -8,7 +8,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -308,7 +307,6 @@ class LoadingPointControllerApiTest extends BaseControllerApiTest {
     mvc.perform(put("/v1/loading-points/" + loadingPointVersion.getId())
             .contentType(contentType)
             .content(mapper.writeValueAsString(update)))
-        .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].id", is(notNullValue())))
         .andExpect(jsonPath("$[0].designation", is("Piazzale")))
