@@ -23,6 +23,8 @@ import org.springframework.http.ResponseEntity;
 class GeoReferenceServiceTest {
 
   @MockBean
+  private JourneyPoiConfig journeyPoiConfig;
+  @MockBean
   private JourneyPoiClient journeyPoiClient;
 
   @Autowired
