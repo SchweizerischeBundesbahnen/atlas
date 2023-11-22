@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Data, Router } from '@angular/router';
 import {
   CreateStopPointVersion,
   PersonWithReducedMobilityService,
@@ -27,6 +27,8 @@ import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-
 export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   isNew = false;
   stopPointVersions!: ReadStopPointVersion[];
+  servicePointVersion!: ReadServicePointVersion;
+  businessOrganisations: string[] = [];
   selectedVersionIndex!: number;
   selectedVersion!: ReadStopPointVersion;
   form!: FormGroup<StopPointDetailFormGroup>;
@@ -53,11 +55,14 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((next) => {
         this.stopPointVersions = next.stopPoint;
-        if (this.stopPointVersions.length > 0) {
-          this.initExistingStopPoint();
-        } else {
-          this.initNotExistingStopPoint();
-        }
+        this.route.parent?.data.subscribe((next) => {
+          this.initServicePointsData(next);
+          if (this.stopPointVersions.length > 0) {
+            this.initExistingStopPoint();
+          } else {
+            this.initNotExistingStopPoint();
+          }
+        });
       });
   }
 
@@ -71,18 +76,6 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     } else {
       this.enableForm();
     }
-  }
-
-  private initNotExistingStopPoint() {
-    this.isNew = true;
-    this.route.parent?.data.subscribe((next) => {
-      const servicePointVersion: ReadServicePointVersion =
-        VersionsHandlingService.determineDefaultVersionByValidity(next.servicePoints);
-      this.form = StopPointFormGroupBuilder.buildEmptyWithReducedValidationFormGroup();
-      this.form.controls.number.setValue(servicePointVersion.number.number);
-      this.form.controls.sloid.setValue(servicePointVersion.sloid);
-      this.disableForm();
-    });
   }
 
   switchVersion(newIndex: number) {
@@ -101,6 +94,23 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
         this.createStopPoint(writableStopPoint);
       }
     }
+  }
+
+  private initServicePointsData(next: Data) {
+    let servicePoints: ReadServicePointVersion[] = next.servicePoints;
+    this.businessOrganisations = [
+      ...new Set(servicePoints.map((value) => value.businessOrganisation)),
+    ];
+    this.servicePointVersion =
+      VersionsHandlingService.determineDefaultVersionByValidity(servicePoints);
+  }
+
+  private initNotExistingStopPoint() {
+    this.isNew = true;
+    this.form = StopPointFormGroupBuilder.buildEmptyWithReducedValidationFormGroup();
+    this.form.controls.number.setValue(this.servicePointVersion.number.number);
+    this.form.controls.sloid.setValue(this.servicePointVersion.sloid);
+    this.disableForm();
   }
 
   private initSelectedVersion() {

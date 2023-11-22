@@ -49,11 +49,11 @@
       <atlas-button
         *ngIf="(isFormEnabled$ | async) === false"
         (buttonClicked)="toggleEdit()"
-        applicationType="SEPODI"
-        [businessOrganisation]="'ch:1:sboid:123'"
+        applicationType="PRM"
+        [businessOrganisations]="businessOrganisations"
         buttonDataCy="edit"
         buttonText="COMMON.EDIT"
-        buttonType="edit"
+        buttonType="edit-service-point-dependent"
         wrapperStyleClass="ms-3"
       ></atlas-button>
       <atlas-button

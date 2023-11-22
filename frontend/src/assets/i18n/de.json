@@ -1075,8 +1075,8 @@
         "EDIT_SUCCESS": "Die Haltestelle wurde erfolgreich gespeichert."
       },
       "DIALOG": {
-        "RECORDING_VARIANT_CHANGES": "Erfassungsvariante wechseln?",
-        "CONFIRM_RECORDING_VARIANT_CHANGES": "Wenn Sie die Erfassungsvariante wechseln Ihre erfasste Daten werden gelöscht."
+        "RECORDING_VARIANT_CHANGES": "Verkehrsmittel wechseln?",
+        "CONFIRM_RECORDING_VARIANT_CHANGES": "Wenn Sie das Verkehrsmittel wechseln, ändert sich die Erfassungsvariante und die bereits eingegebenen Daten werden gelöscht."
       },
       "DETAILS": "Angabe zur Haltestelle",
       "MEANS_OF_TRANSPORT_SUB_LABEL": "Steurt die Auswahl der zu erfassenden Krieterien für die Bestandsaufnahme BehiG",
