@@ -18,6 +18,7 @@ import { Pages } from '../../pages';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-stop-point-detail',
@@ -26,6 +27,7 @@ import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-
 })
 export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   isNew = false;
+  isAuthorizedToCreateStopPoint = true;
   stopPointVersions!: ReadStopPointVersion[];
   servicePointVersion!: ReadServicePointVersion;
   businessOrganisations: string[] = [];
@@ -46,6 +48,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
     private notificationService: NotificationService,
     private dialogService: DialogService,
+    private authService: AuthService,
   ) {}
 
   private stopPointSubscription?: Subscription;
@@ -107,6 +110,21 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
 
   private initNotExistingStopPoint() {
     this.isNew = true;
+    if (this.hasPermissionToCreateNewStopPoint()) {
+      this.initEmptyForm();
+    } else {
+      this.isAuthorizedToCreateStopPoint = false;
+    }
+  }
+
+  private hasPermissionToCreateNewStopPoint(): boolean {
+    const sboidsPermissions = this.businessOrganisations.map((bo) =>
+      this.authService.hasPermissionsToWrite('PRM', bo),
+    );
+    return sboidsPermissions.includes(true);
+  }
+
+  private initEmptyForm() {
     this.form = StopPointFormGroupBuilder.buildEmptyWithReducedValidationFormGroup();
     this.form.controls.number.setValue(this.servicePointVersion.number.number);
     this.form.controls.sloid.setValue(this.servicePointVersion.sloid);
@@ -212,6 +230,6 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
 
   //used in combination with canLeaveDirtyForm
   isFormDirty(): boolean {
-    return this.form.dirty;
+    return this.form && this.form.dirty;
   }
 }
