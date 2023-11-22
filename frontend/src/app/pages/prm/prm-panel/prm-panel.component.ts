@@ -12,6 +12,7 @@ import { VersionsHandlingService } from '../../../core/versioning/versions-handl
 import { ActivatedRoute } from '@angular/router';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
+import { StopPointExistsDataShareService } from '../stop-point/service/stop-point-exists-data-share.service';
 
 export const TABS = [
   {
@@ -60,6 +61,8 @@ export class PrmPanelComponent {
   selectedVersion!: ReadStopPointVersion;
   maxValidity!: DateRange;
   boDescription!: string;
+  isNew!: boolean;
+  disableTabNavigation = false;
 
   tabs = TABS;
   private stopPointSubscription?: Subscription;
@@ -69,6 +72,7 @@ export class PrmPanelComponent {
     private servicePointsService: ServicePointsService,
     private businessOrganisationsService: BusinessOrganisationsService,
     private businessOrganisationLanguageService: BusinessOrganisationLanguageService,
+    private stopPointExistsDataShareService: StopPointExistsDataShareService,
   ) {
     this.businessOrganisationLanguageService
       .languageChanged()
@@ -88,7 +92,23 @@ export class PrmPanelComponent {
             .pipe(tap((bo) => this.initSelectedBusinessOrganisationVersion(bo))),
         ),
       )
-      .subscribe();
+      .subscribe(() => {
+        this.checkStopPointExists();
+      });
+  }
+
+  private checkStopPointExists() {
+    this.stopPointExistsDataShareService.isNew$.subscribe((res) => (this.isNew = res));
+    this.stopPointExistsDataShareService.changeData(this.isNew);
+    if (this.isNew) {
+      this.disableTabNavigation = true;
+      this.tabs = [
+        {
+          link: 'stop-point',
+          title: 'PRM.STOP_POINT',
+        },
+      ];
+    }
   }
 
   ngOnDestroy() {
