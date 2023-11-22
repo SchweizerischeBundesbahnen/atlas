@@ -68,7 +68,7 @@ public interface ServicePointApiV1 {
 
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
           + ".ApplicationType).SEPODI)")
-  @PostMapping("{sloid}/revoke")
+  @PostMapping("{servicePointNumber}/revoke")
   List<ReadServicePointVersionModel> revokeServicePoint(@PathVariable Integer servicePointNumber);
 
   @ResponseStatus(HttpStatus.CREATED)
