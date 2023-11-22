@@ -36,4 +36,7 @@ public class GeoReference {
   @Schema(description = "SwissLocalityName the location is in", example = "Biel/Bienne")
   private String swissLocalityName;
 
+  @Schema(description = "Height of the location")
+  private String height;
+
 }
