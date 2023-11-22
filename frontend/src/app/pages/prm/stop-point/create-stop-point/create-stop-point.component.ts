@@ -17,6 +17,7 @@ import { DialogService } from '../../../../core/components/dialog/dialog.service
 export class CreateStopPointComponent {
   @ViewChild('stepper') stepper!: MatStepper;
   @Input() form!: FormGroup<StopPointDetailFormGroup>;
+  @Input() isAuthorizedToCreateStopPoint!: boolean;
 
   selectedMeansOfTransport!: MeanOfTransport[];
   isReduced = false;
@@ -66,12 +67,7 @@ export class CreateStopPointComponent {
       })
       .subscribe((isConfirmed) => {
         if (isConfirmed) {
-          const number = this.form.controls.number.value;
-          const sloid = this.form.controls.sloid.value;
-          this.form.reset();
-          this.form.controls.meansOfTransport.setValue(this.selectedMeansOfTransport);
-          this.form.controls.number.setValue(number);
-          this.form.controls.sloid.setValue(sloid);
+          this.resetDataForm();
           if (!this.isReduced) {
             StopPointFormGroupBuilder.addCompleteRecordingValidation(this.form);
           } else {
@@ -80,5 +76,14 @@ export class CreateStopPointComponent {
           this.initForm();
         }
       });
+  }
+
+  private resetDataForm() {
+    const number = this.form.controls.number.value;
+    const sloid = this.form.controls.sloid.value;
+    this.form.reset();
+    this.form.controls.meansOfTransport.setValue(this.selectedMeansOfTransport);
+    this.form.controls.number.setValue(number);
+    this.form.controls.sloid.setValue(sloid);
   }
 }

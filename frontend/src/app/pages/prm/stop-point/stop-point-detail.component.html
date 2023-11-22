@@ -1,6 +1,9 @@
 <div class="tab-detail-container">
   <ng-container *ngIf="isNew">
-    <app-create-stop-point [form]="form"></app-create-stop-point>
+    <app-create-stop-point
+      [form]="form"
+      [isAuthorizedToCreateStopPoint]="isAuthorizedToCreateStopPoint"
+    ></app-create-stop-point>
   </ng-container>
   <ng-container *ngIf="!isNew">
     <div class="col-12 d-flex mt-3">
@@ -65,16 +68,18 @@
         wrapperStyleClass="ms-3"
       ></atlas-button>
     </ng-container>
-    <atlas-button
-      (click)="save()"
-      [footerEdit]="isNew || ((isFormEnabled$ | async) ?? false)"
-      [disabled]="!form.dirty"
-      [submitButton]="true"
-      buttonDataCy="save-item"
-      buttonText="COMMON.SAVE"
-      buttonType="whiteFooterEdit"
-      wrapperStyleClass="ms-3"
-    >
-    </atlas-button>
+    <ng-container *ngIf="isNew && isAuthorizedToCreateStopPoint">
+      <atlas-button
+        (click)="save()"
+        [footerEdit]="isNew || ((isFormEnabled$ | async) ?? false)"
+        [disabled]="!form.dirty"
+        [submitButton]="true"
+        buttonDataCy="save-item"
+        buttonText="COMMON.SAVE"
+        buttonType="whiteFooterEdit"
+        wrapperStyleClass="ms-3"
+      >
+      </atlas-button>
+    </ng-container>
   </footer>
 </div>
