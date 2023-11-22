@@ -19,6 +19,7 @@ import { NotificationService } from '../../../core/notification/notification.ser
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
 import { AuthService } from '../../../core/auth/auth.service';
+import { StopPointExistsDataShareService } from './service/stop-point-exists-data-share.service';
 
 @Component({
   selector: 'app-stop-point-detail',
@@ -49,11 +50,13 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     private notificationService: NotificationService,
     private dialogService: DialogService,
     private authService: AuthService,
+    private stopPointExistsDataShareService: StopPointExistsDataShareService,
   ) {}
 
   private stopPointSubscription?: Subscription;
 
   ngOnInit(): void {
+    this.stopPointExistsDataShareService.isNew$.subscribe((res) => (this.isNew = res));
     this.stopPointSubscription = this.route.data
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((next) => {
@@ -110,6 +113,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
 
   private initNotExistingStopPoint() {
     this.isNew = true;
+    this.stopPointExistsDataShareService.changeData(this.isNew);
     if (this.hasPermissionToCreateNewStopPoint()) {
       this.initEmptyForm();
     } else {
@@ -152,6 +156,8 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   }
 
   private initExistingStopPoint() {
+    this.isNew = false;
+    this.stopPointExistsDataShareService.changeData(this.isNew);
     VersionsHandlingService.addVersionNumbers(this.stopPointVersions);
     this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.stopPointVersions);
     if (this.preferredId) {

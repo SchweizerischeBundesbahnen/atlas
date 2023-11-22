@@ -28,6 +28,7 @@
     <nav mat-tab-nav-bar class="tabs mt-5" data-cy="tabs" [tabPanel]="tabPanel">
       <a
         mat-tab-link
+        [disabled]="disableTabNavigation"
         class="font-bold-xl"
         *ngFor="let tab of tabs"
         [routerLink]="tab.link"
