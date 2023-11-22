@@ -35,4 +35,7 @@ export interface GeoReference {
    * SwissLocalityName the location is in
    */
   swissLocalityName?: string;
+
+  //TODO should be generated
+  height: string;
 }
