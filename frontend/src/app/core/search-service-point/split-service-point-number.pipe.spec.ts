@@ -1,5 +1,5 @@
 import { SplitServicePointNumberPipe } from './split-service-point-number.pipe';
-import { ServicePointNumber } from '../../../api';
+import { ServicePointNumber } from '../../api';
 
 describe('SplitServicePointNumberPipe', () => {
   it('create an instance', () => {
