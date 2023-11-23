@@ -1,30 +1,30 @@
 // variables include
-@use 'variables';
+@use './variables';
 
 // theme include
-@use 'theme';
+@use './theme';
 
 // /third-party include
-@use 'third-party/components';
+@use './third-party/components';
 
 // /core includes
-@use 'core/atlas-core';
-@use 'core/color-classes';
-@use 'core/font-classes';
-@use 'core/html_body';
+@use './core/atlas-core';
+@use './core/color-classes';
+@use './core/font-classes';
+@use './core/html_body';
 
 // /atlas-components includes
-@use 'atlas-components/atlas-button';
-@use 'atlas-components/switch-version';
-@use 'atlas-components/atlas-snack-bar';
-@use 'atlas-components/mat-label';
-@use 'atlas-components/mat-paginator';
-@use 'atlas-components/atlas-detail-page';
+@use './atlas-components/atlas-button';
+@use './atlas-components/switch-version';
+@use './atlas-components/atlas-snack-bar';
+@use './atlas-components/mat-label';
+@use './atlas-components/mat-paginator';
+@use './atlas-components/atlas-detail-page';
 
 // /am-components includes
 
-@use 'am-components/mat-tab';
-@use 'am-components/mat-table';
-@use 'am-components/ng-select';
-@use 'am-components/mat-dialog';
-@use 'am-components/mat-select';
+@use './am-components/mat-tab';
+@use './am-components/mat-table';
+@use './am-components/ng-select';
+@use './am-components/mat-dialog';
+@use './am-components/mat-select';

@@ -8,6 +8,7 @@ import ch.sbb.atlas.math.DoubleOperations;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,6 +37,7 @@ public class GeolocationBaseCreateModel implements TransformableGeolocation {
   private Double east;
 
   @Schema(description = "Height of the coordinate point", example = "540.20000")
+  @Digits(integer = 5, fraction = 4)
   private Double height;
 
   @JsonIgnore
