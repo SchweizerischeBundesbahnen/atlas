@@ -1,16 +1,24 @@
-import {AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild,} from '@angular/core';
-import {Map} from 'maplibre-gl';
-import {MapService} from './map.service';
-import {MAP_STYLES, MapStyle} from './map-options.service';
-import {Router} from '@angular/router';
-import {Pages} from '../../pages';
-import {take} from 'rxjs';
-import {AuthService} from '../../../core/auth/auth.service';
-import {ApplicationType} from '../../../api';
-import {filter} from 'rxjs/operators';
-import {MapIcon, MapIconsService} from './map-icons.service';
-import {SearchTypes} from "../../user-administration/user/overview/search-type";
-import {ServicePointSearchType} from "../search-service-point/search-service-point.component";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { Map } from 'maplibre-gl';
+import { MapService } from './map.service';
+import { MAP_STYLES, MapStyle } from './map-options.service';
+import { Router } from '@angular/router';
+import { Pages } from '../../pages';
+import { take } from 'rxjs';
+import { AuthService } from '../../../core/auth/auth.service';
+import { ApplicationType } from '../../../api';
+import { filter } from 'rxjs/operators';
+import { MapIcon, MapIconsService } from './map-icons.service';
+import { SearchTypes } from '../../user-administration/user/overview/search-type';
+import { ServicePointSearchType } from '../../../core/search-service-point/search-service-point.component';
 
 @Component({
   selector: 'atlas-map',
@@ -116,6 +124,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       .catch((reason) => console.error('Navigation failed:', reason));
   }
 
-    protected readonly SearchTypes = SearchTypes;
+  protected readonly SearchTypes = SearchTypes;
   protected readonly ServicePointSearchType = ServicePointSearchType;
 }

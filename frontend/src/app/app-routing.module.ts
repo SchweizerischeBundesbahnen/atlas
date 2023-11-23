@@ -40,7 +40,7 @@ const routes: Routes = [
   {
     path: Pages.PRM.path,
     loadChildren: () => import('./pages/prm/prm.module').then((m) => m.PrmModule),
-    data: { headerTitle: Pages.SEPODI.headerTitle },
+    data: { headerTitle: Pages.PRM.headerTitle },
     canActivate: [AuthGuard],
   },
   {

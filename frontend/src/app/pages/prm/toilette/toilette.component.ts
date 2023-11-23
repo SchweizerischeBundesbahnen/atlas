@@ -1,16 +1,14 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Pages } from '../../pages';
+import { BasePrmComponentService } from '../base-prm-component.service';
 
 @Component({
   selector: 'app-toilette',
   templateUrl: './toilette.component.html',
   styleUrls: ['./toilette.component.scss'],
 })
-export class ToiletteComponent {
-  constructor(private readonly router: Router) {}
-
-  closeSidePanel() {
-    this.router.navigate([Pages.PRM.path]).then();
+export class ToiletteComponent extends BasePrmComponentService {
+  constructor(readonly router: Router) {
+    super(router);
   }
 }

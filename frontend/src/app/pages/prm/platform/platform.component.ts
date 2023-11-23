@@ -1,16 +1,21 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { Pages } from '../../pages';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BasePrmComponentService } from '../base-prm-component.service';
 
 @Component({
   selector: 'app-platform',
   templateUrl: './platform.component.html',
   styleUrls: ['./platform.component.scss'],
 })
-export class PlatformComponent {
-  constructor(private readonly router: Router) {}
+export class PlatformComponent extends BasePrmComponentService {
+  constructor(
+    readonly router: Router,
+    private route: ActivatedRoute,
+  ) {
+    super(router);
+  }
 
-  closeSidePanel() {
-    this.router.navigate([Pages.PRM.path]).then();
+  ngOnInit(): void {
+    this.checkIsReducedOrComplete(this.route.parent?.snapshot?.data!);
   }
 }

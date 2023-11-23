@@ -1,13 +1,13 @@
-import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import {SearchServicePointComponent} from './search-service-point.component';
-import {AppTestingModule} from '../../../app.testing.module';
-import {ActivatedRoute, Router} from '@angular/router';
-import {of} from 'rxjs';
-import {BERN_WYLEREGG} from '../service-point-test-data';
-import {ServicePointSearchResult, ServicePointsService} from '../../../api';
-import {SearchSelectComponent} from '../../../core/form-components/search-select/search-select.component';
-import {TranslatePipe} from '@ngx-translate/core';
+import { SearchServicePointComponent } from './search-service-point.component';
+import { AppTestingModule } from '../../app.testing.module';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of } from 'rxjs';
+import { BERN_WYLEREGG } from '../../pages/sepodi/service-point-test-data';
+import { ServicePointSearchResult, ServicePointsService } from '../../api';
+import { SearchSelectComponent } from '../form-components/search-select/search-select.component';
+import { TranslatePipe } from '@ngx-translate/core';
 import SpyObj = jasmine.SpyObj;
 
 describe('SearchServicePointComponent', () => {

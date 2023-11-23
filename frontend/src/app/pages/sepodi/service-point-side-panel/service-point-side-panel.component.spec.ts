@@ -9,7 +9,7 @@ import { BERN_WYLEREGG } from '../service-point-test-data';
 import { AuthService } from '../../../core/auth/auth.service';
 import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
-import { SplitServicePointNumberPipe } from '../search-service-point/split-service-point-number.pipe';
+import { SplitServicePointNumberPipe } from '../../../core/search-service-point/split-service-point-number.pipe';
 import { TrafficPointMapService } from '../map/traffic-point-map.service';
 
 const authService: Partial<AuthService> = {};

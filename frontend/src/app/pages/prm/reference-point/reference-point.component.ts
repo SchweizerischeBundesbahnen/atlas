@@ -1,16 +1,21 @@
-import { Component } from '@angular/core';
-import { Pages } from '../../pages';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BasePrmComponentService } from '../base-prm-component.service';
 
 @Component({
   selector: 'app-reference-point',
   templateUrl: './reference-point.component.html',
   styleUrls: ['./reference-point.component.scss'],
 })
-export class ReferencePointComponent {
-  constructor(private readonly router: Router) {}
+export class ReferencePointComponent extends BasePrmComponentService implements OnInit {
+  constructor(
+    protected readonly router: Router,
+    private route: ActivatedRoute,
+  ) {
+    super(router);
+  }
 
-  closeSidePanel() {
-    this.router.navigate([Pages.PRM.path]).then();
+  ngOnInit(): void {
+    this.checkIsReducedOrComplete(this.route.parent?.snapshot?.data!);
   }
 }
