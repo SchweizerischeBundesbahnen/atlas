@@ -21,7 +21,10 @@ export class GeographyFormGroupBuilder {
         this.getCoordinates(geolocation)?.north,
         this.getValidatorsForCoordinates(geolocation?.spatialReference, 'NORTH'),
       ),
-      height: new FormControl(geolocation?.height, [AtlasCharsetsValidator.decimalWithDigits(4)]),
+      height: new FormControl(geolocation?.height, [
+        AtlasCharsetsValidator.decimalWithDigits(4),
+        Validators.max(99999),
+      ]),
       spatialReference: new FormControl(geolocation?.spatialReference ?? SpatialReference.Lv95),
     });
     this.initConditionalLocationValidators(formGroup);
@@ -38,29 +41,26 @@ export class GeographyFormGroupBuilder {
   private static initConditionalLocationValidators(formGroup: FormGroup<GeographyFormGroup>) {
     formGroup.controls.spatialReference.valueChanges.subscribe((newSpatialReference) => {
       formGroup.controls.east.setValidators(
-        this.getValidatorsForCoordinates(newSpatialReference!, 'EAST'),
+        this.getValidatorsForCoordinates(newSpatialReference, 'EAST'),
       );
       formGroup.controls.north.setValidators(
-        this.getValidatorsForCoordinates(newSpatialReference!, 'NORTH'),
+        this.getValidatorsForCoordinates(newSpatialReference, 'NORTH'),
       );
     });
   }
 
   private static getValidatorsForCoordinates(
-    spatialReference?: SpatialReference,
-    northOrEast?: 'NORTH' | 'EAST',
+    spatialReference: SpatialReference | null = SpatialReference.Lv95,
+    northOrEast: 'NORTH' | 'EAST',
   ) {
     if (spatialReference === SpatialReference.Lv95) {
       return [Validators.required, AtlasCharsetsValidator.decimalWithDigits(LV95_MAX_DIGITS)];
     }
     if (spatialReference === SpatialReference.Wgs84) {
-      let minMax = 90;
-      if (northOrEast == 'EAST') {
-        minMax = 180;
-      }
+      const minMax = northOrEast === 'NORTH' ? 90 : 180;
       return [
         Validators.required,
-        Validators.min(-1 * minMax),
+        Validators.min(-minMax),
         Validators.max(minMax),
         AtlasCharsetsValidator.decimalWithDigits(WGS84_MAX_DIGITS),
       ];
