@@ -142,7 +142,7 @@
   </div>
 
   <sepodi-geography
-    [formGroup]="form.controls.servicePointGeolocation"
+    [form]="form.controls.servicePointGeolocation"
     [editMode]="form.enabled"
     [(geographyActive)]="geographyActive"
     (locationInformationChange)="onLocationInformationChange($event)"

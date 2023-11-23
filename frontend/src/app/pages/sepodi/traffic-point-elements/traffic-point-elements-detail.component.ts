@@ -61,7 +61,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
   servicePoint: ReadServicePointVersion[] = [];
   servicePointBusinessOrganisations: string[] = [];
   isTrafficPointArea = false;
-  geographyActive = true;
+  // geographyActive = true;
   numberColons!: number;
 
   private ngUnsubscribe = new Subject<void>();
@@ -184,7 +184,8 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
   private initSelectedVersion() {
     this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.trafficPointVersions);
     this.form = TrafficPointElementFormGroupBuilder.buildFormGroup(this.selectedVersion);
-    this.geographyActive = !!this.selectedVersion?.trafficPointElementGeolocation?.spatialReference;
+    // this.geographyActive = !!this.selectedVersion?.trafficPointElementGeolocation?.spatialReference;
+    // todo: set on service
     if (!this.isNew) {
       this.form.disable();
     }

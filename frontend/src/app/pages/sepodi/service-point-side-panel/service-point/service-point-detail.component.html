@@ -2,9 +2,9 @@
   <div class="col-12 d-flex mt-3">
     <div class="d-flex flex-column pe-3">
       <app-switch-version
+        *ngIf="showVersionSwitch && _selectedVersion"
         (switchVersion)="switchVersion($event)"
-        *ngIf="showVersionSwitch"
-        [currentRecord]="selectedVersion"
+        [currentRecord]="_selectedVersion"
         [records]="servicePointVersions"
         [switchDisabled]="isSwitchVersionDisabled"
       ></app-switch-version>
@@ -12,7 +12,7 @@
   </div>
 
   <div class="col-12 d-flex mt-5">
-    <div *ngIf="selectedVersion.id" class="form-title-section">
+    <div *ngIf="_selectedVersion?.id" class="form-title-section">
       <h2 class="font-bold-2xl color-gray-900">
         {{ 'SEPODI.SERVICE_POINTS.DETAILS' | translate }} - {{ 'COMMON.VERSION' | translate }}
         {{ selectedVersionIndex + 1 }}
@@ -20,37 +20,39 @@
       <div>
         <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
         <span class="color-gray-900">{{
-          'COMMON.STATUS_TYPES.' + selectedVersion.status | translate
+          'COMMON.STATUS_TYPES.' + _selectedVersion!.status | translate
         }}</span>
       </div>
     </div>
   </div>
 
-  <service-point-form [form]="form" [currentVersion]="selectedVersion">
-    <div class="color-gray-900" abbreviation>
-      <atlas-text-field
-        *ngIf="!hasAbbreviation && isAbbreviationAllowed && isLatestVersionSelected"
-        [fieldExamples]="[
-          { label: 'FORM.FOR_EXAMPLE', translate: true },
-          { label: 'BIBD |', translate: false },
-          { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '6' } }
-        ]"
-        [formGroup]="form"
-        [required]="false"
-        controlName="abbreviation"
-        fieldLabel="SEPODI.SERVICE_POINTS.ABBREVIATION"
-      >
-      </atlas-text-field>
-      <div *ngIf="hasAbbreviation || !isAbbreviationAllowed || !isLatestVersionSelected">
-        <div class="font-bold-lg color-gray-900">
-          {{ 'SEPODI.SERVICE_POINTS.ABBREVIATION' | translate }}
-        </div>
-        <div class="color-gray-900">
-          {{ selectedVersion.abbreviation ?? '-' }}
+  <ng-container *ngIf="form">
+    <service-point-form [form]="form" [currentVersion]="_selectedVersion!">
+      <div class="color-gray-900" abbreviation>
+        <atlas-text-field
+          *ngIf="!hasAbbreviation && isAbbreviationAllowed && isLatestVersionSelected"
+          [fieldExamples]="[
+            { label: 'FORM.FOR_EXAMPLE', translate: true },
+            { label: 'BIBD |', translate: false },
+            { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '6' } }
+          ]"
+          [formGroup]="form"
+          [required]="false"
+          controlName="abbreviation"
+          fieldLabel="SEPODI.SERVICE_POINTS.ABBREVIATION"
+        >
+        </atlas-text-field>
+        <div *ngIf="hasAbbreviation || !isAbbreviationAllowed || !isLatestVersionSelected">
+          <div class="font-bold-lg color-gray-900">
+            {{ 'SEPODI.SERVICE_POINTS.ABBREVIATION' | translate }}
+          </div>
+          <div class="color-gray-900">
+            {{ _selectedVersion?.abbreviation ?? '-' }}
+          </div>
         </div>
       </div>
-    </div>
-  </service-point-form>
+    </service-point-form>
+  </ng-container>
 </div>
 
 <div class="footer-box">
@@ -64,12 +66,12 @@
     >
     </atlas-button>
     <atlas-button
-      *ngIf="(isFormEnabled$ | async) === false"
+      *ngIf="(isFormEnabled$ | async) === false && form"
       (buttonClicked)="toggleEdit()"
       applicationType="SEPODI"
       [businessOrganisation]="form.controls.businessOrganisation.value!"
-      [uicCountryCode]="selectedVersion.number.uicCountryCode"
-      [disabled]="selectedVersion.status === 'REVOKED'"
+      [uicCountryCode]="_selectedVersion?.number?.uicCountryCode"
+      [disabled]="_selectedVersion?.status === 'REVOKED'"
       buttonDataCy="edit"
       buttonText="COMMON.EDIT"
       buttonType="edit"
@@ -86,7 +88,7 @@
     <atlas-button
       (click)="save()"
       [footerEdit]="(isFormEnabled$ | async) ?? false"
-      [disabled]="!form.dirty"
+      [disabled]="!form?.dirty"
       [submitButton]="true"
       buttonDataCy="save-item"
       buttonText="COMMON.SAVE"

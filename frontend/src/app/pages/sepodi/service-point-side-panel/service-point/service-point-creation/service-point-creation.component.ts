@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
   ServicePointDetailFormGroup,
@@ -14,23 +14,32 @@ import {
   ServicePointsService,
 } from '../../../../../api';
 import { Countries } from '../../../../../core/country/Countries';
-import { catchError, EMPTY, mergeWith, Observable, Subject, take } from 'rxjs';
+import { BehaviorSubject, catchError, EMPTY, mergeWith, Observable, Subject, take } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServicePointType } from '../service-point-type';
-import { ServicePointFormComponent } from '../service-point-form/service-point-form.component';
 import { NotificationService } from '../../../../../core/notification/notification.service';
+import { GeographyFormGroupBuilder } from '../../../geography/geography-form-group';
+
+export class ServicePointCreationSideService {
+  geographyChanged = new BehaviorSubject<boolean>(false);
+
+  set geography(value: boolean) {
+    if (this.geographyChanged.value !== value) {
+      this.geographyChanged.next(value);
+    }
+  }
+}
 
 @Component({
   selector: 'app-service-point-creation',
   templateUrl: './service-point-creation.component.html',
   styleUrls: ['./service-point-creation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  viewProviders: [ServicePointCreationSideService],
 })
 export class ServicePointCreationComponent implements OnInit, OnDestroy {
-  @ViewChild(ServicePointFormComponent) servicePointFormComponent!: ServicePointFormComponent;
-
   public form: FormGroup<ServicePointDetailFormGroup> =
     ServicePointFormGroupBuilder.buildEmptyFormGroup();
   public countryOptions$: Observable<Country[]> = EMPTY;
@@ -48,9 +57,14 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly servicePointService: ServicePointsService,
     private readonly notificationService: NotificationService,
+    private readonly sharedService: ServicePointCreationSideService,
   ) {}
 
   ngOnInit() {
+    this.sharedService.geographyChanged
+      .pipe(takeUntil(this.destroySubscriptions$))
+      .subscribe((enabled) => (enabled ? this.onGeographyEnabled() : this.onGeographyDisabled()));
+
     this.countryOptions$ = this.authService.loadPermissions().pipe(
       map(() => this.getCountryOptions()),
       tap((countries) => {
@@ -75,7 +89,7 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
             ServicePointType.StopPoint,
           ].includes(servicePointType)
         ) {
-          this.servicePointFormComponent.geographyActive = true;
+          this.sharedService.geography = true;
         }
       });
 
@@ -96,6 +110,18 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
     this.destroySubscriptions$.complete();
   }
 
+  private onGeographyEnabled() {
+    ServicePointFormGroupBuilder.addGroupToForm(
+      this.form,
+      'servicePointGeolocation',
+      GeographyFormGroupBuilder.buildFormGroup(),
+    );
+  }
+
+  private onGeographyDisabled() {
+    ServicePointFormGroupBuilder.removeGroupFromForm(this.form, 'servicePointGeolocation');
+  }
+
   async onCancel(): Promise<void> {
     if (this.form.dirty) {
       this.dialogService
@@ -113,12 +139,16 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
 
   onSave(): void {
     this.form.markAllAsTouched();
+    console.log('before save', this.form);
     if (this.form.valid) {
       const servicePointVersion = ServicePointFormGroupBuilder.getWritableServicePoint(this.form);
-      this.form.disable();
+      const controlsAlreadyDisabled = Object.keys(this.form.controls).filter(
+        (key) => this.form.get(key)?.disabled,
+      );
+      this.form.disable({ emitEvent: false });
       this.servicePointService
         .createServicePoint(servicePointVersion)
-        .pipe(catchError(this.handleError))
+        .pipe(catchError(() => this.handleError(controlsAlreadyDisabled)))
         .subscribe(async (servicePointVersion) => {
           this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.ADD_SUCCESS');
           await this.router.navigate([servicePointVersion.number.number], {
@@ -128,8 +158,12 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
     }
   }
 
-  private readonly handleError = () => {
-    this.form.enable();
+  private readonly handleError = (excludedControls: string[]) => {
+    Object.keys(this.form.controls).forEach((key) => {
+      if (!excludedControls.includes(key)) {
+        this.form.get(key)?.enable({ emitEvent: false });
+      }
+    });
     return EMPTY;
   };
 
