@@ -13,15 +13,22 @@ import { ActivatedRoute } from '@angular/router';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
 import { StopPointExistsDataShareService } from '../stop-point/service/stop-point-exists-data-share.service';
+import { PrmMeanOfTransportHelper } from '../prm-mean-of-transport-helper';
 
-export const TABS = [
-  {
-    link: 'stop-point',
-    title: 'PRM.STOP_POINT',
-  },
+export const COMPLETE_TABS = [
   {
     link: 'reference-point',
     title: 'PRM.REFERENCE_POINT',
+  },
+  {
+    link: 'connection',
+    title: 'PRM.CONNECTION',
+  },
+];
+export const REDUCED_TABS = [
+  {
+    link: 'stop-point',
+    title: 'PRM.STOP_POINT',
   },
   {
     link: 'platform',
@@ -43,10 +50,6 @@ export const TABS = [
     link: 'parking-lot',
     title: 'PRM.PARKING_LOT',
   },
-  {
-    link: 'connection',
-    title: 'PRM.CONNECTION',
-  },
 ];
 
 @Component({
@@ -63,8 +66,9 @@ export class PrmPanelComponent {
   boDescription!: string;
   isNew!: boolean;
   disableTabNavigation = false;
+  stopPointVersions!: ReadStopPointVersion[];
 
-  tabs = TABS;
+  tabs = REDUCED_TABS.concat(...COMPLETE_TABS);
   private stopPointSubscription?: Subscription;
 
   constructor(
@@ -84,23 +88,21 @@ export class PrmPanelComponent {
       .pipe(
         map((next) => {
           this.servicePointVersions = next.servicePoints;
+          this.stopPointVersions = next.stopPoints;
+          this.checkStopPointExists();
           this.initServicePointVersioning(this.servicePointVersions);
         }),
-        switchMap((asd) =>
+        switchMap(() =>
           this.businessOrganisationsService
             .getVersions(this.selectedServicePointVersion!.businessOrganisation)
             .pipe(tap((bo) => this.initSelectedBusinessOrganisationVersion(bo))),
         ),
       )
-      .subscribe(() => {
-        this.checkStopPointExists();
-      });
+      .subscribe();
   }
 
   private checkStopPointExists() {
-    this.stopPointExistsDataShareService.isNew$.subscribe((res) => (this.isNew = res));
-    this.stopPointExistsDataShareService.changeData(this.isNew);
-    if (this.isNew) {
+    if (this.stopPointVersions.length === 0) {
       this.disableTabNavigation = true;
       this.tabs = [
         {
@@ -108,6 +110,13 @@ export class PrmPanelComponent {
           title: 'PRM.STOP_POINT',
         },
       ];
+    } else {
+      const isReduced = PrmMeanOfTransportHelper.isReduced(
+        this.stopPointVersions[0].meansOfTransport,
+      );
+      if (isReduced) {
+        this.tabs = REDUCED_TABS;
+      }
     }
   }
 

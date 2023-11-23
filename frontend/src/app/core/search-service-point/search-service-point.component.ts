@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ServicePointSearchResult, ServicePointsService } from '../../../api';
+import { ServicePointSearchResult, ServicePointsService } from '../../api';
 import {
   catchError,
   concat,
@@ -10,7 +10,7 @@ import {
   Subject,
 } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Pages } from '../../pages';
+import { Pages } from '../../pages/pages';
 import { filter, switchMap, tap } from 'rxjs/operators';
 import { TranslatePipe } from '@ngx-translate/core';
 

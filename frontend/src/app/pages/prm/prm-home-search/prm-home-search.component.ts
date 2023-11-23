@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ServicePointSearchType } from '../../sepodi/search-service-point/search-service-point.component';
+import { ServicePointSearchType } from '../../../core/search-service-point/search-service-point.component';
 
 @Component({
   selector: 'app-prm-home-search',

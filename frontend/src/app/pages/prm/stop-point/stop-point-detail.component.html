@@ -68,18 +68,16 @@
         wrapperStyleClass="ms-3"
       ></atlas-button>
     </ng-container>
-    <ng-container *ngIf="isNew && isAuthorizedToCreateStopPoint">
-      <atlas-button
-        (click)="save()"
-        [footerEdit]="isNew || ((isFormEnabled$ | async) ?? false)"
-        [disabled]="!form.dirty"
-        [submitButton]="true"
-        buttonDataCy="save-item"
-        buttonText="COMMON.SAVE"
-        buttonType="whiteFooterEdit"
-        wrapperStyleClass="ms-3"
-      >
-      </atlas-button>
-    </ng-container>
+    <atlas-button
+      (click)="save()"
+      [footerEdit]="isNew || ((isFormEnabled$ | async) ?? false)"
+      [disabled]="!form.dirty"
+      [submitButton]="true"
+      buttonDataCy="save-item"
+      buttonText="COMMON.SAVE"
+      buttonType="whiteFooterEdit"
+      wrapperStyleClass="ms-3"
+    >
+    </atlas-button>
   </footer>
 </div>
