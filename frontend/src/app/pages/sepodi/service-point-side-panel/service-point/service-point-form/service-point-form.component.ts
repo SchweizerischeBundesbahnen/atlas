@@ -15,6 +15,7 @@ import {
 import { LocationInformation } from '../location-information';
 import { takeUntil } from 'rxjs/operators';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
+import { ServicePointCreationSideService } from '../service-point-creation/service-point-creation.component';
 
 @Component({
   selector: 'service-point-form',
@@ -43,10 +44,6 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
 
   @Input() set currentVersion(version: ReadServicePointVersion) {
     this._currentVersion = version;
-    if (this.currentVersion?.servicePointGeolocation?.spatialReference) {
-      this.geographyActive = true;
-    }
-
     this.initLocationInformationDisplay();
   }
   get currentVersion(): ReadServicePointVersion | undefined {
@@ -60,25 +57,34 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
   public stopPointTypes = Object.values(StopPointType);
   public categories = Object.values(Category);
   public locationInformation?: LocationInformation;
-  public geographyActive = false;
   public isNew = false;
 
   private langChangeSubscription?: Subscription;
+  private geographyChangedSubscription?: Subscription;
   private formSubscriptionDestroy$: Subject<void> = new Subject<void>();
 
   constructor(
     private readonly translationSortingService: TranslationSortingService,
     private readonly geoDataService: GeoDataService,
     private readonly dialogService: DialogService,
+    private readonly sharedService: ServicePointCreationSideService,
   ) {}
 
   ngOnInit(): void {
-    this.initSortedOperatingPointTypes();
     this.isNew = !this.currentVersion?.id;
+    this.geographyChangedSubscription = this.sharedService.geographyChanged.subscribe((enabled) => {
+      if (enabled && !this.isNew) {
+        // todo: when switchVersion from enabled to enabled this gets called and in the form setter also
+        const geolocationControls = this._form?.controls.servicePointGeolocation?.controls;
+        if (geolocationControls) this.initGeolocationControlListeners(geolocationControls);
+      }
+    });
+    this.initSortedOperatingPointTypes();
   }
 
   ngOnDestroy() {
     this.langChangeSubscription?.unsubscribe();
+    this.geographyChangedSubscription?.unsubscribe();
   }
 
   private initSortedOperatingPointTypes(): void {
