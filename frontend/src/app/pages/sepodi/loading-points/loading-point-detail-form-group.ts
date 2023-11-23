@@ -23,6 +23,7 @@ export class LoadingPointFormGroupBuilder {
           Validators.min(0),
           Validators.max(9999),
           AtlasCharsetsValidator.numeric,
+          Validators.required,
         ]),
         servicePointNumber: new FormControl(version?.servicePointNumber.number),
         designation: new FormControl(version?.designation, [
