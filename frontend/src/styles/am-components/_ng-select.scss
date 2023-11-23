@@ -61,3 +61,10 @@ $height: 36px;
     display: none;
   }
 }
+
+ng-select.ng-select.ng-select-opened {
+  .ng-select-container,
+  .ng-dropdown-panel {
+    z-index: 1;
+  }
+}
