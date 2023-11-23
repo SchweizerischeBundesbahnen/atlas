@@ -57,19 +57,15 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
 
   ngOnInit(): void {
     this.stopPointExistsDataShareService.isNew$.subscribe((res) => (this.isNew = res));
-    this.stopPointSubscription = this.route.data
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((next) => {
-        this.stopPointVersions = next.stopPoint;
-        this.route.parent?.data.subscribe((next) => {
-          this.initServicePointsData(next);
-          if (this.stopPointVersions.length > 0) {
-            this.initExistingStopPoint();
-          } else {
-            this.initNotExistingStopPoint();
-          }
-        });
-      });
+    this.stopPointSubscription = this.route.parent?.data.subscribe((next) => {
+      this.initServicePointsData(next);
+      this.stopPointVersions = next.stopPoints;
+      if (this.stopPointVersions.length > 0) {
+        this.initExistingStopPoint();
+      } else {
+        this.initNotExistingStopPoint();
+      }
+    });
   }
 
   backToSearchPrm() {

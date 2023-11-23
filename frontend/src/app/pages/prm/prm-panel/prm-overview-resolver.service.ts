@@ -1,20 +1,13 @@
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { inject, Injectable } from '@angular/core';
-import {
-  BusinessOrganisationsService,
-  PersonWithReducedMobilityService,
-  ReadServicePointVersion,
-  ServicePointsService,
-} from '../../../api';
+import { ReadServicePointVersion, ServicePointsService } from '../../../api';
 import { catchError, Observable, of } from 'rxjs';
 import { Pages } from '../../pages';
 
 @Injectable({ providedIn: 'root' })
 export class PrmOverviewResolver {
   constructor(
-    private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
     private readonly servicePointsService: ServicePointsService,
-    private businessOrganisationsService: BusinessOrganisationsService,
     private readonly router: Router,
   ) {}
 

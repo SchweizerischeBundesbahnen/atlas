@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 import { AuthService } from '../../../core/auth/auth.service';
 import { ActivatedRouteMockType, MockAtlasButtonComponent } from '../../../app.testing.mocks';
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
-import { SplitServicePointNumberPipe } from '../search-service-point/split-service-point-number.pipe';
+import { SplitServicePointNumberPipe } from '../../../core/search-service-point/split-service-point-number.pipe';
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
 import { SelectComponent } from '../../../core/form-components/select/select.component';
 import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
