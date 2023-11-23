@@ -112,7 +112,7 @@ describe('ServicePointDetailComponent', () => {
 
   it('should initialize versioning correctly', () => {
     expect(component.showVersionSwitch).toBeTrue();
-    expect(component.selectedVersion).toBeTruthy();
+    expect(component._selectedVersion).toBeTruthy();
 
     expect((component.servicePointVersions[0] as Record).versionNumber).toBeTruthy();
   });
@@ -172,7 +172,7 @@ describe('ServicePointDetailComponent', () => {
   });
 
   it('should set isAbbreviationAllowed based on selectedVersion.businessOrganisation', () => {
-    component.selectedVersion = {
+    component._selectedVersion = {
       businessOrganisation: 'ch:1:sboid:100016',
       designationOfficial: 'abcd',
       validFrom: new Date(2020 - 10 - 1),
@@ -191,7 +191,7 @@ describe('ServicePointDetailComponent', () => {
 
     expect(component.isAbbreviationAllowed).toBeTrue();
 
-    component.selectedVersion = {
+    component._selectedVersion = {
       businessOrganisation: 'falseBusinessOrganisation',
       designationOfficial: 'abcd',
       validFrom: new Date(2020 - 10 - 1),

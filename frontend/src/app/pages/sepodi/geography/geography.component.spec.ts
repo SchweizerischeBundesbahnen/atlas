@@ -58,7 +58,7 @@ describe('GeographyComponent', () => {
 
     fixture = TestBed.createComponent(GeographyComponent);
     component = fixture.componentInstance;
-    component.formGroup = new FormGroup<GeographyFormGroup>({
+    component.form = new FormGroup<GeographyFormGroup>({
       east: new FormControl(45),
       north: new FormControl(7),
       height: new FormControl(5),
