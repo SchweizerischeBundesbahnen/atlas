@@ -1,8 +1,6 @@
-import { Injectable, NgModule } from '@angular/core';
-import { Router, RouterModule, Routes, UrlTree } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { Pages } from '../pages';
-import { AuthService } from '../../core/auth/auth.service';
-import { ApplicationType } from '../../api';
 import { PrmHomeSearchComponent } from './prm-home-search/prm-home-search.component';
 import { PrmPanelComponent } from './prm-panel/prm-panel.component';
 import { StopPointDetailComponent } from './stop-point/stop-point-detail.component';
@@ -14,23 +12,8 @@ import { ToiletteComponent } from './toilette/toilette.component';
 import { ParkingLotComponent } from './parking-lot/parking-lot.component';
 import { ConnectionComponent } from './connection/connection.component';
 import { prmOverviewResolver } from './prm-panel/prm-overview-resolver.service';
-import { stopPointResolver } from './stop-point/stop-point.resolver';
 import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
-
-@Injectable()
-class CanActivatePrmCreationGuard {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly router: Router,
-  ) {}
-
-  canActivate(): true | UrlTree {
-    if (this.authService.hasPermissionsToCreate(ApplicationType.Prm)) {
-      return true;
-    }
-    return this.router.parseUrl(Pages.PRM.path);
-  }
-}
+import { stopPointResolver } from './stop-point/stop-point.resolver';
 
 const routes: Routes = [
   {
@@ -40,13 +23,12 @@ const routes: Routes = [
   {
     path: Pages.STOP_POINTS.path + '/:sloid',
     component: PrmPanelComponent,
-    resolve: { servicePoints: prmOverviewResolver },
+    resolve: { stopPoints: stopPointResolver, servicePoints: prmOverviewResolver },
     runGuardsAndResolvers: 'always',
     children: [
       {
         path: Pages.PRM_STOP_POINT.path,
         component: StopPointDetailComponent,
-        resolve: { stopPoint: stopPointResolver },
         runGuardsAndResolvers: 'always',
         canDeactivate: [canLeaveDirtyForm],
       },
@@ -94,6 +76,5 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
-  providers: [CanActivatePrmCreationGuard],
 })
 export class PrmRoutingModule {}

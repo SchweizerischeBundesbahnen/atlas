@@ -49,6 +49,10 @@ import { DateRangeTextComponent } from '../versioning/date-range-text/date-range
 import { DisplayCantonPipe } from '../cantons/display-canton.pipe';
 import { RemoveCharsDirective } from '../form-components/text-field/remove-chars.directive';
 import { DecimalNumberPipe } from '../pipe/decimal-number.pipe';
+import { SearchServicePointComponent } from '../search-service-point/search-service-point.component';
+import { SearchResultHighlightPipe } from '../search-service-point/search-result-highlight.pipe';
+import { SplitServicePointNumberPipe } from '../search-service-point/split-service-point-number.pipe';
+import { MeansOfTransportPickerComponent } from '../../pages/sepodi/means-of-transport-picker/means-of-transport-picker.component';
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -89,6 +93,10 @@ const coreComponents = [
   MaintenanceIconComponent,
   DateRangeTextComponent,
   RemoveCharsDirective,
+  SearchServicePointComponent,
+  SearchResultHighlightPipe,
+  SplitServicePointNumberPipe,
+  MeansOfTransportPickerComponent,
 ];
 
 @NgModule({

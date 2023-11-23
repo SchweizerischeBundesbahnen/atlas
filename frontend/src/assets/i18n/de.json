@@ -192,7 +192,7 @@
     },
     "PRM": {
       "TITLE": "BehiG-Daten verwalten",
-      "TITLE_HEADER": "Bestandsaufnahem BehiG",
+      "TITLE_HEADER": "Bestandsaufnahme BehiG",
       "DESCRIPTION": "Erfassen, bearbeiten und einsehen der Dienststellendaten im Rahmen der Bestandsaufnahme BehiG."
     },
     "DETAILS": "Details"
@@ -1070,7 +1070,7 @@
         "AUDIO_TICKET_MACHINE": "Akustische und taktile Ausrüstung",
         "INFO_TICKET_MACHINE": "Hinweise zu den Billettautomaten"
       },
-      "NO_STOP_POINT_FOUND": "Für diese Haltestelle wurden durch die Transportunternehmen noch keine BehiG-Daten erfasst.",
+      "NO_STOP_POINT_FOUND": "Für diese Haltestelle wurden noch keine BehiG-Daten durch das Transportunternehmen erfasst.",
       "NOTIFICATION": {
         "ADD_SUCCESS": "Die Haltestelle wurde erfolgreich hinzugefügt.",
         "EDIT_SUCCESS": "Die Haltestelle wurde erfolgreich gespeichert."
@@ -1080,7 +1080,7 @@
         "CONFIRM_RECORDING_VARIANT_CHANGES": "Wenn Sie das Verkehrsmittel wechseln, ändert sich die Erfassungsvariante und die bereits eingegebenen Daten werden gelöscht."
       },
       "DETAILS": "Angabe zur Haltestelle",
-      "MEANS_OF_TRANSPORT_SUB_LABEL": "Steurt die Auswahl der zu erfassenden Krieterien für die Bestandsaufnahme BehiG",
+      "MEANS_OF_TRANSPORT_SUB_LABEL": "Steuert die Auswahl der zu erfassenden Krieterien für die Bestandsaufnahme BehiG",
       "VISUAL_INFO_EXAMPLE": "z.B. Aushangfahrpläne, Netzplöne, Tarifbestimmungen, etc.",
       "CUSTOMER_INFORMATION": "Kundeninformation Haltestelle",
       "AUTONOMUS_USABILITY": "Autonome Benutzbarkeit",
@@ -1100,7 +1100,6 @@
         "PARTIALLY": "Teilweise"
       }
     },
-
     "REFERENCE_POINT": "Referenzpunkt",
     "PLATFORM": "Haltekante",
     "TICKET_COUNTER": "Billettschalter",
