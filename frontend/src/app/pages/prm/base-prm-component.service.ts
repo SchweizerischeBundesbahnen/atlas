@@ -38,13 +38,21 @@ export abstract class BasePrmComponentService {
     }
   }
 
+  protected checkStopPointExists(data: Data) {
+    const stopPointVersions: ReadStopPointVersion[] = data.stopPoints;
+    if (stopPointVersions.length === 0) {
+      const servicePoints: ReadStopPointVersion[] = data.servicePoints;
+      this.navigateToStopPoint(servicePoints);
+    }
+  }
+
   protected navigateToStopPoint(servicePoints: ReadStopPointVersion[]) {
     this.router
       .navigate([
         Pages.PRM.path,
         Pages.STOP_POINTS.path,
         servicePoints[0].sloid,
-        Pages.PRM_STOP_POINT.path,
+        Pages.PRM_STOP_POINT_TAB.path,
       ])
       .then();
   }

@@ -14,7 +14,7 @@ import { ReferencePointComponent } from './reference-point/reference-point.compo
 import { PlatformComponent } from './platform/platform.component';
 import { TicketCounterComponent } from './ticket-counter/ticket-counter.component';
 import { InformationDeskComponent } from './information-desk/information-desk.component';
-import { ToiletteComponent } from './toilette/toilette.component';
+import { ToiletComponent } from './toilet/toilet.component';
 import { ParkingLotComponent } from './parking-lot/parking-lot.component';
 import { ConnectionComponent } from './connection/connection.component';
 import { CreateStopPointComponent } from './stop-point/create-stop-point/create-stop-point.component';
@@ -30,7 +30,7 @@ import { CreateStopPointComponent } from './stop-point/create-stop-point/create-
     PlatformComponent,
     TicketCounterComponent,
     InformationDeskComponent,
-    ToiletteComponent,
+    ToiletComponent,
     ParkingLotComponent,
     ConnectionComponent,
     CreateStopPointComponent,
