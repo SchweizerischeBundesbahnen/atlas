@@ -16,6 +16,6 @@ export class ParkingLotComponent extends BasePrmComponentService {
   }
 
   ngOnInit(): void {
-    this.checkIsReducedOrComplete(this.route.parent?.snapshot?.data!);
+    this.checkStopPointExists(this.route.parent?.snapshot?.data!);
   }
 }

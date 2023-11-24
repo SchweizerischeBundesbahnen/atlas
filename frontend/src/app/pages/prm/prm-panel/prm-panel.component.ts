@@ -12,45 +12,8 @@ import { VersionsHandlingService } from '../../../core/versioning/versions-handl
 import { ActivatedRoute } from '@angular/router';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
-import { StopPointExistsDataShareService } from '../stop-point/service/stop-point-exists-data-share.service';
 import { PrmMeanOfTransportHelper } from '../prm-mean-of-transport-helper';
-
-export const COMPLETE_TABS = [
-  {
-    link: 'reference-point',
-    title: 'PRM.REFERENCE_POINT',
-  },
-  {
-    link: 'connection',
-    title: 'PRM.CONNECTION',
-  },
-];
-export const REDUCED_TABS = [
-  {
-    link: 'stop-point',
-    title: 'PRM.STOP_POINT',
-  },
-  {
-    link: 'platform',
-    title: 'PRM.PLATFORM',
-  },
-  {
-    link: 'ticket-counter',
-    title: 'PRM.TICKET_COUNTER',
-  },
-  {
-    link: 'information-desk',
-    title: 'PRM.INFORMATION_DESK',
-  },
-  {
-    link: 'toilette',
-    title: 'PRM.TOILETTE',
-  },
-  {
-    link: 'parking-lot',
-    title: 'PRM.PARKING_LOT',
-  },
-];
+import { PrmTab } from './prm-tab';
 
 @Component({
   selector: 'app-prm-panel',
@@ -68,7 +31,7 @@ export class PrmPanelComponent {
   disableTabNavigation = false;
   stopPointVersions!: ReadStopPointVersion[];
 
-  tabs = REDUCED_TABS.concat(...COMPLETE_TABS);
+  tabs = PrmTab.tabs;
   private stopPointSubscription?: Subscription;
 
   constructor(
@@ -76,7 +39,6 @@ export class PrmPanelComponent {
     private servicePointsService: ServicePointsService,
     private businessOrganisationsService: BusinessOrganisationsService,
     private businessOrganisationLanguageService: BusinessOrganisationLanguageService,
-    private stopPointExistsDataShareService: StopPointExistsDataShareService,
   ) {
     this.businessOrganisationLanguageService
       .languageChanged()
@@ -89,7 +51,7 @@ export class PrmPanelComponent {
         map((next) => {
           this.servicePointVersions = next.servicePoints;
           this.stopPointVersions = next.stopPoints;
-          this.checkStopPointExists();
+          this.initTabs();
           this.initServicePointVersioning(this.servicePointVersions);
         }),
         switchMap(() =>
@@ -101,21 +63,16 @@ export class PrmPanelComponent {
       .subscribe();
   }
 
-  private checkStopPointExists() {
+  private initTabs() {
     if (this.stopPointVersions.length === 0) {
       this.disableTabNavigation = true;
-      this.tabs = [
-        {
-          link: 'stop-point',
-          title: 'PRM.STOP_POINT',
-        },
-      ];
+      this.tabs = [PrmTab.STOP_POINT];
     } else {
       const isReduced = PrmMeanOfTransportHelper.isReduced(
         this.stopPointVersions[0].meansOfTransport,
       );
       if (isReduced) {
-        this.tabs = REDUCED_TABS;
+        this.tabs = PrmTab.reducedTabs;
       }
     }
   }

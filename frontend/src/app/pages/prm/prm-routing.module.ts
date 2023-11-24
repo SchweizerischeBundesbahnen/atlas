@@ -8,12 +8,13 @@ import { ReferencePointComponent } from './reference-point/reference-point.compo
 import { PlatformComponent } from './platform/platform.component';
 import { TicketCounterComponent } from './ticket-counter/ticket-counter.component';
 import { InformationDeskComponent } from './information-desk/information-desk.component';
-import { ToiletteComponent } from './toilette/toilette.component';
+import { ToiletComponent } from './toilet/toilet.component';
 import { ParkingLotComponent } from './parking-lot/parking-lot.component';
 import { ConnectionComponent } from './connection/connection.component';
 import { prmOverviewResolver } from './prm-panel/prm-overview-resolver.service';
 import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
 import { stopPointResolver } from './stop-point/stop-point.resolver';
+import { PrmTab } from './prm-panel/prm-tab';
 
 const routes: Routes = [
   {
@@ -27,47 +28,47 @@ const routes: Routes = [
     runGuardsAndResolvers: 'always',
     children: [
       {
-        path: Pages.PRM_STOP_POINT.path,
+        path: Pages.PRM_STOP_POINT_TAB.path,
         component: StopPointDetailComponent,
         runGuardsAndResolvers: 'always',
         canDeactivate: [canLeaveDirtyForm],
       },
       {
-        path: 'reference-point',
+        path: PrmTab.REFERENCE_POINT.link,
         component: ReferencePointComponent,
         runGuardsAndResolvers: 'always',
       },
       {
-        path: 'platform',
+        path: PrmTab.PLATFORM.link,
         component: PlatformComponent,
         runGuardsAndResolvers: 'always',
       },
       {
-        path: 'ticket-counter',
+        path: PrmTab.TICKET_COUNTER.link,
         component: TicketCounterComponent,
         runGuardsAndResolvers: 'always',
       },
       {
-        path: 'information-desk',
+        path: PrmTab.INFORMATION_DESK.link,
         component: InformationDeskComponent,
         runGuardsAndResolvers: 'always',
       },
       {
-        path: 'toilette',
-        component: ToiletteComponent,
+        path: PrmTab.TOILET.link,
+        component: ToiletComponent,
         runGuardsAndResolvers: 'always',
       },
       {
-        path: 'parking-lot',
+        path: PrmTab.PARKING_LOT.link,
         component: ParkingLotComponent,
         runGuardsAndResolvers: 'always',
       },
       {
-        path: 'connection',
+        path: PrmTab.CONNECTION.link,
         component: ConnectionComponent,
         runGuardsAndResolvers: 'always',
       },
-      { path: '**', redirectTo: Pages.PRM_STOP_POINT.path },
+      { path: '**', redirectTo: Pages.PRM_STOP_POINT_TAB.path },
     ],
   },
   { path: '**', redirectTo: Pages.PRM.path },

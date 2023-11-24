@@ -15,7 +15,5 @@ export class TicketCounterComponent extends BasePrmComponentService {
     super(router);
   }
 
-  ngOnInit(): void {
-    this.checkIsReducedOrComplete(this.route.parent?.snapshot?.data!);
-  }
+  ngOnInit(): void {}
 }
