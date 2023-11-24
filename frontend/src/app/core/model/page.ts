@@ -3,6 +3,6 @@ export interface Page {
   titleMenu?: string;
   headerTitle?: string;
   path: string;
-  pathText: string;
-  description: string;
+  pathText?: string;
+  description?: string;
 }
