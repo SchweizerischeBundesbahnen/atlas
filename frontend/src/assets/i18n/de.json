@@ -1045,7 +1045,16 @@
     "SLOID_ALREADY_USED": "{{sloid}} ist bereits vergeben."
   },
   "PRM": {
-    "STOP_POINT": "Basisinformationen Haltestelle",
+    "TABS": {
+      "STOP_POINT": "Basisinformationen Haltestelle",
+      "REFERENCE_POINT": "Referenzpunkt",
+      "PLATFORM": "Haltekante",
+      "TICKET_COUNTER": "Billettschalter",
+      "INFORMATION_DESK": "Informationsschalter",
+      "TOILET": "Toilette",
+      "PARKING_LOT": "Parkplatz",
+      "CONNECTION": "Verbindungen"
+    },
     "STOP_POINTS": {
       "FORM": {
         "FREE_TEXT": "Hinweise zur Haltestelle",
@@ -1099,13 +1108,6 @@
         "NOT_APPLICABLE": "Nicht anwendbar",
         "PARTIALLY": "Teilweise"
       }
-    },
-    "REFERENCE_POINT": "Referenzpunkt",
-    "PLATFORM": "Haltekante",
-    "TICKET_COUNTER": "Billettschalter",
-    "INFORMATION_DESK": "Informationsschalter",
-    "TOILETTE": "Toilette",
-    "PARKING_LOT": "Parkplatz",
-    "CONNECTION": "Verbindungen"
+    }
   }
 }
