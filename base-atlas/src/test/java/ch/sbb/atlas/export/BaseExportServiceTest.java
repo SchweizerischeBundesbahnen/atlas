@@ -2,141 +2,166 @@ package ch.sbb.atlas.export;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
+import ch.sbb.atlas.amazon.service.AmazonService;
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.model.BaseVersionModel;
 import ch.sbb.atlas.export.enumeration.ExportType;
 import ch.sbb.atlas.export.model.VersionCsvModel;
+import ch.sbb.atlas.model.entity.BaseVersion;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 class BaseExportServiceTest {
 
-    private URL someUrl;
-    private File file;
+  private static final URL URL;
 
-    private BaseExportService<?> baseExportService = Mockito.mock(
-            BaseExportService.class,
-            Mockito.CALLS_REAL_METHODS);
+  static {
+    try {
+      URL = new URL("http://example.com");
+    } catch (MalformedURLException e) {
+      throw new IllegalStateException(e);
+    }
+  }
 
-    @BeforeEach
-    void setUp() throws IOException {
-        someUrl = new URL("http://example.com");
-        file = new File("demo.txt");
+  private static final File FILE = new File("demo.txt");
+
+  @Mock
+  private FileService fileService;
+  @Mock
+  private AmazonService amazonService;
+
+  private BaseExportService<DummyVersion> baseExportService;
+
+  @BeforeEach
+  void setUp() throws IOException {
+    MockitoAnnotations.openMocks(this);
+    when(amazonService.putFile(any(), any(), any())).thenReturn(URL);
+    when(amazonService.putGzipFile(any(), any(), any())).thenReturn(URL);
+    baseExportService = new DummyExportService(fileService, amazonService);
+  }
+
+  @Test
+  void shouldExportFullVersions() {
+    List<URL> urls = baseExportService.exportFullVersions();
+    assertEquals(1, urls.size());
+  }
+
+  @Test
+  void shouldRequireImplementationForFullAllFormats() {
+    assertThrows(UnsupportedOperationException.class, () -> baseExportService.exportFullVersionsAllFormats());
+  }
+
+  @Test
+  void shouldExportActualVersions() {
+    List<URL> urls = baseExportService.exportActualVersions();
+    assertEquals(1, urls.size());
+  }
+
+  @Test
+  void shouldRequireImplementationForActualAllFormats() {
+    assertThrows(UnsupportedOperationException.class, () -> baseExportService.exportActualVersionsAllFormats());
+  }
+
+  @Test
+  void shouldExportFutureTimetableVersions() {
+    List<URL> urls = baseExportService.exportFutureTimetableVersions();
+    assertEquals(1, urls.size());
+  }
+
+  @Test
+  void shouldRequireImplementationForFutureTimetableVersionsAllFormats() {
+    assertThrows(UnsupportedOperationException.class, () -> baseExportService.exportFutureTimetableVersionsAllFormats());
+  }
+
+  @Test
+  void shouldCreateJsonFile() throws IOException {
+    List<DummyVersion> baseVersionModelList = new ArrayList<>();
+
+    File jsonFileResult = baseExportService.createJsonFile(baseVersionModelList, ExportType.FULL);
+    assertNotNull(jsonFileResult);
+    Files.delete(jsonFileResult.toPath());
+  }
+
+  @Test
+  void shouldCreateCsvFile() throws IOException {
+    List<DummyVersion> versionCsvModels = new ArrayList<>();
+
+    File csvFileResult = baseExportService.createCsvFile(versionCsvModels, ExportType.FULL);
+    assertNotNull(csvFileResult);
+    Files.delete(csvFileResult.toPath());
+  }
+
+  private static class DummyExportService extends BaseExportService<DummyVersion> {
+
+    public DummyExportService(FileService fileService, AmazonService amazonService) {
+      super(fileService, amazonService);
     }
 
-    @Test
-    void shouldExportFullVersions() {
-        BaseExportService<?> bes = Mockito.spy(baseExportService);
-
-        Mockito.doReturn(file).when(bes).getFullVersionsCsv();
-        Mockito.doReturn(someUrl).when(bes).putZipFile(any());
-
-        List<URL> urls = bes.exportFullVersions();
-        assertEquals(1, urls.size());
+    @Override
+    protected ObjectWriter getObjectWriter() {
+      return new ObjectMapper().writer();
     }
 
-    @Test
-    void shouldExportFullVersionsAllFormats() {
-        BaseExportService<?> bes = Mockito.spy(baseExportService);
-
-        Mockito.doReturn(file).when(bes).getFullVersionsJson();
-        Mockito.doReturn(file).when(bes).getFullVersionsCsv();
-        Mockito.doReturn(someUrl).when(bes).putZipFile(any());
-        Mockito.doReturn(someUrl).when(bes).putGzFile(any());
-
-        List<URL> urls = bes.exportFullVersionsAllFormats();
-        assertEquals(2, urls.size());
+    @Override
+    protected String getDirectory() {
+      return null;
     }
 
-    @Test
-    void shouldExportActualVersions() {
-        BaseExportService<?> bes = Mockito.spy(baseExportService);
-
-        Mockito.doReturn(file).when(bes).getActualVersionsCsv();
-        Mockito.doReturn(someUrl).when(bes).putZipFile(any());
-
-        List<URL> urls = bes.exportActualVersions();
-        assertEquals(1, urls.size());
+    @Override
+    protected File getFullVersionsCsv() {
+      return FILE;
     }
 
-    @Test
-    void shouldExportActualVersionsAllFormats() {
-        BaseExportService<?> bes = Mockito.spy(baseExportService);
-
-        Mockito.doReturn(file).when(bes).getActualVersionsCsv();
-        Mockito.doReturn(file).when(bes).getActualVersionsJson();
-        Mockito.doReturn(someUrl).when(bes).putZipFile(any());
-        Mockito.doReturn(someUrl).when(bes).putGzFile(any());
-
-        List<URL> urls = bes.exportActualVersionsAllFormats();
-        assertEquals(2, urls.size());
+    @Override
+    protected File getActualVersionsCsv() {
+      return FILE;
     }
 
-    @Test
-    void shouldExportFutureTimetableVersions() {
-        BaseExportService<?> bes = Mockito.spy(baseExportService);
-
-        Mockito.doReturn(file).when(bes).getFutureTimetableVersionsCsv();
-        Mockito.doReturn(someUrl).when(bes).putZipFile(any());
-
-        List<URL> urls = bes.exportFutureTimetableVersions();
-        assertEquals(1, urls.size());
+    @Override
+    protected File getFutureTimetableVersionsCsv() {
+      return FILE;
     }
 
-    @Test
-    void shouldExportFutureTimetableVersionsAllFormats() {
-        BaseExportService<?> bes = Mockito.spy(baseExportService);
-
-        Mockito.doReturn(file).when(bes).getFutureTimetableVersionsCsv();
-        Mockito.doReturn(file).when(bes).getFutureTimetableVersionsJson();
-        Mockito.doReturn(someUrl).when(bes).putZipFile(any());
-        Mockito.doReturn(someUrl).when(bes).putGzFile(any());
-
-        List<URL> urls = bes.exportFutureTimetableVersionsAllFormats();
-        assertEquals(2, urls.size());
+    @Override
+    protected String getFileName() {
+      return null;
     }
 
-    @Test
-    void shouldCreateJsonFile() throws IOException {
-        File jsonFile = new File("demo.json");
-        List<BaseVersionModel> baseVersionModelList = new ArrayList<>();
-        BaseExportService bes = Mockito.spy(baseExportService);
-
-        Mockito.doReturn(baseVersionModelList).when(bes).convertToJsonModel(any());
-        Mockito.doReturn(jsonFile).when(bes).createFile(any(), any());
-
-        File jsonFileResult = bes.createJsonFile(baseVersionModelList, ExportType.FULL);
-        assertNotNull(jsonFileResult);
-        assertEquals(jsonFile, jsonFileResult);
-        Files.delete(jsonFile.toPath());
+    @Override
+    protected List<VersionCsvModel> convertToCsvModel(List<DummyVersion> versions) {
+      return new ArrayList<>();
     }
 
-    @Test
-    void shouldCreateCsvFile() throws IOException {
-        File csvFile = new File("demo.csv");
-        List<VersionCsvModel> versionCsvModels = new ArrayList<>();
-        BaseExportService bes = Mockito.spy(baseExportService);
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectWriter writer = mapper.writer();
-
-        Mockito.doReturn(versionCsvModels).when(bes).convertToCsvModel(any());
-        Mockito.doReturn(csvFile).when(bes).createFile(any(), any());
-        Mockito.doReturn(writer).when(bes).getObjectWriter();
-
-        File csvFileResult = bes.createCsvFile(versionCsvModels, ExportType.FULL);
-        assertNotNull(csvFileResult);
-        assertEquals(csvFile, csvFileResult);
-        Files.delete(csvFile.toPath());
+    @Override
+    protected List<BaseVersionModel> convertToJsonModel(List<DummyVersion> versions) {
+      return new ArrayList<>();
     }
+  }
+
+  @Data
+  @EqualsAndHashCode(callSuper = true)
+  private static class DummyVersion extends BaseVersion {
+
+    private LocalDate validFrom;
+    private LocalDate validTo;
+  }
 
 }
