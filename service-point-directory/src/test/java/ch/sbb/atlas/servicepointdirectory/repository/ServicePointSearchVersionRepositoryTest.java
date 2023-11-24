@@ -97,9 +97,10 @@ class ServicePointSearchVersionRepositoryTest {
   void shouldReturnOnlyAllSwissOnlyServicePoint() {
     //given
     servicePointVersionRepository.save(ServicePointTestData.createAbroadServicePointVersion());
+    servicePointVersionRepository.save(ServicePointTestData.createStopPointServicePointWithUnknownMeanOfTransportVersion());
 
     //when
-    List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchSwissOnlyServicePoints("egg");
+    List<ServicePointSearchResult> results = servicePointSearchVersionRepository.searchSwissOnlyStopPointServicePoints("egg");
     //then
     assertThat(results).isNotNull();
     assertThat(results).hasSize(1);
