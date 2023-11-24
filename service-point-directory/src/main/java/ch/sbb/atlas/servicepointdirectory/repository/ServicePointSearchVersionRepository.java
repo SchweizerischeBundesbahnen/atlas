@@ -55,7 +55,7 @@ public class ServicePointSearchVersionRepository {
 
     if (isSwissOnlyStopPointServicePoint) {
       mapSqlParameterSource.addValue("countries", SWISS_ONLY_COUNTRIES);
-      mapSqlParameterSource.addValue("not_unknown_means_of_transport", MeanOfTransport.UNKNOWN.getName());
+      mapSqlParameterSource.addValue("not_unknown_means_of_transport", MeanOfTransport.UNKNOWN.name());
     }
 
     String query = getSqlQuery(value, isOperationPointRouteNetworkTrue, isSwissOnlyStopPointServicePoint);
