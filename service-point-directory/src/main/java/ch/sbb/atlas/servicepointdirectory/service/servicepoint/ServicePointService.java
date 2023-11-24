@@ -47,7 +47,7 @@ public class ServicePointService {
 
   public List<ServicePointSearchResult> searchSwissOnlyServicePointVersion(String value) {
     List<ServicePointSearchResult> servicePointSearchResults =
-        servicePointSearchVersionRepository.searchSwissOnlyServicePoints(value);
+        servicePointSearchVersionRepository.searchSwissOnlyStopPointServicePoints(value);
     if (servicePointSearchResults.size() > SEARCH_RESULT_SIZE) {
       return servicePointSearchResults.subList(0, SEARCH_RESULT_SIZE);
     }
