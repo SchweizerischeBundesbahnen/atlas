@@ -14,8 +14,6 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointStatus;
-import lombok.experimental.UtilityClass;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -23,6 +21,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ServicePointTestData {
@@ -377,6 +376,32 @@ public class ServicePointTestData {
         .designationOfficial("Flüh Grenze")
         .abbreviation(null)
         .meansOfTransport(Set.of(MeanOfTransport.BUS))
+        .businessOrganisation("ch:1:sboid:100626")
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2014, 11, 2))
+        .validTo(LocalDate.of(2099, 12, 31))
+        .categories(new HashSet<>())
+        .operatingPointTechnicalTimetableType(OperatingPointTechnicalTimetableType.COUNTRY_BORDER)
+        .operatingPoint(true)
+        .operatingPointWithTimetable(true)
+        .creationDate(LocalDateTime.of(LocalDate.of(2017, 11, 9), LocalTime.of(11, 53, 5)))
+        .creator("GSU_DIDOK")
+        .editionDate(LocalDateTime.of(LocalDate.of(2019, 5, 20), LocalTime.of(15, 3, 58)))
+        .editor("fs45117")
+        .build();
+  }
+
+  public static ServicePointVersion createStopPointServicePointWithUnknownMeanOfTransportVersion() {
+    return ServicePointVersion
+        .builder()
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8507012))
+        .sloid("ch:1:sloid:7012")
+        .numberShort(19768)
+        .country(Country.SWITZERLAND)
+        .designationLong(null)
+        .designationOfficial("Flüh Grenze")
+        .abbreviation(null)
+        .meansOfTransport(Set.of(MeanOfTransport.UNKNOWN))
         .businessOrganisation("ch:1:sboid:100626")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2014, 11, 2))
