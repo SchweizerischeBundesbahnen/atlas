@@ -1,0 +1,22 @@
+import { ReadStopPointVersion } from '../../api';
+
+export const STOP_POINT: ReadStopPointVersion = {
+  validFrom: new Date('2014-12-14'),
+  validTo: new Date('2021-03-31'),
+  number: { number: 8589008, checkDigit: 7, uicCountryCode: 85, numberShort: 89008 },
+  sloid: 'ch:1:sloid:89008',
+  url: 'www.sbb.ch',
+  meansOfTransport: ['BUS'],
+  alternativeTransport: 'TO_BE_COMPLETED',
+  assistanceAvailability: 'TO_BE_COMPLETED',
+  assistanceRequestFulfilled: 'TO_BE_COMPLETED',
+  assistanceService: 'TO_BE_COMPLETED',
+  audioTicketMachine: 'TO_BE_COMPLETED',
+  dynamicAudioSystem: 'TO_BE_COMPLETED',
+  dynamicOpticSystem: 'TO_BE_COMPLETED',
+  ticketMachine: 'TO_BE_COMPLETED',
+  visualInfo: 'TO_BE_COMPLETED',
+  wheelchairTicketMachine: 'TO_BE_COMPLETED',
+};
+
+export class StopPointTestData {}

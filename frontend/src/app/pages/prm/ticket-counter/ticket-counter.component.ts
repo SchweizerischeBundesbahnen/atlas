@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BasePrmComponentService } from '../base-prm-component.service';
 
@@ -7,7 +7,7 @@ import { BasePrmComponentService } from '../base-prm-component.service';
   templateUrl: './ticket-counter.component.html',
   styleUrls: ['./ticket-counter.component.scss'],
 })
-export class TicketCounterComponent extends BasePrmComponentService {
+export class TicketCounterComponent extends BasePrmComponentService implements OnInit {
   constructor(
     readonly router: Router,
     private route: ActivatedRoute,
@@ -15,5 +15,7 @@ export class TicketCounterComponent extends BasePrmComponentService {
     super(router);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.checkIsReducedOrComplete(this.route.parent!.snapshot!.data!);
+  }
 }
