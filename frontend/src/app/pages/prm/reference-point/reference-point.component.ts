@@ -16,6 +16,6 @@ export class ReferencePointComponent extends BasePrmComponentService implements 
   }
 
   ngOnInit(): void {
-    this.checkIsReducedOrComplete(this.route.parent?.snapshot?.data!);
+    this.checkIsReducedOrComplete(this.route.parent!.snapshot!.data!);
   }
 }

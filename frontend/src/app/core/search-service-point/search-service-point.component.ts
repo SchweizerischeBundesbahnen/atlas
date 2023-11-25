@@ -116,7 +116,7 @@ export class SearchServicePointComponent implements OnInit {
     );
   }
 
-  private initSearchValue(searchValue: string) {
+  initSearchValue(searchValue: string) {
     this._searchValue = searchValue == null ? '' : searchValue.trim();
   }
 
