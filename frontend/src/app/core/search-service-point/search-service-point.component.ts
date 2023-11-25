@@ -10,14 +10,9 @@ import {
   Subject,
 } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Pages } from '../../pages/pages';
 import { filter, switchMap, tap } from 'rxjs/operators';
 import { TranslatePipe } from '@ngx-translate/core';
-
-export enum ServicePointSearchType {
-  PRM,
-  SERVICE_POINT,
-}
+import { ServicePointSearch, ServicePointSearchType } from './service-point-search';
 
 @Component({
   selector: 'app-search-service-point',
@@ -28,7 +23,12 @@ export class SearchServicePointComponent implements OnInit {
   private readonly MIN_LENGTH_TERM = 2;
   private readonly _DEBOUNCE_TIME = 500;
 
-  @Input() searchType: ServicePointSearchType = ServicePointSearchType.SERVICE_POINT;
+  @Input() searchType!: ServicePointSearchType;
+
+  private _searchValue = '';
+  servicePointSearchResult$: Observable<ServicePointSearchResult[]> = of([]);
+  searchInput$ = new Subject<string>();
+  loading = false;
 
   constructor(
     private readonly router: Router,
@@ -36,8 +36,6 @@ export class SearchServicePointComponent implements OnInit {
     private readonly servicePointService: ServicePointsService,
     private readonly translatePipe: TranslatePipe,
   ) {}
-
-  private _searchValue = '';
 
   get searchValue(): string {
     return this._searchValue;
@@ -55,46 +53,6 @@ export class SearchServicePointComponent implements OnInit {
       return this.getNotFoundTranslatedLabel();
     }
     return this.getTypeToSearchTranslatedLabel();
-  }
-
-  private getNotFoundTranslatedLabel() {
-    return this.translatePipe.transform('COMMON.NODATAFOUND');
-  }
-
-  private getTypeToSearchTranslatedLabel() {
-    return this.translatePipe.transform('COMMON.TYPE_TO_SEARCH_SHORT');
-  }
-
-  servicePointSearchResult$: Observable<ServicePointSearchResult[]> = of([]);
-  searchInput$ = new Subject<string>();
-  loading = false;
-
-  navigateTo(searchResultSelected: ServicePointSearchResult) {
-    if (searchResultSelected) {
-      if (this.searchType === ServicePointSearchType.SERVICE_POINT) {
-        this.navigateToServicePoint(searchResultSelected);
-      } else {
-        this.navigatePrm(searchResultSelected);
-      }
-    } else {
-      this.servicePointSearchResult$ = of([]);
-    }
-  }
-
-  private navigatePrm(searchResultSelected: ServicePointSearchResult) {
-    this.router
-      .navigate([Pages.STOP_POINTS.path, searchResultSelected.sloid], {
-        relativeTo: this.route,
-      })
-      .then();
-  }
-
-  private navigateToServicePoint(searchResultSelected: ServicePointSearchResult) {
-    this.router
-      .navigate([Pages.SERVICE_POINTS.path, searchResultSelected.number], {
-        relativeTo: this.route,
-      })
-      .then();
   }
 
   ngOnInit(): void {
@@ -118,31 +76,69 @@ export class SearchServicePointComponent implements OnInit {
           if (term.length < this.MIN_LENGTH_TERM) {
             return of([]).pipe(tap(() => (this.loading = false)));
           }
-          return this.doSearch(term);
+          return this.search(term);
         }),
       ),
     );
   }
 
-  private doSearch(term: string) {
-    if (this.searchType === ServicePointSearchType.SERVICE_POINT) {
-      return this.servicePointService.searchServicePoints({ value: term }).pipe(
-        catchError(() => of([])),
-        tap(() => (this.loading = false)),
-      );
+  clearResult() {
+    this._searchValue = '';
+    this.loadResult();
+  }
+
+  navigateTo(searchResultSelected: ServicePointSearchResult) {
+    if (searchResultSelected) {
+      this.navigate(searchResultSelected);
+    } else {
+      this.servicePointSearchResult$ = of([]);
     }
+  }
+
+  private search(term: string) {
+    if (this.searchType === ServicePointSearch.SePoDi) {
+      return this.searchServicePoint(term);
+    }
+    return this.searchSwissOnlyServicePointAsStopPoint(term);
+  }
+
+  private searchSwissOnlyServicePointAsStopPoint(term: string) {
     return this.servicePointService.searchSwissOnlyServicePoints({ value: term }).pipe(
       catchError(() => of([])),
       tap(() => (this.loading = false)),
     );
   }
 
-  initSearchValue(searchValue: string) {
+  private searchServicePoint(term: string) {
+    return this.servicePointService.searchServicePoints({ value: term }).pipe(
+      catchError(() => of([])),
+      tap(() => (this.loading = false)),
+    );
+  }
+
+  private initSearchValue(searchValue: string) {
     this._searchValue = searchValue == null ? '' : searchValue.trim();
   }
 
-  clearResult() {
-    this._searchValue = '';
-    this.loadResult();
+  private navigate(searchResultSelected: ServicePointSearchResult) {
+    this.router
+      .navigate(
+        [
+          this.searchType.navigationPath,
+          this.searchType === ServicePointSearch.SePoDi
+            ? searchResultSelected.number
+            : searchResultSelected.sloid,
+        ],
+        { relativeTo: this.route },
+      )
+      .then();
+  }
+
+  private getNotFoundTranslatedLabel() {
+    return this.translatePipe.transform('COMMON.NODATAFOUND');
+  }
+
+  private getTypeToSearchTranslatedLabel() {
+    return this.translatePipe.transform('COMMON.TYPE_TO_SEARCH_SHORT');
   }
 }
