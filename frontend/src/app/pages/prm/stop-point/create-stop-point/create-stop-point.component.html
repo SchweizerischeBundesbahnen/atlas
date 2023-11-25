@@ -35,7 +35,7 @@
         </div>
       </div>
     </mat-step>
-    <mat-step [stepControl]="form">
+    <mat-step [stepControl]="form" state="edit">
       <ng-template matStepLabel>{{ 'PRM.STOP_POINTS.POPULATE_DATA' | translate }}</ng-template>
       <ng-container *ngIf="isDataEditable">
         <div class="d-flex mb-2">
@@ -68,5 +68,8 @@
         </ng-container>
       </ng-container>
     </mat-step>
+    <ng-template matStepperIcon="edit">
+      <i class="bi bi-check2-circle pt-1"></i>
+    </ng-template>
   </mat-stepper>
 </ng-container>
