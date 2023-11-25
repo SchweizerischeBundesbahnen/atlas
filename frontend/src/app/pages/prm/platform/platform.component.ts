@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BasePrmComponentService } from '../base-prm-component.service';
 
@@ -7,7 +7,7 @@ import { BasePrmComponentService } from '../base-prm-component.service';
   templateUrl: './platform.component.html',
   styleUrls: ['./platform.component.scss'],
 })
-export class PlatformComponent extends BasePrmComponentService {
+export class PlatformComponent extends BasePrmComponentService implements OnInit {
   constructor(
     readonly router: Router,
     private route: ActivatedRoute,
@@ -16,6 +16,6 @@ export class PlatformComponent extends BasePrmComponentService {
   }
 
   ngOnInit(): void {
-    this.checkStopPointExists(this.route.parent?.snapshot?.data!);
+    this.checkStopPointExists(this.route.parent!.snapshot!.data!);
   }
 }

@@ -96,7 +96,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   }
 
   private initServicePointsData(next: Data) {
-    let servicePoints: ReadServicePointVersion[] = next.servicePoints;
+    const servicePoints: ReadServicePointVersion[] = next.servicePoints;
     this.businessOrganisations = [
       ...new Set(servicePoints.map((value) => value.businessOrganisation)),
     ];
