@@ -17,8 +17,7 @@ import { AuthService } from '../../../core/auth/auth.service';
 import { ApplicationType } from '../../../api';
 import { filter } from 'rxjs/operators';
 import { MapIcon, MapIconsService } from './map-icons.service';
-import { SearchTypes } from '../../user-administration/user/overview/search-type';
-import { ServicePointSearchType } from '../../../core/search-service-point/search-service-point.component';
+import { ServicePointSearch } from '../../../core/search-service-point/service-point-search';
 
 @Component({
   selector: 'atlas-map',
@@ -34,6 +33,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   showMapStyleSelection = false;
   showMapLegend = false;
   legend!: MapIcon[];
+  servicePointSearchType = ServicePointSearch.SePoDi;
 
   map!: Map;
 
@@ -123,7 +123,4 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       .then()
       .catch((reason) => console.error('Navigation failed:', reason));
   }
-
-  protected readonly SearchTypes = SearchTypes;
-  protected readonly ServicePointSearchType = ServicePointSearchType;
 }
