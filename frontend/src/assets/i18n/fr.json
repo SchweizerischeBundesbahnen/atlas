@@ -1044,6 +1044,8 @@
     "SLOID_ALREADY_USED": "{{sloid}} est déjà pris."
   },
   "PRM": {
+    "EXTERNAL_LINK": "https://www.tp-info.ch/fr/gestion-des-donnees/accessibilite/saisie",
+    "EXTERNAL_LINK_LABEL": "Guide LHand",
     "STOP_POINT": "Informations de base sur l’arrêt",
     "REFERENCE_POINT": "Point de référence",
     "PLATFORM": "Bordure d’arrêt",
