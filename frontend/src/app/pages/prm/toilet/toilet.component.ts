@@ -16,6 +16,6 @@ export class ToiletComponent extends BasePrmComponentService implements OnInit {
   }
 
   ngOnInit(): void {
-    this.checkStopPointExists(this.route.parent?.snapshot?.data!);
+    this.checkStopPointExists(this.route.parent!.snapshot!.data!);
   }
 }

@@ -15,8 +15,8 @@ export class PrmMeanOfTransportHelper {
       MeanOfTransport.Metro,
       MeanOfTransport.RackRailway,
     ];
-    let reduced: MeanOfTransport[] = [];
-    let complete: MeanOfTransport[] = [];
+    const reduced: MeanOfTransport[] = [];
+    const complete: MeanOfTransport[] = [];
     selectedMeansOfTransport.forEach((mot: MeanOfTransport) => {
       reducedMeansOfTransport.forEach((red) => {
         if (red === mot) {
