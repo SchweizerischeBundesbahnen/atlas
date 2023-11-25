@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ServicePointSearchType } from '../../../core/search-service-point/search-service-point.component';
+import { ServicePointSearch } from '../../../core/search-service-point/service-point-search';
 
 @Component({
   selector: 'app-prm-home-search',
@@ -7,5 +7,5 @@ import { ServicePointSearchType } from '../../../core/search-service-point/searc
   styleUrls: ['./prm-home-search.component.scss'],
 })
 export class PrmHomeSearchComponent {
-  protected readonly ServicePointSearchType = ServicePointSearchType;
+  servicePointSearch = ServicePointSearch.PRM;
 }
