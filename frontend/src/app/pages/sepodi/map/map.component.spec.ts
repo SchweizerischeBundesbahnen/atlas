@@ -6,8 +6,9 @@ import { MAP_STYLES } from './map-options.service';
 import { CoordinatePairWGS84, MapService } from './map.service';
 import maplibregl, { Map } from 'maplibre-gl';
 import { BehaviorSubject } from 'rxjs';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { AuthService } from '../../../core/auth/auth.service';
+import { ServicePointSearchType } from '../../../core/search-service-point/service-point-search';
 import SpyObj = jasmine.SpyObj;
 
 const clickedGeographyCoordinatesSubject = new BehaviorSubject<CoordinatePairWGS84>({
@@ -50,7 +51,9 @@ mapSpy.on.and.callFake(() => {
   selector: 'app-search-service-point',
   template: '<h1>SearchServicePointMockComponent</h1>',
 })
-class SearchServicePointMockComponent {}
+class SearchServicePointMockComponent {
+  @Input() searchType!: ServicePointSearchType;
+}
 
 describe('MapComponent', () => {
   let component: MapComponent;

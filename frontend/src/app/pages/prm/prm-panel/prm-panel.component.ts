@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   BusinessOrganisationsService,
   BusinessOrganisationVersion,
@@ -20,7 +20,7 @@ import { PrmTab } from './prm-tab';
   templateUrl: './prm-panel.component.html',
   styleUrls: ['./prm-panel.component.scss'],
 })
-export class PrmPanelComponent {
+export class PrmPanelComponent implements OnDestroy, OnInit {
   selectedServicePointVersion!: ReadServicePointVersion;
   selectedBusinessOrganisation?: BusinessOrganisationVersion;
   servicePointVersions!: ReadServicePointVersion[];

@@ -16,6 +16,6 @@ export class ConnectionComponent extends BasePrmComponentService implements OnIn
   }
 
   ngOnInit(): void {
-    this.checkIsReducedOrComplete(this.route.parent?.snapshot?.data!);
+    this.checkIsReducedOrComplete(this.route.parent!.snapshot!.data!);
   }
 }
