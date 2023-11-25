@@ -1045,6 +1045,8 @@
     "SLOID_ALREADY_USED": "{{sloid}} ist bereits vergeben."
   },
   "PRM": {
+    "EXTERNAL_LINK": "https://www.öv-info.ch/de/datenmanagement/barrierefreier-zugang/erfassung",
+    "EXTERNAL_LINK_LABEL": "Leitfaden BehiG",
     "TABS": {
       "STOP_POINT": "Basisinformationen Haltestelle",
       "REFERENCE_POINT": "Referenzpunkt",

@@ -1044,6 +1044,8 @@
     "SLOID_ALREADY_USED": "{{sloid}} è già stato preso."
   },
   "PRM": {
+    "EXTERNAL_LINK": "https://www.tp-info.ch/it/gestione-dei-dati/accessa-senza-barriere/procedura",
+    "EXTERNAL_LINK_LABEL": "Guida LDis",
     "STOP_POINT": "Informazioni di base Fermata",
     "REFERENCE_POINT": "Punto di riferimento",
     "PLATFORM": "Bordo di fermata",
