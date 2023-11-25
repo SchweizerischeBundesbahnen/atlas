@@ -28,28 +28,6 @@ export class CreateStopPointComponent {
 
   constructor(private dialogService: DialogService) {}
 
-  checkSelection() {
-    const selectedMeansOfTransport = this.formMeanOfTransport.controls.meansOfTransport.value;
-
-    if (selectedMeansOfTransport && selectedMeansOfTransport.length > 0) {
-      this.isReduced = PrmMeanOfTransportHelper.isReduced(selectedMeansOfTransport);
-      this.selectedMeansOfTransport = selectedMeansOfTransport;
-      if (!this.isMeanOfTransportSelected || this.isReduced === this.isPreviousSelectionReduced) {
-        this.initForm();
-      } else if (this.isReduced !== this.isPreviousSelectionReduced) {
-        this.confirmChangingRecodingVariant();
-      }
-    } else {
-      this.formMeanOfTransport.controls.meansOfTransport.setErrors({ required: '' });
-    }
-  }
-
-  private initForm() {
-    this.isDataEditable = true;
-    this.form.enable();
-    this.stepper.next();
-  }
-
   backSelection() {
     this.isPreviousSelectionReduced = PrmMeanOfTransportHelper.isReduced(
       this.selectedMeansOfTransport,
@@ -57,6 +35,28 @@ export class CreateStopPointComponent {
     this.isMeanOfTransportSelected = true;
     this.isDataEditable = false;
     this.stepper.previous();
+  }
+
+  checkSelection() {
+    this.formMeanOfTransport.markAllAsTouched();
+    if (this.formMeanOfTransport.valid) {
+      const selectedMeansOfTransport = this.formMeanOfTransport.controls.meansOfTransport.value;
+      if (selectedMeansOfTransport && selectedMeansOfTransport.length > 0) {
+        this.isReduced = PrmMeanOfTransportHelper.isReduced(selectedMeansOfTransport);
+        this.selectedMeansOfTransport = selectedMeansOfTransport;
+        if (!this.isMeanOfTransportSelected || this.isReduced === this.isPreviousSelectionReduced) {
+          this.initForm();
+        } else if (this.isReduced !== this.isPreviousSelectionReduced) {
+          this.confirmChangingRecodingVariant();
+        }
+      }
+    }
+  }
+
+  private initForm() {
+    this.isDataEditable = true;
+    this.form.enable();
+    this.stepper.next();
   }
 
   private confirmChangingRecodingVariant() {
