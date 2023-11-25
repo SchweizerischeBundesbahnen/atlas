@@ -7,6 +7,7 @@
   </div>
 
   <ng-select
+    autofocus="true"
     [items]="servicePointSearchResult$ | async"
     [typeahead]="searchInput$"
     [loading]="loading"
