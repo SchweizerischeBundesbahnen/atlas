@@ -54,10 +54,10 @@ export class StopPointFormGroupBuilder {
     if (version.reduced) {
       return this.buildReducedFormGroup(version);
     }
-    return this.buildCompleteFormGrouo(version);
+    return this.buildCompleteFormGroup(version);
   }
 
-  private static buildCompleteFormGrouo(version: ReadStopPointVersion) {
+  private static buildCompleteFormGroup(version: ReadStopPointVersion) {
     return new FormGroup<StopPointDetailFormGroup>({
       number: new FormControl(version.number.number),
       sloid: new FormControl(version.sloid),
