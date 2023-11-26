@@ -37,7 +37,6 @@ class MergeHelperTest extends VersionableServiceBaseTest {
     List<VersionedObject> result = MergeHelper.mergeVersionedObject(
         Arrays.asList(first, second));
     //then
-    assertThat(result).isNotEmpty();
     result.sort(Comparator.comparing(VersionedObject::getValidFrom));
     assertThat(result).hasSize(2);
 
@@ -77,7 +76,6 @@ class MergeHelperTest extends VersionableServiceBaseTest {
     List<VersionedObject> result = MergeHelper.mergeVersionedObject(
         Arrays.asList(first, second));
     //then
-    assertThat(result).isNotEmpty();
     result.sort(Comparator.comparing(VersionedObject::getValidFrom));
     assertThat(result).hasSize(2);
 
@@ -116,7 +114,6 @@ class MergeHelperTest extends VersionableServiceBaseTest {
     List<VersionedObject> result = MergeHelper.mergeVersionedObject(
         Arrays.asList(first, second));
     //then
-    assertThat(result).isNotEmpty();
     result.sort(Comparator.comparing(VersionedObject::getValidFrom));
     assertThat(result).hasSize(2);
 
@@ -158,7 +155,6 @@ class MergeHelperTest extends VersionableServiceBaseTest {
     List<VersionedObject> result = MergeHelper.mergeVersionedObject(
         Arrays.asList(first, second));
     //then
-    assertThat(result).isNotEmpty();
     result.sort(Comparator.comparing(VersionedObject::getValidFrom));
     assertThat(result).hasSize(2);
 
@@ -200,7 +196,6 @@ class MergeHelperTest extends VersionableServiceBaseTest {
     List<VersionedObject> result = MergeHelper.mergeVersionedObject(
         Arrays.asList(first, second));
     //then
-    assertThat(result).isNotEmpty();
     result.sort(Comparator.comparing(VersionedObject::getValidFrom));
     assertThat(result).hasSize(2);
 

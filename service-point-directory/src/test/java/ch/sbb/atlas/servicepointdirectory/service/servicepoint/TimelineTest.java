@@ -53,7 +53,7 @@ public class TimelineTest {
     void shouldCreateEmptyListWhenKilMasterTimelinesWithNull() {
         Timeline timeline = new Timeline(null, ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
         List<DateRange> mergedTimeline = timeline.getKilometerMasterTimelineElements();
-        assertThat(mergedTimeline).hasSize(0);
+        assertThat(mergedTimeline).isEmpty();
     }
 
     @Test
@@ -62,7 +62,7 @@ public class TimelineTest {
 
         Timeline timeline = new Timeline(servicePointVersionList, ServicePointVersionsTimelineTestData.getAargauServicePointVersionModel1());
         List<DateRange> mergedTimeline = timeline.getKilometerMasterTimelineElements();
-        assertThat(mergedTimeline).hasSize(0);
+        assertThat(mergedTimeline).isEmpty();
     }
 
     @Test

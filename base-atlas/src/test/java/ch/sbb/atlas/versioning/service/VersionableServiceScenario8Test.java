@@ -38,7 +38,6 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
         Arrays.asList(versionableObject1, versionableObject2, versionableObject3));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(3);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
@@ -96,7 +95,6 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
         Arrays.asList(versionableObject1, versionableObject2, versionableObject3));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(4);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
@@ -126,7 +124,6 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
     assertThat(thirdVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2024, 6, 1));
     Entity thirdVersionedObjectEntity = thirdVersionedObject.getEntity();
     assertThat(thirdVersionedObjectEntity).isNotNull();
-    assertThat(thirdVersionedObjectEntity.getProperties()).isNotEmpty();
     assertThat(thirdVersionedObjectEntity.getProperties()).hasSize(4);
     Property propertyThirdVersionedObjectEntity = filterProperty(
         thirdVersionedObjectEntity.getProperties(), Fields.property);
@@ -181,7 +178,6 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
             versionableObject4));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(4);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
@@ -249,7 +245,6 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
             versionableObject4));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(4);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
@@ -326,7 +321,6 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
             versionableObject4));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(5);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
@@ -413,7 +407,6 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
             versionableObject4));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(5);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
@@ -532,7 +525,6 @@ public class VersionableServiceScenario8Test extends VersionableServiceBaseTest 
         Arrays.asList(versionableObject1, versionableObject2, versionableObject3));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(4);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();

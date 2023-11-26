@@ -42,7 +42,6 @@ public class VersionableServiceScenario12Test extends VersionableServiceBaseTest
         List.of(versionableObject1, versionableObject2));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(2);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();

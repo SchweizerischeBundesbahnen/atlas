@@ -233,8 +233,7 @@ import org.springframework.transaction.annotation.Transactional;
         LocalDate.of(2022, 1, 1));
 
     //then
-    assertThat(result).hasSize(1);
-    assertThat(result).contains(lineVersion1);
+    assertThat(result).hasSize(1).contains(lineVersion1);
 
   }
 
