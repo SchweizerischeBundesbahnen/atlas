@@ -39,7 +39,7 @@ class MergeHelperTest extends VersionableServiceBaseTest {
     //then
     assertThat(result).isNotEmpty();
     result.sort(Comparator.comparing(VersionedObject::getValidFrom));
-    assertThat(result.size()).isEqualTo(2);
+    assertThat(result).hasSize(2);
 
     VersionedObject firstVersionedObject = result.get(0);
     assertThat(firstVersionedObject.getAction()).isEqualTo(VersioningAction.DELETE);
@@ -79,7 +79,7 @@ class MergeHelperTest extends VersionableServiceBaseTest {
     //then
     assertThat(result).isNotEmpty();
     result.sort(Comparator.comparing(VersionedObject::getValidFrom));
-    assertThat(result.size()).isEqualTo(2);
+    assertThat(result).hasSize(2);
 
     VersionedObject firstVersionedObject = result.get(0);
     assertThat(firstVersionedObject.getAction()).isEqualTo(VersioningAction.DELETE);
@@ -118,7 +118,7 @@ class MergeHelperTest extends VersionableServiceBaseTest {
     //then
     assertThat(result).isNotEmpty();
     result.sort(Comparator.comparing(VersionedObject::getValidFrom));
-    assertThat(result.size()).isEqualTo(2);
+    assertThat(result).hasSize(2);
 
     VersionedObject firstVersionedObject = result.get(0);
     assertThat(firstVersionedObject.getAction()).isEqualTo(VersioningAction.NOT_TOUCHED);
@@ -160,7 +160,7 @@ class MergeHelperTest extends VersionableServiceBaseTest {
     //then
     assertThat(result).isNotEmpty();
     result.sort(Comparator.comparing(VersionedObject::getValidFrom));
-    assertThat(result.size()).isEqualTo(2);
+    assertThat(result).hasSize(2);
 
     VersionedObject firstVersionedObject = result.get(0);
     assertThat(firstVersionedObject.getAction()).isEqualTo(VersioningAction.NOT_TOUCHED);
@@ -202,7 +202,7 @@ class MergeHelperTest extends VersionableServiceBaseTest {
     //then
     assertThat(result).isNotEmpty();
     result.sort(Comparator.comparing(VersionedObject::getValidFrom));
-    assertThat(result.size()).isEqualTo(2);
+    assertThat(result).hasSize(2);
 
     VersionedObject firstVersionedObject = result.get(0);
     assertThat(firstVersionedObject.getAction()).isEqualTo(VersioningAction.NOT_TOUCHED);
