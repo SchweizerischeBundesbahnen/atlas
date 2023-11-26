@@ -42,7 +42,6 @@ public class VersionableServiceScenario14Test extends VersionableServiceBaseTest
         List.of(versionableObject1));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(1);
 
     VersionedObject firstVersionedObject = result.get(0);
@@ -93,7 +92,6 @@ public class VersionableServiceScenario14Test extends VersionableServiceBaseTest
         List.of(versionableObject1));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(1);
 
     VersionedObject firstVersionedObject = result.get(0);
@@ -143,7 +141,6 @@ public class VersionableServiceScenario14Test extends VersionableServiceBaseTest
         List.of(versionableObject1));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(1);
 
     VersionedObject firstVersionedObject = result.get(0);
@@ -192,7 +189,6 @@ public class VersionableServiceScenario14Test extends VersionableServiceBaseTest
         List.of(versionableObject1, versionableObject3));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(2);
 
     VersionedObject firstVersionedObject = result.get(0);
@@ -244,7 +240,6 @@ public class VersionableServiceScenario14Test extends VersionableServiceBaseTest
         List.of(versionableObject1, versionableObject3));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(2);
 
     VersionedObject firstVersionedObject = result.get(0);

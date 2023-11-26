@@ -54,7 +54,6 @@ import org.springframework.beans.factory.annotation.Autowired;
     List<TimetableFieldNumberVersion> result = versionRepository.getAllVersionsVersioned(version1.getTtfnid());
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(3);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
@@ -123,7 +122,6 @@ import org.springframework.beans.factory.annotation.Autowired;
     List<TimetableFieldNumberVersion> result = versionRepository.getAllVersionsVersioned(version1.getTtfnid());
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(4);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
@@ -206,7 +204,6 @@ import org.springframework.beans.factory.annotation.Autowired;
     List<TimetableFieldNumberVersion> result = versionRepository.getAllVersionsVersioned(version1.getTtfnid());
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(4);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
@@ -290,7 +287,6 @@ import org.springframework.beans.factory.annotation.Autowired;
     List<TimetableFieldNumberVersion> result = versionRepository.getAllVersionsVersioned(version1.getTtfnid());
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(4);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
@@ -374,7 +370,6 @@ import org.springframework.beans.factory.annotation.Autowired;
     List<TimetableFieldNumberVersion> result = versionRepository.getAllVersionsVersioned(version1.getTtfnid());
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(5);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
@@ -471,7 +466,6 @@ import org.springframework.beans.factory.annotation.Autowired;
     List<TimetableFieldNumberVersion> result = versionRepository.getAllVersionsVersioned(version1.getTtfnid());
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(5);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
@@ -568,7 +562,6 @@ import org.springframework.beans.factory.annotation.Autowired;
     List<TimetableFieldNumberVersion> result = versionRepository.getAllVersionsVersioned(version1.getTtfnid());
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(4);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
