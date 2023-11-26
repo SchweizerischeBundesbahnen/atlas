@@ -161,6 +161,16 @@ public class ServicePointController implements ServicePointApiV1 {
   }
 
   @Override
+  public ReadServicePointVersionModel validateServicePoint(Long id) {
+    ServicePointVersion servicePointVersion = servicePointService.findById(id)
+            .orElseThrow(() -> new IdNotFoundException(id));
+
+    ServicePointVersion validatedServicePointVersion = servicePointService.validate(servicePointVersion);
+
+    return ServicePointVersionMapper.toModel(validatedServicePointVersion);
+  }
+
+  @Override
   public List<ReadServicePointVersionModel> updateServicePoint(Long id,
       UpdateServicePointVersionModel updateServicePointVersionModel) {
     ServicePointVersion servicePointVersionToUpdate = servicePointService.findById(id)
