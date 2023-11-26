@@ -55,7 +55,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(3);
+    assertThat(result).hasSize(3);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
     // first version no changes
@@ -124,7 +124,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(4);
+    assertThat(result).hasSize(4);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
     // first version no changes
@@ -207,7 +207,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(4);
+    assertThat(result).hasSize(4);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
     // first version no changes
@@ -291,7 +291,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(4);
+    assertThat(result).hasSize(4);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
     // first version no changes
@@ -375,7 +375,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(5);
+    assertThat(result).hasSize(5);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
     // first version no changes
@@ -472,7 +472,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(5);
+    assertThat(result).hasSize(5);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
     // first version update
@@ -569,7 +569,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(4);
+    assertThat(result).hasSize(4);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
     // first version update
