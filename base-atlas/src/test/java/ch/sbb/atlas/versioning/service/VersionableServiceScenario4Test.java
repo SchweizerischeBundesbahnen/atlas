@@ -1,7 +1,6 @@
 package ch.sbb.atlas.versioning.service;
 
 import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.versioning.BaseTest.VersionableObject.Relation;
@@ -46,9 +45,9 @@ public class VersionableServiceScenario4Test extends VersionableServiceBaseTest 
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(5);
+    assertThat(result).hasSize(5);
     List<VersionedObject> sortedVersionedObjects =
-        result.stream().sorted(comparing(VersionedObject::getValidFrom)).collect(toList());
+        result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
 
     VersionedObject firstVersionedObject = sortedVersionedObjects.get(0);
     assertThat(firstVersionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
@@ -57,7 +56,7 @@ public class VersionableServiceScenario4Test extends VersionableServiceBaseTest 
     assertThat(firstVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2020, 5, 31));
     Entity firstVersionedObjectEntity = firstVersionedObject.getEntity();
     assertThat(firstVersionedObjectEntity).isNotNull();
-    assertThat(firstVersionedObjectEntity.getProperties().size()).isEqualTo(4);
+    assertThat(firstVersionedObjectEntity.getProperties()).hasSize(4);
     Property propertyFirstVersionedObjectEntity = filterProperty(
         firstVersionedObjectEntity.getProperties(), VersionableObject.Fields.property);
     assertThat(propertyFirstVersionedObjectEntity).isNotNull();
@@ -74,7 +73,7 @@ public class VersionableServiceScenario4Test extends VersionableServiceBaseTest 
     assertThat(secondVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
     Entity secondVersionedObjectEntity = secondVersionedObject.getEntity();
     assertThat(secondVersionedObjectEntity).isNotNull();
-    assertThat(secondVersionedObjectEntity.getProperties().size()).isEqualTo(4);
+    assertThat(secondVersionedObjectEntity.getProperties()).hasSize(4);
     Property propertySecondVersionedObjectEntity = filterProperty(
         secondVersionedObjectEntity.getProperties(), VersionableObject.Fields.property);
     assertThat(propertySecondVersionedObjectEntity).isNotNull();
@@ -85,11 +84,11 @@ public class VersionableServiceScenario4Test extends VersionableServiceBaseTest 
     List<Entity> oneToManyRelationEntitiesSecondVersionedObjectEntity =
         oneToManyRelationSecondVersionedObjectEntity.getOneToMany();
     assertThat(oneToManyRelationEntitiesSecondVersionedObjectEntity).isNotEmpty();
-    assertThat(oneToManyRelationEntitiesSecondVersionedObjectEntity.size()).isEqualTo(1);
+    assertThat(oneToManyRelationEntitiesSecondVersionedObjectEntity).hasSize(1);
     Entity lineRelationSecondVersionedObject = oneToManyRelationEntitiesSecondVersionedObjectEntity.get(
         0);
     assertThat(lineRelationSecondVersionedObject.getProperties()).isNotEmpty();
-    assertThat(lineRelationSecondVersionedObject.getProperties().size()).isEqualTo(1);
+    assertThat(lineRelationSecondVersionedObject.getProperties()).hasSize(1);
     assertThat(lineRelationSecondVersionedObject.getProperties().get(0).getValue()).isEqualTo(
         "first Relation");
 
@@ -100,7 +99,7 @@ public class VersionableServiceScenario4Test extends VersionableServiceBaseTest 
     assertThat(thirdVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
     Entity thirdVersionedObjectEntity = thirdVersionedObject.getEntity();
     assertThat(thirdVersionedObjectEntity).isNotNull();
-    assertThat(thirdVersionedObjectEntity.getProperties().size()).isEqualTo(4);
+    assertThat(thirdVersionedObjectEntity.getProperties()).hasSize(4);
     Property propertyThirdVersionedObjectEntity = filterProperty(
         thirdVersionedObjectEntity.getProperties(), VersionableObject.Fields.property);
     assertThat(propertyThirdVersionedObjectEntity).isNotNull();
@@ -110,11 +109,11 @@ public class VersionableServiceScenario4Test extends VersionableServiceBaseTest 
     assertThat(oneToManyRelationThirdVersionedObjectEntity.hasOneToManyRelation()).isTrue();
     List<Entity> oneToManyRelationEntitiesThirdVersionedObjectEntity = oneToManyRelationThirdVersionedObjectEntity.getOneToMany();
     assertThat(oneToManyRelationEntitiesThirdVersionedObjectEntity).isNotEmpty();
-    assertThat(oneToManyRelationEntitiesThirdVersionedObjectEntity.size()).isEqualTo(1);
+    assertThat(oneToManyRelationEntitiesThirdVersionedObjectEntity).hasSize(1);
     Entity lineRelationThirdVersionedObject = oneToManyRelationEntitiesThirdVersionedObjectEntity.get(
         0);
     assertThat(lineRelationThirdVersionedObject.getProperties()).isNotEmpty();
-    assertThat(lineRelationThirdVersionedObject.getProperties().size()).isEqualTo(1);
+    assertThat(lineRelationThirdVersionedObject.getProperties()).hasSize(1);
     assertThat(lineRelationThirdVersionedObject.getProperties().get(0).getValue()).isEqualTo(
         "first Relation");
 
@@ -125,7 +124,7 @@ public class VersionableServiceScenario4Test extends VersionableServiceBaseTest 
     assertThat(fourthVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2024, 6, 1));
     Entity fourthVersionedObjectEntity = fourthVersionedObject.getEntity();
     assertThat(fourthVersionedObjectEntity).isNotNull();
-    assertThat(fourthVersionedObjectEntity.getProperties().size()).isEqualTo(4);
+    assertThat(fourthVersionedObjectEntity.getProperties()).hasSize(4);
     Property propertyFourthVersionedObjectEntity = filterProperty(
         fourthVersionedObjectEntity.getProperties(), VersionableObject.Fields.property);
     assertThat(propertyFourthVersionedObjectEntity).isNotNull();
@@ -136,11 +135,11 @@ public class VersionableServiceScenario4Test extends VersionableServiceBaseTest 
     List<Entity> oneToManyRelationEntitiesFourthVersionedObjectEntity =
         oneToManyRelationFourthVersionedObjectEntity.getOneToMany();
     assertThat(oneToManyRelationEntitiesFourthVersionedObjectEntity).isNotEmpty();
-    assertThat(oneToManyRelationEntitiesFourthVersionedObjectEntity.size()).isEqualTo(1);
+    assertThat(oneToManyRelationEntitiesFourthVersionedObjectEntity).hasSize(1);
     Entity lineRelationFourthVersionedObject = oneToManyRelationEntitiesFourthVersionedObjectEntity.get(
         0);
     assertThat(lineRelationFourthVersionedObject.getProperties()).isNotEmpty();
-    assertThat(lineRelationFourthVersionedObject.getProperties().size()).isEqualTo(1);
+    assertThat(lineRelationFourthVersionedObject.getProperties()).hasSize(1);
     assertThat(lineRelationFourthVersionedObject.getProperties().get(0).getValue()).isEqualTo(
         "first Relation");
 
@@ -151,7 +150,7 @@ public class VersionableServiceScenario4Test extends VersionableServiceBaseTest 
     assertThat(fifthVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
     Entity fifthVersionedObjectEntity = fifthVersionedObject.getEntity();
     assertThat(fifthVersionedObjectEntity).isNotNull();
-    assertThat(fifthVersionedObjectEntity.getProperties().size()).isEqualTo(4);
+    assertThat(fifthVersionedObjectEntity.getProperties()).hasSize(4);
     Property propertyFifthVersionedObjectEntity = filterProperty(
         fifthVersionedObjectEntity.getProperties(), VersionableObject.Fields.property);
     assertThat(propertyFifthVersionedObjectEntity).isNotNull();

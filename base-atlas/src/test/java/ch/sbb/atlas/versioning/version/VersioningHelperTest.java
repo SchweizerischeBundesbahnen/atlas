@@ -1943,7 +1943,7 @@ public class VersioningHelperTest {
     //then
     assertThat(result).isFalse();
     assertThat(versioningData.getObjectToVersioningFound().isEmpty()).isFalse();
-    assertThat(versioningData.getObjectToVersioningFound().size()).isEqualTo(1);
+    assertThat(versioningData.getObjectToVersioningFound()).hasSize(1);
   }
 
   @Test
@@ -1958,7 +1958,7 @@ public class VersioningHelperTest {
     //then
     assertThat(result).isTrue();
     assertThat(versioningData.getObjectToVersioningFound().isEmpty()).isFalse();
-    assertThat(versioningData.getObjectToVersioningFound().size()).isEqualTo(1);
+    assertThat(versioningData.getObjectToVersioningFound()).hasSize(1);
   }
 
   @Test

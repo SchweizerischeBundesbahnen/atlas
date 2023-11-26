@@ -201,7 +201,7 @@ import org.springframework.transaction.annotation.Transactional;
     List<LineVersion> result = lineVersionRepository.getFullLineVersions();
 
     //then
-    assertThat(result.size()).isEqualTo(3);
+    assertThat(result).hasSize(3);
   }
 
   @Test
@@ -233,7 +233,7 @@ import org.springframework.transaction.annotation.Transactional;
         LocalDate.of(2022, 1, 1));
 
     //then
-    assertThat(result.size()).isEqualTo(1);
+    assertThat(result).hasSize(1);
     assertThat(result).contains(lineVersion1);
 
   }
