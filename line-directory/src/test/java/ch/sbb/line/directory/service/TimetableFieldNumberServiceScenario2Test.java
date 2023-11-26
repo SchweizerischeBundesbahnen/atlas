@@ -52,7 +52,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(5);
+    assertThat(result).hasSize(5);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
     assertThat(result.get(0)).isNotNull();
 
@@ -87,7 +87,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     assertThat(thirdTemporalVersion.getComment()).isEqualTo("Scenario 2");
     Set<TimetableFieldLineRelation> lineRelations = thirdTemporalVersion.getLineRelations();
     assertThat(lineRelations).isNotEmpty();
-    assertThat(lineRelations.size()).isEqualTo(1);
+    assertThat(lineRelations).hasSize(1);
     TimetableFieldLineRelation lineRelation = lineRelations.stream().iterator().next();
     assertThat(lineRelation).isNotNull();
     assertThat(lineRelation.getSlnid()).isEqualTo("ch:1:ttfnid:111111");

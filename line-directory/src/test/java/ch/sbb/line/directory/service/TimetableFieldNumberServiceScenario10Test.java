@@ -45,7 +45,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(3);
+    assertThat(result).hasSize(3);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
     // first version no changes
@@ -110,7 +110,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(2);
+    assertThat(result).hasSize(2);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
     // first version updated
@@ -165,7 +165,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(4);
+    assertThat(result).hasSize(4);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
     // first version no changes
