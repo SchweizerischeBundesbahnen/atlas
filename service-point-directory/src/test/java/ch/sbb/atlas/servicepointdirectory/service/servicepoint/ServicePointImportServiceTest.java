@@ -134,7 +134,7 @@ class ServicePointImportServiceTest {
     servicePointImportService.importServicePoints(List.of(firstFileCsvContainer));
     servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(firstFileCsvContainer.getDidokCode());
     List<ServicePointVersion> firstResult = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
-    assertThat(firstResult.size()).isEqualTo(2);
+    assertThat(firstResult).hasSize(2);
     assertThat(firstResult.get(0).getValidFrom()).isEqualTo(LocalDate.of(2020, 9, 1));
     assertThat(firstResult.get(0).getValidTo()).isEqualTo(LocalDate.of(2022, 5, 30));
     assertThat(firstResult.get(0).getAbbreviation()).isEqualTo("FIGE");
@@ -148,7 +148,7 @@ class ServicePointImportServiceTest {
     servicePointImportService.importServicePoints(List.of(secondFileCsvContainer));
     //then
     List<ServicePointVersion> result = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
-    assertThat(result.size()).isEqualTo(1);
+    assertThat(result).hasSize(1);
     assertThat(result.get(0).getValidFrom()).isEqualTo(LocalDate.of(2020, 9, 1));
     assertThat(result.get(0).getValidTo()).isEqualTo(LocalDate.of(2099, 12, 31));
     assertThat(result.get(0).getAbbreviation()).isEqualTo("FIBE");
@@ -168,7 +168,7 @@ class ServicePointImportServiceTest {
     servicePointImportService.importServicePoints(List.of(firstFileCsvContainer));
     servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(firstFileCsvContainer.getDidokCode());
     List<ServicePointVersion> firstResult = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
-    assertThat(firstResult.size()).isEqualTo(2);
+    assertThat(firstResult).hasSize(2);
     assertThat(firstResult.get(0).getValidFrom()).isEqualTo(LocalDate.of(2020, 9, 1));
     assertThat(firstResult.get(0).getValidTo()).isEqualTo(LocalDate.of(2022, 5, 30));
     assertThat(firstResult.get(0).getAbbreviation()).isEqualTo("FIGE");
@@ -183,7 +183,7 @@ class ServicePointImportServiceTest {
 
     //then
     List<ServicePointVersion> result = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
-    assertThat(result.size()).isEqualTo(3);
+    assertThat(result).hasSize(3);
     assertThat(result.get(0).getValidFrom()).isEqualTo(LocalDate.of(2020, 9, 1));
     assertThat(result.get(0).getValidTo()).isEqualTo(LocalDate.of(2020, 12, 31));
     assertThat(result.get(0).getAbbreviation()).isEqualTo("FIGE");
@@ -213,7 +213,7 @@ class ServicePointImportServiceTest {
     servicePointImportService.importServicePoints(List.of(firstFileCsvContainer));
     servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(firstFileCsvContainer.getDidokCode());
     List<ServicePointVersion> firstResult = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
-    assertThat(firstResult.size()).isEqualTo(2);
+    assertThat(firstResult).hasSize(2);
     assertThat(firstResult.get(0).getValidFrom()).isEqualTo(LocalDate.of(2020, 9, 1));
     assertThat(firstResult.get(0).getValidTo()).isEqualTo(LocalDate.of(2022, 5, 30));
     assertThat(firstResult.get(0).getAbbreviation()).isEqualTo("FIBE");
@@ -227,7 +227,7 @@ class ServicePointImportServiceTest {
     servicePointImportService.importServicePoints(List.of(secondFileCsvContainer));
     //then
     List<ServicePointVersion> result = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
-    assertThat(result.size()).isEqualTo(1);
+    assertThat(result).hasSize(1);
     assertThat(result.get(0).getValidFrom()).isEqualTo(LocalDate.of(2020, 9, 1));
     assertThat(result.get(0).getValidTo()).isEqualTo(LocalDate.of(2099, 12, 31));
     assertThat(result.get(0).getAbbreviation()).isEqualTo("FIBE");
@@ -251,7 +251,7 @@ class ServicePointImportServiceTest {
     servicePointImportService.importServicePoints(List.of(firstFileCsvContainer));
     servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(firstFileCsvContainer.getDidokCode());
     List<ServicePointVersion> firstResult = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
-    assertThat(firstResult.size()).isEqualTo(2);
+    assertThat(firstResult).hasSize(2);
     assertThat(firstResult.get(0).getValidFrom()).isEqualTo(LocalDate.of(2020, 9, 1));
     assertThat(firstResult.get(0).getValidTo()).isEqualTo(LocalDate.of(2022, 5, 30));
     assertThat(firstResult.get(0).getAbbreviation()).isEqualTo("FIGE");
@@ -266,7 +266,7 @@ class ServicePointImportServiceTest {
 
     //then
     List<ServicePointVersion> result = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
-    assertThat(result.size()).isEqualTo(1);
+    assertThat(result).hasSize(1);
     assertThat(result.get(0).getValidFrom()).isEqualTo(LocalDate.of(2020, 9, 1));
     assertThat(result.get(0).getValidTo()).isEqualTo(LocalDate.of(2099, 12, 31));
     assertThat(result.get(0).getAbbreviation()).isEqualTo("FIBE");
@@ -292,7 +292,7 @@ class ServicePointImportServiceTest {
     servicePointImportService.importServicePoints(List.of(firstFileCsvContainer));
     servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(firstFileCsvContainer.getDidokCode());
     List<ServicePointVersion> firstResult = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
-    assertThat(firstResult.size()).isEqualTo(7);
+    assertThat(firstResult).hasSize(7);
     assertThat(firstResult.get(0).getValidFrom()).isEqualTo(LocalDate.of(1987, 12, 31));
     assertThat(firstResult.get(0).getValidTo()).isEqualTo(LocalDate.of(2007, 12, 8));
     assertThat(firstResult.get(0).getAbbreviation()).isNull();
@@ -322,7 +322,7 @@ class ServicePointImportServiceTest {
 
     //then
     List<ServicePointVersion> result = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
-    assertThat(result.size()).isEqualTo(6);
+    assertThat(result).hasSize(6);
     assertThat(result.get(0).getValidFrom()).isEqualTo(LocalDate.of(1987, 12, 31));
     assertThat(result.get(0).getValidTo()).isEqualTo(LocalDate.of(2007, 12, 8));
     assertThat(result.get(0).getAbbreviation()).isNull();
