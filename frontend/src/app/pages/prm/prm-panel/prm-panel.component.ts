@@ -56,7 +56,7 @@ export class PrmPanelComponent implements OnDestroy, OnInit {
         }),
         switchMap(() =>
           this.businessOrganisationsService
-            .getVersions(this.selectedServicePointVersion!.businessOrganisation)
+            .getVersions(this.selectedServicePointVersion.businessOrganisation)
             .pipe(tap((bo) => this.initSelectedBusinessOrganisationVersion(bo))),
         ),
       )
