@@ -44,7 +44,6 @@ public class VersionableServiceScenario3Test extends VersionableServiceBaseTest 
         Arrays.asList(versionableObject1, versionableObject2, versionableObject3));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(5);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
@@ -89,7 +88,6 @@ public class VersionableServiceScenario3Test extends VersionableServiceBaseTest 
         thirdVersionedObjectEntity.getProperties(), VersionableObject.Fields.oneToManyRelation);
     assertThat(oneToManyRelationThirdVersionedObjectEntity.hasOneToManyRelation()).isTrue();
     List<Entity> oneToManyRelationEntitiesThirdVersionedObjectEntity = oneToManyRelationThirdVersionedObjectEntity.getOneToMany();
-    assertThat(oneToManyRelationEntitiesThirdVersionedObjectEntity).isNotEmpty();
     assertThat(oneToManyRelationEntitiesThirdVersionedObjectEntity).hasSize(1);
     Entity lineRelationThirdVersionedObject = oneToManyRelationEntitiesThirdVersionedObjectEntity.get(
         0);
@@ -116,7 +114,6 @@ public class VersionableServiceScenario3Test extends VersionableServiceBaseTest 
     assertThat(oneToManyRelationFourthVersionedObjectEntity.getOneToMany()).isNotEmpty();
     List<Entity> oneToManyRelationEntitiesFourthVersionedObjectEntity =
         oneToManyRelationFourthVersionedObjectEntity.getOneToMany();
-    assertThat(oneToManyRelationEntitiesFourthVersionedObjectEntity).isNotEmpty();
     assertThat(oneToManyRelationEntitiesFourthVersionedObjectEntity).hasSize(1);
     Entity lineRelationFourthVersionedObject = oneToManyRelationEntitiesFourthVersionedObjectEntity.get(
         0);
@@ -173,7 +170,6 @@ public class VersionableServiceScenario3Test extends VersionableServiceBaseTest 
         Arrays.asList(versionableObject1, versionableObject2, versionableObject3));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(5);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
@@ -214,11 +210,9 @@ public class VersionableServiceScenario3Test extends VersionableServiceBaseTest 
         thirdVersionedObjectEntity.getProperties(), VersionableObject.Fields.oneToManyRelation);
     assertThat(oneToManyRelationThirdVersionedObjectEntity.hasOneToManyRelation()).isTrue();
     List<Entity> oneToManyRelationEntitiesThirdVersionedObjectEntity = oneToManyRelationThirdVersionedObjectEntity.getOneToMany();
-    assertThat(oneToManyRelationEntitiesThirdVersionedObjectEntity).isNotEmpty();
     assertThat(oneToManyRelationEntitiesThirdVersionedObjectEntity).hasSize(1);
     Entity lineRelationThirdVersionedObject = oneToManyRelationEntitiesThirdVersionedObjectEntity.get(
         0);
-    assertThat(lineRelationThirdVersionedObject.getProperties()).isNotEmpty();
     assertThat(lineRelationThirdVersionedObject.getProperties()).hasSize(1);
     assertThat(lineRelationThirdVersionedObject.getProperties().get(0).getValue()).isEqualTo(
         "first Relation");

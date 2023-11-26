@@ -166,7 +166,6 @@ import org.springframework.transaction.annotation.Transactional;
         version1.getSboid());
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(6);
     result.sort(Comparator.comparing(BusinessOrganisationVersion::getValidFrom));
 

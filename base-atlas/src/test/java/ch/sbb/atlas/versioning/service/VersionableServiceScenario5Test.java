@@ -44,7 +44,6 @@ public class VersionableServiceScenario5Test extends VersionableServiceBaseTest 
             versionableObject4));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(6);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
