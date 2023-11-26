@@ -57,7 +57,6 @@ import org.springframework.beans.factory.annotation.Autowired;
         version1.getTtfnid());
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(4);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
@@ -106,7 +105,6 @@ import org.springframework.beans.factory.annotation.Autowired;
     assertThat(fourthTemporalVersion.getDescription()).isEqualTo("FPFN Description <changed>");
     assertThat(fourthTemporalVersion.getComment()).isEqualTo("Scenario 7a");
     Set<TimetableFieldLineRelation> lineRelationsFourthVersion = fourthTemporalVersion.getLineRelations();
-    assertThat(lineRelationsFourthVersion).isNotEmpty();
     assertThat(lineRelationsFourthVersion).hasSize(1);
     TimetableFieldLineRelation lineRelationFourthVersion = lineRelationsFourthVersion.stream()
                                                                                      .iterator()
@@ -153,7 +151,6 @@ import org.springframework.beans.factory.annotation.Autowired;
         version1.getTtfnid());
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(4);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
@@ -164,7 +161,6 @@ import org.springframework.beans.factory.annotation.Autowired;
     assertThat(firstTemporalVersion.getDescription()).isEqualTo("FPFN Description <changed>");
     assertThat(firstTemporalVersion.getComment()).isEqualTo("Scenario 7b");
     Set<TimetableFieldLineRelation> lineRelationsFirstVersion = firstTemporalVersion.getLineRelations();
-    assertThat(lineRelationsFirstVersion).isNotEmpty();
     assertThat(lineRelationsFirstVersion).hasSize(1);
     TimetableFieldLineRelation lineRelationFirstVersion = lineRelationsFirstVersion.stream()
                                                                                    .iterator()
@@ -248,7 +244,6 @@ import org.springframework.beans.factory.annotation.Autowired;
         version1.getTtfnid());
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(4);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
@@ -297,7 +292,6 @@ import org.springframework.beans.factory.annotation.Autowired;
     assertThat(fourthTemporalVersion.getDescription()).isEqualTo("FPFN Description <changed>");
     assertThat(fourthTemporalVersion.getComment()).isEqualTo("Scenario 7c");
     Set<TimetableFieldLineRelation> lineRelationsFourthVersion = fourthTemporalVersion.getLineRelations();
-    assertThat(lineRelationsFourthVersion).isNotEmpty();
     assertThat(lineRelationsFourthVersion).hasSize(1);
     TimetableFieldLineRelation lineRelationFourthVersion = lineRelationsFourthVersion.stream()
                                                                                      .iterator()
@@ -344,7 +338,6 @@ import org.springframework.beans.factory.annotation.Autowired;
         version1.getTtfnid());
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(4);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
@@ -355,7 +348,6 @@ import org.springframework.beans.factory.annotation.Autowired;
     assertThat(firstTemporalVersion.getDescription()).isEqualTo("FPFN Description <changed>");
     assertThat(firstTemporalVersion.getComment()).isEqualTo("Scenario 7d");
     Set<TimetableFieldLineRelation> lineRelationsFirstVersion = firstTemporalVersion.getLineRelations();
-    assertThat(lineRelationsFirstVersion).isNotEmpty();
     assertThat(lineRelationsFirstVersion).hasSize(1);
     TimetableFieldLineRelation lineRelationFirstVersion = lineRelationsFirstVersion.stream()
                                                                                    .iterator()

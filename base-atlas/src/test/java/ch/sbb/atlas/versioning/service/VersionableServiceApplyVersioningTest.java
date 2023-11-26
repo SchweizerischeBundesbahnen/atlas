@@ -91,7 +91,6 @@ public class VersionableServiceApplyVersioningTest extends VersionableServiceBas
         List.of(versionableObject1));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(2);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
@@ -126,7 +125,6 @@ public class VersionableServiceApplyVersioningTest extends VersionableServiceBas
         List.of(versionableObject1, versionableObject3));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(3);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();

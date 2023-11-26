@@ -94,7 +94,6 @@ class ConverterHelperTest extends BaseTest {
     assertThat(result).isNotNull();
     assertThat(result.getId()).isEqualTo(1L);
     List<Property> properties = result.getProperties();
-    assertThat(properties).isNotEmpty();
     assertThat(properties).hasSize(2);
     Property propertyField = properties.stream()
         .filter(
@@ -166,7 +165,6 @@ class ConverterHelperTest extends BaseTest {
     assertThat(result).isNotNull();
     assertThat(result.getId()).isEqualTo(1L);
     List<Property> properties = result.getProperties();
-    assertThat(properties).isNotEmpty();
     assertThat(properties).hasSize(3);
 
     Property propProperty = filterPropertyByKey(properties, "property");
@@ -229,7 +227,6 @@ class ConverterHelperTest extends BaseTest {
     assertThat(result).isNotNull();
     assertThat(result.getId()).isEqualTo(1L);
     List<Property> properties = result.getProperties();
-    assertThat(properties).isNotEmpty();
     assertThat(properties).hasSize(2);
 
     Property propProperty = filterPropertyByKey(properties, "property");
@@ -302,7 +299,6 @@ class ConverterHelperTest extends BaseTest {
     assertThat(entityFirstItem).isNotNull();
     assertThat(entityFirstItem.getId()).isEqualTo(1);
     List<Property> entityFirstItemProperties = entityFirstItem.getProperties();
-    assertThat(entityFirstItemProperties).isNotEmpty();
     assertThat(entityFirstItemProperties).hasSize(3);
 
     Property firstPropertyFirstItem = entityFirstItemProperties.get(0);
@@ -393,7 +389,6 @@ class ConverterHelperTest extends BaseTest {
     );
 
     //then
-    assertThat(result).isNotEmpty();
     assertThat(result).hasSize(2);
     result.sort(Comparator.comparing(toVersioning -> toVersioning.getVersionable().getValidFrom()));
 

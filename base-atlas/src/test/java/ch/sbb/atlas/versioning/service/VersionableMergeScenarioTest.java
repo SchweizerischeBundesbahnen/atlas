@@ -96,7 +96,6 @@ public class VersionableMergeScenarioTest extends MergeBaseTest {
         List.of(versionableObject1, versionableObject2, versionableObject3, versionableObject4));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(4);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
@@ -117,7 +116,6 @@ public class VersionableMergeScenarioTest extends MergeBaseTest {
     assertThat(thirdVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
     Entity thirdVersionedObjectEntity = thirdVersionedObject.getEntity();
     assertThat(thirdVersionedObjectEntity).isNotNull();
-    assertThat(thirdVersionedObjectEntity.getProperties()).isNotEmpty();
     Property propertyThirdVersionedObjectEntity = filterProperty(
         thirdVersionedObjectEntity.getProperties(), property);
     assertThat(propertyThirdVersionedObjectEntity).isNotNull();
@@ -174,7 +172,6 @@ public class VersionableMergeScenarioTest extends MergeBaseTest {
         List.of(versionableObject1, versionableObject2, versionableObject3));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(3);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
@@ -260,7 +257,6 @@ public class VersionableMergeScenarioTest extends MergeBaseTest {
             versionableObject5));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(5);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
@@ -307,7 +303,6 @@ public class VersionableMergeScenarioTest extends MergeBaseTest {
     assertThat(fifthVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2026, 12, 31));
     Entity fifthVersionedObjectEntity = fifthVersionedObject.getEntity();
     assertThat(fifthVersionedObjectEntity).isNotNull();
-    assertThat(fifthVersionedObjectEntity.getProperties()).isNotEmpty();
     Property propertyFifthVersionedObjectEntity = filterProperty(
         fifthVersionedObjectEntity.getProperties(), property);
     assertThat(propertyFifthVersionedObjectEntity).isNotNull();
@@ -375,7 +370,6 @@ public class VersionableMergeScenarioTest extends MergeBaseTest {
             versionableObject5));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(5);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
@@ -393,7 +387,6 @@ public class VersionableMergeScenarioTest extends MergeBaseTest {
     assertThat(thirdVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2024, 12, 31));
     Entity thirdVersionedObjectEntity = thirdVersionedObject.getEntity();
     assertThat(thirdVersionedObjectEntity).isNotNull();
-    assertThat(thirdVersionedObjectEntity.getProperties()).isNotEmpty();
     Property propertyThirdVersionedObjectEntity = filterProperty(
         thirdVersionedObjectEntity.getProperties(), property);
     assertThat(propertyThirdVersionedObjectEntity).isNotNull();
@@ -419,7 +412,6 @@ public class VersionableMergeScenarioTest extends MergeBaseTest {
     assertThat(fourthVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2025, 12, 31));
     Entity fourthVersionedObjectEntity = fourthVersionedObject.getEntity();
     assertThat(fourthVersionedObjectEntity).isNotNull();
-    assertThat(fourthVersionedObjectEntity.getProperties()).isNotEmpty();
     Property propertyFourthVersionedObjectEntity = filterProperty(
         fourthVersionedObjectEntity.getProperties(), property);
     assertThat(propertyFourthVersionedObjectEntity).isNotNull();
@@ -445,7 +437,6 @@ public class VersionableMergeScenarioTest extends MergeBaseTest {
     assertThat(fifthVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2026, 12, 31));
     Entity fifthVersionedObjectEntity = fifthVersionedObject.getEntity();
     assertThat(fifthVersionedObjectEntity).isNotNull();
-    assertThat(fifthVersionedObjectEntity.getProperties()).isNotEmpty();
     Property propertyFifthVersionedObjectEntity = filterProperty(
         fifthVersionedObjectEntity.getProperties(), property);
     assertThat(propertyFifthVersionedObjectEntity).isNotNull();
@@ -494,7 +485,6 @@ public class VersionableMergeScenarioTest extends MergeBaseTest {
         List.of(versionableObject1, versionableObject2));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(2);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
@@ -509,7 +499,6 @@ public class VersionableMergeScenarioTest extends MergeBaseTest {
     assertThat(secondVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
     Entity secondVersionedObjectEntity = secondVersionedObject.getEntity();
     assertThat(secondVersionedObjectEntity).isNotNull();
-    assertThat(secondVersionedObjectEntity.getProperties()).isNotEmpty();
     Property propertySecondVersionedObjectEntity = filterProperty(
         secondVersionedObjectEntity.getProperties(), property);
     assertThat(propertySecondVersionedObjectEntity).isNotNull();
@@ -562,7 +551,6 @@ public class VersionableMergeScenarioTest extends MergeBaseTest {
         List.of(versionableObject1, versionableObject2));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(4);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
@@ -574,7 +562,6 @@ public class VersionableMergeScenarioTest extends MergeBaseTest {
     assertThat(firstVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2021, 5, 31));
     Entity firstVersionedObjectEntity = firstVersionedObject.getEntity();
     assertThat(firstVersionedObjectEntity).isNotNull();
-    assertThat(firstVersionedObjectEntity.getProperties()).isNotEmpty();
     Property propertyFirstVersionedObjectEntity = filterProperty(
         firstVersionedObjectEntity.getProperties(), property);
     assertThat(propertyFirstVersionedObjectEntity).isNotNull();
