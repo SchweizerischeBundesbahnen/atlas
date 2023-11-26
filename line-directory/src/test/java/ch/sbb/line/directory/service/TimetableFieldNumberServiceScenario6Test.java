@@ -53,7 +53,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(4);
+    assertThat(result).hasSize(4);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
     // first version no changes
@@ -102,7 +102,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     assertThat(fourthTemporalVersion.getComment()).isEqualTo("Scenario 6");
     Set<TimetableFieldLineRelation> lineRelationsFourthVersion = fourthTemporalVersion.getLineRelations();
     assertThat(lineRelationsFourthVersion).isNotEmpty();
-    assertThat(lineRelationsFourthVersion.size()).isEqualTo(1);
+    assertThat(lineRelationsFourthVersion).hasSize(1);
     TimetableFieldLineRelation lineRelationFourthVersion = lineRelationsFourthVersion.stream().iterator().next();
     assertThat(lineRelationFourthVersion).isNotNull();
     assertThat(lineRelationFourthVersion.getSlnid()).isEqualTo("ch:1:ttfnid:111111");
@@ -142,7 +142,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(2);
+    assertThat(result).hasSize(2);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
     // first version no changes
@@ -166,7 +166,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     assertThat(secondTemporalVersion.getComment()).isEqualTo("Scenario 6");
     Set<TimetableFieldLineRelation> lineRelationsSecondVersion = secondTemporalVersion.getLineRelations();
     assertThat(lineRelationsSecondVersion).isNotEmpty();
-    assertThat(lineRelationsSecondVersion.size()).isEqualTo(1);
+    assertThat(lineRelationsSecondVersion).hasSize(1);
     TimetableFieldLineRelation lineRelationSecondVersion = lineRelationsSecondVersion.stream().iterator().next();
     assertThat(lineRelationSecondVersion).isNotNull();
     assertThat(lineRelationSecondVersion.getSlnid()).isEqualTo("ch:1:ttfnid:111111");
@@ -206,7 +206,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(2);
+    assertThat(result).hasSize(2);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
     // first version no changes
@@ -230,7 +230,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     assertThat(secondTemporalVersion.getComment()).isEqualTo("Scenario 6");
     Set<TimetableFieldLineRelation> lineRelationsSecondVersion = secondTemporalVersion.getLineRelations();
     assertThat(lineRelationsSecondVersion).isNotEmpty();
-    assertThat(lineRelationsSecondVersion.size()).isEqualTo(1);
+    assertThat(lineRelationsSecondVersion).hasSize(1);
     TimetableFieldLineRelation lineRelationSecondVersion = lineRelationsSecondVersion.stream().iterator().next();
     assertThat(lineRelationSecondVersion).isNotNull();
     assertThat(lineRelationSecondVersion.getSlnid()).isEqualTo("ch:1:ttfnid:111111");
@@ -270,7 +270,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(2);
+    assertThat(result).hasSize(2);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
     // first version no changes
@@ -294,7 +294,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     assertThat(secondTemporalVersion.getComment()).isEqualTo("Scenario 6");
     Set<TimetableFieldLineRelation> lineRelationsSecondVersion = secondTemporalVersion.getLineRelations();
     assertThat(lineRelationsSecondVersion).isNotEmpty();
-    assertThat(lineRelationsSecondVersion.size()).isEqualTo(1);
+    assertThat(lineRelationsSecondVersion).hasSize(1);
     TimetableFieldLineRelation lineRelationSecondVersion = lineRelationsSecondVersion.stream().iterator().next();
     assertThat(lineRelationSecondVersion).isNotNull();
     assertThat(lineRelationSecondVersion.getSlnid()).isEqualTo("ch:1:ttfnid:111111");

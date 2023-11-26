@@ -58,7 +58,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(4);
+    assertThat(result).hasSize(4);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
     // first version no changes
@@ -107,7 +107,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     assertThat(fourthTemporalVersion.getComment()).isEqualTo("Scenario 7a");
     Set<TimetableFieldLineRelation> lineRelationsFourthVersion = fourthTemporalVersion.getLineRelations();
     assertThat(lineRelationsFourthVersion).isNotEmpty();
-    assertThat(lineRelationsFourthVersion.size()).isEqualTo(1);
+    assertThat(lineRelationsFourthVersion).hasSize(1);
     TimetableFieldLineRelation lineRelationFourthVersion = lineRelationsFourthVersion.stream()
                                                                                      .iterator()
                                                                                      .next();
@@ -154,7 +154,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(4);
+    assertThat(result).hasSize(4);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
     //first new
@@ -165,7 +165,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     assertThat(firstTemporalVersion.getComment()).isEqualTo("Scenario 7b");
     Set<TimetableFieldLineRelation> lineRelationsFirstVersion = firstTemporalVersion.getLineRelations();
     assertThat(lineRelationsFirstVersion).isNotEmpty();
-    assertThat(lineRelationsFirstVersion.size()).isEqualTo(1);
+    assertThat(lineRelationsFirstVersion).hasSize(1);
     TimetableFieldLineRelation lineRelationFirstVersion = lineRelationsFirstVersion.stream()
                                                                                    .iterator()
                                                                                    .next();
@@ -249,7 +249,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(4);
+    assertThat(result).hasSize(4);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
     // first version no changes
@@ -298,7 +298,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     assertThat(fourthTemporalVersion.getComment()).isEqualTo("Scenario 7c");
     Set<TimetableFieldLineRelation> lineRelationsFourthVersion = fourthTemporalVersion.getLineRelations();
     assertThat(lineRelationsFourthVersion).isNotEmpty();
-    assertThat(lineRelationsFourthVersion.size()).isEqualTo(1);
+    assertThat(lineRelationsFourthVersion).hasSize(1);
     TimetableFieldLineRelation lineRelationFourthVersion = lineRelationsFourthVersion.stream()
                                                                                      .iterator()
                                                                                      .next();
@@ -345,7 +345,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(4);
+    assertThat(result).hasSize(4);
     result.sort(Comparator.comparing(TimetableFieldNumberVersion::getValidFrom));
 
     //first new
@@ -356,7 +356,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     assertThat(firstTemporalVersion.getComment()).isEqualTo("Scenario 7d");
     Set<TimetableFieldLineRelation> lineRelationsFirstVersion = firstTemporalVersion.getLineRelations();
     assertThat(lineRelationsFirstVersion).isNotEmpty();
-    assertThat(lineRelationsFirstVersion.size()).isEqualTo(1);
+    assertThat(lineRelationsFirstVersion).hasSize(1);
     TimetableFieldLineRelation lineRelationFirstVersion = lineRelationsFirstVersion.stream()
                                                                                    .iterator()
                                                                                    .next();
