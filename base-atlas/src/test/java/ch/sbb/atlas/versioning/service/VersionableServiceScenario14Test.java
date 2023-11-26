@@ -43,7 +43,7 @@ public class VersionableServiceScenario14Test extends VersionableServiceBaseTest
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(1);
+    assertThat(result).hasSize(1);
 
     VersionedObject firstVersionedObject = result.get(0);
     assertThat(firstVersionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
@@ -94,7 +94,7 @@ public class VersionableServiceScenario14Test extends VersionableServiceBaseTest
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(1);
+    assertThat(result).hasSize(1);
 
     VersionedObject firstVersionedObject = result.get(0);
     assertThat(firstVersionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
@@ -144,7 +144,7 @@ public class VersionableServiceScenario14Test extends VersionableServiceBaseTest
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(1);
+    assertThat(result).hasSize(1);
 
     VersionedObject firstVersionedObject = result.get(0);
     assertThat(firstVersionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
@@ -193,7 +193,7 @@ public class VersionableServiceScenario14Test extends VersionableServiceBaseTest
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(2);
+    assertThat(result).hasSize(2);
 
     VersionedObject firstVersionedObject = result.get(0);
     assertThat(firstVersionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
@@ -245,7 +245,7 @@ public class VersionableServiceScenario14Test extends VersionableServiceBaseTest
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(2);
+    assertThat(result).hasSize(2);
 
     VersionedObject firstVersionedObject = result.get(0);
     assertThat(firstVersionedObject.getAction()).isEqualTo(VersioningAction.NOT_TOUCHED);
