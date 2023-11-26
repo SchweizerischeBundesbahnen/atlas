@@ -5,7 +5,6 @@ import { BasePrmComponentService } from '../base-prm-component.service';
 @Component({
   selector: 'app-toilet',
   templateUrl: './toilet.component.html',
-  styleUrls: ['./toilet.component.scss'],
 })
 export class ToiletComponent extends BasePrmComponentService implements OnInit {
   constructor(
@@ -16,6 +15,6 @@ export class ToiletComponent extends BasePrmComponentService implements OnInit {
   }
 
   ngOnInit(): void {
-    this.checkStopPointExists(this.route.parent!.snapshot!.data!);
+    this.checkStopPointExists(this.route.parent!.snapshot.data);
   }
 }

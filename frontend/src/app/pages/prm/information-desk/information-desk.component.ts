@@ -5,7 +5,6 @@ import { BasePrmComponentService } from '../base-prm-component.service';
 @Component({
   selector: 'app-information-desk',
   templateUrl: './information-desk.component.html',
-  styleUrls: ['./information-desk.component.scss'],
 })
 export class InformationDeskComponent extends BasePrmComponentService implements OnInit {
   constructor(
@@ -16,6 +15,6 @@ export class InformationDeskComponent extends BasePrmComponentService implements
   }
 
   ngOnInit(): void {
-    this.checkStopPointExists(this.route.parent!.snapshot!.data!);
+    this.checkStopPointExists(this.route.parent!.snapshot.data);
   }
 }

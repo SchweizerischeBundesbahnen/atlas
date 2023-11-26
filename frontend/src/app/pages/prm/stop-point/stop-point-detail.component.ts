@@ -23,7 +23,6 @@ import { AuthService } from '../../../core/auth/auth.service';
 @Component({
   selector: 'app-stop-point-detail',
   templateUrl: './stop-point-detail.component.html',
-  styleUrls: ['./stop-point-detail.component.scss'],
 })
 export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   isNew = false;
