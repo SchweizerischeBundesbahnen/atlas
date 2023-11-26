@@ -5,7 +5,6 @@ import { BasePrmComponentService } from '../base-prm-component.service';
 @Component({
   selector: 'app-parking-lot',
   templateUrl: './parking-lot.component.html',
-  styleUrls: ['./parking-lot.component.scss'],
 })
 export class ParkingLotComponent extends BasePrmComponentService implements OnInit {
   constructor(
@@ -16,6 +15,6 @@ export class ParkingLotComponent extends BasePrmComponentService implements OnIn
   }
 
   ngOnInit(): void {
-    this.checkStopPointExists(this.route.parent!.snapshot!.data!);
+    this.checkStopPointExists(this.route.parent!.snapshot.data);
   }
 }
