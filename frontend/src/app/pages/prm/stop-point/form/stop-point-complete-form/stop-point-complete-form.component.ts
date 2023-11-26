@@ -10,7 +10,6 @@ import { ControlContainer, FormGroup, NgForm } from '@angular/forms';
 @Component({
   selector: 'app-stop-point-complete-form',
   templateUrl: './stop-point-complete-form.component.html',
-  styleUrls: ['./stop-point-complete-form.component.scss'],
   viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
 })
 export class StopPointCompleteFormComponent implements OnInit {

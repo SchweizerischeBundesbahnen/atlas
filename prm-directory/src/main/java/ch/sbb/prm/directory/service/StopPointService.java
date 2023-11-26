@@ -20,9 +20,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-
 @Slf4j
 @Service
 @Transactional
@@ -32,8 +29,8 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
   private final StopPointValidationService stopPointValidationService;
 
   public StopPointService(StopPointRepository stopPointRepository,
-                          VersionableService versionableService,
-                          StopPointValidationService stopPointValidationService) {
+      VersionableService versionableService,
+      StopPointValidationService stopPointValidationService) {
     super(versionableService);
     this.stopPointRepository = stopPointRepository;
     this.stopPointValidationService = stopPointValidationService;
@@ -68,19 +65,19 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
     return stopPointRepository.findAllByNumberOrderByValidFrom(number);
   }
 
-  boolean isReduced(String servicePointSloid){
+  boolean isReduced(String servicePointSloid) {
     StopPointVersion parentServicePoint = findAllBySloidOrderByValidFrom(servicePointSloid).stream().findFirst()
-            .orElseThrow(() -> new StopPointDoesNotExistException(servicePointSloid));
+        .orElseThrow(() -> new StopPointDoesNotExistException(servicePointSloid));
     return parentServicePoint.isReduced();
   }
 
-  void validateIsNotReduced(String servicePointSloid){
-    if(isReduced(servicePointSloid)){
+  void validateIsNotReduced(String servicePointSloid) {
+    if (isReduced(servicePointSloid)) {
       throw new ReducedVariantException();
     }
   }
 
-  public List<StopPointVersion> findAllBySloidOrderByValidFrom(String sloid){
+  public List<StopPointVersion> findAllBySloidOrderByValidFrom(String sloid) {
     return stopPointRepository.findAllBySloidOrderByValidFrom(sloid);
   }
 
@@ -100,12 +97,12 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
 
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#editedVersion)")
   public StopPointVersion updateStopPointVersion(StopPointVersion currentVersion,
-                                                 StopPointVersion editedVersion) {
-    stopPointValidationService.validateMeansOfTransportChanging(currentVersion,editedVersion);
+      StopPointVersion editedVersion) {
+    stopPointValidationService.validateMeansOfTransportChanging(currentVersion, editedVersion);
     return updateVersion(currentVersion, editedVersion);
   }
 
   public Page<StopPointVersion> findAll(StopPointSearchRestrictions searchRestrictions) {
-    return stopPointRepository.findAll(searchRestrictions.getSpecification(),searchRestrictions.getPageable());
+    return stopPointRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
 }

@@ -13,13 +13,12 @@ import ch.sbb.prm.directory.mapper.StopPointVersionMapper;
 import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
 import ch.sbb.prm.directory.service.StopPointService;
 import ch.sbb.prm.directory.service.dataimport.StopPointImportService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -46,11 +45,6 @@ public class StopPointController implements StopPointApiV1 {
 
   @Override
   public List<ReadStopPointVersionModel> getStopPointVersions(String sloid) {
-    //TODO: if empty check sloid exists in sharedServicePoint
-
-    //    if (stopPointVersions.isEmpty()) {
-    //      throw new StopPointDoesNotExistsException(sloid);
-    //    }
     return stopPointService.findAllBySloidOrderByValidFrom(sloid).stream().map(StopPointVersionMapper::toModel).toList();
   }
 

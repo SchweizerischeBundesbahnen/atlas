@@ -6,7 +6,6 @@ import { ControlContainer, FormGroup, NgForm } from '@angular/forms';
 @Component({
   selector: 'app-stop-point-reduced-form',
   templateUrl: './stop-point-reduced-form.component.html',
-  styleUrls: ['./stop-point-reduced-form.component.scss'],
   viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
 })
 export class StopPointReducedFormComponent implements OnInit {

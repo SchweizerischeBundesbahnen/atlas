@@ -5,9 +5,9 @@ import { PrmMeanOfTransportHelper } from '../../prm-mean-of-transport-helper';
 export class PrmMeanOfTransportValidator {
   static isReducedOrComplete(control: AbstractControl): ValidationErrors | null {
     const selectedMeansOfTransport: MeanOfTransport[] = control.value;
-    const { reduced, complete } =
+    const { hasReduced, hasComplete } =
       PrmMeanOfTransportHelper.getReducedCompleteInstances(selectedMeansOfTransport);
-    if (reduced.length > 0 && complete.length > 0) {
+    if (hasReduced && hasComplete) {
       return { meansOfTransportWrongCombination: control.value };
     }
     return null;

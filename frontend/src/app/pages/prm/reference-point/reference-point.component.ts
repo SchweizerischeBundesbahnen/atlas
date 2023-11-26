@@ -5,7 +5,6 @@ import { BasePrmComponentService } from '../base-prm-component.service';
 @Component({
   selector: 'app-reference-point',
   templateUrl: './reference-point.component.html',
-  styleUrls: ['./reference-point.component.scss'],
 })
 export class ReferencePointComponent extends BasePrmComponentService implements OnInit {
   constructor(
@@ -16,6 +15,6 @@ export class ReferencePointComponent extends BasePrmComponentService implements 
   }
 
   ngOnInit(): void {
-    this.checkIsReducedOrComplete(this.route.parent!.snapshot!.data!);
+    this.checkIsReducedOrComplete(this.route.parent!.snapshot.data);
   }
 }
