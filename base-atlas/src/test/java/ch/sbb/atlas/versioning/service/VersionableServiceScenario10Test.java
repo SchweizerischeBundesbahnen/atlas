@@ -42,7 +42,6 @@ public class VersionableServiceScenario10Test extends VersionableServiceBaseTest
         List.of(versionableObject1, versionableObject3));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(3);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
@@ -54,7 +53,6 @@ public class VersionableServiceScenario10Test extends VersionableServiceBaseTest
     assertThat(firstVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
     Entity firstVersionedObjectEntity = firstVersionedObject.getEntity();
     assertThat(firstVersionedObjectEntity).isNotNull();
-    assertThat(firstVersionedObjectEntity.getProperties()).isNotEmpty();
 
     VersionedObject secondVersionedObject = sortedVersionedObjects.get(1);
     assertThat(secondVersionedObject.getAction()).isEqualTo(VersioningAction.NEW);
@@ -63,7 +61,6 @@ public class VersionableServiceScenario10Test extends VersionableServiceBaseTest
     assertThat(secondVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2023, 12, 31));
     Entity secondVersionedObjectEntity = secondVersionedObject.getEntity();
     assertThat(secondVersionedObjectEntity).isNotNull();
-    assertThat(secondVersionedObjectEntity.getProperties()).isNotEmpty();
     Property propertySecondVersionedObjectEntity = filterProperty(
         secondVersionedObjectEntity.getProperties(), Fields.property);
     assertThat(propertySecondVersionedObjectEntity).isNotNull();
@@ -111,7 +108,6 @@ public class VersionableServiceScenario10Test extends VersionableServiceBaseTest
         List.of(versionableObject1, versionableObject3));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(3);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
@@ -166,7 +162,6 @@ public class VersionableServiceScenario10Test extends VersionableServiceBaseTest
         List.of(versionableObject1, versionableObject3));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(4);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
@@ -270,7 +265,6 @@ public class VersionableServiceScenario10Test extends VersionableServiceBaseTest
         List.of(versionableObject1, versionableObject3));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(4);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
@@ -380,7 +374,6 @@ public class VersionableServiceScenario10Test extends VersionableServiceBaseTest
         List.of(versionableObject1, versionableObject3));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(2);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
@@ -437,7 +430,6 @@ public class VersionableServiceScenario10Test extends VersionableServiceBaseTest
         List.of(versionableObject1, versionableObject3));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(2);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();

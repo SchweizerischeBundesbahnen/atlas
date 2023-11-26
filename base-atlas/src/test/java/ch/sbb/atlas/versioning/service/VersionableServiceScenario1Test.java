@@ -50,7 +50,6 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
         editedVersion, Arrays.asList(versionableObject1, versionableObject2));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(2);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
@@ -90,12 +89,10 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
     assertThat(property2Result.getKey()).isEqualTo(VersionableObject.Fields.oneToManyRelation);
     assertThat(property2Result.hasOneToManyRelation()).isTrue();
     List<Entity> oneToManyRelation = property2Result.getOneToMany();
-    assertThat(oneToManyRelation).isNotEmpty();
     assertThat(oneToManyRelation).hasSize(1);
     Entity entityRelation = oneToManyRelation.get(0);
     assertThat(entityRelation).isNotNull();
     List<Property> entityRelationProperties = entityRelation.getProperties();
-    assertThat(entityRelationProperties).isNotEmpty();
     assertThat(entityRelationProperties).hasSize(1);
     Property entityRelationProperty = entityRelationProperties.get(0);
     assertThat(entityRelationProperty).isNotNull();
@@ -141,7 +138,6 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
 
     //then
 
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(2);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
@@ -181,12 +177,10 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
     assertThat(property2Result.getKey()).isEqualTo(VersionableObject.Fields.oneToManyRelation);
     assertThat(property2Result.hasOneToManyRelation()).isTrue();
     List<Entity> oneToManyRelation = property2Result.getOneToMany();
-    assertThat(oneToManyRelation).isNotEmpty();
     assertThat(oneToManyRelation).hasSize(1);
     Entity entityRelation = oneToManyRelation.get(0);
     assertThat(entityRelation).isNotNull();
     List<Property> entityRelationProperties = entityRelation.getProperties();
-    assertThat(entityRelationProperties).isNotEmpty();
     assertThat(entityRelationProperties).hasSize(1);
     Property entityRelationProperty = entityRelationProperties.get(0);
     assertThat(entityRelationProperty).isNotNull();
@@ -216,7 +210,6 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
         Arrays.asList(versionableObject1, versionableObject2, versionableObject3));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(3);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
@@ -284,7 +277,6 @@ public class VersionableServiceScenario1Test extends VersionableServiceBaseTest 
         Arrays.asList(versionableObject1, versionableObject2, versionableObject3));
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(3);
     List<VersionedObject> sortedVersionedObjects =
         result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();

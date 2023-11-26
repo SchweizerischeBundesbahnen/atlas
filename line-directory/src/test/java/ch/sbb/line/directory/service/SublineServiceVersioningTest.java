@@ -114,7 +114,6 @@ import org.springframework.transaction.annotation.Transactional;
 
     //then
 
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(5);
     result.sort(Comparator.comparing(SublineVersion::getValidFrom));
     assertThat(result.get(0)).isNotNull();
@@ -181,7 +180,6 @@ import org.springframework.transaction.annotation.Transactional;
         version1.getSlnid());
 
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(2);
     result.sort(Comparator.comparing(SublineVersion::getValidFrom));
 
