@@ -5,7 +5,6 @@ import { BasePrmComponentService } from '../base-prm-component.service';
 @Component({
   selector: 'app-platform',
   templateUrl: './platform.component.html',
-  styleUrls: ['./platform.component.scss'],
 })
 export class PlatformComponent extends BasePrmComponentService implements OnInit {
   constructor(
@@ -16,6 +15,6 @@ export class PlatformComponent extends BasePrmComponentService implements OnInit
   }
 
   ngOnInit(): void {
-    this.checkStopPointExists(this.route.parent!.snapshot!.data!);
+    this.checkStopPointExists(this.route.parent!.snapshot.data);
   }
 }

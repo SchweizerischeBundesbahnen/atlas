@@ -17,6 +17,8 @@ export const STOP_POINT: ReadStopPointVersion = {
   ticketMachine: 'TO_BE_COMPLETED',
   visualInfo: 'TO_BE_COMPLETED',
   wheelchairTicketMachine: 'TO_BE_COMPLETED',
+  creationDate: '2020-01-01',
+  creator: 'Cianni',
+  editionDate: '2020-01-05',
+  editor: 'Nicola',
 };
-
-export class StopPointTestData {}
