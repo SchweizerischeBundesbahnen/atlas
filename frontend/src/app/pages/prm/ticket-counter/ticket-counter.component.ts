@@ -5,7 +5,6 @@ import { BasePrmComponentService } from '../base-prm-component.service';
 @Component({
   selector: 'app-ticket-counter',
   templateUrl: './ticket-counter.component.html',
-  styleUrls: ['./ticket-counter.component.scss'],
 })
 export class TicketCounterComponent extends BasePrmComponentService implements OnInit {
   constructor(
@@ -16,6 +15,6 @@ export class TicketCounterComponent extends BasePrmComponentService implements O
   }
 
   ngOnInit(): void {
-    this.checkIsReducedOrComplete(this.route.parent!.snapshot!.data!);
+    this.checkStopPointExists(this.route.parent!.snapshot.data);
   }
 }

@@ -7,9 +7,21 @@ import { AppTestingModule } from '../../../app.testing.module';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../core/auth/auth.service';
 import { BERN_WYLEREGG } from '../../sepodi/service-point-test-data';
-import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
+import {
+  MockAtlasButtonComponent,
+  MockAtlasFieldErrorComponent,
+  MockSelectComponent,
+} from '../../../app.testing.mocks';
 import { SwitchVersionComponent } from '../../../core/components/switch-version/switch-version.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { UserDetailInfoComponent } from '../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { StopPointFormGroupBuilder } from './form/stop-point-detail-form-group';
+import { StopPointCompleteFormComponent } from './form/stop-point-complete-form/stop-point-complete-form.component';
+import { StopPointReducedFormComponent } from './form/stop-point-reduced-form/stop-point-reduced-form.component';
+import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
+import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { MeansOfTransportPickerComponent } from '../../sepodi/means-of-transport-picker/means-of-transport-picker.component';
+import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
 
 const authService: Partial<AuthService> = {};
 describe('StopPointDetailComponent', () => {
@@ -22,7 +34,20 @@ describe('StopPointDetailComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [StopPointDetailComponent, MockAtlasButtonComponent, SwitchVersionComponent],
+      declarations: [
+        StopPointDetailComponent,
+        MockAtlasButtonComponent,
+        SwitchVersionComponent,
+        UserDetailInfoComponent,
+        StopPointCompleteFormComponent,
+        StopPointReducedFormComponent,
+        MockSelectComponent,
+        TextFieldComponent,
+        AtlasLabelFieldComponent,
+        MockAtlasFieldErrorComponent,
+        MeansOfTransportPickerComponent,
+        AtlasSpacerComponent,
+      ],
       imports: [AppTestingModule],
       providers: [
         { provide: AuthService, useValue: authService },
@@ -32,6 +57,7 @@ describe('StopPointDetailComponent', () => {
     });
     fixture = TestBed.createComponent(StopPointDetailComponent);
     component = fixture.componentInstance;
+    component.form = StopPointFormGroupBuilder.buildFormGroup(STOP_POINT);
     fixture.detectChanges();
   });
 
