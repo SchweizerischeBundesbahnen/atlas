@@ -75,6 +75,12 @@ public interface ServicePointApiV1 {
   @PostMapping
   ReadServicePointVersionModel createServicePoint(@RequestBody @Valid CreateServicePointVersionModel servicePointVersionModel);
 
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
+          + ".ApplicationType).SEPODI)")
+  @ResponseStatus(HttpStatus.OK)
+  @PostMapping(path = "validate/{id}")
+  ReadServicePointVersionModel validateServicePoint(@PathVariable Long id);
+
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}")
   List<ReadServicePointVersionModel> updateServicePoint(

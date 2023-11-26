@@ -89,6 +89,11 @@ public class ServicePointService {
     return servicePointVersions;
   }
 
+  public ServicePointVersion validate(ServicePointVersion servicePointVersion) {
+    servicePointVersion.setStatus(Status.VALIDATED);
+    return servicePointVersionRepository.saveAndFlush(servicePointVersion);
+  }
+
   @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#servicePointVersion, "
       + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   public ServicePointVersion save(ServicePointVersion servicePointVersion,
