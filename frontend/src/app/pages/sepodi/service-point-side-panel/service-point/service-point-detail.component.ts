@@ -66,6 +66,10 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     });
   }
 
+  isSupervisor() {
+    return this.authService.isAtLeastSupervisor(ApplicationType.Sepodi);
+  }
+
   ngOnDestroy() {
     this.mapService.deselectServicePoint();
     this.ngUnsubscribe.next();
@@ -218,6 +222,18 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       });
   }
 
+  private revokeServicePoints(servicePointVersion: ReadServicePointVersion) {
+    this.servicePointService
+      .revokeServicePoint(servicePointVersion.number.number)
+      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
+      .subscribe(() => {
+        this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.ADD_SUCCESS');
+        // this.router
+        //   .navigate(['..', servicePointVersion.number.number], { relativeTo: this.route })
+        //   .then(() => this.mapService.refreshMap());
+      });
+  }
+
   private update(id: number, servicePointVersion: CreateServicePointVersion) {
     this.confirmBoTransfer()
       .pipe(take(1))
@@ -266,4 +282,21 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       (obj) => obj.validTo > selectedVersion.validTo,
     );
   }
+
+  revoke() {
+    this.dialogService
+      .confirm({
+        title: 'DIALOG.WARNING',
+        message: 'DIALOG.REVOKE',
+        cancelText: 'DIALOG.BACK',
+        confirmText: 'DIALOG.CONFIRM_REVOKE',
+      })
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.revokeServicePoints(this.selectedVersion);
+        }
+      });
+  }
+
+  protected readonly ApplicationType = ApplicationType;
 }
