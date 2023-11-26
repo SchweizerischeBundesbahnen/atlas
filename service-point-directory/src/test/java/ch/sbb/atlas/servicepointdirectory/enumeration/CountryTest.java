@@ -26,10 +26,10 @@ class CountryTest {
   }
 
   @Test
-  void shouldGetSloidCompatibleCountryCodes(){
+  void shouldGetSloidCompatibleCountryCodes() {
     //then
-    assertThat(Country.SLOID_COMPATIBLE_COUNTRIES).hasSize(4);
-    assertThat(Country.SLOID_COMPATIBLE_COUNTRIES).containsExactlyInAnyOrder(GERMANY_BUS, AUSTRIA_BUS, ITALY_BUS, FRANCE_BUS);
+    assertThat(Country.SLOID_COMPATIBLE_COUNTRIES).hasSize(4)
+        .containsExactlyInAnyOrder(GERMANY_BUS, AUSTRIA_BUS, ITALY_BUS, FRANCE_BUS);
   }
 
 }
