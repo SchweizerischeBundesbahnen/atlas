@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 
- class TrafficPointElementVersionTest {
+class TrafficPointElementVersionTest {
 
   @Test
    void trafficPointVersionSharedEntityIntegrityTest() {
@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 
 
   @Test
-  public void shouldBeValidTrafficPointArea(){
+  void shouldBeValidTrafficPointArea(){
    TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
        .designation("Test")
        .sloid("ch:1:2311:1233")
@@ -43,7 +43,7 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-  public void shouldNotBeValidTrafficPointAreaIfDesignationOperationalIsNotNull(){
+  void shouldNotBeValidTrafficPointAreaIfDesignationOperationalIsNotNull(){
    TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
        .designation("Test")
        .designationOperational("Das sollte nicht erlaubt sein für AREA")
@@ -58,7 +58,7 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-  public void shouldNotBeValidTrafficPointAreaIfLengthIsNotNull(){
+  void shouldNotBeValidTrafficPointAreaIfLengthIsNotNull(){
    TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
        .designation("Test")
        .sloid("ch:1:2311:1233")
@@ -73,7 +73,7 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-  public void shouldNotBeValidTrafficPointAreaIfCompassDirectionIsNotNull(){
+  void shouldNotBeValidTrafficPointAreaIfCompassDirectionIsNotNull(){
    TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
        .designation("Test")
        .sloid("ch:1:2311:1233")
@@ -88,7 +88,7 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-  public void shouldNotBeValidTrafficPointAreaIfBoardingAreaHeightIsNotNull(){
+  void shouldNotBeValidTrafficPointAreaIfBoardingAreaHeightIsNotNull(){
    TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
        .designation("Test")
        .sloid("ch:1:2311:1233")
@@ -103,7 +103,7 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-  public void shouldNotBeValidIfSloidDoesNotMatchGivenSloidPatternForArea(){
+  void shouldNotBeValidIfSloidDoesNotMatchGivenSloidPatternForArea(){
    TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
        .designation("Test")
        .sloid("ch:1:sloid:2311:1233:4312:abc")
@@ -117,7 +117,7 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-  public void shouldBeValidIfSloidMatchGivenSloidPatternForArea(){
+  void shouldBeValidIfSloidMatchGivenSloidPatternForArea(){
    TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
        .designation("Test")
        .sloid("ch:1:sloid:1183913:1233")
@@ -131,7 +131,7 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-  public void shouldBeValidTrafficPointPlattform(){
+  void shouldBeValidTrafficPointPlattform(){
    TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
        .designation("Test")
        .designationOperational("Das sollte funktionieren")
@@ -149,7 +149,7 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-  public void shouldNotBeValidIfSloidDoesNotMatchGivenSloidPatternForPlattform(){
+  void shouldNotBeValidIfSloidDoesNotMatchGivenSloidPatternForPlattform(){
    TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
        .designation("Test")
        .sloid("ch:1:sloid:2311:4234:123:2423:123")
@@ -163,7 +163,7 @@ import org.junit.jupiter.api.Test;
   }
 
   @Test
-  public void shouldBeValidIfSloidMatchGivenSloidPatternForPlattform(){
+  void shouldBeValidIfSloidMatchGivenSloidPatternForPlattform(){
    TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
        .designation("Test")
        .sloid("ch:1:sloid:1183913:1233:321")
