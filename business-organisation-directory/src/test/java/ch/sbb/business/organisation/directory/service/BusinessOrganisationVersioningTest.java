@@ -167,7 +167,7 @@ import org.springframework.transaction.annotation.Transactional;
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.size()).isEqualTo(6);
+    assertThat(result).hasSize(6);
     result.sort(Comparator.comparing(BusinessOrganisationVersion::getValidFrom));
 
     // first current index updated
