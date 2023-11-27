@@ -1,9 +1,14 @@
 package ch.sbb.atlas.servicepointdirectory.service.georeference;
 
 import ch.sbb.atlas.api.servicepoint.GeoReference;
+import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.journey.poi.model.CountryCode;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.Country;
+import ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer;
+import java.math.BigDecimal;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,10 +19,17 @@ import org.springframework.stereotype.Service;
 public class GeoReferenceService {
 
   private final GeoAdminChClient geoAdminChClient;
+  private final JourneyPoiClient journeyPoiClient;
+
+  private final CoordinateTransformer coordinateTransformer = new CoordinateTransformer();
 
   public GeoReference getGeoReference(CoordinatePair coordinatePair) {
     GeoAdminResponse geoAdminResponse = geoAdminChClient.getGeoReference(new GeoAdminParams(coordinatePair));
-    return toGeoReference(geoAdminResponse);
+    GeoReference swissTopoInformation = toGeoReference(geoAdminResponse);
+    if (swissTopoInformation.getCountry() == null) {
+      return getRokasOsmInformation(coordinatePair);
+    }
+    return swissTopoInformation;
   }
 
   private static GeoReference toGeoReference(GeoAdminResponse geoAdminResponse) {
@@ -40,4 +52,22 @@ public class GeoReferenceService {
     return result;
   }
 
+  private GeoReference getRokasOsmInformation(CoordinatePair coordinatePair) {
+    CoordinatePair coordinatesInWgs84 = coordinatePair;
+    if (coordinatePair.getSpatialReference() != SpatialReference.WGS84) {
+      coordinatesInWgs84 = coordinateTransformer.transform(coordinatePair, SpatialReference.WGS84);
+    }
+
+    GeoReference result = new GeoReference();
+    ch.sbb.atlas.journey.poi.model.Country body = journeyPoiClient.closestCountry(
+        BigDecimal.valueOf(coordinatesInWgs84.getEast()),
+        BigDecimal.valueOf(coordinatesInWgs84.getNorth())).getBody();
+
+    String isoCountryCode = Optional.ofNullable(body)
+        .map(ch.sbb.atlas.journey.poi.model.Country::getCountryCode)
+        .map(CountryCode::getIsoCountryCode)
+        .orElse(null);
+    result.setCountry(Country.fromIsoCode(isoCountryCode));
+    return result;
+  }
 }
