@@ -252,9 +252,8 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
   }
 
   private confirmValidityOverServicePoint(): Observable<boolean> {
-    const stopPoint = this.servicePoint.filter((i) => i.stopPoint);
     return this.validityConfirmationService.confirmValidityOverServicePoint(
-      stopPoint,
+      this.servicePoint,
       this.form.controls.validFrom.value!,
       this.form.controls.validTo.value!,
     );

@@ -969,7 +969,7 @@
       },
       "VALIDITY_CONFIRMATION": {
         "TITLE": "Gültigkeit",
-        "MESSAGE": "Achtung, die zugeordnete Haltestelle ist von {{validFrom}} bis {{validTo}} gültig. Bitte passen Sie die Gültigkeit entsprechend an."
+        "MESSAGE": "Achtung, die zugeordnete Dienststelle ist von {{validFrom}} bis {{validTo}} gültig. Bitte passen Sie die Gültigkeit entsprechend an."
       }
     },
     "BOARDING_AREAS": {
