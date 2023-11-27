@@ -5,7 +5,6 @@ import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoAdminHeightResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Tag(name = "GeoData")
@@ -17,6 +16,6 @@ public interface GeoReferenceApiV1 {
 
 
   @GetMapping("/height")
-  GeoAdminHeightResponse getHeight(@RequestBody CoordinatePair coordinatePair) throws Exception;
+  GeoAdminHeightResponse getHeight(CoordinatePair coordinatePair) throws Exception;
 
 }
