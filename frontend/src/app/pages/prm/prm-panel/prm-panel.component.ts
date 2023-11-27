@@ -12,7 +12,7 @@ import { VersionsHandlingService } from '../../../core/versioning/versions-handl
 import { ActivatedRoute } from '@angular/router';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
-import { PrmMeanOfTransportHelper } from '../prm-mean-of-transport-helper';
+import { PrmMeanOfTransportHelper } from '../util/prm-mean-of-transport-helper';
 import { PrmTab } from './prm-tab';
 
 @Component({
@@ -23,13 +23,11 @@ import { PrmTab } from './prm-tab';
 export class PrmPanelComponent implements OnDestroy, OnInit {
   selectedServicePointVersion!: ReadServicePointVersion;
   selectedBusinessOrganisation?: BusinessOrganisationVersion;
-  servicePointVersions!: ReadServicePointVersion[];
   selectedVersion!: ReadStopPointVersion;
   maxValidity!: DateRange;
   boDescription!: string;
   isNew!: boolean;
   disableTabNavigation = false;
-  stopPointVersions!: ReadStopPointVersion[];
   private ngUnsubscribe = new Subject<void>();
 
   tabs = PrmTab.tabs;
@@ -50,20 +48,11 @@ export class PrmPanelComponent implements OnDestroy, OnInit {
     this.route.data
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        map((next) => {
-          this.servicePointVersions = next.servicePoints;
-          this.stopPointVersions = next.stopPoints;
-          this.initTabs(this.stopPointVersions);
-          this.initServicePointVersioning(this.servicePointVersions);
+        map((data) => {
+          this.initTabs(data.stopPoints);
+          this.initServicePointVersioning(data.servicePoints);
         }),
-        switchMap(() =>
-          this.businessOrganisationsService
-            .getVersions(this.selectedServicePointVersion.businessOrganisation)
-            .pipe(
-              takeUntil(this.ngUnsubscribe),
-              tap((bo) => this.initSelectedBusinessOrganisationVersion(bo)),
-            ),
-        ),
+        switchMap(() => this.initBusinessOrganisationHeaderPanel()),
       )
       .subscribe();
   }
@@ -84,8 +73,17 @@ export class PrmPanelComponent implements OnDestroy, OnInit {
     this.ngUnsubscribe?.unsubscribe();
   }
 
+  private initBusinessOrganisationHeaderPanel() {
+    return this.businessOrganisationsService
+      .getVersions(this.selectedServicePointVersion.businessOrganisation)
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        tap((bo) => this.initSelectedBusinessOrganisationVersion(bo)),
+      );
+  }
+
   private initServicePointVersioning(servicePointVersions: ReadServicePointVersion[]) {
-    this.maxValidity = VersionsHandlingService.getMaxValidity(this.servicePointVersions);
+    this.maxValidity = VersionsHandlingService.getMaxValidity(servicePointVersions);
     this.selectedServicePointVersion =
       VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
   }
