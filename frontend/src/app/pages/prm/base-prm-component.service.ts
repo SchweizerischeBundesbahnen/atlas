@@ -3,6 +3,8 @@ import { Data, Router } from '@angular/router';
 import { ReadStopPointVersion } from '../../api';
 import { PrmMeanOfTransportHelper } from './prm-mean-of-transport-helper';
 import { Pages } from '../pages';
+import { PrmTab } from './prm-panel/prm-tab';
+import { Tab } from '../tab';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +13,8 @@ export abstract class BasePrmComponentService {
   get isStopPointExisting() {
     return this._isStopPointExisting;
   }
+
+  abstract getTag(): Tab;
 
   _isStopPointExisting!: boolean;
 
@@ -24,29 +28,25 @@ export abstract class BasePrmComponentService {
     this.router.navigate([Pages.PRM.path]).then();
   }
 
-  protected checkIsReducedOrComplete(data: Data): void {
+  showCurrentTab(data: Data): void {
     const stopPointVersions: ReadStopPointVersion[] = data.stopPoints;
     const servicePoints: ReadStopPointVersion[] = data.servicePoints;
     if (stopPointVersions.length === 0) {
-      this.navigateToStopPoint(servicePoints);
+      this.redirectToStopPoint(servicePoints);
     } else {
       this._isStopPointExisting = true;
       const isReduced = PrmMeanOfTransportHelper.isReduced(stopPointVersions[0].meansOfTransport);
-      if (isReduced) {
-        this.navigateToStopPoint(servicePoints);
+      if (isReduced && this.canShowTab()) {
+        this.redirectToStopPoint(servicePoints);
       }
     }
   }
 
-  protected checkStopPointExists(data: Data) {
-    const stopPointVersions: ReadStopPointVersion[] = data.stopPoints;
-    if (stopPointVersions.length === 0) {
-      const servicePoints: ReadStopPointVersion[] = data.servicePoints;
-      this.navigateToStopPoint(servicePoints);
-    }
+  canShowTab() {
+    return PrmTab.completeTabs.includes(this.getTag());
   }
 
-  protected navigateToStopPoint(servicePoints: ReadStopPointVersion[]) {
+  redirectToStopPoint(servicePoints: ReadStopPointVersion[]) {
     this.router
       .navigate([
         Pages.PRM.path,
