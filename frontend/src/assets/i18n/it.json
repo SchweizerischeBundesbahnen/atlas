@@ -25,6 +25,7 @@
     "ADD": "Aggiungi",
     "EDIT": "Modifica",
     "REVOKE": "Revocare",
+    "VALIDATE": "Convalidare",
     "DELETE": "Eliminare",
     "CANCEL": "Annulla",
     "COVERAGE": {
