@@ -53,7 +53,7 @@ export class CreateStopPointComponent {
     }
   }
 
-  private initForm() {
+  initForm() {
     this.isDataEditable = true;
     this.form.enable();
     this.stepper.next();
@@ -78,12 +78,12 @@ export class CreateStopPointComponent {
       });
   }
 
-  private resetDataForm() {
-    const number = this.form.controls.number.value;
-    const sloid = this.form.controls.sloid.value;
+  resetDataForm() {
+    const alreadyStoredNumber = this.form.controls.number.value;
+    const alreadyStoredSloid = this.form.controls.sloid.value;
     this.form.reset();
     this.form.controls.meansOfTransport.setValue(this.selectedMeansOfTransport);
-    this.form.controls.number.setValue(number);
-    this.form.controls.sloid.setValue(sloid);
+    this.form.controls.number.setValue(alreadyStoredNumber);
+    this.form.controls.sloid.setValue(alreadyStoredSloid);
   }
 }
