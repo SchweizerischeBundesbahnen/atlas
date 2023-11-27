@@ -303,9 +303,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     this.dialogService
       .confirm({
         title: 'DIALOG.WARNING',
-        message: 'DIALOG.REVOKE',
+        message: 'DIALOG.VALIDATE',
         cancelText: 'DIALOG.BACK',
-        confirmText: 'DIALOG.CONFIRM_REVOKE',
+        confirmText: 'DIALOG.CONFIRM_VALIDATE',
       })
       .subscribe((confirmed) => {
         if (confirmed) {
