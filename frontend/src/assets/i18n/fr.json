@@ -954,7 +954,8 @@
       },
       "TERMINATION_FORBIDDEN": "Vous n'êtes pas autorisé à planifier l'arrêt. Pour ce faire, veuillez utiliser le formulaire disponible sur https://www.tp-info.ch/fr/suppression-dun-arret.",
       "ABBREVIATION_UPDATE_NOT_ALLOWED": "L'organisation commerciale du service n'est pas autorisée à ajouter des abréviations ou le service dispose déjà d'une abréviation qui ne peut pas être modifiée ou supprimée.",
-      "ABBREVIATION_NOT_UNIQUE": "L'abréviation est déjà utilisée ou la version du service choisie n'est pas la plus récente."
+      "ABBREVIATION_NOT_UNIQUE": "L'abréviation est déjà utilisée ou la version du service choisie n'est pas la plus récente.",
+      "HEIGHT_NOT_CALCULABLE": "Die Höhe konnte nicht berechnet werden, weil die Koordinaten ausserhalb des berechenbaren Bereichs liegen oder der Swiss-Topo-Endpunkt ist momentan nicht erreichbar."
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Bordures d’arrêts",
