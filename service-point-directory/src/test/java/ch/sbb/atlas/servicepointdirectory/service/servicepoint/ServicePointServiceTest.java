@@ -43,14 +43,11 @@ import static org.mockito.Mockito.verify;
   @Mock
   private ServicePointSearchVersionRepository servicePointSearchVersionRepository;
 
-  @Mock
-  private ServicePointStatusDecider servicePointStatusDecider;
-
   @BeforeEach
   void initMocksAndService() {
     MockitoAnnotations.openMocks(this);
     servicePointService = new ServicePointService(servicePointVersionRepositoryMock, versionableServiceMock,
-        servicePointValidationService, servicePointSearchVersionRepository, servicePointTerminationService, servicePointStatusDecider);
+        servicePointValidationService, servicePointSearchVersionRepository, servicePointTerminationService);
   }
 
   @Test
