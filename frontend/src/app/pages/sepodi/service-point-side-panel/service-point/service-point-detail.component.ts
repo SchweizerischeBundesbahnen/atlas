@@ -289,7 +289,32 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       })
       .subscribe((confirmed) => {
         if (confirmed) {
-          this.revokeServicePoints(this.selectedVersion);
+          this.servicePointService
+            .revokeServicePoint(this.selectedVersion.number.number!)
+            .pipe((takeUntil(this.ngUnsubscribe), catchError(this.handleError)))
+            .subscribe(() => {
+              this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS');
+            });
+        }
+      });
+  }
+
+  validate() {
+    this.dialogService
+      .confirm({
+        title: 'DIALOG.WARNING',
+        message: 'DIALOG.REVOKE',
+        cancelText: 'DIALOG.BACK',
+        confirmText: 'DIALOG.CONFIRM_REVOKE',
+      })
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.servicePointService
+            .validateServicePoint(this.selectedVersion.id!)
+            .pipe((takeUntil(this.ngUnsubscribe), catchError(this.handleError)))
+            .subscribe(() => {
+              this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS');
+            });
         }
       });
   }
