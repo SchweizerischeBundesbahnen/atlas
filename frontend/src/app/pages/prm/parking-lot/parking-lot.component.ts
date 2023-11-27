@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BasePrmComponentService } from '../base-prm-component.service';
+import { PrmTab } from '../prm-panel/prm-tab';
+import { Tab } from '../../tab';
 
 @Component({
   selector: 'app-parking-lot',
@@ -15,6 +17,10 @@ export class ParkingLotComponent extends BasePrmComponentService implements OnIn
   }
 
   ngOnInit(): void {
-    this.checkStopPointExists(this.route.parent!.snapshot.data);
+    this.showCurrentTab(this.route.parent!.snapshot.data);
+  }
+
+  getTag(): Tab {
+    return PrmTab.PARKING_LOT;
   }
 }
