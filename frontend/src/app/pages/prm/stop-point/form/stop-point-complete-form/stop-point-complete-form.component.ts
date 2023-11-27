@@ -28,22 +28,13 @@ export class StopPointCompleteFormComponent implements OnInit {
   }
 
   private initForm() {
-    this.populateDropdownsWithDefaultValue();
+    this.populateCompleteForm();
     StopPointFormGroupBuilder.addCompleteRecordingValidation(this.form);
   }
 
-  private populateDropdownsWithDefaultValue() {
+  private populateCompleteForm() {
     this.form.controls.meansOfTransport.setValue(this.selectedMeansOfTransport);
-    this.form.controls.alternativeTransport.setValue(StandardAttributeType.ToBeCompleted);
-    this.form.controls.assistanceAvailability.setValue(StandardAttributeType.ToBeCompleted);
-    this.form.controls.assistanceService.setValue(StandardAttributeType.ToBeCompleted);
-    this.form.controls.audioTicketMachine.setValue(StandardAttributeType.ToBeCompleted);
-    this.form.controls.dynamicAudioSystem.setValue(StandardAttributeType.ToBeCompleted);
-    this.form.controls.dynamicOpticSystem.setValue(StandardAttributeType.ToBeCompleted);
-    this.form.controls.visualInfo.setValue(StandardAttributeType.ToBeCompleted);
-    this.form.controls.wheelchairTicketMachine.setValue(StandardAttributeType.ToBeCompleted);
-    this.form.controls.assistanceRequestFulfilled.setValue(StandardAttributeType.ToBeCompleted);
-    this.form.controls.ticketMachine.setValue(StandardAttributeType.ToBeCompleted);
+    StopPointFormGroupBuilder.populateDropdownsForCompleteWithDefaultValue(this.form);
   }
 
   private setSortedOperatingPointTypes = (): void => {
