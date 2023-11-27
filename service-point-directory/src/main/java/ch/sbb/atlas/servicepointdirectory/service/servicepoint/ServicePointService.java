@@ -39,30 +39,22 @@ public class ServicePointService {
 
   public List<ServicePointSearchResult> searchServicePointVersion(String value) {
     List<ServicePointSearchResult> servicePointSearchResults = servicePointSearchVersionRepository.searchServicePoints(value);
-    if (servicePointSearchResults.size() > SEARCH_RESULT_SIZE) {
-      return servicePointSearchResults.subList(0, SEARCH_RESULT_SIZE);
-    }
-    return servicePointSearchResults;
+    return getSearchResults(servicePointSearchResults);
   }
 
   public List<ServicePointSearchResult> searchSwissOnlyServicePointVersion(String value) {
     List<ServicePointSearchResult> servicePointSearchResults =
         servicePointSearchVersionRepository.searchSwissOnlyStopPointServicePoints(value);
-    if (servicePointSearchResults.size() > SEARCH_RESULT_SIZE) {
-      return servicePointSearchResults.subList(0, SEARCH_RESULT_SIZE);
-    }
-    return servicePointSearchResults;
+    return getSearchResults(servicePointSearchResults);
   }
 
   public List<ServicePointSearchResult> searchServicePointsWithRouteNetworkTrue(String value) {
     List<ServicePointSearchResult> servicePointSearchResults =
         servicePointSearchVersionRepository.searchServicePointsWithRouteNetworkTrue(
         value);
-    if (servicePointSearchResults.size() > SEARCH_RESULT_SIZE) {
-      return servicePointSearchResults.subList(0, SEARCH_RESULT_SIZE);
-    }
-    return servicePointSearchResults;
+    return getSearchResults(servicePointSearchResults);
   }
+
 
   public Page<ServicePointVersion> findAll(ServicePointSearchRestrictions servicePointSearchRestrictions) {
     return servicePointVersionRepository.loadByIdsFindBySpecification(servicePointSearchRestrictions.getSpecification(),
@@ -137,6 +129,13 @@ public class ServicePointService {
     List<ServicePointVersion> afterUpdateServicePoint = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
     servicePointTerminationService.checkTerminationAllowed(currentVersions, afterUpdateServicePoint);
     return currentVersion;
+  }
+
+  private List<ServicePointSearchResult> getSearchResults(List<ServicePointSearchResult> servicePointSearchResults) {
+    if (servicePointSearchResults.size() > SEARCH_RESULT_SIZE) {
+      return servicePointSearchResults.subList(0, SEARCH_RESULT_SIZE);
+    }
+    return servicePointSearchResults;
   }
 
 }

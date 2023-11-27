@@ -45,7 +45,9 @@ public class StopPointController implements StopPointApiV1 {
 
   @Override
   public List<ReadStopPointVersionModel> getStopPointVersions(String sloid) {
-    return stopPointService.findAllBySloidOrderByValidFrom(sloid).stream().map(StopPointVersionMapper::toModel).toList();
+    return stopPointService.findAllBySloidOrderByValidFrom(sloid).stream()
+        .map(StopPointVersionMapper::toModel)
+        .toList();
   }
 
   @Override
