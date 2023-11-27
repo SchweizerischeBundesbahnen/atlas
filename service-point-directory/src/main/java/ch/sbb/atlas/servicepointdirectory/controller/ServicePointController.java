@@ -198,6 +198,10 @@ public class ServicePointController implements ServicePointApiV1 {
       ServicePointGeolocation servicePointGeolocation = servicePointVersion.getServicePointGeolocation();
       GeoReference geoReference = geoReferenceService.getGeoReference(servicePointGeolocation.asCoordinatePair());
 
+      if(servicePointVersion.getServicePointGeolocation().getHeight() == null){
+        servicePointGeolocation.setHeight(Double.parseDouble(geoReference.getHeight()));
+      }
+
       servicePointGeolocation.setCountry(geoReference.getCountry());
       servicePointGeolocation.setSwissCanton(geoReference.getSwissCanton());
       servicePointGeolocation.setSwissDistrictNumber(geoReference.getSwissDistrictNumber());
