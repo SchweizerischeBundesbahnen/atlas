@@ -218,18 +218,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       });
   }
 
-  private revokeServicePoints(servicePointVersion: ReadServicePointVersion) {
-    this.servicePointService
-      .revokeServicePoint(servicePointVersion.number.number)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
-      .subscribe(() => {
-        this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.ADD_SUCCESS');
-        // this.router
-        //   .navigate(['..', servicePointVersion.number.number], { relativeTo: this.route })
-        //   .then(() => this.mapService.refreshMap());
-      });
-  }
-
   private update(id: number, servicePointVersion: CreateServicePointVersion) {
     this.confirmBoTransfer()
       .pipe(take(1))
