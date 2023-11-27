@@ -3,18 +3,18 @@ import { RouterModule, Routes } from '@angular/router';
 import { Pages } from '../pages';
 import { PrmHomeSearchComponent } from './prm-home-search/prm-home-search.component';
 import { PrmPanelComponent } from './prm-panel/prm-panel.component';
-import { StopPointDetailComponent } from './stop-point/stop-point-detail.component';
-import { ReferencePointComponent } from './reference-point/reference-point.component';
-import { PlatformComponent } from './platform/platform.component';
-import { TicketCounterComponent } from './ticket-counter/ticket-counter.component';
-import { InformationDeskComponent } from './information-desk/information-desk.component';
-import { ToiletComponent } from './toilet/toilet.component';
-import { ParkingLotComponent } from './parking-lot/parking-lot.component';
-import { ConnectionComponent } from './connection/connection.component';
-import { prmOverviewResolver } from './prm-panel/prm-overview-resolver.service';
+import { StopPointDetailComponent } from './tabs/stop-point/detail/stop-point-detail.component';
+import { ReferencePointComponent } from './tabs/reference-point/reference-point.component';
+import { PlatformComponent } from './tabs/platform/platform.component';
+import { TicketCounterComponent } from './tabs/ticket-counter/ticket-counter.component';
+import { InformationDeskComponent } from './tabs/information-desk/information-desk.component';
+import { ToiletComponent } from './tabs/toilet/toilet.component';
+import { ParkingLotComponent } from './tabs/parking-lot/parking-lot.component';
+import { ConnectionComponent } from './tabs/connection/connection.component';
 import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
-import { stopPointResolver } from './stop-point/stop-point.resolver';
+import { stopPointResolver } from './prm-panel/resolvers/stop-point.resolver';
 import { PrmTab } from './prm-panel/prm-tab';
+import { prmPanelResolver } from './prm-panel/resolvers/prm-panel-resolver.service';
 
 const routes: Routes = [
   {
@@ -24,7 +24,7 @@ const routes: Routes = [
   {
     path: Pages.STOP_POINTS.path + '/:sloid',
     component: PrmPanelComponent,
-    resolve: { stopPoints: stopPointResolver, servicePoints: prmOverviewResolver },
+    resolve: { stopPoints: stopPointResolver, servicePoints: prmPanelResolver },
     runGuardsAndResolvers: 'always',
     children: [
       {
