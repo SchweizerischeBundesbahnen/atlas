@@ -294,6 +294,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
             .pipe((takeUntil(this.ngUnsubscribe), catchError(this.handleError)))
             .subscribe(() => {
               this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS');
+              this.router
+                .navigate(['..', this.selectedVersion.number.number], { relativeTo: this.route })
+                .then(() => this.mapService.refreshMap());
             });
         }
       });
@@ -314,6 +317,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
             .pipe((takeUntil(this.ngUnsubscribe), catchError(this.handleError)))
             .subscribe(() => {
               this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS');
+              this.router
+                .navigate(['..', this.selectedVersion.number.number], { relativeTo: this.route })
+                .then(() => this.mapService.refreshMap());
             });
         }
       });
