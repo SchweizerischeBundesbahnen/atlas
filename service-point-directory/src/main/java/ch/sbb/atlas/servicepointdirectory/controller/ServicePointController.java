@@ -131,7 +131,7 @@ public class ServicePointController implements ServicePointApiV1 {
   /**
    * @deprecated Only necessary as long as we use BaseDidokImportEntity
    */
-  @Deprecated(forRemoval = true)
+  @Deprecated(forRemoval = false)
   private static void setCreationDateAndCreatorToNull(ServicePointVersion servicePointVersion) {
     servicePointVersion.setCreator(null);
     servicePointVersion.setCreationDate(null);
