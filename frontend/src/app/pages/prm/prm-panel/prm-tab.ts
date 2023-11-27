@@ -58,4 +58,6 @@ export class PrmTab {
     PrmTab.TOILET,
     PrmTab.PARKING_LOT,
   ];
+
+  public static completeTabs: Tab[] = [PrmTab.REFERENCE_POINT, PrmTab.CONNECTION];
 }
