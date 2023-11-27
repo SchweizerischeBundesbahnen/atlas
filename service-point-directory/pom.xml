@@ -140,6 +140,10 @@
          <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
          <groupId>org.springdoc</groupId>
       </dependency>
+      <dependency>
+         <artifactId>spring-security-oauth2-client</artifactId>
+         <groupId>org.springframework.security</groupId>
+      </dependency>
    </dependencies>
    <build>
       <testResources>
@@ -188,6 +192,32 @@
                <protoSourceRoot>${project.basedir}/src/main/resources/protobuf</protoSourceRoot>
                <protocArtifact>com.google.protobuf:protoc:${protoc.version}:exe:${os.detected.classifier}</protocArtifact>
             </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.openapitools</groupId>
+            <artifactId>openapi-generator-maven-plugin</artifactId>
+            <version>7.1.0</version>
+            <executions>
+               <execution>
+                  <goals>
+                     <goal>generate</goal>
+                  </goals>
+                  <configuration>
+                     <!-- specify the swagger yaml -->
+                     <inputSpec>${project.basedir}/src/main/resources/journey-pois.yaml</inputSpec>
+                     <generatorName>spring</generatorName>
+                     <configOptions>
+                        <interfaceOnly>true</interfaceOnly>
+                        <modelPackage>ch.sbb.atlas.journey.poi.model</modelPackage>
+                        <apiPackage>ch.sbb.atlas.journey.poi.api</apiPackage>
+                        <useSpringBoot3>true</useSpringBoot3>
+                        <generatedConstructorWithRequiredArgs>false</generatedConstructorWithRequiredArgs>
+                        <openApiNullable>false</openApiNullable>
+                     </configOptions>
+                     <library>spring-cloud</library>
+                  </configuration>
+               </execution>
+            </executions>
          </plugin>
       </plugins>
    </build>
