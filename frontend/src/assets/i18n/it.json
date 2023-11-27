@@ -954,7 +954,8 @@
       },
       "TERMINATION_FORBIDDEN": "Non siete autorizzati a terminare la fermata. Utilizzate il modulo all'indirizzo https://www.tp-info.ch/it/soppressione-fermata.",
       "ABBREVIATION_UPDATE_NOT_ALLOWED": "L'organizzazione aziendale del servizio non è autorizzata ad aggiungere abbreviazioni, oppure il servizio ha già un'abbreviazione che non può essere modificata o cancellata.",
-      "ABBREVIATION_NOT_UNIQUE": "La sigla è già in uso o la versione del servizio selezionata non è la più aggiornata."
+      "ABBREVIATION_NOT_UNIQUE": "La sigla è già in uso o la versione del servizio selezionata non è la più aggiornata.",
+      "HEIGHT_NOT_CALCULABLE": "Die Höhe konnte nicht berechnet werden, weil die Koordinaten ausserhalb des berechenbaren Bereichs liegen oder der Swiss-Topo-Endpunkt ist momentan nicht erreichbar."
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Bordi fermata",
