@@ -1,10 +1,9 @@
-package ch.sbb.importservice.config;
+package ch.sbb.atlas.oauth.client;
 
 import java.io.Serial;
 import java.util.Collection;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
@@ -12,7 +11,6 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 
-@Slf4j
 @RequiredArgsConstructor
 public class OAuthClientCredentialsFeignManager {
 
@@ -40,7 +38,7 @@ public class OAuthClientCredentialsFeignManager {
 
     @Serial
     private static final long serialVersionUID = 1;
-
+    
     private final ClientRegistration clientRegistration;
 
     @Override

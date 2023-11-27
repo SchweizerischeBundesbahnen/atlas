@@ -1,0 +1,1303 @@
+openapi: "3.0.1"
+info:
+  title: "Journey POI Service"
+  contact:
+    name: "RoKaS Dev Team"
+    email: "rokas@sbb.ch"
+  license:
+    name: "SBB"
+    url: "https://developer.sbb.ch/license"
+  version: "1.118.0"
+  description: "## API Description\n\n### Purpose\n\nThis API is part of the \"Zentraler\
+    \ POI Service\" (central point-of-interest service). The service layer constitutes\
+    \ the interface (API) to the consumer channels (sbb.ch, SBB Mobile, ...) and provides\
+    \ the data for the TPSI Integration in HAFAS.\n\n### Target customers\n\n * Kanä\
+    le (sbb.ch, SBB Mobile,...)\n * HAFAS\n"
+externalDocs:
+  description: "Confluence Documentation"
+  url: "https://confluence.sbb.ch/display/KIS/Journey-Pois+Service"
+servers:
+- url: "https://journey-pois.api.sbb.ch:443"
+  description: "For paths: /v1, /v2"
+- url: "https://journey-pois-int.api.sbb.ch:443"
+  description: "For paths: /v1, /v2"
+security:
+- intAuth: []
+- prodAuth: []
+- authAzure: []
+paths:
+  /v2/point-of-interests:
+    get:
+      tags:
+      - "Point of Interest v2"
+      summary: "Fetch all points of interest."
+      description: "Fetch all points of interest (not detailed) as json, csv or mbtiles\
+        \ file."
+      operationId: "pointOfInterestAllV2"
+      parameters:
+      - name: "includePreview"
+        in: "query"
+        description: "Set to true to include in the results also points of interest\
+          \ marked as 'preview', false to filter preview points of interest. **Default\
+          \ is false**."
+        required: false
+        schema:
+          type: "boolean"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/PointOfInterest"
+            text/csv:
+              schema:
+                type: "string"
+            application/octet-stream:
+              schema:
+                type: "string"
+                format: "binary"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "406":
+          $ref: "#/components/responses/BadAccept"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v2/point-of-interests/{id}:
+    get:
+      tags:
+      - "Point of Interest v2"
+      summary: "Gets a single point of interest."
+      description: "Gets a single point of interest (detailed)."
+      operationId: "pointOfInterestV2"
+      parameters:
+      - in: "path"
+        name: "id"
+        schema:
+          type: "string"
+        required: true
+        description: "The id of the point of interest to be returned"
+      - name: "routeStopPlace"
+        in: "query"
+        description: "When specified, calculate a footway route between the stop place\
+          \ and the point of interest location. Stop place UIC (e.g. 8507000) or SLOID\
+          \ (e.g. ch:1:sloid:7000)."
+        required: false
+        schema:
+          type: "string"
+        example: "8507000"
+      - name: "routeDirection"
+        in: "query"
+        description: "Whether the footway route goes from or to the stop place."
+        required: false
+        schema:
+          type: "string"
+          enum:
+          - "FROM_STOP_PLACE"
+          - "TO_STOP_PLACE"
+          default: "FROM_STOP_PLACE"
+      - name: "showRealtimeInformation"
+        in: "query"
+        description: "Set to true to include realtime information in the response.\
+          \ For Example Mobility, Publibike, Carvelo2go and Nextbike vehicles availability."
+        required: false
+        schema:
+          type: "boolean"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PointOfInterestDetailed"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "406":
+          $ref: "#/components/responses/BadAccept"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v2/point-of-interests/categories:
+    get:
+      tags:
+      - "Point of Interest v2"
+      summary: "Gets all points of interest categories informations."
+      description: "Gets all points of interest categories informations."
+      operationId: "pointOfInterestCategoryInformations"
+      parameters:
+      - in: "query"
+        name: "version"
+        schema:
+          type: "integer"
+        required: false
+        description: "Targeted version, will use active version per default."
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/CategoryReport"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "406":
+          $ref: "#/components/responses/BadAccept"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v2/stop-places:
+    get:
+      tags:
+      - "Stop Place v2"
+      summary: "(beta) Gets all stop places."
+      description: "Gets all stop places."
+      operationId: "stopPlaces"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/StopPlace"
+        "500":
+          description: "server error"
+  /v2/stop-places/{stopPlace}:
+    get:
+      tags:
+      - "Stop Place v2"
+      summary: "(beta) Get one Stop Place by sloid or uic."
+      description: "Gets one Stop Place based on sloid or uic."
+      operationId: "stopPlacesBySloidOrUic"
+      parameters:
+      - in: "path"
+        name: "stopPlace"
+        schema:
+          type: "string"
+        required: true
+        description: "stopPlace can be either sloid or uic (example ch:1:sloid:7000\
+          \ or 8507000)"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StopPlace"
+        "404":
+          description: "not found"
+  /v2/stop-places/{stopPlace}/point-of-interests:
+    get:
+      tags:
+      - "Stop Place v2"
+      summary: "Gets all point of interest in the stop place."
+      description: "Gets all point of interest in the stop place."
+      operationId: "stopPlacePointOfInterest"
+      parameters:
+      - in: "path"
+        name: "stopPlace"
+        schema:
+          type: "string"
+        required: true
+        description: "stopPlace can be either sloid or uic (example ch:1:sloid:7000\
+          \ or 8507000)"
+      - in: "query"
+        name: "categories"
+        schema:
+          type: "string"
+        required: false
+        description: "Comma-separated list of point of interest categories and/or\
+          \ sub-categories used to filter the response."
+        example: "accommodation,post_office,bike_sharing"
+      - in: "query"
+        name: "distance_outdoor"
+        schema:
+          type: "integer"
+          minimum: 0
+          maximum: 5000
+        required: false
+        description: "Distance in meters around the center of the provided 'stopPlace'.\
+          \ \nOnly works in combination with the 'categories' parameter. \nThis adds\
+          \ points of interest to the response that are within the given radius from\
+          \ the 'stopPlace'.\n(0 <= distance_outdoor <= 5000)\n"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/PointOfInterestDetailed"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "406":
+          $ref: "#/components/responses/BadAccept"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
+  /v1/address/closest:
+    get:
+      tags:
+      - "Address v1 (beta)"
+      summary: "Address reverse geocoding"
+      description: "Retrieve the closest address for the given coordinates. The approximate\
+        \ search radius is 100m."
+      operationId: "closestAddress"
+      parameters:
+      - in: "query"
+        name: "lon"
+        schema:
+          type: "number"
+        required: true
+        description: "Longitude"
+      - in: "query"
+        name: "lat"
+        schema:
+          type: "number"
+        required: true
+        description: "Latitude"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+        "400":
+          description: "wrong request"
+        "500":
+          description: "server error"
+  /v1/address/country/closest:
+    get:
+      tags:
+      - "Address v1 (beta)"
+      summary: "Country reverse geocoding"
+      description: "Retrieve the closest country for the given coordinates."
+      operationId: "closestCountry"
+      parameters:
+      - in: "query"
+        name: "lon"
+        schema:
+          type: "number"
+        required: true
+        description: "Longitude"
+      - in: "query"
+        name: "lat"
+        schema:
+          type: "number"
+        required: true
+        description: "Latitude"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Country"
+        "400":
+          description: "wrong request"
+        "500":
+          description: "server error"
+  /v1/point-of-interest:
+    get:
+      tags:
+      - "Point of Interest v1"
+      summary: "Fetch all points of interest."
+      description: "Fetch all points of interest."
+      operationId: "pointOfInterestAll"
+      deprecated: true
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+        "400":
+          description: "wrong request"
+        "500":
+          description: "server error"
+  /v1/point-of-interest/{sbbId}:
+    get:
+      tags:
+      - "Point of Interest v1"
+      summary: "Gets a single point of interest."
+      description: "Gets a single point of interest."
+      operationId: "pointOfInterest"
+      deprecated: true
+      parameters:
+      - in: "path"
+        name: "sbbId"
+        schema:
+          type: "string"
+        required: true
+        description: "The sbbId of the point of interest to be returned"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+        "400":
+          description: "wrong request"
+        "500":
+          description: "server error"
+  /util/point-of-interest/import:
+    post:
+      tags:
+      - "Point of Interest Admin"
+      summary: "Import points of interest from G#."
+      description: "Import points of interest from G#."
+      operationId: "pointOfInterestImport"
+      responses:
+        "202":
+          description: "success"
+        "500":
+          description: "server error"
+  /util/point-of-interest/versions:
+    get:
+      tags:
+      - "Point of Interest Admin"
+      summary: "List available points of interest versions."
+      description: "List available points of interest versions."
+      operationId: "pointOfInterestVersions"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Version"
+        "500":
+          description: "server error"
+  /util/point-of-interest/versions/activations:
+    get:
+      tags:
+      - "Point of Interest Admin"
+      summary: "List available points of interest activations."
+      description: "List available points of interest activations."
+      operationId: "pointOfInterestActivations"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Activation"
+  /util/point-of-interest/versions/prune:
+    post:
+      tags:
+      - "Point of Interest Admin"
+      summary: "Delete outdated points of interest versions."
+      description: "Deletes all points of interest versions except for the most recently\
+        \ (successfully) imported and activated ones."
+      operationId: "pointOfInterestVersionsPrune"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  deletedVersions:
+                    type: "array"
+                    items:
+                      type: "number"
+                    example:
+                    - 1
+                    - 2
+                    - 3
+        "500":
+          description: "server error"
+  /util/point-of-interest/versions/activate/{version}:
+    post:
+      tags:
+      - "Point of Interest Admin"
+      summary: "Activate a points of interest version."
+      description: "Activate a points of interest version."
+      operationId: "pointOfInterestVersionsActivate"
+      parameters:
+      - in: "path"
+        name: "version"
+        schema:
+          type: "integer"
+        required: true
+        description: "Version to activate"
+      responses:
+        "200":
+          description: "success"
+        "404":
+          description: "this version doesn't exist"
+        "406":
+          description: "must have status SUCCESS to activate"
+        "500":
+          description: "server error"
+  /util/mbtiles/generate:
+    post:
+      tags:
+      - "MBTiles Admin"
+      summary: "Generate MBTiles."
+      description: "Generate MBTiles for specified version and datasource type."
+      externalDocs:
+        url: "https://wiki.openstreetmap.org/wiki/MBTiles"
+      operationId: "mbtilesGenerate"
+      parameters:
+      - name: "version"
+        in: "query"
+        schema:
+          type: "integer"
+        required: false
+        description: "Targeted version, will use active version per default."
+      - name: "type"
+        in: "query"
+        description: "Type of the mbtiles datasource."
+        required: true
+        schema:
+          type: "string"
+          enum:
+          - "JOURNEY_POIS"
+          - "JOURNEY_POIS_PREVIEW"
+      responses:
+        "202":
+          description: "success"
+        "500":
+          description: "server error"
+  /util/mbtiles/get:
+    get:
+      tags:
+      - "MBTiles Admin"
+      summary: "Get MBTiles."
+      description: "Download MBTiles for specified version and datasource type."
+      externalDocs:
+        url: "https://wiki.openstreetmap.org/wiki/MBTiles"
+      operationId: "mbtilesGet"
+      parameters:
+      - name: "version"
+        in: "query"
+        schema:
+          type: "integer"
+        required: false
+        description: "Targeted version, will use active version per default."
+      - name: "type"
+        in: "query"
+        description: "Type of the mbtiles datasource."
+        required: true
+        schema:
+          type: "string"
+          enum:
+          - "JOURNEY_POIS"
+          - "JOURNEY_POIS_PREVIEW"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/octet-stream:
+              schema:
+                type: "string"
+                format: "binary"
+        "500":
+          description: "server error"
+  /util/mbtiles/stop-places/generate:
+    post:
+      tags:
+      - "MBTiles Admin"
+      summary: "Generate MBTiles for Stop-Places and Platforms."
+      description: "Generate MBTiles for Stop-Places and Platforms."
+      externalDocs:
+        url: "https://wiki.openstreetmap.org/wiki/MBTiles"
+      operationId: "mbtilesStopplacesGenerate"
+      responses:
+        "202":
+          description: "success"
+        "500":
+          description: "server error"
+  /util/mbtiles/stop-places/get:
+    get:
+      tags:
+      - "MBTiles Admin"
+      summary: "Get MBTiles for Stop-Places and Platforms."
+      description: "Download MBTiles for Stop-Places and Platforms."
+      externalDocs:
+        url: "https://wiki.openstreetmap.org/wiki/MBTiles"
+      operationId: "mbtilesStopplacesGet"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/octet-stream:
+              schema:
+                type: "string"
+                format: "binary"
+        "500":
+          description: "server error"
+  /util/stop-places/import:
+    post:
+      tags:
+      - "StopPlaces Admin"
+      summary: "Import Stop Places from Atlas"
+      operationId: "stopPlacesImport"
+      responses:
+        "202":
+          description: "success"
+        "500":
+          description: "server error"
+  /util/country/import:
+    post:
+      tags:
+      - "Country Admin"
+      summary: "Import Countries from OSM"
+      operationId: "countriesImport"
+      responses:
+        "202":
+          description: "success"
+        "500":
+          description: "server error"
+components:
+  schemas:
+    Place:
+      properties:
+        discriminatorType:
+          type: "string"
+        geometry:
+          $ref: "#/components/schemas/Point"
+      required:
+      - "geometry"
+      discriminator:
+        propertyName: "discriminatorType"
+        mapping:
+          PointOfInterest: "#/components/schemas/PointOfInterest"
+          StopPlace: "#/components/schemas/StopPlace"
+    StopPlace:
+      allOf:
+      - $ref: "#/components/schemas/Place"
+      - type: "object"
+      properties:
+        uic:
+          type: "integer"
+        sloid:
+          type: "string"
+        name:
+          type: "string"
+        abbreviation:
+          type: "string"
+        meansOfTransports:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/MeansOfTransport"
+        validFrom:
+          type: "string"
+          format: "date"
+          example: "1999-09-28"
+        validTo:
+          type: "string"
+          format: "date"
+          example: "2099-09-28"
+        altitude:
+          type: "integer"
+        platforms:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Platform"
+      required:
+      - "uic"
+      - "sloid"
+      - "name"
+      - "meansOfTransports"
+      - "validFrom"
+      - "validTo"
+      - "altitude"
+      - "platforms"
+      - "position"
+    PointOfInterest:
+      allOf:
+      - $ref: "#/components/schemas/Place"
+      - type: "object"
+      properties:
+        id:
+          type: "string"
+        name:
+          type: "string"
+        source:
+          $ref: "#/components/schemas/Source"
+        category:
+          type: "string"
+        subCategory:
+          type: "string"
+        aliases:
+          type: "array"
+          items:
+            type: "string"
+        stopPlaceUic:
+          type: "integer"
+        stopPlaceSloid:
+          type: "string"
+        level:
+          type: "integer"
+        layer:
+          type: "integer"
+      required:
+      - "id"
+      - "name"
+      - "category"
+      - "subCategory"
+      - "source"
+      discriminator:
+        propertyName: "discriminatorType"
+        mapping:
+          PointOfInterestDetailed: "#/components/schemas/PointOfInterestDetailed"
+    PointOfInterestDetailed:
+      allOf:
+      - $ref: "#/components/schemas/PointOfInterest"
+      - type: "object"
+      properties:
+        operator:
+          $ref: "#/components/schemas/Operator"
+        nameI18n:
+          $ref: "#/components/schemas/StringI18n"
+        description:
+          $ref: "#/components/schemas/StringI18n"
+        tags:
+          type: "array"
+          items:
+            type: "string"
+        address:
+          $ref: "#/components/schemas/Address"
+        contacts:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Contact"
+        contactsPrivate:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Contact"
+        logo:
+          type: "string"
+          format: "uri"
+        icon:
+          type: "string"
+          format: "uri"
+        picture:
+          type: "string"
+          format: "uri"
+        openingHours:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OpeningHours"
+        properties:
+          description: "Additional custom properties in Json format."
+          type: "object"
+        route:
+          $ref: "#/components/schemas/FeatureCollection"
+        locationDetails:
+          $ref: "#/components/schemas/StringI18n"
+        callToAction:
+          $ref: "#/components/schemas/CallToAction"
+      required:
+      - "discriminatorType"
+    Platform:
+      properties:
+        stopPlaceUic:
+          type: "integer"
+        sloid:
+          type: "string"
+        reference:
+          type: "string"
+        geometry:
+          $ref: "#/components/schemas/Point"
+        validFrom:
+          type: "string"
+          format: "date"
+          example: "1999-09-28"
+        validTo:
+          type: "string"
+          format: "date"
+          example: "2099-09-28"
+      required:
+      - "stopPlaceUic"
+      - "sloid"
+      - "reference"
+      - "validFrom"
+      - "validTo"
+      - "geometry"
+    MeansOfTransport:
+      type: "string"
+      enum:
+      - "BOAT"
+      - "BUS"
+      - "TRAIN"
+      - "TRAM"
+      - "WALK"
+      - "GONDOLA"
+      - "FUNICULAR"
+      - "CABLECAR"
+      - "SUBWAY"
+      - "PLANE"
+      - "TAXI"
+      - "OTHER"
+    Operator:
+      properties:
+        name:
+          type: "string"
+    Address:
+      properties:
+        discriminatorType:
+          type: "string"
+        countryCode:
+          type: "string"
+        cantonCode:
+          type: "string"
+        city:
+          type: "string"
+        postalCode:
+          type: "integer"
+        streetName:
+          type: "string"
+        streetNameI18n:
+          $ref: "#/components/schemas/StringI18n"
+        houseNumber:
+          type: "string"
+      required:
+      - "countryCode"
+      - "cantonCode"
+      - "city"
+      - "postalCode"
+    Country:
+      type: "object"
+      properties:
+        countryCode:
+          $ref: "#/components/schemas/CountryCode"
+        name:
+          type: "string"
+          description: "International name of the country"
+        nameOfficialI18n:
+          $ref: "#/components/schemas/StringI18n"
+        nameI18n:
+          $ref: "#/components/schemas/StringI18n"
+        source:
+          $ref: "#/components/schemas/Source"
+    CountryCode:
+      type: "object"
+      properties:
+        isoCountryCode:
+          type: "string"
+          description: "ISO Country Code"
+        isoCountryCodeAlpha2:
+          type: "string"
+          description: "ISO Country Code (Alpha-2 code)"
+        isoCountryCodeAlpha3:
+          type: "string"
+          description: "ISO Country Code (Alpha-3 code)"
+        isoCountryCodeNumeric:
+          type: "string"
+          description: "ISO Country Code (Numeric code)"
+      description: "Data Transfer Object for Country Code information"
+    CallToAction:
+      properties:
+        sbbMobile:
+          $ref: "#/components/schemas/StringI18n"
+        sbbDesktop:
+          $ref: "#/components/schemas/StringI18n"
+        externalMobile:
+          $ref: "#/components/schemas/StringI18n"
+        externalDesktop:
+          $ref: "#/components/schemas/StringI18n"
+    StringI18n:
+      properties:
+        de:
+          type: "string"
+        en:
+          type: "string"
+        fr:
+          type: "string"
+        it:
+          type: "string"
+    Source:
+      properties:
+        name:
+          type: "string"
+        id:
+          type: "string"
+      required:
+      - "name"
+      - "id"
+    Contact:
+      properties:
+        type:
+          $ref: "#/components/schemas/ContactType"
+        value:
+          type: "string"
+      required:
+      - "type"
+      - "value"
+    ContactType:
+      type: "string"
+      enum:
+      - "EMAIL"
+      - "TELEPHONE"
+      - "WEBSITE"
+    Weekday:
+      type: "string"
+      enum:
+      - "Mo"
+      - "Tu"
+      - "We"
+      - "Th"
+      - "Fr"
+      - "Sa"
+      - "Su"
+    OpeningHours:
+      properties:
+        dateFrom:
+          type: "string"
+          format: "date"
+        dateTo:
+          type: "string"
+          format: "date"
+        holiday:
+          $ref: "#/components/schemas/StringI18n"
+        information:
+          $ref: "#/components/schemas/StringI18n"
+        slots:
+          type: "array"
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/OpeningHoursSlot"
+    OpeningHoursSlot:
+      properties:
+        weekdayFrom:
+          $ref: "#/components/schemas/Weekday"
+        weekdayTo:
+          $ref: "#/components/schemas/Weekday"
+        timeFrom:
+          type: "string"
+          example: "08:00"
+          pattern: "^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$"
+        timeTo:
+          type: "string"
+          example: "12:00"
+          pattern: "^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$"
+    CategoryReport:
+      properties:
+        version:
+          type: "integer"
+        pointOfInterestCount:
+          type: "integer"
+        mainCategoryCount:
+          type: "integer"
+        subCategoryCount:
+          type: "integer"
+        sources:
+          type: "array"
+          items:
+            type: "string"
+        mainCategoryReports:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/MainCategoryReport"
+      required:
+      - "version"
+      - "pointOfInterestCount"
+    MainCategoryReport:
+      properties:
+        categoryKey:
+          type: "string"
+        hafasIdentifier:
+          type: "string"
+        categoryName:
+          $ref: "#/components/schemas/StringI18n"
+        pointOfInterestCount:
+          type: "integer"
+        subCategoryCount:
+          type: "integer"
+        color:
+          type: "string"
+        sources:
+          type: "array"
+          items:
+            type: "string"
+        subCategoryReports:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/SubCategoryReport"
+      required:
+      - "categoryKey"
+      - "pointOfInterestCount"
+    SubCategoryReport:
+      properties:
+        subCategoryKey:
+          type: "string"
+        hafasIdentifier:
+          type: "string"
+        icon:
+          type: "string"
+        subCategoryName:
+          $ref: "#/components/schemas/StringI18n"
+        pointOfInterestCount:
+          type: "integer"
+        sources:
+          type: "array"
+          items:
+            type: "string"
+      required:
+      - "subCategoryKey"
+      - "pointOfInterestCount"
+    Version:
+      properties:
+        importVersion:
+          type: "integer"
+          example: 333
+        importDate:
+          type: "string"
+          format: "date-time"
+          example: "2023-09-28T01:00:12.781154Z"
+        importDateEnd:
+          type: "string"
+          format: "date-time"
+          nullable: true
+          example: "2023-09-28T01:03:17.022664Z"
+        importedBy:
+          type: "string"
+          nullable: true
+          example: "Cron Job"
+        status:
+          type: "string"
+          example: "SUCCESS"
+        activationDate:
+          type: "string"
+          format: "date-time"
+          nullable: true
+          example: "2023-09-28T01:03:17.082289Z"
+        isActive:
+          type: "boolean"
+          example: true
+    Activation:
+      properties:
+        importVersion:
+          type: "integer"
+          example: 333
+        activationTime:
+          type: "string"
+          format: "date-time"
+          example: "2023-09-28T01:03:17.082289Z"
+        activatedBy:
+          type: "string"
+          example: "import (Cron Job)"
+    Error:
+      description: "Error detail to be returned if 4xx/5xx, according to [RFC-7807](https://tools.ietf.org/html/rfc7807)"
+      type: "object"
+      properties:
+        status:
+          type: "integer"
+          description: "Http status code of the error (4xx/5xx) problem."
+        title:
+          type: "string"
+          description: "A short, human-readable summary of the problem type"
+        detail:
+          type: "string"
+          description: "Link to the API-Documentation"
+        instance:
+          type: "string"
+          description: "A URI reference that identifies the specific occurrence of\
+            \ the problem. It may or may not yield further information if dereferenced.\n"
+        type:
+          type: "string"
+          description: "A URI reference that identifies the problem type."
+      required:
+      - "title"
+      - "status"
+    GeoJsonType:
+      type: "string"
+      enum:
+      - "FeatureCollection"
+      - "Feature"
+      - "Point"
+      - "MultiPoint"
+      - "LineString"
+      - "MultiLineString"
+      - "Polygon"
+      - "MultiPolygon"
+      - "Geometry"
+      - "GeometryCollection"
+    FeatureCollection:
+      description: "GeoJSon 'FeatureCollection' object"
+      externalDocs:
+        url: "https://tools.ietf.org/html/rfc7946#section-3.3"
+      required:
+      - "features"
+      properties:
+        type:
+          $ref: "#/components/schemas/GeoJsonType"
+        bbox:
+          type: "array"
+          items:
+            type: "number"
+        features:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Feature"
+    Feature:
+      description: "GeoJSon 'Feature' object"
+      externalDocs:
+        url: "https://tools.ietf.org/html/rfc7946#section-3.2"
+      required:
+      - "geometry"
+      - "properties"
+      properties:
+        type:
+          $ref: "#/components/schemas/GeoJsonType"
+        id:
+          type: "string"
+        bbox:
+          type: "array"
+          items:
+            type: "number"
+        properties:
+          type: "object"
+          nullable: true
+        geometry:
+          $ref: "#/components/schemas/Geometry"
+    Geometry:
+      description: "Abstract type for all GeoJSon 'Geometry' object"
+      externalDocs:
+        url: "https://tools.ietf.org/html/rfc7946#section-3"
+      required:
+      - "type"
+      properties:
+        type:
+          $ref: "#/components/schemas/GeoJsonType"
+      discriminator:
+        propertyName: "type"
+        mapping:
+          Point: "#/components/schemas/Point"
+          MultiPoint: "#/components/schemas/MultiPoint"
+          LineString: "#/components/schemas/LineString"
+          MultiLineString: "#/components/schemas/MultiLineString"
+          Polygon: "#/components/schemas/Polygon"
+          MultiPolygon: "#/components/schemas/MultiPolygon"
+          GeometryCollection: "#/components/schemas/GeometryCollection"
+    Point:
+      description: "GeoJSon geometry"
+      externalDocs:
+        url: "https://tools.ietf.org/html/rfc7946#section-3.1.2"
+      allOf:
+      - $ref: "#/components/schemas/Geometry"
+      required:
+      - "coordinates"
+      properties:
+        coordinates:
+          $ref: "#/components/schemas/Position"
+    MultiPoint:
+      description: "GeoJSon geometry"
+      externalDocs:
+        url: "https://tools.ietf.org/html/rfc7946#section-3.1.3"
+      allOf:
+      - $ref: "#/components/schemas/Geometry"
+      required:
+      - "coordinates"
+      properties:
+        coordinates:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Position"
+    Position:
+      description: "GeoJSon fundamental geometry construct."
+      externalDocs:
+        url: "https://tools.ietf.org/html/rfc7946#section-3.1.1"
+      type: "array"
+      minItems: 2
+      maxItems: 3
+      items:
+        type: "number"
+    LineString:
+      description: "GeoJSon geometry"
+      externalDocs:
+        url: "https://tools.ietf.org/html/rfc7946#section-3.1.4"
+      allOf:
+      - $ref: "#/components/schemas/Geometry"
+      required:
+      - "coordinates"
+      properties:
+        coordinates:
+          $ref: "#/components/schemas/LineStringCoordinates"
+    MultiLineString:
+      description: "GeoJSon geometry"
+      externalDocs:
+        url: "https://tools.ietf.org/html/rfc7946#section-3.1.5"
+      allOf:
+      - $ref: "#/components/schemas/Geometry"
+      required:
+      - "coordinates"
+      properties:
+        coordinates:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/LineStringCoordinates"
+    LineStringCoordinates:
+      description: "GeoJSon fundamental geometry construct, array of two or more positions."
+      externalDocs:
+        url: "https://tools.ietf.org/html/rfc7946#section-3.1.4"
+      type: "array"
+      items:
+        $ref: "#/components/schemas/Position"
+      minItems: 2
+    Polygon:
+      description: "GeoJSon geometry"
+      externalDocs:
+        url: "https://tools.ietf.org/html/rfc7946#section-3.1.6"
+      allOf:
+      - $ref: "#/components/schemas/Geometry"
+      required:
+      - "coordinates"
+      properties:
+        coordinates:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/LinearRing"
+    MultiPolygon:
+      description: "GeoJSon geometry"
+      externalDocs:
+        url: "https://tools.ietf.org/html/rfc7946#section-3.1.7"
+      allOf:
+      - $ref: "#/components/schemas/Geometry"
+      required:
+      - "coordinates"
+      properties:
+        coordinates:
+          type: "array"
+          items:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/LinearRing"
+    LinearRing:
+      description: "A linear ring is a closed LineString with four or more positions."
+      externalDocs:
+        url: "https://tools.ietf.org/html/rfc7946#section-3.1.6"
+      type: "array"
+      items:
+        $ref: "#/components/schemas/Position"
+      minItems: 4
+    GeometryCollection:
+      description: "GeoJSon geometry collection"
+      externalDocs:
+        url: "https://tools.ietf.org/html/rfc7946#section-3.1.8"
+      allOf:
+      - $ref: "#/components/schemas/Geometry"
+      required:
+      - "geometries"
+      properties:
+        geometries:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Geometry"
+          minItems: 0
+  securitySchemes:
+    intAuth:
+      type: "oauth2"
+      flows:
+        clientCredentials:
+          tokenUrl: "https://sso-int.sbb.ch/auth/realms/SBB_Public/protocol/openid-connect/token"
+          scopes: {}
+        authorizationCode:
+          tokenUrl: "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/token"
+          authorizationUrl: "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/authorize"
+          scopes: {}
+    prodAuth:
+      type: "oauth2"
+      flows:
+        clientCredentials:
+          tokenUrl: "https://sso.sbb.ch/auth/realms/SBB_Public/protocol/openid-connect/token"
+          scopes: {}
+        authorizationCode:
+          tokenUrl: "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/token"
+          authorizationUrl: "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/authorize"
+          scopes: {}
+    authAzure:
+      type: "oauth2"
+      flows:
+        clientCredentials:
+          tokenUrl: "https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/oauth2/v2.0/token"
+          scopes: {}
+  responses:
+    BadRequest:
+      description: "Bad Request"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    Forbidden:
+      description: "Not Found"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    NotFound:
+      description: "Not Found"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    BadAccept:
+      description: "Accept must be 'application/json'"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    Unauthorized:
+      description: "Unauthorized"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    InternalServerError:
+      description: "Internal server error"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    ServiceUnavailable:
+      description: "Service Unavailable"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
