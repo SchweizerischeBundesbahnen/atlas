@@ -48,6 +48,7 @@ class GeoReferenceServiceTest {
         .swissMunicipalityNumber(5841)
         .swissMunicipalityName("Château-d'Oex")
         .swissLocalityName("La Lécherette")
+        .height(1201.0)
         .build();
 
     assertThat(geoReference).isEqualTo(expectedGeoReference);
