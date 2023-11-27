@@ -969,7 +969,7 @@
       },
       "VALIDITY_CONFIRMATION": {
         "TITLE": "Validité ",
-        "MESSAGE": "Attention, l'arrêt attribué est valable de {{validFrom}} à {{validTo}}. Veuillez adapter la validité en conséquence."
+        "MESSAGE": "Attention, le service attribué est valable de {{validFrom}} à {{validTo}}. Veuillez adapter la validité en conséquence."
       }
     },
     "BOARDING_AREAS": {

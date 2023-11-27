@@ -28,6 +28,7 @@ import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
+import ch.sbb.atlas.journey.poi.model.CountryCode;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.Country;
@@ -37,6 +38,8 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointFotCommentRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.georeference.JourneyPoiClient;
+import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointNumberService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
@@ -57,10 +60,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MvcResult;
 
 class ServicePointControllerApiTest extends BaseControllerApiTest {
 
+  @MockBean
+  private JourneyPoiConfig journeyPoiConfig;
+  @MockBean
+  private JourneyPoiClient journeyPoiClient;
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
   @MockBean
@@ -83,6 +91,11 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   void createDefaultVersion() {
     when(servicePointNumberService.getNextAvailableServicePointId(any())).thenReturn(1);
     servicePointVersion = repository.save(ServicePointTestData.getBernWyleregg());
+
+    ResponseEntity<ch.sbb.atlas.journey.poi.model.Country> poiResponse =
+        ResponseEntity.ofNullable(
+            new ch.sbb.atlas.journey.poi.model.Country().countryCode(new CountryCode().isoCountryCode("RO")));
+    when(journeyPoiClient.closestCountry(any(), any())).thenReturn(poiResponse);
   }
 
   @AfterEach
