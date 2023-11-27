@@ -128,8 +128,10 @@ public class ServicePointController implements ServicePointApiV1 {
     return ServicePointVersionMapper.toModel(createdVersion);
   }
 
-  @Deprecated
-  // Only necessary as long as we use BaseDidokImportEntity
+  /**
+   * @deprecated Only necessary as long as we use BaseDidokImportEntity
+   */
+  @Deprecated(forRemoval = true)
   private static void setCreationDateAndCreatorToNull(ServicePointVersion servicePointVersion) {
     servicePointVersion.setCreator(null);
     servicePointVersion.setCreationDate(null);
