@@ -1,4 +1,4 @@
-package ch.sbb.importservice.config;
+package ch.sbb.atlas.oauth.client;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -20,7 +20,7 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2AccessToken.TokenType;
 
 @ExtendWith(MockitoExtension.class)
- class ImportOAuthClientCredentialsFeignManagerTest {
+ class OAuthClientCredentialsFeignManagerTest {
 
   private OAuthClientCredentialsFeignManager oAuthClientCredentialsFeignManager;
 
@@ -51,7 +51,7 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken.TokenType;
   }
 
   @Test
-   void shouldGetTocken() {
+   void shouldGetToken() {
     //given
     when(clientRegistration.getRegistrationId()).thenReturn("id");
     when(manager.authorize(any())).thenReturn(client);
@@ -65,7 +65,6 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken.TokenType;
     //then
     assertThat(result).isNotNull();
     assertThat(result).isEqualTo("token");
-
   }
 
 }
