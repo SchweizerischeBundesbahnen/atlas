@@ -13,6 +13,7 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.Country;
+import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ class GeoReferenceServiceTest {
   }
 
   @Test
-  void shouldGetInformationAboutLocationAbroadViaPoiClient() {
+  void shouldGetInformationAboutLocationAbroadViaPoiClientTransformingToWgs84() {
     ResponseEntity<ch.sbb.atlas.journey.poi.model.Country> poiResponse =
         ResponseEntity.ofNullable(
             new ch.sbb.atlas.journey.poi.model.Country().countryCode(new CountryCode().isoCountryCode("RO")));
@@ -73,5 +74,27 @@ class GeoReferenceServiceTest {
 
     assertThat(geoReference).isEqualTo(expectedGeoReference);
     verify(journeyPoiClient).closestCountry(BigDecimal.valueOf(26.75401227989), BigDecimal.valueOf(47.25201833567));
+  }
+
+  @Test
+  void shouldGetInformationAboutLocationAbroadViaPoiClientByUsingWgs84() {
+    ResponseEntity<ch.sbb.atlas.journey.poi.model.Country> poiResponse =
+        ResponseEntity.ofNullable(
+            new ch.sbb.atlas.journey.poi.model.Country().countryCode(new CountryCode().isoCountryCode("RO")));
+    when(journeyPoiClient.closestCountry(any(), any())).thenReturn(poiResponse);
+
+    CoordinatePair coordinate = CoordinatePair.builder()
+        .spatialReference(SpatialReference.WGS84)
+        .east(47.25201833567)
+        .north(26.7540122798)
+        .build();
+    GeoReference geoReference = geoReferenceService.getGeoReference(coordinate);
+
+    GeoReference expectedGeoReference = GeoReference.builder()
+        .country(Country.ROMANIA)
+        .build();
+
+    assertThat(geoReference).isEqualTo(expectedGeoReference);
+    verify(journeyPoiClient).closestCountry(BigDecimal.valueOf(47.25201833567), BigDecimal.valueOf(26.7540122798));
   }
 }
