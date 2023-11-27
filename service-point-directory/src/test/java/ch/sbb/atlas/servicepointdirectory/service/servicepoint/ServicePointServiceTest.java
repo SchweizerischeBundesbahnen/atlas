@@ -24,7 +24,7 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
- class ServicePointServiceTest {
+class ServicePointServiceTest {
 
   private ServicePointService servicePointService;
 
