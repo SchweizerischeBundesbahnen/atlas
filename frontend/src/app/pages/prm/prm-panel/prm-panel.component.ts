@@ -7,10 +7,10 @@ import {
   ServicePointsService,
 } from '../../../api';
 import { DateRange } from '../../../core/versioning/date-range';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { ActivatedRoute } from '@angular/router';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
 import { PrmMeanOfTransportHelper } from '../prm-mean-of-transport-helper';
 import { PrmTab } from './prm-tab';
@@ -30,9 +30,9 @@ export class PrmPanelComponent implements OnDestroy, OnInit {
   isNew!: boolean;
   disableTabNavigation = false;
   stopPointVersions!: ReadStopPointVersion[];
+  private ngUnsubscribe = new Subject<void>();
 
   tabs = PrmTab.tabs;
-  private stopPointSubscription?: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -42,35 +42,38 @@ export class PrmPanelComponent implements OnDestroy, OnInit {
   ) {
     this.businessOrganisationLanguageService
       .languageChanged()
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => this.translateBoDescription());
   }
 
   ngOnInit() {
     this.route.data
       .pipe(
+        takeUntil(this.ngUnsubscribe),
         map((next) => {
           this.servicePointVersions = next.servicePoints;
           this.stopPointVersions = next.stopPoints;
-          this.initTabs();
+          this.initTabs(this.stopPointVersions);
           this.initServicePointVersioning(this.servicePointVersions);
         }),
         switchMap(() =>
           this.businessOrganisationsService
             .getVersions(this.selectedServicePointVersion.businessOrganisation)
-            .pipe(tap((bo) => this.initSelectedBusinessOrganisationVersion(bo))),
+            .pipe(
+              takeUntil(this.ngUnsubscribe),
+              tap((bo) => this.initSelectedBusinessOrganisationVersion(bo)),
+            ),
         ),
       )
       .subscribe();
   }
 
-  private initTabs() {
-    if (this.stopPointVersions.length === 0) {
+  initTabs(stopPointVersions: ReadStopPointVersion[]) {
+    if (stopPointVersions.length === 0) {
       this.disableTabNavigation = true;
       this.tabs = [PrmTab.STOP_POINT];
     } else {
-      const isReduced = PrmMeanOfTransportHelper.isReduced(
-        this.stopPointVersions[0].meansOfTransport,
-      );
+      const isReduced = PrmMeanOfTransportHelper.isReduced(stopPointVersions[0].meansOfTransport);
       if (isReduced) {
         this.tabs = PrmTab.reducedTabs;
       }
@@ -78,7 +81,7 @@ export class PrmPanelComponent implements OnDestroy, OnInit {
   }
 
   ngOnDestroy() {
-    this.stopPointSubscription?.unsubscribe();
+    this.ngUnsubscribe?.unsubscribe();
   }
 
   private initServicePointVersioning(servicePointVersions: ReadServicePointVersion[]) {

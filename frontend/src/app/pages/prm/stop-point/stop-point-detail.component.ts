@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 import {
   CreateStopPointVersion,
@@ -24,7 +24,7 @@ import { AuthService } from '../../../core/auth/auth.service';
   selector: 'app-stop-point-detail',
   templateUrl: './stop-point-detail.component.html',
 })
-export class StopPointDetailComponent implements OnInit, DetailFormComponent {
+export class StopPointDetailComponent implements OnInit, OnDestroy, DetailFormComponent {
   isNew = false;
   isAuthorizedToCreateStopPoint = true;
   stopPointVersions!: ReadStopPointVersion[];
@@ -56,12 +56,16 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     this.stopPointSubscription = this.route.parent?.data.subscribe((next) => {
       this.initServicePointsData(next);
       this.stopPointVersions = next.stopPoints;
-      if (this.stopPointVersions.length > 0) {
-        this.initExistingStopPoint();
-      } else {
-        this.initNotExistingStopPoint();
-      }
+      this.initStopPoint();
     });
+  }
+
+  initStopPoint() {
+    if (this.stopPointVersions.length > 0) {
+      this.initExistingStopPoint();
+    } else {
+      this.initNotExistingStopPoint();
+    }
   }
 
   backToSearchPrm() {
@@ -94,7 +98,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     }
   }
 
-  private initServicePointsData(next: Data) {
+  initServicePointsData(next: Data) {
     const servicePoints: ReadServicePointVersion[] = next.servicePoints;
     this.businessOrganisations = [
       ...new Set(servicePoints.map((value) => value.businessOrganisation)),
@@ -103,7 +107,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
       VersionsHandlingService.determineDefaultVersionByValidity(servicePoints);
   }
 
-  private initNotExistingStopPoint() {
+  initNotExistingStopPoint() {
     this.isNew = true;
     if (this.hasPermissionToCreateNewStopPoint()) {
       this.initEmptyForm();
@@ -112,27 +116,27 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     }
   }
 
-  private hasPermissionToCreateNewStopPoint(): boolean {
+  hasPermissionToCreateNewStopPoint(): boolean {
     const sboidsPermissions = this.businessOrganisations.map((bo) =>
       this.authService.hasPermissionsToWrite('PRM', bo),
     );
     return sboidsPermissions.includes(true);
   }
 
-  private initEmptyForm() {
+  initEmptyForm() {
     this.form = StopPointFormGroupBuilder.buildEmptyWithReducedValidationFormGroup();
     this.form.controls.number.setValue(this.servicePointVersion.number.number);
     this.form.controls.sloid.setValue(this.servicePointVersion.sloid);
     this.disableForm();
   }
 
-  private initSelectedVersion() {
+  initSelectedVersion() {
     this.form = StopPointFormGroupBuilder.buildFormGroup(this.selectedVersion);
     this.disableForm();
     this.isSelectedVersionHighDate(this.stopPointVersions, this.selectedVersion);
   }
 
-  private disableForm(): void {
+  disableForm(): void {
     this.form.disable({ emitEvent: false });
     this.isFormEnabled$.next(false);
   }
@@ -146,7 +150,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     );
   }
 
-  private initExistingStopPoint() {
+  initExistingStopPoint() {
     this.isNew = false;
     VersionsHandlingService.addVersionNumbers(this.stopPointVersions);
     this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.stopPointVersions);
@@ -166,7 +170,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     this.disableForm();
   }
 
-  private enableForm() {
+  enableForm() {
     this.form.enable({ emitEvent: false });
     this.isFormEnabled$.next(true);
   }
@@ -191,7 +195,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
       });
   }
 
-  private reloadPage() {
+  reloadPage() {
     this.router
       .navigate([Pages.PRM.path, Pages.STOP_POINTS.path, this.form.controls.number], {
         relativeTo: this.route,
@@ -199,7 +203,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
       .then(() => (this.isNew = false));
   }
 
-  private showConfirmationDialog() {
+  showConfirmationDialog() {
     this.confirmLeave()
       .pipe(take(1))
       .subscribe((confirmed) => {
@@ -227,5 +231,9 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   //used in combination with canLeaveDirtyForm
   isFormDirty(): boolean {
     return this.form && this.form.dirty;
+  }
+
+  ngOnDestroy(): void {
+    this.stopPointSubscription?.unsubscribe();
   }
 }
