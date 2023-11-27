@@ -10,7 +10,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { CoordinatePair, SpatialReference } from '../../../api';
+import { CoordinatePair, GeoDataService, SpatialReference } from '../../../api';
 import { GeographyFormGroup } from './geography-form-group';
 import { CoordinateTransformationService } from './coordinate-transformation.service';
 import { debounceTime, merge, Subject } from 'rxjs';
@@ -65,6 +65,7 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
     private coordinateTransformationService: CoordinateTransformationService,
     private mapService: MapService,
     private changeDetector: ChangeDetectorRef,
+    private geoDataService: GeoDataService,
   ) {}
 
   ngOnInit() {
@@ -76,6 +77,18 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
           east: coordinatePairWGS84.lng,
           spatialReference: SpatialReference.Wgs84,
         });
+
+        this.geoDataService
+          .getHeight({
+            north: coordinatePairWGS84.lat,
+            east: coordinatePairWGS84.lng,
+            spatialReference: SpatialReference.Wgs84,
+          })
+          .subscribe((geoAdminHeightResponse) => {
+            console.log('height ', geoAdminHeightResponse);
+
+            //this.formGroup.controls.height.setValue(geoAdminHeightResponse.height)
+          });
       });
 
     merge(this.formGroup.controls.east.valueChanges, this.formGroup.controls.north.valueChanges)
@@ -201,5 +214,9 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
           }
         }
       });
+  }
+
+  getHeightOfCoordinatePair(coordinatePair: CoordinatePair) {
+    this.geoDataService.getHeight(coordinatePair);
   }
 }
