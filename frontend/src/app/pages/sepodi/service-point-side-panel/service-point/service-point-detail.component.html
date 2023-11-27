@@ -95,7 +95,6 @@
     >
     </atlas-button>
     <atlas-button
-      *ngIf="isSupervisor"
       (buttonClicked)="revoke()"
       [applicationType]="ApplicationType.Sepodi"
       buttonDataCy="revoke-item"

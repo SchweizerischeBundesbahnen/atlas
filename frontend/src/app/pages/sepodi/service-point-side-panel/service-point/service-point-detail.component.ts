@@ -54,7 +54,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     private servicePointService: ServicePointsService,
     private notificationService: NotificationService,
     private mapService: MapService,
-    public authService: AuthService,
+    private authService: AuthService,
   ) {}
 
   ngOnInit() {
@@ -191,10 +191,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       });
     }
     return of(true);
-  }
-
-  isSupervisor() {
-    return this.authService.isAtLeastSupervisor(ApplicationType.Sepodi);
   }
 
   save() {
