@@ -1,19 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.WGS84;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.endsWith;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
@@ -33,6 +19,7 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
@@ -43,6 +30,14 @@ import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointNumberService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.web.servlet.MvcResult;
+
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -54,14 +49,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
+
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.WGS84;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.servlet.MvcResult;
 
 class ServicePointControllerApiTest extends BaseControllerApiTest {
 
@@ -417,6 +419,39 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType))
         // then
         .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void shouldSetStatusToRevokeForAllServicePoints() throws Exception {
+    CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    UpdateServicePointVersionModel createServicePointVersionModel1 = ServicePointTestData.getAargauServicePointVersionModel();
+    createServicePointVersionModel1.setMeansOfTransport(List.of(MeanOfTransport.BUS));
+    createServicePointVersionModel1.setValidFrom(LocalDate.of(2019, 8, 11));
+    createServicePointVersionModel1.setValidTo(LocalDate.of(2020, 8, 10));
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+            aargauServicePointVersionModel);
+    Long id = servicePointVersionModel.getId();
+    List<ReadServicePointVersionModel> servicePointVersionModels = servicePointController.updateServicePoint(id,
+            createServicePointVersionModel1);
+    servicePointVersionModels.forEach(v -> v.setStatus(Status.IN_REVIEW));
+    Integer number = servicePointVersionModel.getNumber().getNumber();
+
+    mvc.perform(post("/v1/service-points/" + number + "/revoke"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].status", is(Status.REVOKED.toString())))
+            .andExpect(jsonPath("$[1].status", is(Status.REVOKED.toString())));
+  }
+
+  @Test
+  void shouldSetStatusToValidateForServicePoint() throws Exception {
+    CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+            aargauServicePointVersionModel);
+    Long id = servicePointVersionModel.getId();
+
+    mvc.perform(post("/v1/service-points/validate/" + id))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.status", is(Status.VALIDATED.toString())));
   }
 
   @Test
