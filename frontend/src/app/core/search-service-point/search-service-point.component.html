@@ -13,7 +13,7 @@
     [loading]="loading"
     (change)="navigateTo($event)"
     (clear)="clearResult()"
-    placeholder="{{ 'SEPODI.SERVICE_POINTS.SERVICE_POINT' | translate }}"
+    placeholder="{{ searchPlaceholder | translate }}"
     appearance="outline"
     [notFoundText]="notFoundText"
     [typeToSearchText]="minThermLongText"

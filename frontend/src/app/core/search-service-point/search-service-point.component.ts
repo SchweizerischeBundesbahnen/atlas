@@ -14,6 +14,9 @@ import { filter, switchMap, tap } from 'rxjs/operators';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ServicePointSearch, ServicePointSearchType } from './service-point-search';
 
+const SEARCH_SERVICE_POINT_PLACEHOLDER = 'SEPODI.SERVICE_POINTS.SERVICE_POINT';
+const SEARCH_STOP_POINT_PLACEHOLDER = 'SEPODI.SERVICE_POINTS.STOP_POINT';
+
 @Component({
   selector: 'app-search-service-point',
   templateUrl: './search-service-point.component.html',
@@ -29,6 +32,12 @@ export class SearchServicePointComponent implements OnInit {
   servicePointSearchResult$: Observable<ServicePointSearchResult[]> = of([]);
   searchInput$ = new Subject<string>();
   loading = false;
+
+  get searchPlaceholder() {
+    return this.searchType === ServicePointSearch.SePoDi
+      ? SEARCH_SERVICE_POINT_PLACEHOLDER
+      : SEARCH_STOP_POINT_PLACEHOLDER;
+  }
 
   constructor(
     private readonly router: Router,
