@@ -969,7 +969,7 @@
       },
       "VALIDITY_CONFIRMATION": {
         "TITLE": "Validità ",
-        "MESSAGE": "Attenzione, il posto di servizio assegnato è validO da {{validFrom}} a {{validTo}}. Si prega di regolare la validità di conseguenza."
+        "MESSAGE": "Attenzione, il posto di servizio assegnato è valido da {{validFrom}} a {{validTo}}. Si prega di regolare la validità di conseguenza."
       }
     },
     "BOARDING_AREAS": {
