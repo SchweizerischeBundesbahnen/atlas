@@ -7,7 +7,6 @@ import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoAdminHeightRes
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.locationtech.jts.geom.Coordinate;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,7 +22,7 @@ public class GeoReferenceController implements GeoReferenceApiV1 {
   }
 
   @Override
-  public GeoAdminHeightResponse getHeight(CoordinatePair coordinatePair) {
+  public GeoAdminHeightResponse getHeight(CoordinatePair coordinatePair) throws Exception {
     return geoReferenceService.getHeight(coordinatePair);
   }
 }

@@ -12,6 +12,6 @@ public interface GeoAdminChClient {
   GeoAdminResponse getGeoReference(@SpringQueryMap GeoAdminParams params);
 
   @GetMapping(value = "/rest/services/height")
-  GeoAdminHeightResponse getHeight(@RequestParam double easting, @RequestParam double northing);
+  GeoAdminHeightResponse getHeight(@RequestParam double easting, @RequestParam double northing) throws Exception;
 
 }
