@@ -330,4 +330,16 @@ export class StopPointFormGroupBuilder {
     form.controls.assistanceRequestFulfilled.clearValidators();
     form.controls.ticketMachine.clearValidators();
   }
+
+  static populateDropdownsForCompleteWithDefaultValue(form: FormGroup<StopPointDetailFormGroup>) {
+    form.controls.assistanceAvailability.setValue(StandardAttributeType.ToBeCompleted);
+    form.controls.assistanceService.setValue(StandardAttributeType.ToBeCompleted);
+    form.controls.audioTicketMachine.setValue(StandardAttributeType.ToBeCompleted);
+    form.controls.dynamicAudioSystem.setValue(StandardAttributeType.ToBeCompleted);
+    form.controls.dynamicOpticSystem.setValue(StandardAttributeType.ToBeCompleted);
+    form.controls.visualInfo.setValue(StandardAttributeType.ToBeCompleted);
+    form.controls.wheelchairTicketMachine.setValue(StandardAttributeType.ToBeCompleted);
+    form.controls.assistanceRequestFulfilled.setValue(StandardAttributeType.ToBeCompleted);
+    form.controls.ticketMachine.setValue(StandardAttributeType.ToBeCompleted);
+  }
 }
