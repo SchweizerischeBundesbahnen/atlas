@@ -33,7 +33,25 @@ export class LeaveDirtyFormGuard {
   }
 
   staysOnSameDetailPage(currentState: RouterStateSnapshot, nextState: RouterStateSnapshot) {
+    //if from new to created url
+    const substringAfterLastSlash = this.getSubstringAfterLastSlash(currentState.url);
+    if (substringAfterLastSlash === 'add') {
+      if (
+        this.getSubstringBeforeLastSlash(currentState.url) ===
+        this.getSubstringBeforeLastSlash(nextState.url)
+      ) {
+        return true;
+      }
+    }
     return currentState.url === nextState.url;
+  }
+
+  private getSubstringAfterLastSlash(value: string) {
+    return value.substring(value.lastIndexOf('/') + 1, value.length);
+  }
+
+  private getSubstringBeforeLastSlash(value: string) {
+    return value.substring(0, value.lastIndexOf('/'));
   }
 }
 
