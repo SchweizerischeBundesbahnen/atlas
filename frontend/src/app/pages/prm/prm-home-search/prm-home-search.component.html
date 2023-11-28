@@ -1,18 +1,12 @@
 <div class="prm-panel-container">
-  <div class="col-12 d-flex pt-3 ps-3">
-    <div class="col-6">
-      <div class="font-bold-3xl detail-title ps-3">
-        {{ 'COMMON.SEARCH.SEARCH_CRITERIA' | translate }}
-      </div>
-    </div>
-    <div class="col-6 link-container">
-      <a href="{{ 'PRM.EXTERNAL_LINK' | translate }}" target="_blank" rel="noopener">{{
-        'PRM.EXTERNAL_LINK_LABEL' | translate
-      }}</a>
+  <div class="col-12 d-flex">
+    <div class="container-search col-6 ps-5 pt-5">
+      <app-search-service-point [searchType]="this.servicePointSearch"></app-search-service-point>
     </div>
   </div>
-  <mat-divider class="mt-2 mb-4"></mat-divider>
-  <div class="container-search ps-4 pt-2">
-    <app-search-service-point [searchType]="this.servicePointSearch"></app-search-service-point>
+  <div class="col-12 d-flex">
+    <div class="info-box-container">
+      <app-prm-info-box></app-prm-info-box>
+    </div>
   </div>
 </div>
