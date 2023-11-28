@@ -25,7 +25,6 @@
     "ADD": "Hinzufügen",
     "EDIT": "Editieren",
     "REVOKE": "Fehlerfassung",
-    "VALIDATE": "Validieren",
     "DELETE": "Löschen",
     "CANCEL": "Abbrechen",
     "COVERAGE": {
@@ -948,6 +947,8 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Die Dienststelle wurde erfolgreich hinzugefügt.",
         "EDIT_SUCCESS": "Die Dienststelle wurde erfolgreich gespeichert.",
+        "REVOKE_SUCCESS": "Die Dienststelle wurde erfolgreich als Fehlerfassung gekennzeichnet.",
+        "VALIDATE_SUCCESS": "Die Dienststelle wurde erfolgreich als Anhörung überspringen gekennzeichnet.",
         "OPERATION_NOT_ALLOWED_DUE_TO_VALIDATION_PERIOD": "Das Speichern ist nicht möglich. Der referenzierte BP-S (Master) ist nicht während der gesamten Gültigkeit des BP-K gültig.",
         "COMMENT_SAVED": "Der Kommentar wurder erfolgreich gespeichert."
       },
