@@ -13,7 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
 import { PrmMeanOfTransportHelper } from '../util/prm-mean-of-transport-helper';
-import { PrmTab } from './prm-tab';
+import { PRM_REDUCED_TABS, PRM_TABS, PrmTab } from './prm-tab';
 
 @Component({
   selector: 'app-prm-panel',
@@ -30,7 +30,7 @@ export class PrmPanelComponent implements OnDestroy, OnInit {
   disableTabNavigation = false;
   private ngUnsubscribe = new Subject<void>();
 
-  tabs = PrmTab.tabs;
+  tabs = PRM_TABS;
 
   constructor(
     private route: ActivatedRoute,
@@ -64,13 +64,13 @@ export class PrmPanelComponent implements OnDestroy, OnInit {
     } else {
       const isReduced = PrmMeanOfTransportHelper.isReduced(stopPointVersions[0].meansOfTransport);
       if (isReduced) {
-        this.tabs = PrmTab.reducedTabs;
+        this.tabs = PRM_REDUCED_TABS;
       }
     }
   }
 
   ngOnDestroy() {
-    this.ngUnsubscribe?.unsubscribe();
+    this.ngUnsubscribe.complete();
   }
 
   private initBusinessOrganisationHeaderPanel() {

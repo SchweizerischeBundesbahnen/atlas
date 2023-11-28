@@ -22,8 +22,8 @@ export class CreateStopPointComponent {
   selectedMeansOfTransport!: MeanOfTransport[];
   isReduced = false;
   isDataEditable = false;
-  isPreviousSelectionReduced: boolean | undefined;
-  isMeanOfTransportSelected: boolean | undefined;
+  isPreviousSelectionReduced?: boolean;
+  isMeanOfTransportSelected?: boolean;
   formMeanOfTransport = StopPointFormGroupBuilder.buildMeansOfTransportForm();
 
   constructor(private dialogService: DialogService) {}
