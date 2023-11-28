@@ -1045,8 +1045,6 @@
     "SLOID_ALREADY_USED": "{{sloid}} è già stato preso."
   },
   "PRM": {
-    "EXTERNAL_LINK": "https://www.tp-info.ch/it/gestione-dei-dati/accessa-senza-barriere/procedura",
-    "EXTERNAL_LINK_LABEL": "Guida LDis",
     "TABS": {
       "STOP_POINT": "Informazioni di base Fermata",
       "REFERENCE_POINT": "Punto di riferimento",
@@ -1110,6 +1108,22 @@
         "NOT_APPLICABLE": "Non applicabile",
         "PARTIALLY": "Parziale"
       }
+    },
+    "INFO_BOX": {
+      "HEADER": "Documenti",
+      "GUIDE_LINE_URL": "https://www.tp-info.ch/sites/default/files/2023-04/Guida_dei_criteri_di_accessibilit%C3%A0_in_DiDok.pdf",
+      "GUIDE_LINE_LABEL": "Guida LDis",
+      "GUIDE_LINE_ATTACHMENT_URL": "https://www.tp-info.ch/sites/default/files/2023-06/Allegato_Guida_dei_criteri_di_accessibilit%C3%A0_in_DiDok_web.xlsx",
+      "GUIDE_LINE_ATTACHMENT_LABEL": "Allegato Guida LDis web",
+      "GUIDE_LINE_ATTACHMENT_TECHNICAL_URL": "https://www.tp-info.ch/sites/default/files/2023-04/Allegato_Guida_dei_criteri_di_accessibilit%C3%A0_in_DiDok_tec_0.xlsx",
+      "GUIDE_LINE_ATTACHMENT_TECHNICAL_LABEL": "Allegato Guida LDis tecnica",
+      "ADDITIONAL_LINK_LABEL": "Link correlati",
+      "DDA_URL": "https://www.fedlex.admin.ch/eli/cc/2003/667/it",
+      "DDA_LABEL": "Legge sui disabili, LDis",
+      "REGULATION_URL": "https://www.fedlex.admin.ch/eli/cc/2003/669/it",
+      "REGULATION_LABEL": "OTDis - Ordinanza concernente la concezione di una rete di trasporti pubblici conforme alle esigenze dei disabili",
+      "EXTERNAL_LINK": "https://www.tp-info.ch/it/gestione-dei-dati/accessa-senza-barriere/procedura",
+      "EXTERNAL_LINK_LABEL": "Guida LDis"
     }
   }
 }

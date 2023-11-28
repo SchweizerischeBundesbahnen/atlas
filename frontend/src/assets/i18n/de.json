@@ -1045,8 +1045,6 @@
     "SLOID_ALREADY_USED": "{{sloid}} ist bereits vergeben."
   },
   "PRM": {
-    "EXTERNAL_LINK": "https://www.öv-info.ch/de/datenmanagement/barrierefreier-zugang/erfassung",
-    "EXTERNAL_LINK_LABEL": "Leitfaden BehiG",
     "TABS": {
       "STOP_POINT": "Basisinformationen Haltestelle",
       "REFERENCE_POINT": "Referenzpunkt",
@@ -1110,6 +1108,22 @@
         "NOT_APPLICABLE": "Nicht anwendbar",
         "PARTIALLY": "Teilweise"
       }
+    },
+    "INFO_BOX": {
+      "HEADER": "Dokumente",
+      "GUIDE_LINE_URL": "https://www.öv-info.ch/sites/default/files/2023-02/Leitfaden-Erfassung-Kriterien-zur-Barrierefreiheit-im-DiDok_0.pdf",
+      "GUIDE_LINE_LABEL": "Leitfaden",
+      "GUIDE_LINE_ATTACHMENT_URL": "https://www.öv-info.ch/sites/default/files/2023-06/Anhang_zum_Leitfaden_Barrierefreiheit_web.xlsx",
+      "GUIDE_LINE_ATTACHMENT_LABEL": "Anhang zum Leitfaden web",
+      "GUIDE_LINE_ATTACHMENT_TECHNICAL_URL": "https://www.öv-info.ch/sites/default/files/2023-04/Anhang_zum_Leitfaden_Barrierefreiheit_technisch_0.xlsx",
+      "GUIDE_LINE_ATTACHMENT_TECHNICAL_LABEL": "Anhang zum Leitfaden technisch",
+      "ADDITIONAL_LINK_LABEL": "Weiterführende Links",
+      "DDA_URL": "https://www.fedlex.admin.ch/eli/cc/2003/667/de",
+      "DDA_LABEL": "Behindertengleichstellungsgesetz, BehiG",
+      "REGULATION_URL": "https://www.fedlex.admin.ch/eli/cc/2003/669/de",
+      "REGULATION_LABEL": "VböV - Verordnung über die behindertengerechte Gestaltung des öffentlichen Verkehrs",
+      "EXTERNAL_LINK": "https://www.öv-info.ch/de/datenmanagement/barrierefreier-zugang/erfassung",
+      "EXTERNAL_LINK_LABEL": "Leitfaden BehiG"
     }
   }
 }
