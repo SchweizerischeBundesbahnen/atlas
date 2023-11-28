@@ -1,0 +1,28 @@
+@use 'src/styles/variables' as variables;
+
+$shadow: 0 0 5px 1px variables.$gray-700;
+
+.info-container {
+  border-radius: variables.$border-radius;
+  background-color: white;
+  -webkit-box-shadow: $shadow;
+  box-shadow: $shadow;
+  padding: 1.5rem;
+  width: 350px;
+}
+
+.no-text-decoration {
+  text-decoration: none;
+  i {
+    padding-left: 0.3rem;
+  }
+}
+
+p {
+  margin: 0.3rem;
+}
+
+hr {
+  margin-top: 0.6rem;
+  margin-bottom: 0.6rem;
+}

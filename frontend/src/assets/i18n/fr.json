@@ -1045,8 +1045,6 @@
     "SLOID_ALREADY_USED": "{{sloid}} est déjà pris."
   },
   "PRM": {
-    "EXTERNAL_LINK": "https://www.tp-info.ch/fr/gestion-des-donnees/accessibilite/saisie",
-    "EXTERNAL_LINK_LABEL": "Guide LHand",
     "TABS": {
       "STOP_POINT": "Informations de base sur l’arrêt",
       "REFERENCE_POINT": "Point de référence",
@@ -1110,6 +1108,22 @@
         "NOT_APPLICABLE": "Non applicable",
         "PARTIALLY": "Partiellement"
       }
+    },
+    "INFO_BOX": {
+      "HEADER": "Document",
+      "GUIDE_LINE_URL": "https://www.tp-info.ch/sites/default/files/2023-05/Guide_aux_crit%C3%A8res_sur_l%E2%80%99accessibilit%C3%A9_en_DiDok.pdf",
+      "GUIDE_LINE_LABEL": "Guide LHand",
+      "GUIDE_LINE_ATTACHMENT_URL": "https://www.tp-info.ch/sites/default/files/2023-06/Annexe_au_guide_sur_l%E2%80%99accessibilit%C3%A9_web.xlsx",
+      "GUIDE_LINE_ATTACHMENT_LABEL": "Annexe au guide sur l’accessibilité web",
+      "GUIDE_LINE_ATTACHMENT_TECHNICAL_URL": "https://www.tp-info.ch/sites/default/files/2023-05/Annexe_au_guide_sur_l%27accessibilite_tec.xlsx",
+      "GUIDE_LINE_ATTACHMENT_TECHNICAL_LABEL": "Annexe au guide sur l'accessibilité technique",
+      "ADDITIONAL_LINK_LABEL": "Liens complémentaires",
+      "DDA_URL": "https://www.fedlex.admin.ch/eli/cc/2003/667/fr",
+      "DDA_LABEL": "Loi sur l’égalité pour les handicapés, LHand",
+      "REGULATION_URL": "https://www.fedlex.admin.ch/eli/cc/2003/669/fr",
+      "REGULATION_LABEL": "OTHand - Ordonnance sur les aménagements visant à assurer l’accès des personnes handicapées aux transports publics",
+      "EXTERNAL_LINK": "https://www.tp-info.ch/fr/gestion-des-donnees/accessibilite/saisie",
+      "EXTERNAL_LINK_LABEL": "Guide LHand"
     }
   }
 }
