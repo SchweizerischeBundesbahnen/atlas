@@ -3,10 +3,10 @@ import { TestBed } from '@angular/core/testing';
 import { BasePrmTabComponentService } from './base-prm-tab-component.service';
 import { Data } from '@angular/router';
 import { BERN_WYLEREGG } from '../../sepodi/service-point-test-data';
-import { STOP_POINT, STOP_POINT_COMPLETE } from '../util/stop-point-test-data';
 import { AppTestingModule } from '../../../app.testing.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StopPointDetailComponent } from './stop-point/detail/stop-point-detail.component';
+import { STOP_POINT, STOP_POINT_COMPLETE } from '../util/stop-point-test-data.spec';
 
 describe('BasePrmTabComponentService', () => {
   let service: BasePrmTabComponentService;

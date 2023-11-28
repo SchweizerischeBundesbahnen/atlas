@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { ServicePointSearchResult, ServicePointsService } from '../../api';
 import {
   catchError,
@@ -27,7 +27,7 @@ export class SearchServicePointComponent implements OnInit {
   private readonly _DEBOUNCE_TIME = 500;
 
   @Input() searchType!: ServicePointSearchType;
-
+  @Output()
   private _searchValue = '';
   servicePointSearchResult$: Observable<ServicePointSearchResult[]> = of([]);
   searchInput$ = new Subject<string>();
