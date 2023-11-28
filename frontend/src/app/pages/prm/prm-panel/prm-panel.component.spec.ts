@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PrmPanelComponent } from './prm-panel.component';
-import { STOP_POINT, STOP_POINT_COMPLETE } from '../util/stop-point-test-data';
 import { BERN_WYLEREGG } from '../../sepodi/service-point-test-data';
 import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
 import { AppTestingModule } from '../../../app.testing.module';
@@ -11,7 +10,8 @@ import { of } from 'rxjs';
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
-import { PrmTab } from './prm-tab';
+import { PRM_REDUCED_TABS, PRM_TABS, PrmTab } from './prm-tab';
+import { STOP_POINT, STOP_POINT_COMPLETE } from '../util/stop-point-test-data.spec';
 
 describe('PrmPanelComponent', () => {
   let component: PrmPanelComponent;
@@ -55,19 +55,19 @@ describe('PrmPanelComponent', () => {
 
   it('should initTabs when stopPoint isReduced', () => {
     //when
-    component.tabs = PrmTab.tabs;
+    component.tabs = PRM_TABS;
     component.initTabs([STOP_POINT]);
     //then
     expect(component.disableTabNavigation).toBeFalsy();
-    expect(component.tabs).toEqual(PrmTab.reducedTabs);
+    expect(component.tabs).toEqual(PRM_REDUCED_TABS);
   });
 
   it('should initTabs when stopPoint isComplete', () => {
     //when
-    component.tabs = PrmTab.tabs;
+    component.tabs = PRM_TABS;
     component.initTabs([STOP_POINT_COMPLETE]);
     //then
     expect(component.disableTabNavigation).toBeFalsy();
-    expect(component.tabs).toEqual(PrmTab.tabs);
+    expect(component.tabs).toEqual(PRM_TABS);
   });
 });
