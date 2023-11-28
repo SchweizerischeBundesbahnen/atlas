@@ -21,12 +21,12 @@ import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
+import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointFotCommentRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.JourneyPoiClient;
-import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointNumberService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
@@ -36,6 +36,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.io.InputStream;
@@ -63,7 +64,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import org.springframework.http.ResponseEntity;
 
 class ServicePointControllerApiTest extends BaseControllerApiTest {
 
@@ -440,6 +440,17 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$[0].status", is(Status.REVOKED.toString())))
             .andExpect(jsonPath("$[1].status", is(Status.REVOKED.toString())));
+  }
+
+  @Test
+  void shouldThrowExceptionOnRevoke() throws Exception {
+    Integer number = 1234567;
+
+    mvc.perform(post("/v1/service-points/" + number + "/revoke"))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.message", is("Entity not found")))
+            .andExpect(jsonPath("$.details.[0].message", endsWith(
+                    "Object with servicePointNumber 1234567 not found")));;
   }
 
   @Test
