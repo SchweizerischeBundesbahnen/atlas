@@ -31,7 +31,7 @@ export abstract class BaseDetailController<TYPE extends Record>
     protected dialogService: DialogService,
     protected notificationService: NotificationService,
     protected authService: AuthService,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
   ) {}
 
   get versionNumberOfCurrentRecord(): number {
@@ -189,6 +189,7 @@ export abstract class BaseDetailController<TYPE extends Record>
   abstract getApplicationType(): ApplicationType;
 
   backToOverview(): void {
+    this.form.reset();
     this.router.navigate(['..'], { relativeTo: this.activatedRoute }).then();
   }
 

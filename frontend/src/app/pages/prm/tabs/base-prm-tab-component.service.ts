@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Data, Router } from '@angular/router';
-import { ReadStopPointVersion } from '../../../api';
+import { ReadServicePointVersion, ReadStopPointVersion } from '../../../api';
 import { PrmMeanOfTransportHelper } from '../util/prm-mean-of-transport-helper';
 import { Pages } from '../../pages';
-import { PrmTab } from '../prm-panel/prm-tab';
+import { PRM_COMPLETE_TABS } from '../prm-panel/prm-tab';
 import { Tab } from '../../tab';
 
 @Injectable({
@@ -30,7 +30,7 @@ export abstract class BasePrmTabComponentService {
 
   showCurrentTab(data: Data): void {
     const stopPointVersions: ReadStopPointVersion[] = data.stopPoints;
-    const servicePoints: ReadStopPointVersion[] = data.servicePoints;
+    const servicePoints: ReadServicePointVersion[] = data.servicePoints;
     if (stopPointVersions.length === 0) {
       this.redirectToStopPoint(servicePoints);
     } else {
@@ -43,10 +43,10 @@ export abstract class BasePrmTabComponentService {
   }
 
   canShowTab() {
-    return PrmTab.completeTabs.includes(this.getTag());
+    return PRM_COMPLETE_TABS.includes(this.getTag());
   }
 
-  redirectToStopPoint(servicePoints: ReadStopPointVersion[]) {
+  redirectToStopPoint(servicePoints: ReadServicePointVersion[]) {
     this.router
       .navigate([
         Pages.PRM.path,

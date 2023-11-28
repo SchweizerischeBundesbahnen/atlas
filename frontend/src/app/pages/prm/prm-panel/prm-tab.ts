@@ -1,63 +1,60 @@
 import { Pages } from '../../pages';
-import { Tab } from '../../tab';
 
-export class PrmTab {
-  public static STOP_POINT: Tab = {
+export const PrmTab = {
+  STOP_POINT: {
     link: Pages.PRM_STOP_POINT_TAB.path,
     title: Pages.PRM_STOP_POINT_TAB.title,
-  };
-
-  public static REFERENCE_POINT: Tab = {
+  },
+  REFERENCE_POINT: {
     link: 'reference-point',
     title: 'PRM.TABS.REFERENCE_POINT',
-  };
-
-  public static PLATFORM: Tab = {
+  },
+  PLATFORM: {
     link: 'platform',
     title: 'PRM.TABS.PLATFORM',
-  };
+  },
 
-  public static TICKET_COUNTER: Tab = {
+  TICKET_COUNTER: {
     link: 'ticket-counter',
     title: 'PRM.TABS.TICKET_COUNTER',
-  };
+  },
 
-  public static INFORMATION_DESK: Tab = {
+  INFORMATION_DESK: {
     link: 'information-desk',
     title: 'PRM.TABS.INFORMATION_DESK',
-  };
-  public static TOILET: Tab = {
+  },
+
+  TOILET: {
     link: 'toilet',
     title: 'PRM.TABS.TOILET',
-  };
-  public static PARKING_LOT: Tab = {
+  },
+  PARKING_LOT: {
     link: 'parking-lot',
     title: 'PRM.TABS.PARKING_LOT',
-  };
-  public static CONNECTION: Tab = {
+  },
+  CONNECTION: {
     link: 'connection',
     title: 'PRM.TABS.CONNECTION',
-  };
+  },
+};
+export const PRM_TABS = [
+  PrmTab.STOP_POINT,
+  PrmTab.REFERENCE_POINT,
+  PrmTab.PLATFORM,
+  PrmTab.TICKET_COUNTER,
+  PrmTab.INFORMATION_DESK,
+  PrmTab.TOILET,
+  PrmTab.PARKING_LOT,
+  PrmTab.CONNECTION,
+];
 
-  public static tabs: Tab[] = [
-    PrmTab.STOP_POINT,
-    PrmTab.REFERENCE_POINT,
-    PrmTab.PLATFORM,
-    PrmTab.TICKET_COUNTER,
-    PrmTab.INFORMATION_DESK,
-    PrmTab.TOILET,
-    PrmTab.PARKING_LOT,
-    PrmTab.CONNECTION,
-  ];
+export const PRM_REDUCED_TABS = [
+  PrmTab.STOP_POINT,
+  PrmTab.PLATFORM,
+  PrmTab.TICKET_COUNTER,
+  PrmTab.INFORMATION_DESK,
+  PrmTab.TOILET,
+  PrmTab.PARKING_LOT,
+];
 
-  public static reducedTabs: Tab[] = [
-    PrmTab.STOP_POINT,
-    PrmTab.PLATFORM,
-    PrmTab.TICKET_COUNTER,
-    PrmTab.INFORMATION_DESK,
-    PrmTab.TOILET,
-    PrmTab.PARKING_LOT,
-  ];
-
-  public static completeTabs: Tab[] = [PrmTab.REFERENCE_POINT, PrmTab.CONNECTION];
-}
+export const PRM_COMPLETE_TABS = [PrmTab.REFERENCE_POINT, PrmTab.CONNECTION];
