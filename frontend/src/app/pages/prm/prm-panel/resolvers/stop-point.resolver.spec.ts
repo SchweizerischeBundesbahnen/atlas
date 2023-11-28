@@ -6,7 +6,7 @@ import { PersonWithReducedMobilityService } from '../../../../api';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ServicePointDetailResolver } from '../../../sepodi/service-point-side-panel/service-point-detail.resolver';
 import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
-import { STOP_POINT } from '../../util/stop-point-test-data';
+import { STOP_POINT } from '../../util/stop-point-test-data.spec';
 
 describe('stopPointResolver', () => {
   const personWithReducedMobilityServiceSpy = jasmine.createSpyObj(

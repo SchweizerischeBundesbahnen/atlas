@@ -312,35 +312,45 @@ export class StopPointFormGroupBuilder {
   }
 
   static removeCompleteRecordingValidation(form: FormGroup<StopPointDetailFormGroup>) {
-    form.controls.address.clearValidators();
-    form.controls.zipCode.clearValidators();
-    form.controls.city.clearValidators();
-    form.controls.alternativeTransport.clearValidators();
-    form.controls.alternativeTransportCondition.clearValidators();
-    form.controls.assistanceAvailability.clearValidators();
-    form.controls.assistanceCondition.clearValidators();
-    form.controls.assistanceService.clearValidators();
-    form.controls.audioTicketMachine.clearValidators();
-    form.controls.additionalInformation.clearValidators();
-    form.controls.dynamicAudioSystem.clearValidators();
-    form.controls.dynamicOpticSystem.clearValidators();
-    form.controls.infoTicketMachine.clearValidators();
-    form.controls.url.clearValidators();
-    form.controls.visualInfo.clearValidators();
-    form.controls.wheelchairTicketMachine.clearValidators();
-    form.controls.assistanceRequestFulfilled.clearValidators();
-    form.controls.ticketMachine.clearValidators();
+    const completeRecordingValidation = [
+      form.controls.address,
+      form.controls.zipCode,
+      form.controls.city,
+      form.controls.alternativeTransport,
+      form.controls.alternativeTransportCondition,
+      form.controls.assistanceAvailability,
+      form.controls.assistanceCondition,
+      form.controls.assistanceService,
+      form.controls.audioTicketMachine,
+      form.controls.additionalInformation,
+      form.controls.dynamicAudioSystem,
+      form.controls.dynamicOpticSystem,
+      form.controls.infoTicketMachine,
+      form.controls.url,
+      form.controls.visualInfo,
+      form.controls.wheelchairTicketMachine,
+      form.controls.assistanceRequestFulfilled,
+      form.controls.ticketMachine,
+    ];
+    completeRecordingValidation.forEach((control) => control.clearValidators());
   }
 
   static populateDropdownsForCompleteWithDefaultValue(form: FormGroup<StopPointDetailFormGroup>) {
-    form.controls.assistanceAvailability.setValue(StandardAttributeType.ToBeCompleted);
-    form.controls.assistanceService.setValue(StandardAttributeType.ToBeCompleted);
-    form.controls.audioTicketMachine.setValue(StandardAttributeType.ToBeCompleted);
-    form.controls.dynamicAudioSystem.setValue(StandardAttributeType.ToBeCompleted);
-    form.controls.dynamicOpticSystem.setValue(StandardAttributeType.ToBeCompleted);
-    form.controls.visualInfo.setValue(StandardAttributeType.ToBeCompleted);
-    form.controls.wheelchairTicketMachine.setValue(StandardAttributeType.ToBeCompleted);
-    form.controls.assistanceRequestFulfilled.setValue(StandardAttributeType.ToBeCompleted);
-    form.controls.ticketMachine.setValue(StandardAttributeType.ToBeCompleted);
+    const dropdownControlsToPopulateWithDefaultValue = [
+      form.controls.assistanceAvailability,
+      form.controls.assistanceAvailability,
+      form.controls.assistanceService,
+      form.controls.audioTicketMachine,
+      form.controls.dynamicAudioSystem,
+      form.controls.dynamicOpticSystem,
+      form.controls.visualInfo,
+      form.controls.wheelchairTicketMachine,
+      form.controls.assistanceRequestFulfilled,
+      form.controls.ticketMachine,
+    ];
+
+    dropdownControlsToPopulateWithDefaultValue.forEach((control) => {
+      control.setValue(StandardAttributeType.ToBeCompleted);
+    });
   }
 }
