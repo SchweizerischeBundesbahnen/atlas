@@ -137,18 +137,13 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
         ),
       )
       .subscribe((geoReference) => {
-        console.log('geo referemce ', geoReference);
-
         this.locationInformation = {
           isoCountryCode: Countries.fromCountry(geoReference.country)?.short,
           canton: geoReference.swissCanton,
           municipalityName: geoReference.swissMunicipalityName,
           localityName: geoReference.swissLocalityName,
         };
-
-        this.form?.controls.servicePointGeolocation.controls.height.setValue(
-          Number(geoReference.height),
-        );
+        geolocationControls.height.setValue(geoReference.height);
       });
   }
 

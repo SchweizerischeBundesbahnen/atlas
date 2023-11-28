@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 
 public class HeightNotCalculatableException extends AtlasException {
 
-    private static final String ERROR = "The height could not be calculated because the coordinates are outside the calculable area, or the Swiss-Topo endpoint is currently unavailable.";
+    private static final String ERROR = "The Swiss-Topo endpoint is currently unavailable.";
 
     @Override
     public ErrorResponse getErrorResponse() {
