@@ -281,7 +281,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
             .revokeServicePoint(this.selectedVersion.number.number!)
             .pipe((takeUntil(this.ngUnsubscribe), catchError(this.handleError)))
             .subscribe(() => {
-              this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS');
+              this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.REVOKE_SUCCESS');
               this.router.navigate(['..', this.selectedVersion.number.number], {
                 relativeTo: this.route,
               });
@@ -304,7 +304,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
             .validateServicePoint(this.selectedVersion.id!)
             .pipe((takeUntil(this.ngUnsubscribe), catchError(this.handleError)))
             .subscribe(() => {
-              this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS');
+              this.notificationService.success(
+                'SEPODI.SERVICE_POINTS.NOTIFICATION.VALIDATE_SUCCESS',
+              );
               this.router.navigate(['..', this.selectedVersion.number.number], {
                 relativeTo: this.route,
               });
