@@ -98,4 +98,56 @@ class GeoReferenceServiceTest {
     assertThat(geoReference).isEqualTo(expectedGeoReference);
     verify(journeyPoiClient).closestCountry(BigDecimal.valueOf(47.25201833567), BigDecimal.valueOf(26.7540122798));
   }
+
+  @Test
+  void shouldCalculateHeightOfValidLV95Coordinates(){
+    CoordinatePair coordinate = CoordinatePair.builder()
+        .spatialReference(SpatialReference.LV95)
+        .east(2568989.30320000000)
+        .north(1141633.69605000000)
+        .build();
+
+    GeoAdminHeightResponse geoAdminHeightResponse = geoReferenceService.getHeight(coordinate);
+
+    GeoAdminHeightResponse expectedHeightResponse = GeoAdminHeightResponse.builder()
+        .height(1201D)
+        .build();
+
+    assertThat(geoAdminHeightResponse).isEqualTo(expectedHeightResponse);
+  }
+
+  @Test
+  void shouldCalculateHeightOfValidWGS84Coordinates(){
+    CoordinatePair coordinate = CoordinatePair.builder()
+        .spatialReference(SpatialReference.WGS84)
+        .east(7.03523000710)
+        .north(46.42533000875)
+        .build();
+
+    GeoAdminHeightResponse geoAdminHeightResponse = geoReferenceService.getHeight(coordinate);
+
+    GeoAdminHeightResponse expectedHeightResponse = GeoAdminHeightResponse.builder()
+        .height(1201D)
+        .build();
+
+    assertThat(geoAdminHeightResponse).isEqualTo(expectedHeightResponse);
+  }
+
+  @Test
+  void shouldCalculateHeightOfValidWGS84WEBCoordinates(){
+    CoordinatePair coordinate = CoordinatePair.builder()
+        .spatialReference(SpatialReference.WGS84WEB)
+        .east(7.03523000710)
+        .north(46.42533000875)
+        .build();
+
+    GeoAdminHeightResponse geoAdminHeightResponse = geoReferenceService.getHeight(coordinate);
+
+    GeoAdminHeightResponse expectedHeightResponse = GeoAdminHeightResponse.builder()
+        .height(1201D)
+        .build();
+
+    assertThat(geoAdminHeightResponse).isEqualTo(expectedHeightResponse);
+  }
+
 }

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
   Country,
   CreateTrafficPointElementVersion,
+  GeoDataService,
   ReadServicePointVersion,
   ReadTrafficPointElementVersion,
   ServicePointsService,
@@ -11,7 +12,7 @@ import {
 } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
-import { catchError, EMPTY, Observable, of, Subject } from 'rxjs';
+import { catchError, EMPTY, merge, Observable, of, Subject } from 'rxjs';
 import { Pages } from '../../pages';
 import { FormGroup } from '@angular/forms';
 import {
@@ -20,12 +21,13 @@ import {
 } from './traffic-point-detail-form-group';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { ValidationService } from '../../../core/validation/validation.service';
-import { takeUntil } from 'rxjs/operators';
+import { debounceTime, filter, switchMap, takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { TrafficPointMapService } from '../map/traffic-point-map.service';
 import { ValidityConfirmationService } from '../validity/validity-confirmation.service';
 import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
 import { Countries } from '../../../core/country/Countries';
+import { GeographyFormGroup } from '../geography/geography-form-group';
 
 interface AreaOption {
   sloid: string | undefined;
@@ -75,6 +77,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
     private dialogService: DialogService,
     private validityConfirmationService: ValidityConfirmationService,
     private notificationService: NotificationService,
+    private geoDataService: GeoDataService,
   ) {}
 
   ngOnInit() {
@@ -85,6 +88,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
       this.trafficPointVersions = next.trafficPoint;
       this.initTrafficPoint();
     });
+    this.initGeolocationControlListeners(this.form.controls.trafficPointElementGeolocation);
   }
 
   ngOnDestroy() {
@@ -278,7 +282,11 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe(() => {
         this.notificationService.success('SEPODI.TRAFFIC_POINT_ELEMENTS.NOTIFICATION.EDIT_SUCCESS');
-        this.router.navigate(['..', this.selectedVersion.sloid], { relativeTo: this.route }).then();
+        this.router
+          .navigate(['..', this.selectedVersion.sloid], { relativeTo: this.route })
+          .then(() => {
+            this.ngOnInit();
+          });
         this.isSwitchVersionDisabled = false;
       });
   }
@@ -292,5 +300,33 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
 
   isFormDirty(): boolean {
     return this.form.dirty;
+  }
+
+  private initGeolocationControlListeners(geolocationControls: FormGroup<GeographyFormGroup>) {
+    merge(
+      geolocationControls.controls.north.valueChanges,
+      geolocationControls.controls.east.valueChanges,
+    )
+      .pipe(
+        debounceTime(500),
+        filter(
+          () =>
+            !!(
+              geolocationControls.controls.east.value &&
+              geolocationControls.controls.north.value &&
+              geolocationControls.controls.spatialReference.value
+            ),
+        ),
+        switchMap(() =>
+          this.geoDataService.getLocationInformation({
+            east: geolocationControls.controls.east.value!,
+            north: geolocationControls.controls.north.value!,
+            spatialReference: geolocationControls.controls.spatialReference.value!,
+          }),
+        ),
+      )
+      .subscribe((geoReference) => {
+        geolocationControls.controls.height.setValue(geoReference.height);
+      });
   }
 }
