@@ -17,6 +17,7 @@ import { ToiletComponent } from './tabs/toilet/toilet.component';
 import { ParkingLotComponent } from './tabs/parking-lot/parking-lot.component';
 import { ConnectionComponent } from './tabs/connection/connection.component';
 import { CreateStopPointComponent } from './tabs/stop-point/create-stop-point/create-stop-point.component';
+import { PrmInfoBoxComponent } from './prm-home-search/prm-info-box/prm-info-box.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { CreateStopPointComponent } from './tabs/stop-point/create-stop-point/cr
     ParkingLotComponent,
     ConnectionComponent,
     CreateStopPointComponent,
+    PrmInfoBoxComponent,
   ],
   imports: [CommonModule, FormModule, FormsModule, PrmRoutingModule, CoreModule],
 })
