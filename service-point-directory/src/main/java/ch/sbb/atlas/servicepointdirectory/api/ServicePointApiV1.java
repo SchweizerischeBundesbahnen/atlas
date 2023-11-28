@@ -78,7 +78,7 @@ public interface ServicePointApiV1 {
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
           + ".ApplicationType).SEPODI)")
   @ResponseStatus(HttpStatus.OK)
-  @PostMapping(path = "validate/{id}")
+  @PostMapping({"versions/{id}/skip-workflow"})
   ReadServicePointVersionModel validateServicePoint(@PathVariable Long id);
 
   @ResponseStatus(HttpStatus.OK)
