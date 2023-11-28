@@ -77,25 +77,11 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
           east: coordinatePairWGS84.lng,
           spatialReference: SpatialReference.Wgs84,
         });
-
-        this.geoDataService
-          .getHeight({
-            north: coordinatePairWGS84.lat,
-            east: coordinatePairWGS84.lng,
-            spatialReference: SpatialReference.Wgs84,
-          })
-          .subscribe((geoAdminHeightResponse) => {
-            console.log('height ', geoAdminHeightResponse);
-
-            //this.formGroup.controls.height.setValue(geoAdminHeightResponse.height)
-          });
       });
 
     merge(this.formGroup.controls.east.valueChanges, this.formGroup.controls.north.valueChanges)
       .pipe(takeUntil(this.destroySubscriptions$), debounceTime(500))
       .subscribe(() => {
-        console.log('this forim ', this.formGroup);
-
         this.onChangeCoordinatesManually({
           east: Number(this.formGroup.controls.east.value),
           north: Number(this.formGroup.controls.north.value),
@@ -214,9 +200,5 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
           }
         }
       });
-  }
-
-  getHeightOfCoordinatePair(coordinatePair: CoordinatePair) {
-    this.geoDataService.getHeight(coordinatePair);
   }
 }

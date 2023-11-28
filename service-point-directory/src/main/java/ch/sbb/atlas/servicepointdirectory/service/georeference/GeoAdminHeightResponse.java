@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GeoAdminHeightResponse {
-    double height;
+    Double height;
 }
