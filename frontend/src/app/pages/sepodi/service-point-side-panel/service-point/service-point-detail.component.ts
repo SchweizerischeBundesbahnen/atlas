@@ -46,6 +46,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   public isFormEnabled$ = new BehaviorSubject<boolean>(false);
   private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
   private ngUnsubscribe = new Subject<void>();
+  protected readonly ApplicationType = ApplicationType;
 
   constructor(
     private router: Router,
@@ -312,6 +313,4 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
         }
       });
   }
-
-  protected readonly ApplicationType = ApplicationType;
 }
