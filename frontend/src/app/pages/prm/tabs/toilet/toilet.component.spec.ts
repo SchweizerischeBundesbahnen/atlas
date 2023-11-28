@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ToiletComponent } from './toilet.component';
-import { STOP_POINT } from '../../util/stop-point-test-data';
 import { BERN_WYLEREGG } from '../../../sepodi/service-point-test-data';
 import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ActivatedRoute } from '@angular/router';
+import { STOP_POINT } from '../../util/stop-point-test-data.spec';
 
 describe('ToiletteComponent', () => {
   let component: ToiletComponent;

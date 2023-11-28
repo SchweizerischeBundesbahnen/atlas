@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StopPointDetailComponent } from './stop-point-detail.component';
 import { of } from 'rxjs';
-import { STOP_POINT } from '../../../util/stop-point-test-data';
 import { AppTestingModule } from '../../../../../app.testing.module';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../../../core/auth/auth.service';
@@ -25,6 +24,7 @@ import { DialogService } from '../../../../../core/components/dialog/dialog.serv
 import { StopPointFormGroupBuilder } from '../form/stop-point-detail-form-group';
 import { PersonWithReducedMobilityService } from '../../../../../api';
 import { NotificationService } from '../../../../../core/notification/notification.service';
+import { STOP_POINT } from '../../../util/stop-point-test-data.spec';
 import SpyObj = jasmine.SpyObj;
 
 const authService: Partial<AuthService> = {};
