@@ -93,6 +93,14 @@ include::{snippets}/service-point-controller-api-test/should-search-swiss-only-s
 
 include::{snippets}/service-point-controller-api-test/should-create-service-point/auto-section.adoc[]
 
+== Validate ServicePoint Status
+
+include::{snippets}/service-point-controller-api-test/should-set-status-to-validate-for-service-point/auto-section.adoc[]
+
+== Revoke ServicePoints Status
+
+include::{snippets}/service-point-controller-api-test/should-set-status-to-revoke-for-all-service-points/auto-section.adoc[]
+
 == Update ServicePoint by ID
 
 include::{snippets}/service-point-controller-api-test/should-update-service-point-and-create-multiple-versions/auto-section.adoc[]
