@@ -4,6 +4,7 @@ import { PrmHomeSearchComponent } from './prm-home-search.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AppTestingModule } from '../../../app.testing.module';
 import { SearchServicePointComponent } from '../../../core/search-service-point/search-service-point.component';
+import { PrmInfoBoxComponent } from './prm-info-box/prm-info-box.component';
 
 describe('PrmHomeSearchComponent', () => {
   let component: PrmHomeSearchComponent;
@@ -11,7 +12,7 @@ describe('PrmHomeSearchComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [PrmHomeSearchComponent, SearchServicePointComponent],
+      declarations: [PrmHomeSearchComponent, SearchServicePointComponent, PrmInfoBoxComponent],
       imports: [AppTestingModule],
       providers: [{ provide: TranslatePipe }],
     });
