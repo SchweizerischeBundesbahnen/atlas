@@ -46,7 +46,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   public isFormEnabled$ = new BehaviorSubject<boolean>(false);
   private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
   private ngUnsubscribe = new Subject<void>();
-  protected readonly ApplicationType = ApplicationType;
 
   constructor(
     private router: Router,
@@ -283,9 +282,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
             .pipe((takeUntil(this.ngUnsubscribe), catchError(this.handleError)))
             .subscribe(() => {
               this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS');
-              this.router
-                .navigate(['..', this.selectedVersion.number.number], { relativeTo: this.route })
-                .then(() => this.mapService.refreshMap());
+              this.router.navigate(['..', this.selectedVersion.number.number], {
+                relativeTo: this.route,
+              });
             });
         }
       });
@@ -306,9 +305,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
             .pipe((takeUntil(this.ngUnsubscribe), catchError(this.handleError)))
             .subscribe(() => {
               this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS');
-              this.router
-                .navigate(['..', this.selectedVersion.number.number], { relativeTo: this.route })
-                .then(() => this.mapService.refreshMap());
+              this.router.navigate(['..', this.selectedVersion.number.number], {
+                relativeTo: this.route,
+              });
             });
         }
       });
