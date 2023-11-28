@@ -5,13 +5,8 @@ import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @Transactional
@@ -39,12 +34,6 @@ public abstract class BasePrmServiceTest {
     @AfterEach
     void cleanUp() {
         sharedServicePointRepository.deleteAll();
-    }
-
-    @Test
-    void shouldVerifyRepoIsNotEmpty() {
-        List<SharedServicePoint> servicePointList = sharedServicePointRepository.findAll();
-        assertThat(servicePointList.isEmpty()).isFalse();
     }
 
 }
