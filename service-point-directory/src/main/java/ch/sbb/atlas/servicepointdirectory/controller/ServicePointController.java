@@ -9,6 +9,7 @@ import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
@@ -20,6 +21,7 @@ import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointFotCommentMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
+import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoAdminHeightResponse;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
@@ -135,6 +137,7 @@ public class ServicePointController implements ServicePointApiV1 {
 
     addGeoReferenceInformation(servicePointVersion);
     setCreationDateAndCreatorToNull(servicePointVersion);
+    geoReferenceService.calculateHeightServicePoint(servicePointVersion);
     ServicePointVersion createdVersion = servicePointService.save(servicePointVersion);
     servicePointDistributor.publishServicePointsWithNumbers(createdVersion.getNumber());
     return ServicePointVersionMapper.toModel(createdVersion);
@@ -158,6 +161,7 @@ public class ServicePointController implements ServicePointApiV1 {
     ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(updateServicePointVersionModel,
         servicePointVersionToUpdate.getNumber());
     addGeoReferenceInformation(editedVersion);
+    geoReferenceService.calculateHeightServicePoint(editedVersion);
 
     servicePointService.update(servicePointVersionToUpdate, editedVersion,
         servicePointService.findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber()));
@@ -198,10 +202,6 @@ public class ServicePointController implements ServicePointApiV1 {
       ServicePointGeolocation servicePointGeolocation = servicePointVersion.getServicePointGeolocation();
       GeoReference geoReference = geoReferenceService.getGeoReference(servicePointGeolocation.asCoordinatePair());
 
-      if(servicePointVersion.getServicePointGeolocation().getHeight() == null){
-        servicePointGeolocation.setHeight(geoReference.getHeight());
-      }
-
       servicePointGeolocation.setCountry(geoReference.getCountry());
       servicePointGeolocation.setSwissCanton(geoReference.getSwissCanton());
       servicePointGeolocation.setSwissDistrictNumber(geoReference.getSwissDistrictNumber());
@@ -211,5 +211,7 @@ public class ServicePointController implements ServicePointApiV1 {
       servicePointGeolocation.setSwissLocalityName(geoReference.getSwissLocalityName());
     }
   }
+
+
 
 }
