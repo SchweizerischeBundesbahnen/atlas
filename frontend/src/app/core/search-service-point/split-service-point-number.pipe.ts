@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ServicePointNumber } from '../../../api';
+import { ServicePointNumber } from '../../api';
 
 @Pipe({
   name: 'splitServicePointNumber',

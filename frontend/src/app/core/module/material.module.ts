@@ -30,6 +30,7 @@ import { DateModule } from './date.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatStepperModule } from '@angular/material/stepper';
 
 @NgModule({
   imports: [CommonModule],
@@ -59,6 +60,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatTabsModule,
     MatRadioModule,
     MatExpansionModule,
+    MatStepperModule,
   ],
   providers: [
     { provide: MatPaginatorIntl, useClass: TranslatedPaginator },

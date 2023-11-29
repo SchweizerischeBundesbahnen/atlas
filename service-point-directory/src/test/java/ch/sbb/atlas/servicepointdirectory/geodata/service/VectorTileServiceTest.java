@@ -66,7 +66,7 @@ class VectorTileServiceTest {
     Tile.Feature feature1 = layer.getFeatures(0);
 
     List<Integer> commands = feature1.getGeometryList();
-    assertThat(commands.size()).isEqualTo(3);
+    assertThat(commands).hasSize(3);
     assertThat(commands.get(0)).isEqualTo(VECTOR_TILE_MOVE_TO_COMMAND_ENCODED);
     assertThat(commands.get(1)).isEqualTo(tileLayerEncodedCenter);
     assertThat(commands.get(2)).isEqualTo(tileLayerEncodedCenter);

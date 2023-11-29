@@ -10,6 +10,9 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +21,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Getter
@@ -40,21 +39,22 @@ public class ServicePointService {
 
   public List<ServicePointSearchResult> searchServicePointVersion(String value) {
     List<ServicePointSearchResult> servicePointSearchResults = servicePointSearchVersionRepository.searchServicePoints(value);
-    if (servicePointSearchResults.size() > SEARCH_RESULT_SIZE) {
-      return servicePointSearchResults.subList(0, SEARCH_RESULT_SIZE);
-    }
-    return servicePointSearchResults;
+    return getSearchResults(servicePointSearchResults);
+  }
+
+  public List<ServicePointSearchResult> searchSwissOnlyServicePointVersion(String value) {
+    List<ServicePointSearchResult> servicePointSearchResults =
+        servicePointSearchVersionRepository.searchSwissOnlyStopPointServicePoints(value);
+    return getSearchResults(servicePointSearchResults);
   }
 
   public List<ServicePointSearchResult> searchServicePointsWithRouteNetworkTrue(String value) {
     List<ServicePointSearchResult> servicePointSearchResults =
         servicePointSearchVersionRepository.searchServicePointsWithRouteNetworkTrue(
         value);
-    if (servicePointSearchResults.size() > SEARCH_RESULT_SIZE) {
-      return servicePointSearchResults.subList(0, SEARCH_RESULT_SIZE);
-    }
-    return servicePointSearchResults;
+    return getSearchResults(servicePointSearchResults);
   }
+
 
   public Page<ServicePointVersion> findAll(ServicePointSearchRestrictions servicePointSearchRestrictions) {
     return servicePointVersionRepository.loadByIdsFindBySpecification(servicePointSearchRestrictions.getSpecification(),
@@ -63,6 +63,10 @@ public class ServicePointService {
 
   public List<ServicePointVersion> findAllByNumberOrderByValidFrom(ServicePointNumber servicePointNumber) {
     return servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
+  }
+
+  public List<ServicePointVersion> findBySloidAndOrderByValidFrom(String sloid){
+    return servicePointVersionRepository.findBySloidOrderByValidFrom(sloid);
   }
 
   public List<ServicePointVersion> findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(
@@ -125,6 +129,13 @@ public class ServicePointService {
     List<ServicePointVersion> afterUpdateServicePoint = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
     servicePointTerminationService.checkTerminationAllowed(currentVersions, afterUpdateServicePoint);
     return currentVersion;
+  }
+
+  private List<ServicePointSearchResult> getSearchResults(List<ServicePointSearchResult> servicePointSearchResults) {
+    if (servicePointSearchResults.size() > SEARCH_RESULT_SIZE) {
+      return servicePointSearchResults.subList(0, SEARCH_RESULT_SIZE);
+    }
+    return servicePointSearchResults;
   }
 
 }

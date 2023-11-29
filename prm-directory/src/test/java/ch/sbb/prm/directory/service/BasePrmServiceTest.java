@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-public class BasePrmServiceTest {
+public abstract class BasePrmServiceTest {
 
     protected static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
 
