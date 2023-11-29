@@ -144,6 +144,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
           localityName: geoReference.swissLocalityName,
         };
         geolocationControls.height.setValue(geoReference.height);
+        console.log('georeference ', geoReference);
       });
   }
 
