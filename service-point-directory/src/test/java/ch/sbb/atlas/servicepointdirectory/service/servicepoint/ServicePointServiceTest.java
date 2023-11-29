@@ -10,6 +10,7 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSearchVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import org.hibernate.StaleObjectStateException;
 import org.junit.jupiter.api.Assertions;
@@ -42,11 +43,14 @@ import java.util.List;
   @Mock
   private ServicePointSearchVersionRepository servicePointSearchVersionRepository;
 
+  @Mock
+  private GeoReferenceService geoReferenceService;
+
   @BeforeEach
   void initMocksAndService() {
     MockitoAnnotations.openMocks(this);
     servicePointService = new ServicePointService(servicePointVersionRepositoryMock, versionableServiceMock,
-        servicePointValidationService, servicePointSearchVersionRepository, servicePointTerminationService);
+        servicePointValidationService, servicePointSearchVersionRepository, servicePointTerminationService, geoReferenceService);
   }
 
   @Test
