@@ -3,17 +3,17 @@ package ch.sbb.atlas.servicepointdirectory.repository;
 import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.stereotype.Component;
-
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
@@ -74,6 +74,7 @@ public class SharedServicePointRepository {
   private static MapSqlParameterSource getBaseParameters() {
     MapSqlParameterSource paramSource = new MapSqlParameterSource();
     paramSource.addValue("countries", Stream.of(Country.SWITZERLAND).map(Enum::name).toList());
+    paramSource.addValue("mean_of_transport_unknown", MeanOfTransport.UNKNOWN.name());
     return paramSource;
   }
 
@@ -83,10 +84,13 @@ public class SharedServicePointRepository {
                sp.business_organisation,
                tp.sloid as traffic_point_element_sloid
         from service_point_version sp
+             join service_point_version_means_of_transport spvmot
+                on sp.id = spvmot.service_point_version_id
              left join traffic_point_element_version tp
-             on sp.number=tp.service_point_number
+                on sp.number=tp.service_point_number
         where sp.sloid is not null
         and sp.country in (:countries)
+        and spvmot.means_of_transport != :mean_of_transport_unknown
         """;
   }
 

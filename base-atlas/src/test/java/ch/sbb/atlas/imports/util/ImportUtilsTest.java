@@ -30,9 +30,7 @@ class ImportUtilsTest {
     );
 
     //then
-    assertThat(result).isNotNull();
-    assertThat(result.isEmpty()).isFalse();
-    assertThat(result.size()).isEqualTo(2);
+    assertThat(result).hasSize(2);
   }
 
   @Test
@@ -55,8 +53,7 @@ class ImportUtilsTest {
     );
 
     //then
-    assertThat(result).isNotNull();
-    assertThat(result.isEmpty()).isTrue();
+    assertThat(result).isEmpty();
   }
 
   @Data

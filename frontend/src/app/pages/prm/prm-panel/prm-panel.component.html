@@ -1,0 +1,47 @@
+<div class="prm-panel">
+  <div class="ps-3 pt-3 pe-3 position-relative">
+    <div class="font-bold-4xl detail-title mb-3">
+      {{ selectedServicePointVersion.designationOfficial }}
+    </div>
+    <div class="font-xl mb-2">
+      <span data-cy="total-range">
+        <date-range-text [dateRange]="maxValidity"></date-range-text>
+      </span>
+    </div>
+    <div class="d-flex flex-row mb-3">
+      <div class="d-flex flex-column" data-cy="selected-version-sloid">
+        <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.SLOID' | translate }}</div>
+        <div>{{ selectedServicePointVersion.sloid }}</div>
+      </div>
+      <div class="d-flex flex-column ms-5" data-cy="selected-version-number">
+        <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.DIDOK_CODE' | translate }}</div>
+        <div>{{ selectedServicePointVersion.number | splitServicePointNumber }}</div>
+      </div>
+      <div class="d-flex flex-column ms-5" data-cy="selected-version-number">
+        <div class="font-bold-base">
+          {{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION' | translate }}
+        </div>
+        <div>{{ selectedBusinessOrganisation?.organisationNumber }} - {{ boDescription }}</div>
+      </div>
+    </div>
+
+    <nav mat-tab-nav-bar class="tabs mt-5" data-cy="tabs" [tabPanel]="tabPanel">
+      <a
+        mat-tab-link
+        [disabled]="disableTabNavigation"
+        class="font-bold-xl"
+        *ngFor="let tab of tabs"
+        [routerLink]="tab.link"
+        routerLinkActive="active-tab"
+        [attr.data-cy]="'tab-' + tab.link"
+      >
+        {{ tab.title | translate }}
+      </a>
+    </nav>
+    <div class="tab-content">
+      <mat-tab-nav-panel #tabPanel>
+        <router-outlet></router-outlet>
+      </mat-tab-nav-panel>
+    </div>
+  </div>
+</div>
