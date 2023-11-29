@@ -18,7 +18,7 @@ public class ServicePointStatusDecider {
 
     private boolean isStatusInReview(ServicePointVersion newServicePointVersion,
                                      Optional<ServicePointVersion> currentServicePointVersion) {
-        if (currentServicePointVersion == null) { // if it is new version creation
+        if (currentServicePointVersion == null) { // if it is stopPoint creation from scratch
             return checkStatus(newServicePointVersion);
         }
 
@@ -37,6 +37,14 @@ public class ServicePointStatusDecider {
             }
             else return false;
         }
+    }
+
+    private boolean isNameChanged(ServicePointVersion newServicePointVersion, ServicePointVersion currentServicePointVersion) {
+        return !newServicePointVersion.getDesignationOfficial().equals(currentServicePointVersion.getDesignationOfficial());
+    }
+
+    private boolean isChangeFromServicePointToStopPoint(ServicePointVersion newServicePointVersion, ServicePointVersion currentServicePointVersion) {
+        return newServicePointVersion.isStopPoint() && !currentServicePointVersion.isStopPoint();
     }
 
     private boolean checkStatus(ServicePointVersion newServicePointVersion) {
@@ -70,7 +78,9 @@ public class ServicePointStatusDecider {
                                                                             List<ServicePointVersion> currentServicePointVersions) {
         return currentServicePointVersions.stream().filter(currentServicePointVersion ->
                 !currentServicePointVersion.getValidTo().isBefore(newServicePointVersion.getValidFrom()) &&
-                        !currentServicePointVersion.getValidFrom().isAfter(newServicePointVersion.getValidFrom())).findFirst();
+                        !currentServicePointVersion.getValidFrom().isAfter(newServicePointVersion.getValidFrom()) &&
+                        (isNameChanged(newServicePointVersion, currentServicePointVersion) ||
+                                isChangeFromServicePointToStopPoint(newServicePointVersion, currentServicePointVersion))).findFirst();
     }
 
 }
