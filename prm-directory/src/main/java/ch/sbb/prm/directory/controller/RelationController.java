@@ -51,7 +51,7 @@ public class RelationController implements RelationApiV1 {
     RelationVersion editedVersion = RelationVersionMapper.toEntity(model);
     relationService.updateRelationVersion(relationVersionToUpdate, editedVersion);
 
-    return relationService.findAllByNumberOrderByValidFrom(relationVersionToUpdate.getNumber()).stream()
+    return relationService.getAllVersions(relationVersionToUpdate.getSloid()).stream()
         .map(RelationVersionMapper::toModel).toList();
   }
 
