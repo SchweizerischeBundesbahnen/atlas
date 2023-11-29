@@ -18,12 +18,24 @@ public class ServicePointStatusDecider {
 
     private boolean isStatusInReview(ServicePointVersion newServicePointVersion,
                                      Optional<ServicePointVersion> currentServicePointVersion) {
-        if (newServicePointVersion.getId() == null) {
+        if (currentServicePointVersion == null) { // if it is new version creation
             return checkStatus(newServicePointVersion);
-        } else {
+        }
+
+//        if (newServicePointVersion.getId() == null) {
+//            return checkStatus(newServicePointVersion);
+//        }
+        else {
             boolean isNameChanged = !newServicePointVersion.getDesignationOfficial()
                     .equals(currentServicePointVersion.get().getDesignationOfficial());
-            return checkStatus(newServicePointVersion) && isNameChanged;
+            if (isNameChanged) {
+                return checkStatus(newServicePointVersion) && isNameChanged;
+            }
+            boolean isServicePointChange = !currentServicePointVersion.get().isStopPoint() && newServicePointVersion.isStopPoint();
+            if (isServicePointChange) {
+                return checkStatus(newServicePointVersion);
+            }
+            else return false;
         }
     }
 
@@ -55,10 +67,10 @@ public class ServicePointStatusDecider {
      * Saving Version             |------|
      */
     private Optional<ServicePointVersion> findPreviousVersionOnSameTimeslot(ServicePointVersion newServicePointVersion,
-                                                                    List<ServicePointVersion> currentServicePointVersions) {
+                                                                            List<ServicePointVersion> currentServicePointVersions) {
         return currentServicePointVersions.stream().filter(currentServicePointVersion ->
-                        !currentServicePointVersion.getValidTo().isBefore(newServicePointVersion.getValidFrom()) &&
-                                !currentServicePointVersion.getValidFrom().isAfter(newServicePointVersion.getValidFrom())).findFirst();
+                !currentServicePointVersion.getValidTo().isBefore(newServicePointVersion.getValidFrom()) &&
+                        !currentServicePointVersion.getValidFrom().isAfter(newServicePointVersion.getValidFrom())).findFirst();
     }
 
 }
