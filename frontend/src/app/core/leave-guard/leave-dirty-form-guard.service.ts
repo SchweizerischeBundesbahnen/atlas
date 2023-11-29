@@ -16,7 +16,7 @@ export class LeaveDirtyFormGuard {
     component: DetailFormComponent,
     currentRoute: ActivatedRouteSnapshot,
     currentState: RouterStateSnapshot,
-    nextState: RouterStateSnapshot
+    nextState: RouterStateSnapshot,
   ) {
     if (this.staysOnSameDetailPage(currentState, nextState)) {
       return true;
@@ -33,10 +33,21 @@ export class LeaveDirtyFormGuard {
   }
 
   staysOnSameDetailPage(currentState: RouterStateSnapshot, nextState: RouterStateSnapshot) {
-    return (
-      this.getSubstringBeforeLastSlash(currentState.url) ===
-      this.getSubstringBeforeLastSlash(nextState.url)
-    );
+    //if from new to created url
+    const substringAfterLastSlash = this.getSubstringAfterLastSlash(currentState.url);
+    if (substringAfterLastSlash === 'add') {
+      if (
+        this.getSubstringBeforeLastSlash(currentState.url) ===
+        this.getSubstringBeforeLastSlash(nextState.url)
+      ) {
+        return true;
+      }
+    }
+    return currentState.url === nextState.url;
+  }
+
+  private getSubstringAfterLastSlash(value: string) {
+    return value.substring(value.lastIndexOf('/') + 1, value.length);
   }
 
   private getSubstringBeforeLastSlash(value: string) {
@@ -48,12 +59,12 @@ export const canLeaveDirtyForm: CanDeactivateFn<DetailFormComponent> = (
   component: DetailFormComponent,
   currentRoute: ActivatedRouteSnapshot,
   currentState: RouterStateSnapshot,
-  nextState: RouterStateSnapshot
+  nextState: RouterStateSnapshot,
 ) => {
   return inject(LeaveDirtyFormGuard).canDeactivate(
     component,
     currentRoute,
     currentState,
-    nextState
+    nextState,
   );
 };

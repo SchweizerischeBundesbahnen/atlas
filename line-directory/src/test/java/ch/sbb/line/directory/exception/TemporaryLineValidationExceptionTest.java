@@ -34,7 +34,7 @@ import org.junit.jupiter.api.Test;
       assertThat(exception.getErrorResponse().getStatus()).isEqualTo(422);
       assertThat(exception.getErrorResponse().getMessage()).isEqualTo(
           "Business rule validation failed");
-      assertThat(exception.getErrorResponse().getDetails().size()).isEqualTo(3);
+      assertThat(exception.getErrorResponse().getDetails()).hasSize(3);
       assertThat(exception.getErrorResponse().getDetails().first().getField()).isEqualTo("validTo");
       assertThat(exception.getErrorResponse().getDetails().first().getMessage()).isEqualTo(
           "Temporary version from 01.01.2021 to 01.05.2021 is a part of relating temporary versions, which together exceed maximum validity of 12 months");
@@ -69,7 +69,7 @@ import org.junit.jupiter.api.Test;
       assertThat(exception.getErrorResponse().getStatus()).isEqualTo(422);
       assertThat(exception.getErrorResponse().getMessage()).isEqualTo(
           "Business rule validation failed");
-      assertThat(exception.getErrorResponse().getDetails().size()).isEqualTo(1);
+      assertThat(exception.getErrorResponse().getDetails()).hasSize(1);
       assertThat(exception.getErrorResponse().getDetails().first().getField()).isEqualTo("validTo");
       assertThat(exception.getErrorResponse().getDetails().first().getMessage()).isEqualTo(
           "Temporary version from 01.01.2021 to 01.05.2022 exceeds maximum validity of 12 months");

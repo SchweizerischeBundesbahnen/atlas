@@ -262,7 +262,7 @@ import org.springframework.transaction.annotation.Transactional;
     List<TimetableFieldNumberVersion> result = versionRepository.getFullTimeTableNumberVersions();
 
     //then
-    assertThat(result.size()).isEqualTo(1);
+    assertThat(result).hasSize(1);
   }
 
   @Test
@@ -285,8 +285,7 @@ import org.springframework.transaction.annotation.Transactional;
         LocalDate.of(2022, 1, 1));
 
     //then
-    assertThat(result.size()).isEqualTo(1);
-    assertThat(result).contains(fieldNumberVersion);
+    assertThat(result).hasSize(1).contains(fieldNumberVersion);
 
   }
 

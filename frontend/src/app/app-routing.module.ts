@@ -38,6 +38,12 @@ const routes: Routes = [
     canActivate: [canActivateTimetableHearing],
   },
   {
+    path: Pages.PRM.path,
+    loadChildren: () => import('./pages/prm/prm.module').then((m) => m.PrmModule),
+    data: { headerTitle: Pages.PRM.headerTitle },
+    canActivate: [AuthGuard],
+  },
+  {
     path: Pages.USER_ADMINISTRATION.path,
     loadChildren: () =>
       import('./pages/user-administration/user-administration.module').then(
