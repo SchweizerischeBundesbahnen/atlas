@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Schema(name = "StopPointImportRequest")
-public class StopPointImportRequestModel {
+@Schema(name = "PlatformImportRequest")
+public class PlatformImportRequestModel {
 
-  @Schema(name = "List of StopPointCsvModelContainer to import")
+  @Schema(name = "List of PlatformCsvModelContainer to import")
   @NotNull
   @NotEmpty
-  private List<StopPointCsvModelContainer> stopPointCsvModelContainers;
+  private List<PlatformCsvModelContainer> platformCsvModelContainers;
 
 }

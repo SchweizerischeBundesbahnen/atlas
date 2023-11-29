@@ -1,7 +1,8 @@
 package ch.sbb.prm.directory.service;
 
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
+
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -9,14 +10,11 @@ import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.validation.PlatformValidationService;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
-
-import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
 
 @Service
 @Transactional
@@ -42,20 +40,20 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
   }
 
   @Override
-  protected void incrementVersion(ServicePointNumber servicePointNumber) {
-    platformRepository.incrementVersion(servicePointNumber);
+  protected void incrementVersion(String sloid) {
+    platformRepository.incrementVersion(sloid);
   }
 
   @Override
-  protected PlatformVersion save(PlatformVersion version) {
+  public PlatformVersion save(PlatformVersion version) {
     boolean reduced = stopPointService.isReduced(version.getParentServicePointSloid());
     platformValidationService.validateRecordingVariants(version,reduced);
     return platformRepository.saveAndFlush(version);
   }
 
   @Override
-  protected List<PlatformVersion> getAllVersions(ServicePointNumber servicePointNumber) {
-    return this.findAllByNumberOrderByValidFrom(servicePointNumber);
+  public List<PlatformVersion> getAllVersions(String sloid) {
+    return platformRepository.findAllBySloidOrderByValidFrom(sloid);
   }
 
   @Override
@@ -83,9 +81,5 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
 
   public Optional<PlatformVersion> getPlatformVersionById(Long id) {
     return platformRepository.findById(id);
-  }
-
-  public List<PlatformVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number) {
-    return platformRepository.findAllByNumberOrderByValidFrom(number);
   }
 }

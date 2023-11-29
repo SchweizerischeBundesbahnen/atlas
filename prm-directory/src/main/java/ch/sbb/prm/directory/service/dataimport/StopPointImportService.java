@@ -93,7 +93,7 @@ public class StopPointImportService extends BasePrmImportService<StopPointVersio
           exception.getMessage());
       return buildSuccessImportResult(stopPointVersion);
     } catch (Exception exception) {
-      log.error("[Stop-Place Import]: Error during update", exception);
+      log.error("[Stop-Point Import]: Error during update", exception);
       return buildFailedImportResult(stopPointVersion, exception);
     }
   }
@@ -103,7 +103,7 @@ public class StopPointImportService extends BasePrmImportService<StopPointVersio
       StopPointVersion stopPointVersion = stopPointService.save(servicePointVersion);
       return buildSuccessImportResult(stopPointVersion);
     } catch (AtlasException exception) {
-      log.error("[Stop-Place Import]: Error during save", exception);
+      log.error("[Stop-Point Import]: Error during save", exception);
       return buildFailedImportResult(servicePointVersion, exception);
     }
   }
