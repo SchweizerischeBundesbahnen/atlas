@@ -2,11 +2,13 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.service.UserService;
+import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSearchVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -36,6 +38,7 @@ public class ServicePointService {
   private final ServicePointValidationService servicePointValidationService;
   private final ServicePointSearchVersionRepository servicePointSearchVersionRepository;
   private final ServicePointTerminationService servicePointTerminationService;
+  private final GeoReferenceService geoReferenceService;
 
   public List<ServicePointSearchResult> searchServicePointVersion(String value) {
     List<ServicePointSearchResult> servicePointSearchResults = servicePointSearchVersionRepository.searchServicePoints(value);
@@ -96,6 +99,7 @@ public class ServicePointService {
 
   public ServicePointVersion saveWithoutValidationForImportOnly(ServicePointVersion servicePointVersion) {
     servicePointVersion.setStatus(Status.VALIDATED);
+    geoReferenceService.calculateHeightServicePoint(servicePointVersion);
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
