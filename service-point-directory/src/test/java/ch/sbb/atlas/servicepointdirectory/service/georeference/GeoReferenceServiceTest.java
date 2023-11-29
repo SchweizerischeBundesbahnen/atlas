@@ -15,6 +15,8 @@ import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
 import java.math.BigDecimal;
+import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
+import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -100,7 +102,7 @@ class GeoReferenceServiceTest {
   }
 
   @Test
-  void shouldCalculateHeightOfValidLV95Coordinates(){
+  void shouldGetHeightOfValidLV95SwissCoordinates(){
     CoordinatePair coordinate = CoordinatePair.builder()
         .spatialReference(SpatialReference.LV95)
         .east(2568989.30320000000)
@@ -117,7 +119,7 @@ class GeoReferenceServiceTest {
   }
 
   @Test
-  void shouldCalculateHeightOfValidWGS84Coordinates(){
+  void shouldGetHeightOfValidWGS84SwissCoordinates(){
     CoordinatePair coordinate = CoordinatePair.builder()
         .spatialReference(SpatialReference.WGS84)
         .east(7.03523000710)
@@ -134,11 +136,11 @@ class GeoReferenceServiceTest {
   }
 
   @Test
-  void shouldCalculateHeightOfValidWGS84WEBCoordinates(){
+  void shouldGetHeightOfValidWGS84WEBSwissCoordinates(){
     CoordinatePair coordinate = CoordinatePair.builder()
         .spatialReference(SpatialReference.WGS84WEB)
-        .east(7.03523000710)
-        .north(46.42533000875)
+        .east(783158.2220039304)
+        .north(5848772.61114715)
         .build();
 
     GeoAdminHeightResponse geoAdminHeightResponse = geoReferenceService.getHeight(coordinate);
@@ -148,6 +150,37 @@ class GeoReferenceServiceTest {
         .build();
 
     assertThat(geoAdminHeightResponse).isEqualTo(expectedHeightResponse);
+  }
+
+  @Test
+  void shouldNotGetForeignCoordinates(){
+    CoordinatePair coordinate = CoordinatePair.builder()
+        .spatialReference(SpatialReference.WGS84)
+        //Coordinates of Milano
+        .east(9.189982)
+        .north(45.464204)
+        .build();
+
+    GeoAdminHeightResponse geoAdminHeightResponse = geoReferenceService.getHeight(coordinate);
+
+    GeoAdminHeightResponse expectedHeightResponse = GeoAdminHeightResponse.builder()
+        .height(null)
+        .build();
+
+    assertThat(geoAdminHeightResponse).isEqualTo(expectedHeightResponse);
+  }
+
+  @Test
+  void shouldNotReplaceExistingHeight() {
+    ServicePointVersion servicePointVersion = ServicePointTestData.getBernWyleregg();
+    servicePointVersion.getServicePointGeolocation().setNorth(46.42533000875);
+    servicePointVersion.getServicePointGeolocation().setEast(7.03523000710);
+    servicePointVersion.getServicePointGeolocation().setHeight(200D);
+
+    geoReferenceService.getHeightForServicePoint(servicePointVersion);
+
+    Double actualHeight = servicePointVersion.getServicePointGeolocation().getHeight();
+    assertThat(actualHeight).isEqualTo(200D);
   }
 
 }
