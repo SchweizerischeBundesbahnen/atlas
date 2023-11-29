@@ -76,11 +76,39 @@ public class ServicePointStatusDecider {
      */
     private Optional<ServicePointVersion> findPreviousVersionOnSameTimeslot(ServicePointVersion newServicePointVersion,
                                                                             List<ServicePointVersion> currentServicePointVersions) {
-        return currentServicePointVersions.stream().filter(currentServicePointVersion ->
-                !currentServicePointVersion.getValidTo().isBefore(newServicePointVersion.getValidFrom()) &&
-                        !currentServicePointVersion.getValidFrom().isAfter(newServicePointVersion.getValidFrom()) &&
+        ServicePointVersion lastExistingServicePointVersion = getLastOfExistingVersions(currentServicePointVersions);
+        ServicePointVersion firstExistingServicePointVersion = getFirstOfExistingVersions(currentServicePointVersions);
+        if (lastExistingServicePointVersion.getValidTo().isBefore(newServicePointVersion.getValidFrom()) ||
+                firstExistingServicePointVersion.getValidFrom().isAfter(newServicePointVersion.getValidTo())) {
+            return currentServicePointVersions.stream().filter(currentServicePointVersion ->
                         (isNameChanged(newServicePointVersion, currentServicePointVersion) ||
-                                isChangeFromServicePointToStopPoint(newServicePointVersion, currentServicePointVersion))).findFirst();
+                        isChangeFromServicePointToStopPoint(newServicePointVersion, currentServicePointVersion)))
+                    .findFirst();
+        }
+        return currentServicePointVersions.stream().filter(currentServicePointVersion ->
+                        (!currentServicePointVersion.getValidTo().isBefore(newServicePointVersion.getValidFrom())
+                        &&
+                        !currentServicePointVersion.getValidFrom().isAfter(newServicePointVersion.getValidFrom()))
+                        &&
+                        (isNameChanged(newServicePointVersion, currentServicePointVersion)
+                        ||
+                        isChangeFromServicePointToStopPoint(newServicePointVersion, currentServicePointVersion)))
+                .findFirst();
+    }
+
+    private ServicePointVersion getLastOfExistingVersions(List<ServicePointVersion> currentServicePointVersions) {
+        return currentServicePointVersions
+                .stream()
+                .skip(currentServicePointVersions.size() - 1)
+                .findFirst()
+                .orElseThrow();
+    }
+
+    private ServicePointVersion getFirstOfExistingVersions(List<ServicePointVersion> currentServicePointVersions) {
+        return currentServicePointVersions
+                .stream()
+                .findFirst()
+                .orElseThrow();
     }
 
 }
