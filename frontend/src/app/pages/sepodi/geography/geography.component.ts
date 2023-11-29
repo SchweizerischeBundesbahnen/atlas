@@ -10,7 +10,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { CoordinatePair, GeoDataService, SpatialReference } from '../../../api';
+import { CoordinatePair, SpatialReference } from '../../../api';
 import { GeographyFormGroup } from './geography-form-group';
 import { CoordinateTransformationService } from './coordinate-transformation.service';
 import { debounceTime, merge, Subject } from 'rxjs';
@@ -65,7 +65,6 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
     private coordinateTransformationService: CoordinateTransformationService,
     private mapService: MapService,
     private changeDetector: ChangeDetectorRef,
-    private geoDataService: GeoDataService,
   ) {}
 
   ngOnInit() {
