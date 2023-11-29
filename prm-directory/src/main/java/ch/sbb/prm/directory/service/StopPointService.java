@@ -40,8 +40,8 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
   }
 
   @Override
-  protected void incrementVersion(ServicePointNumber servicePointNumber) {
-    stopPointRepository.incrementVersion(servicePointNumber);
+  protected void incrementVersion(String sloid) {
+    stopPointRepository.incrementVersion(sloid);
   }
 
   @Override
@@ -55,8 +55,8 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
   }
 
   @Override
-  protected List<StopPointVersion> getAllVersions(ServicePointNumber servicePointNumber) {
-    return this.findAllByNumberOrderByValidFrom(servicePointNumber);
+  public List<StopPointVersion> getAllVersions(String sloid) {
+    return stopPointRepository.findAllBySloid(sloid);
   }
 
   @Override

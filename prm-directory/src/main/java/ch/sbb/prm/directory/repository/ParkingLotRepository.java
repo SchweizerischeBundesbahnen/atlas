@@ -1,6 +1,5 @@
 package ch.sbb.prm.directory.repository;
 
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,9 +15,9 @@ public interface ParkingLotRepository extends JpaRepository<ParkingLotVersion, L
 
   List<ParkingLotVersion> findByParentServicePointSloid(String parentServicePointSloid);
 
-  List<ParkingLotVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number);
+  List<ParkingLotVersion> findAllBySloidOrderByValidFrom(String sloid);
 
   @Modifying(clearAutomatically = true)
-  @Query("update parking_lot_version v set v.version = (v.version + 1) where v.number = :number")
-  void incrementVersion(@Param("number") ServicePointNumber number);
+  @Query("update parking_lot_version v set v.version = (v.version + 1) where v.sloid = :sloid")
+  void incrementVersion(@Param("sloid") String sloid);
 }

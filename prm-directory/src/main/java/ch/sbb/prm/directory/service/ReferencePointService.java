@@ -1,7 +1,12 @@
 package ch.sbb.prm.directory.service;
 
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.INFORMATION_DESK;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TICKET_COUNTER;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TOILET;
+
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -18,18 +23,11 @@ import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.util.RelationUtil;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
-
-import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.INFORMATION_DESK;
-import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
-import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
-import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TICKET_COUNTER;
-import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TOILET;
 
 @Service
 @Transactional
@@ -60,8 +58,8 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   }
 
   @Override
-  protected void incrementVersion(ServicePointNumber servicePointNumber) {
-    referencePointRepository.incrementVersion(servicePointNumber);
+  protected void incrementVersion(String sloid) {
+    referencePointRepository.incrementVersion(sloid);
   }
 
   @Override
@@ -70,8 +68,8 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   }
 
   @Override
-  protected List<ReferencePointVersion> getAllVersions(ServicePointNumber servicePointNumber) {
-    return this.findAllByNumberOrderByValidFrom(servicePointNumber);
+  public List<ReferencePointVersion> getAllVersions(String sloid) {
+    return referencePointRepository.findAllBySloidOrderByValidFrom(sloid);
   }
 
   @Override
@@ -104,10 +102,6 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
 
   public Optional<ReferencePointVersion> getReferencePointById(Long id) {
     return referencePointRepository.findById(id);
-  }
-
-  public List<ReferencePointVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number) {
-    return referencePointRepository.findAllByNumberOrderByValidFrom(number);
   }
 
   private ReferencePointVersion saveReferencePoint(ReferencePointVersion referencePointVersion) {
