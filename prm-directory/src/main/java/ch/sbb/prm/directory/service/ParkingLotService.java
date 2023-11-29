@@ -1,21 +1,19 @@
 package ch.sbb.prm.directory.service;
 
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
+
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
-
-import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
 
 @Service
 @Transactional
@@ -35,8 +33,8 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
   }
 
   @Override
-  protected void incrementVersion(ServicePointNumber servicePointNumber) {
-    parkingLotRepository.incrementVersion(servicePointNumber);
+  public void incrementVersion(String sloid) {
+    parkingLotRepository.incrementVersion(sloid);
   }
 
   @Override
@@ -45,8 +43,8 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
   }
 
   @Override
-  protected List<ParkingLotVersion> getAllVersions(ServicePointNumber servicePointNumber) {
-    return this.findAllByNumberOrderByValidFrom(servicePointNumber);
+  public List<ParkingLotVersion> getAllVersions(String sloid) {
+    return parkingLotRepository.findAllBySloidOrderByValidFrom(sloid);
   }
 
   @Override
@@ -68,10 +66,6 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#editedVersion)")
   public ParkingLotVersion updateParkingLotVersion(ParkingLotVersion currentVersion, ParkingLotVersion editedVersion) {
     return updateVersion(currentVersion, editedVersion);
-  }
-
-  public List<ParkingLotVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number) {
-    return parkingLotRepository.findAllByNumberOrderByValidFrom(number);
   }
 
   public Optional<ParkingLotVersion> getPlatformVersionById(Long id) {

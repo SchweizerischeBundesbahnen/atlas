@@ -1,6 +1,5 @@
 package ch.sbb.prm.directory.service;
 
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.RelationVersion;
@@ -15,11 +14,11 @@ public abstract class PrmVersionableService<T extends PrmVersionable> {
 
   protected final VersionableService versionableService;
 
-  protected abstract void incrementVersion(ServicePointNumber servicePointNumber);
+  protected abstract void incrementVersion(String sloid);
 
   protected abstract T save(T version);
 
-  protected abstract List<T> getAllVersions(ServicePointNumber servicePointNumber);
+  public abstract List<T> getAllVersions(String sloid);
 
   protected abstract void applyVersioning(List<VersionedObject> versionedObjects);
 
@@ -27,7 +26,7 @@ public abstract class PrmVersionableService<T extends PrmVersionable> {
     checkStaleObjectIntegrity(currentVersion, editedVersion);
     editedVersion.setSloid(currentVersion.getSloid());
     editedVersion.setNumber(currentVersion.getNumber());
-    List<T> existingDbVersions = getAllVersions(currentVersion.getNumber());
+    List<T> existingDbVersions = getAllVersions(currentVersion.getSloid());
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, existingDbVersions);
     applyVersioning(versionedObjects);
@@ -35,7 +34,7 @@ public abstract class PrmVersionableService<T extends PrmVersionable> {
   }
 
   protected void checkStaleObjectIntegrity(T currentVersion, T editedVersion) {
-    incrementVersion(currentVersion.getNumber());
+    incrementVersion(currentVersion.getSloid());
     if (!currentVersion.getVersion().equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(RelationVersion.class.getSimpleName(), "version");
     }
