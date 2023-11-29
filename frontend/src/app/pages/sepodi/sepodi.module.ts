@@ -10,11 +10,7 @@ import { TrafficPointElementsTableComponent } from './service-point-side-panel/t
 import { LoadingPointsTableComponent } from './service-point-side-panel/loading-points/loading-points-table.component';
 import { FormModule } from '../../core/module/form.module';
 import { FormsModule } from '@angular/forms';
-import { MeansOfTransportPickerComponent } from './means-of-transport-picker/means-of-transport-picker.component';
 import { GeographyComponent } from './geography/geography.component';
-import { SearchServicePointComponent } from './search-service-point/search-service-point.component';
-import { SearchResultHighlightPipe } from './search-service-point/search-result-highlight.pipe';
-import { SplitServicePointNumberPipe } from './search-service-point/split-service-point-number.pipe';
 import { KilometerMasterSearchComponent } from './service-point-side-panel/service-point/search/kilometer-master-search.component';
 import { ServicePointCreationComponent } from './service-point-side-panel/service-point/service-point-creation/service-point-creation.component';
 import { ServicePointFormComponent } from './service-point-side-panel/service-point/service-point-form/service-point-form.component';
@@ -31,11 +27,7 @@ import { FotCommentDetailComponent } from './service-point-side-panel/comment/fo
     TrafficPointElementsTableComponent,
     LoadingPointsTableComponent,
     MapComponent,
-    MeansOfTransportPickerComponent,
     GeographyComponent,
-    SearchServicePointComponent,
-    SearchResultHighlightPipe,
-    SplitServicePointNumberPipe,
     ServicePointCreationComponent,
     ServicePointFormComponent,
     TrafficPointElementsDetailComponent,

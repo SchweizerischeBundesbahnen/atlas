@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MeanOfTransport } from '../../../api';
 
@@ -7,12 +7,20 @@ import { MeanOfTransport } from '../../../api';
   templateUrl: './means-of-transport-picker.component.html',
   styleUrls: ['./means-of-transport-picker.component.scss'],
 })
-export class MeansOfTransportPickerComponent {
+export class MeansOfTransportPickerComponent implements OnInit {
   @Input() controlName!: string;
   @Input() disabled = false;
   @Input() formGroup!: FormGroup;
+  @Input() label!: string;
+  @Input() showUnknown = true;
 
-  means = Object.values(MeanOfTransport);
+  means!: MeanOfTransport[];
+
+  ngOnInit(): void {
+    this.means = this.showUnknown
+      ? Object.values(MeanOfTransport)
+      : Object.values(MeanOfTransport).filter((value) => value !== MeanOfTransport.Unknown);
+  }
 
   get currentlySelectedMeans() {
     return this.formControl.value as MeanOfTransport[];
@@ -36,7 +44,7 @@ export class MeansOfTransportPickerComponent {
   }
 
   getIcon(mean: MeanOfTransport) {
-    if (this.currentlySelectedMeans.includes(mean)) {
+    if (this.currentlySelectedMeans && this.currentlySelectedMeans.includes(mean)) {
       return mean;
     } else return mean + '_GRAY';
   }

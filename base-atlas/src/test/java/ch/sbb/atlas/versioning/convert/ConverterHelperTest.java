@@ -94,8 +94,7 @@ class ConverterHelperTest extends BaseTest {
     assertThat(result).isNotNull();
     assertThat(result.getId()).isEqualTo(1L);
     List<Property> properties = result.getProperties();
-    assertThat(properties).isNotEmpty();
-    assertThat(properties.size()).isEqualTo(2);
+    assertThat(properties).hasSize(2);
     Property propertyField = properties.stream()
         .filter(
             property -> VersionableObject.Fields.property.equals(
@@ -166,8 +165,7 @@ class ConverterHelperTest extends BaseTest {
     assertThat(result).isNotNull();
     assertThat(result.getId()).isEqualTo(1L);
     List<Property> properties = result.getProperties();
-    assertThat(properties).isNotEmpty();
-    assertThat(properties.size()).isEqualTo(3);
+    assertThat(properties).hasSize(3);
 
     Property propProperty = filterPropertyByKey(properties, "property");
     assertThat(propProperty).isNotNull();
@@ -229,8 +227,7 @@ class ConverterHelperTest extends BaseTest {
     assertThat(result).isNotNull();
     assertThat(result.getId()).isEqualTo(1L);
     List<Property> properties = result.getProperties();
-    assertThat(properties).isNotEmpty();
-    assertThat(properties.size()).isEqualTo(2);
+    assertThat(properties).hasSize(2);
 
     Property propProperty = filterPropertyByKey(properties, "property");
     assertThat(propProperty).isNull();
@@ -288,8 +285,7 @@ class ConverterHelperTest extends BaseTest {
     );
 
     //then
-    assertThat(result).isNotEmpty();
-    assertThat(result.size()).isEqualTo(2);
+    assertThat(result).hasSize(2);
     result.sort(Comparator.comparing(toVersioning -> toVersioning.getVersionable().getValidFrom()));
     ToVersioning firstItemToVersioning = result.get(0);
     assertThat(firstItemToVersioning).isNotNull();
@@ -303,8 +299,7 @@ class ConverterHelperTest extends BaseTest {
     assertThat(entityFirstItem).isNotNull();
     assertThat(entityFirstItem.getId()).isEqualTo(1);
     List<Property> entityFirstItemProperties = entityFirstItem.getProperties();
-    assertThat(entityFirstItemProperties).isNotEmpty();
-    assertThat(entityFirstItemProperties.size()).isEqualTo(3);
+    assertThat(entityFirstItemProperties).hasSize(3);
 
     Property firstPropertyFirstItem = entityFirstItemProperties.get(0);
     assertThat(firstPropertyFirstItem).isNotNull();
@@ -320,13 +315,11 @@ class ConverterHelperTest extends BaseTest {
     assertThat(secondPropertyFirstItem.getValue()).isNull();
     assertThat(secondPropertyFirstItem.getOneToOne()).isNull();
     List<Entity> oneToManyRelation = secondPropertyFirstItem.getOneToMany();
-    assertThat(oneToManyRelation).isNotEmpty();
-    assertThat(oneToManyRelation.size()).isEqualTo(1);
+    assertThat(oneToManyRelation).hasSize(1);
     Entity entityOneToManyRelation = oneToManyRelation.get(0);
     assertThat(entityOneToManyRelation).isNotNull();
     List<Property> entityOneToManyRelationProperties = entityOneToManyRelation.getProperties();
-    assertThat(entityOneToManyRelationProperties).isNotEmpty();
-    assertThat(entityOneToManyRelationProperties.size()).isEqualTo(1);
+    assertThat(entityOneToManyRelationProperties).hasSize(1);
     assertThat(entityOneToManyRelationProperties.get(0).getKey()).isEqualTo(Relation.Fields.value);
     assertThat(entityOneToManyRelationProperties.get(0).getValue()).isEqualTo("value1");
     assertThat(entityOneToManyRelationProperties.get(0).getOneToOne()).isNull();
@@ -352,8 +345,7 @@ class ConverterHelperTest extends BaseTest {
     assertThat(entitySecondItem).isNotNull();
     assertThat(entitySecondItem.getId()).isEqualTo(2);
     List<Property> entitySecondItemProperties = entitySecondItem.getProperties();
-    assertThat(entitySecondItemProperties).isNotEmpty();
-    assertThat(entitySecondItemProperties.size()).isEqualTo(3);
+    assertThat(entitySecondItemProperties).hasSize(3);
 
     Property firstPropertySecondItem = entitySecondItemProperties.get(0);
     assertThat(firstPropertySecondItem).isNotNull();
@@ -397,7 +389,6 @@ class ConverterHelperTest extends BaseTest {
     );
 
     //then
-    assertThat(result).isNotEmpty();
     assertThat(result).hasSize(2);
     result.sort(Comparator.comparing(toVersioning -> toVersioning.getVersionable().getValidFrom()));
 
