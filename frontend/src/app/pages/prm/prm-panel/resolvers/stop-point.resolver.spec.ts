@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 
-import { StopPointResolver } from './stop-point.resolver';
-import { of } from 'rxjs';
-import { PersonWithReducedMobilityService } from '../../../../api';
+import { stopPointResolver, StopPointResolver } from './stop-point.resolver';
+import { Observable, of } from 'rxjs';
+import { PersonWithReducedMobilityService, ReadStopPointVersion } from '../../../../api';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ServicePointDetailResolver } from '../../../sepodi/service-point-side-panel/service-point-detail.resolver';
-import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
+import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
 import { STOP_POINT } from '../../util/stop-point-test-data.spec';
 
 describe('stopPointResolver', () => {
@@ -40,9 +40,11 @@ describe('stopPointResolver', () => {
       paramMap: convertToParamMap({ sloid: 'ch:1:sloid:89008' }),
     } as ActivatedRouteSnapshot;
 
-    const resolvedVersion = resolver.resolve(mockRoute);
+    const result = TestBed.runInInjectionContext(() =>
+      stopPointResolver(mockRoute, {} as RouterStateSnapshot),
+    ) as Observable<ReadStopPointVersion[]>;
 
-    resolvedVersion.subscribe((versions) => {
+    result.subscribe((versions) => {
       expect(versions.length).toBe(1);
       expect(versions[0].sloid).toBe('ch:1:sloid:89008');
     });

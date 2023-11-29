@@ -12,6 +12,7 @@ import { AtlasLabelFieldComponent } from '../../../../../../core/form-components
 import { MeansOfTransportPickerComponent } from '../../../../../sepodi/means-of-transport-picker/means-of-transport-picker.component';
 import { AtlasSpacerComponent } from '../../../../../../core/components/spacer/atlas-spacer.component';
 import { AppTestingModule } from '../../../../../../app.testing.module';
+import { By } from '@angular/platform-browser';
 
 describe('StopPointReducedFormComponent', () => {
   let component: StopPointReducedFormComponent;
@@ -40,5 +41,11 @@ describe('StopPointReducedFormComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should display reduced fields', () => {
+    expect(fixture.debugElement.query(By.css('means-of-transport-picker'))).toBeDefined();
+    expect(fixture.debugElement.query(By.css('form-comment'))).toBeDefined();
+    expect(fixture.debugElement.query(By.css('form-date-range'))).toBeDefined();
   });
 });
