@@ -190,6 +190,11 @@
       "DESCRIPTION": "Hier finden Sie alle Informationen zur Fahrplananhörung Schweiz.",
       "PATH_TEXT": "Fahrplananhörung"
     },
+    "PRM": {
+      "TITLE": "BehiG-Daten verwalten",
+      "TITLE_HEADER": "Bestandsaufnahme BehiG",
+      "DESCRIPTION": "Erfassen, bearbeiten und einsehen der Dienststellendaten im Rahmen der Bestandsaufnahme BehiG."
+    },
     "DETAILS": "Details"
   },
   "PAGINATOR": {
@@ -216,6 +221,7 @@
     "MIN": "Die Zahl muss mindestens {{min}} sein.",
     "MAX": "Die Zahl darf maximal {{max}} sein.",
     "AT_LEAST_ONE": "Wählen Sie mindestens eine Ausprägung aus.",
+    "MEANSOFTRANSPORTWRONGCOMBINATION": "Diese Verkehrsmittelkombination ist nicht zulässig.",
     "DECIMAL_NUMBER": "Geben Sie eine Dezimalzahl mit maximal {{maxDecimalDigits}} Nachkommastellen ein.",
     "COLON_SEPERATED_SID4PT": "Verwenden Sie den SID4PT Zeichensatz (-._0-9a-zA-Z) mit genau {{numbersWithColons}} trennenden Doppelpunkten."
   },
@@ -1037,5 +1043,87 @@
     "BACK_TO_MAP": "Schliessen",
     "AUTOMATIC_SLOID": "wird automatisch vergeben",
     "SLOID_ALREADY_USED": "{{sloid}} ist bereits vergeben."
+  },
+  "PRM": {
+    "TABS": {
+      "STOP_POINT": "Basisinformationen Haltestelle",
+      "REFERENCE_POINT": "Referenzpunkt",
+      "PLATFORM": "Haltekante",
+      "TICKET_COUNTER": "Billettschalter",
+      "INFORMATION_DESK": "Informationsschalter",
+      "TOILET": "Toilette",
+      "PARKING_LOT": "Parkplatz",
+      "CONNECTION": "Verbindungen"
+    },
+    "STOP_POINTS": {
+      "FORM": {
+        "FREE_TEXT": "Hinweise zur Haltestelle",
+        "INTEROPERABLE": "Aktivieren wenn der Bahnhof für den interoperablen Verkehr zugelassen ist.",
+        "URL": "Webseite mit zusätzlichen Informationen",
+        "ADDRESS_KEY_DATA": "Adresse",
+        "ADDRESS": "Strasse/Nummer",
+        "ZIP": "Postleitzahl",
+        "CITY": "Ort",
+        "VISUAL_INFO": "Statisch/optisch",
+        "DYNAMIC_OPTIC_SYSTEM": "Dynamisch/optisch",
+        "DYNAMIC_AUDIO_SYSTEM": "Akustisch",
+        "ASSISTANCE_REQUEST_FULFILLED": "Voraussetzungen erfüllt",
+        "ASSISTANCE_SERVICE": "Hilfestellung durch Personal",
+        "ASSISTANCE_AVAILABILITY": "Voranmeldung für Hilfestellung nötig",
+        "ASSISTANCE_CONDITION": "Hinweise zur Hilfestellung",
+        "ALTERNATIVE_TRANSPORT": "Shuttledienst bzw. alternatives öV-Angebot",
+        "ALTERNATIVE_TRANSPORT_CONDITION": "Hinweise zum Shuttledienst bzw. alternativen öV-Angebot",
+        "ADDITIONAL_INFORMATION": "Zusätzliche Informationen",
+        "TICKET_MACHINE": "Billettautomat vorhanden",
+        "WHEELCHAIR_TICKET_MACHINE": "Barrierefrei ",
+        "AUDIO_TICKET_MACHINE": "Akustische und taktile Ausrüstung",
+        "INFO_TICKET_MACHINE": "Hinweise zu den Billettautomaten"
+      },
+      "NO_STOP_POINT_FOUND": "Für diese Haltestelle wurden noch keine BehiG-Daten durch das Transportunternehmen erfasst.",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Die Haltestelle wurde erfolgreich hinzugefügt.",
+        "EDIT_SUCCESS": "Die Haltestelle wurde erfolgreich gespeichert."
+      },
+      "DIALOG": {
+        "RECORDING_VARIANT_CHANGES": "Verkehrsmittel wechseln?",
+        "CONFIRM_RECORDING_VARIANT_CHANGES": "Wenn Sie das Verkehrsmittel wechseln, ändert sich die Erfassungsvariante und die bereits eingegebenen Daten werden gelöscht."
+      },
+      "DETAILS": "Angabe zur Haltestelle",
+      "MEANS_OF_TRANSPORT_SUB_LABEL": "Steuert die Auswahl der zu erfassenden Kriterien für die Bestandsaufnahme BehiG",
+      "VISUAL_INFO_EXAMPLE": "z.B. Aushangfahrpläne, Netzpläne, Tarifbestimmungen, etc.",
+      "CUSTOMER_INFORMATION": "Kundeninformation Haltestelle",
+      "AUTONOMUS_USABILITY": "Autonome Benutzbarkeit",
+      "AUTOMATIC_TICKET": "Billettautomat",
+      "MEANS_OF_TRAFFIC_SELECTION": "Verkehrsmittel selektieren",
+      "POPULATE_DATA": "Daten erfassen",
+      "NEW_STOP_POINT": "Neue Haltestelle",
+      "NEXT": "Weiter",
+      "BACK": "Zurück"
+    },
+    "ENUMS": {
+      "STANDARD_ATTRIBUTE_TYPES": {
+        "TO_BE_COMPLETED": "Zu vervollständigen",
+        "YES": "Ja",
+        "NO": "Nein",
+        "NOT_APPLICABLE": "Nicht anwendbar",
+        "PARTIALLY": "Teilweise"
+      }
+    },
+    "INFO_BOX": {
+      "HEADER": "Dokumente",
+      "GUIDE_LINE_URL": "https://www.öv-info.ch/sites/default/files/2023-02/Leitfaden-Erfassung-Kriterien-zur-Barrierefreiheit-im-DiDok_0.pdf",
+      "GUIDE_LINE_LABEL": "Leitfaden",
+      "GUIDE_LINE_ATTACHMENT_URL": "https://www.öv-info.ch/sites/default/files/2023-06/Anhang_zum_Leitfaden_Barrierefreiheit_web.xlsx",
+      "GUIDE_LINE_ATTACHMENT_LABEL": "Anhang zum Leitfaden web",
+      "GUIDE_LINE_ATTACHMENT_TECHNICAL_URL": "https://www.öv-info.ch/sites/default/files/2023-04/Anhang_zum_Leitfaden_Barrierefreiheit_technisch_0.xlsx",
+      "GUIDE_LINE_ATTACHMENT_TECHNICAL_LABEL": "Anhang zum Leitfaden technisch",
+      "ADDITIONAL_LINK_LABEL": "Weiterführende Links",
+      "DDA_URL": "https://www.fedlex.admin.ch/eli/cc/2003/667/de",
+      "DDA_LABEL": "Behindertengleichstellungsgesetz, BehiG",
+      "REGULATION_URL": "https://www.fedlex.admin.ch/eli/cc/2003/669/de",
+      "REGULATION_LABEL": "VböV - Verordnung über die behindertengerechte Gestaltung des öffentlichen Verkehrs",
+      "EXTERNAL_LINK": "https://www.öv-info.ch/de/datenmanagement/barrierefreier-zugang/erfassung",
+      "EXTERNAL_LINK_LABEL": "Leitfaden BehiG"
+    }
   }
 }

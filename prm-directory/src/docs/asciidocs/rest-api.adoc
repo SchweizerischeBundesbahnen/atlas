@@ -46,6 +46,10 @@ include::../when_to_use_files_or_API.adoc[]
 
 include::{snippets}/stop-point-version-controller-api-test/should-get-stop-points-version-without-filter/auto-section.adoc[]
 
+=== Get Stop Points by SLOID - Successfully
+
+include::{snippets}/stop-point-version-controller-api-test/should-get-stop-point-versions-by-sloid/auto-section.adoc[]
+
 === Get Stop Points with filter - Successfully
 
 include::{snippets}/stop-point-version-controller-api-test/should-get-stop-point-versions-with-filter/auto-section.adoc[]
@@ -64,7 +68,7 @@ include::{snippets}/stop-point-version-controller-api-test/should-create-stop-po
 
 === Create Stop Points - Unsuccessfully
 
-include::{snippets}/stop-point-version-controller-api-test/should-not-create-stop-point-when-service-point-does-not-exists/auto-section.adoc[]
+include::{snippets}/stop-point-version-controller-api-test/should-not-create-stop-point-version-when-service-point-does-not-exist/auto-section.adoc[]
 
 === Create Stop Points - Properties Validation Unsuccessfully
 
@@ -94,7 +98,7 @@ include::{snippets}/reference-point-version-controller-api-test/should-create-re
 
 === Create Reference Points without Stop Point- Unsuccessfully
 
-include::{snippets}/reference-point-version-controller-api-test/should-not-create-reference-point-when-stop-point-does-not-exists/auto-section.adoc[]
+include::{snippets}/reference-point-version-controller-api-test/should-not-create-reference-point-when-stop-point-does-not-exist/auto-section.adoc[]
 
 == Platform
 
@@ -112,7 +116,7 @@ include::{snippets}/platform-version-controller-api-test/should-update-platform/
 
 === Create Platforms without Stop Point- Unsuccessfully
 
-include::{snippets}/platform-version-controller-api-test/should-not-create-platform-when-stop-point-does-not-exists/auto-section.adoc[]
+include::{snippets}/platform-version-controller-api-test/should-not-create-platform-when-stop-point-does-not-exist/auto-section.adoc[]
 
 == Toilet
 
@@ -144,7 +148,7 @@ include::{snippets}/ticket-counter-version-controller-api-test/should-update-tic
 
 === Create Ticket Counters without Stop Point - Unsuccessfully
 
-include::{snippets}/ticket-counter-version-controller-api-test/should-not-create-ticket-counter-when-stop-point-does-not-exists/auto-section.adoc[]
+include::{snippets}/ticket-counter-version-controller-api-test/should-not-create-ticket-counter-when-stop-point-does-not-exist/auto-section.adoc[]
 
 == Information Desk
 
@@ -162,7 +166,7 @@ include::{snippets}/information-desk-version-controller-api-test/should-update-i
 
 === Create Information Desks without Stop Point - Successfully
 
-include::{snippets}/information-desk-version-controller-api-test/should-not-create-information-desk-when-stop-point-does-exists/auto-section.adoc[]
+include::{snippets}/information-desk-version-controller-api-test/should-not-create-information-desk-when-stop-point-does-exist/auto-section.adoc[]
 
 == Parking Lot
 
@@ -176,7 +180,7 @@ include::{snippets}/parking-lot-version-controller-api-test/should-create-parkin
 
 === Create Parking Lots - Successfully
 
-include::{snippets}/parking-lot-version-controller-api-test/should-not-create-parking-lot-when-stop-point-does-not-exists/auto-section.adoc[]
+include::{snippets}/parking-lot-version-controller-api-test/should-not-create-parking-lot-when-stop-point-does-not-exist/auto-section.adoc[]
 
 === Update Parking Lots - Successfully
 

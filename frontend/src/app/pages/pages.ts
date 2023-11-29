@@ -7,8 +7,6 @@ export class Pages {
     titleMenu: 'PAGES.HOME_MENU',
     headerTitle: 'PAGES.HOME',
     path: '',
-    pathText: '',
-    description: '',
   };
 
   public static TTFN: Page = {
@@ -23,8 +21,6 @@ export class Pages {
   public static TTFN_DETAIL: Page = {
     title: 'PAGES.DETAILS',
     path: ':id',
-    pathText: '',
-    description: '',
   };
 
   public static LIDI: Page = {
@@ -39,22 +35,16 @@ export class Pages {
   public static LINES: Page = {
     title: 'PAGES.DETAILS',
     path: 'lines',
-    pathText: '',
-    description: '',
   };
 
   public static SUBLINES: Page = {
     title: 'PAGES.DETAILS',
     path: 'sublines',
-    pathText: '',
-    description: '',
   };
 
   public static WORKFLOWS: Page = {
     title: 'PAGES.LIDI_WORKFLOW.TITLE',
     path: 'workflows',
-    pathText: '',
-    description: '',
   };
 
   public static BODI: Page = {
@@ -78,15 +68,11 @@ export class Pages {
   public static USERS: Page = {
     title: 'PAGES.DETAILS',
     path: 'users',
-    pathText: '',
-    description: '',
   };
 
   public static CLIENTS: Page = {
     title: 'PAGES.DETAILS',
     path: 'clients',
-    pathText: '',
-    description: '',
   };
 
   public static TTH: Page = {
@@ -101,57 +87,41 @@ export class Pages {
   public static TTH_ACTIVE: Page = {
     title: 'PAGES.DETAILS',
     path: 'active',
-    pathText: '',
-    description: '',
   };
 
   public static TTH_PLANNED: Page = {
     title: 'PAGES.DETAILS',
     path: 'planned',
-    pathText: '',
-    description: '',
   };
 
   public static TTH_ARCHIVED: Page = {
     title: 'PAGES.DETAILS',
     path: 'archived',
-    pathText: '',
-    description: '',
   };
 
   public static TTH_OVERVIEW_DETAIL: Page = {
     title: 'PAGES.OVERVIEW_DETAILS',
     path: ':canton',
-    pathText: '',
-    description: '',
   };
 
   public static TTH_STATEMENT_DETAILS: Page = {
     title: 'PAGES.DETAILS',
     path: ':id',
-    pathText: '',
-    description: '',
   };
 
   public static BUSINESS_ORGANISATIONS: Page = {
     title: 'PAGES.DETAILS',
     path: 'business-organisations',
-    pathText: '',
-    description: '',
   };
 
   public static TRANSPORT_COMPANIES: Page = {
     title: 'PAGES.DETAILS',
     path: 'transport-companies',
-    pathText: '',
-    description: '',
   };
 
   public static COMPANIES: Page = {
     title: 'PAGES.DETAILS',
     path: 'companies',
-    pathText: '',
-    description: '',
   };
 
   public static SEPODI: Page = {
@@ -199,14 +169,44 @@ export class Pages {
     description: 'PAGES.SERVICE_POINTS.DESCRIPTION',
   };
 
-  public static pages: Page[] = [Pages.HOME, Pages.TTFN, Pages.LIDI, Pages.BODI, Pages.SEPODI];
+  public static PRM: Page = {
+    title: 'PAGES.PRM.TITLE',
+    titleMenu: 'PAGES.PRM.TITLE_HEADER',
+    headerTitle: 'PAGES.PRM.TITLE_HEADER',
+    path: 'prm-directory',
+    pathText: 'PAGES.PRM.TITLE_HEADER',
+    description: 'PAGES.PRM.DESCRIPTION',
+  };
+
+  public static STOP_POINTS: Page = {
+    title: 'PRM.STOP_POINTS.TITLE',
+    titleMenu: 'PAGES.STOP_POINTS.TITLE_HEADER',
+    headerTitle: 'PAGES.STOP_POINTS.TITLE_HEADER',
+    path: 'stop-points',
+    pathText: 'PAGES.STOP_POINTS.TITLE_HEADER',
+    description: 'PAGES.STOP_POINTS.DESCRIPTION',
+  };
+
+  public static PRM_STOP_POINT_TAB: Page = {
+    title: 'PRM.TABS.STOP_POINT',
+    path: 'stop-point',
+  };
+
+  public static pages: Page[] = [
+    Pages.HOME,
+    Pages.TTFN,
+    Pages.LIDI,
+    Pages.BODI,
+    Pages.SEPODI,
+    Pages.PRM,
+  ];
   public static adminPages: Page[] = [Pages.USER_ADMINISTRATION];
   public static viewablePages: Page[] = this.pages;
 
   public static get enabledPages(): Page[] {
     let enabledPages = this.viewablePages;
     if (!environment.pageSepodiEnabled) {
-      enabledPages = enabledPages.filter((page) => page !== Pages.SEPODI);
+      enabledPages = enabledPages.filter((page) => page !== Pages.SEPODI || page !== Pages.PRM);
     }
     return enabledPages;
   }

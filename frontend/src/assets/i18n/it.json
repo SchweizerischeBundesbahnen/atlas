@@ -190,6 +190,11 @@
       "DESCRIPTION": "Qui potete trovare tutte le informazioni sull'orario dell'udienza in Svizzera.",
       "PATH_TEXT": "Orario Audizione"
     },
+    "PRM": {
+      "TITLE": "Gestire dei dati BehiG",
+      "TITLE_HEADER": "Inventario LDis",
+      "DESCRIPTION": "Registrare, gestire e visualizzare i dati del servizio nell'ambito dell'inventario BehiG."
+    },
     "DETAILS": "Precisazioni"
   },
   "PAGINATOR": {
@@ -216,6 +221,7 @@
     "MIN": "Il valore deve essere minimo {{min}}",
     "MAX": "Il valore può essere massimo {{max}}",
     "AT_LEAST_ONE": "Selezionare almeno un'espressione.",
+    "MEANSOFTRANSPORTWRONGCOMBINATION": "Questa combinazione di mezzi di trasporto non è consentita",
     "DECIMAL_NUMBER": "Inserire un numero decimale con un massimo di {{maxDecimalDigits}} cifre decimali.",
     "COLON_SEPERATED_SID4PT": "Utilizzare i caratteri SID4PT (-._0-9a-zA-Z) con esattamente {{numbersWithColons}} due punti."
   },
@@ -1037,5 +1043,87 @@
     "BACK_TO_MAP": "Chiudere",
     "AUTOMATIC_SLOID": "viene assegnato automaticamente.",
     "SLOID_ALREADY_USED": "{{sloid}} è già stato preso."
+  },
+  "PRM": {
+    "TABS": {
+      "STOP_POINT": "Informazioni di base Fermata",
+      "REFERENCE_POINT": "Punto di riferimento",
+      "PLATFORM": "Bordo di fermata",
+      "TICKET_COUNTER": "Bigletteria",
+      "INFORMATION_DESK": "Sportello informazioni",
+      "TOILET": "Servizi igienici",
+      "PARKING_LOT": "Parcheggio",
+      "CONNECTION": "Collegamenti"
+    },
+    "STOP_POINTS": {
+      "FORM": {
+        "FREE_TEXT": "Osservazioni sulla fermata",
+        "INTEROPERABLE": "Attivare se la stazione è autorizzata al traffico interoperabile.",
+        "URL": "Sito web con informazioni aggiuntive",
+        "ADDRESS_KEY_DATA": "Indirizzo",
+        "ADDRESS": "Via/numero",
+        "ZIP": "NPA",
+        "CITY": "Località",
+        "VISUAL_INFO": "Statiche/ottiche",
+        "DYNAMIC_OPTIC_SYSTEM": "Dinamiche/ottiche",
+        "DYNAMIC_AUDIO_SYSTEM": "Acustiche ",
+        "ASSISTANCE_REQUEST_FULFILLED": "Condizioni adempite",
+        "ASSISTANCE_SERVICE": "Hilfestellung durch Personal",
+        "ASSISTANCE_AVAILABILITY": "Assistenza del personale",
+        "ASSISTANCE_CONDITION": "Osservazioni sull’assistenza",
+        "ALTERNATIVE_TRANSPORT": "Servizio navetta o offerta alternativa di trasporto pubblico ",
+        "ALTERNATIVE_TRANSPORT_CONDITION": "Indicazioni sul servizio navetta o sull'offerta alternativa di trasporto pubblico",
+        "ADDITIONAL_INFORMATION": "Informazioni aggiuntive",
+        "TICKET_MACHINE": "Distributore automatico di biglietti disponibile",
+        "WHEELCHAIR_TICKET_MACHINE": "Senza barriere",
+        "AUDIO_TICKET_MACHINE": "Segnali acustici e tattili",
+        "INFO_TICKET_MACHINE": "Osservazioni sui distributori automatici di biglietti"
+      },
+      "NO_STOP_POINT_FOUND": "L'azienda di trasporto non ha ancora registrato alcun dato LDis per questa fermata.",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "La fermata è stata aggiunta con successo.",
+        "EDIT_SUCCESS": "La fermata è stata salvata con successo."
+      },
+      "DIALOG": {
+        "RECORDING_VARIANT_CHANGES": "Cambiare mezzo di trasporto?",
+        "CONFIRM_RECORDING_VARIANT_CHANGES": "Cambiando mezzo di trasporto, la variante di inserimento cambia e i dati già inseriti verranno cancellati."
+      },
+      "DETAILS": "Informazioni sulla fermata",
+      "MEANS_OF_TRANSPORT_SUB_LABEL": "Controlla la selezione dei criteri da registrare per l'inventario LDis.",
+      "VISUAL_INFO_EXAMPLE": "Ad esempio, orari di affissione, piani di rete, regolamenti tariffari, ecc.",
+      "CUSTOMER_INFORMATION": "Informazioni alla clientela alla fermata",
+      "AUTONOMUS_USABILITY": "Utilizzo autonomo",
+      "AUTOMATIC_TICKET": "Distributore automatico di biglietti",
+      "MEANS_OF_TRAFFIC_SELECTION": "Selezionare il mezzo di trasporto",
+      "POPULATE_DATA": "Registrare i dati",
+      "NEW_STOP_POINT": "Nuova fermata",
+      "NEXT": "Avanti",
+      "BACK": "Indietro"
+    },
+    "ENUMS": {
+      "STANDARD_ATTRIBUTE_TYPES": {
+        "TO_BE_COMPLETED": "Da completare",
+        "YES": "Si",
+        "NO": "No",
+        "NOT_APPLICABLE": "Non applicabile",
+        "PARTIALLY": "Parziale"
+      }
+    },
+    "INFO_BOX": {
+      "HEADER": "Documenti",
+      "GUIDE_LINE_URL": "https://www.tp-info.ch/sites/default/files/2023-04/Guida_dei_criteri_di_accessibilit%C3%A0_in_DiDok.pdf",
+      "GUIDE_LINE_LABEL": "Guida LDis",
+      "GUIDE_LINE_ATTACHMENT_URL": "https://www.tp-info.ch/sites/default/files/2023-06/Allegato_Guida_dei_criteri_di_accessibilit%C3%A0_in_DiDok_web.xlsx",
+      "GUIDE_LINE_ATTACHMENT_LABEL": "Allegato Guida LDis web",
+      "GUIDE_LINE_ATTACHMENT_TECHNICAL_URL": "https://www.tp-info.ch/sites/default/files/2023-04/Allegato_Guida_dei_criteri_di_accessibilit%C3%A0_in_DiDok_tec_0.xlsx",
+      "GUIDE_LINE_ATTACHMENT_TECHNICAL_LABEL": "Allegato Guida LDis tecnica",
+      "ADDITIONAL_LINK_LABEL": "Link correlati",
+      "DDA_URL": "https://www.fedlex.admin.ch/eli/cc/2003/667/it",
+      "DDA_LABEL": "Legge sui disabili, LDis",
+      "REGULATION_URL": "https://www.fedlex.admin.ch/eli/cc/2003/669/it",
+      "REGULATION_LABEL": "OTDis - Ordinanza concernente la concezione di una rete di trasporti pubblici conforme alle esigenze dei disabili",
+      "EXTERNAL_LINK": "https://www.tp-info.ch/it/gestione-dei-dati/accessa-senza-barriere/procedura",
+      "EXTERNAL_LINK_LABEL": "Guida LDis"
+    }
   }
 }

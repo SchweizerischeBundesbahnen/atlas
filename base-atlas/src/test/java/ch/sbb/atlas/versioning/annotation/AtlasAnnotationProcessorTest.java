@@ -218,8 +218,7 @@ class AtlasAnnotationProcessorTest {
     List<VersionableProperty> versionableProperties = atlasAnnotationProcessor.getVersionableProperties(
         nonVersionable);
     //then
-    assertThat(versionableProperties).isNotEmpty();
-    assertThat(versionableProperties.size()).isEqualTo(1);
+    assertThat(versionableProperties).hasSize(1);
     VersionableProperty versionableProperty = versionableProperties.get(0);
     assertThat(versionableProperty).isNotNull();
     assertThat(versionableProperty.getFieldName()).isEqualTo("property");
@@ -290,8 +289,7 @@ class AtlasAnnotationProcessorTest {
     List<VersionableProperty> versionableProperties = atlasAnnotationProcessor.getVersionableProperties(
         childVersionable);
     //then
-    assertThat(versionableProperties).isNotEmpty();
-    assertThat(versionableProperties.size()).isEqualTo(2);
+    assertThat(versionableProperties).hasSize(2);
 
     VersionableProperty versionableProperty = versionableProperties.get(0);
     assertThat(versionableProperty).isNotNull();
