@@ -33,8 +33,26 @@ describe('LeaveDirtyFormGuard', () => {
         { isFormDirty: () => false },
         route,
         currentState,
-        nextState
-      )
+        nextState,
+      ),
+    ).toBeTruthy();
+  });
+
+  it('should allow routing by creation with same url if form is not dirty', () => {
+    const currentState = {
+      url: '/prm-directory/stop-points/ch:1:sloid:319/stop-point',
+    } as RouterStateSnapshot;
+    const nextState = {
+      url: '/prm-directory/stop-points/ch:1:sloid:319/stop-point',
+    } as RouterStateSnapshot;
+
+    expect(
+      leaveDirtyFormGuard.canDeactivate(
+        { isFormDirty: () => false },
+        route,
+        currentState,
+        nextState,
+      ),
     ).toBeTruthy();
   });
 
