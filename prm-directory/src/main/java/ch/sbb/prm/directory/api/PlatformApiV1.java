@@ -2,6 +2,8 @@ package ch.sbb.prm.directory.api;
 
 import ch.sbb.atlas.api.prm.model.platform.CreatePlatformVersionModel;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
+import ch.sbb.atlas.imports.ItemImportResult;
+import ch.sbb.atlas.imports.prm.stoppoint.PlatformImportRequestModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -29,4 +31,7 @@ public interface PlatformApiV1 {
   @PutMapping(path = "{id}")
   List<ReadPlatformVersionModel> updatePlatform(@PathVariable Long id,
       @RequestBody @Valid CreatePlatformVersionModel createPlatformVersionModel);
+
+  @PostMapping("import")
+  List<ItemImportResult> importPlatforms(@RequestBody @Valid PlatformImportRequestModel importRequestModel);
 }
