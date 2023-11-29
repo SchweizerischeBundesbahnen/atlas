@@ -137,7 +137,7 @@ public class ServicePointController implements ServicePointApiV1 {
 
     addGeoReferenceInformation(servicePointVersion);
     setCreationDateAndCreatorToNull(servicePointVersion);
-    geoReferenceService.calculateHeightServicePoint(servicePointVersion);
+    geoReferenceService.getHeightForServicePoint(servicePointVersion);
     ServicePointVersion createdVersion = servicePointService.save(servicePointVersion);
     servicePointDistributor.publishServicePointsWithNumbers(createdVersion.getNumber());
     return ServicePointVersionMapper.toModel(createdVersion);
@@ -161,7 +161,7 @@ public class ServicePointController implements ServicePointApiV1 {
     ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(updateServicePointVersionModel,
         servicePointVersionToUpdate.getNumber());
     addGeoReferenceInformation(editedVersion);
-    geoReferenceService.calculateHeightServicePoint(editedVersion);
+    geoReferenceService.getHeightForServicePoint(editedVersion);
 
     servicePointService.update(servicePointVersionToUpdate, editedVersion,
         servicePointService.findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber()));

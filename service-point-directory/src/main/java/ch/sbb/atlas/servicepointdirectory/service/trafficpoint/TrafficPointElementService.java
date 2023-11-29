@@ -86,7 +86,7 @@ public class TrafficPointElementService {
 
   public TrafficPointElementVersion save(TrafficPointElementVersion trafficPointElementVersion) {
     crossValidationService.validateServicePointNumberExists(trafficPointElementVersion.getServicePointNumber());
-
+    geoReferenceService.getHeightForTrafficPoint(trafficPointElementVersion);
     return trafficPointElementVersionRepository.saveAndFlush(trafficPointElementVersion);
   }
 

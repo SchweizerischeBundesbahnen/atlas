@@ -99,7 +99,7 @@ public class ServicePointService {
 
   public ServicePointVersion saveWithoutValidationForImportOnly(ServicePointVersion servicePointVersion) {
     servicePointVersion.setStatus(Status.VALIDATED);
-    geoReferenceService.calculateHeightServicePoint(servicePointVersion);
+    geoReferenceService.getHeightForServicePoint(servicePointVersion);
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
