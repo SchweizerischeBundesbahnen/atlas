@@ -574,11 +574,11 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
 
     /**
      * Szenario 12: Verlängerung und Wechseln zu C Haltestelle
-     * NEU:                                                                                                      |__Verlängerung & Wechselng C Hausen__|
+     * NEU:                                                                                                      |__Verlängerung & Wechseln C Hausen__|
      * IST:       |________________Haltestelle A Hausen________|_____________________Haltestelle B Hausen________|
      * Version:
      *
-     * RESULTAT:  |________________Haltestelle A Hausen________|_____________________Haltestelle B Hausen_________|__Verlängerung & Wechselng C Hausen__|
+     * RESULTAT:  |________________Haltestelle A Hausen________|_____________________Haltestelle B Hausen_________|__Verlängerung & Wechseln C Hausen__|
      * Version:
      * Status:                        VALIDATED                                           VALIDATED                          IN REVIEW
      */
@@ -623,7 +623,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString())))
                 .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validFrom, is("2019-08-11")))
                 .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validTo, is("2020-12-31")))
-                .andExpect(jsonPath("$[2].status", is(Status.VALIDATED.toString()))); // TODO: Change to InReview
+                .andExpect(jsonPath("$[2].status", is(Status.IN_REVIEW.toString()))); // TODO: Change to InReview
     }
 
     @Test
