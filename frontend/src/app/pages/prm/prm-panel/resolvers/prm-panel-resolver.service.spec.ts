@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AppTestingModule } from '../../../../app.testing.module';
-import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
+import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
 import { BERN_WYLEREGG } from '../../../sepodi/service-point-test-data';
-import { ServicePointsService } from '../../../../api';
-import { PrmOverviewResolver } from './prm-panel-resolver.service';
+import { ReadServicePointVersion, ServicePointsService } from '../../../../api';
+import { prmPanelResolver, PrmPanelResolver } from './prm-panel-resolver.service';
 
 describe('PrmOverviewResolver', () => {
   const servicePointsServiceSpy = jasmine.createSpyObj('servicePointsService', [
@@ -13,20 +13,20 @@ describe('PrmOverviewResolver', () => {
   ]);
   servicePointsServiceSpy.getServicePointVersionsBySloid.and.returnValue(of([BERN_WYLEREGG]));
 
-  let resolver: PrmOverviewResolver;
+  let resolver: PrmPanelResolver;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [AppTestingModule],
       providers: [
-        PrmOverviewResolver,
+        PrmPanelResolver,
         {
           provide: ServicePointsService,
           useValue: servicePointsServiceSpy,
         },
       ],
     });
-    resolver = TestBed.inject(PrmOverviewResolver);
+    resolver = TestBed.inject(PrmPanelResolver);
   });
 
   it('should be created', () => {
@@ -38,9 +38,11 @@ describe('PrmOverviewResolver', () => {
       paramMap: convertToParamMap({ sloid: 'ch:1:sloid:89008' }),
     } as ActivatedRouteSnapshot;
 
-    const resolvedVersion = resolver.resolve(mockRoute);
+    const result = TestBed.runInInjectionContext(() =>
+      prmPanelResolver(mockRoute, {} as RouterStateSnapshot),
+    ) as Observable<ReadServicePointVersion[]>;
 
-    resolvedVersion.subscribe((versions) => {
+    result.subscribe((versions) => {
       expect(versions.length).toBe(1);
       expect(versions[0].sloid).toBe('ch:1:sloid:89008');
     });
