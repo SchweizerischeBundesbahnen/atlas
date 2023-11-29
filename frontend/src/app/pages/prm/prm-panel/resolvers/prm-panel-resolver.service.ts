@@ -5,7 +5,7 @@ import { catchError, Observable, of } from 'rxjs';
 import { Pages } from '../../../pages';
 
 @Injectable({ providedIn: 'root' })
-export class PrmOverviewResolver {
+export class PrmPanelResolver {
   constructor(
     private readonly servicePointsService: ServicePointsService,
     private readonly router: Router,
@@ -29,4 +29,4 @@ export class PrmOverviewResolver {
 }
 export const prmPanelResolver: ResolveFn<Array<ReadServicePointVersion>> = (
   route: ActivatedRouteSnapshot,
-) => inject(PrmOverviewResolver).resolve(route);
+) => inject(PrmPanelResolver).resolve(route);
