@@ -100,9 +100,9 @@ public class ServicePointService {
   public ServicePointVersion save(ServicePointVersion servicePointVersion,
                                   Optional<ServicePointVersion> currentVersion,
                                   List<ServicePointVersion> currentVersions) {
-//    servicePointVersion.setStatus(Status.VALIDATED);
-    servicePointVersion.setStatus(servicePointStatusDecider
-            .getStatusForServicePoint(servicePointVersion, currentVersion, currentVersions));
+    servicePointVersion.setStatus(Status.VALIDATED);
+//    servicePointVersion.setStatus(servicePointStatusDecider
+//            .getStatusForServicePoint(servicePointVersion, currentVersion, currentVersions));
     servicePointVersion.setEditionDate(LocalDateTime.now());
     servicePointVersion.setEditor(UserService.getUserIdentifier());
 
