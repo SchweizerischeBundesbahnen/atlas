@@ -1,6 +1,7 @@
 package ch.sbb.atlas.api.prm.enumeration;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -16,4 +17,10 @@ public enum VehicleAccessAttributeType {
 
   private final Integer rank;
 
+  public static VehicleAccessAttributeType of(Integer value) {
+    if (value == null) {
+      return null;
+    }
+    return Stream.of(values()).filter(i -> i.getRank().equals(value)).findFirst().orElseThrow();
+  }
 }
