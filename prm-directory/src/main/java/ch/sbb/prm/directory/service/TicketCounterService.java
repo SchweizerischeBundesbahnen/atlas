@@ -1,21 +1,19 @@
 package ch.sbb.prm.directory.service;
 
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TICKET_COUNTER;
+
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.TicketCounterRepository;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
-
-import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TICKET_COUNTER;
 
 @Service
 @Transactional
@@ -35,8 +33,8 @@ public class TicketCounterService extends PrmRelatableVersionableService<TicketC
   }
 
   @Override
-  protected void incrementVersion(ServicePointNumber servicePointNumber) {
-    ticketCounterRepository.incrementVersion(servicePointNumber);
+  protected void incrementVersion(String sloid) {
+    ticketCounterRepository.incrementVersion(sloid);
   }
 
   @Override
@@ -45,8 +43,8 @@ public class TicketCounterService extends PrmRelatableVersionableService<TicketC
   }
 
   @Override
-  protected List<TicketCounterVersion> getAllVersions(ServicePointNumber servicePointNumber) {
-    return this.findAllByNumberOrderByValidFrom(servicePointNumber);
+  public List<TicketCounterVersion> getAllVersions(String sloid) {
+    return ticketCounterRepository.findAllBySloidOrderByValidFrom(sloid);
   }
 
   @Override
@@ -69,10 +67,6 @@ public class TicketCounterService extends PrmRelatableVersionableService<TicketC
   public TicketCounterVersion updateTicketCounterVersion(TicketCounterVersion currentVersion,
                                                          TicketCounterVersion editedVersion) {
     return updateVersion(currentVersion, editedVersion);
-  }
-
-  public List<TicketCounterVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number) {
-    return ticketCounterRepository.findAllByNumberOrderByValidFrom(number);
   }
 
   public Optional<TicketCounterVersion> getTicketCounterVersionById(Long id) {

@@ -1,6 +1,5 @@
 package ch.sbb.prm.directory.repository;
 
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,10 +15,10 @@ public interface ReferencePointRepository extends JpaRepository<ReferencePointVe
 
   List<ReferencePointVersion> findByParentServicePointSloid(String parentServicePointSloid);
 
-  List<ReferencePointVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number);
+  List<ReferencePointVersion> findAllBySloidOrderByValidFrom(String sloid);
 
   @Modifying(clearAutomatically = true)
-  @Query("update reference_point_version v set v.version = (v.version + 1) where v.number = :number")
-  void incrementVersion(@Param("number") ServicePointNumber number);
+  @Query("update reference_point_version v set v.version = (v.version + 1) where v.sloid = :sloid")
+  void incrementVersion(@Param("sloid") String sloid);
 
 }
