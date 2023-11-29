@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 
 public class HeightNotCalculatableException extends AtlasException {
 
-    private static final String ERROR = "The Swiss-Topo endpoint is currently unavailable.";
+    private static final String ERROR = "The height service is currently unavailable.";
 
     @Override
     public ErrorResponse getErrorResponse() {
@@ -27,7 +27,7 @@ public class HeightNotCalculatableException extends AtlasException {
         return List.of(Detail.builder()
             .message(ERROR)
             .displayInfo(builder()
-                .code("SEPODI.SERVICE_POINTS.HEIGHT_NOT_CALCULABLE")
+                .code("SEPODI.SERVICE_POINTS.HEIGHT_SERVICE_UNAVAILABLE")
                 .build())
             .build());
     }

@@ -143,7 +143,7 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   private TrafficPointElementVersion createTrafficPoint(TrafficPointElementVersion trafficPointElementVersion) {
     ServicePointNumber servicePointNumber = trafficPointElementVersion.getServicePointNumber();
     crossValidationService.validateServicePointNumberExists(servicePointNumber);
-    geoReferenceService.calculateHeightTrafficPoint(trafficPointElementVersion);
+    geoReferenceService.getHeightForTrafficPoint(trafficPointElementVersion);
     return trafficPointElementService.create(trafficPointElementVersion, servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber));
   }
 
@@ -151,7 +151,7 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
     ServicePointNumber servicePointNumber = editedVersion.getServicePointNumber();
     crossValidationService.validateServicePointNumberExists(editedVersion.getServicePointNumber());
     List<ServicePointVersion> allServicePointVersions = servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber);
-    geoReferenceService.calculateHeightTrafficPoint(editedVersion);
+    geoReferenceService.getHeightForTrafficPoint(editedVersion);
     trafficPointElementService.update(currentVersion, editedVersion, allServicePointVersions);
   }
 }
