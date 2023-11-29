@@ -1,0 +1,83 @@
+<div class="tab-detail-container">
+  <ng-container *ngIf="isNew">
+    <app-create-stop-point
+      [form]="form"
+      [isAuthorizedToCreateStopPoint]="isAuthorizedToCreateStopPoint"
+    ></app-create-stop-point>
+  </ng-container>
+  <ng-container *ngIf="!isNew">
+    <div class="col-12 d-flex mt-3">
+      <div class="d-flex flex-column pe-3">
+        <app-switch-version
+          (switchVersion)="switchVersion($event)"
+          *ngIf="showVersionSwitch"
+          [currentRecord]="selectedVersion"
+          [records]="stopPointVersions"
+          [switchDisabled]="isSwitchVersionDisabled"
+          [showStatus]="false"
+        ></app-switch-version>
+      </div>
+    </div>
+    <div class="col-12 d-flex mt-5">
+      <div *ngIf="selectedVersion.id" class="form-title-section">
+        <h2 class="font-bold-2xl color-gray-900">
+          {{ 'PRM.STOP_POINTS.DETAILS' | translate }} - {{ 'COMMON.VERSION' | translate }}
+          {{ selectedVersionIndex + 1 }}
+        </h2>
+      </div>
+    </div>
+    <div *ngIf="isReduced">
+      <app-stop-point-reduced-form [form]="form"></app-stop-point-reduced-form>
+    </div>
+    <div *ngIf="!isReduced">
+      <app-stop-point-complete-form [form]="form"></app-stop-point-complete-form>
+    </div>
+    <div>
+      <mat-divider class="mt-4 mb-4"></mat-divider>
+      <app-user-detail-info *ngIf="!isNew" [record]="this.selectedVersion"></app-user-detail-info>
+    </div>
+  </ng-container>
+</div>
+<div class="footer-box">
+  <footer class="d-flex align-items-center justify-content-center">
+    <atlas-button
+      buttonDataCy="close-detail"
+      buttonText="SEPODI.BACK_TO_MAP"
+      buttonType="whiteFooterNonEdit"
+      (buttonClicked)="backToSearchPrm()"
+      [footerEdit]="(isFormEnabled$ | async) ?? false"
+    >
+    </atlas-button>
+    <ng-container *ngIf="!isNew">
+      <atlas-button
+        *ngIf="(isFormEnabled$ | async) === false"
+        (buttonClicked)="toggleEdit()"
+        applicationType="PRM"
+        [businessOrganisations]="businessOrganisations"
+        buttonDataCy="edit"
+        buttonText="COMMON.EDIT"
+        buttonType="edit-service-point-dependent"
+        wrapperStyleClass="ms-3"
+      ></atlas-button>
+      <atlas-button
+        [footerEdit]="(isFormEnabled$ | async) ?? false"
+        (buttonClicked)="toggleEdit()"
+        buttonDataCy="cancel"
+        buttonText="COMMON.CANCEL"
+        buttonType="whiteFooterEdit"
+        wrapperStyleClass="ms-3"
+      ></atlas-button>
+    </ng-container>
+    <atlas-button
+      (click)="save()"
+      [footerEdit]="isNew || ((isFormEnabled$ | async) ?? false)"
+      [disabled]="!form.dirty"
+      [submitButton]="true"
+      buttonDataCy="save-item"
+      buttonText="COMMON.SAVE"
+      buttonType="whiteFooterEdit"
+      wrapperStyleClass="ms-3"
+    >
+    </atlas-button>
+  </footer>
+</div>

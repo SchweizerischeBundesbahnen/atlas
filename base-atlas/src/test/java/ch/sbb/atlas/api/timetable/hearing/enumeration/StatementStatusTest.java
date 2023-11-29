@@ -8,7 +8,7 @@ class StatementStatusTest {
 
   @Test
   void shouldCoverage() {
-    assertThat(StatementStatus.values().length).isEqualTo(9);
+    assertThat(StatementStatus.values()).hasSize(9);
   }
 
 }

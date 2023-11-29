@@ -14,8 +14,6 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointStatus;
-import lombok.experimental.UtilityClass;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -23,6 +21,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ServicePointTestData {
@@ -48,6 +47,37 @@ public class ServicePointTestData {
         .validTo(LocalDate.of(2021, 3, 31))
         .categories(new HashSet<>())
         .meansOfTransport(Set.of(MeanOfTransport.BUS))
+        .operatingPoint(true)
+        .operatingPointWithTimetable(true)
+        .operatingPointRouteNetwork(true)
+        .creationDate(LocalDateTime.of(LocalDate.of(2021, 3, 22), LocalTime.of(9, 26, 29)))
+        .creator("fs45117")
+        .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
+        .editor("fs45117")
+        .build();
+
+    geolocation.setServicePointVersion(servicePoint);
+    return servicePoint;
+  }
+  public static ServicePointVersion createStopPointServicePointWithUnknownMeanOfTransportVersion() {
+    ServicePointGeolocation geolocation = getServicePointGeolocationBernMittelland();
+
+    ServicePointVersion servicePoint = ServicePointVersion
+        .builder()
+        .servicePointGeolocation(geolocation)
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8501234))
+        .sloid("ch:1:sloid:1234")
+        .numberShort(1234)
+        .country(Country.SWITZERLAND)
+        .designationLong(null)
+        .designationOfficial("Bern, Wyleregg")
+        .abbreviation(null)
+        .businessOrganisation("ch:1:sboid:100626")
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2014, 12, 14))
+        .validTo(LocalDate.of(2021, 3, 31))
+        .categories(new HashSet<>())
+        .meansOfTransport(Set.of(MeanOfTransport.UNKNOWN))
         .operatingPoint(true)
         .operatingPointWithTimetable(true)
         .operatingPointRouteNetwork(true)

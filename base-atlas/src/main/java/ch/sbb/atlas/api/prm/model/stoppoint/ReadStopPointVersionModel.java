@@ -24,4 +24,7 @@ public class ReadStopPointVersionModel extends StopPointVersionModel {
   @Valid
   private ServicePointNumber number;
 
+  @Schema(description = "A stop point is reduced/complete based on the means of transport selected")
+  private boolean isReduced;
+
 }

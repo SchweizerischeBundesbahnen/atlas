@@ -49,6 +49,7 @@ public class StopPointVersionMapper {
         .editor(version.getEditor())
         .editionDate(version.getEditionDate())
         .etagVersion(version.getVersion())
+        .isReduced(version.isReduced())
         .build();
   }
   public static StopPointVersion toEntity(CreateStopPointVersionModel model){

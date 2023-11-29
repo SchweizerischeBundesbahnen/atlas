@@ -1,13 +1,14 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { SearchServicePointComponent } from './search-service-point.component';
-import { AppTestingModule } from '../../../app.testing.module';
+import { AppTestingModule } from '../../app.testing.module';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { BERN_WYLEREGG } from '../service-point-test-data';
-import { ServicePointSearchResult, ServicePointsService } from '../../../api';
-import { SearchSelectComponent } from '../../../core/form-components/search-select/search-select.component';
+import { BERN_WYLEREGG } from '../../pages/sepodi/service-point-test-data';
+import { ServicePointSearchResult, ServicePointsService } from '../../api';
+import { SearchSelectComponent } from '../form-components/search-select/search-select.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ServicePointSearch } from './service-point-search';
 import SpyObj = jasmine.SpyObj;
 
 describe('SearchServicePointComponent', () => {
@@ -35,6 +36,7 @@ describe('SearchServicePointComponent', () => {
     });
     fixture = TestBed.createComponent(SearchServicePointComponent);
     component = fixture.componentInstance;
+    fixture.componentInstance.searchType = ServicePointSearch.SePoDi;
     fixture.detectChanges();
     router = TestBed.inject(Router);
   });
@@ -48,7 +50,7 @@ describe('SearchServicePointComponent', () => {
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     const searchResult: ServicePointSearchResult = { number: 8507000, designationOfficial: 'Bern' };
     //when
-    component.navigateToServicePoint(searchResult);
+    component.navigateTo(searchResult);
     //then
     expect(router.navigate).toHaveBeenCalled();
   });

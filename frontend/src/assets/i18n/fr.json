@@ -190,6 +190,11 @@
       "DESCRIPTION": "Vous trouverez ici toutes les informations relatives à la consultation sur le projet d'horaire en Suisse.",
       "PATH_TEXT": "Consultation sur le projet d'horaire"
     },
+    "PRM": {
+      "TITLE": "Gérer les données LHand",
+      "TITLE_HEADER": "Inventaire des actifs LHand",
+      "DESCRIPTION": "Saisir, modifier et consulter les données des services dans le cadre de I'inventaire LHand."
+    },
     "DETAILS": "Précisions"
   },
   "PAGINATOR": {
@@ -216,6 +221,7 @@
     "MIN": "La valeur doit être au minimum {{min}}.",
     "MAX": "La valeur doit être au maximum {{max}}.",
     "AT_LEAST_ONE": "Sélectionnez au moins une modalité.",
+    "MEANSOFTRANSPORTWRONGCOMBINATION": "Cette combinaison de moyens de transport n'est pas autorisée",
     "DECIMAL_NUMBER": "Saisissez un nombre décimal avec un maximum de {{maxDecimalDigits}} chiffres après la virgule.",
     "COLON_SEPERATED_SID4PT": "Utilisez le jeu de caractères SID4PT (-._0-9a-zA-Z) avec des deux-points séparant exactement {{numbersWithColons}}."
   },
@@ -1037,5 +1043,87 @@
     "BACK_TO_MAP": "Fermer",
     "AUTOMATIC_SLOID": "Elle est indiquée automatiquement.",
     "SLOID_ALREADY_USED": "{{sloid}} est déjà pris."
+  },
+  "PRM": {
+    "TABS": {
+      "STOP_POINT": "Informations de base sur l’arrêt",
+      "REFERENCE_POINT": "Point de référence",
+      "PLATFORM": "Bordure d’arrêt",
+      "TICKET_COUNTER": "Guichet des billets",
+      "INFORMATION_DESK": "Guichet d’information",
+      "TOILET": "Toilettes",
+      "PARKING_LOT": "Place de stationnement",
+      "CONNECTION": "Relations "
+    },
+    "STOP_POINTS": {
+      "FORM": {
+        "FREE_TEXT": "Remarques sur l’arrêt",
+        "INTEROPERABLE": "Activer si la gare est ouverte pour le trafic interopérable.",
+        "URL": "Site web avec informations complémentaires",
+        "ADDRESS_KEY_DATA": "Adresse",
+        "ADDRESS": "Rue/numéro",
+        "ZIP": "NPA",
+        "CITY": "Localité",
+        "VISUAL_INFO": "Statique/optique",
+        "DYNAMIC_OPTIC_SYSTEM": "Dynamique/optique",
+        "DYNAMIC_AUDIO_SYSTEM": "Acoustique ",
+        "ASSISTANCE_REQUEST_FULFILLED": "Conditions préalables remplies",
+        "ASSISTANCE_SERVICE": "Assistance par le personnel",
+        "ASSISTANCE_AVAILABILITY": "Notification préalable nécessaire pour assistance",
+        "ASSISTANCE_CONDITION": "Remarques sur l’assistance",
+        "ALTERNATIVE_TRANSPORT": "Service de navette ou offre de mode de transport public alternatif",
+        "ALTERNATIVE_TRANSPORT_CONDITION": "Renseignements sur le service navette ou l'offre de modes de transport public alternatifs",
+        "ADDITIONAL_INFORMATION": "Informations complémentaires",
+        "TICKET_MACHINE": "Présence d'un distributeur de billets",
+        "WHEELCHAIR_TICKET_MACHINE": "Accessible ",
+        "AUDIO_TICKET_MACHINE": "Équipement acoustique et tactile",
+        "INFO_TICKET_MACHINE": "Remarques sur les distributeurs de billets"
+      },
+      "NO_STOP_POINT_FOUND": "Pour cet arrêt, aucune donnée LHand n'a encore été saisie par l'entreprise de transport.",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "L'arrêt a été ajouté avec succès.",
+        "EDIT_SUCCESS": "L'arrêt a été enregistré avec succès."
+      },
+      "DIALOG": {
+        "RECORDING_VARIANT_CHANGES": "Changer de moyen de transport ?",
+        "CONFIRM_RECORDING_VARIANT_CHANGES": "Si vous changez de moyen de transport, la variante de saisie change et les données déjà saisies sont supprimées."
+      },
+      "DETAILS": "Indication de l'arrêt",
+      "MEANS_OF_TRANSPORT_SUB_LABEL": "Gère le choix des catégories à saisir pour l'état des lieux LHand",
+      "VISUAL_INFO_EXAMPLE": "Par exemple, les affiches horaires, les plans de réseau, les dispositions tarifaires, etc.",
+      "CUSTOMER_INFORMATION": "Information à la clientèle à l’arrêt",
+      "AUTONOMUS_USABILITY": "Possibilité d’utilisation autonome",
+      "AUTOMATIC_TICKET": "Distributeur de billets",
+      "MEANS_OF_TRAFFIC_SELECTION": "Sélectionner le moyen de transport",
+      "POPULATE_DATA": "Saisir les données",
+      "NEW_STOP_POINT": "Nouvel arrêt",
+      "NEXT": "Suite",
+      "BACK": "De retour"
+    },
+    "ENUMS": {
+      "STANDARD_ATTRIBUTE_TYPES": {
+        "TO_BE_COMPLETED": "À compléter",
+        "YES": "Oui",
+        "NO": "Non",
+        "NOT_APPLICABLE": "Non applicable",
+        "PARTIALLY": "Partiellement"
+      }
+    },
+    "INFO_BOX": {
+      "HEADER": "Document",
+      "GUIDE_LINE_URL": "https://www.tp-info.ch/sites/default/files/2023-05/Guide_aux_crit%C3%A8res_sur_l%E2%80%99accessibilit%C3%A9_en_DiDok.pdf",
+      "GUIDE_LINE_LABEL": "Guide LHand",
+      "GUIDE_LINE_ATTACHMENT_URL": "https://www.tp-info.ch/sites/default/files/2023-06/Annexe_au_guide_sur_l%E2%80%99accessibilit%C3%A9_web.xlsx",
+      "GUIDE_LINE_ATTACHMENT_LABEL": "Annexe au guide sur l’accessibilité web",
+      "GUIDE_LINE_ATTACHMENT_TECHNICAL_URL": "https://www.tp-info.ch/sites/default/files/2023-05/Annexe_au_guide_sur_l%27accessibilite_tec.xlsx",
+      "GUIDE_LINE_ATTACHMENT_TECHNICAL_LABEL": "Annexe au guide sur l'accessibilité technique",
+      "ADDITIONAL_LINK_LABEL": "Liens complémentaires",
+      "DDA_URL": "https://www.fedlex.admin.ch/eli/cc/2003/667/fr",
+      "DDA_LABEL": "Loi sur l’égalité pour les handicapés, LHand",
+      "REGULATION_URL": "https://www.fedlex.admin.ch/eli/cc/2003/669/fr",
+      "REGULATION_LABEL": "OTHand - Ordonnance sur les aménagements visant à assurer l’accès des personnes handicapées aux transports publics",
+      "EXTERNAL_LINK": "https://www.tp-info.ch/fr/gestion-des-donnees/accessibilite/saisie",
+      "EXTERNAL_LINK_LABEL": "Guide LHand"
+    }
   }
 }

@@ -35,6 +35,9 @@ public interface StopPointApiV1 {
           StopPointVersion.Fields.validFrom}) Pageable pageable,
       @Valid @ParameterObject StopPointRequestParams stopPointRequestParams);
 
+  @GetMapping("{sloid}")
+  List<ReadStopPointVersionModel> getStopPointVersions(@PathVariable String sloid);
+
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   ReadStopPointVersionModel createStopPoint(@RequestBody @Valid CreateStopPointVersionModel stopPointVersionModel);

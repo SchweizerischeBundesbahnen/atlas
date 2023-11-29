@@ -44,6 +44,14 @@ class SharedServicePointRepositoryTest {
   }
 
   @Test
+  void shouldNotFindServicePointsAsStopPointWithMeanOfTransportUnknown() {
+    servicePointVersionRepository.saveAndFlush(ServicePointTestData.createStopPointServicePointWithUnknownMeanOfTransportVersion());
+
+    Set<SharedServicePointVersionModel> sharedServicePoints = sharedServicePointRepository.getAllServicePoints();
+    assertThat(sharedServicePoints).isEmpty();
+  }
+
+  @Test
   void shouldFindServicePointWithTrafficPoint() {
     ServicePointVersion bernWyleregg = ServicePointTestData.getBernWyleregg();
     servicePointVersionRepository.saveAndFlush(bernWyleregg);

@@ -1,6 +1,6 @@
 package ch.sbb.atlas.imports.servicepoint.servicepoint;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -56,7 +56,7 @@ class ServicePointCsvModelContainerTest {
     container.mergeVersionsIsNotVirtualAndHasNotGeolocation();
 
     //then
-    assertThat(container.getServicePointCsvModelList().size()).isEqualTo(2);
+    assertThat(container.getServicePointCsvModelList()).hasSize(2);
     container.getServicePointCsvModelList().sort(Comparator.comparing(ServicePointCsvModel::getValidFrom));
     assertThat(container.getServicePointCsvModelList().get(0)).isEqualTo(withGeolocation);
     assertThat(container.getServicePointCsvModelList().get(1).getValidFrom()).isEqualTo(
@@ -105,7 +105,7 @@ class ServicePointCsvModelContainerTest {
     container.mergeVersionsIsNotVirtualAndHasNotGeolocation();
 
     //then
-    assertThat(container.getServicePointCsvModelList().size()).isEqualTo(3);
+    assertThat(container.getServicePointCsvModelList()).hasSize(3);
     container.getServicePointCsvModelList().sort(Comparator.comparing(ServicePointCsvModel::getValidFrom));
     assertThat(container.getServicePointCsvModelList().get(0)).isEqualTo(withGeolocation);
     assertThat(container.getServicePointCsvModelList().get(1)).isEqualTo(notVirtualWithoutGeolocation);
@@ -154,7 +154,7 @@ class ServicePointCsvModelContainerTest {
     container.mergeVersionsIsNotVirtualAndHasNotGeolocation();
 
     //then
-    assertThat(container.getServicePointCsvModelList().size()).isEqualTo(3);
+    assertThat(container.getServicePointCsvModelList()).hasSize(3);
     container.getServicePointCsvModelList().sort(Comparator.comparing(ServicePointCsvModel::getValidFrom));
     assertThat(container.getServicePointCsvModelList().get(0)).isEqualTo(withGeolocation);
     assertThat(container.getServicePointCsvModelList().get(1)).isEqualTo(notVirtualWithoutGeolocation);
@@ -206,7 +206,7 @@ class ServicePointCsvModelContainerTest {
     container.mergeHasNotBezeichnungDiff();
 
     //then
-    assertThat(container.getServicePointCsvModelList().size()).isEqualTo(2);
+    assertThat(container.getServicePointCsvModelList()).hasSize(2);
     container.getServicePointCsvModelList().sort(Comparator.comparing(ServicePointCsvModel::getValidFrom));
     assertThat(container.getServicePointCsvModelList().get(0).getValidFrom()).isEqualTo(withBezeichnung17.getValidFrom());
     assertThat(container.getServicePointCsvModelList().get(0).getValidTo()).isEqualTo(withBezeichnung17Second.getValidTo());
@@ -253,7 +253,7 @@ class ServicePointCsvModelContainerTest {
     container.mergeHasNotBezeichnungDiff();
 
     //then
-    assertThat(container.getServicePointCsvModelList().size()).isEqualTo(3);
+    assertThat(container.getServicePointCsvModelList()).hasSize(3);
     assertThat(container.getDidokCode()).isEqualTo(12);
   }
 
