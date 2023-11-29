@@ -3,7 +3,6 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepointdirectory.api.GeoReferenceApiV1;
-import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoAdminHeightResponse;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +20,4 @@ public class GeoReferenceController implements GeoReferenceApiV1 {
     return geoReferenceService.getGeoReference(coordinatePair);
   }
 
-  @Override
-  public GeoAdminHeightResponse getHeight(CoordinatePair coordinatePair) throws Exception {
-    return geoReferenceService.getHeight(coordinatePair);
-  }
 }
