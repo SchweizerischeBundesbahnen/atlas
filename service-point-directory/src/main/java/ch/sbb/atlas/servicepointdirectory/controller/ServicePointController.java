@@ -161,7 +161,7 @@ public class ServicePointController implements ServicePointApiV1 {
     ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(updateServicePointVersionModel,
         servicePointVersionToUpdate.getNumber());
     addGeoReferenceInformation(editedVersion);
-    geoReferenceService.getHeightForServicePoint(editedVersion);
+    geoReferenceService.getHeightForServicePoint(editedVersion, false);
 
     servicePointService.update(servicePointVersionToUpdate, editedVersion,
         servicePointService.findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber()));

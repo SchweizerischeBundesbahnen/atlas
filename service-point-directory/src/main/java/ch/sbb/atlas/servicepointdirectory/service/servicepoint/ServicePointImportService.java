@@ -6,13 +6,16 @@ import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.imports.util.DidokCsvMapper;
 import ch.sbb.atlas.imports.util.ImportUtils;
+import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
+import ch.sbb.atlas.servicepointdirectory.exception.HeightNotCalculatableException;
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportServicePointDirectoryService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
+import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -39,6 +42,7 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
   private final ServicePointFotCommentService servicePointFotCommentService;
   private final ServicePointDistributor servicePointDistributor;
   private final ServicePointNumberService servicePointNumberService;
+  private final GeoReferenceService geoReferenceService;
 
   @Override
   protected void save(ServicePointVersion servicePointVersion) {
@@ -103,6 +107,13 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
 
       for (ServicePointVersion servicePointVersion : servicePointVersions) {
         boolean servicePointNumberExisting = servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber());
+
+        //TODO umbauen
+        ItemImportResult heightResult = getHeightForServicePointImport(servicePointVersion);
+        if(heightResult != null){
+          importResults.add(heightResult);
+        }
+
         if (servicePointNumberExisting) {
           ItemImportResult updateResult = updateServicePointVersion(servicePointVersion);
           importResults.add(updateResult);
@@ -156,6 +167,8 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
 
   private ItemImportResult updateServicePointVersion(ServicePointVersion servicePointVersion) {
     try {
+
+
       updateServicePointVersionForImportService(servicePointVersion);
       return buildSuccessImportResult(servicePointVersion);
     } catch (Exception exception) {
@@ -170,6 +183,17 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
         return buildFailedImportResult(servicePointVersion, exception);
       }
     }
+  }
+
+  private ItemImportResult getHeightForServicePointImport(ServicePointVersion servicePointVersion){
+    //TODO im update und create machen das try und catch
+
+    try{
+      geoReferenceService.getHeightForServicePoint(servicePointVersion, true);
+    }catch (HeightNotCalculatableException e){
+      return buildFailedImportResult(servicePointVersion, e);
+    }
+    return null;
   }
 
 }
