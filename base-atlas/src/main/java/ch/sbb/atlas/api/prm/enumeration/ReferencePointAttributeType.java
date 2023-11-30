@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true, example = "MAIN_STATION_ENTRANCE")
 @Getter
 @RequiredArgsConstructor
+// Ranks from https://code.sbb.ch/projects/PT_ABLDIDOK/repos/didokfrontend/browse/src/app/pages/behig/models/behig-form.ts#34
 public enum ReferencePointAttributeType {
   MAIN_STATION_ENTRANCE(0),
   ALTERNATIVE_STATION_ENTRANCE(1),
