@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true, example = "PLATFORM_ACCESS_WITHOUT_ASSISTANCE")
 @Getter
 @RequiredArgsConstructor
+// Ranks from https://code.sbb.ch/projects/PT_ABLDIDOK/repos/didokfrontend/browse/src/app/pages/behig/models/behig-form.ts#11
 public enum VehicleAccessAttributeType {
   TO_BE_COMPLETED(0),
   PLATFORM_ACCESS_WITHOUT_ASSISTANCE(11),

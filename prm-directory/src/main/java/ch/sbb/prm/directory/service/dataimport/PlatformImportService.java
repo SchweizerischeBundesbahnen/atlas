@@ -13,26 +13,26 @@ import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.mapper.PlatformVersionMapper;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.service.PlatformService;
+import ch.sbb.prm.directory.service.SharedServicePointService;
+import ch.sbb.prm.directory.service.StopPointService;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class PlatformImportService extends BasePrmImportService<PlatformVersion> {
 
   private final PlatformRepository platformRepository;
   private final PlatformService platformService;
-
   private final VersionableService versionableService;
+  private final StopPointService stopPointService;
+  private final SharedServicePointService sharedServicePointService;
 
-  public PlatformImportService(PlatformRepository platformRepository, PlatformService platformService,
-      VersionableService versionableService) {
-    this.platformRepository = platformRepository;
-    this.platformService = platformService;
-    this.versionableService = versionableService;
-  }
 
   @Override
   protected void save(PlatformVersion version) {
@@ -60,6 +60,8 @@ public class PlatformImportService extends BasePrmImportService<PlatformVersion>
       for (PlatformVersion platformVersion : platform) {
         boolean platformExists = platformRepository.existsBySloid(platformVersion.getSloid());
         ItemImportResult itemImportResult;
+
+        clearVariantDependentProperties(platformVersion);
         if (platformExists) {
           itemImportResult = updateStopPoint(platformVersion);
         } else {
@@ -96,11 +98,36 @@ public class PlatformImportService extends BasePrmImportService<PlatformVersion>
 
   private ItemImportResult createVersion(PlatformVersion platformVersion) {
     try {
+      sharedServicePointService.validateTrafficPointElementExists(platformVersion.getParentServicePointSloid(), platformVersion.getSloid());
       PlatformVersion savedVersion = platformService.save(platformVersion);
       return buildSuccessImportResult(savedVersion);
     } catch (AtlasException exception) {
       log.error("[Platform Import]: Error during save", exception);
       return buildFailedImportResult(platformVersion, exception);
+    }
+  }
+
+  private void clearVariantDependentProperties(PlatformVersion version) {
+    boolean reduced = stopPointService.isReduced(version.getParentServicePointSloid());
+    if (reduced) {
+      version.setBoardingDevice(null);
+      version.setAdviceAccessInfo(null);
+      version.setContrastingAreas(null);
+      version.setDynamicAudio(null);
+      version.setDynamicVisual(null);
+      version.setInclination(null);
+      version.setInclinationWidth(null);
+      version.setLevelAccessWheelchair(null);
+      version.setSuperelevation(null);
+    } else {
+      version.setHeight(null);
+      version.setInclinationLongitudinal(null);
+      version.setInfoOpportunities(Collections.emptySet());
+      version.setPartialElevation(null);
+      version.setTactileSystem(null);
+      version.setVehicleAccess(null);
+      version.setWheelchairAreaLength(null);
+      version.setWheelchairAreaWidth(null);
     }
   }
 

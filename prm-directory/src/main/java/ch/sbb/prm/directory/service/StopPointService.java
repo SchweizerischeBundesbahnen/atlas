@@ -69,7 +69,7 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
     return stopPointRepository.findAllByNumberOrderByValidFrom(number);
   }
 
-  boolean isReduced(String servicePointSloid) {
+  public boolean isReduced(String servicePointSloid) {
     StopPointVersion parentServicePoint = findAllBySloidOrderByValidFrom(servicePointSloid).stream().findFirst()
         .orElseThrow(() -> new StopPointDoesNotExistException(servicePointSloid));
     return parentServicePoint.isReduced();
