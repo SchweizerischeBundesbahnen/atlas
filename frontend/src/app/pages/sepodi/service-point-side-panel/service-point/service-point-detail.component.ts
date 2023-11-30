@@ -4,9 +4,12 @@ import { VersionsHandlingService } from '../../../../core/versioning/versions-ha
 import {
   ApplicationRole,
   ApplicationType,
+  CoordinatePair,
   CreateServicePointVersion,
+  Geolocation,
   ReadServicePointVersion,
   ServicePointsService,
+  SpatialReference,
 } from '../../../../api';
 import { FormGroup } from '@angular/forms';
 import {
@@ -23,17 +26,14 @@ import { NotificationService } from '../../../../core/notification/notification.
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { ServicePointAbbreviationAllowList } from './service-point-abbreviation-allow-list';
-import { ServicePointCreationSideService } from './service-point-creation/service-point-creation.component';
-import {
-  GeographyFormGroup,
-  GeographyFormGroupBuilder,
-} from '../../geography/geography-form-group';
+import { GeographyFormGroupBuilder } from '../../geography/geography-form-group';
+import { GeographyChangedEvent } from '../../geography/geography-changed-event';
 
 @Component({
   selector: 'app-service-point',
   templateUrl: './service-point-detail.component.html',
   styleUrls: ['./service-point-detail.component.scss'],
-  viewProviders: [ServicePointCreationSideService],
+  viewProviders: [GeographyChangedEvent],
 })
 export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFormComponent {
   servicePointVersions!: ReadServicePointVersion[];
@@ -42,30 +42,27 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   set selectedVersion(version: ReadServicePointVersion) {
     this._selectedVersion = version;
     if (version.servicePointGeolocation?.spatialReference) {
-      this.sharedService.geographyChanged.next(true);
+      this.geographyChangedEvent.emit(true);
     } else {
-      this.sharedService.geography = false;
+      this.geographyChangedEvent.emitOnlyWhenValueChanged(false);
     }
   }
 
   showVersionSwitch = false;
   selectedVersionIndex!: number;
   form?: FormGroup<ServicePointDetailFormGroup>;
-  // todo: isNew needed?
-  isNew = true;
   hasAbbreviation = false;
   isAbbreviationAllowed = false;
 
   isLatestVersionSelected = false;
   preferredId?: number;
 
-  // todo: is never set to false again
   isSwitchVersionDisabled = false;
 
   public isFormEnabled$ = new BehaviorSubject<boolean>(false);
   private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
   private ngUnsubscribe = new Subject<void>();
-  private _savedGeographyForm?: FormGroup<GeographyFormGroup>;
+  private _savedGeographyForm?: Geolocation;
 
   constructor(
     private router: Router,
@@ -75,14 +72,14 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     private notificationService: NotificationService,
     private mapService: MapService,
     private authService: AuthService,
-    private readonly sharedService: ServicePointCreationSideService,
+    private readonly geographyChangedEvent: GeographyChangedEvent,
   ) {}
 
   ngOnInit() {
-    this.sharedService.geographyChanged
+    this.geographyChangedEvent
+      .get()
       .pipe(skip(1), takeUntil(this.ngUnsubscribe))
       .subscribe((enabled) => {
-        console.log('enabled: ', enabled);
         enabled ? this.onGeographyEnabled() : this.onGeographyDisabled();
       });
 
@@ -96,15 +93,42 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
   private onGeographyEnabled() {
     if (this.form && !this.form.controls.servicePointGeolocation) {
-      const groupToAdd = this._savedGeographyForm ?? GeographyFormGroupBuilder.buildFormGroup();
-      ServicePointFormGroupBuilder.addGroupToForm(this.form, 'servicePointGeolocation', groupToAdd);
+      ServicePointFormGroupBuilder.addGroupToForm(
+        this.form,
+        'servicePointGeolocation',
+        GeographyFormGroupBuilder.buildFormGroup(this._savedGeographyForm),
+      );
       this.form.markAsDirty();
     }
   }
 
   private onGeographyDisabled() {
     if (this.form?.controls.servicePointGeolocation) {
-      this._savedGeographyForm = this.form.controls.servicePointGeolocation;
+      if (
+        this.form.controls.servicePointGeolocation.value.spatialReference === SpatialReference.Wgs84
+      ) {
+        const coordinatePair = {
+          spatialReference: SpatialReference.Wgs84,
+          north: this.form.controls.servicePointGeolocation.value.north!,
+          east: this.form.controls.servicePointGeolocation.value.east!,
+        };
+        this._savedGeographyForm = {
+          spatialReference: this.form.controls.servicePointGeolocation.value.spatialReference!,
+          height: this.form.controls.servicePointGeolocation.value.height ?? undefined,
+          wgs84: coordinatePair,
+        } as Geolocation;
+      } else {
+        const coordinatePair = {
+          spatialReference: SpatialReference.Lv95,
+          north: this.form.controls.servicePointGeolocation.value.north!,
+          east: this.form.controls.servicePointGeolocation.value.east!,
+        };
+        this._savedGeographyForm = {
+          spatialReference: this.form.controls.servicePointGeolocation.value.spatialReference!,
+          height: this.form.controls.servicePointGeolocation.value.height ?? undefined,
+          lv95: coordinatePair,
+        } as Geolocation;
+      }
       ServicePointFormGroupBuilder.removeGroupFromForm(this.form, 'servicePointGeolocation');
       this.form.markAsDirty();
     }
@@ -113,7 +137,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   ngOnDestroy() {
     this.mapService.deselectServicePoint();
     this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.ngUnsubscribe.unsubscribe();
   }
 
   switchVersion(newIndex: number) {
@@ -146,15 +170,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   }
 
   public initSelectedVersion(version: ReadServicePointVersion) {
-    if (version.id) {
-      this.isNew = false;
-    }
-
     this.form = ServicePointFormGroupBuilder.buildFormGroup(version);
-    console.log(this.form);
-    if (!this.isNew) {
-      this.disableForm();
-    }
+    this.disableForm();
+    this.isSwitchVersionDisabled = false;
     this.selectedVersion = version;
     this.displayAndSelectServicePointOnMap();
     this.isSelectedVersionHighDate(this.servicePointVersions, version);
@@ -193,12 +211,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       .pipe(take(1))
       .subscribe((confirmed) => {
         if (confirmed) {
-          if (this.isNew) {
-            this.closeSidePanel();
-          } else {
-            this.initSelectedVersion(this._selectedVersion!);
-            this.disableForm();
-          }
+          this.initSelectedVersion(this._selectedVersion!);
+          this.disableForm();
+          this.isSwitchVersionDisabled = false;
         }
       });
   }
@@ -246,24 +261,8 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     if (this.form?.valid) {
       const servicePointVersion = ServicePointFormGroupBuilder.getWritableServicePoint(this.form);
       this.disableForm();
-      if (this.isNew) {
-        this.create(servicePointVersion);
-      } else {
-        this.update(this._selectedVersion!.id!, servicePointVersion);
-      }
+      this.update(this._selectedVersion!.id!, servicePointVersion);
     }
-  }
-
-  private create(servicePointVersion: CreateServicePointVersion) {
-    this.servicePointService
-      .createServicePoint(servicePointVersion)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
-      .subscribe((servicePointVersion) => {
-        this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.ADD_SUCCESS');
-        this.router
-          .navigate(['..', servicePointVersion.number.number], { relativeTo: this.route })
-          .then(() => this.mapService.refreshMap());
-      });
   }
 
   private update(id: number, servicePointVersion: CreateServicePointVersion) {

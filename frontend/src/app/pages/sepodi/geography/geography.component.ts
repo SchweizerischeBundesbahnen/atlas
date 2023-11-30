@@ -4,7 +4,7 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  OnInit,
+  OnInit, Output,
   SimpleChanges,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
@@ -14,8 +14,7 @@ import { CoordinateTransformationService } from './coordinate-transformation.ser
 import { debounceTime, merge, Subject } from 'rxjs';
 import { MapService } from '../map/map.service';
 import { MatRadioChange } from '@angular/material/radio';
-import { takeUntil } from 'rxjs/operators';
-import { ServicePointCreationSideService } from '../service-point-side-panel/service-point/service-point-creation/service-point-creation.component';
+import { GeographyChangedEvent } from './geography-changed-event';
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import { Countries } from 'src/app/core/country/Countries';
 import { LocationInformation } from '../service-point-side-panel/service-point/location-information';
@@ -31,20 +30,30 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
   readonly LV95_MAX_DIGITS = LV95_MAX_DIGITS;
   readonly WGS84_MAX_DIGITS = WGS84_MAX_DIGITS;
 
-  // todo: check that form is undefined when geography = false
   _form?: FormGroup<GeographyFormGroup>;
   @Input() set form(form: FormGroup<GeographyFormGroup> | undefined) {
     this._form = form;
-    if (!form) return;
-    merge(form.controls.east.valueChanges, form.controls.north.valueChanges)
-      .pipe(takeUntil(this.destroySubscriptions$), debounceTime(500))
-      .subscribe(() => {
-        this.onChangeCoordinatesManually({
-          east: Number(form.controls.east.value),
-          north: Number(form.controls.north.value),
-          spatialReference: this.currentSpatialReference!,
-        });
+
+    if (form) {
+      this._geographyActive = true;
+      this.updateMapInteractionMode();
+      this.onChangeCoordinatesManually({
+        east: Number(form.controls.east.value),
+        north: Number(form.controls.north.value),
+        spatialReference: this.currentSpatialReference!,
       });
+      merge(form.controls.east.valueChanges, form.controls.north.valueChanges)
+        .pipe(takeUntil(this.destroySubscriptions$), debounceTime(500))
+        .subscribe(() => {
+          this.onChangeCoordinatesManually({
+            east: Number(form.controls.east.value),
+            north: Number(form.controls.north.value),
+            spatialReference: this.currentSpatialReference!,
+          });
+        });
+    } else {
+      this._geographyActive = false;
+    }
   }
 
   @Input() editMode = false;
@@ -57,7 +66,7 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
 
   set geographyActive(value: boolean) {
     this._geographyActive = value;
-    this.sharedService.geographyChanged.next(value);
+    this.geographyChangedEvent.emit(value);
     this.updateMapInteractionMode();
   }
   @Output()
@@ -72,25 +81,16 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
     private coordinateTransformationService: CoordinateTransformationService,
     private mapService: MapService,
     private changeDetector: ChangeDetectorRef,
-    private sharedService: ServicePointCreationSideService,
+    private readonly geographyChangedEvent: GeographyChangedEvent,
     private geoDataService: GeoDataService,
   ) {}
 
   ngOnInit() {
-    this.sharedService.geographyChanged
-      .pipe(takeUntil(this.destroySubscriptions$))
-      .subscribe((enabled) => {
-        if (enabled) {
-          this._geographyActive = true;
-          this.updateMapInteractionMode();
-        } else {
-          this._geographyActive = false;
-        }
-      });
-
+    console.log('init');
     this.mapService.clickedGeographyCoordinates
       .pipe(takeUntil(this.destroySubscriptions$))
       .subscribe((coordinatePairWGS84) => {
+        console.log('map click from: ', this);
         this.onMapClick({
           north: coordinatePairWGS84.lat,
           east: coordinatePairWGS84.lng,
@@ -121,15 +121,17 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
     const roundedEast = Number(coordinates.east.toFixed(maxDigits));
     const roundedNorth = Number(coordinates.north.toFixed(maxDigits));
 
-    this._form.controls.east.setValue(roundedEast);
-    this._form.controls.north.setValue(roundedNorth);
+    this._form.patchValue({
+      east: roundedEast,
+      north: roundedNorth,
+    });
     this._form.markAsDirty();
   }
 
   ngOnDestroy() {
     this.mapService.exitCoordinateSelectionMode();
     this.destroySubscriptions$.next();
-    this.destroySubscriptions$.complete();
+    this.destroySubscriptions$.unsubscribe();
   }
 
   initTransformedCoordinatePair() {

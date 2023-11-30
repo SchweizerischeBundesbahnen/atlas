@@ -14,30 +14,21 @@ import {
   ServicePointsService,
 } from '../../../../../api';
 import { Countries } from '../../../../../core/country/Countries';
-import { BehaviorSubject, catchError, EMPTY, mergeWith, Observable, Subject, take } from 'rxjs';
+import { catchError, EMPTY, mergeWith, Observable, Subject, take } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServicePointType } from '../service-point-type';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { GeographyFormGroupBuilder } from '../../../geography/geography-form-group';
-
-export class ServicePointCreationSideService {
-  geographyChanged = new BehaviorSubject<boolean>(false);
-
-  set geography(value: boolean) {
-    if (this.geographyChanged.value !== value) {
-      this.geographyChanged.next(value);
-    }
-  }
-}
+import { GeographyChangedEvent } from '../../../geography/geography-changed-event';
 
 @Component({
   selector: 'app-service-point-creation',
   templateUrl: './service-point-creation.component.html',
   styleUrls: ['./service-point-creation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  viewProviders: [ServicePointCreationSideService],
+  viewProviders: [GeographyChangedEvent],
 })
 export class ServicePointCreationComponent implements OnInit, OnDestroy {
   public form: FormGroup<ServicePointDetailFormGroup> =
@@ -57,11 +48,12 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly servicePointService: ServicePointsService,
     private readonly notificationService: NotificationService,
-    private readonly sharedService: ServicePointCreationSideService,
+    private readonly geographyChangedEvent: GeographyChangedEvent,
   ) {}
 
   ngOnInit() {
-    this.sharedService.geographyChanged
+    this.geographyChangedEvent
+      .get()
       .pipe(takeUntil(this.destroySubscriptions$))
       .subscribe((enabled) => (enabled ? this.onGeographyEnabled() : this.onGeographyDisabled()));
 
@@ -89,7 +81,7 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
             ServicePointType.StopPoint,
           ].includes(servicePointType)
         ) {
-          this.sharedService.geography = true;
+          this.geographyChangedEvent.emitOnlyWhenValueChanged(true);
         }
       });
 
@@ -107,7 +99,8 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.destroySubscriptions$.complete();
+    this.destroySubscriptions$.next();
+    this.destroySubscriptions$.unsubscribe();
   }
 
   private onGeographyEnabled() {

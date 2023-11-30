@@ -49,7 +49,7 @@ export class TrafficPointElementsTableComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.ngUnsubscribe.unsubscribe();
   }
 
   ngOnInit(): void {
