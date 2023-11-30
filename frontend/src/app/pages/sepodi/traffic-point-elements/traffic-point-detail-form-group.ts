@@ -16,14 +16,35 @@ export interface TrafficPointElementDetailFormGroup extends BaseDetailFormGroup 
   boardingAreaHeight: FormControl<number | null | undefined>;
   compassDirection: FormControl<number | null | undefined>;
   etagVersion: FormControl<number | null | undefined>;
-  trafficPointElementGeolocation: FormGroup<GeographyFormGroup>;
+  trafficPointElementGeolocation?: FormGroup<GeographyFormGroup>;
 }
 
+type OptionalKeysOfTrafficPointElementDetailFormGroup = {
+  [K in keyof TrafficPointElementDetailFormGroup]-?: undefined extends TrafficPointElementDetailFormGroup[K]
+    ? K
+    : never;
+}[keyof TrafficPointElementDetailFormGroup];
+
 export class TrafficPointElementFormGroupBuilder {
+  static addGroupToForm(
+    form: FormGroup<TrafficPointElementDetailFormGroup>,
+    controlName: keyof TrafficPointElementDetailFormGroup,
+    group: FormGroup,
+  ) {
+    form.addControl(controlName, group);
+  }
+
+  static removeGroupFromForm(
+    form: FormGroup<TrafficPointElementDetailFormGroup>,
+    controlName: OptionalKeysOfTrafficPointElementDetailFormGroup,
+  ) {
+    form.removeControl(controlName);
+  }
+
   static buildFormGroup(
     version?: ReadTrafficPointElementVersion,
   ): FormGroup<TrafficPointElementDetailFormGroup> {
-    return new FormGroup<TrafficPointElementDetailFormGroup>(
+    const formGroup = new FormGroup<TrafficPointElementDetailFormGroup>(
       {
         sloid: new FormControl(version?.sloid),
         designationOperational: new FormControl(version?.designationOperational, [
@@ -54,9 +75,6 @@ export class TrafficPointElementFormGroupBuilder {
         validTo: new FormControl(version?.validTo ? moment(version.validTo) : null, [
           Validators.required,
         ]),
-        trafficPointElementGeolocation: GeographyFormGroupBuilder.buildFormGroup(
-          version?.trafficPointElementGeolocation,
-        ),
         etagVersion: new FormControl(version?.etagVersion),
         creationDate: new FormControl(version?.creationDate),
         editionDate: new FormControl(version?.editionDate),
@@ -65,5 +83,15 @@ export class TrafficPointElementFormGroupBuilder {
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
     );
+
+    if (version?.trafficPointElementGeolocation?.spatialReference) {
+      this.addGroupToForm(
+        formGroup,
+        'trafficPointElementGeolocation',
+        GeographyFormGroupBuilder.buildFormGroup(version.trafficPointElementGeolocation),
+      );
+    }
+
+    return formGroup;
   }
 }
