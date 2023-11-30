@@ -1,6 +1,5 @@
 package ch.sbb.prm.directory.service.dataimport;
 
-import ch.sbb.atlas.api.prm.model.platform.CreatePlatformVersionModel;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.ItemImportResult.ItemImportResultBuilder;
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModelContainer;
@@ -53,22 +52,20 @@ public class PlatformImportService extends BasePrmImportService<PlatformVersion>
   public List<ItemImportResult> importPlatforms(List<PlatformCsvModelContainer> csvModelContainers) {
     List<ItemImportResult> importResults = new ArrayList<>();
     for (PlatformCsvModelContainer container : csvModelContainers) {
-      for (List<CreatePlatformVersionModel> createPlatform : container.getModelsGroupedBySloid()){
-        List<PlatformVersion> platform = createPlatform.stream().map(PlatformVersionMapper::toEntity).toList();
+      List<PlatformVersion> platform = container.getCreateModels().stream().map(PlatformVersionMapper::toEntity).toList();
 
-        List<PlatformVersion> dbVersions =  platformService.getAllVersions(platform.iterator().next().getSloid());
-        replaceCsvMergedVersions(dbVersions, platform);
+      List<PlatformVersion> dbVersions = platformService.getAllVersions(platform.iterator().next().getSloid());
+      replaceCsvMergedVersions(dbVersions, platform);
 
-        for (PlatformVersion platformVersion : platform) {
-          boolean platformExists = platformRepository.existsBySloid(platformVersion.getSloid());
-          ItemImportResult itemImportResult;
-          if (platformExists) {
-            itemImportResult = updateStopPoint(platformVersion);
-          } else {
-            itemImportResult = createVersion(platformVersion);
-          }
-          importResults.add(itemImportResult);
+      for (PlatformVersion platformVersion : platform) {
+        boolean platformExists = platformRepository.existsBySloid(platformVersion.getSloid());
+        ItemImportResult itemImportResult;
+        if (platformExists) {
+          itemImportResult = updateStopPoint(platformVersion);
+        } else {
+          itemImportResult = createVersion(platformVersion);
         }
+        importResults.add(itemImportResult);
       }
     }
     return importResults;
