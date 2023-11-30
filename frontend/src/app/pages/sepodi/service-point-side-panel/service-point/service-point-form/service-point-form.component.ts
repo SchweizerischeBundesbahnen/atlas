@@ -15,7 +15,7 @@ import {
 import { LocationInformation } from '../location-information';
 import { takeUntil } from 'rxjs/operators';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import { ServicePointCreationSideService } from '../service-point-creation/service-point-creation.component';
+import { GeographyChangedEvent } from '../../../geography/geography-changed-event';
 
 @Component({
   selector: 'service-point-form',
@@ -28,7 +28,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
     new EventEmitter<ServicePointType | null | undefined>();
 
   @Input() set form(form: FormGroup<ServicePointDetailFormGroup>) {
-    this.formSubscriptionDestroy$.complete();
+    this.formSubscriptionDestroy$.complete(); // todo: better event handling on form controls
     this.formSubscriptionDestroy$ = new Subject<void>();
     this._form = form;
 
@@ -60,31 +60,33 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
   public isNew = false;
 
   private langChangeSubscription?: Subscription;
-  private geographyChangedSubscription?: Subscription;
+  private geographyChangedEventSubscription?: Subscription;
   private formSubscriptionDestroy$: Subject<void> = new Subject<void>();
 
   constructor(
     private readonly translationSortingService: TranslationSortingService,
     private readonly geoDataService: GeoDataService,
     private readonly dialogService: DialogService,
-    private readonly sharedService: ServicePointCreationSideService,
+    private readonly geographyChangedEvent: GeographyChangedEvent,
   ) {}
 
   ngOnInit(): void {
     this.isNew = !this.currentVersion?.id;
-    this.geographyChangedSubscription = this.sharedService.geographyChanged.subscribe((enabled) => {
-      if (enabled && !this.isNew) {
-        // todo: when switchVersion from enabled to enabled this gets called and in the form setter also
-        const geolocationControls = this._form?.controls.servicePointGeolocation?.controls;
-        if (geolocationControls) this.initGeolocationControlListeners(geolocationControls);
-      }
-    });
+    this.geographyChangedEventSubscription = this.geographyChangedEvent
+      .get()
+      .subscribe((enabled) => {
+        if (enabled && !this.isNew) {
+          const geolocationControls = this._form?.controls.servicePointGeolocation?.controls;
+          if (geolocationControls) this.initGeolocationControlListeners(geolocationControls);
+        }
+      });
     this.initSortedOperatingPointTypes();
   }
 
   ngOnDestroy() {
     this.langChangeSubscription?.unsubscribe();
-    this.geographyChangedSubscription?.unsubscribe();
+    this.geographyChangedEventSubscription?.unsubscribe();
+    this.formSubscriptionDestroy$.complete();
   }
 
   private initSortedOperatingPointTypes(): void {
@@ -114,6 +116,38 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
         servicePointGeolocation?.swissLocation?.localityMunicipality?.municipalityName,
       localityName: servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName,
     };
+  }
+
+  private initGeolocationControlListeners(geolocationControls: GeographyFormGroup) {
+    console.log('init');
+    merge(geolocationControls.north.valueChanges, geolocationControls.east.valueChanges)
+      .pipe(
+        takeUntil(this.formSubscriptionDestroy$),
+        debounceTime(500),
+        filter(
+          () =>
+            !!(
+              geolocationControls.east.value &&
+              geolocationControls.north.value &&
+              geolocationControls.spatialReference.value
+            ),
+        ),
+        switchMap(() =>
+          this.geoDataService.getLocationInformation({
+            east: geolocationControls.east.value!,
+            north: geolocationControls.north.value!,
+            spatialReference: geolocationControls.spatialReference.value!,
+          }),
+        ),
+      )
+      .subscribe((geoReference) => {
+        this.locationInformation = {
+          isoCountryCode: Countries.fromCountry(geoReference.country)?.short,
+          canton: geoReference.swissCanton,
+          municipalityName: geoReference.swissMunicipalityName,
+          localityName: geoReference.swissLocalityName,
+        };
+      });
   }
 
   private initTypeChangeInformationDialog(

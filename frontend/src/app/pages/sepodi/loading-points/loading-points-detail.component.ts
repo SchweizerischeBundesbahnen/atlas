@@ -65,7 +65,7 @@ export class LoadingPointsDetailComponent implements OnInit, OnDestroy, DetailFo
 
   ngOnDestroy() {
     this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.ngUnsubscribe.unsubscribe();
   }
 
   private initLoadingPoint() {
