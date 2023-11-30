@@ -48,7 +48,7 @@ class PlatformValidationServiceTest {
   @Test
   void shouldNotValidateWhenCompletePRMDoesNotContainsAllMandatoryFields() {
     //given
-    PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
+    PlatformVersion platformVersion = PlatformTestData.getCompletePlatformVersion();
     platformVersion.setBoardingDevice(null);
 
     //when
@@ -73,7 +73,7 @@ class PlatformValidationServiceTest {
   @Test
   void shouldValidateWhenCompleteContainsAllFields() {
     //given
-    PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
+    PlatformVersion platformVersion = PlatformTestData.getCompletePlatformVersion();
 
     //when
     Executable executable = () -> platformValidationService.validateRecordingVariants(platformVersion, false);
