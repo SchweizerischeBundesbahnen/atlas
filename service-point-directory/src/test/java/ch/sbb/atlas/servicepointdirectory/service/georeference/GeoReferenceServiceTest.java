@@ -177,7 +177,7 @@ class GeoReferenceServiceTest {
     servicePointVersion.getServicePointGeolocation().setEast(7.03523000710);
     servicePointVersion.getServicePointGeolocation().setHeight(200D);
 
-    geoReferenceService.getHeightForServicePoint(servicePointVersion);
+    geoReferenceService.getHeightForServicePoint(servicePointVersion, false);
 
     Double actualHeight = servicePointVersion.getServicePointGeolocation().getHeight();
     assertThat(actualHeight).isEqualTo(200D);
