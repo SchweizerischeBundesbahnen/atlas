@@ -55,7 +55,7 @@ public class PlatformCsvService extends CsvService<PlatformCsvModel> {
 
     Map<String, List<PlatformCsvModel>> groupedPlatforms = PrmCsvService.filterForActive(platformCsvModels).stream()
         .collect(Collectors.groupingBy(PlatformCsvModel::getSloid));
-    List<PlatformCsvModelContainer> result = groupedPlatforms.entrySet().stream().map(toContainer()).toList();
+    List<PlatformCsvModelContainer> result = new ArrayList<>(groupedPlatforms.entrySet().stream().map(toContainer()).toList());
 
     mergePlatforms(result);
     return result;

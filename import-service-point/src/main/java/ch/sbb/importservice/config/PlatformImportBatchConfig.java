@@ -58,7 +58,7 @@ public class PlatformImportBatchConfig extends BaseImportBatchJob {
     long prunedPlatformModels = platformCsvModelContainers.stream()
         .mapToLong(i -> i.getCreateModels().size()).sum();
     log.info("Found " + prunedPlatformModels + " platforms to import...");
-    log.info("Start sending requests to service-point-directory with chunkSize: {}...", PRM_CHUNK_SIZE);
+    log.info("Start sending requests to prm-directory with chunkSize: {}...", PRM_CHUNK_SIZE);
     return new ThreadSafeListItemReader<>(Collections.synchronizedList(platformCsvModelContainers));
   }
 
