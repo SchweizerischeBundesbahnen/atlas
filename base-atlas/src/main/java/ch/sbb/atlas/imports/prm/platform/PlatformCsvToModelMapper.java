@@ -2,7 +2,6 @@ package ch.sbb.atlas.imports.prm.platform;
 
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
-import ch.sbb.atlas.api.prm.enumeration.BooleanAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
@@ -21,6 +20,7 @@ public class PlatformCsvToModelMapper {
     return CreatePlatformVersionModel.builder()
         .numberWithoutCheckDigit(ServicePointNumber.removeCheckDigit(csvModel.getDidokCode()))
         .parentServicePointSloid(csvModel.getDsSloid())
+        .sloid(csvModel.getSloid())
         .boardingDevice(BoardingDeviceAttributeType.of(csvModel.getBoardingDevice()))
         .adviceAccessInfo(csvModel.getAccessInfo())
         .additionalInformation(csvModel.getInfos())
@@ -33,7 +33,7 @@ public class PlatformCsvToModelMapper {
         .inclinationWidth(csvModel.getInclinationWidth())
         .infoOpportunities(getInfoOpportunities(csvModel))
         .levelAccessWheelchair(BasicAttributeType.of(csvModel.getLevelAccessWheelchair()))
-        .partialElevation(BooleanAttributeType.of(csvModel.getPartialElev()))
+        .partialElevation(csvModel.getPartialElev().equals(1))
         .superelevation(csvModel.getSuperelevation())
         .tactileSystem(BooleanOptionalAttributeType.of(csvModel.getTactileSystems()))
         .vehicleAccess(VehicleAccessAttributeType.of(csvModel.getVehicleAccess()))
@@ -52,7 +52,11 @@ public class PlatformCsvToModelMapper {
     if (StringUtils.isBlank(csvModel.getInfoBlinds())) {
       return Collections.emptyList();
     }
-    return Stream.of(csvModel.getInfoBlinds().split("~")).map(Integer::parseInt).map(InfoOpportunityAttributeType::of).toList();
+    return Stream.of(csvModel.getInfoBlinds().split("~"))
+        .filter(StringUtils::isNotBlank)
+        .map(Integer::parseInt)
+        .map(InfoOpportunityAttributeType::of)
+        .toList();
   }
 
 }

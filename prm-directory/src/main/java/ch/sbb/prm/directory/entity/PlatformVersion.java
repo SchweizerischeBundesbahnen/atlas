@@ -2,7 +2,6 @@ package ch.sbb.prm.directory.entity;
 
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
-import ch.sbb.atlas.api.prm.enumeration.BooleanAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
@@ -108,9 +107,8 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
   private BasicAttributeType levelAccessWheelchair;
 
   @PrmVariant(variant = RecordingVariant.REDUCED)
-  @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private BooleanAttributeType partialElevation;
+  private Boolean partialElevation;
 
   @PrmVariant(variant = RecordingVariant.COMPLETE)
   @AtlasVersionableProperty

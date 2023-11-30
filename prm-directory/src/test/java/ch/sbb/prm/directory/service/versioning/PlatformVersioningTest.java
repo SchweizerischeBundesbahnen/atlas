@@ -73,6 +73,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     editedVersion.setInclinationWidth(323.12);
     editedVersion.setAdditionalInformation("no additional");
     editedVersion.setLevelAccessWheelchair(BasicAttributeType.YES);
+    editedVersion.setPartialElevation(true);
     editedVersion.setSuperelevation(121.123);
     editedVersion.setCreationDate(version2.getCreationDate());
     editedVersion.setEditionDate(version2.getEditionDate());
