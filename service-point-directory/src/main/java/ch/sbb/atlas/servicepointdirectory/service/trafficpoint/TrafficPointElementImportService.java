@@ -147,7 +147,7 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
 
   private ItemImportResult saveTrafficPointVersion(TrafficPointElementVersion trafficPointElementVersion) {
     try {
-      geoReferenceService.getHeightForTrafficPoint(trafficPointElementVersion, true);
+      geoReferenceService.getHeightForTrafficPoint(trafficPointElementVersion);
       TrafficPointElementVersion savedTrafficPointVersion = trafficPointElementService.save(trafficPointElementVersion);
       return buildSuccessImportResult(savedTrafficPointVersion);
     } catch (Exception exception) {
