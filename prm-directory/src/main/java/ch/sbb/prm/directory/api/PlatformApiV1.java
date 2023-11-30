@@ -3,7 +3,7 @@ package ch.sbb.prm.directory.api;
 import ch.sbb.atlas.api.prm.model.platform.CreatePlatformVersionModel;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
 import ch.sbb.atlas.imports.ItemImportResult;
-import ch.sbb.atlas.imports.prm.stoppoint.PlatformImportRequestModel;
+import ch.sbb.atlas.imports.prm.platform.PlatformImportRequestModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;

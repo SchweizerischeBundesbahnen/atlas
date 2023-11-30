@@ -1,4 +1,4 @@
-package ch.sbb.importservice.writer.prm.stoppoint;
+package ch.sbb.importservice.writer.prm;
 
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModelContainer;
