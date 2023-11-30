@@ -80,18 +80,18 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      *
      * RESULTAT:  |________________Haltestelle_________________|
      * Version:
-     * Status:    IN REVIEW
+     * Status:    DRAFT
      */
 
     @Test
-    void scenario1WhenCreateNewStopPointThanSetStatusToInReview() throws Exception {
+    void scenario1WhenCreateNewStopPointThanSetStatusToDRAFT() throws Exception {
         servicePointVersion = repository.save(ServicePointTestData.getBernWyleregg());
         mvc.perform(post("/v1/service-points")
                         .contentType(contentType)
                         .content(mapper.writeValueAsString(ServicePointTestData.getAargauServicePointVersionModel())))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue() + 1)))
-                .andExpect(jsonPath("$.status", is(Status.IN_REVIEW.toString()))); // TODO: Here status should be InReview
+                .andExpect(jsonPath("$.status", is(Status.DRAFT.toString()))); // TODO: Here status should be DRAFT
     }
 
     /**
@@ -102,11 +102,11 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      *
      * RESULTAT:  |_________Dienststelle___|________Haltestelle_____________________________|
      * Version:
-     * Status:       VALIDATED                             IN REVIEW
+     * Status:       VALIDATED                             DRAFT
      */
 
     @Test
-    void scenario2WhenServicePointAndUpdateToStopPointThenStopPointInReview() throws Exception {
+    void scenario2WhenServicePointAndUpdateToStopPointThenStopPointDRAFT() throws Exception {
         repository.deleteAll();
         CreateServicePointVersionModel servicePoint = ServicePointTestData.getAargauServicePointVersionModel();
         servicePoint.setMeansOfTransport(new ArrayList<>());
@@ -134,7 +134,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2011-12-11")))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
-                .andExpect(jsonPath("$[1].status", is(Status.IN_REVIEW.toString()))); // TODO: Change to InReview
+                .andExpect(jsonPath("$[1].status", is(Status.DRAFT.toString()))); // TODO: Change to DRAFT
     }
 
     /**
@@ -145,10 +145,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      *
      * RESULTAT:  |__________Dienststelle___________|__Dienststelle_______|____Haltestelle_____|___Haltestelle____________________|
      * Version:
-     * Status:       VALIDATED                             VALIDATED            IN REVIEW             IN REVIEW
+     * Status:       VALIDATED                             VALIDATED            DRAFT             DRAFT
      */
 //    @Test
-    void scenario3WhenThreeServicePointsAndUpdateToStopPointThenStopPointInReview() throws Exception { // TODO: this one doesn't work properly
+    void scenario3WhenThreeServicePointsAndUpdateToStopPointThenStopPointDRAFT() throws Exception { // TODO: this one doesn't work properly
         repository.deleteAll();
         CreateServicePointVersionModel servicePoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         servicePoint1.setMeansOfTransport(new ArrayList<>());
@@ -200,7 +200,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[2].status", is(Status.VALIDATED.toString())))
                 .andExpect(jsonPath("$[3]." + ServicePointVersionModel.Fields.validFrom, is("2015-01-01")))
                 .andExpect(jsonPath("$[3]." + ServicePointVersionModel.Fields.validTo, is("2019-8-10")))
-                .andExpect(jsonPath("$[3].status", is(Status.VALIDATED.toString()))); // TODO: Change to InReview
+                .andExpect(jsonPath("$[3].status", is(Status.VALIDATED.toString()))); // TODO: Change to DRAFT
     }
 
     /**
@@ -211,10 +211,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      *
      * RESULTAT:  |__Haltestelle A Hausen__|__________Haltestelle B Hausen_____________|
      * Version:
-     * Status:       VALIDATED                              IN REVIEW
+     * Status:       VALIDATED                              DRAFT
      */
     @Test
-    void scenario4WhenStopPointAndChangeStopPointNameOnSecondPartThenStopPointWithNewNameInReview() throws Exception {
+    void scenario4WhenStopPointAndChangeStopPointNameOnSecondPartThenStopPointWithNewNameDRAFT() throws Exception {
         repository.deleteAll();
         CreateServicePointVersionModel servicePoint = ServicePointTestData.getAargauServicePointVersionModel();
         ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
@@ -240,7 +240,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2015-12-11")))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
-                .andExpect(jsonPath("$[1].status", is(Status.IN_REVIEW.toString()))); // TODO: Change to InReview
+                .andExpect(jsonPath("$[1].status", is(Status.DRAFT.toString()))); // TODO: Change to DRAFT
     }
 
     /**
@@ -251,10 +251,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      *
      * RESULTAT:  |__________Haltestelle B Hausen_____________|__Haltestelle A Hausen__|
      * Version:
-     * Status:                IN REVIEW                               VALIDATED
+     * Status:                DRAFT                               VALIDATED
      */
     @Test
-    void scenario5WhenStopPointAndChangeStopPointNameOnFirstPartThenStopPointWithNewNameInReview() throws Exception {
+    void scenario5WhenStopPointAndChangeStopPointNameOnFirstPartThenStopPointWithNewNameDRAFT() throws Exception {
         repository.deleteAll();
         CreateServicePointVersionModel servicePoint = ServicePointTestData.getAargauServicePointVersionModel();
         ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
@@ -277,7 +277,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
                 .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
-                .andExpect(jsonPath("$[0].status", is(Status.IN_REVIEW.toString()))) // TODO: Change to InReview
+                .andExpect(jsonPath("$[0].status", is(Status.DRAFT.toString()))) // TODO: Change to DRAFT
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2016-01-01")))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
                 .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString())));
@@ -291,10 +291,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      *
      * RESULTAT:  |________________Haltestelle A Hausen________|__Haltestelle B Hausen__|__Haltestelle C Hausen__|
      * Version:
-     * Status:                VALIDATED                                VALIDATED                IN REVIEW
+     * Status:                VALIDATED                                VALIDATED                DRAFT
      */
     @Test
-    void scenario6WhenTwoStopPointsAndChangeStopPointNameOnLastPartThenStopPointWithNewNameInReview() throws Exception {
+    void scenario6WhenTwoStopPointsAndChangeStopPointNameOnLastPartThenStopPointWithNewNameDRAFT() throws Exception {
         repository.deleteAll();
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
@@ -332,7 +332,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString())))
                 .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validFrom, is("2017-01-01")))
                 .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
-                .andExpect(jsonPath("$[2].status", is(Status.IN_REVIEW.toString())));// TODO: Change to InReview
+                .andExpect(jsonPath("$[2].status", is(Status.DRAFT.toString())));// TODO: Change to DRAFT
     }
 
     /**
@@ -343,10 +343,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      *
      * RESULTAT:  |_____Haltestelle A Hausen________|__Haltestelle C Hausen__|_______Haltestelle B Hausen________|
      * Version:
-     * Status:                VALIDATED                        IN REVIEW                    VALIDATED
+     * Status:                VALIDATED                        DRAFT                    VALIDATED
      */
     @Test
-    void scenario7WhenTwoStopPointsAndChangeStopPointNameInTheMiddleThenStopPointWithNewNameInReview() throws Exception {
+    void scenario7WhenTwoStopPointsAndChangeStopPointNameInTheMiddleThenStopPointWithNewNameDRAFT() throws Exception {
         repository.deleteAll();
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint1.setValidFrom(LocalDate.of(2015, 1, 1));
@@ -384,7 +384,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2015-06-01")))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2016-06-01")))
-                .andExpect(jsonPath("$[1].status", is(Status.IN_REVIEW.toString())))// TODO: Change to InReview
+                .andExpect(jsonPath("$[1].status", is(Status.DRAFT.toString())))// TODO: Change to DRAFT
                 .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validFrom, is("2016-06-02")))
                 .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validTo, is("2016-12-31")))
                 .andExpect(jsonPath("$[2].status", is(Status.VALIDATED.toString())));
@@ -398,10 +398,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      *
      * RESULTAT:  |__Haltestelle A Hausen__|_______Haltestelle B Hausen_______|________Haltestelle A Hausen______|
      * Version:
-     * Status:                VALIDATED                        IN REVIEW                    VALIDATED
+     * Status:                VALIDATED                        DRAFT                    VALIDATED
      */
     @Test
-    void scenario8WhenStopPointAndChangeStopPointNameInTheMiddleThenStopPointWithNewNameInReview() throws Exception {
+    void scenario8WhenStopPointAndChangeStopPointNameInTheMiddleThenStopPointWithNewNameDRAFT() throws Exception {
         repository.deleteAll();
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
@@ -423,7 +423,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2014-01-01")))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2016-12-31")))
-                .andExpect(jsonPath("$[1].status", is(Status.IN_REVIEW.toString()))) // TODO: Change to InReview
+                .andExpect(jsonPath("$[1].status", is(Status.DRAFT.toString()))) // TODO: Change to DRAFT
                 .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validFrom, is("2017-01-01")))
                 .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
                 .andExpect(jsonPath("$[2].status", is(Status.VALIDATED.toString())));
@@ -437,10 +437,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      *
      * RESULTAT:  |__________________________Haltestelle B Hausen________________________________________________|
      * Version:
-     * Status:                                   IN REVIEW
+     * Status:                                   DRAFT
      */
     @Test
-    void scenario9WhenStopPointAndChangeStopPointNameThenStopPointWithNewNameInReview() throws Exception {
+    void scenario9WhenStopPointAndChangeStopPointNameThenStopPointWithNewNameDRAFT() throws Exception {
         repository.deleteAll();
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
@@ -457,7 +457,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
                 .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
-                .andExpect(jsonPath("$[0].status", is(Status.IN_REVIEW.toString()))); // TODO: Change to InReview
+                .andExpect(jsonPath("$[0].status", is(Status.DRAFT.toString()))); // TODO: Change to DRAFT
     }
 
     /**
@@ -468,10 +468,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      *
      * RESULTAT:  |________________Haltestelle A Hausen + Koordinaten 1________|_HS A Hausen + Koordinaten 2__|___Haltestelle B Hausen + Koordinaten 3 _____|
      * Version:
-     * Status:                                VALIDATED                                    VALIDATED                           IN REVIEW
+     * Status:                                VALIDATED                                    VALIDATED                           DRAFT
      */
     @Test
-    void scenario10WhenTwoStopPointsWith2CoordinatesAndChangeStopPointNameAndCoordinateAtTheEndThenStopPointWithNewNameInReview() throws Exception {
+    void scenario10WhenTwoStopPointsWith2CoordinatesAndChangeStopPointNameAndCoordinateAtTheEndThenStopPointWithNewNameDRAFT() throws Exception {
         repository.deleteAll();
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint1.setValidFrom(LocalDate.of(2010, 12, 11));
@@ -518,7 +518,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString())))
                 .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validFrom, is("2018-01-01")))
                 .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
-                .andExpect(jsonPath("$[2].status", is(Status.IN_REVIEW.toString()))); // TODO: Change to InReview
+                .andExpect(jsonPath("$[2].status", is(Status.DRAFT.toString()))); // TODO: Change to DRAFT
     }
 
 
@@ -530,10 +530,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      *
      * RESULTAT:  |_Haltestelle A Hausen + Koordinaten 1_|_Haltestelle B Hausen + Koordinaten 3_|____________Haltestelle A Hausen + Koordinaten 1____________________________|
      * Version:
-     * Status:                                VALIDATED                                    VALIDATED                           IN REVIEW
+     * Status:                                VALIDATED                                    VALIDATED                           DRAFT
      */
 //    @Test // TODO: Check why is not working
-    void scenario11WhenTwoStopPointsWith2CoordinatesAndChangeStopPointNameAndCoordinateThenStopPointWithNewNameInReview() throws Exception {
+    void scenario11WhenTwoStopPointsWith2CoordinatesAndChangeStopPointNameAndCoordinateThenStopPointWithNewNameDRAFT() throws Exception {
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint1.setValidFrom(LocalDate.of(2010, 12, 11));
         stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
@@ -566,10 +566,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2015-01-01")))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
-                .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString()))) // TODO: Change to InReview
+                .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString()))) // TODO: Change to DRAFT
                 .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validFrom, is("2016-01-01")))
                 .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
-                .andExpect(jsonPath("$[2].status", is(Status.VALIDATED.toString()))); // TODO: Change to InReview
+                .andExpect(jsonPath("$[2].status", is(Status.VALIDATED.toString()))); // TODO: Change to DRAFT
     }
 
     /**
@@ -582,10 +582,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      *
      * RESULTAT:  |________________Haltestelle A Hausen________|_____________________Haltestelle B Hausen_________|__Verlängerung & Wechseln C Hausen__|
      * Version:
-     * Status:                        VALIDATED                                           VALIDATED                          IN REVIEW
+     * Status:                        VALIDATED                                           VALIDATED                          DRAFT
      */
     @Test
-    void scenario12WhenTwoStopPointsWith2NamesAndStopPointExtendsThenStopPointWithNewNameInReview() throws Exception {
+    void scenario12WhenTwoStopPointsWith2NamesAndStopPointExtendsThenStopPointWithNewNameDRAFT() throws Exception {
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint1.setValidFrom(LocalDate.of(2010, 12, 11));
         stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
@@ -625,7 +625,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString())))
                 .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validFrom, is("2019-08-11")))
                 .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validTo, is("2020-12-31")))
-                .andExpect(jsonPath("$[2].status", is(Status.IN_REVIEW.toString()))); // TODO: Change to InReview
+                .andExpect(jsonPath("$[2].status", is(Status.DRAFT.toString()))); // TODO: Change to DRAFT
     }
 
     /**
@@ -638,10 +638,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      *
      * RESULTAT:  |__Verlängerung & Wechseln C Hausen__|________________Haltestelle A Hausen________|_____________________Haltestelle B Hausen_________|
      * Version:
-     * Status:                 IN REVIEW                                  VALIDATED                                           VALIDATED
+     * Status:                 DRAFT                                  VALIDATED                                           VALIDATED
      */
     @Test
-    void scenario13WhenTwoStopPointsWith2NamesAndStopPointExtendsThenStopPointWithNewNameInReview() throws Exception {
+    void scenario13WhenTwoStopPointsWith2NamesAndStopPointExtendsThenStopPointWithNewNameDRAFT() throws Exception {
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint1.setValidFrom(LocalDate.of(2010, 12, 11));
         stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
@@ -675,7 +675,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$", hasSize(3)))
                 .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2005-08-11")))
                 .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2010-12-10")))
-                .andExpect(jsonPath("$[0].status", is(Status.IN_REVIEW.toString()))) // TODO: Change to InReview
+                .andExpect(jsonPath("$[0].status", is(Status.DRAFT.toString()))) // TODO: Change to DRAFT
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
                 .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString())))
@@ -750,7 +750,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      * Status:                         VALIDATED                                                           VALIDATED
      */
     @Test
-    void scenario15WhenTwoStopPointsWith2NamesAndStopPointExtendsThenStopPointWithNewNameInReview() throws Exception {
+    void scenario15WhenTwoStopPointsWith2NamesAndStopPointExtendsThenStopPointWithNewNameDRAFT() throws Exception {
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint1.setValidFrom(LocalDate.of(2010, 12, 11));
         stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
@@ -856,7 +856,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      * Status:                         VALIDATED                                   VALIDATED
      */
     @Test
-    void scenario17WhenTwoStopPointsWith2NamesAndStopPointExtendsThenStopPointWithNewNameInReview() throws Exception {
+    void scenario17WhenTwoStopPointsWith2NamesAndStopPointExtendsThenStopPointWithNewNameDRAFT() throws Exception {
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint1.setValidFrom(LocalDate.of(2010, 12, 11));
         stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
@@ -908,7 +908,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      *
      * RESULTAT:  |________________Haltestelle A Hausen_________|              |________________Wiedereinführung & Wechsel zu B Hausen____________|
      * Version:
-     * Status:                         VALIDATED                                                              IN REVIEW
+     * Status:                         VALIDATED                                                              DRAFT
      */
     @Test
     void scenario18WhenTwoStopPointsWith2NamesAndStopPointUpdateWithoutNameChangeThenStopPointValidated() throws Exception {
@@ -936,7 +936,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2018-01-01")))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
-                .andExpect(jsonPath("$[1].status", is(Status.IN_REVIEW.toString())));
+                .andExpect(jsonPath("$[1].status", is(Status.DRAFT.toString())));
     }
 
     /**
@@ -949,7 +949,7 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      *
      * RESULTAT:  |________________Haltestelle A Hausen_________|              |________________Wiedereinführung & Wechsel zu A Hausen____________|
      * Version:
-     * Status:                         VALIDATED                                                              IN REVIEW
+     * Status:                         VALIDATED                                                              DRAFT
      */
     @Test
     void scenario19WhenTwoStopPointsWith2NamesAndStopPointUpdateWithoutNameChangeThenStopPointValidated() throws Exception {
@@ -976,11 +976,11 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2018-01-01")))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
-                .andExpect(jsonPath("$[1].status", is(Status.IN_REVIEW.toString())));
+                .andExpect(jsonPath("$[1].status", is(Status.DRAFT.toString())));
     }
 
 //    @Test // TODO: Fix failing test
-    void scenario20WhenTwoStopPointsWith2NamesAndStopPointExtendsThenStopPointWithNewNameInReview() throws Exception {
+    void scenario20WhenTwoStopPointsWith2NamesAndStopPointExtendsThenStopPointWithNewNameDRAFT() throws Exception {
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
         ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(

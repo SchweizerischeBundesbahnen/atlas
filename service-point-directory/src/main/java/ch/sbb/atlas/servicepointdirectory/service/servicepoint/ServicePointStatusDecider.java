@@ -82,18 +82,18 @@ public class ServicePointStatusDecider {
                                            Optional<ServicePointVersion> currentServicePointVersion,
                                            List<ServicePointVersion> servicePointVersions) {
         if (servicePointVersions!=null && !servicePointVersions.isEmpty() && checkIfVersionIsIsolated(newServicePointVersion, servicePointVersions) && newServicePointVersion.isStopPoint()) {
-            return Status.IN_REVIEW;
+            return Status.DRAFT;
         }
 
         if (isStatusInReview(newServicePointVersion, currentServicePointVersion)) {
             if (servicePointVersions == null || servicePointVersions.isEmpty()) {
-                return Status.IN_REVIEW;
+                return Status.DRAFT;
             }
             if (isThereTouchingVersionWithTheSameName(newServicePointVersion, servicePointVersions)) {
                 return Status.VALIDATED;
             }
             Optional<ServicePointVersion> servicePointVersion = findPreviousVersionOnSameTimeslot(newServicePointVersion, servicePointVersions);
-            if (servicePointVersion.isPresent()) return Status.IN_REVIEW;
+            if (servicePointVersion.isPresent()) return Status.DRAFT;
         }
         return Status.VALIDATED;
     }
