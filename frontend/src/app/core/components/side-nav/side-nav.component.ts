@@ -39,6 +39,6 @@ export class SideNavComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.ngUnsubscribe.unsubscribe();
   }
 }
