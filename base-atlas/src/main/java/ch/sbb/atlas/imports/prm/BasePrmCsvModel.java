@@ -20,7 +20,11 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BasePrmCsvModel {
+public abstract class BasePrmCsvModel {
+
+  public abstract String getSloid();
+
+  public abstract Integer getStatus();
 
   @EqualsAndHashCode.Exclude
   @JsonProperty("VALID_FROM")
