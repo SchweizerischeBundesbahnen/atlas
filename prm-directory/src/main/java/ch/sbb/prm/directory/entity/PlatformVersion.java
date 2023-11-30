@@ -12,7 +12,8 @@ import ch.sbb.prm.directory.converter.InfoOpportunityTypeConverter;
 import ch.sbb.prm.directory.service.PrmVersionable;
 import ch.sbb.prm.directory.service.Relatable;
 import ch.sbb.prm.directory.validation.VariantsReducedCompleteRecordable;
-import ch.sbb.prm.directory.validation.annotation.NotForReducedVariant;
+import ch.sbb.prm.directory.validation.annotation.PrmVariant;
+import ch.sbb.prm.directory.validation.annotation.RecordingVariant;
 import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -23,6 +24,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
+import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -51,7 +53,7 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
-  @NotForReducedVariant(nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private BoardingDeviceAttributeType boardingDevice;
@@ -59,69 +61,84 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
   @AtlasVersionableProperty
   private String additionalInformation;
 
-  @NotForReducedVariant
+  @PrmVariant(variant = RecordingVariant.COMPLETE)
   @AtlasVersionableProperty
   private String adviceAccessInfo;
 
-  @NotForReducedVariant(nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private BooleanOptionalAttributeType contrastingAreas;
 
-  @NotForReducedVariant(nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private BasicAttributeType dynamicAudio;
 
-  @NotForReducedVariant(nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private BasicAttributeType dynamicVisual;
 
   @AtlasVersionableProperty
+  @PrmVariant(variant = RecordingVariant.REDUCED)
   private Double height;
 
-  @NotForReducedVariant
+  @PrmVariant(variant = RecordingVariant.COMPLETE)
   @AtlasVersionableProperty
   private Double inclination;
 
+  @PrmVariant(variant = RecordingVariant.REDUCED)
   @AtlasVersionableProperty
   private Double inclinationLongitudinal;
 
-  @NotForReducedVariant
+  @PrmVariant(variant = RecordingVariant.COMPLETE)
   @AtlasVersionableProperty
   private Double inclinationWidth;
 
+  @PrmVariant(variant = RecordingVariant.REDUCED)
   @AtlasVersionableProperty
   @ElementCollection(targetClass = InfoOpportunityAttributeType.class, fetch = FetchType.EAGER)
   @Convert(converter = InfoOpportunityTypeConverter.class)
   private Set<InfoOpportunityAttributeType> infoOpportunities;
 
-  @NotForReducedVariant(nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private BasicAttributeType levelAccessWheelchair;
 
+  @PrmVariant(variant = RecordingVariant.REDUCED)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private BooleanAttributeType partialElevation;
 
-  @NotForReducedVariant
+  @PrmVariant(variant = RecordingVariant.COMPLETE)
   @AtlasVersionableProperty
   private Double superelevation;
 
+  @PrmVariant(variant = RecordingVariant.REDUCED)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private BooleanOptionalAttributeType tactileSystem;
 
+  @PrmVariant(variant = RecordingVariant.REDUCED)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private VehicleAccessAttributeType vehicleAccess;
 
+  @PrmVariant(variant = RecordingVariant.REDUCED)
   @AtlasVersionableProperty
   private Double wheelchairAreaLength;
 
+  @PrmVariant(variant = RecordingVariant.REDUCED)
   @AtlasVersionableProperty
   private Double wheelchairAreaWidth;
+
+  public Set<InfoOpportunityAttributeType> getInfoOpportunities() {
+    if (infoOpportunities == null) {
+      return new HashSet<>();
+    }
+    return infoOpportunities;
+  }
 
 }
