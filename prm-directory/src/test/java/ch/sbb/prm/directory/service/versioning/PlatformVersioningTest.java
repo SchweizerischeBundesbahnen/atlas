@@ -140,7 +140,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     platformService.updatePlatformVersion(version2,editedVersion);
 
     //then
-    List<PlatformVersion> result = platformRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
+    List<PlatformVersion> result = platformRepository.findAllBySloidOrderByValidFrom(version2.getSloid());
     assertThat(result).isNotNull().hasSize(2);
 
     PlatformVersion firstTemporalVersion = result.get(0);
@@ -194,7 +194,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     //when
     platformService.updatePlatformVersion(version2, editedVersion);
     //then
-    List<PlatformVersion> result = platformRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
+    List<PlatformVersion> result = platformRepository.findAllBySloidOrderByValidFrom(version2.getSloid());
     assertThat(result).isNotNull().hasSize(5);
 
     PlatformVersion firstTemporalVersion = result.get(0);
@@ -380,7 +380,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     //when
     platformService.updatePlatformVersion(version2, editedVersion);
     //then
-    List<PlatformVersion> result = platformRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
+    List<PlatformVersion> result = platformRepository.findAllBySloidOrderByValidFrom(version2.getSloid());
     assertThat(result).isNotNull().hasSize(2);
 
     PlatformVersion firstTemporalVersion = result.get(0);
