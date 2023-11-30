@@ -1,5 +1,9 @@
 package ch.sbb.prm.directory.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -9,19 +13,14 @@ import ch.sbb.prm.directory.exception.ReducedVariantException;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.validation.StopPointValidationService;
+import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
-import java.util.List;
-import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class StopPointServiceTest {
 
@@ -35,12 +34,14 @@ class StopPointServiceTest {
 
   @Mock
   private VersionableService versionableService;
+  @Mock
+  private SharedServicePointService sharedServicePointService;
 
   @BeforeEach
   void init() {
     MockitoAnnotations.openMocks(this);
     this.stopPointService = new StopPointService(stopPointRepository, versionableService,
-        stopPointValidationService);
+        stopPointValidationService, sharedServicePointService);
   }
 
   @Test
