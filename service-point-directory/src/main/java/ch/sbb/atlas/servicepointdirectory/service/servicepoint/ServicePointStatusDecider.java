@@ -63,6 +63,9 @@ public class ServicePointStatusDecider {
             if (servicePointVersions == null || servicePointVersions.isEmpty()) {
                 return Status.IN_REVIEW;
             }
+            if (isThereTouchingVersionWithTheSameName(newServicePointVersion, servicePointVersions)) {
+                return Status.VALIDATED;
+            }
             Optional<ServicePointVersion> servicePointVersion = findPreviousVersionOnSameTimeslot(newServicePointVersion, servicePointVersions);
             if (servicePointVersion.isPresent()) return Status.IN_REVIEW;
         }
@@ -109,6 +112,20 @@ public class ServicePointStatusDecider {
                 .stream()
                 .findFirst()
                 .orElseThrow();
+    }
+
+    private boolean isThereTouchingVersionWithTheSameName(ServicePointVersion newServicePointVersion, List<ServicePointVersion> currentServicePointVersions) {
+        Optional<ServicePointVersion> found = currentServicePointVersions
+                .stream()
+                .filter(servicePointVersion -> !isNameChanged(newServicePointVersion, servicePointVersion))
+                .filter(servicePointVersion -> !isChangeFromServicePointToStopPoint(newServicePointVersion, servicePointVersion))
+                .filter(servicePointVersion -> checkOverlapping(servicePointVersion, newServicePointVersion))
+                .findFirst();
+        return found.isPresent();
+    }
+
+    private boolean checkOverlapping(ServicePointVersion existing, ServicePointVersion newOne) {
+        return existing.getValidFrom().isBefore(newOne.getValidTo()) && existing.getValidTo().isAfter(newOne.getValidFrom());
     }
 
 }
