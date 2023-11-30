@@ -1,5 +1,7 @@
 package ch.sbb.prm.directory.service.versioning;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.InformationDeskTestData;
@@ -17,13 +19,10 @@ import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.BasePrmServiceTest;
 import ch.sbb.prm.directory.service.InformationDeskService;
 import ch.sbb.prm.directory.service.RelationService;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.time.LocalDate;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 class InformationDeskVersioningTest extends BasePrmServiceTest {
 
@@ -91,7 +90,7 @@ class InformationDeskVersioningTest extends BasePrmServiceTest {
     informationDeskService.updateInformationDeskVersion(version2, editedVersion);
 
     //then
-    List<InformationDeskVersion> result = informationDeskRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
+    List<InformationDeskVersion> result = informationDeskRepository.findAllBySloidOrderByValidFrom(version2.getSloid());
     assertThat(result).isNotNull().hasSize(2);
 
     InformationDeskVersion firstTemporalVersion = result.get(0);
@@ -151,8 +150,8 @@ class InformationDeskVersioningTest extends BasePrmServiceTest {
     informationDeskService.updateInformationDeskVersion(version2, editedVersion);
 
     //then
-    List<InformationDeskVersion> result = informationDeskRepository.findAllByNumberOrderByValidFrom(
-        version2.getNumber());
+    List<InformationDeskVersion> result = informationDeskRepository.findAllBySloidOrderByValidFrom(
+        version2.getSloid());
     assertThat(result).isNotNull().hasSize(5);
 
     InformationDeskVersion firstTemporalVersion = result.get(0);
@@ -226,7 +225,7 @@ class InformationDeskVersioningTest extends BasePrmServiceTest {
     informationDeskService.updateInformationDeskVersion(version2, editedVersion);
 
     //then
-    List<InformationDeskVersion> result = informationDeskRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
+    List<InformationDeskVersion> result = informationDeskRepository.findAllBySloidOrderByValidFrom(version2.getSloid());
     assertThat(result).isNotNull().hasSize(2);
 
     InformationDeskVersion firstTemporalVersion = result.get(0);
