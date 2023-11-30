@@ -1,4 +1,4 @@
-package ch.sbb.atlas.imports.prm.stoppoint;
+package ch.sbb.atlas.imports.prm.platform;
 
 import ch.sbb.atlas.imports.prm.BasePrmCsvModel;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

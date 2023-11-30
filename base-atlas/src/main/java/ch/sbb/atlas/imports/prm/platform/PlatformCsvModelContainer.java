@@ -1,7 +1,6 @@
-package ch.sbb.atlas.imports.prm.stoppoint;
+package ch.sbb.atlas.imports.prm.platform;
 
 import ch.sbb.atlas.api.prm.model.platform.CreatePlatformVersionModel;
-import ch.sbb.atlas.imports.prm.stoppoint.mapper.PlatformCsvToModelMapper;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Collection;
@@ -32,7 +31,12 @@ public class PlatformCsvModelContainer {
   }
 
   public Collection<List<CreatePlatformVersionModel>> getModelsGroupedBySloid() {
-    return platformCsvModels.stream().map(PlatformCsvToModelMapper::toModel).collect(Collectors.groupingBy(CreatePlatformVersionModel::getSloid)).values();
+    return platformCsvModels.stream().map(PlatformCsvToModelMapper::toModel)
+        .collect(Collectors.groupingBy(CreatePlatformVersionModel::getSloid)).values();
+  }
+
+  public List<CreatePlatformVersionModel> getAllCreateModels() {
+    return getModelsGroupedBySloid().stream().flatMap(Collection::stream).toList();
   }
 
 }

@@ -56,7 +56,7 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
 
   @Override
   public List<StopPointVersion> getAllVersions(String sloid) {
-    return stopPointRepository.findAllBySloid(sloid);
+    return stopPointRepository.findAllBySloidOrderByValidFrom(sloid);
   }
 
   @Override

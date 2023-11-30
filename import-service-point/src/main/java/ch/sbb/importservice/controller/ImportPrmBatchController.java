@@ -3,6 +3,7 @@ package ch.sbb.importservice.controller;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_BATCH_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.FULL_PATH_FILENAME_JOB_PARAMETER;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_PLATFORM_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_STOP_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
 
@@ -49,6 +50,9 @@ public class ImportPrmBatchController {
   @Qualifier(IMPORT_STOP_POINT_CSV_JOB_NAME)
   private final Job importStopPointCsvJob;
 
+  @Qualifier(IMPORT_PLATFORM_CSV_JOB_NAME)
+  private final Job importPlatformCsvJob;
+
   @PostMapping("stop-point-batch")
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
@@ -85,6 +89,47 @@ public class ImportPrmBatchController {
     } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
              JobParametersInvalidException | IllegalArgumentException e) {
       throw new JobExecutionException(IMPORT_STOP_POINT_CSV_JOB_NAME, e);
+    } finally {
+      Files.delete(file.toPath());
+    }
+  }
+
+  @PostMapping("platform-batch")
+  @ResponseStatus(HttpStatus.OK)
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200"),
+  })
+  @Async
+  public void startPlatformImportBatch() {
+    JobParameters jobParameters = new JobParametersBuilder()
+        .addString(EXECUTION_TYPE_PARAMETER, EXECUTION_BATCH_PARAMETER)
+        .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
+    try {
+      JobExecution execution = jobLauncher.run(importPlatformCsvJob, jobParameters);
+      log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
+    } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
+             JobParametersInvalidException e) {
+      throw new JobExecutionException(IMPORT_PLATFORM_CSV_JOB_NAME, e);
+    }
+  }
+
+  @PostMapping("platform")
+  @ResponseStatus(HttpStatus.OK)
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200"),
+  })
+  public ResponseEntity<String> startPlatformImport(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+    File file = fileHelperService.getFileFromMultipart(multipartFile);
+    JobParameters jobParameters = new JobParametersBuilder()
+        .addString(FULL_PATH_FILENAME_JOB_PARAMETER, file.getAbsolutePath())
+        .addLong(START_AT_JOB_PARAMETER, System.currentTimeMillis()).toJobParameters();
+    try {
+      JobExecution execution = jobLauncher.run(importPlatformCsvJob, jobParameters);
+      log.info("Job executed with status: {}", execution.getExitStatus().getExitCode());
+      return ResponseEntity.ok().body(execution.toString());
+    } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
+             JobParametersInvalidException | IllegalArgumentException e) {
+      throw new JobExecutionException(IMPORT_PLATFORM_CSV_JOB_NAME, e);
     } finally {
       Files.delete(file.toPath());
     }
