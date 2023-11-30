@@ -72,7 +72,7 @@ export class WorkflowDialogComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private workflowService: WorkflowService,
     private userAdministrationService: UserAdministrationService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) {}
 
   ngOnInit() {
@@ -80,6 +80,7 @@ export class WorkflowDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.ngUnsubscribe.next();
     this.ngUnsubscribe.unsubscribe();
   }
 
@@ -111,7 +112,7 @@ export class WorkflowDialogComponent implements OnInit, OnDestroy {
     const lineVersionWorkflows: LineVersionWorkflow[] = [];
     this.data.lineRecord.lineVersionWorkflows?.forEach((lvw) => lineVersionWorkflows.push(lvw));
     return lineVersionWorkflows.filter(
-      (lvw) => lvw.workflowProcessingStatus === WorkflowProcessingStatus.InProgress
+      (lvw) => lvw.workflowProcessingStatus === WorkflowProcessingStatus.InProgress,
     );
   }
 

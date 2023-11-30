@@ -27,18 +27,18 @@ export class NotificationService implements OnDestroy {
     first(
       (event) =>
         event instanceof NavigationStart &&
-        !this.router.getCurrentNavigation()?.extras.state?.notDismissSnackBar
+        !this.router.getCurrentNavigation()?.extras.state?.notDismissSnackBar,
     ),
     takeUntil(this.ngUnsubscribe),
     catchError((err) => {
       throw err;
-    })
+    }),
   );
 
   constructor(
     private snackBar: MatSnackBar,
     private translateService: TranslateService,
-    private router: Router
+    private router: Router,
   ) {}
 
   success(msg: string, param?: NotificationParamMessage) {
@@ -63,7 +63,7 @@ export class NotificationService implements OnDestroy {
     }
     const errorSnackBar = this.snackBar.openFromComponent(
       ErrorNotificationComponent,
-      this.SNACK_BAR_CONFIG
+      this.SNACK_BAR_CONFIG,
     );
     this.dismissOnNavigation(errorSnackBar);
   }
@@ -84,7 +84,7 @@ export class NotificationService implements OnDestroy {
         catchError((err) => {
           console.log(err);
           throw err;
-        })
+        }),
       )
       .subscribe((value) => {
         this.SNACK_BAR_CONFIG['duration'] = 5000;
@@ -99,7 +99,7 @@ export class NotificationService implements OnDestroy {
 
   ngOnDestroy() {
     this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.ngUnsubscribe.unsubscribe();
   }
 
   private dismissOnNavigation(errorSnackBar: MatSnackBarRef<ErrorNotificationComponent>) {

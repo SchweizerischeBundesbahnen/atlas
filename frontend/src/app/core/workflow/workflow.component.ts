@@ -35,7 +35,7 @@ export class WorkflowComponent implements OnInit, OnChanges, OnDestroy {
     private readonly notificationService: NotificationService,
     private readonly translateService: TranslateService,
     private readonly lineService: LinesService,
-    private readonly workflowDialogService: WorkflowDialogService
+    private readonly workflowDialogService: WorkflowDialogService,
   ) {}
 
   ngOnInit(): void {
@@ -62,13 +62,13 @@ export class WorkflowComponent implements OnInit, OnChanges, OnDestroy {
     const lineVersionWorkflows: LineVersionWorkflow[] = [];
     this.lineRecord.lineVersionWorkflows?.forEach((lvw) => lineVersionWorkflows.push(lvw));
     return lineVersionWorkflows.filter(
-      (lvw) => lvw.workflowProcessingStatus === WorkflowProcessingStatus.InProgress
+      (lvw) => lvw.workflowProcessingStatus === WorkflowProcessingStatus.InProgress,
     );
   }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.ngUnsubscribe.unsubscribe();
   }
 
   newWorkflow() {

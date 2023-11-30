@@ -41,7 +41,7 @@ export class LineDetailComponent
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
     protected authService: AuthService,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
   ) {
     super(router, dialogService, notificationService, authService, activatedRoute);
   }
@@ -213,7 +213,7 @@ export class LineDetailComponent
         ]),
         validFrom: new FormControl(
           version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required]
+          [Validators.required],
         ),
         validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [
           Validators.required,
@@ -228,7 +228,7 @@ export class LineDetailComponent
         editor: new FormControl(version.editor),
         creator: new FormControl(version.creator),
       },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
     );
   }
 
@@ -238,6 +238,6 @@ export class LineDetailComponent
 
   ngOnDestroy() {
     this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.ngUnsubscribe.unsubscribe();
   }
 }
