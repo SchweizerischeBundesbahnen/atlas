@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true, example = "STATIC_VISUAL_INFORMATION")
 @Getter
 @RequiredArgsConstructor
+// Ranks from https://code.sbb.ch/projects/PT_ABLDIDOK/repos/didokfrontend/browse/src/app/pages/behig/models/behig-form.ts
 public enum InfoOpportunityAttributeType {
 
   TO_BE_COMPLETED(0),

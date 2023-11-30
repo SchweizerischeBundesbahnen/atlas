@@ -39,8 +39,8 @@ public class PrmCsvService {
       csvModels.sort(comparing(T::getValidFrom));
       stopPointCsvModelListMerged = new ArrayList<>(List.of(csvModels.get(0)));
       for (int currentIndex = 1; currentIndex < csvModels.size(); currentIndex++) {
-        final T previous = stopPointCsvModelListMerged.get(stopPointCsvModelListMerged.size() - 1);
-        final T current = csvModels.get(currentIndex);
+        T previous = stopPointCsvModelListMerged.get(stopPointCsvModelListMerged.size() - 1);
+        T current = csvModels.get(currentIndex);
         if (DateHelper.areDatesSequential(previous.getValidTo(), current.getValidFrom())
             && current.equals(previous)) {
           removeCurrentVersionIncreaseNextValidTo(previous, current);
@@ -62,19 +62,19 @@ public class PrmCsvService {
   }
 
   public <T extends BasePrmCsvModel> PrmCsvMergeResult<T> mergeEqualVersions(List<T> stopPointCsvModels) {
-    List<T> stopPointCsvModelListMerged = new ArrayList<>();
+    List<T> csvModelListMerged = new ArrayList<>();
     if (stopPointCsvModels.size() == 1) {
       return new PrmCsvMergeResult<>(stopPointCsvModels);
     }
     List<String> mergedSloids = new ArrayList<>();
     if (stopPointCsvModels.size() > 1) {
       stopPointCsvModels.sort(comparing(T::getValidFrom));
-      stopPointCsvModelListMerged = new ArrayList<>(
+      csvModelListMerged = new ArrayList<>(
           List.of(stopPointCsvModels.get(0))
       );
       for (int currentIndex = 1; currentIndex < stopPointCsvModels.size(); currentIndex++) {
-        final T previous = stopPointCsvModelListMerged.get(stopPointCsvModelListMerged.size() - 1);
-        final T current = stopPointCsvModels.get(currentIndex);
+        T previous = csvModelListMerged.get(csvModelListMerged.size() - 1);
+        T current = stopPointCsvModels.get(currentIndex);
         if (current.getValidFrom().isEqual(previous.getValidFrom()) && current.getValidTo().isEqual(previous.getValidTo())
             && current.equals(previous)) {
           log.info("Found duplicated version with number {}", previous.getSloid());
@@ -82,11 +82,11 @@ public class PrmCsvService {
           log.info("Version-2 [{}]-[{}]", current.getValidFrom(), current.getValidTo());
           mergedSloids.add(current.getSloid());
         } else {
-          stopPointCsvModelListMerged.add(current);
+          csvModelListMerged.add(current);
         }
       }
     }
-    return new PrmCsvMergeResult<>(stopPointCsvModelListMerged, mergedSloids);
+    return new PrmCsvMergeResult<>(csvModelListMerged, mergedSloids);
   }
 
   @Data

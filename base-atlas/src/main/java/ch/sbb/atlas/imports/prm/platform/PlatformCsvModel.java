@@ -84,12 +84,6 @@ public class PlatformCsvModel extends BasePrmCsvModel {
   @JsonProperty("WHEELCHAIR_AREA_WIDTH")
   private Double wheelchairAreaWidth;
 
-  @JsonProperty("DESCRIPTION")
-  private String description;
-
-  @JsonProperty("DESCRIPTION_OPERATIONAL")
-  private Integer descriptionOperational;
-
   @JsonProperty("VALID_FROM")
   private LocalDate validFrom;
 

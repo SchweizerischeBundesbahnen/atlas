@@ -8,10 +8,11 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true, example = "LIFTS")
 @Getter
 @RequiredArgsConstructor
+// Ranks from https://code.sbb.ch/projects/PT_ABLDIDOK/repos/didokfrontend/browse/src/app/pages/behig/models/behig-form.ts
 public enum BoardingDeviceAttributeType {
   TO_BE_COMPLETED(0),
-  NO(1),
-  NOT_APPLICABLE(2),
+  NO(2),
+  NOT_APPLICABLE(3),
   RAMPS(9),
   LIFTS(10);
 
