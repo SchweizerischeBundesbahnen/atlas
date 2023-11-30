@@ -3,7 +3,7 @@ package ch.sbb.prm.directory.service.dataimport;
 import ch.sbb.atlas.api.prm.model.platform.CreatePlatformVersionModel;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.ItemImportResult.ItemImportResultBuilder;
-import ch.sbb.atlas.imports.prm.stoppoint.PlatformCsvModelContainer;
+import ch.sbb.atlas.imports.prm.platform.PlatformCsvModelContainer;
 import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
@@ -14,8 +14,6 @@ import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.mapper.PlatformVersionMapper;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.service.PlatformService;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +50,7 @@ public class PlatformImportService extends BasePrmImportService<PlatformVersion>
         .build();
   }
 
-  public List<ItemImportResult> importPlatforms(@NotNull @NotEmpty List<PlatformCsvModelContainer> csvModelContainers) {
+  public List<ItemImportResult> importPlatforms(List<PlatformCsvModelContainer> csvModelContainers) {
     List<ItemImportResult> importResults = new ArrayList<>();
     for (PlatformCsvModelContainer container : csvModelContainers) {
       for (List<CreatePlatformVersionModel> createPlatform : container.getModelsGroupedBySloid()){
@@ -81,7 +79,7 @@ public class PlatformImportService extends BasePrmImportService<PlatformVersion>
       updateVersionForImportService(platformVersion);
       return buildSuccessImportResult(platformVersion);
     } catch (VersioningNoChangesException exception) {
-      log.info("Found version {} to import without modification: {}", platformVersion.getSloid(),          exception.getMessage());
+      log.info("Found version {} to import without modification: {}", platformVersion.getSloid(), exception.getMessage());
       return buildSuccessImportResult(platformVersion);
     } catch (Exception exception) {
       log.error("[Platform Import]: Error during update", exception);
@@ -95,7 +93,8 @@ public class PlatformImportService extends BasePrmImportService<PlatformVersion>
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(current, edited,
         dbVersions);
     ImportUtils.overrideEditionDateAndEditorOnVersionedObjects(edited, versionedObjects);
-    versionableService.applyVersioning(PlatformVersion.class, versionedObjects, this::save,        new ApplyVersioningDeleteByIdLongConsumer(platformRepository));
+    versionableService.applyVersioning(PlatformVersion.class, versionedObjects, this::save,
+        new ApplyVersioningDeleteByIdLongConsumer(platformRepository));
   }
 
   private ItemImportResult createVersion(PlatformVersion platformVersion) {
@@ -107,6 +106,5 @@ public class PlatformImportService extends BasePrmImportService<PlatformVersion>
       return buildFailedImportResult(platformVersion, exception);
     }
   }
-
 
 }
