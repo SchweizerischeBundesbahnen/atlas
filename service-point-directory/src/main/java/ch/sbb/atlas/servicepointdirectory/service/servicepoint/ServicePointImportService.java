@@ -25,8 +25,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
@@ -108,11 +110,11 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
       for (ServicePointVersion servicePointVersion : servicePointVersions) {
         boolean servicePointNumberExisting = servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber());
 
-        //TODO umbauen
-        ItemImportResult heightResult = getHeightForServicePointImport(servicePointVersion);
-        if(heightResult != null){
-          importResults.add(heightResult);
-        }
+        //TODO cleanup
+        //TODO Problem Mail response is incorrect
+        Stream.of(getHeightForServicePointImport(servicePointVersion))
+            .filter(Objects::nonNull)
+            .forEach(importResults::add);
 
         if (servicePointNumberExisting) {
           ItemImportResult updateResult = updateServicePointVersion(servicePointVersion);
@@ -167,8 +169,6 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
 
   private ItemImportResult updateServicePointVersion(ServicePointVersion servicePointVersion) {
     try {
-
-
       updateServicePointVersionForImportService(servicePointVersion);
       return buildSuccessImportResult(servicePointVersion);
     } catch (Exception exception) {
@@ -186,14 +186,14 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
   }
 
   private ItemImportResult getHeightForServicePointImport(ServicePointVersion servicePointVersion){
-    //TODO im update und create machen das try und catch
-
+    //TODO clean up "return null"
     try{
-      geoReferenceService.getHeightForServicePoint(servicePointVersion, true);
+      geoReferenceService.getHeightForServicePoint(servicePointVersion);
+      return null;
     }catch (HeightNotCalculatableException e){
-      return buildFailedImportResult(servicePointVersion, e);
+      return buildSuccessImportFailedHeightResult(servicePointVersion, e);
     }
-    return null;
   }
 
 }
+
