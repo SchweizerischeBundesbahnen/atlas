@@ -16,6 +16,28 @@ import java.util.Optional;
 @Service
 public class ServicePointStatusDecider {
 
+    public boolean checkIfVersionIsIsolated(ServicePointVersion newServicePointVersion,
+                                             List<ServicePointVersion> servicePointVersions) {
+        if (checkIfSomeDateEqual(newServicePointVersion, servicePointVersions)) {
+            return false;
+        }
+        return !checkIfSomeOverlap(newServicePointVersion, servicePointVersions);
+    }
+
+    public boolean checkIfSomeOverlap(ServicePointVersion newServicePointVersion, List<ServicePointVersion> servicePointVersions) {
+        return servicePointVersions.stream()
+                .anyMatch(servicePointVersion -> servicePointVersion.getValidFrom().isBefore(newServicePointVersion.getValidTo()) &&
+                        newServicePointVersion.getValidFrom().isBefore(servicePointVersion.getValidTo()));
+    }
+
+    public boolean checkIfSomeDateEqual(ServicePointVersion newServicePointVersion, List<ServicePointVersion> servicePointVersionList) {
+        return servicePointVersionList.stream()
+                .anyMatch(servicePointVersion -> servicePointVersion.getValidFrom().equals(newServicePointVersion.getValidFrom())
+                || servicePointVersion.getValidFrom().equals(newServicePointVersion.getValidTo())
+                || servicePointVersion.getValidTo().equals(newServicePointVersion.getValidFrom())
+                || servicePointVersion.getValidTo().equals(newServicePointVersion.getValidTo()));
+    }
+
     private boolean isStatusInReview(ServicePointVersion newServicePointVersion,
                                      Optional<ServicePointVersion> currentServicePointVersion) {
         if (currentServicePointVersion == null) { // if it is stopPoint creation from scratch
@@ -59,6 +81,10 @@ public class ServicePointStatusDecider {
     public Status getStatusForServicePoint(ServicePointVersion newServicePointVersion,
                                            Optional<ServicePointVersion> currentServicePointVersion,
                                            List<ServicePointVersion> servicePointVersions) {
+        if (servicePointVersions!=null && !servicePointVersions.isEmpty() && checkIfVersionIsIsolated(newServicePointVersion, servicePointVersions) && newServicePointVersion.isStopPoint()) {
+            return Status.IN_REVIEW;
+        }
+
         if (isStatusInReview(newServicePointVersion, currentServicePointVersion)) {
             if (servicePointVersions == null || servicePointVersions.isEmpty()) {
                 return Status.IN_REVIEW;
