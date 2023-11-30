@@ -40,7 +40,7 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
       firstName: new FormControl(''),
       lastName: new FormControl(''),
       function: new FormControl(''),
-    }
+    },
   );
   private ngUnsubscribe = new Subject<void>();
 
@@ -48,7 +48,7 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private workflowService: WorkflowService,
-    private lineService: LinesService
+    private lineService: LinesService,
   ) {}
 
   ngOnInit() {
@@ -74,7 +74,7 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
   }
 
   populateLineVersionSnapshotFormGroup(
-    version: LineVersionSnapshot
+    version: LineVersionSnapshot,
   ): FormGroup<LineVersionSnapshotDetailFormGroup> {
     return new FormGroup<LineVersionSnapshotDetailFormGroup>({
       parentObjectId: new FormControl(version.parentObjectId),
@@ -107,7 +107,7 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.ngUnsubscribe.unsubscribe();
   }
 
   private checkLineVersionSNapshottedAlreadyExists() {
@@ -117,7 +117,7 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (lineVersions) => {
           const lineVersionsFiltered: LineVersion[] = lineVersions.filter(
-            (version) => version.id === this.lineVersionSnapshot.parentObjectId
+            (version) => version.id === this.lineVersionSnapshot.parentObjectId,
           );
           if (lineVersionsFiltered.length === 0) {
             this.versionAlreadyExists = false;
@@ -148,7 +148,7 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
 
   private initLineVersionSnapshotForm() {
     this.lineVersionSnapshotForm = this.populateLineVersionSnapshotFormGroup(
-      this.lineVersionSnapshot
+      this.lineVersionSnapshot,
     );
     this.lineVersionSnapshotForm.disable();
   }

@@ -78,7 +78,6 @@ const routes: Routes = [
           },
         ],
       },
-
       {
         path: Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path + '/:id',
         component: TrafficPointElementsDetailComponent,

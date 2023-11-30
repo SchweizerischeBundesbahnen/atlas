@@ -37,12 +37,11 @@ export class BusinessOrganisationDetailComponent
   constructor(
     protected router: Router,
     private businessOrganisationsService: BusinessOrganisationsService,
-    private formBuilder: FormBuilder,
     private businessOrganisationLanguageService: BusinessOrganisationLanguageService,
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
     protected authService: AuthService,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
   ) {
     super(router, dialogService, notificationService, authService, activatedRoute);
   }
@@ -106,7 +105,7 @@ export class BusinessOrganisationDetailComponent
         .revokeBusinessOrganisation(selectedRecord.sboid)
         .subscribe(() => {
           this.notificationService.success(
-            'BODI.BUSINESS_ORGANISATION.NOTIFICATION.REVOKE_SUCCESS'
+            'BODI.BUSINESS_ORGANISATION.NOTIFICATION.REVOKE_SUCCESS',
           );
           this.router
             .navigate([Pages.BODI.path, Pages.BUSINESS_ORGANISATIONS.path, selectedRecord.sboid])
@@ -122,7 +121,7 @@ export class BusinessOrganisationDetailComponent
         .deleteBusinessOrganisation(selectedVersion.sboid)
         .subscribe(() => {
           this.notificationService.success(
-            'BODI.BUSINESS_ORGANISATION.NOTIFICATION.DELETE_SUCCESS'
+            'BODI.BUSINESS_ORGANISATION.NOTIFICATION.DELETE_SUCCESS',
           );
           this.backToOverview();
         });
@@ -189,7 +188,7 @@ export class BusinessOrganisationDetailComponent
         businessTypes: new FormControl(version.businessTypes),
         validFrom: new FormControl(
           version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required]
+          [Validators.required],
         ),
         validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [
           Validators.required,
@@ -200,12 +199,12 @@ export class BusinessOrganisationDetailComponent
         editor: new FormControl(version.editor),
         creator: new FormControl(version.creator),
       },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
     );
   }
 
   ngOnDestroy() {
     this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.ngUnsubscribe.unsubscribe();
   }
 }

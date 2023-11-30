@@ -65,7 +65,9 @@ export class TrafficPointMapService {
   }
 
   setDisplayedTrafficPoints(trafficPoints: DisplayableTrafficPoint[]) {
-    const source = this.mapService.map.getSource(MAP_TRAFFIC_POINT_LAYER_NAME) as GeoJSONSource;
+    const source = this.mapService.map.getSource(MAP_TRAFFIC_POINT_LAYER_NAME) as
+      | GeoJSONSource
+      | undefined;
 
     const trafficPointGeoInformation: Feature[] = trafficPoints.map((point) => {
       return {
@@ -81,7 +83,7 @@ export class TrafficPointMapService {
         },
       };
     });
-    source.setData({
+    source?.setData({
       type: 'FeatureCollection',
       features: trafficPointGeoInformation,
     });
