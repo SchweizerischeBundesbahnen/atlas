@@ -1,4 +1,4 @@
-package ch.sbb.atlas.imports.prm.stoppoint;
+package ch.sbb.atlas.imports.prm.platform;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;

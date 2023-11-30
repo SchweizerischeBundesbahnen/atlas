@@ -38,7 +38,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @Slf4j
-public class ServicePointImportBatchConfig extends BaseImportBatchJob{
+public class ServicePointImportBatchConfig extends BaseImportBatchJob {
 
   private static final int SERVICE_POINT_CHUNK_SIZE = 20;
   private static final int TRAFFIC_POINT_CHUNK_SIZE = 50;

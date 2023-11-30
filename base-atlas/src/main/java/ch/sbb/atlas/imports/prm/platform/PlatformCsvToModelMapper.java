@@ -1,4 +1,4 @@
-package ch.sbb.atlas.imports.prm.stoppoint.mapper;
+package ch.sbb.atlas.imports.prm.platform;
 
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
@@ -7,7 +7,6 @@ import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.platform.CreatePlatformVersionModel;
-import ch.sbb.atlas.imports.prm.stoppoint.PlatformCsvModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import java.util.Collections;
 import java.util.List;
