@@ -24,7 +24,6 @@ public class StopPointCsvModelContainer {
   private Integer didokCode;
   private List<StopPointCsvModel> stopPointCsvModels;
   private List<CreateStopPointVersionModel> createStopPointVersionModels;
-  private boolean hasMergedVersion;
 
   public Integer getDidokCode() {
     return ServicePointNumber.removeCheckDigit(this.didokCode);
