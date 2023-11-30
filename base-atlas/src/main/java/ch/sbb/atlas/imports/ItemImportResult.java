@@ -37,4 +37,10 @@ public class ItemImportResult {
         .message("[FAILED]: This version could not be imported due to: " + exception.getMessage());
   }
 
+  public static ItemImportResultBuilder failedHeightResultBuilder(Exception exception) {
+    return ItemImportResult.builder()
+        .status(ItemImportResponseStatus.FAILED)
+        .message("[Success]: This version was imported successfully but the height could not be calculated due to: " + exception.getMessage());
+  }
+
 }
