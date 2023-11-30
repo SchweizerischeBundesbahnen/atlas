@@ -24,5 +24,10 @@ public abstract class BaseImportService<T extends  Versionable> {
     return addInfoToItemImportResult(failedResultBuilder, element);
   }
 
+  protected ItemImportResult buildSuccessImportFailedHeightResult(T element, Exception exception){
+    ItemImportResultBuilder failedResultBuilder = ItemImportResult.failedHeightResultBuilder(exception);
+    return addInfoToItemImportResult(failedResultBuilder, element);
+  }
+
 
 }
