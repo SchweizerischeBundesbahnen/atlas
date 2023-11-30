@@ -1,42 +1,27 @@
 package ch.sbb.atlas.imports.prm.platform;
 
 import ch.sbb.atlas.api.prm.model.platform.CreatePlatformVersionModel;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.imports.prm.BasePrmCsvModelContainer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Data
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
-@NoArgsConstructor
-@Builder
+@SuperBuilder
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PlatformCsvModelContainer {
+public class PlatformCsvModelContainer extends BasePrmCsvModelContainer<PlatformCsvModel> {
 
-  private Integer didokCode;
-  private List<PlatformCsvModel> platformCsvModels;
-  private boolean hasMergedVersion;
-
-  public Integer getDidokCode() {
-    return ServicePointNumber.removeCheckDigit(this.didokCode);
-  }
-
-  public Collection<List<CreatePlatformVersionModel>> getModelsGroupedBySloid() {
-    return platformCsvModels.stream().map(PlatformCsvToModelMapper::toModel)
-        .collect(Collectors.groupingBy(CreatePlatformVersionModel::getSloid)).values();
-  }
-
-  public List<CreatePlatformVersionModel> getAllCreateModels() {
-    return getModelsGroupedBySloid().stream().flatMap(Collection::stream).toList();
+  public List<CreatePlatformVersionModel> getCreateModels() {
+    return getCsvModels().stream().map(PlatformCsvToModelMapper::toModel).toList();
   }
 
 }

@@ -1,6 +1,6 @@
 package ch.sbb.importservice.config;
 
-import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_STOP_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_PLATFORM_CSV_JOB_NAME;
 
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModel;
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModelContainer;
@@ -37,7 +37,7 @@ public class PlatformImportBatchConfig extends BaseImportBatchJob {
   protected PlatformImportBatchConfig(JobRepository jobRepository, PlatformTransactionManager transactionManager,
       JobCompletionListener jobCompletionListener, StepTracerListener stepTracerListener,
       PlatformApiWriter platformApiWriter, PlatformCsvService platformCsvService) {
-    super(jobRepository, transactionManager,jobCompletionListener,stepTracerListener);
+    super(jobRepository, transactionManager, jobCompletionListener, stepTracerListener);
     this.platformApiWriter = platformApiWriter;
     this.platformCsvService = platformCsvService;
   }
@@ -53,9 +53,10 @@ public class PlatformImportBatchConfig extends BaseImportBatchJob {
     } else {
       actualPlatformCsvModels = platformCsvService.getActualCsvModelsFromS3();
     }
-    final List<PlatformCsvModelContainer> platformCsvModelContainers = platformCsvService.mapToPlatformCsvModelContainers(actualPlatformCsvModels);
+    List<PlatformCsvModelContainer> platformCsvModelContainers = platformCsvService.mapToPlatformCsvModelContainers(
+        actualPlatformCsvModels);
     long prunedPlatformModels = platformCsvModelContainers.stream()
-        .mapToLong(i -> i.getAllCreateModels().size()).sum();
+        .mapToLong(i -> i.getCreateModels().size()).sum();
     log.info("Found " + prunedPlatformModels + " platforms to import...");
     log.info("Start sending requests to service-point-directory with chunkSize: {}...", PRM_CHUNK_SIZE);
     return new ThreadSafeListItemReader<>(Collections.synchronizedList(platformCsvModelContainers));
@@ -78,7 +79,7 @@ public class PlatformImportBatchConfig extends BaseImportBatchJob {
 
   @Bean
   public Job importPlatformCsvJob(ThreadSafeListItemReader<PlatformCsvModelContainer> platformListItemReader) {
-    return new JobBuilder(IMPORT_STOP_POINT_CSV_JOB_NAME, jobRepository)
+    return new JobBuilder(IMPORT_PLATFORM_CSV_JOB_NAME, jobRepository)
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
         .flow(parsePlatformCsvStep(platformListItemReader))
