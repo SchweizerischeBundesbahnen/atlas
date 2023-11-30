@@ -1,5 +1,17 @@
 package ch.sbb.prm.directory.controller;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import ch.sbb.atlas.api.prm.model.platform.CreatePlatformVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -17,26 +29,13 @@ import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.RelationService;
+import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Set;
-
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
 class PlatformVersionControllerApiTest extends BaseControllerApiTest {
@@ -99,7 +98,7 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
-    CreatePlatformVersionModel createPlatformVersionModel = PlatformTestData.getCreatePlatformVersionModel();
+    CreatePlatformVersionModel createPlatformVersionModel = PlatformTestData.getCreateCompletePlatformVersionModel();
     createPlatformVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //when && then
@@ -169,7 +168,7 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
             .andExpect(status().isPreconditionFailed())
             .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7001 does not exist.")));
   }
-
+  //TODO: add tests reduced and complete
   /**
    * Szenario 8a: Letzte Version terminieren wenn nur validTo ist updated
    * NEU:      |______________________|
@@ -185,10 +184,10 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
     stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.saveAndFlush(stopPointVersion);
-    PlatformVersion version1 = PlatformTestData.builderVersion1().build();
+    PlatformVersion version1 = PlatformTestData.builderCompleteVersion1().build();
     version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     platformRepository.saveAndFlush(version1);
-    PlatformVersion version2 = PlatformTestData.builderVersion2().build();
+    PlatformVersion version2 = PlatformTestData.builderCompleteVersion2().build();
     version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     platformRepository.saveAndFlush(version2);
 
@@ -208,7 +207,7 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setInclination(version2.getInclination());
     editedVersionModel.setInclinationLongitudinal(version2.getInclinationLongitudinal());
     editedVersionModel.setInclinationWidth(version2.getInclinationWidth());
-    editedVersionModel.setInfoOpportunities(version2.getInfoOpportunities().stream().toList());
+    editedVersionModel.setInfoOpportunities(null);
     editedVersionModel.setLevelAccessWheelchair(version2.getLevelAccessWheelchair());
     editedVersionModel.setPartialElevation(version2.getPartialElevation());
     editedVersionModel.setSuperelevation(version2.getSuperelevation());
