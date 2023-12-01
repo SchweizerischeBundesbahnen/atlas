@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
@@ -17,8 +18,11 @@ public class AmazonFileStreamingServiceImpl implements AmazonFileStreamingServic
   @Override
   public StreamingResponseBody streamFileAndDecompress(AmazonBucket amazonBucket, String fileToStream) {
     File file = amazonService.pullFile(amazonBucket, fileToStream);
-    InputStream inputStream = new ByteArrayInputStream(fileService.gzipDecompress(file));
-    return fileService.toStreamingResponse(file, inputStream);
+    try(InputStream inputStream = new ByteArrayInputStream(fileService.gzipDecompress(file))){
+      return fileService.toStreamingResponse(file, inputStream);
+    } catch (IOException e) {
+      throw new IllegalStateException("Could not stream the file", e);
+    }
   }
 
   @Override
