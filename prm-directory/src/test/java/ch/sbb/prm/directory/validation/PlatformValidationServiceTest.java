@@ -40,8 +40,8 @@ class PlatformValidationServiceTest {
     ErrorResponse errorResponse = result.getErrorResponse();
     assertThat(errorResponse.getStatus()).isEqualTo(400);
     assertThat(errorResponse.getMessage()).isEqualTo(
-        "PlatformVersion with sloid [ch:1:sloid:12345:1] cannot be save: Attempting to save a Reduced object with wrong "
-            + "properties population!");
+        "PlatformVersionwith sloid [ch:1:sloid:12345:1] cannot be save: Attempting to save a Reduced object that contains "
+            + "Complete properties!");
     assertThat(errorResponse.getDetails()).hasSize(9);
   }
 
@@ -77,8 +77,8 @@ class PlatformValidationServiceTest {
     ErrorResponse errorResponse = result.getErrorResponse();
     assertThat(errorResponse.getStatus()).isEqualTo(400);
     assertThat(errorResponse.getMessage()).isEqualTo(
-        "PlatformVersion with sloid [ch:1:sloid:12345:1] cannot be save: Attempting to save a Complete object with wrong "
-            + "properties population!");
+        "PlatformVersionwith sloid [ch:1:sloid:12345:1] cannot be save: Attempting to save a Complete object that does not "
+            + "contains all mandatory properties!");
     SortedSet<Detail> errorResponseDetails = errorResponse.getDetails();
     assertThat(errorResponseDetails).hasSize(1);
     Detail detail = errorResponseDetails.stream().toList().get(0);
@@ -87,24 +87,12 @@ class PlatformValidationServiceTest {
   }
 
   @Test
-  void shouldValidateWhenCompleteContainsAllDeclaredCompleteFields() {
+  void shouldValidateWhenCompleteContainsAllFields() {
     //given
     PlatformVersion platformVersion = PlatformTestData.getCompletePlatformVersion();
 
     //when
     Executable executable = () -> platformValidationService.validateRecordingVariants(platformVersion, false);
-
-    //then
-    assertDoesNotThrow(executable);
-  }
-
-  @Test
-  void shouldValidateWhenReducedContainsAllDeclaredReducedFields() {
-    //given
-    PlatformVersion platformVersion = PlatformTestData.getReducedPlatformVersion();
-
-    //when
-    Executable executable = () -> platformValidationService.validateRecordingVariants(platformVersion, true);
 
     //then
     assertDoesNotThrow(executable);
