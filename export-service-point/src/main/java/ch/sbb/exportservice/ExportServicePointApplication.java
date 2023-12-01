@@ -1,11 +1,10 @@
 package ch.sbb.exportservice;
 
 import ch.sbb.atlas.kafka.KafkaTruststorePreparation;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import java.time.ZoneId;
 import java.util.TimeZone;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import static ch.sbb.atlas.api.AtlasApiConstants.ZURICH_ZONE_ID;
 

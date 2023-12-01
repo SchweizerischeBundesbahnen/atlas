@@ -4,13 +4,14 @@ import ch.sbb.exportservice.model.SePoDiBatchExportFileName;
 import ch.sbb.exportservice.model.SePoDiExportType;
 import jakarta.validation.constraints.NotNull;
 import java.util.concurrent.Callable;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadPoolExecutor.AbortPolicy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.AsyncTaskExecutor;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -25,10 +26,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableAsync
 public class AsyncConfig implements AsyncConfigurer {
 
-  private static final int CORE_POOL_SIZE = 5;
-  private static final int MAX_POOL_SIZE = 10;
-  private static final int QUEUE_CAPACITY = 25;
-  private static final int DEFAULT_TIMEOUT = 600_000;
+  private static final int THREAD_EXECUTION_SIZE = 64;
+
+  private static final int DEFAULT_TIMEOUT = 7200000;
 
   /**
    * When using {@link org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody}
@@ -40,12 +40,23 @@ public class AsyncConfig implements AsyncConfigurer {
    */
   @Override
   @Bean(name = "taskExecutor")
-  public Executor getAsyncExecutor() {
+  public TaskExecutor getAsyncExecutor() {
     log.debug("Creating Async Task Executor");
     ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-    executor.setCorePoolSize(CORE_POOL_SIZE);
-    executor.setMaxPoolSize(MAX_POOL_SIZE);
-    executor.setQueueCapacity(QUEUE_CAPACITY);
+    executor.setCorePoolSize(5);
+    executor.setMaxPoolSize(10);
+    executor.setQueueCapacity(25);
+    executor.setRejectedExecutionHandler(new AbortPolicy());
+    executor.setThreadNamePrefix("asyncExecutor-");
+    executor.setRejectedExecutionHandler((r, executor1) -> {
+      log.info("rejectedExecution");
+      try {
+        executor1.getQueue().put(r);
+      } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+      }
+    });
+    executor.initialize();
     return executor;
   }
 
