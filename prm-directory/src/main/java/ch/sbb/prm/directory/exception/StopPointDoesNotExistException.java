@@ -16,7 +16,7 @@ public class StopPointDoesNotExistException extends AtlasException {
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
         .status(HttpStatus.PRECONDITION_FAILED.value())
-        .message("The stop place with sloid " + getSloid() + " does not exist.")
+        .message("The stop point with sloid " + getSloid() + " does not exist.")
         .build();
   }
 
