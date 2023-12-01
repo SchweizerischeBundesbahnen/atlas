@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -76,11 +77,18 @@ public class AmazonServiceImpl implements AmazonService {
   }
 
   private static File getFile(String filePath, S3Object s3Object, String dir) {
-    File downloadedFile = new File(dir + filePath.replace("/", "_"));
-    try (FileOutputStream fileOutputStream = new FileOutputStream(downloadedFile);
-        S3ObjectInputStream s3InputStream = s3Object.getObjectContent()) {
-      fileOutputStream.write(s3InputStream.readAllBytes());
-      return downloadedFile;
+    try {
+      File downloadedFile =
+          Files.createTempFile(Path.of(dir), filePath.replace("/", "_"), null).toFile();
+      downloadedFile.deleteOnExit();
+      log.warn(downloadedFile.getName());
+      try (FileOutputStream fileOutputStream = new FileOutputStream(downloadedFile);
+          S3ObjectInputStream s3InputStream = s3Object.getObjectContent()) {
+        fileOutputStream.write(s3InputStream.readAllBytes());
+        return downloadedFile;
+      } catch (IOException e) {
+        throw new FileException("There was a problem with downloading filePath=" + filePath + " to dir=" + dir, e);
+      }
     } catch (IOException e) {
       throw new FileException("There was a problem with downloading filePath=" + filePath + " to dir=" + dir, e);
     }
