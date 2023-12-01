@@ -73,7 +73,6 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     editedVersion.setInclinationWidth(323.12);
     editedVersion.setAdditionalInformation("no additional");
     editedVersion.setLevelAccessWheelchair(BasicAttributeType.YES);
-    editedVersion.setPartialElevation(true);
     editedVersion.setSuperelevation(121.123);
     editedVersion.setCreationDate(version2.getCreationDate());
     editedVersion.setEditionDate(version2.getEditionDate());
@@ -84,7 +83,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     platformService.updatePlatformVersion(version2,editedVersion);
 
     //then
-    List<PlatformVersion> result = platformRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
+    List<PlatformVersion> result = platformRepository.findAllBySloidOrderByValidFrom(version2.getSloid());
     assertThat(result).isNotNull().hasSize(2);
 
     PlatformVersion firstTemporalVersion = result.get(0);
@@ -266,7 +265,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     //when
     platformService.updatePlatformVersion(version2, editedVersion);
     //then
-    List<PlatformVersion> result = platformRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
+    List<PlatformVersion> result = platformRepository.findAllBySloidOrderByValidFrom(version2.getSloid());
     assertThat(result).isNotNull().hasSize(5);
 
     PlatformVersion firstTemporalVersion = result.get(0);
@@ -330,7 +329,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     //when
     platformService.updatePlatformVersion(version2, editedVersion);
     //then
-    List<PlatformVersion> result = platformRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
+    List<PlatformVersion> result = platformRepository.findAllBySloidOrderByValidFrom(version2.getSloid());
     assertThat(result).isNotNull().hasSize(2);
 
     PlatformVersion firstTemporalVersion = result.get(0);
