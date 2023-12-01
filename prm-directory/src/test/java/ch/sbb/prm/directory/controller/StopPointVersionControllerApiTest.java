@@ -161,7 +161,7 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/stop-points").contentType(contentType)
             .content(mapper.writeValueAsString(stopPointCreateVersionModel)))
         .andExpect(status().isConflict())
-        .andExpect(jsonPath("$.message", is("The stop place with sloid ch:1:sloid:12345 already exists.")));
+        .andExpect(jsonPath("$.message", is("The stop point with sloid ch:1:sloid:12345 already exists.")));
 
   }
 
