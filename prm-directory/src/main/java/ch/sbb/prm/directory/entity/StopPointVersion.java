@@ -11,7 +11,8 @@ import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.prm.directory.service.PrmVersionable;
 import ch.sbb.prm.directory.validation.PrmMeansOfTransportHelper;
 import ch.sbb.prm.directory.validation.VariantsReducedCompleteRecordable;
-import ch.sbb.prm.directory.validation.annotation.NotForReducedVariant;
+import ch.sbb.prm.directory.validation.annotation.PrmVariant;
+import ch.sbb.prm.directory.validation.annotation.RecordingVariant;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
@@ -28,6 +29,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,10 +39,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
-
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -87,94 +87,94 @@ public class StopPointVersion extends BasePrmImportEntity implements PrmVersiona
   private String freeText;
 
   @Size(max = AtlasFieldLengths.LENGTH_2000)
-  @NotForReducedVariant
+  @PrmVariant(variant = RecordingVariant.COMPLETE)
   @AtlasVersionableProperty
   private String address;
 
   @Size(max = AtlasFieldLengths.LENGTH_50)
-  @NotForReducedVariant
+  @PrmVariant(variant = RecordingVariant.COMPLETE)
   @AtlasVersionableProperty
   private String zipCode;
 
   @Size(max = AtlasFieldLengths.LENGTH_75)
-  @NotForReducedVariant
+  @PrmVariant(variant = RecordingVariant.COMPLETE)
   @AtlasVersionableProperty
   private String city;
 
-  @NotForReducedVariant(nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType alternativeTransport;
 
   @Size(max = AtlasFieldLengths.LENGTH_2000)
-  @NotForReducedVariant
+  @PrmVariant(variant = RecordingVariant.COMPLETE)
   @AtlasVersionableProperty
   private String alternativeTransportCondition;
 
-  @NotForReducedVariant(nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType assistanceAvailability;
 
   @Size(max = AtlasFieldLengths.LENGTH_2000)
-  @NotForReducedVariant
+  @PrmVariant(variant = RecordingVariant.COMPLETE)
   @AtlasVersionableProperty
   private String assistanceCondition;
 
-  @NotForReducedVariant(nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType assistanceService;
 
-  @NotForReducedVariant(nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType audioTicketMachine;
 
   @Size(max = AtlasFieldLengths.LENGTH_2000)
-  @NotForReducedVariant
+  @PrmVariant(variant = RecordingVariant.COMPLETE)
   @AtlasVersionableProperty
   private String additionalInformation;
 
-  @NotForReducedVariant(nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType dynamicAudioSystem;
 
-  @NotForReducedVariant(nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType dynamicOpticSystem;
 
-  @NotForReducedVariant
+  @PrmVariant(variant = RecordingVariant.COMPLETE)
   @AtlasVersionableProperty
   private String infoTicketMachine;
 
-  @NotForReducedVariant
+  @PrmVariant(variant = RecordingVariant.COMPLETE)
   @AtlasVersionableProperty
   private Boolean interoperable;
 
   @Size(max = AtlasFieldLengths.LENGTH_500)
-  @NotForReducedVariant
+  @PrmVariant(variant = RecordingVariant.COMPLETE)
   @AtlasVersionableProperty
   private String url;
 
-  @NotForReducedVariant(nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType visualInfo;
 
-  @NotForReducedVariant(nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType wheelchairTicketMachine;
 
-  @NotForReducedVariant(nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType assistanceRequestFulfilled;
 
-  @NotForReducedVariant(nullable = false)
+  @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType ticketMachine;
