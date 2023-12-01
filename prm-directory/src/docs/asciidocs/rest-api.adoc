@@ -106,9 +106,21 @@ include::{snippets}/reference-point-version-controller-api-test/should-not-creat
 
 include::{snippets}/platform-version-controller-api-test/should-get-platforms-version/auto-section.adoc[]
 
-=== Create Platforms - Successfully
+=== Create Complete Platforms - Successfully
 
-include::{snippets}/platform-version-controller-api-test/should-create-platform/auto-section.adoc[]
+include::{snippets}/platform-version-controller-api-test/should-create-complete-platform/auto-section.adoc[]
+
+=== Create Reduced Platforms - Successfully
+
+include::{snippets}/platform-version-controller-api-test/should-create-reduced-platform/auto-section.adoc[]
+
+=== Create Reduced Platforms - Unsuccessfully
+
+include::{snippets}/platform-version-controller-api-test/should-not-create-platform-reduced-when-complete-properties-provided/auto-section.adoc[]
+
+=== Create Complete Platforms - Unsuccessfully
+
+include::{snippets}/platform-version-controller-api-test/should-not-create-platform-completed-when-reduced-properties-provided/auto-section.adoc[]
 
 === Update Platforms - Successfully
 
