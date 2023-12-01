@@ -87,6 +87,7 @@ logging:
   level:
     root: INFO
     org.hibernate: ERROR
+    ch.sbb.atlas.versioning: ERROR
 
 atlas:
   client:
