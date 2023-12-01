@@ -61,7 +61,6 @@ public class PlatformImportService extends BasePrmImportService<PlatformVersion>
         boolean platformExists = platformRepository.existsBySloid(platformVersion.getSloid());
         ItemImportResult itemImportResult;
 
-        clearVariantDependentProperties(platformVersion);
         if (platformExists) {
           itemImportResult = updateStopPoint(platformVersion);
         } else {
@@ -75,6 +74,7 @@ public class PlatformImportService extends BasePrmImportService<PlatformVersion>
 
   private ItemImportResult updateStopPoint(PlatformVersion platformVersion) {
     try {
+      clearVariantDependentProperties(platformVersion);
       updateVersionForImportService(platformVersion);
       return buildSuccessImportResult(platformVersion);
     } catch (VersioningNoChangesException exception) {
@@ -99,6 +99,7 @@ public class PlatformImportService extends BasePrmImportService<PlatformVersion>
   private ItemImportResult createVersion(PlatformVersion platformVersion) {
     try {
       sharedServicePointService.validateTrafficPointElementExists(platformVersion.getParentServicePointSloid(), platformVersion.getSloid());
+      clearVariantDependentProperties(platformVersion);
       PlatformVersion savedVersion = platformService.save(platformVersion);
       return buildSuccessImportResult(savedVersion);
     } catch (AtlasException exception) {
