@@ -26,7 +26,7 @@ class PlatformValidationServiceTest {
   }
 
   @Test
-  void shouldNotValidateWhenReducedPlatformContainsAllFields() {
+  void shouldNotValidateWhenCompletePlatformContainsAllFields() {
     //given
     PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
 
@@ -43,6 +43,22 @@ class PlatformValidationServiceTest {
         "PlatformVersion with sloid [ch:1:sloid:12345:1] cannot be save: Attempting to save a Reduced object with wrong "
             + "properties population!");
     assertThat(errorResponse.getDetails()).hasSize(9);
+  }
+
+  @Test
+  void shouldNotAllowCompletePlatformWithInfoOpportunities() {
+    //given
+    PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
+    assertThat(platformVersion.getInfoOpportunities()).isNotEmpty();
+
+    //when
+    RecordingVariantException result = Assertions.assertThrows(
+        RecordingVariantException.class,
+        () -> platformValidationService.validateRecordingVariants(platformVersion, false));
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getErrorConstraintMap()).containsKey("infoOpportunities");
   }
 
   @Test
