@@ -32,11 +32,11 @@ public class RecordingVariantException extends AtlasException {
   }
 
   private String buildErrorMsg() {
-    StringBuilder builder = new StringBuilder(objectName + "with sloid [" + sloid + "] cannot be save: ");
+    StringBuilder builder = new StringBuilder(objectName + " with sloid [" + sloid + "] cannot be save: ");
     if(isReduced){
-      builder.append("Attempting to save a Reduced object that contains Complete properties!");
+      builder.append("Attempting to save a Reduced object with wrong properties population!");
     }else {
-      builder.append("Attempting to save a Complete object that does not contains all mandatory properties!");
+      builder.append("Attempting to save a Complete object with wrong properties population!");
     }
     return builder.toString();
   }
