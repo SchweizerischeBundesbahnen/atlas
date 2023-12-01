@@ -51,7 +51,7 @@ public class ServicePointSearchVersionRepository {
     mapSqlParameterSource.addValue("ends_with", "%" + sanitizeValue);
     mapSqlParameterSource.addValue("ends_with_space", "% " + sanitizeValue);
     mapSqlParameterSource.addValue("contains_value", "%" + sanitizeValue + "%");
-    mapSqlParameterSource.addValue("swiss_country_code", "%" + Country.SWITZERLAND.getUicCode() + "%");
+    mapSqlParameterSource.addValue("swiss_country_code", Country.SWITZERLAND.getUicCode().toString() + "%");
 
     if (isSwissOnlyStopPointServicePoint) {
       mapSqlParameterSource.addValue("countries", SWISS_ONLY_COUNTRIES);
@@ -89,7 +89,7 @@ public class ServicePointSearchVersionRepository {
         $SWISS_ONLY_COUNTRY_CLAUSE
         order by
             (case
-                when cast(number as text) like ':swiss_country_code%' then 0
+                when cast(number as text) like :swiss_country_code then 0
                 else 1 end),
             $DYNAMIC_CASES_CLAUSE
             (case
