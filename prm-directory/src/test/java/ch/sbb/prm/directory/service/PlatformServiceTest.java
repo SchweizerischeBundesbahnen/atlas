@@ -1,5 +1,9 @@
 package ch.sbb.prm.directory.service;
 
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.PlatformTestData;
@@ -16,16 +20,11 @@ import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
+import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-import java.util.Set;
-
-import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PlatformServiceTest extends BasePrmServiceTest {
 
@@ -79,7 +78,7 @@ class PlatformServiceTest extends BasePrmServiceTest {
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
     stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
-    PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
+    PlatformVersion platformVersion = PlatformTestData.getCompletePlatformVersion();
     platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when
     platformService.createPlatformVersion(platformVersion);
@@ -104,7 +103,7 @@ class PlatformServiceTest extends BasePrmServiceTest {
     referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
-    PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
+    PlatformVersion platformVersion = PlatformTestData.getCompletePlatformVersion();
     platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //when
@@ -135,7 +134,7 @@ class PlatformServiceTest extends BasePrmServiceTest {
     referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
-    PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
+    PlatformVersion platformVersion = PlatformTestData.getCompletePlatformVersion();
     platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //when
