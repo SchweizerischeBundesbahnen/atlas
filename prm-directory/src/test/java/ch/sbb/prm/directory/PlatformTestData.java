@@ -135,6 +135,23 @@ public class PlatformTestData {
         .build();
 
   }
+  public static CreatePlatformVersionModel getCreateReducedPlatformVersionModel() {
+    return CreatePlatformVersionModel.builder()
+        .sloid("ch:1:sloid:12345:1")
+        .numberWithoutCheckDigit(8507000)
+        .validFrom(LocalDate.of(2003, 1, 1))
+        .validTo(LocalDate.of(2003, 12, 31))
+        .parentServicePointSloid("ch:1.sloid:12345")
+        .height(333.12)
+        .inclinationLongitudinal(123.12)
+        .infoOpportunities(List.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
+        .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
+        .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
+        .wheelchairAreaLength(456.321)
+        .wheelchairAreaWidth(321.123)
+        .build();
+
+  }
 
   public static PlatformVersionBuilder<?, ?> builderVersion1(){
     return PlatformVersion.builder()
@@ -268,6 +285,56 @@ public class PlatformTestData {
         .levelAccessWheelchair(BasicAttributeType.NO)
         .partialElevation(BooleanAttributeType.NO)
         .superelevation(321.123)
+        .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
+        .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
+        .wheelchairAreaLength(456.321)
+        .wheelchairAreaWidth(321.123);
+  }
+
+  public static PlatformVersionBuilder<?, ?> builderReducedVersion1(){
+    return PlatformVersion.builder()
+        .sloid("ch:1.sloid:12345:1")
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .parentServicePointSloid("ch:1.sloid:12345")
+        .height(123.12)
+        .inclinationLongitudinal(123.12)
+        .infoOpportunities(Set.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
+        .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
+        .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
+        .wheelchairAreaLength(456.321)
+        .wheelchairAreaWidth(321.123);
+
+
+  }
+
+  public static PlatformVersionBuilder<?, ?> builderReducedVersion2(){
+    return PlatformVersion.builder()
+        .sloid("ch:1.sloid:12345:1")
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
+        .validFrom(LocalDate.of(2001, 1, 1))
+        .validTo(LocalDate.of(2002, 12, 31))
+        .parentServicePointSloid("ch:1.sloid:12345")
+        .height(111.12)
+        .inclinationLongitudinal(123.12)
+        .infoOpportunities(Set.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
+        .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
+        .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
+        .wheelchairAreaLength(456.321)
+        .wheelchairAreaWidth(321.123);
+  }
+
+  public static PlatformVersionBuilder<?, ?> builderReducedVersion3(){
+    return PlatformVersion.builder()
+        .sloid("ch:1.sloid:12345:1")
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
+        .validFrom(LocalDate.of(2003, 1, 1))
+        .validTo(LocalDate.of(2003, 12, 31))
+        .parentServicePointSloid("ch:1.sloid:12345")
+        .height(333.12)
+        .inclinationLongitudinal(123.12)
+        .infoOpportunities(Set.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
         .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
         .wheelchairAreaLength(456.321)
