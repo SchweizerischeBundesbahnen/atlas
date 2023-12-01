@@ -28,12 +28,15 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
   private final StopPointRepository stopPointRepository;
   private final StopPointValidationService stopPointValidationService;
 
+  private final SharedServicePointService sharedServicePointService;
+
   public StopPointService(StopPointRepository stopPointRepository,
       VersionableService versionableService,
-      StopPointValidationService stopPointValidationService) {
+      StopPointValidationService stopPointValidationService, SharedServicePointService sharedServicePointService) {
     super(versionableService);
     this.stopPointRepository = stopPointRepository;
     this.stopPointValidationService = stopPointValidationService;
+    this.sharedServicePointService = sharedServicePointService;
   }
 
   @Override
@@ -46,6 +49,7 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
   public StopPointVersion save(StopPointVersion version) {
     version.setEditionDate(LocalDateTime.now());
     version.setEditor(UserService.getUserIdentifier());
+    sharedServicePointService.validateServicePointExists(version.getSloid()); // This check is still needed because of import StopPoint
     stopPointValidationService.validateStopPointRecordingVariants(version);
     return stopPointRepository.saveAndFlush(version);
   }
