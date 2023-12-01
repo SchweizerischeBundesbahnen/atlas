@@ -16,7 +16,7 @@ class StopPointDoesNotExistExceptionTest {
     //then
     ErrorResponse errorResponse = result.getErrorResponse();
     assertThat(errorResponse.getStatus()).isEqualTo(HttpStatus.PRECONDITION_FAILED.value());
-    assertThat(errorResponse.getMessage()).isEqualTo("The stop place with sloid ch:1:sloid:8000 does not exist.");
+    assertThat(errorResponse.getMessage()).isEqualTo("The stop point with sloid ch:1:sloid:8000 does not exist.");
   }
 
 }
