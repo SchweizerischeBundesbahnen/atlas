@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.concurrent.CompletableFuture;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -46,10 +47,12 @@ public class ExportStopPointBatchControllerApiV1 {
       @ApiResponse(responseCode = "404", description = "Object with filename myFile not found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
-  public ResponseEntity<StreamingResponseBody> streamExportJsonFile(@PathVariable PrmBatchExportFileName exportFileName,
+  @Async
+  public CompletableFuture<ResponseEntity<StreamingResponseBody>> streamExportJsonFile(@PathVariable PrmBatchExportFileName exportFileName,
       @PathVariable PrmExportType prmExportType) {
     StreamingResponseBody body = fileExportService.streamJsonFile(prmExportType, exportFileName);
-    return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body);
+    return CompletableFuture.completedFuture(
+        ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body));
   }
 
   @GetMapping(value = "json/latest/{exportFileName}/{prmExportType}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -58,11 +61,13 @@ public class ExportStopPointBatchControllerApiV1 {
       @ApiResponse(responseCode = "404", description = "No generated files found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
-  public ResponseEntity<StreamingResponseBody> streamLatestExportJsonFile(@PathVariable PrmBatchExportFileName exportFileName,
+  @Async
+  public CompletableFuture<ResponseEntity<StreamingResponseBody>> streamLatestExportJsonFile(@PathVariable PrmBatchExportFileName exportFileName,
       @PathVariable PrmExportType prmExportType) {
     String fileName = fileExportService.getLatestUploadedFileName(exportFileName, prmExportType);
     StreamingResponseBody body = fileExportService.streamLatestJsonFile(fileName);
-    return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body);
+    return CompletableFuture.completedFuture(
+        ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body));
   }
 
   @GetMapping(value = "download-gzip-json/{exportFileName}/{prmExportType}")
@@ -71,13 +76,14 @@ public class ExportStopPointBatchControllerApiV1 {
       @ApiResponse(responseCode = "404", description = "No filed found for today date", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
-  public ResponseEntity<StreamingResponseBody> streamExportGzFile(
+  @Async
+  public CompletableFuture<ResponseEntity<StreamingResponseBody>> streamExportGzFile(
       @PathVariable PrmBatchExportFileName exportFileName,
       @PathVariable PrmExportType prmExportType) throws NotAllowedExportFileException {
     String fileName = fileExportService.getBaseFileName(prmExportType, exportFileName);
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(fileName);
     StreamingResponseBody body = fileExportService.streamGzipFile(prmExportType, exportFileName);
-    return ResponseEntity.ok().headers(headers).body(body);
+    return CompletableFuture.completedFuture(ResponseEntity.ok().headers(headers).body(body));
   }
 
   @GetMapping(value = "download-gzip-json/latest/{exportFileName}/{prmExportType}")
@@ -86,13 +92,14 @@ public class ExportStopPointBatchControllerApiV1 {
       @ApiResponse(responseCode = "404", description = "No generated files found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
-  public ResponseEntity<StreamingResponseBody> streamLatestExportGzFile(
+  @Async
+  public CompletableFuture<ResponseEntity<StreamingResponseBody>> streamLatestExportGzFile(
       @PathVariable PrmBatchExportFileName exportFileName,
       @PathVariable PrmExportType prmExportType) throws NotAllowedExportFileException {
     String fileName = fileExportService.getLatestUploadedFileName(exportFileName, prmExportType);
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(extractFileNameFromS3ObjectName(fileName));
     StreamingResponseBody body = fileExportService.streamGzipFile(prmExportType, exportFileName);
-    return ResponseEntity.ok().headers(headers).body(body);
+    return CompletableFuture.completedFuture(ResponseEntity.ok().headers(headers).body(body));
   }
 
   @PostMapping("stop-point-batch")
