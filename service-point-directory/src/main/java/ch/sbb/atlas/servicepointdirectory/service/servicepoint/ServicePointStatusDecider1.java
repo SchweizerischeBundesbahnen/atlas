@@ -8,7 +8,6 @@ import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoloca
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.temporal.ChronoUnit;
@@ -19,12 +18,59 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ServicePointStatusDecider {
+public class ServicePointStatusDecider1 {
 
     private final GeoReferenceService geoReferenceService;
 
-    @Value("${validity-in-days}")
-    private String validityInDays;
+    public Status getStatusForServicePoint(ServicePointVersion newServicePointVersion,
+                                           Optional<ServicePointVersion> currentServicePointVersion,
+                                           List<ServicePointVersion> servicePointVersions) {
+        if (!checkForAllStatusPreconditions(newServicePointVersion)) {
+            return Status.VALIDATED;
+        }
+        if (servicePointVersions!=null &&
+                !servicePointVersions.isEmpty() &&
+                checkIfVersionIsIsolated(newServicePointVersion, servicePointVersions) &&
+                newServicePointVersion.isStopPoint()) {
+            return Status.DRAFT;
+        }
+
+        if (isStatusInReview(newServicePointVersion, currentServicePointVersion)) {
+            if (servicePointVersions == null || servicePointVersions.isEmpty()) {
+                return Status.DRAFT;
+            }
+            if (isThereTouchingVersionWithTheSameName(newServicePointVersion, servicePointVersions)) {
+                return Status.VALIDATED;
+            }
+            Optional<ServicePointVersion> servicePointVersion = findPreviousVersionOnSameTimeslot(newServicePointVersion, servicePointVersions);
+            if (servicePointVersion.isPresent()) return Status.DRAFT;
+        }
+        return Status.VALIDATED;
+    }
+
+    public boolean checkForAllStatusPreconditions(ServicePointVersion newServicePointVersion) {
+        boolean isSwissCountryCode = Objects.equals(newServicePointVersion.getCountry().getUicCode(), Country.SWITZERLAND.getUicCode());
+        boolean isValidityLongEnough = ChronoUnit.DAYS.between(newServicePointVersion.getValidFrom(), newServicePointVersion.getValidTo()) > 60;
+        boolean isSwissLocation = isLocatedInSwitzerland(newServicePointVersion);
+
+        return isSwissCountryCode &&
+                newServicePointVersion.isStopPoint() &&
+                isSwissLocation &&
+                isValidityLongEnough;
+    }
+
+    private boolean isLocatedInSwitzerland(ServicePointVersion newServicePointVersion) {
+        if (newServicePointVersion.getServicePointGeolocation() == null) {
+            return false;
+        }
+        ServicePointGeolocation servicePointGeolocation = newServicePointVersion.getServicePointGeolocation();
+        GeoReference geoReference = geoReferenceService.getGeoReference(servicePointGeolocation.asCoordinatePair());
+
+        boolean isSwissLocation = geoReference.getCountry().equals(Country.SWITZERLAND);
+        return isSwissLocation;
+    }
+
+
 
     public boolean checkIfVersionIsIsolated(ServicePointVersion newServicePointVersion,
                                              List<ServicePointVersion> servicePointVersions) {
@@ -75,50 +121,19 @@ public class ServicePointStatusDecider {
         return !newServicePointVersion.getDesignationOfficial().equals(currentServicePointVersion.getDesignationOfficial());
     }
 
-    private boolean isLocatedInSwitzerland(ServicePointVersion newServicePointVersion) {
-        if (newServicePointVersion.getServicePointGeolocation() == null) {
-            return false;
-        }
-        ServicePointGeolocation servicePointGeolocation = newServicePointVersion.getServicePointGeolocation();
-        GeoReference geoReference = geoReferenceService.getGeoReference(servicePointGeolocation.asCoordinatePair());
-
-        boolean isSwissLocation = geoReference.getCountry().equals(Country.SWITZERLAND);
-        return isSwissLocation;
-    }
-
     private boolean isChangeFromServicePointToStopPoint(ServicePointVersion newServicePointVersion, ServicePointVersion currentServicePointVersion) {
         return newServicePointVersion.isStopPoint() && !currentServicePointVersion.isStopPoint();
     }
 
     private boolean checkStatus(ServicePointVersion newServicePointVersion) {
         boolean isSwissCountryCode = Objects.equals(newServicePointVersion.getCountry().getUicCode(), Country.SWITZERLAND.getUicCode());
-        boolean isValidityLongEnough = ChronoUnit.DAYS.between(newServicePointVersion.getValidFrom(), newServicePointVersion.getValidTo()) > Long.parseLong(validityInDays);
+        boolean isValidityLongEnough = ChronoUnit.DAYS.between(newServicePointVersion.getValidFrom(), newServicePointVersion.getValidTo()) > 60;
         boolean isSwissLocation = isLocatedInSwitzerland(newServicePointVersion);
 
         return isSwissCountryCode &&
                 newServicePointVersion.isStopPoint() &&
                 isSwissLocation &&
                 isValidityLongEnough;
-    }
-
-    public Status getStatusForServicePoint(ServicePointVersion newServicePointVersion,
-                                           Optional<ServicePointVersion> currentServicePointVersion,
-                                           List<ServicePointVersion> servicePointVersions) {
-        if (servicePointVersions!=null && !servicePointVersions.isEmpty() && checkIfVersionIsIsolated(newServicePointVersion, servicePointVersions) && newServicePointVersion.isStopPoint()) {
-            return Status.DRAFT;
-        }
-
-        if (isStatusInReview(newServicePointVersion, currentServicePointVersion)) {
-            if (servicePointVersions == null || servicePointVersions.isEmpty()) {
-                return Status.DRAFT;
-            }
-            if (isThereTouchingVersionWithTheSameName(newServicePointVersion, servicePointVersions)) {
-                return Status.VALIDATED;
-            }
-            Optional<ServicePointVersion> servicePointVersion = findPreviousVersionOnSameTimeslot(newServicePointVersion, servicePointVersions);
-            if (servicePointVersion.isPresent()) return Status.DRAFT;
-        }
-        return Status.VALIDATED;
     }
 
     /**
