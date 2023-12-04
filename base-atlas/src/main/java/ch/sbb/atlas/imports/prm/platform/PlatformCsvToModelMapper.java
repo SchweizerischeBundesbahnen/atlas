@@ -16,7 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 @UtilityClass
 public class PlatformCsvToModelMapper {
 
-  public static CreatePlatformVersionModel toModel(PlatformCsvModel csvModel){
+  public static CreatePlatformVersionModel toModel(PlatformCsvModel csvModel) {
     return CreatePlatformVersionModel.builder()
         .numberWithoutCheckDigit(ServicePointNumber.removeCheckDigit(csvModel.getDidokCode()))
         .parentServicePointSloid(csvModel.getDsSloid())

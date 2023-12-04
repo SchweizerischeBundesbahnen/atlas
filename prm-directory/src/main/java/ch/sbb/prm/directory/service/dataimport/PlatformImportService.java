@@ -16,7 +16,6 @@ import ch.sbb.prm.directory.service.PlatformService;
 import ch.sbb.prm.directory.service.SharedServicePointService;
 import ch.sbb.prm.directory.service.StopPointService;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -62,7 +61,7 @@ public class PlatformImportService extends BasePrmImportService<PlatformVersion>
         ItemImportResult itemImportResult;
 
         if (platformExists) {
-          itemImportResult = updateStopPoint(platformVersion);
+          itemImportResult = updatePlatform(platformVersion);
         } else {
           itemImportResult = createVersion(platformVersion);
         }
@@ -72,7 +71,7 @@ public class PlatformImportService extends BasePrmImportService<PlatformVersion>
     return importResults;
   }
 
-  private ItemImportResult updateStopPoint(PlatformVersion platformVersion) {
+  private ItemImportResult updatePlatform(PlatformVersion platformVersion) {
     try {
       clearVariantDependentProperties(platformVersion);
       updateVersionForImportService(platformVersion);
@@ -123,7 +122,7 @@ public class PlatformImportService extends BasePrmImportService<PlatformVersion>
     } else {
       version.setHeight(null);
       version.setInclinationLongitudinal(null);
-      version.setInfoOpportunities(Collections.emptySet());
+      version.setInfoOpportunities(null);
       version.setPartialElevation(null);
       version.setTactileSystem(null);
       version.setVehicleAccess(null);
