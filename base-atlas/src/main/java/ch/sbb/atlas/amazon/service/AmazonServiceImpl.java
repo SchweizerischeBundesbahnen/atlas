@@ -69,8 +69,10 @@ public class AmazonServiceImpl implements AmazonService {
   public File pullFile(AmazonBucket bucket, String filePath) {
     try {
       S3Object s3Object = pullS3Object(bucket, filePath);
-      return getFile(filePath, s3Object, fileService.getDir());
-    } catch (AmazonS3Exception e) {
+      File file = getFile(filePath, s3Object, fileService.getDir());
+      s3Object.close();
+      return file;
+    } catch (AmazonS3Exception | IOException e) {
       log.error("AmazonS3Exception occurred! filePath={}, bucket={}", filePath, bucket, e);
       throw new FileNotFoundException(filePath);
     }
