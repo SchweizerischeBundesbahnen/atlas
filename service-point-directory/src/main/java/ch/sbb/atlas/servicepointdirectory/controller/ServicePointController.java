@@ -134,11 +134,9 @@ public class ServicePointController implements ServicePointApiV1 {
 
       servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel, manualServicePointNumber);
     }
-
     addGeoReferenceInformation(servicePointVersion);
     setCreationDateAndCreatorToNull(servicePointVersion);
     geoReferenceService.getHeightForServicePoint(servicePointVersion);
-
     ServicePointVersion createdVersion = servicePointService.save(servicePointVersion);
     servicePointDistributor.publishServicePointsWithNumbers(createdVersion.getNumber());
     return ServicePointVersionMapper.toModel(createdVersion);
@@ -213,7 +211,5 @@ public class ServicePointController implements ServicePointApiV1 {
       servicePointGeolocation.setSwissLocalityName(geoReference.getSwissLocalityName());
     }
   }
-
-
 
 }
