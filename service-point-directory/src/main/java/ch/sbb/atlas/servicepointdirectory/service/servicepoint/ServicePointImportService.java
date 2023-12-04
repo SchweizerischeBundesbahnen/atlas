@@ -6,7 +6,6 @@ import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.imports.util.DidokCsvMapper;
 import ch.sbb.atlas.imports.util.ImportUtils;
-import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -110,12 +109,6 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
       for (ServicePointVersion servicePointVersion : servicePointVersions) {
         boolean servicePointNumberExisting = servicePointService.isServicePointNumberExisting(servicePointVersion.getNumber());
 
-        //TODO cleanup
-        //TODO Problem Mail response is incorrect
-        Stream.of(getHeightForServicePointImport(servicePointVersion))
-            .filter(Objects::nonNull)
-            .forEach(importResults::add);
-
         if (servicePointNumberExisting) {
           ItemImportResult updateResult = updateServicePointVersion(servicePointVersion);
           importResults.add(updateResult);
@@ -156,44 +149,57 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
   }
 
   private ItemImportResult saveServicePointVersion(ServicePointVersion servicePointVersion) {
+    List<Exception> warnings = new ArrayList<>();
+
+    getHeightForServicePoint(servicePointVersion, warnings);
+
     try {
       ServicePointVersion savedServicePointVersion = servicePointService.saveWithoutValidationForImportOnly(servicePointVersion);
       servicePointNumberService.deleteAvailableNumber(savedServicePointVersion.getNumber(),
           savedServicePointVersion.getCountry());
-      return buildSuccessImportResult(savedServicePointVersion);
     } catch (Exception exception) {
-      log.error("[Service-Point Import]: Error during save", exception);
-      return buildFailedImportResult(servicePointVersion, exception);
+        log.error("[Service-Point Import]: Error during save", exception);
+        return buildFailedImportResult(servicePointVersion, exception);
     }
+
+    return buildSuccessMessageBasedOnWarnings(servicePointVersion, warnings);
   }
 
   private ItemImportResult updateServicePointVersion(ServicePointVersion servicePointVersion) {
+    List<Exception> warnings = new ArrayList<>();
+    getHeightForServicePoint(servicePointVersion, warnings);
+
     try {
       updateServicePointVersionForImportService(servicePointVersion);
+    } catch (VersioningNoChangesException exception) {
+      log.info("Found version {} to import without modification: {}",
+          servicePointVersion.getNumber().getValue(),
+          exception.getMessage()
+      );
       return buildSuccessImportResult(servicePointVersion);
     } catch (Exception exception) {
-      if (exception instanceof VersioningNoChangesException) {
-        log.info("Found version {} to import without modification: {}",
-            servicePointVersion.getNumber().getValue(),
-            exception.getMessage()
-        );
-        return buildSuccessImportResult(servicePointVersion);
-      } else {
-        log.error("[Service-Point Import]: Error during update", exception);
-        return buildFailedImportResult(servicePointVersion, exception);
-      }
+      log.error("[Service-Point Import]: Error during update", exception);
+      return buildFailedImportResult(servicePointVersion, exception);
     }
+
+    return buildSuccessMessageBasedOnWarnings(servicePointVersion, warnings);
   }
 
-  private ItemImportResult getHeightForServicePointImport(ServicePointVersion servicePointVersion){
-    //TODO clean up "return null"
-    try{
+  private void getHeightForServicePoint(ServicePointVersion servicePointVersion, List<Exception> warnings){
+    try {
       geoReferenceService.getHeightForServicePoint(servicePointVersion);
-      return null;
-    }catch (HeightNotCalculatableException e){
-      return buildSuccessImportFailedHeightResult(servicePointVersion, e);
+    } catch (HeightNotCalculatableException exception) {
+      log.warn("[Service-Point Import]: Warning during height calculation ", exception);
+      warnings.add(exception);
     }
   }
 
+  private ItemImportResult buildSuccessMessageBasedOnWarnings(ServicePointVersion servicePointVersion, List<Exception> warnings){
+    if(!warnings.isEmpty()) {
+      return buildSuccessWarningImportResult(servicePointVersion, warnings);
+    } else {
+      return buildSuccessImportResult(servicePointVersion);
+    }
+  }
 }
 
