@@ -1,19 +1,37 @@
 package ch.sbb.atlas.servicepointdirectory.service;
 
+import ch.sbb.atlas.api.servicepoint.GeoReference;
+import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointStatusDecider;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
-public class ServicePointStatusDeciderTest {
+@IntegrationTest
+class ServicePointStatusDeciderTest {
 
-    private final ServicePointStatusDecider servicePointStatusDecider = new ServicePointStatusDecider();
+    @MockBean
+    private GeoReferenceService geoReferenceService;
+
+    private final ServicePointStatusDecider servicePointStatusDecider = new ServicePointStatusDecider(geoReferenceService);
+
+    @BeforeEach
+    void setUp() {
+        GeoReference geoReference = GeoReference.builder().country(Country.SWITZERLAND).build();
+        when(geoReferenceService.getGeoReference(any())).thenReturn(geoReference);
+    }
 
     @Test
     void testCheck() {
