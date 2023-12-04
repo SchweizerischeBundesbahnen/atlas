@@ -156,9 +156,8 @@ class GeoReferenceServiceTest {
   void shouldNotGetForeignCoordinates(){
     CoordinatePair coordinate = CoordinatePair.builder()
         .spatialReference(SpatialReference.WGS84)
-        //Coordinates of Milano
-        .east(9.189982)
-        .north(45.464204)
+        .east(10.32713502296)
+        .north(55.56215489276)
         .build();
 
     GeoAdminHeightResponse geoAdminHeightResponse = geoReferenceService.getHeight(coordinate);
