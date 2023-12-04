@@ -121,9 +121,35 @@
             <b th:text="'Total Success Imported CSV lines: ' + ${properties.get(0).get('successImportedItemsSize')}  "></b>
         </li>
         <li>
+            <b th:text="'Total Success with Warnings Imported CSV lines: ' + ${properties.get(0).get('successWarningImportedItemsSize')}"></b>
+        </li>
+        <li>
             <b th:text="'Total Failed Imported CSV lines: ' + ${properties.get(0).get('failedImportedItemsSize')}"></b>
         </li>
     </ul>
+    <!-- new -->
+    <div class='message mt-1' th:if="${!properties.get(0).get('successWarningImportedItems').isEmpty()}"
+         th:text="'See the imported Objects summary in the following table:'">
+    </div>
+    <div class='mt-1' th:if="${!properties.get(0).get('successWarningImportedItems').isEmpty()}">
+        <table>
+            <thead>
+            <caption>Imported items</caption>
+            <tr>
+                <th>Item Number</th>
+                <th>Response Status</th>
+                <th>Response Message</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${properties.get(0).get('successWarningImportedItems')}">
+                <td th:text='${item.processedItem}'></td>
+                <td th:text='${item.processedItemStatus}'></td>
+                <td th:text='${item.processedItemMessage}'></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
     <div class='message mt-1' th:if="${!properties.get(0).get('failedImportedItems').isEmpty()}"
          th:text="'See the imported Objects summary in the following table:'">

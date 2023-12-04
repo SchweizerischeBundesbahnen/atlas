@@ -138,6 +138,7 @@ public class ServicePointController implements ServicePointApiV1 {
     addGeoReferenceInformation(servicePointVersion);
     setCreationDateAndCreatorToNull(servicePointVersion);
     geoReferenceService.getHeightForServicePoint(servicePointVersion);
+
     ServicePointVersion createdVersion = servicePointService.save(servicePointVersion);
     servicePointDistributor.publishServicePointsWithNumbers(createdVersion.getNumber());
     return ServicePointVersionMapper.toModel(createdVersion);
@@ -160,6 +161,7 @@ public class ServicePointController implements ServicePointApiV1 {
 
     ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(updateServicePointVersionModel,
         servicePointVersionToUpdate.getNumber());
+
     addGeoReferenceInformation(editedVersion);
     geoReferenceService.getHeightForServicePoint(editedVersion);
 
@@ -200,7 +202,7 @@ public class ServicePointController implements ServicePointApiV1 {
   private void addGeoReferenceInformation(ServicePointVersion servicePointVersion) {
     if (servicePointVersion.hasGeolocation()) {
       ServicePointGeolocation servicePointGeolocation = servicePointVersion.getServicePointGeolocation();
-      GeoReference geoReference = geoReferenceService.getGeoReference(servicePointGeolocation.asCoordinatePair());
+      GeoReference geoReference = geoReferenceService.getGeoReferenceWithoutHeight(servicePointGeolocation.asCoordinatePair());
 
       servicePointGeolocation.setCountry(geoReference.getCountry());
       servicePointGeolocation.setSwissCanton(geoReference.getSwissCanton());
