@@ -8,6 +8,7 @@ import java.util.concurrent.ThreadPoolExecutor.AbortPolicy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.AsyncTaskExecutor;
@@ -24,11 +25,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Slf4j
 @Configuration
 @EnableAsync
-public class AsyncConfig implements AsyncConfigurer {
+public class AsyncConfig implements AsyncConfigurer , DisposableBean {
 
-  private static final int THREAD_EXECUTION_SIZE = 64;
+  private static final int CORE_POOL_SIZE = 100;
+  private static final int MAX_POOL_SIZE = 200;
+  private static final int QUEUE_CAPACITY = 100;
 
   private static final int DEFAULT_TIMEOUT = 7200000;
+
+  private ThreadPoolTaskExecutor executor;
 
   /**
    * When using {@link org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody}
@@ -42,16 +47,18 @@ public class AsyncConfig implements AsyncConfigurer {
   @Bean(name = "taskExecutor")
   public TaskExecutor getAsyncExecutor() {
     log.debug("Creating Async Task Executor");
-    ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-    executor.setCorePoolSize(5);
-    executor.setMaxPoolSize(10);
-    executor.setQueueCapacity(25);
+    executor = new ThreadPoolTaskExecutor();
+    executor.setCorePoolSize(CORE_POOL_SIZE);
+    executor.setMaxPoolSize(MAX_POOL_SIZE);
+    executor.setQueueCapacity(QUEUE_CAPACITY);
     executor.setRejectedExecutionHandler(new AbortPolicy());
-    executor.setThreadNamePrefix("asyncExecutor-");
-    executor.setRejectedExecutionHandler((r, executor1) -> {
-      log.info("rejectedExecution");
+    executor.setThreadNamePrefix("async-executor-");
+    executor.setWaitForTasksToCompleteOnShutdown(true);
+    executor.setRejectedExecutionHandler((rejected, exec) -> {
+      log.warn("Execution rejected...");
       try {
-        executor1.getQueue().put(r);
+        log.warn("Put rejected execution in queue...");
+        exec.getQueue().put(rejected);
       } catch (InterruptedException e) {
         throw new RuntimeException(e);
       }
@@ -62,6 +69,7 @@ public class AsyncConfig implements AsyncConfigurer {
 
   @Override
   public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+    log.error("SimpleAsyncUncaughtExceptionHandler occurred!");
     return new SimpleAsyncUncaughtExceptionHandler();
   }
 
@@ -88,5 +96,11 @@ public class AsyncConfig implements AsyncConfigurer {
         return super.handleTimeout(request, task);
       }
     };
+  }
+
+  @Override
+  public void destroy(){
+    log.info("Shutdown executor...");
+    executor.shutdown();
   }
 }
