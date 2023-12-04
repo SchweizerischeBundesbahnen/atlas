@@ -1,7 +1,10 @@
 package ch.sbb.atlas.imports;
 
 import ch.sbb.atlas.imports.ItemImportResult.ItemImportResultBuilder;
+import ch.sbb.atlas.imports.servicepoint.enumeration.ItemImportResponseStatus;
 import ch.sbb.atlas.versioning.model.Versionable;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -24,9 +27,14 @@ public abstract class BaseImportService<T extends  Versionable> {
     return addInfoToItemImportResult(failedResultBuilder, element);
   }
 
-  protected ItemImportResult buildSuccessImportFailedHeightResult(T element, Exception exception){
-    ItemImportResultBuilder failedResultBuilder = ItemImportResult.failedHeightResultBuilder(exception);
-    return addInfoToItemImportResult(failedResultBuilder, element);
+  protected ItemImportResult buildSuccessWarningImportResult(T element,  List<Exception> exceptions){
+    String combinedWarningMessage = exceptions.stream()
+        .map(Exception::getMessage)
+        .collect(Collectors.joining(", ", "[WARNING]: This version was imported successfully but it has warnings: ", ""));
+
+    ItemImportResultBuilder successWarningResultBuilder = ItemImportResult.successWarningResultBuilder(combinedWarningMessage);
+
+    return addInfoToItemImportResult(successWarningResultBuilder, element);
   }
 
 
