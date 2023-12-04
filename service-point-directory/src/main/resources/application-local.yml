@@ -3,6 +3,8 @@ server:
   error:
     include-message: always
 
+validity-in-days: 60
+
 management:
   endpoint:
     health:
