@@ -3,8 +3,6 @@ package ch.sbb.atlas.imports.prm.platform;
 import ch.sbb.atlas.imports.prm.BasePrmCsvModel;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -83,24 +81,6 @@ public class PlatformCsvModel extends BasePrmCsvModel {
 
   @JsonProperty("WHEELCHAIR_AREA_WIDTH")
   private Double wheelchairAreaWidth;
-
-  @JsonProperty("VALID_FROM")
-  private LocalDate validFrom;
-
-  @JsonProperty("VALID_TO")
-  private LocalDate validTo;
-
-  @JsonProperty("ADD_DATE")
-  private LocalDateTime addDate;
-
-  @JsonProperty("ADDED_BY")
-  private String addedBy;
-
-  @JsonProperty("MODIFIED_DATE")
-  private LocalDateTime modifiedDate;
-
-  @JsonProperty("MODIFIED_BY")
-  private String modifiedBy;
 
   @JsonProperty("DS_SLOID")
   private String dsSloid;
