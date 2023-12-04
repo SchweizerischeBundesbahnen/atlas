@@ -80,7 +80,6 @@ model/district.ts
 model/errorDetail.ts
 model/errorResponse.ts
 model/examinantWorkflowCheck.ts
-model/geoAdminHeightResponse.ts
 model/geoReference.ts
 model/geolocation.ts
 model/geolocationCreate.ts

@@ -49,7 +49,6 @@ export * from './district';
 export * from './errorDetail';
 export * from './errorResponse';
 export * from './examinantWorkflowCheck';
-export * from './geoAdminHeightResponse';
 export * from './geoReference';
 export * from './geolocation';
 export * from './geolocationCreate';
