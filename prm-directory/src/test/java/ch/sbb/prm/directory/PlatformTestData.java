@@ -14,6 +14,7 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.PlatformVersion.PlatformVersionBuilder;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
@@ -45,6 +46,10 @@ public class PlatformTestData {
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
         .wheelchairAreaLength(456.321)
         .wheelchairAreaWidth(321.123)
+        .editionDate(LocalDateTime.now())
+        .creationDate(LocalDateTime.now())
+        .creator("u123456")
+        .editor("u123456")
         .build();
 
   }
