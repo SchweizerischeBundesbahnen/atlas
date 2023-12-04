@@ -1,8 +1,12 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
+import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +15,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ServicePointStatusDecider {
+
+    private final GeoReferenceService geoReferenceService;
 
     public boolean checkIfVersionIsIsolated(ServicePointVersion newServicePointVersion,
                                              List<ServicePointVersion> servicePointVersions) {
@@ -65,6 +71,17 @@ public class ServicePointStatusDecider {
         return !newServicePointVersion.getDesignationOfficial().equals(currentServicePointVersion.getDesignationOfficial());
     }
 
+    private boolean isLocatedInSwitzerland(ServicePointVersion newServicePointVersion) {
+        if (newServicePointVersion.getServicePointGeolocation() == null) {
+            return false;
+        }
+        ServicePointGeolocation servicePointGeolocation = newServicePointVersion.getServicePointGeolocation();
+        GeoReference geoReference = geoReferenceService.getGeoReference(servicePointGeolocation.asCoordinatePair());
+
+        boolean isSwissLocation = geoReference.getCountry().equals(Country.SWITZERLAND);
+        return isSwissLocation;
+    }
+
     private boolean isChangeFromServicePointToStopPoint(ServicePointVersion newServicePointVersion, ServicePointVersion currentServicePointVersion) {
         return newServicePointVersion.isStopPoint() && !currentServicePointVersion.isStopPoint();
     }
@@ -72,9 +89,11 @@ public class ServicePointStatusDecider {
     private boolean checkStatus(ServicePointVersion newServicePointVersion) {
         boolean isSwissCountryCode = Objects.equals(newServicePointVersion.getCountry().getUicCode(), Country.SWITZERLAND.getUicCode());
         boolean isValidityLongEnough = ChronoUnit.DAYS.between(newServicePointVersion.getValidFrom(), newServicePointVersion.getValidTo()) > 60;
+        boolean isSwissLocation = isLocatedInSwitzerland(newServicePointVersion);
 
         return isSwissCountryCode &&
                 newServicePointVersion.isStopPoint() &&
+                isSwissLocation &&
                 isValidityLongEnough;
     }
 
