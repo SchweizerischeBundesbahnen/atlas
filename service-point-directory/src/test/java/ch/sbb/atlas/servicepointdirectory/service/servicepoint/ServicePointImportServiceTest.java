@@ -1,12 +1,11 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
@@ -14,6 +13,14 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointNumberRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.util.Pair;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -22,13 +29,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.util.Pair;
-import org.springframework.transaction.annotation.Transactional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @Transactional
@@ -110,6 +112,9 @@ class ServicePointImportServiceTest {
     assertThat(result).isNotNull();
     assertThat(itemImportResults).hasSize(5);
     assertThat(result).hasSize(3);
+    assertThat(result.get(0).getStatus()).isEqualTo(Status.DRAFT);
+    assertThat(result.get(1).getStatus()).isEqualTo(Status.IN_REVIEW);
+    assertThat(result.get(2).getStatus()).isEqualTo(Status.VALIDATED);
     for (ServicePointVersion servicePointVersion : result) {
       assertThat(servicePointVersion.getNumber()).isNotNull();
       assertThat(servicePointVersion.getNumber()).isEqualTo(servicePointNumber);
@@ -478,7 +483,7 @@ class ServicePointImportServiceTest {
         .isFahrplan(true)
         .nummer(didokCode)
         .laendercode(80)
-        .status(1)
+        .status(0)
         .abkuerzung("TEST")
         .didokCode(didokCode)
         .comment("BAV-Kommentar")
@@ -509,7 +514,7 @@ class ServicePointImportServiceTest {
         .isFahrplan(true)
         .nummer(didokCode)
         .laendercode(80)
-        .status(1)
+        .status(2)
         .didokCode(didokCode)
         .comment("BAV-Kommentar")
         .build();
@@ -524,7 +529,7 @@ class ServicePointImportServiceTest {
         .isFahrplan(true)
         .nummer(didokCode)
         .laendercode(80)
-        .status(1)
+        .status(3)
         .didokCode(didokCode)
         .comment("BAV-Kommentar")
         .build();
@@ -539,7 +544,7 @@ class ServicePointImportServiceTest {
         .isFahrplan(true)
         .nummer(didokCode)
         .laendercode(80)
-        .status(1)
+        .status(4)
         .didokCode(didokCode)
         .comment("BAV-Kommentar")
         .build();
