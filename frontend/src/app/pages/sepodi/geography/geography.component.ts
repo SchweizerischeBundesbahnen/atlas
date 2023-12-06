@@ -117,6 +117,7 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy() {
     this.mapService.exitCoordinateSelectionMode();
+    this.destroySubscriptions$.next();
     this.destroySubscriptions$.complete();
   }
 
