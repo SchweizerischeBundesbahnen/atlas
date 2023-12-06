@@ -40,7 +40,7 @@ class GeoReferenceServiceTest {
         .east(2568989.30320000000)
         .north(1141633.69605000000)
         .build();
-    GeoReference geoReference = geoReferenceService.getGeoReference(coordinate);
+    GeoReference geoReference = geoReferenceService.getGeoReference(coordinate, false);
 
     GeoReference expectedGeoReference = GeoReference.builder()
         .country(Country.SWITZERLAND)
@@ -69,7 +69,7 @@ class GeoReferenceServiceTest {
         .east(4047745.97821)
         .north(1411920.22041)
         .build();
-    GeoReference geoReference = geoReferenceService.getGeoReference(coordinate);
+    GeoReference geoReference = geoReferenceService.getGeoReference(coordinate,false);
 
     GeoReference expectedGeoReference = GeoReference.builder()
         .country(Country.ROMANIA)
@@ -91,7 +91,7 @@ class GeoReferenceServiceTest {
         .east(47.25201833567)
         .north(26.7540122798)
         .build();
-    GeoReference geoReference = geoReferenceService.getGeoReference(coordinate);
+    GeoReference geoReference = geoReferenceService.getGeoReference(coordinate, false);
 
     GeoReference expectedGeoReference = GeoReference.builder()
         .country(Country.ROMANIA)

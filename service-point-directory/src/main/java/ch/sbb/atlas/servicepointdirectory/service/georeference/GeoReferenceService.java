@@ -12,13 +12,11 @@ import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.exception.HeightNotCalculatableException;
-import ch.sbb.atlas.servicepointdirectory.geodata.transformer.GeometryTransformer;
 import feign.FeignException.FeignClientException;
 import java.math.BigDecimal;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.locationtech.jts.geom.Coordinate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -32,29 +30,23 @@ public class GeoReferenceService {
 
   private final CoordinateTransformer coordinateTransformer = new CoordinateTransformer();
 
-  private final GeometryTransformer geometryTransformer;
 
-  public GeoReference getGeoReference(CoordinatePair coordinatePair) {
-    Optional<GeoAdminHeightResponse> geoAdminHeightResponse = Optional.ofNullable(getHeight(coordinatePair));
-
+  public GeoReference getGeoReference(CoordinatePair coordinatePair, boolean isAddGeoReferenceInformationCalled) {
     GeoAdminResponse geoAdminResponse = geoAdminChClient.getGeoReference(new GeoAdminParams(coordinatePair));
-    GeoReference swissTopoInformation = toGeoReference(geoAdminResponse, geoAdminHeightResponse);
+    GeoReference swissTopoInformation = toGeoReference(geoAdminResponse);
+
+    if (!isAddGeoReferenceInformationCalled){
+      GeoAdminHeightResponse geoAdminHeightResponse = getHeight(coordinatePair);
+      swissTopoInformation.setHeight(geoAdminHeightResponse.getHeight());
+    }
+
     if (swissTopoInformation.getCountry() == null) {
       return getRokasOsmInformation(coordinatePair);
     }
     return swissTopoInformation;
   }
 
-  public GeoReference getGeoReferenceWithoutHeight(CoordinatePair coordinatePair){
-    GeoAdminResponse geoAdminResponse = geoAdminChClient.getGeoReference(new GeoAdminParams(coordinatePair));
-    GeoReference swissTopoInformation = toGeoReference(geoAdminResponse, Optional.empty());
-    if (swissTopoInformation.getCountry() == null) {
-      return getRokasOsmInformation(coordinatePair);
-    }
-    return swissTopoInformation;
-  }
-
-  private static GeoReference toGeoReference(GeoAdminResponse geoAdminResponse, Optional<GeoAdminHeightResponse> geoAdminHeightResponse) {
+  private static GeoReference toGeoReference(GeoAdminResponse geoAdminResponse) {
     GeoReference result = new GeoReference();
 
     geoAdminResponse.getResultByLayer(Layers.MUNICIPALITY).ifPresent(i -> {
@@ -70,8 +62,6 @@ public class GeoReferenceService {
     geoAdminResponse.getResultByLayer(Layers.CANTON)
         .ifPresent(i -> result.setSwissCanton(SwissCanton.fromCantonNumber(Integer.parseInt(i.getFeatureId()))));
     geoAdminResponse.getResultByLayer(Layers.COUNTRY).ifPresent(i -> result.setCountry(Country.fromIsoCode(i.getId())));
-
-    geoAdminHeightResponse.ifPresent(heightResponse -> result.setHeight(heightResponse.height));
 
     return result;
   }
@@ -95,13 +85,12 @@ public class GeoReferenceService {
     return result;
   }
   public GeoAdminHeightResponse getHeight(CoordinatePair coordinatePair) {
-    Coordinate coordinate = new Coordinate(coordinatePair.getEast(), coordinatePair.getNorth());
     if(coordinatePair.getSpatialReference() != SpatialReference.LV95){
-      coordinate = geometryTransformer.transform(coordinatePair.getSpatialReference(), coordinate, SpatialReference.LV95);
+      coordinatePair = coordinateTransformer.transform(coordinatePair, SpatialReference.LV95);
     }
 
     try {
-      return geoAdminChClient.getHeight(coordinate.getX(), coordinate.getY());
+      return geoAdminChClient.getHeight(coordinatePair.getEast(), coordinatePair.getNorth());
     }
     catch (FeignClientException e){
       return handleFeignClientException(e);
