@@ -9,7 +9,6 @@ import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
@@ -136,7 +135,6 @@ public class ServicePointController implements ServicePointApiV1 {
     }
     addGeoReferenceInformation(servicePointVersion);
     setCreationDateAndCreatorToNull(servicePointVersion);
-    geoReferenceService.getHeightForServicePoint(servicePointVersion);
     ServicePointVersion createdVersion = servicePointService.save(servicePointVersion);
     servicePointDistributor.publishServicePointsWithNumbers(createdVersion.getNumber());
     return ServicePointVersionMapper.toModel(createdVersion);
@@ -161,7 +159,6 @@ public class ServicePointController implements ServicePointApiV1 {
         servicePointVersionToUpdate.getNumber());
 
     addGeoReferenceInformation(editedVersion);
-    geoReferenceService.getHeightForServicePoint(editedVersion);
 
     servicePointService.update(servicePointVersionToUpdate, editedVersion,
         servicePointService.findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber()));
@@ -200,7 +197,12 @@ public class ServicePointController implements ServicePointApiV1 {
   private void addGeoReferenceInformation(ServicePointVersion servicePointVersion) {
     if (servicePointVersion.hasGeolocation()) {
       ServicePointGeolocation servicePointGeolocation = servicePointVersion.getServicePointGeolocation();
-      GeoReference geoReference = geoReferenceService.getGeoReferenceWithoutHeight(servicePointGeolocation.asCoordinatePair());
+      GeoReference geoReference = geoReferenceService.getGeoReference(servicePointGeolocation.asCoordinatePair(), true);
+
+      if (servicePointGeolocation.getHeight() == null){
+        GeoAdminHeightResponse geoAdminHeightResponse = geoReferenceService.getHeight(servicePointGeolocation.asCoordinatePair());
+        servicePointGeolocation.setHeight(geoAdminHeightResponse.getHeight());
+      }
 
       servicePointGeolocation.setCountry(geoReference.getCountry());
       servicePointGeolocation.setSwissCanton(geoReference.getSwissCanton());
