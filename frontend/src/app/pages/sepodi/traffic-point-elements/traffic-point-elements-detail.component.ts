@@ -87,8 +87,8 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
     this.route.data.pipe(takeUntil(this.ngUnsubscribe)).subscribe((next) => {
       this.trafficPointVersions = next.trafficPoint;
       this.initTrafficPoint();
+      this.initGeolocationControlListeners(this.form.controls.trafficPointElementGeolocation);
     });
-    this.initGeolocationControlListeners(this.form.controls.trafficPointElementGeolocation);
   }
 
   ngOnDestroy() {
@@ -308,6 +308,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
       geolocationControls.controls.east.valueChanges,
     )
       .pipe(
+        takeUntil(this.ngUnsubscribe),
         debounceTime(500),
         filter(
           () =>
