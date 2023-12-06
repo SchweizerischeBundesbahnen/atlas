@@ -6,7 +6,7 @@ import {
   ReadServicePointVersion,
   ReadStopPointVersion,
 } from '../../../../../api';
-import { BehaviorSubject, Observable, of, Subject, Subscription, take } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject, take } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
 import { takeUntil } from 'rxjs/operators';
@@ -50,10 +50,8 @@ export class StopPointDetailComponent implements OnInit, OnDestroy, DetailFormCo
     private authService: AuthService,
   ) {}
 
-  private stopPointSubscription?: Subscription;
-
   ngOnInit(): void {
-    this.stopPointSubscription = this.route.parent?.data.subscribe((data) => {
+    this.route.parent?.data.subscribe((data) => {
       this.initServicePointsData(data);
       this.stopPointVersions = data.stopPoints;
       this.initStopPoint();
@@ -243,6 +241,7 @@ export class StopPointDetailComponent implements OnInit, OnDestroy, DetailFormCo
   }
 
   ngOnDestroy(): void {
-    this.stopPointSubscription?.unsubscribe();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }
