@@ -35,11 +35,11 @@ class GeoReferenceControllerTest {
         .north(1141633.69605000000)
         .build();
     GeoReference geoReference = GeoReference.builder().country(Country.SWITZERLAND).build();
-    when(geoReferenceService.getGeoReference(coordinate)).thenReturn(geoReference);
+    when(geoReferenceService.getGeoReference(coordinate, false)).thenReturn(geoReference);
 
     GeoReference locationInformation = geoReferenceController.getLocationInformation(coordinate);
 
     assertThat(locationInformation).isEqualTo(geoReference);
-    verify(geoReferenceService).getGeoReference(coordinate);
+    verify(geoReferenceService).getGeoReference(coordinate, false);
   }
 }
