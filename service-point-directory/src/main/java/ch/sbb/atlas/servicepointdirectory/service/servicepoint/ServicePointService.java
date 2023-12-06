@@ -10,9 +10,6 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +18,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Getter
@@ -126,7 +127,6 @@ public class ServicePointService {
     }
     editedVersion.setNumber(currentVersion.getNumber());
     editedVersion.setSloid(currentVersion.getSloid());
-    editedVersion.setStatusDidok3(currentVersion.getStatusDidok3());
     editedVersion.setNumberShort(currentVersion.getNumberShort());
     editedVersion.setCountry(currentVersion.getCountry());
 
