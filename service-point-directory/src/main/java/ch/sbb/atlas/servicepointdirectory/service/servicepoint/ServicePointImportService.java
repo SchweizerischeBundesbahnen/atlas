@@ -21,18 +21,17 @@ import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import com.fasterxml.jackson.databind.MappingIterator;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -48,7 +47,7 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
 
   @Override
   protected void save(ServicePointVersion servicePointVersion) {
-    servicePointService.saveWithoutValidationForImportOnly(servicePointVersion);
+    servicePointService.saveWithoutValidationForImportOnly(servicePointVersion, servicePointVersion.getStatus());
   }
 
   @Override
@@ -133,7 +132,7 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
     BasePointUtility.addCreateAndEditDetailsToGeolocationPropertyFromVersionedObjects(versionedObjects,
         ServicePointVersion.Fields.servicePointGeolocation);
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
-        servicePointService::saveWithoutValidationForImportOnly,
+        version -> servicePointService.saveWithoutValidationForImportOnly(version, edited.getStatus()),
         new ApplyVersioningDeleteByIdLongConsumer(servicePointService.getServicePointVersionRepository()));
   }
 
@@ -155,7 +154,7 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
     getHeightForServicePointImport(servicePointVersion, warnings);
 
     try {
-      ServicePointVersion savedServicePointVersion = servicePointService.saveWithoutValidationForImportOnly(servicePointVersion);
+      ServicePointVersion savedServicePointVersion = servicePointService.saveWithoutValidationForImportOnly(servicePointVersion, servicePointVersion.getStatus());
       servicePointNumberService.deleteAvailableNumber(savedServicePointVersion.getNumber(),
           savedServicePointVersion.getCountry());
     } catch (Exception exception) {
