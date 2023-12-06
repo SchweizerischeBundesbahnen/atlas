@@ -98,6 +98,8 @@ scheduler:
       chron: "0 0 4 * * ?" #At 04:00:00am every day
     stop-point-trigger-batch:
       chron: "0 30 4 * * ?" #At 04:30:00am every day
+    platform-trigger-batch:
+      chron: "0 40 4 * * ?" #At 04:40:00am every day
 
   lidi:
     export:
