@@ -13,7 +13,8 @@ import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointStatus;
+import lombok.experimental.UtilityClass;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -21,7 +22,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ServicePointTestData {
@@ -170,7 +170,6 @@ public class ServicePointTestData {
         .designationLong(null)
         .designationOfficial("Bern Ost (Spw)")
         .abbreviation("BNO")
-        .statusDidok3(ServicePointStatus.IN_OPERATION)
         .businessOrganisation("ch:1:sboid:100001")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2018, 1, 31))

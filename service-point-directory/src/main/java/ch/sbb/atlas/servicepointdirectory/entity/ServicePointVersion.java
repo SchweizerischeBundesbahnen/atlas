@@ -17,7 +17,6 @@ import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.converter.CategoryConverter;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.GeolocationBaseEntity;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointStatus;
 import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
@@ -123,10 +122,6 @@ public class ServicePointVersion extends BasePointVersion<ServicePointVersion> i
   @Pattern(regexp = AtlasCharacterSetsRegex.ABBREVIATION_PATTERN)
   @AtlasVersionableProperty
   private String abbreviation;
-
-  @AtlasVersionableProperty(ignoreDiff = true)
-  @Enumerated(EnumType.STRING)
-  private ServicePointStatus statusDidok3;
 
   @Size(max = AtlasFieldLengths.LENGTH_10)
   @AtlasVersionableProperty

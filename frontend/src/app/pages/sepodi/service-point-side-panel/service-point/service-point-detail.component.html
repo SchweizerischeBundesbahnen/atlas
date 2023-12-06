@@ -97,7 +97,7 @@
     <atlas-button
       (buttonClicked)="revoke()"
       [applicationType]="'SEPODI'"
-      [disabled]="form.enabled || selectedVersion.status === 'REVOKED'"
+      [hidden]="selectedVersion.status === 'REVOKED'"
       buttonDataCy="revoke-item"
       buttonText="COMMON.REVOKE"
       buttonType="revoke"
@@ -107,11 +107,7 @@
     <atlas-button
       (buttonClicked)="validate()"
       [applicationType]="'SEPODI'"
-      [disabled]="
-        form.enabled ||
-        selectedVersion.status === 'REVOKED' ||
-        selectedVersion.status === 'VALIDATED'
-      "
+      [hidden]="selectedVersion.status === 'REVOKED' || selectedVersion.status === 'VALIDATED'"
       buttonDataCy="revoke-item"
       buttonText="WORKFLOW.BUTTON.SKIP"
       buttonType="skipworkflow"
