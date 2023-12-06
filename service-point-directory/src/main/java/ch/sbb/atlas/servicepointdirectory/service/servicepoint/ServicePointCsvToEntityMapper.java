@@ -84,7 +84,6 @@ public class ServicePointCsvToEntityMapper implements
         .designationLong(servicePointCsvModel.getBezeichnungLang())
         .designationOfficial(servicePointCsvModel.getBezeichnungOffiziell())
         .abbreviation(servicePointCsvModel.getAbkuerzung())
-        .statusDidok3(statusDidok3)
         .businessOrganisation("ch:1:sboid:" + servicePointCsvModel.getSaid())
         .status(status)
         .validFrom(servicePointCsvModel.getValidFrom())
