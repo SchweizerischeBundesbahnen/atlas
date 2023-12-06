@@ -106,8 +106,8 @@ public class ServicePointService {
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
-  public ServicePointVersion saveWithoutValidationForImportOnly(ServicePointVersion servicePointVersion) {
-    servicePointVersion.setStatus(Status.VALIDATED);
+  public ServicePointVersion saveWithoutValidationForImportOnly(ServicePointVersion servicePointVersion, Status status) {
+    servicePointVersion.setStatus(status);
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
