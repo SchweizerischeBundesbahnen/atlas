@@ -11,7 +11,7 @@ import {
 } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
-import { catchError, EMPTY, Observable, of, skip, Subject } from 'rxjs';
+import { catchError, EMPTY, Observable, of, Subject } from 'rxjs';
 import { Pages } from '../../pages';
 import { FormGroup } from '@angular/forms';
 import {
@@ -27,7 +27,6 @@ import { ValidityConfirmationService } from '../validity/validity-confirmation.s
 import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
 import { Countries } from '../../../core/country/Countries';
 import { GeographyFormGroup, GeographyFormGroupBuilder } from '../geography/geography-form-group';
-import { GeographyChangedEvent } from '../geography/geography-changed-event';
 
 interface AreaOption {
   sloid: string | undefined;
@@ -41,7 +40,6 @@ const NUMBER_COLONS_AREA = 0;
   selector: 'app-traffic-point-elements',
   templateUrl: './traffic-point-elements-detail.component.html',
   styleUrls: ['./traffic-point-elements-detail.component.scss'],
-  viewProviders: [GeographyChangedEvent],
 })
 export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, DetailFormComponent {
   readonly extractSloid = (option: AreaOption) => option.sloid;
@@ -78,17 +76,11 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
     private dialogService: DialogService,
     private validityConfirmationService: ValidityConfirmationService,
     private notificationService: NotificationService,
-    private readonly geographyChangedEvent: GeographyChangedEvent,
   ) {}
 
   ngOnInit() {
     this.isTrafficPointArea = history.state.isTrafficPointArea;
     this.numberColons = this.isTrafficPointArea ? NUMBER_COLONS_AREA : NUMBER_COLONS_PLATFORM;
-
-    this.geographyChangedEvent
-      .get()
-      .pipe(skip(1), takeUntil(this.ngUnsubscribe))
-      .subscribe((enabled) => (enabled ? this.geographyEnabled() : this.geographyDisabled()));
 
     this.route.data.pipe(takeUntil(this.ngUnsubscribe)).subscribe((next) => {
       this.trafficPointVersions = next.trafficPoint;
@@ -107,7 +99,11 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
     if (this.trafficPointVersions.length == 0) {
       this.isNew = true;
       this.form = TrafficPointElementFormGroupBuilder.buildFormGroup();
-      this.geographyChangedEvent.emit(true);
+      TrafficPointElementFormGroupBuilder.addGroupToForm(
+        this.form,
+        'trafficPointElementGeolocation',
+        GeographyFormGroupBuilder.buildFormGroup(),
+      );
     } else {
       this.isNew = false;
       VersionsHandlingService.addVersionNumbers(this.trafficPointVersions);
@@ -194,9 +190,6 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
   private initSelectedVersion() {
     this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.trafficPointVersions);
     this.form = TrafficPointElementFormGroupBuilder.buildFormGroup(this.selectedVersion);
-    this.geographyChangedEvent.emit(
-      !!this.selectedVersion.trafficPointElementGeolocation?.spatialReference,
-    );
     if (!this.isNew) {
       this.disableForm();
     }
@@ -310,7 +303,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
     return this.form.dirty;
   }
 
-  private geographyEnabled() {
+  geographyEnabled() {
     if (this.form && !this.form.controls.trafficPointElementGeolocation) {
       const groupToAdd = this._savedGeographyForm ?? GeographyFormGroupBuilder.buildFormGroup();
       TrafficPointElementFormGroupBuilder.addGroupToForm(
@@ -322,7 +315,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
     }
   }
 
-  private geographyDisabled() {
+  geographyDisabled() {
     if (this.form.controls.trafficPointElementGeolocation) {
       this._savedGeographyForm = this.form.controls.trafficPointElementGeolocation;
       TrafficPointElementFormGroupBuilder.removeGroupFromForm(
