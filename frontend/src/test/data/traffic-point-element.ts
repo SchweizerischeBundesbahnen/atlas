@@ -1,4 +1,7 @@
-import { ContainerReadTrafficPointElementVersion, ReadTrafficPointElementVersion } from '../../api';
+import {
+  ContainerReadTrafficPointElementVersion,
+  ReadTrafficPointElementVersion,
+} from '../../app/api';
 
 export const BERN_WYLEREGG_TRAFFIC_POINTS: ReadTrafficPointElementVersion[] = [
   {

@@ -113,6 +113,7 @@
     <sepodi-geography
       [form]="form.controls.trafficPointElementGeolocation"
       [editMode]="form.enabled"
+      (geographyChanged)="$event ? geographyEnabled() : geographyDisabled()"
     ></sepodi-geography>
 
     <div class="font-bold-2xl mt-5" *ngIf="!isTrafficPointArea">

@@ -55,6 +55,13 @@
         >
         </atlas-text-field>
       </div>
+
+      <sepodi-geography
+        geography
+        [form]="form.controls.servicePointGeolocation"
+        [editMode]="form.enabled"
+        (geographyChanged)="$event ? onGeographyEnabled() : onGeographyDisabled()"
+      ></sepodi-geography>
     </service-point-form>
   </div>
 

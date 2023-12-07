@@ -4,7 +4,6 @@ import { AppTestingModule } from '../../../../app.testing.module';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, of } from 'rxjs';
-import { BERN } from '../../service-point-test-data';
 import { FormGroup, FormsModule } from '@angular/forms';
 import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
 import { MeansOfTransportPickerComponent } from '../../means-of-transport-picker/means-of-transport-picker.component';
@@ -28,7 +27,8 @@ import {
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DisplayCantonPipe } from '../../../../core/cantons/display-canton.pipe';
 import { MapService } from '../../map/map.service';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { BERN } from '../../../../../test/data/service-point';
 
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
 const servicePointsServiceSpy = jasmine.createSpyObj('ServicePointService', [
@@ -65,6 +65,17 @@ const authServiceMock: Partial<AuthService> = {
 class ServicePointFormMockComponent {
   @Input() form?: FormGroup;
   @Input() currentVersion?: object;
+  @Input() locationInformation?: object;
+}
+
+@Component({
+  selector: 'sepodi-geography',
+  template: '<h1>ServicePointGeographyMockComponent</h1>',
+})
+class ServicePointGeographyMockComponent {
+  @Input() form?: FormGroup;
+  @Input() editMode?: boolean;
+  @Output() geographyChanged = new EventEmitter();
 }
 
 describe('ServicePointDetailComponent', () => {
@@ -88,6 +99,7 @@ describe('ServicePointDetailComponent', () => {
         MockAtlasButtonComponent,
         DisplayCantonPipe,
         ServicePointFormMockComponent,
+        ServicePointGeographyMockComponent,
       ],
       imports: [AppTestingModule, FormsModule],
       providers: [
@@ -112,67 +124,66 @@ describe('ServicePointDetailComponent', () => {
 
   it('should initialize versioning correctly', () => {
     expect(component.showVersionSwitch).toBeTrue();
-    expect(component._selectedVersion).toBeTruthy();
+    expect(component.selectedVersion).toBeTruthy();
 
     expect((component.servicePointVersions[0] as Record).versionNumber).toBeTruthy();
   });
 
   it('should initialize form correctly', () => {
-    expect(component.isNew).toBeFalse();
-    expect(component.form.disabled).toBeTrue();
+    expect(component.form?.disabled).toBeTrue();
   });
 
   it('should switch to edit mode', () => {
-    expect(component.form.disabled).toBeTrue();
+    expect(component.form?.disabled).toBeTrue();
 
     component.toggleEdit();
-    expect(component.form.enabled).toBeTrue();
+    expect(component.form?.enabled).toBeTrue();
   });
 
   it('should switch to readonly mode when not dirty without confirmation', () => {
-    component.form.enable();
+    component.form?.enable();
 
-    expect(component.form.enabled).toBeTrue();
-    expect(component.form.dirty).toBeFalse();
+    expect(component.form?.enabled).toBeTrue();
+    expect(component.form?.dirty).toBeFalse();
 
     component.toggleEdit();
-    expect(component.form.disabled).toBeTrue();
+    expect(component.form?.disabled).toBeTrue();
   });
 
   it('should switch to readonly mode when dirty with confirmation', () => {
     // given
-    component.form.enable();
-    expect(component.form.enabled).toBeTrue();
+    component.form?.enable();
+    expect(component.form?.enabled).toBeTrue();
 
-    component.form.controls.designationOfficial.setValue('Basel beste Sport');
-    component.form.markAsDirty();
-    expect(component.form.dirty).toBeTrue();
+    component.form?.controls.designationOfficial.setValue('Basel beste Sport');
+    component.form?.markAsDirty();
+    expect(component.form?.dirty).toBeTrue();
 
     dialogServiceSpy.confirm.and.returnValue(of(true));
 
     // when & then
     component.toggleEdit();
-    expect(component.form.disabled).toBeTrue();
+    expect(component.form?.disabled).toBeTrue();
   });
 
   it('should stay in edit mode when confirmation canceled', () => {
     // given
-    component.form.enable();
-    expect(component.form.enabled).toBeTrue();
+    component.form?.enable();
+    expect(component.form?.enabled).toBeTrue();
 
-    component.form.controls.designationOfficial.setValue('Basel beste Sport');
-    component.form.markAsDirty();
-    expect(component.form.dirty).toBeTrue();
+    component.form?.controls.designationOfficial.setValue('Basel beste Sport');
+    component.form?.markAsDirty();
+    expect(component.form?.dirty).toBeTrue();
 
     dialogServiceSpy.confirm.and.returnValue(of(false));
 
     // when & then
     component.toggleEdit();
-    expect(component.form.enabled).toBeTrue();
+    expect(component.form?.enabled).toBeTrue();
   });
 
   it('should set isAbbreviationAllowed based on selectedVersion.businessOrganisation', () => {
-    component._selectedVersion = {
+    component.selectedVersion = {
       businessOrganisation: 'ch:1:sboid:100016',
       designationOfficial: 'abcd',
       validFrom: new Date(2020 - 10 - 1),
@@ -191,7 +202,7 @@ describe('ServicePointDetailComponent', () => {
 
     expect(component.isAbbreviationAllowed).toBeTrue();
 
-    component._selectedVersion = {
+    component.selectedVersion = {
       businessOrganisation: 'falseBusinessOrganisation',
       designationOfficial: 'abcd',
       validFrom: new Date(2020 - 10 - 1),
@@ -282,7 +293,7 @@ describe('ServicePointDetailComponent', () => {
     servicePointsServiceSpy.updateServicePoint.and.returnValue(of(BERN));
 
     component.toggleEdit();
-    component.form.controls.designationOfficial.setValue('New YB Station');
+    component.form?.controls.designationOfficial.setValue('New YB Station');
     component.save();
 
     expect(servicePointsServiceSpy.updateServicePoint).toHaveBeenCalled();

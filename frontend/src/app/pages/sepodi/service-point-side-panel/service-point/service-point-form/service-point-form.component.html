@@ -141,12 +141,7 @@
     </div>
   </div>
 
-  <sepodi-geography
-    [form]="form.controls.servicePointGeolocation"
-    [editMode]="form.enabled"
-    [(geographyActive)]="geographyActive"
-    (locationInformationChange)="onLocationInformationChange($event)"
-  ></sepodi-geography>
+  <ng-content select="[geography]"></ng-content>
 
   <div *ngIf="form.value.servicePointGeolocation?.spatialReference && currentVersion">
     <div class="font-bold-2xl mt-5">{{ 'SEPODI.GEOLOCATION.ADMINISTRATION' | translate }}</div>
