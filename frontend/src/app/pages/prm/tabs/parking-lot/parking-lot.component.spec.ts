@@ -3,9 +3,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ParkingLotComponent } from './parking-lot.component';
 import { ActivatedRoute } from '@angular/router';
 import { AppTestingModule } from '../../../../app.testing.module';
-import { BERN_WYLEREGG } from '../../../sepodi/service-point-test-data';
 import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 import { STOP_POINT } from '../../util/stop-point-test-data.spec';
+import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 
 describe('ParkingLotComponent', () => {
   let component: ParkingLotComponent;

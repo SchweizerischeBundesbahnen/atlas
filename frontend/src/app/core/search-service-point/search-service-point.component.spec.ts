@@ -4,12 +4,12 @@ import { SearchServicePointComponent } from './search-service-point.component';
 import { AppTestingModule } from '../../app.testing.module';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { BERN_WYLEREGG } from '../../pages/sepodi/service-point-test-data';
 import { ServicePointSearchResult, ServicePointsService } from '../../api';
 import { SearchSelectComponent } from '../form-components/search-select/search-select.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ServicePointSearch } from './service-point-search';
 import SpyObj = jasmine.SpyObj;
+import { BERN_WYLEREGG } from '../../../test/data/service-point';
 
 describe('SearchServicePointComponent', () => {
   let component: SearchServicePointComponent;

@@ -2,9 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { ValidityConfirmationService } from './validity-confirmation.service';
 import { of } from 'rxjs';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
-import { BERN } from '../service-point-test-data';
 import moment from 'moment';
 import SpyObj = jasmine.SpyObj;
+import { BERN } from '../../../../test/data/service-point';
 
 describe('ValidityConfirmationService', () => {
   let service: ValidityConfirmationService;
