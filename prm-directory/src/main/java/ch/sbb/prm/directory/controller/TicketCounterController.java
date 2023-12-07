@@ -39,7 +39,7 @@ public class TicketCounterController implements TicketCounterApiV1 {
     TicketCounterVersion editedVersion = TicketCounterVersionMapper.toEntity(model);
     ticketCounterService.updateTicketCounterVersion(ticketCounterVersionToUpdate, editedVersion);
 
-    return ticketCounterService.findAllByNumberOrderByValidFrom(ticketCounterVersionToUpdate.getNumber()).stream()
+    return ticketCounterService.getAllVersions(ticketCounterVersionToUpdate.getSloid()).stream()
         .map(TicketCounterVersionMapper::toModel).toList();
   }
 

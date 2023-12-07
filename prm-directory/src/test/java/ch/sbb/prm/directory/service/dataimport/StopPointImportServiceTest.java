@@ -174,7 +174,7 @@ class StopPointImportServiceTest {
     StopPointCsvModelContainer container = new StopPointCsvModelContainer();
 
     StopPointCsvModel stopPointCsvModel = StopPointCsvModel.builder()
-        .dsSloid("ch:1:sloid:4761")
+        .sloid("ch:1:sloid:4761")
         .didokCode(8504761)
         .freeText("[Shuttle]")
         .validFrom(LocalDate.of(1900,1,1))

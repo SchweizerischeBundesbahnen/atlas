@@ -1,21 +1,19 @@
 package ch.sbb.prm.directory.service;
 
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.INFORMATION_DESK;
+
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import ch.sbb.prm.directory.repository.InformationDeskRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
-
-import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.INFORMATION_DESK;
 
 @Service
 @Transactional
@@ -36,8 +34,8 @@ public class InformationDeskService extends PrmRelatableVersionableService<Infor
   }
 
   @Override
-  protected void incrementVersion(ServicePointNumber servicePointNumber) {
-    informationDeskRepository.incrementVersion(servicePointNumber);
+  protected void incrementVersion(String sloid) {
+    informationDeskRepository.incrementVersion(sloid);
   }
 
   @Override
@@ -46,8 +44,8 @@ public class InformationDeskService extends PrmRelatableVersionableService<Infor
   }
 
   @Override
-  protected List<InformationDeskVersion> getAllVersions(ServicePointNumber servicePointNumber) {
-    return this.findAllByNumberOrderByValidFrom(servicePointNumber);
+  public List<InformationDeskVersion> getAllVersions(String sloid) {
+    return informationDeskRepository.findAllBySloidOrderByValidFrom(sloid);
   }
 
   @Override
@@ -76,7 +74,4 @@ public class InformationDeskService extends PrmRelatableVersionableService<Infor
     return informationDeskRepository.findById(id);
   }
 
-  public List<InformationDeskVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number) {
-    return informationDeskRepository.findAllByNumberOrderByValidFrom(number);
-  }
 }

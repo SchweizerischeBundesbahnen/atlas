@@ -1,5 +1,7 @@
 package ch.sbb.prm.directory.service.versioning;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.ReferencePointTestData;
@@ -17,13 +19,10 @@ import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import ch.sbb.prm.directory.service.BasePrmServiceTest;
 import ch.sbb.prm.directory.service.RelationService;
 import ch.sbb.prm.directory.service.TicketCounterService;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.time.LocalDate;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 class TicketCounterVersioningTest extends BasePrmServiceTest {
 
@@ -91,7 +90,7 @@ class TicketCounterVersioningTest extends BasePrmServiceTest {
     ticketCounterService.updateTicketCounterVersion(version2, editedVersion);
 
     //then
-    List<TicketCounterVersion> result = ticketCounterRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
+    List<TicketCounterVersion> result = ticketCounterRepository.findAllBySloidOrderByValidFrom(version2.getSloid());
     assertThat(result).isNotNull().hasSize(2);
 
     TicketCounterVersion firstTemporalVersion = result.get(0);
@@ -151,7 +150,7 @@ class TicketCounterVersioningTest extends BasePrmServiceTest {
     ticketCounterService.updateTicketCounterVersion(version2, editedVersion);
 
     //then
-    List<TicketCounterVersion> result = ticketCounterRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
+    List<TicketCounterVersion> result = ticketCounterRepository.findAllBySloidOrderByValidFrom(version2.getSloid());
     assertThat(result).isNotNull().hasSize(5);
 
     TicketCounterVersion secondTemporalVersion = result.get(1);
@@ -219,7 +218,7 @@ class TicketCounterVersioningTest extends BasePrmServiceTest {
     ticketCounterService.updateTicketCounterVersion(version2, editedVersion);
 
     //then
-    List<TicketCounterVersion> result = ticketCounterRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
+    List<TicketCounterVersion> result = ticketCounterRepository.findAllBySloidOrderByValidFrom(version2.getSloid());
     assertThat(result).isNotNull().hasSize(2);
 
     TicketCounterVersion firstTemporalVersion = result.get(0);

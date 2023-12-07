@@ -23,7 +23,7 @@ public class StopPointCsvModel extends BasePrmCsvModel {
   private Integer didokCode;
 
   @JsonProperty("DS_SLOID")
-  private String dsSloid;
+  private String sloid;
 
   @JsonProperty("ADDRESS")
   private String address;

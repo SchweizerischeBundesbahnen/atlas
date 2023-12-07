@@ -34,7 +34,7 @@ public class StopPointCsvTestData {
         .audioTickMach(0)
         .city("Bern")
         .compInfos("comp info")
-        .dsSloid("ch:1:sloid:123456")
+        .sloid("ch:1:sloid:123456")
         .assistanceReqsFulfilled(0)
         .dynamicAudioSys(0)
         .dynamicOpticSys(0)

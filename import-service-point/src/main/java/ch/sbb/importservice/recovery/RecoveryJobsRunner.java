@@ -4,6 +4,7 @@ import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_BATCH
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.FULL_PATH_FILENAME_JOB_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_PLATFORM_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_STOP_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_TRAFFIC_POINT_CSV_JOB_NAME;
@@ -61,6 +62,9 @@ public class RecoveryJobsRunner implements ApplicationRunner {
   @Qualifier(IMPORT_STOP_POINT_CSV_JOB_NAME)
   private final Job importStopPointCsvJob;
 
+  @Qualifier(IMPORT_PLATFORM_CSV_JOB_NAME)
+  private final Job importPlatformCsvJob;
+
   private final FileService fileService;
 
   @Override
@@ -71,6 +75,7 @@ public class RecoveryJobsRunner implements ApplicationRunner {
     recoverJob(IMPORT_LOADING_POINT_CSV_JOB_NAME);
     recoverJob(IMPORT_TRAFFIC_POINT_CSV_JOB_NAME);
     recoverJob(IMPORT_STOP_POINT_CSV_JOB_NAME);
+    recoverJob(IMPORT_PLATFORM_CSV_JOB_NAME);
   }
 
   void recoverJob(String jobName)
@@ -143,6 +148,9 @@ public class RecoveryJobsRunner implements ApplicationRunner {
     }
     if (IMPORT_STOP_POINT_CSV_JOB_NAME.equals(jobName)) {
       return importStopPointCsvJob;
+    }
+    if (IMPORT_PLATFORM_CSV_JOB_NAME.equals(jobName)) {
+      return importPlatformCsvJob;
     }
     throw new IllegalStateException("No job found with name: " + jobName);
   }
