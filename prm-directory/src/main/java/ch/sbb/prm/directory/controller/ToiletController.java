@@ -38,7 +38,7 @@ public class ToiletController implements ToiletApiV1 {
     ToiletVersion editedVersion = ToiletVersionMapper.toEntity(model);
     toiletService.updateToiletVersion(toiletVersion, editedVersion);
 
-    return toiletService.findAllByNumberOrderByValidFrom(toiletVersion.getNumber()).stream()
+    return toiletService.getAllVersions(toiletVersion.getSloid()).stream()
         .map(ToiletVersionMapper::toModel).toList();
   }
 

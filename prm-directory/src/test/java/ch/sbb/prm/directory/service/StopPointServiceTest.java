@@ -77,7 +77,7 @@ class StopPointServiceTest {
     assertThat(result).isNotNull();
     ErrorResponse errorResponse = result.getErrorResponse();
     assertThat(errorResponse.getStatus()).isEqualTo(412);
-    assertThat(errorResponse.getMessage()).isEqualTo("The stop place with sloid ch:1:sloid:8507000 does not exist.");
+    assertThat(errorResponse.getMessage()).isEqualTo("The stop point with sloid ch:1:sloid:8507000 does not exist.");
 
   }
 

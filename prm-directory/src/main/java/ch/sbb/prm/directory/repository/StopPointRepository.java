@@ -17,8 +17,8 @@ public interface StopPointRepository extends JpaRepository<StopPointVersion, Lon
     boolean existsBySloid(String sloid);
 
     @Modifying(clearAutomatically = true)
-    @Query("update stop_point_version v set v.version = (v.version + 1) where v.number = :number")
-    void incrementVersion(@Param("number") ServicePointNumber number);
+    @Query("update stop_point_version v set v.version = (v.version + 1) where v.sloid = :sloid")
+    void incrementVersion(@Param("sloid") String sloid);
 
     List<StopPointVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number);
 

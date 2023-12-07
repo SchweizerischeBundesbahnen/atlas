@@ -1,5 +1,7 @@
 package ch.sbb.prm.directory.service.versioning;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
@@ -15,13 +17,10 @@ import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.BasePrmServiceTest;
 import ch.sbb.prm.directory.service.RelationService;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.time.LocalDate;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 class RelationVersioningTest extends BasePrmServiceTest {
 
@@ -80,7 +79,7 @@ class RelationVersioningTest extends BasePrmServiceTest {
     relationService.updateRelationVersion(version2, editedVersion);
 
     //then
-    List<RelationVersion> result = relationRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
+    List<RelationVersion> result = relationRepository.findAllBySloidOrderByValidFrom(version2.getSloid());
     assertThat(result).isNotNull().hasSize(2);
 
     RelationVersion firstTemporalVersion = result.get(0);
@@ -138,7 +137,7 @@ class RelationVersioningTest extends BasePrmServiceTest {
     relationService.updateRelationVersion(version2, editedVersion);
 
     //then
-    List<RelationVersion> result = relationRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
+    List<RelationVersion> result = relationRepository.findAllBySloidOrderByValidFrom(version2.getSloid());
     assertThat(result).isNotNull().hasSize(5);
 
     RelationVersion firstTemporalVersion = result.get(0);
@@ -207,7 +206,7 @@ class RelationVersioningTest extends BasePrmServiceTest {
     relationService.updateRelationVersion(version2, editedVersion);
 
     //then
-    List<RelationVersion> result = relationRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
+    List<RelationVersion> result = relationRepository.findAllBySloidOrderByValidFrom(version2.getSloid());
     assertThat(result).isNotNull().hasSize(2);
 
     RelationVersion firstTemporalVersion = result.get(0);

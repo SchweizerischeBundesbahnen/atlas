@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true, example = "WITH_REMOTE_CONTROL")
 @Getter
 @RequiredArgsConstructor
+// Ranks from https://code.sbb.ch/projects/PT_ABLDIDOK/repos/didokfrontend/browse/src/app/pages/behig/models/behig-form.ts#11
 public enum TactileVisualAttributeType {
 
   TO_BE_COMPLETED(0),

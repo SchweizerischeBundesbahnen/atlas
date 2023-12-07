@@ -9,7 +9,7 @@ import ch.sbb.importservice.listener.StepTracerListener;
 import ch.sbb.importservice.reader.ThreadSafeListItemReader;
 import ch.sbb.importservice.service.csv.StopPointCsvService;
 import ch.sbb.importservice.utils.StepUtils;
-import ch.sbb.importservice.writer.prm.stoppoint.StopPointApiWriter;
+import ch.sbb.importservice.writer.prm.StopPointApiWriter;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
@@ -29,13 +29,13 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @Slf4j
-public class PRMImportBatchConfig extends BaseImportBatchJob {
+public class StopPointImportBatchConfig extends BaseImportBatchJob {
 
   private static final int PRM_CHUNK_SIZE = 20;
   private final StopPointApiWriter stopPointApiWriter;
   private final StopPointCsvService stopPointCsvService;
 
-  protected PRMImportBatchConfig(JobRepository jobRepository, PlatformTransactionManager transactionManager,
+  protected StopPointImportBatchConfig(JobRepository jobRepository, PlatformTransactionManager transactionManager,
       JobCompletionListener jobCompletionListener, StepTracerListener stepTracerListener,
       StopPointApiWriter stopPointApiWriter, StopPointCsvService stopPointCsvService) {
     super(jobRepository, transactionManager,jobCompletionListener,stepTracerListener);
@@ -59,7 +59,7 @@ public class PRMImportBatchConfig extends BaseImportBatchJob {
     long prunedStopPointModels = stopPointCsvModelContainers.stream()
         .collect(Collectors.summarizingInt(value -> value.getCreateStopPointVersionModels().size())).getSum();
     log.info("Found " + prunedStopPointModels + " stopPoints to import...");
-    log.info("Start sending requests to service-point-directory with chunkSize: {}...", PRM_CHUNK_SIZE);
+    log.info("Start sending requests to prm-directory with chunkSize: {}...", PRM_CHUNK_SIZE);
     return new ThreadSafeListItemReader<>(Collections.synchronizedList(stopPointCsvModelContainers));
   }
 
