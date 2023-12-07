@@ -1,12 +1,14 @@
 package ch.sbb.atlas.api.prm.enumeration;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Schema(enumAsRef = true, example = "STATIC_VISUAL_INFORMATION")
 @Getter
 @RequiredArgsConstructor
+// Ranks from https://code.sbb.ch/projects/PT_ABLDIDOK/repos/didokfrontend/browse/src/app/pages/behig/models/behig-form.ts
 public enum InfoOpportunityAttributeType {
 
   TO_BE_COMPLETED(0),
@@ -18,5 +20,9 @@ public enum InfoOpportunityAttributeType {
   TEXT_TO_SPEECH_COMPLETE(20);
 
   private final Integer rank;
+
+  public static InfoOpportunityAttributeType of(Integer value) {
+    return Stream.of(values()).filter(i -> i.getRank().equals(value)).findFirst().orElseThrow();
+  }
 
 }

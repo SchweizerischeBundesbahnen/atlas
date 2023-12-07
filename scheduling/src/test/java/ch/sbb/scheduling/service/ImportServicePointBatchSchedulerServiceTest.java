@@ -124,4 +124,24 @@ import org.springframework.http.HttpStatus;
    assertThat(result.status()).isEqualTo(200);
   }
 
+  @Test
+  void shouldTriggerImportPlatformBatchSuccessfully() {
+   //given
+   Response response = Response.builder()
+       .status(200)
+       .reason("OK")
+       .request(
+           Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+               null, Util.UTF_8, null))
+       .build();
+   when(client.triggerImportPlatformBatch()).thenReturn(response);
+
+   //when
+   Response result = importServicePointBatchSchedulerService.triggerImportPlatformBatch();
+
+   //then
+   assertThat(result).isNotNull();
+   assertThat(result.status()).isEqualTo(200);
+  }
+
 }

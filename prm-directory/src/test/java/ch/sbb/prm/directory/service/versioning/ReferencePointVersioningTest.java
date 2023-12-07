@@ -1,5 +1,7 @@
 package ch.sbb.prm.directory.service.versioning;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.ReferencePointTestData;
@@ -14,13 +16,10 @@ import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.BasePrmServiceTest;
 import ch.sbb.prm.directory.service.ReferencePointService;
 import ch.sbb.prm.directory.service.RelationService;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.time.LocalDate;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 class ReferencePointVersioningTest extends BasePrmServiceTest {
 
@@ -82,8 +81,8 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
     referencePointService.updateReferencePointVersion(version2, editedVersion);
 
     //then
-    List<ReferencePointVersion> result = referencePointRepository.findAllByNumberOrderByValidFrom(
-        version2.getNumber());
+    List<ReferencePointVersion> result = referencePointRepository.findAllBySloidOrderByValidFrom(
+        version2.getSloid());
     assertThat(result).isNotNull().hasSize(2);
 
     ReferencePointVersion firstTemporalVersion = result.get(0);
@@ -147,8 +146,8 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
     referencePointService.updateReferencePointVersion(version2, editedVersion);
 
     //then
-    List<ReferencePointVersion> result = referencePointRepository.findAllByNumberOrderByValidFrom(
-        version2.getNumber());
+    List<ReferencePointVersion> result = referencePointRepository.findAllBySloidOrderByValidFrom(
+        version2.getSloid());
     assertThat(result).isNotNull().hasSize(5);
 
     ReferencePointVersion firstTemporalVersion = result.get(0);
@@ -221,8 +220,8 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
     referencePointService.updateReferencePointVersion(version2, editedVersion);
 
     //then
-    List<ReferencePointVersion> result = referencePointRepository.findAllByNumberOrderByValidFrom(
-        version2.getNumber());
+    List<ReferencePointVersion> result = referencePointRepository.findAllBySloidOrderByValidFrom(
+        version2.getSloid());
     assertThat(result).isNotNull().hasSize(2);
 
     ReferencePointVersion firstTemporalVersion = result.get(0);

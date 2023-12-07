@@ -13,7 +13,7 @@ public class StopPointCsvToModelMapper {
 
   public static CreateStopPointVersionModel toModel(StopPointCsvModel csvModel){
     CreateStopPointVersionModelBuilder<?, ?> builder = CreateStopPointVersionModel.builder();
-        builder.sloid(csvModel.getDsSloid());
+        builder.sloid(csvModel.getSloid());
         builder.numberWithoutCheckDigit(ServicePointNumber.removeCheckDigit(csvModel.getDidokCode()));
         builder.validFrom(csvModel.getValidFrom());
         builder.validTo(csvModel.getValidTo());

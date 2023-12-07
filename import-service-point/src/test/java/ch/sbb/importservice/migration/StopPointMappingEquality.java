@@ -20,7 +20,7 @@ public record StopPointMappingEquality(StopPointCsvModel didokCsvLine, StopPoint
 
   public void performCheck() {
     assertThat(atlasCsvLine.getNumber()).isEqualTo(MigrationUtil.removeCheckDigit(didokCsvLine.getDidokCode()));
-    assertThat(atlasCsvLine.getSloid()).isEqualTo(didokCsvLine.getDsSloid());
+    assertThat(atlasCsvLine.getSloid()).isEqualTo(didokCsvLine.getSloid());
     if (atlasCsvLine.getAssistanceAvailability() != null && didokCsvLine.getAssistanceAvailability() != null) {
       assertThat(atlasCsvLine.getAssistanceAvailability()).isEqualTo(
           StandardAttributeType.from(didokCsvLine.getAssistanceAvailability()).toString());

@@ -1,6 +1,5 @@
 package ch.sbb.prm.directory.repository;
 
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,9 +15,9 @@ public interface ToiletRepository extends JpaRepository<ToiletVersion, Long>,
 
   List<ToiletVersion> findByParentServicePointSloid(String parentServicePointSloid);
 
-  List<ToiletVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number);
+  List<ToiletVersion> findAllBySloidOrderByValidFrom(String sloid);
 
   @Modifying(clearAutomatically = true)
-  @Query("update toilet_version v set v.version = (v.version + 1) where v.number = :number")
-  void incrementVersion(@Param("number") ServicePointNumber number);
+  @Query("update toilet_version v set v.version = (v.version + 1) where v.sloid = :sloid")
+  void incrementVersion(@Param("sloid") String sloid);
 }

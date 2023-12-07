@@ -3,7 +3,6 @@ package ch.sbb.atlas.api.prm.model.platform;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
-import ch.sbb.atlas.api.prm.enumeration.BooleanAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
@@ -73,7 +72,7 @@ public abstract class PlatformVersionModel extends BasePrmVersionModel implement
 
   private BasicAttributeType levelAccessWheelchair;
 
-  private BooleanAttributeType partialElevation;
+  private Boolean partialElevation;
 
   @Schema(description = "Track superelevation value [mm]")
   @Digits(integer = 10, fraction = 3)

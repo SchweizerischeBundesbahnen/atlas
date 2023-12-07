@@ -39,7 +39,7 @@ public class ParkingLotsController implements ParkingLotApiV1 {
     ParkingLotVersion editedVersion = ParkingLotVersionMapper.toEntity(model);
     parkingLotService.updateParkingLotVersion(parkingLotVersion, editedVersion);
 
-    return parkingLotService.findAllByNumberOrderByValidFrom(parkingLotVersion.getNumber()).stream()
+    return parkingLotService.getAllVersions(parkingLotVersion.getSloid()).stream()
         .map(ParkingLotVersionMapper::toModel).toList();
   }
 

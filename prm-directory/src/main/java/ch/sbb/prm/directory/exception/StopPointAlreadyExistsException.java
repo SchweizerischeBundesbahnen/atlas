@@ -16,7 +16,7 @@ public class StopPointAlreadyExistsException extends AtlasException {
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
         .status(HttpStatus.CONFLICT.value())
-        .message("The stop place with sloid " + getSloid() + " already exists.")
+        .message("The stop point with sloid " + getSloid() + " already exists.")
         .build();
   }
 

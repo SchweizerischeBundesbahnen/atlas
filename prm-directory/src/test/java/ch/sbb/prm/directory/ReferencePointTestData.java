@@ -40,7 +40,7 @@ public class ReferencePointTestData {
 
   public static ReferencePointVersionBuilder<?, ?> builderVersion2(){
     return ReferencePointVersion.builder()
-        .sloid("ch:1.sloid:12345:2")
+        .sloid("ch:1.sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2002, 12, 31))
@@ -53,7 +53,7 @@ public class ReferencePointTestData {
 
   public static ReferencePointVersionBuilder<?, ?> builderVersion3(){
     return ReferencePointVersion.builder()
-        .sloid("ch:1.sloid:12345:3")
+        .sloid("ch:1.sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2003, 1, 1))
         .validTo(LocalDate.of(2003, 12, 31))

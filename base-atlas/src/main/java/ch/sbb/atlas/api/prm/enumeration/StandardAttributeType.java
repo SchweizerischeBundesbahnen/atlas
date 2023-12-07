@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true, example = "YES")
 @Getter
 @RequiredArgsConstructor
+// Rank from https://code.sbb.ch/projects/PT_ABLDIDOK/repos/didokfrontend/browse/src/app/pages/behig/models/behig-form.ts#11
 public enum StandardAttributeType {
   TO_BE_COMPLETED(0),
   YES(1),
