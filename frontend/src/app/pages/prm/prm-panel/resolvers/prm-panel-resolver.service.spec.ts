@@ -3,9 +3,9 @@ import { TestBed } from '@angular/core/testing';
 import { Observable, of } from 'rxjs';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
-import { BERN_WYLEREGG } from '../../../sepodi/service-point-test-data';
 import { ReadServicePointVersion, ServicePointsService } from '../../../../api';
 import { prmPanelResolver, PrmPanelResolver } from './prm-panel-resolver.service';
+import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 
 describe('PrmOverviewResolver', () => {
   const servicePointsServiceSpy = jasmine.createSpyObj('servicePointsService', [

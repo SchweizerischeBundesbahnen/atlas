@@ -4,7 +4,7 @@ import { LoadingPointsService } from '../../../api';
 import { TestBed } from '@angular/core/testing';
 import { AppTestingModule } from '../../../app.testing.module';
 import { LoadingPointsDetailResolver } from './loading-points-detail-resolver.service';
-import { LOADING_POINT } from '../loading-point-test-data';
+import { LOADING_POINT } from '../../../../test/data/loading-point';
 
 describe('LoadingPointsDetailResolver', () => {
   const loadingPointsService = jasmine.createSpyObj('loadingPointsService', ['getLoadingPoint']);
