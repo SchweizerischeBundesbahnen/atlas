@@ -110,7 +110,7 @@ export class ServicePointFormGroupBuilder {
         stopPointType: new FormControl(),
         meansOfTransport: new FormControl([]),
         categories: new FormControl([]),
-        servicePointGeolocation: GeographyFormGroupBuilder.buildFormGroup(),
+        // servicePointGeolocation: GeographyFormGroupBuilder.buildFormGroup(),
         operatingPointRouteNetwork: new FormControl(),
         operatingPointKilometer: new FormControl(),
         operatingPointKilometerMaster: new FormControl(),

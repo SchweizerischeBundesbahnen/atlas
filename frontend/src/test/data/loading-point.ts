@@ -1,4 +1,4 @@
-import { ReadLoadingPointVersion } from '../../api';
+import { ReadLoadingPointVersion } from '../../app/api';
 
 export const LOADING_POINT: ReadLoadingPointVersion[] = [
   {

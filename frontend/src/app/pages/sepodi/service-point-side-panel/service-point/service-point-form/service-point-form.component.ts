@@ -6,7 +6,6 @@ import { TranslationSortingService } from '../../../../../core/translation/trans
 import { Subject, Subscription, take } from 'rxjs';
 import {
   Category,
-  GeoDataService,
   OperatingPointTechnicalTimetableType,
   OperatingPointType,
   ReadServicePointVersion,
@@ -15,7 +14,6 @@ import {
 import { LocationInformation } from '../location-information';
 import { takeUntil } from 'rxjs/operators';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import { GeographyChangedEvent } from '../../../geography/geography-changed-event';
 
 @Component({
   selector: 'service-point-form',
@@ -28,10 +26,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
     new EventEmitter<ServicePointType | null | undefined>();
 
   @Input() set form(form: FormGroup<ServicePointDetailFormGroup>) {
-    this.formSubscriptionDestroy$.complete(); // todo: better event handling on form controls
-    this.formSubscriptionDestroy$ = new Subject<void>();
     this._form = form;
-
     this._currentSelectedServicePointType = form.controls.selectedType.value;
     this.initTypeChangeInformationDialog(form.controls.selectedType);
   }
@@ -42,21 +37,29 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
   private _form?: FormGroup<ServicePointDetailFormGroup>;
   private _currentSelectedServicePointType: ServicePointType | null | undefined;
 
-  @Input() set currentVersion(version: ReadServicePointVersion) {
+  @Input() set currentVersion(version: ReadServicePointVersion | undefined) {
     this._currentVersion = version;
     this.initLocationInformationDisplay();
   }
   get currentVersion(): ReadServicePointVersion | undefined {
     return this._currentVersion;
   }
-
   private _currentVersion?: ReadServicePointVersion;
+
+  @Input() set locationInformation(value: LocationInformation | null) {
+    if (value) {
+      this._locationInformation = value;
+    }
+  }
+  get locationInformation(): LocationInformation | undefined {
+    return this._locationInformation;
+  }
+  private _locationInformation?: LocationInformation;
 
   public servicePointTypes = Object.values(ServicePointType);
   public operatingPointTypes: string[] = [];
   public stopPointTypes = Object.values(StopPointType);
   public categories = Object.values(Category);
-  public locationInformation?: LocationInformation;
   public isNew = false;
 
   private langChangeSubscription?: Subscription;
@@ -65,21 +68,11 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly translationSortingService: TranslationSortingService,
-    private readonly geoDataService: GeoDataService,
     private readonly dialogService: DialogService,
-    private readonly geographyChangedEvent: GeographyChangedEvent,
   ) {}
 
   ngOnInit(): void {
     this.isNew = !this.currentVersion?.id;
-    this.geographyChangedEventSubscription = this.geographyChangedEvent
-      .get()
-      .subscribe((enabled) => {
-        if (enabled && !this.isNew) {
-          const geolocationControls = this._form?.controls.servicePointGeolocation?.controls;
-          if (geolocationControls) this.initGeolocationControlListeners(geolocationControls);
-        }
-      });
     this.initSortedOperatingPointTypes();
   }
 
@@ -109,45 +102,13 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
 
   private initLocationInformationDisplay() {
     const servicePointGeolocation = this.currentVersion?.servicePointGeolocation;
-    this.locationInformation = {
+    this._locationInformation = {
       isoCountryCode: servicePointGeolocation?.isoCountryCode,
       canton: servicePointGeolocation?.swissLocation?.canton,
       municipalityName:
         servicePointGeolocation?.swissLocation?.localityMunicipality?.municipalityName,
       localityName: servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName,
     };
-  }
-
-  private initGeolocationControlListeners(geolocationControls: GeographyFormGroup) {
-    console.log('init');
-    merge(geolocationControls.north.valueChanges, geolocationControls.east.valueChanges)
-      .pipe(
-        takeUntil(this.formSubscriptionDestroy$),
-        debounceTime(500),
-        filter(
-          () =>
-            !!(
-              geolocationControls.east.value &&
-              geolocationControls.north.value &&
-              geolocationControls.spatialReference.value
-            ),
-        ),
-        switchMap(() =>
-          this.geoDataService.getLocationInformation({
-            east: geolocationControls.east.value!,
-            north: geolocationControls.north.value!,
-            spatialReference: geolocationControls.spatialReference.value!,
-          }),
-        ),
-      )
-      .subscribe((geoReference) => {
-        this.locationInformation = {
-          isoCountryCode: Countries.fromCountry(geoReference.country)?.short,
-          canton: geoReference.swissCanton,
-          municipalityName: geoReference.swissMunicipalityName,
-          localityName: geoReference.swissLocalityName,
-        };
-      });
   }
 
   private initTypeChangeInformationDialog(
@@ -209,9 +170,5 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
       this.form.controls.operatingPointKilometer.setValue(false);
       this.form.controls.operatingPointKilometerMaster.reset();
     }
-  }
-
-  onLocationInformationChange(newLocationInformation: LocationInformation) {
-    this.locationInformation = newLocationInformation;
   }
 }
