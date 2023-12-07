@@ -10,7 +10,7 @@ describe('ServicePointFormComponent', () => {
 
   beforeEach(() => {
     spy = jasmine.createSpyObj(['mock']);
-    component = new ServicePointFormComponent(spy, spy, spy);
+    component = new ServicePointFormComponent(spy, spy);
   });
 
   it('should create', () => {

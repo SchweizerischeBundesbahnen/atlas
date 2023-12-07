@@ -7,7 +7,7 @@ import { MockAtlasButtonComponent, MockTableComponent } from '../../../../app.te
 import { TrafficPointElementsService } from '../../../../api';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER } from '../../traffic-point-element-test-data';
+import { BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER } from '../../../../../test/data/traffic-point-element';
 
 describe('TrafficPointElementsTableComponent', () => {
   let component: TrafficPointElementsTableComponent;

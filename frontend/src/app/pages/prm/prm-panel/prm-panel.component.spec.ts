@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PrmPanelComponent } from './prm-panel.component';
-import { BERN_WYLEREGG } from '../../sepodi/service-point-test-data';
 import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
 import { AppTestingModule } from '../../../app.testing.module';
 import { ActivatedRoute } from '@angular/router';
@@ -12,6 +11,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
 import { PRM_REDUCED_TABS, PRM_TABS, PrmTab } from './prm-tab';
 import { STOP_POINT, STOP_POINT_COMPLETE } from '../util/stop-point-test-data.spec';
+import { BERN_WYLEREGG } from '../../../../test/data/service-point';
 
 describe('PrmPanelComponent', () => {
   let component: PrmPanelComponent;

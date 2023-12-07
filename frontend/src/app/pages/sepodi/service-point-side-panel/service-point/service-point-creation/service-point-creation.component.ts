@@ -21,14 +21,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ServicePointType } from '../service-point-type';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { GeographyFormGroupBuilder } from '../../../geography/geography-form-group';
-import { GeographyChangedEvent } from '../../../geography/geography-changed-event';
 
 @Component({
   selector: 'app-service-point-creation',
   templateUrl: './service-point-creation.component.html',
   styleUrls: ['./service-point-creation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  viewProviders: [GeographyChangedEvent],
 })
 export class ServicePointCreationComponent implements OnInit, OnDestroy {
   public form: FormGroup<ServicePointDetailFormGroup> =
@@ -48,15 +46,9 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly servicePointService: ServicePointsService,
     private readonly notificationService: NotificationService,
-    private readonly geographyChangedEvent: GeographyChangedEvent,
   ) {}
 
   ngOnInit() {
-    this.geographyChangedEvent
-      .get()
-      .pipe(takeUntil(this.destroySubscriptions$))
-      .subscribe((enabled) => (enabled ? this.onGeographyEnabled() : this.onGeographyDisabled()));
-
     this.countryOptions$ = this.authService.loadPermissions().pipe(
       map(() => this.getCountryOptions()),
       tap((countries) => {
@@ -81,7 +73,7 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
             ServicePointType.StopPoint,
           ].includes(servicePointType)
         ) {
-          this.geographyChangedEvent.emitOnlyWhenValueChanged(true);
+          this.onGeographyEnabled();
         }
       });
 
@@ -103,7 +95,7 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
     this.destroySubscriptions$.unsubscribe();
   }
 
-  private onGeographyEnabled() {
+  onGeographyEnabled() {
     ServicePointFormGroupBuilder.addGroupToForm(
       this.form,
       'servicePointGeolocation',
@@ -111,7 +103,7 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
     );
   }
 
-  private onGeographyDisabled() {
+  onGeographyDisabled() {
     ServicePointFormGroupBuilder.removeGroupFromForm(this.form, 'servicePointGeolocation');
   }
 
