@@ -8,7 +8,6 @@ import { BehaviorSubject, of, Subject } from 'rxjs';
 import { ActivatedRouteMockType, MockAtlasButtonComponent } from '../../../app.testing.mocks';
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 import { SplitServicePointNumberPipe } from '../../../core/search-service-point/split-service-point-number.pipe';
-import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../traffic-point-element-test-data';
 import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
 import { SelectComponent } from '../../../core/form-components/select/select.component';
 import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
@@ -27,9 +26,10 @@ import { CoordinateTransformationService } from '../geography/coordinate-transfo
 import { AuthService } from '../../../core/auth/auth.service';
 import { SloidComponent } from '../../../core/form-components/sloid/sloid.component';
 import { ServicePointsService, TrafficPointElementsService } from '../../../api';
-import { BERN_WYLEREGG } from '../service-point-test-data';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import moment from 'moment/moment';
+import { BERN_WYLEREGG } from '../../../../test/data/service-point';
+import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../test/data/traffic-point-element';
 
 const authService: Partial<AuthService> = {};
 const trafficPointMapService = jasmine.createSpyObj<TrafficPointMapService>([
@@ -158,7 +158,7 @@ describe('TrafficPointElementsDetailComponent', () => {
       component.form.controls.validFrom.setValue(moment(new Date(2000 - 10 - 1)));
       component.form.controls.validTo.setValue(moment(new Date(2099 - 10 - 1)));
 
-      component.form.controls.trafficPointElementGeolocation.disable();
+      component.form.controls.trafficPointElementGeolocation?.disable();
       component.save();
 
       expect(trafficPointService.createTrafficPoint).toHaveBeenCalled();

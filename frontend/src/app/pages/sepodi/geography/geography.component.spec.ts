@@ -17,13 +17,14 @@ import { DecimalNumberPipe } from '../../../core/pipe/decimal-number.pipe';
 import { CoordinatePairWGS84, MapService } from '../map/map.service';
 import { CoordinateTransformationService } from './coordinate-transformation.service';
 import { AppTestingModule } from '../../../app.testing.module';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
-const mapService = jasmine.createSpyObj<MapService>([
-  'placeMarkerAndFlyTo',
-  'enterCoordinateSelectionMode',
-  'exitCoordinateSelectionMode',
-]);
+const mapService = jasmine.createSpyObj<MapService>(
+  ['placeMarkerAndFlyTo', 'enterCoordinateSelectionMode', 'exitCoordinateSelectionMode'],
+  {
+    mapInitialized: new BehaviorSubject(false),
+  },
+);
 mapService.clickedGeographyCoordinates = new Subject<CoordinatePairWGS84>();
 
 const coordinateTransformationServiceSpy = jasmine.createSpyObj<CoordinateTransformationService>([

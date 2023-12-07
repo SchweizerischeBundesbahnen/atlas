@@ -1,23 +1,24 @@
 import {
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
-  OnInit, Output,
+  OnInit,
+  Output,
   SimpleChanges,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { CoordinatePair, GeoDataService, SpatialReference } from '../../../api';
 import { GeographyFormGroup } from './geography-form-group';
 import { CoordinateTransformationService } from './coordinate-transformation.service';
-import { debounceTime, merge, Subject } from 'rxjs';
+import { debounceTime, merge, Observable, Subject } from 'rxjs';
 import { MapService } from '../map/map.service';
 import { MatRadioChange } from '@angular/material/radio';
-import { GeographyChangedEvent } from './geography-changed-event';
-import { filter, switchMap, takeUntil } from 'rxjs/operators';
-import { Countries } from 'src/app/core/country/Countries';
+import { map, takeUntil } from 'rxjs/operators';
 import { LocationInformation } from '../service-point-side-panel/service-point/location-information';
+import { Countries } from '../../../core/country/Countries';
 
 export const LV95_MAX_DIGITS = 5;
 export const WGS84_MAX_DIGITS = 11;
@@ -30,6 +31,8 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
   readonly LV95_MAX_DIGITS = LV95_MAX_DIGITS;
   readonly WGS84_MAX_DIGITS = WGS84_MAX_DIGITS;
 
+  currentLocationInfo$?: Observable<LocationInformation>;
+
   _form?: FormGroup<GeographyFormGroup>;
   @Input() set form(form: FormGroup<GeographyFormGroup> | undefined) {
     this._form = form;
@@ -37,19 +40,16 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
     if (form) {
       this._geographyActive = true;
       this.updateMapInteractionMode();
-      this.onChangeCoordinatesManually({
-        east: Number(form.controls.east.value),
-        north: Number(form.controls.north.value),
-        spatialReference: this.currentSpatialReference!,
-      });
+      this.onChangeCoordinatesManually(this.currentCoordinates!);
       merge(form.controls.east.valueChanges, form.controls.north.valueChanges)
-        .pipe(takeUntil(this.destroySubscriptions$), debounceTime(500))
+        // todo: do i have multiple subscriptions, when i add the saved form group?
+        .pipe(debounceTime(500), takeUntil(this.destroySubscriptions$))
         .subscribe(() => {
-          this.onChangeCoordinatesManually({
-            east: Number(form.controls.east.value),
-            north: Number(form.controls.north.value),
-            spatialReference: this.currentSpatialReference!,
-          });
+          this.onChangeCoordinatesManually(this.currentCoordinates!);
+          const coordinatePair = this.currentCoordinates;
+          if (coordinatePair?.north && coordinatePair.east) {
+            this.currentLocationInfo$ = this.requestCurrentLocationInformation(coordinatePair);
+          }
         });
     } else {
       this._geographyActive = false;
@@ -57,6 +57,7 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   @Input() editMode = false;
+  @Output() geographyChanged = new EventEmitter<boolean>();
 
   private _geographyActive = false;
 
@@ -66,12 +67,9 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
 
   set geographyActive(value: boolean) {
     this._geographyActive = value;
-    this.geographyChangedEvent.emit(value);
+    this.geographyChanged.emit(value);
     this.updateMapInteractionMode();
   }
-  @Output()
-  locationInformationChange = new EventEmitter<LocationInformation>();
-  locationInformation?: LocationInformation;
 
   transformedCoordinatePair?: CoordinatePair;
 
@@ -81,16 +79,13 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
     private coordinateTransformationService: CoordinateTransformationService,
     private mapService: MapService,
     private changeDetector: ChangeDetectorRef,
-    private readonly geographyChangedEvent: GeographyChangedEvent,
-    private geoDataService: GeoDataService,
+    private readonly geoDataService: GeoDataService,
   ) {}
 
   ngOnInit() {
-    console.log('init');
     this.mapService.clickedGeographyCoordinates
       .pipe(takeUntil(this.destroySubscriptions$))
       .subscribe((coordinatePairWGS84) => {
-        console.log('map click from: ', this);
         this.onMapClick({
           north: coordinatePairWGS84.lat,
           east: coordinatePairWGS84.lng,
@@ -99,6 +94,7 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
       });
   }
 
+  // todo: mby with input setters
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.editMode) {
       this.updateMapInteractionMode();
@@ -140,7 +136,6 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
       this.currentCoordinates,
       this.transformedSpatialReference,
     );
-    this.initGeolocationControlListeners(this.formGroup);
     this.changeDetector.detectChanges();
   }
 
@@ -218,39 +213,14 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
       });
   }
 
-  private initGeolocationControlListeners(geolocationControls: FormGroup<GeographyFormGroup>) {
-    merge(
-      geolocationControls.controls.north.valueChanges,
-      geolocationControls.controls.east.valueChanges,
-    )
-      .pipe(
-        takeUntil(this.destroySubscriptions$),
-        debounceTime(100),
-        filter(() => {
-          return !!(
-            geolocationControls.controls.east.value &&
-            geolocationControls.controls.north.value &&
-            geolocationControls.controls.spatialReference.value
-          );
-        }),
-        switchMap(() =>
-          this.geoDataService.getLocationInformation({
-            east: geolocationControls.controls.east.value!,
-            north: geolocationControls.controls.north.value!,
-            spatialReference: geolocationControls.controls.spatialReference.value!,
-          }),
-        ),
-      )
-      .subscribe((geoReference) => {
-        this.locationInformation = {
-          isoCountryCode: Countries.fromCountry(geoReference.country)?.short,
-          canton: geoReference.swissCanton,
-          municipalityName: geoReference.swissMunicipalityName,
-          localityName: geoReference.swissLocalityName,
-        };
-
-        this.locationInformationChange.emit(this.locationInformation);
-        geolocationControls.controls.height.setValue(geoReference.height);
-      });
+  private requestCurrentLocationInformation(coordinatePair: CoordinatePair) {
+    return this.geoDataService.getLocationInformation(coordinatePair).pipe(
+      map((geoReference) => ({
+        isoCountryCode: Countries.fromCountry(geoReference.country)?.short,
+        canton: geoReference.swissCanton,
+        municipalityName: geoReference.swissMunicipalityName,
+        localityName: geoReference.swissLocalityName,
+      })),
+    );
   }
 }
