@@ -71,6 +71,21 @@
             </configuration>
           </execution>
           <execution>
+            <id>generate api</id>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <skip>${skip.npm.exec.ci}</skip>
+              <executable>npm</executable>
+              <arguments>
+                <argument>run</argument>
+                <argument>generate-api</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
             <id>npm lint</id>
             <goals>
               <goal>exec</goal>
