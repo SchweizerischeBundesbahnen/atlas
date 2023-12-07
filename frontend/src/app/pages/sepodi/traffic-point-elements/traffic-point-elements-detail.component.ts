@@ -21,7 +21,7 @@ import {
 } from './traffic-point-detail-form-group';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { ValidationService } from '../../../core/validation/validation.service';
-import { debounceTime, filter, switchMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { TrafficPointMapService } from '../map/traffic-point-map.service';
 import { ValidityConfirmationService } from '../validity/validity-confirmation.service';
@@ -202,6 +202,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
       this.showConfirmationDialog();
     } else {
       this.isSwitchVersionDisabled = true;
+      this.ngOnInit();
       this.form.enable();
     }
   }
@@ -271,7 +272,9 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
         this.notificationService.success('SEPODI.TRAFFIC_POINT_ELEMENTS.NOTIFICATION.ADD_SUCCESS');
         this.router
           .navigate(['..', trafficPointElementVersion.sloid], { relativeTo: this.route })
-          .then();
+          .then(() => {
+            this.ngOnInit();
+          });
         this.isSwitchVersionDisabled = false;
       });
   }
@@ -310,14 +313,13 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
       .pipe(
         takeUntil(this.ngUnsubscribe),
         debounceTime(500),
-        filter(
-          () =>
-            !!(
-              geolocationControls.controls.east.value &&
-              geolocationControls.controls.north.value &&
-              geolocationControls.controls.spatialReference.value
-            ),
-        ),
+        filter(() => {
+          return !!(
+            geolocationControls.controls.east.value &&
+            geolocationControls.controls.north.value &&
+            geolocationControls.controls.spatialReference.value
+          );
+        }),
         switchMap(() =>
           this.geoDataService.getLocationInformation({
             east: geolocationControls.controls.east.value!,
