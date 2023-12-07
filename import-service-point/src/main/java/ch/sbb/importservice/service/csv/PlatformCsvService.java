@@ -6,7 +6,6 @@ import ch.sbb.atlas.imports.prm.platform.PlatformCsvModel;
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModelContainer;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
-import ch.sbb.importservice.service.csv.PrmCsvService.PrmCsvMergeResult;
 import ch.sbb.importservice.utils.JobDescriptionConstants;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class PlatformCsvService extends CsvService<PlatformCsvModel> {
+public class PlatformCsvService extends PrmCsvService<PlatformCsvModel> {
 
   public static final String PRM_STOP_PLACES_FILE_NAME = "PRM_PLATFORMS";
 
@@ -53,7 +52,7 @@ public class PlatformCsvService extends CsvService<PlatformCsvModel> {
 
   public List<PlatformCsvModelContainer> mapToPlatformCsvModelContainers(List<PlatformCsvModel> platformCsvModels) {
 
-    Map<String, List<PlatformCsvModel>> groupedPlatforms = PrmCsvService.filterForActive(platformCsvModels).stream()
+    Map<String, List<PlatformCsvModel>> groupedPlatforms = filterForActive(platformCsvModels).stream()
         .collect(Collectors.groupingBy(PlatformCsvModel::getSloid));
     List<PlatformCsvModelContainer> result = new ArrayList<>(groupedPlatforms.entrySet().stream().map(toContainer()).toList());
 
@@ -78,7 +77,7 @@ public class PlatformCsvService extends CsvService<PlatformCsvModel> {
     List<String> mergedSloids = new ArrayList<>();
     csvModelContainers.forEach(
         container -> {
-          PrmCsvMergeResult<PlatformCsvModel> prmCsvMergeResult = PrmCsvService.mergeSequentialEqualVersions(
+          PrmCsvMergeResult<PlatformCsvModel> prmCsvMergeResult = mergeSequentialEqualVersions(
               container.getCsvModels());
           container.setCsvModels(prmCsvMergeResult.getVersions());
           mergedSloids.addAll(prmCsvMergeResult.getMergedSloids());
@@ -93,7 +92,7 @@ public class PlatformCsvService extends CsvService<PlatformCsvModel> {
     List<String> mergedSloids = new ArrayList<>();
     csvModelContainers.forEach(
         container -> {
-          PrmCsvMergeResult<PlatformCsvModel> prmCsvMergeResult = PrmCsvService.mergeEqualVersions(container.getCsvModels());
+          PrmCsvMergeResult<PlatformCsvModel> prmCsvMergeResult = mergeEqualVersions(container.getCsvModels());
           container.setCsvModels(prmCsvMergeResult.getVersions());
           mergedSloids.addAll(prmCsvMergeResult.getMergedSloids());
         });
