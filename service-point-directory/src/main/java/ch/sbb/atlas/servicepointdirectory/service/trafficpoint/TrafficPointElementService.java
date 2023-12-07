@@ -11,7 +11,6 @@ import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearch
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import ch.sbb.atlas.servicepointdirectory.service.OverviewService;
-import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -37,16 +36,14 @@ public class TrafficPointElementService {
   private final VersionableService versionableService;
   private final CrossValidationService crossValidationService;
   private final TrafficPointElementSloidService trafficPointElementSloidService;
-  private final GeoReferenceService geoReferenceService;
 
   public TrafficPointElementService(TrafficPointElementVersionRepository trafficPointElementVersionRepository,
       VersionableService versionableService, CrossValidationService crossValidationService,
-      TrafficPointElementSloidService trafficPointElementSloidService, GeoReferenceService geoReferenceService) {
+      TrafficPointElementSloidService trafficPointElementSloidService) {
     this.trafficPointElementVersionRepository = trafficPointElementVersionRepository;
     this.versionableService = versionableService;
     this.crossValidationService = crossValidationService;
     this.trafficPointElementSloidService = trafficPointElementSloidService;
-    this.geoReferenceService = geoReferenceService;
   }
 
   public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
