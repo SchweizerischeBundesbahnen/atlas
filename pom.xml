@@ -23,7 +23,7 @@
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
       <!-- Spring -->
-      <spring-cloud.version>2023.0.0-RC1</spring-cloud.version>
+      <spring-cloud.version>2023.0.0</spring-cloud.version>
       <spring-openapi-ui.version>2.2.0</spring-openapi-ui.version>
 
       <swagger-core.version>2.2.19</swagger-core.version>
