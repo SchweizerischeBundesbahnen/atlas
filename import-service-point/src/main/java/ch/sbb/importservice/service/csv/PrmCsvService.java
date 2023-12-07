@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public abstract class PrmCsvService<T> extends CsvService<T> {
+public abstract class PrmCsvService<T extends BasePrmCsvModel> extends CsvService<T> {
 
   private static final int ACTIVE_STATUS = 1;
 
@@ -23,7 +23,7 @@ public abstract class PrmCsvService<T> extends CsvService<T> {
     super(fileHelperService, jobHelperService);
   }
 
-  public <T extends BasePrmCsvModel> List<T> filterForActive(List<T> models) {
+  public List<T> filterForActive(List<T> models) {
     List<T> activeVersions = models.stream().filter(activeOnly()).toList();
     log.info("Found and removed {} inactive (STATUS=0) versions.", models.size() - activeVersions.size());
     return activeVersions;
@@ -33,7 +33,7 @@ public abstract class PrmCsvService<T> extends CsvService<T> {
     return basePrmCsvModel -> basePrmCsvModel.getStatus().equals(ACTIVE_STATUS);
   }
 
-  public <T extends BasePrmCsvModel> PrmCsvMergeResult<T> mergeSequentialEqualVersions(List<T> csvModels) {
+  public PrmCsvMergeResult<T> mergeSequentialEqualVersions(List<T> csvModels) {
     List<T> stopPointCsvModelListMerged = new ArrayList<>();
     if (csvModels.size() == 1) {
       return new PrmCsvMergeResult<>(csvModels);
@@ -65,7 +65,7 @@ public abstract class PrmCsvService<T> extends CsvService<T> {
     log.info("Version merged [{}]-[{}]", previous.getValidFrom(), current.getValidTo());
   }
 
-  public <T extends BasePrmCsvModel> PrmCsvMergeResult<T> mergeEqualVersions(List<T> stopPointCsvModels) {
+  public PrmCsvMergeResult<T> mergeEqualVersions(List<T> stopPointCsvModels) {
     List<T> csvModelListMerged = new ArrayList<>();
     if (stopPointCsvModels.size() == 1) {
       return new PrmCsvMergeResult<>(stopPointCsvModels);
