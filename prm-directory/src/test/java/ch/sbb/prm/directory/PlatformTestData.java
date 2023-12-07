@@ -6,7 +6,6 @@ import static ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType.TEXT
 
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
-import ch.sbb.atlas.api.prm.enumeration.BooleanAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
@@ -15,6 +14,7 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.PlatformVersion.PlatformVersionBuilder;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
@@ -40,12 +40,16 @@ public class PlatformTestData {
         .inclinationWidth(123.12)
         .infoOpportunities(Set.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
         .levelAccessWheelchair(BasicAttributeType.NO)
-        .partialElevation(BooleanAttributeType.NO)
+        .partialElevation(false)
         .superelevation(321.123)
         .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
         .wheelchairAreaLength(456.321)
         .wheelchairAreaWidth(321.123)
+        .editionDate(LocalDateTime.now())
+        .creationDate(LocalDateTime.now())
+        .creator("u123456")
+        .editor("u123456")
         .build();
 
   }
@@ -106,7 +110,7 @@ public class PlatformTestData {
         .inclinationWidth(123.12)
         .infoOpportunities(List.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
         .levelAccessWheelchair(BasicAttributeType.NO)
-        .partialElevation(BooleanAttributeType.NO)
+        .partialElevation(false)
         .superelevation(321.123)
         .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
@@ -172,7 +176,7 @@ public class PlatformTestData {
         .inclinationWidth(123.12)
         .infoOpportunities(Set.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
         .levelAccessWheelchair(BasicAttributeType.NO)
-        .partialElevation(BooleanAttributeType.NO)
+        .partialElevation(false)
         .superelevation(321.123)
         .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
@@ -256,7 +260,7 @@ public class PlatformTestData {
         .inclinationWidth(123.12)
         .infoOpportunities(Set.of(InfoOpportunityAttributeType.TO_BE_COMPLETED))
         .levelAccessWheelchair(BasicAttributeType.NO)
-        .partialElevation(BooleanAttributeType.NO)
+        .partialElevation(false)
         .superelevation(321.123)
         .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
@@ -283,7 +287,7 @@ public class PlatformTestData {
         .inclinationWidth(123.12)
         .infoOpportunities(Set.of(ACOUSTIC_INFORMATION))
         .levelAccessWheelchair(BasicAttributeType.NO)
-        .partialElevation(BooleanAttributeType.NO)
+        .partialElevation(false)
         .superelevation(321.123)
         .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
