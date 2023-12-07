@@ -2,6 +2,7 @@ package ch.sbb.importservice.recovery;
 
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_PLATFORM_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_STOP_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_TRAFFIC_POINT_CSV_JOB_NAME;
@@ -70,8 +71,14 @@ class RecoveryJobsRunnerTest {
   @Qualifier(IMPORT_TRAFFIC_POINT_CSV_JOB_NAME)
   private Job importTrafficPointCsvJob;
 
+  @Mock
   @Qualifier(IMPORT_STOP_POINT_CSV_JOB_NAME)
   private Job importStopPointCsvJob;
+
+  @Mock
+  @Qualifier(IMPORT_PLATFORM_CSV_JOB_NAME)
+  private Job importPlatformCsvJob;
+
   @Mock
   private ImportProcessedItemRepository importProcessedItemRepository;
 
@@ -79,7 +86,8 @@ class RecoveryJobsRunnerTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     recoveryJobsRunner = new RecoveryJobsRunner(jobExplorer, jobLauncher, jobRepository, importProcessedItemRepository,
-        importServicePointCsvJob, importLoadingPointCsvJob, importTrafficPointCsvJob, importStopPointCsvJob, fileService);
+        importServicePointCsvJob, importLoadingPointCsvJob, importTrafficPointCsvJob, importStopPointCsvJob,
+        importPlatformCsvJob, fileService);
   }
 
   @Test
