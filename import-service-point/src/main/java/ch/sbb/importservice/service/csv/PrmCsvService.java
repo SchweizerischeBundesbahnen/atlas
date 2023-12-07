@@ -4,28 +4,32 @@ import static java.util.Comparator.comparing;
 
 import ch.sbb.atlas.imports.prm.BasePrmCsvModel;
 import ch.sbb.atlas.versioning.date.DateHelper;
+import ch.sbb.importservice.service.FileHelperService;
+import ch.sbb.importservice.service.JobHelperService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@UtilityClass
-public class PrmCsvService {
+public abstract class PrmCsvService<T> extends CsvService<T> {
 
   private static final int ACTIVE_STATUS = 1;
 
-  public static <T extends BasePrmCsvModel> List<T> filterForActive(List<T> models) {
+  protected PrmCsvService(FileHelperService fileHelperService, JobHelperService jobHelperService) {
+    super(fileHelperService, jobHelperService);
+  }
+
+  public <T extends BasePrmCsvModel> List<T> filterForActive(List<T> models) {
     List<T> activeVersions = models.stream().filter(activeOnly()).toList();
     log.info("Found and removed {} inactive (STATUS=0) versions.", models.size() - activeVersions.size());
     return activeVersions;
   }
 
-  private static Predicate<BasePrmCsvModel> activeOnly() {
+  private Predicate<BasePrmCsvModel> activeOnly() {
     return basePrmCsvModel -> basePrmCsvModel.getStatus().equals(ACTIVE_STATUS);
   }
 

@@ -19,7 +19,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-class ImportPrmBatchControllerTest extends BaseControllerApiTest {
+class ImportStopPointBatchControllerTest extends BaseControllerApiTest {
 
   @MockBean
   private PrmClient sePoDiClient;
