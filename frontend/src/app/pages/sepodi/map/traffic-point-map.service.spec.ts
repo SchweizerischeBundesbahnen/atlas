@@ -4,8 +4,8 @@ import { TrafficPointMapService } from './traffic-point-map.service';
 import { MapService } from './map.service';
 import { TrafficPointElementsService } from '../../../api';
 import { BehaviorSubject, of } from 'rxjs';
-import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../traffic-point-element-test-data';
 import { MAP_TRAFFIC_POINT_LAYER_NAME } from './map-style';
+import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../test/data/traffic-point-element';
 
 const mapService = jasmine.createSpyObj<MapService>(['centerOn']);
 mapService.mapInitialized = new BehaviorSubject<boolean>(true);

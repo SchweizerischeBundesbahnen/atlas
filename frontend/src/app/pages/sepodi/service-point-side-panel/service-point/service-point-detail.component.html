@@ -2,9 +2,9 @@
   <div class="col-12 d-flex mt-3">
     <div class="d-flex flex-column pe-3">
       <app-switch-version
-        *ngIf="showVersionSwitch && _selectedVersion"
+        *ngIf="showVersionSwitch && selectedVersion"
         (switchVersion)="switchVersion($event)"
-        [currentRecord]="_selectedVersion"
+        [currentRecord]="selectedVersion"
         [records]="servicePointVersions"
         [switchDisabled]="isSwitchVersionDisabled"
       ></app-switch-version>
@@ -12,7 +12,7 @@
   </div>
 
   <div class="col-12 d-flex mt-5">
-    <div *ngIf="_selectedVersion?.id" class="form-title-section">
+    <div *ngIf="selectedVersion?.id" class="form-title-section">
       <h2 class="font-bold-2xl color-gray-900">
         {{ 'SEPODI.SERVICE_POINTS.DETAILS' | translate }} - {{ 'COMMON.VERSION' | translate }}
         {{ selectedVersionIndex + 1 }}
@@ -20,14 +20,18 @@
       <div>
         <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
         <span class="color-gray-900">{{
-          'COMMON.STATUS_TYPES.' + _selectedVersion!.status | translate
+          'COMMON.STATUS_TYPES.' + selectedVersion!.status | translate
         }}</span>
       </div>
     </div>
   </div>
 
   <ng-container *ngIf="form">
-    <service-point-form [form]="form" [currentVersion]="_selectedVersion!">
+    <service-point-form
+      [form]="form"
+      [currentVersion]="selectedVersion"
+      [locationInformation]="geographyComponent.currentLocationInfo$ | async"
+    >
       <div class="color-gray-900" abbreviation>
         <atlas-text-field
           *ngIf="!hasAbbreviation && isAbbreviationAllowed && isLatestVersionSelected"
@@ -47,10 +51,18 @@
             {{ 'SEPODI.SERVICE_POINTS.ABBREVIATION' | translate }}
           </div>
           <div class="color-gray-900">
-            {{ _selectedVersion?.abbreviation ?? '-' }}
+            {{ selectedVersion?.abbreviation ?? '-' }}
           </div>
         </div>
       </div>
+
+      <sepodi-geography
+        #geographyComponent
+        geography
+        [form]="form.controls.servicePointGeolocation"
+        [editMode]="form.enabled"
+        (geographyChanged)="$event ? onGeographyEnabled() : onGeographyDisabled()"
+      ></sepodi-geography>
     </service-point-form>
   </ng-container>
 </div>
@@ -70,8 +82,8 @@
       (buttonClicked)="toggleEdit()"
       applicationType="SEPODI"
       [businessOrganisation]="form.controls.businessOrganisation.value!"
-      [uicCountryCode]="_selectedVersion?.number?.uicCountryCode"
-      [disabled]="_selectedVersion?.status === 'REVOKED'"
+      [uicCountryCode]="selectedVersion?.number?.uicCountryCode"
+      [disabled]="selectedVersion?.status === 'REVOKED'"
       buttonDataCy="edit"
       buttonText="COMMON.EDIT"
       buttonType="edit"

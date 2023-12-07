@@ -22,11 +22,11 @@ import { InfoIconComponent } from '../../../core/form-components/info-icon/info-
 import { RemoveCharsDirective } from '../../../core/form-components/text-field/remove-chars.directive';
 import { SloidComponent } from '../../../core/form-components/sloid/sloid.component';
 import { LoadingPointsService, ServicePointsService } from '../../../api';
-import { BERN_WYLEREGG } from '../service-point-test-data';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import moment from 'moment/moment';
 import { LoadingPointsDetailComponent } from './loading-points-detail.component';
-import { LOADING_POINT } from '../loading-point-test-data';
+import { LOADING_POINT } from '../../../../test/data/loading-point';
+import { BERN_WYLEREGG } from '../../../../test/data/service-point';
 
 const authService: Partial<AuthService> = {};
 
