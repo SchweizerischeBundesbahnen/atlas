@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Schema(name = "StopPointImportRequestModel")
+@Schema(name = "StopPointImportRequest")
 public class StopPointImportRequestModel {
 
   @Schema(name = "List of StopPointCsvModelContainer to import")

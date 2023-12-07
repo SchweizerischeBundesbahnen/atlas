@@ -40,7 +40,7 @@ public class InformationDeskController implements InformationDeskApiV1 {
     InformationDeskVersion editedVersion = InformationDeskVersionMapper.toEntity(model);
     informationDeskService.updateInformationDeskVersion(informationDeskVersion, editedVersion);
 
-    return informationDeskService.findAllByNumberOrderByValidFrom(informationDeskVersion.getNumber()).stream()
+    return informationDeskService.getAllVersions(informationDeskVersion.getSloid()).stream()
         .map(InformationDeskVersionMapper::toModel).toList();
   }
 

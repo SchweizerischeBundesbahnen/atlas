@@ -21,4 +21,6 @@ public interface ImportServicePointBatchClient {
   @PostMapping(value = "/import-service-point/v1/import-prm/stop-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
   Response triggerImportStopPointBatch();
 
+  @PostMapping(value = "/import-service-point/v1/import-prm/platform-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response triggerImportPlatformBatch();
 }

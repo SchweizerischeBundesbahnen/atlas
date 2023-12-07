@@ -1,5 +1,7 @@
 package ch.sbb.prm.directory.service.versioning;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
@@ -16,13 +18,10 @@ import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.BasePrmServiceTest;
 import ch.sbb.prm.directory.service.ParkingLotService;
 import ch.sbb.prm.directory.service.RelationService;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.time.LocalDate;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 class ParkingLotVersioningTest extends BasePrmServiceTest {
 
@@ -87,7 +86,7 @@ class ParkingLotVersioningTest extends BasePrmServiceTest {
     parkingLotService.updateParkingLotVersion(version2, editedVersion);
 
     //then
-    List<ParkingLotVersion> result = parkingLotRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
+    List<ParkingLotVersion> result = parkingLotRepository.findAllBySloidOrderByValidFrom(version2.getSloid());
     assertThat(result).isNotNull().hasSize(2);
 
     ParkingLotVersion firstTemporalVersion = result.get(0);
@@ -147,7 +146,7 @@ class ParkingLotVersioningTest extends BasePrmServiceTest {
     parkingLotService.updateParkingLotVersion(version2, editedVersion);
 
     //then
-    List<ParkingLotVersion> result = parkingLotRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
+    List<ParkingLotVersion> result = parkingLotRepository.findAllBySloidOrderByValidFrom(version2.getSloid());
     assertThat(result).isNotNull().hasSize(5);
 
     ParkingLotVersion firstTemporalVersion = result.get(0);
@@ -219,7 +218,7 @@ class ParkingLotVersioningTest extends BasePrmServiceTest {
     parkingLotService.updateParkingLotVersion(version2, editedVersion);
 
     //then
-    List<ParkingLotVersion> result = parkingLotRepository.findAllByNumberOrderByValidFrom(version2.getNumber());
+    List<ParkingLotVersion> result = parkingLotRepository.findAllBySloidOrderByValidFrom(version2.getSloid());
     assertThat(result).isNotNull().hasSize(2);
 
     ParkingLotVersion firstTemporalVersion = result.get(0);

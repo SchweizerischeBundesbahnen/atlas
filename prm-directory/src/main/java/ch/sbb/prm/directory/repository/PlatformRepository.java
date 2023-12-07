@@ -1,6 +1,5 @@
 package ch.sbb.prm.directory.repository;
 
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,8 +16,10 @@ public interface PlatformRepository extends JpaRepository<PlatformVersion, Long>
   List<PlatformVersion> findByParentServicePointSloid(String parentServicePointSloid);
 
   @Modifying(clearAutomatically = true)
-  @Query("update platform_version v set v.version = (v.version + 1) where v.number = :number")
-  void incrementVersion(@Param("number") ServicePointNumber number);
+  @Query("update platform_version v set v.version = (v.version + 1) where v.sloid = :sloid")
+  void incrementVersion(@Param("sloid") String sloid);
 
-  List<PlatformVersion> findAllByNumberOrderByValidFrom(ServicePointNumber number);
+  List<PlatformVersion> findAllBySloidOrderByValidFrom(String sloid);
+
+  boolean existsBySloid(String sloid);
 }

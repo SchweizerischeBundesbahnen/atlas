@@ -2,6 +2,7 @@ package ch.sbb.importservice.recovery;
 
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_PLATFORM_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_STOP_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_TRAFFIC_POINT_CSV_JOB_NAME;
@@ -70,8 +71,14 @@ class RecoveryJobsRunnerTest {
   @Qualifier(IMPORT_TRAFFIC_POINT_CSV_JOB_NAME)
   private Job importTrafficPointCsvJob;
 
+  @Mock
   @Qualifier(IMPORT_STOP_POINT_CSV_JOB_NAME)
   private Job importStopPointCsvJob;
+
+  @Mock
+  @Qualifier(IMPORT_PLATFORM_CSV_JOB_NAME)
+  private Job importPlatformCsvJob;
+
   @Mock
   private ImportProcessedItemRepository importProcessedItemRepository;
 
@@ -79,7 +86,8 @@ class RecoveryJobsRunnerTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     recoveryJobsRunner = new RecoveryJobsRunner(jobExplorer, jobLauncher, jobRepository, importProcessedItemRepository,
-        importServicePointCsvJob, importLoadingPointCsvJob, importTrafficPointCsvJob, importStopPointCsvJob, fileService);
+        importServicePointCsvJob, importLoadingPointCsvJob, importTrafficPointCsvJob, importStopPointCsvJob,
+        importPlatformCsvJob, fileService);
   }
 
   @Test
@@ -191,6 +199,27 @@ class RecoveryJobsRunnerTest {
     verify(jobLauncher, never()).run(eq(importServicePointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importLoadingPointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importTrafficPointCsvJob), any());
+    verify(fileService).clearDir();
+  }
+
+  @Test
+  void shouldRecoverImportPlatformCsvJob() throws Exception {
+    //given
+    StepExecution stepExecution = new StepExecution("myStep", jobExecution);
+    stepExecution.setId(132L);
+    Map<String, JobParameter<?>> parameters = new HashMap<>();
+    parameters.put(EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
+    when(jobParameters.getParameters()).thenReturn(parameters);
+    when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);
+    when(jobExecution.getJobParameters()).thenReturn(jobParameters);
+    when(jobExecution.getStepExecutions()).thenReturn(List.of(stepExecution));
+    when(jobExplorer.getLastJobInstance(IMPORT_PLATFORM_CSV_JOB_NAME)).thenReturn(jobInstance);
+    when(jobExplorer.getLastJobExecution(jobInstance)).thenReturn(jobExecution);
+    when(jobLauncher.run(any(), any())).thenReturn(jobExecution);
+    //when
+    recoveryJobsRunner.run(new DefaultApplicationArguments());
+    //then
+    verify(jobLauncher).run(eq(importPlatformCsvJob), any());
     verify(fileService).clearDir();
   }
 }
