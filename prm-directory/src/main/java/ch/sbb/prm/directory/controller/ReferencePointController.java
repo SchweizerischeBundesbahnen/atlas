@@ -40,7 +40,7 @@ public class ReferencePointController implements ReferencePointApiV1 {
     ReferencePointVersion editedVersion = ReferencePointVersionMapper.toEntity(model);
     referencePointService.updateReferencePointVersion(referencePointVersion, editedVersion);
 
-    return referencePointService.findAllByNumberOrderByValidFrom(referencePointVersion.getNumber()).stream()
+    return referencePointService.getAllVersions(referencePointVersion.getSloid()).stream()
         .map(ReferencePointVersionMapper::toModel).toList();
   }
 }

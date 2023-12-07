@@ -111,6 +111,12 @@ delete
 from stop_point_version;
 delete
 from stop_point_version_means_of_transport;
+
+-- Platforms
+delete
+from platform_version_info_opportunities;
+delete
+from platform_version;
 ```
 
 Further we need to clear the import-service-point db: see * [Reset Batch](../documentation/batch_util.md)
