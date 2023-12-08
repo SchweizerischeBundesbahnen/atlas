@@ -24,7 +24,7 @@
 
       <!-- Spring -->
       <spring-cloud.version>2023.0.0</spring-cloud.version>
-      <spring-openapi-ui.version>2.2.0</spring-openapi-ui.version>
+      <spring-openapi-ui.version>2.3.0</spring-openapi-ui.version>
 
       <swagger-core.version>2.2.19</swagger-core.version>
       <tika-core.version>2.9.1</tika-core.version>
@@ -123,7 +123,7 @@
          <dependency>
             <artifactId>aws-java-sdk-s3</artifactId>
             <groupId>com.amazonaws</groupId>
-            <version>1.12.595</version>
+            <version>1.12.608</version>
          </dependency>
 
          <dependency>
