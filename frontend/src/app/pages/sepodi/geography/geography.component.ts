@@ -42,8 +42,7 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
       this.updateMapInteractionMode();
       this.onChangeCoordinatesManually(this.currentCoordinates!);
       merge(form.controls.east.valueChanges, form.controls.north.valueChanges)
-        // todo: do i have multiple subscriptions, when i add the saved form group?
-        .pipe(debounceTime(500), takeUntil(this.destroySubscriptions$))
+        .pipe(debounceTime(500), takeUntil(this.formDestroy$))
         .subscribe(() => {
           this.onChangeCoordinatesManually(this.currentCoordinates!);
           const coordinatePair = this.currentCoordinates;
@@ -53,6 +52,7 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
         });
     } else {
       this._geographyActive = false;
+      this.formDestroy$.next();
     }
   }
 
@@ -74,6 +74,7 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
   transformedCoordinatePair?: CoordinatePair;
 
   private destroySubscriptions$ = new Subject<void>();
+  private formDestroy$ = new Subject<void>();
 
   constructor(
     private coordinateTransformationService: CoordinateTransformationService,
@@ -94,7 +95,6 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
       });
   }
 
-  // todo: mby with input setters
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.editMode) {
       this.updateMapInteractionMode();
@@ -102,6 +102,14 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
     if (changes.form) {
       this.initTransformedCoordinatePair();
     }
+  }
+
+  ngOnDestroy() {
+    this.mapService.exitCoordinateSelectionMode();
+    this.destroySubscriptions$.next();
+    this.destroySubscriptions$.unsubscribe();
+    this.formDestroy$.next();
+    this.formDestroy$.unsubscribe();
   }
 
   setFormGroupValue(coordinates?: CoordinatePair) {
@@ -122,12 +130,6 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
       north: roundedNorth,
     });
     this._form.markAsDirty();
-  }
-
-  ngOnDestroy() {
-    this.mapService.exitCoordinateSelectionMode();
-    this.destroySubscriptions$.next();
-    this.destroySubscriptions$.unsubscribe();
   }
 
   initTransformedCoordinatePair() {
