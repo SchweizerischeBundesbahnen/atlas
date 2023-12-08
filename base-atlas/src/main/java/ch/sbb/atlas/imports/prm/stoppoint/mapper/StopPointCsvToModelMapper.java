@@ -1,5 +1,6 @@
 package ch.sbb.atlas.imports.prm.stoppoint.mapper;
 
+import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel.CreateStopPointVersionModelBuilder;
@@ -36,7 +37,7 @@ public class StopPointCsvToModelMapper {
         builder.url(csvModel.getUrl());
         builder.visualInfo(mapStandardAttributeType(csvModel.getVisualInfos()));
         builder.wheelchairTicketMachine(mapStandardAttributeType(csvModel.getWheelchairTickMach()));
-        builder.assistanceRequestFulfilled(mapStandardAttributeType(csvModel.getAssistanceReqsFulfilled()));
+        builder.assistanceRequestFulfilled(mapBooleanOptionalAttributeType(csvModel.getAssistanceReqsFulfilled()));
         builder.ticketMachine(mapStandardAttributeType(csvModel.getTicketMachine()));
         builder.creationDate(csvModel.getCreatedAt());
         builder.creator(csvModel.getAddedBy());
@@ -47,6 +48,9 @@ public class StopPointCsvToModelMapper {
   }
   StandardAttributeType mapStandardAttributeType(Integer standardAttributeTypeCode){
     return standardAttributeTypeCode!=null ? StandardAttributeType.from(standardAttributeTypeCode) : null;
+  }
+  BooleanOptionalAttributeType mapBooleanOptionalAttributeType(Integer standardAttributeTypeCode){
+    return standardAttributeTypeCode!=null ? BooleanOptionalAttributeType.of(standardAttributeTypeCode) : null;
   }
   Boolean mapInteroperable(Integer interoperable){
     if (interoperable == null){

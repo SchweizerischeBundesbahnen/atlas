@@ -1,6 +1,7 @@
 package ch.sbb.atlas.api.prm.model.stoppoint;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.BasePrmVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -84,7 +85,7 @@ public abstract class StopPointVersionModel extends BasePrmVersionModel implemen
 
   private StandardAttributeType wheelchairTicketMachine;
 
-  private StandardAttributeType assistanceRequestFulfilled;
+  private BooleanOptionalAttributeType assistanceRequestFulfilled;
 
   private StandardAttributeType ticketMachine;
 

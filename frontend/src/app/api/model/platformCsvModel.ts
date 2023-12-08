@@ -10,21 +10,33 @@
  * Do not edit the class manually.
  */
 
-export interface ServicePointNumber {
-  /**
-   * DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort. Size: 7
-   */
-  number: number;
-  /**
-   * UicCountryCode, Indicates which country allocated the service point number and is to be interpreted organisationally, not territorially.
-   */
-  uicCountryCode: number;
-  /**
-   * NumberShort - 5 chars identifying number. Range: 1-99.999
-   */
-  numberShort: number;
-  /**
-   * Calculated value formed from the numberShort. Range: 0-9
-   */
-  checkDigit: number;
+export interface PlatformCsvModel {
+  VALID_FROM?: Date;
+  VALID_TO?: Date;
+  ADD_DATE?: string;
+  ADDED_BY?: string;
+  MODIFIED_DATE?: string;
+  MODIFIED_BY?: string;
+  SLOID?: string;
+  DIDOK_CODE?: number;
+  STATUS?: number;
+  BOARDING_DEVICE?: number;
+  COMPL_ACCESS_INFO?: string;
+  COMPL_INFOS?: string;
+  CONTRASTING_AREAS?: number;
+  DYNAMIC_AUDIO?: number;
+  DYNAMIC_VISUAL?: number;
+  HEIGHT?: number;
+  INCLINATION?: number;
+  INCLINATION_LONG?: number;
+  INCLINATION_WIDTH?: number;
+  INFO_BLINDS?: string;
+  LEVEL_ACCESS_WHEELCHAIR?: number;
+  PARTIAL_ELEV?: number;
+  SUPERELEVATION?: number;
+  TACTILE_SYSTEMS?: number;
+  VEHICLE_ACCESS?: number;
+  WHEELCHAIR_AREA_LENGTH?: number;
+  WHEELCHAIR_AREA_WIDTH?: number;
+  DS_SLOID?: string;
 }

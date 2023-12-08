@@ -71,7 +71,7 @@
   <div class="d-flex flex-column col-3 ps-2">
     <atlas-text-field
       [fieldExamples]="[
-        { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+        { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '75' } }
       ]"
       [formGroup]="form"
       controlName="city"
@@ -182,8 +182,9 @@
     dataCy="assistanceRequestFulfilled"
     label="PRM.STOP_POINTS.FORM.ASSISTANCE_REQUEST_FULFILLED"
     optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
-    [options]="standardAttributeTypes"
+    [options]="booleanOptionalAttributeTypes"
     [additionalLabelspace]="0"
+    (selectChanged)="updateRelatedFieldsContent($event)"
   >
   </atlas-select>
   <atlas-select
