@@ -3,6 +3,7 @@ package ch.sbb.prm.directory;
 import static java.util.List.of;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -47,7 +48,7 @@ public class StopPointTestData {
         .url("https://www.prm.sbb")
         .visualInfo(StandardAttributeType.TO_BE_COMPLETED)
         .wheelchairTicketMachine(StandardAttributeType.TO_BE_COMPLETED)
-        .assistanceRequestFulfilled(StandardAttributeType.TO_BE_COMPLETED)
+        .assistanceRequestFulfilled(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .ticketMachine(StandardAttributeType.TO_BE_COMPLETED)
         .build();
 
@@ -78,7 +79,7 @@ public class StopPointTestData {
         .url("https://www.prm.sbb")
         .visualInfo(StandardAttributeType.TO_BE_COMPLETED)
         .wheelchairTicketMachine(StandardAttributeType.TO_BE_COMPLETED)
-        .assistanceRequestFulfilled(StandardAttributeType.TO_BE_COMPLETED)
+        .assistanceRequestFulfilled(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .ticketMachine(StandardAttributeType.TO_BE_COMPLETED)
         .build();
 
@@ -109,7 +110,7 @@ public class StopPointTestData {
         .url("https://www.prm.sbb")
         .visualInfo(StandardAttributeType.TO_BE_COMPLETED)
         .wheelchairTicketMachine(StandardAttributeType.TO_BE_COMPLETED)
-        .assistanceRequestFulfilled(StandardAttributeType.TO_BE_COMPLETED)
+        .assistanceRequestFulfilled(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .ticketMachine(StandardAttributeType.TO_BE_COMPLETED)
         .build();
 
@@ -140,7 +141,7 @@ public class StopPointTestData {
         .url(RandomStringUtils.random(AtlasFieldLengths.LENGTH_500 + 1,true,false))
         .visualInfo(StandardAttributeType.TO_BE_COMPLETED)
         .wheelchairTicketMachine(StandardAttributeType.TO_BE_COMPLETED)
-        .assistanceRequestFulfilled(StandardAttributeType.TO_BE_COMPLETED)
+        .assistanceRequestFulfilled(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .ticketMachine(StandardAttributeType.TO_BE_COMPLETED)
         .build();
   }
@@ -170,7 +171,7 @@ public class StopPointTestData {
         .url("https://www.prm.sbb")
         .visualInfo(StandardAttributeType.TO_BE_COMPLETED)
         .wheelchairTicketMachine(StandardAttributeType.TO_BE_COMPLETED)
-        .assistanceRequestFulfilled(StandardAttributeType.TO_BE_COMPLETED)
+        .assistanceRequestFulfilled(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .ticketMachine(StandardAttributeType.TO_BE_COMPLETED);
   }
 
@@ -199,7 +200,7 @@ public class StopPointTestData {
         .url("https://www.prm.sbb")
         .visualInfo(StandardAttributeType.TO_BE_COMPLETED)
         .wheelchairTicketMachine(StandardAttributeType.TO_BE_COMPLETED)
-        .assistanceRequestFulfilled(StandardAttributeType.TO_BE_COMPLETED)
+        .assistanceRequestFulfilled(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .ticketMachine(StandardAttributeType.TO_BE_COMPLETED);
   }
 
@@ -228,7 +229,7 @@ public class StopPointTestData {
         .url("https://www.prm.sbb")
         .visualInfo(StandardAttributeType.TO_BE_COMPLETED)
         .wheelchairTicketMachine(StandardAttributeType.TO_BE_COMPLETED)
-        .assistanceRequestFulfilled(StandardAttributeType.TO_BE_COMPLETED)
+        .assistanceRequestFulfilled(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .ticketMachine(StandardAttributeType.TO_BE_COMPLETED);
   }
 
