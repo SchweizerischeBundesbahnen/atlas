@@ -7,6 +7,7 @@ const reducedMeansOfTransport: MeanOfTransport[] = [
   MeanOfTransport.CableCar,
   MeanOfTransport.Boat,
   MeanOfTransport.Tram,
+  MeanOfTransport.CableRailway,
 ];
 
 const completeMeansOfTransport: MeanOfTransport[] = [

@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.processor;
 
+import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.export.model.prm.StopPointVersionCsvModel;
 import ch.sbb.exportservice.entity.StopPointVersion;
@@ -33,7 +34,7 @@ public class StopPointVersionCsvProcessor extends BaseServicePointProcessor impl
         .url(version.getUrl())
         .visualInfo(mapStandardAttributeType(version.getVisualInfo()))
         .wheelchairTicketMachine(mapStandardAttributeType(version.getWheelchairTicketMachine()))
-        .assistanceRequestFulfilled(mapStandardAttributeType(version.getAssistanceRequestFulfilled()))
+        .assistanceRequestFulfilled(mapBooleanOptionalAttributeType(version.getAssistanceRequestFulfilled()))
         .ticketMachine(mapStandardAttributeType(version.getTicketMachine()))
         .meansOfTransport(version.getMeansOfTransportPipeList())
         .checkDigit(version.getNumber().getCheckDigit())
@@ -49,6 +50,10 @@ public class StopPointVersionCsvProcessor extends BaseServicePointProcessor impl
 
   private String mapStandardAttributeType(StandardAttributeType attributeType){
     return attributeType != null ? attributeType.toString() : null;
+  }
+
+  private String mapBooleanOptionalAttributeType(BooleanOptionalAttributeType booleanOptionalAttributeType){
+    return booleanOptionalAttributeType != null ? booleanOptionalAttributeType.toString() : null;
   }
 
 }
