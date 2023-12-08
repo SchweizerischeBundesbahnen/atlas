@@ -94,7 +94,6 @@ export class TrafficPointMapService {
   }
 
   displayCurrentTrafficPoint(coordinates?: CoordinatePair) {
-    // todo: no fly to
     this.mapService.mapInitialized
       .pipe(
         filter((initialized) => initialized),
