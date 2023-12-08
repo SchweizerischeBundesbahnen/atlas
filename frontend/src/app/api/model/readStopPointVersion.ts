@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { ServicePointNumber } from './servicePointNumber';
+import { BooleanOptionalAttributeType } from './booleanOptionalAttributeType';
 import { MeanOfTransport } from './meanOfTransport';
 import { StandardAttributeType } from './standardAttributeType';
 
@@ -102,7 +103,7 @@ export interface ReadStopPointVersion {
   url?: string;
   visualInfo?: StandardAttributeType;
   wheelchairTicketMachine?: StandardAttributeType;
-  assistanceRequestFulfilled?: StandardAttributeType;
+  assistanceRequestFulfilled?: BooleanOptionalAttributeType;
   ticketMachine?: StandardAttributeType;
   number: ServicePointNumber;
   reduced?: boolean;

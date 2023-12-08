@@ -13,7 +13,6 @@ import { ServicePointNumber } from './servicePointNumber';
 import { BooleanOptionalAttributeType } from './booleanOptionalAttributeType';
 import { VehicleAccessAttributeType } from './vehicleAccessAttributeType';
 import { BasicAttributeType } from './basicAttributeType';
-import { BooleanAttributeType } from './booleanAttributeType';
 import { InfoOpportunityAttributeType } from './infoOpportunityAttributeType';
 import { BoardingDeviceAttributeType } from './boardingDeviceAttributeType';
 
@@ -91,7 +90,7 @@ export interface ReadPlatformVersion {
    */
   infoOpportunities?: Array<InfoOpportunityAttributeType>;
   levelAccessWheelchair?: BasicAttributeType;
-  partialElevation?: BooleanAttributeType;
+  partialElevation?: boolean;
   /**
    * Track superelevation value [mm]
    */

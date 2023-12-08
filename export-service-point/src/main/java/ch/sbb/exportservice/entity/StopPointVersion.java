@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.entity;
 
+import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -69,7 +70,7 @@ public class StopPointVersion extends BaseEntity {
 
   private StandardAttributeType wheelchairTicketMachine;
 
-  private StandardAttributeType assistanceRequestFulfilled;
+  private BooleanOptionalAttributeType assistanceRequestFulfilled;
 
   private StandardAttributeType ticketMachine;
 
