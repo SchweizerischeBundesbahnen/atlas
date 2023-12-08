@@ -10,5 +10,7 @@ class BasicAttributeTypeTest {
   void shouldGetTypeFromValue() {
     BasicAttributeType basicAttributeType = BasicAttributeType.of(0);
     assertThat(basicAttributeType).isEqualTo(BasicAttributeType.TO_BE_COMPLETED);
+
+    assertThat(BasicAttributeType.of(null)).isNull();
   }
 }
