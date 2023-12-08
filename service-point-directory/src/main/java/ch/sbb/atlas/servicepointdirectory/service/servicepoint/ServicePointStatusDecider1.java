@@ -100,6 +100,8 @@ public class ServicePointStatusDecider1 {
             return checkStatus(newServicePointVersion);
         }
 
+
+
 //        if (newServicePointVersion.getId() == null) {
 //            return checkStatus(newServicePointVersion);
 //        }
