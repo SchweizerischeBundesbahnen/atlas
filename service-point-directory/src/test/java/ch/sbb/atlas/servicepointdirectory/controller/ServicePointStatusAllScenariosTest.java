@@ -13,7 +13,6 @@ import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
-import ch.sbb.atlas.servicepointdirectory.repository.ServicePointFotCommentRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointNumberService;
@@ -37,7 +36,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
+class ServicePointStatusAllScenariosTest extends BaseControllerApiTest {
 
     @MockBean
     private SharedBusinessOrganisationService sharedBusinessOrganisationService;
@@ -47,14 +46,11 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
     private GeoReferenceService geoReferenceService;
 
     private final ServicePointVersionRepository repository;
-    private final ServicePointFotCommentRepository fotCommentRepository;
     private final ServicePointController servicePointController;
 
     @Autowired
-    ServicePointStopPointApiScenariosTest(ServicePointVersionRepository repository,
-                                  ServicePointFotCommentRepository fotCommentRepository, ServicePointController servicePointController) {
+    ServicePointStatusAllScenariosTest(ServicePointVersionRepository repository, ServicePointController servicePointController) {
         this.repository = repository;
-        this.fotCommentRepository = fotCommentRepository;
         this.servicePointController = servicePointController;
     }
 
@@ -68,7 +64,6 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
     @AfterEach
     void cleanUpDb() {
         repository.deleteAll();
-        fotCommentRepository.deleteAll();
     }
 
     /**
@@ -106,7 +101,6 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      */
     @Test
     void scenario2WhenServicePointAndUpdateToStopPointThenStopPointDRAFT() throws Exception {
-        repository.deleteAll();
         CreateServicePointVersionModel servicePoint = ServicePointTestData.getAargauServicePointVersionModel();
         servicePoint.setMeansOfTransport(new ArrayList<>());
         servicePoint.setStopPointType(null);
@@ -149,7 +143,6 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      */
     @Test
     void scenario3WhenThreeServicePointsAndUpdateToStopPointThenStopPointDRAFT() throws Exception {
-        repository.deleteAll();
         CreateServicePointVersionModel servicePoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         servicePoint1.setMeansOfTransport(new ArrayList<>());
         servicePoint1.setStopPointType(null);
@@ -217,7 +210,6 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      */
     @Test
     void scenario4WhenStopPointAndChangeStopPointNameOnSecondPartThenStopPointWithNewNameDRAFT() throws Exception {
-        repository.deleteAll();
         CreateServicePointVersionModel servicePoint = ServicePointTestData.getAargauServicePointVersionModel();
         servicePoint.setDesignationOfficial("A Hausen");
         ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
@@ -259,7 +251,6 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      */
     @Test
     void scenario5WhenStopPointAndChangeStopPointNameOnFirstPartThenStopPointWithNewNameDRAFT() throws Exception {
-        repository.deleteAll();
         CreateServicePointVersionModel servicePoint = ServicePointTestData.getAargauServicePointVersionModel();
         servicePoint.setDesignationOfficial("A Hausen");
         ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
@@ -301,7 +292,6 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      */
     @Test
     void scenario6WhenTwoStopPointsAndChangeStopPointNameOnLastPartThenStopPointWithNewNameDRAFT() throws Exception {
-        repository.deleteAll();
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint1.setDesignationOfficial("A Hausen");
         stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
@@ -355,7 +345,6 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      */
     @Test
     void scenario7WhenTwoStopPointsAndChangeStopPointNameInTheMiddleThenStopPointWithNewNameDRAFT() throws Exception {
-        repository.deleteAll();
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint1.setValidFrom(LocalDate.of(2015, 1, 1));
         stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
@@ -412,7 +401,6 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      */
     @Test
     void scenario8WhenStopPointAndChangeStopPointNameInTheMiddleThenStopPointWithNewNameDRAFT() throws Exception {
-        repository.deleteAll();
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint1.setDesignationOfficial("A Hausen");
         ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
@@ -453,7 +441,6 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      */
     @Test
     void scenario9WhenStopPointAndChangeStopPointNameThenStopPointWithNewNameDRAFT() throws Exception {
-        repository.deleteAll();
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint1.setDesignationOfficial("A Hausen");
         ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
@@ -486,7 +473,6 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      */
     @Test
     void scenario10WhenTwoStopPointsWith2CategoriesAndChangeStopPointNameAndCategoryAtTheEndThenStopPointWithNewNameDRAFT() throws Exception {
-        repository.deleteAll();
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint1.setDesignationOfficial("A Hausen");
         stopPoint1.setCategories(List.of(Category.POINT_OF_SALE));
@@ -550,7 +536,6 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      */
     @Test // TODO: Check with Joel or check Versioning
     void scenario11WhenTwoStopPointsWith2CoordinatesAndChangeStopPointNameAndCoordinateThenStopPointWithNewNameDRAFT() throws Exception {
-        repository.deleteAll();
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint1.setValidFrom(LocalDate.of(2010, 12, 11));
         stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
@@ -830,7 +815,6 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      */
     @Test
     void scenario16WhenTwoStopPointsWith2NamesAndStopPointUpdateWithoutNameChangeThenStopPointValidated() throws Exception {
-        repository.deleteAll();
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint1.setValidFrom(LocalDate.of(2010, 12, 11));
         stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
