@@ -75,10 +75,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
     /**
      * Szenario 1: Neue Haltestelle erfassen
      * NEU:       |________________Haltestelle_________________|
-     *
+     * <p>
      * IST:
      * Status:
-     *
+     * <p>
      * RESULTAT:  |________________Haltestelle_________________|
      * Status:                       DRAFT
      */
@@ -96,10 +96,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
     /**
      * Szenario 2: Umwandlung in Haltestelle (stopPoint = true)
      * NEU:                                |________________Haltestelle______________________|
-     *
+     * <p>
      * IST:       |__________________________Dienststelle____________________________________|
      * Status:                                VALIDATED
-     *
+     * <p>
      * RESULTAT:  |______Dienststelle______|______________Haltestelle________________________|
      * Status:          VALIDATED                             DRAFT
      */
@@ -115,8 +115,8 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
 
         // TODO: Remove it once implementation fully works, here and overall below where it is needed
         Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
-        servicePointVersion1.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion1.get());
+        servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion1.ifPresent(repository::save);
 
         UpdateServicePointVersionModel stopPoint = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint.setValidFrom(LocalDate.of(2011, 12, 11));
@@ -138,10 +138,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
     /**
      * Szenario 3: Umwandlung in Haltestelle (stopPoint = true)
      * NEU:                                                               |________________Haltestelle____________________________|
-     *
+     * <p>
      * IST:       |__________Dienststelle___________|____________Dienststelle__________________|___________Dienststelle___________|
      * Status:                 VALIDATED                         VALIDATED                                   VALIDATED
-     *
+     * <p>
      * RESULTAT:  |__________Dienststelle___________|__Dienststelle_______|____Haltestelle_____|___Haltestelle____________________|
      * Status:                VALIDATED                  VALIDATED               DRAFT              DRAFT
      */
@@ -205,10 +205,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
     /**
      * Szenario 4: Haltestelle (stopPoint = true) Namensänderung
      * NEU:                               |_________Haltestelle B Hausen_______________|
-     *
+     * <p>
      * IST:       |___________________Haltestelle A Hausen_____________________________|
      * Status:                             VALIDATED
-     *
+     * <p>
      * RESULTAT:  |__Haltestelle A Hausen__|__________Haltestelle B Hausen_____________|
      * Status:          VALIDATED                           DRAFT
      */
@@ -221,8 +221,8 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
         Long id = servicePointVersionModel.getId();
 
         Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
-        servicePointVersion1.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion1.get());
+        servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion1.ifPresent(repository::save);
 
         UpdateServicePointVersionModel stopPoint = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint.setDesignationOfficial("Bern Strasse");
@@ -245,10 +245,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
     /**
      * Szenario 5: Haltestelle (stopPoint = true) Namensänderung
      * NEU:       |________________Haltestelle B Hausen________|
-     *
+     * <p>
      * IST:       |____________________Haltestelle A Hausen____________________________|
      * Status:                             VALIDATED
-     *
+     * <p>
      * RESULTAT:  |__________Haltestelle B Hausen_____________|__Haltestelle A Hausen__|
      * Status:                  DRAFT                               VALIDATED
      */
@@ -261,8 +261,8 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
         Long id = servicePointVersionModel.getId();
 
         Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
-        servicePointVersion1.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion1.get());
+        servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion1.ifPresent(repository::save);
 
         UpdateServicePointVersionModel stopPoint = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint.setDesignationOfficial("Bern Strasse");
@@ -285,10 +285,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
     /**
      * Szenario 6: Haltestelle (stopPoint = true) Namensänderung
      * NEU:                                                                             |__Haltestelle C Hausen__|
-     *
+     * <p>
      * IST:       |______________Haltestelle A Hausen__________|_________________Haltestelle B Hausen____________|
      * Status:                    VALIDATED                                        VALIDATED
-     *
+     * <p>
      * RESULTAT:  |___________Haltestelle A Hausen_____________|__Haltestelle B Hausen__|__Haltestelle C Hausen__|
      * Status:                  VALIDATED                              VALIDATED                DRAFT
      */
@@ -302,8 +302,8 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 stopPoint1);
         Long id = servicePointVersionModel.getId();
         Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
-        servicePointVersion1.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion1.get());
+        servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion1.ifPresent(repository::save);
 
         CreateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint2.setDesignationOfficial("B Hausen");
@@ -312,8 +312,8 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 stopPoint2);
         Long id1 = servicePointVersionModel1.getId();
         Optional<ServicePointVersion> servicePointVersion2 = repository.findById(id1);
-        servicePointVersion2.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion2.get());
+        servicePointVersion2.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion2.ifPresent(repository::save);
 
         UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint3.setDesignationOfficial("C Hausen");
@@ -338,10 +338,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
     /**
      * Szenario 7: Haltestelle (stopPoint = true) Namensänderung
      * NEU:                                         |__Haltestelle C Hausen__|
-     *
+     * <p>
      * IST:       |____________Haltestelle A Hausen____________|______________Haltestelle B Hausen_______________|
      * Status:                    VALIDATED                                     VALIDATED
-     *
+     * <p>
      * RESULTAT:  |_____Haltestelle A Hausen________|__Haltestelle C Hausen__|_______Haltestelle B Hausen________|
      * Status:                VALIDATED                        DRAFT                    VALIDATED
      */
@@ -356,8 +356,8 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 stopPoint1);
         Long id = servicePointVersionModel.getId();
         Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
-        servicePointVersion1.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion1.get());
+        servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion1.ifPresent(repository::save);
 
         CreateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint2.setDesignationOfficial("B Hausen");
@@ -367,8 +367,8 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 stopPoint2);
         Long id1 = servicePointVersionModel1.getId();
         Optional<ServicePointVersion> servicePointVersion2 = repository.findById(id1);
-        servicePointVersion2.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion2.get());
+        servicePointVersion2.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion2.ifPresent(repository::save);
 
         UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint3.setDesignationOfficial("C Hausen");
@@ -394,10 +394,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
     /**
      * Szenario 8: Haltestelle (stopPoint = true) Namensänderung
      * NEU:                                |_______Haltestelle B Hausen_______|
-     *
+     * <p>
      * IST:       |_______________________________Haltestelle A Hausen___________________________________________|
      * Status:                                       VALIDATED
-     *
+     * <p>
      * RESULTAT:  |__Haltestelle A Hausen__|_______Haltestelle B Hausen_______|________Haltestelle A Hausen______|
      * Status:          VALIDATED                       DRAFT                              VALIDATED
      */
@@ -434,10 +434,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
     /**
      * Szenario 9: Haltestelle (stopPoint = true) Namensänderung
      * NEU:       |__________________________Haltestelle C Hausen________________________________________________|
-     *
+     * <p>
      * IST:       |__________________________Haltestelle A Hausen________________________________________________|
      * Status:                                 VALIDATED
-     *
+     * <p>
      * RESULTAT:  |__________________________Haltestelle C Hausen________________________________________________|
      * Status:                                   DRAFT
      */
@@ -466,10 +466,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
     /**
      * Szenario 10: Haltestelle (stopPoint = true) Namensänderung + wieteres Attribut (Category)
      * NEU:                                                                                             |________Haltestelle B Hausen + Category 3_______|
-     *
+     * <p>
      * IST:       |________________Haltestelle A Hausen + Category 1________|________________Haltestelle A Hausen + Category 2___________________________|
      * Status:                         VALIDATED                                                      VALIDATED
-     *
+     * <p>
      * RESULTAT:  |_____________Haltestelle A Hausen + Category 1___________|_HS A Hausen + Category 2__|________Haltestelle B Hausen + Category 3 ______|
      * Status:                           VALIDATED                                    VALIDATED                           DRAFT
      */
@@ -485,8 +485,8 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 stopPoint1);
         Long id = servicePointVersionModel.getId();
         Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
-        servicePointVersion1.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion1.get());
+        servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion1.ifPresent(repository::save);
 
         CreateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint2.setValidFrom(LocalDate.of(2016, 1, 1));
@@ -499,10 +499,9 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 stopPoint2);
         Long id1 = servicePointVersionModel1.get(1).getId();
         Optional<ServicePointVersion> servicePointVersion2 = repository.findById(id1);
-        servicePointVersion2.get().setStatus(Status.VALIDATED);
-//        servicePointVersion2.get().setDesignationOfficial("Aargau Strasse");
-        servicePointVersion2.get().setServicePointGeolocation(ServicePointTestData.getAargauServicePointGeolocation());
-        repository.save(servicePointVersion2.get());
+        servicePointVersion2.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion2.ifPresent(pointVersion -> pointVersion.setServicePointGeolocation(ServicePointTestData.getAargauServicePointGeolocation()));
+        servicePointVersion2.ifPresent(repository::save);
 
         UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint3.setDesignationOfficial("B Hausen");
@@ -532,21 +531,26 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
     /**
      * Szenario 11: Haltestelle (stopPoint = true) Namensänderung + wieteres Attribut (Koordinatensänderung)
      * NEU:                                              |_______________________________Haltestelle B Hausen + Koordinaten 3 _______________________________________________|
-     *
+     * <p>
      * IST:       |_______________________Haltestelle A Hausen + Koordinaten 1__________________|_____________________Haltestelle A Hausen + Koordinaten 2___________________|
      * Status:                                 VALIDATED                                                                          VALIDATED
-     *
+     * <p>
      * RESULTAT:  |_Haltestelle A Hausen + Koordinaten 1_|_Haltestelle B Hausen + Koordinaten 3_|___________________Haltestelle A Hausen + Koordinaten 2_____________________|
      * Status:                  VALIDATED                               VALIDATED                                                 DRAFT
      */
     @Test // TODO: Check with Joel or check Versioning
     void scenario11WhenTwoStopPointsWith2CoordinatesAndChangeStopPointNameAndCoordinateThenStopPointWithNewNameDRAFT() throws Exception {
+        repository.deleteAll();
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint1.setValidFrom(LocalDate.of(2010, 12, 11));
         stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
         stopPoint1.setDesignationOfficial("A Hausen");
-        ReadServicePointVersionModel servicePointVersionModel1 = servicePointController.createServicePoint(
+        ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
                 stopPoint1);
+        Long id = servicePointVersionModel.getId();
+        Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
+        servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion1.ifPresent(repository::save);
 
         CreateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint2.setValidFrom(LocalDate.of(2016, 1, 1));
@@ -554,10 +558,16 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
         stopPoint2.setDesignationOfficial("A Hausen");
         stopPoint2.setServicePointGeolocation(
                 ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
-        ReadServicePointVersionModel servicePointVersionModel2 = servicePointController.createServicePoint(
+//        ReadServicePointVersionModel servicePointVersionModel2 = servicePointController.createServicePoint(
+//                stopPoint2);
+//        Long id1 = servicePointVersionModel2.getId();
+
+        List<ReadServicePointVersionModel> servicePointVersionModel1 = servicePointController.updateServicePoint(id,
                 stopPoint2);
-        Long id = servicePointVersionModel1.getId();
-        Long id1 = servicePointVersionModel2.getId();
+        Long id1 = servicePointVersionModel1.get(1).getId();
+        Optional<ServicePointVersion> servicePointVersion2 = repository.findById(id1);
+        servicePointVersion2.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion2.ifPresent(repository::save);
 
         UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint3.setDesignationOfficial("B Hausen");
@@ -587,10 +597,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      * Dargestellt nur die Fälle in denen ausschliesslich der angepasst wird. Werden noch weitere Attribute angepasst (z.B. Koordinaten, Kategorie)
      * bleibt das Prinzip gleich, es wird jedoch entsprechend mehr Versionen geben
      * NEU:                                                                                                      |__Verlängerung & Wechseln C Hausen__|
-     *
+     * <p>
      * IST:       |______________Haltestelle A Hausen__________|__________________Haltestelle B Hausen___________|
      * Status:                      VALIDATED                                         VALIDATED
-     *
+     * <p>
      * RESULTAT:  |______________Haltestelle A Hausen__________|________________Haltestelle B Hausen______________|__Verlängerung & Wechseln C Hausen__|
      * Status:                       VALIDATED                                         VALIDATED                                DRAFT
      */
@@ -604,8 +614,8 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 stopPoint1);
         Long id = servicePointVersionModel.getId();
         Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
-        servicePointVersion1.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion1.get());
+        servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion1.ifPresent(repository::save);
 
         CreateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint2.setDesignationOfficial("B Hausen");
@@ -615,8 +625,8 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 stopPoint2);
         Long id1 = servicePointVersionModel1.getId();
         Optional<ServicePointVersion> servicePointVersion2 = repository.findById(id1);
-        servicePointVersion2.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion2.get());
+        servicePointVersion2.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion2.ifPresent(repository::save);
 
         UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint3.setDesignationOfficial("C Hausen");
@@ -644,10 +654,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      * Dargestellt nur die Fälle in denen ausschliesslich der angepasst wird. Werden noch weitere Attribute angepasst (z.B. Koordinaten, Kategorie)
      * bleibt das Prinzip gleich, es wird jedoch entsprechend mehr Versionen geben
      * NEU:       |__Verlängerung & Wechseln C Hausen__|
-     *
+     * <p>*
      * IST:                                            |_____________Haltestelle A Hausen___________|________________Haltestelle B Hausen_____________|
      * Status:                                                        VALIDATED                                         VALIDATED
-     *
+     * <p>
      * RESULTAT:  |__Verlängerung & Wechseln C Hausen__|_____________Haltestelle A Hausen___________|_________________Haltestelle B Hausen_____________|
      * Status:                 DRAFT                                  VALIDATED                                          VALIDATED
      */
@@ -661,8 +671,8 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 stopPoint1);
         Long id = servicePointVersionModel.getId();
         Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
-        servicePointVersion1.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion1.get());
+        servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion1.ifPresent(repository::save);
 
         CreateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint2.setDesignationOfficial("B Hausen");
@@ -672,8 +682,8 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 stopPoint2);
         Long id1 = servicePointVersionModel1.getId();
         Optional<ServicePointVersion> servicePointVersion2 = repository.findById(id1);
-        servicePointVersion2.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion2.get());
+        servicePointVersion2.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion2.ifPresent(repository::save);
 
         UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint3.setDesignationOfficial("C Hausen");
@@ -701,10 +711,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      * Dargestellt nur die Fälle in denen ausschliesslich der angepasst wird. Werden noch weitere Attribute angepasst (z.B. Koordinaten, Kategorie)
      * bleibt das Prinzip gleich, es wird jedoch entsprechend mehr Versionen geben
      * NEU:                                                                                                      |__Verlängerung B Hausen__|
-     *
+     * <p>
      * IST:       |________________Haltestelle A Hausen________|_____________________Haltestelle B Hausen________|
      * Status:                       VALIDATED                                          VALIDATED
-     *
+     * <p>
      * RESULTAT:  |________________Haltestelle A Hausen________|_____________________Haltestelle B Hausen__________________________________|
      * Status:                       VALIDATED                                          VALIDATED
      */
@@ -718,8 +728,8 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 stopPoint1);
         Long id = servicePointVersionModel.getId();
         Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
-        servicePointVersion1.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion1.get());
+        servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion1.ifPresent(repository::save);
 
         CreateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint2.setDesignationOfficial("B Hausen");
@@ -729,8 +739,8 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 stopPoint2);
         Long id1 = servicePointVersionModel1.getId();
         Optional<ServicePointVersion> servicePointVersion2 = repository.findById(id1);
-        servicePointVersion2.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion2.get());
+        servicePointVersion2.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion2.ifPresent(repository::save);
 
         UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint3.setDesignationOfficial("B Hausen");
@@ -755,10 +765,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      * Dargestellt nur die Fälle in denen ausschliesslich der angepasst wird. Werden noch weitere Attribute angepasst (z.B. Koordinaten, Kategorie)
      * bleibt das Prinzip gleich, es wird jedoch entsprechend mehr Versionen geben
      * NEU:       |__Verlängerung A Hausen__|
-     *
+     * <p>
      * IST:                                 |_____________Haltestelle A Hausen___________|________________Haltestelle B Hausen_____________|
      * Status:                                               VALIDATED                                         VALIDATED
-     *
+     * <p>
      * RESULTAT:  |______________________Haltestelle A Hausen____________________________|_________________Haltestelle B Hausen____________|
      * Status:                              VALIDATED                                                           VALIDATED
      */
@@ -772,8 +782,8 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 stopPoint1);
         Long id = servicePointVersionModel.getId();
         Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
-        servicePointVersion1.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion1.get());
+        servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion1.ifPresent(repository::save);
 
         CreateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint2.setDesignationOfficial("B Hausen");
@@ -783,8 +793,8 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 stopPoint2);
         Long id1 = servicePointVersionModel1.getId();
         Optional<ServicePointVersion> servicePointVersion2 = repository.findById(id1);
-        servicePointVersion2.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion2.get());
+        servicePointVersion2.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion2.ifPresent(repository::save);
 
         UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint3.setDesignationOfficial("A Hausen");
@@ -809,10 +819,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      * Dargestellt nur die Fälle in denen ausschliesslich der angepasst wird. Werden noch weitere Attribute angepasst (z.B. Koordinaten, Kategorie)
      * bleibt das Prinzip gleich, es wird jedoch entsprechend mehr Versionen geben
      * NEU:                                               |_______________________Wechsel zu B Hausen____________|
-     *
+     * <p>
      * IST:       |________________Haltestelle A Hausen________|________________Haltestelle B Hausen_____________|
      * Status:                        VALIDATED                                    VALIDATED
-     *
+     * <p>
      * RESULTAT:  |________________Haltestelle A Hausen___|_____________________Haltestelle B Hausen_____________|
      * Status:                         VALIDATED                                   VALIDATED
      */
@@ -827,8 +837,8 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 stopPoint1);
         Long id = servicePointVersionModel.getId();
         Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
-        servicePointVersion1.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion1.get());
+        servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion1.ifPresent(repository::save);
 
         CreateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint2.setDesignationOfficial("B Hausen");
@@ -838,8 +848,8 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 stopPoint2);
         Long id1 = servicePointVersionModel1.getId();
         Optional<ServicePointVersion> servicePointVersion2 = repository.findById(id1);
-        servicePointVersion2.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion2.get());
+        servicePointVersion2.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion2.ifPresent(repository::save);
 
         UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint3.setDesignationOfficial("B Hausen");
@@ -864,10 +874,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      * Dargestellt nur die Fälle in denen ausschliesslich der angepasst wird. Werden noch weitere Attribute angepasst (z.B. Koordinaten, Kategorie)
      * bleibt das Prinzip gleich, es wird jedoch entsprechend mehr Versionen geben
      * NEU:       |_______________________Wechsel zu A Hausen____________|
-     *
+     * <p>
      * IST:       |________________Haltestelle A Hausen________|_______________Haltestelle B Hausen______________|
      * Status:                        VALIDATED                                    VALIDATED
-     *
+     * <p>
      * RESULTAT:  |________________Haltestelle A Hausen__________________|___________Haltestelle B Hausen________|
      * Status:                         VALIDATED                                        VALIDATED
      */
@@ -881,8 +891,8 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 stopPoint1);
         Long id = servicePointVersionModel.getId();
         Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
-        servicePointVersion1.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion1.get());
+        servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion1.ifPresent(repository::save);
 
         CreateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint2.setDesignationOfficial("B Hausen");
@@ -892,8 +902,8 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 stopPoint2);
         Long id1 = servicePointVersionModel1.getId();
         Optional<ServicePointVersion> servicePointVersion2 = repository.findById(id1);
-        servicePointVersion2.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion2.get());
+        servicePointVersion2.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion2.ifPresent(repository::save);
 
         UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint3.setDesignationOfficial("A Hausen");
@@ -920,10 +930,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      * Dargestellt nur die Fälle in denen ausschliesslich der angepasst wird. Werden noch weitere Attribute angepasst (z.B. Koordinaten, Kategorie)
      * bleibt das Prinzip gleich, es wird jedoch entsprechend mehr Versionen geben
      * NEU:                                                                    |________________Wiedereinführung & Wechsel zu B Hausen____________|
-     *
+     * <p>
      * IST:       |___________Haltestelle A Hausen_____________|
      * Status:                    VALIDATED
-     *
+     * <p>
      * RESULTAT:  |___________Haltestelle A Hausen_____________|               |________________Wiedereinführung & Wechsel zu B Hausen____________|
      * Status:                    VALIDATED                                                                  DRAFT
      */
@@ -936,8 +946,8 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 stopPoint1);
         Long id = servicePointVersionModel.getId();
         Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
-        servicePointVersion1.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion1.get());
+        servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion1.ifPresent(repository::save);
 
         UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint3.setDesignationOfficial("B Hausen");
@@ -962,10 +972,10 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
      * Dargestellt nur die Fälle in denen ausschliesslich der angepasst wird. Werden noch weitere Attribute angepasst (z.B. Koordinaten, Kategorie)
      * bleibt das Prinzip gleich, es wird jedoch entsprechend mehr Versionen geben
      * NEU:                                                                    |________________Wiedereinführung & Wechsel zu A Hausen____________|
-     *
+     * <p>
      * IST:       |_____________Haltestelle A Hausen___________|
      * Status:                      VALIDATED
-     *
+     * <p>
      * RESULTAT:  |_____________Haltestelle A Hausen____________|              |________________Wiedereinführung & Wechsel zu A Hausen____________|
      * Status:                      VALIDATED                                                                DRAFT
      */
@@ -978,8 +988,8 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 stopPoint1);
         Long id = servicePointVersionModel.getId();
         Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
-        servicePointVersion1.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion1.get());
+        servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion1.ifPresent(repository::save);
 
         UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint3.setValidFrom(LocalDate.of(2018, 1, 1));
@@ -998,175 +1008,5 @@ class ServicePointStopPointApiScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
                 .andExpect(jsonPath("$[1].status", is(Status.DRAFT.toString())));
     }
-
-    /**
-     * Szenario 20: Haltestelle (stopPoint = true) Verschiebung, mit Lücke
-     * Dargestellt nur die Fälle in denen ausschliesslich der angepasst wird. Werden noch weitere Attribute angepasst (z.B. Koordinaten, Kategorie)
-     * bleibt das Prinzip gleich, es wird jedoch entsprechend mehr Versionen geben
-     * NEU:       |_____________Haltestelle A Hausen___________|
-     *
-     * IST:                                                                                  |_____________Haltestelle A Hausen___________|
-     * Status:                                                                                                VALIDATED
-     *
-     * RESULTAT:                                                                             |_____________Haltestelle A Hausen____________|
-     * Status:                                                                                                   DRAFT
-     */
-    @Test
-    void scenario20WhenTwoStopPointsWith2NamesAndStopPointUpdateWithoutNameChangeThenStopPointValidated() throws Exception {
-        repository.deleteAll();
-//        CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
-//        stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
-//        stopPoint1.setDesignationOfficial("A Hausen");
-//        ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
-//                stopPoint1);
-//        Long id = servicePointVersionModel.getId();
-//        Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
-//        servicePointVersion1.get().setStatus(Status.VALIDATED);
-//        repository.save(servicePointVersion1.get());
-//
-//        UpdateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
-//        stopPoint2.setValidTo(LocalDate.of(2019, 8, 10));
-//        stopPoint2.setDesignationOfficial("A Hausen");
-//        servicePointController.updateServicePoint(id, stopPoint2);
-//
-//        UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
-//        stopPoint3.setValidFrom(LocalDate.of(2018, 1, 1));
-//        stopPoint3.setDesignationOfficial("A Hausen");
-
-
-        CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
-        stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
-        stopPoint1.setDesignationOfficial("A Hausen");
-        ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
-                stopPoint1);
-        Long id = servicePointVersionModel.getId();
-        Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
-        servicePointVersion1.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion1.get());
-
-        UpdateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
-        stopPoint2.setValidFrom(LocalDate.of(2018, 1, 1));
-        stopPoint2.setValidTo(LocalDate.of(2019, 8, 10));
-        stopPoint2.setDesignationOfficial("A Hausen");
-        List<ReadServicePointVersionModel> servicePointVersionModels = servicePointController.updateServicePoint(id, stopPoint2);
-        Long id2 = servicePointVersionModels.get(1).getId();
-
-        UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
-        stopPoint3.setValidTo(LocalDate.of(2019, 8, 10));
-        stopPoint3.setDesignationOfficial("A Hausen");
-        List<ReadServicePointVersionModel> servicePointVersionModels1 = servicePointController.updateServicePoint(id, stopPoint3);
-        Long id3 = servicePointVersionModels1.get(0).getId();
-
-        UpdateServicePointVersionModel stopPoint4 = ServicePointTestData.getAargauServicePointVersionModel();
-        stopPoint4.setValidFrom(LocalDate.of(2018, 1, 1));
-        stopPoint4.setDesignationOfficial("A Hausen");
-//        servicePointController.updateServicePoint(id2, stopPoint4);
-
-
-
-        mvc.perform(put("/v1/service-points/" + id)
-                        .contentType(contentType)
-                        .content(mapper.writeValueAsString(stopPoint4)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2018-01-01")))
-                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
-                .andExpect(jsonPath("$[0].status", is(Status.DRAFT.toString())));
-    }
-
-    /**
-     * Szenario 21: Haltestelle (stopPoint = true) Wiedereinführung ohne Namenwechsel, mit Lücke
-     * Dargestellt nur die Fälle in denen ausschliesslich der angepasst wird. Werden noch weitere Attribute angepasst (z.B. Koordinaten, Kategorie)
-     * bleibt das Prinzip gleich, es wird jedoch entsprechend mehr Versionen geben
-     * NEU:                                                                                                  |_____________Haltestelle A Hausen___________|
-     *
-     * IST:       |_____________Haltestelle A Hausen___________|_____________Haltestelle B Hausen___________|
-     * Status:                      VALIDATED                                      VALIDATED
-     *
-     * RESULTAT:  |_____________Haltestelle A Hausen___________|_____________Haltestelle B Hausen___________|_____________Haltestelle A Hausen____________|
-     * Status:                        VALIDATED                                      VALIDATED                                  DRAFT
-     */
-    @Test // TODO: Fix failing test
-    void scenario21WhenTwoStopPointsWith2NamesAndStopPointExtendsThenStopPointWithNewNameDRAFT() throws Exception {
-        CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
-        stopPoint1.setDesignationOfficial("A Hausen");
-        stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
-        ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
-                stopPoint1);
-        Long id = servicePointVersionModel.getId();
-        Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
-        servicePointVersion1.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion1.get());
-
-        CreateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
-        stopPoint2.setDesignationOfficial("B Hausen");
-        stopPoint2.setValidFrom(LocalDate.of(2016, 1, 1));
-        stopPoint2.setValidTo(LocalDate.of(2017, 12, 31));
-        List<ReadServicePointVersionModel> servicePointVersionModels = servicePointController.updateServicePoint(id, stopPoint2);
-        Long id1 = servicePointVersionModels.get(1).getId();
-        Optional<ServicePointVersion> servicePointVersion2 = repository.findById(id1);
-        servicePointVersion2.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion2.get());
-
-        UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
-        stopPoint3.setValidFrom(LocalDate.of(2018, 1, 1));
-        stopPoint3.setValidTo(LocalDate.of(2018, 12, 31));
-        stopPoint3.setDesignationOfficial("A Hausen");
-
-        mvc.perform(put("/v1/service-points/" + id1)
-                        .contentType(contentType)
-                        .content(mapper.writeValueAsString(stopPoint3)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(3)))
-                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
-                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
-                .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
-                .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2016-01-01")))
-                .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2017-12-31")))
-                .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString())))
-                .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validFrom, is("2018-01-01")))
-                .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validTo, is("2018-12-31")))
-                .andExpect(jsonPath("$[2].status", is(Status.DRAFT.toString())));
-    }
-
-
-
-    @Test
-    void scenario22WhenTwoStopPointsWith2NamesAndStopPointUpdateWithoutNameChangeThenStopPointValidated() throws Exception {
-        repository.deleteAll();
-        CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
-        stopPoint1.setValidFrom(LocalDate.of(2010, 12, 11));
-        stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
-        stopPoint1.setDesignationOfficial("A Hausen");
-        ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
-                stopPoint1);
-        Long id = servicePointVersionModel.getId();
-        Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
-        servicePointVersion1.get().setStatus(Status.VALIDATED);
-        repository.save(servicePointVersion1.get());
-
-        UpdateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
-        stopPoint2.setValidFrom(LocalDate.of(2010, 12, 11));
-        stopPoint2.setValidTo(LocalDate.of(2019, 8, 10));
-        stopPoint2.setDesignationOfficial("A Hausen");
-        List<ReadServicePointVersionModel> servicePointVersionModels = servicePointController.updateServicePoint(id, stopPoint2);
-//        Long id2 = servicePointVersionModels.get(0).getId();
-
-        UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
-        stopPoint3.setValidFrom(LocalDate.of(2018, 1, 1));
-        stopPoint3.setValidTo(LocalDate.of(2019, 8, 10));
-        stopPoint3.setDesignationOfficial("A Hausen");
-
-        mvc.perform(put("/v1/service-points/" + id)
-                        .contentType(contentType)
-                        .content(mapper.writeValueAsString(stopPoint3)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2018-01-01")))
-                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
-                .andExpect(jsonPath("$[0].status", is(Status.DRAFT.toString())));
-    }
-
-
 
 }
