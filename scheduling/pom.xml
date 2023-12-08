@@ -42,12 +42,12 @@
       <dependency>
          <artifactId>shedlock-spring</artifactId>
          <groupId>net.javacrumbs.shedlock</groupId>
-         <version>5.10.0</version>
+         <version>5.10.2</version>
       </dependency>
       <dependency>
          <artifactId>shedlock-provider-jdbc-template</artifactId>
          <groupId>net.javacrumbs.shedlock</groupId>
-         <version>5.10.0</version>
+         <version>5.10.2</version>
       </dependency>
       <dependency>
          <artifactId>postgresql</artifactId>
