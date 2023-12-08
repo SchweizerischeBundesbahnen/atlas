@@ -33,7 +33,6 @@ model/applicationRole.ts
 model/applicationType.ts
 model/basicAttributeType.ts
 model/boardingDeviceAttributeType.ts
-model/booleanAttributeType.ts
 model/booleanOptionalAttributeType.ts
 model/businessOrganisation.ts
 model/businessOrganisationVersion.ts
@@ -93,6 +92,7 @@ model/inlineObject3.ts
 model/inlineObject4.ts
 model/inlineObject5.ts
 model/inlineObject6.ts
+model/inlineObject7.ts
 model/itemImportResponseStatus.ts
 model/itemImportResult.ts
 model/line.ts
@@ -115,6 +115,9 @@ model/permission.ts
 model/permissionRestrictionObject.ts
 model/permissionRestrictionType.ts
 model/person.ts
+model/platformCsvModel.ts
+model/platformCsvModelContainer.ts
+model/platformImportRequest.ts
 model/prmBatchExportFileName.ts
 model/prmExportType.ts
 model/readInformationDeskVersion.ts
@@ -148,7 +151,7 @@ model/status.ts
 model/stepFreeAccessAttributeType.ts
 model/stopPointCsvModel.ts
 model/stopPointCsvModelContainer.ts
-model/stopPointImportRequestModel.ts
+model/stopPointImportRequest.ts
 model/stopPointType.ts
 model/subline.ts
 model/sublineType.ts

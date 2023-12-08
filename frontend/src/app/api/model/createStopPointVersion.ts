@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { BooleanOptionalAttributeType } from './booleanOptionalAttributeType';
 import { MeanOfTransport } from './meanOfTransport';
 import { StandardAttributeType } from './standardAttributeType';
 
@@ -101,7 +102,7 @@ export interface CreateStopPointVersion {
   url?: string;
   visualInfo?: StandardAttributeType;
   wheelchairTicketMachine?: StandardAttributeType;
-  assistanceRequestFulfilled?: StandardAttributeType;
+  assistanceRequestFulfilled?: BooleanOptionalAttributeType;
   ticketMachine?: StandardAttributeType;
   /**
    * Seven digits number. First two digits represent Country Code. Last 5 digits represent service point ID.

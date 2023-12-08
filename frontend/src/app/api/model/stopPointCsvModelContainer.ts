@@ -16,5 +16,4 @@ export interface StopPointCsvModelContainer {
   didokCode?: number;
   stopPointCsvModels?: Array<StopPointCsvModel>;
   createStopPointVersionModels?: Array<CreateStopPointVersion>;
-  hasMergedVersion?: boolean;
 }

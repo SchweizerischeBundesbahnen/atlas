@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.reader;
 
+import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -54,7 +55,7 @@ public class StopPointVersionRowMapper extends BaseRowMapper implements RowMappe
             StandardAttributeType.valueOf(rs.getString("wheelchair_ticket_machine")) : null);
     builder.assistanceRequestFulfilled(
         rs.getObject("assistance_request_fulfilled") != null ?
-            StandardAttributeType.valueOf(rs.getString("assistance_request_fulfilled")) : null);
+            BooleanOptionalAttributeType.valueOf(rs.getString("assistance_request_fulfilled")) : null);
     builder.ticketMachine(
         rs.getObject("ticket_machine") != null ?
             StandardAttributeType.valueOf(rs.getString("ticket_machine")) : null);
