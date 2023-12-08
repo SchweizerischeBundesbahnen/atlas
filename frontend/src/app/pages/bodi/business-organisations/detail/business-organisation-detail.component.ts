@@ -7,7 +7,7 @@ import {
 } from '../../../../api';
 import { BaseDetailController } from '../../../../core/components/base-detail/base-detail-controller';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { takeUntil } from 'rxjs/operators';
