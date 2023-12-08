@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.converter.MeanOfTransportConverter;
@@ -172,7 +173,7 @@ public class StopPointVersion extends BasePrmImportEntity implements PrmVersiona
   @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private StandardAttributeType assistanceRequestFulfilled;
+  private BooleanOptionalAttributeType assistanceRequestFulfilled;
 
   @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
   @Enumerated(EnumType.STRING)
