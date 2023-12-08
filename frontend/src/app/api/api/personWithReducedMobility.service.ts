@@ -34,6 +34,7 @@ import { CreateTicketCounterVersion } from '../model/models';
 import { CreateToiletVersion } from '../model/models';
 import { ErrorResponse } from '../model/models';
 import { ItemImportResult } from '../model/models';
+import { PlatformImportRequest } from '../model/models';
 import { ReadInformationDeskVersion } from '../model/models';
 import { ReadParkingLotVersion } from '../model/models';
 import { ReadPlatformVersion } from '../model/models';
@@ -43,7 +44,7 @@ import { ReadStopPointVersion } from '../model/models';
 import { ReadTicketCounterVersion } from '../model/models';
 import { ReadToiletVersion } from '../model/models';
 import { ReferencePointElementType } from '../model/models';
-import { StopPointImportRequestModel } from '../model/models';
+import { StopPointImportRequest } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
@@ -1443,37 +1444,110 @@ export class PersonWithReducedMobilityService {
   }
 
   /**
-   * @param stopPointImportRequestModel
+   * @param platformImportRequest
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public importPlatforms(
+    platformImportRequest: PlatformImportRequest,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' },
+  ): Observable<Array<ItemImportResult>>;
+  public importPlatforms(
+    platformImportRequest: PlatformImportRequest,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' },
+  ): Observable<HttpResponse<Array<ItemImportResult>>>;
+  public importPlatforms(
+    platformImportRequest: PlatformImportRequest,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: '*/*' },
+  ): Observable<HttpEvent<Array<ItemImportResult>>>;
+  public importPlatforms(
+    platformImportRequest: PlatformImportRequest,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: '*/*' },
+  ): Observable<any> {
+    if (platformImportRequest === null || platformImportRequest === undefined) {
+      throw new Error(
+        'Required parameter platformImportRequest was null or undefined when calling importPlatforms.',
+      );
+    }
+
+    let headers = this.defaultHeaders;
+
+    let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+    if (httpHeaderAcceptSelected === undefined) {
+      // to determine the Accept header
+      const httpHeaderAccepts: string[] = ['*/*'];
+      httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    }
+    if (httpHeaderAcceptSelected !== undefined) {
+      headers = headers.set('Accept', httpHeaderAcceptSelected);
+    }
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      headers = headers.set('Content-Type', httpContentTypeSelected);
+    }
+
+    let responseType_: 'text' | 'json' = 'json';
+    if (httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+      responseType_ = 'text';
+    }
+
+    return this.httpClient.post<Array<ItemImportResult>>(
+      `${this.configuration.basePath}/prm-directory/v1/platforms/import`,
+      platformImportRequest,
+      {
+        responseType: <any>responseType_,
+        withCredentials: this.configuration.withCredentials,
+        headers: headers,
+        observe: observe,
+        reportProgress: reportProgress,
+      },
+    );
+  }
+
+  /**
+   * @param stopPointImportRequest
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public importStopPoints(
-    stopPointImportRequestModel: StopPointImportRequestModel,
+    stopPointImportRequest: StopPointImportRequest,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' },
   ): Observable<Array<ItemImportResult>>;
   public importStopPoints(
-    stopPointImportRequestModel: StopPointImportRequestModel,
+    stopPointImportRequest: StopPointImportRequest,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' },
   ): Observable<HttpResponse<Array<ItemImportResult>>>;
   public importStopPoints(
-    stopPointImportRequestModel: StopPointImportRequestModel,
+    stopPointImportRequest: StopPointImportRequest,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: '*/*' },
   ): Observable<HttpEvent<Array<ItemImportResult>>>;
   public importStopPoints(
-    stopPointImportRequestModel: StopPointImportRequestModel,
+    stopPointImportRequest: StopPointImportRequest,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: '*/*' },
   ): Observable<any> {
-    if (stopPointImportRequestModel === null || stopPointImportRequestModel === undefined) {
+    if (stopPointImportRequest === null || stopPointImportRequest === undefined) {
       throw new Error(
-        'Required parameter stopPointImportRequestModel was null or undefined when calling importStopPoints.',
+        'Required parameter stopPointImportRequest was null or undefined when calling importStopPoints.',
       );
     }
 
@@ -1504,7 +1578,7 @@ export class PersonWithReducedMobilityService {
 
     return this.httpClient.post<Array<ItemImportResult>>(
       `${this.configuration.basePath}/prm-directory/v1/stop-points/import`,
-      stopPointImportRequestModel,
+      stopPointImportRequest,
       {
         responseType: <any>responseType_,
         withCredentials: this.configuration.withCredentials,
