@@ -44,7 +44,8 @@ class ServicePointServiceTest {
   private ServicePointSearchVersionRepository servicePointSearchVersionRepository;
 
   @Mock
-  private ServicePointStatusDecider servicePointStatusDecider;
+//  private ServicePointStatusDecider servicePointStatusDecider;
+  private ServicePointStatusDecider3 servicePointStatusDecider;
 
   @BeforeEach
   void initMocksAndService() {
