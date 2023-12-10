@@ -97,7 +97,7 @@ public class ServicePointStatusDecider1 {
     private boolean isStatusInReview(ServicePointVersion newServicePointVersion,
                                      Optional<ServicePointVersion> currentServicePointVersion) {
         if (currentServicePointVersion == null) { // if it is stopPoint creation from scratch
-            return checkStatus(newServicePointVersion);
+            return isStatusDraftAccordingToStatusDecisionAlgorithm(newServicePointVersion);
         }
 
 
@@ -109,11 +109,11 @@ public class ServicePointStatusDecider1 {
             boolean isNameChanged = !newServicePointVersion.getDesignationOfficial()
                     .equals(currentServicePointVersion.get().getDesignationOfficial());
             if (isNameChanged) {
-                return checkStatus(newServicePointVersion) && isNameChanged;
+                return isStatusDraftAccordingToStatusDecisionAlgorithm(newServicePointVersion) && isNameChanged;
             }
             boolean isServicePointChange = !currentServicePointVersion.get().isStopPoint() && newServicePointVersion.isStopPoint();
             if (isServicePointChange) {
-                return checkStatus(newServicePointVersion);
+                return isStatusDraftAccordingToStatusDecisionAlgorithm(newServicePointVersion);
             }
             else return false;
         }
@@ -127,7 +127,7 @@ public class ServicePointStatusDecider1 {
         return newServicePointVersion.isStopPoint() && !currentServicePointVersion.isStopPoint();
     }
 
-    private boolean checkStatus(ServicePointVersion newServicePointVersion) {
+    private boolean isStatusDraftAccordingToStatusDecisionAlgorithm(ServicePointVersion newServicePointVersion) {
         boolean isSwissCountryCode = Objects.equals(newServicePointVersion.getCountry().getUicCode(), Country.SWITZERLAND.getUicCode());
         boolean isValidityLongEnough = ChronoUnit.DAYS.between(newServicePointVersion.getValidFrom(), newServicePointVersion.getValidTo()) > 60;
         boolean isSwissLocation = isLocatedInSwitzerland(newServicePointVersion);

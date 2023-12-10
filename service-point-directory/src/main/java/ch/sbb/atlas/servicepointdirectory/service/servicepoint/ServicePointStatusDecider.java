@@ -26,6 +26,7 @@ public class ServicePointStatusDecider {
     @Value("${validity-in-days}")
     private String validityInDays;
 
+    // needed for scenarios 4, 5, 6, 7, 8, 10, 11, 14, 15, 16, 17
     public boolean checkIfVersionIsIsolated(ServicePointVersion newServicePointVersion,
                                              List<ServicePointVersion> servicePointVersions) {
         if (checkIfSomeDateEqual(newServicePointVersion, servicePointVersions)) {
@@ -51,7 +52,7 @@ public class ServicePointStatusDecider {
     private boolean isStatusInReview(ServicePointVersion newServicePointVersion,
                                      Optional<ServicePointVersion> currentServicePointVersion) {
         if (currentServicePointVersion == null) { // if it is stopPoint creation from scratch
-            return checkStatus(newServicePointVersion);
+            return isStatusDraftAccordingToStatusDecisionAlgorithm(newServicePointVersion);
         }
 
 //        if (newServicePointVersion.getId() == null) {
@@ -61,11 +62,11 @@ public class ServicePointStatusDecider {
             boolean isNameChanged = !newServicePointVersion.getDesignationOfficial()
                     .equals(currentServicePointVersion.get().getDesignationOfficial());
             if (isNameChanged) {
-                return checkStatus(newServicePointVersion) && isNameChanged;
+                return isStatusDraftAccordingToStatusDecisionAlgorithm(newServicePointVersion) && isNameChanged;
             }
             boolean isServicePointChange = !currentServicePointVersion.get().isStopPoint() && newServicePointVersion.isStopPoint();
             if (isServicePointChange) {
-                return checkStatus(newServicePointVersion);
+                return isStatusDraftAccordingToStatusDecisionAlgorithm(newServicePointVersion);
             }
             else return false;
         }
@@ -90,7 +91,7 @@ public class ServicePointStatusDecider {
         return newServicePointVersion.isStopPoint() && !currentServicePointVersion.isStopPoint();
     }
 
-    private boolean checkStatus(ServicePointVersion newServicePointVersion) {
+    private boolean isStatusDraftAccordingToStatusDecisionAlgorithm(ServicePointVersion newServicePointVersion) {
         boolean isSwissCountryCode = Objects.equals(newServicePointVersion.getCountry().getUicCode(), Country.SWITZERLAND.getUicCode());
         boolean isValidityLongEnough = ChronoUnit.DAYS.between(newServicePointVersion.getValidFrom(), newServicePointVersion.getValidTo()) > Long.parseLong(validityInDays);
         boolean isSwissLocation = isLocatedInSwitzerland(newServicePointVersion);
@@ -126,6 +127,7 @@ public class ServicePointStatusDecider {
      *                               ^
      * Saving Version             |------|
      */
+    // for scenarios 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
     private Optional<ServicePointVersion> findPreviousVersionOnSameTimeslot(ServicePointVersion newServicePointVersion,
                                                                             List<ServicePointVersion> currentServicePointVersions) {
         ServicePointVersion lastExistingServicePointVersion = getLastOfExistingVersions(currentServicePointVersions);
@@ -163,6 +165,7 @@ public class ServicePointStatusDecider {
                 .orElseThrow();
     }
 
+    // needed for scenario 16
     private boolean isThereTouchingVersionWithTheSameName(ServicePointVersion newServicePointVersion, List<ServicePointVersion> currentServicePointVersions) {
         Optional<ServicePointVersion> found = currentServicePointVersions
                 .stream()
