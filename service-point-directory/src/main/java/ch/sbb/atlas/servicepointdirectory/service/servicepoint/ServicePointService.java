@@ -37,7 +37,8 @@ public class ServicePointService {
   private final ServicePointValidationService servicePointValidationService;
   private final ServicePointSearchVersionRepository servicePointSearchVersionRepository;
   private final ServicePointTerminationService servicePointTerminationService;
-  private final ServicePointStatusDecider servicePointStatusDecider;
+  private final ServicePointStatusDecider3 servicePointStatusDecider;
+//  private final ServicePointStatusDecider servicePointStatusDecider;
 
   public List<ServicePointSearchResult> searchServicePointVersion(String value) {
     List<ServicePointSearchResult> servicePointSearchResults = servicePointSearchVersionRepository.searchServicePoints(value);

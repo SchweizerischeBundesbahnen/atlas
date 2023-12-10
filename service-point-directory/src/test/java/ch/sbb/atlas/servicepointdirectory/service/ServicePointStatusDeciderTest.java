@@ -6,7 +6,7 @@ import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointStatusDecider;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointStatusDecider3;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -25,7 +25,8 @@ class ServicePointStatusDeciderTest {
     @MockBean
     private GeoReferenceService geoReferenceService;
 
-    private final ServicePointStatusDecider servicePointStatusDecider = new ServicePointStatusDecider(geoReferenceService);
+    private final ServicePointStatusDecider3 servicePointStatusDecider = new ServicePointStatusDecider3(geoReferenceService);
+//    private final ServicePointStatusDecider servicePointStatusDecider = new ServicePointStatusDecider(geoReferenceService);
 
     @BeforeEach
     void setUp() {
