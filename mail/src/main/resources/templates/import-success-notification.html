@@ -120,8 +120,8 @@
         <li>
             <b th:text="'Total Success Imported CSV lines: ' + ${properties.get(0).get('successImportedItemsSize')}  "></b>
         </li>
-        <li>
-            <b th:if="${!properties.get(0).get('warningImportedItemsSize').isEmpty()}" th:text="'Total Success with Warnings Imported CSV lines: ' + ${properties.get(0).get('successWarningImportedItemsSize')}"></b>
+        <li th:if="${!properties.get(0).get('warningImportedItems').isEmpty()}">
+            <b th:text="'Total Success with Warnings Imported CSV lines: ' + ${properties.get(0).get('warningImportedItemsSize')}"></b>
         </li>
         <li>
             <b th:text="'Total Failed Imported CSV lines: ' + ${properties.get(0).get('failedImportedItemsSize')}"></b>
