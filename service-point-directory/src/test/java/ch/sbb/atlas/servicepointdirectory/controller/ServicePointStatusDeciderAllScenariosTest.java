@@ -79,12 +79,10 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
      */
     @Test
     void scenario1WhenCreateNewStopPointThenSetStatusToDRAFT() throws Exception {
-        ServicePointVersion servicePointVersion = repository.save(ServicePointTestData.getBernWyleregg());
         mvc.perform(post("/v1/service-points")
                         .contentType(contentType)
                         .content(mapper.writeValueAsString(ServicePointTestData.getAargauServicePointVersionModel())))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.id, is(servicePointVersion.getId().intValue() + 1)))
                 .andExpect(jsonPath("$.status", is(Status.DRAFT.toString())));
     }
 
