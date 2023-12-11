@@ -21,13 +21,12 @@ import {
 } from './traffic-point-detail-form-group';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { ValidationService } from '../../../core/validation/validation.service';
-import { debounceTime, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { TrafficPointMapService } from '../map/traffic-point-map.service';
 import { ValidityConfirmationService } from '../validity/validity-confirmation.service';
 import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
 import { Countries } from '../../../core/country/Countries';
-import { GeographyFormGroup } from '../geography/geography-form-group';
 
 interface AreaOption {
   sloid: string | undefined;
@@ -87,7 +86,6 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
     this.route.data.pipe(takeUntil(this.ngUnsubscribe)).subscribe((next) => {
       this.trafficPointVersions = next.trafficPoint;
       this.initTrafficPoint();
-      this.initGeolocationControlListeners(this.form.controls.trafficPointElementGeolocation);
     });
   }
 
@@ -303,33 +301,5 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
 
   isFormDirty(): boolean {
     return this.form.dirty;
-  }
-
-  private initGeolocationControlListeners(geolocationControls: FormGroup<GeographyFormGroup>) {
-    merge(
-      geolocationControls.controls.north.valueChanges,
-      geolocationControls.controls.east.valueChanges,
-    )
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        debounceTime(500),
-        filter(() => {
-          return !!(
-            geolocationControls.controls.east.value &&
-            geolocationControls.controls.north.value &&
-            geolocationControls.controls.spatialReference.value
-          );
-        }),
-        switchMap(() =>
-          this.geoDataService.getLocationInformation({
-            east: geolocationControls.controls.east.value!,
-            north: geolocationControls.controls.north.value!,
-            spatialReference: geolocationControls.controls.spatialReference.value!,
-          }),
-        ),
-      )
-      .subscribe((geoReference) => {
-        geolocationControls.controls.height.setValue(geoReference.height);
-      });
   }
 }

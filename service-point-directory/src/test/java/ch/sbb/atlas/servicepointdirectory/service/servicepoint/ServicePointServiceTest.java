@@ -43,14 +43,11 @@ import java.util.List;
   @Mock
   private ServicePointSearchVersionRepository servicePointSearchVersionRepository;
 
-  @Mock
-  private GeoReferenceService geoReferenceService;
-
   @BeforeEach
   void initMocksAndService() {
     MockitoAnnotations.openMocks(this);
     servicePointService = new ServicePointService(servicePointVersionRepositoryMock, versionableServiceMock,
-        servicePointValidationService, servicePointSearchVersionRepository, servicePointTerminationService, geoReferenceService);
+        servicePointValidationService, servicePointSearchVersionRepository, servicePointTerminationService);
   }
 
   @Test
