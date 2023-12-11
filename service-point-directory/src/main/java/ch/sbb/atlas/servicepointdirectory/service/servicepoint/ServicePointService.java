@@ -38,7 +38,6 @@ public class ServicePointService {
   private final ServicePointSearchVersionRepository servicePointSearchVersionRepository;
   private final ServicePointTerminationService servicePointTerminationService;
   private final ServicePointStatusDecider servicePointStatusDecider;
-//  private final ServicePointStatusDecider servicePointStatusDecider;
 
   public List<ServicePointSearchResult> searchServicePointVersion(String value) {
     List<ServicePointSearchResult> servicePointSearchResults = servicePointSearchVersionRepository.searchServicePoints(value);
@@ -101,7 +100,6 @@ public class ServicePointService {
   public ServicePointVersion save(ServicePointVersion servicePointVersion,
                                   Optional<ServicePointVersion> currentVersion,
                                   List<ServicePointVersion> currentVersions) {
-//    servicePointVersion.setStatus(Status.VALIDATED);
     servicePointVersion.setStatus(servicePointStatusDecider
             .getStatusForServicePoint(servicePointVersion, currentVersion, currentVersions));
     servicePointVersion.setEditionDate(LocalDateTime.now());
