@@ -31,8 +31,6 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
     this.formSubscriptionDestroy$ = new Subject<void>();
     this._form = form;
 
-    const geolocationControls = form.controls.servicePointGeolocation.controls;
-
     this._currentSelectedServicePointType = form.controls.selectedType.value;
     this.initTypeChangeInformationDialog(form.controls.selectedType);
   }

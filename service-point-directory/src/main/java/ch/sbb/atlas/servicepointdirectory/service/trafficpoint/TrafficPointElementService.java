@@ -149,7 +149,7 @@ public class TrafficPointElementService {
         .build().getSpecification());
   }
 
-  public void getHeightForTrafficPoint(TrafficPointElementVersion trafficPointElementVersion) {
+  public void setHeightForTrafficPoints(TrafficPointElementVersion trafficPointElementVersion) {
     TrafficPointElementGeolocation trafficPointElementGeolocation = trafficPointElementVersion.getTrafficPointElementGeolocation();
     if (trafficPointElementGeolocation != null && trafficPointElementGeolocation.getHeight() == null) {
       GeoAdminHeightResponse geoAdminHeightResponse = geoReferenceService.getHeight(trafficPointElementGeolocation.asCoordinatePair());
