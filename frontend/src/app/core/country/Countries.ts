@@ -79,6 +79,7 @@ export class Countries {
     { short: 'AM', uicCode: 58, enumCountry: Country.Armenia, path: 'am' },
     { short: 'AU', uicCode: 4, enumCountry: Country.Australia, path: 'au' },
     { short: 'AT', uicCode: 81, enumCountry: Country.Austria, path: 'at' },
+    { short: 'LI', enumCountry: Country.Liechtenstein, path: 'li' },
   ];
 
   public static readonly geolocationCountries: Country[] = [
@@ -100,7 +101,7 @@ export class Countries {
   static getCountryNameUicCodeFromCountry(country: Country): number {
     const countryName = Countries.fromCountry(country);
     if (!countryName) return -1;
-    return countryName.uicCode;
+    return countryName.uicCode!;
   }
 
   static filteredCountries(): Country[] {
