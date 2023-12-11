@@ -27,14 +27,14 @@ public abstract class BaseImportService<T extends  Versionable> {
     return addInfoToItemImportResult(failedResultBuilder, element);
   }
 
-  protected ItemImportResult buildSuccessWarningImportResult(T element,  List<Exception> exceptions){
+  protected ItemImportResult buildWarningImportResult(T element,  List<Exception> exceptions){
     String combinedWarningMessage = exceptions.stream()
         .map(Exception::getMessage)
         .collect(Collectors.joining(", ", "[WARNING]: This version was imported successfully but it has warnings: ", ""));
 
-    ItemImportResultBuilder successWarningResultBuilder = ItemImportResult.successWarningResultBuilder(combinedWarningMessage);
+    ItemImportResultBuilder warningResultBuilder = ItemImportResult.warningResultBuilder(combinedWarningMessage);
 
-    return addInfoToItemImportResult(successWarningResultBuilder, element);
+    return addInfoToItemImportResult(warningResultBuilder, element);
   }
 
 
