@@ -11,7 +11,7 @@ import {
 } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
-import { catchError, EMPTY, merge, Observable, of, Subject } from 'rxjs';
+import { catchError, EMPTY, Observable, of, Subject } from 'rxjs';
 import { Pages } from '../../pages';
 import { FormGroup } from '@angular/forms';
 import {
