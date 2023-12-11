@@ -278,7 +278,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       .subscribe((confirmed) => {
         if (confirmed) {
           this.servicePointService
-            .revokeServicePoint(this.selectedVersion.number.number!)
+            .revokeServicePoint(this.selectedVersion.number.number)
             .pipe((takeUntil(this.ngUnsubscribe), catchError(this.handleError)))
             .subscribe(() => {
               this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.REVOKE_SUCCESS');
