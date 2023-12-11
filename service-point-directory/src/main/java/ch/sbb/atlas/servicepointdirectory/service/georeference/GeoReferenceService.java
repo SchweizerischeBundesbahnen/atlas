@@ -30,14 +30,17 @@ public class GeoReferenceService {
 
   private final CoordinateTransformer coordinateTransformer = new CoordinateTransformer();
 
+  public GeoReference getGeoReference(CoordinatePair coordinatePair) {
+    return getGeoReference(coordinatePair, true);
+  }
 
-  public GeoReference getGeoReference(CoordinatePair coordinatePair, boolean isAddGeoReferenceInformationCalled) {
+  public GeoReference getGeoReference(CoordinatePair coordinatePair, boolean callHeightService) {
     GeoAdminResponse geoAdminResponse = geoAdminChClient.getGeoReference(new GeoAdminParams(coordinatePair));
     GeoReference swissTopoInformation = toGeoReference(geoAdminResponse);
 
-    if (!isAddGeoReferenceInformationCalled){
-      GeoAdminHeightResponse geoAdminHeightResponse = getHeight(coordinatePair);
-      swissTopoInformation.setHeight(geoAdminHeightResponse.getHeight());
+    if(callHeightService){
+        GeoAdminHeightResponse geoAdminHeightResponse = getHeight(coordinatePair);
+        swissTopoInformation.setHeight(geoAdminHeightResponse.getHeight());
     }
 
     if (swissTopoInformation.getCountry() == null) {
@@ -104,22 +107,6 @@ public class GeoReferenceService {
       return new GeoAdminHeightResponse();
     } else {
       throw new HeightNotCalculatableException();
-    }
-  }
-
-  public void getHeightForServicePoint(ServicePointVersion servicePointVersion) {
-    ServicePointGeolocation servicePointGeolocation = servicePointVersion.getServicePointGeolocation();
-    if (servicePointGeolocation != null && servicePointGeolocation.getHeight() == null) {
-      GeoAdminHeightResponse geoAdminHeightResponse = getHeight(servicePointGeolocation.asCoordinatePair());
-      servicePointGeolocation.setHeight(geoAdminHeightResponse.getHeight());
-    }
-  }
-
-  public void getHeightForTrafficPoint(TrafficPointElementVersion trafficPointElementVersion) {
-    TrafficPointElementGeolocation trafficPointElementGeolocation = trafficPointElementVersion.getTrafficPointElementGeolocation();
-    if (trafficPointElementGeolocation != null && trafficPointElementGeolocation.getHeight() == null) {
-      GeoAdminHeightResponse geoAdminHeightResponse = getHeight(trafficPointElementGeolocation.asCoordinatePair());
-      trafficPointElementGeolocation.setHeight(geoAdminHeightResponse.getHeight());
     }
   }
 }

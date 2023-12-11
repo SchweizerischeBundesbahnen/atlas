@@ -20,7 +20,6 @@ import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointFotCommentMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
-import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoAdminHeightResponse;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
@@ -197,11 +196,10 @@ public class ServicePointController implements ServicePointApiV1 {
   private void addGeoReferenceInformation(ServicePointVersion servicePointVersion) {
     if (servicePointVersion.hasGeolocation()) {
       ServicePointGeolocation servicePointGeolocation = servicePointVersion.getServicePointGeolocation();
-      GeoReference geoReference = geoReferenceService.getGeoReference(servicePointGeolocation.asCoordinatePair(), true);
+      GeoReference geoReference = geoReferenceService.getGeoReference(servicePointGeolocation.asCoordinatePair(), servicePointGeolocation.getHeight() == null);
 
-      if (servicePointGeolocation.getHeight() == null){
-        GeoAdminHeightResponse geoAdminHeightResponse = geoReferenceService.getHeight(servicePointGeolocation.asCoordinatePair());
-        servicePointGeolocation.setHeight(geoAdminHeightResponse.getHeight());
+      if (geoReference.getHeight() != null){
+        servicePointGeolocation.setHeight(geoReference.getHeight());
       }
 
       servicePointGeolocation.setCountry(geoReference.getCountry());
