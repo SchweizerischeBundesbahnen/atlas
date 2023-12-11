@@ -6,7 +6,6 @@ import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContai
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
 import ch.sbb.atlas.imports.util.DidokCsvMapper;
 import ch.sbb.atlas.imports.util.ImportUtils;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.exception.HeightNotCalculatableException;
@@ -163,7 +162,7 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
 
   private void getHeightForTrafficPoint(TrafficPointElementVersion trafficPointElementVersion, List<Exception> warnings){
     try {
-      trafficPointElementService.getHeightForTrafficPoint(trafficPointElementVersion);
+      trafficPointElementService.setHeightForTrafficPoints(trafficPointElementVersion);
     } catch (HeightNotCalculatableException exception) {
       log.warn("[Traffic-Point Import]: Warning during height calculation ", exception);
       warnings.add(exception);
