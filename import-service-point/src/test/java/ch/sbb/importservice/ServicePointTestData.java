@@ -62,5 +62,4 @@ public class ServicePointTestData {
     servicePointCsvModel.setDidokCode(didokNumber);
     return servicePointCsvModel;
   }
-
 }
