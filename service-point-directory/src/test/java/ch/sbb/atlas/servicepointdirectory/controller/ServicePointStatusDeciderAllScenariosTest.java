@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class ServicePointStatusAllScenariosTest extends BaseControllerApiTest {
+class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
 
     @MockBean
     private SharedBusinessOrganisationService sharedBusinessOrganisationService;
@@ -49,7 +49,7 @@ class ServicePointStatusAllScenariosTest extends BaseControllerApiTest {
     private final ServicePointController servicePointController;
 
     @Autowired
-    ServicePointStatusAllScenariosTest(ServicePointVersionRepository repository, ServicePointController servicePointController) {
+    ServicePointStatusDeciderAllScenariosTest(ServicePointVersionRepository repository, ServicePointController servicePointController) {
         this.repository = repository;
         this.servicePointController = servicePointController;
     }
@@ -990,6 +990,55 @@ class ServicePointStatusAllScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2018-01-01")))
                 .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
                 .andExpect(jsonPath("$[1].status", is(Status.DRAFT.toString())));
+    }
+
+    @Test
+    void newStopPointWhenIsSwissCountryCodeFalseShouldSetStatusToValidated() throws Exception {
+        CreateServicePointVersionModel createServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+        createServicePointVersionModel.setCountry(Country.ITALY);
+        createServicePointVersionModel.setNumberShort(12345);
+        mvc.perform(post("/v1/service-points")
+                        .contentType(contentType)
+                        .content(mapper.writeValueAsString(createServicePointVersionModel)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.status", is(Status.VALIDATED.toString())));
+    }
+
+    @Test
+    void newServicePointShouldSetStatusToValidated() throws Exception {
+        CreateServicePointVersionModel createServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+        createServicePointVersionModel.setMeansOfTransport(null);
+        createServicePointVersionModel.setOperatingPointRouteNetwork(false);
+        createServicePointVersionModel.setStopPointType(null);
+        mvc.perform(post("/v1/service-points")
+                        .contentType(contentType)
+                        .content(mapper.writeValueAsString(createServicePointVersionModel)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.status", is(Status.VALIDATED.toString())));
+    }
+
+    @Test
+    void newStopPointWhenValidityIsNotLongEnoughShouldSetStatusToValidated() throws Exception {
+        CreateServicePointVersionModel createServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+        createServicePointVersionModel.setValidFrom(LocalDate.of(2020, 1, 1));
+        createServicePointVersionModel.setValidTo(LocalDate.of(2020, 1, 31));
+        mvc.perform(post("/v1/service-points")
+                        .contentType(contentType)
+                        .content(mapper.writeValueAsString(createServicePointVersionModel)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.status", is(Status.VALIDATED.toString())));
+    }
+
+    @Test
+    void newStopPointWhenValidityIsNotSwissLocationShouldSetStatusToValidated() throws Exception {
+        GeoReference geoReference = GeoReference.builder().country(Country.ITALY).build();
+        when(geoReferenceService.getGeoReference(any())).thenReturn(geoReference);
+        CreateServicePointVersionModel createServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+        mvc.perform(post("/v1/service-points")
+                        .contentType(contentType)
+                        .content(mapper.writeValueAsString(createServicePointVersionModel)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.status", is(Status.VALIDATED.toString())));
     }
 
 }
