@@ -91,7 +91,6 @@ public class GeoReferenceService {
     if(coordinatePair.getSpatialReference() != SpatialReference.LV95){
       coordinatePair = coordinateTransformer.transform(coordinatePair, SpatialReference.LV95);
     }
-
     try {
       return geoAdminChClient.getHeight(coordinatePair.getEast(), coordinatePair.getNorth());
     }
