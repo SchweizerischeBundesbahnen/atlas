@@ -37,7 +37,7 @@ public class ItemImportResult {
         .message("[FAILED]: This version could not be imported due to: " + exception.getMessage());
   }
 
-  public static ItemImportResultBuilder successWarningResultBuilder(String warningMessage) {
+  public static ItemImportResultBuilder warningResultBuilder(String warningMessage) {
     return ItemImportResult.builder()
         .status(ItemImportResponseStatus.WARNING)
         .message(warningMessage);

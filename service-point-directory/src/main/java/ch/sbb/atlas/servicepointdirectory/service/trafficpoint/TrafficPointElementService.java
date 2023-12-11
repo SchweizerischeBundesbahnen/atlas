@@ -5,12 +5,15 @@ import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.exception.SloidAlreadyExistsException;
 import ch.sbb.atlas.servicepointdirectory.mapper.TrafficPointElementVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import ch.sbb.atlas.servicepointdirectory.service.OverviewService;
+import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoAdminHeightResponse;
+import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -36,14 +39,16 @@ public class TrafficPointElementService {
   private final VersionableService versionableService;
   private final CrossValidationService crossValidationService;
   private final TrafficPointElementSloidService trafficPointElementSloidService;
+  private final GeoReferenceService geoReferenceService;
 
   public TrafficPointElementService(TrafficPointElementVersionRepository trafficPointElementVersionRepository,
       VersionableService versionableService, CrossValidationService crossValidationService,
-      TrafficPointElementSloidService trafficPointElementSloidService) {
+      TrafficPointElementSloidService trafficPointElementSloidService, GeoReferenceService geoReferenceService) {
     this.trafficPointElementVersionRepository = trafficPointElementVersionRepository;
     this.versionableService = versionableService;
     this.crossValidationService = crossValidationService;
     this.trafficPointElementSloidService = trafficPointElementSloidService;
+    this.geoReferenceService = geoReferenceService;
   }
 
   public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
@@ -142,5 +147,13 @@ public class TrafficPointElementService {
             .validOn(validOn)
             .build())
         .build().getSpecification());
+  }
+
+  public void getHeightForTrafficPoint(TrafficPointElementVersion trafficPointElementVersion) {
+    TrafficPointElementGeolocation trafficPointElementGeolocation = trafficPointElementVersion.getTrafficPointElementGeolocation();
+    if (trafficPointElementGeolocation != null && trafficPointElementGeolocation.getHeight() == null) {
+      GeoAdminHeightResponse geoAdminHeightResponse = geoReferenceService.getHeight(trafficPointElementGeolocation.asCoordinatePair());
+      trafficPointElementGeolocation.setHeight(geoAdminHeightResponse.getHeight());
+    }
   }
 }
