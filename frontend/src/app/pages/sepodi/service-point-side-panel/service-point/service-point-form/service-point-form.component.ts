@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ServicePointDetailFormGroup } from '../service-point-detail-form-group';
 import { ServicePointType } from '../service-point-type';
 import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
-import { debounceTime, merge, Subject, Subscription, take } from 'rxjs';
+import { Subject, Subscription, take } from 'rxjs';
 import {
   Category,
   GeoDataService,
@@ -13,9 +13,7 @@ import {
   StopPointType,
 } from '../../../../../api';
 import { LocationInformation } from '../location-information';
-import { filter, switchMap, takeUntil } from 'rxjs/operators';
-import { Countries } from '../../../../../core/country/Countries';
-import { GeographyFormGroup } from '../../../geography/geography-form-group';
+import { takeUntil } from 'rxjs/operators';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 
 @Component({
@@ -34,7 +32,6 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
     this._form = form;
 
     const geolocationControls = form.controls.servicePointGeolocation.controls;
-    this.initGeolocationControlListeners(geolocationControls);
 
     this._currentSelectedServicePointType = form.controls.selectedType.value;
     this.initTypeChangeInformationDialog(form.controls.selectedType);
@@ -115,38 +112,6 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
     };
   }
 
-  private initGeolocationControlListeners(geolocationControls: GeographyFormGroup) {
-    merge(geolocationControls.north.valueChanges, geolocationControls.east.valueChanges)
-      .pipe(
-        takeUntil(this.formSubscriptionDestroy$),
-        debounceTime(500),
-        filter(
-          () =>
-            !!(
-              geolocationControls.east.value &&
-              geolocationControls.north.value &&
-              geolocationControls.spatialReference.value
-            ),
-        ),
-        switchMap(() =>
-          this.geoDataService.getLocationInformation({
-            east: geolocationControls.east.value!,
-            north: geolocationControls.north.value!,
-            spatialReference: geolocationControls.spatialReference.value!,
-          }),
-        ),
-      )
-      .subscribe((geoReference) => {
-        this.locationInformation = {
-          isoCountryCode: Countries.fromCountry(geoReference.country)?.short,
-          canton: geoReference.swissCanton,
-          municipalityName: geoReference.swissMunicipalityName,
-          localityName: geoReference.swissLocalityName,
-        };
-        geolocationControls.height.setValue(geoReference.height);
-      });
-  }
-
   private initTypeChangeInformationDialog(
     selectedTypeCtrl: FormControl<ServicePointType | null | undefined>,
   ) {
@@ -206,5 +171,9 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
       this.form.controls.operatingPointKilometer.setValue(false);
       this.form.controls.operatingPointKilometerMaster.reset();
     }
+  }
+
+  onLocationInformationChange(newLocationInformation: LocationInformation) {
+    this.locationInformation = newLocationInformation;
   }
 }
