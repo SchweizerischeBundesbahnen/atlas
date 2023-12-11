@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
   Country,
   CreateTrafficPointElementVersion,
-  GeoDataService,
   ReadServicePointVersion,
   ReadTrafficPointElementVersion,
   ServicePointsService,
@@ -76,7 +75,6 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
     private dialogService: DialogService,
     private validityConfirmationService: ValidityConfirmationService,
     private notificationService: NotificationService,
-    private geoDataService: GeoDataService,
   ) {}
 
   ngOnInit() {
@@ -200,8 +198,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
       this.showConfirmationDialog();
     } else {
       this.isSwitchVersionDisabled = true;
-      this.ngOnInit();
-      this.form.enable();
+      this.form.enable({ emitEvent: false });
     }
   }
 
@@ -242,7 +239,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
             : (trafficPointElementVersion.trafficPointElementType =
                 TrafficPointElementType.Platform);
 
-          this.form.disable();
+          this.form.disable({ emitEvent: false });
           trafficPointElementVersion.numberWithoutCheckDigit = this.servicePointNumber;
           if (this.isNew) {
             this.create(trafficPointElementVersion);
@@ -270,9 +267,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
         this.notificationService.success('SEPODI.TRAFFIC_POINT_ELEMENTS.NOTIFICATION.ADD_SUCCESS');
         this.router
           .navigate(['..', trafficPointElementVersion.sloid], { relativeTo: this.route })
-          .then(() => {
-            this.ngOnInit();
-          });
+          .then();
         this.isSwitchVersionDisabled = false;
       });
   }
@@ -283,11 +278,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe(() => {
         this.notificationService.success('SEPODI.TRAFFIC_POINT_ELEMENTS.NOTIFICATION.EDIT_SUCCESS');
-        this.router
-          .navigate(['..', this.selectedVersion.sloid], { relativeTo: this.route })
-          .then(() => {
-            this.ngOnInit();
-          });
+        this.router.navigate(['..', this.selectedVersion.sloid], { relativeTo: this.route }).then();
         this.isSwitchVersionDisabled = false;
       });
   }
