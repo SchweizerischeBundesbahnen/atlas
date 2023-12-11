@@ -7,7 +7,11 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Immutable;
@@ -46,7 +50,9 @@ public class ServicePointGeoData extends GeolocationBaseEntity {
       end
       as service_point_type
       FROM service_point_version_geolocation geo
-      JOIN service_point_version sp on sp.service_point_geolocation_id = geo.id                                  LEFT JOIN service_point_version_means_of_transport spvmot on sp.id = spvmot.service_point_version_id
+      JOIN service_point_version sp on sp.service_point_geolocation_id = geo.id 
+      LEFT JOIN service_point_version_means_of_transport spvmot on sp.id = spvmot.service_point_version_id
+      where sp.status!='REVOKED'
       """;
   @Id
   private Long id;
