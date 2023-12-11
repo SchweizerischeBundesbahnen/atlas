@@ -14,6 +14,7 @@ import ch.sbb.atlas.servicepointdirectory.exception.HeightNotCalculatableExcepti
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportServicePointDirectoryService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
+import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoAdminHeightResponse;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
@@ -151,7 +152,7 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
   private ItemImportResult saveServicePointVersion(ServicePointVersion servicePointVersion) {
     List<Exception> warnings = new ArrayList<>();
 
-    getHeightForServicePoint(servicePointVersion, warnings);
+    getHeightForServicePointImport(servicePointVersion, warnings);
 
     try {
       ServicePointVersion savedServicePointVersion = servicePointService.saveWithoutValidationForImportOnly(servicePointVersion);
@@ -167,7 +168,7 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
 
   private ItemImportResult updateServicePointVersion(ServicePointVersion servicePointVersion) {
     List<Exception> warnings = new ArrayList<>();
-    getHeightForServicePoint(servicePointVersion, warnings);
+    getHeightForServicePointImport(servicePointVersion, warnings);
 
     try {
       updateServicePointVersionForImportService(servicePointVersion);
@@ -185,9 +186,13 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
     return buildSuccessMessageBasedOnWarnings(servicePointVersion, warnings);
   }
 
-  private void getHeightForServicePoint(ServicePointVersion servicePointVersion, List<Exception> warnings){
+  private void getHeightForServicePointImport(ServicePointVersion servicePointVersion, List<Exception> warnings){
+    ServicePointGeolocation servicePointGeolocation = servicePointVersion.getServicePointGeolocation();
     try {
-      geoReferenceService.getHeightForServicePoint(servicePointVersion);
+      if (servicePointGeolocation != null && servicePointGeolocation.getHeight() == null) {
+        GeoAdminHeightResponse geoAdminHeightResponse = geoReferenceService.getHeight(servicePointGeolocation.asCoordinatePair());
+        servicePointGeolocation.setHeight(geoAdminHeightResponse.getHeight());
+      }
     } catch (HeightNotCalculatableException exception) {
       log.warn("[Service-Point Import]: Warning during height calculation ", exception);
       warnings.add(exception);
@@ -196,7 +201,7 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
 
   private ItemImportResult buildSuccessMessageBasedOnWarnings(ServicePointVersion servicePointVersion, List<Exception> warnings){
     if(!warnings.isEmpty()) {
-      return buildSuccessWarningImportResult(servicePointVersion, warnings);
+      return buildWarningImportResult(servicePointVersion, warnings);
     } else {
       return buildSuccessImportResult(servicePointVersion);
     }

@@ -216,7 +216,7 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
     )
       .pipe(
         takeUntil(this.destroySubscriptions$),
-        debounceTime(10),
+        debounceTime(100),
         filter(() => {
           return !!(
             geolocationControls.controls.east.value &&

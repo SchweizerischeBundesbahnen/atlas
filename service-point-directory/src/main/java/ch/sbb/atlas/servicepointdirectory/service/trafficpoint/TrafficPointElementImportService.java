@@ -13,7 +13,6 @@ import ch.sbb.atlas.servicepointdirectory.exception.HeightNotCalculatableExcepti
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportServicePointDirectoryService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
-import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -37,7 +36,6 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
   private final TrafficPointElementService trafficPointElementService;
   private final VersionableService versionableService;
   private final ServicePointDistributor servicePointDistributor;
-  private final GeoReferenceService geoReferenceService;
 
   @Override
   protected void save(TrafficPointElementVersion trafficPointElementVersion) {
@@ -146,7 +144,7 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
       return buildFailedImportResult(trafficPointElementVersion, exception);
     }
 
-    return buildSuccessMessageBasedOnWarnings(trafficPointElementVersion, warnings);
+    return buildWarningMessage(trafficPointElementVersion, warnings);
   }
 
   private ItemImportResult saveTrafficPointVersion(TrafficPointElementVersion trafficPointElementVersion) {
@@ -160,21 +158,21 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
       return buildFailedImportResult(trafficPointElementVersion, exception);
     }
 
-    return buildSuccessMessageBasedOnWarnings(trafficPointElementVersion, warnings);
+    return buildWarningMessage(trafficPointElementVersion, warnings);
   }
 
   private void getHeightForTrafficPoint(TrafficPointElementVersion trafficPointElementVersion, List<Exception> warnings){
     try {
-      geoReferenceService.getHeightForTrafficPoint(trafficPointElementVersion);
+      trafficPointElementService.getHeightForTrafficPoint(trafficPointElementVersion);
     } catch (HeightNotCalculatableException exception) {
       log.warn("[Traffic-Point Import]: Warning during height calculation ", exception);
       warnings.add(exception);
     }
   }
 
-  private ItemImportResult buildSuccessMessageBasedOnWarnings(TrafficPointElementVersion trafficPointElementVersion, List<Exception> warnings){
+  private ItemImportResult buildWarningMessage(TrafficPointElementVersion trafficPointElementVersion, List<Exception> warnings){
     if(!warnings.isEmpty()) {
-      return buildSuccessWarningImportResult(trafficPointElementVersion, warnings);
+      return buildWarningImportResult(trafficPointElementVersion, warnings);
     } else {
       return buildSuccessImportResult(trafficPointElementVersion);
     }

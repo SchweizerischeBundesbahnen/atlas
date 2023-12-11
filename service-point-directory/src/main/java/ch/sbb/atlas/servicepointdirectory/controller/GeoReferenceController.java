@@ -17,7 +17,7 @@ public class GeoReferenceController implements GeoReferenceApiV1 {
 
   @Override
   public GeoReference getLocationInformation(CoordinatePair coordinatePair) {
-    return geoReferenceService.getGeoReference(coordinatePair, false);
+    return geoReferenceService.getGeoReference(coordinatePair);
   }
 
 }
