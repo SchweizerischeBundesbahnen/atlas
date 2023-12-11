@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -62,12 +61,10 @@ public class ServicePointStatusDecider {
                                            List<ServicePointVersion> servicePointVersions) {
         String logMessageBeginning = "Deciding on ServicePoint.Status when updating from stopPoint, currentServicePointVersion={} to stopPoint, ";
         // case 1 new StopPoint, scenario 1
-        if (currentServicePointVersion.isEmpty() && CollectionUtils.isEmpty(servicePointVersions)) {
+        if (currentServicePointVersion.isEmpty()) {
             log.info("Deciding on ServicePoint.Status when creating new StopPoint={}", newServicePointVersion);
             return calculateStatusAccordingToStatusDecisionAlgorithm(newServicePointVersion);
-        }
-
-        if (currentServicePointVersion.isPresent()) {
+        } else {
             // case 2 change from servicePoint to stopPoint, scenario 2, scenario 3
             if (isChangeFromServicePointToStopPoint(newServicePointVersion, currentServicePointVersion.get())) {
                 log.info("Deciding on ServicePoint.Status when updating from servicePoint, currentServicePointVersion={} to stopPoint, " +
@@ -134,13 +131,13 @@ public class ServicePointStatusDecider {
         return !checkIfSomeOverlap(newServicePointVersion, servicePointVersions);
     }
 
-    public boolean checkIfSomeOverlap(ServicePointVersion newServicePointVersion, List<ServicePointVersion> servicePointVersions) {
+    private boolean checkIfSomeOverlap(ServicePointVersion newServicePointVersion, List<ServicePointVersion> servicePointVersions) {
         return servicePointVersions.stream()
                 .anyMatch(servicePointVersion -> servicePointVersion.getValidFrom().isBefore(newServicePointVersion.getValidTo()) &&
                         newServicePointVersion.getValidFrom().isBefore(servicePointVersion.getValidTo()));
     }
 
-    public boolean checkIfSomeDateEqual(ServicePointVersion newServicePointVersion, List<ServicePointVersion> servicePointVersionList) {
+    private boolean checkIfSomeDateEqual(ServicePointVersion newServicePointVersion, List<ServicePointVersion> servicePointVersionList) {
         return servicePointVersionList.stream()
                 .anyMatch(servicePointVersion -> servicePointVersion.getValidFrom().equals(newServicePointVersion.getValidFrom())
                         || servicePointVersion.getValidFrom().equals(newServicePointVersion.getValidTo())
