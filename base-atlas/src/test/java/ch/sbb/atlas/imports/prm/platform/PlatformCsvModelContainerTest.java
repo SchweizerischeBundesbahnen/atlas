@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class PlatformCsvModelContainerTest {
 
     @Test
-    public void testGetCreateModels() {
+    void testGetCreateModels() {
         PlatformCsvModel csvModel1 = PlatformCsvTestData.getCsvModel();
         PlatformCsvModel csvModel2 = PlatformCsvTestData.getCsvModel();
 
