@@ -78,5 +78,3 @@ kafka:
       point:
         topic: atlas.service.point
         groupId: atlas.kafka.spdi.service.point.groupId
-
-validity-in-days: 60
