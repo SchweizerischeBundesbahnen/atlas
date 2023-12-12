@@ -18,7 +18,6 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.util.ParameterTypes;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -118,7 +117,7 @@ class BaseImportServiceTest {
   }
 
   @Test
-  public void testBuildFailedImportResult() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+  void testBuildFailedImportResult() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
     //because method is protected
     Method method = BaseImportService.class.getDeclaredMethod("buildFailedImportResult", Versionable.class, Exception.class);
     method.setAccessible(true);
@@ -129,11 +128,11 @@ class BaseImportServiceTest {
     ItemImportResult result = (ItemImportResult) method.invoke(baseImportService, servicePointVersion, mockException);
 
     assertNotNull(result);
-    assertThat(result.getStatus() == ItemImportResponseStatus.FAILED);
+    assertThat(result.getStatus()).isEqualTo(ItemImportResponseStatus.FAILED);
   }
 
   @Test
-  public void testBuildSuccessImportResult() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+  void testBuildSuccessImportResult() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
     //because method is protected
     Method method = BaseImportService.class.getDeclaredMethod("buildSuccessImportResult", Versionable.class);
     method.setAccessible(true);
@@ -143,11 +142,11 @@ class BaseImportServiceTest {
     ItemImportResult result = (ItemImportResult) method.invoke(baseImportService, servicePointVersion);
 
     assertNotNull(result);
-    assertThat(result.getStatus() == ItemImportResponseStatus.SUCCESS);
+    assertThat(result.getStatus()).isEqualTo(ItemImportResponseStatus.SUCCESS);
   }
 
   @Test
-  public void testBuildWarningImportResult() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+  void testBuildWarningImportResult() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
     //because method is protected
     Method method = BaseImportService.class.getDeclaredMethod("buildWarningImportResult", Versionable.class, List.class);
     method.setAccessible(true);
@@ -161,6 +160,6 @@ class BaseImportServiceTest {
     ItemImportResult result = (ItemImportResult) method.invoke(baseImportService, servicePointVersion, exceptionList);
 
     assertNotNull(result);
-    assertThat(result.getStatus() == ItemImportResponseStatus.WARNING);
+    assertThat(result.getStatus()).isEqualTo(ItemImportResponseStatus.WARNING);
   }
 }
