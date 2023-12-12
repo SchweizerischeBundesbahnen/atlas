@@ -6,8 +6,10 @@ import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDate;
@@ -19,12 +21,18 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @IntegrationTest
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ServicePointStatusDeciderTest {
 
     @MockBean
     private GeoReferenceService geoReferenceService;
 
-    private final ServicePointStatusDecider servicePointStatusDecider = new ServicePointStatusDecider(geoReferenceService);
+    private ServicePointStatusDecider servicePointStatusDecider;
+
+    @BeforeAll
+    void beforeAll() {
+        servicePointStatusDecider = new ServicePointStatusDecider(geoReferenceService);
+    }
 
     @BeforeEach
     void setUp() {
