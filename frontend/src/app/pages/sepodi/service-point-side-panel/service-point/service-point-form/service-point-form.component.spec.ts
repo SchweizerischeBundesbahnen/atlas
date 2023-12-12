@@ -1,6 +1,7 @@
 import { ServicePointFormComponent } from './service-point-form.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import SpyObj = jasmine.SpyObj;
+import { LocationInformation } from '../location-information';
 
 describe('ServicePointFormComponent', () => {
   let component: ServicePointFormComponent;
@@ -108,5 +109,17 @@ describe('ServicePointFormComponent', () => {
 
     expect(component.form?.controls.operatingPointKilometer.value).toBe(false);
     expect(component.form?.controls.operatingPointKilometerMaster.value).toBe(null);
+  });
+
+  it('should update locationInformation when onLocationInformationChange is called', () => {
+    const newLocationInfo: LocationInformation = {
+      isoCountryCode: 'CH',
+      canton: 'BERN',
+      municipalityName: 'Münchenbuchsee',
+      localityName: 'Hofwil',
+    };
+
+    component.onLocationInformationChange(newLocationInfo);
+    expect(component.locationInformation).toEqual(newLocationInfo);
   });
 });
