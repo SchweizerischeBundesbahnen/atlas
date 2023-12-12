@@ -17,17 +17,17 @@ public abstract class BaseImportService<T extends  Versionable> {
       T element
   );
 
-  public ItemImportResult buildSuccessImportResult(T element) {
+  protected ItemImportResult buildSuccessImportResult(T element) {
     ItemImportResultBuilder successResultBuilder = ItemImportResult.successResultBuilder();
     return addInfoToItemImportResult(successResultBuilder, element);
   }
 
-  public ItemImportResult buildFailedImportResult(T element, Exception exception) {
+  protected ItemImportResult buildFailedImportResult(T element, Exception exception) {
     ItemImportResultBuilder failedResultBuilder = ItemImportResult.failedResultBuilder(exception);
     return addInfoToItemImportResult(failedResultBuilder, element);
   }
 
-  public ItemImportResult buildWarningImportResult(T element,  List<Exception> exceptions){
+  protected ItemImportResult buildWarningImportResult(T element,  List<Exception> exceptions){
     String combinedWarningMessage = exceptions.stream()
         .map(Exception::getMessage)
         .collect(Collectors.joining(", ", "[WARNING]: This version was imported successfully but it has warnings: ", ""));
