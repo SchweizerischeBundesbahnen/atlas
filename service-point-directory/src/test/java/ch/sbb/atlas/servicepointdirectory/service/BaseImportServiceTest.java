@@ -11,8 +11,6 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.versioning.model.Versionable;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
@@ -117,47 +115,35 @@ class BaseImportServiceTest {
   }
 
   @Test
-  void testBuildFailedImportResult() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-    //because method is protected
-    Method method = BaseImportService.class.getDeclaredMethod("buildFailedImportResult", Versionable.class, Exception.class);
-    method.setAccessible(true);
-
+  void testBuildFailedImportResult() {
 
     Exception mockException = new RuntimeException("Test Exception");
     ServicePointVersion servicePointVersion = ServicePointTestData.createServicePointVersion();
-    ItemImportResult result = (ItemImportResult) method.invoke(baseImportService, servicePointVersion, mockException);
+    ItemImportResult result = baseImportService.buildFailedImportResult(servicePointVersion, mockException);
 
     assertNotNull(result);
     assertThat(result.getStatus()).isEqualTo(ItemImportResponseStatus.FAILED);
   }
 
   @Test
-  void testBuildSuccessImportResult() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-    //because method is protected
-    Method method = BaseImportService.class.getDeclaredMethod("buildSuccessImportResult", Versionable.class);
-    method.setAccessible(true);
-
+  void testBuildSuccessImportResult() {
 
     ServicePointVersion servicePointVersion = ServicePointTestData.createServicePointVersion();
-    ItemImportResult result = (ItemImportResult) method.invoke(baseImportService, servicePointVersion);
+    ItemImportResult result = baseImportService.buildSuccessImportResult(servicePointVersion);
 
     assertNotNull(result);
     assertThat(result.getStatus()).isEqualTo(ItemImportResponseStatus.SUCCESS);
   }
 
   @Test
-  void testBuildWarningImportResult() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-    //because method is protected
-    Method method = BaseImportService.class.getDeclaredMethod("buildWarningImportResult", Versionable.class, List.class);
-    method.setAccessible(true);
-
+  void testBuildWarningImportResult() {
 
     Exception mockException = new RuntimeException("Test Exception");
     List<Exception> exceptionList = new ArrayList<>();
     exceptionList.add(mockException);
 
     ServicePointVersion servicePointVersion = ServicePointTestData.createServicePointVersion();
-    ItemImportResult result = (ItemImportResult) method.invoke(baseImportService, servicePointVersion, exceptionList);
+    ItemImportResult result = baseImportService.buildWarningImportResult(servicePointVersion, exceptionList);
 
     assertNotNull(result);
     assertThat(result.getStatus()).isEqualTo(ItemImportResponseStatus.WARNING);
