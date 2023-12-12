@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class StopPointCsvToModelMapperTest {
 
     @Test
-    public void testToModel() {
+    void testToModel() {
         StopPointCsvModel csvModel = StopPointCsvTestData.getStopPointCsvModel();
         CreateStopPointVersionModel result = StopPointCsvToModelMapper.toModel(csvModel);
 
