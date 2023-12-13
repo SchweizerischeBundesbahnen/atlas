@@ -22,6 +22,9 @@ public class ServicePointStatusDecider {
 
     private static final String LOG_MESSAGE_BEGINNING = "Deciding on ServicePoint.Status when updating from stopPoint, currentServicePointVersion={} to stopPoint, ";
 
+    /**
+     * Documentation at CreateNewServicePointStatusDecision.puml and UpdateNewServicePointStatusDecision.puml
+     */
     private Status calculateStatusAccordingToStatusDecisionAlgorithm(ServicePointVersion newServicePointVersion) {
         boolean isStopPoint = newServicePointVersion.isStopPoint();
         boolean isSwissCountryCode = Objects.equals(newServicePointVersion.getCountry().getUicCode(), Country.SWITZERLAND.getUicCode());
@@ -49,6 +52,9 @@ public class ServicePointStatusDecider {
         return newServicePointVersion.isStopPoint() && !currentServicePointVersion.isStopPoint();
     }
 
+    /**
+     * Documentation at ServicePointStatusScenarios.md
+     */
     public Status getStatusForServicePoint(ServicePointVersion newServicePointVersion,
                                            Optional<ServicePointVersion> currentServicePointVersion,
                                            List<ServicePointVersion> servicePointVersions) {
