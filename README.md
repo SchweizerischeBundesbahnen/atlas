@@ -2,7 +2,6 @@
 
 This is the repository for business relevant services for ATLAS.
 
-
 <!-- toc -->
 
 - [Big Picture](#big-picture)
