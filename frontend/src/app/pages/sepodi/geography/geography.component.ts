@@ -10,13 +10,15 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { CoordinatePair, SpatialReference } from '../../../api';
+import { CoordinatePair, GeoDataService, SpatialReference } from '../../../api';
 import { GeographyFormGroup } from './geography-form-group';
 import { CoordinateTransformationService } from './coordinate-transformation.service';
 import { debounceTime, merge, Subject } from 'rxjs';
 import { MapService } from '../map/map.service';
 import { MatRadioChange } from '@angular/material/radio';
-import { takeUntil } from 'rxjs/operators';
+import { filter, switchMap, takeUntil } from 'rxjs/operators';
+import { Countries } from 'src/app/core/country/Countries';
+import { LocationInformation } from '../service-point-side-panel/service-point/location-information';
 
 export const LV95_MAX_DIGITS = 5;
 export const WGS84_MAX_DIGITS = 11;
@@ -56,6 +58,9 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
       this.updateMapInteractionMode();
     }
   }
+  @Output()
+  locationInformationChange = new EventEmitter<LocationInformation>();
+  locationInformation?: LocationInformation;
 
   transformedCoordinatePair?: CoordinatePair;
 
@@ -65,6 +70,7 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
     private coordinateTransformationService: CoordinateTransformationService,
     private mapService: MapService,
     private changeDetector: ChangeDetectorRef,
+    private geoDataService: GeoDataService,
   ) {}
 
   ngOnInit() {
@@ -117,6 +123,7 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy() {
     this.mapService.exitCoordinateSelectionMode();
+    this.destroySubscriptions$.next();
     this.destroySubscriptions$.complete();
   }
 
@@ -125,6 +132,7 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
       this.currentCoordinates,
       this.transformedSpatialReference,
     );
+    this.initGeolocationControlListeners(this.formGroup);
     this.changeDetector.detectChanges();
   }
 
@@ -198,6 +206,42 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
             this.mapService.exitCoordinateSelectionMode();
           }
         }
+      });
+  }
+
+  private initGeolocationControlListeners(geolocationControls: FormGroup<GeographyFormGroup>) {
+    merge(
+      geolocationControls.controls.north.valueChanges,
+      geolocationControls.controls.east.valueChanges,
+    )
+      .pipe(
+        takeUntil(this.destroySubscriptions$),
+        debounceTime(100),
+        filter(() => {
+          return !!(
+            geolocationControls.controls.east.value &&
+            geolocationControls.controls.north.value &&
+            geolocationControls.controls.spatialReference.value
+          );
+        }),
+        switchMap(() =>
+          this.geoDataService.getLocationInformation({
+            east: geolocationControls.controls.east.value!,
+            north: geolocationControls.controls.north.value!,
+            spatialReference: geolocationControls.controls.spatialReference.value!,
+          }),
+        ),
+      )
+      .subscribe((geoReference) => {
+        this.locationInformation = {
+          isoCountryCode: Countries.fromCountry(geoReference.country)?.short,
+          canton: geoReference.swissCanton,
+          municipalityName: geoReference.swissMunicipalityName,
+          localityName: geoReference.swissLocalityName,
+        };
+
+        this.locationInformationChange.emit(this.locationInformation);
+        geolocationControls.controls.height.setValue(geoReference.height);
       });
   }
 }

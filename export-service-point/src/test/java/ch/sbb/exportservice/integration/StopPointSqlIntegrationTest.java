@@ -51,7 +51,7 @@ class StopPointSqlIntegrationTest extends BasePrmSqlIntegrationTest {
   @Test
   void shouldReturnTimetableFutureStopPoints() throws SQLException {
     //given
-    LocalDate actualTimetableYearChangeDate = FutureTimetableHelper.getActualTimetableYearChangeDate(LocalDate.now());
+    LocalDate actualTimetableYearChangeDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
     insertStopPoint(8507000, "ch:1:sloid:70000", actualTimetableYearChangeDate.minusYears(1),
         actualTimetableYearChangeDate.plusYears(1));
     String sqlQuery = StopPointVersionSqlQueryUtil.getSqlQuery(PrmExportType.TIMETABLE_FUTURE);

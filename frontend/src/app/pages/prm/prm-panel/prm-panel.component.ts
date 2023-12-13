@@ -70,6 +70,7 @@ export class PrmPanelComponent implements OnDestroy, OnInit {
   }
 
   ngOnDestroy() {
+    this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
 
