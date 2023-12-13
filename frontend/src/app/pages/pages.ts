@@ -206,7 +206,7 @@ export class Pages {
   public static get enabledPages(): Page[] {
     let enabledPages = this.viewablePages;
     if (!environment.pageSepodiEnabled) {
-      enabledPages = enabledPages.filter((page) => page !== Pages.SEPODI || page !== Pages.PRM);
+      enabledPages = enabledPages.filter((page) => page !== Pages.SEPODI && page !== Pages.PRM);
     }
     return enabledPages;
   }
