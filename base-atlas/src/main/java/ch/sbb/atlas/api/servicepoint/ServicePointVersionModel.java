@@ -51,7 +51,7 @@ public abstract class ServicePointVersionModel extends BaseVersionModel implemen
           , example = "Biel/Bienne Bözingenfeld/Champ", maxLength = 30)
   private String designationOfficial;
 
-  @Size(min = AtlasFieldLengths.LENGTH_2, max = AtlasFieldLengths.LENGTH_6)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_6)
   @Pattern(regexp = AtlasCharacterSetsRegex.ABBREVIATION_PATTERN)
   @Schema(description = "Location abbreviation. Mainly used by the railways. Abbreviations may not be used as a code for "
           + "identifying locations.", example = "BIBD", minLength = 2, maxLength = 6)
