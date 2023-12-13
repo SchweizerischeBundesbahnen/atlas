@@ -19,7 +19,7 @@ export class SideNavComponent implements OnDestroy {
       .pipe(
         takeUntil(this.ngUnsubscribe),
         filter((event) => event instanceof NavigationEnd),
-        tap(() => (this.activePageIndex = this.getActivePageIndex(this.router.url)))
+        tap(() => (this.activePageIndex = this.getActivePageIndex(this.router.url))),
       )
       .subscribe();
   }
@@ -33,11 +33,12 @@ export class SideNavComponent implements OnDestroy {
       return this.enabledPages.findIndex((value) => value.path.length === 0);
     }
     return this.enabledPages.findIndex(
-      (value) => value.path.length > 0 && currentUrl.includes(value.path)
+      (value) => value.path.length > 0 && currentUrl.includes(value.path),
     );
   }
 
   ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
 }

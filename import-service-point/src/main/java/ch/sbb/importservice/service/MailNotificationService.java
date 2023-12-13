@@ -49,6 +49,7 @@ public class MailNotificationService {
     String stepExecutionInformation = getStepExecutionInformation(stepExecution);
 
     List<ImportProcessItem> successImportedItems = filterByStatus(importProcessItems, ItemImportResponseStatus.SUCCESS);
+    List<ImportProcessItem> warningImportedItems = filterByStatus(importProcessItems, ItemImportResponseStatus.WARNING);
     List<ImportProcessItem> failedImportedItems = filterByStatus(importProcessItems, ItemImportResponseStatus.FAILED);
 
     List<Map<String, Object>> mailProperties = new ArrayList<>();
@@ -58,12 +59,18 @@ public class MailNotificationService {
     mailContentProperty.put("correlationId", getCurrentSpan(stepExecution));
     mailContentProperty.put("importProcessItemsSize", importProcessItems.size());
     mailContentProperty.put("successImportedItemsSize", successImportedItems.size());
+    mailContentProperty.put("warningImportedItemsSize", warningImportedItems.size());
     mailContentProperty.put("failedImportedItemsSize", failedImportedItems.size());
-    if (failedImportedItems.size() < 1_000) {
-      mailContentProperty.put("failedImportedItems", getImportProcessItem(failedImportedItems));
-    } else {
+
+    if(failedImportedItems.size() + warningImportedItems.size() > 1_000){
       mailContentProperty.put("failedImportedItems", new HashMap<>());
+      mailContentProperty.put("warningImportedItems", new HashMap<>());
     }
+    else{
+      mailContentProperty.put("failedImportedItems", getImportProcessItem(failedImportedItems));
+      mailContentProperty.put("warningImportedItems", getImportProcessItem(warningImportedItems));
+    }
+
     mailProperties.add(mailContentProperty);
     return mailProperties;
   }

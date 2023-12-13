@@ -12,13 +12,13 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class BaseImportServiceTest {
+class BaseImportServicePointDirectoryServiceTest {
 
-  private BaseImportServicePointDirectoryService<ServicePointVersion> baseImportService;
+  private BaseImportServicePointDirectoryService<ServicePointVersion> baseImportServicePointDirectoryService;
 
   @BeforeEach
   void setUp() {
-    baseImportService = new BaseImportServicePointDirectoryService<>() {
+    baseImportServicePointDirectoryService = new BaseImportServicePointDirectoryService<>() {
       @Override
       protected void save(ServicePointVersion element) {
         // not used
@@ -58,7 +58,7 @@ class BaseImportServiceTest {
     final ServicePointVersion dbVersion = ServicePointTestData.createServicePointVersionWithoutServicePointGeolocation();
 
     // when
-    baseImportService.copyPropertiesFromCsvVersionToDbVersion(csvVersion, dbVersion);
+    baseImportServicePointDirectoryService.copyPropertiesFromCsvVersionToDbVersion(csvVersion, dbVersion);
 
     // then
     assertThat(dbVersion.getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
@@ -79,7 +79,7 @@ class BaseImportServiceTest {
     dbVersion.getServicePointGeolocation().setSwissMunicipalityNumber(5);
 
     // when
-    baseImportService.copyPropertiesFromCsvVersionToDbVersion(csvVersion, dbVersion);
+    baseImportServicePointDirectoryService.copyPropertiesFromCsvVersionToDbVersion(csvVersion, dbVersion);
 
     // then
     assertThat(dbVersion.getDesignationOfficial()).isEqualTo("Bern, Wyleregg");
@@ -88,5 +88,4 @@ class BaseImportServiceTest {
     assertThat(dbVersion.getServicePointGeolocation().getSwissMunicipalityNumber()).isEqualTo(351);
     assertThat(dbVersion.getServicePointGeolocation().getHeight()).isEqualTo(555);
   }
-
 }
