@@ -63,8 +63,8 @@ export class ServicePointFormGroupBuilder {
         sloid: new FormControl(),
         abbreviation: new FormControl(null, [
           Validators.maxLength(6),
-          Validators.minLength(2),
-          AtlasCharsetsValidator.uppercaseNumericLength2To6Validator,
+          Validators.minLength(1),
+          AtlasCharsetsValidator.uppercaseNumeric,
         ]),
         status: new FormControl(),
         designationOfficial: new FormControl(null, [
@@ -120,7 +120,7 @@ export class ServicePointFormGroupBuilder {
         abbreviation: new FormControl(version.abbreviation, [
           Validators.maxLength(6),
           Validators.minLength(2),
-          AtlasCharsetsValidator.uppercaseNumericLength2To6Validator,
+          AtlasCharsetsValidator.uppercaseNumeric,
         ]),
         status: new FormControl(version.status),
         designationOfficial: new FormControl(version.designationOfficial, [
