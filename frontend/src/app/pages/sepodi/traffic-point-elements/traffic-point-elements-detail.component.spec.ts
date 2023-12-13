@@ -63,7 +63,9 @@ describe('TrafficPointElementsDetailComponent', () => {
     'updateTrafficPoint',
     'createTrafficPoint',
   ]);
-  trafficPointService.getAreasOfServicePoint.and.returnValue(of(BERN_WYLEREGG_TRAFFIC_POINTS));
+  trafficPointService.getAreasOfServicePoint.and.returnValue(
+    of({ objects: BERN_WYLEREGG_TRAFFIC_POINTS }),
+  );
   trafficPointService.updateTrafficPoint.and.returnValue(of(BERN_WYLEREGG_TRAFFIC_POINTS));
   trafficPointService.createTrafficPoint.and.returnValue(of(BERN_WYLEREGG_TRAFFIC_POINTS[0]));
 

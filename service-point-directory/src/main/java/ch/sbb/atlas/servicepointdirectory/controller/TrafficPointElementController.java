@@ -17,6 +17,7 @@ import ch.sbb.atlas.servicepointdirectory.mapper.TrafficPointElementVersionMappe
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
+import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementImportService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
@@ -37,6 +38,7 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
 
   private final TrafficPointElementService trafficPointElementService;
   private final ServicePointService servicePointService;
+  private final GeoReferenceService geoReferenceService;
   private final CrossValidationService crossValidationService;
   private final TrafficPointElementImportService trafficPointElementImportService;
   private final ServicePointDistributor servicePointDistributor;
@@ -138,6 +140,7 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   private TrafficPointElementVersion createTrafficPoint(TrafficPointElementVersion trafficPointElementVersion) {
     ServicePointNumber servicePointNumber = trafficPointElementVersion.getServicePointNumber();
     crossValidationService.validateServicePointNumberExists(servicePointNumber);
+    trafficPointElementService.setHeightForTrafficPoints(trafficPointElementVersion);
     return trafficPointElementService.create(trafficPointElementVersion, servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber));
   }
 
@@ -145,7 +148,7 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
     ServicePointNumber servicePointNumber = editedVersion.getServicePointNumber();
     crossValidationService.validateServicePointNumberExists(editedVersion.getServicePointNumber());
     List<ServicePointVersion> allServicePointVersions = servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber);
+    trafficPointElementService.setHeightForTrafficPoints(editedVersion);
     trafficPointElementService.update(currentVersion, editedVersion, allServicePointVersions);
   }
-
 }
