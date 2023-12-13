@@ -108,6 +108,7 @@ export class TrafficPointMapService {
           },
           properties: {},
         });
+        this.mapService.centerOn(coordinates);
       });
   }
 
