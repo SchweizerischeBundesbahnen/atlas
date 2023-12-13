@@ -12,6 +12,6 @@ public class AtlasCharacterSetsRegex {
 
   public static final String EMAIL_ADDRESS = "^$|^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
 
-  public static final String ABBREVIATION_PATTERN = "^[A-Z0-9]{2,6}$";
+  public static final String ABBREVIATION_PATTERN = "[A-Z0-9]*";
 
 }

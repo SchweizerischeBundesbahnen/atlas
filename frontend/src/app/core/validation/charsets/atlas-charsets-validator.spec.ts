@@ -103,4 +103,16 @@ describe('Atlas Charsets Validator', () => {
     expect(colonSeperatedSid4pt(new FormControl(':'))).toBeDefined();
     expect(colonSeperatedSid4pt(new FormControl('1:00:02'))).toBeDefined();
   });
+
+  it('should allow upper case alphanumerics', () => {
+    const uppercaseNumeric = AtlasCharsetsValidator.uppercaseNumeric;
+
+    expect(uppercaseNumeric(new FormControl('W'))).toBeNull();
+    expect(uppercaseNumeric(new FormControl('BN'))).toBeNull();
+
+    expect(uppercaseNumeric(new FormControl('a'))).toBeDefined();
+    expect(uppercaseNumeric(new FormControl(':'))).toBeDefined();
+    expect(uppercaseNumeric(new FormControl('GGG.'))).toBeDefined();
+    expect(uppercaseNumeric(new FormControl('BAU,'))).toBeDefined();
+  });
 });
