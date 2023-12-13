@@ -47,6 +47,7 @@ export class FotCommentDetailComponent implements DetailFormComponent, OnInit, O
   }
 
   ngOnDestroy() {
+    this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
 

@@ -12,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 public abstract class BaseImportServicePointDirectoryService<T extends BasePointVersion<T> & Versionable> extends
     BaseImportService<T> {
 
-  protected abstract void save(T element);
-
   protected void copyPropertiesFromCsvVersionToDbVersion(T csvVersion, T dbVersion) {
     if (isNewGeolocation(csvVersion, dbVersion)) {
       csvVersion.referenceGeolocationTo(dbVersion);

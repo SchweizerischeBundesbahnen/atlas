@@ -19,4 +19,5 @@ public class GeoReferenceController implements GeoReferenceApiV1 {
   public GeoReference getLocationInformation(CoordinatePair coordinatePair) {
     return geoReferenceService.getGeoReference(coordinatePair);
   }
+
 }
