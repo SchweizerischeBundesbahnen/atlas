@@ -159,4 +159,28 @@ class ServicePointVersionTest {
             "If this test fail please make sure the entire ATLAS application works properly: import, export, ...\n", ServicePointVersion.class);
     assertThat(result.get()).as(errorDescription).isEqualTo(62);
   }
+
+  @Test
+  void shouldAcceptWintherthurAbbreviation() {
+    // Given
+    ServicePointVersion servicePoint = ServicePointVersion.builder()
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8506000))
+        .numberShort(6000)
+        .country(Country.SWITZERLAND)
+        .freightServicePoint(true)
+        .designationLong("Winterthur")
+        .designationOfficial("official designation")
+        .abbreviation("W")
+        .businessOrganisation("somesboid")
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .version(1)
+        .build();
+    //when
+    Set<ConstraintViolation<ServicePointVersion>> constraintViolations = validator.validate(servicePoint);
+
+    //then
+    assertThat(constraintViolations).isEmpty();
+  }
 }
