@@ -43,12 +43,8 @@ export class AtlasCharsetsValidator {
     };
   }
 
-  static uppercaseNumericLength2To6Validator(control: AbstractControl) {
-    return AtlasCharsetsValidator.validateAllowedCharacters(
-      control,
-      '^[A-Z0-9]{2,6}$',
-      '"A-Z & 0-9"',
-    );
+  static uppercaseNumeric(control: AbstractControl) {
+    return AtlasCharsetsValidator.validateAllowedCharacters(control, '[A-Z0-9]*', '"A-Z & 0-9"');
   }
 
   static sid4pt(control: AbstractControl): ValidationErrors | null {
