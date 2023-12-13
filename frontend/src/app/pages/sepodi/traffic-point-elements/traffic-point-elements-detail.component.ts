@@ -198,7 +198,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
       this.showConfirmationDialog();
     } else {
       this.isSwitchVersionDisabled = true;
-      this.form.enable();
+      this.form.enable({ emitEvent: false });
     }
   }
 
@@ -239,7 +239,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
             : (trafficPointElementVersion.trafficPointElementType =
                 TrafficPointElementType.Platform);
 
-          this.form.disable();
+          this.form.disable({ emitEvent: false });
           trafficPointElementVersion.numberWithoutCheckDigit = this.servicePointNumber;
           if (this.isNew) {
             this.create(trafficPointElementVersion);
