@@ -30,6 +30,7 @@ import java.util.Optional;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -57,7 +58,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     @BeforeEach
     void createDefaultVersion() {
         GeoReference geoReference = GeoReference.builder().country(Country.SWITZERLAND).build();
-        when(geoReferenceService.getGeoReference(any())).thenReturn(geoReference);
+        when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReference);
         when(servicePointNumberService.getNextAvailableServicePointId(any())).thenReturn(1);
     }
 
@@ -1030,7 +1031,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     @Test
     void newStopPointWhenValidityIsNotSwissLocationShouldSetStatusToValidated() throws Exception {
         GeoReference geoReference = GeoReference.builder().country(Country.ITALY).build();
-        when(geoReferenceService.getGeoReference(any())).thenReturn(geoReference);
+        when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReference);
         CreateServicePointVersionModel createServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
         mvc.perform(post("/v1/service-points")
                         .contentType(contentType)
