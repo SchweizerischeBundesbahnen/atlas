@@ -100,4 +100,17 @@ public class AtlasCharacterSetsRegexTest {
     assertThat(pattern.matcher("hello@asdf").matches()).isFalse();
     assertThat(pattern.matcher("tag me on #atlas").matches()).isFalse();
   }
+
+  @Test
+  void shouldValidateAbbreviationPattern() {
+    Pattern pattern = Pattern.compile(AtlasCharacterSetsRegex.ABBREVIATION_PATTERN);
+
+    assertThat(pattern.matcher("W").matches()).isTrue();
+    assertThat(pattern.matcher("BN").matches()).isTrue();
+
+    assertThat(pattern.matcher("GAGG.").matches()).isFalse();
+    assertThat(pattern.matcher("BAU,,").matches()).isFalse();
+    assertThat(pattern.matcher(":").matches()).isFalse();
+    assertThat(pattern.matcher("a").matches()).isFalse();
+  }
 }
