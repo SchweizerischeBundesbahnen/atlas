@@ -7,10 +7,17 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer;
+import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
+import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
+import ch.sbb.atlas.servicepointdirectory.exception.HeightNotCalculatableException;
+import feign.FeignException.FeignClientException;
 import java.math.BigDecimal;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,8 +31,18 @@ public class GeoReferenceService {
   private final CoordinateTransformer coordinateTransformer = new CoordinateTransformer();
 
   public GeoReference getGeoReference(CoordinatePair coordinatePair) {
+    return getGeoReference(coordinatePair, true);
+  }
+
+  public GeoReference getGeoReference(CoordinatePair coordinatePair, boolean callHeightService) {
     GeoAdminResponse geoAdminResponse = geoAdminChClient.getGeoReference(new GeoAdminParams(coordinatePair));
     GeoReference swissTopoInformation = toGeoReference(geoAdminResponse);
+
+    if(callHeightService){
+        GeoAdminHeightResponse geoAdminHeightResponse = getHeight(coordinatePair);
+        swissTopoInformation.setHeight(geoAdminHeightResponse.getHeight());
+    }
+
     if (swissTopoInformation.getCountry() == null) {
       return getRokasOsmInformation(coordinatePair);
     }
@@ -69,5 +86,26 @@ public class GeoReferenceService {
         .orElse(null);
     result.setCountry(Country.fromIsoCode(isoCountryCode));
     return result;
+  }
+  public GeoAdminHeightResponse getHeight(CoordinatePair coordinatePair) {
+    if(coordinatePair.getSpatialReference() != SpatialReference.LV95){
+      coordinatePair = coordinateTransformer.transform(coordinatePair, SpatialReference.LV95);
+    }
+    try {
+      return geoAdminChClient.getHeight(coordinatePair.getEast(), coordinatePair.getNorth());
+    }
+    catch (FeignClientException e){
+      return handleFeignClientException(e);
+    } catch (Exception e) {
+      throw new HeightNotCalculatableException();
+    }
+  }
+
+  private GeoAdminHeightResponse handleFeignClientException(FeignClientException e) {
+    if (e.status() == HttpStatus.BAD_REQUEST.value()) {
+      return new GeoAdminHeightResponse();
+    } else {
+      throw new HeightNotCalculatableException();
+    }
   }
 }

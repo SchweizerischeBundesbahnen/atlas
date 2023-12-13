@@ -248,8 +248,8 @@ public class ServicePointTestData {
     ServicePointGeolocation geolocation = ServicePointGeolocation
         .builder()
         .spatialReference(SpatialReference.LV95)
-        .east(2671984.26107)
-        .north(1485245.92913)
+        .east(2600000D)
+        .north(1200000D)
         .country(Country.SWITZERLAND)
         .swissCanton(SwissCanton.AARGAU)
         .swissDistrictName("Rheinfelden")

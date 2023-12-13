@@ -15,6 +15,8 @@ import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
 import java.math.BigDecimal;
+import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
+import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -48,6 +50,7 @@ class GeoReferenceServiceTest {
         .swissMunicipalityNumber(5841)
         .swissMunicipalityName("Château-d'Oex")
         .swissLocalityName("La Lécherette")
+        .height(1201.0)
         .build();
 
     assertThat(geoReference).isEqualTo(expectedGeoReference);
@@ -96,5 +99,73 @@ class GeoReferenceServiceTest {
 
     assertThat(geoReference).isEqualTo(expectedGeoReference);
     verify(journeyPoiClient).closestCountry(BigDecimal.valueOf(47.25201833567), BigDecimal.valueOf(26.7540122798));
+  }
+
+  @Test
+  void shouldGetHeightOfValidLV95SwissCoordinates(){
+    CoordinatePair coordinate = CoordinatePair.builder()
+        .spatialReference(SpatialReference.LV95)
+        .east(2568989.30320000000)
+        .north(1141633.69605000000)
+        .build();
+
+    GeoAdminHeightResponse geoAdminHeightResponse = geoReferenceService.getHeight(coordinate);
+
+    GeoAdminHeightResponse expectedHeightResponse = GeoAdminHeightResponse.builder()
+        .height(1201D)
+        .build();
+
+    assertThat(geoAdminHeightResponse).isEqualTo(expectedHeightResponse);
+  }
+
+  @Test
+  void shouldGetHeightOfValidWGS84SwissCoordinates(){
+    CoordinatePair coordinate = CoordinatePair.builder()
+        .spatialReference(SpatialReference.WGS84)
+        .east(7.03523000710)
+        .north(46.42533000875)
+        .build();
+
+    GeoAdminHeightResponse geoAdminHeightResponse = geoReferenceService.getHeight(coordinate);
+
+    GeoAdminHeightResponse expectedHeightResponse = GeoAdminHeightResponse.builder()
+        .height(1201D)
+        .build();
+
+    assertThat(geoAdminHeightResponse).isEqualTo(expectedHeightResponse);
+  }
+
+  @Test
+  void shouldGetHeightOfValidWGS84WEBSwissCoordinates(){
+    CoordinatePair coordinate = CoordinatePair.builder()
+        .spatialReference(SpatialReference.WGS84WEB)
+        .east(783158.2220039304)
+        .north(5848772.61114715)
+        .build();
+
+    GeoAdminHeightResponse geoAdminHeightResponse = geoReferenceService.getHeight(coordinate);
+
+    GeoAdminHeightResponse expectedHeightResponse = GeoAdminHeightResponse.builder()
+        .height(1201D)
+        .build();
+
+    assertThat(geoAdminHeightResponse).isEqualTo(expectedHeightResponse);
+  }
+
+  @Test
+  void shouldNotGetForeignCoordinates(){
+    CoordinatePair coordinate = CoordinatePair.builder()
+        .spatialReference(SpatialReference.WGS84)
+        .east(10.32713502296)
+        .north(55.56215489276)
+        .build();
+
+    GeoAdminHeightResponse geoAdminHeightResponse = geoReferenceService.getHeight(coordinate);
+
+    GeoAdminHeightResponse expectedHeightResponse = GeoAdminHeightResponse.builder()
+        .height(null)
+        .build();
+
+    assertThat(geoAdminHeightResponse).isEqualTo(expectedHeightResponse);
   }
 }
