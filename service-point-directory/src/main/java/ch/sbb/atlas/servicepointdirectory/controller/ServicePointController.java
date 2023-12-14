@@ -28,13 +28,14 @@ import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointReque
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchResult;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
-import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @Slf4j
@@ -111,6 +112,18 @@ public class ServicePointController implements ServicePointApiV1 {
   }
 
   @Override
+  public List<ReadServicePointVersionModel> revokeServicePoint(Integer servicePointNumber) {
+    List<ReadServicePointVersionModel> servicePointVersionModels = servicePointService.revokeServicePoint(ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber))
+            .stream()
+            .map(ServicePointVersionMapper::toModel)
+            .toList();
+    if (servicePointVersionModels.isEmpty()) {
+      throw new ServicePointNumberNotFoundException(ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber));
+    }
+    return servicePointVersionModels;
+  }
+
+  @Override
   public ReadServicePointVersionModel createServicePoint(CreateServicePointVersionModel createServicePointVersionModel) {
     ServicePointVersion servicePointVersion;
 
@@ -134,7 +147,7 @@ public class ServicePointController implements ServicePointApiV1 {
     }
     addGeoReferenceInformation(servicePointVersion);
     setCreationDateAndCreatorToNull(servicePointVersion);
-    ServicePointVersion createdVersion = servicePointService.save(servicePointVersion);
+    ServicePointVersion createdVersion = servicePointService.save(servicePointVersion, Optional.empty(), List.of());
     servicePointDistributor.publishServicePointsWithNumbers(createdVersion.getNumber());
     return ServicePointVersionMapper.toModel(createdVersion);
   }
@@ -146,6 +159,16 @@ public class ServicePointController implements ServicePointApiV1 {
   private static void setCreationDateAndCreatorToNull(ServicePointVersion servicePointVersion) {
     servicePointVersion.setCreator(null);
     servicePointVersion.setCreationDate(null);
+  }
+
+  @Override
+  public ReadServicePointVersionModel validateServicePoint(Long id) {
+    ServicePointVersion servicePointVersion = servicePointService.findById(id)
+            .orElseThrow(() -> new IdNotFoundException(id));
+
+    ServicePointVersion validatedServicePointVersion = servicePointService.validate(servicePointVersion);
+
+    return ServicePointVersionMapper.toModel(validatedServicePointVersion);
   }
 
   @Override

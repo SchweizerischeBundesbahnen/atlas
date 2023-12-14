@@ -126,7 +126,9 @@
     "BACK": "Tornare al modulo di immissione dati",
     "WARNING": "Attenzione!",
     "REVOKE": "Si desidera contrassegnare irrevocabilmente questo record come un record di errore?",
+    "VALIDATE": "Concedere questa modifica del nome senza un’audizione?",
     "CONFIRM_REVOKE": "Revocare",
+    "CONFIRM_VALIDATE": "Confermare i nomi",
     "DELETE": "Eliminare definitivamente questo record?",
     "CONFIRM_DELETE": "Cancellare i dati",
     "DISCARD_CHANGES_TITLE": "Annullare le modifiche?",
@@ -945,6 +947,8 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Il posto di servizio è stato aggiunto con successo.",
         "EDIT_SUCCESS": "Il posto di servizio è stato salvato con successo.",
+        "REVOKE_SUCCESS": "Il posto di servizio è stato contrassegnata con successo come versione di errore.",
+        "VALIDATE_SUCCESS": "Lo stato della fermata è stato modificato con successo.",
         "OPERATION_NOT_ALLOWED_DUE_TO_VALIDATION_PERIOD": "Il salvataggio non è possibile. Il BP-S di riferimento (master) non è valido per tutta la durata della validità del BP-K.",
         "COMMENT_SAVED": "Il commento è stato salvato con successo."
       },
