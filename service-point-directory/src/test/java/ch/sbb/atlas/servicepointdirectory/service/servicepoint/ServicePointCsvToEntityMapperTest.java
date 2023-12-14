@@ -1,7 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.util.DidokCsvMapper;
@@ -17,8 +15,9 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointStatus;
 import com.fasterxml.jackson.databind.MappingIterator;
+import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,7 +26,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
  class ServicePointCsvToEntityMapperTest {
 
@@ -126,7 +126,6 @@ import org.junit.jupiter.api.Test;
         .designationLong(null)
         .designationOfficial("Fischbach-Göslikon, Zentrum")
         .abbreviation(null)
-        .statusDidok3(ServicePointStatus.IN_OPERATION)
         .businessOrganisation("ch:1:sboid:100602")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2021, 4, 1))
@@ -182,7 +181,6 @@ import org.junit.jupiter.api.Test;
         .designationLong(null)
         .designationOfficial("Fischbach-Göslikon, Zentrum")
         .abbreviation(null)
-        .statusDidok3(ServicePointStatus.IN_OPERATION)
         .businessOrganisation("ch:1:sboid:100602")
         .operatingPoint(true)
         .operatingPointWithTimetable(true)
@@ -239,7 +237,6 @@ import org.junit.jupiter.api.Test;
         .designationLong(null)
         .designationOfficial("UNO-Linie 712 km 0.275")
         .abbreviation("712000")
-        .statusDidok3(ServicePointStatus.IN_OPERATION)
         .businessOrganisation("ch:1:sboid:100058")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2021, 12, 13))
@@ -320,7 +317,6 @@ import org.junit.jupiter.api.Test;
         .designationLong(null)
         .designationOfficial("Bern Ost (Spw)")
         .abbreviation("BNO")
-        .statusDidok3(ServicePointStatus.IN_OPERATION)
         .businessOrganisation("ch:1:sboid:100001")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2018, 1, 31))
@@ -406,7 +402,6 @@ import org.junit.jupiter.api.Test;
         .designationLong(null)
         .designationOfficial("Bern, Wyleregg")
         .abbreviation(null)
-        .statusDidok3(ServicePointStatus.IN_OPERATION)
         .businessOrganisation("ch:1:sboid:100626")
         .status(Status.VALIDATED)
         .operatingPoint(true)
@@ -486,7 +481,6 @@ import org.junit.jupiter.api.Test;
         .designationOfficial("Flüh Grenze")
         .abbreviation(null)
         .meansOfTransport(Collections.emptySet())
-        .statusDidok3(ServicePointStatus.IN_OPERATION)
         .businessOrganisation("ch:1:sboid:100019")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2017, 11, 2))
@@ -569,7 +563,6 @@ import org.junit.jupiter.api.Test;
         .operatingPointWithTimetable(true)
         .meansOfTransport(Collections.emptySet())
         .businessOrganisation("ch:1:sboid:100311")
-        .statusDidok3(ServicePointStatus.IN_OPERATION)
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2020, 12, 13))
         .validTo(LocalDate.of(2099, 12, 31))
@@ -656,7 +649,6 @@ import org.junit.jupiter.api.Test;
         .designationOfficial("Zürich RB Limmattal")
         .abbreviation("RBL")
         .meansOfTransport(Collections.emptySet())
-        .statusDidok3(ServicePointStatus.IN_OPERATION)
         .businessOrganisation("ch:1:sboid:100001")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2018, 2, 18))
@@ -749,7 +741,6 @@ import org.junit.jupiter.api.Test;
         .designationOfficial("Arth-Goldau Nordwest")
         .abbreviation("GDNW")
         .meansOfTransport(Collections.emptySet())
-        .statusDidok3(ServicePointStatus.IN_OPERATION)
         .businessOrganisation("ch:1:sboid:100001")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2019, 7, 16))
@@ -841,7 +832,6 @@ import org.junit.jupiter.api.Test;
         .designationOfficial("Zürich Langstr Dienstgebäude")
         .abbreviation("ZLDG")
         .meansOfTransport(Collections.emptySet())
-        .statusDidok3(ServicePointStatus.IN_OPERATION)
         .businessOrganisation("ch:1:sboid:100001")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2006, 8, 31))
@@ -931,7 +921,6 @@ import org.junit.jupiter.api.Test;
         .designationOfficial("Zürich Dienstgebäude 8")
         .abbreviation("ZDGH")
         .meansOfTransport(Collections.emptySet())
-        .statusDidok3(ServicePointStatus.HISTORICAL)
         .businessOrganisation("ch:1:sboid:100001")
         .status(Status.VALIDATED)
         .operatingPoint(true)
@@ -1000,7 +989,6 @@ import org.junit.jupiter.api.Test;
         .designationOfficial("Basel EuroAirport P")
         .abbreviation("BSEU")
         .meansOfTransport(Collections.emptySet())
-        .statusDidok3(ServicePointStatus.IN_OPERATION)
         .businessOrganisation("ch:1:sboid:100001")
         .status(Status.VALIDATED)
         .operatingPoint(true)
@@ -1064,7 +1052,6 @@ import org.junit.jupiter.api.Test;
         .designationLong(null)
         .designationOfficial("Bad Säckingen")
         .abbreviation(null)
-        .statusDidok3(ServicePointStatus.IN_OPERATION)
         .businessOrganisation("ch:1:sboid:100325")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2011, 12, 16))
@@ -1102,4 +1089,5 @@ import org.junit.jupiter.api.Test;
         .usingRecursiveComparison()
         .ignoringFields("servicePointVersion").isEqualTo(expectedServicePointGeolocation);
   }
+
 }

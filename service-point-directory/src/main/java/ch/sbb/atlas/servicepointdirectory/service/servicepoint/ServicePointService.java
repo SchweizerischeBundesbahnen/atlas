@@ -10,9 +10,6 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +18,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Getter
@@ -36,6 +37,7 @@ public class ServicePointService {
   private final ServicePointValidationService servicePointValidationService;
   private final ServicePointSearchVersionRepository servicePointSearchVersionRepository;
   private final ServicePointTerminationService servicePointTerminationService;
+  private final ServicePointStatusDecider servicePointStatusDecider;
 
   public List<ServicePointSearchResult> searchServicePointVersion(String value) {
     List<ServicePointSearchResult> servicePointSearchResults = servicePointSearchVersionRepository.searchServicePoints(value);
@@ -82,10 +84,24 @@ public class ServicePointService {
     return servicePointVersionRepository.findById(id);
   }
 
+  public List<ServicePointVersion> revokeServicePoint(ServicePointNumber servicePointNumber) {
+    List<ServicePointVersion> servicePointVersions = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
+    servicePointVersions.forEach(servicePointVersion -> servicePointVersion.setStatus(Status.REVOKED));
+    return servicePointVersions;
+  }
+
+  public ServicePointVersion validate(ServicePointVersion servicePointVersion) {
+    servicePointVersion.setStatus(Status.VALIDATED);
+    return servicePointVersionRepository.saveAndFlush(servicePointVersion);
+  }
+
   @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#servicePointVersion, "
       + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
-  public ServicePointVersion save(ServicePointVersion servicePointVersion) {
-    servicePointVersion.setStatus(Status.VALIDATED);
+  public ServicePointVersion save(ServicePointVersion servicePointVersion,
+                                  Optional<ServicePointVersion> currentVersion,
+                                  List<ServicePointVersion> currentVersions) {
+    servicePointVersion.setStatus(servicePointStatusDecider
+            .getStatusForServicePoint(servicePointVersion, currentVersion, currentVersions));
     servicePointVersion.setEditionDate(LocalDateTime.now());
     servicePointVersion.setEditor(UserService.getUserIdentifier());
 
@@ -94,8 +110,8 @@ public class ServicePointService {
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
-  public ServicePointVersion saveWithoutValidationForImportOnly(ServicePointVersion servicePointVersion) {
-    servicePointVersion.setStatus(Status.VALIDATED);
+  public ServicePointVersion saveWithoutValidationForImportOnly(ServicePointVersion servicePointVersion, Status status) {
+    servicePointVersion.setStatus(status);
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
@@ -115,7 +131,6 @@ public class ServicePointService {
     }
     editedVersion.setNumber(currentVersion.getNumber());
     editedVersion.setSloid(currentVersion.getSloid());
-    editedVersion.setStatusDidok3(currentVersion.getStatusDidok3());
     editedVersion.setNumberShort(currentVersion.getNumberShort());
     editedVersion.setCountry(currentVersion.getCountry());
 
@@ -124,7 +139,7 @@ public class ServicePointService {
         editedVersion, existingDbVersions);
 
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
-        this::save, new ApplyVersioningDeleteByIdLongConsumer(servicePointVersionRepository));
+        version -> save(version, Optional.of(currentVersion), currentVersions), new ApplyVersioningDeleteByIdLongConsumer(servicePointVersionRepository));
 
     List<ServicePointVersion> afterUpdateServicePoint = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
     servicePointTerminationService.checkTerminationAllowed(currentVersions, afterUpdateServicePoint);
