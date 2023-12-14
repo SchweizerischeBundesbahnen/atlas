@@ -126,7 +126,9 @@
     "BACK": "Retour au formulaire de saisie",
     "WARNING": "Avertissement!",
     "REVOKE": "Voulez-vous marquer irrévocablement cet enregistrement comme une saisie d'erreur?",
+    "VALIDATE": "Voulez-vous autoriser ce changement de nom sans audition?",
     "CONFIRM_REVOKE": "Confirmer la saisie de l'erreur",
+    "CONFIRM_VALIDATE": "Confirmer le nom",
     "DELETE": "Voulez-vous supprimer définitivement ce bloc de données?",
     "CONFIRM_DELETE": "Supprimer les données",
     "DISCARD_CHANGES_TITLE": "Annuler les modifications?",
@@ -945,6 +947,8 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Le service a été ajouté avec succès.",
         "EDIT_SUCCESS": "Le service a été enregistré avec succès.",
+        "REVOKE_SUCCESS": "La service a été marquée avec succès comme étant une saisie d'erreur.",
+        "VALIDATE_SUCCESS": "Le statut de l'arrêt a été adapté avec succès.",
         "OPERATION_NOT_ALLOWED_DUE_TO_VALIDATION_PERIOD": "L'enregistrement n'est pas possible. Le BP-S (master) référencé n'est pas valable pendant toute la période de validité du BP-K.",
         "COMMENT_SAVED": "Le commentaire a été enregistré avec succès."
       },
