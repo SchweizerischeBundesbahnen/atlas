@@ -94,5 +94,25 @@
       wrapperStyleClass="ms-3"
     >
     </atlas-button>
+    <atlas-button
+      (buttonClicked)="revoke()"
+      [applicationType]="'SEPODI'"
+      [hidden]="selectedVersion.status === 'REVOKED'"
+      buttonDataCy="revoke-item"
+      buttonText="COMMON.REVOKE"
+      buttonType="revoke"
+      wrapperStyleClass="ms-3"
+    >
+    </atlas-button>
+    <atlas-button
+      (buttonClicked)="validate()"
+      [applicationType]="'SEPODI'"
+      [hidden]="selectedVersion.status === 'REVOKED' || selectedVersion.status === 'VALIDATED'"
+      buttonDataCy="revoke-item"
+      buttonText="WORKFLOW.BUTTON.SKIP"
+      buttonType="skipworkflow"
+      wrapperStyleClass="ms-3"
+    >
+    </atlas-button>
   </footer>
 </div>
