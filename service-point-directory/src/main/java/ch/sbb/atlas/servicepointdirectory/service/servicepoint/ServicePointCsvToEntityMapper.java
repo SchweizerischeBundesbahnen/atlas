@@ -15,6 +15,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointStatus;
+
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
@@ -72,6 +73,8 @@ public class ServicePointCsvToEntityMapper implements
 
   ServicePointVersion mapServicePointVersion(ServicePointCsvModel servicePointCsvModel) {
     Set<MeanOfTransport> meansOfTransport = MeanOfTransport.fromCode(servicePointCsvModel.getBpvhVerkehrsmittel());
+    ServicePointStatus statusDidok3 = ServicePointStatus.from(servicePointCsvModel.getStatus());
+    Status status = calculateStatus(statusDidok3);
     return ServicePointVersion
         .builder()
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(servicePointCsvModel.getDidokCode()))
@@ -81,9 +84,8 @@ public class ServicePointCsvToEntityMapper implements
         .designationLong(servicePointCsvModel.getBezeichnungLang())
         .designationOfficial(servicePointCsvModel.getBezeichnungOffiziell())
         .abbreviation(servicePointCsvModel.getAbkuerzung())
-        .statusDidok3(ServicePointStatus.from(servicePointCsvModel.getStatus()))
         .businessOrganisation("ch:1:sboid:" + servicePointCsvModel.getSaid())
-        .status(Status.VALIDATED)
+        .status(status)
         .validFrom(servicePointCsvModel.getValidFrom())
         .validTo(servicePointCsvModel.getValidTo())
         .categories(getCategories(servicePointCsvModel))
@@ -108,6 +110,14 @@ public class ServicePointCsvToEntityMapper implements
         .editionDate(servicePointCsvModel.getEditedAt())
         .editor(servicePointCsvModel.getEditedBy())
         .build();
+  }
+
+  private Status calculateStatus(ServicePointStatus servicePointStatus) {
+    return switch (servicePointStatus) {
+      case TO_BE_REQUESTED -> Status.DRAFT;
+      case REQUESTED -> Status.IN_REVIEW;
+      default -> Status.VALIDATED;
+    };
   }
 
 }

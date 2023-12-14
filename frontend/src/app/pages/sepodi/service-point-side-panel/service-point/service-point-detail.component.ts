@@ -266,4 +266,54 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       (obj) => obj.validTo > selectedVersion.validTo,
     );
   }
+
+  revoke() {
+    this.dialogService
+      .confirm({
+        title: 'DIALOG.WARNING',
+        message: 'DIALOG.REVOKE',
+        cancelText: 'DIALOG.BACK',
+        confirmText: 'DIALOG.CONFIRM_REVOKE',
+      })
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.servicePointService
+            .revokeServicePoint(this.selectedVersion.number.number)
+            .pipe((takeUntil(this.ngUnsubscribe), catchError(this.handleError)))
+            .subscribe(() => {
+              this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.REVOKE_SUCCESS');
+              this.router
+                .navigate(['..', this.selectedVersion.number.number], {
+                  relativeTo: this.route,
+                })
+                .then(() => this.mapService.refreshMap());
+            });
+        }
+      });
+  }
+
+  validate() {
+    this.dialogService
+      .confirm({
+        title: 'DIALOG.WARNING',
+        message: 'DIALOG.VALIDATE',
+        cancelText: 'DIALOG.BACK',
+        confirmText: 'DIALOG.CONFIRM_VALIDATE',
+      })
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.servicePointService
+            .validateServicePoint(this.selectedVersion.id!)
+            .pipe((takeUntil(this.ngUnsubscribe), catchError(this.handleError)))
+            .subscribe(() => {
+              this.notificationService.success(
+                'SEPODI.SERVICE_POINTS.NOTIFICATION.VALIDATE_SUCCESS',
+              );
+              this.router.navigate(['..', this.selectedVersion.number.number], {
+                relativeTo: this.route,
+              });
+            });
+        }
+      });
+  }
 }

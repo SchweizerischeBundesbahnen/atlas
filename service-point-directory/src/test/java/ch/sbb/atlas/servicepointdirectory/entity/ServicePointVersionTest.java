@@ -1,7 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -12,11 +10,14 @@ import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import org.junit.jupiter.api.Test;
+
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ServicePointVersionTest {
 
@@ -157,7 +158,7 @@ class ServicePointVersionTest {
     //then
     String errorDescription = String.format("\n The %s is used in ServicePointDirectory project. " +
             "If this test fail please make sure the entire ATLAS application works properly: import, export, ...\n", ServicePointVersion.class);
-    assertThat(result.get()).as(errorDescription).isEqualTo(62);
+    assertThat(result.get()).as(errorDescription).isEqualTo(60);
   }
 
   @Test

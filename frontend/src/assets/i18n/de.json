@@ -126,7 +126,9 @@
     "BACK": "Zurück zur Eingabemaske",
     "WARNING": "Warnung!",
     "REVOKE": "Wollen Sie diesen Datensatz unwiderruflich als Fehlerfassung kennzeichnen?",
+    "VALIDATE": "Wollen Sie diese Namensänderung ohne eine Anhörung gewähren?",
     "CONFIRM_REVOKE": "Fehlerfassung bestätigen",
+    "CONFIRM_VALIDATE": "Namen bestätigen",
     "DELETE": "Wollen Sie diesen Datensatz unwiderruflich löschen?",
     "CONFIRM_DELETE": "Daten löschen",
     "DISCARD_CHANGES_TITLE": "Änderungen verwerfen?",
@@ -945,6 +947,8 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Die Dienststelle wurde erfolgreich hinzugefügt.",
         "EDIT_SUCCESS": "Die Dienststelle wurde erfolgreich gespeichert.",
+        "REVOKE_SUCCESS": "Die Dienststelle wurde erfolgreich als Fehlerfassung gekennzeichnet.",
+        "VALIDATE_SUCCESS": "Der Status der Haltestelle wurde erfolgreich angepasst.",
         "OPERATION_NOT_ALLOWED_DUE_TO_VALIDATION_PERIOD": "Das Speichern ist nicht möglich. Der referenzierte BP-S (Master) ist nicht während der gesamten Gültigkeit des BP-K gültig.",
         "COMMENT_SAVED": "Der Kommentar wurder erfolgreich gespeichert."
       },
