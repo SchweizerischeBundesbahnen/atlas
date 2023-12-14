@@ -1,9 +1,10 @@
 package ch.sbb.atlas.servicepointdirectory.model;
 
-import java.util.Arrays;
-import java.util.Objects;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Arrays;
+import java.util.Objects;
 
 @Getter
 @RequiredArgsConstructor
@@ -14,10 +15,9 @@ public enum ServicePointStatus {
   PLANNED(2, "Geplant", "Prévu", "Pianificato", "Planned"),
   IN_OPERATION(3, "In Betrieb", "En fonctionnement", "In funzione", "In operation"),
   TERMINATED(4, "Terminiert", "Terminé", "Terminato", "Terminated"),
-  IN_POST_OPERATIONAL_PHASE(5, "Post operationale Phase", "En phase post-opératoire", "In fase post-operativa",
+  IN_POST_OPERATIONAL_PHASE(5, "Im Nachlauf", "En phase post-opératoire", "In fase post-operativa",
       "In post-operational phase"),
-  HISTORICAL(6, "Historisch", "Historique", "Storico", "Historical"),
-  UNKNOWN(7, "Unbekannt", "Inconnu", "Sconosciuto", "unknown");
+  HISTORICAL(6, "Historisch", "Historique", "Storico", "Historical");
 
   private final Integer id;
   private final String designationDe;

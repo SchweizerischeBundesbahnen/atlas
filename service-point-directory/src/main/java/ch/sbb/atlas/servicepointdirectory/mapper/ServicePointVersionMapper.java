@@ -6,10 +6,11 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import lombok.experimental.UtilityClass;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ServicePointVersionMapper {
