@@ -31,7 +31,11 @@ import { MapService } from '../../map/map.service';
 import { Component, Input } from '@angular/core';
 
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
-const servicePointsServiceSpy = jasmine.createSpyObj('ServicePointService', ['updateServicePoint']);
+const servicePointsServiceSpy = jasmine.createSpyObj('ServicePointService', [
+  'updateServicePoint',
+  'validateServicePoint',
+  'revokeServicePoint',
+]);
 const notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['success']);
 const mapServiceSpy = jasmine.createSpyObj('MapService', [
   'placeMarkerAndFlyTo',
@@ -282,5 +286,23 @@ describe('ServicePointDetailComponent', () => {
     component.save();
 
     expect(servicePointsServiceSpy.updateServicePoint).toHaveBeenCalled();
+  });
+
+  it('should validate service point on validate', () => {
+    dialogServiceSpy.confirm.and.returnValue(of(true));
+    servicePointsServiceSpy.validateServicePoint.and.returnValue(of(BERN));
+
+    component.validate();
+
+    expect(servicePointsServiceSpy.validateServicePoint).toHaveBeenCalled();
+  });
+
+  it('should revoke service points on revoke', () => {
+    dialogServiceSpy.confirm.and.returnValue(of(true));
+    servicePointsServiceSpy.revokeServicePoint.and.returnValue(of(BERN));
+
+    component.revoke();
+
+    expect(servicePointsServiceSpy.revokeServicePoint).toHaveBeenCalled();
   });
 });

@@ -1,19 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.WGS84;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.endsWith;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
@@ -33,16 +19,26 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
+import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointFotCommentRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.JourneyPoiClient;
-import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointNumberService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MvcResult;
+
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -54,14 +50,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.servlet.MvcResult;
+
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.WGS84;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class ServicePointControllerApiTest extends BaseControllerApiTest {
 
@@ -420,6 +422,189 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldSetStatusToRevokeForAllServicePoints() throws Exception {
+    CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    UpdateServicePointVersionModel createServicePointVersionModel1 = ServicePointTestData.getAargauServicePointVersionModel();
+    createServicePointVersionModel1.setMeansOfTransport(List.of(MeanOfTransport.BUS));
+    createServicePointVersionModel1.setValidFrom(LocalDate.of(2019, 8, 11));
+    createServicePointVersionModel1.setValidTo(LocalDate.of(2020, 8, 10));
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+            aargauServicePointVersionModel);
+    Long id = servicePointVersionModel.getId();
+    List<ReadServicePointVersionModel> servicePointVersionModels = servicePointController.updateServicePoint(id,
+            createServicePointVersionModel1);
+    servicePointVersionModels.forEach(v -> v.setStatus(Status.IN_REVIEW));
+    Integer number = servicePointVersionModel.getNumber().getNumber();
+
+    mvc.perform(post("/v1/service-points/" + number + "/revoke"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].status", is(Status.REVOKED.toString())))
+            .andExpect(jsonPath("$[1].status", is(Status.REVOKED.toString())));
+  }
+
+  @Test
+  void shouldVerifyDesignationOfficialDesignationLongCanBeReusedAfterStatusRevoked() throws Exception {
+    repository.deleteAll();
+    CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    aargauServicePointVersionModel.setCountry(Country.GERMANY);
+    aargauServicePointVersionModel.setNumberShort(12345);
+    CreateServicePointVersionModel createServicePointVersionModel1 = ServicePointTestData.getAargauServicePointVersionModel();
+    createServicePointVersionModel1.setCountry(Country.GERMANY);
+    createServicePointVersionModel1.setNumberShort(12345);
+    createServicePointVersionModel1.setMeansOfTransport(List.of(MeanOfTransport.BUS));
+    createServicePointVersionModel1.setValidFrom(LocalDate.of(2019, 8, 11));
+    createServicePointVersionModel1.setValidTo(LocalDate.of(2020, 8, 10));
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+            aargauServicePointVersionModel);
+    Long id = servicePointVersionModel.getId();
+    List<ReadServicePointVersionModel> servicePointVersionModels = servicePointController.updateServicePoint(id,
+            createServicePointVersionModel1);
+    servicePointVersionModels.forEach(v -> v.setStatus(Status.IN_REVIEW));
+    Integer number = servicePointVersionModel.getNumber().getNumber();
+
+    mvc.perform(post("/v1/service-points/" + number + "/revoke"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].status", is(Status.REVOKED.toString())))
+            .andExpect(jsonPath("$[1].status", is(Status.REVOKED.toString())));
+
+    CreateServicePointVersionModel buchsiServicePoint = ServicePointTestData.getBuchsiServicePoint();
+    buchsiServicePoint.setCountry(Country.GERMANY);
+    buchsiServicePoint.setNumberShort(55555);
+    buchsiServicePoint.setValidFrom(LocalDate.of(2019, 8, 11));
+    buchsiServicePoint.setValidTo(LocalDate.of(2020, 8, 10));
+    buchsiServicePoint.setDesignationLong("designation long 1");
+    buchsiServicePoint.setDesignationOfficial("Aargau Strasse");
+    buchsiServicePoint.setAbbreviation("NEWABC");
+    buchsiServicePoint.setBusinessOrganisation("ch:1:sboid:100879");
+    mvc.perform(post("/v1/service-points")
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(buchsiServicePoint)))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.designationOfficial", is("Aargau Strasse")))
+            .andExpect(jsonPath("$.designationLong", is("designation long 1")))
+            .andExpect(jsonPath("$.abbreviation", is("NEWABC")));
+    mvc.perform(get("/v1/service-points"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.totalCount", is(3)))
+            .andExpect(jsonPath("$.objects[0].abbreviation", is("ABC")))
+            .andExpect(jsonPath("$.objects[0].designationLong", is("designation long 1")))
+            .andExpect(jsonPath("$.objects[0].designationOfficial", is("Aargau Strasse")))
+            .andExpect(jsonPath("$.objects[0].number.number", is(8012345)))
+            .andExpect(jsonPath("$.objects[1].abbreviation", is("ABC")))
+            .andExpect(jsonPath("$.objects[1].designationLong", is("designation long 1")))
+            .andExpect(jsonPath("$.objects[1].designationOfficial", is("Aargau Strasse")))
+            .andExpect(jsonPath("$.objects[1].number.number", is(8012345)))
+            .andExpect(jsonPath("$.objects[2].abbreviation", is("NEWABC")))
+            .andExpect(jsonPath("$.objects[2].designationLong", is("designation long 1")))
+            .andExpect(jsonPath("$.objects[2].designationOfficial", is("Aargau Strasse")))
+            .andExpect(jsonPath("$.objects[2].number.number", is(8055555)));
+  }
+
+  @Test
+  void shouldNotAllowReuseDesignationOfficialAndDesignationLongOnTwoServicePoints() throws Exception {
+    repository.deleteAll();
+    CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    aargauServicePointVersionModel.setCountry(Country.GERMANY);
+    aargauServicePointVersionModel.setNumberShort(12345);
+    CreateServicePointVersionModel createServicePointVersionModel1 = ServicePointTestData.getAargauServicePointVersionModel();
+    createServicePointVersionModel1.setCountry(Country.GERMANY);
+    createServicePointVersionModel1.setNumberShort(12345);
+    createServicePointVersionModel1.setMeansOfTransport(List.of(MeanOfTransport.BUS));
+    createServicePointVersionModel1.setValidFrom(LocalDate.of(2019, 8, 11));
+    createServicePointVersionModel1.setValidTo(LocalDate.of(2020, 8, 10));
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+            aargauServicePointVersionModel);
+    Long id = servicePointVersionModel.getId();
+    List<ReadServicePointVersionModel> servicePointVersionModels = servicePointController.updateServicePoint(id,
+            createServicePointVersionModel1);
+    servicePointVersionModels.forEach(v -> v.setStatus(Status.IN_REVIEW));
+    Integer number = servicePointVersionModel.getNumber().getNumber();
+
+    CreateServicePointVersionModel buchsiServicePoint = ServicePointTestData.getBuchsiServicePoint();
+    buchsiServicePoint.setCountry(Country.GERMANY);
+    buchsiServicePoint.setNumberShort(55555);
+    buchsiServicePoint.setValidFrom(LocalDate.of(2019, 8, 11));
+    buchsiServicePoint.setValidTo(LocalDate.of(2020, 8, 10));
+    buchsiServicePoint.setDesignationLong("designation long 1");
+    buchsiServicePoint.setDesignationOfficial("Aargau Strasse");
+    buchsiServicePoint.setAbbreviation("NEWABC");
+    buchsiServicePoint.setBusinessOrganisation("ch:1:sboid:100879");
+    mvc.perform(post("/v1/service-points")
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(buchsiServicePoint)))
+            .andExpect(status().is4xxClientError())
+            .andExpect(jsonPath("$.message", is("A conflict occurred due to a business rule while saving 8055555")))
+            .andExpect(jsonPath("$.details.[0].message", endsWith(
+                    "DesignationOfficial Aargau Strasse already taken from 11.08.2019 to 10.08.2020 by 8012345")));
+  }
+
+  @Test
+  void shouldNotAllowAbbreviationReuseAfterStatusRevoked() throws Exception {
+    repository.deleteAll();
+    CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    aargauServicePointVersionModel.setCountry(Country.GERMANY);
+    aargauServicePointVersionModel.setNumberShort(12345);
+    CreateServicePointVersionModel createServicePointVersionModel1 = ServicePointTestData.getAargauServicePointVersionModel();
+    createServicePointVersionModel1.setCountry(Country.GERMANY);
+    createServicePointVersionModel1.setNumberShort(12345);
+    createServicePointVersionModel1.setMeansOfTransport(List.of(MeanOfTransport.BUS));
+    createServicePointVersionModel1.setValidFrom(LocalDate.of(2019, 8, 11));
+    createServicePointVersionModel1.setValidTo(LocalDate.of(2020, 8, 10));
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+            aargauServicePointVersionModel);
+    Long id = servicePointVersionModel.getId();
+    List<ReadServicePointVersionModel> servicePointVersionModels = servicePointController.updateServicePoint(id,
+            createServicePointVersionModel1);
+    servicePointVersionModels.forEach(v -> v.setStatus(Status.IN_REVIEW));
+    Integer number = servicePointVersionModel.getNumber().getNumber();
+
+    mvc.perform(post("/v1/service-points/" + number + "/revoke"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].status", is(Status.REVOKED.toString())))
+            .andExpect(jsonPath("$[1].status", is(Status.REVOKED.toString())));
+
+    CreateServicePointVersionModel buchsiServicePoint = ServicePointTestData.getBuchsiServicePoint();
+    buchsiServicePoint.setCountry(Country.GERMANY);
+    buchsiServicePoint.setNumberShort(55555);
+    buchsiServicePoint.setValidFrom(LocalDate.of(2019, 8, 11));
+    buchsiServicePoint.setValidTo(LocalDate.of(2020, 8, 10));
+    buchsiServicePoint.setDesignationLong("designation long 1");
+    buchsiServicePoint.setDesignationOfficial("Aargau Strasse");
+    buchsiServicePoint.setAbbreviation("ABC");
+    buchsiServicePoint.setBusinessOrganisation("ch:1:sboid:100879");
+    mvc.perform(post("/v1/service-points")
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(buchsiServicePoint)))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message", is("The abbreviation must be unique and the chosen servicepoint version should be the most recent version.")))
+            .andExpect(jsonPath("$.details.[0].message", endsWith(
+                    "The abbreviation must be unique and the chosen servicepoint version should be the most recent version.")));
+  }
+
+  @Test
+  void shouldThrowExceptionOnRevoke() throws Exception {
+    Integer number = 1234567;
+
+    mvc.perform(post("/v1/service-points/" + number + "/revoke"))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.message", is("Entity not found")))
+            .andExpect(jsonPath("$.details.[0].message", endsWith(
+                    "Object with servicePointNumber 1234567 not found")));;
+  }
+
+  @Test
+  void shouldSetStatusToValidateForServicePoint() throws Exception {
+    CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+            aargauServicePointVersionModel);
+    Long id = servicePointVersionModel.getId();
+
+    mvc.perform(post("/v1/service-points/versions/" + id + "/skip-workflow"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.status", is(Status.VALIDATED.toString())));
+  }
+
+  @Test
   void shouldCreateServicePoint() throws Exception {
     mvc.perform(post("/v1/service-points")
             .contentType(contentType)
@@ -454,7 +639,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.district.districtName", is("Bern-Mittelland")))
         .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.localityMunicipality.municipalityName", is("Bern")))
         .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.localityMunicipality.localityName", is("Bern")))
-        .andExpect(jsonPath("$." + ReadServicePointVersionModel.Fields.status, is("VALIDATED")))
+        .andExpect(jsonPath("$." + ReadServicePointVersionModel.Fields.status, is("DRAFT")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
         .andExpect(jsonPath("$.operatingPointKilometer", is(true)))
@@ -594,7 +779,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.district.districtName", is("Bern-Mittelland")))
         .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.localityMunicipality.municipalityName", is("Bern")))
         .andExpect(jsonPath("$.servicePointGeolocation.swissLocation.localityMunicipality.localityName", is("Bern")))
-        .andExpect(jsonPath("$." + ReadServicePointVersionModel.Fields.status, is("VALIDATED")))
+        .andExpect(jsonPath("$." + ReadServicePointVersionModel.Fields.status, is("DRAFT")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.validTo, is("2019-08-10")))
         .andExpect(jsonPath("$.operatingPointKilometer", is(true)))
@@ -878,6 +1063,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   @Test
   void shouldCreateServicePointAndGenerateServicePointNumber() throws Exception {
+    repository.deleteAll();
     CreateServicePointVersionModel servicePointVersionModel = CreateServicePointVersionModel.builder()
         .country(Country.SWITZERLAND)
         .designationOfficial("Bern")
