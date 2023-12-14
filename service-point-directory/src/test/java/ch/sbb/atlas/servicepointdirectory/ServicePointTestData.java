@@ -13,7 +13,8 @@ import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
-import ch.sbb.atlas.servicepointdirectory.model.ServicePointStatus;
+import lombok.experimental.UtilityClass;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -21,7 +22,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ServicePointTestData {
@@ -170,7 +170,6 @@ public class ServicePointTestData {
         .designationLong(null)
         .designationOfficial("Bern Ost (Spw)")
         .abbreviation("BNO")
-        .statusDidok3(ServicePointStatus.IN_OPERATION)
         .businessOrganisation("ch:1:sboid:100001")
         .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2018, 1, 31))
@@ -261,6 +260,26 @@ public class ServicePointTestData {
         .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
         .editor("fs45117")
         .build();
+    return geolocation;
+  }
+
+  public static ServicePointGeolocation getZurichServicePointGeolocation() {
+    ServicePointGeolocation geolocation = ServicePointGeolocation
+            .builder()
+            .spatialReference(SpatialReference.LV95)
+            .east(2571984.26107)
+            .north(1585245.92913)
+            .country(Country.SWITZERLAND)
+            .swissCanton(SwissCanton.ZURICH)
+            .swissDistrictName("ZurichZentrum")
+            .swissDistrictNumber(1500)
+            .swissMunicipalityName("Zurich")
+            .swissLocalityName("Zurich")
+            .creationDate(LocalDateTime.of(LocalDate.of(2000, 3, 22), LocalTime.of(9, 26, 29)))
+            .creator("fs45117")
+            .editionDate(LocalDateTime.of(LocalDate.of(2022, 2, 23), LocalTime.of(17, 10, 10)))
+            .editor("fs45117")
+            .build();
     return geolocation;
   }
 
@@ -440,6 +459,34 @@ public class ServicePointTestData {
         .validFrom(LocalDate.of(2010, 12, 11))
         .validTo(LocalDate.of(2019, 8, 10))
         .build();
+  }
+
+  public static ServicePointVersion getBernAargau() {
+    ServicePointGeolocation geolocation = getServicePointGeolocationBernMittelland();
+
+    ServicePointVersion servicePoint = ServicePointVersion
+            .builder()
+            .country(Country.SWITZERLAND)
+            .designationLong("designation long 1")
+            .designationOfficial("Aargau Strasse")
+            .abbreviation("ABC")
+            .freightServicePoint(false)
+            .sortCodeOfDestinationStation("39136")
+            .categories(Set.of(Category.POINT_OF_SALE))
+            .operatingPointRouteNetwork(true)
+            .meansOfTransport(Set.of(MeanOfTransport.TRAIN))
+            .stopPointType(StopPointType.ON_REQUEST)
+            .servicePointGeolocation(ServicePointTestData.getServicePointGeolocationBernMittelland())
+            .status(Status.VALIDATED)
+            .validFrom(LocalDate.of(2010, 12, 11))
+            .validTo(LocalDate.of(2019, 8, 10))
+            .number(ServicePointNumber.ofNumberWithoutCheckDigit(8589008))
+            .numberShort(89008)
+            .businessOrganisation("ch:1:sboid:100626")
+            .build();
+
+    geolocation.setServicePointVersion(servicePoint);
+    return servicePoint;
   }
 
   public static CreateServicePointVersionModel getBuchsiServicePoint() {

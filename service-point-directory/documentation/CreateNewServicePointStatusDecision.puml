@@ -1,0 +1,34 @@
+@startuml
+
+title ServicePoint Status Decision Process - Create new ServicePoint
+
+start
+
+partition "ServicePointStatusDecider"{
+    if (CountryCode = 85) then (yes)
+
+      if (isStopPoint) then (yes)
+        if (is valid more than 60 days) then (yes)
+            if (is located in Switzerland) then (yes)
+                :Status = DRAFT;
+                stop
+            else(no)
+                :Status = VALIDATED;
+                stop
+            endif
+        else(no)
+            :Status = VALIDATED;
+            stop
+        endif
+      else (no)
+        :Status = VALIDATED;
+        stop
+      endif
+
+    else (no)
+      :Status = VALIDATED;
+      stop
+    endif
+}
+
+@enduml
