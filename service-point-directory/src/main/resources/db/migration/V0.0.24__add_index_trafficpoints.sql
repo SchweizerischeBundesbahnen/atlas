@@ -1,0 +1,2 @@
+create index traffic_point_element_version_traffic_point_geolocation_id
+    on traffic_point_element_version (traffic_point_geolocation_id);
