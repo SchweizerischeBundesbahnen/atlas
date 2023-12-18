@@ -1,18 +1,19 @@
 package ch.sbb.business.organisation.directory.model.csv;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.api.bodi.enumeration.BusinessType;
 import ch.sbb.atlas.export.AtlasCsvMapper;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationExportVersionWithTuInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import org.junit.jupiter.api.Test;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
-import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class BusinessOrganisationVersionCsvModelTest {
 
@@ -68,7 +69,6 @@ class BusinessOrganisationVersionCsvModelTest {
             .validTo(LocalDate.of(2000, 12, 31))
             .creationDate(LocalDateTime.of(2020, 1, 31, 11, 12, 15, 147))
             .editionDate(LocalDateTime.of(2020, 1, 31, 11, 12, 15, 147))
-            .transportCompanyId(32L)
             .number("#001")
             .abbreviation("SBB")
             .businessRegisterName("Schweizer Bundesbahnen")
@@ -77,8 +77,8 @@ class BusinessOrganisationVersionCsvModelTest {
     String csvString = objectWriter.writeValueAsString(csvModel);
 
     String expectedCsv = """
-        sboid;said;validFrom;validTo;organisationNumber;status;descriptionDe;descriptionFr;descriptionIt;descriptionEn;abbreviationDe;abbreviationFr;abbreviationIt;abbreviationEn;businessTypesId;businessTypesDe;businessTypesIt;businessTypesFr;transportCompanyNumber;"transportCompanyAbbreviation";"transportCompanyBusinessRegisterName";transportCompanyId;creationTime;editionTime
-        "ch:1:sboid:1000000";"1000000";"2000-01-01";"2000-12-31";123;VALIDATED;"desc-de";"desc-fr";"desc-it";"desc-en";de;fr;it;en;"10,20,45";"Eisenbahn,Schiff,Luft";"Ferrovia,Nave,Aria";"Chemin de fer,Bateau,Air";"#001";SBB;"Schweizer Bundesbahnen";32;"2020-01-31 11:12:15";"2020-01-31 11:12:15"
+        sboid;said;validFrom;validTo;organisationNumber;status;descriptionDe;descriptionFr;descriptionIt;descriptionEn;abbreviationDe;abbreviationFr;abbreviationIt;abbreviationEn;businessTypesId;businessTypesDe;businessTypesIt;businessTypesFr;transportCompanyNumber;"transportCompanyAbbreviation";"transportCompanyBusinessRegisterName";creationTime;editionTime
+        "ch:1:sboid:1000000";"1000000";"2000-01-01";"2000-12-31";123;VALIDATED;"desc-de";"desc-fr";"desc-it";"desc-en";de;fr;it;en;"10,20,45";"Eisenbahn,Schiff,Luft";"Ferrovia,Nave,Aria";"Chemin de fer,Bateau,Air";"#001";SBB;"Schweizer Bundesbahnen";"2020-01-31 11:12:15";"2020-01-31 11:12:15"
         """;
     assertThat(csvString).isEqualTo(expectedCsv);
   }
