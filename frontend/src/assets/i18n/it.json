@@ -959,7 +959,7 @@
       "TERMINATION_FORBIDDEN": "Non siete autorizzati a terminare la fermata. Utilizzate il modulo all'indirizzo https://www.tp-info.ch/it/soppressione-fermata.",
       "ABBREVIATION_UPDATE_NOT_ALLOWED": "L'organizzazione aziendale del servizio non è autorizzata ad aggiungere abbreviazioni, oppure il servizio ha già un'abbreviazione che non può essere modificata o cancellata.",
       "ABBREVIATION_NOT_UNIQUE": "La sigla è già in uso o la versione del servizio selezionata non è la più aggiornata.",
-      "HEIGHT_SERVICE_UNAVAILABLE": "Il servizio di altitudine non è attualmente disponibile."
+      "HEIGHT_SERVICE_UNAVAILABLE": "Il servizio di altezza non è disponibile. Riprovare tra 30 minuti. Se il problema persiste, contattare il centro specializzato Atlas."
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Bordi fermata",
