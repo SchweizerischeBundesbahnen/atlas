@@ -8,12 +8,13 @@ import ch.sbb.business.organisation.directory.entity.BusinessOrganisationExportV
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -23,7 +24,7 @@ import lombok.NoArgsConstructor;
     "descriptionDe", "descriptionFr", "descriptionIt", "descriptionEn",
     "abbreviationDe", "abbreviationFr", "abbreviationIt", "abbreviationEn",
     "businessTypesId", "businessTypesDe", "businessTypesIt", "businessTypesFr",
-    "transportCompanyNumber", "transportCompanyAbbreviation", "transportCompanyBusinessRegisterName", "transportCompanyId",
+    "transportCompanyNumber", "transportCompanyAbbreviation", "transportCompanyBusinessRegisterName",
     "creationTime", "editionTime"})
 public class BusinessOrganisationVersionCsvModel implements VersionCsvModel {
 
@@ -90,9 +91,6 @@ public class BusinessOrganisationVersionCsvModel implements VersionCsvModel {
   @JsonProperty("transportCompanyBusinessRegisterName")
   private String transportCompanyBusinessRegisterName;
 
-  @JsonProperty("transportCompanyId")
-  private Long transportCompanyId;
-
   @JsonProperty("editionTime")
   private LocalDateTime editionTime;
 
@@ -144,7 +142,6 @@ public class BusinessOrganisationVersionCsvModel implements VersionCsvModel {
     model.setTransportCompanyNumber(version.getNumber());
     model.setTransportCompanyAbbreviation(version.getAbbreviation());
     model.setTransportCompanyBusinessRegisterName(version.getBusinessRegisterName());
-    model.setTransportCompanyId(version.getTransportCompanyId());
     model.setEditionTime(version.getEditionDate());
     model.setCreationTime(version.getCreationDate());
     return model;

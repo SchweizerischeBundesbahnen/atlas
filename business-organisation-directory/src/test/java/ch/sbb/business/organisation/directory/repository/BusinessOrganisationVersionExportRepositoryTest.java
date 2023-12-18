@@ -1,18 +1,19 @@
 package ch.sbb.business.organisation.directory.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.business.organisation.directory.BusinessOrganisationData;
 import ch.sbb.business.organisation.directory.entity.BusinessOrganisationExportVersionWithTuInfo;
 import ch.sbb.business.organisation.directory.entity.TransportCompany;
 import ch.sbb.business.organisation.directory.entity.TransportCompanyRelation;
-import java.time.LocalDate;
-import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
  class BusinessOrganisationVersionExportRepositoryTest {
@@ -102,7 +103,6 @@ import org.springframework.beans.factory.annotation.Autowired;
     BusinessOrganisationExportVersionWithTuInfo version = actualVersions.get(0);
     assertThat(version.getSboid()).isEqualTo("ch:1:sboid:1000000");
 
-    assertThat(version.getTransportCompanyId()).isNull();
     assertThat(version.getNumber()).isNull();
     assertThat(version.getAbbreviation()).isNull();
     assertThat(version.getBusinessRegisterName()).isNull();
