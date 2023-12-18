@@ -51,7 +51,7 @@
     "@ng-select/ng-select": "12.0",
     "@ngx-translate/core": "^15.0",
     "@ngx-translate/http-loader": "^8.0",
-    "angular-oauth2-oidc": "^15.0",
+    "angular-oauth2-oidc": "^17.0.0",
     "angular-server-side-configuration": "^17.0.2",
     "bootstrap": "^5.3",
     "jwt-decode": "^4.0.0",
