@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   ApplicationType,
@@ -8,10 +8,9 @@ import {
 import { BaseDetailController } from '../../../core/components/base-detail/base-detail-controller';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../core/notification/notification.service';
-import { catchError, Subject } from 'rxjs';
+import { catchError } from 'rxjs';
 import moment from 'moment';
 import { DateRangeValidator } from '../../../core/validation/date-range/date-range-validator';
-import { takeUntil } from 'rxjs/operators';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { Pages } from '../../pages';
 import { Page } from '../../../core/model/page';
@@ -28,17 +27,15 @@ import { AuthService } from '../../../core/auth/auth.service';
 })
 export class TimetableFieldNumberDetailComponent
   extends BaseDetailController<TimetableFieldNumberVersion>
-  implements OnInit, OnDestroy
+  implements OnInit
 {
-  private ngUnsubscribe = new Subject<void>();
-
   constructor(
     protected router: Router,
     private timetableFieldNumberService: TimetableFieldNumbersService,
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
     protected authService: AuthService,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
   ) {
     super(router, dialogService, notificationService, authService, activatedRoute);
   }
@@ -62,7 +59,7 @@ export class TimetableFieldNumberDetailComponent
   updateRecord(): void {
     this.timetableFieldNumberService
       .updateVersionWithVersioning(this.getId(), this.form.value)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .subscribe(() => {
         this.notificationService.success('TTFN.NOTIFICATION.EDIT_SUCCESS');
         this.router.navigate([Pages.TTFN.path, this.record.ttfnid]).then(() => this.ngOnInit());
@@ -72,7 +69,7 @@ export class TimetableFieldNumberDetailComponent
   createRecord(): void {
     this.timetableFieldNumberService
       .createVersion(this.form.value)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .subscribe((version) => {
         this.notificationService.success('TTFN.NOTIFICATION.ADD_SUCCESS');
         this.router.navigate([Pages.TTFN.path, version.ttfnid]).then(() => this.ngOnInit());
@@ -113,7 +110,7 @@ export class TimetableFieldNumberDetailComponent
         ]),
         validFrom: new FormControl(
           version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required]
+          [Validators.required],
         ),
         validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [
           Validators.required,
@@ -146,13 +143,8 @@ export class TimetableFieldNumberDetailComponent
         editor: new FormControl(version.editor),
         creator: new FormControl(version.creator),
       },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
     );
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 
   getPageType(): Page {

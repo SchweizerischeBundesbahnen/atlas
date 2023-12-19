@@ -5,18 +5,20 @@ import {
   Country,
   CreateServicePointVersion,
   PermissionRestrictionType,
+  ServicePointsService,
   SwissCanton,
 } from '../../../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { of } from 'rxjs';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { ServicePointFormGroupBuilder } from '../service-point-detail-form-group';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../../../core/auth/auth.service';
 import { Countries } from '../../../../../core/country/Countries';
 import SpyObj = jasmine.SpyObj;
 import anything = jasmine.anything;
 import Spy = jasmine.Spy;
+import { TestBed } from '@angular/core/testing';
 
 class AuthServiceMock implements Partial<AuthService> {
   getApplicationUserPermission = jasmine.createSpy();
@@ -34,19 +36,38 @@ describe('ServicePointCreationComponent', () => {
   let authServiceMock: AuthServiceMock;
 
   beforeEach(() => {
-    spy = jasmine.createSpyObj(['mock']);
     servicePointServiceSpy = jasmine.createSpyObj(['createServicePoint']);
     notificationServiceSpy = jasmine.createSpyObj(['success']);
     routerSpy = jasmine.createSpyObj(['navigate']);
     authServiceMock = new AuthServiceMock();
-    component = new ServicePointCreationComponent(
-      <AuthService>(<unknown>authServiceMock),
-      spy,
-      routerSpy,
-      spy,
-      servicePointServiceSpy,
-      notificationServiceSpy,
-    );
+
+    TestBed.configureTestingModule({
+      providers: [
+        ServicePointCreationComponent,
+        {
+          provide: AuthService,
+          useValue: authServiceMock,
+        },
+        {
+          provide: ActivatedRoute,
+          useValue: spy,
+        },
+        {
+          provide: ServicePointsService,
+          useValue: servicePointServiceSpy,
+        },
+        {
+          provide: NotificationService,
+          useValue: notificationServiceSpy,
+        },
+        {
+          provide: Router,
+          useValue: routerSpy,
+        },
+      ],
+    });
+
+    component = TestBed.inject(ServicePointCreationComponent);
   });
 
   it('should create', () => {
