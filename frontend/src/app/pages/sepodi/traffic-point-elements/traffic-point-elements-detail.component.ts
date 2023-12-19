@@ -11,7 +11,7 @@ import {
 } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
-import { catchError, EMPTY, Observable, of, Subject } from 'rxjs';
+import { catchError, EMPTY, Observable, of } from 'rxjs';
 import { Pages } from '../../pages';
 import { FormGroup } from '@angular/forms';
 import {
@@ -20,7 +20,6 @@ import {
 } from './traffic-point-detail-form-group';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { ValidationService } from '../../../core/validation/validation.service';
-import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { TrafficPointMapService } from '../map/traffic-point-map.service';
 import { ValidityConfirmationService } from '../validity/validity-confirmation.service';
@@ -65,7 +64,6 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
   numberColons!: number;
 
   private _savedGeographyForm?: FormGroup<GeographyFormGroup>;
-  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     private route: ActivatedRoute,
@@ -82,15 +80,13 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
     this.isTrafficPointArea = history.state.isTrafficPointArea;
     this.numberColons = this.isTrafficPointArea ? NUMBER_COLONS_AREA : NUMBER_COLONS_PLATFORM;
 
-    this.route.data.pipe(takeUntil(this.ngUnsubscribe)).subscribe((next) => {
+    this.route.data.subscribe((next) => {
       this.trafficPointVersions = next.trafficPoint;
       this.initTrafficPoint();
     });
   }
 
   ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.unsubscribe();
     this.trafficPointMapService.clearDisplayedTrafficPoints();
     this.trafficPointMapService.clearCurrentTrafficPoint();
   }
@@ -129,7 +125,6 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
 
       this.servicePointService
         .getServicePointVersions(this.servicePointNumber)
-        .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((servicePoint) => {
           this.servicePoint = servicePoint;
           this.servicePointName =
@@ -143,7 +138,6 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
 
       this.trafficPointElementsService
         .getAreasOfServicePoint(this.servicePointNumber)
-        .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((areas) => {
           const options: AreaOption[] = [{ sloid: undefined, displayText: '' }];
           options.push(
@@ -271,7 +265,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
   private create(trafficPointElementVersion: CreateTrafficPointElementVersion) {
     this.trafficPointElementsService
       .createTrafficPoint(trafficPointElementVersion)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .pipe(catchError(this.handleError()))
       .subscribe((trafficPointElementVersion) => {
         this.notificationService.success('SEPODI.TRAFFIC_POINT_ELEMENTS.NOTIFICATION.ADD_SUCCESS');
         this.router
@@ -284,7 +278,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
   private update(id: number, trafficPointElementVersion: CreateTrafficPointElementVersion) {
     this.trafficPointElementsService
       .updateTrafficPoint(id, trafficPointElementVersion)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .pipe(catchError(this.handleError()))
       .subscribe(() => {
         this.notificationService.success('SEPODI.TRAFFIC_POINT_ELEMENTS.NOTIFICATION.EDIT_SUCCESS');
         this.router.navigate(['..', this.selectedVersion.sloid], { relativeTo: this.route }).then();
