@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 import {
   CreateStopPointVersion,
@@ -6,10 +6,9 @@ import {
   ReadServicePointVersion,
   ReadStopPointVersion,
 } from '../../../../../api';
-import { BehaviorSubject, Observable, of, Subject, take } from 'rxjs';
+import { BehaviorSubject, Observable, of, take } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
-import { takeUntil } from 'rxjs/operators';
 import { Pages } from '../../../../pages';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
@@ -24,7 +23,7 @@ import {
   selector: 'app-stop-point-detail',
   templateUrl: './stop-point-detail.component.html',
 })
-export class StopPointDetailComponent implements OnInit, OnDestroy, DetailFormComponent {
+export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   isNew = false;
   isAuthorizedToCreateStopPoint = true;
   stopPointVersions!: ReadStopPointVersion[];
@@ -37,7 +36,6 @@ export class StopPointDetailComponent implements OnInit, OnDestroy, DetailFormCo
   showVersionSwitch = false;
   isSwitchVersionDisabled = false;
   preferredId?: number;
-  private ngUnsubscribe = new Subject<void>();
   public isFormEnabled$ = new BehaviorSubject<boolean>(false);
   isReduced!: boolean | undefined;
 
@@ -180,7 +178,6 @@ export class StopPointDetailComponent implements OnInit, OnDestroy, DetailFormCo
   private updateStopPoint(writableStopPoint: CreateStopPointVersion) {
     this.personWithReducedMobilityService
       .updateStopPoint(this.selectedVersion.id!, writableStopPoint)
-      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
         this.notificationService.success('PRM.STOP_POINTS.NOTIFICATION.EDIT_SUCCESS');
         this.reloadPage();
@@ -188,13 +185,10 @@ export class StopPointDetailComponent implements OnInit, OnDestroy, DetailFormCo
   }
 
   private createStopPoint(writableStopPoint: CreateStopPointVersion) {
-    this.personWithReducedMobilityService
-      .createStopPoint(writableStopPoint)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.notificationService.success('PRM.STOP_POINTS.NOTIFICATION.ADD_SUCCESS');
-        this.reloadPage();
-      });
+    this.personWithReducedMobilityService.createStopPoint(writableStopPoint).subscribe(() => {
+      this.notificationService.success('PRM.STOP_POINTS.NOTIFICATION.ADD_SUCCESS');
+      this.reloadPage();
+    });
   }
 
   reloadPage() {
@@ -238,10 +232,5 @@ export class StopPointDetailComponent implements OnInit, OnDestroy, DetailFormCo
   //used in combination with canLeaveDirtyForm
   isFormDirty(): boolean {
     return this.form && this.form.dirty;
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 }
