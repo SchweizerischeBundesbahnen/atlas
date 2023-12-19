@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   LinesService,
   LineVersion,
@@ -8,11 +8,9 @@ import {
 } from '../../../../api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Subject } from 'rxjs';
 import moment from 'moment';
 import { Pages } from '../../../pages';
 import { LineVersionSnapshotDetailFormGroup } from './line-version-snapshot-detail-form-group';
-import { takeUntil } from 'rxjs/operators';
 import { WorkflowFormGroup } from '../../../../core/workflow/workflow-form-group';
 import { WorkflowCheckFormGroup } from '../../../../core/workflow/workflow-check-form/workflow-check-form-group';
 
@@ -20,7 +18,7 @@ import { WorkflowCheckFormGroup } from '../../../../core/workflow/workflow-check
   templateUrl: './line-version-snapshot-detail.component.html',
   styleUrls: ['./line-version-snapshot-detail.component.scss'],
 })
-export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
+export class LineVersionSnapshotDetailComponent implements OnInit {
   lineVersionSnapshot!: LineVersionSnapshot;
   showWorkflowCheckForm = false;
   versionAlreadyExists = true;
@@ -42,7 +40,6 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
       function: new FormControl(''),
     },
   );
-  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     private router: Router,
@@ -105,45 +102,34 @@ export class LineVersionSnapshotDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.unsubscribe();
-  }
-
   private checkLineVersionSNapshottedAlreadyExists() {
-    this.lineService
-      .getLineVersions(this.lineVersionSnapshot!.slnid!)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe({
-        next: (lineVersions) => {
-          const lineVersionsFiltered: LineVersion[] = lineVersions.filter(
-            (version) => version.id === this.lineVersionSnapshot.parentObjectId,
-          );
-          if (lineVersionsFiltered.length === 0) {
-            this.versionAlreadyExists = false;
-          }
-        },
-        error: () => {
+    this.lineService.getLineVersions(this.lineVersionSnapshot!.slnid!).subscribe({
+      next: (lineVersions) => {
+        const lineVersionsFiltered: LineVersion[] = lineVersions.filter(
+          (version) => version.id === this.lineVersionSnapshot.parentObjectId,
+        );
+        if (lineVersionsFiltered.length === 0) {
           this.versionAlreadyExists = false;
-        },
-      });
+        }
+      },
+      error: () => {
+        this.versionAlreadyExists = false;
+      },
+    });
   }
 
   private initWorkflowForms() {
-    this.workflowService
-      .getWorkflow(this.lineVersionSnapshot.workflowId)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((workflow) => {
-        this.workflow = workflow;
-        this.pupulateWorkflowStartedFormGroup();
-        if (
-          this.lineVersionSnapshot.workflowStatus === 'APPROVED' ||
-          this.lineVersionSnapshot.workflowStatus === 'REJECTED'
-        ) {
-          this.showWorkflowCheckForm = true;
-          this.populeteWorkflowCheckFormGroup();
-        }
-      });
+    this.workflowService.getWorkflow(this.lineVersionSnapshot.workflowId).subscribe((workflow) => {
+      this.workflow = workflow;
+      this.pupulateWorkflowStartedFormGroup();
+      if (
+        this.lineVersionSnapshot.workflowStatus === 'APPROVED' ||
+        this.lineVersionSnapshot.workflowStatus === 'REJECTED'
+      ) {
+        this.showWorkflowCheckForm = true;
+        this.populeteWorkflowCheckFormGroup();
+      }
+    });
   }
 
   private initLineVersionSnapshotForm() {

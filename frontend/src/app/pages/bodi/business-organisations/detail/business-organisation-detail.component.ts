@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   ApplicationType,
   BusinessOrganisationsService,
@@ -10,8 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { takeUntil } from 'rxjs/operators';
-import { catchError, Subject } from 'rxjs';
+import { catchError } from 'rxjs';
 import moment from 'moment';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import { Pages } from '../../../pages';
@@ -29,10 +28,9 @@ import { AuthService } from '../../../../core/auth/auth.service';
 })
 export class BusinessOrganisationDetailComponent
   extends BaseDetailController<BusinessOrganisationVersion>
-  implements OnInit, OnDestroy
+  implements OnInit
 {
   BUSINESS_TYPES = Object.values(BusinessType);
-  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     protected router: Router,
@@ -77,7 +75,7 @@ export class BusinessOrganisationDetailComponent
   updateRecord(): void {
     this.businessOrganisationsService
       .updateBusinessOrganisationVersion(this.getId(), this.form.value)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .subscribe(() => {
         this.notificationService.success('BODI.BUSINESS_ORGANISATION.NOTIFICATION.EDIT_SUCCESS');
         this.router
@@ -89,7 +87,7 @@ export class BusinessOrganisationDetailComponent
   createRecord(): void {
     this.businessOrganisationsService
       .createBusinessOrganisationVersion(this.form.value)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .subscribe((version) => {
         this.notificationService.success('BODI.BUSINESS_ORGANISATION.NOTIFICATION.ADD_SUCCESS');
         this.router
@@ -201,10 +199,5 @@ export class BusinessOrganisationDetailComponent
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
     );
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.unsubscribe();
   }
 }
