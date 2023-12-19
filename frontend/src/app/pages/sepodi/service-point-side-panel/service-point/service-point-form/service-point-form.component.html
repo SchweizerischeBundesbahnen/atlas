@@ -146,40 +146,47 @@
   <div *ngIf="form.value.servicePointGeolocation?.spatialReference && currentVersion">
     <div class="font-bold-2xl mt-5">{{ 'SEPODI.GEOLOCATION.ADMINISTRATION' | translate }}</div>
 
-    <div class="d-flex flex-row mt-2">
-      <div class="col-3 pe-3 flex-column">
-        <div class="font-bold-lg color-gray-900">
-          {{ 'SEPODI.GEOLOCATION.COUNTRY' | translate }}
+    <ng-container
+      [ngTemplateOutlet]="locationInformationTemplate"
+      [ngTemplateOutletContext]="{ $implicit: locationInformation$ | async }"
+    ></ng-container>
+
+    <ng-template #locationInformationTemplate let-locationInformation>
+      <div class="d-flex flex-row mt-2">
+        <div class="col-3 pe-3 flex-column">
+          <div class="font-bold-lg color-gray-900">
+            {{ 'SEPODI.GEOLOCATION.COUNTRY' | translate }}
+          </div>
+          <div class="color-gray-900">
+            {{ locationInformation?.isoCountryCode ?? '-' }}
+          </div>
         </div>
-        <div class="color-gray-900">
-          {{ locationInformation?.isoCountryCode ?? '-' }}
+        <div class="col-3 pe-3">
+          <div class="font-bold-lg color-gray-900">
+            {{ 'SEPODI.GEOLOCATION.CANTON' | translate }}
+          </div>
+          <div class="color-gray-900">
+            {{ locationInformation?.canton | displayCanton }}
+          </div>
+        </div>
+        <div class="col-3 pe-3">
+          <div class="font-bold-lg color-gray-900">
+            {{ 'SEPODI.GEOLOCATION.MUNICIPALITY' | translate }}
+          </div>
+          <div class="color-gray-900">
+            {{ locationInformation?.municipalityName ?? '-' }}
+          </div>
+        </div>
+        <div class="col-3 pe-3">
+          <div class="font-bold-lg color-gray-900">
+            {{ 'SEPODI.GEOLOCATION.DISTRICT' | translate }}
+          </div>
+          <div class="color-gray-900">
+            {{ locationInformation?.localityName ?? '-' }}
+          </div>
         </div>
       </div>
-      <div class="col-3 pe-3">
-        <div class="font-bold-lg color-gray-900">
-          {{ 'SEPODI.GEOLOCATION.CANTON' | translate }}
-        </div>
-        <div class="color-gray-900">
-          {{ locationInformation?.canton | displayCanton }}
-        </div>
-      </div>
-      <div class="col-3 pe-3">
-        <div class="font-bold-lg color-gray-900">
-          {{ 'SEPODI.GEOLOCATION.MUNICIPALITY' | translate }}
-        </div>
-        <div class="color-gray-900">
-          {{ locationInformation?.municipalityName ?? '-' }}
-        </div>
-      </div>
-      <div class="col-3 pe-3">
-        <div class="font-bold-lg color-gray-900">
-          {{ 'SEPODI.GEOLOCATION.DISTRICT' | translate }}
-        </div>
-        <div class="color-gray-900">
-          {{ locationInformation?.localityName ?? '-' }}
-        </div>
-      </div>
-    </div>
+    </ng-template>
   </div>
 
   <div class="d-flex flex-column col-12">

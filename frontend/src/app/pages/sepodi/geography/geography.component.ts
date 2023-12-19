@@ -5,20 +5,18 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { CoordinatePair, GeoDataService, SpatialReference } from '../../../api';
+import { CoordinatePair, SpatialReference } from '../../../api';
 import { GeographyFormGroup } from './geography-form-group';
 import { CoordinateTransformationService } from './coordinate-transformation.service';
-import { debounceTime, merge, Observable, Subject } from 'rxjs';
+import { debounceTime, merge, Subject } from 'rxjs';
 import { MapService } from '../map/map.service';
 import { MatRadioChange } from '@angular/material/radio';
-import { map, takeUntil } from 'rxjs/operators';
-import { LocationInformation } from '../service-point-side-panel/service-point/location-information';
-import { Countries } from '../../../core/country/Countries';
+import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 export const LV95_MAX_DIGITS = 5;
 export const WGS84_MAX_DIGITS = 11;
@@ -27,11 +25,9 @@ export const WGS84_MAX_DIGITS = 11;
   selector: 'sepodi-geography',
   templateUrl: './geography.component.html',
 })
-export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
+export class GeographyComponent implements OnDestroy, OnChanges {
   readonly LV95_MAX_DIGITS = LV95_MAX_DIGITS;
   readonly WGS84_MAX_DIGITS = WGS84_MAX_DIGITS;
-
-  currentLocationInfo$?: Observable<LocationInformation>;
 
   _form?: FormGroup<GeographyFormGroup>;
   @Input() set form(form: FormGroup<GeographyFormGroup> | undefined) {
@@ -45,10 +41,7 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
         .pipe(debounceTime(500), takeUntil(this.formDestroy$))
         .subscribe(() => {
           this.onChangeCoordinatesManually(this.currentCoordinates!);
-          const coordinatePair = this.currentCoordinates;
-          if (coordinatePair?.north && coordinatePair.east) {
-            this.currentLocationInfo$ = this.requestCurrentLocationInformation(coordinatePair);
-          }
+          this.coordinatesChanged.emit(this.currentCoordinates);
         });
     } else {
       this._geographyActive = false;
@@ -58,6 +51,7 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() editMode = false;
   @Output() geographyChanged = new EventEmitter<boolean>();
+  @Output() coordinatesChanged = new EventEmitter<CoordinatePair>();
 
   private _geographyActive = false;
 
@@ -73,19 +67,15 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
 
   transformedCoordinatePair?: CoordinatePair;
 
-  private destroySubscriptions$ = new Subject<void>();
   private formDestroy$ = new Subject<void>();
 
   constructor(
     private coordinateTransformationService: CoordinateTransformationService,
     private mapService: MapService,
     private changeDetector: ChangeDetectorRef,
-    private readonly geoDataService: GeoDataService,
-  ) {}
-
-  ngOnInit() {
+  ) {
     this.mapService.clickedGeographyCoordinates
-      .pipe(takeUntil(this.destroySubscriptions$))
+      .pipe(takeUntilDestroyed())
       .subscribe((coordinatePairWGS84) => {
         this.onMapClick({
           north: coordinatePairWGS84.lat,
@@ -106,8 +96,6 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy() {
     this.mapService.exitCoordinateSelectionMode();
-    this.destroySubscriptions$.next();
-    this.destroySubscriptions$.unsubscribe();
     this.formDestroy$.next();
     this.formDestroy$.unsubscribe();
   }
@@ -202,27 +190,11 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private updateMapInteractionMode() {
-    this.mapService.mapInitialized
-      .pipe(takeUntil(this.destroySubscriptions$))
-      .subscribe((initialized) => {
-        if (initialized) {
-          if (this.editMode && this.geographyActive) {
-            this.mapService.enterCoordinateSelectionMode();
-          } else {
-            this.mapService.exitCoordinateSelectionMode();
-          }
-        }
-      });
-  }
-
-  private requestCurrentLocationInformation(coordinatePair: CoordinatePair) {
-    return this.geoDataService.getLocationInformation(coordinatePair).pipe(
-      map((geoReference) => ({
-        isoCountryCode: Countries.fromCountry(geoReference.country)?.short,
-        canton: geoReference.swissCanton,
-        municipalityName: geoReference.swissMunicipalityName,
-        localityName: geoReference.swissLocalityName,
-      })),
-    );
+    if (!this.mapService.mapInitialized.value) return;
+    if (this.editMode && this.geographyActive) {
+      this.mapService.enterCoordinateSelectionMode();
+    } else {
+      this.mapService.exitCoordinateSelectionMode();
+    }
   }
 }
