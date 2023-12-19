@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
   ServicePointDetailFormGroup,
@@ -15,12 +15,13 @@ import {
 } from '../../../../../api';
 import { Countries } from '../../../../../core/country/Countries';
 import { catchError, EMPTY, mergeWith, Observable, Subject, take } from 'rxjs';
-import { map, takeUntil, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServicePointType } from '../service-point-type';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { GeographyFormGroupBuilder } from '../../../geography/geography-form-group';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-service-point-creation',
@@ -28,7 +29,7 @@ import { GeographyFormGroupBuilder } from '../../../geography/geography-form-gro
   styleUrls: ['./service-point-creation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ServicePointCreationComponent implements OnInit, OnDestroy {
+export class ServicePointCreationComponent implements OnInit {
   public form: FormGroup<ServicePointDetailFormGroup> =
     ServicePointFormGroupBuilder.buildEmptyFormGroup();
   public countryOptions$: Observable<Country[]> = EMPTY;
@@ -37,8 +38,6 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
     ServicePointType | null | undefined
   >();
 
-  private destroySubscriptions$ = new Subject<void>();
-
   constructor(
     private readonly authService: AuthService,
     private readonly dialogService: DialogService,
@@ -46,7 +45,42 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly servicePointService: ServicePointsService,
     private readonly notificationService: NotificationService,
-  ) {}
+  ) {
+    this.form.controls.country?.valueChanges
+      .pipe(mergeWith(this.servicePointTypeChanged$), takeUntilDestroyed())
+      .subscribe(this.handleCountryOrTypeChange);
+
+    this.form.controls.country?.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe(this.handleCountryChange);
+  }
+
+  private handleCountryChange = (country: Country | null) => {
+    if (!country) return;
+    if (Countries.geolocationCountries.includes(country)) {
+      this.form.controls.number.disable();
+      this.form.controls.number.reset();
+    } else {
+      this.form.controls.number.enable();
+    }
+  };
+
+  private handleCountryOrTypeChange = () => {
+    const country = this.form.controls.country?.value;
+    const servicePointType = this.form.controls.selectedType.value;
+    if (
+      country &&
+      Countries.geolocationCountries.includes(country) &&
+      servicePointType &&
+      [
+        ServicePointType.ServicePoint,
+        ServicePointType.OperatingPoint,
+        ServicePointType.StopPoint,
+      ].includes(servicePointType)
+    ) {
+      this.onGeographyEnabled();
+    }
+  };
 
   ngOnInit() {
     this.countryOptions$ = this.authService.loadPermissions().pipe(
@@ -57,42 +91,6 @@ export class ServicePointCreationComponent implements OnInit, OnDestroy {
         }
       }),
     );
-
-    this.form.controls.country?.valueChanges
-      .pipe(mergeWith(this.servicePointTypeChanged$), takeUntil(this.destroySubscriptions$))
-      .subscribe(() => {
-        const country = this.form.controls.country?.value;
-        const servicePointType = this.form.controls.selectedType.value;
-        if (
-          country &&
-          Countries.geolocationCountries.includes(country) &&
-          servicePointType &&
-          [
-            ServicePointType.ServicePoint,
-            ServicePointType.OperatingPoint,
-            ServicePointType.StopPoint,
-          ].includes(servicePointType)
-        ) {
-          this.onGeographyEnabled();
-        }
-      });
-
-    this.form.controls.country?.valueChanges
-      .pipe(takeUntil(this.destroySubscriptions$))
-      .subscribe((country) => {
-        if (!country) return;
-        if (Countries.geolocationCountries.includes(country)) {
-          this.form.controls.number.disable();
-          this.form.controls.number.reset();
-        } else {
-          this.form.controls.number.enable();
-        }
-      });
-  }
-
-  ngOnDestroy() {
-    this.destroySubscriptions$.next();
-    this.destroySubscriptions$.unsubscribe();
   }
 
   onGeographyEnabled() {
