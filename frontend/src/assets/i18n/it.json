@@ -1047,7 +1047,8 @@
     },
     "BACK_TO_MAP": "Chiudere",
     "AUTOMATIC_SLOID": "viene assegnato automaticamente.",
-    "SLOID_ALREADY_USED": "{{sloid}} è già stato preso."
+    "SLOID_ALREADY_USED": "{{sloid}} è già stato preso.",
+    "NUMBER_ALREADY_USED": "{{number}} è già stato preso."
   },
   "PRM": {
     "TABS": {

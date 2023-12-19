@@ -27,7 +27,6 @@ import { AtLeastOneValidator } from '../../../../core/validation/boolean-cross-v
 export interface ServicePointDetailFormGroup extends BaseDetailFormGroup {
   country?: FormControl<Country | null>;
   number: FormControl<number | null | undefined>;
-  sloid: FormControl<string | null | undefined>;
   abbreviation: FormControl<string | null | undefined>;
   status: FormControl<Status | null | undefined>;
   designationOfficial: FormControl<string | null | undefined>;
@@ -45,11 +44,32 @@ export interface ServicePointDetailFormGroup extends BaseDetailFormGroup {
   operatingPointKilometerMaster: FormControl<number | null | undefined>;
   operatingPointTrafficPointType: FormControl<OperatingPointTrafficPointType | null | undefined>;
   etagVersion: FormControl<number | null | undefined>;
-  servicePointGeolocation: FormGroup<GeographyFormGroup>;
+  servicePointGeolocation?: FormGroup<GeographyFormGroup>;
   selectedType: FormControl<ServicePointType | null | undefined>;
 }
 
+type OptionalKeysOfServicePointDetailFormGroup = {
+  [K in keyof ServicePointDetailFormGroup]-?: undefined extends ServicePointDetailFormGroup[K]
+    ? K
+    : never;
+}[keyof ServicePointDetailFormGroup];
+
 export class ServicePointFormGroupBuilder {
+  static addGroupToForm(
+    form: FormGroup<ServicePointDetailFormGroup>,
+    controlName: keyof ServicePointDetailFormGroup,
+    group: FormGroup,
+  ) {
+    form.addControl(controlName, group);
+  }
+
+  static removeGroupFromForm(
+    form: FormGroup<ServicePointDetailFormGroup>,
+    controlName: OptionalKeysOfServicePointDetailFormGroup,
+  ) {
+    form.removeControl(controlName);
+  }
+
   static buildEmptyFormGroup(): FormGroup<ServicePointDetailFormGroup> {
     const formGroup = new FormGroup<ServicePointDetailFormGroup>(
       {
@@ -60,7 +80,6 @@ export class ServicePointFormGroupBuilder {
           Validators.required,
         ]),
         country: new FormControl(null, [Validators.required]),
-        sloid: new FormControl(),
         abbreviation: new FormControl(null, [
           Validators.maxLength(6),
           Validators.minLength(1),
@@ -91,7 +110,6 @@ export class ServicePointFormGroupBuilder {
         stopPointType: new FormControl(),
         meansOfTransport: new FormControl([]),
         categories: new FormControl([]),
-        servicePointGeolocation: GeographyFormGroupBuilder.buildFormGroup(),
         operatingPointRouteNetwork: new FormControl(),
         operatingPointKilometer: new FormControl(),
         operatingPointKilometerMaster: new FormControl(),
@@ -116,7 +134,6 @@ export class ServicePointFormGroupBuilder {
       {
         number: new FormControl(version.number.numberShort),
         country: new FormControl(version.country),
-        sloid: new FormControl(version.sloid),
         abbreviation: new FormControl(version.abbreviation, [
           Validators.maxLength(6),
           Validators.minLength(2),
@@ -156,9 +173,6 @@ export class ServicePointFormGroupBuilder {
         stopPointType: new FormControl(version.stopPointType),
         meansOfTransport: new FormControl(version.meansOfTransport),
         categories: new FormControl(version.categories),
-        servicePointGeolocation: GeographyFormGroupBuilder.buildFormGroup(
-          version.servicePointGeolocation,
-        ),
         operatingPointRouteNetwork: new FormControl(version.operatingPointRouteNetwork),
         operatingPointKilometer: new FormControl(version.operatingPointKilometer),
         operatingPointKilometerMaster: new FormControl(
@@ -176,6 +190,14 @@ export class ServicePointFormGroupBuilder {
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
     );
+
+    if (version.servicePointGeolocation?.spatialReference) {
+      formGroup.addControl(
+        'servicePointGeolocation',
+        GeographyFormGroupBuilder.buildFormGroup(version.servicePointGeolocation),
+      );
+    }
+
     this.initConditionalValidators(formGroup);
     return formGroup;
   }

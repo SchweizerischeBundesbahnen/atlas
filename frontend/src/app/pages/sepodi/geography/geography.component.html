@@ -8,8 +8,8 @@
   <atlas-slide-toggle [(toggle)]="geographyActive" [disabled]="!editMode"></atlas-slide-toggle>
 </div>
 
-<ng-container *ngIf="geographyActive">
-  <form [formGroup]="formGroup">
+<ng-container *ngIf="_form">
+  <form [formGroup]="_form">
     <mat-radio-group formControlName="spatialReference" (change)="switchSpatialReference($event)">
       <mat-radio-button [value]="'LV95'">
         {{ 'SEPODI.GEOLOCATION.SYSTEM_LV95' | translate }}
@@ -22,7 +22,7 @@
                 { label: 'FORM.FOR_EXAMPLE', translate: true },
                 { label: '2600037.0', translate: false }
               ]"
-              [formGroup]="formGroup"
+              [formGroup]="_form"
               [required]="true"
               controlName="east"
               fieldLabel="SEPODI.GEOLOCATION.LV95.EAST"
@@ -36,7 +36,7 @@
                 { label: 'FORM.FOR_EXAMPLE', translate: true },
                 { label: '1199749.0', translate: false }
               ]"
-              [formGroup]="formGroup"
+              [formGroup]="_form"
               [required]="true"
               controlName="north"
               fieldLabel="SEPODI.GEOLOCATION.LV95.NORTH"
@@ -50,7 +50,7 @@
                 { label: 'FORM.FOR_EXAMPLE', translate: true },
                 { label: '540.2', translate: false }
               ]"
-              [formGroup]="formGroup"
+              [formGroup]="_form"
               [required]="false"
               controlName="height"
               fieldLabel="SEPODI.GEOLOCATION.HEIGHT"
@@ -90,7 +90,7 @@
                 { label: 'FORM.FOR_EXAMPLE', translate: true },
                 { label: '7.43913088992', translate: false }
               ]"
-              [formGroup]="formGroup"
+              [formGroup]="_form"
               [required]="true"
               controlName="east"
               fieldLabel="SEPODI.GEOLOCATION.WGS84.EAST"
@@ -103,7 +103,7 @@
                 { label: 'FORM.FOR_EXAMPLE', translate: true },
                 { label: '46.94883229051', translate: false }
               ]"
-              [formGroup]="formGroup"
+              [formGroup]="_form"
               [required]="true"
               controlName="north"
               fieldLabel="SEPODI.GEOLOCATION.WGS84.NORTH"
@@ -116,7 +116,7 @@
                 { label: 'FORM.FOR_EXAMPLE', translate: true },
                 { label: '540.2', translate: false }
               ]"
-              [formGroup]="formGroup"
+              [formGroup]="_form"
               [required]="false"
               controlName="height"
               fieldLabel="SEPODI.GEOLOCATION.HEIGHT"
