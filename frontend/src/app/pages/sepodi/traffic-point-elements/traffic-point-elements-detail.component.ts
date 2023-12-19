@@ -11,7 +11,7 @@ import {
 } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
-import { catchError, EMPTY, Observable, of, Subject } from 'rxjs';
+import { catchError, EMPTY, Observable, of } from 'rxjs';
 import { Pages } from '../../pages';
 import { FormGroup } from '@angular/forms';
 import {
@@ -20,12 +20,12 @@ import {
 } from './traffic-point-detail-form-group';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { ValidationService } from '../../../core/validation/validation.service';
-import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { TrafficPointMapService } from '../map/traffic-point-map.service';
 import { ValidityConfirmationService } from '../validity/validity-confirmation.service';
 import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
 import { Countries } from '../../../core/country/Countries';
+import { GeographyFormGroup, GeographyFormGroupBuilder } from '../geography/geography-form-group';
 
 interface AreaOption {
   sloid: string | undefined;
@@ -61,10 +61,9 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
   servicePoint: ReadServicePointVersion[] = [];
   servicePointBusinessOrganisations: string[] = [];
   isTrafficPointArea = false;
-  geographyActive = true;
   numberColons!: number;
 
-  private ngUnsubscribe = new Subject<void>();
+  private _savedGeographyForm?: FormGroup<GeographyFormGroup>;
 
   constructor(
     private route: ActivatedRoute,
@@ -81,15 +80,13 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
     this.isTrafficPointArea = history.state.isTrafficPointArea;
     this.numberColons = this.isTrafficPointArea ? NUMBER_COLONS_AREA : NUMBER_COLONS_PLATFORM;
 
-    this.route.data.pipe(takeUntil(this.ngUnsubscribe)).subscribe((next) => {
+    this.route.data.subscribe((next) => {
       this.trafficPointVersions = next.trafficPoint;
       this.initTrafficPoint();
     });
   }
 
   ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
     this.trafficPointMapService.clearDisplayedTrafficPoints();
     this.trafficPointMapService.clearCurrentTrafficPoint();
   }
@@ -98,6 +95,11 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
     if (this.trafficPointVersions.length == 0) {
       this.isNew = true;
       this.form = TrafficPointElementFormGroupBuilder.buildFormGroup();
+      TrafficPointElementFormGroupBuilder.addGroupToForm(
+        this.form,
+        'trafficPointElementGeolocation',
+        GeographyFormGroupBuilder.buildFormGroup(),
+      );
     } else {
       this.isNew = false;
       VersionsHandlingService.addVersionNumbers(this.trafficPointVersions);
@@ -123,7 +125,6 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
 
       this.servicePointService
         .getServicePointVersions(this.servicePointNumber)
-        .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((servicePoint) => {
           this.servicePoint = servicePoint;
           this.servicePointName =
@@ -137,7 +138,6 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
 
       this.trafficPointElementsService
         .getAreasOfServicePoint(this.servicePointNumber)
-        .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((areas) => {
           const options: AreaOption[] = [{ sloid: undefined, displayText: '' }];
           options.push(
@@ -184,9 +184,8 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
   private initSelectedVersion() {
     this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.trafficPointVersions);
     this.form = TrafficPointElementFormGroupBuilder.buildFormGroup(this.selectedVersion);
-    this.geographyActive = !!this.selectedVersion?.trafficPointElementGeolocation?.spatialReference;
     if (!this.isNew) {
-      this.form.disable();
+      this.disableForm();
     }
     this.trafficPointMapService.displayCurrentTrafficPoint(
       this.selectedVersion.trafficPointElementGeolocation?.wgs84,
@@ -209,7 +208,6 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
           this.confirmCancel();
         } else {
           this.initSelectedVersion();
-          this.form.disable();
         }
         this.isSwitchVersionDisabled = false;
       }
@@ -239,7 +237,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
             : (trafficPointElementVersion.trafficPointElementType =
                 TrafficPointElementType.Platform);
 
-          this.form.disable({ emitEvent: false });
+          this.disableForm();
           trafficPointElementVersion.numberWithoutCheckDigit = this.servicePointNumber;
           if (this.isNew) {
             this.create(trafficPointElementVersion);
@@ -249,6 +247,11 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
         }
       });
     }
+  }
+
+  disableForm() {
+    this.form.disable();
+    this._savedGeographyForm = undefined;
   }
 
   private confirmValidityOverServicePoint(): Observable<boolean> {
@@ -262,7 +265,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
   private create(trafficPointElementVersion: CreateTrafficPointElementVersion) {
     this.trafficPointElementsService
       .createTrafficPoint(trafficPointElementVersion)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .pipe(catchError(this.handleError()))
       .subscribe((trafficPointElementVersion) => {
         this.notificationService.success('SEPODI.TRAFFIC_POINT_ELEMENTS.NOTIFICATION.ADD_SUCCESS');
         this.router
@@ -275,7 +278,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
   private update(id: number, trafficPointElementVersion: CreateTrafficPointElementVersion) {
     this.trafficPointElementsService
       .updateTrafficPoint(id, trafficPointElementVersion)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .pipe(catchError(this.handleError()))
       .subscribe(() => {
         this.notificationService.success('SEPODI.TRAFFIC_POINT_ELEMENTS.NOTIFICATION.EDIT_SUCCESS');
         this.router.navigate(['..', this.selectedVersion.sloid], { relativeTo: this.route }).then();
@@ -292,5 +295,28 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
 
   isFormDirty(): boolean {
     return this.form.dirty;
+  }
+
+  geographyEnabled() {
+    if (this.form && !this.form.controls.trafficPointElementGeolocation) {
+      const groupToAdd = this._savedGeographyForm ?? GeographyFormGroupBuilder.buildFormGroup();
+      TrafficPointElementFormGroupBuilder.addGroupToForm(
+        this.form,
+        'trafficPointElementGeolocation',
+        groupToAdd,
+      );
+      this.form.markAsDirty();
+    }
+  }
+
+  geographyDisabled() {
+    if (this.form.controls.trafficPointElementGeolocation) {
+      this._savedGeographyForm = this.form.controls.trafficPointElementGeolocation;
+      TrafficPointElementFormGroupBuilder.removeGroupFromForm(
+        this.form,
+        'trafficPointElementGeolocation',
+      );
+      this.form.markAsDirty();
+    }
   }
 }

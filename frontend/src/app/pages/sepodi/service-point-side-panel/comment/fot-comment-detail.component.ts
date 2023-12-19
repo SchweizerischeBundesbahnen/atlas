@@ -1,9 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, EMPTY, Observable, of, Subject, take } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { catchError, EMPTY, Observable, of, take } from 'rxjs';
 import { Pages } from '../../../pages';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { ValidationService } from '../../../../core/validation/validation.service';
@@ -24,9 +23,8 @@ export interface FotCommentFormGroup {
   templateUrl: './fot-comment-detail.component.html',
   styleUrls: ['./fot-comment-detail.component.scss'],
 })
-export class FotCommentDetailComponent implements DetailFormComponent, OnInit, OnDestroy {
+export class FotCommentDetailComponent implements DetailFormComponent, OnInit {
   form!: FormGroup<FotCommentFormGroup>;
-  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     private servicePointService: ServicePointsService,
@@ -40,15 +38,7 @@ export class FotCommentDetailComponent implements DetailFormComponent, OnInit, O
     this.initFormGroup();
     this.servicePointService
       .getFotComment(this.servicePointNumber)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((comment) => {
-        this.initFormGroup(comment);
-      });
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+      .subscribe((comment) => this.initFormGroup(comment));
   }
 
   get servicePointNumber() {
@@ -108,7 +98,7 @@ export class FotCommentDetailComponent implements DetailFormComponent, OnInit, O
     if (this.form.valid) {
       this.servicePointService
         .saveFotComment(this.servicePointNumber, this.currentComment)
-        .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
+        .pipe(catchError(this.handleError))
         .subscribe((comment) => {
           this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.COMMENT_SAVED');
           this.initFormGroup(comment);
