@@ -5,7 +5,6 @@ import { of } from 'rxjs';
 import { AppTestingModule } from '../../../../../app.testing.module';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../../../core/auth/auth.service';
-import { BERN_WYLEREGG } from '../../../../sepodi/service-point-test-data';
 import {
   MockAtlasButtonComponent,
   MockAtlasFieldErrorComponent,
@@ -26,6 +25,7 @@ import { PersonWithReducedMobilityService } from '../../../../../api';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { STOP_POINT } from '../../../util/stop-point-test-data.spec';
 import SpyObj = jasmine.SpyObj;
+import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
 
 const authService: Partial<AuthService> = {};
 describe('StopPointDetailComponent', () => {

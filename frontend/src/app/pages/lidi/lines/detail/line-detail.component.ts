@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   ApplicationType,
   LinesService,
@@ -12,8 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { takeUntil } from 'rxjs/operators';
-import { catchError, Subject } from 'rxjs';
+import { catchError } from 'rxjs';
 import moment from 'moment';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import { Pages } from '../../../pages';
@@ -28,12 +27,8 @@ import { AuthService } from '../../../../core/auth/auth.service';
   templateUrl: './line-detail.component.html',
   styleUrls: ['./line-detail.component.scss'],
 })
-export class LineDetailComponent
-  extends BaseDetailController<LineVersion>
-  implements OnInit, OnDestroy
-{
+export class LineDetailComponent extends BaseDetailController<LineVersion> implements OnInit {
   isShowLineSnapshotHistory = false;
-  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     protected router: Router,
@@ -41,7 +36,7 @@ export class LineDetailComponent
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
     protected authService: AuthService,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
   ) {
     super(router, dialogService, notificationService, authService, activatedRoute);
   }
@@ -111,7 +106,7 @@ export class LineDetailComponent
   updateRecord(): void {
     this.linesService
       .updateLineVersion(this.getId(), this.form.value)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .subscribe(() => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.EDIT_SUCCESS');
         this.router
@@ -129,7 +124,7 @@ export class LineDetailComponent
   createRecord(): void {
     this.linesService
       .createLineVersion(this.form.value)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .subscribe((version) => {
         this.notificationService.success('LIDI.LINE.NOTIFICATION.ADD_SUCCESS');
         this.router
@@ -213,7 +208,7 @@ export class LineDetailComponent
         ]),
         validFrom: new FormControl(
           version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required]
+          [Validators.required],
         ),
         validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [
           Validators.required,
@@ -228,16 +223,11 @@ export class LineDetailComponent
         editor: new FormControl(version.editor),
         creator: new FormControl(version.creator),
       },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
     );
   }
 
   getFormControlsToDisable(): string[] {
     return this.record.status === Status.InReview ? ['validFrom', 'validTo', 'lineType'] : [];
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 }

@@ -111,9 +111,9 @@
     </div>
 
     <sepodi-geography
-      [formGroup]="form.controls.trafficPointElementGeolocation"
+      [form]="form.controls.trafficPointElementGeolocation"
       [editMode]="form.enabled"
-      [(geographyActive)]="geographyActive"
+      (geographyChanged)="$event ? geographyEnabled() : geographyDisabled()"
     ></sepodi-geography>
 
     <div class="font-bold-2xl mt-5" *ngIf="!isTrafficPointArea">

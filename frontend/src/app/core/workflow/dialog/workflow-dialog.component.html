@@ -8,7 +8,7 @@
     <span class="font-bold-4xl">{{ data.title | translate }}</span>
     <div *ngIf="workflowId">
       <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
-      <span class="color-gray-900">{{ workflowStatusTranslated }}</span>
+      <span class="color-gray-900">{{ workflowStatusTranslated$ | async }}</span>
     </div>
   </div>
 

@@ -1,6 +1,6 @@
 @use '@angular/material' as mat;
-@use 'palette/atlas-palette' as palette;
-@use 'typography/atlas-typography' as typography;
+@use './palette/atlas-palette' as palette;
+@use './typography/atlas-typography' as typography;
 
 // Define the default theme
 $app-primary: mat.define-palette(palette.$atlas-primary);

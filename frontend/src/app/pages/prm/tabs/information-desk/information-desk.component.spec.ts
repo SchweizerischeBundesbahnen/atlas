@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InformationDeskComponent } from './information-desk.component';
-import { BERN_WYLEREGG } from '../../../sepodi/service-point-test-data';
 import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ActivatedRoute } from '@angular/router';
 import { STOP_POINT } from '../../util/stop-point-test-data.spec';
+import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 
 describe('InformationDeskComponent', () => {
   let component: InformationDeskComponent;

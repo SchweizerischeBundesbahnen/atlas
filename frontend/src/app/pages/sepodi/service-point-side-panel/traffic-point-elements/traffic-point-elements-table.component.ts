@@ -1,11 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import { ReadTrafficPointElementVersion, TrafficPointElementsService } from '../../../../api';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../pages';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
 import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
 import { TableService } from '../../../../core/components/table/table.service';
 
@@ -14,7 +12,7 @@ import { TableService } from '../../../../core/components/table/table.service';
   templateUrl: './traffic-point-elements-table.component.html',
   styleUrls: ['./traffic-point-elements-table.component.scss'],
 })
-export class TrafficPointElementsTableComponent implements OnInit, OnDestroy {
+export class TrafficPointElementsTableComponent implements OnInit {
   tableColumnsPlatforms: TableColumn<ReadTrafficPointElementVersion>[] = [
     { headerTitle: 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION', value: 'designation' },
     { headerTitle: 'SEPODI.SERVICE_POINTS.SLOID', value: 'sloid' },
@@ -38,7 +36,6 @@ export class TrafficPointElementsTableComponent implements OnInit, OnDestroy {
   isTrafficPointArea = false;
 
   tableFilterConfig!: TableFilter<unknown>[][];
-  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     private trafficPointElementService: TrafficPointElementsService,
@@ -47,15 +44,9 @@ export class TrafficPointElementsTableComponent implements OnInit, OnDestroy {
     private router: Router,
   ) {}
 
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
-  }
-
   ngOnInit(): void {
-    this.route.data.pipe(takeUntil(this.ngUnsubscribe)).subscribe((next) => {
+    this.route.data.subscribe((next) => {
       this.isTrafficPointArea = next.isTrafficPointArea;
-
       this.tableFilterConfig = this.tableService.initializeFilterConfig(
         {},
         this.isTrafficPointArea
@@ -107,11 +98,9 @@ export class TrafficPointElementsTableComponent implements OnInit, OnDestroy {
       pagination.page,
       pagination.size,
       [pagination.sort ?? 'designation,asc'],
-    )
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((container) => {
-        this.trafficPointElementRows = container.objects!;
-        this.totalCount$ = container.totalCount!;
-      });
+    ).subscribe((container) => {
+      this.trafficPointElementRows = container.objects!;
+      this.totalCount$ = container.totalCount!;
+    });
   }
 }
