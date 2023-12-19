@@ -24,7 +24,6 @@ export class NotificationService {
   correlationId: string | null | undefined;
   private routerEventSubscription?: Subscription;
   private readonly routerEventPipe = this.router.events.pipe(
-    takeUntilDestroyed(),
     first(
       (event) =>
         event instanceof NavigationStart &&
@@ -33,6 +32,7 @@ export class NotificationService {
     catchError((err) => {
       throw err;
     }),
+    takeUntilDestroyed(),
   );
 
   constructor(
