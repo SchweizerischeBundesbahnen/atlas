@@ -1,16 +1,28 @@
 import { ServicePointFormComponent } from './service-point-form.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import SpyObj = jasmine.SpyObj;
-import { LocationInformation } from '../location-information';
+import {
+  CoordinatePair,
+  Country,
+  ReadServicePointVersion,
+  SpatialReference,
+  SwissCanton,
+} from '../../../../../api';
+import { EventEmitter } from '@angular/core';
+import { GeographyComponent } from '../../../geography/geography.component';
+import { of } from 'rxjs';
 
 describe('ServicePointFormComponent', () => {
   let component: ServicePointFormComponent;
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   let spy: SpyObj<any>;
+  const translationSortingServiceSpy = jasmine.createSpyObj(['sort'], {
+    translateService: { onLangChange: jasmine.createSpyObj(['subscribe']) },
+  });
+  const geoDataServiceSpy = jasmine.createSpyObj(['getLocationInformation']);
 
   beforeEach(() => {
-    spy = jasmine.createSpyObj(['mock']);
-    component = new ServicePointFormComponent(spy, spy);
+    component = new ServicePointFormComponent(translationSortingServiceSpy, spy, geoDataServiceSpy);
   });
 
   it('should create', () => {
@@ -111,15 +123,37 @@ describe('ServicePointFormComponent', () => {
     expect(component.form?.controls.operatingPointKilometerMaster.value).toBe(null);
   });
 
-  it('should update locationInformation when onLocationInformationChange is called', () => {
-    const newLocationInfo: LocationInformation = {
-      isoCountryCode: 'CH',
-      canton: 'BERN',
-      municipalityName: 'Münchenbuchsee',
-      localityName: 'Hofwil',
+  it('should update locationInformation when coordinates changed', (done) => {
+    component['_currentVersion'] = { id: 5 } as ReadServicePointVersion;
+    component.geographyComponent = {
+      coordinatesChanged: new EventEmitter<CoordinatePair>(),
+    } as GeographyComponent;
+
+    const coordinatePair = {
+      spatialReference: SpatialReference.Lv95,
+      north: 5,
+      east: 6,
     };
 
-    component.onLocationInformationChange(newLocationInfo);
-    expect(component.locationInformation$).toEqual(newLocationInfo);
+    geoDataServiceSpy.getLocationInformation.withArgs(coordinatePair).and.returnValue(
+      of({
+        country: Country.Cuba,
+        swissCanton: SwissCanton.Aargau,
+        swissMunicipalityName: 'Gemeinde',
+        swissLocalityName: 'Ort',
+      }),
+    );
+
+    component.ngOnInit();
+
+    component.geographyComponent.coordinatesChanged.emit(coordinatePair);
+
+    component.locationInformation$?.subscribe((locationInformation) => {
+      expect(locationInformation.canton).toEqual(SwissCanton.Aargau);
+      expect(locationInformation.isoCountryCode).toEqual('CU');
+      expect(locationInformation.municipalityName).toEqual('Gemeinde');
+      expect(locationInformation.localityName).toEqual('Ort');
+      done();
+    });
   });
 });
