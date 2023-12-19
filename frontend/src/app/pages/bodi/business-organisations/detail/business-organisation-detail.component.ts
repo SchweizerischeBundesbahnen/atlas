@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   ApplicationType,
   BusinessOrganisationsService,
@@ -7,11 +7,10 @@ import {
 } from '../../../../api';
 import { BaseDetailController } from '../../../../core/components/base-detail/base-detail-controller';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { takeUntil } from 'rxjs/operators';
-import { catchError, Subject } from 'rxjs';
+import { catchError } from 'rxjs';
 import moment from 'moment';
 import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
 import { Pages } from '../../../pages';
@@ -29,20 +28,18 @@ import { AuthService } from '../../../../core/auth/auth.service';
 })
 export class BusinessOrganisationDetailComponent
   extends BaseDetailController<BusinessOrganisationVersion>
-  implements OnInit, OnDestroy
+  implements OnInit
 {
   BUSINESS_TYPES = Object.values(BusinessType);
-  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     protected router: Router,
     private businessOrganisationsService: BusinessOrganisationsService,
-    private formBuilder: FormBuilder,
     private businessOrganisationLanguageService: BusinessOrganisationLanguageService,
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
     protected authService: AuthService,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
   ) {
     super(router, dialogService, notificationService, authService, activatedRoute);
   }
@@ -78,7 +75,7 @@ export class BusinessOrganisationDetailComponent
   updateRecord(): void {
     this.businessOrganisationsService
       .updateBusinessOrganisationVersion(this.getId(), this.form.value)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .subscribe(() => {
         this.notificationService.success('BODI.BUSINESS_ORGANISATION.NOTIFICATION.EDIT_SUCCESS');
         this.router
@@ -90,7 +87,7 @@ export class BusinessOrganisationDetailComponent
   createRecord(): void {
     this.businessOrganisationsService
       .createBusinessOrganisationVersion(this.form.value)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .subscribe((version) => {
         this.notificationService.success('BODI.BUSINESS_ORGANISATION.NOTIFICATION.ADD_SUCCESS');
         this.router
@@ -106,7 +103,7 @@ export class BusinessOrganisationDetailComponent
         .revokeBusinessOrganisation(selectedRecord.sboid)
         .subscribe(() => {
           this.notificationService.success(
-            'BODI.BUSINESS_ORGANISATION.NOTIFICATION.REVOKE_SUCCESS'
+            'BODI.BUSINESS_ORGANISATION.NOTIFICATION.REVOKE_SUCCESS',
           );
           this.router
             .navigate([Pages.BODI.path, Pages.BUSINESS_ORGANISATIONS.path, selectedRecord.sboid])
@@ -122,7 +119,7 @@ export class BusinessOrganisationDetailComponent
         .deleteBusinessOrganisation(selectedVersion.sboid)
         .subscribe(() => {
           this.notificationService.success(
-            'BODI.BUSINESS_ORGANISATION.NOTIFICATION.DELETE_SUCCESS'
+            'BODI.BUSINESS_ORGANISATION.NOTIFICATION.DELETE_SUCCESS',
           );
           this.backToOverview();
         });
@@ -189,7 +186,7 @@ export class BusinessOrganisationDetailComponent
         businessTypes: new FormControl(version.businessTypes),
         validFrom: new FormControl(
           version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required]
+          [Validators.required],
         ),
         validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [
           Validators.required,
@@ -200,12 +197,7 @@ export class BusinessOrganisationDetailComponent
         editor: new FormControl(version.editor),
         creator: new FormControl(version.creator),
       },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
     );
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 }

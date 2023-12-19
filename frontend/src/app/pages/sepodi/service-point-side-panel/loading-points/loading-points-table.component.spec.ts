@@ -4,9 +4,9 @@ import { LoadingPointsTableComponent } from './loading-points-table.component';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { MockAtlasButtonComponent, MockTableComponent } from '../../../../app.testing.mocks';
 import { of } from 'rxjs';
-import { LOADING_POINT } from '../../loading-point-test-data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingPointsService } from '../../../../api';
+import { LOADING_POINT } from '../../../../../test/data/loading-point';
 
 describe('LoadingPointsTableComponent', () => {
   let component: LoadingPointsTableComponent;

@@ -5,12 +5,12 @@ import { ActivatedRoute } from '@angular/router';
 import { AppTestingModule } from '../../../app.testing.module';
 import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
 import { of } from 'rxjs';
-import { BERN_WYLEREGG } from '../service-point-test-data';
 import { AuthService } from '../../../core/auth/auth.service';
 import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 import { SplitServicePointNumberPipe } from '../../../core/search-service-point/split-service-point-number.pipe';
 import { TrafficPointMapService } from '../map/traffic-point-map.service';
+import { BERN_WYLEREGG } from '../../../../test/data/service-point';
 
 const authService: Partial<AuthService> = {};
 const trafficPointMapService = jasmine.createSpyObj<TrafficPointMapService>([

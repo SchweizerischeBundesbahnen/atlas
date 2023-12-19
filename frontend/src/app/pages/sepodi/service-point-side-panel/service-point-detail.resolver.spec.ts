@@ -4,7 +4,7 @@ import { ServicePointsService, Status } from '../../../api';
 import { TestBed } from '@angular/core/testing';
 import { AppTestingModule } from '../../../app.testing.module';
 import { ServicePointDetailResolver } from './service-point-detail.resolver';
-import { BERN_WYLEREGG } from '../service-point-test-data';
+import { BERN_WYLEREGG } from '../../../../test/data/service-point';
 
 describe('ServicePointDetailResolver', () => {
   const servicePointsServiceSpy = jasmine.createSpyObj('servicePointsService', [
