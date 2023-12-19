@@ -1,6 +1,5 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Subject } from 'rxjs';
 import { WorkflowDialogData } from './workflow-dialog-data';
 import { NotificationService } from '../../notification/notification.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -8,7 +7,6 @@ import { WorkflowFormGroup } from '../workflow-form-group';
 import { AtlasFieldLengthValidator } from '../../validation/field-lengths/atlas-field-length-validator';
 import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets-validator';
 import { WhitespaceValidator } from '../../validation/whitespace/whitespace-validator';
-import { takeUntil } from 'rxjs/operators';
 import {
   LineVersionWorkflow,
   UserAdministrationService,
@@ -20,13 +18,14 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import { ValidationService } from '../../validation/validation.service';
 import WorkflowTypeEnum = Workflow.WorkflowTypeEnum;
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-workflow-dialog',
   templateUrl: './workflow-dialog.component.html',
   styleUrls: ['./workflow-dialog.component.scss'],
 })
-export class WorkflowDialogComponent implements OnInit, OnDestroy {
+export class WorkflowDialogComponent implements OnInit {
   workflowStartFormGroup: FormGroup<WorkflowFormGroup> = new FormGroup<WorkflowFormGroup>({
     comment: new FormControl('', [
       Validators.required,
@@ -62,9 +61,7 @@ export class WorkflowDialogComponent implements OnInit, OnDestroy {
   });
 
   workflowId?: number;
-  workflowStatusTranslated!: string;
-
-  private ngUnsubscribe = new Subject<void>();
+  workflowStatusTranslated$?: Observable<string>;
 
   constructor(
     public dialogRef: MatDialogRef<WorkflowDialogComponent>,
@@ -77,11 +74,6 @@ export class WorkflowDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initWorkflowForm();
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.unsubscribe();
   }
 
   private initWorkflowForm() {
@@ -102,10 +94,9 @@ export class WorkflowDialogComponent implements OnInit, OnDestroy {
 
     this.workflowService
       .getWorkflow(workflowId)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((workflow: Workflow) => {
-        this.populateWorkflowStartFormGroupFromPersistence(workflow);
-      });
+      .subscribe((workflow: Workflow) =>
+        this.populateWorkflowStartFormGroupFromPersistence(workflow),
+      );
   }
 
   private filterWorkflowsInProgress() {
@@ -118,18 +109,17 @@ export class WorkflowDialogComponent implements OnInit, OnDestroy {
 
   private populateUserDataFormFromAuthenticatedUser() {
     this.workflowStartFormGroup.reset();
-    this.userAdministrationService
-      .getCurrentUser()
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((user) => {
-        this.workflowStartFormGroup.controls.firstName.setValue(user.firstName);
-        this.workflowStartFormGroup.controls.lastName.setValue(user.lastName);
-        this.workflowStartFormGroup.controls.mail.setValue(user.mail);
-      });
+    this.userAdministrationService.getCurrentUser().subscribe((user) => {
+      this.workflowStartFormGroup.controls.firstName.setValue(user.firstName);
+      this.workflowStartFormGroup.controls.lastName.setValue(user.lastName);
+      this.workflowStartFormGroup.controls.mail.setValue(user.mail);
+    });
   }
 
   private populateWorkflowStartFormGroupFromPersistence(workflow: Workflow) {
-    this.getTranslatedWorkflowStatus(workflow);
+    this.workflowStatusTranslated$ = this.translateService.get(
+      'WORKFLOW.STATUS.' + workflow.workflowStatus,
+    );
     this.workflowStartFormGroup.controls.comment.setValue(workflow.workflowComment);
     this.workflowStartFormGroup.controls.firstName.setValue(workflow.client?.firstName);
     this.workflowStartFormGroup.controls.lastName.setValue(workflow.client?.lastName);
@@ -137,26 +127,14 @@ export class WorkflowDialogComponent implements OnInit, OnDestroy {
     this.workflowStartFormGroup.controls.mail.setValue(workflow.client?.mail);
   }
 
-  getTranslatedWorkflowStatus(workflow: Workflow) {
-    return this.translateService
-      .get('WORKFLOW.STATUS.' + workflow.workflowStatus)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((translation) => {
-        this.workflowStatusTranslated = translation;
-      });
-  }
-
   startWorkflow() {
     ValidationService.validateForm(this.workflowStartFormGroup);
     if (this.workflowStartFormGroup.valid) {
       const workflowStart = this.populateWorkflowStart();
-      this.workflowService
-        .startWorkflow(workflowStart)
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe(() => {
-          this.closeDialog();
-          this.notificationService.success('WORKFLOW.NOTIFICATION.START.SUCCESS');
-        });
+      this.workflowService.startWorkflow(workflowStart).subscribe(() => {
+        this.closeDialog();
+        this.notificationService.success('WORKFLOW.NOTIFICATION.START.SUCCESS');
+      });
     }
   }
 
