@@ -1,18 +1,6 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { LineRecord } from './model/line-record';
 import { LinesService, LineVersionWorkflow, WorkflowProcessingStatus } from '../../api';
-import { NotificationService } from '../notification/notification.service';
-import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { WorkflowDialogService } from './dialog/workflow-dialog.service';
 
 @Component({
@@ -20,7 +8,7 @@ import { WorkflowDialogService } from './dialog/workflow-dialog.service';
   templateUrl: './workflow.component.html',
   styleUrls: ['./workflow.component.scss'],
 })
-export class WorkflowComponent implements OnInit, OnChanges, OnDestroy {
+export class WorkflowComponent implements OnInit, OnChanges {
   @Input() lineRecord!: LineRecord;
   @Input() descriptionForWorkflow!: string;
 
@@ -29,11 +17,7 @@ export class WorkflowComponent implements OnInit, OnChanges, OnDestroy {
   workflowInProgress = false;
   workflowId: number | undefined;
 
-  private ngUnsubscribe = new Subject<void>();
-
   constructor(
-    private readonly notificationService: NotificationService,
-    private readonly translateService: TranslateService,
     private readonly lineService: LinesService,
     private readonly workflowDialogService: WorkflowDialogService,
   ) {}
@@ -66,11 +50,6 @@ export class WorkflowComponent implements OnInit, OnChanges, OnDestroy {
     );
   }
 
-  ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.unsubscribe();
-  }
-
   newWorkflow() {
     this.workflowDialogService
       .openNew(this.lineRecord, this.descriptionForWorkflow)
@@ -92,11 +71,6 @@ export class WorkflowComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   skipWorkflow() {
-    this.lineService
-      .skipWorkflow(this.lineRecord.id!)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.workflowEvent.emit();
-      });
+    this.lineService.skipWorkflow(this.lineRecord.id!).subscribe(() => this.workflowEvent.emit());
   }
 }
