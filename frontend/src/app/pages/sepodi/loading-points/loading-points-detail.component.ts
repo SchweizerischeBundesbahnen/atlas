@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   CreateLoadingPointVersion,
@@ -9,7 +9,7 @@ import {
 } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
-import { catchError, EMPTY, Observable, of, Subject } from 'rxjs';
+import { catchError, EMPTY, Observable, of } from 'rxjs';
 import { Pages } from '../../pages';
 import { FormGroup } from '@angular/forms';
 import {
@@ -18,17 +18,17 @@ import {
 } from './loading-point-detail-form-group';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { ValidationService } from '../../../core/validation/validation.service';
-import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../../core/notification/notification.service';
 import { ValidityConfirmationService } from '../validity/validity-confirmation.service';
 import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-loading-points',
   templateUrl: './loading-points-detail.component.html',
   styleUrls: ['./loading-points-detail.component.scss'],
 })
-export class LoadingPointsDetailComponent implements OnInit, OnDestroy, DetailFormComponent {
+export class LoadingPointsDetailComponent implements DetailFormComponent {
   loadingPointVersions!: ReadLoadingPointVersion[];
   selectedVersion!: ReadLoadingPointVersion;
 
@@ -44,8 +44,6 @@ export class LoadingPointsDetailComponent implements OnInit, OnDestroy, DetailFo
   servicePoint: ReadServicePointVersion[] = [];
   servicePointBusinessOrganisations: string[] = [];
 
-  private ngUnsubscribe = new Subject<void>();
-
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -54,18 +52,11 @@ export class LoadingPointsDetailComponent implements OnInit, OnDestroy, DetailFo
     private dialogService: DialogService,
     private validityConfirmationService: ValidityConfirmationService,
     private notificationService: NotificationService,
-  ) {}
-
-  ngOnInit() {
-    this.route.data.pipe(takeUntil(this.ngUnsubscribe)).subscribe((next) => {
+  ) {
+    this.route.data.pipe(takeUntilDestroyed()).subscribe((next) => {
       this.loadingPointVersions = next.loadingPoint;
       this.initLoadingPoint();
     });
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.unsubscribe();
   }
 
   private initLoadingPoint() {
@@ -94,7 +85,6 @@ export class LoadingPointsDetailComponent implements OnInit, OnDestroy, DetailFo
     } else {
       this.servicePointService
         .getServicePointVersions(this.servicePointNumber)
-        .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((servicePoint) => {
           this.servicePoint = servicePoint;
           this.servicePointName =
@@ -191,7 +181,7 @@ export class LoadingPointsDetailComponent implements OnInit, OnDestroy, DetailFo
   private create(loadingPointVersion: CreateLoadingPointVersion) {
     this.loadingPointsService
       .createLoadingPoint(loadingPointVersion)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .pipe(catchError(this.handleError()))
       .subscribe((loadingPointVersion) => {
         this.notificationService.success('SEPODI.LOADING_POINTS.NOTIFICATION.ADD_SUCCESS');
         this.router
@@ -208,7 +198,7 @@ export class LoadingPointsDetailComponent implements OnInit, OnDestroy, DetailFo
   private update(id: number, loadingPointVersion: CreateLoadingPointVersion) {
     this.loadingPointsService
       .updateLoadingPoint(id, loadingPointVersion)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
+      .pipe(catchError(this.handleError()))
       .subscribe(() => {
         this.notificationService.success('SEPODI.LOADING_POINTS.NOTIFICATION.EDIT_SUCCESS');
         this.router

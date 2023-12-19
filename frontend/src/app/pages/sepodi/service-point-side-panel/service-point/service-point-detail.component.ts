@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
 import {
@@ -14,11 +14,10 @@ import {
   ServicePointFormGroupBuilder,
 } from './service-point-detail-form-group';
 import { MapService } from '../../map/map.service';
-import { BehaviorSubject, catchError, EMPTY, Observable, of, Subject, take } from 'rxjs';
+import { BehaviorSubject, catchError, EMPTY, Observable, of, take } from 'rxjs';
 import { Pages } from '../../../pages';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { ValidationService } from '../../../../core/validation/validation.service';
-import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { AuthService } from '../../../../core/auth/auth.service';
@@ -27,13 +26,14 @@ import {
   GeographyFormGroup,
   GeographyFormGroupBuilder,
 } from '../../geography/geography-form-group';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-service-point',
   templateUrl: './service-point-detail.component.html',
   styleUrls: ['./service-point-detail.component.scss'],
 })
-export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFormComponent {
+export class ServicePointDetailComponent implements OnDestroy, DetailFormComponent {
   servicePointVersions!: ReadServicePointVersion[];
   selectedVersion?: ReadServicePointVersion;
 
@@ -50,7 +50,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
   public isFormEnabled$ = new BehaviorSubject<boolean>(false);
   private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
-  private ngUnsubscribe = new Subject<void>();
   private _savedGeographyForm?: FormGroup<GeographyFormGroup>;
 
   constructor(
@@ -61,12 +60,9 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
     private notificationService: NotificationService,
     private mapService: MapService,
     private authService: AuthService,
-  ) {}
-
-  ngOnInit() {
-    this.route.parent?.data.pipe(takeUntil(this.ngUnsubscribe)).subscribe((next) => {
+  ) {
+    this.route.parent?.data.pipe(takeUntilDestroyed()).subscribe((next) => {
       this.servicePointVersions = next.servicePoint;
-
       this.initServicePoint();
       this.displayAndSelectServicePointOnMap();
     });
@@ -93,8 +89,6 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
 
   ngOnDestroy() {
     this.mapService.deselectServicePoint();
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.unsubscribe();
   }
 
   switchVersion(newIndex: number) {
@@ -138,17 +132,12 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
   }
 
   private displayAndSelectServicePointOnMap() {
-    this.mapService.mapInitialized.pipe(takeUntil(this.ngUnsubscribe)).subscribe((initialized) => {
-      if (initialized) {
-        if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
-          this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
-        }
-        this.mapService.centerOn(this.selectedVersion?.servicePointGeolocation?.wgs84);
-        this.mapService.displayCurrentCoordinates(
-          this.selectedVersion?.servicePointGeolocation?.wgs84,
-        );
-      }
-    });
+    if (!this.mapService.mapInitialized.value) return;
+    if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
+      this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
+    }
+    this.mapService.centerOn(this.selectedVersion?.servicePointGeolocation?.wgs84);
+    this.mapService.displayCurrentCoordinates(this.selectedVersion?.servicePointGeolocation?.wgs84);
   }
 
   toggleEdit() {
@@ -230,7 +219,7 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
           this.preferredId = id;
           this.servicePointService
             .updateServicePoint(id, servicePointVersion)
-            .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
+            .pipe(catchError(this.handleError))
             .subscribe(() => {
               this.hasAbbreviation = !!this.form?.controls.abbreviation.value;
               this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.EDIT_SUCCESS');
@@ -282,12 +271,12 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       .subscribe((confirmed) => {
         if (confirmed) {
           this.servicePointService
-            .revokeServicePoint(this.selectedVersion.number.number)
-            .pipe((takeUntil(this.ngUnsubscribe), catchError(this.handleError)))
+            .revokeServicePoint(this.selectedVersion!.number.number)
+            .pipe(catchError(this.handleError))
             .subscribe(() => {
               this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.REVOKE_SUCCESS');
               this.router
-                .navigate(['..', this.selectedVersion.number.number], {
+                .navigate(['..', this.selectedVersion!.number.number], {
                   relativeTo: this.route,
                 })
                 .then(() => this.mapService.refreshMap());
@@ -307,13 +296,13 @@ export class ServicePointDetailComponent implements OnInit, OnDestroy, DetailFor
       .subscribe((confirmed) => {
         if (confirmed) {
           this.servicePointService
-            .validateServicePoint(this.selectedVersion.id!)
-            .pipe((takeUntil(this.ngUnsubscribe), catchError(this.handleError)))
+            .validateServicePoint(this.selectedVersion!.id!)
+            .pipe(catchError(this.handleError))
             .subscribe(() => {
               this.notificationService.success(
                 'SEPODI.SERVICE_POINTS.NOTIFICATION.VALIDATE_SUCCESS',
               );
-              this.router.navigate(['..', this.selectedVersion.number.number], {
+              this.router.navigate(['..', this.selectedVersion!.number.number], {
                 relativeTo: this.route,
               });
             });

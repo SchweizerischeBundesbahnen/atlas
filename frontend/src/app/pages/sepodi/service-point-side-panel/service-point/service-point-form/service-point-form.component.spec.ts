@@ -120,6 +120,6 @@ describe('ServicePointFormComponent', () => {
     };
 
     component.onLocationInformationChange(newLocationInfo);
-    expect(component.locationInformation).toEqual(newLocationInfo);
+    expect(component.locationInformation$).toEqual(newLocationInfo);
   });
 });

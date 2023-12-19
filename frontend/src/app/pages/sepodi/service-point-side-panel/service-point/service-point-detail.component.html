@@ -27,11 +27,7 @@
   </div>
 
   <ng-container *ngIf="form">
-    <service-point-form
-      [form]="form"
-      [currentVersion]="selectedVersion"
-      [locationInformation]="geographyComponent.currentLocationInfo$ | async"
-    >
+    <service-point-form [form]="form" [currentVersion]="selectedVersion">
       <div class="color-gray-900" abbreviation>
         <atlas-text-field
           *ngIf="!hasAbbreviation && isAbbreviationAllowed && isLatestVersionSelected"
@@ -57,7 +53,6 @@
       </div>
 
       <sepodi-geography
-        #geographyComponent
         geography
         [form]="form.controls.servicePointGeolocation"
         [editMode]="form.enabled"
@@ -111,7 +106,7 @@
     <atlas-button
       (buttonClicked)="revoke()"
       [applicationType]="'SEPODI'"
-      [hidden]="selectedVersion.status === 'REVOKED'"
+      [hidden]="selectedVersion?.status === 'REVOKED'"
       buttonDataCy="revoke-item"
       buttonText="COMMON.REVOKE"
       buttonType="revoke"
@@ -121,7 +116,7 @@
     <atlas-button
       (buttonClicked)="validate()"
       [applicationType]="'SEPODI'"
-      [hidden]="selectedVersion.status === 'REVOKED' || selectedVersion.status === 'VALIDATED'"
+      [hidden]="selectedVersion?.status === 'REVOKED' || selectedVersion?.status === 'VALIDATED'"
       buttonDataCy="revoke-item"
       buttonText="WORKFLOW.BUTTON.SKIP"
       buttonType="skipworkflow"
