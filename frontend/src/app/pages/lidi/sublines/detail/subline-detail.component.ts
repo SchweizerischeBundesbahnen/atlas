@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   ApplicationType,
   Line,
@@ -8,12 +8,11 @@ import {
   SublineType,
   SublineVersion,
 } from '../../../../api';
-import { DateService } from 'src/app/core/date/date.service';
 import { BaseDetailController } from '../../../../core/components/base-detail/base-detail-controller';
-import { catchError, Observable, of, Subject, takeUntil } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 import { DialogService } from '../../../../core/components/dialog/dialog.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Page } from '../../../../core/model/page';
 import { Pages } from '../../../pages';
@@ -31,14 +30,10 @@ import { AuthService } from '../../../../core/auth/auth.service';
   templateUrl: './subline-detail.component.html',
   styleUrls: ['./subline-detail.component.scss'],
 })
-export class SublineDetailComponent
-  extends BaseDetailController<SublineVersion>
-  implements OnInit, OnDestroy
-{
+export class SublineDetailComponent extends BaseDetailController<SublineVersion> implements OnInit {
   TYPE_OPTIONS = Object.values(SublineType);
   PAYMENT_TYPE_OPTIONS = Object.values(PaymentType);
 
-  private ngUnsubscribe = new Subject<void>();
   mainlines$: Observable<Line[]> = of([]);
 
   readonly mainlineSlnidFormControlName = 'mainlineSlnid';
@@ -46,14 +41,12 @@ export class SublineDetailComponent
   constructor(
     protected router: Router,
     private sublinesService: SublinesService,
-    private formBuilder: FormBuilder,
     protected notificationService: NotificationService,
-    private dateService: DateService,
     private validationService: ValidationService,
     private linesService: LinesService,
     protected dialogService: DialogService,
     protected authService: AuthService,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
   ) {
     super(router, dialogService, notificationService, authService, activatedRoute);
   }
@@ -90,7 +83,7 @@ export class SublineDetailComponent
   updateRecord(): void {
     this.sublinesService
       .updateSublineVersion(this.getId(), this.form.value)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .subscribe(() => {
         this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.EDIT_SUCCESS');
         this.router
@@ -102,7 +95,7 @@ export class SublineDetailComponent
   createRecord(): void {
     this.sublinesService
       .createSublineVersion(this.form.value)
-      .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .subscribe((version) => {
         this.notificationService.success('LIDI.SUBLINE.NOTIFICATION.ADD_SUCCESS');
         this.router
@@ -171,7 +164,7 @@ export class SublineDetailComponent
         ]),
         validFrom: new FormControl(
           version.validFrom ? moment(version.validFrom) : version.validFrom,
-          [Validators.required]
+          [Validators.required],
         ),
         validTo: new FormControl(version.validTo ? moment(version.validTo) : version.validTo, [
           Validators.required,
@@ -182,7 +175,7 @@ export class SublineDetailComponent
         editor: new FormControl(version.editor),
         creator: new FormControl(version.creator),
       },
-      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')]
+      [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
     );
   }
 
@@ -194,11 +187,6 @@ export class SublineDetailComponent
     return [this.mainlineSlnidFormControlName];
   }
 
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
-  }
-
   searchMainlines(searchString: string) {
     this.mainlines$ = this.linesService
       .getLines(searchString, [], [], [], undefined, undefined, undefined, undefined, [
@@ -208,8 +196,8 @@ export class SublineDetailComponent
   }
 
   mainlineUrl(): string {
-    return `${location.origin}/${Pages.LIDI.path}/${Pages.LINES.path}/${
-      this.form.get(this.mainlineSlnidFormControlName)?.value
-    }`;
+    return `${location.origin}/${Pages.LIDI.path}/${Pages.LINES.path}/${this.form.get(
+      this.mainlineSlnidFormControlName,
+    )?.value}`;
   }
 }

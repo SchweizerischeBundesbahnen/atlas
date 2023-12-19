@@ -24,4 +24,5 @@ footer {
   bottom: 0;
   height: calc(#{variables.$footerHeight} + 1rem);
   background-color: variables.$background;
+  z-index: 1;
 }
