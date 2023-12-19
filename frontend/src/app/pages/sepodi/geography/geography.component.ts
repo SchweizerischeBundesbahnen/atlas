@@ -5,20 +5,18 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { CoordinatePair, GeoDataService, SpatialReference } from '../../../api';
+import { CoordinatePair, SpatialReference } from '../../../api';
 import { GeographyFormGroup } from './geography-form-group';
 import { CoordinateTransformationService } from './coordinate-transformation.service';
 import { debounceTime, merge, Subject } from 'rxjs';
 import { MapService } from '../map/map.service';
 import { MatRadioChange } from '@angular/material/radio';
-import { filter, switchMap, takeUntil } from 'rxjs/operators';
-import { Countries } from 'src/app/core/country/Countries';
-import { LocationInformation } from '../service-point-side-panel/service-point/location-information';
+import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 export const LV95_MAX_DIGITS = 5;
 export const WGS84_MAX_DIGITS = 11;
@@ -27,70 +25,62 @@ export const WGS84_MAX_DIGITS = 11;
   selector: 'sepodi-geography',
   templateUrl: './geography.component.html',
 })
-export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
+export class GeographyComponent implements OnDestroy, OnChanges {
   readonly LV95_MAX_DIGITS = LV95_MAX_DIGITS;
   readonly WGS84_MAX_DIGITS = WGS84_MAX_DIGITS;
 
-  @Input() formGroup!: FormGroup<GeographyFormGroup>;
+  _form?: FormGroup<GeographyFormGroup>;
+  @Input() set form(form: FormGroup<GeographyFormGroup> | undefined) {
+    this._form = form;
+
+    if (form) {
+      this._geographyActive = true;
+      this.updateMapInteractionMode();
+      this.onChangeCoordinatesManually(this.currentCoordinates!);
+      merge(form.controls.east.valueChanges, form.controls.north.valueChanges)
+        .pipe(debounceTime(500), takeUntil(this.formDestroy$))
+        .subscribe(() => {
+          this.onChangeCoordinatesManually(this.currentCoordinates!);
+          this.coordinatesChanged.emit(this.currentCoordinates);
+        });
+    } else {
+      this._geographyActive = false;
+      this.formDestroy$.next();
+    }
+  }
+
   @Input() editMode = false;
+  @Output() geographyChanged = new EventEmitter<boolean>();
+  @Output() coordinatesChanged = new EventEmitter<CoordinatePair>();
 
-  private _geographyActive = true;
+  private _geographyActive = false;
 
-  @Output()
-  geographyActiveChange = new EventEmitter<boolean>();
-
-  @Input()
   get geographyActive() {
     return this._geographyActive;
   }
 
   set geographyActive(value: boolean) {
     this._geographyActive = value;
-    this.geographyActiveChange.emit(value);
-
-    if (this.editMode) {
-      if (this.geographyActive) {
-        this.formGroup.enable();
-      } else {
-        this.formGroup.disable();
-      }
-      this.formGroup.parent?.markAsDirty();
-      this.updateMapInteractionMode();
-    }
+    this.geographyChanged.emit(value);
+    this.updateMapInteractionMode();
   }
-  @Output()
-  locationInformationChange = new EventEmitter<LocationInformation>();
-  locationInformation?: LocationInformation;
 
   transformedCoordinatePair?: CoordinatePair;
 
-  private destroySubscriptions$ = new Subject<void>();
+  private formDestroy$ = new Subject<void>();
 
   constructor(
     private coordinateTransformationService: CoordinateTransformationService,
     private mapService: MapService,
     private changeDetector: ChangeDetectorRef,
-    private geoDataService: GeoDataService,
-  ) {}
-
-  ngOnInit() {
+  ) {
     this.mapService.clickedGeographyCoordinates
-      .pipe(takeUntil(this.destroySubscriptions$))
+      .pipe(takeUntilDestroyed())
       .subscribe((coordinatePairWGS84) => {
         this.onMapClick({
           north: coordinatePairWGS84.lat,
           east: coordinatePairWGS84.lng,
           spatialReference: SpatialReference.Wgs84,
-        });
-      });
-
-    merge(this.formGroup.controls.east.valueChanges, this.formGroup.controls.north.valueChanges)
-      .pipe(takeUntil(this.destroySubscriptions$), debounceTime(500))
-      .subscribe(() => {
-        this.onChangeCoordinatesManually({
-          east: Number(this.formGroup.controls.east.value),
-          north: Number(this.formGroup.controls.north.value),
-          spatialReference: this.currentSpatialReference!,
         });
       });
   }
@@ -99,15 +89,22 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
     if (changes.editMode) {
       this.updateMapInteractionMode();
     }
-    if (changes.formGroup) {
+    if (changes.form) {
       this.initTransformedCoordinatePair();
     }
   }
 
+  ngOnDestroy() {
+    this.mapService.exitCoordinateSelectionMode();
+    this.formDestroy$.next();
+    this.formDestroy$.unsubscribe();
+  }
+
   setFormGroupValue(coordinates?: CoordinatePair) {
-    if (!coordinates) {
+    if (!this._form || !coordinates) {
       return;
     }
+
     const maxDigits =
       this.currentSpatialReference === SpatialReference.Lv95
         ? this.LV95_MAX_DIGITS
@@ -116,23 +113,19 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
     const roundedEast = Number(coordinates.east.toFixed(maxDigits));
     const roundedNorth = Number(coordinates.north.toFixed(maxDigits));
 
-    this.formGroup.controls.east.setValue(roundedEast);
-    this.formGroup.controls.north.setValue(roundedNorth);
-    this.formGroup.markAsDirty();
-  }
-
-  ngOnDestroy() {
-    this.mapService.exitCoordinateSelectionMode();
-    this.destroySubscriptions$.next();
-    this.destroySubscriptions$.complete();
+    this._form.patchValue({
+      east: roundedEast,
+      north: roundedNorth,
+    });
+    this._form.markAsDirty();
   }
 
   initTransformedCoordinatePair() {
+    if (!this.currentCoordinates) return;
     this.transformedCoordinatePair = this.coordinateTransformationService.transform(
       this.currentCoordinates,
       this.transformedSpatialReference,
     );
-    this.initGeolocationControlListeners(this.formGroup);
     this.changeDetector.detectChanges();
   }
 
@@ -142,15 +135,16 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
       : SpatialReference.Lv95;
   }
 
-  get currentSpatialReference(): SpatialReference {
-    return this.formGroup.controls.spatialReference.value!;
+  get currentSpatialReference(): SpatialReference | null | undefined {
+    return this._form?.controls.spatialReference.value;
   }
 
-  get currentCoordinates(): CoordinatePair {
+  get currentCoordinates(): CoordinatePair | undefined {
+    if (!this._form) return;
     return {
-      east: Number(this.formGroup.value.east),
-      north: Number(this.formGroup.value.north),
-      spatialReference: this.currentSpatialReference,
+      east: Number(this._form.value.east),
+      north: Number(this._form.value.north),
+      spatialReference: this.currentSpatialReference!,
     };
   }
 
@@ -158,12 +152,12 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
     if (!$event.value) {
       return;
     }
-    const previousCoordinatePair = this.currentCoordinates;
+    const previousCoordinatePair = this.currentCoordinates!;
     previousCoordinatePair.spatialReference = this.transformedSpatialReference;
 
     const transformedCoordinatePair = this.coordinateTransformationService.transform(
       previousCoordinatePair,
-      this.currentSpatialReference,
+      this.currentSpatialReference!,
     );
 
     this.setFormGroupValue(transformedCoordinatePair);
@@ -196,52 +190,11 @@ export class GeographyComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private updateMapInteractionMode() {
-    this.mapService.mapInitialized
-      .pipe(takeUntil(this.destroySubscriptions$))
-      .subscribe((initialized) => {
-        if (initialized) {
-          if (this.editMode && this.geographyActive) {
-            this.mapService.enterCoordinateSelectionMode();
-          } else {
-            this.mapService.exitCoordinateSelectionMode();
-          }
-        }
-      });
-  }
-
-  private initGeolocationControlListeners(geolocationControls: FormGroup<GeographyFormGroup>) {
-    merge(
-      geolocationControls.controls.north.valueChanges,
-      geolocationControls.controls.east.valueChanges,
-    )
-      .pipe(
-        takeUntil(this.destroySubscriptions$),
-        debounceTime(100),
-        filter(() => {
-          return !!(
-            geolocationControls.controls.east.value &&
-            geolocationControls.controls.north.value &&
-            geolocationControls.controls.spatialReference.value
-          );
-        }),
-        switchMap(() =>
-          this.geoDataService.getLocationInformation({
-            east: geolocationControls.controls.east.value!,
-            north: geolocationControls.controls.north.value!,
-            spatialReference: geolocationControls.controls.spatialReference.value!,
-          }),
-        ),
-      )
-      .subscribe((geoReference) => {
-        this.locationInformation = {
-          isoCountryCode: Countries.fromCountry(geoReference.country)?.short,
-          canton: geoReference.swissCanton,
-          municipalityName: geoReference.swissMunicipalityName,
-          localityName: geoReference.swissLocalityName,
-        };
-
-        this.locationInformationChange.emit(this.locationInformation);
-        geolocationControls.controls.height.setValue(geoReference.height);
-      });
+    if (!this.mapService.mapInitialized.value) return;
+    if (this.editMode && this.geographyActive) {
+      this.mapService.enterCoordinateSelectionMode();
+    } else {
+      this.mapService.exitCoordinateSelectionMode();
+    }
   }
 }

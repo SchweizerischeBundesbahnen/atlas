@@ -85,7 +85,7 @@ describe('NotificationService', () => {
         horizontalPosition: 'right',
         verticalPosition: 'top',
         panelClass: ['success', 'notification'],
-      })
+      }),
     );
   });
 
@@ -124,7 +124,7 @@ describe('NotificationService', () => {
             }),
           ],
         }),
-      })
+      }),
     );
   });
 
@@ -139,7 +139,7 @@ describe('NotificationService', () => {
         horizontalPosition: 'right',
         verticalPosition: 'top',
         panelClass: ['info', 'notification'],
-      })
+      }),
     );
   });
 });

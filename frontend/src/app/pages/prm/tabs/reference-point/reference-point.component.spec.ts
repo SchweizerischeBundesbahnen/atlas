@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReferencePointComponent } from './reference-point.component';
-import { BERN_WYLEREGG } from '../../../sepodi/service-point-test-data';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ActivatedRoute } from '@angular/router';
 import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 import { STOP_POINT } from '../../util/stop-point-test-data.spec';
+import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 
 describe('ReferencePointComponent', () => {
   let component: ReferencePointComponent;
