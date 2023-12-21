@@ -47,7 +47,7 @@ public class PlatformVersionCsvModel {
 
     private String levelAccessWheelchair;
 
-    private String partialElevation;
+    private Boolean partialElevation;
 
     private String superElevation;
 
