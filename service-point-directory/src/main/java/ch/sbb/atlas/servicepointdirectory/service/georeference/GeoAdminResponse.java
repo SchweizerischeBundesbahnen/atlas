@@ -9,6 +9,8 @@ import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
+import static ch.sbb.atlas.api.AtlasApiConstants.ZURICH_ZONE_ID;
+
 @Data
 public class GeoAdminResponse {
 
@@ -47,7 +49,7 @@ public class GeoAdminResponse {
     if (layer.equals(Layers.MUNICIPALITY)) {
       return results.stream()
               .filter(l -> l.getLayerBodId().equals(layer.getLayerBodId()))
-              .filter(l -> l.getAttributes().getYear().equals(Year.now(ZoneId.of("Europe/Berlin")).getValue()))
+              .filter(l -> l.getAttributes().getYear().equals(Year.now(ZoneId.of(ZURICH_ZONE_ID)).getValue()))
               .findFirst();
     }
     return results.stream()
