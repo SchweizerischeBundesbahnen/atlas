@@ -28,11 +28,12 @@ public class AsyncConfig implements AsyncConfigurer {
   private static final int CORE_POOL_SIZE = 5;
   private static final int MAX_POOL_SIZE = 10;
   private static final int QUEUE_CAPACITY = 25;
-  private static final int DEFAULT_TIMEOUT = 360000;
+  private static final int DEFAULT_TIMEOUT = 600_000;
 
   /**
    * When using {@link org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody}
-   * {@link ch.sbb.exportservice.controller.ExportServicePointBatchControllerApiV1#streamExportJsonFile(SePoDiBatchExportFileName, SePoDiExportType)},
+   * {@link ch.sbb.exportservice.controller.ExportServicePointBatchControllerApiV1#streamExportJsonFile(SePoDiBatchExportFileName,
+   * SePoDiExportType)},
    * it is highly recommended to configure TaskExecutor used in Spring MVC for executing asynchronous requests.
    *
    * @return taskExecutor
