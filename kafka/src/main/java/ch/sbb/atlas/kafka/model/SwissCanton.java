@@ -1,10 +1,11 @@
 package ch.sbb.atlas.kafka.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.Objects;
-import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Objects;
+import java.util.stream.Stream;
 
 @Schema(enumAsRef = true, example = "BERN")
 @RequiredArgsConstructor
@@ -47,5 +48,10 @@ public enum SwissCanton {
   public static SwissCanton fromCantonNumber(Integer swissCantonNumber) {
     return Stream.of(SwissCanton.values()).filter(swissCanton -> Objects.equals(swissCanton.getNumber(),
         swissCantonNumber)).findFirst().orElse(null);
+  }
+
+  public static SwissCanton fromCantonName(String swissCantonName) {
+    return Stream.of(SwissCanton.values()).filter(swissCanton -> Objects.equals(swissCanton.getName(),
+        swissCantonName)).findFirst().orElse(null);
   }
 }
