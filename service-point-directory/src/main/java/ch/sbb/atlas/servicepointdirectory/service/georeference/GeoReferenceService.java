@@ -7,18 +7,15 @@ import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.transformer.CoordinateTransformer;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
-import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
-import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.exception.HeightNotCalculatableException;
 import feign.FeignException.FeignClientException;
-import java.math.BigDecimal;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -52,19 +49,19 @@ public class GeoReferenceService {
   private static GeoReference toGeoReference(GeoAdminResponse geoAdminResponse) {
     GeoReference result = new GeoReference();
 
-    geoAdminResponse.getResultByLayer(Layers.MUNICIPALITY).ifPresent(i -> {
-      result.setSwissMunicipalityName(i.getAttributes().getGemname());
-      result.setSwissMunicipalityNumber(Integer.parseInt(i.getFeatureId()));
+    geoAdminResponse.getLatestResultByLayer(Layers.MUNICIPALITY).ifPresent(i -> {
+      result.setSwissMunicipalityName(i.getAttributes().getMunicipalityName());
+      result.setSwissMunicipalityNumber(i.getAttributes().getMunicipalityNumber());
     });
-    geoAdminResponse.getResultByLayer(Layers.DISTRICT).ifPresent(i -> {
+    geoAdminResponse.getLatestResultByLayer(Layers.DISTRICT).ifPresent(i -> {
       result.setSwissDistrictName(i.getAttributes().getName());
       result.setSwissDistrictNumber(Integer.parseInt(i.getFeatureId()));
     });
-    geoAdminResponse.getResultByLayer(Layers.LOCALITY)
-        .ifPresent(i -> result.setSwissLocalityName(i.getAttributes().getLangtext()));
-    geoAdminResponse.getResultByLayer(Layers.CANTON)
-        .ifPresent(i -> result.setSwissCanton(SwissCanton.fromCantonNumber(Integer.parseInt(i.getFeatureId()))));
-    geoAdminResponse.getResultByLayer(Layers.COUNTRY).ifPresent(i -> result.setCountry(Country.fromIsoCode(i.getId())));
+    geoAdminResponse.getLatestResultByLayer(Layers.LOCALITY)
+        .ifPresent(i -> result.setSwissLocalityName(i.getAttributes().getLongText()));
+    geoAdminResponse.getLatestResultByLayer(Layers.CANTON)
+        .ifPresent(i -> result.setSwissCanton(SwissCanton.fromCantonName(i.getAttributes().getName())));
+    geoAdminResponse.getLatestResultByLayer(Layers.COUNTRY).ifPresent(i -> result.setCountry(Country.fromIsoCode(i.getId())));
 
     return result;
   }
