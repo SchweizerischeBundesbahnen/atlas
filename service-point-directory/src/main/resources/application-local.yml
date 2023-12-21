@@ -14,7 +14,7 @@ management:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5439/service-point-directory?currentSchema=service-point-directory
+    url: jdbc:postgresql://localhost:5439/service-point-directory?currentSchema=service_point_directory
     username: user
     password: pwd
     driver-class-name: org.postgresql.Driver
