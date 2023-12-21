@@ -5,6 +5,7 @@ import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
+import java.time.LocalDate;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -47,7 +48,7 @@ public class PlatformVersion extends BaseEntity {
 
     private Double inclination;
 
-    private Double inclinationLongitudal;
+    private Double inclinationLongitudinal;
 
     private Double inclinationWidth;
 
@@ -66,5 +67,14 @@ public class PlatformVersion extends BaseEntity {
     private Double wheelchairAreaLength;
 
     private Double wheelChairAreaWidth;
+
+    private LocalDate validTo;
+
+    private LocalDate validFrom;
+
+    @ToString.Include
+    public Boolean isPartialElevation() {
+        return partialElevation != null;
+    }
 
 }
