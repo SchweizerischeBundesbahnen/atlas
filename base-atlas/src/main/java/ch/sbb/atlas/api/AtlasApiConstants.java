@@ -18,5 +18,7 @@ public class AtlasApiConstants {
 
   public static final int ATLAS_WGS84_MAX_DIGITS = 11;
   public static final int ATLAS_LV_MAX_DIGITS = 5;
-  
+
+  public static final String ZURICH_ZONE_ID = "Europe/Zurich";
+
 }
