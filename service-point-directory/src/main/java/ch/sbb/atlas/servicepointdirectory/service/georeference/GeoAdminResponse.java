@@ -35,10 +35,21 @@ public class GeoAdminResponse {
 
     @JsonProperty("langtext")
     private String longText;
+
+    @JsonProperty("is_current_jahr")
+    private boolean isCurrentYear;
+
   }
 
   public Optional<Result> getLatestResultByLayer(Layers layer) {
-    long count = results.stream().filter(i -> i.getLayerBodId().equals(layer.getLayerBodId())).count();
-    return count != 0 ? results.stream().filter(i -> i.getLayerBodId().equals(layer.getLayerBodId())).skip(count-1).findFirst() : Optional.empty();
+    if (layer.equals(Layers.MUNICIPALITY)) {
+      return results.stream()
+              .filter(l -> l.getLayerBodId().equals(layer.getLayerBodId()))
+              .filter(l -> l.getAttributes().isCurrentYear)
+              .findFirst();
+    }
+    return results.stream()
+            .filter(i -> i.getLayerBodId().equals(layer.getLayerBodId()))
+            .findFirst();
   }
 }
