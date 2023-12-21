@@ -121,6 +121,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.router
       .navigate([Pages.SEPODI.path, Pages.SERVICE_POINTS.path])
       .then()
-      .catch((reason) => console.error('Navigation failed:', reason));
+      .catch((reason) => console.error('Navigation failed: ', reason));
   }
 }
