@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.Getter;
 
+import java.time.Year;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,8 +38,8 @@ public class GeoAdminResponse {
     @JsonProperty("langtext")
     private String longText;
 
-    @JsonProperty("is_current_jahr")
-    private boolean isCurrentYear;
+    @JsonProperty("jahr")
+    private Integer year;
 
   }
 
@@ -45,7 +47,7 @@ public class GeoAdminResponse {
     if (layer.equals(Layers.MUNICIPALITY)) {
       return results.stream()
               .filter(l -> l.getLayerBodId().equals(layer.getLayerBodId()))
-              .filter(l -> l.getAttributes().isCurrentYear)
+              .filter(l -> l.getAttributes().getYear().equals(Year.now(ZoneId.of("Europe/Berlin")).getValue()))
               .findFirst();
     }
     return results.stream()
