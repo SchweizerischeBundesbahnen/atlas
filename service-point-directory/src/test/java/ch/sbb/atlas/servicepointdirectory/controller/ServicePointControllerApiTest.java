@@ -51,6 +51,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static ch.sbb.atlas.api.AtlasApiConstants.ZURICH_ZONE_ID;
 import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
 import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.WGS84;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -293,7 +294,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   @Test
   void shouldFindServicePointVersionBycreatedAfterByISODateTime() throws Exception {
-    ZonedDateTime zonedDateTime = servicePointVersion.getCreationDate().plusDays(1).atZone(ZoneId.of("Europe/Berlin"));
+    ZonedDateTime zonedDateTime = servicePointVersion.getCreationDate().plusDays(1).atZone(ZoneId.of(ZURICH_ZONE_ID));
     String createdAfterQueryString = zonedDateTime.format(
         DateTimeFormatter.ofPattern(AtlasApiConstants.ISO_DATE_TIME_FORMAT_PATTERN));
 
