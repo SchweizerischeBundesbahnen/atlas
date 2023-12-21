@@ -8,20 +8,20 @@ https://confluence.sbb.ch/display/MON/Splunk
 
 ## Indexes
 
-| Index     |  Umgebung    |
-|-----------|------------|
-|index=sbb_atlas_internal_dev_events | Index für Dev Umgebung |
-|index=sbb_atlas_internal_test_events | Index für Test Umgebung |
-|index=sbb_atlas_internal_int_events | Index für Integration Umgebung |
-|index=sbb_atlas_internal_prod_events | Index für Produktion Umgebung |
+| Index                                 | Umgebung                       |
+|---------------------------------------|--------------------------------|
+| index=sbb_atlas_internal_dev_events   | Index für Dev Umgebung         |
+| index=sbb_atlas_internal_test_events  | Index für Test Umgebung        |
+| index=sbb_atlas_internal_int_events   | Index für Integration Umgebung |
+| index=sbb_atlas_internal_prod_events  | Index für Produktion Umgebung  |
 
 ## More filter possibilities
 
-| Filter     |  Effekt    |
-|-----------|------------|
-|openshift_namespace=atlas-dev | Filtert nach Openshift Namespace |
-|appname=atlas | Filtert nach Atlas Applikationen |
-|openshift_container_name=timetable-field-number-backend | Filtert nach Container Name |
+| Filter                                                  | Effekt                           |
+|---------------------------------------------------------|----------------------------------|
+| openshift_namespace=atlas-dev                           | Filtert nach Openshift Namespace |
+| appname=atlas                                           | Filtert nach Atlas Applikationen |
+| openshift_container_name=timetable-field-number-backend | Filtert nach Container Name      |
 
 ## Implementation
 
