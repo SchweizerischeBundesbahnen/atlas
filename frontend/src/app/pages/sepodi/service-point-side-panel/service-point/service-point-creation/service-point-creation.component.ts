@@ -122,7 +122,6 @@ export class ServicePointCreationComponent implements OnInit {
 
   onSave(): void {
     this.form.markAllAsTouched();
-    console.log('before save', this.form);
     if (this.form.valid) {
       const servicePointVersion = ServicePointFormGroupBuilder.getWritableServicePoint(this.form);
       const controlsAlreadyDisabled = Object.keys(this.form.controls).filter(
