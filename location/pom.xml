@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+
+   <name>Atlas Location Service</name>
+
+   <parent>
+      <groupId>ch.sbb.atlas</groupId>
+      <artifactId>atlas</artifactId>
+      <relativePath>../pom.xml</relativePath>
+      <version>1.551.0</version>
+   </parent>
+
+   <artifactId>location</artifactId>
+
+   <properties>
+      <maven.compiler.source>17</maven.compiler.source>
+      <maven.compiler.target>17</maven.compiler.target>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+   </properties>
+
+   <dependencies>
+      <dependency>
+         <artifactId>spring-boot-starter-actuator</artifactId>
+         <groupId>org.springframework.boot</groupId>
+      </dependency>
+      <dependency>
+         <artifactId>spring-boot-starter-data-jpa</artifactId>
+         <groupId>org.springframework.boot</groupId>
+      </dependency>
+      <dependency>
+         <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+         <groupId>org.springframework.boot</groupId>
+      </dependency>
+      <dependency>
+         <artifactId>spring-boot-starter-security</artifactId>
+         <groupId>org.springframework.boot</groupId>
+      </dependency>
+      <dependency>
+         <artifactId>spring-boot-starter-web</artifactId>
+         <groupId>org.springframework.boot</groupId>
+      </dependency>
+      <dependency>
+         <artifactId>flyway-core</artifactId>
+         <groupId>org.flywaydb</groupId>
+      </dependency>
+      <dependency>
+         <artifactId>postgresql</artifactId>
+         <groupId>org.postgresql</groupId>
+         <scope>runtime</scope>
+      </dependency>
+      <dependency>
+         <artifactId>lombok</artifactId>
+         <groupId>org.projectlombok</groupId>
+         <optional>true</optional>
+      </dependency>
+
+      <dependency>
+         <artifactId>base-atlas</artifactId>
+         <groupId>ch.sbb.atlas</groupId>
+         <version>1.551.0</version>
+      </dependency>
+
+      <dependency>
+         <artifactId>spring-boot-starter-test</artifactId>
+         <groupId>org.springframework.boot</groupId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <artifactId>base-atlas</artifactId>
+         <classifier>tests</classifier>
+         <groupId>ch.sbb.atlas</groupId>
+         <scope>test</scope>
+         <type>test-jar</type>
+         <version>1.551.0</version>
+      </dependency>
+      <dependency>
+         <artifactId>spring-restdocs-mockmvc</artifactId>
+         <groupId>org.springframework.restdocs</groupId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <artifactId>spring-auto-restdocs-core</artifactId>
+         <groupId>capital.scalable</groupId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <artifactId>h2</artifactId>
+         <groupId>com.h2database</groupId>
+         <scope>test</scope>
+      </dependency>
+   </dependencies>
+
+   <build>
+      <plugins>
+         <plugin>
+            <artifactId>asciidoctor-maven-plugin</artifactId>
+            <groupId>org.asciidoctor</groupId>
+         </plugin>
+         <plugin>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <groupId>org.springframework.boot</groupId>
+         </plugin>
+         <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+         </plugin>
+      </plugins>
+   </build>
+
+</project>

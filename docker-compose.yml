@@ -145,6 +145,22 @@ services:
       - "-c"
       - "datestyle=iso, ymd"
 
+  location-db:
+    image: postgres:15.4
+    restart: always
+    ports:
+      - "5443:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pwd
+      POSTGRES_DB: location
+    volumes:
+      - "/var/lib/postgresql/data"
+    command:
+      - "postgres"
+      - "-c"
+      - "datestyle=iso, ymd"
+
   zookeeper:
     image: wurstmeister/zookeeper
     ports:
