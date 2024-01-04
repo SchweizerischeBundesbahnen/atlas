@@ -2,7 +2,7 @@ package ch.sbb.prm.directory.search;
 
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification;
-import ch.sbb.prm.directory.controller.StopPointRequestParams;
+import ch.sbb.prm.directory.model.StopPointRequestParams;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion_;
 import java.util.List;

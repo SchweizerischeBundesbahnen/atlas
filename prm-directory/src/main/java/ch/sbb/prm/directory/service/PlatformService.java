@@ -2,16 +2,31 @@ package ch.sbb.prm.directory.service;
 
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
 
+import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
+import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
+import ch.sbb.atlas.api.prm.model.platform.RecordingStatus;
+import ch.sbb.atlas.service.OverviewService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.PlatformVersion;
+import ch.sbb.prm.directory.model.PlatformRequestParams;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.search.PlatformSearchRestrictions;
 import ch.sbb.prm.directory.validation.PlatformValidationService;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,7 +62,7 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
   @Override
   public PlatformVersion save(PlatformVersion version) {
     boolean reduced = stopPointService.isReduced(version.getParentServicePointSloid());
-    platformValidationService.validateRecordingVariants(version,reduced);
+    platformValidationService.validateRecordingVariants(version, reduced);
     return platformRepository.saveAndFlush(version);
   }
 
@@ -81,5 +96,63 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
 
   public Optional<PlatformVersion> getPlatformVersionById(Long id) {
     return platformRepository.findById(id);
+  }
+
+  public Page<PlatformVersion> findAll(PlatformSearchRestrictions searchRestrictions) {
+    return platformRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
+  }
+
+  public List<PlatformVersion> getPlatformsByStopPoint(String sloid) {
+    PlatformSearchRestrictions searchRestrictions = PlatformSearchRestrictions.builder()
+        .platformRequestParams(PlatformRequestParams.builder()
+            .parentServicePointSloids(List.of(sloid))
+            .build())
+        .build();
+
+    return platformRepository.findAll(searchRestrictions.getSpecification());
+  }
+
+  public List<PlatformOverviewModel> getPlatformOverview(String parentSloid) {
+    boolean reduced = stopPointService.isReduced(parentSloid);
+
+    Map<String, List<PlatformVersion>> groupedPlatforms = getPlatformsByStopPoint(parentSloid).stream()
+        .collect(Collectors.groupingBy(PlatformVersion::getSloid));
+
+    List<PlatformOverviewModel> overviewModels = new ArrayList<>();
+    groupedPlatforms.forEach((sloid, versions) -> {
+      versions.sort(Comparator.comparing(PlatformVersion::getValidFrom));
+
+      PlatformVersion platformVersion = OverviewService.mergeVersionsForDisplay(versions,
+          (previous, current) -> previous.getSloid().equals(current.getSloid())).iterator().next();
+
+      overviewModels.add(PlatformOverviewModel.builder()
+          .sloid(sloid)
+          .validFrom(platformVersion.getValidFrom())
+          .validTo(platformVersion.getValidTo())
+          .recordingStatus(getStatusForPlatform(platformVersion, reduced))
+          .build());
+    });
+    return overviewModels;
+  }
+
+  private RecordingStatus getStatusForPlatform(PlatformVersion platform, boolean reduced) {
+    if (reduced) {
+      if (platform.getTactileSystem() == BooleanOptionalAttributeType.TO_BE_COMPLETED ||
+          platform.getVehicleAccess() == VehicleAccessAttributeType.TO_BE_COMPLETED ||
+          platform.getInfoOpportunities().contains(InfoOpportunityAttributeType.TO_BE_COMPLETED)
+      ) {
+        return RecordingStatus.INCOMPLETE;
+      }
+      return RecordingStatus.COMPLETE;
+    }
+    if (platform.getBoardingDevice() == BoardingDeviceAttributeType.TO_BE_COMPLETED ||
+        platform.getContrastingAreas() == BooleanOptionalAttributeType.TO_BE_COMPLETED ||
+        platform.getDynamicAudio() == BasicAttributeType.TO_BE_COMPLETED ||
+        platform.getDynamicVisual() == BasicAttributeType.TO_BE_COMPLETED ||
+        platform.getLevelAccessWheelchair() == BasicAttributeType.TO_BE_COMPLETED
+    ) {
+      return RecordingStatus.INCOMPLETE;
+    }
+    return RecordingStatus.COMPLETE;
   }
 }
