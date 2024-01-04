@@ -1,0 +1,10 @@
+server:
+  port: 8094
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5443/location?currentSchema=location
+    username: user
+    password: pwd
+    driver-class-name: org.postgresql.Driver
+  application:
+    name: location
