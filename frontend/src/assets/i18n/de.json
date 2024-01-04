@@ -1130,6 +1130,14 @@
       "REGULATION_LABEL": "VböV - Verordnung über die behindertengerechte Gestaltung des öffentlichen Verkehrs",
       "EXTERNAL_LINK": "https://www.öv-info.ch/de/datenmanagement/barrierefreier-zugang/erfassung",
       "EXTERNAL_LINK_LABEL": "Leitfaden BehiG"
+    },
+    "PLATFORMS": {
+      "RECORDING_STATUS": "Erfassungsstatus",
+      "RECORDINGSTATUS": {
+        "COMPLETE": "komplett",
+        "INCOMPLETE": "teilweise",
+        "NOT_STARTED": "nicht begonnen"
+      }
     }
   }
 }

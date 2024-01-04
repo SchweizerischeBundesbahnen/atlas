@@ -1,4 +1,4 @@
-package ch.sbb.prm.directory.controller;
+package ch.sbb.prm.directory.model;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.VersionedObjectDateRequestParams;
@@ -22,20 +22,24 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder
 @ToString
-public class StopPointRequestParams extends VersionedObjectDateRequestParams {
+public class PlatformRequestParams extends VersionedObjectDateRequestParams {
 
-  @Parameter(description = "Unique key for stop points which is used in the customer information.")
+  @Parameter(description = "Unique key for platforms which is used in the customer information.")
   @Singular(ignoreNullCollections = true)
   private List<String> sloids = new ArrayList<>();
 
-  @Parameter(description = "Number")
+  @Parameter(description = "Unique key for the associated Service Point.")
+  @Singular(ignoreNullCollections = true)
+  private List<String> parentServicePointSloids = new ArrayList<>();
+
+  @Parameter(description = "Service Point Numbers")
   @Singular(ignoreNullCollections = true)
   private List<
       @Min(AtlasFieldLengths.MIN_SEVEN_DIGITS_NUMBER)
-      @Max(AtlasFieldLengths.MAX_SEVEN_DIGITS_NUMBER) Integer> numbers = new ArrayList<>();
+      @Max(AtlasFieldLengths.MAX_SEVEN_DIGITS_NUMBER) Integer> servicePointNumbers = new ArrayList<>();
 
-  public List<ServicePointNumber> getServicePointNumbers() {
-    return numbers.stream().map(ServicePointNumber::ofNumberWithoutCheckDigit).toList();
+  public List<ServicePointNumber> getNumbers() {
+    return servicePointNumbers.stream().map(ServicePointNumber::ofNumberWithoutCheckDigit).toList();
   }
 
 }

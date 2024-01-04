@@ -15,16 +15,19 @@ import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.exception.TrafficPointElementDoesNotExistsException;
+import ch.sbb.prm.directory.model.PlatformRequestParams;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
+import ch.sbb.prm.directory.search.PlatformSearchRestrictions;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 
 class PlatformServiceTest extends BasePrmServiceTest {
 
@@ -198,4 +201,51 @@ class PlatformServiceTest extends BasePrmServiceTest {
         () -> platformService.createPlatformVersion(platformVersion)).getLocalizedMessage();
   }
 
+  @Test
+  void shouldFindPlatformsByParentSloid() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.builderVersion1().meansOfTransport(Set.of(MeanOfTransport.TRAIN))
+        .build();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    referencePointRepository.save(referencePointVersion);
+
+    PlatformVersion platformVersion = PlatformTestData.getCompletePlatformVersion();
+    platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    platformService.createPlatformVersion(platformVersion);
+
+    //when
+    List<PlatformVersion> platformVersions = platformService.findAll(PlatformSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .platformRequestParams(
+                PlatformRequestParams.builder().parentServicePointSloids(List.of(PARENT_SERVICE_POINT_SLOID)).build()).build())
+        .getContent();
+
+    //then
+    assertThat(platformVersions).hasSize(1);
+  }
+
+  @Test
+  void shouldReturnPlatformOverview() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.builderVersion1().meansOfTransport(Set.of(MeanOfTransport.TRAIN))
+        .build();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    referencePointRepository.save(referencePointVersion);
+
+    PlatformVersion platformVersion = PlatformTestData.getCompletePlatformVersion();
+    platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    platformService.createPlatformVersion(platformVersion);
+
+    //when
+    List<PlatformVersion> platformVersions = platformService.getPlatformsByStopPoint(PARENT_SERVICE_POINT_SLOID);
+
+    //then
+    assertThat(platformVersions).hasSize(1);
+  }
 }
