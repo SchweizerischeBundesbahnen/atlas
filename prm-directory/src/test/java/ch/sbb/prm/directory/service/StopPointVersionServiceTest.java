@@ -3,7 +3,7 @@ package ch.sbb.prm.directory.service;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.controller.StopPointRequestParams;
+import ch.sbb.prm.directory.model.StopPointRequestParams;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.repository.StopPointRepository;
