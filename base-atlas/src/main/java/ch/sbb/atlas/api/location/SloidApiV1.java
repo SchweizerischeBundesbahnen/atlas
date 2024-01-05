@@ -1,5 +1,6 @@
 package ch.sbb.atlas.api.location;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,6 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface SloidApiV1 {
 
   @PostMapping("generate")
-  ResponseEntity<String> generateSloid(@RequestBody GenerateSloidRequestModel generateSloidRequestModel);
+  ResponseEntity<String> generateSloid(@RequestBody @Valid GenerateSloidRequestModel generateSloidRequestModel);
 
 }
