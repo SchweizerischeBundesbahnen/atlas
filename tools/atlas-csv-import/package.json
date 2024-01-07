@@ -10,7 +10,7 @@
   "author": "luca.ammann2@sbb.ch",
   "license": "ISC",
   "dependencies": {
-    "axios": "^1.6.3",
+    "axios": "^1.6.5",
     "convert-csv-to-json": "^2.0.0"
   }
 }
