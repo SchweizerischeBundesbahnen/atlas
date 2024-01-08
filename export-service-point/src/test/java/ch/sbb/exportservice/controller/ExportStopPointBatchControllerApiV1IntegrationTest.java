@@ -4,28 +4,31 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.amazon.exception.FileException;
-import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.exportservice.model.PrmBatchExportFileName;
 import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.service.ExportStopPointJobService;
 import ch.sbb.exportservice.service.FileExportService;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class ExportStopPointBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
+class ExportStopPointBatchControllerApiV1IntegrationTest extends BaseExportControllerTest {
 
   @MockBean
   private FileExportService<PrmExportType> fileExportService;
@@ -37,18 +40,20 @@ class ExportStopPointBatchControllerApiV1IntegrationTest extends BaseControllerA
   @Order(1)
   void shouldGetJsonSuccessfully() throws Exception {
     //given
-    try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json")) {
-      StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
+      StreamingResponseBody streamingResponseBody = writeOutputStream(new ByteArrayInputStream(JSON_DATA.getBytes()));
 
       doReturn(streamingResponseBody).when(fileExportService)
           .streamJsonFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
 
       //when & then
-      mvc.perform(get("/v1/export/prm/json/stop-point-version/full")
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/stop-point-version/full")
               .contentType(contentType))
+          .andExpect(request().asyncStarted())
+          .andReturn();
+
+      mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(jsonPath("$", hasSize(1)));
-    }
+          .andExpect(jsonPath("$", hasSize(3)));
   }
 
   @Test
@@ -59,8 +64,11 @@ class ExportStopPointBatchControllerApiV1IntegrationTest extends BaseControllerA
         .streamJsonFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
 
     //when & then
-    mvc.perform(get("/v1/export/prm/json/stop-point-version/full")
-            .contentType(contentType))
+    MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/stop-point-version/full")
+            .contentType(contentType)).andExpect(request().asyncStarted())
+        .andReturn();
+
+    mvc.perform(asyncDispatch(mvcResult))
         .andExpect(status().isInternalServerError());
   }
 
@@ -75,8 +83,11 @@ class ExportStopPointBatchControllerApiV1IntegrationTest extends BaseControllerA
       doReturn("service-point").when(fileExportService)
           .getBaseFileName(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
       //when & then
-      mvc.perform(get("/v1/export/prm/download-gzip-json/stop-point-version/full")
-              .contentType(contentType))
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/stop-point-version/full")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+
+      mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
           .andExpect(content().contentType("application/gzip"));
     }
@@ -90,8 +101,11 @@ class ExportStopPointBatchControllerApiV1IntegrationTest extends BaseControllerA
         .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
 
     //when & then
-    mvc.perform(get("/v1/export/prm/download-gzip-json/stop-point-version/full")
-            .contentType(contentType))
+    MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/stop-point-version/full")
+            .contentType(contentType)).andExpect(request().asyncStarted())
+        .andReturn();
+
+    mvc.perform(asyncDispatch(mvcResult))
         .andExpect(status().isInternalServerError());
   }
 
@@ -106,8 +120,11 @@ class ExportStopPointBatchControllerApiV1IntegrationTest extends BaseControllerA
       doReturn("prm/full/full_stop_point-2023-10-27.json.gz").when(fileExportService)
           .getLatestUploadedFileName(PrmBatchExportFileName.STOP_POINT_VERSION, PrmExportType.FULL);
       //when & then
-      mvc.perform(get("/v1/export/prm/download-gzip-json/latest/stop-point-version/full")
-              .contentType(contentType))
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/latest/stop-point-version/full")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+
+      mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
           .andExpect(content().contentType("application/gzip"));
     }
@@ -136,22 +153,14 @@ class ExportStopPointBatchControllerApiV1IntegrationTest extends BaseControllerA
       doReturn("prm/full/full_stop_point-2023-10-27.json.gz").when(fileExportService)
           .getLatestUploadedFileName(PrmBatchExportFileName.STOP_POINT_VERSION, PrmExportType.FULL);
       //when & then
-      mvc.perform(get("/v1/export/prm/json/latest/stop-point-version/full")
-              .contentType(contentType))
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/latest/stop-point-version/full")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+
+      mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
           .andExpect(content().contentType("application/json"));
     }
-  }
-
-  private StreamingResponseBody writeOutputStream(InputStream inputStream) {
-    return outputStream -> {
-      int len;
-      byte[] data = new byte[4096];
-      while ((len = inputStream.read(data, 0, data.length)) != -1) {
-        outputStream.write(data, 0, len);
-      }
-      inputStream.close();
-    };
   }
 
 }

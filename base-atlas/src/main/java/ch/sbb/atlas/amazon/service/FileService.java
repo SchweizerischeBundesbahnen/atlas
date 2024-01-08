@@ -1,5 +1,6 @@
 package ch.sbb.atlas.amazon.service;
 
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,4 +22,6 @@ public interface FileService {
   byte[] gzipDecompress(File file);
 
   byte[] gzipCompress(byte[] bytes) throws IOException;
+
+  byte[] gzipDecompress(S3ObjectInputStream s3ObjectInputStream);
 }
