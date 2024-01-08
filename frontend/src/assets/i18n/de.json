@@ -1132,12 +1132,14 @@
       "EXTERNAL_LINK_LABEL": "Leitfaden BehiG"
     },
     "PLATFORMS": {
+      "TITLE": "Haltekante/Gleis",
       "RECORDING_STATUS": "Erfassungsstatus",
       "RECORDINGSTATUS": {
         "COMPLETE": "komplett",
         "INCOMPLETE": "teilweise",
         "NOT_STARTED": "nicht begonnen"
-      }
+      },
+      "DETAIL_INFORMATION": "Angaben zur Haltekante"
     }
   }
 }

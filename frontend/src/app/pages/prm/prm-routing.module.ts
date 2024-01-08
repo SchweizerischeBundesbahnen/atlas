@@ -5,7 +5,7 @@ import { PrmHomeSearchComponent } from './prm-home-search/prm-home-search.compon
 import { PrmPanelComponent } from './prm-panel/prm-panel.component';
 import { StopPointDetailComponent } from './tabs/stop-point/detail/stop-point-detail.component';
 import { ReferencePointComponent } from './tabs/reference-point/reference-point.component';
-import { PlatformComponent } from './tabs/platform/platform.component';
+import { PlatformTableComponent } from './tabs/platform/platform-table.component';
 import { TicketCounterComponent } from './tabs/ticket-counter/ticket-counter.component';
 import { InformationDeskComponent } from './tabs/information-desk/information-desk.component';
 import { ToiletComponent } from './tabs/toilet/toilet.component';
@@ -15,6 +15,9 @@ import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard
 import { stopPointResolver } from './prm-panel/resolvers/stop-point.resolver';
 import { PrmTab } from './prm-panel/prm-tab';
 import { prmPanelResolver } from './prm-panel/resolvers/prm-panel-resolver.service';
+import { PlatformComponent } from './platform/platform.component';
+import { platformResolver } from './platform/platform.resolver';
+import { trafficPointElementResolver } from './platform/traffic-point-element.resolver';
 
 const routes: Routes = [
   {
@@ -22,7 +25,17 @@ const routes: Routes = [
     component: PrmHomeSearchComponent,
   },
   {
-    path: Pages.STOP_POINTS.path + '/:sloid',
+    path: Pages.STOP_POINTS.path + '/:stopPointSloid/' + Pages.PLATFORMS.path + '/:platformSloid',
+    component: PlatformComponent,
+    runGuardsAndResolvers: 'always',
+    resolve: {
+      platform: platformResolver,
+      servicePoint: prmPanelResolver,
+      trafficPoint: trafficPointElementResolver,
+    },
+  },
+  {
+    path: Pages.STOP_POINTS.path + '/:stopPointSloid',
     component: PrmPanelComponent,
     resolve: { stopPoints: stopPointResolver, servicePoints: prmPanelResolver },
     runGuardsAndResolvers: 'always',
@@ -40,7 +53,7 @@ const routes: Routes = [
       },
       {
         path: PrmTab.PLATFORM.link,
-        component: PlatformComponent,
+        component: PlatformTableComponent,
         runGuardsAndResolvers: 'always',
       },
       {
