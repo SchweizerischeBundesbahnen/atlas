@@ -1,0 +1,60 @@
+<div class="platform">
+  <div class="ps-3 pt-3 pe-3 position-relative">
+    <div class="font-bold-4xl detail-title mb-3">
+      {{ servicePoint.designationOfficial }} - {{ 'PRM.PLATFORMS.TITLE' | translate }}
+      {{ trafficPoint.designation }}
+    </div>
+    <div *ngIf="!isNew" class="font-xl mb-2">
+      <span data-cy="total-range">
+        <date-range-text [dateRange]="maxValidity"></date-range-text>
+      </span>
+    </div>
+    <div class="d-flex flex-row mb-3">
+      <div class="d-flex flex-column me-5" data-cy="selected-version-sloid">
+        <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.SLOID' | translate }}</div>
+        <div>{{ trafficPoint.sloid }}</div>
+      </div>
+      <div class="d-flex flex-column me-5" data-cy="selected-version-sloid">
+        <div class="font-bold-base">
+          {{ 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION' | translate }}
+        </div>
+        <div>{{ trafficPoint.designation }}</div>
+      </div>
+      <div class="d-flex flex-column" data-cy="stop-point-name">
+        <div class="font-bold-base">
+          {{ 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION_OPERATIONAL' | translate }}
+        </div>
+        <div>{{ trafficPoint.designationOperational }}</div>
+      </div>
+    </div>
+
+    <div class="platform-detail p-3">
+      <h2 class="font-bold-2xl color-gray-900">
+        {{ 'PRM.PLATFORMS.DETAIL_INFORMATION' | translate }}
+        <!--        todo version number -->
+        <span *ngIf="!isNew"> - {{ 'COMMON.VERSION' | translate }}{{ 1 }}</span>
+      </h2>
+    </div>
+    <div class="footer-box">
+      <footer class="d-flex justify-content-center align-items-center">
+        <atlas-button
+          (buttonClicked)="back()"
+          [disabled]="false"
+          [footerEdit]="false"
+          buttonDataCy="back"
+          buttonText="COMMON.BACK"
+          buttonType="whiteFooterNonEdit"
+          wrapperStyleClass="ms-3"
+        ></atlas-button>
+        <atlas-button
+          (buttonClicked)="save()"
+          [footerEdit]="true"
+          buttonDataCy="save"
+          buttonText="COMMON.SAVE"
+          buttonType="whiteFooterEdit"
+          wrapperStyleClass="ms-3"
+        ></atlas-button>
+      </footer>
+    </div>
+  </div>
+</div>

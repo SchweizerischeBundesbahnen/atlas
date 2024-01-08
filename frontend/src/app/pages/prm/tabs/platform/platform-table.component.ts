@@ -4,7 +4,6 @@ import { BasePrmTabComponentService } from '../base-prm-tab-component.service';
 import { PrmTab } from '../../prm-panel/prm-tab';
 import { Tab } from '../../../tab';
 import {
-  ContainerReadTrafficPointElementVersion,
   PersonWithReducedMobilityService,
   ReadTrafficPointElementVersion,
   TrafficPointElementsService,
@@ -15,16 +14,15 @@ import { TableFilter } from '../../../../core/components/table-filter/config/tab
 import { Pages } from '../../../pages';
 import { TableService } from '../../../../core/components/table/table.service';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
-import { catchError, mergeMap } from 'rxjs';
+import { mergeMap } from 'rxjs';
 import { servicePointSloidToNumber } from '../../../../core/util/sloidHelper';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-platform',
-  templateUrl: './platform.component.html',
+  templateUrl: './platform-table.component.html',
 })
-export class PlatformComponent extends BasePrmTabComponentService implements OnInit {
+export class PlatformTableComponent extends BasePrmTabComponentService implements OnInit {
   platforms: PlatformOverviewRow[] = [];
   totalCount = 0;
   trafficPointElements: ReadTrafficPointElementVersion[] = [];
@@ -59,20 +57,19 @@ export class PlatformComponent extends BasePrmTabComponentService implements OnI
   ngOnInit(): void {
     this.showCurrentTab(this.route.parent!.snapshot.data);
 
-    this.tableFilterConfig = this.tableService.initializeFilterConfig(
-      {},
-      Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM,
-    );
+    this.tableFilterConfig = this.tableService.initializeFilterConfig({}, Pages.PLATFORMS);
   }
 
   getTag(): Tab {
     return PrmTab.PLATFORM;
   }
 
-  rowClicked(clickedRow: PlatformOverviewRow) {}
+  rowClicked(clickedRow: PlatformOverviewRow) {
+    this.router.navigate([clickedRow.sloid], { relativeTo: this.route }).then();
+  }
 
   getOverview(pagination: TablePagination) {
-    const sloid = this.route.parent!.snapshot.params.sloid!;
+    const sloid = this.route.parent!.snapshot.params.stopPointSloid!;
 
     this.trafficPointElementsService
       .getPlatformsOfServicePoint(
