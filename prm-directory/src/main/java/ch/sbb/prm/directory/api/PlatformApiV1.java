@@ -54,4 +54,7 @@ public interface PlatformApiV1 {
   @PageableAsQueryParam
   @GetMapping("/overview/{parentSloid}")
   List<PlatformOverviewModel> getPlatformOverview(@PathVariable String parentSloid);
+
+  @GetMapping("{sloid}")
+  List<ReadPlatformVersionModel> getPlatformVersions(@PathVariable String sloid);
 }
