@@ -4,10 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -20,47 +21,49 @@ class AmazonFileStreamingServiceTest {
   private AmazonService amazonService;
 
   private AmazonFileStreamingService amazonFileStreamingService;
+
+  @Mock
   private FileServiceImpl fileService;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    fileService = new FileServiceImpl();
     amazonFileStreamingService = new AmazonFileStreamingServiceImpl(amazonService, fileService);
   }
 
   @Test
   void shouldStreamFileAndDecompress() throws IOException {
-    File file = new File("testfile");
-    Files.writeString(file.toPath(), "Tesd data");
-    file.deleteOnExit();
+    //given
+    String testData = "Tesd data";
+    byte[] dataBytes = testData.getBytes();
 
-    byte[] compressedBytes = fileService.gzipCompress(Files.readAllBytes(file.toPath()));
-    File compressed = new File("compressed");
-    Files.write(compressed.toPath(), compressedBytes);
-    compressed.deleteOnExit();
-
-    when(amazonService.pullFile(any(), any())).thenReturn(compressed);
-
+    S3Object s3Object = new S3Object();
+    s3Object.setObjectContent(new ByteArrayInputStream(dataBytes));
+    when(amazonService.pullS3Object(any(),any())).thenReturn(s3Object);
+    when(fileService.gzipDecompress(any(S3ObjectInputStream.class))).thenReturn(dataBytes);
+    //when
     StreamingResponseBody response = amazonFileStreamingService.streamFileAndDecompress(AmazonBucket.EXPORT,
         "file.json");
 
+    //then
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     response.writeTo(outputStream);
     String output = outputStream.toString();
-    assertThat(output).isEqualTo("Tesd data");
+    assertThat(output).isEqualTo(testData);
   }
 
   @Test
   void shouldStreamFile() throws IOException {
-    File file = new File("testfile");
-    Files.writeString(file.toPath(), "Tesd data");
-    file.deleteOnExit();
+    //given
+    String testData = "Tesd data";
+    ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(testData.getBytes());
+    StreamingResponseBody responseBody = byteArrayInputStream::transferTo;
+    when(amazonService.pullFileAsStream(any(), any())).thenReturn(responseBody);
 
-    when(amazonService.pullFile(any(), any())).thenReturn(file);
-
+    //when
     StreamingResponseBody response = amazonFileStreamingService.streamFile(AmazonBucket.EXPORT, "file.json");
 
+    //then
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     response.writeTo(outputStream);
     String output = outputStream.toString();
