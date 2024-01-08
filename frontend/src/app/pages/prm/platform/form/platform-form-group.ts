@@ -16,13 +16,14 @@ import {
   VehicleAccessAttributeType,
 } from '../../../../api';
 import { MeanOfTransportFormGroup } from '../../tabs/stop-point/form/stop-point-detail-form-group';
+import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
 
 export interface PlatformFormGroup extends BaseDetailFormGroup {
   sloid: FormControl<string | null | undefined>;
   additionalInformation: FormControl<string | null | undefined>;
 }
 
-export interface ReducedPlatformFormGroup extends BaseDetailFormGroup {
+export interface ReducedPlatformFormGroup extends PlatformFormGroup {
   height: FormControl<number | null | undefined>;
   inclinationLongitudinal: FormControl<number | null | undefined>;
   infoOpportunities: FormControl<Array<InfoOpportunityAttributeType> | null | undefined>;
@@ -33,7 +34,7 @@ export interface ReducedPlatformFormGroup extends BaseDetailFormGroup {
   wheelchairAreaWidth: FormControl<number | null | undefined>;
 }
 
-export interface CompletePlatformFormGroup extends BaseDetailFormGroup {
+export interface CompletePlatformFormGroup extends PlatformFormGroup {
   boardingDevice: FormControl<BoardingDeviceAttributeType | null | undefined>;
   adviceAccessInfo: FormControl<string | null | undefined>;
   contrastingAreas: FormControl<BooleanOptionalAttributeType | null | undefined>;
@@ -47,64 +48,33 @@ export interface CompletePlatformFormGroup extends BaseDetailFormGroup {
 
 export class PlatformFormGroupBuilder {
   public static buildCompleteFormGroup(version: ReadPlatformVersion) {
-    return new FormGroup<PlatformFormGroup>(
+    return new FormGroup<CompletePlatformFormGroup>(
       {
-        number: new FormControl(version.number.number),
         sloid: new FormControl(version.sloid),
-        meansOfTransport: new FormControl(version.meansOfTransport),
-        freeText: new FormControl(version.freeText, [
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          Validators.maxLength(2000),
-        ]),
-        address: new FormControl(version.address, [
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          Validators.maxLength(2000),
-        ]),
-        zipCode: new FormControl(version.zipCode, [
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          Validators.maxLength(50),
-        ]),
-        city: new FormControl(version.city, [
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          Validators.maxLength(75),
-        ]),
-        alternativeTransport: new FormControl(version.alternativeTransport, [Validators.required]),
-        alternativeTransportCondition: new FormControl(version.alternativeTransportCondition, [
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          Validators.maxLength(2000),
-        ]),
-        assistanceAvailability: new FormControl(version.assistanceAvailability, [
-          Validators.required,
-        ]),
-        assistanceCondition: new FormControl(version.assistanceCondition, [
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          Validators.maxLength(2000),
-        ]),
-        assistanceService: new FormControl(version.assistanceService, [Validators.required]),
-        audioTicketMachine: new FormControl(version.audioTicketMachine, [Validators.required]),
         additionalInformation: new FormControl(version.additionalInformation, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(2000),
         ]),
-        dynamicAudioSystem: new FormControl(version.dynamicAudioSystem, [Validators.required]),
-        dynamicOpticSystem: new FormControl(version.dynamicOpticSystem, [Validators.required]),
-        infoTicketMachine: new FormControl(version.infoTicketMachine, [
+        boardingDevice: new FormControl(version.boardingDevice, [Validators.required]),
+        adviceAccessInfo: new FormControl(version.adviceAccessInfo, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(2000),
         ]),
-        interoperable: new FormControl(version.interoperable),
-        url: new FormControl(version.url, [
-          WhitespaceValidator.blankOrEmptySpaceSurrounding,
-          Validators.maxLength(500),
+        contrastingAreas: new FormControl(version.contrastingAreas, [Validators.required]),
+        dynamicAudio: new FormControl(version.dynamicAudio, [Validators.required]),
+        dynamicVisual: new FormControl(version.dynamicVisual, [Validators.required]),
+        inclination: new FormControl(version.inclination, [
+          AtlasCharsetsValidator.decimalWithDigits(3),
         ]),
-        visualInfo: new FormControl(version.visualInfo, [Validators.required]),
-        wheelchairTicketMachine: new FormControl(version.wheelchairTicketMachine, [
+        inclinationWidth: new FormControl(version.inclinationWidth, [
+          AtlasCharsetsValidator.decimalWithDigits(3),
+        ]),
+        levelAccessWheelchair: new FormControl(version.levelAccessWheelchair, [
           Validators.required,
         ]),
-        assistanceRequestFulfilled: new FormControl(version.assistanceRequestFulfilled, [
-          Validators.required,
+        superelevation: new FormControl(version.superelevation, [
+          AtlasCharsetsValidator.decimalWithDigits(3),
         ]),
-        ticketMachine: new FormControl(version.ticketMachine, [Validators.required]),
         validFrom: new FormControl(
           version.validFrom ? moment(version.validFrom) : version.validFrom,
           [Validators.required],
@@ -125,12 +95,24 @@ export class PlatformFormGroupBuilder {
   public static buildReducedFormGroup(version: ReadPlatformVersion) {
     return new FormGroup<ReducedPlatformFormGroup>(
       {
-        number: new FormControl(version.number.number),
         sloid: new FormControl(version.sloid),
-        meansOfTransport: new FormControl(version.meansOfTransport, [Validators.required]),
-        freeText: new FormControl(version.freeText, [
+        additionalInformation: new FormControl(version.additionalInformation, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(2000),
+        ]),
+        height: new FormControl(version.height, [AtlasCharsetsValidator.decimalWithDigits(3)]),
+        inclinationLongitudinal: new FormControl(version.inclinationLongitudinal, [
+          AtlasCharsetsValidator.decimalWithDigits(3),
+        ]),
+        infoOpportunities: new FormControl(version.infoOpportunities),
+        partialElevation: new FormControl(version.partialElevation),
+        tactileSystem: new FormControl(version.tactileSystem, [Validators.required]),
+        vehicleAccess: new FormControl(version.vehicleAccess, [Validators.required]),
+        wheelchairAreaLength: new FormControl(version.wheelchairAreaLength, [
+          AtlasCharsetsValidator.decimalWithDigits(3),
+        ]),
+        wheelchairAreaWidth: new FormControl(version.wheelchairAreaWidth, [
+          AtlasCharsetsValidator.decimalWithDigits(3),
         ]),
         validFrom: new FormControl(
           version.validFrom ? moment(version.validFrom) : version.validFrom,
