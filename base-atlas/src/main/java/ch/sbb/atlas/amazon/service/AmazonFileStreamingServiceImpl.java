@@ -1,9 +1,8 @@
 package ch.sbb.atlas.amazon.service;
 
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +16,11 @@ public class AmazonFileStreamingServiceImpl implements AmazonFileStreamingServic
 
   @Override
   public StreamingResponseBody streamFileAndDecompress(AmazonBucket amazonBucket, String fileToStream) {
-    File file = amazonService.pullFile(amazonBucket, fileToStream);
-    try(InputStream inputStream = new ByteArrayInputStream(fileService.gzipDecompress(file))){
-      return fileService.toStreamingResponse(file, inputStream);
+    try(S3Object s3Object = amazonService.pullS3Object(amazonBucket, fileToStream);
+        S3ObjectInputStream s3ObjectInputStream = s3Object.getObjectContent();
+        InputStream inputStream = new ByteArrayInputStream(fileService.gzipDecompress(s3ObjectInputStream))){
+      return inputStream::transferTo;
+
     } catch (IOException e) {
       throw new IllegalStateException("Could not stream the file", e);
     }
@@ -27,12 +28,7 @@ public class AmazonFileStreamingServiceImpl implements AmazonFileStreamingServic
 
   @Override
   public StreamingResponseBody streamFile(AmazonBucket amazonBucket, String fileToStream) {
-    File file = amazonService.pullFile(amazonBucket, fileToStream);
-    try {
-      return fileService.toStreamingResponse(file, new FileInputStream(file));
-    } catch (FileNotFoundException exception) {
-      throw new IllegalStateException(exception);
-    }
+    return amazonService.pullFileAsStream(amazonBucket, fileToStream);
   }
 
 }
