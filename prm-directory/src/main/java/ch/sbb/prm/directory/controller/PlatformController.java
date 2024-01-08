@@ -69,4 +69,9 @@ public class PlatformController implements PlatformApiV1 {
     return platformService.getPlatformOverview(parentSloid);
   }
 
+  @Override
+  public List<ReadPlatformVersionModel> getPlatformVersions(String sloid) {
+    return platformService.getAllVersions(sloid).stream().map(PlatformVersionMapper::toModel).toList();
+  }
+
 }

@@ -12,7 +12,7 @@ export class StopPointResolver {
   ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadStopPointVersion>> {
-    const sloidParameter = route.paramMap.get('sloid') || '';
+    const sloidParameter = route.paramMap.get('stopPointSloid') || '';
     return sloidParameter === 'add'
       ? of([])
       : this.personWithReducedMobilityService.getStopPointVersions(sloidParameter).pipe(
