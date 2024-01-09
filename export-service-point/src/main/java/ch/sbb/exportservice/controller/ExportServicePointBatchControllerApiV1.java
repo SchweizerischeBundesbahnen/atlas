@@ -11,6 +11,7 @@ import ch.sbb.exportservice.service.ExportLoadingPointJobService;
 import ch.sbb.exportservice.service.ExportServicePointJobService;
 import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
 import ch.sbb.exportservice.service.FileExportService;
+import io.micrometer.tracing.annotation.NewSpan;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,7 +33,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @Tag(name = "Export Service Point Batch")
 @RequestMapping("v1/export")
@@ -40,6 +41,7 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 @Slf4j
 public class ExportServicePointBatchControllerApiV1 {
 
+  public static final String START_STREAMING_FILE_LOG_MSG = "Start streaming file ";
   private final ExportServicePointJobService exportServicePointJobService;
   private final ExportTrafficPointElementJobService exportTrafficPointElementJobService;
   private final ExportLoadingPointJobService exportLoadingPointJobService;
@@ -52,28 +54,34 @@ public class ExportServicePointBatchControllerApiV1 {
       @ApiResponse(responseCode = "404", description = "No file found for today date", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
+  @NewSpan
   @Async
-  public CompletableFuture<ResponseEntity<StreamingResponseBody>> streamExportJsonFile(@PathVariable SePoDiBatchExportFileName exportFileName,
+  public CompletableFuture<ResponseEntity<InputStreamResource>> streamExportJsonFile(
+      @PathVariable SePoDiBatchExportFileName exportFileName,
       @PathVariable SePoDiExportType sePoDiExportType) {
     checkInputPath(exportFileName, sePoDiExportType);
-    StreamingResponseBody body = fileExportService.streamJsonFile(sePoDiExportType, exportFileName);
-    return CompletableFuture.completedFuture(
+    log.info("Start streaming file...");
+    InputStreamResource body = fileExportService.streamJsonFile(sePoDiExportType, exportFileName);
+    return CompletableFuture.supplyAsync(() ->
         ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body));
   }
 
   @GetMapping(value = "json/latest/{exportFileName}/{sePoDiExportType}", produces = MediaType.APPLICATION_JSON_VALUE)
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200",description = "Returns the today generated file as Stream"),
+      @ApiResponse(responseCode = "200", description = "Returns the today generated file as Stream"),
       @ApiResponse(responseCode = "404", description = "No generated files found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
+  @NewSpan
   @Async
-  public CompletableFuture<ResponseEntity<StreamingResponseBody>> streamLatestExportJsonFile(@PathVariable SePoDiBatchExportFileName exportFileName,
-                                                                    @PathVariable SePoDiExportType sePoDiExportType) {
+  public CompletableFuture<ResponseEntity<InputStreamResource>> streamLatestExportJsonFile(
+      @PathVariable SePoDiBatchExportFileName exportFileName,
+      @PathVariable SePoDiExportType sePoDiExportType) {
     checkInputPath(exportFileName, sePoDiExportType);
     String fileName = fileExportService.getLatestUploadedFileName(exportFileName, sePoDiExportType);
-    StreamingResponseBody body = fileExportService.streamLatestJsonFile(fileName);
-    return CompletableFuture.completedFuture(
+    log.info(START_STREAMING_FILE_LOG_MSG + fileName + "...");
+    InputStreamResource body = fileExportService.streamLatestJsonFile(fileName);
+    return CompletableFuture.supplyAsync(() ->
         ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body));
   }
 
@@ -83,15 +91,17 @@ public class ExportServicePointBatchControllerApiV1 {
       @ApiResponse(responseCode = "404", description = "No file found for today date", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
+  @NewSpan
   @Async
-  public CompletableFuture<ResponseEntity<StreamingResponseBody>> streamExportGzFile(
+  public CompletableFuture<ResponseEntity<InputStreamResource>> streamExportGzFile(
       @PathVariable SePoDiBatchExportFileName exportFileName,
       @PathVariable SePoDiExportType sePoDiExportType) throws NotAllowedExportFileException {
     checkInputPath(exportFileName, sePoDiExportType);
     String fileName = fileExportService.getBaseFileName(sePoDiExportType, exportFileName);
+    log.info(START_STREAMING_FILE_LOG_MSG + fileName + "...");
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(fileName);
-    StreamingResponseBody body = fileExportService.streamGzipFile(sePoDiExportType, exportFileName);
-    return CompletableFuture.completedFuture(ResponseEntity.ok().headers(headers).body(body));
+    InputStreamResource body = fileExportService.streamGzipFile(sePoDiExportType, exportFileName);
+    return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));
   }
 
   @GetMapping(value = "download-gzip-json/latest/{exportFileName}/{sePoDiExportType}")
@@ -100,15 +110,17 @@ public class ExportServicePointBatchControllerApiV1 {
       @ApiResponse(responseCode = "404", description = "No generated files found", content = @Content(schema =
       @Schema(implementation = ErrorResponse.class)))
   })
+  @NewSpan
   @Async
-  public CompletableFuture<ResponseEntity<StreamingResponseBody>> streamLatestExportGzFile(
+  public CompletableFuture<ResponseEntity<InputStreamResource>> streamLatestExportGzFile(
       @PathVariable SePoDiBatchExportFileName exportFileName,
       @PathVariable SePoDiExportType sePoDiExportType) throws NotAllowedExportFileException {
     checkInputPath(exportFileName, sePoDiExportType);
     String fileName = fileExportService.getLatestUploadedFileName(exportFileName, sePoDiExportType);
+    log.info(START_STREAMING_FILE_LOG_MSG + fileName + "...");
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(extractFileNameFromS3ObjectName(fileName));
-    StreamingResponseBody body = fileExportService.streamLatestGzipFile(fileName);
-    return CompletableFuture.completedFuture(ResponseEntity.ok().headers(headers).body(body));
+    InputStreamResource body = fileExportService.streamLatestGzipFile(fileName);
+    return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));
   }
 
   @PostMapping("service-point-batch")
@@ -116,6 +128,7 @@ public class ExportServicePointBatchControllerApiV1 {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
   })
+  @NewSpan
   @Async
   public void startExportServicePointBatch() {
     exportServicePointJobService.startExportJobs();
@@ -126,6 +139,7 @@ public class ExportServicePointBatchControllerApiV1 {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
   })
+  @NewSpan
   @Async
   public void startExportTrafficPointElementBatch() {
     exportTrafficPointElementJobService.startExportJobs();
@@ -136,6 +150,7 @@ public class ExportServicePointBatchControllerApiV1 {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200"),
   })
+  @NewSpan
   @Async
   public void startExportLoadingPointBatch() {
     exportLoadingPointJobService.startExportJobs();

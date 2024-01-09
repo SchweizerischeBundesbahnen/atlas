@@ -16,8 +16,13 @@ import ch.sbb.business.organisation.directory.mapper.BusinessOrganisationVersion
 import ch.sbb.business.organisation.directory.service.BusinessOrganisationAmazonService;
 import ch.sbb.business.organisation.directory.service.BusinessOrganisationService;
 import ch.sbb.business.organisation.directory.service.export.BusinessOrganisationVersionExportService;
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -25,12 +30,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
-
-import java.net.URL;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -159,16 +158,16 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
   }
 
   @Override
-  public ResponseEntity<StreamingResponseBody> streamGzipFile(ExportType exportType) {
+  public ResponseEntity<InputStreamResource> streamGzipFile(ExportType exportType) {
     String fileName = businessOrganisationAmazonService.getFileName(exportType);
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(fileName);
-    StreamingResponseBody body = businessOrganisationAmazonService.streamGzipFile(exportType);
+    InputStreamResource body = businessOrganisationAmazonService.streamGzipFile(exportType);
     return ResponseEntity.ok().headers(headers).body(body);
   }
 
   @Override
-  public ResponseEntity<StreamingResponseBody> streamJsonFile(ExportType exportType) {
-    StreamingResponseBody body = businessOrganisationAmazonService.streamJsonFile(exportType);
+  public ResponseEntity<InputStreamResource> streamJsonFile(ExportType exportType) {
+    InputStreamResource body = businessOrganisationAmazonService.streamJsonFile(exportType);
     return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body);
   }
 

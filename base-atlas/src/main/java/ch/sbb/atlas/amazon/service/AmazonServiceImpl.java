@@ -21,7 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
+import org.springframework.core.io.InputStreamResource;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -67,7 +67,7 @@ public class AmazonServiceImpl implements AmazonService {
 
   @Override
   public File pullFile(AmazonBucket bucket, String filePath) {
-    try (S3Object s3Object = pullS3Object(bucket, filePath)){
+    try (S3Object s3Object = pullS3Object(bucket, filePath)) {
       return getFile(filePath, s3Object, fileService.getDir());
     } catch (AmazonS3Exception | IOException e) {
       log.error("AmazonS3Exception occurred! filePath={}, bucket={}", filePath, bucket, e);
@@ -76,13 +76,15 @@ public class AmazonServiceImpl implements AmazonService {
   }
 
   @Override
-  public StreamingResponseBody pullFileAsStream(AmazonBucket bucket, String filePath) {
-    return outputStream -> {
-      try (S3Object s3Object = pullS3Object(bucket, filePath);
-          S3ObjectInputStream s3ObjectObjectContent = s3Object.getObjectContent()) {
-        s3ObjectObjectContent.transferTo(outputStream);
-      }
-    };
+  public InputStreamResource pullFileAsStream(AmazonBucket bucket, String filePath) {
+    try (S3Object s3Object = pullS3Object(bucket, filePath);
+        S3ObjectInputStream s3ObjectObjectContent = s3Object.getObjectContent()) {
+      byte[] bytes = s3ObjectObjectContent.readAllBytes();
+      return new InputStreamResource(new ByteArrayInputStream(bytes));
+    } catch (IOException e) {
+      log.error("AmazonS3Exception occurred! filePath={}, bucket={}", filePath, bucket, e);
+      throw new FileException("There was a problem with downloading filePath=" + filePath, e);
+    }
   }
 
   private static File getFile(String filePath, S3Object s3Object, String dir) {
@@ -98,6 +100,7 @@ public class AmazonServiceImpl implements AmazonService {
 
   @Override
   public S3Object pullS3Object(AmazonBucket bucket, String filePath) {
+    log.info("Pull file " + filePath + " from Amazon S3 Bucket.");
     return getClient(bucket).getObject(getAmazonBucketConfig(bucket).getBucketName(), filePath);
   }
 

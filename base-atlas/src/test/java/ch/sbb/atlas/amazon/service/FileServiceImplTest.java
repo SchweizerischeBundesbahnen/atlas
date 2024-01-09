@@ -2,14 +2,18 @@ package ch.sbb.atlas.amazon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.amazonaws.services.s3.model.S3Object;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 class FileServiceImplTest {
@@ -95,8 +99,8 @@ class FileServiceImplTest {
 
     //when
     byte[] compressedBytes;
-    try( FileInputStream fileInputStream = new FileInputStream(file)){
-     compressedBytes = fileService.gzipCompress(fileInputStream.readAllBytes());
+    try (FileInputStream fileInputStream = new FileInputStream(file)) {
+      compressedBytes = fileService.gzipCompress(fileInputStream.readAllBytes());
     }
 
     File compressed = new File("compressed");
@@ -107,6 +111,25 @@ class FileServiceImplTest {
     //then
 
     assertThat(new String(decompressedBytes)).isEqualTo("Test Data");
+  }
+
+  @Test
+  void shouldCompressAndDecompressS3ObjectInputStream() throws IOException {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json.gz");
+        S3Object s3Object = new S3Object()) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      s3Object.setObjectContent(inputStreamResource.getInputStream());
+
+      //when
+      byte[] bytes = fileService.gzipDecompress(s3Object.getObjectContent());
+
+      //then
+      String result = new String(bytes, StandardCharsets.UTF_8);
+      assertThat(result).isNotNull();
+
+    }
+
   }
 
 }
