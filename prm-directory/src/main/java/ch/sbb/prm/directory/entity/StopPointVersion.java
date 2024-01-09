@@ -30,9 +30,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,6 +37,10 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
+
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -178,7 +179,7 @@ public class StopPointVersion extends BasePrmImportEntity implements PrmVersiona
   @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private StandardAttributeType ticketMachine;
+  private BooleanOptionalAttributeType ticketMachine;
 
   public Set<MeanOfTransport> getMeansOfTransport() {
     if (meansOfTransport == null) {
