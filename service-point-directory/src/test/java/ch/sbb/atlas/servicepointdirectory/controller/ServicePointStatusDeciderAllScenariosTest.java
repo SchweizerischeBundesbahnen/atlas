@@ -1127,4 +1127,31 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[0].status", is(Status.DRAFT.toString())));
     }
 
+    @Test
+    void scenarioAdditionalWhenStopPointWithStatusValidatedAndUpdateStopPointWithNewSwissGeolocationThenStopPointValidated() throws Exception {
+        CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
+        stopPoint1.setDesignationOfficial("A Hausen");
+        ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+                stopPoint1);
+        Long id = servicePointVersionModel.getId();
+        Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
+        servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+        servicePointVersion1.ifPresent(repository::save);
+
+        UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint3.setServicePointGeolocation(ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
+        stopPoint3.setValidTo(LocalDate.of(2015, 12, 31));
+        stopPoint3.setDesignationOfficial("A Hausen");
+
+        mvc.perform(put("/v1/service-points/" + id)
+                        .contentType(contentType)
+                        .content(mapper.writeValueAsString(stopPoint3)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
+                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
+                .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())));
+    }
+
 }
