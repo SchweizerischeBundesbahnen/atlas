@@ -461,34 +461,6 @@ public class ServicePointTestData {
         .build();
   }
 
-  public static ServicePointVersion getBernAargau() {
-    ServicePointGeolocation geolocation = getServicePointGeolocationBernMittelland();
-
-    ServicePointVersion servicePoint = ServicePointVersion
-            .builder()
-            .country(Country.SWITZERLAND)
-            .designationLong("designation long 1")
-            .designationOfficial("Aargau Strasse")
-            .abbreviation("ABC")
-            .freightServicePoint(false)
-            .sortCodeOfDestinationStation("39136")
-            .categories(Set.of(Category.POINT_OF_SALE))
-            .operatingPointRouteNetwork(true)
-            .meansOfTransport(Set.of(MeanOfTransport.TRAIN))
-            .stopPointType(StopPointType.ON_REQUEST)
-            .servicePointGeolocation(ServicePointTestData.getServicePointGeolocationBernMittelland())
-            .status(Status.VALIDATED)
-            .validFrom(LocalDate.of(2010, 12, 11))
-            .validTo(LocalDate.of(2019, 8, 10))
-            .number(ServicePointNumber.ofNumberWithoutCheckDigit(8589008))
-            .numberShort(89008)
-            .businessOrganisation("ch:1:sboid:100626")
-            .build();
-
-    geolocation.setServicePointVersion(servicePoint);
-    return servicePoint;
-  }
-
   public static CreateServicePointVersionModel getBuchsiServicePoint() {
     return CreateServicePointVersionModel.builder()
         .numberShort(34511)
