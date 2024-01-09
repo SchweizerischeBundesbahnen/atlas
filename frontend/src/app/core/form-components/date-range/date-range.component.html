@@ -18,7 +18,7 @@
         [formControlName]="controlNameFrom"
         required
       />
-      <mat-datepicker-toggle [for]="validFromPicker">
+      <mat-datepicker-toggle [for]="validFromPicker" [tabIndex]="-1">
         <mat-icon matDatepickerToggleIcon>
           <form-date-icon [enabled]="controlFrom.enabled"></form-date-icon>
         </mat-icon>
