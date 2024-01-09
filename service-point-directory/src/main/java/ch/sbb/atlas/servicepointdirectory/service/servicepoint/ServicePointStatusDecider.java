@@ -62,11 +62,17 @@ public class ServicePointStatusDecider {
             // Scenario when we create completely new StopPoint
             return setStatusForNewlyCreatedStopPoint(newServicePointVersion);
         } else {
+            if ((newServicePointVersion.getStatus() == null && currentServicePointVersion.get().getStatus() == Status.DRAFT)
+                   || (newServicePointVersion.getCountry().getUicCode() == 85 && currentServicePointVersion.get().getCountry().getUicCode() != 85)
+                   || (newServicePointVersion.getServicePointGeolocation().getCountry().getUicCode() == 85 && currentServicePointVersion.get().getServicePointGeolocation().getCountry().getUicCode() != 85)
+            ) {
+                return setStatusForStopPoint(newServicePointVersion, currentServicePointVersion.get(), "Deciding on ServicePoint.Status when Status stays to DRAFT or move from non Swiss to Swiss Location. NewServicePointVersion={}, currentServicePointVersion={}.");
+            }
             // Scenario update from servicePoint to stopPoint (2, 3). Or scenario update when new ServicePointVersion is isolated (19).
             if (isChangeFromServicePointToStopPoint(newServicePointVersion, currentServicePointVersion.get())
                     || checkIfVersionIsIsolated(newServicePointVersion, servicePointVersions)) {
                 return setStatusForStopPoint(newServicePointVersion, currentServicePointVersion.get(),
-                        "Deciding on ServicePoint.Status when new StopPoint is isolated or updating from servicePoint, currentServicePointVersion={} to stopPoint " + "newServicePointVersion={}.");
+                        "Deciding on ServicePoint.Status when new StopPoint is isolated or updating from servicePoint, newServicePointVersion={} to stopPoint " + "currentServicePointVersion={}.");
             }
             // Scenario extension of version with the same name (16, 17, 7)
             if (isNameChanged(newServicePointVersion, currentServicePointVersion.get())
