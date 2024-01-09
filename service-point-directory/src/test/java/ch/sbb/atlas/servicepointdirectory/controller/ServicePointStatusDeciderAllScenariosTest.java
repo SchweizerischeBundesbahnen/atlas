@@ -1043,8 +1043,19 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$.status", is(Status.VALIDATED.toString())));
     }
 
+    /**
+     * Szenario 20: Haltestelle (stopPoint = true) in Status DRAFT, update mit Geolocation ändern
+     * <p>
+     * NEU:       |________________Haltestelle A Hausen + Geolocation B____________|
+     * <p>
+     * IST:       |________________Haltestelle A Hausen + Geolocation A____________|
+     * Status:                      DRAFT
+     * <p>
+     * RESULTAT:  |________________Haltestelle A Hausen + Geolocation B____________|
+     * Status:                      DRAFT
+     */
     @Test
-    void scenarioAdditionalWhenSwissStopPointAndUpdateStopPointWithNewSwissGeolocationThenStopPointDraft() throws Exception {
+    void scenario20WhenSwissStopPointAndUpdateStopPointWithNewSwissGeolocationThenStopPointDraft() throws Exception {
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
         stopPoint1.setDesignationOfficial("A Hausen");
@@ -1067,8 +1078,19 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[0].status", is(Status.DRAFT.toString())));
     }
 
+    /**
+     * Szenario 21: Haltestelle (stopPoint = true) in Status VALIDATED und Geolocation im Ausland, update mit Geolocation ändern in der Schweiz
+     * <p>
+     * NEU:       |________________Haltestelle A Hausen + Geolocation Switzerland____________|
+     * <p>
+     * IST:       |________________Haltestelle A Hausen + Geolocation France_________________|
+     * Status:                      VALIDATED
+     * <p>
+     * RESULTAT:  |________________Haltestelle A Hausen + Geolocation Switzerland____________|
+     * Status:                      DRAFT
+     */
     @Test
-    void scenarioAdditional1WhenStopPointWithFrenchGeolocationAndUpdateStopPointWithNewSwissGeolocationThenStopPointDraft() throws Exception {
+    void scenario21WhenStopPointWithFrenchGeolocationAndUpdateStopPointWithNewSwissGeolocationThenStopPointDraft() throws Exception {
         GeoReference geoReferenceFrance = GeoReference.builder().country(Country.FRANCE).build();
         when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReferenceFrance);
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
@@ -1098,7 +1120,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     }
 
     @Test
-    void scenarioAdditional1WhenStopPointWithFrenchGeolocationAndUpdateStopPointWithNewSwissGeolocationAndNewNameThenStopPointDraft() throws Exception {
+    void whenStopPointWithFrenchGeolocationAndUpdateStopPointWithNewSwissGeolocationAndNewNameThenStopPointDraft() throws Exception {
         GeoReference geoReferenceFrance = GeoReference.builder().country(Country.FRANCE).build();
         when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReferenceFrance);
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
@@ -1128,7 +1150,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     }
 
     @Test
-    void scenarioAdditionalWhenStopPointWithStatusValidatedAndUpdateStopPointWithNewSwissGeolocationThenStopPointValidated() throws Exception {
+    void whenStopPointWithStatusValidatedAndUpdateStopPointWithNewSwissGeolocationThenStopPointValidated() throws Exception {
         CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
         stopPoint1.setDesignationOfficial("A Hausen");
