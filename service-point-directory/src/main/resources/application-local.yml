@@ -47,10 +47,6 @@ spring:
             client-secret: ${JOURNEY_POI_CLIENT_SECRET}
             scope:
               - api://a7eb81a8-9554-4ff1-aad4-625a0d0e938b/.default
-  journeyPoi:
-    client:
-      gateway:
-        url: https://journey-pois-int.api.sbb.ch:443
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
@@ -113,3 +109,7 @@ logging:
       sbb:
         atlas:
           versioning: ERROR
+
+journeyPoi:
+  client:
+    url: https://journey-pois-int.api.sbb.ch:443
