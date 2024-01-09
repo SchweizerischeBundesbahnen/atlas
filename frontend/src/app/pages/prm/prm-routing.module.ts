@@ -32,6 +32,7 @@ const routes: Routes = [
       platform: platformResolver,
       servicePoint: prmPanelResolver,
       trafficPoint: trafficPointElementResolver,
+      stopPoint: stopPointResolver,
     },
   },
   {

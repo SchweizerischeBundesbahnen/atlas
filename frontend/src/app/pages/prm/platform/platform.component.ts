@@ -3,10 +3,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
   ReadPlatformVersion,
   ReadServicePointVersion,
+  ReadStopPointVersion,
   ReadTrafficPointElementVersion,
 } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
+import {
+  CompletePlatformFormGroup,
+  PlatformFormGroupBuilder,
+  ReducedPlatformFormGroup,
+} from './form/platform-form-group';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-platforms',
@@ -21,6 +28,18 @@ export class PlatformComponent implements OnInit {
   servicePoint!: ReadServicePointVersion;
   trafficPoint!: ReadTrafficPointElementVersion;
   maxValidity!: DateRange;
+  stopPoint!: ReadStopPointVersion[];
+
+  reduced = false;
+  form!: FormGroup<ReducedPlatformFormGroup> | FormGroup<CompletePlatformFormGroup>;
+
+  get reducedForm(): FormGroup<ReducedPlatformFormGroup> {
+    return this.form as FormGroup<ReducedPlatformFormGroup>;
+  }
+
+  get completeForm(): FormGroup<CompletePlatformFormGroup> {
+    return this.form as FormGroup<CompletePlatformFormGroup>;
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -31,6 +50,9 @@ export class PlatformComponent implements OnInit {
     this.initServicePointDesignation();
 
     this.platform = this.route.snapshot.data.platform;
+    this.stopPoint = this.route.snapshot.data.stopPoint;
+    this.reduced = this.stopPoint[0].reduced!;
+
     if (this.platform.length === 0) {
       this.isNew = true;
     } else {
@@ -40,6 +62,15 @@ export class PlatformComponent implements OnInit {
         this.platform,
       );
     }
+
+    if (this.reduced) {
+      this.form = PlatformFormGroupBuilder.buildReducedFormGroup(this.selectedVersion);
+    } else {
+      this.form = PlatformFormGroupBuilder.buildCompleteFormGroup(this.selectedVersion);
+    }
+    this.form.controls.sloid.setValue(this.trafficPoint.sloid);
+
+    console.log('reduced: ', this.reduced);
   }
 
   initServicePointDesignation() {
