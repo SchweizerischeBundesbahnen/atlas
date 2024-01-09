@@ -57,17 +57,18 @@ public class ServicePointStatusDecider {
                                            Optional<ServicePointVersion> currentServicePointVersion,
                                            List<ServicePointVersion> servicePointVersions) {
         if (currentServicePointVersion.isEmpty()) {
-            // Create Scenario: Scenario when we create completely new StopPoint
+            // Create Scenario: Scenario when we create completely new StopPoint (1)
             return setStatusForStopPoint(newServicePointVersion, null, "Deciding on ServicePoint.Status when creating new StopPoint={}");
         } else {
-            // Update Scenario: extension of version with the same name (16, 17, 7)
+            // Update Scenario: extension of version with the same name (7, 14, 16, 17)
             if (isNameChanged(newServicePointVersion, currentServicePointVersion.get())
                     && isThereOverlappingVersionWithTheSameName(newServicePointVersion, servicePointVersions)) {
                 return setStatusPerDefaultAsValidated(newServicePointVersion, currentServicePointVersion,
                         "Deciding on ServicePoint.Status when updating where, newServicePointVersion={}, and currentServicePointVersion={}. " +
                                          "DesignationOfficial name is changed, but there are exisiting touching versions with the same name");
             }
-            // Update Scenario: Scenario update StopPoint with Name Change (covered cases: with gap, update on one part of existing version, update on whole version, update over 2 versions, extension), (4, 5, 6, 8, 9, 10, 11, 12, 13, 18)
+            // Update Scenario: Scenario update StopPoint with Name Change (covered cases: with gap, update on one part of existing version,
+            // update on the whole version, update over 2 versions, extension) (4, 5, 6, 8, 9, 10, 11, 12, 13, 18)
             // Update Scenario: Scenario update from servicePoint to stopPoint (2, 3). Or scenario update when new ServicePointVersion is isolated (19).
             // Update Scenario: Scenario update when previous version is DRAFT (20). Scenario update from wrong Geolocation outside of Switzerland to geolocation inside of Switzerland (21)
             if (isNameChanged(newServicePointVersion, currentServicePointVersion.get()) && findPreviousVersionOnTheSameTimeslot(newServicePointVersion, servicePointVersions).isPresent()
@@ -80,6 +81,7 @@ public class ServicePointStatusDecider {
                         "Deciding on ServicePoint.Status when update scenario where newServicePointVersion={} and currentServicePointVersion={}.");
             }
         }
+        // (15)
         return setStatusPerDefaultAsValidated(newServicePointVersion, currentServicePointVersion,
                 "Deciding on ServicePoint.Status when updating where, newServicePointVersion={}, and currentServicePointVersion={}. Status will be set to Validated per default.");
     }
@@ -130,8 +132,8 @@ public class ServicePointStatusDecider {
 
     private boolean isGeolocationChangedFromAbroadToSwitzerland(ServicePointVersion newServicePointVersion,
                                                                 ServicePointVersion currentServicePointVersion) {
-        return newServicePointVersion.getServicePointGeolocation().getCountry().getUicCode() == 85
-                && currentServicePointVersion.getServicePointGeolocation().getCountry().getUicCode() != 85;
+        return Objects.equals(newServicePointVersion.getServicePointGeolocation().getCountry().getUicCode(), Country.SWITZERLAND.getUicCode())
+                && !Objects.equals(currentServicePointVersion.getServicePointGeolocation().getCountry().getUicCode(), Country.SWITZERLAND.getUicCode());
     }
 
     boolean isVersionIsolated(ServicePointVersion newServicePointVersion,
