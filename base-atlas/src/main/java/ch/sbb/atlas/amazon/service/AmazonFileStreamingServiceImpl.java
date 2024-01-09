@@ -6,7 +6,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
+import org.springframework.core.io.InputStreamResource;
 
 @RequiredArgsConstructor
 public class AmazonFileStreamingServiceImpl implements AmazonFileStreamingService {
@@ -15,11 +15,11 @@ public class AmazonFileStreamingServiceImpl implements AmazonFileStreamingServic
   private final FileService fileService;
 
   @Override
-  public StreamingResponseBody streamFileAndDecompress(AmazonBucket amazonBucket, String fileToStream) {
+  public InputStreamResource streamFileAndDecompress(AmazonBucket amazonBucket, String fileToStream) {
     try(S3Object s3Object = amazonService.pullS3Object(amazonBucket, fileToStream);
         S3ObjectInputStream s3ObjectInputStream = s3Object.getObjectContent();
         InputStream inputStream = new ByteArrayInputStream(fileService.gzipDecompress(s3ObjectInputStream))){
-      return inputStream::transferTo;
+      return new InputStreamResource(inputStream);
 
     } catch (IOException e) {
       throw new IllegalStateException("Could not stream the file", e);
@@ -27,7 +27,7 @@ public class AmazonFileStreamingServiceImpl implements AmazonFileStreamingServic
   }
 
   @Override
-  public StreamingResponseBody streamFile(AmazonBucket amazonBucket, String fileToStream) {
+  public InputStreamResource streamFile(AmazonBucket amazonBucket, String fileToStream) {
     return amazonService.pullFileAsStream(amazonBucket, fileToStream);
   }
 
