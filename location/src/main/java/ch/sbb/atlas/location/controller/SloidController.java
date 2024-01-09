@@ -1,10 +1,13 @@
 package ch.sbb.atlas.location.controller;
 
+import ch.sbb.atlas.api.location.ClaimSloidRequestModel;
 import ch.sbb.atlas.api.location.GenerateSloidRequestModel;
 import ch.sbb.atlas.api.location.SloidApiV1;
+import jakarta.persistence.criteria.CriteriaBuilder.In;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,43 +20,36 @@ public class SloidController implements SloidApiV1 {
   private final JdbcTemplate jdbcTemplate;
 
   @Override
-  public ResponseEntity<String> generateSloid(GenerateSloidRequestModel generateSloidRequestModel) {
-    final String sloidPrefix = generateSloidRequestModel.sloidPrefix();
-    switch (generateSloidRequestModel.sloidType()) {
-      case AREA -> {
-        Integer counter = null;
-        try {
-          counter = jdbcTemplate.queryForObject("select child_seq from sloid_allocated where sloid = ?;",
-              Integer.class,
-              sloidPrefix);
-        } catch (DataAccessException e) {
-          log.info("prefix does not exist or counter not defined");
-        }
+  public ResponseEntity<String> generateSloid(GenerateSloidRequestModel request) {
+    final String sloidPrefix = request.sloidType().getSloidPrefix(request.sloidPrefix());
+    final String seqName = request.sloidType().getSeqName();
+    String generatedSloid;
+    do {
+      generatedSloid = tryToGenerateNewSloid(sloidPrefix, seqName);
+    } while (generatedSloid == null);
+    return ResponseEntity.ok(generatedSloid);
+  }
 
-        if (counter == null) {
-          return ResponseEntity.badRequest().build();
-        }
-
-        while (true) {
-          try {
-            counter++;
-            jdbcTemplate.update("insert into sloid_allocated (sloid, child_seq) values (?, ?);",
-                sloidPrefix + ":" + counter, counter);
-            return ResponseEntity.ok(sloidPrefix + ":" + counter);
-          } catch (DataAccessException e) {
-            log.error("sloid already allocated: ", e);
-          }
-        }
-      }
+  @Override
+  public ResponseEntity<String> claimSloid(ClaimSloidRequestModel request) {
+    try {
+      jdbcTemplate.update("insert into sloid_allocated (sloid) values (?);", request.sloid());
+      return ResponseEntity.ok(request.sloid());
+    } catch (DataAccessException e) {
+      log.info("{} occupied", request.sloid());
+      return ResponseEntity.status(HttpStatus.CONFLICT).body(request.sloid() + " is already used.");
     }
+  }
 
-    throw new RuntimeException("no switch");
+  private String tryToGenerateNewSloid(String sloidPrefix, String seqName) {
+    final Integer nextSeqValue = jdbcTemplate.queryForObject("select nextval(?);", Integer.class, seqName);
+    final String sloid = sloidPrefix + ":" + nextSeqValue;
+    try {
+      jdbcTemplate.update("insert into sloid_allocated (sloid) values (?);", sloid);
+      return sloid;
+    } catch (DataAccessException e) {
+      log.info("{} occupied", sloid);
+      return null;
+    }
   }
 }
-
-// todo: sloid überall eindeutig ausser platform = kante
-// todo: patterns sepodi (location, bereich, kante), patterns prm (platform = kante, rest 4 doppelpunkte eindeutig)
-// todo: <location> von available tabelle, <bereich> und <kante> je eine sequence (überlegen wie sequence reset, damit nichts
-//  übersprungen wird.
-
-// todo: direkt inserts anstatt exists prüfen und error handling (bei manuell returnen, bei automatic weiter versuchen)
