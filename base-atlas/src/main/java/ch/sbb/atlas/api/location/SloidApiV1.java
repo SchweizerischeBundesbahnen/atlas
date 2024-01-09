@@ -12,4 +12,7 @@ public interface SloidApiV1 {
   @PostMapping("generate")
   ResponseEntity<String> generateSloid(@RequestBody @Valid GenerateSloidRequestModel generateSloidRequestModel);
 
+  @PostMapping("claim")
+  ResponseEntity<String> claimSloid(@RequestBody @Valid ClaimSloidRequestModel claimSloidRequestModel);
+
 }
