@@ -20,6 +20,7 @@ import { CreateStopPointComponent } from './tabs/stop-point/create-stop-point/cr
 import { PrmInfoBoxComponent } from './prm-home-search/prm-info-box/prm-info-box.component';
 import { PlatformComponent } from './platform/platform.component';
 import { PlatformCompleteFormComponent } from './platform/form/platform-complete-form/platform-complete-form.component';
+import { PlatformReducedFormComponent } from './platform/form/platform-reduced-form/platform-reduced-form.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { PlatformCompleteFormComponent } from './platform/form/platform-complete
     PrmInfoBoxComponent,
     PlatformComponent,
     PlatformCompleteFormComponent,
+    PlatformReducedFormComponent,
   ],
   imports: [CommonModule, FormModule, FormsModule, PrmRoutingModule, CoreModule],
 })
