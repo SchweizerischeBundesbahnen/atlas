@@ -1,6 +1,7 @@
 create table sloid_allocated
 (
-    sloid          varchar(50) primary key,
-    child_seq      integer,
-    grandchild_seq integer
+    sloid varchar(128) primary key
 );
+
+create sequence area_seq start with 100;
+create sequence edge_seq;
