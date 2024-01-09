@@ -4,7 +4,7 @@ import ch.sbb.atlas.journey.poi.api.V1Api;
 import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 
-@FeignClient(name = "journeyPoiClient", url = "https://journey-pois-int.api.sbb.ch:443", configuration = JourneyPoiConfig.class)
+@FeignClient(name = "journeyPoiClient", url = "${spring.journeyPoi.client.gateway.url}", configuration = JourneyPoiConfig.class)
 public interface JourneyPoiClient extends V1Api {
 
 }
