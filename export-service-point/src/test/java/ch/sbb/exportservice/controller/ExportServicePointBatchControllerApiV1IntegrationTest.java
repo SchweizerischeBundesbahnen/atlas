@@ -14,25 +14,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.amazon.exception.FileException;
+import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.exportservice.model.SePoDiBatchExportFileName;
 import ch.sbb.exportservice.model.SePoDiExportType;
 import ch.sbb.exportservice.service.ExportLoadingPointJobService;
 import ch.sbb.exportservice.service.ExportServicePointJobService;
 import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
 import ch.sbb.exportservice.service.FileExportService;
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseExportControllerTest {
+class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
 
   @MockBean
   private FileExportService<SePoDiExportType> fileExportService;
@@ -50,21 +50,23 @@ class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseExportCo
   @Order(1)
   void shouldGetJsonSuccessfully() throws Exception {
     //given
-    StreamingResponseBody streamingResponseBody = writeOutputStream(new ByteArrayInputStream(JSON_DATA.getBytes()));
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point-data.json")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
 
-    doReturn(streamingResponseBody).when(fileExportService)
-        .streamJsonFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
+      doReturn(inputStreamResource).when(fileExportService)
+          .streamJsonFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
 
-    //when & then
-    MvcResult mvcResult = mvc.perform(get("/v1/export/json/service-point-version/world-full")
-            .contentType(contentType)
-            .accept(MediaType.APPLICATION_JSON))
-        .andExpect(request().asyncStarted())
-        .andReturn();
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/json/service-point-version/world-full")
+              .contentType(contentType)
+              .accept(MediaType.APPLICATION_JSON))
+          .andExpect(request().asyncStarted())
+          .andReturn();
 
-    mvc.perform(asyncDispatch(mvcResult))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(3)));
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$", hasSize(3)));
+    }
   }
 
   @Test
@@ -88,9 +90,9 @@ class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseExportCo
   @Order(3)
   void shouldDownloadGzipJsonSuccessfully() throws Exception {
     //given
-    try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point.json.gz")) {
-      StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
-      doReturn(streamingResponseBody).when(fileExportService)
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point.json.gzip")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(fileExportService)
           .streamGzipFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
       doReturn("service-point").when(fileExportService)
           .getBaseFileName(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
@@ -183,9 +185,9 @@ class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseExportCo
   @Order(9)
   void shouldDownloadLatestGzipJsonSuccessfully() throws Exception {
     //given
-    try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point.json.gz")) {
-      StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
-      doReturn(streamingResponseBody).when(fileExportService)
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point.json.gzip")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(fileExportService)
           .streamGzipFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
       doReturn("service_point/full/full-swiss-only-service_point-2023-09-30.csv.json").when(fileExportService)
           .getLatestUploadedFileName(SePoDiBatchExportFileName.SERVICE_POINT_VERSION, SePoDiExportType.WORLD_FULL);
@@ -205,9 +207,9 @@ class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseExportCo
   @Order(10)
   void shouldDownloadLatestJsonSuccessfully() throws Exception {
     //given
-    try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point.json.gz")) {
-      StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
-      doReturn(streamingResponseBody).when(fileExportService)
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point.json.gzip")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(fileExportService)
           .streamGzipFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
       doReturn("service_point/full/full-swiss-only-service_point-2023-09-30.csv.json").when(fileExportService)
           .getLatestUploadedFileName(SePoDiBatchExportFileName.SERVICE_POINT_VERSION, SePoDiExportType.WORLD_FULL);
