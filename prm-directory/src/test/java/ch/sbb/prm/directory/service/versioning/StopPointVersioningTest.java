@@ -1,7 +1,5 @@
 package ch.sbb.prm.directory.service.versioning;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -13,14 +11,17 @@ import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.StopPointService;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @Transactional
@@ -92,7 +93,7 @@ class StopPointVersioningTest {
     editedVersion.setVisualInfo(StandardAttributeType.TO_BE_COMPLETED);
     editedVersion.setWheelchairTicketMachine(StandardAttributeType.TO_BE_COMPLETED);
     editedVersion.setAssistanceRequestFulfilled(BooleanOptionalAttributeType.TO_BE_COMPLETED);
-    editedVersion.setTicketMachine(StandardAttributeType.TO_BE_COMPLETED);
+    editedVersion.setTicketMachine(BooleanOptionalAttributeType.TO_BE_COMPLETED);
     editedVersion.setCreationDate(version2.getCreationDate());
     editedVersion.setEditionDate(version2.getEditionDate());
     editedVersion.setCreator(version2.getCreator());
