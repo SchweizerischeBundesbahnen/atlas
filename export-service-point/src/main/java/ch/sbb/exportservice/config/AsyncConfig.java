@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.async.CallableProcessingInterceptor;
@@ -34,6 +35,7 @@ public class AsyncConfig implements AsyncConfigurer , DisposableBean {
   private static final int QUEUE_CAPACITY = 100;
 
   private static final int DEFAULT_TIMEOUT = 600_000;
+  public static final int KEEP_ALIVE_SECONDS = 120;
 
   private ThreadPoolTaskExecutor executor;
 
@@ -54,20 +56,15 @@ public class AsyncConfig implements AsyncConfigurer , DisposableBean {
     executor.setMaxPoolSize(MAX_POOL_SIZE);
     executor.setQueueCapacity(QUEUE_CAPACITY);
     executor.setRejectedExecutionHandler(new AbortPolicy());
-    executor.setThreadNamePrefix("async-executor-");
-//    executor.setWaitForTasksToCompleteOnShutdown(true);
-    executor.setRejectedExecutionHandler((rejected, exec) -> {
-      log.warn("Execution rejected...");
-      try {
-        log.warn("Put rejected execution in queue...");
-        //TODO: do nothing
-        exec.getQueue().put(rejected);
-      } catch (InterruptedException e) {
-        throw new RuntimeException(e);
-      }
-    });
+    executor.setThreadNamePrefix("async-exec-");
+    executor.setKeepAliveSeconds(KEEP_ALIVE_SECONDS);
     executor.initialize();
     return executor;
+  }
+
+  @Bean
+  protected ConcurrentTaskExecutor getTaskExecutor() {
+    return new ConcurrentTaskExecutor(this.getAsyncExecutor());
   }
 
   @Override

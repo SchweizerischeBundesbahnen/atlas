@@ -7,13 +7,14 @@ import static org.mockito.Mockito.when;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
+import org.springframework.core.io.InputStreamResource;
 
 class AmazonFileStreamingServiceTest {
 
@@ -42,31 +43,26 @@ class AmazonFileStreamingServiceTest {
     when(amazonService.pullS3Object(any(),any())).thenReturn(s3Object);
     when(fileService.gzipDecompress(any(S3ObjectInputStream.class))).thenReturn(dataBytes);
     //when
-    StreamingResponseBody response = amazonFileStreamingService.streamFileAndDecompress(AmazonBucket.EXPORT,
+    InputStreamResource response = amazonFileStreamingService.streamFileAndDecompress(AmazonBucket.EXPORT,
         "file.json");
 
     //then
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    response.writeTo(outputStream);
-    String output = outputStream.toString();
-    assertThat(output).isEqualTo(testData);
+    String result = IOUtils.toString(response.getInputStream(), StandardCharsets.UTF_8);
+    assertThat(result).isEqualTo(testData);
   }
 
   @Test
   void shouldStreamFile() throws IOException {
     //given
     String testData = "Tesd data";
-    ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(testData.getBytes());
-    StreamingResponseBody responseBody = byteArrayInputStream::transferTo;
-    when(amazonService.pullFileAsStream(any(), any())).thenReturn(responseBody);
+    InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(testData.getBytes()));
+    when(amazonService.pullFileAsStream(any(), any())).thenReturn(inputStreamResource);
 
     //when
-    StreamingResponseBody response = amazonFileStreamingService.streamFile(AmazonBucket.EXPORT, "file.json");
+    InputStreamResource response = amazonFileStreamingService.streamFile(AmazonBucket.EXPORT, "file.json");
 
     //then
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    response.writeTo(outputStream);
-    String output = outputStream.toString();
-    assertThat(output).isEqualTo("Tesd data");
+    String result = IOUtils.toString(response.getInputStream(), StandardCharsets.UTF_8);
+    assertThat(result).isEqualTo("Tesd data");
   }
 }
