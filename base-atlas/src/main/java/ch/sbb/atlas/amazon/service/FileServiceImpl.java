@@ -131,11 +131,9 @@ public class FileServiceImpl implements FileService {
 
   @Override
   public byte[] gzipDecompress(S3ObjectInputStream s3ObjectInputStream) {
-    try {
-      ByteArrayOutputStream output = new ByteArrayOutputStream();
-      try (GZIPInputStream gis = new GZIPInputStream(s3ObjectInputStream)) {
-        gis.transferTo(output);
-      }
+    try (ByteArrayOutputStream output = new ByteArrayOutputStream();
+        GZIPInputStream gis = new GZIPInputStream(s3ObjectInputStream)) {
+      gis.transferTo(output);
       return output.toByteArray();
     } catch (IOException exception) {
       throw new IllegalStateException("Could not unzip file", exception);

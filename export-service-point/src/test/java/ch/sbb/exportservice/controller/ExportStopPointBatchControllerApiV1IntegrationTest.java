@@ -13,22 +13,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.amazon.exception.FileException;
+import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.exportservice.model.PrmBatchExportFileName;
 import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.service.ExportStopPointJobService;
 import ch.sbb.exportservice.service.FileExportService;
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class ExportStopPointBatchControllerApiV1IntegrationTest extends BaseExportControllerTest {
+class ExportStopPointBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
 
   @MockBean
   private FileExportService<PrmExportType> fileExportService;
@@ -40,9 +40,10 @@ class ExportStopPointBatchControllerApiV1IntegrationTest extends BaseExportContr
   @Order(1)
   void shouldGetJsonSuccessfully() throws Exception {
     //given
-      StreamingResponseBody streamingResponseBody = writeOutputStream(new ByteArrayInputStream(JSON_DATA.getBytes()));
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
 
-      doReturn(streamingResponseBody).when(fileExportService)
+      doReturn(inputStreamResource).when(fileExportService)
           .streamJsonFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
 
       //when & then
@@ -53,7 +54,8 @@ class ExportStopPointBatchControllerApiV1IntegrationTest extends BaseExportContr
 
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(jsonPath("$", hasSize(3)));
+          .andExpect(jsonPath("$", hasSize(1)));
+    }
   }
 
   @Test
@@ -77,8 +79,8 @@ class ExportStopPointBatchControllerApiV1IntegrationTest extends BaseExportContr
   void shouldDownloadGzipJsonSuccessfully() throws Exception {
     //given
     try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json.gz")) {
-      StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
-      doReturn(streamingResponseBody).when(fileExportService)
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(fileExportService)
           .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
       doReturn("service-point").when(fileExportService)
           .getBaseFileName(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
@@ -114,8 +116,8 @@ class ExportStopPointBatchControllerApiV1IntegrationTest extends BaseExportContr
   void shouldDownloadLatestGzipJsonSuccessfully() throws Exception {
     //given
     try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json.gz")) {
-      StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
-      doReturn(streamingResponseBody).when(fileExportService)
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(fileExportService)
           .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
       doReturn("prm/full/full_stop_point-2023-10-27.json.gz").when(fileExportService)
           .getLatestUploadedFileName(PrmBatchExportFileName.STOP_POINT_VERSION, PrmExportType.FULL);
@@ -147,8 +149,8 @@ class ExportStopPointBatchControllerApiV1IntegrationTest extends BaseExportContr
   void shouldDownloadLatestJsonSuccessfully() throws Exception {
     //given
     try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json.gz")) {
-      StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
-      doReturn(streamingResponseBody).when(fileExportService)
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(fileExportService)
           .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
       doReturn("prm/full/full_stop_point-2023-10-27.json.gz").when(fileExportService)
           .getLatestUploadedFileName(PrmBatchExportFileName.STOP_POINT_VERSION, PrmExportType.FULL);
