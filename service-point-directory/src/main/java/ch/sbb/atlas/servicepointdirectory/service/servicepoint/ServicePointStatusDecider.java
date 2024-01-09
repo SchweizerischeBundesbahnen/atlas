@@ -59,42 +59,37 @@ public class ServicePointStatusDecider {
                                            Optional<ServicePointVersion> currentServicePointVersion,
                                            List<ServicePointVersion> servicePointVersions) {
         if (currentServicePointVersion.isEmpty()) {
-            // Scenario when we create completely new StopPoint
-            return setStatusForNewlyCreatedStopPoint(newServicePointVersion);
+            // Create Scenario: Scenario when we create completely new StopPoint
+            return setStatusForStopPoint(newServicePointVersion, null, "Deciding on ServicePoint.Status when creating new StopPoint={}");
+//            return setStatusForNewlyCreatedStopPoint(newServicePointVersion);
         } else {
-            if ((newServicePointVersion.getStatus() == null && currentServicePointVersion.get().getStatus() == Status.DRAFT)
-                   || (newServicePointVersion.getCountry().getUicCode() == 85 && currentServicePointVersion.get().getCountry().getUicCode() != 85)
-                   || (newServicePointVersion.getServicePointGeolocation().getCountry().getUicCode() == 85 && currentServicePointVersion.get().getServicePointGeolocation().getCountry().getUicCode() != 85)
-            ) {
-                return setStatusForStopPoint(newServicePointVersion, currentServicePointVersion.get(), "Deciding on ServicePoint.Status when Status stays to DRAFT or move from non Swiss to Swiss Location. NewServicePointVersion={}, currentServicePointVersion={}.");
-            }
-            // Scenario update from servicePoint to stopPoint (2, 3). Or scenario update when new ServicePointVersion is isolated (19).
-            if (isChangeFromServicePointToStopPoint(newServicePointVersion, currentServicePointVersion.get())
-                    || checkIfVersionIsIsolated(newServicePointVersion, servicePointVersions)) {
-                return setStatusForStopPoint(newServicePointVersion, currentServicePointVersion.get(),
-                        "Deciding on ServicePoint.Status when new StopPoint is isolated or updating from servicePoint, newServicePointVersion={} to stopPoint " + "currentServicePointVersion={}.");
-            }
-            // Scenario extension of version with the same name (16, 17, 7)
+            // Update Scenario: extension of version with the same name (16, 17, 7)
             if (isNameChanged(newServicePointVersion, currentServicePointVersion.get())
                     && isThereTouchingVersionWithTheSameName(newServicePointVersion, servicePointVersions)) {
                 return setStatusPerDefaultAsValidated(newServicePointVersion, currentServicePointVersion,
                         "newServicePointVersion={}. DesignationOfficial name is changed, but there are exisiting touching versions with the same name");
             }
-            // Scenario update StopPoint with Name Change (covered cases: with gap, update on one part of existing version, update on whole version, update over 2 versions, extension), (4, 5, 6, 8, 9, 10, 11, 12, 13, 18)
+            // Update Scenario: Scenario update StopPoint with Name Change (covered cases: with gap, update on one part of existing version, update on whole version, update over 2 versions, extension), (4, 5, 6, 8, 9, 10, 11, 12, 13, 18)
+            // Update Scenario: Scenario update from servicePoint to stopPoint (2, 3). Or scenario update when new ServicePointVersion is isolated (19).
+            // Update Scenario: Scenario update when previous version is DRAFT. Scenario update from wrong Geolocation outside of Switzerland to geolocation inside of Switzerland
             if (isNameChanged(newServicePointVersion, currentServicePointVersion.get())
                     && findPreviousVersionOnSameTimeslot(newServicePointVersion, servicePointVersions).isPresent()
-                    || findIsolatedOrConsequentServicePointVersion(newServicePointVersion, servicePointVersions).isPresent()) {
+                    || findIsolatedOrConsequentServicePointVersion(newServicePointVersion, servicePointVersions).isPresent()
+                    || currentServicePointVersion.get().getStatus() == Status.DRAFT
+                    || (newServicePointVersion.getServicePointGeolocation().getCountry().getUicCode() == 85 && currentServicePointVersion.get().getServicePointGeolocation().getCountry().getUicCode() != 85)
+                    || isChangeFromServicePointToStopPoint(newServicePointVersion, currentServicePointVersion.get())
+                    || checkIfVersionIsIsolated(newServicePointVersion, servicePointVersions)) {
                 return setStatusForStopPoint(newServicePointVersion, currentServicePointVersion.get(),
-                        LOG_MESSAGE_BEGINNING + "newServicePointVersion={}. DesignationOfficial name is changed");
+                        "Deciding on ServicePoint.Status when update scenario where newServicePointVersion={} and currentServicePointVersion={}.");
             }
         }
         return setStatusPerDefaultAsValidated(newServicePointVersion, currentServicePointVersion,
                 "newServicePointVersion={}. Status will be set to Validated.");
     }
-
-    private Status setStatusForNewlyCreatedStopPoint(ServicePointVersion newServicePointVersion) {
-        return setStatusForStopPoint(newServicePointVersion, null, "Deciding on ServicePoint.Status when creating new StopPoint={}");
-    }
+//
+//    private Status setStatusForNewlyCreatedStopPoint(ServicePointVersion newServicePointVersion) {
+//        return setStatusForStopPoint(newServicePointVersion, null, "Deciding on ServicePoint.Status when creating new StopPoint={}");
+//    }
 
     private Status setStatusForStopPoint(ServicePointVersion newServicePointVersion,
                                          ServicePointVersion currentServicePointVersion,
