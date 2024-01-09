@@ -78,3 +78,7 @@ kafka:
       point:
         topic: atlas.service.point
         groupId: atlas.kafka.spdi.service.point.groupId
+
+journeyPoi:
+  client:
+    url: https://journey-pois-int.api.sbb.ch:443
