@@ -109,3 +109,7 @@ logging:
       sbb:
         atlas:
           versioning: ERROR
+
+journeyPoi:
+  client:
+    url: https://journey-pois-int.api.sbb.ch:443
