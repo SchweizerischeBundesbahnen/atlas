@@ -1113,6 +1113,20 @@
         "NO": "Nein",
         "NOT_APPLICABLE": "Nicht anwendbar",
         "PARTIALLY": "Teilweise"
+      },
+      "BOARDING_DEVICE_TYPES": {
+        "TO_BE_COMPLETED": "Zu vervollständigen",
+        "NO": "Nein",
+        "NOT_APPLICABLE": "Nicht anwendbar",
+        "RAMPS": "Rampe",
+        "LIFTS": "Lift"
+      },
+      "VEHICLE_ACCESS_TYPES": {
+        "TO_BE_COMPLETED": "Zu vervollständigen",
+        "PLATFORM_ACCESS_WITHOUT_ASSISTANCE": "Nein",
+        "PLATFORM_ACCESS_WITH_ASSISTANCE": "Nicht anwendbar",
+        "PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED": "Rampe",
+        "PLATFORM_NOT_WHEELCHAIR_ACCESSIBLE": "Lift"
       }
     },
     "INFO_BOX": {
@@ -1139,7 +1153,30 @@
         "INCOMPLETE": "teilweise",
         "NOT_STARTED": "nicht begonnen"
       },
-      "DETAIL_INFORMATION": "Angaben zur Haltekante"
+      "DETAIL_INFORMATION": "Angaben zur Haltekante",
+      "ACCORDING_TO_GUIDE": "Gemäss Leitfaden",
+      "COMPLETE": {
+        "ADDITIONAL_INFORMATION": "Hinweise zum Zugang zur Haltekante",
+        "ADDITIONAL_INFORMATION_SUBTITLE": "Freitextfeld für (freiwillige) Erläuterungen zu speziellen Flällen zum Perronzugang auf Stufe Haltekante",
+        "SUPERELEVATION": "Gleisüberhöhungswert [mm]",
+        "INCLINATION_WIDTH": "Perronlängsneigung [%]",
+        "INCLINATION": "Perronquergefälle [%]",
+        "CONTRASTING_AREAS": "Taktil-visuelle Markierung Perronfläche",
+        "CUSTOMER_INFORMATION": "Kundeninformation Haltekante",
+        "DYNAMIC_VISUAL": "Dynamisch/optisch",
+        "DYNAMIC_AUDIO": "Akustisch",
+        "ACCESS": "Zugang zum Verkehrsmittel",
+        "LEVEL_ACCESS_WHEELCHAIR": "Niveaugleicher Einstieg",
+        "BOARDING_DEVICE": "Hilfsmittel für Rollstuhl",
+        "ADVICE_ACCESS_INFO": "Hinweise zum Zugang zum Verkehrsmittel",
+        "ADVICE_ACCESS_INFO_SUBTITLE": "Freitextfeld für Erläuterungen zu speziellen Fällen für den Zugang zum Verkehrsmittel, e.g. Manövrierfläche eingeschränkt"
+      },
+      "REDUCED": {
+        "VEHICLE_ACCESS": "Zugang zum Perron; Einstieg ins Fahrzeug",
+        "TACTILE_SYSTEM": "Taktiles Leitsystem",
+        "ADDITIONAL_INFORMATION": "Hinweise zum Zugang zur Haltekante",
+        "PARTIAL_ELEVATION": "Hinweise zum Zugang zur Haltekante"
+      }
     }
   }
 }

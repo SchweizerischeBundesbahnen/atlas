@@ -28,12 +28,30 @@
       </div>
     </div>
 
-    <div class="platform-detail p-3">
+    <div class="platform-detail mt-5">
       <h2 class="font-bold-2xl color-gray-900">
         {{ 'PRM.PLATFORMS.DETAIL_INFORMATION' | translate }}
         <!--        todo version number -->
         <span *ngIf="!isNew"> - {{ 'COMMON.VERSION' | translate }}{{ 1 }}</span>
       </h2>
+
+      <div class="col-6 pb-3 mt-3">
+        <h2 class="font-bold-2xl color-gray-900">
+          {{ 'FORM.KEY_DATA' | translate }}
+        </h2>
+        <form-date-range [formGroup]="form"></form-date-range>
+      </div>
+
+      <h2 class="font-bold-2xl color-gray-900 mt-3">
+        {{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}
+      </h2>
+
+      <div *ngIf="reduced">
+        <app-platform-reduced-form [form]="reducedForm"></app-platform-reduced-form>
+      </div>
+      <div *ngIf="!reduced">
+        <app-platform-complete-form [form]="completeForm"></app-platform-complete-form>
+      </div>
     </div>
     <div class="footer-box">
       <footer class="d-flex justify-content-center align-items-center">
