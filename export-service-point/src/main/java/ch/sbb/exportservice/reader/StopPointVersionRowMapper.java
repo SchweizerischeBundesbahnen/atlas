@@ -6,13 +6,14 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.exportservice.entity.StopPointVersion;
 import ch.sbb.exportservice.entity.StopPointVersion.StopPointVersionBuilder;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.jdbc.core.RowMapper;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.jdbc.core.RowMapper;
 
 public class StopPointVersionRowMapper extends BaseRowMapper implements RowMapper<StopPointVersion> {
 
@@ -58,7 +59,7 @@ public class StopPointVersionRowMapper extends BaseRowMapper implements RowMappe
             BooleanOptionalAttributeType.valueOf(rs.getString("assistance_request_fulfilled")) : null);
     builder.ticketMachine(
         rs.getObject("ticket_machine") != null ?
-            StandardAttributeType.valueOf(rs.getString("ticket_machine")) : null);
+                BooleanOptionalAttributeType.valueOf(rs.getString("ticket_machine")) : null);
     setMeansOfTransport(builder, rs.getString("list_of_transports"));
     builder.validFrom(rs.getObject("valid_from", LocalDate.class));
     builder.validTo(rs.getObject("valid_to", LocalDate.class));
