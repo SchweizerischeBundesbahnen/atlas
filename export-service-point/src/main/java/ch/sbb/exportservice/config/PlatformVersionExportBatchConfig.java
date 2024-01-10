@@ -1,31 +1,23 @@
 package ch.sbb.exportservice.config;
 
 import static ch.sbb.exportservice.model.PrmBatchExportFileName.PLATFORM_VERSION;
-import static ch.sbb.exportservice.model.PrmBatchExportFileName.STOP_POINT_VERSION;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PLATFORM_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POINT_CSV_JOB_NAME;
 
+import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
 import ch.sbb.atlas.export.model.prm.PlatformVersionCsvModel;
-import ch.sbb.atlas.export.model.prm.StopPointVersionCsvModel;
 import ch.sbb.exportservice.entity.PlatformVersion;
-import ch.sbb.exportservice.entity.StopPointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
-import ch.sbb.exportservice.model.PrmBatchExportFileName;
 import ch.sbb.exportservice.model.PrmExportType;
-import ch.sbb.exportservice.model.SePoDiBatchExportFileName;
-import ch.sbb.exportservice.model.SePoDiExportType;
 import ch.sbb.exportservice.processor.PlatformVersionCsvProcessor;
-import ch.sbb.exportservice.processor.StopPointVersionCsvProcessor;
-import ch.sbb.exportservice.reader.LoadingPointVersionSqlQueryUtil;
+import ch.sbb.exportservice.processor.PlatformVersionJsonProcessor;
 import ch.sbb.exportservice.reader.PlatformVersionRowMapper;
 import ch.sbb.exportservice.reader.PlatformVersionSqlQueryUtil;
 import ch.sbb.exportservice.tasklet.FileJsonDeletingTasklet;
 import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
-import ch.sbb.exportservice.writer.CsvLoadingPointVersionWriter;
 import ch.sbb.exportservice.writer.CsvPlatformVersionWriter;
-import ch.sbb.exportservice.writer.JsonLoadingPointVersionWriter;
+import ch.sbb.exportservice.writer.JsonPlatformVersionWriter;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -38,6 +30,7 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
+import org.springframework.batch.item.json.JsonFileItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,8 +47,7 @@ public class PlatformVersionExportBatchConfig {
     private final JobCompletionListener jobCompletionListener;
     private final StepTracerListener stepTracerListener;
     private final CsvPlatformVersionWriter csvPlatformVersionWriter;
-    private final JsonLoadingPointVersionWriter jsonLoadingPointVersionWriter;
-
+    private final JsonPlatformVersionWriter jsonPlatformVersionWriter;
 
     @Bean
     @StepScope
@@ -91,7 +83,6 @@ public class PlatformVersionExportBatchConfig {
         return new PlatformVersionCsvProcessor();
     }
 
-
     @Bean
     @StepScope
     public FlatFileItemWriter<PlatformVersionCsvModel> platformCsvWriter(
@@ -111,6 +102,33 @@ public class PlatformVersionExportBatchConfig {
             .next(deleteJsonFileStep())
             .end()
             .build();
+    }
+
+    @Bean
+    public Step exportPlatformJsonStep(ItemReader<PlatformVersion> itemReader) {
+        String stepName = "exportPlatformJsonStep";
+        return new StepBuilder(stepName, jobRepository)
+            .<PlatformVersion, ReadPlatformVersionModel>chunk(StepUtils.CHUNK_SIZE, transactionManager)
+            .reader(itemReader)
+            .processor(platformVersionJsonProcessor())
+            .writer(platformJsonFileItemWriter(null))
+            .faultTolerant()
+            .backOffPolicy(StepUtils.getBackOffPolicy(stepName))
+            .retryPolicy(StepUtils.getRetryPolicy(stepName))
+            .listener(stepTracerListener)
+            .build();
+    }
+
+    @Bean
+    public PlatformVersionJsonProcessor platformVersionJsonProcessor() {
+        return new PlatformVersionJsonProcessor();
+    }
+
+    @Bean
+    @StepScope
+    public JsonFileItemWriter<ReadPlatformVersionModel> platformJsonFileItemWriter(
+        @Value("#{jobParameters[exportType]}") PrmExportType exportType) {
+        return jsonPlatformVersionWriter.getWriter(exportType, PLATFORM_VERSION);
     }
 
     @Bean
