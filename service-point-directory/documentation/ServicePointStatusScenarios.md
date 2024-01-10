@@ -198,3 +198,25 @@ Status:                      VALIDATED
 RESULTAT:  |_____________Haltestelle A Hausen____________|              |__________________Haltestelle A Hausen___________________|
 Status:                      VALIDATED                                                            DRAFT
 ```
+
+## Use Case 20: Update Stop Point in Status DRAFT, update for example Geolocation
+```agsl
+NEU:       |________________Haltestelle A Hausen + Geolocation B____________|                                                             
+
+IST:       |________________Haltestelle A Hausen + Geolocation A____________|
+Status:                                DRAFT
+
+RESULTAT:  |________________Haltestelle A Hausen + Geolocation B____________|
+Status:                                DRAFT                                                            
+```
+
+## Use Case 21: Update Stop Point in Status VALIDATED from Geolocation outside of Switzerland (e.g. France) to Switzerland
+```agsl
+NEU:       |________________Haltestelle A Hausen + Geolocation Switzerland____________|                                                             
+
+IST:       |________________Haltestelle A Hausen + Geolocation France_________________|
+Status:                                VALIDATED
+
+RESULTAT:  |________________Haltestelle A Hausen + Geolocation Switzerland____________|
+Status:                                  DRAFT                                                            
+```
