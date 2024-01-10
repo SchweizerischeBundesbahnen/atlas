@@ -35,7 +35,7 @@ public class StopPointVersionCsvProcessor extends BaseServicePointProcessor impl
         .visualInfo(mapStandardAttributeType(version.getVisualInfo()))
         .wheelchairTicketMachine(mapStandardAttributeType(version.getWheelchairTicketMachine()))
         .assistanceRequestFulfilled(mapBooleanOptionalAttributeType(version.getAssistanceRequestFulfilled()))
-        .ticketMachine(mapStandardAttributeType(version.getTicketMachine()))
+        .ticketMachine(mapBooleanOptionalAttributeType(version.getTicketMachine()))
         .meansOfTransport(version.getMeansOfTransportPipeList())
         .checkDigit(version.getNumber().getCheckDigit())
         .validFrom(DATE_FORMATTER.format(version.getValidFrom()))
