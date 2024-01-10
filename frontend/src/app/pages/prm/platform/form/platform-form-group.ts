@@ -111,7 +111,9 @@ export class PlatformFormGroupBuilder {
         inclinationLongitudinal: new FormControl(version?.inclinationLongitudinal, [
           AtlasCharsetsValidator.decimalWithDigits(3),
         ]),
-        infoOpportunities: new FormControl(version?.infoOpportunities),
+        infoOpportunities: new FormControl(
+          version?.infoOpportunities ?? [InfoOpportunityAttributeType.ToBeCompleted],
+        ),
         partialElevation: new FormControl(version?.partialElevation),
         tactileSystem: new FormControl(
           version?.tactileSystem ?? BooleanOptionalAttributeType.ToBeCompleted,

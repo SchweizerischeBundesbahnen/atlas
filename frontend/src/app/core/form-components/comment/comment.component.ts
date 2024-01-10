@@ -14,5 +14,4 @@ export class CommentComponent {
   @Input() controlName = 'comment';
   @Input() maxChars = '1500';
   @Input() info!: string;
-  @Input() infoLabel = 'FORM.TEXT';
 }

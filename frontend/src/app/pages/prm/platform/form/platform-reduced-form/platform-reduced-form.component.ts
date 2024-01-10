@@ -1,7 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ControlContainer, FormGroup, NgForm } from '@angular/forms';
-import { BooleanOptionalAttributeType, VehicleAccessAttributeType } from '../../../../../api';
-import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
+import {
+  BooleanOptionalAttributeType,
+  InfoOpportunityAttributeType,
+  VehicleAccessAttributeType,
+} from '../../../../../api';
 import { ReducedPlatformFormGroup } from '../platform-form-group';
 
 @Component({
@@ -15,8 +18,27 @@ export class PlatformReducedFormComponent implements OnInit {
 
   booleanOptionalAttributeTypes = Object.values(BooleanOptionalAttributeType);
   vehicleAccess = Object.values(VehicleAccessAttributeType);
+  infoOpportunities = Object.values(InfoOpportunityAttributeType);
 
-  constructor(private readonly translationSortingService: TranslationSortingService) {}
-
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.form.controls.infoOpportunities.valueChanges.subscribe((infoOpportunities) => {
+      if (infoOpportunities) {
+        if (infoOpportunities.length == 0) {
+          this.form.controls.infoOpportunities.setValue(
+            [InfoOpportunityAttributeType.ToBeCompleted],
+            { emitEvent: false },
+          );
+        }
+        if (
+          infoOpportunities?.length > 1 &&
+          infoOpportunities?.includes(InfoOpportunityAttributeType.ToBeCompleted)
+        ) {
+          this.form.controls.infoOpportunities.setValue(
+            infoOpportunities.filter((i) => i !== InfoOpportunityAttributeType.ToBeCompleted),
+            { emitEvent: false },
+          );
+        }
+      }
+    });
+  }
 }
