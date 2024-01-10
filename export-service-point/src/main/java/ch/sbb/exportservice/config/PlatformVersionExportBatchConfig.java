@@ -98,8 +98,8 @@ public class PlatformVersionExportBatchConfig {
             .listener(jobCompletionListener)
             .incrementer(new RunIdIncrementer())
             .flow(exportPlatformCsvStep(itemReader))
-            .next(uploadCsvFileStep())
-            .next(deleteJsonFileStep())
+            .next(uploadPlatformCsvFileStep())
+            .next(deletePlatformJsonFileStep())
             .end()
             .build();
     }
@@ -132,30 +132,30 @@ public class PlatformVersionExportBatchConfig {
     }
 
     @Bean
-    public Step uploadCsvFileStep() {
+    public Step uploadPlatformCsvFileStep() {
         return new StepBuilder("uploadCsvFile", jobRepository)
-            .tasklet(uploadCsvFileTasklet(null), transactionManager)
+            .tasklet(uploadPlatformCsvFileTasklet(null), transactionManager)
             .listener(stepTracerListener)
             .build();
     }
 
     @Bean
-    public Step deleteJsonFileStep() {
+    public Step deletePlatformJsonFileStep() {
         return new StepBuilder("deleteJsonFiles", jobRepository)
-            .tasklet(fileJsonDeletingTasklet(null), transactionManager)
+            .tasklet(filePlatformJsonDeletingTasklet(null), transactionManager)
             .listener(stepTracerListener)
             .build();
     }
 
     @Bean
     @StepScope
-    public UploadCsvFileTasklet uploadCsvFileTasklet(@Value("#{jobParameters[exportType]}") PrmExportType prmExportType) {
+    public UploadCsvFileTasklet uploadPlatformCsvFileTasklet(@Value("#{jobParameters[exportType]}") PrmExportType prmExportType) {
         return new UploadCsvFileTasklet(prmExportType, PLATFORM_VERSION);
     }
 
     @Bean
     @StepScope
-    public FileJsonDeletingTasklet fileJsonDeletingTasklet(
+    public FileJsonDeletingTasklet filePlatformJsonDeletingTasklet(
         @Value("#{jobParameters[exportType]}") PrmExportType prmExportType) {
         return new FileJsonDeletingTasklet(prmExportType, PLATFORM_VERSION);
     }
