@@ -5,18 +5,25 @@ import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
 import { AppTestingModule } from '../../../app.testing.module';
 import { ActivatedRoute } from '@angular/router';
 import { SplitServicePointNumberPipe } from '../../../core/search-service-point/split-service-point-number.pipe';
-import { of } from 'rxjs';
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
 import { STOP_POINT } from '../util/stop-point-test-data.spec';
 import { BERN_WYLEREGG } from '../../../../test/data/service-point';
+import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../test/data/traffic-point-element';
 
 describe('PlatformComponent', () => {
   let component: PlatformComponent;
   let fixture: ComponentFixture<PlatformComponent>;
   const activatedRouteMock = {
-    data: of({ stopPoints: [STOP_POINT], servicePoints: [BERN_WYLEREGG] }),
+    snapshot: {
+      data: {
+        stopPoint: [STOP_POINT],
+        servicePoint: [BERN_WYLEREGG],
+        platform: [],
+        trafficPoint: [BERN_WYLEREGG_TRAFFIC_POINTS[0]],
+      },
+    },
   };
 
   beforeEach(() => {
