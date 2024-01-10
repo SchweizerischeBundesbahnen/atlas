@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class ExportStopPointBatchControllerApiV1 {
 
-  public static final String START_STREAMING_FILE_LOG_MSG = "Start streaming file ";
+  private static final String START_STREAMING_FILE_LOG_MSG = "Start streaming file ";
 
   private final ExportStopPointJobService exportStopPointJobService;
 
@@ -54,7 +54,7 @@ public class ExportStopPointBatchControllerApiV1 {
   @Async
   public CompletableFuture<ResponseEntity<InputStreamResource>> streamExportJsonFile(@PathVariable PrmBatchExportFileName exportFileName,
       @PathVariable PrmExportType prmExportType) {
-    log.info("Start streaming file ...");
+    log.info(START_STREAMING_FILE_LOG_MSG);
     InputStreamResource body = fileExportService.streamJsonFile(prmExportType, exportFileName);
     return CompletableFuture.supplyAsync(() ->
         ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body));
