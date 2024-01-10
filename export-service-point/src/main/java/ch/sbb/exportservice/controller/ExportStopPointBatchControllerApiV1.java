@@ -109,7 +109,7 @@ public class ExportStopPointBatchControllerApiV1 {
     String fileName = fileExportService.getLatestUploadedFileName(exportFileName, prmExportType);
     log.info(START_STREAMING_FILE_LOG_MSG + fileName + "...");
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(extractFileNameFromS3ObjectName(fileName));
-    InputStreamResource body = fileExportService.streamGzipFile(prmExportType, exportFileName);
+    InputStreamResource body = fileExportService.streamLatestGzipFile(fileName);
     return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));
   }
 
