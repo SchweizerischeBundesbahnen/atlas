@@ -27,7 +27,7 @@ public class PlatformVersionMapper {
         .inclination(version.getInclination())
         .inclinationLongitudinal(version.getInclinationLongitudinal())
         .inclinationWidth(version.getInclinationWidth())
-        .infoOpportunities(version.getInfoOpportunities() != null ?  version.getInfoOpportunities().stream().toList() : null)
+        .infoOpportunities(version.getInfoOpportunities() != null ?  version.getInfoOpportunities() : null)
         .levelAccessWheelchair(version.getLevelAccessWheelchair())
         .partialElevation(version.getPartialElevation())
         .superelevation(version.getSuperelevation())
