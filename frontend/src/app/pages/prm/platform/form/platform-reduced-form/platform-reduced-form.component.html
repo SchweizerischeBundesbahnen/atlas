@@ -35,10 +35,68 @@
       maxChars="2000"
     ></form-comment>
   </div>
-  <div class="d-flex flex-column col-6">
+</div>
+
+<div class="col-12 d-flex mt-4">
+  <div class="d-flex flex-column col-6 pe-3">
+    <atlas-text-field
+      [fieldExamples]="[{ label: 'PRM.PLATFORMS.ACCORDING_TO_GUIDE', translate: true }]"
+      [formGroup]="form"
+      controlName="inclinationLongitudinal"
+      fieldLabel="PRM.PLATFORMS.REDUCED.INCLINATION_LONG"
+    >
+    </atlas-text-field>
+  </div>
+  <div class="d-flex flex-column col-6 pt-5" [formGroup]="form">
     <mat-checkbox formControlName="partialElevation" data-cy="partialElevation">
       {{ 'PRM.PLATFORMS.REDUCED.PARTIAL_ELEVATION' | translate }}
     </mat-checkbox>
     <app-atlas-field-error [form]="form" controlName="partialElevation"></app-atlas-field-error>
+  </div>
+</div>
+<div class="col-12 d-flex mt-4">
+  <atlas-select
+    [formGroup]="form"
+    controlName="infoOpportunities"
+    dataCy="infoOpportunities"
+    label="PRM.PLATFORMS.REDUCED.INFO_OPPORTUNITIES"
+    optionTranslateLabelPrefix="PRM.ENUMS.VEHICLE_ACCESS_TYPES."
+    [options]="booleanOptionalAttributeTypes"
+    [additionalLabelspace]="0"
+  >
+  </atlas-select>
+</div>
+
+<h2 class="font-bold-2xl color-gray-900 mt-5">
+  {{ 'PRM.PLATFORMS.REDUCED.WHEELCHAIR_AREA' | translate }}
+</h2>
+<div class="color-gray-900">
+  {{ 'PRM.PLATFORMS.REDUCED.WHEELCHAIR_AREA_SUBTILTE' | translate }}
+</div>
+
+<div class="col-12 d-flex mt-4">
+  <div class="d-flex flex-column col-4 pe-3">
+    <atlas-text-field
+      [formGroup]="form"
+      controlName="height"
+      fieldLabel="PRM.PLATFORMS.REDUCED.HEIGHT"
+    >
+    </atlas-text-field>
+  </div>
+  <div class="d-flex flex-column col-4 pe-3">
+    <atlas-text-field
+      [formGroup]="form"
+      controlName="wheelchairAreaLength"
+      fieldLabel="PRM.PLATFORMS.REDUCED.WHEELCHAIR_AREA_LENGTH"
+    >
+    </atlas-text-field>
+  </div>
+  <div class="d-flex flex-column col-4">
+    <atlas-text-field
+      [formGroup]="form"
+      controlName="wheelchairAreaWidth"
+      fieldLabel="PRM.PLATFORMS.REDUCED.WHEELCHAIR_AREA_WIDTH"
+    >
+    </atlas-text-field>
   </div>
 </div>
