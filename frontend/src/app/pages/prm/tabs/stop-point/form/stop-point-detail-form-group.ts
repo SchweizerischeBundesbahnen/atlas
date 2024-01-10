@@ -35,7 +35,7 @@ export interface StopPointDetailFormGroup extends BaseDetailFormGroup {
   visualInfo: FormControl<StandardAttributeType | null | undefined>;
   wheelchairTicketMachine: FormControl<StandardAttributeType | null | undefined>;
   assistanceRequestFulfilled: FormControl<BooleanOptionalAttributeType | null | undefined>;
-  ticketMachine: FormControl<StandardAttributeType | null | undefined>;
+  ticketMachine: FormControl<BooleanOptionalAttributeType | null | undefined>;
   number: FormControl<number | null | undefined>;
 }
 
