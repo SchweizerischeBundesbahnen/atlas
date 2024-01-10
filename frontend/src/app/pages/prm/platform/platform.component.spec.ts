@@ -9,11 +9,10 @@ import { of } from 'rxjs';
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
-import { PRM_REDUCED_TABS, PRM_TABS, PrmTab } from './prm-tab';
-import { STOP_POINT, STOP_POINT_COMPLETE } from '../util/stop-point-test-data.spec';
+import { STOP_POINT } from '../util/stop-point-test-data.spec';
 import { BERN_WYLEREGG } from '../../../../test/data/service-point';
 
-describe('PrmPanelComponent', () => {
+describe('PlatformComponent', () => {
   let component: PlatformComponent;
   let fixture: ComponentFixture<PlatformComponent>;
   const activatedRouteMock = {
@@ -43,31 +42,5 @@ describe('PrmPanelComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should initTabs when stopPoint does not exists', () => {
-    //when
-    component.initTabs([]);
-    //then
-    expect(component.disableTabNavigation).toBeTruthy();
-    expect(component.tabs).toEqual([PrmTab.STOP_POINT]);
-  });
-
-  it('should initTabs when stopPoint isReduced', () => {
-    //when
-    component.tabs = PRM_TABS;
-    component.initTabs([STOP_POINT]);
-    //then
-    expect(component.disableTabNavigation).toBeFalsy();
-    expect(component.tabs).toEqual(PRM_REDUCED_TABS);
-  });
-
-  it('should initTabs when stopPoint isComplete', () => {
-    //when
-    component.tabs = PRM_TABS;
-    component.initTabs([STOP_POINT_COMPLETE]);
-    //then
-    expect(component.disableTabNavigation).toBeFalsy();
-    expect(component.tabs).toEqual(PRM_TABS);
   });
 });
