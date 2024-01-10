@@ -5,6 +5,7 @@
       controlName="vehicleAccess"
       dataCy="vehicleAccess"
       label="PRM.PLATFORMS.REDUCED.VEHICLE_ACCESS"
+      infoIconTitle="PRM.PLATFORMS.REDUCED.VEHICLE_ACCESS_INFO"
       optionTranslateLabelPrefix="PRM.ENUMS.VEHICLE_ACCESS_TYPES."
       [options]="vehicleAccess"
       [additionalLabelspace]="0"
@@ -17,7 +18,8 @@
       controlName="tactileSystem"
       dataCy="tactileSystem"
       label="PRM.PLATFORMS.REDUCED.TACTILE_SYSTEM"
-      optionTranslateLabelPrefix="PRM.ENUMS.VEHICLE_ACCESS_TYPES."
+      infoIconTitle="PRM.PLATFORMS.REDUCED.TACTILE_SYSTEM_INFO"
+      optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
       [options]="booleanOptionalAttributeTypes"
       [additionalLabelspace]="0"
     >
@@ -30,9 +32,9 @@
     <form-comment
       [formGroup]="form"
       label="PRM.PLATFORMS.REDUCED.ADDITIONAL_INFORMATION"
-      infoLabel="PRM.PLATFORMS.ACCORDING_TO_GUIDE"
       controlName="additionalInformation"
       maxChars="2000"
+      info="PRM.PLATFORMS.REDUCED.ADDITIONAL_INFORMATION_INFO"
     ></form-comment>
   </div>
 </div>
@@ -40,7 +42,11 @@
 <div class="col-12 d-flex mt-4">
   <div class="d-flex flex-column col-6 pe-3">
     <atlas-text-field
-      [fieldExamples]="[{ label: 'PRM.PLATFORMS.ACCORDING_TO_GUIDE', translate: true }]"
+      [fieldExamples]="[
+        { label: 'FORM.FOR_EXAMPLE', translate: true },
+        { label: '5.123 |', translate: false },
+        { label: 'FORM.MAX_DIGITS', translate: true, arg: { key: 'amount', value: '3' } }
+      ]"
       [formGroup]="form"
       controlName="inclinationLongitudinal"
       fieldLabel="PRM.PLATFORMS.REDUCED.INCLINATION_LONG"
@@ -50,21 +56,28 @@
   <div class="d-flex flex-column col-6 pt-5" [formGroup]="form">
     <mat-checkbox formControlName="partialElevation" data-cy="partialElevation">
       {{ 'PRM.PLATFORMS.REDUCED.PARTIAL_ELEVATION' | translate }}
+      <form-info-icon
+        infoTitle="{{ 'PRM.PLATFORMS.REDUCED.PARTIAL_ELEVATION_INFO' | translate }}"
+      ></form-info-icon>
     </mat-checkbox>
     <app-atlas-field-error [form]="form" controlName="partialElevation"></app-atlas-field-error>
   </div>
 </div>
 <div class="col-12 d-flex mt-4">
-  <atlas-select
-    [formGroup]="form"
-    controlName="infoOpportunities"
-    dataCy="infoOpportunities"
-    label="PRM.PLATFORMS.REDUCED.INFO_OPPORTUNITIES"
-    optionTranslateLabelPrefix="PRM.ENUMS.VEHICLE_ACCESS_TYPES."
-    [options]="booleanOptionalAttributeTypes"
-    [additionalLabelspace]="0"
-  >
-  </atlas-select>
+  <div class="d-flex flex-column col-12">
+    <atlas-select
+      [formGroup]="form"
+      [multiple]="true"
+      controlName="infoOpportunities"
+      dataCy="infoOpportunities"
+      label="PRM.PLATFORMS.REDUCED.INFO_OPPORTUNITIES"
+      infoIconTitle="PRM.PLATFORMS.REDUCED.INFO_OPPORTUNITIES_INFO"
+      optionTranslateLabelPrefix="PRM.ENUMS.INFO_OPPORTUNITY_TYPES."
+      [options]="infoOpportunities"
+      [additionalLabelspace]="0"
+    >
+    </atlas-select>
+  </div>
 </div>
 
 <h2 class="font-bold-2xl color-gray-900 mt-5">
@@ -78,6 +91,11 @@
   <div class="d-flex flex-column col-4 pe-3">
     <atlas-text-field
       [formGroup]="form"
+      [fieldExamples]="[
+        { label: 'FORM.FOR_EXAMPLE', translate: true },
+        { label: '12.123 |', translate: false },
+        { label: 'FORM.MAX_DIGITS', translate: true, arg: { key: 'amount', value: '3' } }
+      ]"
       controlName="height"
       fieldLabel="PRM.PLATFORMS.REDUCED.HEIGHT"
     >
@@ -86,6 +104,11 @@
   <div class="d-flex flex-column col-4 pe-3">
     <atlas-text-field
       [formGroup]="form"
+      [fieldExamples]="[
+        { label: 'FORM.FOR_EXAMPLE', translate: true },
+        { label: '12.123 |', translate: false },
+        { label: 'FORM.MAX_DIGITS', translate: true, arg: { key: 'amount', value: '3' } }
+      ]"
       controlName="wheelchairAreaLength"
       fieldLabel="PRM.PLATFORMS.REDUCED.WHEELCHAIR_AREA_LENGTH"
     >
@@ -94,6 +117,11 @@
   <div class="d-flex flex-column col-4">
     <atlas-text-field
       [formGroup]="form"
+      [fieldExamples]="[
+        { label: 'FORM.FOR_EXAMPLE', translate: true },
+        { label: '12.123 |', translate: false },
+        { label: 'FORM.MAX_DIGITS', translate: true, arg: { key: 'amount', value: '3' } }
+      ]"
       controlName="wheelchairAreaWidth"
       fieldLabel="PRM.PLATFORMS.REDUCED.WHEELCHAIR_AREA_WIDTH"
     >
