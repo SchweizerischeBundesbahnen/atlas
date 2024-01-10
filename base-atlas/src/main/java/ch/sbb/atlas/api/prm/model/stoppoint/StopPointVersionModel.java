@@ -9,13 +9,14 @@ import ch.sbb.atlas.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -87,6 +88,6 @@ public abstract class StopPointVersionModel extends BasePrmVersionModel implemen
 
   private BooleanOptionalAttributeType assistanceRequestFulfilled;
 
-  private StandardAttributeType ticketMachine;
+  private BooleanOptionalAttributeType ticketMachine;
 
 }
