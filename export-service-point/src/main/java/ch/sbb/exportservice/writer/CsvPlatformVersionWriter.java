@@ -1,8 +1,8 @@
 package ch.sbb.exportservice.writer;
 
-import ch.sbb.atlas.export.model.prm.StopPointVersionCsvModel;
+import ch.sbb.atlas.export.model.prm.PlatformVersionCsvModel;
 
-public class CsvPlatformVersionWriter extends BaseCsvWriter<StopPointVersionCsvModel>{
+public class CsvPlatformVersionWriter extends BaseCsvWriter<PlatformVersionCsvModel>{
 
     @Override
     String[] getCsvHeader() {
