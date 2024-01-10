@@ -5,10 +5,12 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.amazon.exception.FileException;
@@ -25,7 +27,9 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MvcResult;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
@@ -47,14 +51,19 @@ class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseControll
   void shouldGetJsonSuccessfully() throws Exception {
     //given
     try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point-data.json")) {
-      StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
 
-      doReturn(streamingResponseBody).when(fileExportService)
+      doReturn(inputStreamResource).when(fileExportService)
           .streamJsonFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
 
       //when & then
-      mvc.perform(get("/v1/export/json/service-point-version/world-full")
-              .contentType(contentType))
+      MvcResult mvcResult = mvc.perform(get("/v1/export/json/service-point-version/world-full")
+              .contentType(contentType)
+              .accept(MediaType.APPLICATION_JSON))
+          .andExpect(request().asyncStarted())
+          .andReturn();
+
+      mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
           .andExpect(jsonPath("$", hasSize(3)));
     }
@@ -68,8 +77,12 @@ class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseControll
         .streamJsonFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
 
     //when & then
-    mvc.perform(get("/v1/export/json/service-point-version/world-full")
+    MvcResult mvcResult = mvc.perform(get("/v1/export/json/service-point-version/world-full")
             .contentType(contentType))
+        .andExpect(request().asyncStarted())
+        .andReturn();
+
+    mvc.perform(asyncDispatch(mvcResult))
         .andExpect(status().isInternalServerError());
   }
 
@@ -77,15 +90,19 @@ class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseControll
   @Order(3)
   void shouldDownloadGzipJsonSuccessfully() throws Exception {
     //given
-    try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point.json.gz")) {
-      StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
-      doReturn(streamingResponseBody).when(fileExportService)
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point.json.gzip")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(fileExportService)
           .streamGzipFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
       doReturn("service-point").when(fileExportService)
           .getBaseFileName(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
       //when & then
-      mvc.perform(get("/v1/export/download-gzip-json/service-point-version/world-full")
+      MvcResult mvcResult = mvc.perform(get("/v1/export/download-gzip-json/service-point-version/world-full")
               .contentType(contentType))
+          .andExpect(request().asyncStarted())
+          .andReturn();
+
+      mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
           .andExpect(content().contentType("application/gzip"));
     }
@@ -99,8 +116,12 @@ class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseControll
         .streamGzipFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
 
     //when & then
-    mvc.perform(get("/v1/export/download-gzip-json/service-point-version/world-full")
+    MvcResult mvcResult = mvc.perform(get("/v1/export/download-gzip-json/service-point-version/world-full")
             .contentType(contentType))
+        .andExpect(request().asyncStarted())
+        .andReturn();
+
+    mvc.perform(asyncDispatch(mvcResult))
         .andExpect(status().isInternalServerError());
   }
 
@@ -109,8 +130,12 @@ class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseControll
   void shouldNotDownloadJsonWhenExportTypeIsNotAllowedForTheExportFile() throws Exception {
     //given
     //when & then
-    mvc.perform(get("/v1/export/download-gzip-json/traffic-point-element-version/swiss-only-full")
+    MvcResult mvcResult = mvc.perform(get("/v1/export/download-gzip-json/traffic-point-element-version/swiss-only-full")
             .contentType(contentType))
+        .andExpect(request().asyncStarted())
+        .andReturn();
+
+    mvc.perform(asyncDispatch(mvcResult))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
         .andExpect(jsonPath("$.message",
@@ -160,15 +185,19 @@ class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseControll
   @Order(9)
   void shouldDownloadLatestGzipJsonSuccessfully() throws Exception {
     //given
-    try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point.json.gz")) {
-      StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
-      doReturn(streamingResponseBody).when(fileExportService)
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point.json.gzip")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(fileExportService)
           .streamGzipFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
       doReturn("service_point/full/full-swiss-only-service_point-2023-09-30.csv.json").when(fileExportService)
           .getLatestUploadedFileName(SePoDiBatchExportFileName.SERVICE_POINT_VERSION, SePoDiExportType.WORLD_FULL);
       //when & then
-      mvc.perform(get("/v1/export/download-gzip-json/latest/service-point-version/world-full")
+      MvcResult mvcResult = mvc.perform(get("/v1/export/download-gzip-json/latest/service-point-version/world-full")
               .contentType(contentType))
+          .andExpect(request().asyncStarted())
+          .andReturn();
+
+      mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
           .andExpect(content().contentType("application/gzip"));
     }
@@ -178,29 +207,22 @@ class ExportServicePointBatchControllerApiV1IntegrationTest extends BaseControll
   @Order(10)
   void shouldDownloadLatestJsonSuccessfully() throws Exception {
     //given
-    try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point.json.gz")) {
-      StreamingResponseBody streamingResponseBody = writeOutputStream(inputStream);
-      doReturn(streamingResponseBody).when(fileExportService)
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point.json.gzip")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(fileExportService)
           .streamGzipFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
       doReturn("service_point/full/full-swiss-only-service_point-2023-09-30.csv.json").when(fileExportService)
           .getLatestUploadedFileName(SePoDiBatchExportFileName.SERVICE_POINT_VERSION, SePoDiExportType.WORLD_FULL);
       //when & then
-      mvc.perform(get("/v1/export/json/latest/service-point-version/world-full")
+      MvcResult mvcResult = mvc.perform(get("/v1/export/json/latest/service-point-version/world-full")
               .contentType(contentType))
+          .andExpect(request().asyncStarted())
+          .andReturn();
+
+      mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
           .andExpect(content().contentType("application/json"));
     }
-  }
-
-  private StreamingResponseBody writeOutputStream(InputStream inputStream) {
-    return outputStream -> {
-      int len;
-      byte[] data = new byte[4096];
-      while ((len = inputStream.read(data, 0, data.length)) != -1) {
-        outputStream.write(data, 0, len);
-      }
-      inputStream.close();
-    };
   }
 
 }
