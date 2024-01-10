@@ -1,13 +1,12 @@
 package ch.sbb.exportservice.config;
 
 import ch.sbb.atlas.configuration.filter.CorrelationIdFilterConfig;
+import java.util.Collection;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.Collection;
 
 @Configuration
 @Import(CorrelationIdFilterConfig.class)
