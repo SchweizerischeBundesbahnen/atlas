@@ -10,7 +10,7 @@ import { AtlasLabelFieldComponent } from '../../../../../core/form-components/at
 import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
 import { AppTestingModule } from '../../../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
-import { StopPointFormGroupBuilder } from '../../../tabs/stop-point/form/stop-point-detail-form-group';
+import { PlatformFormGroupBuilder } from '../platform-form-group';
 
 describe('PlatformCompleteFormComponent', () => {
   let component: PlatformCompleteFormComponent;
@@ -31,8 +31,7 @@ describe('PlatformCompleteFormComponent', () => {
     });
     fixture = TestBed.createComponent(PlatformCompleteFormComponent);
     component = fixture.componentInstance;
-    fixture.componentInstance.form =
-      StopPointFormGroupBuilder.buildEmptyWithReducedValidationFormGroup();
+    component.form = PlatformFormGroupBuilder.buildCompleteFormGroup();
     fixture.detectChanges();
   });
 
