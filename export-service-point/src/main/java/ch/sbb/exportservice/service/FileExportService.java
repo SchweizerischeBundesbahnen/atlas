@@ -26,8 +26,8 @@ import org.springframework.stereotype.Service;
 public class FileExportService<T extends ExportTypeBase> {
 
   private static final String JSON_GZ_EXTENSION = ".json.gz";
-  public static final String S3_BUCKET_PATH_SEPARATOR = "/";
-  public static final String DOWNLOADING_FILE_INFO_MSG = "Downloading file: ";
+  private static final String S3_BUCKET_PATH_SEPARATOR = "/";
+  private static final String DOWNLOADING_FILE_INFO_MSG = "Downloading file: ";
 
   private final AmazonFileStreamingService amazonFileStreamingService;
   private final AmazonService amazonService;
