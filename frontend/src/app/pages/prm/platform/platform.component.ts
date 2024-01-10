@@ -69,8 +69,6 @@ export class PlatformComponent implements OnInit {
       this.form = PlatformFormGroupBuilder.buildCompleteFormGroup(this.selectedVersion);
     }
     this.form.controls.sloid.setValue(this.trafficPoint.sloid);
-
-    console.log('reduced: ', this.reduced);
   }
 
   initServicePointDesignation() {

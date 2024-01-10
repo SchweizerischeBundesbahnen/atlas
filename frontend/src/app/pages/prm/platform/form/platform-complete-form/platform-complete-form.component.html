@@ -3,7 +3,7 @@
     <form-comment
       [formGroup]="form"
       label="PRM.PLATFORMS.COMPLETE.ADDITIONAL_INFORMATION"
-      infoLabel="PRM.PLATFORMS.COMPLETE.ADDITIONAL_INFORMATION_SUBTITLE"
+      info="PRM.PLATFORMS.COMPLETE.ADDITIONAL_INFORMATION_SUBTITLE"
       controlName="additionalInformation"
       maxChars="2000"
     ></form-comment>
@@ -12,7 +12,11 @@
 <div class="col-12 d-flex mt-4">
   <div class="d-flex flex-column col-4 pe-3">
     <atlas-text-field
-      [fieldExamples]="[{ label: 'PRM.PLATFORMS.ACCORDING_TO_GUIDE', translate: true }]"
+      [fieldExamples]="[
+        { label: 'FORM.FOR_EXAMPLE', translate: true },
+        { label: '15.123 |', translate: false },
+        { label: 'FORM.MAX_DIGITS', translate: true, arg: { key: 'amount', value: '3' } }
+      ]"
       [formGroup]="form"
       controlName="superelevation"
       fieldLabel="PRM.PLATFORMS.COMPLETE.SUPERELEVATION"
@@ -21,7 +25,11 @@
   </div>
   <div class="d-flex flex-column col-4 pe-3">
     <atlas-text-field
-      [fieldExamples]="[{ label: 'PRM.PLATFORMS.ACCORDING_TO_GUIDE', translate: true }]"
+      [fieldExamples]="[
+        { label: 'FORM.FOR_EXAMPLE', translate: true },
+        { label: '5.123 |', translate: false },
+        { label: 'FORM.MAX_DIGITS', translate: true, arg: { key: 'amount', value: '3' } }
+      ]"
       [formGroup]="form"
       controlName="inclinationWidth"
       fieldLabel="PRM.PLATFORMS.COMPLETE.INCLINATION_WIDTH"
@@ -30,7 +38,11 @@
   </div>
   <div class="d-flex flex-column col-4">
     <atlas-text-field
-      [fieldExamples]="[{ label: 'PRM.PLATFORMS.ACCORDING_TO_GUIDE', translate: true }]"
+      [fieldExamples]="[
+        { label: 'FORM.FOR_EXAMPLE', translate: true },
+        { label: '5.123 |', translate: false },
+        { label: 'FORM.MAX_DIGITS', translate: true, arg: { key: 'amount', value: '3' } }
+      ]"
       [formGroup]="form"
       controlName="inclination"
       fieldLabel="PRM.PLATFORMS.COMPLETE.INCLINATION"
@@ -45,6 +57,7 @@
       controlName="contrastingAreas"
       dataCy="contrastingAreas"
       label="PRM.PLATFORMS.COMPLETE.CONTRASTING_AREAS"
+      infoIconTitle="PRM.PLATFORMS.COMPLETE.CONTRASTING_AREAS_INFO"
       optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
       [options]="booleanOptionalAttributeTypes"
       [additionalLabelspace]="0"
@@ -62,6 +75,7 @@
       controlName="dynamicVisual"
       dataCy="dynamicVisual"
       label="PRM.PLATFORMS.COMPLETE.DYNAMIC_VISUAL"
+      infoIconTitle="PRM.PLATFORMS.COMPLETE.DYNAMIC_VISUAL_INFO"
       optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
       [options]="basicAttributeType"
       [additionalLabelspace]="0"
@@ -74,6 +88,7 @@
       controlName="dynamicAudio"
       dataCy="dynamicAudio"
       label="PRM.PLATFORMS.COMPLETE.DYNAMIC_AUDIO"
+      infoIconTitle="PRM.PLATFORMS.COMPLETE.DYNAMIC_AUDIO_INFO"
       optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
       [options]="basicAttributeType"
       [additionalLabelspace]="0"
@@ -91,6 +106,7 @@
       controlName="levelAccessWheelchair"
       dataCy="levelAccessWheelchair"
       label="PRM.PLATFORMS.COMPLETE.LEVEL_ACCESS_WHEELCHAIR"
+      infoIconTitle="PRM.PLATFORMS.COMPLETE.LEVEL_ACCESS_WHEELCHAIR_INFO"
       optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
       [options]="basicAttributeType"
       [additionalLabelspace]="0"
@@ -103,6 +119,7 @@
       controlName="boardingDevice"
       dataCy="boardingDevice"
       label="PRM.PLATFORMS.COMPLETE.BOARDING_DEVICE"
+      infoIconTitle="PRM.PLATFORMS.COMPLETE.BOARDING_DEVICE_INFO"
       optionTranslateLabelPrefix="PRM.ENUMS.BOARDING_DEVICE_TYPES."
       [options]="boardingDeviceAttributeTypes"
       [additionalLabelspace]="0"
@@ -115,7 +132,7 @@
     <form-comment
       [formGroup]="form"
       label="PRM.PLATFORMS.COMPLETE.ADVICE_ACCESS_INFO"
-      infoLabel="PRM.PLATFORMS.COMPLETE.ADVICE_ACCESS_INFO_SUBTITLE"
+      info="PRM.PLATFORMS.COMPLETE.ADVICE_ACCESS_INFO_SUBTITLE"
       controlName="adviceAccessInfo"
       maxChars="2000"
     ></form-comment>
