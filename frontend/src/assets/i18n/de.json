@@ -1123,10 +1123,10 @@
       },
       "VEHICLE_ACCESS_TYPES": {
         "TO_BE_COMPLETED": "Zu vervollständigen",
-        "PLATFORM_ACCESS_WITHOUT_ASSISTANCE": "Nein",
-        "PLATFORM_ACCESS_WITH_ASSISTANCE": "Nicht anwendbar",
-        "PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED": "Rampe",
-        "PLATFORM_NOT_WHEELCHAIR_ACCESSIBLE": "Lift"
+        "PLATFORM_ACCESS_WITHOUT_ASSISTANCE": "Stufenloser Zugang; niveaugleicher Ein-/Ausstieg.",
+        "PLATFORM_ACCESS_WITH_ASSISTANCE": "Stufenloser Zugang; Ein-/Ausstieg durch Personalhilfestellung, keine Voranmeldung nötig.",
+        "PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED": "Stufenloser Zugang; Ein-/Ausstieg durch Personalhilfestellung, Voranmeldung nötig.",
+        "PLATFORM_NOT_WHEELCHAIR_ACCESSIBLE": "Für Rollstühle nicht benutzbar."
       },
       "INFO_OPPORTUNITY_TYPES": {
         "TO_BE_COMPLETED": "Zu vervollständigen",
@@ -1163,7 +1163,6 @@
         "NOT_STARTED": "nicht begonnen"
       },
       "DETAIL_INFORMATION": "Angaben zur Haltekante",
-      "ACCORDING_TO_GUIDE": "Gemäss Leitfaden",
       "COMPLETE": {
         "ADDITIONAL_INFORMATION": "Hinweise zum Zugang zur Haltekante",
         "ADDITIONAL_INFORMATION_SUBTITLE": "Freitextfeld für (freiwillige) Erläuterungen zu speziellen Fällen zum Perronzugang auf Stufe Haltekante.",
