@@ -11,6 +11,7 @@ import { TextFieldComponent } from '../../../../../core/form-components/text-fie
 import { AtlasLabelFieldComponent } from '../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
 import { AppTestingModule } from '../../../../../app.testing.module';
 import { PlatformFormGroupBuilder } from '../platform-form-group';
+import { InfoOpportunityAttributeType } from '../../../../../api';
 
 describe('PlatformReducedFormComponent', () => {
   let component: PlatformReducedFormComponent;
@@ -37,5 +38,22 @@ describe('PlatformReducedFormComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should default infoOpportunities to ToBeCompleted', () => {
+    component.form.controls.infoOpportunities.setValue([]);
+    expect(component.form.controls.infoOpportunities.value).toEqual([
+      InfoOpportunityAttributeType.ToBeCompleted,
+    ]);
+  });
+
+  it('should remove ToBeCompleted from infoOpportunities on other select', () => {
+    component.form.controls.infoOpportunities.setValue([
+      InfoOpportunityAttributeType.ToBeCompleted,
+      InfoOpportunityAttributeType.TextToSpeechComplete,
+    ]);
+    expect(component.form.controls.infoOpportunities.value).toEqual([
+      InfoOpportunityAttributeType.TextToSpeechComplete,
+    ]);
   });
 });
