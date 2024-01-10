@@ -9,8 +9,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @Slf4j
 @Service
@@ -19,12 +19,12 @@ public class BusinessOrganisationAmazonService {
 
   private final AmazonFileStreamingService amazonFileStreamingService;
 
-  public StreamingResponseBody streamJsonFile(ExportType exportType) {
+  public InputStreamResource streamJsonFile(ExportType exportType) {
     String fileToStream = getFileToStream(exportType);
     return amazonFileStreamingService.streamFileAndDecompress(AmazonBucket.EXPORT, fileToStream);
   }
 
-  public StreamingResponseBody streamGzipFile(ExportType exportType) {
+  public InputStreamResource streamGzipFile(ExportType exportType) {
     String fileToStream = getFileToStream(exportType);
     return amazonFileStreamingService.streamFile(AmazonBucket.EXPORT, fileToStream);
   }
