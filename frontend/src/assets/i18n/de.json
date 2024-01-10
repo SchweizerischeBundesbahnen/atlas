@@ -1175,7 +1175,14 @@
         "VEHICLE_ACCESS": "Zugang zum Perron; Einstieg ins Fahrzeug",
         "TACTILE_SYSTEM": "Taktiles Leitsystem",
         "ADDITIONAL_INFORMATION": "Hinweise zum Zugang zur Haltekante",
-        "PARTIAL_ELEVATION": "Hinweise zum Zugang zur Haltekante"
+        "INCLINATION_LONG": "Längsneigung der Haltekante [%]",
+        "PARTIAL_ELEVATION": "Teilerhöhung",
+        "INFO_OPPORTUNITIES": "Informationsmöglichkeiten",
+        "WHEELCHAIR_AREA": "Rollstuhleinstiegsfläche",
+        "WHEELCHAIR_AREA_SUBTILTE": "Rollstuhleinfahrtsfläche (Bus) = Perronbereich Rollstuhleinstieg (Tram); weitere Beschreibung im Leitfaden",
+        "HEIGHT": "Höhe [cm]",
+        "WHEELCHAIR_AREA_LENGTH": "Länge [cm]",
+        "WHEELCHAIR_AREA_WIDTH": "Breite [cm]"
       }
     }
   }
