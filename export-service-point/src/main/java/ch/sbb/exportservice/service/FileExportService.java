@@ -16,36 +16,42 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FileExportService<T extends ExportTypeBase> {
 
   private static final String JSON_GZ_EXTENSION = ".json.gz";
-  public static final String S3_BUCKET_PATH_SEPARATOR = "/";
+  private static final String S3_BUCKET_PATH_SEPARATOR = "/";
+  private static final String DOWNLOADING_FILE_INFO_MSG = "Downloading file: ";
 
   private final AmazonFileStreamingService amazonFileStreamingService;
   private final AmazonService amazonService;
   private final FileService fileService;
 
-  public StreamingResponseBody streamJsonFile(T exportTypeBase, ExportFileName exportFileName) {
+  public InputStreamResource streamJsonFile(T exportTypeBase, ExportFileName exportFileName) {
     String fileToStream = getFileToStream(exportTypeBase, exportFileName, JSON_GZ_EXTENSION);
+    log.info(DOWNLOADING_FILE_INFO_MSG + fileToStream);
     return amazonFileStreamingService.streamFileAndDecompress(AmazonBucket.EXPORT, fileToStream);
   }
 
-  public StreamingResponseBody streamGzipFile(T exportTypeBase, ExportFileName exportFileName) {
+  public InputStreamResource streamGzipFile(T exportTypeBase, ExportFileName exportFileName) {
     String fileToStream = getFileToStream(exportTypeBase, exportFileName, JSON_GZ_EXTENSION);
+    log.info(DOWNLOADING_FILE_INFO_MSG + fileToStream);
     return amazonFileStreamingService.streamFile(AmazonBucket.EXPORT, fileToStream);
   }
 
-  public StreamingResponseBody streamLatestGzipFile(String fileToStream) {
+  public InputStreamResource streamLatestGzipFile(String fileToStream) {
+    log.info(DOWNLOADING_FILE_INFO_MSG + fileToStream);
     return amazonFileStreamingService.streamFile(AmazonBucket.EXPORT, fileToStream);
   }
 
-
-  public StreamingResponseBody streamLatestJsonFile(String fileToStream) {
+  public InputStreamResource streamLatestJsonFile(String fileToStream) {
+    log.info(DOWNLOADING_FILE_INFO_MSG + fileToStream);
     return amazonFileStreamingService.streamFileAndDecompress(AmazonBucket.EXPORT, fileToStream);
   }
 
