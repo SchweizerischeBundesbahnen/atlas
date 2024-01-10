@@ -1190,7 +1190,7 @@
         "TACTILE_SYSTEM": "Sistema di guida tattile",
         "TACTILE_SYSTEM_INFO": "Sistema di guida tattile (da non confondere con la segnaletica orizzontale prevista per i non vedenti dall’art. 12 ORTDis).",
         "ADDITIONAL_INFORMATION": "Osservazioni sull’accesso al bordo di fermata",
-        "ADDITIONAL_INFORMATION_SUBTITLE": "Campo di testo libero per (eventuali) spiegazioni di casi particolari.",
+        "ADDITIONAL_INFORMATION_INFO": "Campo di testo libero per (eventuali) spiegazioni di casi particolari.",
         "INCLINATION_LONG": "Pendenza longitudinale del marciapiede [%]",
         "PARTIAL_ELEVATION": "Innalzamento parziale",
         "PARTIAL_ELEVATION_INFO": "Attivare in caso di innalzamento parziale.",
