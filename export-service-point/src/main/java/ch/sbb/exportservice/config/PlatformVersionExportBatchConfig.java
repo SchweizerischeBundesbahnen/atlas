@@ -11,12 +11,17 @@ import ch.sbb.exportservice.entity.PlatformVersion;
 import ch.sbb.exportservice.entity.StopPointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
+import ch.sbb.exportservice.model.PrmBatchExportFileName;
 import ch.sbb.exportservice.model.PrmExportType;
+import ch.sbb.exportservice.model.SePoDiBatchExportFileName;
 import ch.sbb.exportservice.model.SePoDiExportType;
 import ch.sbb.exportservice.processor.PlatformVersionCsvProcessor;
 import ch.sbb.exportservice.processor.StopPointVersionCsvProcessor;
 import ch.sbb.exportservice.reader.LoadingPointVersionSqlQueryUtil;
 import ch.sbb.exportservice.reader.PlatformVersionRowMapper;
+import ch.sbb.exportservice.reader.PlatformVersionSqlQueryUtil;
+import ch.sbb.exportservice.tasklet.FileJsonDeletingTasklet;
+import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvLoadingPointVersionWriter;
 import ch.sbb.exportservice.writer.CsvPlatformVersionWriter;
@@ -56,11 +61,11 @@ public class PlatformVersionExportBatchConfig {
     @StepScope
     public JdbcCursorItemReader<PlatformVersion> platformReader(
         @Autowired @Qualifier("prmDataSource") DataSource dataSource,
-        @Value("#{jobParameters[exportType]}") SePoDiExportType sePoDiExportType
+        @Value("#{jobParameters[exportType]}") PrmExportType prmExportType
     ) {
         JdbcCursorItemReader<PlatformVersion> itemReader = new JdbcCursorItemReader<>();
         itemReader.setDataSource(dataSource);
-        itemReader.setSql(LoadingPointVersionSqlQueryUtil.getSqlQuery(sePoDiExportType));
+        itemReader.setSql(PlatformVersionSqlQueryUtil.getSqlQuery(prmExportType));
         itemReader.setFetchSize(StepUtils.FETCH_SIZE);
         itemReader.setRowMapper(new PlatformVersionRowMapper());
         return itemReader;
@@ -70,7 +75,7 @@ public class PlatformVersionExportBatchConfig {
     public Step exportPlatformCsvStep(ItemReader<PlatformVersion> itemReader) {
         final String stepName = "exportPlatformCsvStep";
         return new StepBuilder(stepName, jobRepository)
-            .<StopPointVersion, StopPointVersionCsvModel>chunk(StepUtils.CHUNK_SIZE, transactionManager)
+            .<PlatformVersion, PlatformVersionCsvModel>chunk(StepUtils.CHUNK_SIZE, transactionManager)
             .reader(itemReader)
             .processor(platformVersionCsvProcessor())
             .writer(platformCsvWriter(null))
@@ -98,13 +103,42 @@ public class PlatformVersionExportBatchConfig {
     @Bean
     @Qualifier(EXPORT_PLATFORM_CSV_JOB_NAME)
     public Job exportPlatformCsvJob(ItemReader<PlatformVersion> itemReader) {
-        return new JobBuilder(EXPORT_STOP_POINT_CSV_JOB_NAME, jobRepository)
+        return new JobBuilder(EXPORT_PLATFORM_CSV_JOB_NAME, jobRepository)
             .listener(jobCompletionListener)
             .incrementer(new RunIdIncrementer())
             .flow(exportPlatformCsvStep(itemReader))
-            .next(uploadStopPointCsvFileStep())
-            .next(deleteStopPointCsvFileStep())
+            .next(uploadCsvFileStep())
+            .next(deleteJsonFileStep())
             .end()
             .build();
+    }
+
+    @Bean
+    public Step uploadCsvFileStep() {
+        return new StepBuilder("uploadCsvFile", jobRepository)
+            .tasklet(uploadCsvFileTasklet(null), transactionManager)
+            .listener(stepTracerListener)
+            .build();
+    }
+
+    @Bean
+    public Step deleteJsonFileStep() {
+        return new StepBuilder("deleteJsonFiles", jobRepository)
+            .tasklet(fileJsonDeletingTasklet(null), transactionManager)
+            .listener(stepTracerListener)
+            .build();
+    }
+
+    @Bean
+    @StepScope
+    public UploadCsvFileTasklet uploadCsvFileTasklet(@Value("#{jobParameters[exportType]}") PrmExportType prmExportType) {
+        return new UploadCsvFileTasklet(prmExportType, PLATFORM_VERSION);
+    }
+
+    @Bean
+    @StepScope
+    public FileJsonDeletingTasklet fileJsonDeletingTasklet(
+        @Value("#{jobParameters[exportType]}") PrmExportType prmExportType) {
+        return new FileJsonDeletingTasklet(prmExportType, PLATFORM_VERSION);
     }
 }
