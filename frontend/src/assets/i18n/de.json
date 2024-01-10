@@ -1119,7 +1119,7 @@
         "NO": "Nein",
         "NOT_APPLICABLE": "Nicht anwendbar",
         "RAMPS": "Rampe",
-        "LIFTS": "Lift"
+        "LIFTS": "Hublift"
       },
       "VEHICLE_ACCESS_TYPES": {
         "TO_BE_COMPLETED": "Zu vervollständigen",
@@ -1127,6 +1127,15 @@
         "PLATFORM_ACCESS_WITH_ASSISTANCE": "Nicht anwendbar",
         "PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED": "Rampe",
         "PLATFORM_NOT_WHEELCHAIR_ACCESSIBLE": "Lift"
+      },
+      "INFO_OPPORTUNITY_TYPES": {
+        "TO_BE_COMPLETED": "Zu vervollständigen",
+        "STATIC_VISUAL_INFORMATION": "statische optische Informationen (Aushangfahrplan, evtl. Netz- bzw. Tarifzonenplan)",
+        "ELECTRONIC_VISUAL_INFORMATION_DEPARTURES": "elektronische Anzeige, nur mit Abfahrten",
+        "ELECTRONIC_VISUAL_INFORMATION_COMPLETE": "elektronische Anzeige, mit Abfahrten und Störungsinformationen",
+        "ACOUSTIC_INFORMATION": "Lautsprecher (in der Regel nur Störungsinformation)",
+        "TEXT_TO_SPEECH_DEPARTURES": "Text-to-Speech, nur mit Abfahrten",
+        "TEXT_TO_SPEECH_COMPLETE": "Text-to-Speech, mit Abfahrten und Störungsinformationen"
       }
     },
     "INFO_BOX": {
@@ -1157,7 +1166,7 @@
       "ACCORDING_TO_GUIDE": "Gemäss Leitfaden",
       "COMPLETE": {
         "ADDITIONAL_INFORMATION": "Hinweise zum Zugang zur Haltekante",
-        "ADDITIONAL_INFORMATION_SUBTITLE": "Freitextfeld für (freiwillige) Erläuterungen zu speziellen Flällen zum Perronzugang auf Stufe Haltekante",
+        "ADDITIONAL_INFORMATION_SUBTITLE": "Freitextfeld für (freiwillige) Erläuterungen zu speziellen Fällen zum Perronzugang auf Stufe Haltekante",
         "SUPERELEVATION": "Gleisüberhöhungswert [mm]",
         "INCLINATION_WIDTH": "Perronlängsneigung [%]",
         "INCLINATION": "Perronquergefälle [%]",
@@ -1173,11 +1182,16 @@
       },
       "REDUCED": {
         "VEHICLE_ACCESS": "Zugang zum Perron; Einstieg ins Fahrzeug",
+        "VEHICLE_ACCESS_INFO": "Eine Ausprägung pro Haltekante. Entspricht dem Rollstuhlstatus gemäss V580 Vorschrift 02 - Produkte mit\nübergreifendem Charakter (Signaletik, Symbole und Piktogramme), Abschnitt 3.2 Reisen mit Handicap",
         "TACTILE_SYSTEM": "Taktiles Leitsystem",
+        "TACTILE_SYSTEM_INFO": "Taktiles Leitsystem (nicht zu verwechseln mit dem vorgeschriebenen Blindenquadrat gem. Art. 12 VAböV).",
         "ADDITIONAL_INFORMATION": "Hinweise zum Zugang zur Haltekante",
+        "ADDITIONAL_INFORMATION_INFO": "Freitextfeld für Erläuterungen zu nicht barrierefreien Haltekanten und Spezialfällen. Existieren\nAbhängigkeiten zu Verkehrsmitteltyp, Angebotskategorie oder sogar Linie, d.h., gilt die angegebene\nZugänglichkeit nur für einen Teil des relevanten Fahrplanangebots, ist dies zu vermerken.",
         "INCLINATION_LONG": "Längsneigung der Haltekante [%]",
         "PARTIAL_ELEVATION": "Teilerhöhung",
+        "PARTIAL_ELEVATION_INFO": "Aktivieren wenn es sich um eine Teilerhöhung handelt.",
         "INFO_OPPORTUNITIES": "Informationsmöglichkeiten",
+        "INFO_OPPORTUNITIES_INFO": "Informationen für Sinnesbehinderte",
         "WHEELCHAIR_AREA": "Rollstuhleinstiegsfläche",
         "WHEELCHAIR_AREA_SUBTILTE": "Rollstuhleinfahrtsfläche (Bus) = Perronbereich Rollstuhleinstieg (Tram); weitere Beschreibung im Leitfaden",
         "HEIGHT": "Höhe [cm]",
