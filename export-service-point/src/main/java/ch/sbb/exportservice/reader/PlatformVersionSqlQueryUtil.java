@@ -14,7 +14,7 @@ public class PlatformVersionSqlQueryUtil extends SqlQueryUtil{
     private static final String SELECT_STATEMENT = """
       SELECT pv.id, string_agg(pvio.info_opportunities, '|') as info_opportunities, pv.* 
       FROM platform_version pv
-      LEFT JOIN platform_version_info_opportunities pvio on pv.id = pvio.platfrom_version_id
+      LEFT JOIN platform_version_info_opportunities pvio on pv.id = pvio.platform_version_id
       """;
     private static final String WHERE_STATEMENT = "WHERE '%s' between pv.valid_from and pv.valid_to ";
     private static final String GROUP_BY_STATEMENT = "GROUP BY pv.id";
