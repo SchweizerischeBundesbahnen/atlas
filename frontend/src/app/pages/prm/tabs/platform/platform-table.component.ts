@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BasePrmTabComponentService } from '../base-prm-tab-component.service';
-import { PrmTab } from '../../prm-panel/prm-tab';
+import { PrmTabs } from '../../prm-panel/prm-tabs';
 import { Tab } from '../../../tab';
 import {
   PersonWithReducedMobilityService,
@@ -61,7 +61,7 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
   }
 
   getTag(): Tab {
-    return PrmTab.PLATFORM;
+    return PrmTabs.PLATFORM;
   }
 
   rowClicked(clickedRow: PlatformOverviewRow) {
