@@ -40,11 +40,11 @@ public class AmazonServiceImpl implements AmazonService {
     return putFileToBucket(bucket, file, dir, metadata);
   }
 
-  private AmazonS3 getClient(AmazonBucket bucket) {
+  AmazonS3 getClient(AmazonBucket bucket) {
     return amazonBucketClients.stream().filter(i -> i.getBucket() == bucket).findFirst().orElseThrow().getClient();
   }
 
-  private AmazonBucketConfig getAmazonBucketConfig(AmazonBucket bucket) {
+  AmazonBucketConfig getAmazonBucketConfig(AmazonBucket bucket) {
     return amazonBucketClients.stream().filter(i -> i.getBucket() == bucket).findFirst().orElseThrow().getAmazonBucketConfig();
   }
 
