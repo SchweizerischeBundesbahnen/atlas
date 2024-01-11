@@ -13,11 +13,11 @@ import { ParkingLotComponent } from './tabs/parking-lot/parking-lot.component';
 import { ConnectionComponent } from './tabs/connection/connection.component';
 import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
 import { stopPointResolver } from './prm-panel/resolvers/stop-point.resolver';
-import { PrmTab } from './prm-panel/prm-tab';
+import { PrmTabs } from './prm-panel/prm-tabs';
 import { prmPanelResolver } from './prm-panel/resolvers/prm-panel-resolver.service';
 import { PlatformComponent } from './platform/platform.component';
-import { platformResolver } from './platform/platform.resolver';
-import { trafficPointElementResolver } from './platform/traffic-point-element.resolver';
+import { platformResolver } from './platform/resolvers/platform.resolver';
+import { trafficPointElementResolver } from './platform/resolvers/traffic-point-element.resolver';
 
 const routes: Routes = [
   {
@@ -28,6 +28,7 @@ const routes: Routes = [
     path: Pages.STOP_POINTS.path + '/:stopPointSloid/' + Pages.PLATFORMS.path + '/:platformSloid',
     component: PlatformComponent,
     runGuardsAndResolvers: 'always',
+    canDeactivate: [canLeaveDirtyForm],
     resolve: {
       platform: platformResolver,
       servicePoint: prmPanelResolver,
@@ -48,37 +49,37 @@ const routes: Routes = [
         canDeactivate: [canLeaveDirtyForm],
       },
       {
-        path: PrmTab.REFERENCE_POINT.link,
+        path: PrmTabs.REFERENCE_POINT.link,
         component: ReferencePointComponent,
         runGuardsAndResolvers: 'always',
       },
       {
-        path: PrmTab.PLATFORM.link,
+        path: PrmTabs.PLATFORM.link,
         component: PlatformTableComponent,
         runGuardsAndResolvers: 'always',
       },
       {
-        path: PrmTab.TICKET_COUNTER.link,
+        path: PrmTabs.TICKET_COUNTER.link,
         component: TicketCounterComponent,
         runGuardsAndResolvers: 'always',
       },
       {
-        path: PrmTab.INFORMATION_DESK.link,
+        path: PrmTabs.INFORMATION_DESK.link,
         component: InformationDeskComponent,
         runGuardsAndResolvers: 'always',
       },
       {
-        path: PrmTab.TOILET.link,
+        path: PrmTabs.TOILET.link,
         component: ToiletComponent,
         runGuardsAndResolvers: 'always',
       },
       {
-        path: PrmTab.PARKING_LOT.link,
+        path: PrmTabs.PARKING_LOT.link,
         component: ParkingLotComponent,
         runGuardsAndResolvers: 'always',
       },
       {
-        path: PrmTab.CONNECTION.link,
+        path: PrmTabs.CONNECTION.link,
         component: ConnectionComponent,
         runGuardsAndResolvers: 'always',
       },

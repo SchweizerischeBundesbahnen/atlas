@@ -1,6 +1,7 @@
 import { Pages } from '../../pages';
 
-export const PrmTab = {
+export type PrmTab = { link: string; title: string };
+export const PrmTabs = {
   STOP_POINT: {
     link: Pages.PRM_STOP_POINT_TAB.path,
     title: Pages.PRM_STOP_POINT_TAB.title,
@@ -38,23 +39,23 @@ export const PrmTab = {
   },
 };
 export const PRM_TABS = [
-  PrmTab.STOP_POINT,
-  PrmTab.REFERENCE_POINT,
-  PrmTab.PLATFORM,
-  PrmTab.TICKET_COUNTER,
-  PrmTab.INFORMATION_DESK,
-  PrmTab.TOILET,
-  PrmTab.PARKING_LOT,
-  PrmTab.CONNECTION,
+  PrmTabs.STOP_POINT,
+  PrmTabs.REFERENCE_POINT,
+  PrmTabs.PLATFORM,
+  PrmTabs.TICKET_COUNTER,
+  PrmTabs.INFORMATION_DESK,
+  PrmTabs.TOILET,
+  PrmTabs.PARKING_LOT,
+  PrmTabs.CONNECTION,
 ];
 
 export const PRM_REDUCED_TABS = [
-  PrmTab.STOP_POINT,
-  PrmTab.PLATFORM,
-  PrmTab.TICKET_COUNTER,
-  PrmTab.INFORMATION_DESK,
-  PrmTab.TOILET,
-  PrmTab.PARKING_LOT,
+  PrmTabs.STOP_POINT,
+  PrmTabs.PLATFORM,
+  PrmTabs.TICKET_COUNTER,
+  PrmTabs.INFORMATION_DESK,
+  PrmTabs.TOILET,
+  PrmTabs.PARKING_LOT,
 ];
 
-export const PRM_COMPLETE_TABS = [PrmTab.REFERENCE_POINT, PrmTab.CONNECTION];
+export const PRM_COMPLETE_TABS = [PrmTabs.REFERENCE_POINT, PrmTabs.CONNECTION];
