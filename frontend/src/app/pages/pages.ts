@@ -188,12 +188,12 @@ export class Pages {
   };
 
   public static PLATFORMS: Page = {
-    title: 'PRM.STOP_POINTS.TITLE',
-    titleMenu: 'PAGES.STOP_POINTS.TITLE_HEADER',
-    headerTitle: 'PAGES.STOP_POINTS.TITLE_HEADER',
+    title: 'PRM.PLATFORMS.TITLE',
+    titleMenu: 'PAGES.PLATFORMS.TITLE_HEADER',
+    headerTitle: 'PAGES.PLATFORMS.TITLE_HEADER',
     path: 'platform',
-    pathText: 'PAGES.STOP_POINTS.TITLE_HEADER',
-    description: 'PAGES.STOP_POINTS.DESCRIPTION',
+    pathText: 'PAGES.PLATFORMS.TITLE_HEADER',
+    description: 'PAGES.PLATFORMS.DESCRIPTION',
   };
 
   public static PRM_STOP_POINT_TAB: Page = {

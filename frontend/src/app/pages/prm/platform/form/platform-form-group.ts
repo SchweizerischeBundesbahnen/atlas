@@ -13,7 +13,7 @@ import {
   VehicleAccessAttributeType,
 } from '../../../../api';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
-import { servicePointSloidToNumber } from '../../../../core/util/sloidHelper';
+import { SloidHelper } from '../../../../core/util/sloidHelper';
 
 export interface PlatformFormGroup extends BaseDetailFormGroup {
   sloid: FormControl<string | null | undefined>;
@@ -156,7 +156,7 @@ export class PlatformFormGroupBuilder {
     const platformVersion: CreatePlatformVersion = {
       sloid: formValue.sloid!,
       parentServicePointSloid: parentServicePointSloid,
-      numberWithoutCheckDigit: servicePointSloidToNumber(parentServicePointSloid),
+      numberWithoutCheckDigit: SloidHelper.servicePointSloidToNumber(parentServicePointSloid),
       validFrom: formValue.validFrom!.toDate(),
       validTo: formValue.validTo!.toDate(),
       creationDate: formValue.creationDate!,
