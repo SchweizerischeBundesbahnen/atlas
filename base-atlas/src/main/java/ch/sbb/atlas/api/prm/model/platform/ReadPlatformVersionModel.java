@@ -1,7 +1,6 @@
 package ch.sbb.atlas.api.prm.model.platform;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -19,7 +18,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "ReadPlatformVersion")
-public class ReadPlatformVersionModel extends PlatformVersionModel implements DatesValidator {
+public class ReadPlatformVersionModel extends PlatformVersionModel {
 
   @NotNull
   @Valid

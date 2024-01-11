@@ -35,13 +35,13 @@ public class PlatformVersionCsvModel {
 
     private String dynamicVisual;
 
-    private String height;
+    private Double height;
 
-    private String inclination;
+    private Double inclination;
 
-    private String inclinationLongitudal;
+    private Double inclinationLongitudal;
 
-    private String inclinationWidth;
+    private Double inclinationWidth;
 
     private String infoOpportunities;
 
@@ -49,15 +49,15 @@ public class PlatformVersionCsvModel {
 
     private Boolean partialElevation;
 
-    private String superElevation;
+    private Double superElevation;
 
     private String tactileSystems;
 
     private String vehicleAccess;
 
-    private String wheelchairAreaLength;
+    private Double wheelchairAreaLength;
 
-    private String wheelChairAreaWidth;
+    private Double wheelChairAreaWidth;
 
     private String validFrom;
 

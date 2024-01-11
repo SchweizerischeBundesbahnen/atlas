@@ -54,6 +54,8 @@ public class PlatformVersion extends BaseEntity {
 
     private Set<InfoOpportunityAttributeType> infoOpportunities;
 
+    private String infoOpportunitiesPipeList;
+
     private BasicAttributeType levelAccessWheelchair;
 
     private Boolean partialElevation;
