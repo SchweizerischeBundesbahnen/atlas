@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PlatformCompleteFormComponent } from './platform-complete-form.component';
-import {
-  MockAtlasFieldErrorComponent,
-  MockSelectComponent,
-} from '../../../../../app.testing.mocks';
+import { MockAtlasFieldErrorComponent } from '../../../../../app.testing.mocks';
 import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
 import { AtlasLabelFieldComponent } from '../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
 import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
 import { AppTestingModule } from '../../../../../app.testing.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import { PlatformFormGroupBuilder } from '../platform-form-group';
+import { InfoIconComponent } from '../../../../../core/form-components/info-icon/info-icon.component';
+import { SelectComponent } from '../../../../../core/form-components/select/select.component';
+import { CommentComponent } from '../../../../../core/form-components/comment/comment.component';
 
 describe('PlatformCompleteFormComponent', () => {
   let component: PlatformCompleteFormComponent;
@@ -20,11 +20,13 @@ describe('PlatformCompleteFormComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         PlatformCompleteFormComponent,
-        MockSelectComponent,
         TextFieldComponent,
-        MockAtlasFieldErrorComponent,
         AtlasLabelFieldComponent,
+        MockAtlasFieldErrorComponent,
         AtlasSpacerComponent,
+        InfoIconComponent,
+        SelectComponent,
+        CommentComponent,
       ],
       imports: [AppTestingModule],
       providers: [{ provide: TranslatePipe }],
