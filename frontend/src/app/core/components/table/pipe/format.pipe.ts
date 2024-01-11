@@ -10,7 +10,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class FormatPipe implements PipeTransform {
   constructor(private readonly translatePipe: TranslatePipe) {}
 
-  transform<T>(value: string | Date, column: TableColumn<T>): string {
+  transform<T>(value: string | Date | undefined, column: TableColumn<T>): string {
     if (value === undefined) {
       return '';
     }
