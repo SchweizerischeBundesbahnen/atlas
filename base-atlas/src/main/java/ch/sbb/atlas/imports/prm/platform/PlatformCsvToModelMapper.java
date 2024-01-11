@@ -7,8 +7,7 @@ import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import java.util.Collections;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
 import java.util.stream.Stream;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
@@ -47,14 +46,14 @@ public class PlatformCsvToModelMapper {
         .build();
   }
 
-  private static Set<InfoOpportunityAttributeType> getInfoOpportunities(PlatformCsvModel csvModel) {
+  private static List<InfoOpportunityAttributeType> getInfoOpportunities(PlatformCsvModel csvModel) {
     if (StringUtils.isBlank(csvModel.getInfoBlinds())) {
-      return Collections.emptySet();
+      return Collections.emptyList();
     }
     return Stream.of(csvModel.getInfoBlinds().split("~"))
         .filter(StringUtils::isNotBlank)
         .map(Integer::parseInt)
         .map(InfoOpportunityAttributeType::of)
-        .collect(Collectors.toSet());
+        .toList();
   }
 }

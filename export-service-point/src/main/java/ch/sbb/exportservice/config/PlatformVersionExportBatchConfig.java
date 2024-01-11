@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.config;
 
 import static ch.sbb.exportservice.model.PrmBatchExportFileName.PLATFORM_VERSION;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PLATFORM_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.*;
 
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
 import ch.sbb.atlas.export.model.prm.PlatformVersionCsvModel;
@@ -13,8 +13,10 @@ import ch.sbb.exportservice.processor.PlatformVersionCsvProcessor;
 import ch.sbb.exportservice.processor.PlatformVersionJsonProcessor;
 import ch.sbb.exportservice.reader.PlatformVersionRowMapper;
 import ch.sbb.exportservice.reader.PlatformVersionSqlQueryUtil;
+import ch.sbb.exportservice.tasklet.FileCsvDeletingTasklet;
 import ch.sbb.exportservice.tasklet.FileJsonDeletingTasklet;
 import ch.sbb.exportservice.tasklet.UploadCsvFileTasklet;
+import ch.sbb.exportservice.tasklet.UploadJsonFileTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvPlatformVersionWriter;
 import ch.sbb.exportservice.writer.JsonPlatformVersionWriter;
@@ -99,11 +101,23 @@ public class PlatformVersionExportBatchConfig {
             .incrementer(new RunIdIncrementer())
             .flow(exportPlatformCsvStep(itemReader))
             .next(uploadPlatformCsvFileStep())
-            .next(deletePlatformJsonFileStep())
+            .next(deletePlatformCsvFileStep())
             .end()
             .build();
     }
 
+    @Bean
+    @Qualifier(EXPORT_PLATFORM_JSON_JOB_NAME)
+    public Job exportPlatformJsonJob(ItemReader<PlatformVersion> itemReader) {
+        return new JobBuilder(EXPORT_PLATFORM_JSON_JOB_NAME, jobRepository)
+                .listener(jobCompletionListener)
+                .incrementer(new RunIdIncrementer())
+                .flow(exportPlatformJsonStep(itemReader))
+                .next(uploadPlatformJsonFileStep())
+                .next(deletePlatformJsonFileStep())
+                .end()
+                .build();
+    }
     @Bean
     public Step exportPlatformJsonStep(ItemReader<PlatformVersion> itemReader) {
         String stepName = "exportPlatformJsonStep";
@@ -140,6 +154,22 @@ public class PlatformVersionExportBatchConfig {
     }
 
     @Bean
+    public Step uploadPlatformJsonFileStep() {
+        return new StepBuilder("uploadJsonFile", jobRepository)
+                .tasklet(uploadPlatformJsonFileTasklet(null), transactionManager)
+                .listener(stepTracerListener)
+                .build();
+    }
+
+    @Bean
+    public Step deletePlatformCsvFileStep() {
+        return new StepBuilder("deleteCsvFiles", jobRepository)
+                .tasklet(filePlatformCsvDeletingTasklet(null), transactionManager)
+                .listener(stepTracerListener)
+                .build();
+    }
+
+    @Bean
     public Step deletePlatformJsonFileStep() {
         return new StepBuilder("deleteJsonFiles", jobRepository)
             .tasklet(filePlatformJsonDeletingTasklet(null), transactionManager)
@@ -151,6 +181,18 @@ public class PlatformVersionExportBatchConfig {
     @StepScope
     public UploadCsvFileTasklet uploadPlatformCsvFileTasklet(@Value("#{jobParameters[exportType]}") PrmExportType prmExportType) {
         return new UploadCsvFileTasklet(prmExportType, PLATFORM_VERSION);
+    }
+
+    @Bean
+    @StepScope
+    public UploadJsonFileTasklet uploadPlatformJsonFileTasklet(@Value("#{jobParameters[exportType]}") PrmExportType prmExportType) {
+        return new UploadJsonFileTasklet(prmExportType, PLATFORM_VERSION);
+    }
+
+    @Bean
+    @StepScope
+    public FileCsvDeletingTasklet filePlatformCsvDeletingTasklet(@Value("#{jobParameters[exportType]}") PrmExportType prmExportType) {
+        return new FileCsvDeletingTasklet(prmExportType, PLATFORM_VERSION);
     }
 
     @Bean
