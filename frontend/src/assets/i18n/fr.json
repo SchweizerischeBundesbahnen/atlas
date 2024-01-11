@@ -1156,6 +1156,7 @@
     },
     "PLATFORMS": {
       "TITLE": "Bordure d'arrêt/voie",
+      "NEW": "Nouveau bordure d’arrêt",
       "RECORDING_STATUS": "État de la saisie",
       "RECORDINGSTATUS": {
         "COMPLETE": "complet",
@@ -1201,6 +1202,10 @@
         "HEIGHT": "Hauteur [cm]",
         "WHEELCHAIR_AREA_LENGTH": "Longueur [cm]",
         "WHEELCHAIR_AREA_WIDTH": "Largeur [cm]"
+      },
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Le bordure d’arrêt a été ajouté avec succès.",
+        "EDIT_SUCCESS": "Le bordure d’arrêt a été enregistré avec succès."
       }
     }
   }
