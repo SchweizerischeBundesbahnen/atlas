@@ -5,7 +5,6 @@ import { AppTestingModule } from '../../../../app.testing.module';
 import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
 import { PersonWithReducedMobilityService, ReadPlatformVersion } from '../../../../api';
 import { platformResolver } from './platform.resolver';
-import { PrmPanelResolver } from '../../prm-panel/resolvers/prm-panel-resolver.service';
 
 const platform: ReadPlatformVersion[] = [
   {
