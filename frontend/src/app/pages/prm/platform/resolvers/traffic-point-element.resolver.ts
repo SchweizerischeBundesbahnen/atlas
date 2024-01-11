@@ -5,7 +5,7 @@ import { ReadTrafficPointElementVersion, TrafficPointElementsService } from '../
 import { Pages } from '../../../pages';
 
 @Injectable({ providedIn: 'root' })
-export class TrafficPointiElementResolver {
+export class TrafficPointElementResolver {
   constructor(
     private readonly trafficPointElementsService: TrafficPointElementsService,
     private readonly router: Router,
@@ -27,4 +27,4 @@ export class TrafficPointiElementResolver {
 
 export const trafficPointElementResolver: ResolveFn<Array<ReadTrafficPointElementVersion>> = (
   route: ActivatedRouteSnapshot,
-) => inject(TrafficPointiElementResolver).resolve(route);
+) => inject(TrafficPointElementResolver).resolve(route);
