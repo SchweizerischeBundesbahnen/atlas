@@ -1,6 +1,7 @@
 package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
+import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.servicepoint.Canton;
 import ch.sbb.atlas.api.servicepoint.DistrictModel;
 import ch.sbb.atlas.api.servicepoint.GeolocationBaseReadModel;
@@ -32,6 +33,10 @@ public abstract class BaseServicePointProcessor {
 
   protected static List<MeanOfTransport> getMeansOfTransportSorted(Set<MeanOfTransport> meanOfTransports) {
     return meanOfTransports.stream().sorted().toList();
+  }
+
+  protected static List<InfoOpportunityAttributeType> getInfoOpportunities(Set<InfoOpportunityAttributeType> infoOpportunities) {
+    return infoOpportunities.stream().sorted().toList();
   }
 
   protected static List<Category> getCategoriesSorted(ServicePointVersion servicePointVersion) {
