@@ -5,7 +5,6 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSearchVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
-import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import org.hibernate.StaleObjectStateException;
 import org.junit.jupiter.api.Assertions;
@@ -46,11 +45,15 @@ class ServicePointServiceTest {
   @Mock
   private ServicePointStatusDecider servicePointStatusDecider;
 
+  @Mock
+  private LocationClient locationClient;
+
   @BeforeEach
   void initMocksAndService() {
     MockitoAnnotations.openMocks(this);
     servicePointService = new ServicePointService(servicePointVersionRepositoryMock, versionableServiceMock,
-        servicePointValidationService, servicePointSearchVersionRepository, servicePointTerminationService, servicePointStatusDecider);
+        servicePointValidationService, servicePointSearchVersionRepository, servicePointTerminationService,
+        servicePointStatusDecider, locationClient);
   }
 
   @Test
@@ -67,14 +70,15 @@ class ServicePointServiceTest {
 
   @Test
   void shouldCallFindServicePointWithRouteNetworkTrue() {
-   // given
-   ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(1234567);
+    // given
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(1234567);
 
-   // when
-   servicePointService.findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(servicePointNumber);
+    // when
+    servicePointService.findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(servicePointNumber);
 
-   // then
-   verify(servicePointVersionRepositoryMock).findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(eq(servicePointNumber));
+    // then
+    verify(servicePointVersionRepositoryMock).findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(
+        eq(servicePointNumber));
   }
 
   @Test
@@ -99,7 +103,7 @@ class ServicePointServiceTest {
   }
 
   @Test
-   void shouldGetCurrentServicePointVersionWhenValidFromPerfectMatch() {
+  void shouldGetCurrentServicePointVersionWhenValidFromPerfectMatch() {
     //given
     ServicePointVersion version = ServicePointVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -118,7 +122,7 @@ class ServicePointServiceTest {
   }
 
   @Test
-   void shouldGetCurrentServicePointVersionWhenValidToPerfectMatch() {
+  void shouldGetCurrentServicePointVersionWhenValidToPerfectMatch() {
     //given
     ServicePointVersion version = ServicePointVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -137,7 +141,7 @@ class ServicePointServiceTest {
   }
 
   @Test
-   void shouldGetCurrentServicePointVersionWhenEditedVersionIsBetweenDbVersion() {
+  void shouldGetCurrentServicePointVersionWhenEditedVersionIsBetweenDbVersion() {
     //given
     ServicePointVersion version = ServicePointVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -156,7 +160,7 @@ class ServicePointServiceTest {
   }
 
   @Test
-   void shouldGetCurrentServicePointVersionWhenFoundMultipleVersionWhenEditedVersionIsBetweenDbVersion() {
+  void shouldGetCurrentServicePointVersionWhenFoundMultipleVersionWhenEditedVersionIsBetweenDbVersion() {
     //given
     ServicePointVersion version1 = ServicePointVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 2))
@@ -185,7 +189,7 @@ class ServicePointServiceTest {
    * return             |-----------|
    */
   @Test
-   void shouldGetCurrentServicePointVersionWhenNoCurrentVersionMatchedAndReturnTheLastVersion() {
+  void shouldGetCurrentServicePointVersionWhenNoCurrentVersionMatchedAndReturnTheLastVersion() {
     //given
     ServicePointVersion version1 = ServicePointVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 2))
@@ -216,7 +220,7 @@ class ServicePointServiceTest {
    * return             |------------|
    */
   @Test
-   void shouldGetCurrentServicePointVersionWhenNoCurrentVersionMatchedAndReturnTheFirstVersion() {
+  void shouldGetCurrentServicePointVersionWhenNoCurrentVersionMatchedAndReturnTheFirstVersion() {
     //given
     ServicePointVersion version1 = ServicePointVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 2))
@@ -247,7 +251,7 @@ class ServicePointServiceTest {
    * return |------------|-----------|
    */
   @Test
-   void shouldReturnTheFirstVersionWhenTheEditVersionMatchExactlyMoreThenOneVersion() {
+  void shouldReturnTheFirstVersionWhenTheEditVersionMatchExactlyMoreThenOneVersion() {
     //given
     ServicePointVersion version1 = ServicePointVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -270,7 +274,7 @@ class ServicePointServiceTest {
   }
 
   @Test
-   void shouldUpdateServicePointVersion() {
+  void shouldUpdateServicePointVersion() {
     //given
     ServicePointVersion version1 = ServicePointVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -291,7 +295,7 @@ class ServicePointServiceTest {
   }
 
   @Test
-   void shouldUpdateServicePointVersionAndThrowException() {
+  void shouldUpdateServicePointVersionAndThrowException() {
     //given
     ServicePointVersion version1 = ServicePointVersion.builder()
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -304,7 +308,8 @@ class ServicePointServiceTest {
         .build();
     version2.setVersion(2);
     // when then
-    Assertions.assertThrows(StaleObjectStateException.class, () -> servicePointService.updateServicePointVersion(version1, version2, Collections.emptyList()));
+    Assertions.assertThrows(StaleObjectStateException.class,
+        () -> servicePointService.updateServicePointVersion(version1, version2, Collections.emptyList()));
   }
 
 }
