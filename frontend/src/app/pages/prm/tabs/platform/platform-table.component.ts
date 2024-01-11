@@ -15,7 +15,7 @@ import { Pages } from '../../../pages';
 import { TableService } from '../../../../core/components/table/table.service';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { mergeMap } from 'rxjs';
-import { servicePointSloidToNumber } from '../../../../core/util/sloidHelper';
+import { SloidHelper } from '../../../../core/util/sloidHelper';
 import { tap } from 'rxjs/operators';
 
 @Component({
@@ -73,7 +73,7 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
 
     this.trafficPointElementsService
       .getPlatformsOfServicePoint(
-        servicePointSloidToNumber(sloid),
+        SloidHelper.servicePointSloidToNumber(sloid),
         pagination.page,
         pagination.size,
         [pagination.sort ?? 'designation,asc'],
