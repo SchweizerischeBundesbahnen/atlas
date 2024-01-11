@@ -18,6 +18,7 @@ import {
   StopPointDetailFormGroup,
   StopPointFormGroupBuilder,
 } from '../form/stop-point-detail-form-group';
+import { PrmTabsService } from '../../../prm-panel/prm-tabs.service';
 
 @Component({
   selector: 'app-stop-point-detail',
@@ -32,7 +33,6 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   selectedVersionIndex!: number;
   selectedVersion!: ReadStopPointVersion;
   form!: FormGroup<StopPointDetailFormGroup>;
-  isLatestVersionSelected = false;
   showVersionSwitch = false;
   isSwitchVersionDisabled = false;
   preferredId?: number;
@@ -46,6 +46,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     private notificationService: NotificationService,
     private dialogService: DialogService,
     private authService: AuthService,
+    private prmTabsService: PrmTabsService,
   ) {}
 
   ngOnInit(): void {
@@ -133,21 +134,11 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   initSelectedVersion() {
     this.form = StopPointFormGroupBuilder.buildFormGroup(this.selectedVersion);
     this.disableForm();
-    this.isSelectedVersionHighDate(this.stopPointVersions, this.selectedVersion);
   }
 
   disableForm(): void {
     this.form.disable({ emitEvent: false });
     this.isFormEnabled$.next(false);
-  }
-
-  private isSelectedVersionHighDate(
-    stopPointVersions: ReadStopPointVersion[],
-    selectedVersion: ReadStopPointVersion,
-  ) {
-    this.isLatestVersionSelected = !stopPointVersions.some(
-      (obj) => obj.validTo > selectedVersion.validTo,
-    );
   }
 
   initExistingStopPoint() {
@@ -185,10 +176,13 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   }
 
   private createStopPoint(writableStopPoint: CreateStopPointVersion) {
-    this.personWithReducedMobilityService.createStopPoint(writableStopPoint).subscribe(() => {
-      this.notificationService.success('PRM.STOP_POINTS.NOTIFICATION.ADD_SUCCESS');
-      this.reloadPage();
-    });
+    this.personWithReducedMobilityService
+      .createStopPoint(writableStopPoint)
+      .subscribe((stopPoint) => {
+        this.notificationService.success('PRM.STOP_POINTS.NOTIFICATION.ADD_SUCCESS');
+        this.prmTabsService.initTabs([stopPoint]);
+        this.reloadPage();
+      });
   }
 
   reloadPage() {
