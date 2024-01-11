@@ -18,10 +18,66 @@ import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spac
 import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
 import { SelectComponent } from '../../../core/form-components/select/select.component';
 import { CommentComponent } from '../../../core/form-components/comment/comment.component';
+import { PersonWithReducedMobilityService, ReadPlatformVersion } from '../../../api';
+import moment from 'moment/moment';
+import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
+import { SwitchVersionComponent } from '../../../core/components/switch-version/switch-version.component';
+import { DateRangeComponent } from '../../../core/form-components/date-range/date-range.component';
+import { of } from 'rxjs';
+import { NotificationService } from '../../../core/notification/notification.service';
+import { DateIconComponent } from '../../../core/form-components/date-icon/date-icon.component';
+
+const platform: ReadPlatformVersion[] = [
+  {
+    creationDate: '2024-01-11T10:08:28.446803',
+    creator: 'e524381',
+    editionDate: '2024-01-11T10:08:28.446803',
+    editor: 'e524381',
+    id: 1002,
+    sloid: 'ch:1:sloid:7000:0:100000',
+    validFrom: new Date('2024-01-01'),
+    validTo: new Date('2024-01-03'),
+    etagVersion: 8,
+    parentServicePointSloid: 'ch:1:sloid:7000',
+    boardingDevice: 'TO_BE_COMPLETED',
+    adviceAccessInfo: undefined,
+    additionalInformation: undefined,
+    contrastingAreas: 'YES',
+    dynamicAudio: 'TO_BE_COMPLETED',
+    dynamicVisual: 'TO_BE_COMPLETED',
+    height: undefined,
+    inclination: undefined,
+    inclinationLongitudinal: undefined,
+    inclinationWidth: undefined,
+    infoOpportunities: [],
+    levelAccessWheelchair: 'TO_BE_COMPLETED',
+    partialElevation: undefined,
+    superelevation: undefined,
+    tactileSystem: undefined,
+    vehicleAccess: undefined,
+    wheelchairAreaLength: undefined,
+    wheelchairAreaWidth: undefined,
+    number: {
+      number: 8507000,
+      checkDigit: 3,
+      numberShort: 7000,
+      uicCountryCode: 85,
+    },
+  },
+];
 
 describe('PlatformComponent', () => {
   let component: PlatformComponent;
   let fixture: ComponentFixture<PlatformComponent>;
+
+  const personWithReducedMobilityService = jasmine.createSpyObj(
+    'personWithReducedMobilityService',
+    ['createPlatform', 'updatePlatform'],
+  );
+  personWithReducedMobilityService.createPlatform.and.returnValue(of(platform[0]));
+
+  const notificationService = jasmine.createSpyObj('notificationService', ['success']);
+
   const activatedRouteMock = {
     snapshot: {
       data: {
@@ -48,20 +104,77 @@ describe('PlatformComponent', () => {
         InfoIconComponent,
         SelectComponent,
         CommentComponent,
+        DateRangeTextComponent,
+        SwitchVersionComponent,
+        DateRangeComponent,
+        DateIconComponent,
       ],
       imports: [AppTestingModule],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: NotificationService, useValue: notificationService },
+        { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService },
         TranslatePipe,
         SplitServicePointNumberPipe,
       ],
     });
-    fixture = TestBed.createComponent(PlatformComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('new reduced platform', () => {
+    beforeEach(() => {
+      fixture = TestBed.createComponent(PlatformComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+
+    it('should init', () => {
+      expect(component).toBeTruthy();
+
+      expect(component.isNew).toBeTrue();
+      expect(component.reduced).toBeTrue();
+      expect(component.selectedVersion).toBeUndefined();
+
+      expect(component.form.enabled).toBeTrue();
+    });
+
+    it('should create on save', () => {
+      component.form.controls.validFrom.setValue(moment('31.10.2000', 'dd.MM.yyyy'));
+      component.form.controls.validTo.setValue(moment('31.10.2099', 'dd.MM.yyyy'));
+
+      component.save();
+
+      expect(personWithReducedMobilityService.createPlatform).toHaveBeenCalled();
+      expect(notificationService.success).toHaveBeenCalled();
+    });
+  });
+
+  describe('edit reduced platform', () => {
+    beforeEach(() => {
+      TestBed.overrideProvider(ActivatedRoute, {
+        useValue: {
+          snapshot: {
+            data: {
+              stopPoint: [STOP_POINT],
+              servicePoint: [BERN_WYLEREGG],
+              platform: platform,
+              trafficPoint: [BERN_WYLEREGG_TRAFFIC_POINTS[0]],
+            },
+          },
+        },
+      });
+      fixture = TestBed.createComponent(PlatformComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+
+    it('should init', () => {
+      expect(component).toBeTruthy();
+
+      expect(component.isNew).toBeFalse();
+      expect(component.reduced).toBeTrue();
+      expect(component.selectedVersion).toBeDefined();
+
+      expect(component.form.enabled).toBeFalse();
+    });
   });
 });
