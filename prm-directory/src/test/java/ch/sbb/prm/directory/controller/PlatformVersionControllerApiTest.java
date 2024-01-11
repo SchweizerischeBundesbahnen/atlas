@@ -41,6 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
 class PlatformVersionControllerApiTest extends BaseControllerApiTest {
 
   private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:7000";
+
   private final PlatformRepository platformRepository;
   private final StopPointRepository stopPointRepository;
   private final ReferencePointRepository referencePointRepository;
@@ -51,10 +52,10 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
 
   @Autowired
   PlatformVersionControllerApiTest(PlatformRepository platformRepository,
-                                   StopPointRepository stopPointRepository,
-                                   ReferencePointRepository referencePointRepository,
-                                   SharedServicePointRepository sharedServicePointRepository,
-                                   RelationService relationService) {
+      StopPointRepository stopPointRepository,
+      ReferencePointRepository referencePointRepository,
+      SharedServicePointRepository sharedServicePointRepository,
+      RelationService relationService) {
     this.platformRepository = platformRepository;
     this.stopPointRepository = stopPointRepository;
     this.referencePointRepository = referencePointRepository;
@@ -65,10 +66,10 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
   @BeforeEach
   void setUp() {
     SharedServicePoint servicePoint = SharedServicePoint.builder()
-            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],"
-                    + "\"trafficPointSloids\":[\"ch:1:sloid:12345:1\"]}")
-            .sloid("ch:1:sloid:7000")
-            .build();
+        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],"
+            + "\"trafficPointSloids\":[\"ch:1:sloid:12345:1\"]}")
+        .sloid("ch:1:sloid:7000")
+        .build();
     sharedServicePointRepository.saveAndFlush(servicePoint);
   }
 
@@ -86,6 +87,45 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/platforms"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
+  @Test
+  void shouldGetPlatformsVersionByParentSloid() throws Exception {
+    //given
+    platformRepository.save(PlatformTestData.getPlatformVersion());
+
+    //when & then
+    mvc.perform(
+            get("/v1/platforms?parentServicePointSloids=" + PlatformTestData.getPlatformVersion().getParentServicePointSloid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
+  @Test
+  void shouldGetPlatformBySloid() throws Exception {
+    //given
+    platformRepository.save(PlatformTestData.getPlatformVersion());
+
+    //when & then
+    mvc.perform(get("/v1/platforms/" + PlatformTestData.getPlatformVersion().getSloid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)));
+  }
+
+  @Test
+  void shouldGetPlatformOverview() throws Exception {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+    PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
+    platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    platformRepository.save(platformVersion);
+
+    //when & then
+    mvc.perform(get("/v1/platforms/overview/" + platformVersion.getParentServicePointSloid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)));
   }
 
   @Test
@@ -211,20 +251,17 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
 
     //when && then
     mvc.perform(post("/v1/platforms")
-                    .contentType(contentType)
-                    .content(mapper.writeValueAsString(createPlatformVersionModel)))
-            .andExpect(status().isPreconditionFailed())
-            .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7001 does not exist.")));
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(createPlatformVersionModel)))
+        .andExpect(status().isPreconditionFailed())
+        .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7001 does not exist.")));
   }
 
   /**
-   * Szenario 8a: Letzte Version terminieren wenn nur validTo ist updated
-   * NEU:      |______________________|
-   * IST:      |-------------------------------------------------------
-   * Version:                            1
-   *
-   * RESULTAT: |----------------------| Version wird per xx aufgehoben
-   * Version:         1
+   * Szenario 8a: Letzte Version terminieren wenn nur validTo ist updated NEU:      |______________________| IST:
+   * |------------------------------------------------------- Version:                            1
+   * <p>
+   * RESULTAT: |----------------------| Version wird per xx aufgehoben Version:         1
    */
   @Test
   void shouldUpdatePlatform() throws Exception {
