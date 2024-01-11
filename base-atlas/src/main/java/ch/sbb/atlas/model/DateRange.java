@@ -45,8 +45,4 @@ public class DateRange {
     return DateRange.builder().from(versionable.getValidFrom()).to(versionable.getValidTo()).build();
   }
 
-  public static boolean isValidToday(Versionable versionable) {
-    return fromVersionable(versionable).contains(LocalDate.now());
-  }
-
 }
