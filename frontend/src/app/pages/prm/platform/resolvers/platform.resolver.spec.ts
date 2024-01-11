@@ -57,7 +57,6 @@ describe('PrmPlatformResolver', () => {
     TestBed.configureTestingModule({
       imports: [AppTestingModule],
       providers: [
-        PrmPanelResolver,
         {
           provide: PersonWithReducedMobilityService,
           useValue: personWithReducedMobilityServiceSpy,
@@ -68,7 +67,7 @@ describe('PrmPlatformResolver', () => {
 
   it('should get platform from prm-directory', () => {
     const mockRoute = {
-      paramMap: convertToParamMap({ sloid: 'ch:1:sloid:7000:0:100000' }),
+      paramMap: convertToParamMap({ platformSloid: 'ch:1:sloid:7000:0:100000' }),
     } as ActivatedRouteSnapshot;
 
     const result = TestBed.runInInjectionContext(() =>

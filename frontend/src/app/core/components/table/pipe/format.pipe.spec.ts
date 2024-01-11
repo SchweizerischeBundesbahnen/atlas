@@ -23,6 +23,12 @@ describe('FormatPipe', () => {
     expect(formatted).toEqual('01.01.2023');
   });
 
+  it('should format undefined as empty string', () => {
+    const tableColumn: TableColumn<object> = { formatAsDate: true } as TableColumn<object>;
+    const formatted = formatPipe.transform(undefined, tableColumn);
+    expect(formatted).toEqual('');
+  });
+
   it('should translate withPrefix', () => {
     const value = 'test';
     const tableColumn: TableColumn<object> = {
