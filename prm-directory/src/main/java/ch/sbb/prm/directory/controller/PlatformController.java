@@ -66,7 +66,7 @@ public class PlatformController implements PlatformApiV1 {
 
   @Override
   public List<PlatformOverviewModel> getPlatformOverview(String parentSloid) {
-    return platformService.getPlatformOverview(parentSloid);
+    return platformService.mergePlatformsForOverview(platformService.getPlatformsByStopPoint(parentSloid), parentSloid);
   }
 
   @Override

@@ -112,10 +112,10 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
     return platformRepository.findAll(searchRestrictions.getSpecification());
   }
 
-  public List<PlatformOverviewModel> getPlatformOverview(String parentSloid) {
+  public List<PlatformOverviewModel> mergePlatformsForOverview(List<PlatformVersion> platforms, String parentSloid) {
     boolean reduced = stopPointService.isReduced(parentSloid);
 
-    Map<String, List<PlatformVersion>> groupedPlatforms = getPlatformsByStopPoint(parentSloid).stream()
+    Map<String, List<PlatformVersion>> groupedPlatforms = platforms.stream()
         .collect(Collectors.groupingBy(PlatformVersion::getSloid));
 
     List<PlatformOverviewModel> overviewModels = new ArrayList<>();

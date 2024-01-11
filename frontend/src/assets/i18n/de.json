@@ -1156,6 +1156,7 @@
     },
     "PLATFORMS": {
       "TITLE": "Haltekante/Gleis",
+      "NEW": "Neue Haltekante",
       "RECORDING_STATUS": "Erfassungsstatus",
       "RECORDINGSTATUS": {
         "COMPLETE": "komplett",
@@ -1201,6 +1202,10 @@
         "HEIGHT": "Höhe [cm]",
         "WHEELCHAIR_AREA_LENGTH": "Länge [cm]",
         "WHEELCHAIR_AREA_WIDTH": "Breite [cm]"
+      },
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Die Haltekante wurde erfolgreich hinzugefügt.",
+        "EDIT_SUCCESS": "Die Haltekante wurde erfolgreich gespeichert."
       }
     }
   }
