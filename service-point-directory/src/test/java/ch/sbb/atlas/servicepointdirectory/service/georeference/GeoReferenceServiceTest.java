@@ -14,9 +14,8 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
+import ch.sbb.atlas.servicepointdirectory.config.OAuthFeignConfig;
 import java.math.BigDecimal;
-import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
-import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -27,6 +26,8 @@ class GeoReferenceServiceTest {
 
   @MockBean
   private JourneyPoiConfig journeyPoiConfig;
+  @MockBean
+  private OAuthFeignConfig oAuthFeignConfig;
   @MockBean
   private JourneyPoiClient journeyPoiClient;
 
@@ -102,7 +103,7 @@ class GeoReferenceServiceTest {
   }
 
   @Test
-  void shouldGetHeightOfValidLV95SwissCoordinates(){
+  void shouldGetHeightOfValidLV95SwissCoordinates() {
     CoordinatePair coordinate = CoordinatePair.builder()
         .spatialReference(SpatialReference.LV95)
         .east(2568989.30320000000)
@@ -119,7 +120,7 @@ class GeoReferenceServiceTest {
   }
 
   @Test
-  void shouldGetHeightOfValidWGS84SwissCoordinates(){
+  void shouldGetHeightOfValidWGS84SwissCoordinates() {
     CoordinatePair coordinate = CoordinatePair.builder()
         .spatialReference(SpatialReference.WGS84)
         .east(7.03523000710)
@@ -136,7 +137,7 @@ class GeoReferenceServiceTest {
   }
 
   @Test
-  void shouldGetHeightOfValidWGS84WEBSwissCoordinates(){
+  void shouldGetHeightOfValidWGS84WEBSwissCoordinates() {
     CoordinatePair coordinate = CoordinatePair.builder()
         .spatialReference(SpatialReference.WGS84WEB)
         .east(783158.2220039304)
@@ -153,7 +154,7 @@ class GeoReferenceServiceTest {
   }
 
   @Test
-  void shouldNotGetForeignCoordinates(){
+  void shouldNotGetForeignCoordinates() {
     CoordinatePair coordinate = CoordinatePair.builder()
         .spatialReference(SpatialReference.WGS84)
         .east(10.32713502296)
