@@ -5,7 +5,6 @@ import { MockAtlasButtonComponent, MockAtlasFieldErrorComponent } from '../../..
 import { AppTestingModule } from '../../../app.testing.module';
 import { ActivatedRoute } from '@angular/router';
 import { SplitServicePointNumberPipe } from '../../../core/search-service-point/split-service-point-number.pipe';
-import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
 import { STOP_POINT } from '../util/stop-point-test-data.spec';
