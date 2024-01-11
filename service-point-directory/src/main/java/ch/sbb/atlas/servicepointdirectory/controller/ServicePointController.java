@@ -115,10 +115,11 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public List<ReadServicePointVersionModel> revokeServicePoint(Integer servicePointNumber) {
-    List<ReadServicePointVersionModel> servicePointVersionModels = servicePointService.revokeServicePoint(ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber))
-            .stream()
-            .map(ServicePointVersionMapper::toModel)
-            .toList();
+    List<ReadServicePointVersionModel> servicePointVersionModels = servicePointService.revokeServicePoint(
+            ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber))
+        .stream()
+        .map(ServicePointVersionMapper::toModel)
+        .toList();
     if (servicePointVersionModels.isEmpty()) {
       throw new ServicePointNumberNotFoundException(ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber));
     }
@@ -166,7 +167,7 @@ public class ServicePointController implements ServicePointApiV1 {
   @Override
   public ReadServicePointVersionModel validateServicePoint(Long id) {
     ServicePointVersion servicePointVersion = servicePointService.findById(id)
-            .orElseThrow(() -> new IdNotFoundException(id));
+        .orElseThrow(() -> new IdNotFoundException(id));
 
     if (!Status.DRAFT.equals(servicePointVersion.getStatus())) {
       throw new ServicePointStatusChangeNotAllowedException(servicePointVersion.getNumber(), servicePointVersion.getStatus());
@@ -225,9 +226,10 @@ public class ServicePointController implements ServicePointApiV1 {
   private void addGeoReferenceInformation(ServicePointVersion servicePointVersion) {
     if (servicePointVersion.hasGeolocation()) {
       ServicePointGeolocation servicePointGeolocation = servicePointVersion.getServicePointGeolocation();
-      GeoReference geoReference = geoReferenceService.getGeoReference(servicePointGeolocation.asCoordinatePair(), servicePointGeolocation.getHeight() == null);
+      GeoReference geoReference = geoReferenceService.getGeoReference(servicePointGeolocation.asCoordinatePair(),
+          servicePointGeolocation.getHeight() == null);
 
-      if (geoReference.getHeight() != null){
+      if (geoReference.getHeight() != null) {
         servicePointGeolocation.setHeight(geoReference.getHeight());
       }
 

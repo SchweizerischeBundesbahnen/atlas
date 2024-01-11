@@ -1,7 +1,12 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
+import ch.sbb.atlas.api.location.ClaimSloidRequestModel;
+import ch.sbb.atlas.api.location.GenerateSloidRequestModel;
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
+import ch.sbb.atlas.servicepoint.Country;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.service.OverviewService;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -13,9 +18,11 @@ import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearch
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoAdminHeightResponse;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.LocationClient;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
+import feign.FeignException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -37,17 +44,32 @@ public class TrafficPointElementService {
   private final TrafficPointElementVersionRepository trafficPointElementVersionRepository;
   private final VersionableService versionableService;
   private final TrafficPointElementValidationService trafficPointElementValidationService;
-  private final TrafficPointElementSloidService trafficPointElementSloidService;
   private final GeoReferenceService geoReferenceService;
+  private final LocationClient locationClient;
 
   public TrafficPointElementService(TrafficPointElementVersionRepository trafficPointElementVersionRepository,
       VersionableService versionableService, TrafficPointElementValidationService trafficPointElementValidationService,
-      TrafficPointElementSloidService trafficPointElementSloidService, GeoReferenceService geoReferenceService) {
+      GeoReferenceService geoReferenceService,
+      LocationClient locationClient) {
     this.trafficPointElementVersionRepository = trafficPointElementVersionRepository;
     this.versionableService = versionableService;
     this.trafficPointElementValidationService = trafficPointElementValidationService;
-    this.trafficPointElementSloidService = trafficPointElementSloidService;
     this.geoReferenceService = geoReferenceService;
+    this.locationClient = locationClient;
+  }
+
+  public void claimSloid(String sloid) throws FeignException {
+    locationClient.claimSloid(new ClaimSloidRequestModel(sloid));
+  }
+
+  public String generateSloid(TrafficPointElementType trafficPointElementType, ServicePointNumber servicePointNumber)
+      throws FeignException {
+    final SloidType sloidType =
+        trafficPointElementType == TrafficPointElementType.BOARDING_AREA ? SloidType.AREA : SloidType.EDGE;
+    final String sloidPrefix = "ch:1:sloid:" + (servicePointNumber.getCountry() == Country.SWITZERLAND ?
+        servicePointNumber.getNumberShort()
+        : servicePointNumber.getNumber());
+    return locationClient.generateSloid(new GenerateSloidRequestModel(sloidType, sloidPrefix));
   }
 
   public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
@@ -66,23 +88,32 @@ public class TrafficPointElementService {
     return trafficPointElementVersionRepository.existsBySloid(sloid);
   }
 
+  public void createThroughImport(TrafficPointElementVersion trafficPointElementVersion) {
+    create(trafficPointElementVersion, null);
+  }
+
   @PreAuthorize("""
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
       (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public TrafficPointElementVersion create(TrafficPointElementVersion trafficPointElementVersion,
       List<ServicePointVersion> servicePointVersions) {
-    if (trafficPointElementVersion.getSloid() != null && isTrafficPointElementExisting(trafficPointElementVersion.getSloid())) {
-      throw new SloidAlreadyExistsException(trafficPointElementVersion.getSloid());
+    if (trafficPointElementVersion.getSloid() != null) {
+      try {
+        claimSloid(trafficPointElementVersion.getSloid());
+      } catch (FeignException e) {
+        throw new SloidAlreadyExistsException(trafficPointElementVersion.getSloid());
+      }
+    } else {
+      try {
+        trafficPointElementVersion.setSloid(
+            generateSloid(trafficPointElementVersion.getTrafficPointElementType(),
+                trafficPointElementVersion.getServicePointNumber())
+        );
+      } catch (FeignException e) {
+        throw new RuntimeException("Unexpected Exception occurred during generation of sloid.");
+      }
     }
-
-    if (trafficPointElementVersion.getSloid() == null) {
-      boolean isBoardingArea = trafficPointElementVersion.getTrafficPointElementType() == TrafficPointElementType.BOARDING_AREA;
-
-      trafficPointElementVersion.setSloid(
-          trafficPointElementSloidService.getNextSloid(trafficPointElementVersion.getServicePointNumber(), isBoardingArea)
-      );
-    }
-    return save(trafficPointElementVersion);
+    return trafficPointElementVersionRepository.saveAndFlush(trafficPointElementVersion);
   }
 
   public TrafficPointElementVersion save(TrafficPointElementVersion trafficPointElementVersion) {
