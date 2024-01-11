@@ -20,6 +20,7 @@ import { NotificationService } from '../../../core/notification/notification.ser
 import { Observable, of, take } from 'rxjs';
 import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
+import { PrmMeanOfTransportHelper } from '../util/prm-mean-of-transport-helper';
 
 @Component({
   selector: 'app-platforms',
@@ -62,7 +63,7 @@ export class PlatformComponent implements OnInit, DetailFormComponent {
     this.stopPoint = this.route.snapshot.data.stopPoint;
 
     this.platform = this.route.snapshot.data.platform;
-    this.reduced = this.stopPoint[0].reduced!;
+    this.reduced = PrmMeanOfTransportHelper.isReduced(this.stopPoint[0].meansOfTransport);
 
     this.isNew = this.platform.length === 0;
 
