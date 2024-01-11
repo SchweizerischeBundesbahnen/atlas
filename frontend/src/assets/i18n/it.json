@@ -1156,6 +1156,7 @@
     },
     "PLATFORMS": {
       "TITLE": "Bordo fermata/Binario",
+      "NEW": "Nuovo bordo di fermata",
       "RECORDING_STATUS": "Stato della registrazione",
       "RECORDINGSTATUS": {
         "COMPLETE": "completo",
@@ -1201,6 +1202,10 @@
         "HEIGHT": "Altezza [cm]",
         "WHEELCHAIR_AREA_LENGTH": "Lunghezza [cm]",
         "WHEELCHAIR_AREA_WIDTH": "Larghezza [cm]"
+      },
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Il bordo di fermata è stata aggiunta con successo.",
+        "EDIT_SUCCESS": "Il bordo di fermata è stata salvata con successo."
       }
     }
   }
