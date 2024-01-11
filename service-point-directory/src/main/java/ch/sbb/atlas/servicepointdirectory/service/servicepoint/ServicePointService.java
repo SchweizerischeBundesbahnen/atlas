@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import ch.sbb.atlas.api.location.ClaimSloidRequestModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -10,6 +11,7 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
+import feign.FeignException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +40,13 @@ public class ServicePointService {
   private final ServicePointSearchVersionRepository servicePointSearchVersionRepository;
   private final ServicePointTerminationService servicePointTerminationService;
   private final ServicePointStatusDecider servicePointStatusDecider;
+  private final LocationClient locationClient;
+
+  public void claimSloid(String sloid) throws FeignException {
+    if (sloid != null) {
+      locationClient.claimSloid(new ClaimSloidRequestModel(sloid));
+    }
+  }
 
   public List<ServicePointSearchResult> searchServicePointVersion(String value) {
     List<ServicePointSearchResult> servicePointSearchResults = servicePointSearchVersionRepository.searchServicePoints(value);
@@ -53,10 +62,9 @@ public class ServicePointService {
   public List<ServicePointSearchResult> searchServicePointsWithRouteNetworkTrue(String value) {
     List<ServicePointSearchResult> servicePointSearchResults =
         servicePointSearchVersionRepository.searchServicePointsWithRouteNetworkTrue(
-        value);
+            value);
     return getSearchResults(servicePointSearchResults);
   }
-
 
   public Page<ServicePointVersion> findAll(ServicePointSearchRestrictions servicePointSearchRestrictions) {
     return servicePointVersionRepository.loadByIdsFindBySpecification(servicePointSearchRestrictions.getSpecification(),
@@ -67,7 +75,7 @@ public class ServicePointService {
     return servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
   }
 
-  public List<ServicePointVersion> findBySloidAndOrderByValidFrom(String sloid){
+  public List<ServicePointVersion> findBySloidAndOrderByValidFrom(String sloid) {
     return servicePointVersionRepository.findBySloidOrderByValidFrom(sloid);
   }
 
@@ -85,7 +93,8 @@ public class ServicePointService {
   }
 
   public List<ServicePointVersion> revokeServicePoint(ServicePointNumber servicePointNumber) {
-    List<ServicePointVersion> servicePointVersions = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
+    List<ServicePointVersion> servicePointVersions = servicePointVersionRepository.findAllByNumberOrderByValidFrom(
+        servicePointNumber);
     servicePointVersions.forEach(servicePointVersion -> servicePointVersion.setStatus(Status.REVOKED));
     return servicePointVersions;
   }
@@ -98,10 +107,10 @@ public class ServicePointService {
   @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#servicePointVersion, "
       + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   public ServicePointVersion save(ServicePointVersion servicePointVersion,
-                                  Optional<ServicePointVersion> currentVersion,
-                                  List<ServicePointVersion> currentVersions) {
+      Optional<ServicePointVersion> currentVersion,
+      List<ServicePointVersion> currentVersions) {
     servicePointVersion.setStatus(servicePointStatusDecider
-            .getStatusForServicePoint(servicePointVersion, currentVersion, currentVersions));
+        .getStatusForServicePoint(servicePointVersion, currentVersion, currentVersions));
     servicePointVersion.setEditionDate(LocalDateTime.now());
     servicePointVersion.setEditor(UserService.getUserIdentifier());
 
@@ -139,7 +148,8 @@ public class ServicePointService {
         editedVersion, existingDbVersions);
 
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
-        version -> save(version, Optional.of(currentVersion), currentVersions), new ApplyVersioningDeleteByIdLongConsumer(servicePointVersionRepository));
+        version -> save(version, Optional.of(currentVersion), currentVersions),
+        new ApplyVersioningDeleteByIdLongConsumer(servicePointVersionRepository));
 
     List<ServicePointVersion> afterUpdateServicePoint = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
     servicePointTerminationService.checkTerminationAllowed(currentVersions, afterUpdateServicePoint);

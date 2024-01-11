@@ -6,18 +6,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum SloidType {
+  /** ex. ch:1:sloid:7000:5 */
   AREA("area_seq") {
     @Override
     public String getSloidPrefix(String sloidPrefix) {
       return sloidPrefix;
     }
-  }, //ch:1:sloid:9994:5 (area and prm)
+  },
+  /** ex. ch:1:sloid:7000:5:900 */
   EDGE("edge_seq") {
     @Override
     public String getSloidPrefix(String sloidPrefix) {
       return sloidPrefix + ":0";
     }
-  }; // ch:1:sloid:1232:5:2 (haltekante)
+  };
 
   private final String seqName;
 
