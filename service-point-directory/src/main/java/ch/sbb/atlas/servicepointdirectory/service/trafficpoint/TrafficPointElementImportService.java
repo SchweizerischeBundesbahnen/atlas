@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.ItemImportResult.ItemImportResultBuilder;
+import ch.sbb.atlas.imports.servicepoint.enumeration.ItemImportResponseStatus;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
 import ch.sbb.atlas.imports.util.DidokCsvMapper;
@@ -17,6 +18,7 @@ import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import com.fasterxml.jackson.databind.MappingIterator;
+import feign.FeignException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -88,6 +90,17 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
   ) {
     List<ItemImportResult> importResults = new ArrayList<>();
     for (TrafficPointCsvModelContainer container : trafficPointCsvModelContainers) {
+      //      try {
+      //        trafficPointElementService.claimSloid(container.getSloid()); // todo: only new
+      //      } catch (FeignException e) {
+      //        ItemImportResult importResult = new ItemImportResult();
+      //        importResult.setItemNumber(container.getSloid());
+      //        importResult.setStatus(ItemImportResponseStatus.FAILED);
+      //        importResult.setMessage("[FAILED]: The following sloid could not be claimed: " + container.getSloid());
+      //        importResults.add(importResult);
+      //        continue;
+      //      }
+
       List<TrafficPointElementVersion> trafficPointElementVersions = container.getCsvModelList()
           .stream()
           .map(new TrafficPointElementCsvToEntityMapper())
@@ -129,16 +142,15 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
   private ItemImportResult updateTrafficPointVersion(TrafficPointElementVersion trafficPointElementVersion) {
     List<Exception> warnings = new ArrayList<>();
     getHeightForTrafficPoint(trafficPointElementVersion, warnings);
-
     try {
       updateTrafficPointElementVersionImport(trafficPointElementVersion);
-    }catch (VersioningNoChangesException exception) {
+    } catch (VersioningNoChangesException exception) {
       log.info("Found version {} to import without modification: {}",
           trafficPointElementVersion.getSloid(),
           exception.getMessage()
       );
       return buildSuccessImportResult(trafficPointElementVersion);
-    } catch (Exception exception){
+    } catch (Exception exception) {
       log.error("[Traffic-Point Import]: Error during update with sloid: " + trafficPointElementVersion.getSloid(), exception);
       return buildFailedImportResult(trafficPointElementVersion, exception);
     }
@@ -149,9 +161,8 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
   private ItemImportResult saveTrafficPointVersion(TrafficPointElementVersion trafficPointElementVersion) {
     List<Exception> warnings = new ArrayList<>();
     getHeightForTrafficPoint(trafficPointElementVersion, warnings);
-
     try {
-      trafficPointElementService.save(trafficPointElementVersion);
+      trafficPointElementService.createThroughImport(trafficPointElementVersion);
     } catch (Exception exception) {
       log.error("[Traffic-Point Import]: Error during save with sloid: " + trafficPointElementVersion.getSloid(), exception);
       return buildFailedImportResult(trafficPointElementVersion, exception);
@@ -160,7 +171,7 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
     return buildWarningMessage(trafficPointElementVersion, warnings);
   }
 
-  private void getHeightForTrafficPoint(TrafficPointElementVersion trafficPointElementVersion, List<Exception> warnings){
+  private void getHeightForTrafficPoint(TrafficPointElementVersion trafficPointElementVersion, List<Exception> warnings) {
     try {
       trafficPointElementService.setHeightForTrafficPoints(trafficPointElementVersion);
     } catch (HeightNotCalculatableException exception) {
@@ -169,8 +180,8 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
     }
   }
 
-  private ItemImportResult buildWarningMessage(TrafficPointElementVersion trafficPointElementVersion, List<Exception> warnings){
-    if(!warnings.isEmpty()) {
+  private ItemImportResult buildWarningMessage(TrafficPointElementVersion trafficPointElementVersion, List<Exception> warnings) {
+    if (!warnings.isEmpty()) {
       return buildWarningImportResult(trafficPointElementVersion, warnings);
     } else {
       return buildSuccessImportResult(trafficPointElementVersion);

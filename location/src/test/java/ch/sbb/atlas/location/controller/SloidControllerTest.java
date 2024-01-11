@@ -146,4 +146,5 @@ class SloidControllerTest extends BaseControllerApiTest {
         String.class, "ch:1:sloid:7000:500195:900");
     assertThat(savedSloid).isNotNull();
   }
+
 }

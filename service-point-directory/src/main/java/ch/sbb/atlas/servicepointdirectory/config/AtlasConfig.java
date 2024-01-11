@@ -10,7 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Import(SharedBusinessOrganisationConfig.class)
-@EnableFeignClients(basePackages = "ch.sbb.atlas.servicepointdirectory.service.georeference")
+@EnableFeignClients(basePackages = {
+    "ch.sbb.atlas.servicepointdirectory.service.georeference", "ch.sbb.atlas.servicepointdirectory.service.servicepoint"})
 @Configuration
 public class AtlasConfig {
 
@@ -23,4 +24,5 @@ public class AtlasConfig {
   public VersionableService versionableService() {
     return new VersionableServiceImpl();
   }
+
 }
