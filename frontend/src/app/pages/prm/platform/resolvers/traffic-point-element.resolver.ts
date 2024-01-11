@@ -1,8 +1,8 @@
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { inject, Injectable } from '@angular/core';
 import { catchError, Observable } from 'rxjs';
-import { ReadTrafficPointElementVersion, TrafficPointElementsService } from '../../../api';
-import { Pages } from '../../pages';
+import { ReadTrafficPointElementVersion, TrafficPointElementsService } from '../../../../api';
+import { Pages } from '../../../pages';
 
 @Injectable({ providedIn: 'root' })
 export class TrafficPointiElementResolver {

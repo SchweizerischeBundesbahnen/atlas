@@ -7,11 +7,13 @@ import {
   BasicAttributeType,
   BoardingDeviceAttributeType,
   BooleanOptionalAttributeType,
+  CreatePlatformVersion,
   InfoOpportunityAttributeType,
   ReadPlatformVersion,
   VehicleAccessAttributeType,
 } from '../../../../api';
 import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
+import { servicePointSloidToNumber } from '../../../../core/util/sloidHelper';
 
 export interface PlatformFormGroup extends BaseDetailFormGroup {
   sloid: FormControl<string | null | undefined>;
@@ -143,5 +145,55 @@ export class PlatformFormGroupBuilder {
       },
       [DateRangeValidator.fromGreaterThenTo('validFrom', 'validTo')],
     );
+  }
+
+  static getWritableForm(
+    form: FormGroup<ReducedPlatformFormGroup> | FormGroup<CompletePlatformFormGroup>,
+    parentServicePointSloid: string,
+    reduced: boolean,
+  ): CreatePlatformVersion {
+    const formValue = (form as FormGroup<ReducedPlatformFormGroup>).value;
+    const platformVersion: CreatePlatformVersion = {
+      sloid: formValue.sloid!,
+      parentServicePointSloid: parentServicePointSloid,
+      numberWithoutCheckDigit: servicePointSloidToNumber(parentServicePointSloid),
+      validFrom: formValue.validFrom!.toDate(),
+      validTo: formValue.validTo!.toDate(),
+      creationDate: formValue.creationDate!,
+      creator: formValue.creator!,
+      editionDate: formValue.editionDate!,
+      editor: formValue.editor!,
+      etagVersion: formValue.etagVersion!,
+    };
+    if (reduced) {
+      const formValue = (form as FormGroup<ReducedPlatformFormGroup>).value;
+      return {
+        ...platformVersion,
+        inclinationLongitudinal: formValue.inclinationLongitudinal!,
+        additionalInformation: formValue.additionalInformation!,
+        height: formValue.height!,
+        infoOpportunities: formValue.infoOpportunities!,
+        partialElevation: formValue.partialElevation!,
+        tactileSystem: formValue.tactileSystem!,
+        vehicleAccess: formValue.vehicleAccess!,
+        wheelchairAreaLength: formValue.wheelchairAreaLength!,
+        wheelchairAreaWidth: formValue.wheelchairAreaWidth!,
+      };
+    } else {
+      const formValue = (form as FormGroup<CompletePlatformFormGroup>).value;
+      return {
+        ...platformVersion,
+        inclination: formValue.inclination!,
+        inclinationWidth: formValue.inclinationWidth!,
+        additionalInformation: formValue.additionalInformation!,
+        adviceAccessInfo: formValue.adviceAccessInfo!,
+        boardingDevice: formValue.boardingDevice!,
+        contrastingAreas: formValue.contrastingAreas!,
+        dynamicAudio: formValue.dynamicAudio!,
+        dynamicVisual: formValue.dynamicVisual!,
+        levelAccessWheelchair: formValue.levelAccessWheelchair!,
+        superelevation: formValue.superelevation!,
+      };
+    }
   }
 }
