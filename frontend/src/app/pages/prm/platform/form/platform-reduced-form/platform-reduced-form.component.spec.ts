@@ -3,15 +3,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlatformReducedFormComponent } from './platform-reduced-form.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
-import {
-  MockAtlasFieldErrorComponent,
-  MockSelectComponent,
-} from '../../../../../app.testing.mocks';
+import { MockAtlasFieldErrorComponent } from '../../../../../app.testing.mocks';
 import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
 import { AtlasLabelFieldComponent } from '../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
 import { AppTestingModule } from '../../../../../app.testing.module';
 import { PlatformFormGroupBuilder } from '../platform-form-group';
 import { InfoOpportunityAttributeType } from '../../../../../api';
+import { SelectComponent } from '../../../../../core/form-components/select/select.component';
+import { InfoIconComponent } from '../../../../../core/form-components/info-icon/info-icon.component';
 
 describe('PlatformReducedFormComponent', () => {
   let component: PlatformReducedFormComponent;
@@ -21,7 +20,8 @@ describe('PlatformReducedFormComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         PlatformReducedFormComponent,
-        MockSelectComponent,
+        SelectComponent,
+        InfoIconComponent,
         TextFieldComponent,
         MockAtlasFieldErrorComponent,
         AtlasLabelFieldComponent,
