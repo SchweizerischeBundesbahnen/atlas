@@ -1155,8 +1155,9 @@
       "EXTERNAL_LINK_LABEL": "Guida LDis"
     },
     "PLATFORMS": {
-      "TITLE": "Bordo fermata/Binario",
+      "TITLE": "Bordo di fermata/Binario",
       "NEW": "Nuovo bordo di fermata",
+      "NO_RECORD": "Questo bordo di fermata non è ancora stato registrato.",
       "RECORDING_STATUS": "Stato della registrazione",
       "RECORDINGSTATUS": {
         "COMPLETE": "completo",

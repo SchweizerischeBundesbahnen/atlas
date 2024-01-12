@@ -1157,6 +1157,7 @@
     "PLATFORMS": {
       "TITLE": "Haltekante/Gleis",
       "NEW": "Neue Haltekante",
+      "NO_RECORD": "Diese Haltekante wurde noch nicht erfasst.",
       "RECORDING_STATUS": "Erfassungsstatus",
       "RECORDINGSTATUS": {
         "COMPLETE": "komplett",

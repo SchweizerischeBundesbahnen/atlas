@@ -21,6 +21,7 @@ import { Observable, of, take } from 'rxjs';
 import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import { PrmMeanOfTransportHelper } from '../util/prm-mean-of-transport-helper';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-platforms',
@@ -36,11 +37,13 @@ export class PlatformComponent implements OnInit, DetailFormComponent {
   trafficPoint!: ReadTrafficPointElementVersion;
   maxValidity!: DateRange;
   stopPoint!: ReadStopPointVersion[];
+  businessOrganisations: string[] = [];
 
   reduced = false;
   form!: FormGroup<ReducedPlatformFormGroup> | FormGroup<CompletePlatformFormGroup>;
   showVersionSwitch = false;
   selectedVersionIndex!: number;
+  mayCreate = true;
 
   get reducedForm(): FormGroup<ReducedPlatformFormGroup> {
     return this.form as FormGroup<ReducedPlatformFormGroup>;
@@ -56,6 +59,7 @@ export class PlatformComponent implements OnInit, DetailFormComponent {
     private personWithReducedMobilityService: PersonWithReducedMobilityService,
     private notificationService: NotificationService,
     private dialogService: DialogService,
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
@@ -67,7 +71,9 @@ export class PlatformComponent implements OnInit, DetailFormComponent {
 
     this.isNew = this.platform.length === 0;
 
-    if (!this.isNew) {
+    if (this.isNew) {
+      this.mayCreate = this.hasPermissionToCreateNewStopPoint();
+    } else {
       VersionsHandlingService.addVersionNumbers(this.platform);
       this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.platform);
       this.maxValidity = VersionsHandlingService.getMaxValidity(this.platform);
@@ -94,12 +100,22 @@ export class PlatformComponent implements OnInit, DetailFormComponent {
   }
 
   private initSePoDiData() {
-    this.servicePoint = VersionsHandlingService.determineDefaultVersionByValidity(
-      this.route.snapshot.data.servicePoint,
-    );
+    const servicePointVersions: ReadServicePointVersion[] = this.route.snapshot.data.servicePoint;
+    this.servicePoint =
+      VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
+    this.businessOrganisations = [
+      ...new Set(servicePointVersions.map((value) => value.businessOrganisation)),
+    ];
     this.trafficPoint = VersionsHandlingService.determineDefaultVersionByValidity(
       this.route.snapshot.data.trafficPoint,
     );
+  }
+
+  hasPermissionToCreateNewStopPoint(): boolean {
+    const sboidsPermissions = this.businessOrganisations.map((bo) =>
+      this.authService.hasPermissionsToWrite('PRM', bo),
+    );
+    return sboidsPermissions.includes(true);
   }
 
   switchVersion(newIndex: number) {

@@ -1157,6 +1157,7 @@
     "PLATFORMS": {
       "TITLE": "Bordure d'arrêt/voie",
       "NEW": "Nouveau bordure d’arrêt",
+      "NO_RECORD": "Cette bordure d’arrêt n'a pas encore été saisie.",
       "RECORDING_STATUS": "État de la saisie",
       "RECORDINGSTATUS": {
         "COMPLETE": "complet",
