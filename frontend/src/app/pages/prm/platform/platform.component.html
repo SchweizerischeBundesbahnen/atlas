@@ -29,42 +29,49 @@
     </div>
 
     <div class="platform-detail mt-5">
-      <div class="font-bold-3xl mb-3" *ngIf="isNew">
-        {{ 'PRM.PLATFORMS.NEW' | translate }}
-      </div>
-      <div class="col-12 d-flex mt-3 mb-5" *ngIf="showVersionSwitch">
-        <div class="d-flex flex-column pe-3">
-          <app-switch-version
-            (switchVersion)="switchVersion($event)"
-            [currentRecord]="selectedVersion"
-            [records]="platform"
-            [showStatus]="false"
-          ></app-switch-version>
+      <ng-container *ngIf="!mayCreate; else authorized">
+        <div class="font-regular mb-3">
+          {{ 'PRM.PLATFORMS.NO_RECORD' | translate }}
         </div>
-      </div>
+      </ng-container>
+      <ng-template #authorized>
+        <div class="font-bold-3xl mb-3" *ngIf="isNew">
+          {{ 'PRM.PLATFORMS.NEW' | translate }}
+        </div>
+        <div class="col-12 d-flex mt-3 mb-5" *ngIf="showVersionSwitch">
+          <div class="d-flex flex-column pe-3">
+            <app-switch-version
+              (switchVersion)="switchVersion($event)"
+              [currentRecord]="selectedVersion"
+              [records]="platform"
+              [showStatus]="false"
+            ></app-switch-version>
+          </div>
+        </div>
 
-      <h2 class="font-bold-2xl color-gray-900" *ngIf="!isNew">
-        {{ 'PRM.PLATFORMS.DETAIL_INFORMATION' | translate }} - {{ 'COMMON.VERSION' | translate }}
-        {{ selectedVersionIndex + 1 }}
-      </h2>
-
-      <div class="col-6 pb-3 mt-3">
-        <h2 class="font-bold-2xl color-gray-900">
-          {{ 'FORM.KEY_DATA' | translate }}
+        <h2 class="font-bold-2xl color-gray-900" *ngIf="!isNew">
+          {{ 'PRM.PLATFORMS.DETAIL_INFORMATION' | translate }} - {{ 'COMMON.VERSION' | translate }}
+          {{ selectedVersionIndex + 1 }}
         </h2>
-        <form-date-range [formGroup]="form"></form-date-range>
-      </div>
 
-      <h2 class="font-bold-2xl color-gray-900 mt-3">
-        {{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}
-      </h2>
+        <div class="col-6 pb-3 mt-3">
+          <h2 class="font-bold-2xl color-gray-900">
+            {{ 'FORM.KEY_DATA' | translate }}
+          </h2>
+          <form-date-range [formGroup]="form"></form-date-range>
+        </div>
 
-      <div *ngIf="reduced">
-        <app-platform-reduced-form [form]="reducedForm"></app-platform-reduced-form>
-      </div>
-      <div *ngIf="!reduced">
-        <app-platform-complete-form [form]="completeForm"></app-platform-complete-form>
-      </div>
+        <h2 class="font-bold-2xl color-gray-900 mt-3">
+          {{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}
+        </h2>
+
+        <div *ngIf="reduced">
+          <app-platform-reduced-form [form]="reducedForm"></app-platform-reduced-form>
+        </div>
+        <div *ngIf="!reduced">
+          <app-platform-complete-form [form]="completeForm"></app-platform-complete-form>
+        </div>
+      </ng-template>
     </div>
     <div class="footer-box">
       <footer class="d-flex justify-content-center align-items-center">
@@ -77,12 +84,13 @@
           buttonType="whiteFooterNonEdit"
         ></atlas-button>
         <atlas-button
+          *ngIf="form.disabled"
           (buttonClicked)="toggleEdit()"
-          [disabled]="false"
-          [footerEdit]="form.enabled"
+          applicationType="PRM"
+          [businessOrganisations]="businessOrganisations"
           buttonDataCy="edit"
           buttonText="COMMON.EDIT"
-          buttonType="whiteFooterNonEdit"
+          buttonType="edit-service-point-dependent"
           wrapperStyleClass="ms-3"
         ></atlas-button>
         <atlas-button
@@ -93,6 +101,7 @@
           buttonType="whiteFooterEdit"
         ></atlas-button>
         <atlas-button
+          *ngIf="mayCreate"
           (buttonClicked)="save()"
           [footerEdit]="form.enabled"
           [disabled]="!form.dirty"
