@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
-import ch.sbb.atlas.servicepointdirectory.migration.DoubleAssertion;
+import ch.sbb.atlas.model.DoubleAssertion;
 import lombok.extern.slf4j.Slf4j;
 
 /**
