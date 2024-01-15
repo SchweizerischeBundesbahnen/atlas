@@ -187,6 +187,15 @@ export class Pages {
     description: 'PAGES.STOP_POINTS.DESCRIPTION',
   };
 
+  public static PLATFORMS: Page = {
+    title: 'PRM.PLATFORMS.TITLE',
+    titleMenu: 'PAGES.PLATFORMS.TITLE_HEADER',
+    headerTitle: 'PAGES.PLATFORMS.TITLE_HEADER',
+    path: 'platform',
+    pathText: 'PAGES.PLATFORMS.TITLE_HEADER',
+    description: 'PAGES.PLATFORMS.DESCRIPTION',
+  };
+
   public static PRM_STOP_POINT_TAB: Page = {
     title: 'PRM.TABS.STOP_POINT',
     path: 'stop-point',

@@ -1,7 +1,7 @@
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { inject, Injectable } from '@angular/core';
 import { ReadServicePointVersion, ServicePointsService } from '../../../../api';
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, Observable } from 'rxjs';
 import { Pages } from '../../../pages';
 
 @Injectable({ providedIn: 'root' })
@@ -12,19 +12,17 @@ export class PrmPanelResolver {
   ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadServicePointVersion>> {
-    const sloidParameter = route.paramMap.get('sloid') || '';
+    const sloidParameter = route.paramMap.get('stopPointSloid') || '';
 
-    return sloidParameter === 'add'
-      ? of([])
-      : this.servicePointsService.getServicePointVersionsBySloid(sloidParameter).pipe(
-          catchError(() =>
-            this.router
-              .navigate([Pages.PRM.path], {
-                state: { notDismissSnackBar: true },
-              })
-              .then(() => []),
-          ),
-        );
+    return this.servicePointsService.getServicePointVersionsBySloid(sloidParameter).pipe(
+      catchError(() =>
+        this.router
+          .navigate([Pages.PRM.path], {
+            state: { notDismissSnackBar: true },
+          })
+          .then(() => []),
+      ),
+    );
   }
 }
 export const prmPanelResolver: ResolveFn<Array<ReadServicePointVersion>> = (
