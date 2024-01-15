@@ -12,6 +12,7 @@ public class PlatformVersionJsonProcessor extends BaseServicePointProcessor impl
     public ReadPlatformVersionModel process(PlatformVersion version) throws Exception {
         return ReadPlatformVersionModel.builder()
             .id(version.getId())
+            .sloid(version.getSloid())
             .parentServicePointSloid(version.getParentSloidServicePoint())
             .boardingDevice(version.getBoardingDevice())
             .adviceAccessInfo(version.getAdviceAccessInfo())
@@ -31,7 +32,14 @@ public class PlatformVersionJsonProcessor extends BaseServicePointProcessor impl
             .tactileSystem(version.getTactileSystems())
             .vehicleAccess(version.getVehicleAccess())
             .wheelchairAreaLength(version.getWheelchairAreaLength())
-            .wheelchairAreaWidth(version.getWheelChairAreaWidth())
+            .wheelchairAreaWidth(version.getWheelchairAreaWidth())
+            .validFrom(version.getValidFrom())
+            .validTo(version.getValidTo())
+            .creationDate(version.getCreationDate())
+            .creator(version.getCreator())
+            .editionDate(version.getEditionDate())
+            .editor(version.getEditor())
+            .etagVersion(version.getVersion())
             .build();
     }
 }

@@ -68,7 +68,7 @@ public class PlatformVersion extends BaseEntity {
 
     private Double wheelchairAreaLength;
 
-    private Double wheelChairAreaWidth;
+    private Double wheelchairAreaWidth;
 
     private LocalDate validTo;
 
