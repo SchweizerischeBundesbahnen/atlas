@@ -1,4 +1,4 @@
-package ch.sbb.atlas.servicepointdirectory.service;
+package ch.sbb.atlas.service;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.model.DateRange;
@@ -27,16 +27,16 @@ public class OverviewService {
         .build();
   }
 
-  public static <T extends Versionable> List<T> mergeVersionsForDisplay(List<T> trafficPointElements,
+  public static <T extends Versionable> List<T> mergeVersionsForDisplay(List<T> versionsToMerge,
       BiPredicate<T, T> equalPredicate) {
-    if (trafficPointElements.isEmpty()) {
+    if (versionsToMerge.isEmpty()) {
       return Collections.emptyList();
     }
 
     List<T> result = new ArrayList<>();
 
     List<T> versions = new ArrayList<>();
-    Iterator<T> iterator = trafficPointElements.iterator();
+    Iterator<T> iterator = versionsToMerge.iterator();
     T previous = iterator.next();
     versions.add(previous);
     T current;

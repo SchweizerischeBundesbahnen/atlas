@@ -1113,6 +1113,29 @@
         "NO": "No",
         "NOT_APPLICABLE": "Non applicabile",
         "PARTIALLY": "Parziale"
+      },
+      "BOARDING_DEVICE_TYPES": {
+        "TO_BE_COMPLETED": "Da completare",
+        "NO": "No",
+        "NOT_APPLICABLE": "Non applicabile",
+        "RAMPS": "Rampa",
+        "LIFTS": "Elevatore"
+      },
+      "VEHICLE_ACCESS_TYPES": {
+        "TO_BE_COMPLETED": "Da completare",
+        "PLATFORM_ACCESS_WITHOUT_ASSISTANCE": "Accesso senza gradini; salita/discesa a livello",
+        "PLATFORM_ACCESS_WITH_ASSISTANCE": "Accesso senza gradini; salita/discesa con l’assistenza del personale, preavviso non necessario",
+        "PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED": "Accesso senza gradini; salita/discesa con l’assistenza del personale, preavviso necessario",
+        "PLATFORM_NOT_WHEELCHAIR_ACCESSIBLE": "Non accessibile in sedia a rotelle"
+      },
+      "INFO_OPPORTUNITY_TYPES": {
+        "TO_BE_COMPLETED": "Da completare",
+        "STATIC_VISUAL_INFORMATION": "statische optische Informationen (Aushangfahrplan, evtl. Netz- bzw. Tarifzonenplan)",
+        "ELECTRONIC_VISUAL_INFORMATION_DEPARTURES": "elektronische Anzeige, nur mit Abfahrten",
+        "ELECTRONIC_VISUAL_INFORMATION_COMPLETE": "elektronische Anzeige, mit Abfahrten und Störungsinformationen",
+        "ACOUSTIC_INFORMATION": "Lautsprecher (in der Regel nur Störungsinformation)",
+        "TEXT_TO_SPEECH_DEPARTURES": "Text-to-Speech, nur mit Abfahrten",
+        "TEXT_TO_SPEECH_COMPLETE": "Text-to-Speech, mit Abfahrten und Störungsinformationen"
       }
     },
     "INFO_BOX": {
@@ -1130,6 +1153,61 @@
       "REGULATION_LABEL": "OTDis - Ordinanza concernente la concezione di una rete di trasporti pubblici conforme alle esigenze dei disabili",
       "EXTERNAL_LINK": "https://www.tp-info.ch/it/gestione-dei-dati/accessa-senza-barriere/procedura",
       "EXTERNAL_LINK_LABEL": "Guida LDis"
+    },
+    "PLATFORMS": {
+      "TITLE": "Bordo di fermata/Binario",
+      "NEW": "Nuovo bordo di fermata",
+      "NO_RECORD": "Questo bordo di fermata non è ancora stato registrato.",
+      "RECORDING_STATUS": "Stato della registrazione",
+      "RECORDINGSTATUS": {
+        "COMPLETE": "completo",
+        "INCOMPLETE": "parzialmente",
+        "NOT_STARTED": "non iniziato"
+      },
+      "DETAIL_INFORMATION": "Informazioni sul bordo di contenimento",
+      "COMPLETE": {
+        "ADDITIONAL_INFORMATION": "Osservazioni sull’accesso al bordo di fermata",
+        "ADDITIONAL_INFORMATION_SUBTITLE": "Campo di testo libero per (eventuali) spiegazioni di casi particolari.",
+        "SUPERELEVATION": "Valore di sopraelevazione del binario [mm]",
+        "INCLINATION_WIDTH": "Pendenza longitudinale del marciapiede [%]",
+        "INCLINATION": "Inclinazione trasversale del marciapiede [%]",
+        "CONTRASTING_AREAS": "Segnalazioni tattili e visive sui marciapiedi",
+        "CONTRASTING_AREAS_INFO": "I marciapiedi sono dotati dei necessari elementi guida secondo la guida dell’UFT sulle segnalazioni tattili e visive sui marciapiedi ferroviari?",
+        "CUSTOMER_INFORMATION": "Informazioni alla clientela al bordo di fermata",
+        "DYNAMIC_VISUAL": "Informazioni ottiche dinamiche",
+        "DYNAMIC_VISUAL_INFO": "Al bordo di fermata sono disponibili informazioni ottiche dinamiche?",
+        "DYNAMIC_AUDIO": "Informazioni acustiche",
+        "DYNAMIC_AUDIO_INFO": "Al bordo di fermata sono disponibili informazioni acustiche (altoparlanti e/o sintesi vocale)?",
+        "ACCESS": "Zugang zum Verkehrsmittel",
+        "LEVEL_ACCESS_WHEELCHAIR": "Accesso a livello",
+        "LEVEL_ACCESS_WHEELCHAIR_INFO": "Sono soddisfatte le esigenze infrastrutturali per l’accesso a livello?\nÈ possibile selezionare «Sì» anche nel caso di innalzamenti o conformità parziali di marciapiedi secondo DE Oferr ad art. 34, DE 34, cifra 2.1.1.1.",
+        "BOARDING_DEVICE": "Mezzi ausiliari per sedie a rotelle",
+        "BOARDING_DEVICE_INFO": "Se sono disponibili elevatore e rampa = Elevatore.\nNon applicabile = Non necessari, in quanto è possibile l’accesso autonomo.",
+        "ADVICE_ACCESS_INFO": "Osservazioni sull’accesso al mezzo di trasporto",
+        "ADVICE_ACCESS_INFO_SUBTITLE": "Campo di testo libero per (eventuali) spiegazioni di casi particolari per l’accesso al mezzo di trasporto.\nAd es.: area di manovra limitata"
+      },
+      "REDUCED": {
+        "VEHICLE_ACCESS": "Accesso al marciapiede; accesso al veicolo",
+        "VEHICLE_ACCESS_INFO": "Una caratteristica per bordo di fermata",
+        "TACTILE_SYSTEM": "Sistema di guida tattile",
+        "TACTILE_SYSTEM_INFO": "Sistema di guida tattile (da non confondere con la segnaletica orizzontale prevista per i non vedenti dall’art. 12 ORTDis).",
+        "ADDITIONAL_INFORMATION": "Osservazioni sull’accesso al bordo di fermata",
+        "ADDITIONAL_INFORMATION_INFO": "Campo di testo libero per (eventuali) spiegazioni di casi particolari.",
+        "INCLINATION_LONG": "Pendenza longitudinale del marciapiede [%]",
+        "PARTIAL_ELEVATION": "Innalzamento parziale",
+        "PARTIAL_ELEVATION_INFO": "Attivare in caso di innalzamento parziale.",
+        "INFO_OPPORTUNITIES": "Possibilità d’informazione",
+        "INFO_OPPORTUNITIES_INFO": "Informazioni per persone con disabilità sensoriali (possibilità di selezione multipla)",
+        "WHEELCHAIR_AREA": "Superficie d’accesso per sedie a rotelle",
+        "WHEELCHAIR_AREA_SUBTILTE": "Superficie d’imbarco per sedie a rotelle (autobus) = zona del marciapiede per l’accesso in sedia a rotelle (tram); ulteriori descrizioni nella guida",
+        "HEIGHT": "Altezza [cm]",
+        "WHEELCHAIR_AREA_LENGTH": "Lunghezza [cm]",
+        "WHEELCHAIR_AREA_WIDTH": "Larghezza [cm]"
+      },
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Il bordo di fermata è stata aggiunta con successo.",
+        "EDIT_SUCCESS": "Il bordo di fermata è stata salvata con successo."
+      }
     }
   }
 }

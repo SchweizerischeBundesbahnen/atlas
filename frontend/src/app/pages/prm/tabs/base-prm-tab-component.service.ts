@@ -3,7 +3,7 @@ import { Data, Router } from '@angular/router';
 import { ReadServicePointVersion, ReadStopPointVersion } from '../../../api';
 import { PrmMeanOfTransportHelper } from '../util/prm-mean-of-transport-helper';
 import { Pages } from '../../pages';
-import { PRM_COMPLETE_TABS } from '../prm-panel/prm-tab';
+import { PRM_COMPLETE_TABS } from '../prm-panel/prm-tabs';
 import { Tab } from '../../tab';
 
 @Injectable({

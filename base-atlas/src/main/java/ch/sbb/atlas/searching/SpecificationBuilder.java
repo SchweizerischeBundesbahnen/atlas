@@ -17,8 +17,8 @@ import org.springframework.data.jpa.domain.Specification;
 public class SpecificationBuilder<T> {
 
   private final List<String> stringAttributes;
-  private final SingularAttribute<T, LocalDate> validFromAttribute;
-  private final SingularAttribute<T, LocalDate> validToAttribute;
+  private final SingularAttribute<? super T, LocalDate> validFromAttribute;
+  private final SingularAttribute<? super T, LocalDate> validToAttribute;
   private final SingularAttribute<T, String> singleStringAttribute;
 
   public Specification<T> searchCriteriaSpecification(List<String> searchCriteria) {
