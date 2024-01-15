@@ -10,7 +10,7 @@ import ch.sbb.prm.directory.api.StopPointApiV1;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.StopPointAlreadyExistsException;
 import ch.sbb.prm.directory.mapper.StopPointVersionMapper;
-import ch.sbb.prm.directory.model.StopPointRequestParams;
+import ch.sbb.prm.directory.controller.model.StopPointRequestParams;
 import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
 import ch.sbb.prm.directory.service.StopPointService;
 import ch.sbb.prm.directory.service.dataimport.StopPointImportService;

@@ -10,7 +10,7 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.PlatformApiV1;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.mapper.PlatformVersionMapper;
-import ch.sbb.prm.directory.model.PlatformRequestParams;
+import ch.sbb.prm.directory.controller.model.PlatformRequestParams;
 import ch.sbb.prm.directory.search.PlatformSearchRestrictions;
 import ch.sbb.prm.directory.service.PlatformService;
 import ch.sbb.prm.directory.service.dataimport.PlatformImportService;
