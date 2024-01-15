@@ -38,7 +38,7 @@ public class PlatformTestData {
         .inclination(123.12)
         .inclinationLongitudinal(123.12)
         .inclinationWidth(123.12)
-        .infoOpportunities(Set.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
+        .infoOpportunities(List.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
         .levelAccessWheelchair(BasicAttributeType.NO)
         .partialElevation(false)
         .superelevation(321.123)
