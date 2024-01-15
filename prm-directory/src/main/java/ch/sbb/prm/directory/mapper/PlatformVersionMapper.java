@@ -60,7 +60,7 @@ public class PlatformVersionMapper {
         .inclination(model.getInclination())
         .inclinationLongitudinal(model.getInclinationLongitudinal())
         .inclinationWidth(model.getInclinationWidth())
-        .infoOpportunities(model.getInfoOpportunities() != null ? Set.copyOf(model.getInfoOpportunities()) : null)
+        .infoOpportunities(model.getInfoOpportunities() != null ? model.getInfoOpportunities() : null)
         .levelAccessWheelchair(model.getLevelAccessWheelchair())
         .partialElevation(model.getPartialElevation())
         .superelevation(model.getSuperelevation())
