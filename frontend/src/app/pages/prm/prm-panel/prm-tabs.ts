@@ -1,6 +1,5 @@
 import { Pages } from '../../pages';
 
-export type PrmTab = { link: string; title: string };
 export const PrmTabs = {
   STOP_POINT: {
     link: Pages.PRM_STOP_POINT_TAB.path,
