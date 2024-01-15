@@ -1,15 +1,11 @@
 <div [formGroup]="formGroup" class="atlas-select">
-  <mat-label
+  <app-atlas-label-field
+    [required]="required"
+    fieldLabel="{{ label }}"
+    infoIconTitle="{{ infoIconTitle }}"
     *ngIf="label"
-    class="font-bold-lg d-flex"
-    [ngClass]="{ 'required-indicator': required }"
   >
-    <div class="d-flex">{{ label | translate }}</div>
-    <form-info-icon
-      *ngIf="infoIconTitle"
-      infoTitle="{{ infoIconTitle | translate }}"
-    ></form-info-icon>
-  </mat-label>
+  </app-atlas-label-field>
   <atlas-spacer *ngIf="label" height="3px"></atlas-spacer>
   <atlas-spacer
     *ngIf="additionalLabelspace"
