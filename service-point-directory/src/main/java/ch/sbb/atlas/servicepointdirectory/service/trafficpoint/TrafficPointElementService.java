@@ -11,7 +11,7 @@ import ch.sbb.atlas.servicepointdirectory.mapper.TrafficPointElementVersionMappe
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
-import ch.sbb.atlas.servicepointdirectory.service.OverviewService;
+import ch.sbb.atlas.service.OverviewService;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoAdminHeightResponse;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;

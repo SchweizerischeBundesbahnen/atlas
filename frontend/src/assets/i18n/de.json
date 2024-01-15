@@ -1113,6 +1113,29 @@
         "NO": "Nein",
         "NOT_APPLICABLE": "Nicht anwendbar",
         "PARTIALLY": "Teilweise"
+      },
+      "BOARDING_DEVICE_TYPES": {
+        "TO_BE_COMPLETED": "Zu vervollständigen",
+        "NO": "Nein",
+        "NOT_APPLICABLE": "Nicht anwendbar",
+        "RAMPS": "Rampe",
+        "LIFTS": "Hublift"
+      },
+      "VEHICLE_ACCESS_TYPES": {
+        "TO_BE_COMPLETED": "Zu vervollständigen",
+        "PLATFORM_ACCESS_WITHOUT_ASSISTANCE": "Stufenloser Zugang; niveaugleicher Ein-/Ausstieg.",
+        "PLATFORM_ACCESS_WITH_ASSISTANCE": "Stufenloser Zugang; Ein-/Ausstieg durch Personalhilfestellung, keine Voranmeldung nötig.",
+        "PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED": "Stufenloser Zugang; Ein-/Ausstieg durch Personalhilfestellung, Voranmeldung nötig.",
+        "PLATFORM_NOT_WHEELCHAIR_ACCESSIBLE": "Für Rollstühle nicht benutzbar."
+      },
+      "INFO_OPPORTUNITY_TYPES": {
+        "TO_BE_COMPLETED": "Zu vervollständigen",
+        "STATIC_VISUAL_INFORMATION": "statische optische Informationen (Aushangfahrplan, evtl. Netz- bzw. Tarifzonenplan)",
+        "ELECTRONIC_VISUAL_INFORMATION_DEPARTURES": "elektronische Anzeige, nur mit Abfahrten",
+        "ELECTRONIC_VISUAL_INFORMATION_COMPLETE": "elektronische Anzeige, mit Abfahrten und Störungsinformationen",
+        "ACOUSTIC_INFORMATION": "Lautsprecher (in der Regel nur Störungsinformation)",
+        "TEXT_TO_SPEECH_DEPARTURES": "Text-to-Speech, nur mit Abfahrten",
+        "TEXT_TO_SPEECH_COMPLETE": "Text-to-Speech, mit Abfahrten und Störungsinformationen"
       }
     },
     "INFO_BOX": {
@@ -1130,6 +1153,61 @@
       "REGULATION_LABEL": "VböV - Verordnung über die behindertengerechte Gestaltung des öffentlichen Verkehrs",
       "EXTERNAL_LINK": "https://www.öv-info.ch/de/datenmanagement/barrierefreier-zugang/erfassung",
       "EXTERNAL_LINK_LABEL": "Leitfaden BehiG"
+    },
+    "PLATFORMS": {
+      "TITLE": "Haltekante/Gleis",
+      "NEW": "Neue Haltekante",
+      "NO_RECORD": "Diese Haltekante wurde noch nicht erfasst.",
+      "RECORDING_STATUS": "Erfassungsstatus",
+      "RECORDINGSTATUS": {
+        "COMPLETE": "komplett",
+        "INCOMPLETE": "teilweise",
+        "NOT_STARTED": "nicht begonnen"
+      },
+      "DETAIL_INFORMATION": "Angaben zur Haltekante",
+      "COMPLETE": {
+        "ADDITIONAL_INFORMATION": "Hinweise zum Zugang zur Haltekante",
+        "ADDITIONAL_INFORMATION_SUBTITLE": "Freitextfeld für (freiwillige) Erläuterungen zu speziellen Fällen zum Perronzugang auf Stufe Haltekante.",
+        "SUPERELEVATION": "Gleisüberhöhungswert [mm]",
+        "INCLINATION_WIDTH": "Perronlängsneigung [%]",
+        "INCLINATION": "Perronquergefälle [%]",
+        "CONTRASTING_AREAS": "Taktil-visuelle Markierung Perronfläche",
+        "CONTRASTING_AREAS_INFO": "Sind Perronflächen gemäss BAV-Leitfaden \"Taktil-visuelle Markierungen von Bahnperrons\" mit den entsprechenden Führungselementen versehen?",
+        "CUSTOMER_INFORMATION": "Kundeninformation Haltekante",
+        "DYNAMIC_VISUAL": "Dynamisch/optisch",
+        "DYNAMIC_VISUAL_INFO": "Sind dynamische optische Anzeigen an der Haltekante vorhanden?",
+        "DYNAMIC_AUDIO": "Akustisch",
+        "DYNAMIC_AUDIO_INFO": "Sind akustische Informationen an der Haltekante vorhanden (Lautsprecher und/oder Text-to-Speech)?",
+        "ACCESS": "Zugang zum Verkehrsmittel",
+        "LEVEL_ACCESS_WHEELCHAIR": "Niveaugleicher Einstieg",
+        "LEVEL_ACCESS_WHEELCHAIR_INFO": "Ist die Infrastrukturseitige Voraussetzung für den niveaugleichen Einstieg vorhanden?\n\"Ja\" ist auch bei Perron Teilerhöhungen oder Perron Teilkonformitäten gem. AB-EBV zu Art. 34, AB 34, Ziff. 2.1.1.1) zulässig.",
+        "BOARDING_DEVICE": "Hilfsmittel für Rollstuhl",
+        "BOARDING_DEVICE_INFO": "Wenn Hublift und Rampe vorhanden = Hublift.\nNicht anwendbar = nicht notwendig, da autonomer Einstieg möglich.",
+        "ADVICE_ACCESS_INFO": "Hinweise zum Zugang zum Verkehrsmittel",
+        "ADVICE_ACCESS_INFO_SUBTITLE": "Freitextfeld für Erläuterungen zu speziellen Fällen für den Zugang zum Verkehrsmittel, e.g. Manövrierfläche eingeschränkt"
+      },
+      "REDUCED": {
+        "VEHICLE_ACCESS": "Zugang zum Perron; Einstieg ins Fahrzeug",
+        "VEHICLE_ACCESS_INFO": "Eine Ausprägung pro Haltekante. Entspricht dem Rollstuhlstatus gemäss V580 Vorschrift 02 - Produkte mit\nübergreifendem Charakter (Signaletik, Symbole und Piktogramme), Abschnitt 3.2 Reisen mit Handicap",
+        "TACTILE_SYSTEM": "Taktiles Leitsystem",
+        "TACTILE_SYSTEM_INFO": "Taktiles Leitsystem (nicht zu verwechseln mit dem vorgeschriebenen Blindenquadrat gem. Art. 12 VAböV).",
+        "ADDITIONAL_INFORMATION": "Hinweise zum Zugang zur Haltekante",
+        "ADDITIONAL_INFORMATION_INFO": "Freitextfeld für Erläuterungen zu nicht barrierefreien Haltekanten und Spezialfällen. Existieren\nAbhängigkeiten zu Verkehrsmitteltyp, Angebotskategorie oder sogar Linie, d.h., gilt die angegebene\nZugänglichkeit nur für einen Teil des relevanten Fahrplanangebots, ist dies zu vermerken.",
+        "INCLINATION_LONG": "Längsneigung der Haltekante [%]",
+        "PARTIAL_ELEVATION": "Teilerhöhung",
+        "PARTIAL_ELEVATION_INFO": "Aktivieren wenn es sich um eine Teilerhöhung handelt.",
+        "INFO_OPPORTUNITIES": "Informationsmöglichkeiten",
+        "INFO_OPPORTUNITIES_INFO": "Informationen für Sinnesbehinderte",
+        "WHEELCHAIR_AREA": "Rollstuhleinstiegsfläche",
+        "WHEELCHAIR_AREA_SUBTILTE": "Rollstuhleinfahrtsfläche (Bus) = Perronbereich Rollstuhleinstieg (Tram); weitere Beschreibung im Leitfaden",
+        "HEIGHT": "Höhe [cm]",
+        "WHEELCHAIR_AREA_LENGTH": "Länge [cm]",
+        "WHEELCHAIR_AREA_WIDTH": "Breite [cm]"
+      },
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Die Haltekante wurde erfolgreich hinzugefügt.",
+        "EDIT_SUCCESS": "Die Haltekante wurde erfolgreich gespeichert."
+      }
     }
   }
 }

@@ -10,7 +10,7 @@ import { PrmPanelComponent } from './prm-panel/prm-panel.component';
 import { StopPointReducedFormComponent } from './tabs/stop-point/form/stop-point-reduced-form/stop-point-reduced-form.component';
 import { StopPointCompleteFormComponent } from './tabs/stop-point/form/stop-point-complete-form/stop-point-complete-form.component';
 import { ReferencePointComponent } from './tabs/reference-point/reference-point.component';
-import { PlatformComponent } from './tabs/platform/platform.component';
+import { PlatformTableComponent } from './tabs/platform/platform-table.component';
 import { TicketCounterComponent } from './tabs/ticket-counter/ticket-counter.component';
 import { InformationDeskComponent } from './tabs/information-desk/information-desk.component';
 import { ToiletComponent } from './tabs/toilet/toilet.component';
@@ -18,6 +18,9 @@ import { ParkingLotComponent } from './tabs/parking-lot/parking-lot.component';
 import { ConnectionComponent } from './tabs/connection/connection.component';
 import { CreateStopPointComponent } from './tabs/stop-point/create-stop-point/create-stop-point.component';
 import { PrmInfoBoxComponent } from './prm-home-search/prm-info-box/prm-info-box.component';
+import { PlatformCompleteFormComponent } from './tabs/platform/detail/form/platform-complete-form/platform-complete-form.component';
+import { PlatformReducedFormComponent } from './tabs/platform/detail/form/platform-reduced-form/platform-reduced-form.component';
+import { PlatformDetailComponent } from './tabs/platform/detail/platform-detail.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +30,7 @@ import { PrmInfoBoxComponent } from './prm-home-search/prm-info-box/prm-info-box
     StopPointReducedFormComponent,
     StopPointCompleteFormComponent,
     ReferencePointComponent,
-    PlatformComponent,
+    PlatformTableComponent,
     TicketCounterComponent,
     InformationDeskComponent,
     ToiletComponent,
@@ -35,6 +38,9 @@ import { PrmInfoBoxComponent } from './prm-home-search/prm-info-box/prm-info-box
     ConnectionComponent,
     CreateStopPointComponent,
     PrmInfoBoxComponent,
+    PlatformDetailComponent,
+    PlatformCompleteFormComponent,
+    PlatformReducedFormComponent,
   ],
   imports: [CommonModule, FormModule, FormsModule, PrmRoutingModule, CoreModule],
 })
