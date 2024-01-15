@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Observable, of } from 'rxjs';
-import { AppTestingModule } from '../../../../app.testing.module';
 import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
-import { PersonWithReducedMobilityService, ReadPlatformVersion } from '../../../../api';
 import { platformResolver } from './platform.resolver';
+import { PersonWithReducedMobilityService, ReadPlatformVersion } from '../../../../../../api';
+import { AppTestingModule } from '../../../../../../app.testing.module';
 
 const platform: ReadPlatformVersion[] = [
   {

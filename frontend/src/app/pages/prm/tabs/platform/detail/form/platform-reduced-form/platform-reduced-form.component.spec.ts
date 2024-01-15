@@ -2,15 +2,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PlatformReducedFormComponent } from './platform-reduced-form.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
-import { MockAtlasFieldErrorComponent } from '../../../../../app.testing.mocks';
-import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
-import { AtlasLabelFieldComponent } from '../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
-import { AppTestingModule } from '../../../../../app.testing.module';
+import { SelectComponent } from '../../../../../../../core/form-components/select/select.component';
+import { InfoIconComponent } from '../../../../../../../core/form-components/info-icon/info-icon.component';
+import { TextFieldComponent } from '../../../../../../../core/form-components/text-field/text-field.component';
+import { MockAtlasFieldErrorComponent } from '../../../../../../../app.testing.mocks';
+import { AtlasLabelFieldComponent } from '../../../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasSpacerComponent } from '../../../../../../../core/components/spacer/atlas-spacer.component';
+import { AppTestingModule } from '../../../../../../../app.testing.module';
 import { PlatformFormGroupBuilder } from '../platform-form-group';
-import { InfoOpportunityAttributeType } from '../../../../../api';
-import { SelectComponent } from '../../../../../core/form-components/select/select.component';
-import { InfoIconComponent } from '../../../../../core/form-components/info-icon/info-icon.component';
+import { InfoOpportunityAttributeType } from '../../../../../../../api';
 
 describe('PlatformReducedFormComponent', () => {
   let component: PlatformReducedFormComponent;

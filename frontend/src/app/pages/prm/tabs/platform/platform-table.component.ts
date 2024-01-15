@@ -5,6 +5,7 @@ import { PrmTabs } from '../../prm-panel/prm-tabs';
 import { Tab } from '../../../tab';
 import {
   PersonWithReducedMobilityService,
+  PlatformOverview,
   ReadTrafficPointElementVersion,
   TrafficPointElementsService,
 } from '../../../../api';
@@ -86,22 +87,25 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
         mergeMap(() => this.personWithReducedMobilityService.getPlatformOverview(sloid)),
       )
       .subscribe((platforms) => {
-        const platformOverview: PlatformOverviewRow[] = [];
-        this.trafficPointElements.forEach((trafficPointElement) => {
-          const correspondingPrmPlatform = platforms.find(
-            (i) => i.sloid === trafficPointElement.sloid!,
-          );
-          platformOverview.push({
-            designation: trafficPointElement.designation,
-            designationOperational: trafficPointElement.designationOperational,
-            sloid: trafficPointElement.sloid!,
-            validFrom: correspondingPrmPlatform?.validFrom,
-            validTo: correspondingPrmPlatform?.validTo,
-            completion: correspondingPrmPlatform?.recordingStatus || 'NOT_STARTED',
-          });
-        });
-
-        this.platforms = platformOverview;
+        this.platforms = this.mergeTrafficPointAndPlatformDataForOverview(platforms);
       });
+  }
+
+  mergeTrafficPointAndPlatformDataForOverview(prmPlatformOverview: PlatformOverview[]) {
+    const mergedOverview: PlatformOverviewRow[] = [];
+    this.trafficPointElements.forEach((trafficPointElementInSePoDi) => {
+      const correspondingPrmPlatform = prmPlatformOverview.find(
+        (i) => i.sloid === trafficPointElementInSePoDi.sloid!,
+      );
+      mergedOverview.push({
+        designation: trafficPointElementInSePoDi.designation,
+        designationOperational: trafficPointElementInSePoDi.designationOperational,
+        sloid: trafficPointElementInSePoDi.sloid!,
+        validFrom: correspondingPrmPlatform?.validFrom,
+        validTo: correspondingPrmPlatform?.validTo,
+        completion: correspondingPrmPlatform?.recordingStatus || 'NOT_STARTED',
+      });
+    });
+    return mergedOverview;
   }
 }

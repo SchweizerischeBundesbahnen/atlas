@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
+import {
+  CompletePlatformFormGroup,
+  PlatformFormGroupBuilder,
+  ReducedPlatformFormGroup,
+} from './form/platform-form-group';
 import {
   CreatePlatformVersion,
   PersonWithReducedMobilityService,
@@ -7,28 +13,22 @@ import {
   ReadServicePointVersion,
   ReadStopPointVersion,
   ReadTrafficPointElementVersion,
-} from '../../../api';
-import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
-import { DateRange } from '../../../core/versioning/date-range';
-import {
-  CompletePlatformFormGroup,
-  PlatformFormGroupBuilder,
-  ReducedPlatformFormGroup,
-} from './form/platform-form-group';
-import { FormGroup } from '@angular/forms';
-import { NotificationService } from '../../../core/notification/notification.service';
+} from '../../../../../api';
 import { Observable, of, take } from 'rxjs';
-import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
-import { DialogService } from '../../../core/components/dialog/dialog.service';
-import { PrmMeanOfTransportHelper } from '../util/prm-mean-of-transport-helper';
-import { AuthService } from '../../../core/auth/auth.service';
+import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
+import { DateRange } from '../../../../../core/versioning/date-range';
+import { FormGroup } from '@angular/forms';
+import { NotificationService } from '../../../../../core/notification/notification.service';
+import { DialogService } from '../../../../../core/components/dialog/dialog.service';
+import { AuthService } from '../../../../../core/auth/auth.service';
+import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-helper';
 
 @Component({
   selector: 'app-platforms',
-  templateUrl: './platform.component.html',
-  styleUrls: ['./platform.component.scss'],
+  templateUrl: './platform-detail.component.html',
+  styleUrls: ['./platform-detail.component.scss'],
 })
-export class PlatformComponent implements OnInit, DetailFormComponent {
+export class PlatformDetailComponent implements OnInit, DetailFormComponent {
   isNew = false;
   platform: ReadPlatformVersion[] = [];
   selectedVersion!: ReadPlatformVersion;
