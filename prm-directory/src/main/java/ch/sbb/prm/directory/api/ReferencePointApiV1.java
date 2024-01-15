@@ -2,6 +2,9 @@ package ch.sbb.prm.directory.api;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
+import ch.sbb.atlas.configuration.Role;
+import ch.sbb.atlas.imports.ItemImportResult;
+import ch.sbb.atlas.imports.prm.referencepoint.ReferencePointImportRequestModel;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReferencePointVersionModel;
 import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.imports.ItemImportResult;
