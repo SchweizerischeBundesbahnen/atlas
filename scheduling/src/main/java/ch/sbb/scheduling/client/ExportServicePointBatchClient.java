@@ -21,7 +21,9 @@ public interface ExportServicePointBatchClient {
   @PostMapping(value = "/export-service-point/v1/export/prm/stop-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
   Response postTriggerExportStopPointBatch();
 
+  @PostMapping(value = "/export-service-point/v1/export/prm/platform/platform-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response postTriggerExportPlatformBatch();
+
   @PostMapping(value = "/export-service-point/v1/export/prm/reference-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
   Response postTriggerExportReferencePointBatch();
-
 }
