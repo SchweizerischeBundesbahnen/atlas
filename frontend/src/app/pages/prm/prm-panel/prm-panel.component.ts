@@ -10,9 +10,9 @@ import { VersionsHandlingService } from '../../../core/versioning/versions-handl
 import { ActivatedRoute } from '@angular/router';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
-import { PrmMeanOfTransportHelper } from '../util/prm-mean-of-transport-helper';
-import { PRM_REDUCED_TABS, PRM_TABS, PrmTab } from './prm-tab';
+import { PRM_TABS } from './prm-tabs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { PrmTabsService } from './prm-tabs.service';
 
 @Component({
   selector: 'app-prm-panel',
@@ -34,12 +34,12 @@ export class PrmPanelComponent {
     private route: ActivatedRoute,
     private businessOrganisationsService: BusinessOrganisationsService,
     private businessOrganisationLanguageService: BusinessOrganisationLanguageService,
+    private prmTabsService: PrmTabsService,
   ) {
     this.businessOrganisationLanguageService
       .languageChanged()
       .pipe(takeUntilDestroyed())
       .subscribe(() => this.translateBoDescription());
-
     this.route.data
       .pipe(
         takeUntilDestroyed(),
@@ -53,15 +53,11 @@ export class PrmPanelComponent {
   }
 
   initTabs(stopPointVersions: ReadStopPointVersion[]) {
-    if (stopPointVersions.length === 0) {
-      this.disableTabNavigation = true;
-      this.tabs = [PrmTab.STOP_POINT];
-    } else {
-      const isReduced = PrmMeanOfTransportHelper.isReduced(stopPointVersions[0].meansOfTransport);
-      if (isReduced) {
-        this.tabs = PRM_REDUCED_TABS;
-      }
-    }
+    this.prmTabsService.tabs.subscribe((tabs) => (this.tabs = tabs));
+    this.prmTabsService.disableTabNavigation.subscribe(
+      (disableTabNavigation) => (this.disableTabNavigation = disableTabNavigation),
+    );
+    this.prmTabsService.initTabs(stopPointVersions);
   }
 
   private initBusinessOrganisationHeaderPanel() {

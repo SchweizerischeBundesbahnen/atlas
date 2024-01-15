@@ -1,6 +1,8 @@
 package ch.sbb.prm.directory.controller;
 
+import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.platform.CreatePlatformVersionModel;
+import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.platform.PlatformImportRequestModel;
@@ -8,11 +10,15 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.PlatformApiV1;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.mapper.PlatformVersionMapper;
+import ch.sbb.prm.directory.controller.model.PlatformRequestParams;
+import ch.sbb.prm.directory.search.PlatformSearchRestrictions;
 import ch.sbb.prm.directory.service.PlatformService;
 import ch.sbb.prm.directory.service.dataimport.PlatformImportService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -24,8 +30,17 @@ public class PlatformController implements PlatformApiV1 {
   private final PlatformImportService platformImportService;
 
   @Override
-  public List<ReadPlatformVersionModel> getPlatforms() {
-    return platformService.getAllPlatforms().stream().map(PlatformVersionMapper::toModel).toList();
+  public Container<ReadPlatformVersionModel> getPlatforms(Pageable pageable, PlatformRequestParams platformRequestParams) {
+    PlatformSearchRestrictions searchRestrictions = PlatformSearchRestrictions.builder()
+        .pageable(pageable)
+        .platformRequestParams(platformRequestParams)
+        .build();
+    Page<PlatformVersion> platformVersions = platformService.findAll(searchRestrictions);
+
+    return Container.<ReadPlatformVersionModel>builder()
+        .objects(platformVersions.stream().map(PlatformVersionMapper::toModel).toList())
+        .totalCount(platformVersions.getTotalElements())
+        .build();
   }
 
   @Override
@@ -48,4 +63,15 @@ public class PlatformController implements PlatformApiV1 {
   public List<ItemImportResult> importPlatforms(PlatformImportRequestModel importRequestModel) {
     return platformImportService.importPlatforms(importRequestModel.getPlatformCsvModelContainers());
   }
+
+  @Override
+  public List<PlatformOverviewModel> getPlatformOverview(String parentSloid) {
+    return platformService.mergePlatformsForOverview(platformService.getPlatformsByStopPoint(parentSloid), parentSloid);
+  }
+
+  @Override
+  public List<ReadPlatformVersionModel> getPlatformVersions(String sloid) {
+    return platformService.getAllVersions(sloid).stream().map(PlatformVersionMapper::toModel).toList();
+  }
+
 }
