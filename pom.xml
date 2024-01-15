@@ -30,7 +30,7 @@
       <tika-core.version>2.9.1</tika-core.version>
 
       <!-- REST Doc -->
-      <asciidoctor-plugin.version>2.2.4</asciidoctor-plugin.version>
+      <asciidoctor-plugin.version>2.2.5</asciidoctor-plugin.version>
       <spring-restdocs-mockmvc.version>3.0.1</spring-restdocs-mockmvc.version>
       <spring-auto-rest-docs-core.version>2.0.11</spring-auto-rest-docs-core.version>
 
@@ -123,7 +123,7 @@
          <dependency>
             <artifactId>aws-java-sdk-s3</artifactId>
             <groupId>com.amazonaws</groupId>
-            <version>1.12.635</version>
+            <version>1.12.637</version>
          </dependency>
 
          <dependency>
