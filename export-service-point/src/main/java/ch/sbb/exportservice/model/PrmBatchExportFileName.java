@@ -10,8 +10,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum PrmBatchExportFileName implements ExportFileName {
 
-  STOP_POINT_VERSION("prm", "stop-point" ),
-  PLATFORM_VERSION("prm", "platform"),
+  STOP_POINT_VERSION("stop-point", "stop-point" ),
+  PLATFORM_VERSION("platform", "platform"),
   REFERENCE_POINT_VERSION("prm", "reference-point" );
 
   private final String baseDir;

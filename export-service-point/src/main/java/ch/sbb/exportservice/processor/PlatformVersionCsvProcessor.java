@@ -36,7 +36,7 @@ public class PlatformVersionCsvProcessor extends BaseServicePointProcessor imple
             .tactileSystems(mapBooleanOptionalAttributeType(version.getTactileSystems()))
             .vehicleAccess(mapVehicleAccessAttributeType(version.getVehicleAccess()))
             .wheelchairAreaLength(version.getWheelchairAreaLength())
-            .wheelChairAreaWidth(version.getWheelChairAreaWidth())
+            .wheelChairAreaWidth(version.getWheelchairAreaWidth())
             .validFrom(DATE_FORMATTER.format(version.getValidFrom()))
             .validTo(DATE_FORMATTER.format(version.getValidTo()))
             .creationDate(LOCAL_DATE_FORMATTER.format(version.getCreationDate()))
