@@ -6,7 +6,7 @@ import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointImportRequestModel;
-import ch.sbb.prm.directory.model.StopPointRequestParams;
+import ch.sbb.prm.directory.controller.model.StopPointRequestParams;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
