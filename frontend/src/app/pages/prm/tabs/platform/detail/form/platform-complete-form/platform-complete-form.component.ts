@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { ControlContainer, FormGroup, NgForm } from '@angular/forms';
+import { CompletePlatformFormGroup } from '../platform-form-group';
 import {
   BasicAttributeType,
   BoardingDeviceAttributeType,
   BooleanOptionalAttributeType,
-} from '../../../../../api';
-import { CompletePlatformFormGroup } from '../platform-form-group';
+} from '../../../../../../../api';
 
 @Component({
   selector: 'app-platform-complete-form',

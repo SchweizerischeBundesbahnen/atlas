@@ -8,7 +8,7 @@ import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.platform.PlatformImportRequestModel;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
-import ch.sbb.prm.directory.model.PlatformRequestParams;
+import ch.sbb.prm.directory.controller.model.PlatformRequestParams;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
