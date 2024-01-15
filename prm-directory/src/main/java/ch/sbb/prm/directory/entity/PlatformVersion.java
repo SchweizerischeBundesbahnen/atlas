@@ -23,8 +23,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -99,7 +100,7 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
   @AtlasVersionableProperty
   @ElementCollection(targetClass = InfoOpportunityAttributeType.class, fetch = FetchType.EAGER)
   @Convert(converter = InfoOpportunityTypeConverter.class)
-  private Set<InfoOpportunityAttributeType> infoOpportunities;
+  private List<InfoOpportunityAttributeType> infoOpportunities;
 
   @PrmVariant(variant = RecordingVariant.COMPLETE,nullable = false)
   @Enumerated(EnumType.STRING)
@@ -132,9 +133,9 @@ public class PlatformVersion extends BasePrmEntityVersion implements Relatable, 
   @AtlasVersionableProperty
   private Double wheelchairAreaWidth;
 
-  public Set<InfoOpportunityAttributeType> getInfoOpportunities() {
+  public List<InfoOpportunityAttributeType> getInfoOpportunities() {
     if (infoOpportunities == null) {
-      return new HashSet<>();
+      return new ArrayList<>();
     }
     return infoOpportunities;
   }
