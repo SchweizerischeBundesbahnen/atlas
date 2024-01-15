@@ -6,7 +6,7 @@ import ch.sbb.prm.directory.entity.BasePrmEntityVersion.Fields;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion_;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.PlatformVersion_;
-import ch.sbb.prm.directory.model.PlatformRequestParams;
+import ch.sbb.prm.directory.controller.model.PlatformRequestParams;
 import java.util.List;
 import java.util.Optional;
 import lombok.Builder;

@@ -15,9 +15,9 @@ import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard
 import { stopPointResolver } from './prm-panel/resolvers/stop-point.resolver';
 import { PrmTabs } from './prm-panel/prm-tabs';
 import { prmPanelResolver } from './prm-panel/resolvers/prm-panel-resolver.service';
-import { PlatformComponent } from './platform/platform.component';
-import { platformResolver } from './platform/resolvers/platform.resolver';
-import { trafficPointElementResolver } from './platform/resolvers/traffic-point-element.resolver';
+import { platformResolver } from './tabs/platform/detail/resolvers/platform.resolver';
+import { trafficPointElementResolver } from './tabs/platform/detail/resolvers/traffic-point-element.resolver';
+import { PlatformDetailComponent } from './tabs/platform/detail/platform-detail.component';
 
 const routes: Routes = [
   {
@@ -26,7 +26,7 @@ const routes: Routes = [
   },
   {
     path: Pages.STOP_POINTS.path + '/:stopPointSloid/' + Pages.PLATFORMS.path + '/:platformSloid',
-    component: PlatformComponent,
+    component: PlatformDetailComponent,
     runGuardsAndResolvers: 'always',
     canDeactivate: [canLeaveDirtyForm],
     resolve: {

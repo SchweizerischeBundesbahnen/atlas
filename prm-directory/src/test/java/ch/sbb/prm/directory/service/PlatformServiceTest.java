@@ -16,7 +16,7 @@ import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.exception.TrafficPointElementDoesNotExistsException;
-import ch.sbb.prm.directory.model.PlatformRequestParams;
+import ch.sbb.prm.directory.controller.model.PlatformRequestParams;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;

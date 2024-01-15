@@ -1,8 +1,6 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import moment from 'moment';
-import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
-import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
-import { BaseDetailFormGroup } from '../../../../core/components/base-detail/base-detail-form-group';
+import { BaseDetailFormGroup } from '../../../../../../core/components/base-detail/base-detail-form-group';
 import {
   BasicAttributeType,
   BoardingDeviceAttributeType,
@@ -11,9 +9,11 @@ import {
   InfoOpportunityAttributeType,
   ReadPlatformVersion,
   VehicleAccessAttributeType,
-} from '../../../../api';
-import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
-import { SloidHelper } from '../../../../core/util/sloidHelper';
+} from '../../../../../../api';
+import { WhitespaceValidator } from '../../../../../../core/validation/whitespace/whitespace-validator';
+import { AtlasCharsetsValidator } from '../../../../../../core/validation/charsets/atlas-charsets-validator';
+import { DateRangeValidator } from '../../../../../../core/validation/date-range/date-range-validator';
+import { SloidHelper } from '../../../../../../core/util/sloidHelper';
 
 export interface PlatformFormGroup extends BaseDetailFormGroup {
   sloid: FormControl<string | null | undefined>;
@@ -166,34 +166,48 @@ export class PlatformFormGroupBuilder {
       etagVersion: formValue.etagVersion!,
     };
     if (reduced) {
-      const formValue = (form as FormGroup<ReducedPlatformFormGroup>).value;
-      return {
-        ...platformVersion,
-        inclinationLongitudinal: formValue.inclinationLongitudinal!,
-        additionalInformation: formValue.additionalInformation!,
-        height: formValue.height!,
-        infoOpportunities: formValue.infoOpportunities!,
-        partialElevation: formValue.partialElevation!,
-        tactileSystem: formValue.tactileSystem!,
-        vehicleAccess: formValue.vehicleAccess!,
-        wheelchairAreaLength: formValue.wheelchairAreaLength!,
-        wheelchairAreaWidth: formValue.wheelchairAreaWidth!,
-      };
+      return this.getReducedForm(form, platformVersion);
     } else {
-      const formValue = (form as FormGroup<CompletePlatformFormGroup>).value;
-      return {
-        ...platformVersion,
-        inclination: formValue.inclination!,
-        inclinationWidth: formValue.inclinationWidth!,
-        additionalInformation: formValue.additionalInformation!,
-        adviceAccessInfo: formValue.adviceAccessInfo!,
-        boardingDevice: formValue.boardingDevice!,
-        contrastingAreas: formValue.contrastingAreas!,
-        dynamicAudio: formValue.dynamicAudio!,
-        dynamicVisual: formValue.dynamicVisual!,
-        levelAccessWheelchair: formValue.levelAccessWheelchair!,
-        superelevation: formValue.superelevation!,
-      };
+      return this.getCompleteForm(form, platformVersion);
     }
+  }
+
+  private static getCompleteForm(
+    form: FormGroup<ReducedPlatformFormGroup> | FormGroup<CompletePlatformFormGroup>,
+    platformVersion: CreatePlatformVersion,
+  ) {
+    const formValue = (form as FormGroup<CompletePlatformFormGroup>).value;
+    return {
+      ...platformVersion,
+      inclination: formValue.inclination!,
+      inclinationWidth: formValue.inclinationWidth!,
+      additionalInformation: formValue.additionalInformation!,
+      adviceAccessInfo: formValue.adviceAccessInfo!,
+      boardingDevice: formValue.boardingDevice!,
+      contrastingAreas: formValue.contrastingAreas!,
+      dynamicAudio: formValue.dynamicAudio!,
+      dynamicVisual: formValue.dynamicVisual!,
+      levelAccessWheelchair: formValue.levelAccessWheelchair!,
+      superelevation: formValue.superelevation!,
+    };
+  }
+
+  private static getReducedForm(
+    form: FormGroup<ReducedPlatformFormGroup> | FormGroup<CompletePlatformFormGroup>,
+    platformVersion: CreatePlatformVersion,
+  ) {
+    const formValue = (form as FormGroup<ReducedPlatformFormGroup>).value;
+    return {
+      ...platformVersion,
+      inclinationLongitudinal: formValue.inclinationLongitudinal!,
+      additionalInformation: formValue.additionalInformation!,
+      height: formValue.height!,
+      infoOpportunities: formValue.infoOpportunities!,
+      partialElevation: formValue.partialElevation!,
+      tactileSystem: formValue.tactileSystem!,
+      vehicleAccess: formValue.vehicleAccess!,
+      wheelchairAreaLength: formValue.wheelchairAreaLength!,
+      wheelchairAreaWidth: formValue.wheelchairAreaWidth!,
+    };
   }
 }
