@@ -5,7 +5,7 @@ import { PrmHomeSearchComponent } from './prm-home-search/prm-home-search.compon
 import { PrmPanelComponent } from './prm-panel/prm-panel.component';
 import { StopPointDetailComponent } from './tabs/stop-point/detail/stop-point-detail.component';
 import { ReferencePointComponent } from './tabs/reference-point/reference-point.component';
-import { PlatformComponent } from './tabs/platform/platform.component';
+import { PlatformTableComponent } from './tabs/platform/platform-table.component';
 import { TicketCounterComponent } from './tabs/ticket-counter/ticket-counter.component';
 import { InformationDeskComponent } from './tabs/information-desk/information-desk.component';
 import { ToiletComponent } from './tabs/toilet/toilet.component';
@@ -13,8 +13,11 @@ import { ParkingLotComponent } from './tabs/parking-lot/parking-lot.component';
 import { ConnectionComponent } from './tabs/connection/connection.component';
 import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
 import { stopPointResolver } from './prm-panel/resolvers/stop-point.resolver';
-import { PrmTab } from './prm-panel/prm-tab';
+import { PrmTabs } from './prm-panel/prm-tabs';
 import { prmPanelResolver } from './prm-panel/resolvers/prm-panel-resolver.service';
+import { platformResolver } from './tabs/platform/detail/resolvers/platform.resolver';
+import { trafficPointElementResolver } from './tabs/platform/detail/resolvers/traffic-point-element.resolver';
+import { PlatformDetailComponent } from './tabs/platform/detail/platform-detail.component';
 
 const routes: Routes = [
   {
@@ -22,7 +25,19 @@ const routes: Routes = [
     component: PrmHomeSearchComponent,
   },
   {
-    path: Pages.STOP_POINTS.path + '/:sloid',
+    path: Pages.STOP_POINTS.path + '/:stopPointSloid/' + Pages.PLATFORMS.path + '/:platformSloid',
+    component: PlatformDetailComponent,
+    runGuardsAndResolvers: 'always',
+    canDeactivate: [canLeaveDirtyForm],
+    resolve: {
+      platform: platformResolver,
+      servicePoint: prmPanelResolver,
+      trafficPoint: trafficPointElementResolver,
+      stopPoint: stopPointResolver,
+    },
+  },
+  {
+    path: Pages.STOP_POINTS.path + '/:stopPointSloid',
     component: PrmPanelComponent,
     resolve: { stopPoints: stopPointResolver, servicePoints: prmPanelResolver },
     runGuardsAndResolvers: 'always',
@@ -34,37 +49,37 @@ const routes: Routes = [
         canDeactivate: [canLeaveDirtyForm],
       },
       {
-        path: PrmTab.REFERENCE_POINT.link,
+        path: PrmTabs.REFERENCE_POINT.link,
         component: ReferencePointComponent,
         runGuardsAndResolvers: 'always',
       },
       {
-        path: PrmTab.PLATFORM.link,
-        component: PlatformComponent,
+        path: PrmTabs.PLATFORM.link,
+        component: PlatformTableComponent,
         runGuardsAndResolvers: 'always',
       },
       {
-        path: PrmTab.TICKET_COUNTER.link,
+        path: PrmTabs.TICKET_COUNTER.link,
         component: TicketCounterComponent,
         runGuardsAndResolvers: 'always',
       },
       {
-        path: PrmTab.INFORMATION_DESK.link,
+        path: PrmTabs.INFORMATION_DESK.link,
         component: InformationDeskComponent,
         runGuardsAndResolvers: 'always',
       },
       {
-        path: PrmTab.TOILET.link,
+        path: PrmTabs.TOILET.link,
         component: ToiletComponent,
         runGuardsAndResolvers: 'always',
       },
       {
-        path: PrmTab.PARKING_LOT.link,
+        path: PrmTabs.PARKING_LOT.link,
         component: ParkingLotComponent,
         runGuardsAndResolvers: 'always',
       },
       {
-        path: PrmTab.CONNECTION.link,
+        path: PrmTabs.CONNECTION.link,
         component: ConnectionComponent,
         runGuardsAndResolvers: 'always',
       },

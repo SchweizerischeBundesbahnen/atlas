@@ -9,7 +9,7 @@ import { of } from 'rxjs';
 import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
-import { PRM_REDUCED_TABS, PRM_TABS, PrmTab } from './prm-tab';
+import { PRM_REDUCED_TABS, PRM_TABS, PrmTabs } from './prm-tabs';
 import { STOP_POINT, STOP_POINT_COMPLETE } from '../util/stop-point-test-data.spec';
 import { BERN_WYLEREGG } from '../../../../test/data/service-point';
 
@@ -50,7 +50,7 @@ describe('PrmPanelComponent', () => {
     component.initTabs([]);
     //then
     expect(component.disableTabNavigation).toBeTruthy();
-    expect(component.tabs).toEqual([PrmTab.STOP_POINT]);
+    expect(component.tabs).toEqual([PrmTabs.STOP_POINT]);
   });
 
   it('should initTabs when stopPoint isReduced', () => {
