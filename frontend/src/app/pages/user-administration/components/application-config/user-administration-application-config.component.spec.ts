@@ -1,7 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserAdministrationApplicationConfigComponent } from './user-administration-application-config.component';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import {
+  TranslateFakeLoader,
+  TranslateLoader,
+  TranslateModule,
+  TranslatePipe,
+} from '@ngx-translate/core';
 import { UserPermissionManager } from '../../service/user-permission-manager';
 import { MaterialModule } from '../../../../core/module/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -11,6 +16,7 @@ import { SelectComponent } from '../../../../core/form-components/select/select.
 import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
 import { MockAtlasFieldErrorComponent } from '../../../../app.testing.mocks';
 import SpyObj = jasmine.SpyObj;
+import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
 
 describe('UserAdministrationApplicationConfigComponent', () => {
   let component: UserAdministrationApplicationConfigComponent;
@@ -46,6 +52,7 @@ describe('UserAdministrationApplicationConfigComponent', () => {
       declarations: [
         UserAdministrationApplicationConfigComponent,
         SelectComponent,
+        AtlasLabelFieldComponent,
         AtlasSpacerComponent,
         MockAtlasFieldErrorComponent,
       ],
@@ -61,6 +68,7 @@ describe('UserAdministrationApplicationConfigComponent', () => {
           provide: UserPermissionManager,
           useValue: userPermissionManagerSpy,
         },
+        { provide: TranslatePipe },
       ],
     }).compileComponents();
 

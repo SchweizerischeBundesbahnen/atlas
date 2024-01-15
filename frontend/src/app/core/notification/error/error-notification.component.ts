@@ -12,6 +12,6 @@ export class ErrorNotificationComponent {
   constructor(
     public snackBarRef: MatSnackBarRef<ErrorNotificationComponent>,
     public notificationService: NotificationService,
-    @Inject(MAT_SNACK_BAR_DATA) public data: ErrorResponse
+    @Inject(MAT_SNACK_BAR_DATA) public data: ErrorResponse,
   ) {}
 }

@@ -1113,6 +1113,29 @@
         "NO": "Non",
         "NOT_APPLICABLE": "Non applicable",
         "PARTIALLY": "Partiellement"
+      },
+      "BOARDING_DEVICE_TYPES": {
+        "TO_BE_COMPLETED": "À compléter",
+        "NO": "Non",
+        "NOT_APPLICABLE": "Non applicable",
+        "RAMPS": "Rampe",
+        "LIFTS": "Élévateur pour chaise roulante"
+      },
+      "VEHICLE_ACCESS_TYPES": {
+        "TO_BE_COMPLETED": "À compléter",
+        "PLATFORM_ACCESS_WITHOUT_ASSISTANCE": "Accès sans marche ; embarquement/débarquement de plain-pied.",
+        "PLATFORM_ACCESS_WITH_ASSISTANCE": "Accès sans marche ; embarquement/débarquement par le personnel d’assistance, pas d’annonce préalable requise.",
+        "PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED": "Accès sans marche ; embarquement/débarquement par le personnel d’assistance, annonce préalable requise.",
+        "PLATFORM_NOT_WHEELCHAIR_ACCESSIBLE": "Non adapté aux chaises roulantes."
+      },
+      "INFO_OPPORTUNITY_TYPES": {
+        "TO_BE_COMPLETED": "À compléter",
+        "STATIC_VISUAL_INFORMATION": "Informations optiques statiques (horaire affiché, év. plan de réseau ou plan des zones de tarification)",
+        "ELECTRONIC_VISUAL_INFORMATION_DEPARTURES": "Indicateur électronique, avec les départs uniquement",
+        "ELECTRONIC_VISUAL_INFORMATION_COMPLETE": "Indicateur électronique, avec les départs et les informations sur les perturbations",
+        "ACOUSTIC_INFORMATION": "Haut-parleur (en général, uniquement information sur les perturbations)",
+        "TEXT_TO_SPEECH_DEPARTURES": "Système texte-voix, avec les départs uniquement",
+        "TEXT_TO_SPEECH_COMPLETE": "Système texte-voix, avec les départs et les informations sur les perturbations"
       }
     },
     "INFO_BOX": {
@@ -1130,6 +1153,61 @@
       "REGULATION_LABEL": "OTHand - Ordonnance sur les aménagements visant à assurer l’accès des personnes handicapées aux transports publics",
       "EXTERNAL_LINK": "https://www.tp-info.ch/fr/gestion-des-donnees/accessibilite/saisie",
       "EXTERNAL_LINK_LABEL": "Guide LHand"
+    },
+    "PLATFORMS": {
+      "TITLE": "Bordure d'arrêt/voie",
+      "NEW": "Nouveau bordure d’arrêt",
+      "NO_RECORD": "Cette bordure d’arrêt n'a pas encore été saisie.",
+      "RECORDING_STATUS": "État de la saisie",
+      "RECORDINGSTATUS": {
+        "COMPLETE": "complet",
+        "INCOMPLETE": "en partie",
+        "NOT_STARTED": "pas commencé"
+      },
+      "DETAIL_INFORMATION": "Données sur le bord de maintien",
+      "COMPLETE": {
+        "ADDITIONAL_INFORMATION": "Remarques sur l’accès à la bordure d’arrêt",
+        "ADDITIONAL_INFORMATION_SUBTITLE": "Champ de texte libre pour des explications (facultatives) sur des cas spéciaux.",
+        "SUPERELEVATION": "Valeur de devers [mm]",
+        "INCLINATION_WIDTH": "Pente longitudinale du quai [%]",
+        "INCLINATION": "Déclivité transversale du quai [%]",
+        "CONTRASTING_AREAS": "Marquage tactilo-visuel sur le quai",
+        "CONTRASTING_AREAS_INFO": "Les quais sont-ils équipés d’éléments de guidage conformes au guide des marquages tactilo-visuels sur les quais de l’OFT?",
+        "CUSTOMER_INFORMATION": "Information à la clientèle à la bordure d’arrêt",
+        "DYNAMIC_VISUAL": "Information optique dynamique",
+        "DYNAMIC_VISUAL_INFO": "Existe-t-il des indicateurs dynamiques optiques à la bordure d’arrêt?",
+        "DYNAMIC_AUDIO": "Information acoustique",
+        "DYNAMIC_AUDIO_INFO": "Existe-t-il des informations acoustiques à la bordure d’arrêt (haut-parleur et/ou système texte-voix)?",
+        "ACCESS": "Accès au moyen de transport",
+        "LEVEL_ACCESS_WHEELCHAIR": "Accès de plain-pied",
+        "LEVEL_ACCESS_WHEELCHAIR_INFO": "La condition infrastructurelle indispensable pour l’accès de plain-pied est-elle remplie?\n«Oui» est également autorisé en cas de relèvements partiels de quais ou de conformités partielles de quais selon les DE-OCF ad art. 34, DE 34, ch. 2.1.1.1).",
+        "BOARDING_DEVICE": "Moyen auxiliaire pour chaise roulante",
+        "BOARDING_DEVICE_INFO": "Si un élévateur et une rampe sont disponibles = élévateur.\nNon applicable = pas nécessaire car un embarquement autonome est possible.",
+        "ADVICE_ACCESS_INFO": "Remarques sur l’accès au moyen de transport",
+        "ADVICE_ACCESS_INFO_SUBTITLE": "Champ de texte libre pour des explications (facultatives) sur des cas spéciaux pour l’accès au moyen de transport.\nPar ex.: zone de manœuvre restreinte"
+      },
+      "REDUCED": {
+        "VEHICLE_ACCESS": "Accès au quai ; accès au véhicule",
+        "VEHICLE_ACCESS_INFO": "Une modalité par bordure d’arrêt.",
+        "TACTILE_SYSTEM": "Système de guidage tactile",
+        "TACTILE_SYSTEM_INFO": "Système de guidage tactile (ne pas confondre avec le carré pour aveugles prescrit selon l’art. 12 OETHand).",
+        "ADDITIONAL_INFORMATION": "Remarques sur l’accès à la bordure d’arrêt",
+        "ADDITIONAL_INFORMATION_INFO": "Champ de texte libre pour des explications (facultatives) sur des cas spéciaux.",
+        "INCLINATION_LONG": "Pente longitudinale de la bordure d’arrêt [%]",
+        "PARTIAL_ELEVATION": "Relèvement partiel",
+        "PARTIAL_ELEVATION_INFO": "Activer s’il s’agit d’un relèvement partiel.",
+        "INFO_OPPORTUNITIES": "Possibilités d’information",
+        "INFO_OPPORTUNITIES_INFO": "Informations pour personnes handicapées sensorielles (plusieurs choix possibles)",
+        "WHEELCHAIR_AREA": "Surface d’accès des chaises roulantes",
+        "WHEELCHAIR_AREA_SUBTILTE": "Surface d’accès des chaises roulantes (bus) = zone du quai pour l’embarquement en chaise roulante (tram); description plus détaillée dans la directive.",
+        "HEIGHT": "Hauteur [cm]",
+        "WHEELCHAIR_AREA_LENGTH": "Longueur [cm]",
+        "WHEELCHAIR_AREA_WIDTH": "Largeur [cm]"
+      },
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Le bordure d’arrêt a été ajouté avec succès.",
+        "EDIT_SUCCESS": "Le bordure d’arrêt a été enregistré avec succès."
+      }
     }
   }
 }

@@ -26,6 +26,7 @@ import { SelectComponent } from '../../../core/form-components/select/select.com
 import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
 import { AuthService } from '../../../core/auth/auth.service';
 import { TableService } from '../../../core/components/table/table.service';
+import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
 
 @Component({
   selector: 'app-timetable-hearing-overview-tab-heading',
@@ -118,6 +119,7 @@ async function baseTestConfiguration() {
     declarations: [
       OverviewDetailComponent,
       SelectComponent,
+      AtlasLabelFieldComponent,
       MockAtlasFieldErrorComponent,
       AtlasSpacerComponent,
       MockAppTthOverviewTabHeadingComponent,

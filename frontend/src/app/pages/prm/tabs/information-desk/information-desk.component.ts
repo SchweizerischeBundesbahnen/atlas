@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BasePrmTabComponentService } from '../base-prm-tab-component.service';
-import { PrmTab } from '../../prm-panel/prm-tab';
+import { PrmTabs } from '../../prm-panel/prm-tabs';
 import { Tab } from '../../../tab';
 
 @Component({
@@ -21,6 +21,6 @@ export class InformationDeskComponent extends BasePrmTabComponentService impleme
   }
 
   getTag(): Tab {
-    return PrmTab.INFORMATION_DESK;
+    return PrmTabs.INFORMATION_DESK;
   }
 }

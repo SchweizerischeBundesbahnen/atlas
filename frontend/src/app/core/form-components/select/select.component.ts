@@ -21,6 +21,7 @@ import { MatOption } from '@angular/material/core';
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 export class SelectComponent<TYPE> implements OnInit, OnChanges {
   @Input() label: string | undefined;
+  @Input() infoIconTitle?: string;
   @Input() placeHolderLabel = 'FORM.DROPDOWN_PLACEHOLDER';
   @Input() optionTranslateLabelPrefix: string | undefined;
 

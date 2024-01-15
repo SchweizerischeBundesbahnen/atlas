@@ -1,5 +1,15 @@
 <div class="tab-detail-container">
-  <p>platform works</p>
+  <app-table
+    data-cy="platform-overview-table"
+    [tableData]="platforms"
+    [totalCount]="totalCount"
+    [tableColumns]="tableColumns"
+    [canEdit]="true"
+    [tableFilterConfig]="tableFilterConfig"
+    (editElementEvent)="rowClicked($event)"
+    (tableChanged)="getOverview($event)"
+    (tableInitialized)="getOverview($event)"
+  ></app-table>
 </div>
 <div class="footer-box">
   <footer class="d-flex align-items-center justify-content-center">

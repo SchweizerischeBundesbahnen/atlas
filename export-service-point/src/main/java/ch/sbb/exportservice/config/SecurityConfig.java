@@ -3,6 +3,7 @@ package ch.sbb.exportservice.config;
 import static org.springframework.security.config.Customizer.withDefaults;
 import static org.springframework.security.oauth2.jwt.JwtClaimNames.AUD;
 
+import ch.sbb.atlas.configuration.BaseSecurityConfig;
 import ch.sbb.atlas.configuration.Role;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,11 +49,7 @@ public class SecurityConfig {
         // @see <a href="https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#jc-authorize-requests">Authorize
         // Requests</a>
         .authorizeHttpRequests(authorizeRequests ->
-            authorizeRequests
-                .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
-                .requestMatchers("/swagger-ui/**").permitAll()
-                .requestMatchers("/v3/api-docs/**").permitAll()
-                .requestMatchers("/static/rest-api.html").permitAll()
+            BaseSecurityConfig.addGenerallyAllowedPaths(authorizeRequests)
 
                 // Method security may also be configured using the annotations <code>@PreAuthorize</code> and
                 // <code>@PostAuthorize</code>
