@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Observable, of } from 'rxjs';
-import { AppTestingModule } from '../../../../app.testing.module';
 import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
-import { ReadTrafficPointElementVersion, TrafficPointElementsService } from '../../../../api';
 import { trafficPointElementResolver } from './traffic-point-element.resolver';
-import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../../test/data/traffic-point-element';
+import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../../../../test/data/traffic-point-element';
+import { AppTestingModule } from '../../../../../../app.testing.module';
+import { ReadTrafficPointElementVersion, TrafficPointElementsService } from '../../../../../../api';
 
 describe('TrafficPointElementResolver', () => {
   const trafficPointElementsService = jasmine.createSpyObj('trafficPointElementsService', [

@@ -18,9 +18,9 @@ import { ParkingLotComponent } from './tabs/parking-lot/parking-lot.component';
 import { ConnectionComponent } from './tabs/connection/connection.component';
 import { CreateStopPointComponent } from './tabs/stop-point/create-stop-point/create-stop-point.component';
 import { PrmInfoBoxComponent } from './prm-home-search/prm-info-box/prm-info-box.component';
-import { PlatformComponent } from './platform/platform.component';
-import { PlatformCompleteFormComponent } from './platform/form/platform-complete-form/platform-complete-form.component';
-import { PlatformReducedFormComponent } from './platform/form/platform-reduced-form/platform-reduced-form.component';
+import { PlatformCompleteFormComponent } from './tabs/platform/detail/form/platform-complete-form/platform-complete-form.component';
+import { PlatformReducedFormComponent } from './tabs/platform/detail/form/platform-reduced-form/platform-reduced-form.component';
+import { PlatformDetailComponent } from './tabs/platform/detail/platform-detail.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +38,7 @@ import { PlatformReducedFormComponent } from './platform/form/platform-reduced-f
     ConnectionComponent,
     CreateStopPointComponent,
     PrmInfoBoxComponent,
-    PlatformComponent,
+    PlatformDetailComponent,
     PlatformCompleteFormComponent,
     PlatformReducedFormComponent,
   ],

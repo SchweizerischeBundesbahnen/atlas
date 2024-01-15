@@ -1,38 +1,41 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PlatformComponent } from './platform.component';
-import { MockAtlasButtonComponent, MockAtlasFieldErrorComponent } from '../../../app.testing.mocks';
-import { AppTestingModule } from '../../../app.testing.module';
-import { ActivatedRoute } from '@angular/router';
-import { SplitServicePointNumberPipe } from '../../../core/search-service-point/split-service-point-number.pipe';
-import { TranslatePipe } from '@ngx-translate/core';
-import { DisplayDatePipe } from '../../../core/pipe/display-date.pipe';
-import { STOP_POINT, STOP_POINT_COMPLETE } from '../util/stop-point-test-data.spec';
-import { BERN_WYLEREGG } from '../../../../test/data/service-point';
-import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../test/data/traffic-point-element';
+import { PlatformDetailComponent } from './platform-detail.component';
+import SpyObj = jasmine.SpyObj;
+import { AuthService } from '../../../../../core/auth/auth.service';
+import { of } from 'rxjs';
+import { DialogService } from '../../../../../core/components/dialog/dialog.service';
+import { STOP_POINT, STOP_POINT_COMPLETE } from '../../../util/stop-point-test-data.spec';
+import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
+import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../../../test/data/traffic-point-element';
+import {
+  MockAtlasButtonComponent,
+  MockAtlasFieldErrorComponent,
+} from '../../../../../app.testing.mocks';
+import { DisplayDatePipe } from '../../../../../core/pipe/display-date.pipe';
 import { PlatformReducedFormComponent } from './form/platform-reduced-form/platform-reduced-form.component';
 import { PlatformCompleteFormComponent } from './form/platform-complete-form/platform-complete-form.component';
-import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
-import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
-import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
-import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
-import { SelectComponent } from '../../../core/form-components/select/select.component';
-import { CommentComponent } from '../../../core/form-components/comment/comment.component';
+import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
+import { AtlasLabelFieldComponent } from '../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
+import { InfoIconComponent } from '../../../../../core/form-components/info-icon/info-icon.component';
+import { SelectComponent } from '../../../../../core/form-components/select/select.component';
+import { CommentComponent } from '../../../../../core/form-components/comment/comment.component';
+import { DateRangeTextComponent } from '../../../../../core/versioning/date-range-text/date-range-text.component';
+import { SwitchVersionComponent } from '../../../../../core/components/switch-version/switch-version.component';
+import { DateRangeComponent } from '../../../../../core/form-components/date-range/date-range.component';
+import { DateIconComponent } from '../../../../../core/form-components/date-icon/date-icon.component';
+import { AppTestingModule } from '../../../../../app.testing.module';
+import { ActivatedRoute } from '@angular/router';
+import { NotificationService } from '../../../../../core/notification/notification.service';
 import {
   PersonWithReducedMobilityService,
   ReadPlatformVersion,
   VehicleAccessAttributeType,
-} from '../../../api';
-import moment from 'moment/moment';
-import { DateRangeTextComponent } from '../../../core/versioning/date-range-text/date-range-text.component';
-import { SwitchVersionComponent } from '../../../core/components/switch-version/switch-version.component';
-import { DateRangeComponent } from '../../../core/form-components/date-range/date-range.component';
-import { of } from 'rxjs';
-import { NotificationService } from '../../../core/notification/notification.service';
-import { DateIconComponent } from '../../../core/form-components/date-icon/date-icon.component';
-import { AuthService } from '../../../core/auth/auth.service';
-import { DialogService } from '../../../core/components/dialog/dialog.service';
-import SpyObj = jasmine.SpyObj;
+} from '../../../../../api';
+import { TranslatePipe } from '@ngx-translate/core';
+import { SplitServicePointNumberPipe } from '../../../../../core/search-service-point/split-service-point-number.pipe';
+import moment from 'moment';
 
 const reducedPlatform: ReadPlatformVersion[] = [
   {
@@ -115,9 +118,9 @@ const authService: Partial<AuthService> = {
   },
 };
 
-describe('PlatformComponent', () => {
-  let component: PlatformComponent;
-  let fixture: ComponentFixture<PlatformComponent>;
+describe('PlatformDetailComponent', () => {
+  let component: PlatformDetailComponent;
+  let fixture: ComponentFixture<PlatformDetailComponent>;
 
   const personWithReducedMobilityService = jasmine.createSpyObj(
     'personWithReducedMobilityService',
@@ -144,7 +147,7 @@ describe('PlatformComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
-        PlatformComponent,
+        PlatformDetailComponent,
         MockAtlasButtonComponent,
         DisplayDatePipe,
         PlatformReducedFormComponent,
@@ -176,7 +179,7 @@ describe('PlatformComponent', () => {
 
   describe('new reduced platform', () => {
     beforeEach(() => {
-      fixture = TestBed.createComponent(PlatformComponent);
+      fixture = TestBed.createComponent(PlatformDetailComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
     });
@@ -216,7 +219,7 @@ describe('PlatformComponent', () => {
           },
         },
       });
-      fixture = TestBed.createComponent(PlatformComponent);
+      fixture = TestBed.createComponent(PlatformDetailComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
     });
@@ -283,7 +286,7 @@ describe('PlatformComponent', () => {
           },
         },
       });
-      fixture = TestBed.createComponent(PlatformComponent);
+      fixture = TestBed.createComponent(PlatformDetailComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
     });

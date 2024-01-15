@@ -1,8 +1,8 @@
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { inject, Injectable } from '@angular/core';
 import { catchError, Observable } from 'rxjs';
-import { PersonWithReducedMobilityService, ReadPlatformVersion } from '../../../../api';
-import { Pages } from '../../../pages';
+import { PersonWithReducedMobilityService, ReadPlatformVersion } from '../../../../../../api';
+import { Pages } from '../../../../../pages';
 
 @Injectable({ providedIn: 'root' })
 export class PrmPlatformResolver {
