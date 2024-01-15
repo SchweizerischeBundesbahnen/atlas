@@ -152,9 +152,9 @@ export default class CommonUtils {
   ) {
     cy.get('app-table')
       .eq(tableNumber)
-      .find('mat-label')
+      .find('app-atlas-label-field')
       .eq(fieldNumber)
-      .contains(fieldLabelExpectation);
+      .should('contain.text', fieldLabelExpectation);
   }
 
   static clickOnEdit() {
