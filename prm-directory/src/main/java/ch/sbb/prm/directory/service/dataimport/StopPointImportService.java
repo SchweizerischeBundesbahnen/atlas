@@ -56,7 +56,7 @@ public class StopPointImportService extends BasePrmImportService<StopPointVersio
     List<ItemImportResult> importResults = new ArrayList<>();
     for (StopPointCsvModelContainer container : csvModelContainers) {
       List<StopPointVersion> stopPointVersions =
-          container.getCreateStopPointVersionModels().stream().map(StopPointVersionMapper::toEntity).toList();
+          container.getStopPointVersionModels().stream().map(StopPointVersionMapper::toEntity).toList();
       List<StopPointVersion> dbVersions = stopPointService.findAllByNumberOrderByValidFrom(
           ServicePointNumber.ofNumberWithoutCheckDigit(container.getDidokCode()));
       replaceCsvMergedVersions(dbVersions, stopPointVersions);
