@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.service;
 
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TOILET;
 
+import ch.sbb.atlas.api.client.location.LocationClient;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -22,8 +23,9 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
   private final ToiletRepository toiletRepository;
 
   public ToiletService(ToiletRepository toiletRepository, StopPointService stopPointService,
-      RelationService relationService, ReferencePointRepository referencePointRepository, VersionableService versionableService) {
-    super(versionableService, stopPointService, relationService, referencePointRepository);
+      RelationService relationService, ReferencePointRepository referencePointRepository, VersionableService versionableService,
+      LocationClient locationClient) {
+    super(versionableService, stopPointService, relationService, referencePointRepository, locationClient);
     this.toiletRepository = toiletRepository;
   }
 
@@ -59,7 +61,7 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
 
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#version)")
   public ToiletVersion createToilet(ToiletVersion version) {
-    createRelation(version);
+    createRelationWithSloidAllocation(version);
     return save(version);
   }
 
