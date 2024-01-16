@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
+import ch.sbb.atlas.api.location.ClaimSloidRequestModel;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
@@ -27,6 +28,7 @@ import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointFotCommentRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.JourneyPoiClient;
+import ch.sbb.atlas.api.client.location.LocationClient;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointNumberService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
@@ -60,6 +62,9 @@ import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -72,11 +77,15 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   @MockBean
   private JourneyPoiConfig journeyPoiConfig;
   @MockBean
+  private FeignConfig feignConfig;
+  @MockBean
   private JourneyPoiClient journeyPoiClient;
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
   @MockBean
   private ServicePointNumberService servicePointNumberService;
+  @MockBean
+  private LocationClient locationClient;
 
   private final ServicePointVersionRepository repository;
   private final ServicePointFotCommentRepository fotCommentRepository;
@@ -431,17 +440,19 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     createServicePointVersionModel1.setValidFrom(LocalDate.of(2019, 8, 11));
     createServicePointVersionModel1.setValidTo(LocalDate.of(2020, 8, 10));
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
-            aargauServicePointVersionModel);
+        aargauServicePointVersionModel);
     Long id = servicePointVersionModel.getId();
     List<ReadServicePointVersionModel> servicePointVersionModels = servicePointController.updateServicePoint(id,
-            createServicePointVersionModel1);
+        createServicePointVersionModel1);
     servicePointVersionModels.forEach(v -> v.setStatus(Status.IN_REVIEW));
     Integer number = servicePointVersionModel.getNumber().getNumber();
 
     mvc.perform(post("/v1/service-points/" + number + "/revoke"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].status", is(Status.REVOKED.toString())))
-            .andExpect(jsonPath("$[1].status", is(Status.REVOKED.toString())));
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].status", is(Status.REVOKED.toString())))
+        .andExpect(jsonPath("$[1].status", is(Status.REVOKED.toString())));
+
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
   }
 
   @Test
@@ -457,17 +468,17 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     createServicePointVersionModel1.setValidFrom(LocalDate.of(2019, 8, 11));
     createServicePointVersionModel1.setValidTo(LocalDate.of(2020, 8, 10));
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
-            aargauServicePointVersionModel);
+        aargauServicePointVersionModel);
     Long id = servicePointVersionModel.getId();
     List<ReadServicePointVersionModel> servicePointVersionModels = servicePointController.updateServicePoint(id,
-            createServicePointVersionModel1);
+        createServicePointVersionModel1);
     servicePointVersionModels.forEach(v -> v.setStatus(Status.IN_REVIEW));
     Integer number = servicePointVersionModel.getNumber().getNumber();
 
     mvc.perform(post("/v1/service-points/" + number + "/revoke"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].status", is(Status.REVOKED.toString())))
-            .andExpect(jsonPath("$[1].status", is(Status.REVOKED.toString())));
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].status", is(Status.REVOKED.toString())))
+        .andExpect(jsonPath("$[1].status", is(Status.REVOKED.toString())));
 
     CreateServicePointVersionModel buchsiServicePoint = ServicePointTestData.getBuchsiServicePoint();
     buchsiServicePoint.setCountry(Country.GERMANY);
@@ -479,27 +490,29 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     buchsiServicePoint.setAbbreviation("NEWABC");
     buchsiServicePoint.setBusinessOrganisation("ch:1:sboid:100879");
     mvc.perform(post("/v1/service-points")
-                    .contentType(contentType)
-                    .content(mapper.writeValueAsString(buchsiServicePoint)))
-            .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.designationOfficial", is("Aargau Strasse")))
-            .andExpect(jsonPath("$.designationLong", is("designation long 1")))
-            .andExpect(jsonPath("$.abbreviation", is("NEWABC")));
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(buchsiServicePoint)))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.designationOfficial", is("Aargau Strasse")))
+        .andExpect(jsonPath("$.designationLong", is("designation long 1")))
+        .andExpect(jsonPath("$.abbreviation", is("NEWABC")));
     mvc.perform(get("/v1/service-points"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.totalCount", is(3)))
-            .andExpect(jsonPath("$.objects[0].abbreviation", is("ABC")))
-            .andExpect(jsonPath("$.objects[0].designationLong", is("designation long 1")))
-            .andExpect(jsonPath("$.objects[0].designationOfficial", is("Aargau Strasse")))
-            .andExpect(jsonPath("$.objects[0].number.number", is(8012345)))
-            .andExpect(jsonPath("$.objects[1].abbreviation", is("ABC")))
-            .andExpect(jsonPath("$.objects[1].designationLong", is("designation long 1")))
-            .andExpect(jsonPath("$.objects[1].designationOfficial", is("Aargau Strasse")))
-            .andExpect(jsonPath("$.objects[1].number.number", is(8012345)))
-            .andExpect(jsonPath("$.objects[2].abbreviation", is("NEWABC")))
-            .andExpect(jsonPath("$.objects[2].designationLong", is("designation long 1")))
-            .andExpect(jsonPath("$.objects[2].designationOfficial", is("Aargau Strasse")))
-            .andExpect(jsonPath("$.objects[2].number.number", is(8055555)));
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(3)))
+        .andExpect(jsonPath("$.objects[0].abbreviation", is("ABC")))
+        .andExpect(jsonPath("$.objects[0].designationLong", is("designation long 1")))
+        .andExpect(jsonPath("$.objects[0].designationOfficial", is("Aargau Strasse")))
+        .andExpect(jsonPath("$.objects[0].number.number", is(8012345)))
+        .andExpect(jsonPath("$.objects[1].abbreviation", is("ABC")))
+        .andExpect(jsonPath("$.objects[1].designationLong", is("designation long 1")))
+        .andExpect(jsonPath("$.objects[1].designationOfficial", is("Aargau Strasse")))
+        .andExpect(jsonPath("$.objects[1].number.number", is(8012345)))
+        .andExpect(jsonPath("$.objects[2].abbreviation", is("NEWABC")))
+        .andExpect(jsonPath("$.objects[2].designationLong", is("designation long 1")))
+        .andExpect(jsonPath("$.objects[2].designationOfficial", is("Aargau Strasse")))
+        .andExpect(jsonPath("$.objects[2].number.number", is(8055555)));
+
+    verify(locationClient, times(0)).claimSloid(any());
   }
 
   @Test
@@ -515,10 +528,10 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     createServicePointVersionModel1.setValidFrom(LocalDate.of(2019, 8, 11));
     createServicePointVersionModel1.setValidTo(LocalDate.of(2020, 8, 10));
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
-            aargauServicePointVersionModel);
+        aargauServicePointVersionModel);
     Long id = servicePointVersionModel.getId();
     List<ReadServicePointVersionModel> servicePointVersionModels = servicePointController.updateServicePoint(id,
-            createServicePointVersionModel1);
+        createServicePointVersionModel1);
     servicePointVersionModels.forEach(v -> v.setStatus(Status.IN_REVIEW));
     Integer number = servicePointVersionModel.getNumber().getNumber();
 
@@ -532,12 +545,14 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     buchsiServicePoint.setAbbreviation("NEWABC");
     buchsiServicePoint.setBusinessOrganisation("ch:1:sboid:100879");
     mvc.perform(post("/v1/service-points")
-                    .contentType(contentType)
-                    .content(mapper.writeValueAsString(buchsiServicePoint)))
-            .andExpect(status().is4xxClientError())
-            .andExpect(jsonPath("$.message", is("A conflict occurred due to a business rule while saving 8055555")))
-            .andExpect(jsonPath("$.details.[0].message", endsWith(
-                    "DesignationOfficial Aargau Strasse already taken from 11.08.2019 to 10.08.2020 by 8012345")));
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(buchsiServicePoint)))
+        .andExpect(status().is4xxClientError())
+        .andExpect(jsonPath("$.message", is("A conflict occurred due to a business rule while saving 8055555")))
+        .andExpect(jsonPath("$.details.[0].message", endsWith(
+            "DesignationOfficial Aargau Strasse already taken from 11.08.2019 to 10.08.2020 by 8012345")));
+
+    verify(locationClient, times(0)).claimSloid(any());
   }
 
   @Test
@@ -553,17 +568,17 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     createServicePointVersionModel1.setValidFrom(LocalDate.of(2019, 8, 11));
     createServicePointVersionModel1.setValidTo(LocalDate.of(2020, 8, 10));
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
-            aargauServicePointVersionModel);
+        aargauServicePointVersionModel);
     Long id = servicePointVersionModel.getId();
     List<ReadServicePointVersionModel> servicePointVersionModels = servicePointController.updateServicePoint(id,
-            createServicePointVersionModel1);
+        createServicePointVersionModel1);
     servicePointVersionModels.forEach(v -> v.setStatus(Status.IN_REVIEW));
     Integer number = servicePointVersionModel.getNumber().getNumber();
 
     mvc.perform(post("/v1/service-points/" + number + "/revoke"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].status", is(Status.REVOKED.toString())))
-            .andExpect(jsonPath("$[1].status", is(Status.REVOKED.toString())));
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].status", is(Status.REVOKED.toString())))
+        .andExpect(jsonPath("$[1].status", is(Status.REVOKED.toString())));
 
     CreateServicePointVersionModel buchsiServicePoint = ServicePointTestData.getBuchsiServicePoint();
     buchsiServicePoint.setCountry(Country.GERMANY);
@@ -575,35 +590,39 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     buchsiServicePoint.setAbbreviation("ABC");
     buchsiServicePoint.setBusinessOrganisation("ch:1:sboid:100879");
     mvc.perform(post("/v1/service-points")
-                    .contentType(contentType)
-                    .content(mapper.writeValueAsString(buchsiServicePoint)))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.message", is("The abbreviation must be unique and the chosen servicepoint version should be the most recent version.")))
-            .andExpect(jsonPath("$.details.[0].message", endsWith(
-                    "The abbreviation must be unique and the chosen servicepoint version should be the most recent version.")));
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(buchsiServicePoint)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message",
+            is("The abbreviation must be unique and the chosen servicepoint version should be the most recent version.")))
+        .andExpect(jsonPath("$.details.[0].message", endsWith(
+            "The abbreviation must be unique and the chosen servicepoint version should be the most recent version.")));
+    verify(locationClient, times(0)).claimSloid(any());
   }
 
   @Test
   void shouldThrowExceptionOnRevoke() throws Exception {
-    Integer number = 1234567;
+    int number = 1234567;
 
     mvc.perform(post("/v1/service-points/" + number + "/revoke"))
-            .andExpect(status().isNotFound())
-            .andExpect(jsonPath("$.message", is("Entity not found")))
-            .andExpect(jsonPath("$.details.[0].message", endsWith(
-                    "Object with servicePointNumber 1234567 not found")));;
+        .andExpect(status().isNotFound())
+        .andExpect(jsonPath("$.message", is("Entity not found")))
+        .andExpect(jsonPath("$.details.[0].message", endsWith(
+            "Object with servicePointNumber 1234567 not found")));
+    ;
   }
 
   @Test
   void shouldSetStatusToValidateForServicePoint() throws Exception {
     CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
-            aargauServicePointVersionModel);
+        aargauServicePointVersionModel);
     Long id = servicePointVersionModel.getId();
 
     mvc.perform(post("/v1/service-points/versions/" + id + "/skip-workflow"))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.status", is(Status.VALIDATED.toString())));
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.status", is(Status.VALIDATED.toString())));
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
   }
 
   @Test
@@ -727,6 +746,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.trafficPoint", is(true)))
         .andExpect(jsonPath("$.hasGeolocation", is(true)))
         .andExpect(jsonPath("$.creator", is("e123456")));
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
   }
 
   @Test
@@ -759,6 +779,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.operatingPointKilometerMaster.number", is(8500001)))
         .andExpect(jsonPath("$.operatingPointKilometerMaster.numberShort", is(1)))
         .andExpect(jsonPath("$.operatingPointKilometerMaster.checkDigit", is(8)));
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
   }
 
   @Test
@@ -780,6 +801,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.operatingPointKilometerMaster.number", is(8589008)))
         .andExpect(jsonPath("$.operatingPointKilometerMaster.numberShort", is(89008)))
         .andExpect(jsonPath("$.operatingPointKilometerMaster.checkDigit", is(7)));
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
   }
 
   @Test
@@ -796,6 +818,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.number.numberShort", is(1)))
         .andExpect(jsonPath("$.number.checkDigit", is(8)))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointRouteNetwork, is(false)));
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
   }
 
   @Test
@@ -809,13 +832,13 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     aargauServicePointVersionModel.setOperatingPointTechnicalTimetableType(null);
     aargauServicePointVersionModel.setOperatingPointTrafficPointType(null);
     mvc.perform(post("/v1/service-points")
-                    .contentType(contentType)
-                    .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
-            .andExpect(jsonPath("$.details.[0].message", endsWith(
-                    "OperatingPointRouteNetwork true is allowed only for StopPoint, ControlPoint and OperatingPoint." +
-                    " OperatingPointKilometerMasterNumber can be set only for StopPoint, ControlPoint and OperatingPoint.")));
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+        .andExpect(jsonPath("$.details.[0].message", endsWith(
+            "OperatingPointRouteNetwork true is allowed only for StopPoint, ControlPoint and OperatingPoint." +
+                " OperatingPointKilometerMasterNumber can be set only for StopPoint, ControlPoint and OperatingPoint.")));
   }
 
   @Test
@@ -867,6 +890,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.trafficPoint", is(true)))
         .andExpect(jsonPath("$.hasGeolocation", is(true)))
         .andExpect(jsonPath("$.creator", is("e123456")));
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
   }
 
   @Test
@@ -874,8 +898,6 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
         ServicePointTestData.getAargauServicePointVersionModel());
     Long id = servicePointVersionModel.getId();
-    Integer numberShort = servicePointVersionModel.getNumber().getNumberShort();
-
     UpdateServicePointVersionModel newServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
     newServicePointVersionModel.setServicePointGeolocation(
         ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
@@ -908,12 +930,13 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[2].servicePointGeolocation.lv95.east", is(2600783.0)))
         .andExpect(jsonPath("$[2].servicePointGeolocation.wgs84.north", is(46.96096808019)))
         .andExpect(jsonPath("$[2].servicePointGeolocation.wgs84.east", is(7.44891972221)));
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
   }
 
   @Test
   void shouldThrowExceptionWhenUpdateServicePointWithRouteNetworkTrueAndNotStopOrControlOrOperatingPoint() throws Exception {
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
-            ServicePointTestData.getAargauServicePointVersionModelWithRouteNetworkFalse());
+        ServicePointTestData.getAargauServicePointVersionModelWithRouteNetworkFalse());
     Long id = servicePointVersionModel.getId();
 
     CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
@@ -925,13 +948,14 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     aargauServicePointVersionModel.setOperatingPointTechnicalTimetableType(null);
     aargauServicePointVersionModel.setOperatingPointTrafficPointType(null);
     mvc.perform(put("/v1/service-points/" + id)
-                  .contentType(contentType)
-                  .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
-          .andExpect(status().isBadRequest())
-          .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
-          .andExpect(jsonPath("$.details.[0].message", endsWith(
-                  "OperatingPointRouteNetwork true is allowed only for StopPoint, ControlPoint and OperatingPoint." +
-                  " OperatingPointKilometerMasterNumber can be set only for StopPoint, ControlPoint and OperatingPoint.")));
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+        .andExpect(jsonPath("$.details.[0].message", endsWith(
+            "OperatingPointRouteNetwork true is allowed only for StopPoint, ControlPoint and OperatingPoint." +
+                " OperatingPointKilometerMasterNumber can be set only for StopPoint, ControlPoint and OperatingPoint.")));
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
   }
 
   @Test
@@ -952,6 +976,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(newServicePointVersionModel)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
   }
 
   @Test
@@ -974,6 +999,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0].operatingPointKilometerMaster.numberShort", is(1)))
         .andExpect(jsonPath("$[0].operatingPointKilometerMaster.checkDigit", is(8)))
         .andExpect(jsonPath("$", hasSize(1)));
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
   }
 
   @Test
@@ -992,6 +1018,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(newServicePointVersionModel)))
         .andExpect(status().is4xxClientError());
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
   }
 
   @Test
@@ -1061,6 +1088,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     assertThat(errorResponse.getDetails().first().getDisplayInfo().getCode()).isEqualTo(
         "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR");
     assertThat(errorResponse.getError()).isEqualTo("Stale object state error");
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
   }
 
   @Test
@@ -1113,6 +1141,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.servicePointGeolocation.lv03.north", is(199776.88044)))
         .andExpect(jsonPath("$.servicePointGeolocation.lv03.east", is(600127.58303)))
         .andExpect(jsonPath("$.hasGeolocation", is(true)));
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
   }
 
   @Test
@@ -1137,6 +1166,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.servicePointGeolocation.lv95.east", is(2600127.58359)))
         .andExpect(jsonPath("$.servicePointGeolocation.lv95.north", is(1199776.88159)))
         .andExpect(jsonPath("$.hasGeolocation", is(true)));
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
   }
 
   @Test
@@ -1156,6 +1186,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.number.number", is(8500001)))
         .andExpect(jsonPath("$.sloid", is("ch:1:sloid:1")));
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
   }
 
   @Test
@@ -1174,6 +1205,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
         .andExpect(status().isBadRequest());
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
   }
 
   @Test
@@ -1194,6 +1226,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(aargauServicePoint)))
         .andExpect(status().isForbidden());
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
   }
 
   @Test
@@ -1214,6 +1247,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(buchsiServicePoint)))
         .andExpect(status().isForbidden());
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
   }
 
 }

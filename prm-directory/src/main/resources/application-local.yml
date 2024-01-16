@@ -93,4 +93,3 @@ atlas:
   client:
     gateway:
       url: "http://localhost:8888"
-

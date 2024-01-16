@@ -17,7 +17,7 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableTyp
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.LocationClient;
+import ch.sbb.atlas.api.client.location.LocationClient;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointNumberService;
 import java.time.LocalDate;
 import java.util.List;

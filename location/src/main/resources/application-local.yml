@@ -33,15 +33,10 @@ spring:
         registration:
           azure:
             authorization-grant-type: client_credentials
-            client-id: ${SCHEDULING_CLIENT_ID}
-            client-secret: ${SCHEDULING_CLIENT_SECRET}
+            client-id: test # todo: why do i have to configure this, it works also with test
+            client-secret: test
             scope:
               - api://87e6e634-6ba1-4e7a-869d-3348b4c3eafc/.default
 auth:
   audience:
     service-name: 87e6e634-6ba1-4e7a-869d-3348b4c3eafc
-
-atlas:
-  client:
-    gateway:
-      url: "http://localhost:8888"

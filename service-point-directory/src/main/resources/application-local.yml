@@ -40,8 +40,6 @@ spring:
         provider:
           journeyPoi:
             issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
-          azure:
-            issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
         registration:
           journeyPoi:
             authorization-grant-type: client_credentials
@@ -49,12 +47,6 @@ spring:
             client-secret: ${JOURNEY_POI_CLIENT_SECRET}
             scope:
               - api://a7eb81a8-9554-4ff1-aad4-625a0d0e938b/.default
-          azure:
-            authorization-grant-type: client_credentials
-            client-id: ${SCHEDULING_CLIENT_ID}
-            client-secret: ${SCHEDULING_CLIENT_SECRET}
-            scope:
-              - api://87e6e634-6ba1-4e7a-869d-3348b4c3eafc/.default
 
   kafka:
     bootstrap-servers: localhost:9092
@@ -122,3 +114,8 @@ logging:
 journeyPoi:
   client:
     url: https://journey-pois-int.api.sbb.ch:443
+
+atlas:
+  client:
+    gateway:
+      url: "http://localhost:8888"

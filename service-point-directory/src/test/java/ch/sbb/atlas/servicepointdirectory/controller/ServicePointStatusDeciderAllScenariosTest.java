@@ -1,5 +1,17 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import ch.sbb.atlas.api.client.location.LocationClient;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
@@ -15,29 +27,16 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.LocationClient;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointNumberService;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
 
@@ -111,7 +110,6 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
         servicePoint);
     Long id = servicePointVersionModel.getId();
-
 
     Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
     servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
@@ -412,9 +410,9 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
         stopPoint1);
     Long id = servicePointVersionModel.getId();
-        Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
-        servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
-        servicePointVersion1.ifPresent(repository::save);
+    Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
+    servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+    servicePointVersion1.ifPresent(repository::save);
 
     UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
     stopPoint3.setDesignationOfficial("C Hausen");
@@ -552,7 +550,6 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
    * Status:                  VALIDATED                               DRAFT                                                 DRAFT
    */
   @Test
-
   void scenario11WhenTwoStopPointsWith2CoordinatesAndChangeStopPointNameAndCoordinateThenStopPointWithNewNameDRAFT()
       throws Exception {
     CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
@@ -1073,81 +1070,85 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.status", is(Status.VALIDATED.toString())));
   }
 
-    /**
-     * Szenario 20: Haltestelle (stopPoint = true) in Status DRAFT, update mit Geolocation ändern
-     * <p>
-     * NEU:       |________________Haltestelle A Hausen + Geolocation B____________|
-     * <p>
-     * IST:       |________________Haltestelle A Hausen + Geolocation A____________|
-     * Status:                      DRAFT
-     * <p>
-     * RESULTAT:  |________________Haltestelle A Hausen + Geolocation B____________|
-     * Status:                      DRAFT
-     */
-    @Test
-    void scenario20WhenSwissStopPointAndUpdateStopPointWithNewSwissGeolocationThenStopPointDraft() throws Exception {
-        CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
-        stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
-        stopPoint1.setDesignationOfficial("A Hausen");
-        ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
-                stopPoint1);
-        Long id = servicePointVersionModel.getId();
+  /**
+   * Szenario 20: Haltestelle (stopPoint = true) in Status DRAFT, update mit Geolocation ändern
+   * <p>
+   * NEU:       |________________Haltestelle A Hausen + Geolocation B____________|
+   * <p>
+   * IST:       |________________Haltestelle A Hausen + Geolocation A____________|
+   * Status:                      DRAFT
+   * <p>
+   * RESULTAT:  |________________Haltestelle A Hausen + Geolocation B____________|
+   * Status:                      DRAFT
+   */
+  @Test
+  void scenario20WhenSwissStopPointAndUpdateStopPointWithNewSwissGeolocationThenStopPointDraft() throws Exception {
+    CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
+    stopPoint1.setDesignationOfficial("A Hausen");
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+        stopPoint1);
+    Long id = servicePointVersionModel.getId();
 
-        UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
-        stopPoint3.setServicePointGeolocation(ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
-        stopPoint3.setValidTo(LocalDate.of(2015, 12, 31));
-        stopPoint3.setDesignationOfficial("A Hausen");
+    UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPoint3.setServicePointGeolocation(
+        ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
+    stopPoint3.setValidTo(LocalDate.of(2015, 12, 31));
+    stopPoint3.setDesignationOfficial("A Hausen");
 
-        mvc.perform(put("/v1/service-points/" + id)
-                        .contentType(contentType)
-                        .content(mapper.writeValueAsString(stopPoint3)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
-                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
-                .andExpect(jsonPath("$[0].status", is(Status.DRAFT.toString())));
-    }
+    mvc.perform(put("/v1/service-points/" + id)
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(stopPoint3)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
+        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
+        .andExpect(jsonPath("$[0].status", is(Status.DRAFT.toString())));
+  }
 
-    /**
-     * Szenario 21: Haltestelle (stopPoint = true) in Status VALIDATED und Geolocation im Ausland, update mit Geolocation ändern in der Schweiz
-     * <p>
-     * NEU:       |________________Haltestelle A Hausen + Geolocation Switzerland____________|
-     * <p>
-     * IST:       |________________Haltestelle A Hausen + Geolocation France_________________|
-     * Status:                      VALIDATED
-     * <p>
-     * RESULTAT:  |________________Haltestelle A Hausen + Geolocation Switzerland____________|
-     * Status:                      DRAFT
-     */
-    @Test
-    void scenario21WhenStopPointWithFrenchGeolocationAndUpdateStopPointWithNewSwissGeolocationThenStopPointDraft() throws Exception {
-        GeoReference geoReferenceFrance = GeoReference.builder().country(Country.FRANCE).build();
-        when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReferenceFrance);
-        CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
-        stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
-        stopPoint1.setDesignationOfficial("A Hausen");
-        ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
-                stopPoint1);
-        Long id = servicePointVersionModel.getId();
-        // Check that status for french geolocation is validated
-        assertThat(servicePointVersionModel.getStatus()).isEqualTo(Status.VALIDATED);
+  /**
+   * Szenario 21: Haltestelle (stopPoint = true) in Status VALIDATED und Geolocation im Ausland, update mit Geolocation ändern in
+   * der Schweiz
+   * <p>
+   * NEU:       |________________Haltestelle A Hausen + Geolocation Switzerland____________|
+   * <p>
+   * IST:       |________________Haltestelle A Hausen + Geolocation France_________________|
+   * Status:                      VALIDATED
+   * <p>
+   * RESULTAT:  |________________Haltestelle A Hausen + Geolocation Switzerland____________|
+   * Status:                      DRAFT
+   */
+  @Test
+  void scenario21WhenStopPointWithFrenchGeolocationAndUpdateStopPointWithNewSwissGeolocationThenStopPointDraft()
+      throws Exception {
+    GeoReference geoReferenceFrance = GeoReference.builder().country(Country.FRANCE).build();
+    when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReferenceFrance);
+    CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
+    stopPoint1.setDesignationOfficial("A Hausen");
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+        stopPoint1);
+    Long id = servicePointVersionModel.getId();
+    // Check that status for french geolocation is validated
+    assertThat(servicePointVersionModel.getStatus()).isEqualTo(Status.VALIDATED);
 
-        GeoReference geoReferenceSwitzerland = GeoReference.builder().country(Country.SWITZERLAND).build();
-        when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReferenceSwitzerland);
-        UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
-        stopPoint3.setServicePointGeolocation(ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
-        stopPoint3.setValidTo(LocalDate.of(2015, 12, 31));
-        stopPoint3.setDesignationOfficial("A Hausen");
+    GeoReference geoReferenceSwitzerland = GeoReference.builder().country(Country.SWITZERLAND).build();
+    when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReferenceSwitzerland);
+    UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPoint3.setServicePointGeolocation(
+        ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
+    stopPoint3.setValidTo(LocalDate.of(2015, 12, 31));
+    stopPoint3.setDesignationOfficial("A Hausen");
 
-        mvc.perform(put("/v1/service-points/" + id)
-                        .contentType(contentType)
-                        .content(mapper.writeValueAsString(stopPoint3)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
-                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
-                .andExpect(jsonPath("$[0].status", is(Status.DRAFT.toString())));
-    }
+    mvc.perform(put("/v1/service-points/" + id)
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(stopPoint3)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
+        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
+        .andExpect(jsonPath("$[0].status", is(Status.DRAFT.toString())));
+  }
 
     /**
      * Szenario 22: Haltestelle (stopPoint = true) in Status VALIDATED und No Geolocation, update mit Geolocation ändern in der Schweiz
@@ -1237,49 +1238,51 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
         // Check that status for french geolocation is validated
         assertThat(servicePointVersionModel.getStatus()).isEqualTo(Status.VALIDATED);
 
-        GeoReference geoReferenceSwitzerland = GeoReference.builder().country(Country.SWITZERLAND).build();
-        when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReferenceSwitzerland);
-        UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
-        stopPoint3.setServicePointGeolocation(ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
-        stopPoint3.setValidTo(LocalDate.of(2015, 12, 31));
-        stopPoint3.setDesignationOfficial("B Hausen");
+    GeoReference geoReferenceSwitzerland = GeoReference.builder().country(Country.SWITZERLAND).build();
+    when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReferenceSwitzerland);
+    UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPoint3.setServicePointGeolocation(
+        ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
+    stopPoint3.setValidTo(LocalDate.of(2015, 12, 31));
+    stopPoint3.setDesignationOfficial("B Hausen");
 
-        mvc.perform(put("/v1/service-points/" + id)
-                        .contentType(contentType)
-                        .content(mapper.writeValueAsString(stopPoint3)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
-                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
-                .andExpect(jsonPath("$[0].status", is(Status.DRAFT.toString())));
-    }
+    mvc.perform(put("/v1/service-points/" + id)
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(stopPoint3)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
+        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
+        .andExpect(jsonPath("$[0].status", is(Status.DRAFT.toString())));
+  }
 
-    @Test
-    void whenStopPointWithStatusValidatedAndUpdateStopPointWithNewSwissGeolocationThenStopPointValidated() throws Exception {
-        CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
-        stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
-        stopPoint1.setDesignationOfficial("A Hausen");
-        ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
-                stopPoint1);
-        Long id = servicePointVersionModel.getId();
-        Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
-        servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
-        servicePointVersion1.ifPresent(repository::save);
+  @Test
+  void whenStopPointWithStatusValidatedAndUpdateStopPointWithNewSwissGeolocationThenStopPointValidated() throws Exception {
+    CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
+    stopPoint1.setDesignationOfficial("A Hausen");
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+        stopPoint1);
+    Long id = servicePointVersionModel.getId();
+    Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
+    servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+    servicePointVersion1.ifPresent(repository::save);
 
-        UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
-        stopPoint3.setServicePointGeolocation(ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
-        stopPoint3.setValidTo(LocalDate.of(2015, 12, 31));
-        stopPoint3.setDesignationOfficial("A Hausen");
+    UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPoint3.setServicePointGeolocation(
+        ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
+    stopPoint3.setValidTo(LocalDate.of(2015, 12, 31));
+    stopPoint3.setDesignationOfficial("A Hausen");
 
-        mvc.perform(put("/v1/service-points/" + id)
-                        .contentType(contentType)
-                        .content(mapper.writeValueAsString(stopPoint3)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
-                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
-                .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())));
-    }
+    mvc.perform(put("/v1/service-points/" + id)
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(stopPoint3)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
+        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
+        .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())));
+  }
 
     @Test
     void whenStopPointWithNoCountryGeolocationThenStopPointValidated() throws Exception {

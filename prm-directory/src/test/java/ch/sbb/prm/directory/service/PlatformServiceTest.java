@@ -41,12 +41,12 @@ class PlatformServiceTest extends BasePrmServiceTest {
 
   @Autowired
   PlatformServiceTest(PlatformService platformService,
-                      PlatformRepository platformRepository,
-                      SharedServicePointConsumer sharedServicePointConsumer,
-                      RelationRepository relationRepository,
-                      StopPointRepository stopPointRepository,
-                      ReferencePointRepository referencePointRepository,
-                      SharedServicePointRepository sharedServicePointRepository) {
+      PlatformRepository platformRepository,
+      SharedServicePointConsumer sharedServicePointConsumer,
+      RelationRepository relationRepository,
+      StopPointRepository stopPointRepository,
+      ReferencePointRepository referencePointRepository,
+      SharedServicePointRepository sharedServicePointRepository) {
     super(sharedServicePointRepository);
     this.platformService = platformService;
     this.platformRepository = platformRepository;
@@ -90,11 +90,11 @@ class PlatformServiceTest extends BasePrmServiceTest {
 
     //then
     List<PlatformVersion> platformVersions = platformRepository
-            .findByParentServicePointSloid(platformVersion.getParentServicePointSloid());
+        .findByParentServicePointSloid(platformVersion.getParentServicePointSloid());
     assertThat(platformVersions).hasSize(1);
     assertThat(platformVersions.get(0).getParentServicePointSloid()).isEqualTo(platformVersion.getParentServicePointSloid());
     List<RelationVersion> relationVersions = relationRepository
-            .findAllByParentServicePointSloid(platformVersion.getParentServicePointSloid());
+        .findAllByParentServicePointSloid(platformVersion.getParentServicePointSloid());
     assertThat(relationVersions).isEmpty();
   }
 
@@ -120,7 +120,7 @@ class PlatformServiceTest extends BasePrmServiceTest {
     assertThat(platformVersions).hasSize(1);
     assertThat(platformVersions.get(0).getParentServicePointSloid()).isEqualTo(platformVersion.getParentServicePointSloid());
     List<RelationVersion> relationVersions = relationRepository
-            .findAllByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+        .findAllByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions).hasSize(1);
     assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(PLATFORM);
@@ -132,7 +132,8 @@ class PlatformServiceTest extends BasePrmServiceTest {
   @Test
   void shouldCreatePlatformWhenStopPointIsComplete() {
     //given
-    StopPointVersion stopPointVersion = StopPointTestData.builderVersion1().meansOfTransport(Set.of(MeanOfTransport.TRAIN)).build();
+    StopPointVersion stopPointVersion = StopPointTestData.builderVersion1().meansOfTransport(Set.of(MeanOfTransport.TRAIN))
+        .build();
     stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
