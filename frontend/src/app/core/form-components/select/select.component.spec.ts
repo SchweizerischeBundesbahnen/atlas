@@ -4,6 +4,7 @@ import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-tran
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
+import { InfoIconComponent } from '../info-icon/info-icon.component';
 
 describe('SelectComponent', () => {
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
@@ -13,7 +14,7 @@ describe('SelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SelectComponent, AtlasLabelFieldComponent],
+      declarations: [SelectComponent, InfoIconComponent, AtlasLabelFieldComponent],
       imports: [
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
