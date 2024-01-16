@@ -20,7 +20,6 @@ import {
   MatDatepickerPanel,
 } from '@angular/material/datepicker';
 import { Moment } from 'moment/moment';
-import { BusinessOrganisation, TimetableFieldNumber, TransportCompany } from '../../../api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TableFilterMultiSelect } from './config/table-filter-multiselect';
 import { TableFilterDateSelect } from './config/table-filter-date-select';
@@ -28,6 +27,7 @@ import { TableFilterChip } from './config/table-filter-chip';
 import { TableFilterSearchSelect } from './config/table-filter-search-select';
 import { TableFilterSearchType } from './config/table-filter-search-type';
 import { AtlasLabelFieldComponent } from '../../form-components/atlas-label-field/atlas-label-field.component';
+import { BusinessOrganisation, TimetableFieldNumber, TransportCompany } from '../../../api';
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
