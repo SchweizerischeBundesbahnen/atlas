@@ -1,8 +1,7 @@
 package ch.sbb.prm.directory.mapper;
 
-import ch.sbb.atlas.api.prm.model.referencepoint.CreateReferencePointVersionModel;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.api.prm.model.referencepoint.ReferencePointVersionModel;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import lombok.experimental.UtilityClass;
 
@@ -29,12 +28,12 @@ public class ReferencePointVersionMapper {
         .build();
   }
 
-  public static ReferencePointVersion toEntity(CreateReferencePointVersionModel model){
+  public static ReferencePointVersion toEntity(ReferencePointVersionModel model){
     return ReferencePointVersion.builder()
         .id(model.getId())
         .sloid(model.getSloid())
         .parentServicePointSloid(model.getParentServicePointSloid())
-        .number(ServicePointNumber.ofNumberWithoutCheckDigit(model.getNumberWithoutCheckDigit()))
+        .number(new Sloid(model.getParentServicePointSloid()).getServicePointNumber())
         .validFrom(model.getValidFrom())
         .validTo(model.getValidTo())
         .designation(model.getDesignation())
