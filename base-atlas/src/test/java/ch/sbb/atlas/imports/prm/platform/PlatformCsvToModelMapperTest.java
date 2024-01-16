@@ -7,7 +7,7 @@ import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
-import ch.sbb.atlas.api.prm.model.platform.CreatePlatformVersionModel;
+import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.testdata.prm.PlatformCsvTestData;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,9 +20,8 @@ class PlatformCsvToModelMapperTest {
   void shouldMapCsvToCreateModelCorrectly() {
     //given
     PlatformCsvModel csvModel = PlatformCsvTestData.getCsvModel();
-    CreatePlatformVersionModel expected = CreatePlatformVersionModel.builder()
+    PlatformVersionModel expected = PlatformVersionModel.builder()
         .sloid("ch:1:sloid:76646:0:17")
-        .numberWithoutCheckDigit(8576646)
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .parentServicePointSloid("ch:1:sloid:76646")
@@ -49,7 +48,7 @@ class PlatformCsvToModelMapperTest {
         .wheelchairAreaWidth(200.0)
         .build();
 
-    CreatePlatformVersionModel result = PlatformCsvToModelMapper.toModel(csvModel);
+    PlatformVersionModel result = PlatformCsvToModelMapper.toModel(csvModel);
     assertThat(result).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime.class).isEqualTo(expected);
   }
 

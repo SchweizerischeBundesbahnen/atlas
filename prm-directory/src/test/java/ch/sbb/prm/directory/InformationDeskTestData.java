@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory;
 
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
-import ch.sbb.atlas.api.prm.model.informationdesk.CreateInformationDeskVersionModel;
+import ch.sbb.atlas.api.prm.model.informationdesk.InformationDeskVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import ch.sbb.prm.directory.entity.InformationDeskVersion.InformationDeskVersionBuilder;
@@ -68,10 +68,9 @@ public class InformationDeskTestData {
         .wheelchairAccess(StandardAttributeType.YES);
   }
 
-  public static CreateInformationDeskVersionModel getCreateInformationDeskVersionModel(){
-    return CreateInformationDeskVersionModel.builder()
+  public static InformationDeskVersionModel getInformationDeskVersionModel(){
+    return InformationDeskVersionModel.builder()
         .sloid("ch:1.sloid:12345:1")
-        .numberWithoutCheckDigit(8507000)
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2001, 12, 31))
         .parentServicePointSloid("ch:1.sloid:12345")

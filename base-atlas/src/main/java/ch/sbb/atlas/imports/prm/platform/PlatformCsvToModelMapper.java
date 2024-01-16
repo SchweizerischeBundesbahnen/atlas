@@ -5,8 +5,7 @@ import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
-import ch.sbb.atlas.api.prm.model.platform.CreatePlatformVersionModel;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
@@ -16,9 +15,8 @@ import org.apache.commons.lang3.StringUtils;
 @UtilityClass
 public class PlatformCsvToModelMapper {
 
-  public static CreatePlatformVersionModel toModel(PlatformCsvModel csvModel) {
-    return CreatePlatformVersionModel.builder()
-        .numberWithoutCheckDigit(ServicePointNumber.removeCheckDigit(csvModel.getDidokCode()))
+  public static PlatformVersionModel toModel(PlatformCsvModel csvModel) {
+    return PlatformVersionModel.builder()
         .parentServicePointSloid(csvModel.getDsSloid())
         .sloid(csvModel.getSloid())
         .boardingDevice(BoardingDeviceAttributeType.of(csvModel.getBoardingDevice()))

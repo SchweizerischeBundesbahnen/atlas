@@ -1,16 +1,15 @@
 package ch.sbb.prm.directory.mapper;
 
-import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel;
+import static ch.sbb.atlas.servicepoint.Country.SWITZERLAND;
+
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
+import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.ServicePointNonSwissCountryNotAllowedException;
+import java.util.HashSet;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.HashSet;
-
-import static ch.sbb.atlas.servicepoint.Country.SWITZERLAND;
 
 @Slf4j
 @UtilityClass
@@ -52,7 +51,7 @@ public class StopPointVersionMapper {
         .isReduced(version.isReduced())
         .build();
   }
-  public static StopPointVersion toEntity(CreateStopPointVersionModel model){
+  public static StopPointVersion toEntity(StopPointVersionModel model){
     return StopPointVersion.builder()
         .id(model.getId())
         .sloid(model.getSloid())
@@ -88,9 +87,8 @@ public class StopPointVersionMapper {
         .build();
   }
 
-  private static ServicePointNumber convertToServicePointNumber(CreateStopPointVersionModel stopPointVersion) {
-    ServicePointNumber servicePointNumber = ServicePointNumber
-            .ofNumberWithoutCheckDigit(stopPointVersion.getNumberWithoutCheckDigit());
+  private static ServicePointNumber convertToServicePointNumber(StopPointVersionModel stopPointVersion) {
+    ServicePointNumber servicePointNumber = new Sloid(stopPointVersion.getSloid()).getServicePointNumber();
     if (!SWITZERLAND.equals(servicePointNumber.getCountry())) {
       throw new ServicePointNonSwissCountryNotAllowedException(servicePointNumber);
     }
