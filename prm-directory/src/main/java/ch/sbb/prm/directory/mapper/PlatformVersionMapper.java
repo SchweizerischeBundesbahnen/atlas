@@ -47,7 +47,7 @@ public class PlatformVersionMapper {
         .id(model.getId())
         .sloid(model.getSloid())
         .parentServicePointSloid(model.getParentServicePointSloid())
-        .number(new Sloid(model.getParentServicePointSloid()).getServicePointNumber())
+        .number(SloidHelper.getServicePointNumber(model.getParentServicePointSloid()))
         .validFrom(model.getValidFrom())
         .validTo(model.getValidTo())
         .contrastingAreas(model.getContrastingAreas())

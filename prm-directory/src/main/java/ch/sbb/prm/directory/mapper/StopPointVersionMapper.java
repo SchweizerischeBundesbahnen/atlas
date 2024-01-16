@@ -88,7 +88,7 @@ public class StopPointVersionMapper {
   }
 
   private static ServicePointNumber convertToServicePointNumber(StopPointVersionModel stopPointVersion) {
-    ServicePointNumber servicePointNumber = new Sloid(stopPointVersion.getSloid()).getServicePointNumber();
+    ServicePointNumber servicePointNumber = SloidHelper.getServicePointNumber(stopPointVersion.getSloid());
     if (!SWITZERLAND.equals(servicePointNumber.getCountry())) {
       throw new ServicePointNonSwissCountryNotAllowedException(servicePointNumber);
     }
