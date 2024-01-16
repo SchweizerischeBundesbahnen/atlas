@@ -26,9 +26,10 @@ public abstract class BasePrmVersionModel extends BaseVersionModel {
   private Long id;
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
-  @Schema(description = "Unique code for locations that is used in customer information. The structure is described in the "
-      + "“Swiss Location ID” specification, chapter 4.2. The document is available here. "
-      + "https://transportdatamanagement.ch/standards/", example = "ch:1:sloid:18771:1")
+  @Schema(description = """
+      Unique code for locations that is used in customer information.
+      The structure is described in the “Swiss Location ID” specification, chapter 4.2.
+      The document is available here: https://transportdatamanagement.ch/standards/""", example = "ch:1:sloid:18771:1")
   private String sloid;
 
   @Schema(description = "Valid from")

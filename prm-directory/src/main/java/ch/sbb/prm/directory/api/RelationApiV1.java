@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.api;
 
-import ch.sbb.atlas.api.prm.model.relation.CreateRelationVersionModel;
-import ch.sbb.atlas.api.prm.model.relation.ReadRelationVersionModel;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.api.prm.model.relation.ReadRelationVersionModel;
+import ch.sbb.atlas.api.prm.model.relation.RelationVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -36,5 +36,5 @@ public interface RelationApiV1 {
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}")
   List<ReadRelationVersionModel> updateRelation(@PathVariable Long id,
-      @RequestBody @Valid CreateRelationVersionModel model);
+      @RequestBody @Valid RelationVersionModel model);
 }

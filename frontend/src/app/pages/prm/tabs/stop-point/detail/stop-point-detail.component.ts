@@ -1,11 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Data, Router } from '@angular/router';
-import {
-  CreateStopPointVersion,
-  PersonWithReducedMobilityService,
-  ReadServicePointVersion,
-  ReadStopPointVersion,
-} from '../../../../../api';
 import { BehaviorSubject, Observable, of, take } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
@@ -19,6 +13,12 @@ import {
   StopPointFormGroupBuilder,
 } from '../form/stop-point-detail-form-group';
 import { PrmTabsService } from '../../../prm-panel/prm-tabs.service';
+import {
+  PersonWithReducedMobilityService,
+  ReadServicePointVersion,
+  ReadStopPointVersion,
+  StopPointVersion,
+} from '../../../../../api';
 
 @Component({
   selector: 'app-stop-point-detail',
@@ -166,7 +166,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     this.isFormEnabled$.next(true);
   }
 
-  private updateStopPoint(writableStopPoint: CreateStopPointVersion) {
+  private updateStopPoint(writableStopPoint: StopPointVersion) {
     this.personWithReducedMobilityService
       .updateStopPoint(this.selectedVersion.id!, writableStopPoint)
       .subscribe(() => {
@@ -175,7 +175,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
       });
   }
 
-  private createStopPoint(writableStopPoint: CreateStopPointVersion) {
+  private createStopPoint(writableStopPoint: StopPointVersion) {
     this.personWithReducedMobilityService
       .createStopPoint(writableStopPoint)
       .subscribe((stopPoint) => {

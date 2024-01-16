@@ -1,6 +1,7 @@
 package ch.sbb.atlas.api.model;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
+import ch.sbb.atlas.service.UserService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import java.text.MessageFormat;
@@ -56,7 +57,15 @@ public class ErrorResponse {
   }
 
   private void logError() {
-    log.error(this.toString());
+    log.error("{} caused by {}", this, getUserIdentifier().orElse("-"));
+  }
+
+  private Optional<String> getUserIdentifier() {
+    try {
+      return Optional.ofNullable(UserService.getUserIdentifier());
+    } catch (Exception e) {
+      return Optional.empty();
+    }
   }
 
   @AllArgsConstructor

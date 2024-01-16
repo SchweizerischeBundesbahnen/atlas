@@ -1,19 +1,18 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import moment from 'moment';
 import { BaseDetailFormGroup } from '../../../../../../core/components/base-detail/base-detail-form-group';
+import { WhitespaceValidator } from '../../../../../../core/validation/whitespace/whitespace-validator';
+import { AtlasCharsetsValidator } from '../../../../../../core/validation/charsets/atlas-charsets-validator';
+import { DateRangeValidator } from '../../../../../../core/validation/date-range/date-range-validator';
 import {
   BasicAttributeType,
   BoardingDeviceAttributeType,
   BooleanOptionalAttributeType,
-  CreatePlatformVersion,
   InfoOpportunityAttributeType,
+  PlatformVersion,
   ReadPlatformVersion,
   VehicleAccessAttributeType,
 } from '../../../../../../api';
-import { WhitespaceValidator } from '../../../../../../core/validation/whitespace/whitespace-validator';
-import { AtlasCharsetsValidator } from '../../../../../../core/validation/charsets/atlas-charsets-validator';
-import { DateRangeValidator } from '../../../../../../core/validation/date-range/date-range-validator';
-import { SloidHelper } from '../../../../../../core/util/sloidHelper';
 
 export interface PlatformFormGroup extends BaseDetailFormGroup {
   sloid: FormControl<string | null | undefined>;
@@ -151,12 +150,11 @@ export class PlatformFormGroupBuilder {
     form: FormGroup<ReducedPlatformFormGroup> | FormGroup<CompletePlatformFormGroup>,
     parentServicePointSloid: string,
     reduced: boolean,
-  ): CreatePlatformVersion {
+  ): PlatformVersion {
     const formValue = (form as FormGroup<ReducedPlatformFormGroup>).value;
-    const platformVersion: CreatePlatformVersion = {
+    const platformVersion: PlatformVersion = {
       sloid: formValue.sloid!,
       parentServicePointSloid: parentServicePointSloid,
-      numberWithoutCheckDigit: SloidHelper.servicePointSloidToNumber(parentServicePointSloid),
       validFrom: formValue.validFrom!.toDate(),
       validTo: formValue.validTo!.toDate(),
       creationDate: formValue.creationDate!,
@@ -174,7 +172,7 @@ export class PlatformFormGroupBuilder {
 
   private static getCompleteForm(
     form: FormGroup<ReducedPlatformFormGroup> | FormGroup<CompletePlatformFormGroup>,
-    platformVersion: CreatePlatformVersion,
+    platformVersion: PlatformVersion,
   ) {
     const formValue = (form as FormGroup<CompletePlatformFormGroup>).value;
     return {
@@ -194,7 +192,7 @@ export class PlatformFormGroupBuilder {
 
   private static getReducedForm(
     form: FormGroup<ReducedPlatformFormGroup> | FormGroup<CompletePlatformFormGroup>,
-    platformVersion: CreatePlatformVersion,
+    platformVersion: PlatformVersion,
   ) {
     const formValue = (form as FormGroup<ReducedPlatformFormGroup>).value;
     return {
