@@ -1,6 +1,6 @@
 package ch.sbb.atlas.imports.prm.platform;
 
-import ch.sbb.atlas.api.prm.model.platform.CreatePlatformVersionModel;
+import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.imports.prm.BasePrmCsvModelContainer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PlatformCsvModelContainer extends BasePrmCsvModelContainer<PlatformCsvModel> {
 
   @JsonIgnore
-  public List<CreatePlatformVersionModel> getCreateModels() {
+  public List<PlatformVersionModel> getCreateModels() {
     return getCsvModels().stream().map(PlatformCsvToModelMapper::toModel).toList();
   }
 

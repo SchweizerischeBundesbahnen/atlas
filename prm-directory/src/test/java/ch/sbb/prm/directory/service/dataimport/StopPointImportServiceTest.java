@@ -1,5 +1,7 @@
 package ch.sbb.prm.directory.service.dataimport;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModel;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModelContainer;
@@ -14,18 +16,15 @@ import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
@@ -57,9 +56,9 @@ class StopPointImportServiceTest {
   void shouldImportWhenStopPointsDoesNotExists() {
     //given
     SharedServicePoint servicePoint = SharedServicePoint.builder()
-        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:123456\",\"sboids\":[\"ch:1:sboid:100602\"],"
+        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:12345\",\"sboids\":[\"ch:1:sboid:100602\"],"
             + "\"trafficPointSloids\":[]}")
-        .sloid("ch:1:sloid:123456")
+        .sloid("ch:1:sloid:12345")
         .build();
     sharedServicePointRepository.saveAndFlush(servicePoint);
 
@@ -70,7 +69,7 @@ class StopPointImportServiceTest {
     //then
     assertThat(result).hasSize(1);
     assertThat(result.get(0).getMessage()).isEqualTo("[SUCCESS]: This version was imported successfully");
-    assertThat(result.get(0).getItemNumber()).isEqualTo("8534567");
+    assertThat(result.get(0).getItemNumber()).isEqualTo("8512345");
     assertThat(result.get(0).getValidFrom()).isEqualTo(LocalDate.of(2000, 1, 1));
     assertThat(result.get(0).getValidTo()).isEqualTo(LocalDate.of(2000, 12, 31));
     assertThat(result.get(0).getStatus()).isEqualTo(ItemImportResponseStatus.SUCCESS);
@@ -87,7 +86,7 @@ class StopPointImportServiceTest {
 
     //then
     assertThat(result).hasSize(1);
-    assertThat(result.get(0).getItemNumber()).isEqualTo("8534567");
+    assertThat(result.get(0).getItemNumber()).isEqualTo("8512345");
     assertThat(result.get(0).getStatus()).isEqualTo(ItemImportResponseStatus.FAILED);
   }
 
@@ -102,7 +101,7 @@ class StopPointImportServiceTest {
 
     //then
     assertThat(result).hasSize(1);
-    assertThat(result.get(0).getItemNumber()).isEqualTo("8534567");
+    assertThat(result.get(0).getItemNumber()).isEqualTo("8512345");
     assertThat(result.get(0).getStatus()).isEqualTo(ItemImportResponseStatus.FAILED);
   }
 
@@ -110,15 +109,14 @@ class StopPointImportServiceTest {
   void shouldImportWhenStopPointsExists() {
     //then
     SharedServicePoint servicePoint = SharedServicePoint.builder()
-        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:123456\",\"sboids\":[\"ch:1:sboid:100602\"],"
+        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:12345\",\"sboids\":[\"ch:1:sboid:100602\"],"
             + "\"trafficPointSloids\":[]}")
-        .sloid("ch:1:sloid:123456")
+        .sloid("ch:1:sloid:12345")
         .build();
     sharedServicePointRepository.saveAndFlush(servicePoint);
     StopPointCsvModelContainer stopPointCsvModelContainer = StopPointCsvTestData.getStopPointCsvModelContainer();
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
-    Integer didokCode = stopPointCsvModelContainer.getDidokCode();
-    stopPointVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(didokCode));
+    stopPointVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8512345));
     stopPointRepository.saveAndFlush(stopPointVersion);
 
     //when
@@ -127,7 +125,7 @@ class StopPointImportServiceTest {
     //then
     assertThat(result).hasSize(1);
     assertThat(result.get(0).getMessage()).isEqualTo("[SUCCESS]: This version was imported successfully");
-    assertThat(result.get(0).getItemNumber()).isEqualTo("8534567");
+    assertThat(result.get(0).getItemNumber()).isEqualTo("8512345");
     assertThat(result.get(0).getValidFrom()).isEqualTo(LocalDate.of(2000, 1, 1));
     assertThat(result.get(0).getValidTo()).isEqualTo(LocalDate.of(2000, 12, 31));
     assertThat(result.get(0).getStatus()).isEqualTo(ItemImportResponseStatus.SUCCESS);

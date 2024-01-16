@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.api;
 
-import ch.sbb.atlas.api.prm.model.toilet.CreateToiletVersionModel;
 import ch.sbb.atlas.api.prm.model.toilet.ReadToiletVersionModel;
+import ch.sbb.atlas.api.prm.model.toilet.ToiletVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -23,11 +23,11 @@ public interface ToiletApiV1 {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  ReadToiletVersionModel createToiletVersion(@RequestBody @Valid CreateToiletVersionModel toiletVersionModel);
+  ReadToiletVersionModel createToiletVersion(@RequestBody @Valid ToiletVersionModel toiletVersionModel);
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}")
   List<ReadToiletVersionModel> updateToiletVersion(@PathVariable Long id,
-      @RequestBody @Valid CreateToiletVersionModel model);
+      @RequestBody @Valid ToiletVersionModel model);
 
 }
