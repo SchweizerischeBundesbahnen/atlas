@@ -13,6 +13,7 @@ import { MeansOfTransportPickerComponent } from '../../../../../sepodi/means-of-
 import { AtlasSpacerComponent } from '../../../../../../core/components/spacer/atlas-spacer.component';
 import { AppTestingModule } from '../../../../../../app.testing.module';
 import { By } from '@angular/platform-browser';
+import { InfoIconComponent } from '../../../../../../core/form-components/info-icon/info-icon.component';
 
 describe('StopPointReducedFormComponent', () => {
   let component: StopPointReducedFormComponent;
@@ -25,6 +26,7 @@ describe('StopPointReducedFormComponent', () => {
         MockSelectComponent,
         MockAtlasFieldErrorComponent,
         TextFieldComponent,
+        InfoIconComponent,
         AtlasLabelFieldComponent,
         MeansOfTransportPickerComponent,
         AtlasSpacerComponent,

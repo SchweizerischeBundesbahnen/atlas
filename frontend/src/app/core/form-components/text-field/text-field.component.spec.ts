@@ -9,6 +9,7 @@ import {
   TranslatePipe,
 } from '@ngx-translate/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { InfoIconComponent } from '../info-icon/info-icon.component';
 
 describe('TextFieldComponent', () => {
   let component: TextFieldComponent;
@@ -16,7 +17,7 @@ describe('TextFieldComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TextFieldComponent],
+      declarations: [TextFieldComponent, InfoIconComponent],
       imports: [
         FormModule,
         TranslateModule.forRoot({
