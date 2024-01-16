@@ -1,14 +1,14 @@
 package ch.sbb.prm.directory.api;
 
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.prm.model.platform.CreatePlatformVersionModel;
 import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
+import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
 import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.platform.PlatformImportRequestModel;
-import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.controller.model.PlatformRequestParams;
+import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -40,12 +40,12 @@ public interface PlatformApiV1 {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  ReadPlatformVersionModel createPlatform(@RequestBody @Valid CreatePlatformVersionModel model);
+  ReadPlatformVersionModel createPlatform(@RequestBody @Valid PlatformVersionModel model);
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}")
   List<ReadPlatformVersionModel> updatePlatform(@PathVariable Long id,
-      @RequestBody @Valid CreatePlatformVersionModel createPlatformVersionModel);
+      @RequestBody @Valid PlatformVersionModel PlatformVersionModel);
 
   @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping("import")

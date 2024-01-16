@@ -1,8 +1,7 @@
 package ch.sbb.prm.directory.mapper;
 
-import ch.sbb.atlas.api.prm.model.ticketcounter.CreateTicketCounterVersionModel;
 import ch.sbb.atlas.api.prm.model.ticketcounter.ReadTicketCounterVersionModel;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.api.prm.model.ticketcounter.TicketCounterVersionModel;
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
 import lombok.experimental.UtilityClass;
 
@@ -30,12 +29,12 @@ public class TicketCounterVersionMapper {
         .build();
   }
 
-  public static TicketCounterVersion toEntity(CreateTicketCounterVersionModel model){
+  public static TicketCounterVersion toEntity(TicketCounterVersionModel model){
     return TicketCounterVersion.builder()
         .id(model.getId())
         .sloid(model.getSloid())
         .parentServicePointSloid(model.getParentServicePointSloid())
-        .number(ServicePointNumber.ofNumberWithoutCheckDigit(model.getNumberWithoutCheckDigit()))
+        .number(new Sloid(model.getParentServicePointSloid()).getServicePointNumber())
         .validFrom(model.getValidFrom())
         .validTo(model.getValidTo())
         .designation(model.getDesignation())
