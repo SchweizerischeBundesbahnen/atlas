@@ -13,6 +13,7 @@ export class MeansOfTransportPickerComponent implements OnInit {
   @Input() formGroup!: FormGroup;
   @Input() label!: string;
   @Input() showUnknown = true;
+  @Input() showInfo = false;
 
   means!: MeanOfTransport[];
 
