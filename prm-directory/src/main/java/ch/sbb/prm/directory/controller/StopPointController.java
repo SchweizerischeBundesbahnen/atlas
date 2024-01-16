@@ -1,16 +1,16 @@
 package ch.sbb.prm.directory.controller;
 
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
+import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointImportRequestModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.StopPointApiV1;
+import ch.sbb.prm.directory.controller.model.StopPointRequestParams;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.StopPointAlreadyExistsException;
 import ch.sbb.prm.directory.mapper.StopPointVersionMapper;
-import ch.sbb.prm.directory.controller.model.StopPointRequestParams;
 import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
 import ch.sbb.prm.directory.service.StopPointService;
 import ch.sbb.prm.directory.service.dataimport.StopPointImportService;
@@ -52,7 +52,7 @@ public class StopPointController implements StopPointApiV1 {
   }
 
   @Override
-  public ReadStopPointVersionModel createStopPoint(CreateStopPointVersionModel model) {
+  public ReadStopPointVersionModel createStopPoint(StopPointVersionModel model) {
     boolean stopPointExisting = stopPointService.isStopPointExisting(model.getSloid());
     if (stopPointExisting) {
       throw new StopPointAlreadyExistsException(model.getSloid());
@@ -63,7 +63,7 @@ public class StopPointController implements StopPointApiV1 {
   }
 
   @Override
-  public List<ReadStopPointVersionModel> updateStopPoint(Long id, CreateStopPointVersionModel model) {
+  public List<ReadStopPointVersionModel> updateStopPoint(Long id, StopPointVersionModel model) {
     StopPointVersion stopPointVersionToUpdate =
         stopPointService.getStopPointById(id).orElseThrow(() -> new IdNotFoundException(id));
     StopPointVersion editedVersion = StopPointVersionMapper.toEntity(model);

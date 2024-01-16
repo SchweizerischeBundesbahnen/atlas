@@ -1,17 +1,16 @@
 package ch.sbb.prm.directory.controller;
 
-import ch.sbb.atlas.api.prm.model.parkinglot.CreateParkingLotVersionModel;
+import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotVersionModel;
 import ch.sbb.atlas.api.prm.model.parkinglot.ReadParkingLotVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.ParkingLotApiV1;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.mapper.ParkingLotVersionMapper;
 import ch.sbb.prm.directory.service.ParkingLotService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -26,13 +25,13 @@ public class ParkingLotsController implements ParkingLotApiV1 {
   }
 
   @Override
-  public ReadParkingLotVersionModel createParkingLot(CreateParkingLotVersionModel model) {
+  public ReadParkingLotVersionModel createParkingLot(ParkingLotVersionModel model) {
     ParkingLotVersion parkingLotVersion = parkingLotService.createParkingLot(ParkingLotVersionMapper.toEntity(model));
     return ParkingLotVersionMapper.toModel(parkingLotVersion);
   }
 
   @Override
-  public List<ReadParkingLotVersionModel> updateParkingLot(Long id, CreateParkingLotVersionModel model) {
+  public List<ReadParkingLotVersionModel> updateParkingLot(Long id, ParkingLotVersionModel model) {
     ParkingLotVersion parkingLotVersion =
         parkingLotService.getPlatformVersionById(id).orElseThrow(() -> new IdNotFoundException(id));
 

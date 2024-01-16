@@ -1,6 +1,6 @@
 package ch.sbb.atlas.imports.prm.stoppoint;
 
-import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel;
+import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
 import ch.sbb.atlas.imports.prm.stoppoint.mapper.StopPointCsvToModelMapper;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -23,13 +23,13 @@ public class StopPointCsvModelContainer {
 
   private Integer didokCode;
   private List<StopPointCsvModel> stopPointCsvModels;
-  private List<CreateStopPointVersionModel> createStopPointVersionModels;
+  private List<StopPointVersionModel> stopPointVersionModels;
 
   public Integer getDidokCode() {
     return ServicePointNumber.removeCheckDigit(this.didokCode);
   }
 
-  public List<CreateStopPointVersionModel> getCreateStopPointVersionModels() {
+  public List<StopPointVersionModel> getStopPointVersionModels() {
     return stopPointCsvModels.stream().map(StopPointCsvToModelMapper::toModel).toList();
   }
 
