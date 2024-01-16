@@ -28,6 +28,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
+@Schema(name = "PlatformVersion")
 public class PlatformVersionModel extends BasePrmVersionModel implements DatesValidator, Versionable {
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
