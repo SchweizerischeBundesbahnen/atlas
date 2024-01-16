@@ -15,5 +15,5 @@ import { StopPointCsvModel } from './stopPointCsvModel';
 export interface StopPointCsvModelContainer {
   didokCode?: number;
   stopPointCsvModels?: Array<StopPointCsvModel>;
-  createStopPointVersionModels?: Array<CreateStopPointVersion>;
+  StopPointVersionModels?: Array<CreateStopPointVersion>;
 }

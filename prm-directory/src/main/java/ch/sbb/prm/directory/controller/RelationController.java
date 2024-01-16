@@ -1,18 +1,17 @@
 package ch.sbb.prm.directory.controller;
 
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
-import ch.sbb.atlas.api.prm.model.relation.CreateRelationVersionModel;
 import ch.sbb.atlas.api.prm.model.relation.ReadRelationVersionModel;
+import ch.sbb.atlas.api.prm.model.relation.RelationVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.RelationApiV1;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.mapper.RelationVersionMapper;
 import ch.sbb.prm.directory.service.RelationService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -45,7 +44,7 @@ public class RelationController implements RelationApiV1 {
   }
 
   @Override
-  public List<ReadRelationVersionModel> updateRelation(Long id, CreateRelationVersionModel model) {
+  public List<ReadRelationVersionModel> updateRelation(Long id, RelationVersionModel model) {
     RelationVersion relationVersionToUpdate =
         relationService.getRelationById(id).orElseThrow(() -> new IdNotFoundException(id));
     RelationVersion editedVersion = RelationVersionMapper.toEntity(model);

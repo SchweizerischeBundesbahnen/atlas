@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.api;
 
-import ch.sbb.atlas.api.prm.model.ticketcounter.CreateTicketCounterVersionModel;
 import ch.sbb.atlas.api.prm.model.ticketcounter.ReadTicketCounterVersionModel;
+import ch.sbb.atlas.api.prm.model.ticketcounter.TicketCounterVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -24,11 +24,11 @@ public interface TicketCounterApiV1 {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   ReadTicketCounterVersionModel createTicketCounter(
-      @RequestBody @Valid CreateTicketCounterVersionModel ticketCounterVersionModel);
+      @RequestBody @Valid TicketCounterVersionModel ticketCounterVersionModel);
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}")
   List<ReadTicketCounterVersionModel> updateTicketCounter(@PathVariable Long id,
-      @RequestBody @Valid CreateTicketCounterVersionModel model);
+      @RequestBody @Valid TicketCounterVersionModel model);
 
 }

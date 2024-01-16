@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.api.prm.model.informationdesk.CreateInformationDeskVersionModel;
+import ch.sbb.atlas.api.prm.model.informationdesk.InformationDeskVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -97,12 +97,12 @@ class InformationDeskVersionControllerApiTest extends BaseControllerApiTest {
     referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
-    CreateInformationDeskVersionModel createInformationDeskVersionModel = InformationDeskTestData.getCreateInformationDeskVersionModel();
-    createInformationDeskVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    InformationDeskVersionModel InformationDeskVersionModel = InformationDeskTestData.getInformationDeskVersionModel();
+    InformationDeskVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when && then
     mvc.perform(post("/v1/information-desks")
             .contentType(contentType)
-            .content(mapper.writeValueAsString(createInformationDeskVersionModel)))
+            .content(mapper.writeValueAsString(InformationDeskVersionModel)))
         .andExpect(status().isCreated());
     verify(relationService, times(1)).save(any(RelationVersion.class));
   }
@@ -116,12 +116,12 @@ class InformationDeskVersionControllerApiTest extends BaseControllerApiTest {
     stopPointVersion.setMeansOfTransport(Set.of(MeanOfTransport.BUS));
     stopPointRepository.save(stopPointVersion);
 
-    CreateInformationDeskVersionModel createInformationDeskVersionModel = InformationDeskTestData.getCreateInformationDeskVersionModel();
-    createInformationDeskVersionModel.setParentServicePointSloid(parentServicePointSloid);
+    InformationDeskVersionModel InformationDeskVersionModel = InformationDeskTestData.getInformationDeskVersionModel();
+    InformationDeskVersionModel.setParentServicePointSloid(parentServicePointSloid);
     //when && then
     mvc.perform(post("/v1/information-desks")
             .contentType(contentType)
-            .content(mapper.writeValueAsString(createInformationDeskVersionModel)))
+            .content(mapper.writeValueAsString(InformationDeskVersionModel)))
         .andExpect(status().isCreated());
     verify(relationService, never()).save(any(RelationVersion.class));
   }
@@ -133,12 +133,12 @@ class InformationDeskVersionControllerApiTest extends BaseControllerApiTest {
     referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
-    CreateInformationDeskVersionModel createInformationDeskVersionModel = InformationDeskTestData.getCreateInformationDeskVersionModel();
-    createInformationDeskVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    InformationDeskVersionModel InformationDeskVersionModel = InformationDeskTestData.getInformationDeskVersionModel();
+    InformationDeskVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when && then
     mvc.perform(post("/v1/information-desks")
             .contentType(contentType)
-            .content(mapper.writeValueAsString(createInformationDeskVersionModel)))
+            .content(mapper.writeValueAsString(InformationDeskVersionModel)))
         .andExpect(status().isPreconditionFailed())
         .andExpect(jsonPath("$.message", is("The stop point with sloid ch:1:sloid:7000 does not exist.")));
     verify(relationService, times(0)).save(any(RelationVersion.class));
@@ -152,12 +152,12 @@ class InformationDeskVersionControllerApiTest extends BaseControllerApiTest {
     referencePointVersion.setParentServicePointSloid("ch:1:sloid:7001");
     referencePointRepository.save(referencePointVersion);
 
-    CreateInformationDeskVersionModel createInformationDeskVersionModel = InformationDeskTestData.getCreateInformationDeskVersionModel();
-    createInformationDeskVersionModel.setParentServicePointSloid("ch:1:sloid:7001");
+    InformationDeskVersionModel InformationDeskVersionModel = InformationDeskTestData.getInformationDeskVersionModel();
+    InformationDeskVersionModel.setParentServicePointSloid("ch:1:sloid:7001");
     //when && then
     mvc.perform(post("/v1/information-desks")
                     .contentType(contentType)
-                    .content(mapper.writeValueAsString(createInformationDeskVersionModel)))
+                    .content(mapper.writeValueAsString(InformationDeskVersionModel)))
             .andExpect(status().isPreconditionFailed())
             .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7001 does not exist.")));
   }
@@ -188,12 +188,11 @@ class InformationDeskVersionControllerApiTest extends BaseControllerApiTest {
     version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     informationDeskRepository.saveAndFlush(version2);
 
-    CreateInformationDeskVersionModel editedVersionModel = new CreateInformationDeskVersionModel();
+    InformationDeskVersionModel editedVersionModel = new InformationDeskVersionModel();
     editedVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersionModel.setSloid(version2.getSloid());
     editedVersionModel.setValidFrom(version2.getValidFrom());
     editedVersionModel.setValidTo(version2.getValidTo().minusYears(1));
-    editedVersionModel.setNumberWithoutCheckDigit(version2.getNumber().getNumber());
     editedVersionModel.setDesignation(version2.getDesignation());
     editedVersionModel.setAdditionalInformation(version2.getAdditionalInformation());
     editedVersionModel.setInductionLoop(version2.getInductionLoop());
