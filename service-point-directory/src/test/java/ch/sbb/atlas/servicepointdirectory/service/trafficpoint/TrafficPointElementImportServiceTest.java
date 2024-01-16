@@ -15,7 +15,7 @@ import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.LocationClient;
+import ch.sbb.atlas.api.client.location.LocationClient;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;

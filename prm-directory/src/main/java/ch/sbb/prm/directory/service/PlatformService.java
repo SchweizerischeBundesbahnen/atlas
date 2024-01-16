@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.service;
 
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
 
+import ch.sbb.atlas.api.client.location.LocationClient;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
 import ch.sbb.atlas.service.OverviewService;
@@ -38,8 +39,8 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
   public PlatformService(StopPointService stopPointService, RelationService relationService,
       PlatformRepository platformRepository, ReferencePointRepository referencePointRepository,
       VersionableService versionableService, SharedServicePointService sharedServicePointService,
-      PlatformValidationService platformValidationService) {
-    super(versionableService, stopPointService, relationService, referencePointRepository);
+      PlatformValidationService platformValidationService, LocationClient locationClient) {
+    super(versionableService, stopPointService, relationService, referencePointRepository, locationClient);
     this.platformRepository = platformRepository;
     this.sharedServicePointService = sharedServicePointService;
     this.platformValidationService = platformValidationService;

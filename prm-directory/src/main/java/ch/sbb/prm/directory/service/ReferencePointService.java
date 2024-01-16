@@ -48,7 +48,8 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   public ReferencePointService(ReferencePointRepository referencePointRepository,
       ToiletRepository toiletRepository, ContactPointRepository contactPointRepository,
       ParkingLotRepository parkingLotRepository, PlatformRepository platformRepository, RelationService relationService,
-      StopPointService stopPointService, SloidService sloidService, VersionableService versionableService) {
+      StopPointService stopPointService, SloidService sloidService, VersionableService versionableService,
+      SloidService sloidService1) {
     super(versionableService);
     this.referencePointRepository = referencePointRepository;
     this.toiletRepository = toiletRepository;

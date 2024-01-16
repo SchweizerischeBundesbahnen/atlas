@@ -150,7 +150,7 @@ public class ServicePointController implements ServicePointApiV1 {
     }
     addGeoReferenceInformation(servicePointVersion);
     setCreationDateAndCreatorToNull(servicePointVersion);
-    ServicePointVersion createdVersion = servicePointService.save(servicePointVersion, Optional.empty(), List.of());
+    ServicePointVersion createdVersion = servicePointService.create(servicePointVersion, Optional.empty(), List.of());
     servicePointDistributor.publishServicePointsWithNumbers(createdVersion.getNumber());
     return ServicePointVersionMapper.toModel(createdVersion);
   }
