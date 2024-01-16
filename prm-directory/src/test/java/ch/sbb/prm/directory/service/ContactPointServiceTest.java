@@ -1,5 +1,13 @@
 package ch.sbb.prm.directory.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
+import ch.sbb.atlas.api.client.location.LocationClient;
+import ch.sbb.atlas.api.location.ClaimSloidRequestModel;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ContactPointTestData;
@@ -15,15 +23,12 @@ import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
+import java.util.List;
+import java.util.Set;
 import org.assertj.core.api.AbstractComparableAssert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 class ContactPointServiceTest extends BasePrmServiceTest {
 
@@ -33,13 +38,16 @@ class ContactPointServiceTest extends BasePrmServiceTest {
   private final StopPointRepository stopPointRepository;
   private final ReferencePointRepository referencePointRepository;
 
+  @MockBean
+  private LocationClient locationClient;
+
   @Autowired
   ContactPointServiceTest(ContactPointService contactPointService,
-                          ContactPointRepository contactPointRepository,
-                          RelationRepository relationRepository,
-                          StopPointRepository stopPointRepository,
-                          ReferencePointRepository referencePointRepository,
-                          SharedServicePointRepository sharedServicePointRepository) {
+      ContactPointRepository contactPointRepository,
+      RelationRepository relationRepository,
+      StopPointRepository stopPointRepository,
+      ReferencePointRepository referencePointRepository,
+      SharedServicePointRepository sharedServicePointRepository) {
     super(sharedServicePointRepository);
     this.contactPointService = contactPointService;
     this.contactPointRepository = contactPointRepository;
@@ -71,16 +79,18 @@ class ContactPointServiceTest extends BasePrmServiceTest {
 
     //then
     List<ContactPointVersion> contactPointVersions = contactPointRepository
-            .findByParentServicePointSloid(contactPointVersion.getParentServicePointSloid());
+        .findByParentServicePointSloid(contactPointVersion.getParentServicePointSloid());
     assertThat(contactPointVersions).hasSize(1);
-    assertThat(contactPointVersions.get(0).getParentServicePointSloid()).isEqualTo(contactPointVersion.getParentServicePointSloid());
+    assertThat(contactPointVersions.get(0).getParentServicePointSloid()).isEqualTo(
+        contactPointVersion.getParentServicePointSloid());
     List<RelationVersion> relationVersions = relationRepository
-            .findAllByParentServicePointSloid(contactPointVersion.getParentServicePointSloid());
+        .findAllByParentServicePointSloid(contactPointVersion.getParentServicePointSloid());
     assertThat(relationVersions).isEmpty();
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1.sloid:12345:1")));
   }
 
   @Test
-  void shouldCreateToiletWhenReferencePointExists() {
+  void shouldCreateInformationDeskWhenReferencePointExists() {
     //given
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
     stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
@@ -95,20 +105,23 @@ class ContactPointServiceTest extends BasePrmServiceTest {
 
     //then
     List<ContactPointVersion> contactPointVersions = contactPointRepository
-            .findByParentServicePointSloid(contactPointVersion.getParentServicePointSloid());
+        .findByParentServicePointSloid(contactPointVersion.getParentServicePointSloid());
     assertThat(contactPointVersions).hasSize(1);
-    assertThat(contactPointVersions.get(0).getParentServicePointSloid()).isEqualTo(contactPointVersion.getParentServicePointSloid());
+    assertThat(contactPointVersions.get(0).getParentServicePointSloid()).isEqualTo(
+        contactPointVersion.getParentServicePointSloid());
     List<RelationVersion> relationVersions = relationRepository
-            .findAllByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+        .findAllByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions).hasSize(1);
     assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
     AbstractComparableAssert<?, ReferencePointElementType> equalTo = assertThat(
         relationVersions.get(0).getReferencePointElementType()).isEqualTo(ReferencePointElementType.CONTACT_POINT);
     assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(ReferencePointElementType.CONTACT_POINT);
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1.sloid:12345:1")));
   }
+
   @Test
-  void shouldNotCreateToiletRelationWhenStopPointIsReduced() {
+  void shouldNotCreateInformationDeskRelationWhenStopPointIsReduced() {
     //given
     String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
@@ -128,10 +141,12 @@ class ContactPointServiceTest extends BasePrmServiceTest {
     List<ContactPointVersion> contactPointVersions = contactPointRepository.findByParentServicePointSloid(
             contactPointVersion.getParentServicePointSloid());
     assertThat(contactPointVersions).hasSize(1);
-    assertThat(contactPointVersions.get(0).getParentServicePointSloid()).isEqualTo(contactPointVersion.getParentServicePointSloid());
+    assertThat(contactPointVersions.get(0).getParentServicePointSloid()).isEqualTo(
+        contactPointVersion.getParentServicePointSloid());
     List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
         parentServicePointSloid);
     assertThat(relationVersions).isEmpty();
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1.sloid:12345:1")));
   }
 
 }

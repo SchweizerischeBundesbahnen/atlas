@@ -2,7 +2,6 @@ package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.ItemImportResult.ItemImportResultBuilder;
-import ch.sbb.atlas.imports.servicepoint.enumeration.ItemImportResponseStatus;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
 import ch.sbb.atlas.imports.util.DidokCsvMapper;
@@ -18,7 +17,6 @@ import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import com.fasterxml.jackson.databind.MappingIterator;
-import feign.FeignException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -90,17 +88,6 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
   ) {
     List<ItemImportResult> importResults = new ArrayList<>();
     for (TrafficPointCsvModelContainer container : trafficPointCsvModelContainers) {
-      //      try {
-      //        trafficPointElementService.claimSloid(container.getSloid()); // todo: only new
-      //      } catch (FeignException e) {
-      //        ItemImportResult importResult = new ItemImportResult();
-      //        importResult.setItemNumber(container.getSloid());
-      //        importResult.setStatus(ItemImportResponseStatus.FAILED);
-      //        importResult.setMessage("[FAILED]: The following sloid could not be claimed: " + container.getSloid());
-      //        importResults.add(importResult);
-      //        continue;
-      //      }
-
       List<TrafficPointElementVersion> trafficPointElementVersions = container.getCsvModelList()
           .stream()
           .map(new TrafficPointElementCsvToEntityMapper())
