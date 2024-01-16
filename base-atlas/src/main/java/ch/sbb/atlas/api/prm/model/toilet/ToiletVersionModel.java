@@ -21,6 +21,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
+@Schema(name = "ToiletVersion")
 public class ToiletVersionModel extends BasePrmVersionModel implements DatesValidator {
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
