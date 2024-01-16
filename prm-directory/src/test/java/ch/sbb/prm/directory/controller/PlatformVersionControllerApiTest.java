@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.api.prm.model.platform.CreatePlatformVersionModel;
+import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -138,13 +138,13 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
-    CreatePlatformVersionModel createPlatformVersionModel = PlatformTestData.getCreateCompletePlatformVersionModel();
-    createPlatformVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    PlatformVersionModel PlatformVersionModel = PlatformTestData.getCreateCompletePlatformVersionModel();
+    PlatformVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //when && then
     mvc.perform(post("/v1/platforms")
             .contentType(contentType)
-            .content(mapper.writeValueAsString(createPlatformVersionModel)))
+            .content(mapper.writeValueAsString(PlatformVersionModel)))
         .andExpect(status().isCreated());
     verify(relationService, times(1)).save(any(RelationVersion.class));
   }
@@ -160,13 +160,13 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
-    CreatePlatformVersionModel createPlatformVersionModel = PlatformTestData.getCreateReducedPlatformVersionModel();
-    createPlatformVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    PlatformVersionModel PlatformVersionModel = PlatformTestData.getCreateReducedPlatformVersionModel();
+    PlatformVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //when && then
     mvc.perform(post("/v1/platforms")
             .contentType(contentType)
-            .content(mapper.writeValueAsString(createPlatformVersionModel)))
+            .content(mapper.writeValueAsString(PlatformVersionModel)))
         .andExpect(status().isCreated());
     verify(relationService, times(0)).save(any(RelationVersion.class));
   }
@@ -183,13 +183,13 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);
 
-    CreatePlatformVersionModel createPlatformVersionModel = PlatformTestData.getCreatePlatformVersionModel();
-    createPlatformVersionModel.setParentServicePointSloid(parentServicePointSloid);
+    PlatformVersionModel PlatformVersionModel = PlatformTestData.getPlatformVersionModel();
+    PlatformVersionModel.setParentServicePointSloid(parentServicePointSloid);
 
     //when && then
     mvc.perform(post("/v1/platforms")
             .contentType(contentType)
-            .content(mapper.writeValueAsString(createPlatformVersionModel)))
+            .content(mapper.writeValueAsString(PlatformVersionModel)))
         .andExpect(status().isBadRequest());
     verify(relationService, never()).save(any(RelationVersion.class));
 
@@ -207,14 +207,14 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);
 
-    CreatePlatformVersionModel createPlatformVersionModel = PlatformTestData.getCreateCompletePlatformVersionModel();
-    createPlatformVersionModel.setParentServicePointSloid(parentServicePointSloid);
-    createPlatformVersionModel.setHeight(123.1);
+    PlatformVersionModel PlatformVersionModel = PlatformTestData.getCreateCompletePlatformVersionModel();
+    PlatformVersionModel.setParentServicePointSloid(parentServicePointSloid);
+    PlatformVersionModel.setHeight(123.1);
 
     //when && then
     mvc.perform(post("/v1/platforms")
             .contentType(contentType)
-            .content(mapper.writeValueAsString(createPlatformVersionModel)))
+            .content(mapper.writeValueAsString(PlatformVersionModel)))
         .andExpect(status().isBadRequest());
     verify(relationService, never()).save(any(RelationVersion.class));
 
@@ -227,13 +227,13 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
-    CreatePlatformVersionModel createPlatformVersionModel = PlatformTestData.getCreatePlatformVersionModel();
-    createPlatformVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    PlatformVersionModel PlatformVersionModel = PlatformTestData.getPlatformVersionModel();
+    PlatformVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //when && then
     mvc.perform(post("/v1/platforms")
             .contentType(contentType)
-            .content(mapper.writeValueAsString(createPlatformVersionModel)))
+            .content(mapper.writeValueAsString(PlatformVersionModel)))
         .andExpect(status().isPreconditionFailed())
         .andExpect(jsonPath("$.message", is("The stop point with sloid ch:1:sloid:7000 does not exist.")));
     verify(relationService, times(0)).save(any(RelationVersion.class));
@@ -246,13 +246,13 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     referencePointVersion.setParentServicePointSloid("ch:1:sloid:7001");
     referencePointRepository.save(referencePointVersion);
 
-    CreatePlatformVersionModel createPlatformVersionModel = PlatformTestData.getCreatePlatformVersionModel();
-    createPlatformVersionModel.setParentServicePointSloid("ch:1:sloid:7001");
+    PlatformVersionModel PlatformVersionModel = PlatformTestData.getPlatformVersionModel();
+    PlatformVersionModel.setParentServicePointSloid("ch:1:sloid:7001");
 
     //when && then
     mvc.perform(post("/v1/platforms")
             .contentType(contentType)
-            .content(mapper.writeValueAsString(createPlatformVersionModel)))
+            .content(mapper.writeValueAsString(PlatformVersionModel)))
         .andExpect(status().isPreconditionFailed())
         .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7001 does not exist.")));
   }
@@ -276,9 +276,8 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     platformRepository.saveAndFlush(version2);
 
-    CreatePlatformVersionModel editedVersionModel = new CreatePlatformVersionModel();
+    PlatformVersionModel editedVersionModel = new PlatformVersionModel();
     editedVersionModel.setSloid(version2.getSloid());
-    editedVersionModel.setNumberWithoutCheckDigit(version2.getNumber().getNumber());
     editedVersionModel.setValidFrom(version2.getValidFrom());
     editedVersionModel.setValidTo(version2.getValidTo().minusYears(1));
     editedVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
