@@ -1,7 +1,19 @@
 package ch.sbb.prm.directory.controller;
 
-import ch.sbb.atlas.api.prm.model.ticketcounter.CreateTicketCounterVersionModel;
-import ch.sbb.atlas.api.prm.model.toilet.CreateToiletVersionModel;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import ch.sbb.atlas.api.prm.model.ticketcounter.TicketCounterVersionModel;
+import ch.sbb.atlas.api.prm.model.toilet.ToiletVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -19,26 +31,13 @@ import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.service.RelationService;
+import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Set;
-
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
 class ToiletVersionControllerApiTest extends BaseControllerApiTest {
@@ -102,7 +101,7 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
     referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
-    CreateToiletVersionModel model = ToiletTestData.getCreateToiletVersionModel();
+    ToiletVersionModel model = ToiletTestData.getToiletVersionModel();
     model.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //when && then
@@ -123,7 +122,7 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);
 
-    CreateToiletVersionModel model = ToiletTestData.getCreateToiletVersionModel();
+    ToiletVersionModel model = ToiletTestData.getToiletVersionModel();
     model.setParentServicePointSloid(parentServicePointSloid);
 
     //when && then
@@ -141,7 +140,7 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
     referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
-    CreateToiletVersionModel model = ToiletTestData.getCreateToiletVersionModel();
+    ToiletVersionModel model = ToiletTestData.getToiletVersionModel();
     model.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //when && then
@@ -159,7 +158,7 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
     referencePointVersion.setParentServicePointSloid("ch:1:sloid:7001");
     referencePointRepository.save(referencePointVersion);
 
-    CreateTicketCounterVersionModel model = TicketCounterTestData.getCreateTicketCounterVersionVersionModel();
+    TicketCounterVersionModel model = TicketCounterTestData.getCreateTicketCounterVersionVersionModel();
     model.setParentServicePointSloid("ch:1:sloid:7001");
 
     //when && then
@@ -196,12 +195,11 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
     version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     toiletRepository.saveAndFlush(version2);
 
-    CreateToiletVersionModel editedVersionModel = new CreateToiletVersionModel();
+    ToiletVersionModel editedVersionModel = new ToiletVersionModel();
     editedVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersionModel.setSloid(version2.getSloid());
     editedVersionModel.setValidFrom(version2.getValidFrom());
     editedVersionModel.setValidTo(version2.getValidTo().minusYears(1));
-    editedVersionModel.setNumberWithoutCheckDigit(version2.getNumber().getNumber());
     editedVersionModel.setDesignation(version2.getDesignation());
     editedVersionModel.setAdditionalInformation(version2.getAdditionalInformation());
     editedVersionModel.setWheelchairToilet(version2.getWheelchairToilet());

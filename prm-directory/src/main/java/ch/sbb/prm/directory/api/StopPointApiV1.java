@@ -1,8 +1,8 @@
 package ch.sbb.prm.directory.api;
 
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
+import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
 import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointImportRequestModel;
@@ -42,12 +42,12 @@ public interface StopPointApiV1 {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  ReadStopPointVersionModel createStopPoint(@RequestBody @Valid CreateStopPointVersionModel stopPointVersionModel);
+  ReadStopPointVersionModel createStopPoint(@RequestBody @Valid StopPointVersionModel stopPointVersionModel);
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}")
   List<ReadStopPointVersionModel> updateStopPoint(@PathVariable Long id,
-      @RequestBody @Valid CreateStopPointVersionModel stopPointVersionModel);
+      @RequestBody @Valid StopPointVersionModel stopPointVersionModel);
 
   @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping("import")
