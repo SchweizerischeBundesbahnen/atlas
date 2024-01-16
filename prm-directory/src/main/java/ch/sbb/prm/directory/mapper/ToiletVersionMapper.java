@@ -32,7 +32,7 @@ public class ToiletVersionMapper {
         .id(model.getId())
         .sloid(model.getSloid())
         .parentServicePointSloid(model.getParentServicePointSloid())
-        .number(new Sloid(model.getParentServicePointSloid()).getServicePointNumber())
+        .number(SloidHelper.getServicePointNumber(model.getParentServicePointSloid()))
         .validFrom(model.getValidFrom())
         .validTo(model.getValidTo())
         .designation(model.getDesignation())

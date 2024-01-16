@@ -45,7 +45,7 @@ public interface PlatformApiV1 {
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}")
   List<ReadPlatformVersionModel> updatePlatform(@PathVariable Long id,
-      @RequestBody @Valid PlatformVersionModel PlatformVersionModel);
+      @RequestBody @Valid PlatformVersionModel platformVersionModel);
 
   @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping("import")

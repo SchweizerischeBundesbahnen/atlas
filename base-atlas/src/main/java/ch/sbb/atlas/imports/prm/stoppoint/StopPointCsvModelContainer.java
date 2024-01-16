@@ -23,7 +23,7 @@ public class StopPointCsvModelContainer {
 
   private Integer didokCode;
   private List<StopPointCsvModel> stopPointCsvModels;
-  private List<StopPointVersionModel> StopPointVersionModels;
+  private List<StopPointVersionModel> stopPointVersionModels;
 
   public Integer getDidokCode() {
     return ServicePointNumber.removeCheckDigit(this.didokCode);
