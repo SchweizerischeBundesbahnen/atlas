@@ -1,21 +1,20 @@
 package ch.sbb.prm.directory;
 
+import static java.util.List.of;
+
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
-import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel;
+import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion.StopPointVersionBuilder;
-import lombok.experimental.UtilityClass;
-import org.apache.commons.lang3.RandomStringUtils;
-
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-
-import static java.util.List.of;
+import lombok.experimental.UtilityClass;
+import org.apache.commons.lang3.RandomStringUtils;
 
 @UtilityClass
 public class StopPointTestData {
@@ -55,10 +54,9 @@ public class StopPointTestData {
 
   }
 
-  public static CreateStopPointVersionModel getStopPointCreateVersionModel() {
-    return CreateStopPointVersionModel.builder()
+  public static StopPointVersionModel getStopPointCreateVersionModel() {
+    return StopPointVersionModel.builder()
         .sloid("ch:1:sloid:7000")
-        .numberWithoutCheckDigit(8507000)
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .meansOfTransport(of(MeanOfTransport.TRAIN, MeanOfTransport.METRO))
@@ -86,10 +84,9 @@ public class StopPointTestData {
 
   }
 
-  public static CreateStopPointVersionModel getWrongStopPointReducedCreateVersionModel() {
-    return CreateStopPointVersionModel.builder()
+  public static StopPointVersionModel getWrongStopPointReducedCreateVersionModel() {
+    return StopPointVersionModel.builder()
         .sloid("ch:1:sloid:7000")
-        .numberWithoutCheckDigit(8507000)
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .meansOfTransport(of(MeanOfTransport.TRAM))
@@ -117,10 +114,9 @@ public class StopPointTestData {
 
   }
 
-  public static CreateStopPointVersionModel getCompleteNotValidatableStopPointReducedCreateVersionModel() {
-    return CreateStopPointVersionModel.builder()
+  public static StopPointVersionModel getCompleteNotValidatableStopPointReducedCreateVersionModel() {
+    return StopPointVersionModel.builder()
         .sloid("ch:1:sloid:7000")
-        .numberWithoutCheckDigit(8507000)
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .meansOfTransport(of(MeanOfTransport.TRAIN))

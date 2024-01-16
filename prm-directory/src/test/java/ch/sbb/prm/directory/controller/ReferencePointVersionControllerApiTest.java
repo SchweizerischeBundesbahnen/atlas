@@ -1,6 +1,17 @@
 package ch.sbb.prm.directory.controller;
 
-import ch.sbb.atlas.api.prm.model.referencepoint.CreateReferencePointVersionModel;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import ch.sbb.atlas.api.prm.model.referencepoint.ReferencePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -29,26 +40,14 @@ import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.service.RelationService;
+import java.time.LocalDate;
+import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.util.Set;
-
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
 class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
@@ -118,8 +117,8 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
     stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
-    CreateReferencePointVersionModel createReferencePointVersionModel = ReferencePointTestData.getCreateReferencePointVersionModel();
-    createReferencePointVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    ReferencePointVersionModel ReferencePointVersionModel = ReferencePointTestData.getReferencePointVersionModel();
+    ReferencePointVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //Init PRM Relations
     InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
@@ -141,7 +140,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
     //when && then
     mvc.perform(post("/v1/reference-points")
             .contentType(contentType)
-            .content(mapper.writeValueAsString(createReferencePointVersionModel)))
+            .content(mapper.writeValueAsString(ReferencePointVersionModel)))
         .andExpect(status().isCreated());
     //verify that the reference point create 5 relation
     verify(relationService, times(5)).save(any(RelationVersion.class));
@@ -155,13 +154,13 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
     stopPointVersion.setSloid(parentServicePointSloid);
     stopPointVersion.setMeansOfTransport(Set.of(MeanOfTransport.BUS));
     stopPointRepository.save(stopPointVersion);
-    CreateReferencePointVersionModel createReferencePointVersionModel = ReferencePointTestData.getCreateReferencePointVersionModel();
-    createReferencePointVersionModel.setParentServicePointSloid(parentServicePointSloid);
+    ReferencePointVersionModel ReferencePointVersionModel = ReferencePointTestData.getReferencePointVersionModel();
+    ReferencePointVersionModel.setParentServicePointSloid(parentServicePointSloid);
 
     //when && then
     mvc.perform(post("/v1/reference-points")
             .contentType(contentType)
-            .content(mapper.writeValueAsString(createReferencePointVersionModel)))
+            .content(mapper.writeValueAsString(ReferencePointVersionModel)))
         .andExpect(status().isPreconditionFailed());
     verify(relationService, times(0)).save(any(RelationVersion.class));
 
@@ -170,8 +169,8 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldNotCreateReferencePointWhenStopPointDoesNotExist() throws Exception {
     //given
-    CreateReferencePointVersionModel createReferencePointVersionModel = ReferencePointTestData.getCreateReferencePointVersionModel();
-    createReferencePointVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    ReferencePointVersionModel ReferencePointVersionModel = ReferencePointTestData.getReferencePointVersionModel();
+    ReferencePointVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //Init PRM Relations
     InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
@@ -193,7 +192,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
     //when && then
     mvc.perform(post("/v1/reference-points")
             .contentType(contentType)
-            .content(mapper.writeValueAsString(createReferencePointVersionModel)))
+            .content(mapper.writeValueAsString(ReferencePointVersionModel)))
         .andExpect(status().isPreconditionFailed())
         .andExpect(jsonPath("$.message", is("The stop point with sloid ch:1:sloid:7000 does not exist.")));
     verify(relationService, times(0)).save(any(RelationVersion.class));
@@ -223,9 +222,8 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
     version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.saveAndFlush(version2);
 
-    CreateReferencePointVersionModel editedVersionModel = new CreateReferencePointVersionModel();
+    ReferencePointVersionModel editedVersionModel = new ReferencePointVersionModel();
     editedVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
-    editedVersionModel.setNumberWithoutCheckDigit(1234567);
     editedVersionModel.setMainReferencePoint(version2.isMainReferencePoint());
     editedVersionModel.setReferencePointType(version2.getReferencePointType());
     editedVersionModel.setDesignation(version2.getDesignation());

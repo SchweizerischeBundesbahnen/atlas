@@ -1,8 +1,7 @@
 package ch.sbb.prm.directory.mapper;
 
-import ch.sbb.atlas.api.prm.model.informationdesk.CreateInformationDeskVersionModel;
+import ch.sbb.atlas.api.prm.model.informationdesk.InformationDeskVersionModel;
 import ch.sbb.atlas.api.prm.model.informationdesk.ReadInformationDeskVersionModel;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import lombok.experimental.UtilityClass;
 
@@ -30,12 +29,12 @@ public class InformationDeskVersionMapper {
         .build();
   }
 
-  public static InformationDeskVersion toEntity(CreateInformationDeskVersionModel model){
+  public static InformationDeskVersion toEntity(InformationDeskVersionModel model){
     return InformationDeskVersion.builder()
         .id(model.getId())
         .sloid(model.getSloid())
         .parentServicePointSloid(model.getParentServicePointSloid())
-        .number(ServicePointNumber.ofNumberWithoutCheckDigit(model.getNumberWithoutCheckDigit()))
+        .number(new Sloid(model.getParentServicePointSloid()).getServicePointNumber())
         .validFrom(model.getValidFrom())
         .validTo(model.getValidTo())
         .designation(model.getDesignation())

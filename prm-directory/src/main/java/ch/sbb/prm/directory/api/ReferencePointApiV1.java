@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.api;
 
-import ch.sbb.atlas.api.prm.model.referencepoint.CreateReferencePointVersionModel;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
+import ch.sbb.atlas.api.prm.model.referencepoint.ReferencePointVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -23,11 +23,11 @@ public interface ReferencePointApiV1 {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  ReadReferencePointVersionModel createReferencePoint(@RequestBody @Valid CreateReferencePointVersionModel model);
+  ReadReferencePointVersionModel createReferencePoint(@RequestBody @Valid ReferencePointVersionModel model);
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}")
   List<ReadReferencePointVersionModel> updateReferencePoint(@PathVariable Long id,
-      @RequestBody @Valid CreateReferencePointVersionModel model);
+      @RequestBody @Valid ReferencePointVersionModel model);
 
 }

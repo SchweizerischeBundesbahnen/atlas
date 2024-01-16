@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory;
 
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
-import ch.sbb.atlas.api.prm.model.ticketcounter.CreateTicketCounterVersionModel;
+import ch.sbb.atlas.api.prm.model.ticketcounter.TicketCounterVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.TicketCounterVersion;
 import ch.sbb.prm.directory.entity.TicketCounterVersion.TicketCounterVersionBuilder;
@@ -68,10 +68,9 @@ public class TicketCounterTestData {
         .wheelchairAccess(StandardAttributeType.YES);
   }
 
-  public static CreateTicketCounterVersionModel getCreateTicketCounterVersionVersionModel(){
-    return CreateTicketCounterVersionModel.builder()
+  public static TicketCounterVersionModel getCreateTicketCounterVersionVersionModel(){
+    return TicketCounterVersionModel.builder()
         .sloid("ch:1.sloid:12345:1")
-        .numberWithoutCheckDigit(8507000)
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2001, 12, 31))
         .parentServicePointSloid("ch:1.sloid:12345")

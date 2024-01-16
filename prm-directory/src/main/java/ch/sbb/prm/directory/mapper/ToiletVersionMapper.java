@@ -1,8 +1,7 @@
 package ch.sbb.prm.directory.mapper;
 
-import ch.sbb.atlas.api.prm.model.toilet.CreateToiletVersionModel;
 import ch.sbb.atlas.api.prm.model.toilet.ReadToiletVersionModel;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.api.prm.model.toilet.ToiletVersionModel;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import lombok.experimental.UtilityClass;
 
@@ -28,12 +27,12 @@ public class ToiletVersionMapper {
         .build();
   }
 
-  public static ToiletVersion toEntity(CreateToiletVersionModel model){
+  public static ToiletVersion toEntity(ToiletVersionModel model){
     return ToiletVersion.builder()
         .id(model.getId())
         .sloid(model.getSloid())
         .parentServicePointSloid(model.getParentServicePointSloid())
-        .number(ServicePointNumber.ofNumberWithoutCheckDigit(model.getNumberWithoutCheckDigit()))
+        .number(new Sloid(model.getParentServicePointSloid()).getServicePointNumber())
         .validFrom(model.getValidFrom())
         .validTo(model.getValidTo())
         .designation(model.getDesignation())
