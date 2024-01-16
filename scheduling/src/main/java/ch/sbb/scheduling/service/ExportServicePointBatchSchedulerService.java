@@ -63,7 +63,7 @@ public class ExportServicePointBatchSchedulerService extends BaseSchedulerServic
   }
 
   @SpanTracing
-  @Retryable(label = "triggerExportStopPointBatch", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
+  @Retryable(label = "triggerExportPlatformBatch", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
   @Backoff(delay = 65000))
   @Scheduled(cron = "${scheduler.export-service-point.platform-trigger-batch.chron}", zone = "${scheduler.zone}")
   @SchedulerLock(name = "triggerExportPlatformBatch", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
