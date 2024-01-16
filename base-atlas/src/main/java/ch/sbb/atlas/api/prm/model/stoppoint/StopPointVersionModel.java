@@ -24,7 +24,8 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-public abstract class StopPointVersionModel extends BasePrmVersionModel implements DatesValidator {
+@Schema(name = "StopPointVersion")
+public class StopPointVersionModel extends BasePrmVersionModel implements DatesValidator {
 
   @NotEmpty
   @Schema(description = "Means of transport. Indicates for which means of transport a stop is intended/equipped. Mandatory for "

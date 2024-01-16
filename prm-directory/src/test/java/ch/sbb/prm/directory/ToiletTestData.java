@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory;
 
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
-import ch.sbb.atlas.api.prm.model.toilet.CreateToiletVersionModel;
+import ch.sbb.atlas.api.prm.model.toilet.ToiletVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.entity.ToiletVersion.ToiletVersionBuilder;
@@ -60,10 +60,9 @@ public class ToiletTestData {
         .additionalInformation("Additional information");
   }
 
-  public static CreateToiletVersionModel getCreateToiletVersionModel(){
-    return CreateToiletVersionModel.builder()
+  public static ToiletVersionModel getToiletVersionModel(){
+    return ToiletVersionModel.builder()
         .sloid("ch:1.sloid:12345:1")
-        .numberWithoutCheckDigit(8507000)
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2001, 12, 31))
         .parentServicePointSloid("ch:1.sloid:12345")

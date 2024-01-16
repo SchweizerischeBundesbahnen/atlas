@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory;
 
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
-import ch.sbb.atlas.api.prm.model.referencepoint.CreateReferencePointVersionModel;
+import ch.sbb.atlas.api.prm.model.referencepoint.ReferencePointVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion.ReferencePointVersionBuilder;
@@ -64,10 +64,9 @@ public class ReferencePointTestData {
         .referencePointType(ReferencePointAttributeType.PLATFORM);
   }
 
-  public static CreateReferencePointVersionModel getCreateReferencePointVersionModel(){
-    return CreateReferencePointVersionModel.builder()
+  public static ReferencePointVersionModel getReferencePointVersionModel(){
+    return ReferencePointVersionModel.builder()
         .sloid("ch:1.sloid:12345:1")
-        .numberWithoutCheckDigit(8507000)
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .designation("designation")

@@ -1,17 +1,16 @@
 package ch.sbb.prm.directory.controller;
 
-import ch.sbb.atlas.api.prm.model.toilet.CreateToiletVersionModel;
 import ch.sbb.atlas.api.prm.model.toilet.ReadToiletVersionModel;
+import ch.sbb.atlas.api.prm.model.toilet.ToiletVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.ToiletApiV1;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.mapper.ToiletVersionMapper;
 import ch.sbb.prm.directory.service.ToiletService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -26,13 +25,13 @@ public class ToiletController implements ToiletApiV1 {
   }
 
   @Override
-  public ReadToiletVersionModel createToiletVersion(CreateToiletVersionModel model) {
+  public ReadToiletVersionModel createToiletVersion(ToiletVersionModel model) {
     ToiletVersion toiletVersion = toiletService.createToilet(ToiletVersionMapper.toEntity(model));
     return ToiletVersionMapper.toModel(toiletVersion);
   }
 
   @Override
-  public List<ReadToiletVersionModel> updateToiletVersion(Long id, CreateToiletVersionModel model) {
+  public List<ReadToiletVersionModel> updateToiletVersion(Long id, ToiletVersionModel model) {
     ToiletVersion toiletVersion =
         toiletService.getToiletVersionById(id).orElseThrow(() -> new IdNotFoundException(id));
     ToiletVersion editedVersion = ToiletVersionMapper.toEntity(model);

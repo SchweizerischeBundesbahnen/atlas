@@ -6,9 +6,7 @@
         [class]="chipSearch.elementWidthCssClass"
         class="d-flex flex-column search-box"
       >
-        <mat-label class="font-bold-lg">{{
-          'COMMON.SEARCH.SEARCH_CRITERIA' | translate
-        }}</mat-label>
+        <app-atlas-label-field fieldLabel="COMMON.SEARCH.SEARCH_CRITERIA"></app-atlas-label-field>
         <div
           [ngClass]="chipSearch.disabled ? 'disabled' : ''"
           class="search-main-field mb-4"
@@ -89,7 +87,7 @@
         *ngIf="filterConfig | instanceOf: TableFilterDateSelectClass as dateSelect"
         [class]="dateSelect.elementWidthCssClass"
       >
-        <mat-label class="font-bold-lg">{{ 'COMMON.SEARCH.VALIDITY' | translate }}</mat-label>
+        <app-atlas-label-field fieldLabel="COMMON.SEARCH.VALIDITY"></app-atlas-label-field>
         <atlas-spacer height="3px"></atlas-spacer>
         <div class="search-date-field">
           <div class="container-date-field">
