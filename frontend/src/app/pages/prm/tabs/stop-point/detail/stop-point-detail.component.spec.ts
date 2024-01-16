@@ -24,8 +24,9 @@ import { StopPointFormGroupBuilder } from '../form/stop-point-detail-form-group'
 import { PersonWithReducedMobilityService } from '../../../../../api';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { STOP_POINT } from '../../../util/stop-point-test-data.spec';
-import SpyObj = jasmine.SpyObj;
 import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
+import { InfoIconComponent } from '../../../../../core/form-components/info-icon/info-icon.component';
+import SpyObj = jasmine.SpyObj;
 
 const authService: Partial<AuthService> = {};
 describe('StopPointDetailComponent', () => {
@@ -60,6 +61,7 @@ describe('StopPointDetailComponent', () => {
         StopPointReducedFormComponent,
         MockSelectComponent,
         TextFieldComponent,
+        InfoIconComponent,
         AtlasLabelFieldComponent,
         MockAtlasFieldErrorComponent,
         MeansOfTransportPickerComponent,
