@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.mapper;
 
-import ch.sbb.atlas.api.prm.model.relation.CreateRelationVersionModel;
 import ch.sbb.atlas.api.prm.model.relation.ReadRelationVersionModel;
+import ch.sbb.atlas.api.prm.model.relation.RelationVersionModel;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import lombok.experimental.UtilityClass;
 
@@ -29,7 +29,7 @@ public class RelationVersionMapper {
         .build();
   }
 
-  public static RelationVersion toEntity(CreateRelationVersionModel model){
+  public static RelationVersion toEntity(RelationVersionModel model){
     return RelationVersion.builder()
         .id(model.getId())
         .sloid(model.getSloid())
