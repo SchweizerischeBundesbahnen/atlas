@@ -10,22 +10,17 @@
       <groupId>ch.sbb.atlas</groupId>
       <artifactId>atlas</artifactId>
       <relativePath>../pom.xml</relativePath>
-      <version>1.551.0</version>
+      <version>1.563.0</version>
    </parent>
 
    <artifactId>location</artifactId>
-
+   <description>Atlas Location Service</description>
 
    <dependencies>
       <dependency>
          <artifactId>spring-boot-starter-security</artifactId>
          <groupId>org.springframework.boot</groupId>
       </dependency>
-      <dependency>
-         <artifactId>spring-security-oauth2-client</artifactId>
-         <groupId>org.springframework.security</groupId>
-      </dependency>
-
       <dependency>
          <artifactId>spring-boot-starter-actuator</artifactId>
          <groupId>org.springframework.boot</groupId>
@@ -56,7 +51,7 @@
       <dependency>
          <artifactId>base-atlas</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.551.0</version>
+         <version>1.563.0</version>
       </dependency>
 
       <dependency>
@@ -70,7 +65,7 @@
          <groupId>ch.sbb.atlas</groupId>
          <scope>test</scope>
          <type>test-jar</type>
-         <version>1.551.0</version>
+         <version>1.563.0</version>
       </dependency>
       <dependency>
          <artifactId>spring-restdocs-mockmvc</artifactId>

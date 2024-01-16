@@ -1,10 +1,12 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import ch.sbb.atlas.api.location.ClaimSloidRequestModel;
+import ch.sbb.atlas.api.client.location.LocationClient;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.exception.SloidAlreadyExistsException;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSearchVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
@@ -106,17 +108,26 @@ public class ServicePointService {
 
   @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#servicePointVersion, "
       + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
-  public ServicePointVersion save(ServicePointVersion servicePointVersion,
+  public ServicePointVersion create(ServicePointVersion servicePointVersion,
       Optional<ServicePointVersion> currentVersion,
+      List<ServicePointVersion> currentVersions) {
+    preSaveChecks(servicePointVersion, currentVersion, currentVersions);
+    try {
+      claimSloid(servicePointVersion.getSloid());
+    } catch (FeignException e) {
+      throw new SloidAlreadyExistsException(servicePointVersion.getSloid());
+    }
+    return servicePointVersionRepository.saveAndFlush(servicePointVersion);
+  }
+
+  private void preSaveChecks(ServicePointVersion servicePointVersion, Optional<ServicePointVersion> currentVersion,
       List<ServicePointVersion> currentVersions) {
     servicePointVersion.setStatus(servicePointStatusDecider
         .getStatusForServicePoint(servicePointVersion, currentVersion, currentVersions));
     servicePointVersion.setEditionDate(LocalDateTime.now());
     servicePointVersion.setEditor(UserService.getUserIdentifier());
-
     servicePointValidationService.validateAndSetAbbreviation(servicePointVersion);
     servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
-    return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
   public ServicePointVersion saveWithoutValidationForImportOnly(ServicePointVersion servicePointVersion, Status status) {
@@ -154,6 +165,13 @@ public class ServicePointService {
     List<ServicePointVersion> afterUpdateServicePoint = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
     servicePointTerminationService.checkTerminationAllowed(currentVersions, afterUpdateServicePoint);
     return currentVersion;
+  }
+
+  private void save(ServicePointVersion servicePointVersion,
+      Optional<ServicePointVersion> currentVersion,
+      List<ServicePointVersion> currentVersions) {
+    preSaveChecks(servicePointVersion, currentVersion, currentVersions);
+    servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
   private List<ServicePointSearchResult> getSearchResults(List<ServicePointSearchResult> servicePointSearchResults) {

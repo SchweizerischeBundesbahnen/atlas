@@ -2,7 +2,6 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.ItemImportResult.ItemImportResultBuilder;
-import ch.sbb.atlas.imports.servicepoint.enumeration.ItemImportResponseStatus;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.imports.util.DidokCsvMapper;
@@ -24,7 +23,6 @@ import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import com.fasterxml.jackson.databind.MappingIterator;
-import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
@@ -104,18 +102,6 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
   ) {
     List<ItemImportResult> importResults = new ArrayList<>();
     for (ServicePointCsvModelContainer container : servicePointCsvModelContainers) {
-      final String sloid = container.getServicePointCsvModelList().get(0).getSloid();
-      try {
-        servicePointService.claimSloid(sloid);
-      } catch (FeignException e) {
-        final ItemImportResult itemImportResult = new ItemImportResult();
-        itemImportResult.setItemNumber(sloid);
-        itemImportResult.setStatus(ItemImportResponseStatus.FAILED);
-        itemImportResult.setMessage("[FAILED]: The following sloid could not be claimed: " + sloid);
-        importResults.add(itemImportResult);
-        continue;
-      }
-
       List<ServicePointVersion> servicePointVersions = container.getServicePointCsvModelList()
           .stream()
           .map(new ServicePointCsvToEntityMapper())
@@ -175,10 +161,9 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
 
   private ItemImportResult saveServicePointVersion(ServicePointVersion servicePointVersion) {
     List<Exception> warnings = new ArrayList<>();
-
     getHeightForServicePointImport(servicePointVersion, warnings);
-
     try {
+      servicePointService.claimSloid(servicePointVersion.getSloid());
       ServicePointVersion savedServicePointVersion = servicePointService.saveWithoutValidationForImportOnly(servicePointVersion,
           servicePointVersion.getStatus());
       servicePointNumberService.deleteAvailableNumber(savedServicePointVersion.getNumber(),
@@ -187,7 +172,6 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
       log.error("[Service-Point Import]: Error during save", exception);
       return buildFailedImportResult(servicePointVersion, exception);
     }
-
     return buildSuccessMessageBasedOnWarnings(servicePointVersion, warnings);
   }
 

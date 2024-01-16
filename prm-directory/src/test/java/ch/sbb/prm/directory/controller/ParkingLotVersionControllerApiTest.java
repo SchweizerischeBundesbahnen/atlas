@@ -13,6 +13,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotVersionModel;
+import ch.sbb.atlas.api.location.ClaimSloidRequestModel;
+import ch.sbb.atlas.api.client.location.LocationClient;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -39,6 +41,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import static org.mockito.ArgumentMatchers.eq;
+
 @Transactional
 class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
 
@@ -50,13 +55,15 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
 
   @MockBean
   private final RelationService relationService;
+  @MockBean
+  private LocationClient locationClient;
 
   @Autowired
   ParkingLotVersionControllerApiTest(ParkingLotRepository parkingLotRepository,
-                                     StopPointRepository stopPointRepository,
-                                     ReferencePointRepository referencePointRepository,
-                                     SharedServicePointRepository sharedServicePointRepository,
-                                     RelationService relationService) {
+      StopPointRepository stopPointRepository,
+      ReferencePointRepository referencePointRepository,
+      SharedServicePointRepository sharedServicePointRepository,
+      RelationService relationService) {
     this.parkingLotRepository = parkingLotRepository;
     this.stopPointRepository = stopPointRepository;
     this.referencePointRepository = referencePointRepository;
@@ -105,6 +112,7 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isCreated());
     verify(relationService, times(1)).save(any(RelationVersion.class));
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1.sloid:12345:1")));
   }
 
   @Test
@@ -125,7 +133,7 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isCreated());
     verify(relationService, never()).save(any(RelationVersion.class));
-
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1.sloid:12345:1")));
   }
 
   @Test
@@ -159,10 +167,10 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
 
     //when && then
     mvc.perform(post("/v1/parking-lots")
-                    .contentType(contentType)
-                    .content(mapper.writeValueAsString(model)))
-            .andExpect(status().isPreconditionFailed())
-            .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7001 does not exist.")));
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(model)))
+        .andExpect(status().isPreconditionFailed())
+        .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7001 does not exist.")));
   }
 
   /**
@@ -170,7 +178,7 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
    * NEU:      |______________________|
    * IST:      |-------------------------------------------------------
    * Version:                            1
-   *
+   * <p>
    * RESULTAT: |----------------------| Version wird per xx aufgehoben
    * Version:         1
    */

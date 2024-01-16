@@ -44,7 +44,7 @@ class ServicePointControllerTest {
     servicePointController = new ServicePointController(servicePointService, servicePointFotCommentService,
         servicePointImportService, geoReferenceService, servicePointDistributor, servicePointNumberService);
 
-    when(servicePointService.save(any(), any(), any())).then(i -> i.getArgument(0, ServicePointVersion.class));
+    when(servicePointService.create(any(), any(), any())).then(i -> i.getArgument(0, ServicePointVersion.class));
   }
 
   @Test
