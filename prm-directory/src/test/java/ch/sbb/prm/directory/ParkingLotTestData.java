@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory;
 
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
-import ch.sbb.atlas.api.prm.model.parkinglot.CreateParkingLotVersionModel;
+import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.ParkingLotVersion.ParkingLotVersionBuilder;
@@ -64,10 +64,9 @@ public class ParkingLotTestData {
         .prmPlacesAvailable(BooleanOptionalAttributeType.TO_BE_COMPLETED);
   }
 
-  public static CreateParkingLotVersionModel getCreateParkingLotVersionModel(){
-    return CreateParkingLotVersionModel.builder()
+  public static ParkingLotVersionModel getParkingLotVersionModel(){
+    return ParkingLotVersionModel.builder()
         .sloid("ch:1.sloid:12345:1")
-        .numberWithoutCheckDigit(8507000)
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .parentServicePointSloid("ch:1.sloid:12345")

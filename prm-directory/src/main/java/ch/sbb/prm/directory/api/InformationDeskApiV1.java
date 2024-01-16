@@ -1,6 +1,6 @@
 package ch.sbb.prm.directory.api;
 
-import ch.sbb.atlas.api.prm.model.informationdesk.CreateInformationDeskVersionModel;
+import ch.sbb.atlas.api.prm.model.informationdesk.InformationDeskVersionModel;
 import ch.sbb.atlas.api.prm.model.informationdesk.ReadInformationDeskVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -23,10 +23,10 @@ public interface InformationDeskApiV1 {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  ReadInformationDeskVersionModel createInformationDesk(@RequestBody @Valid CreateInformationDeskVersionModel model);
+  ReadInformationDeskVersionModel createInformationDesk(@RequestBody @Valid InformationDeskVersionModel model);
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}")
   List<ReadInformationDeskVersionModel> updateInformationDesk(@PathVariable Long id,
-      @RequestBody @Valid CreateInformationDeskVersionModel model);
+      @RequestBody @Valid InformationDeskVersionModel model);
 }

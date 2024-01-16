@@ -1,8 +1,7 @@
 package ch.sbb.prm.directory.mapper;
 
-import ch.sbb.atlas.api.prm.model.parkinglot.CreateParkingLotVersionModel;
+import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotVersionModel;
 import ch.sbb.atlas.api.prm.model.parkinglot.ReadParkingLotVersionModel;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import lombok.experimental.UtilityClass;
 
@@ -29,12 +28,12 @@ public class ParkingLotVersionMapper {
         .build();
   }
 
-  public static ParkingLotVersion toEntity(CreateParkingLotVersionModel model){
+  public static ParkingLotVersion toEntity(ParkingLotVersionModel model){
     return ParkingLotVersion.builder()
         .id(model.getId())
         .sloid(model.getSloid())
         .parentServicePointSloid(model.getParentServicePointSloid())
-        .number(ServicePointNumber.ofNumberWithoutCheckDigit(model.getNumberWithoutCheckDigit()))
+        .number(SloidHelper.getServicePointNumber(model.getParentServicePointSloid()))
         .validFrom(model.getValidFrom())
         .validTo(model.getValidTo())
         .designation(model.getDesignation())

@@ -9,7 +9,7 @@ import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
-import ch.sbb.atlas.api.prm.model.platform.CreatePlatformVersionModel;
+import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.PlatformVersion.PlatformVersionBuilder;
@@ -91,10 +91,9 @@ public class PlatformTestData {
 
   }
 
-  public static CreatePlatformVersionModel getCreatePlatformVersionModel() {
-    return CreatePlatformVersionModel.builder()
+  public static PlatformVersionModel getPlatformVersionModel() {
+    return PlatformVersionModel.builder()
         .sloid("ch:1:sloid:12345:1")
-        .numberWithoutCheckDigit(8507000)
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .parentServicePointSloid("ch:1.sloid:12345")
@@ -119,10 +118,9 @@ public class PlatformTestData {
         .build();
 
   }
-  public static CreatePlatformVersionModel getCreateCompletePlatformVersionModel() {
-    return CreatePlatformVersionModel.builder()
+  public static PlatformVersionModel getCreateCompletePlatformVersionModel() {
+    return PlatformVersionModel.builder()
         .sloid("ch:1:sloid:12345:1")
-        .numberWithoutCheckDigit(8507000)
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .parentServicePointSloid("ch:1.sloid:12345")
@@ -139,10 +137,9 @@ public class PlatformTestData {
         .build();
 
   }
-  public static CreatePlatformVersionModel getCreateReducedPlatformVersionModel() {
-    return CreatePlatformVersionModel.builder()
+  public static PlatformVersionModel getCreateReducedPlatformVersionModel() {
+    return PlatformVersionModel.builder()
         .sloid("ch:1:sloid:12345:1")
-        .numberWithoutCheckDigit(8507000)
         .validFrom(LocalDate.of(2003, 1, 1))
         .validTo(LocalDate.of(2003, 12, 31))
         .parentServicePointSloid("ch:1.sloid:12345")

@@ -1,6 +1,6 @@
 package ch.sbb.prm.directory.api;
 
-import ch.sbb.atlas.api.prm.model.parkinglot.CreateParkingLotVersionModel;
+import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotVersionModel;
 import ch.sbb.atlas.api.prm.model.parkinglot.ReadParkingLotVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -23,10 +23,10 @@ public interface ParkingLotApiV1 {
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  ReadParkingLotVersionModel createParkingLot(@RequestBody @Valid CreateParkingLotVersionModel model);
+  ReadParkingLotVersionModel createParkingLot(@RequestBody @Valid ParkingLotVersionModel model);
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}")
   List<ReadParkingLotVersionModel> updateParkingLot(@PathVariable Long id,
-      @RequestBody @Valid CreateParkingLotVersionModel model);
+      @RequestBody @Valid ParkingLotVersionModel model);
 }
