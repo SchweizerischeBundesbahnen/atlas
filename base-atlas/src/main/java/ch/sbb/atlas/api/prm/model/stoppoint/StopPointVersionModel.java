@@ -24,6 +24,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
+@Schema(name = "StopPointVersion")
 public class StopPointVersionModel extends BasePrmVersionModel implements DatesValidator {
 
   @NotEmpty

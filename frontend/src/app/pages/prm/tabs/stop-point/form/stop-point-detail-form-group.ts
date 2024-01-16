@@ -1,17 +1,17 @@
 import { BaseDetailFormGroup } from '../../../../../core/components/base-detail/base-detail-form-group';
-import {
-  BooleanOptionalAttributeType,
-  CreateStopPointVersion,
-  MeanOfTransport,
-  ReadStopPointVersion,
-  StandardAttributeType,
-} from '../../../../../api';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import moment from 'moment';
 import { WhitespaceValidator } from '../../../../../core/validation/whitespace/whitespace-validator';
 import { DateRangeValidator } from '../../../../../core/validation/date-range/date-range-validator';
 import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-helper';
 import { PrmMeanOfTransportValidator } from '../create-stop-point/prm-mean-of-transport-validator';
+import {
+  BooleanOptionalAttributeType,
+  MeanOfTransport,
+  ReadStopPointVersion,
+  StandardAttributeType,
+  StopPointVersion,
+} from '../../../../../api';
 
 export interface StopPointDetailFormGroup extends BaseDetailFormGroup {
   sloid: FormControl<string | null | undefined>;
@@ -202,7 +202,7 @@ export class StopPointFormGroupBuilder {
     );
   }
 
-  static getWritableStopPoint(form: FormGroup<StopPointDetailFormGroup>): CreateStopPointVersion {
+  static getWritableStopPoint(form: FormGroup<StopPointDetailFormGroup>): StopPointVersion {
     const value = form.value;
     const isReduced = PrmMeanOfTransportHelper.isReduced(value.meansOfTransport!);
     if (isReduced) {
