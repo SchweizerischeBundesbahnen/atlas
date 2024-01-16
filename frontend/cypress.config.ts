@@ -1,4 +1,4 @@
-import { defineConfig } from 'cypress';
+import {defineConfig} from 'cypress';
 import cypress_failed_log from 'cypress-failed-log/src/failed';
 import cypress_high_resolution from 'cypress-high-resolution';
 
@@ -14,6 +14,7 @@ export default defineConfig({
   pageLoadTimeout: 60000,
   requestTimeout: 60000,
   responseTimeout: 60000,
+  video: true,
   env: {
     resolution: 'high'
   },
