@@ -33,7 +33,8 @@ public class ServicePointStatusDecider {
     }
 
     private boolean isSPLocatedInSwitzerland(ServicePointVersion newServicePointVersion) {
-        if (newServicePointVersion.getServicePointGeolocation() == null) {
+        if (newServicePointVersion.getServicePointGeolocation() == null
+            || newServicePointVersion.getServicePointGeolocation().getCountry() == null) {
             return false;
         }
         ServicePointGeolocation servicePointGeolocation = newServicePointVersion.getServicePointGeolocation();
