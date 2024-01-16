@@ -35,10 +35,6 @@ public abstract class BaseServicePointProcessor {
     return meanOfTransports.stream().sorted().toList();
   }
 
-  protected static List<InfoOpportunityAttributeType> getInfoOpportunities(Set<InfoOpportunityAttributeType> infoOpportunities) {
-    return infoOpportunities.stream().sorted().toList();
-  }
-
   protected static List<Category> getCategoriesSorted(ServicePointVersion servicePointVersion) {
     return servicePointVersion.getCategories().stream().sorted().toList();
   }
