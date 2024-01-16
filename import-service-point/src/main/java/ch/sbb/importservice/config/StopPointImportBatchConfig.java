@@ -57,7 +57,7 @@ public class StopPointImportBatchConfig extends BaseImportBatchJob {
     final List<StopPointCsvModelContainer> stopPointCsvModelContainers =
         stopPointCsvService.mapToStopPointCsvModelContainers(actualStopPointCsvModels);
     long prunedStopPointModels = stopPointCsvModelContainers.stream()
-        .collect(Collectors.summarizingInt(value -> value.getCreateStopPointVersionModels().size())).getSum();
+        .collect(Collectors.summarizingInt(value -> value.getStopPointVersionModels().size())).getSum();
     log.info("Found " + prunedStopPointModels + " stopPoints to import...");
     log.info("Start sending requests to prm-directory with chunkSize: {}...", PRM_CHUNK_SIZE);
     return new ThreadSafeListItemReader<>(Collections.synchronizedList(stopPointCsvModelContainers));

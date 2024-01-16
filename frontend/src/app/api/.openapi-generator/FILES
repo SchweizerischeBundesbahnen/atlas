@@ -66,16 +66,8 @@ model/country.ts
 model/countryPermissionRestrictionModel.ts
 model/coverage.ts
 model/coverageType.ts
-model/createInformationDeskVersion.ts
 model/createLoadingPointVersion.ts
-model/createParkingLotVersion.ts
-model/createPlatformVersion.ts
-model/createReferencePointVersion.ts
-model/createRelationVersion.ts
 model/createServicePointVersion.ts
-model/createStopPointVersion.ts
-model/createTicketCounterVersion.ts
-model/createToiletVersion.ts
 model/createTrafficPointElementVersion.ts
 model/displayInfo.ts
 model/district.ts
@@ -87,6 +79,7 @@ model/geolocation.ts
 model/geolocationCreate.ts
 model/hearingStatus.ts
 model/infoOpportunityAttributeType.ts
+model/informationDeskVersion.ts
 model/inlineObject.ts
 model/inlineObject1.ts
 model/inlineObject2.ts
@@ -112,6 +105,7 @@ model/operatingPointTechnicalTimetableType.ts
 model/operatingPointTrafficPointType.ts
 model/operatingPointType.ts
 model/parameter.ts
+model/parkingLotVersion.ts
 model/paymentType.ts
 model/permission.ts
 model/permissionRestrictionObject.ts
@@ -121,6 +115,7 @@ model/platformCsvModel.ts
 model/platformCsvModelContainer.ts
 model/platformImportRequest.ts
 model/platformOverview.ts
+model/platformVersion.ts
 model/prmBatchExportFileName.ts
 model/prmExportType.ts
 model/readInformationDeskVersion.ts
@@ -136,6 +131,8 @@ model/readToiletVersion.ts
 model/readTrafficPointElementVersion.ts
 model/referencePointAttributeType.ts
 model/referencePointElementType.ts
+model/referencePointVersion.ts
+model/relationVersion.ts
 model/sboidPermissionRestrictionModel.ts
 model/sePoDiBatchExportFileName.ts
 model/sePoDiExportType.ts
@@ -156,12 +153,14 @@ model/stopPointCsvModel.ts
 model/stopPointCsvModelContainer.ts
 model/stopPointImportRequest.ts
 model/stopPointType.ts
+model/stopPointVersion.ts
 model/subline.ts
 model/sublineType.ts
 model/sublineVersion.ts
 model/swissCanton.ts
 model/swissLocation.ts
 model/tactileVisualAttributeType.ts
+model/ticketCounterVersion.ts
 model/timetableFieldNumber.ts
 model/timetableFieldNumberVersion.ts
 model/timetableHearingStatement.ts
@@ -169,6 +168,7 @@ model/timetableHearingStatementDocument.ts
 model/timetableHearingStatementResponsibleTransportCompany.ts
 model/timetableHearingStatementSender.ts
 model/timetableHearingYear.ts
+model/toiletVersion.ts
 model/trafficPointCsvModelContainer.ts
 model/trafficPointElementCsvModel.ts
 model/trafficPointElementType.ts

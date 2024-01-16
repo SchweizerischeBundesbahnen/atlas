@@ -9,7 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
-import ch.sbb.atlas.api.prm.model.stoppoint.CreateStopPointVersionModel;
+import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.StopPointTestData;
@@ -99,7 +99,7 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldCreateStopPoint() throws Exception {
     //given
-    CreateStopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
+    StopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
     SharedServicePoint servicePoint = SharedServicePoint.builder()
         .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
         .sloid("ch:1:sloid:7000")
@@ -114,7 +114,7 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldNotCreateStopPointReducedIfCompletePropertiesProvided() throws Exception {
     //given
-    CreateStopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getWrongStopPointReducedCreateVersionModel();
+    StopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getWrongStopPointReducedCreateVersionModel();
     SharedServicePoint servicePoint = SharedServicePoint.builder()
         .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
         .sloid("ch:1:sloid:7000")
@@ -130,7 +130,7 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldNotCreateStopPointCompleteWithNotValidatableProperties() throws Exception {
     //given
-    CreateStopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getCompleteNotValidatableStopPointReducedCreateVersionModel();
+    StopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getCompleteNotValidatableStopPointReducedCreateVersionModel();
     SharedServicePoint servicePoint = SharedServicePoint.builder()
         .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
         .sloid("ch:1:sloid:7000")
@@ -149,8 +149,7 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
     //given
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
     stopPointRepository.save(stopPointVersion);
-    CreateStopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
-    stopPointCreateVersionModel.setNumberWithoutCheckDigit(stopPointVersion.getNumber().getNumber());
+    StopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
     stopPointCreateVersionModel.setSloid(stopPointVersion.getSloid());
     SharedServicePoint servicePoint = SharedServicePoint.builder()
         .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:12345\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
@@ -168,9 +167,8 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldNotCreateStopPointReducedIfServicePointHasAsCountryNotSwiss() throws Exception {
     //given
-    CreateStopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
+    StopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
     stopPointCreateVersionModel.setSloid("ch:1:sloid:1101407");
-    stopPointCreateVersionModel.setNumberWithoutCheckDigit(1101407);
     SharedServicePoint servicePoint = SharedServicePoint.builder()
         .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:1101407\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
         .sloid("ch:1:sloid:1101407")
@@ -188,7 +186,7 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldNotCreateStopPointVersionWhenServicePointDoesNotExist() throws Exception {
     //given
-    CreateStopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
+    StopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
     SharedServicePoint servicePoint = SharedServicePoint.builder()
             .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7001\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
             .sloid("ch:1:sloid:7001")
@@ -218,8 +216,7 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
         stopPointRepository.saveAndFlush(StopPointTestData.builderVersion1().build());
     StopPointVersion version2 = stopPointRepository.saveAndFlush(StopPointTestData.builderVersion2().build());
 
-    CreateStopPointVersionModel editedVersionModel = new CreateStopPointVersionModel();
-    editedVersionModel.setNumberWithoutCheckDigit(version2.getNumber().getNumber());
+    StopPointVersionModel editedVersionModel = new StopPointVersionModel();
     editedVersionModel.setValidFrom(version2.getValidFrom());
     editedVersionModel.setValidTo(version2.getValidTo().minusYears(1));
     editedVersionModel.setFreeText(version2.getFreeText());

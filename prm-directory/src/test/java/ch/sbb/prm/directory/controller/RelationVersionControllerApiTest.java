@@ -1,7 +1,16 @@
 package ch.sbb.prm.directory.controller;
 
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
-import ch.sbb.atlas.api.prm.model.relation.CreateRelationVersionModel;
+import ch.sbb.atlas.api.prm.model.relation.RelationVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.RelationTestData;
@@ -11,21 +20,11 @@ import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
+import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-
-import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
-import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
 class RelationVersionControllerApiTest extends BaseControllerApiTest {
@@ -160,7 +159,7 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
     version2.setReferencePointSloid(referencePointSloid);
     relationRepository.saveAndFlush(version2);
 
-    CreateRelationVersionModel editedVersionModel = new CreateRelationVersionModel();
+    RelationVersionModel editedVersionModel = new RelationVersionModel();
     editedVersionModel.setParentServicePointSloid(parentServicePointSloid);
     editedVersionModel.setSloid(version2.getSloid());
     editedVersionModel.setReferencePointSloid(version2.getReferencePointSloid());
