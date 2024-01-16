@@ -3,15 +3,17 @@ package ch.sbb.prm.directory.controller;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.client.location.LocationClient;
+import ch.sbb.atlas.api.location.ClaimSloidRequestModel;
 import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
@@ -52,12 +54,15 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
   @MockBean
   private final RelationService relationService;
 
+  @MockBean
+  private LocationClient locationClient;
+
   @Autowired
   ContactPointVersionControllerApiTest(ContactPointRepository contactPointRepository,
-                                       StopPointRepository stopPointRepository,
-                                       ReferencePointRepository referencePointRepository,
-                                       SharedServicePointRepository sharedServicePointRepository,
-                                       RelationService relationService) {
+      StopPointRepository stopPointRepository,
+      ReferencePointRepository referencePointRepository,
+      SharedServicePointRepository sharedServicePointRepository,
+      RelationService relationService) {
     this.contactPointRepository = contactPointRepository;
     this.stopPointRepository = stopPointRepository;
     this.referencePointRepository = referencePointRepository;
@@ -105,6 +110,7 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(contactPointVersionModel)))
         .andExpect(status().isCreated());
     verify(relationService, times(1)).save(any(RelationVersion.class));
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1.sloid:12345:1")));
   }
 
   @Test
@@ -124,6 +130,7 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(contactPointVersionModel)))
         .andExpect(status().isCreated());
     verify(relationService, never()).save(any(RelationVersion.class));
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1.sloid:12345:1")));
   }
 
   @Test
@@ -142,8 +149,8 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(status().isPreconditionFailed())
         .andExpect(jsonPath("$.message", is("The stop point with sloid ch:1:sloid:7000 does not exist.")));
     verify(relationService, times(0)).save(any(RelationVersion.class));
+    verify(locationClient, never()).claimSloid(any());
   }
-
 
   @Test
   void shouldNotCreateContactPointVersionWhenParentSloidDoesNotExist() throws Exception {
@@ -160,6 +167,7 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
                     .content(mapper.writeValueAsString(contactPointVersionModel)))
             .andExpect(status().isPreconditionFailed())
             .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7001 does not exist.")));
+    verify(locationClient, never()).claimSloid(any());
   }
 
   /**
@@ -167,7 +175,7 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
    * NEU:      |______________________|
    * IST:      |-------------------------------------------------------
    * Version:                            1
-   *
+   * <p>
    * RESULTAT: |----------------------| Version wird per xx aufgehoben
    * Version:         1
    */
@@ -214,6 +222,8 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2000-12-31")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2001-01-01")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2001-12-31")));
+    verify(locationClient, never()).claimSloid(any());
+    verify(locationClient, never()).generateSloid(any());
   }
 
 }
