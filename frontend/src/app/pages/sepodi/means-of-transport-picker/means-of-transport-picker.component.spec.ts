@@ -12,6 +12,9 @@ import { MeansOfTransportPickerComponent } from './means-of-transport-picker.com
 import { MeanOfTransport } from '../../../api';
 import { MaterialModule } from '../../../core/module/material.module';
 import { By } from '@angular/platform-browser';
+import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
+import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
+import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
 
 describe('MeansOfTransportPickerComponent', () => {
   let component: MeansOfTransportPickerComponent;
@@ -19,7 +22,12 @@ describe('MeansOfTransportPickerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MeansOfTransportPickerComponent],
+      declarations: [
+        MeansOfTransportPickerComponent,
+        InfoIconComponent,
+        AtlasLabelFieldComponent,
+        AtlasSpacerComponent,
+      ],
       imports: [
         FormModule,
         FormsModule,
