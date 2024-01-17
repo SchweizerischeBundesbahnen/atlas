@@ -36,7 +36,7 @@ class ExportPlatformIntegrationTest extends BasePrmSqlIntegrationTest {
   }
 
   @Test
-  void shouldExecuteExportStopPointCsvJob() throws Exception {
+  void shouldExecuteExportPlatformCsvJob() throws Exception {
     // given
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
@@ -53,7 +53,7 @@ class ExportPlatformIntegrationTest extends BasePrmSqlIntegrationTest {
   }
 
   @Test
-  void shouldExecuteExportStopPointJsonJob() throws Exception {
+  void shouldExecuteExportPlatformJsonJob() throws Exception {
     // given
     JobParameters jobParameters = new JobParametersBuilder()
         .addString(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, JobDescriptionConstants.EXECUTION_BATCH_PARAMETER)
