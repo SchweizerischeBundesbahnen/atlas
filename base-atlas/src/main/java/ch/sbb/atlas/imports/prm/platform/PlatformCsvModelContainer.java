@@ -5,10 +5,8 @@ import ch.sbb.atlas.imports.prm.BasePrmCsvModelContainer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,10 +14,13 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
+@NoArgsConstructor
 @SuperBuilder
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PlatformCsvModelContainer extends BasePrmCsvModelContainer<PlatformCsvModel> {
+
+  private List<PlatformCsvModel> platformCsvModels;
 
   @JsonIgnore
   public List<PlatformVersionModel> getCreateModels() {
