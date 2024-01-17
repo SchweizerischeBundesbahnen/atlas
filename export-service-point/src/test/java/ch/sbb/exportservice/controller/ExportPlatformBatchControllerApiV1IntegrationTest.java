@@ -35,7 +35,7 @@ class ExportPlatformBatchControllerApiV1IntegrationTest extends BaseControllerAp
     doNothing().when(exportPlatformJobService).startExportJobs();
 
     //when & then
-    mvc.perform(post("/v1/export/prm/platform/platform-batch")
+    mvc.perform(post("/v1/export/prm/platform-batch")
             .contentType(contentType))
         .andExpect(status().isOk());
   }
