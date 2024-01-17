@@ -13,6 +13,7 @@ info:
     name: location
     version: @version@
     buildtime: @timestamp@
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5443/location?currentSchema=location

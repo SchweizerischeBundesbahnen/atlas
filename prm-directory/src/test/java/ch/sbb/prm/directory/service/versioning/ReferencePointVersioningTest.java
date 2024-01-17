@@ -73,6 +73,7 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
 
     ReferencePointVersion version2 = ReferencePointTestData.builderVersion2().build();
     version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    version2.setVersion(0);
     referencePointService.updateReferencePointVersion(referencePoint1, version2);
 
     ReferencePointVersion editedVersion = ReferencePointTestData.builderVersion2().build();
@@ -139,10 +140,12 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
 
     ReferencePointVersion version2 = ReferencePointTestData.builderVersion2().build();
     version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    version2.setVersion(0);
     referencePointService.updateReferencePointVersion(referencePoint1, version2);
 
     ReferencePointVersion version3 = ReferencePointTestData.builderVersion3().build();
     version3.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    version3.setVersion(0);
     referencePointService.updateReferencePointVersion(version2, version3);
 
     ReferencePointVersion editedVersion = ReferencePointTestData.builderVersion2().build();
@@ -222,6 +225,7 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
 
     ReferencePointVersion version2 = ReferencePointTestData.builderVersion2().build();
     version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    version2.setVersion(0);
     referencePointService.updateReferencePointVersion(referencePoint1, version2);
 
     ReferencePointVersion editedVersion = ReferencePointTestData.builderVersion2().build();
