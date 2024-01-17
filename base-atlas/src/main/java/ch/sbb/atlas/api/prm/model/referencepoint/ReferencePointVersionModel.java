@@ -31,15 +31,15 @@ public class ReferencePointVersionModel extends BasePrmVersionModel implements D
 
   @Schema(description = "Long designation of a location. Used primarily in customer information. "
       + "Not all systems can process names of this length.", example = "Biel/Bienne Bözingenfeld/Champs-de-Boujean")
-  @Size(min = 2, max = AtlasFieldLengths.LENGTH_50)
   @NotNull
+  @Size(max = AtlasFieldLengths.LENGTH_50)
   private String designation;
 
   @Schema(description = "Additional Information")
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   private String additionalInformation;
 
   @Schema(description = "Main reference point")
-  @NotNull
   private boolean mainReferencePoint;
 
   @NotNull
