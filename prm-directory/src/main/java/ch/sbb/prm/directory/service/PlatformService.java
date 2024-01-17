@@ -3,7 +3,7 @@ package ch.sbb.prm.directory.service;
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
 
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
-import ch.sbb.atlas.api.prm.model.PlatformOverviewModel;
+import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
 import ch.sbb.atlas.service.OverviewService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
