@@ -1,13 +1,13 @@
 package ch.sbb.prm.directory.api;
 
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
+import ch.sbb.atlas.api.prm.model.PrmObjectOverviewModel;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
 import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.platform.PlatformImportRequestModel;
-import ch.sbb.prm.directory.controller.model.PlatformRequestParams;
+import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -36,7 +36,7 @@ public interface PlatformApiV1 {
   Container<ReadPlatformVersionModel> getPlatforms(
       @Parameter(hidden = true) @PageableDefault(sort = {BasePrmEntityVersion.Fields.number,
           BasePrmEntityVersion.Fields.validFrom}) Pageable pageable,
-      @Valid @ParameterObject PlatformRequestParams platformRequestParams);
+      @Valid @ParameterObject PrmObjectRequestParams prmObjectRequestParams);
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
@@ -53,7 +53,7 @@ public interface PlatformApiV1 {
 
   @PageableAsQueryParam
   @GetMapping("/overview/{parentSloid}")
-  List<PlatformOverviewModel> getPlatformOverview(@PathVariable String parentSloid);
+  List<PrmObjectOverviewModel> getPlatformOverview(@PathVariable String parentSloid);
 
   @GetMapping("{sloid}")
   List<ReadPlatformVersionModel> getPlatformVersions(@PathVariable String sloid);
