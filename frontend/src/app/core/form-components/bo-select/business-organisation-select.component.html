@@ -8,14 +8,15 @@
   [disabled]="disabled"
 >
   <div class="d-flex flex-column">
-    <mat-label [ngClass]="formModus ? 'required-indicator' : ''" class="font-bold-lg">{{
-      'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION' | translate
-    }}</mat-label>
-    <mat-label *ngIf="formModus" class="font-regular-sm">
+    <app-atlas-label-field
+      fieldLabel="BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION"
+      [required]="formModus"
+    ></app-atlas-label-field>
+    <div *ngIf="formModus" class="font-regular-sm">
       {{ 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER' | translate }} -
       {{ 'BODI.BUSINESS_ORGANISATION.ABBREVIATION' | translate }} -
       {{ 'BODI.BUSINESS_ORGANISATION.DESCRIPTION' | translate }} - SAID
-    </mat-label>
+    </div>
   </div>
   <div
     [ngClass]="formModus ? 'form-mode-label-form-field-space' : 'search-mode-space-between'"

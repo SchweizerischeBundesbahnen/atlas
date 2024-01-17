@@ -9,13 +9,13 @@
   [multiple]="true"
 >
   <div class="d-flex flex-column">
-    <mat-label class="font-bold-lg">{{
-      'BODI.TRANSPORT_COMPANIES.TRANSPORT_COMPANIES' | translate
-    }}</mat-label>
-    <mat-label *ngIf="formModus" class="font-regular-sm">
+    <app-atlas-label-field
+      fieldLabel="BODI.TRANSPORT_COMPANIES.TRANSPORT_COMPANIES"
+    ></app-atlas-label-field>
+    <div *ngIf="formModus" class="font-regular-sm">
       {{ 'BODI.TRANSPORT_COMPANIES.ABBREVIATION' | translate }} -
       {{ 'BODI.TRANSPORT_COMPANIES.BUSINESS_REGISTER_NAME' | translate }}
-    </mat-label>
+    </div>
   </div>
   <div
     [ngClass]="formModus ? 'form-mode-label-form-field-space' : 'search-mode-space-between'"
