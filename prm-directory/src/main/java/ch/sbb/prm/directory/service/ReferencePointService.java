@@ -22,9 +22,11 @@ import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
+import ch.sbb.prm.directory.search.ReferencePointSearchRestrictions;
 import ch.sbb.prm.directory.util.RelationUtil;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,19 +80,17 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
         new ApplyVersioningDeleteByIdLongConsumer(referencePointRepository));
   }
 
-  public List<ReferencePointVersion> getAllReferencePoints() {
-    return referencePointRepository.findAll();
-  }
-
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#referencePointVersion)")
   public ReferencePointVersion createReferencePoint(ReferencePointVersion referencePointVersion) {
     stopPointService.checkStopPointExists(referencePointVersion.getParentServicePointSloid());
     stopPointService.validateIsNotReduced(referencePointVersion.getParentServicePointSloid());
+
     searchAndUpdatePlatformRelation(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
     searchAndUpdateTicketCounter(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
     searchAndUpdateToiletRelation(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
     searchAndUpdateInformationDesk(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
     searchAndUpdateParkingLot(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
+
     return referencePointRepository.saveAndFlush(referencePointVersion);
   }
 
@@ -144,4 +144,7 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
             referencePointElementType)));
   }
 
+  public Page<ReferencePointVersion> findAll(ReferencePointSearchRestrictions searchRestrictions) {
+    return referencePointRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
+  }
 }

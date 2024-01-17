@@ -8,7 +8,7 @@ import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.platform.PlatformImportRequestModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.PlatformApiV1;
-import ch.sbb.prm.directory.controller.model.PlatformRequestParams;
+import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.mapper.PlatformVersionMapper;
 import ch.sbb.prm.directory.search.PlatformSearchRestrictions;
@@ -30,10 +30,10 @@ public class PlatformController implements PlatformApiV1 {
   private final PlatformImportService platformImportService;
 
   @Override
-  public Container<ReadPlatformVersionModel> getPlatforms(Pageable pageable, PlatformRequestParams platformRequestParams) {
+  public Container<ReadPlatformVersionModel> getPlatforms(Pageable pageable, PrmObjectRequestParams prmObjectRequestParams) {
     PlatformSearchRestrictions searchRestrictions = PlatformSearchRestrictions.builder()
         .pageable(pageable)
-        .platformRequestParams(platformRequestParams)
+        .prmObjectRequestParams(prmObjectRequestParams)
         .build();
     Page<PlatformVersion> platformVersions = platformService.findAll(searchRestrictions);
 
