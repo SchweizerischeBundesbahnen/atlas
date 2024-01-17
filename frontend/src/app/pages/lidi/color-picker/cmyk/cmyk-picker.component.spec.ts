@@ -8,6 +8,7 @@ import { WithDefaultValueDirective } from '../../../../core/text-input/with-defa
 import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
 
 describe('CmykPickerComponent', () => {
   let component: CmykPickerComponent;
@@ -20,6 +21,7 @@ describe('CmykPickerComponent', () => {
         CmykPickerComponent,
         WithDefaultValueDirective,
         AtlasFieldErrorComponent,
+        InfoIconComponent,
         AtlasLabelFieldComponent,
       ],
       providers: [{ provide: TranslatePipe }],

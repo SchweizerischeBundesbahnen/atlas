@@ -1,6 +1,13 @@
 <form [formGroup]="formGroup">
   <div class="picker">
-    <span class="font-regular-sm">{{ label | translate }}</span>
+    <app-atlas-label-field
+      [required]="true"
+      fieldLabel="SEPODI.SERVICE_POINTS.MEANS_OF_TRANSPORT"
+      infoIconTitle="{{ showInfo ? 'PRM.STOP_POINTS.MEANS_OF_TRANSPORT_SUB_LABEL' : '' }}"
+      *ngIf="label"
+    >
+    </app-atlas-label-field>
+    <atlas-spacer height="5px"></atlas-spacer>
     <div class="means-of-transport-wrapper">
       <ng-container *ngFor="let mean of means">
         <img
