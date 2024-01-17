@@ -110,7 +110,7 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(contactPointVersionModel)))
         .andExpect(status().isCreated());
     verify(relationService, times(1)).save(any(RelationVersion.class));
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1.sloid:12345:1")));
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:12345:1")));
   }
 
   @Test
@@ -130,7 +130,7 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(contactPointVersionModel)))
         .andExpect(status().isCreated());
     verify(relationService, never()).save(any(RelationVersion.class));
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1.sloid:12345:1")));
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:12345:1")));
   }
 
   @Test
