@@ -6,7 +6,7 @@ import ch.sbb.prm.directory.entity.BasePrmEntityVersion.Fields;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion_;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.PlatformVersion_;
-import ch.sbb.prm.directory.controller.model.PlatformRequestParams;
+import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import java.util.List;
 import java.util.Optional;
 import lombok.Builder;
@@ -22,7 +22,7 @@ import org.springframework.data.jpa.domain.Specification;
 public class PlatformSearchRestrictions {
 
   private final Pageable pageable;
-  private final PlatformRequestParams platformRequestParams;
+  private final PrmObjectRequestParams prmObjectRequestParams;
 
   @Singular(ignoreNullCollections = true)
   private List<String> searchCriterias;
@@ -30,15 +30,15 @@ public class PlatformSearchRestrictions {
 
   public Specification<PlatformVersion> getSpecification() {
     return specBuilder().searchCriteriaSpecification(searchCriterias)
-        .and(specBuilder().validOnSpecification(Optional.ofNullable(platformRequestParams.getValidOn())))
-        .and(specBuilder().inSpecification(platformRequestParams.getNumbers(), Fields.number))
-        .and(specBuilder().inSpecification(platformRequestParams.getSloids(), Fields.sloid))
-        .and(specBuilder().inSpecification(platformRequestParams.getParentServicePointSloids(), Fields.parentServicePointSloid))
+        .and(specBuilder().validOnSpecification(Optional.ofNullable(prmObjectRequestParams.getValidOn())))
+        .and(specBuilder().inSpecification(prmObjectRequestParams.getNumbers(), Fields.number))
+        .and(specBuilder().inSpecification(prmObjectRequestParams.getSloids(), Fields.sloid))
+        .and(specBuilder().inSpecification(prmObjectRequestParams.getParentServicePointSloids(), Fields.parentServicePointSloid))
         .and(new ValidOrEditionTimerangeSpecification<>(
-            platformRequestParams.getFromDate(),
-            platformRequestParams.getToDate(),
-            platformRequestParams.getCreatedAfter(),
-            platformRequestParams.getModifiedAfter()));
+            prmObjectRequestParams.getFromDate(),
+            prmObjectRequestParams.getToDate(),
+            prmObjectRequestParams.getCreatedAfter(),
+            prmObjectRequestParams.getModifiedAfter()));
 
   }
 

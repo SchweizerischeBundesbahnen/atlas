@@ -4,7 +4,7 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFOR
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
+import ch.sbb.atlas.api.prm.model.PrmObjectOverviewModel;
 import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.PlatformTestData;
@@ -16,7 +16,7 @@ import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.exception.TrafficPointElementDoesNotExistsException;
-import ch.sbb.prm.directory.controller.model.PlatformRequestParams;
+import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
@@ -220,8 +220,8 @@ class PlatformServiceTest extends BasePrmServiceTest {
     //when
     List<PlatformVersion> platformVersions = platformService.findAll(PlatformSearchRestrictions.builder()
             .pageable(Pageable.unpaged())
-            .platformRequestParams(
-                PlatformRequestParams.builder().parentServicePointSloids(List.of(PARENT_SERVICE_POINT_SLOID)).build()).build())
+            .prmObjectRequestParams(
+                PrmObjectRequestParams.builder().parentServicePointSloids(List.of(PARENT_SERVICE_POINT_SLOID)).build()).build())
         .getContent();
 
     //then
@@ -266,7 +266,7 @@ class PlatformServiceTest extends BasePrmServiceTest {
     platformService.createPlatformVersion(platformVersion);
 
     //when
-    List<PlatformOverviewModel> platformVersions = platformService.mergePlatformsForOverview(platformService.getPlatformsByStopPoint(PARENT_SERVICE_POINT_SLOID), PARENT_SERVICE_POINT_SLOID);
+    List<PrmObjectOverviewModel> platformVersions = platformService.mergePlatformsForOverview(platformService.getPlatformsByStopPoint(PARENT_SERVICE_POINT_SLOID), PARENT_SERVICE_POINT_SLOID);
 
     //then
     assertThat(platformVersions).hasSize(1);

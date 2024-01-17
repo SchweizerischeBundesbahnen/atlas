@@ -1,14 +1,14 @@
 package ch.sbb.prm.directory.controller;
 
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
+import ch.sbb.atlas.api.prm.model.PrmObjectOverviewModel;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.platform.PlatformImportRequestModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.PlatformApiV1;
-import ch.sbb.prm.directory.controller.model.PlatformRequestParams;
+import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.mapper.PlatformVersionMapper;
 import ch.sbb.prm.directory.search.PlatformSearchRestrictions;
@@ -30,10 +30,10 @@ public class PlatformController implements PlatformApiV1 {
   private final PlatformImportService platformImportService;
 
   @Override
-  public Container<ReadPlatformVersionModel> getPlatforms(Pageable pageable, PlatformRequestParams platformRequestParams) {
+  public Container<ReadPlatformVersionModel> getPlatforms(Pageable pageable, PrmObjectRequestParams prmObjectRequestParams) {
     PlatformSearchRestrictions searchRestrictions = PlatformSearchRestrictions.builder()
         .pageable(pageable)
-        .platformRequestParams(platformRequestParams)
+        .prmObjectRequestParams(prmObjectRequestParams)
         .build();
     Page<PlatformVersion> platformVersions = platformService.findAll(searchRestrictions);
 
@@ -65,7 +65,7 @@ public class PlatformController implements PlatformApiV1 {
   }
 
   @Override
-  public List<PlatformOverviewModel> getPlatformOverview(String parentSloid) {
+  public List<PrmObjectOverviewModel> getPlatformOverview(String parentSloid) {
     return platformService.mergePlatformsForOverview(platformService.getPlatformsByStopPoint(parentSloid), parentSloid);
   }
 
