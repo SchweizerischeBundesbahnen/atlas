@@ -92,6 +92,11 @@ include::{snippets}/stop-point-version-controller-api-test/should-update-stop-po
 
 include::{snippets}/reference-point-version-controller-api-test/should-get-reference-points-version/auto-section.adoc[]
 
+=== Get Reference Point by Sloid - Successfully
+
+include::{snippets}/reference-point-version-controller-api-test/should-get-reference-point-by-sloid/auto-section.adoc[]
+
+
 === Create Reference Points - Successfully
 
 include::{snippets}/reference-point-version-controller-api-test/should-create-reference-point/auto-section.adoc[]
