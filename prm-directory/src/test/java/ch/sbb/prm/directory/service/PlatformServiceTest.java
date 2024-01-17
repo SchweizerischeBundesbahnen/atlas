@@ -16,7 +16,7 @@ import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.exception.TrafficPointElementDoesNotExistsException;
-import ch.sbb.prm.directory.controller.model.PlatformRequestParams;
+import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
@@ -220,8 +220,8 @@ class PlatformServiceTest extends BasePrmServiceTest {
     //when
     List<PlatformVersion> platformVersions = platformService.findAll(PlatformSearchRestrictions.builder()
             .pageable(Pageable.unpaged())
-            .platformRequestParams(
-                PlatformRequestParams.builder().parentServicePointSloids(List.of(PARENT_SERVICE_POINT_SLOID)).build()).build())
+            .prmObjectRequestParams(
+                PrmObjectRequestParams.builder().parentServicePointSloids(List.of(PARENT_SERVICE_POINT_SLOID)).build()).build())
         .getContent();
 
     //then
