@@ -6,7 +6,6 @@ import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion.Fields;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion_;
-import ch.sbb.prm.directory.entity.PlatformVersion_;
 import java.util.Collections;
 import java.util.Optional;
 import lombok.Data;
@@ -38,7 +37,7 @@ public abstract class BasePrmSearchRestrictions<T extends BasePrmEntityVersion> 
   protected SpecificationBuilder<T> specBuilder() {
     return SpecificationBuilder.<T>builder()
         .validFromAttribute(BasePrmEntityVersion_.validFrom)
-        .validToAttribute(PlatformVersion_.validTo)
+        .validToAttribute(BasePrmEntityVersion_.validTo)
         .build();
   }
 }
