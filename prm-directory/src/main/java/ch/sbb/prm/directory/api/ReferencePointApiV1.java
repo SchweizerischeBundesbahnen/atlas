@@ -1,7 +1,6 @@
 package ch.sbb.prm.directory.api;
 
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.prm.model.PrmObjectOverviewModel;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReferencePointVersionModel;
 import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
@@ -43,11 +42,7 @@ public interface ReferencePointApiV1 {
   List<ReadReferencePointVersionModel> updateReferencePoint(@PathVariable Long id,
       @RequestBody @Valid ReferencePointVersionModel model);
 
-  @PageableAsQueryParam
-  @GetMapping("/overview/{parentSloid}")
-  List<PrmObjectOverviewModel> getPlatformOverview(@PathVariable String parentSloid);
-
   @GetMapping("{sloid}")
-  List<ReadReferencePointVersionModel> getPlatformVersions(@PathVariable String sloid);
+  List<ReadReferencePointVersionModel> getReferencePointVersions(@PathVariable String sloid);
 
 }
