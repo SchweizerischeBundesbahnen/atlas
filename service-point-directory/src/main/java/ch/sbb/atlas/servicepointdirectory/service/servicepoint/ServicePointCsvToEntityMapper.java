@@ -112,7 +112,7 @@ public class ServicePointCsvToEntityMapper implements
         .build();
   }
 
-  private Status calculateStatus(ServicePointStatus servicePointStatus) {
+  public static Status calculateStatus(ServicePointStatus servicePointStatus) {
     return switch (servicePointStatus) {
       case TO_BE_REQUESTED -> Status.DRAFT;
       case REQUESTED -> Status.IN_REVIEW;
