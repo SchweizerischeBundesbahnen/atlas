@@ -1,5 +1,6 @@
-package ch.sbb.atlas.api.prm.model.platform;
+package ch.sbb.atlas.api.prm.model;
 
+import ch.sbb.atlas.api.prm.model.platform.RecordingStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -16,8 +17,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "PlatformOverview")
-public class PlatformOverviewModel {
+@Schema(name = "PrmObjectOverview")
+public class PrmObjectOverviewModel {
 
   @NotNull
   private String sloid;
