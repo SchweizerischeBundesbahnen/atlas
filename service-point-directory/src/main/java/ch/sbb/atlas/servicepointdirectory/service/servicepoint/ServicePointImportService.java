@@ -123,9 +123,7 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
     return importResults;
   }
 
-  public void updateServicePointVersionForImportService(ServicePointVersion edited) {
-    List<ServicePointVersion> dbVersions = servicePointService.findAllByNumberOrderByValidFrom(edited.getNumber());
-    ServicePointVersion current = ImportUtils.getCurrentPointVersion(dbVersions, edited);
+  public void updateServicePointVersionForImportService(ServicePointVersion edited, List<ServicePointVersion> dbVersions, ServicePointVersion current) {
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(current, edited,
         dbVersions);
     ImportUtils.overrideEditionDateAndEditorOnVersionedObjects(edited, versionedObjects);
@@ -168,15 +166,24 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
   private ItemImportResult updateServicePointVersion(ServicePointVersion servicePointVersion) {
     List<Exception> warnings = new ArrayList<>();
     getHeightForServicePointImport(servicePointVersion, warnings);
-
+    List<ServicePointVersion> dbVersions = servicePointService.findAllByNumberOrderByValidFrom(servicePointVersion.getNumber());
+    ServicePointVersion current = ImportUtils.getCurrentPointVersion(dbVersions, servicePointVersion);
     try {
-      updateServicePointVersionForImportService(servicePointVersion);
+      updateServicePointVersionForImportService(servicePointVersion, dbVersions, current);
     } catch (VersioningNoChangesException exception) {
-      log.info("Found version {} to import without modification: {}",
-          servicePointVersion.getNumber().getValue(),
-          exception.getMessage()
-      );
-      return buildSuccessImportResult(servicePointVersion);
+      if (!servicePointVersion.getStatus().equals(current.getStatus())) {
+        log.info("During the service point import, a service point with the number {} was identified, where only the status changed from {} to {}",
+                servicePointVersion.getNumber().getValue(),
+                current.getStatus(),
+                servicePointVersion.getStatus());
+        servicePointService.saveOnlyStatusIfOnlyStatusIsUpdated(current.getId(), servicePointVersion.getStatus());
+      } else {
+        log.info("Found version {} to import without modification: {}",
+                servicePointVersion.getNumber().getValue(),
+                exception.getMessage()
+        );
+        return buildSuccessImportResult(servicePointVersion);
+      }
     } catch (Exception exception) {
       log.error("[Service-Point Import]: Error during update", exception);
       return buildFailedImportResult(servicePointVersion, exception);

@@ -1,12 +1,15 @@
 package ch.sbb.atlas.servicepointdirectory.migration.servicepoints;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-
 import ch.sbb.atlas.imports.util.CsvReader;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -16,20 +19,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ServicePointMigrationActualDateIntegrationTest {
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ACTUALDATE_V_2_20230906020132.csv";
-  private static final String ATLAS_CSV_FILE = "actual_date-world-service_point-2023-09-06.csv";
-  private static final LocalDate ACTUAL_DATE = LocalDate.of(2023, 9, 6);
+  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ACTUALDATE_V_2_20240112021141.csv";
+  private static final String ATLAS_CSV_FILE = "actual_date-world-service_point-2024-01-12.csv";
+  private static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 1, 12);
 
   private static final List<ServicePointAtlasCsvModel> atlasCsvLines = new ArrayList<>();
   private static final Map<Integer, ServicePointAtlasCsvModel> atlasCsvLinesAsMap = new HashMap<>();
