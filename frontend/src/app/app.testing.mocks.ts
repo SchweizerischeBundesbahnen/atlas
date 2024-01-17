@@ -21,6 +21,14 @@ export class MockAppDetailWrapperComponent {
 }
 
 @Component({
+  selector: 'form-info-icon',
+  template: '',
+})
+export class MockInfoIconComponent {
+  @Input() infoTitle = '';
+}
+
+@Component({
   selector: 'bo-select',
   template: '<p>Mock Business Organisation Select Component</p>',
 })
@@ -128,6 +136,7 @@ export type ActivatedRouteMockType = { data: any };
     MockAtlasButtonComponent,
     MockUserDetailInfoComponent,
     MockAtlasFieldErrorComponent,
+    MockInfoIconComponent,
   ],
   exports: [
     MockBoSelectComponent,
