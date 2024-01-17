@@ -86,7 +86,7 @@ class ContactPointServiceTest extends BasePrmServiceTest {
     List<RelationVersion> relationVersions = relationRepository
         .findAllByParentServicePointSloid(contactPointVersion.getParentServicePointSloid());
     assertThat(relationVersions).isEmpty();
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1.sloid:12345:1")));
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:12345:1")));
   }
 
   @Test
@@ -117,7 +117,7 @@ class ContactPointServiceTest extends BasePrmServiceTest {
         relationVersions.get(0).getReferencePointElementType()).isEqualTo(ReferencePointElementType.CONTACT_POINT);
     assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(ReferencePointElementType.CONTACT_POINT);
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1.sloid:12345:1")));
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:12345:1")));
   }
 
   @Test
@@ -146,7 +146,7 @@ class ContactPointServiceTest extends BasePrmServiceTest {
     List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
         parentServicePointSloid);
     assertThat(relationVersions).isEmpty();
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1.sloid:12345:1")));
+    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:12345:1")));
   }
 
 }
