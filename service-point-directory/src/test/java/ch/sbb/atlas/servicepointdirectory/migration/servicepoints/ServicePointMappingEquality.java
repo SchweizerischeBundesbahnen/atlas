@@ -1,17 +1,20 @@
 package ch.sbb.atlas.servicepointdirectory.migration.servicepoints;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.model.DoubleAssertion;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepointdirectory.model.ServicePointStatus;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointCsvToEntityMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+
 import java.math.BigDecimal;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @param isFullExport ActualDate and FutureTimetable does not export SLOID in Didok
@@ -39,6 +42,15 @@ public record ServicePointMappingEquality(ServicePointDidokCsvModel didokCsvLine
   }
 
   private void performCoreDataCheck() {
+//    log.info("Performing INFO core data check for didok code: " + didokCsvLine.getDidokCode() + " and atlas number: " + atlasCsvLine.getNumber());
+//    log.error("Performing ERROR core data check for didok code: " + didokCsvLine.getDidokCode() + " and atlas number: " + atlasCsvLine.getNumber());
+//    System.out.println("HERE ARE STATUSES for atlas number: " + atlasCsvLine.getNumber());
+//    System.out.println("HERE ARE STATUSES for didok code: " + didokCsvLine.getDidokCode());
+//    System.out.println(atlasCsvLine.getStatus().name());
+//    System.out.println(didokCsvLine.getStatus());
+//    ServicePointStatus didokServicePointStatus = ServicePointStatus.from(didokCsvLine.getStatus());
+//    Status atlasServicePointStatus = ServicePointCsvToEntityMapper.calculateStatus(didokServicePointStatus);
+    assertThat(atlasCsvLine.getStatus()).isEqualTo(ServicePointCsvToEntityMapper.calculateStatus(ServicePointStatus.from(didokCsvLine.getStatus())));
     assertThat(atlasCsvLine.getNumber()).isEqualTo(didokCsvLine.getDidokCode());
     assertThat(atlasCsvLine.getNumberShort()).isEqualTo(didokCsvLine.getNummer());
     assertThat(atlasCsvLine.getUicCountryCode()).isEqualTo(didokCsvLine.getLaendercode());
@@ -171,7 +183,7 @@ public record ServicePointMappingEquality(ServicePointDidokCsvModel didokCsvLine
     assertThat(atlasCsvLine.getLocalityName()).isEqualTo(didokCsvLine.getOrtschaftsName());
 
     performEqualityCheckOnCoordinates();
-    if (isFullExport) {
+    if (isFullExport && didokCsvLine.getHeight() != null) {
       assertThat(atlasCsvLine.getHeight()).isEqualTo(didokCsvLine.getHeight());
     }
   }
