@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -113,6 +114,13 @@ public class ServicePointService {
   public ServicePointVersion saveWithoutValidationForImportOnly(ServicePointVersion servicePointVersion, Status status) {
     servicePointVersion.setStatus(status);
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
+  }
+
+  public ServicePointVersion saveOnlyStatusIfOnlyStatusIsUpdated(Long id, Status status) {
+    ServicePointVersion existingServicePointVersion = this.findById(id)
+            .orElseThrow(() -> new NotFoundException.IdNotFoundException(id));
+    existingServicePointVersion.setStatus(status);
+    return existingServicePointVersion;
   }
 
   @PreAuthorize(
