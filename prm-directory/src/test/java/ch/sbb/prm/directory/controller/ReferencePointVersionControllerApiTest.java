@@ -108,6 +108,17 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
     //when & then
     mvc.perform(get("/v1/reference-points"))
         .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
+  @Test
+  void shouldGetReferencePointBySloid() throws Exception {
+    //given
+    ReferencePointVersion referencePointVersion = referencePointRepository.save(
+        ReferencePointTestData.getReferencePointVersion());
+    //when & then
+    mvc.perform(get("/v1/reference-points/" + referencePointVersion.getSloid()))
+        .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
   }
 
