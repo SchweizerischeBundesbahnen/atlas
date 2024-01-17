@@ -1,15 +1,12 @@
 <div class="col-12 d-flex">
   <div class="col-6">
-    <mat-label class="font-bold-lg required-indicator">
-      {{ 'SEPODI.SERVICE_POINTS.MEANS_OF_TRANSPORT' | translate }}
-    </mat-label>
-    <atlas-spacer height="3px"></atlas-spacer>
     <means-of-transport-picker
       [formGroup]="form"
       controlName="meansOfTransport"
       [disabled]="form.disabled"
       label="PRM.STOP_POINTS.MEANS_OF_TRANSPORT_SUB_LABEL"
       [showUnknown]="false"
+      [showInfo]="true"
     ></means-of-transport-picker>
   </div>
 </div>
@@ -18,6 +15,7 @@
     <form-comment
       [formGroup]="form"
       label="PRM.STOP_POINTS.FORM.FREE_TEXT"
+      info="PRM.STOP_POINTS.FORM.FREE_TEXT_INFO"
       controlName="freeText"
       maxChars="2000"
     ></form-comment>

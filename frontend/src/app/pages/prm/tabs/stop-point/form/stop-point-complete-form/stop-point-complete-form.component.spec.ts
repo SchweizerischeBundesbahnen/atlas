@@ -13,6 +13,7 @@ import { AtlasLabelFieldComponent } from '../../../../../../core/form-components
 import { MeansOfTransportPickerComponent } from '../../../../../sepodi/means-of-transport-picker/means-of-transport-picker.component';
 import { AtlasSpacerComponent } from '../../../../../../core/components/spacer/atlas-spacer.component';
 import { By } from '@angular/platform-browser';
+import { InfoIconComponent } from '../../../../../../core/form-components/info-icon/info-icon.component';
 import arrayContaining = jasmine.arrayContaining;
 
 describe('StopPointCompleteFormComponent', () => {
@@ -26,6 +27,7 @@ describe('StopPointCompleteFormComponent', () => {
         MockSelectComponent,
         TextFieldComponent,
         MockAtlasFieldErrorComponent,
+        InfoIconComponent,
         AtlasLabelFieldComponent,
         MeansOfTransportPickerComponent,
         AtlasSpacerComponent,

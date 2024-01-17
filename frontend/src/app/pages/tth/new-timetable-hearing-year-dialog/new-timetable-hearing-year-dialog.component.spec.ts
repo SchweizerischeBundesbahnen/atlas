@@ -66,6 +66,7 @@ describe('NewTimetableHearingYearDialogComponent', () => {
         NewTimetableHearingYearDialogComponent,
         DateRangeComponent,
         DateIconComponent,
+        InfoIconComponent,
         AtlasLabelFieldComponent,
         InfoIconComponent,
         SelectComponent,
