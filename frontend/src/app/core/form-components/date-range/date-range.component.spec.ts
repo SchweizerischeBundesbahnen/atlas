@@ -7,6 +7,7 @@ import { DateIconComponent } from '../date-icon/date-icon.component';
 import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
 import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { InfoIconComponent } from '../info-icon/info-icon.component';
 
 describe('DateRangeComponent', () => {
   let component: DateRangeComponent;
@@ -18,6 +19,7 @@ describe('DateRangeComponent', () => {
         DateRangeComponent,
         DateIconComponent,
         AtlasFieldErrorComponent,
+        InfoIconComponent,
         AtlasLabelFieldComponent,
       ],
       imports: [AppTestingModule],
