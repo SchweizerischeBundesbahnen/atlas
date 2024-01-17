@@ -1,6 +1,7 @@
 package ch.sbb.exportservice.reader;
 
 import ch.sbb.atlas.api.prm.enumeration.*;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.entity.PlatformVersion.PlatformVersionBuilder;
 import ch.sbb.exportservice.entity.PlatformVersion;
 import java.sql.ResultSet;
@@ -19,6 +20,7 @@ public class PlatformVersionRowMapper extends BaseRowMapper implements RowMapper
         builder.id(rs.getLong("id"));
         builder.sloid(rs.getString("sloid"));
         builder.parentSloidServicePoint(rs.getString("parent_service_point_sloid"));
+        builder.parentNumberServicePoint(ServicePointNumber.ofNumberWithoutCheckDigit(ServicePointNumber.removeCheckDigit(rs.getInt("number"))));
         builder.boardingDevice(
                 rs.getObject("boarding_device") != null ? BoardingDeviceAttributeType.valueOf(rs.getString("boarding_device")) : null);
         builder.adviceAccessInfo(rs.getString("advice_access_info"));
@@ -42,6 +44,10 @@ public class PlatformVersionRowMapper extends BaseRowMapper implements RowMapper
                 rs.getObject("tactile_system") != null ? BooleanOptionalAttributeType.valueOf(rs.getString("tactile_system")) : null);
         builder.vehicleAccess(
                 rs.getObject("vehicle_access") != null ? VehicleAccessAttributeType.valueOf(rs.getString("vehicle_access")) : null);
+        builder.wheelchairAreaLength(
+                rs.getObject("wheelchair_area_length") != null ? rs.getDouble("wheelchair_area_length") : null);
+        builder.wheelchairAreaWidth(
+                rs.getObject("wheelchair_area_width") != null ? rs.getDouble("wheelchair_area_width") : null);
         builder.validFrom(rs.getObject("valid_from", LocalDate.class));
         builder.validTo(rs.getObject("valid_to", LocalDate.class));
         builder.creationDate(rs.getObject("creation_date", LocalDateTime.class));
