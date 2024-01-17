@@ -7,6 +7,8 @@ import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import java.time.LocalDate;
 import java.util.Set;
+
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,7 +32,7 @@ public class PlatformVersion extends BaseEntity {
 
     private String parentSloidServicePoint;
 
-    private Integer parentNumberServicePoint;
+    private ServicePointNumber parentNumberServicePoint;
 
     private BoardingDeviceAttributeType boardingDevice;
 
