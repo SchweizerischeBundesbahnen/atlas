@@ -1,5 +1,6 @@
 package ch.sbb.prm.directory.entity;
 
+import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
@@ -12,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,12 +42,13 @@ public class ReferencePointVersion extends BasePrmEntityVersion implements PrmVe
 
   @NotNull
   @AtlasVersionableProperty
+  @Size(max = AtlasFieldLengths.LENGTH_50)
   private String designation;
 
   @AtlasVersionableProperty
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   private String additionalInformation;
 
-  @NotNull
   @AtlasVersionableProperty
   private boolean mainReferencePoint;
 

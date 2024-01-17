@@ -1,5 +1,7 @@
 package ch.sbb.prm.directory.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -10,6 +12,7 @@ import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.TicketCounterTestData;
 import ch.sbb.prm.directory.ToiletTestData;
+import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.InformationDeskVersion;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.PlatformVersion;
@@ -26,14 +29,14 @@ import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
+import ch.sbb.prm.directory.search.ReferencePointSearchRestrictions;
+import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 class ReferencePointServiceTest extends BasePrmServiceTest {
 
@@ -153,6 +156,38 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
     platformVersion.setParentServicePointSloid(parentServicePointSloid);
     platformVersion.setSloid("ch:1:sloid:70000:1");
     platformRepository.saveAndFlush(platformVersion);
+  }
+
+  @Test
+  void shouldFindReferencePointByParentSloid() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+
+    createAndSavePlatformVersion(PARENT_SERVICE_POINT_SLOID);
+    createAndSaveTicketCounterVersion(PARENT_SERVICE_POINT_SLOID);
+    createAndSaveToiletVersion(PARENT_SERVICE_POINT_SLOID);
+    createAndSaveInformationDeskVersion(PARENT_SERVICE_POINT_SLOID);
+    createAndSaveParkingLotVersion(PARENT_SERVICE_POINT_SLOID);
+
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    //when
+    referencePointService.createReferencePoint(referencePointVersion);
+
+    //then
+    Page<ReferencePointVersion> result = referencePointService.findAll(
+        ReferencePointSearchRestrictions.builder().pageable(Pageable.ofSize(1)).prmObjectRequestParams(
+            PrmObjectRequestParams.builder().parentServicePointSloids(List.of("ch:1:unknownsloid")).build()).build());
+    assertThat(result.getTotalElements()).isZero();
+    assertThat(result.getContent()).isEmpty();
+
+     result = referencePointService.findAll(
+        ReferencePointSearchRestrictions.builder().pageable(Pageable.ofSize(1)).prmObjectRequestParams(
+            PrmObjectRequestParams.builder().parentServicePointSloids(List.of(PARENT_SERVICE_POINT_SLOID)).build()).build());
+    assertThat(result.getTotalElements()).isOne();
+    assertThat(result.getContent()).isNotEmpty();
   }
 
 }
