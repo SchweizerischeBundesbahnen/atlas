@@ -7,7 +7,7 @@
       <artifactId>atlas</artifactId>
       <groupId>ch.sbb.atlas</groupId>
       <relativePath>../pom.xml</relativePath>
-      <version>1.572.0</version>
+      <version>1.573.0</version>
    </parent>
    <artifactId>base-atlas</artifactId>
    <name>Atlas Base Library</name>
@@ -115,7 +115,7 @@
       <dependency>
          <artifactId>kafka</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.572.0</version>
+         <version>1.573.0</version>
       </dependency>
 
       <dependency>
