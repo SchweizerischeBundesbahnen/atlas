@@ -1,6 +1,10 @@
 package ch.sbb.atlas.api.prm.enumeration;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +27,19 @@ public enum InfoOpportunityAttributeType {
 
   public static InfoOpportunityAttributeType of(Integer value) {
     return Stream.of(values()).filter(i -> i.getRank().equals(value)).findFirst().orElseThrow();
+  }
+
+  public static InfoOpportunityAttributeType from(String code) {
+    return Arrays.stream(InfoOpportunityAttributeType.values()).filter(infoOpportunity -> Objects.equals(infoOpportunity.getRank(), code))
+            .findFirst().orElse(null);
+  }
+
+  public static Set<InfoOpportunityAttributeType> fromCode(
+          String infoOpportunitiesCode) {
+    return Arrays.stream(Objects.nonNull(infoOpportunitiesCode) ? infoOpportunitiesCode.split("~") : new String[]{})
+            .map(InfoOpportunityAttributeType::from)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toSet());
   }
 
 }
