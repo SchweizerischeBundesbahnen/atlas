@@ -17,8 +17,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "PrmObjectOverview")
-public class PrmObjectOverviewModel {
+@Schema(name = "PlatformOverview")
+public class PlatformOverviewModel {
 
   @NotNull
   private String sloid;
