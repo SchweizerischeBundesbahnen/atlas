@@ -3,7 +3,7 @@ package ch.sbb.prm.directory.service;
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
 
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
-import ch.sbb.atlas.api.prm.model.PrmObjectOverviewModel;
+import ch.sbb.atlas.api.prm.model.PlatformOverviewModel;
 import ch.sbb.atlas.service.OverviewService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -102,20 +102,20 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
     return platformRepository.findAll(searchRestrictions.getSpecification());
   }
 
-  public List<PrmObjectOverviewModel> mergePlatformsForOverview(List<PlatformVersion> platforms, String parentSloid) {
+  public List<PlatformOverviewModel> mergePlatformsForOverview(List<PlatformVersion> platforms, String parentSloid) {
     boolean reduced = stopPointService.isReduced(parentSloid);
 
     Map<String, List<PlatformVersion>> groupedPlatforms = platforms.stream()
         .collect(Collectors.groupingBy(PlatformVersion::getSloid));
 
-    List<PrmObjectOverviewModel> overviewModels = new ArrayList<>();
+    List<PlatformOverviewModel> overviewModels = new ArrayList<>();
     groupedPlatforms.forEach((sloid, versions) -> {
       versions.sort(Comparator.comparing(PlatformVersion::getValidFrom));
 
       PlatformVersion platformVersion = OverviewService.mergeVersionsForDisplay(versions,
           (previous, current) -> previous.getSloid().equals(current.getSloid())).iterator().next();
 
-      overviewModels.add(PrmObjectOverviewModel.builder()
+      overviewModels.add(PlatformOverviewModel.builder()
           .sloid(sloid)
           .validFrom(platformVersion.getValidFrom())
           .validTo(platformVersion.getValidTo())
