@@ -22,7 +22,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder
 @ToString
-public class PlatformRequestParams extends VersionedObjectDateRequestParams {
+public class PrmObjectRequestParams extends VersionedObjectDateRequestParams {
 
   @Parameter(description = "Unique key for platforms which is used in the customer information.")
   @Singular(ignoreNullCollections = true)
