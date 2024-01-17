@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.controller;
 
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.prm.model.PrmObjectOverviewModel;
+import ch.sbb.atlas.api.prm.model.PlatformOverviewModel;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
 import ch.sbb.atlas.imports.ItemImportResult;
@@ -65,7 +65,7 @@ public class PlatformController implements PlatformApiV1 {
   }
 
   @Override
-  public List<PrmObjectOverviewModel> getPlatformOverview(String parentSloid) {
+  public List<PlatformOverviewModel> getPlatformOverview(String parentSloid) {
     return platformService.mergePlatformsForOverview(platformService.getPlatformsByStopPoint(parentSloid), parentSloid);
   }
 
