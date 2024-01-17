@@ -48,7 +48,7 @@ class PlatformMigrationIntegrationTest {
       List<PlatformCsvModelContainer> platformCsvModelContainers = platformCsvService.mapToPlatformCsvModelContainers(
           CsvReader.parseCsv(csvStream, PlatformCsvModel.class));
       didokPlatformCsvLines.addAll(platformCsvModelContainers.stream()
-          .map(PlatformCsvModelContainer::getPlatformCsvModels)
+          .map(PlatformCsvModelContainer::getCsvModels)
           .flatMap(Collection::stream)
           .toList());
 
