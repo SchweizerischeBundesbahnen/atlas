@@ -19,6 +19,7 @@ describe('CommentComponent', () => {
         CommentComponent,
         InfoIconComponent,
         AtlasFieldErrorComponent,
+        InfoIconComponent,
         AtlasLabelFieldComponent,
         TextFieldComponent,
       ],

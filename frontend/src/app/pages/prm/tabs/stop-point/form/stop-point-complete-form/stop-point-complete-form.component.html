@@ -1,15 +1,12 @@
 <div class="col-12 d-flex">
   <div class="col-6">
-    <mat-label class="font-bold-lg required-indicator">
-      {{ 'SEPODI.SERVICE_POINTS.MEANS_OF_TRANSPORT' | translate }}
-    </mat-label>
-    <atlas-spacer height="3px"></atlas-spacer>
     <means-of-transport-picker
       [formGroup]="form"
       controlName="meansOfTransport"
       [disabled]="form.disabled"
       label="PRM.STOP_POINTS.MEANS_OF_TRANSPORT_SUB_LABEL"
       [showUnknown]="false"
+      [showInfo]="true"
     ></means-of-transport-picker>
   </div>
   <div class="col-6" [formGroup]="form">
@@ -24,6 +21,7 @@
     <form-comment
       [formGroup]="form"
       label="PRM.STOP_POINTS.FORM.FREE_TEXT"
+      info="PRM.STOP_POINTS.FORM.FREE_TEXT_INFO"
       controlName="freeText"
       maxChars="2000"
     ></form-comment>
@@ -88,6 +86,7 @@
     controlName="visualInfo"
     dataCy="visualInfo"
     label="PRM.STOP_POINTS.FORM.VISUAL_INFO"
+    infoIconTitle="PRM.STOP_POINTS.FORM.VISUAL_INFO_INFO"
     optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
     [options]="standardAttributeTypes"
     [additionalLabelspace]="0"
@@ -99,6 +98,7 @@
     controlName="dynamicOpticSystem"
     dataCy="dynamicOpticSystem"
     label="PRM.STOP_POINTS.FORM.DYNAMIC_OPTIC_SYSTEM"
+    infoIconTitle="PRM.STOP_POINTS.FORM.DYNAMIC_OPTIC_SYSTEM_INFO"
     optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
     [options]="standardAttributeTypes"
     [additionalLabelspace]="0"
@@ -110,6 +110,7 @@
     controlName="dynamicAudioSystem"
     dataCy="dynamicAudioSystem"
     label="PRM.STOP_POINTS.FORM.DYNAMIC_AUDIO_SYSTEM"
+    infoIconTitle="PRM.STOP_POINTS.FORM.DYNAMIC_AUDIO_SYSTEM_INFO"
     optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
     [options]="standardAttributeTypes"
     [additionalLabelspace]="0"
@@ -145,6 +146,7 @@
     controlName="wheelchairTicketMachine"
     dataCy="wheelchairTicketMachine"
     label="PRM.STOP_POINTS.FORM.WHEELCHAIR_TICKET_MACHINE"
+    infoIconTitle="PRM.STOP_POINTS.FORM.WHEELCHAIR_TICKET_MACHINE_INFO"
     optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
     [options]="standardAttributeTypes"
     [additionalLabelspace]="0"
@@ -156,6 +158,7 @@
     controlName="audioTicketMachine"
     dataCy="audioTicketMachine"
     label="PRM.STOP_POINTS.FORM.AUDIO_TICKET_MACHINE"
+    infoIconTitle="PRM.STOP_POINTS.FORM.AUDIO_TICKET_MACHINE_INFO"
     optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
     [options]="standardAttributeTypes"
     [additionalLabelspace]="0"
@@ -181,6 +184,7 @@
     controlName="assistanceRequestFulfilled"
     dataCy="assistanceRequestFulfilled"
     label="PRM.STOP_POINTS.FORM.ASSISTANCE_REQUEST_FULFILLED"
+    infoIconTitle="PRM.STOP_POINTS.FORM.ASSISTANCE_REQUEST_FULFILLED_INFO"
     optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
     [required]="true"
     [options]="booleanOptionalAttributeTypes"
@@ -194,6 +198,7 @@
     controlName="assistanceService"
     dataCy="assistanceService"
     label="PRM.STOP_POINTS.FORM.ASSISTANCE_SERVICE"
+    infoIconTitle="PRM.STOP_POINTS.FORM.ASSISTANCE_SERVICE_INFO"
     optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
     [options]="standardAttributeTypes"
     [additionalLabelspace]="0"
@@ -205,6 +210,7 @@
     controlName="assistanceAvailability"
     dataCy="assistanceAvailability"
     label="PRM.STOP_POINTS.FORM.ASSISTANCE_AVAILABILITY"
+    infoIconTitle="PRM.STOP_POINTS.FORM.ASSISTANCE_AVAILABILITY_INFO"
     optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
     [options]="standardAttributeTypes"
     [additionalLabelspace]="0"
@@ -216,6 +222,7 @@
     <form-comment
       [formGroup]="form"
       label="PRM.STOP_POINTS.FORM.ASSISTANCE_CONDITION"
+      info="PRM.STOP_POINTS.FORM.ASSISTANCE_CONDITION_INFO"
       controlName="assistanceCondition"
       maxChars="2000"
     ></form-comment>
@@ -228,6 +235,7 @@
     controlName="alternativeTransport"
     dataCy="alternativeTransport"
     label="PRM.STOP_POINTS.FORM.ALTERNATIVE_TRANSPORT"
+    infoIconTitle="PRM.STOP_POINTS.FORM.ALTERNATIVE_TRANSPORT_INFO"
     optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
     [options]="standardAttributeTypes"
     [additionalLabelspace]="28"
@@ -237,6 +245,7 @@
     <form-comment
       [formGroup]="form"
       label="PRM.STOP_POINTS.FORM.ALTERNATIVE_TRANSPORT_CONDITION"
+      info="PRM.STOP_POINTS.FORM.ALTERNATIVE_TRANSPORT_CONDITION_INFO"
       controlName="alternativeTransportCondition"
       maxChars="2000"
     ></form-comment>
