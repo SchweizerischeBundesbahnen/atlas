@@ -14,13 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
-@NoArgsConstructor
 @SuperBuilder
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PlatformCsvModelContainer extends BasePrmCsvModelContainer<PlatformCsvModel> {
-
-  private List<PlatformCsvModel> platformCsvModels;
 
   @JsonIgnore
   public List<PlatformVersionModel> getCreateModels() {
