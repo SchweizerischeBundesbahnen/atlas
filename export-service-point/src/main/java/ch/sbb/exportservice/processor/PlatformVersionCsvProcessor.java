@@ -18,7 +18,7 @@ public class PlatformVersionCsvProcessor extends BaseServicePointProcessor imple
         return PlatformVersionCsvModel.builder()
             .sloid(version.getSloid())
             .parentSloidServicePoint(version.getParentSloidServicePoint())
-            .parentNumberServicePoint(version.getParentNumberServicePoint())
+            .parentNumberServicePoint(version.getParentNumberServicePoint().getNumber())
             .boardingDevice(mapBoardingDeviceAttributeType(version.getBoardingDevice()))
             .adviceAccessInfo(version.getAdviceAccessInfo())
             .additionalInformation(version.getAdditionalInformation())
