@@ -9,7 +9,7 @@ import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.PlatformVersion;
-import ch.sbb.prm.directory.controller.model.PlatformRequestParams;
+import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.search.PlatformSearchRestrictions;
@@ -94,7 +94,7 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
 
   public List<PlatformVersion> getPlatformsByStopPoint(String sloid) {
     PlatformSearchRestrictions searchRestrictions = PlatformSearchRestrictions.builder()
-        .platformRequestParams(PlatformRequestParams.builder()
+        .prmObjectRequestParams(PrmObjectRequestParams.builder()
             .parentServicePointSloids(List.of(sloid))
             .build())
         .build();
