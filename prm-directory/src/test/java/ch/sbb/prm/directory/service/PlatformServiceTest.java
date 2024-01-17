@@ -4,7 +4,7 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFOR
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import ch.sbb.atlas.api.prm.model.PrmObjectOverviewModel;
+import ch.sbb.atlas.api.prm.model.PlatformOverviewModel;
 import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.PlatformTestData;
@@ -266,7 +266,7 @@ class PlatformServiceTest extends BasePrmServiceTest {
     platformService.createPlatformVersion(platformVersion);
 
     //when
-    List<PrmObjectOverviewModel> platformVersions = platformService.mergePlatformsForOverview(platformService.getPlatformsByStopPoint(PARENT_SERVICE_POINT_SLOID), PARENT_SERVICE_POINT_SLOID);
+    List<PlatformOverviewModel> platformVersions = platformService.mergePlatformsForOverview(platformService.getPlatformsByStopPoint(PARENT_SERVICE_POINT_SLOID), PARENT_SERVICE_POINT_SLOID);
 
     //then
     assertThat(platformVersions).hasSize(1);

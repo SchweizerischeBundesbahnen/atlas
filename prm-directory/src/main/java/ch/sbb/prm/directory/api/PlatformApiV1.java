@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.api;
 
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.prm.model.PrmObjectOverviewModel;
+import ch.sbb.atlas.api.prm.model.PlatformOverviewModel;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
 import ch.sbb.atlas.configuration.Role;
@@ -53,7 +53,7 @@ public interface PlatformApiV1 {
 
   @PageableAsQueryParam
   @GetMapping("/overview/{parentSloid}")
-  List<PrmObjectOverviewModel> getPlatformOverview(@PathVariable String parentSloid);
+  List<PlatformOverviewModel> getPlatformOverview(@PathVariable String parentSloid);
 
   @GetMapping("{sloid}")
   List<ReadPlatformVersionModel> getPlatformVersions(@PathVariable String sloid);
