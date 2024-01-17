@@ -18,6 +18,7 @@ import { TablePagination } from '../../../../core/components/table/table-paginat
 import { mergeMap } from 'rxjs';
 import { SloidHelper } from '../../../../core/util/sloidHelper';
 import { tap } from 'rxjs/operators';
+import { TableContentPaginationAndSorting } from '../../../../core/components/table/table-content-pagination-and-sorting';
 
 @Component({
   selector: 'app-platform',
@@ -73,12 +74,7 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
     const sloid = this.route.parent!.snapshot.params.stopPointSloid!;
 
     this.trafficPointElementsService
-      .getPlatformsOfServicePoint(
-        SloidHelper.servicePointSloidToNumber(sloid),
-        pagination.page,
-        pagination.size,
-        [pagination.sort ?? 'designation,asc'],
-      )
+      .getPlatformsOfServicePoint(SloidHelper.servicePointSloidToNumber(sloid))
       .pipe(
         tap((sepodiPlatforms) => {
           this.trafficPointElements = sepodiPlatforms.objects!;
@@ -87,7 +83,13 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
         mergeMap(() => this.personWithReducedMobilityService.getPlatformOverview(sloid)),
       )
       .subscribe((platforms) => {
-        this.platforms = this.mergeTrafficPointAndPlatformDataForOverview(platforms);
+        const mergedPlatformInfos = this.mergeTrafficPointAndPlatformDataForOverview(platforms);
+        this.platforms = TableContentPaginationAndSorting.pageAndSort(
+          mergedPlatformInfos,
+          pagination,
+          'designation',
+        );
+        this.totalCount = mergedPlatformInfos.length;
       });
   }
 
