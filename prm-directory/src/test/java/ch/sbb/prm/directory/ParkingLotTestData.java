@@ -11,7 +11,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ParkingLotTestData {
 
-  public static ParkingLotVersion getParkingLotVersion(){
+  public static ParkingLotVersion getParkingLotVersion() {
     return ParkingLotVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -25,7 +25,7 @@ public class ParkingLotTestData {
         .build();
   }
 
-  public static ParkingLotVersionBuilder<?, ?> builderVersion1(){
+  public static ParkingLotVersionBuilder<?, ?> builderVersion1() {
     return ParkingLotVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -38,7 +38,7 @@ public class ParkingLotTestData {
         .prmPlacesAvailable(BooleanOptionalAttributeType.TO_BE_COMPLETED);
   }
 
-  public static ParkingLotVersionBuilder<?, ?> builderVersion2(){
+  public static ParkingLotVersionBuilder<?, ?> builderVersion2() {
     return ParkingLotVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -51,7 +51,7 @@ public class ParkingLotTestData {
         .prmPlacesAvailable(BooleanOptionalAttributeType.TO_BE_COMPLETED);
   }
 
-  public static ParkingLotVersionBuilder<?, ?> builderVersion3(){
+  public static ParkingLotVersionBuilder<?, ?> builderVersion3() {
     return ParkingLotVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -64,7 +64,7 @@ public class ParkingLotTestData {
         .prmPlacesAvailable(BooleanOptionalAttributeType.TO_BE_COMPLETED);
   }
 
-  public static ParkingLotVersionModel getParkingLotVersionModel(){
+  public static ParkingLotVersionModel getParkingLotVersionModel() {
     return ParkingLotVersionModel.builder()
         .sloid("ch:1:sloid:12345:1")
         .validFrom(LocalDate.of(2000, 1, 1))
