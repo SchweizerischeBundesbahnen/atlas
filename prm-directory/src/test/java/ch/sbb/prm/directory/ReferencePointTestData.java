@@ -48,8 +48,7 @@ public class ReferencePointTestData {
         .additionalInformation("additional")
         .mainReferencePoint(true)
         .parentServicePointSloid("ch:1:sloid:12345")
-        .referencePointType(ReferencePointAttributeType.PLATFORM)
-        .version(0);
+        .referencePointType(ReferencePointAttributeType.PLATFORM);
   }
 
   public static ReferencePointVersionBuilder<?, ?> builderVersion3() {
@@ -62,8 +61,7 @@ public class ReferencePointTestData {
         .additionalInformation("additional")
         .mainReferencePoint(true)
         .parentServicePointSloid("ch:1:sloid:12345")
-        .referencePointType(ReferencePointAttributeType.PLATFORM)
-        .version(0);
+        .referencePointType(ReferencePointAttributeType.PLATFORM);
   }
 
   public static ReferencePointVersionModel getReferencePointVersionModel() {
