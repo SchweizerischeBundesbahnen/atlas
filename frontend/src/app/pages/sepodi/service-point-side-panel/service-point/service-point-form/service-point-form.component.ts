@@ -13,6 +13,8 @@ import { ServicePointType } from '../service-point-type';
 import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
 import { Observable, of, Subject, Subscription, take } from 'rxjs';
 import {
+  ApplicationRole,
+  ApplicationType,
   Category,
   GeoDataService,
   OperatingPointTechnicalTimetableType,
@@ -25,6 +27,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { GeographyComponent } from '../../../geography/geography.component';
 import { Countries } from '../../../../../core/country/Countries';
+import { AuthService } from '../../../../../core/auth/auth.service';
 
 @Component({
   selector: 'service-point-form',
@@ -77,15 +80,19 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
   private geographyChangedEventSubscription?: Subscription;
   private formDestroy$ = new Subject<void>();
 
+  boSboidRestriction: string[] = [];
+
   constructor(
     private readonly translationSortingService: TranslationSortingService,
     private readonly dialogService: DialogService,
     private readonly geoDataService: GeoDataService,
+    private readonly authService: AuthService,
   ) {}
 
   ngOnInit(): void {
     this.isNew = !this.currentVersion?.id;
     this.initSortedOperatingPointTypes();
+    this.initBoSboidRestriction();
 
     if (!this.isNew) {
       this.geographyComponent?.coordinatesChanged.subscribe((coordinatePair) => {
@@ -160,6 +167,19 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  initBoSboidRestriction() {
+    if (!this.isNew || this.authService.isAdmin) {
+      this.boSboidRestriction = [];
+    } else {
+      const permission = this.authService.getApplicationUserPermission(ApplicationType.Sepodi);
+      if (permission.role === ApplicationRole.Writer) {
+        this.boSboidRestriction = AuthService.getSboidRestrictions(permission);
+      } else {
+        this.boSboidRestriction = [];
+      }
+    }
   }
 
   setOperatingPointRouteNetwork(isSelected: boolean) {
