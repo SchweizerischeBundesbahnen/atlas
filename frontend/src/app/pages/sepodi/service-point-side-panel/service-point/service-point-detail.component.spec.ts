@@ -29,6 +29,7 @@ import { DisplayCantonPipe } from '../../../../core/cantons/display-canton.pipe'
 import { MapService } from '../../map/map.service';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BERN } from '../../../../../test/data/service-point';
+import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
 
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
 const servicePointsServiceSpy = jasmine.createSpyObj('ServicePointService', [
@@ -100,6 +101,7 @@ describe('ServicePointDetailComponent', () => {
         DisplayCantonPipe,
         ServicePointFormMockComponent,
         ServicePointGeographyMockComponent,
+        UserDetailInfoComponent,
       ],
       imports: [AppTestingModule, FormsModule],
       providers: [
