@@ -36,6 +36,7 @@ import {
 import { TranslatePipe } from '@ngx-translate/core';
 import { SplitServicePointNumberPipe } from '../../../../../core/search-service-point/split-service-point-number.pipe';
 import moment from 'moment';
+import { UserDetailInfoComponent } from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
 
 const reducedPlatform: ReadPlatformVersion[] = [
   {
@@ -163,6 +164,7 @@ describe('PlatformDetailComponent', () => {
         SwitchVersionComponent,
         DateRangeComponent,
         DateIconComponent,
+        UserDetailInfoComponent,
       ],
       imports: [AppTestingModule],
       providers: [
