@@ -164,10 +164,7 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
     getHeightForServicePointImport(servicePointVersion, warnings);
     try {
       servicePointService.claimSloid(servicePointVersion.getSloid());
-      ServicePointVersion savedServicePointVersion = servicePointService.saveWithoutValidationForImportOnly(servicePointVersion,
-          servicePointVersion.getStatus());
-      servicePointNumberService.deleteAvailableNumber(savedServicePointVersion.getNumber(),
-          savedServicePointVersion.getCountry());
+      servicePointService.saveWithoutValidationForImportOnly(servicePointVersion, servicePointVersion.getStatus());
     } catch (Exception exception) {
       log.error("[Service-Point Import]: Error during save", exception);
       return buildFailedImportResult(servicePointVersion, exception);

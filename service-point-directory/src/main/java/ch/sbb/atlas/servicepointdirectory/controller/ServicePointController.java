@@ -131,11 +131,10 @@ public class ServicePointController implements ServicePointApiV1 {
     ServicePointVersion servicePointVersion;
 
     if (createServicePointVersionModel.shouldGenerateServicePointNumber()) {
-      int nextAvailableServicePointId = servicePointNumberService.getNextAvailableServicePointId(
-          createServicePointVersionModel.getCountry());
+      // todo: use location service
 
       ServicePointNumber servicePointNumber = ServicePointNumber.of(createServicePointVersionModel.getCountry(),
-          nextAvailableServicePointId);
+          1);
       log.info("Generated new service point number={}", servicePointNumber);
 
       servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel, servicePointNumber);
