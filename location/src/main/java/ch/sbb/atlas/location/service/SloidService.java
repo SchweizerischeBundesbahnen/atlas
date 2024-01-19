@@ -1,6 +1,7 @@
 package ch.sbb.atlas.location.service;
 
 import ch.sbb.atlas.location.repository.SloidRepository;
+import ch.sbb.atlas.servicepoint.Country;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
@@ -28,6 +29,21 @@ public class SloidService {
     return generatedSloid;
   }
 
+  public String getNextAvailableSloid(Country country) {
+    String nextAvailableSloid;
+    int updateCount;
+    do {
+      nextAvailableSloid = sloidRepository.getNextAvailableSloid(country);
+      updateCount = sloidRepository.setAvailableSloidToUsed(nextAvailableSloid, country);
+    } while (updateCount == 0);
+    return nextAvailableSloid;
+  }
+
+  public boolean claimAvailableSloid(String sloid, Country country) {
+    int updateCount = sloidRepository.setAvailableSloidToUsed(sloid, country);
+    return updateCount != 0;
+  }
+
   public boolean claimSloid(String sloid) {
     try {
       sloidRepository.insertSloid(sloid);
@@ -39,3 +55,4 @@ public class SloidService {
   }
 
 }
+// todo: implement sync endpoint and cleanup endpoint for not_confirmed elements
