@@ -93,8 +93,9 @@ export class TrafficPointElementsTableComponent implements OnInit {
   }
 
   get isParentStopPoint(): boolean {
-    const servicePoint: ReadServicePointVersion[] = this.route.parent!.snapshot.data.servicePoint;
-    return servicePoint.filter((i) => i.stopPoint).length > 0;
+    const servicePointVersions: ReadServicePointVersion[] =
+      this.route.parent!.snapshot.data.servicePoint;
+    return servicePointVersions.filter((sp) => sp.stopPoint).length > 0;
   }
 
   closeSidePanel() {
