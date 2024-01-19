@@ -6,6 +6,7 @@ import { DateRange } from '../../../core/versioning/date-range';
 import { MapService } from '../map/map.service';
 import { Subscription } from 'rxjs';
 import { TrafficPointMapService } from '../map/traffic-point-map.service';
+import { Countries } from '../../../core/country/Countries';
 
 export const TABS = [
   {
@@ -29,6 +30,10 @@ export const TABS = [
     title: 'SEPODI.SERVICE_POINTS.FOT_COMMENT',
   },
 ];
+
+export const FOREIGN_TABS = TABS.filter((i) =>
+  ['service-point', 'loading-points', 'comment'].includes(i.link),
+);
 
 @Component({
   selector: 'app-service-point-side-panel',
@@ -54,6 +59,11 @@ export class ServicePointSidePanelComponent implements OnInit, OnDestroy {
     this.servicePointSubscription = this.route.data.subscribe((next) => {
       this.servicePointVersions = next.servicePoint;
       this.initVersioning();
+      if (Countries.geolocationCountries.includes(this.servicePointVersions[0].country)) {
+        this.tabs = TABS;
+      } else {
+        this.tabs = FOREIGN_TABS;
+      }
 
       this.trafficPointMapService.displayTrafficPointsOnMap(
         this.servicePointVersions[0].number.number,
