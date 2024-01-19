@@ -23,13 +23,13 @@
 
   <atlas-detail-footer>
     <ng-container *ngIf="editMode; else readMode">
-      <button (click)="cancelEdit()" class="atlas-primary-btn footer-btn" data-cy="cancel">
+      <button (click)="cancelEdit()" class="atlas-primary-btn" data-cy="cancel">
         {{ 'COMMON.CANCEL' | translate }}
       </button>
       <button
         (click)="saveEdits()"
         [disabled]="!saveEnabled"
-        class="atlas-primary-btn footer-btn ms-3"
+        class="atlas-primary-btn ms-3"
         data-cy="save"
         type="submit"
       >
