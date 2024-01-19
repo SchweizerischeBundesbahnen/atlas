@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { TableColumn } from '../../../../core/components/table/table-column';
-import { ReadTrafficPointElementVersion, TrafficPointElementsService } from '../../../../api';
+import {
+  ReadServicePointVersion,
+  ReadTrafficPointElementVersion,
+  TrafficPointElementsService,
+} from '../../../../api';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Pages } from '../../../pages';
@@ -34,6 +38,7 @@ export class TrafficPointElementsTableComponent implements OnInit {
   trafficPointElementRows: ReadTrafficPointElementVersion[] = [];
   totalCount$ = 0;
   isTrafficPointArea = false;
+  createVisible = false;
 
   tableFilterConfig!: TableFilter<unknown>[][];
 
@@ -47,6 +52,7 @@ export class TrafficPointElementsTableComponent implements OnInit {
   ngOnInit(): void {
     this.route.data.subscribe((next) => {
       this.isTrafficPointArea = next.isTrafficPointArea;
+      this.createVisible = this.isParentStopPoint;
       this.tableFilterConfig = this.tableService.initializeFilterConfig(
         {},
         this.isTrafficPointArea
@@ -84,6 +90,11 @@ export class TrafficPointElementsTableComponent implements OnInit {
 
   get servicePointNumber() {
     return this.route.parent!.snapshot.params['id'];
+  }
+
+  get isParentStopPoint(): boolean {
+    const servicePoint: ReadServicePointVersion[] = this.route.parent!.snapshot.data.servicePoint;
+    return servicePoint.filter((i) => i.stopPoint).length > 0;
   }
 
   closeSidePanel() {
