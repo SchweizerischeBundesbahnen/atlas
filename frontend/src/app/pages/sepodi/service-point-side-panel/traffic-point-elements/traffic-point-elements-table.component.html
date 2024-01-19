@@ -1,5 +1,6 @@
 <div class="traffic-point-element-table p-5 position-relative">
   <atlas-button
+    *ngIf="createVisible"
     (buttonClicked)="addNewTrafficPointElement()"
     applicationType="SEPODI"
     buttonDataCy="new-traffic-point-element"
