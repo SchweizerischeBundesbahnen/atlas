@@ -65,7 +65,7 @@ public class TrafficPointElementService {
   public String generateSloid(TrafficPointElementType trafficPointElementType, ServicePointNumber servicePointNumber)
       throws FeignException {
     final SloidType sloidType =
-        trafficPointElementType == TrafficPointElementType.BOARDING_AREA ? SloidType.AREA : SloidType.EDGE;
+        trafficPointElementType == TrafficPointElementType.BOARDING_AREA ? SloidType.AREA : SloidType.PLATFORM;
     final String sloidPrefix = "ch:1:sloid:" + (servicePointNumber.getCountry() == Country.SWITZERLAND ?
         servicePointNumber.getNumberShort()
         : servicePointNumber.getNumber());
