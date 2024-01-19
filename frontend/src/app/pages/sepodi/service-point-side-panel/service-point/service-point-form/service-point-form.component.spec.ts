@@ -1,6 +1,5 @@
 import { ServicePointFormComponent } from './service-point-form.component';
 import { FormControl, FormGroup } from '@angular/forms';
-import SpyObj = jasmine.SpyObj;
 import {
   CoordinatePair,
   Country,
@@ -11,6 +10,7 @@ import {
 import { EventEmitter } from '@angular/core';
 import { GeographyComponent } from '../../../geography/geography.component';
 import { of } from 'rxjs';
+import SpyObj = jasmine.SpyObj;
 
 describe('ServicePointFormComponent', () => {
   let component: ServicePointFormComponent;
@@ -20,9 +20,15 @@ describe('ServicePointFormComponent', () => {
     translateService: { onLangChange: jasmine.createSpyObj(['subscribe']) },
   });
   const geoDataServiceSpy = jasmine.createSpyObj(['getLocationInformation']);
+  const authServiceSpy = jasmine.createSpyObj(['isAdmin', 'getApplicationUserPermission']);
 
   beforeEach(() => {
-    component = new ServicePointFormComponent(translationSortingServiceSpy, spy, geoDataServiceSpy);
+    component = new ServicePointFormComponent(
+      translationSortingServiceSpy,
+      spy,
+      geoDataServiceSpy,
+      authServiceSpy,
+    );
   });
 
   it('should create', () => {

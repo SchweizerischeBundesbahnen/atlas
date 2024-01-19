@@ -30,6 +30,7 @@ import { DialogService } from '../../../core/components/dialog/dialog.service';
 import moment from 'moment/moment';
 import { BERN_WYLEREGG } from '../../../../test/data/service-point';
 import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../test/data/traffic-point-element';
+import { UserDetailInfoComponent } from '../../../core/components/base-detail/user-edit-info/user-detail-info.component';
 
 const authService: Partial<AuthService> = {};
 const trafficPointMapService = jasmine.createSpyObj<TrafficPointMapService>([
@@ -185,6 +186,7 @@ describe('TrafficPointElementsDetailComponent', () => {
         InfoIconComponent,
         RemoveCharsDirective,
         SloidComponent,
+        UserDetailInfoComponent,
       ],
       imports: [AppTestingModule],
       providers: [
