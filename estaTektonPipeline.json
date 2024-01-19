@@ -4,7 +4,8 @@
   "advancedBuildSettings": {
     "buildWorkspaceSize": "20Gi",
     "buildCacheSize": "10Gi",
-    "taggingWorkspaceSize": "2Gi"
+    "taggingWorkspaceSize": "2Gi",
+    "pipelineTimeout": "1h30m0s"
   },
   "builder": {
     "node": "18"
