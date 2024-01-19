@@ -29,7 +29,7 @@ export class UserDetailInfoComponent {
   }
 
   private getProcessedCreationEdition(
-    record: CreationEditionRecord
+    record: CreationEditionRecord,
   ): Observable<CreationEditionRecord | undefined> {
     const displayNames$: Observable<string | undefined>[] = [record.editor, record.creator].map(
       (value) => {
@@ -38,8 +38,13 @@ export class UserDetailInfoComponent {
         }
         return this.userAdministrationService
           .getUserDisplayName(value)
-          .pipe(map((userDisplayName) => userDisplayName.displayName ?? value));
-      }
+          .pipe(
+            map(
+              (userDisplayName) =>
+                this.formatUserDisplayInformation(userDisplayName.displayName) ?? value,
+            ),
+          );
+      },
     );
 
     return forkJoin(displayNames$).pipe(
@@ -50,8 +55,16 @@ export class UserDetailInfoComponent {
         editor,
         creator,
       })),
-      catchError(() => of(undefined))
+      catchError(() => of(undefined)),
     );
+  }
+
+  private formatUserDisplayInformation(displayName?: string) {
+    const indexOfParenthesis = displayName?.indexOf('(');
+    if (displayName && indexOfParenthesis != -1) {
+      return displayName?.substring(0, indexOfParenthesis);
+    }
+    return displayName;
   }
 
   private formatDateTime(dateTime: string | undefined) {

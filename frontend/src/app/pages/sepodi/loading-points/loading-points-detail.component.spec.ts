@@ -27,6 +27,7 @@ import moment from 'moment/moment';
 import { LoadingPointsDetailComponent } from './loading-points-detail.component';
 import { LOADING_POINT } from '../../../../test/data/loading-point';
 import { BERN_WYLEREGG } from '../../../../test/data/service-point';
+import { UserDetailInfoComponent } from '../../../core/components/base-detail/user-edit-info/user-detail-info.component';
 
 const authService: Partial<AuthService> = {};
 
@@ -157,6 +158,7 @@ describe('LoadingPointsDetailComponent', () => {
         InfoIconComponent,
         RemoveCharsDirective,
         SloidComponent,
+        UserDetailInfoComponent,
       ],
       imports: [AppTestingModule],
       providers: [
