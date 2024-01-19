@@ -114,6 +114,11 @@
     <div class="col-12 d-flex">
       <form-date-range [formGroup]="form"></form-date-range>
     </div>
+
+    <div *ngIf="!isNew" class="mb-3">
+      <mat-divider class="mt-4 mb-4"></mat-divider>
+      <app-user-detail-info [record]="selectedVersion"></app-user-detail-info>
+    </div>
   </div>
 
   <div class="page-footer">
