@@ -315,7 +315,7 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
     CreateTrafficPointElementVersionModel platformToCreate = TrafficPointTestData.getCreateTrafficPointVersionModel();
     platformToCreate.setSloid(null);
 
-    when(locationClient.generateSloid(eq(new GenerateSloidRequestModel(SloidType.EDGE, "ch:1:sloid:1400015")))).thenReturn(
+    when(locationClient.generateSloid(eq(new GenerateSloidRequestModel(SloidType.PLATFORM, "ch:1:sloid:1400015")))).thenReturn(
         "ch:1:sloid"
             + ":1400015:0:100");
     mvc.perform(post("/v1/traffic-point-elements")
