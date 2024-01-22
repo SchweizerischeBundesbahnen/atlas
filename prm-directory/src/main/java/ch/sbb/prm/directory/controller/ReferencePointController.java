@@ -41,6 +41,12 @@ public class ReferencePointController implements ReferencePointApiV1 {
   }
 
   @Override
+  public Container<ReadReferencePointVersionModel> getReferencePointsOverview(String parentServicePointSloid, Pageable pageable) {
+    return referencePointService.buildOverview(referencePointService.findByParentServicePointSloid(parentServicePointSloid),
+        pageable);
+  }
+
+  @Override
   public ReadReferencePointVersionModel createReferencePoint(ReferencePointVersionModel model) {
     ReferencePointVersion referencePointVersion = ReferencePointVersionMapper.toEntity(model);
     ReferencePointVersion savedReferencePointVersion = referencePointService.createReferencePoint(referencePointVersion);
