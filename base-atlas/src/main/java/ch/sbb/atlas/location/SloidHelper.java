@@ -1,4 +1,4 @@
-package ch.sbb.prm.directory.mapper;
+package ch.sbb.atlas.location;
 
 import static ch.sbb.atlas.api.AtlasFieldLengths.SERVICE_POINT_NUMBER_LENGTH;
 
