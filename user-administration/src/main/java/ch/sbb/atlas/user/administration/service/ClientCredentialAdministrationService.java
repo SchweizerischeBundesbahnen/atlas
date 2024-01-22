@@ -15,8 +15,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,8 +25,8 @@ public class ClientCredentialAdministrationService {
 
   private final ClientCredentialPermissionRepository clientCredentialPermissionRepository;
 
-  public Page<ClientCredentialPermission> getClientCredentialPermissions(Pageable pageable) {
-    return clientCredentialPermissionRepository.findAll(pageable);
+  public List<ClientCredentialPermission> getClientCredentialPermissions() {
+    return clientCredentialPermissionRepository.findAll();
   }
 
   public List<ClientCredentialPermission> getClientCredentialPermission(String clientId) {
