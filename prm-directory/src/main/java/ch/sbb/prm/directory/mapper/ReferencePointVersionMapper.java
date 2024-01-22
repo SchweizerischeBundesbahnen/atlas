@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.mapper;
 
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReferencePointVersionModel;
+import ch.sbb.atlas.location.SloidHelper;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import lombok.experimental.UtilityClass;
 

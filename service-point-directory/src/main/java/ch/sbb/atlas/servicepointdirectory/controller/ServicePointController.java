@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.GeoReference;
@@ -9,6 +10,7 @@ import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.location.SloidHelper;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
@@ -21,6 +23,7 @@ import ch.sbb.atlas.servicepointdirectory.exception.ServicePointStatusChangeNotA
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointFotCommentMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
+import ch.sbb.atlas.servicepointdirectory.service.LocationService;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
@@ -47,6 +50,7 @@ public class ServicePointController implements ServicePointApiV1 {
   private final ServicePointImportService servicePointImportService;
   private final GeoReferenceService geoReferenceService;
   private final ServicePointDistributor servicePointDistributor;
+  private final LocationService locationService;
 
   @Override
   public Container<ReadServicePointVersionModel> getServicePoints(Pageable pageable,
@@ -128,20 +132,19 @@ public class ServicePointController implements ServicePointApiV1 {
     ServicePointVersion servicePointVersion;
 
     if (createServicePointVersionModel.shouldGenerateServicePointNumber()) {
-      // todo: use location service
-
-      ServicePointNumber servicePointNumber = ServicePointNumber.of(createServicePointVersionModel.getCountry(),
-          1);
+      //case 85,11-14
+      String generatedSloid = locationService.generateSloid(SloidType.SERVICE_POINT, createServicePointVersionModel.getCountry());
+      log.info("Generated new SLOID={}", generatedSloid);
+      ServicePointNumber servicePointNumber = SloidHelper.getServicePointNumber(generatedSloid);
       log.info("Generated new service point number={}", servicePointNumber);
-
       servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel, servicePointNumber);
     } else {
+      //case not swiss
       ServicePointNumber manualServicePointNumber = ServicePointNumber.of(createServicePointVersionModel.getCountry(),
           createServicePointVersionModel.getNumberShort());
       if (servicePointService.isServicePointNumberExisting(manualServicePointNumber)) {
         throw new ServicePointNumberAlreadyExistsException(manualServicePointNumber);
       }
-
       servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel, manualServicePointNumber);
     }
     addGeoReferenceInformation(servicePointVersion);
