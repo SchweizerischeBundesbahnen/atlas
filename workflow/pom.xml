@@ -10,7 +10,7 @@
       <artifactId>atlas</artifactId>
       <groupId>ch.sbb.atlas</groupId>
       <relativePath>../pom.xml</relativePath>
-      <version>1.578.0</version>
+      <version>1.579.0</version>
    </parent>
    <description>Atlas Workflow Service</description>
    <artifactId>workflow</artifactId>
@@ -57,17 +57,17 @@
       <dependency>
          <artifactId>base-atlas</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.578.0</version>
+         <version>1.579.0</version>
       </dependency>
       <dependency>
          <groupId>ch.sbb.atlas</groupId>
          <artifactId>kafka</artifactId>
-         <version>1.578.0</version>
+         <version>1.579.0</version>
       </dependency>
       <dependency>
          <groupId>ch.sbb.atlas</groupId>
          <artifactId>user-administration-security</artifactId>
-         <version>1.578.0</version>
+         <version>1.579.0</version>
       </dependency>
       <dependency>
          <artifactId>spring-cloud-starter-openfeign</artifactId>
@@ -99,7 +99,7 @@
          <groupId>ch.sbb.atlas</groupId>
          <scope>test</scope>
          <type>test-jar</type>
-         <version>1.578.0</version>
+         <version>1.579.0</version>
       </dependency>
       <dependency>
          <artifactId>h2</artifactId>
