@@ -15,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,6 +45,7 @@ public class RelationVersion extends BasePrmEntityVersion implements PrmVersiona
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @AtlasVersionableProperty
+  @NotNull
   private String referencePointSloid;
 
   @Enumerated(EnumType.STRING)
