@@ -1,5 +1,6 @@
 package ch.sbb.atlas.location.repository;
 
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.servicepoint.Country;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,13 +27,13 @@ public class SloidRepository {
     return locationJdbcTemplate.queryForObject("select nextval(?);", Integer.class, seqName);
   }
 
-  public void insertSloid(String sloid) {
-    locationJdbcTemplate.update("insert into sloid_allocated (sloid) values (?);", sloid);
+  public void insertSloid(String sloid, SloidType sloidType) {
+    locationJdbcTemplate.update("insert into allocated_sloid (sloid,sloidType) values (?,?);", sloid, sloidType.name());
   }
 
   public String getNextAvailableSloid(Country country) {
     return locationJdbcTemplate.queryForObject(
-        "select sloid from available_service_point_sloid where country = ? and used = false order by sloid limit 1;",
+        "select sloid from available_service_point_sloid where country = ? and claimed = false order by sloid limit 1;",
         String.class, country.name());
   }
 

@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.mapper;
 
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
+import ch.sbb.atlas.location.SloidHelper;
 import ch.sbb.prm.directory.entity.ContactPointVersion;
 import lombok.experimental.UtilityClass;
 

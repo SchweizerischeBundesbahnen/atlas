@@ -21,10 +21,11 @@ public class SloidController implements SloidApiV1 {
     String sloid;
     if (request.getSloidType() == SloidType.SERVICE_POINT) {
       sloid = sloidService.getNextAvailableSloid(request.getCountry());
+      sloidService.saveGeneratedToAllocatedSloid(sloid,request.getSloidType());
     } else {
       final String sloidPrefix = request.getSloidType().getSloidPrefix(request.getSloidPrefix());
       final String seqName = request.getSloidType().getSeqName();
-      sloid = sloidService.generateNewSloid(sloidPrefix, seqName);
+      sloid = sloidService.generateNewSloid(sloidPrefix, seqName, request.getSloidType());
     }
     return ResponseEntity.ok(sloid);
   }
@@ -35,7 +36,7 @@ public class SloidController implements SloidApiV1 {
     if (request.getSloidType() == SloidType.SERVICE_POINT) {
       claimed = sloidService.claimAvailableSloid(request.getSloid(), request.getCountry());
     } else {
-      claimed = sloidService.claimSloid(request.getSloid());
+      claimed = sloidService.claimSloid(request.getSloid(), request.getSloidType());
     }
     return claimed ? ResponseEntity.ok(request.getSloid())
         : ResponseEntity.status(HttpStatus.CONFLICT).body(request.getSloid() + " is not available");

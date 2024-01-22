@@ -6,15 +6,17 @@ import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public final class GenerateSloidRequestModel {
 
   @NotNull
-  private final SloidType sloidType;
+  private SloidType sloidType;
 
   @Pattern(regexp = "ch:1:sloid:[0-9]+")
-  private final String sloidPrefix;
+  private String sloidPrefix;
 
   private Country country;
 
@@ -26,6 +28,11 @@ public final class GenerateSloidRequestModel {
   public GenerateSloidRequestModel(@NotNull SloidType sloidType, String sloidPrefix, Country country) {
     this.sloidType = sloidType;
     this.sloidPrefix = sloidPrefix;
+    this.country = country;
+  }
+
+  public GenerateSloidRequestModel(@NotNull SloidType sloidType, Country country) {
+    this.sloidType = sloidType;
     this.country = country;
   }
 
