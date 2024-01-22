@@ -1,10 +1,12 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
+import ch.sbb.atlas.api.client.location.LocationClient;
 import ch.sbb.atlas.api.location.ClaimSloidRequestModel;
 import ch.sbb.atlas.api.location.GenerateSloidRequestModel;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
+import ch.sbb.atlas.exception.SloidAlreadyExistsException;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.service.OverviewService;
@@ -12,13 +14,11 @@ import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
-import ch.sbb.atlas.exception.SloidAlreadyExistsException;
 import ch.sbb.atlas.servicepointdirectory.mapper.TrafficPointElementVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoAdminHeightResponse;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
-import ch.sbb.atlas.api.client.location.LocationClient;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -59,11 +59,12 @@ public class TrafficPointElementService {
   }
 
   public void claimSloid(String sloid) throws FeignException {
-    locationClient.claimSloid(new ClaimSloidRequestModel(sloid));
+    locationClient.claimSloid(new ClaimSloidRequestModel(SloidType.PLATFORM,sloid));
   }
 
   public String generateSloid(TrafficPointElementType trafficPointElementType, ServicePointNumber servicePointNumber)
       throws FeignException {
+    //TODO: move to location service
     final SloidType sloidType =
         trafficPointElementType == TrafficPointElementType.BOARDING_AREA ? SloidType.AREA : SloidType.PLATFORM;
     final String sloidPrefix = "ch:1:sloid:" + (servicePointNumber.getCountry() == Country.SWITZERLAND ?
