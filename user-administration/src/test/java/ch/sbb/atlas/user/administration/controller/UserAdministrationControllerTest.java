@@ -34,7 +34,6 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 class UserAdministrationControllerTest {
@@ -90,7 +89,7 @@ class UserAdministrationControllerTest {
 
   @Test
   void shouldSyncClientsAndUsersToKafka() {
-    when(clientCredentialAdministrationService.getClientCredentialPermissions(any())).thenReturn(new PageImpl<>(List.of(
+    when(clientCredentialAdministrationService.getClientCredentialPermissions()).thenReturn(List.of(
         ClientCredentialPermission.builder()
             .clientCredentialId("1234-12453-13421345-11")
             .alias("ClientCreds")
@@ -101,7 +100,7 @@ class UserAdministrationControllerTest {
                     .restriction("sboid")
                     .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
                 .build()))
-            .build())));
+            .build()));
 
     String sbbuid = "u1234566";
     when(userAdministrationService.getAllUserIds()).thenReturn(List.of(sbbuid));
