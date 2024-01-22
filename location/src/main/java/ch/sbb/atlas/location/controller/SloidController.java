@@ -19,11 +19,11 @@ public class SloidController implements SloidApiV1 {
   @Override
   public ResponseEntity<String> generateSloid(GenerateSloidRequestModel request) {
     String sloid;
-    if (request.sloidType() == SloidType.SERVICE_POINT) {
-      sloid = sloidService.getNextAvailableSloid(request.country());
+    if (request.getSloidType() == SloidType.SERVICE_POINT) {
+      sloid = sloidService.getNextAvailableSloid(request.getCountry());
     } else {
-      final String sloidPrefix = request.sloidType().getSloidPrefix(request.sloidPrefix());
-      final String seqName = request.sloidType().getSeqName();
+      final String sloidPrefix = request.getSloidType().getSloidPrefix(request.getSloidPrefix());
+      final String seqName = request.getSloidType().getSeqName();
       sloid = sloidService.generateNewSloid(sloidPrefix, seqName);
     }
     return ResponseEntity.ok(sloid);
@@ -32,13 +32,18 @@ public class SloidController implements SloidApiV1 {
   @Override
   public ResponseEntity<String> claimSloid(ClaimSloidRequestModel request) {
     boolean claimed;
-    if (request.sloidType() == SloidType.SERVICE_POINT) {
-      claimed = sloidService.claimAvailableSloid(request.sloid(), request.country());
+    if (request.getSloidType() == SloidType.SERVICE_POINT) {
+      claimed = sloidService.claimAvailableSloid(request.getSloid(), request.getCountry());
     } else {
-      claimed = sloidService.claimSloid(request.sloid());
+      claimed = sloidService.claimSloid(request.getSloid());
     }
-    return claimed ? ResponseEntity.ok(request.sloid())
-        : ResponseEntity.status(HttpStatus.CONFLICT).body(request.sloid() + " is not available");
+    return claimed ? ResponseEntity.ok(request.getSloid())
+        : ResponseEntity.status(HttpStatus.CONFLICT).body(request.getSloid() + " is not available");
+  }
+
+  @Override
+  public ResponseEntity<String> sync() {
+    return ResponseEntity.ok(sloidService.sync());
   }
 
 }

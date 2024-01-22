@@ -26,9 +26,52 @@ public enum SloidType {
     public String getSloidPrefix(String sloidPrefix) {
       return sloidPrefix + ":0";
     }
+  },
+  /**PRM ex. ch:1:sloid:7000:5 */
+  REFERENCE_POINT("area_seq") {
+    @Override
+    public String getSloidPrefix(String sloidPrefix) {
+      return sloidPrefix;
+    }
+  },
+  /**PRM ex. ch:1:sloid:7000:5 */
+  TOILETTE("area_seq") {
+    @Override
+    public String getSloidPrefix(String sloidPrefix) {
+      return sloidPrefix;
+    }
+  },
+  /**PRM ex. ch:1:sloid:7000:5 */
+  RELATION("area_seq") {
+    @Override
+    public String getSloidPrefix(String sloidPrefix) {
+      return sloidPrefix;
+    }
+  },
+  /**PRM ex. ch:1:sloid:7000:5 */
+  PARKING_LOT("area_seq") {
+    @Override
+    public String getSloidPrefix(String sloidPrefix) {
+      return sloidPrefix;
+    }
+  },
+  /**PRM ex. ch:1:sloid:7000:5 */
+  INFO_DESK("area_seq") {
+    @Override
+    public String getSloidPrefix(String sloidPrefix) {
+      return sloidPrefix;
+    }
+  },
+  /**PRM ex. ch:1:sloid:7000:5 */
+  TICKET_COUNTER("area_seq") {
+    @Override
+    public String getSloidPrefix(String sloidPrefix) {
+      return sloidPrefix;
+    }
   };
 
   private final String seqName;
 
   public abstract String getSloidPrefix(String sloidPrefix);
+
 }
