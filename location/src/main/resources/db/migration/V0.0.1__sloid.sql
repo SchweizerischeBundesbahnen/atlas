@@ -1,7 +1,7 @@
 create table allocated_sloid
 (
-    sloid     varchar(128) primary key,
-    type      varchar(50)
+    sloid       varchar(128) primary key,
+    sloidType   varchar(50)
 );
 
 create table available_service_point_sloid
@@ -15,27 +15,22 @@ create table available_service_point_sloid
 create sequence area_seq start with 100;
 create sequence edge_seq;
 
--- WITH empty_rows AS (
---     SELECT 1 AS n UNION ALL SELECT 1 AS n UNION ALL SELECT 1 AS n UNION ALL SELECT 1 AS n UNION ALL
---     SELECT 1 AS n UNION ALL SELECT 1 AS n UNION ALL SELECT 1 AS n UNION ALL SELECT 1 AS n UNION ALL
---     SELECT 1 AS n UNION ALL SELECT 1 AS n
--- )
--- SELECT ('ch:1:sloid:' || row_number() over (order by a.n)) as sloid, 'SWITZERLAND' as country
--- FROM empty_rows as a, empty_rows as b, empty_rows as c, empty_rows as d, empty_rows as e limit 99999;
-
 insert into available_service_point_sloid
-select ('ch:1:sloid:' || available_sloids) as sloid, 'GERMANY_BUS' as country
+select ('ch:1:sloid:' || available_sloids) as sloid, 'SWITZERLAND' as country
 from generate_series(1, 99999) as available_sloids;
 
 insert into available_service_point_sloid
-select ('ch:1:sloid:' || available_sloids) as sloid, 'AUSTRIA_BUS' as country
+select ('ch:1:sloid:' || available_sloids + 1100000) as sloid, 'GERMANY_BUS' as country
 from generate_series(1, 99999) as available_sloids;
 
 insert into available_service_point_sloid
-select ('ch:1:sloid:' || available_sloids) as sloid, 'ITALY_BUS' as country
+select ('ch:1:sloid:' || available_sloids + 1200000) as sloid, 'AUSTRIA_BUS' as country
+from generate_series(1, 99999 ) as available_sloids;
+
+insert into available_service_point_sloid
+select ('ch:1:sloid:' || available_sloids + 1300000) as sloid, 'ITALY_BUS' as country
 from generate_series(1, 99999) as available_sloids;
 
 insert into available_service_point_sloid
-select ('ch:1:sloid:' || available_sloids) as sloid, 'FRANCE_BUS' as country
+select ('ch:1:sloid:' || available_sloids + 1400000) as sloid, 'FRANCE_BUS' as country
 from generate_series(1, 99999) as available_sloids;
-
