@@ -1,7 +1,10 @@
 package ch.sbb.atlas.location.repository;
 
 import ch.sbb.atlas.servicepoint.Country;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -9,18 +12,26 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class SloidRepository {
 
-  private final JdbcTemplate jdbcTemplate;
+  @Qualifier("locationJdbcTemplate")
+  private final JdbcTemplate locationJdbcTemplate;
+
+  public Set<String> getAllocatedSloid(){
+    return new HashSet<>(locationJdbcTemplate.queryForList("""
+            select distinct (sloid)
+            from allocated_sloid where sloid is not null
+            """, String.class));
+  }
 
   public Integer getNextSeqValue(String seqName) {
-    return jdbcTemplate.queryForObject("select nextval(?);", Integer.class, seqName);
+    return locationJdbcTemplate.queryForObject("select nextval(?);", Integer.class, seqName);
   }
 
   public void insertSloid(String sloid) {
-    jdbcTemplate.update("insert into sloid_allocated (sloid) values (?);", sloid);
+    locationJdbcTemplate.update("insert into sloid_allocated (sloid) values (?);", sloid);
   }
 
   public String getNextAvailableSloid(Country country) {
-    return jdbcTemplate.queryForObject(
+    return locationJdbcTemplate.queryForObject(
         "select sloid from available_service_point_sloid where country = ? and used = false order by sloid limit 1;",
         String.class, country.name());
   }
@@ -31,7 +42,8 @@ public class SloidRepository {
   //  }
 
   public int setAvailableSloidToUsed(String sloid, Country country) {
-    return jdbcTemplate.update("update available_service_point_sloid set used = true where sloid = ? and country = ?;", sloid,
+    return locationJdbcTemplate.update("update available_service_point_sloid set claimed = true where sloid = ? and country = ?;",
+        sloid,
         country.name());
   }
 

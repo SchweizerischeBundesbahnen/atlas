@@ -16,10 +16,21 @@ info:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5443/location?currentSchema=location
-    username: user
-    password: pwd
-    driver-class-name: org.postgresql.Driver
+    location:
+      url: jdbc:postgresql://localhost:5443/location?currentSchema=location
+      username: user
+      password: pwd
+      driver-class-name: org.postgresql.Driver
+    service-point:
+      url: jdbc:postgresql://localhost:5439/service-point-directory?currentSchema=service_point_directory
+      username: user
+      password: pwd
+      driver-class-name: org.postgresql.Driver
+    prm:
+      url: jdbc:postgresql://localhost:5442/prm-directory?currentSchema=prm_directory
+      username: user
+      password: pwd
+      driver-class-name: org.postgresql.Driver
   application:
     name: location
   security:
