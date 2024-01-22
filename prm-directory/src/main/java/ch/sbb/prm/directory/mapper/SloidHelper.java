@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.mapper;
 
 import static ch.sbb.atlas.api.AtlasFieldLengths.SERVICE_POINT_NUMBER_LENGTH;
 
+import ch.sbb.atlas.model.exception.BadRequestException;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import java.util.List;
@@ -24,7 +25,7 @@ public class SloidHelper {
         return ServicePointNumber.of(Country.SWITZERLAND, number);
       }
     } catch (Exception e) {
-      throw new IllegalStateException("Not a valid sloid, could not determine servicePointNumber of sloid=" + sloid, e);
+      throw new BadRequestException("Not a valid sloid, could not determine servicePointNumber of sloid=" + sloid);
     }
   }
 
