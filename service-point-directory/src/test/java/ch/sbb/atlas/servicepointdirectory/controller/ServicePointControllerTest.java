@@ -1,5 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -8,18 +12,12 @@ import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointNumberService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
+import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.time.LocalDate;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 class ServicePointControllerTest {
 
@@ -33,8 +31,6 @@ class ServicePointControllerTest {
   private GeoReferenceService geoReferenceService;
   @Mock
   private ServicePointDistributor servicePointDistributor;
-  @Mock
-  private ServicePointNumberService servicePointNumberService;
 
   private ServicePointController servicePointController;
 
@@ -42,7 +38,7 @@ class ServicePointControllerTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     servicePointController = new ServicePointController(servicePointService, servicePointFotCommentService,
-        servicePointImportService, geoReferenceService, servicePointDistributor, servicePointNumberService);
+        servicePointImportService, geoReferenceService, servicePointDistributor);
 
     when(servicePointService.create(any(), any(), any())).then(i -> i.getArgument(0, ServicePointVersion.class));
   }

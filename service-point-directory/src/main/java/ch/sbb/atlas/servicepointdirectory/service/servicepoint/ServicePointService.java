@@ -1,12 +1,14 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
-import ch.sbb.atlas.api.location.ClaimSloidRequestModel;
 import ch.sbb.atlas.api.client.location.LocationClient;
+import ch.sbb.atlas.api.location.GenerateSloidRequestModel;
+import ch.sbb.atlas.api.location.SloidType;
+import ch.sbb.atlas.exception.SloidAlreadyExistsException;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.service.UserService;
+import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.exception.SloidAlreadyExistsException;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSearchVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
@@ -14,6 +16,9 @@ import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import feign.FeignException;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,10 +27,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Getter
@@ -44,9 +45,9 @@ public class ServicePointService {
   private final ServicePointStatusDecider servicePointStatusDecider;
   private final LocationClient locationClient;
 
-  public void claimSloid(String sloid) throws FeignException {
+  public void claimSloid(String sloid, Country country) throws FeignException {
     if (sloid != null) {
-      locationClient.claimSloid(new ClaimSloidRequestModel(sloid));
+      locationClient.generateSloid(new GenerateSloidRequestModel(SloidType.SERVICE_POINT,sloid, country));
     }
   }
 
@@ -113,8 +114,9 @@ public class ServicePointService {
       List<ServicePointVersion> currentVersions) {
     preSaveChecks(servicePointVersion, currentVersion, currentVersions);
     try {
-      claimSloid(servicePointVersion.getSloid());
+      claimSloid(servicePointVersion.getSloid(), servicePointVersion.getNumber().getCountry());
     } catch (FeignException e) {
+      log.error(e.getMessage());
       throw new SloidAlreadyExistsException(servicePointVersion.getSloid());
     }
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
