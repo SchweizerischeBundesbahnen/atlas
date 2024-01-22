@@ -42,14 +42,6 @@ public record ServicePointMappingEquality(ServicePointDidokCsvModel didokCsvLine
   }
 
   private void performCoreDataCheck() {
-//    log.info("Performing INFO core data check for didok code: " + didokCsvLine.getDidokCode() + " and atlas number: " + atlasCsvLine.getNumber());
-//    log.error("Performing ERROR core data check for didok code: " + didokCsvLine.getDidokCode() + " and atlas number: " + atlasCsvLine.getNumber());
-//    System.out.println("HERE ARE STATUSES for atlas number: " + atlasCsvLine.getNumber());
-//    System.out.println("HERE ARE STATUSES for didok code: " + didokCsvLine.getDidokCode());
-//    System.out.println(atlasCsvLine.getStatus().name());
-//    System.out.println(didokCsvLine.getStatus());
-//    ServicePointStatus didokServicePointStatus = ServicePointStatus.from(didokCsvLine.getStatus());
-//    Status atlasServicePointStatus = ServicePointCsvToEntityMapper.calculateStatus(didokServicePointStatus);
     assertThat(atlasCsvLine.getStatus()).isEqualTo(ServicePointCsvToEntityMapper.calculateStatus(ServicePointStatus.from(didokCsvLine.getStatus())));
     assertThat(atlasCsvLine.getNumber()).isEqualTo(didokCsvLine.getDidokCode());
     assertThat(atlasCsvLine.getNumberShort()).isEqualTo(didokCsvLine.getNummer());
