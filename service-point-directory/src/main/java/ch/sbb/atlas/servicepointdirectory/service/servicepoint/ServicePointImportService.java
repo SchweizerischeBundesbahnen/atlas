@@ -23,12 +23,6 @@ import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import com.fasterxml.jackson.databind.MappingIterator;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
@@ -36,6 +30,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
@@ -47,7 +46,6 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
   private final VersionableService versionableService;
   private final ServicePointFotCommentService servicePointFotCommentService;
   private final ServicePointDistributor servicePointDistributor;
-  private final ServicePointNumberService servicePointNumberService;
   private final GeoReferenceService geoReferenceService;
 
   @Override
@@ -163,7 +161,7 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
     List<Exception> warnings = new ArrayList<>();
     getHeightForServicePointImport(servicePointVersion, warnings);
     try {
-      servicePointService.claimSloid(servicePointVersion.getSloid());
+      servicePointService.claimSloid(servicePointVersion.getSloid(),servicePointVersion.getNumber().getCountry());
       servicePointService.saveWithoutValidationForImportOnly(servicePointVersion, servicePointVersion.getStatus());
     } catch (Exception exception) {
       log.error("[Service-Point Import]: Error during save", exception);
