@@ -1,8 +1,10 @@
 package ch.sbb.atlas.location.service;
 
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.location.repository.SePoDiRepository;
 import ch.sbb.atlas.location.repository.SloidRepository;
 import ch.sbb.atlas.servicepoint.Country;
+import jakarta.validation.constraints.NotNull;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,20 +25,21 @@ public class SloidService {
     
     log.info("Used ServicePoint sloid: {}",servicePointSloid);
     log.info("Allocated servicePoint sloid: {}",allocatedSloid);
-    servicePointSloid.removeAll(allocatedSloid);
-
+    allocatedSloid.removeAll(servicePointSloid);
     log.info("Used ServicePoint sloid: {}",servicePointSloid);
-    log.info("Allocated servicePoint sloid: {}",allocatedSloid);
+    log.info("Allocated but not used servicePoint sloid: {}",allocatedSloid);
+    //TODO: sloidRepository.removeUnusedSloidFromAllocatedSloid(allocatedSloid)
+    // sloidRepository.setUnclimedNotUsedSloid(allocatedSloid)
     return "asd";
   }
 
-  public String generateNewSloid(String sloidPrefix, String seqName) {
+  public String generateNewSloid(String sloidPrefix, String seqName, @NotNull SloidType sloidType) {
     String generatedSloid = null;
     do {
       final Integer nextSeqValue = sloidRepository.getNextSeqValue(seqName);
       final String sloid = sloidPrefix + ":" + nextSeqValue;
       try {
-        sloidRepository.insertSloid(sloid);
+        sloidRepository.insertSloid(sloid,sloidType);
         generatedSloid = sloid;
       } catch (DataAccessException e) {
         log.info("{} occupied", sloid);
@@ -60,14 +63,18 @@ public class SloidService {
     return updateCount != 0;
   }
 
-  public boolean claimSloid(String sloid) {
+  public boolean claimSloid(String sloid, @NotNull SloidType sloidType) {
     try {
-      sloidRepository.insertSloid(sloid);
+      sloidRepository.insertSloid(sloid,sloidType);
       return true;
     } catch (DataAccessException e) {
       log.info("{} occupied", sloid);
       return false;
     }
+  }
+
+  public void saveGeneratedToAllocatedSloid(String sloid, SloidType sloidType){
+    sloidRepository.insertSloid(sloid,sloidType);
   }
 
 }
