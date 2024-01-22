@@ -5,10 +5,29 @@ import ch.sbb.atlas.servicepoint.Country;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import lombok.Getter;
 
-public record GenerateSloidRequestModel(@NotNull SloidType sloidType,
-                                        @Pattern(regexp = "ch:1:sloid:[0-9]+") String sloidPrefix,
-                                        Country country) {
+@Getter
+public final class GenerateSloidRequestModel {
+
+  @NotNull
+  private final SloidType sloidType;
+
+  @Pattern(regexp = "ch:1:sloid:[0-9]+")
+  private final String sloidPrefix;
+
+  private Country country;
+
+  public GenerateSloidRequestModel(@NotNull SloidType sloidType, String sloidPrefix) {
+    this.sloidType = sloidType;
+    this.sloidPrefix = sloidPrefix;
+  }
+
+  public GenerateSloidRequestModel(@NotNull SloidType sloidType, String sloidPrefix, Country country) {
+    this.sloidType = sloidType;
+    this.sloidPrefix = sloidPrefix;
+    this.country = country;
+  }
 
   @AssertTrue(message = "When SloidType = SERVICE_POINT, the country has to be one of code: 85 or 11-14")
   public boolean isValidCountry() {
