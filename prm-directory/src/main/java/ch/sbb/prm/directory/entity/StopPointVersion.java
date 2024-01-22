@@ -62,6 +62,7 @@ public class StopPointVersion extends BasePrmImportEntity implements PrmVersiona
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @AtlasVersionableProperty
+  @NotNull
   private String sloid;
 
   @NotNull
