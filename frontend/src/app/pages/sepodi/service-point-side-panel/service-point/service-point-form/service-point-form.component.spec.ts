@@ -1,8 +1,11 @@
 import { ServicePointFormComponent } from './service-point-form.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
+  ApplicationRole,
+  ApplicationType,
   CoordinatePair,
   Country,
+  PermissionRestrictionType,
   ReadServicePointVersion,
   SpatialReference,
   SwissCanton,
@@ -20,7 +23,8 @@ describe('ServicePointFormComponent', () => {
     translateService: { onLangChange: jasmine.createSpyObj(['subscribe']) },
   });
   const geoDataServiceSpy = jasmine.createSpyObj(['getLocationInformation']);
-  const authServiceSpy = jasmine.createSpyObj(['isAdmin', 'getApplicationUserPermission']);
+  const authServiceSpy = jasmine.createSpyObj(['getApplicationUserPermission']);
+  authServiceSpy.isAdmin = true;
 
   beforeEach(() => {
     component = new ServicePointFormComponent(
@@ -161,5 +165,40 @@ describe('ServicePointFormComponent', () => {
       expect(locationInformation.localityName).toEqual('Ort');
       done();
     });
+  });
+
+  it('should show all bos on edit', () => {
+    component['_currentVersion'] = { id: 5 } as ReadServicePointVersion;
+    component.ngOnInit();
+
+    expect(component.isNew).toBeFalse();
+    expect(component.boSboidRestriction).toHaveSize(0);
+  });
+
+  it('should show all bos new for admin', () => {
+    authServiceSpy.isAdmin = true;
+    component.ngOnInit();
+
+    expect(component.isNew).toBeTrue();
+    expect(component.boSboidRestriction).toHaveSize(0);
+  });
+
+  it('should show only allowed bos on new for writer', () => {
+    authServiceSpy.isAdmin = false;
+    authServiceSpy.getApplicationUserPermission.and.returnValue({
+      role: ApplicationRole.Writer,
+      application: ApplicationType.Sepodi,
+      permissionRestrictions: [
+        {
+          type: PermissionRestrictionType.BusinessOrganisation,
+          valueAsString: 'ch:1:sboid:213',
+        },
+      ],
+    });
+
+    component.ngOnInit();
+
+    expect(component.isNew).toBeTrue();
+    expect(component.boSboidRestriction).toHaveSize(1);
   });
 });
