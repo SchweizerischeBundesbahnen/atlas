@@ -32,6 +32,7 @@ public abstract class BasePrmEntityVersion extends BasePrmImportEntity implement
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @AtlasVersionableProperty
+  @NotNull
   private String sloid;
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
