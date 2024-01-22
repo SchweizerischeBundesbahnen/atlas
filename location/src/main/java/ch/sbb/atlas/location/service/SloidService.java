@@ -1,7 +1,9 @@
 package ch.sbb.atlas.location.service;
 
+import ch.sbb.atlas.location.repository.SePoDiRepository;
 import ch.sbb.atlas.location.repository.SloidRepository;
 import ch.sbb.atlas.servicepoint.Country;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
@@ -13,6 +15,20 @@ import org.springframework.stereotype.Service;
 public class SloidService {
 
   private final SloidRepository sloidRepository;
+  private final SePoDiRepository sePoDiRepository;
+
+  public String sync(){
+    Set<String> servicePointSloid = sePoDiRepository.getServicePointSloid();
+    Set<String> allocatedSloid = sloidRepository.getAllocatedSloid();
+    
+    log.info("Used ServicePoint sloid: {}",servicePointSloid);
+    log.info("Allocated servicePoint sloid: {}",allocatedSloid);
+    servicePointSloid.removeAll(allocatedSloid);
+
+    log.info("Used ServicePoint sloid: {}",servicePointSloid);
+    log.info("Allocated servicePoint sloid: {}",allocatedSloid);
+    return "asd";
+  }
 
   public String generateNewSloid(String sloidPrefix, String seqName) {
     String generatedSloid = null;
