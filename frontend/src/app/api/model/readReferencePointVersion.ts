@@ -64,7 +64,7 @@ export interface ReadReferencePointVersion {
   /**
    * Main reference point
    */
-  mainReferencePoint: boolean;
+  mainReferencePoint?: boolean;
   referencePointType: ReferencePointAttributeType;
   number: ServicePointNumber;
 }

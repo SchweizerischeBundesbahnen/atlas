@@ -33,9 +33,10 @@ public interface ReferencePointApiV1 {
           BasePrmEntityVersion.Fields.validFrom}) Pageable pageable,
       @Valid @ParameterObject PrmObjectRequestParams prmObjectRequestParams);
 
-  @GetMapping("overview/{parentSloid}")
+  @GetMapping("overview/{parentServicePointSloid}")
   @PageableAsQueryParam
-  Container<ReadReferencePointVersionModel> getReferencePointsOverview(@PathVariable String parentSloid, Pageable pageable);
+  Container<ReadReferencePointVersionModel> getReferencePointsOverview(@Parameter(hidden = true) Pageable pageable,
+      @PathVariable String parentServicePointSloid);
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
