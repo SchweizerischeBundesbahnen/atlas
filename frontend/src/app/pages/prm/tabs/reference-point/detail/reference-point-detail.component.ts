@@ -12,11 +12,13 @@ import { FormGroup } from '@angular/forms';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import {
+  Country,
   PersonWithReducedMobilityService,
   ReadReferencePointVersion,
   ReadServicePointVersion,
   ReferencePointVersion,
 } from '../../../../../api';
+import { Countries } from '../../../../../core/country/Countries';
 
 @Component({
   selector: 'app-reference-point',
@@ -36,6 +38,7 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
   selectedVersionIndex!: number;
 
   businessOrganisations: string[] = [];
+  servicePointNumberPartForSloid: string[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -78,9 +81,18 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
     const servicePointVersions: ReadServicePointVersion[] = this.route.snapshot.data.servicePoint;
     this.servicePoint =
       VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
+    this.servicePointNumberPartForSloid = [this.buildServicePointNumberPartForSloid()];
     this.businessOrganisations = [
       ...new Set(servicePointVersions.map((value) => value.businessOrganisation)),
     ];
+  }
+
+  buildServicePointNumberPartForSloid() {
+    const numberAsString = String(this.servicePoint.number.number);
+    if (numberAsString.startsWith(String(Countries.fromCountry(Country.Switzerland)!.uicCode!))) {
+      return String(this.servicePoint.number.number % 100000);
+    }
+    return numberAsString;
   }
 
   switchVersion(newIndex: number) {
@@ -119,9 +131,13 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
   private create(referencePointVersion: ReferencePointVersion) {
     this.personWithReducedMobilityService
       .createReferencePoint(referencePointVersion)
-      .subscribe(() => {
+      .subscribe((createdVersion) => {
         this.notificationService.success('PRM.REFERENCE_POINTS.NOTIFICATION.ADD_SUCCESS');
-        this.reloadPage();
+        this.router
+          .navigate(['..', createdVersion.sloid], {
+            relativeTo: this.route,
+          })
+          .then(() => this.ngOnInit());
       });
   }
 
@@ -130,16 +146,12 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
       .updateReferencePoint(this.selectedVersion.id!, referencePointVersion)
       .subscribe(() => {
         this.notificationService.success('PRM.REFERENCE_POINTS.NOTIFICATION.EDIT_SUCCESS');
-        this.reloadPage();
+        this.router
+          .navigate(['..', this.selectedVersion.sloid], {
+            relativeTo: this.route,
+          })
+          .then(() => this.ngOnInit());
       });
-  }
-
-  reloadPage() {
-    this.router
-      .navigate(['..', this.selectedVersion.sloid], {
-        relativeTo: this.route,
-      })
-      .then(() => this.ngOnInit());
   }
 
   private showCancelEditDialog() {
