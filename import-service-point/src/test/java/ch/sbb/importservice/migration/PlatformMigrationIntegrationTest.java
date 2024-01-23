@@ -1,10 +1,8 @@
 package ch.sbb.importservice.migration;
 
 import ch.sbb.atlas.export.model.prm.PlatformVersionCsvModel;
-import ch.sbb.atlas.export.model.prm.StopPointVersionCsvModel;
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModel;
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModelContainer;
-import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModel;
 import ch.sbb.atlas.imports.util.CsvReader;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Validity;
@@ -63,58 +61,61 @@ class PlatformMigrationIntegrationTest {
 
   @Test
   @Order(2)
-  void shouldHaveSameStopPointNumbersInBothCsvs() {
+  void shouldHaveSamePlatformNumbersInBothCsvs() {
 
-    Set<Integer> didokStopPointNumbers =
+    Set<Integer> didokPlatformNumbers =
         didokPlatformCsvLines.stream().filter(platformCsvModel -> platformCsvModel.getStatus().equals(1))
-            .map(MigrationUtil::removeCheckDigitDidokPlatform).collect(Collectors.toSet());
+            .map(MigrationUtil::removeCheckDigit).collect(Collectors.toSet());
     Set<Integer> atlasPlatformNumbers = atlasPlatformCsvLines.stream().map(PlatformVersionCsvModel::getParentNumberServicePoint)
         .collect(Collectors.toSet());
 
-    Set<Integer> difference = atlasPlatformNumbers.stream().filter(e -> !didokStopPointNumbers.contains(e))
+    Set<Integer> difference = atlasPlatformNumbers.stream().filter(e -> !didokPlatformNumbers.contains(e))
         .collect(Collectors.toSet());
     if (!difference.isEmpty()) {
       log.error("We have Atlas Platform Numbers, which are not in Didok: {}", difference);
     }
-    Set<Integer> differenceDidok = didokStopPointNumbers.stream().filter(e -> !atlasPlatformNumbers.contains(e))
+    Set<Integer> differenceDidok = didokPlatformNumbers.stream().filter(e -> !atlasPlatformNumbers.contains(e))
         .collect(Collectors.toSet());
     if (!differenceDidok.isEmpty()) {
       log.error("We have Didok Platform Numbers, which are not in Atlas: {}", differenceDidok);
     }
 
-    assertThat(didokStopPointNumbers).containsExactlyInAnyOrderElementsOf(atlasPlatformNumbers);
+    assertThat(didokPlatformNumbers).containsExactlyInAnyOrderElementsOf(atlasPlatformNumbers);
   }
 
   @Test
   @Order(3)
-  void shouldHaveSameValidityOnEachDidokCode() {
-    Map<Integer, Validity> groupedDidokCodes = didokPlatformCsvLines.stream().collect(
-        Collectors.groupingBy(MigrationUtil::removeCheckDigitDidokPlatform,
-            Collectors.collectingAndThen(
-                Collectors.toList(),
-                list -> new Validity(
-                    list.stream().map(item -> DateRange.builder()
-                        .from(item.getValidFrom())
-                        .to(item.getValidTo())
-                        .build()
-                    ).collect(Collectors.toList())
-                ).minify())));
+  void shouldHaveSameValidityOnEachSloid() {
 
-    Map<Integer, Validity> groupedAtlasNumbers = atlasPlatformCsvLines.stream().collect(
-        Collectors.groupingBy(PlatformVersionCsvModel::getParentNumberServicePoint, Collectors.collectingAndThen(Collectors.toList(),
-            list -> new Validity(
-                list.stream().map(
-                        i -> DateRange.builder()
-                            .from(CsvReader.dateFromString(i.getValidFrom()))
-                            .to(CsvReader.dateFromString(i.getValidTo())).build())
-                    .collect(Collectors.toList())).minify())));
+    Map<String, Validity> groupedSloidsDidok = didokPlatformCsvLines.stream().collect(
+            Collectors.groupingBy(PlatformCsvModel::getSloid,
+                    Collectors.collectingAndThen(
+                            Collectors.toList(),
+                            list -> new Validity(
+                                    list.stream().map(item -> DateRange.builder()
+                                            .from(item.getValidFrom())
+                                            .to(item.getValidTo())
+                                            .build()
+                                    ).collect(Collectors.toList())
+                            ).minify())));
+
+    Map<String, Validity> groupedSloidsAtlas = atlasPlatformCsvLines.stream().collect(
+            Collectors.groupingBy(PlatformVersionCsvModel::getSloid,
+                    Collectors.collectingAndThen(Collectors.toList(),
+                            list -> new Validity(
+                                    list.stream().map(
+                                                    i -> DateRange.builder()
+                                                            .from(CsvReader.dateFromString(i.getValidFrom()))
+                                                            .to(CsvReader.dateFromString(i.getValidTo())).build())
+                                            .collect(Collectors.toList())).minify())));
 
     List<String> validityErrors = new ArrayList<>();
-    groupedDidokCodes.forEach((didokCode, didokValidity) -> {
-      Validity atlasValidity = groupedAtlasNumbers.get(didokCode);
-      if (!atlasValidity.equals(didokValidity)) {
+    groupedSloidsDidok.forEach((sloid, didokValidity) -> {
+      Validity atlasValidity = groupedSloidsAtlas.get(sloid);
+      if (atlasValidity == null || !atlasValidity.equals(didokValidity)) {
+        log.error("error: ", didokValidity.getDateRanges());
         validityErrors.add(
-            "ValidityError on didokCode: " + didokCode + " didokValidity=" + didokValidity + ", atlasValidity=" + atlasValidity);
+                "ValidityError on sloid: " + sloid + " didokValidity=" + didokValidity.getDateRanges() + ", atlasValidity=" + atlasValidity.getDateRanges());
       }
     });
 
@@ -126,31 +127,17 @@ class PlatformMigrationIntegrationTest {
 
   @Test
   @Order(5)
-  void shouldHaveMappedFieldsToAtlasCorrectly() {
+  void shouldHaveMappedFieldsToAtlasUsingSloidCorrectly() {
     assertThat(atlasPlatformCsvLines).isNotEmpty();
-    Map<Integer, List<PlatformVersionCsvModel>> groupedAtlasStopPoints = atlasPlatformCsvLines.stream()
-        .collect(Collectors.groupingBy(PlatformVersionCsvModel::getParentNumberServicePoint));
-    assertThat(atlasPlatformCsvLines).isNotEmpty();
+    Map<String, List<PlatformVersionCsvModel>> groupedAtlasPlatforms = atlasPlatformCsvLines.stream()
+            .collect(Collectors.groupingBy(PlatformVersionCsvModel::getSloid));
+
+    assertThat(didokPlatformCsvLines).isNotEmpty();
     didokPlatformCsvLines.forEach(didokCsvLine -> {
       PlatformVersionCsvModel atlasCsvLine = findCorrespondingAtlasPlatformVersion(didokCsvLine,
-          groupedAtlasStopPoints.get(MigrationUtil.removeCheckDigit(didokCsvLine.getDidokCode())));
+              groupedAtlasPlatforms.get(didokCsvLine.getSloid()));
       new PlatformMappingEquality(didokCsvLine, atlasCsvLine).performCheck();
     });
-  }
-
-  private StopPointVersionCsvModel findCorrespondingAtlasStopPointVersion(StopPointCsvModel didokCsvLine,
-      List<StopPointVersionCsvModel> atlasCsvLines) {
-    List<StopPointVersionCsvModel> matchedVersions = atlasCsvLines.stream().filter(
-            atlasCsvLine -> DateRange.builder()
-                .from(CsvReader.dateFromString(atlasCsvLine.getValidFrom()))
-                .to(CsvReader.dateFromString(atlasCsvLine.getValidTo()))
-                .build()
-                .contains(didokCsvLine.getValidFrom()))
-        .toList();
-    if (matchedVersions.size() == 1) {
-      return matchedVersions.get(0);
-    }
-    throw new IllegalStateException("Not exactly one match");
   }
 
   private PlatformVersionCsvModel findCorrespondingAtlasPlatformVersion(PlatformCsvModel didokCsvLine,
