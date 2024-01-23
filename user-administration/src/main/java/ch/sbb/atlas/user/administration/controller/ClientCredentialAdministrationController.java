@@ -4,13 +4,14 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.user.administration.ClientCredentialAdministrationApiV1;
 import ch.sbb.atlas.api.user.administration.ClientCredentialModel;
 import ch.sbb.atlas.api.user.administration.ClientCredentialPermissionCreateModel;
+import ch.sbb.atlas.service.OverviewService;
 import ch.sbb.atlas.user.administration.entity.ClientCredentialPermission;
 import ch.sbb.atlas.user.administration.mapper.ClientCredentialMapper;
 import ch.sbb.atlas.user.administration.mapper.KafkaModelMapper;
 import ch.sbb.atlas.user.administration.service.ClientCredentialAdministrationService;
 import ch.sbb.atlas.user.administration.service.UserPermissionDistributor;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,13 +24,9 @@ public class ClientCredentialAdministrationController implements ClientCredentia
 
   @Override
   public Container<ClientCredentialModel> getClientCredentials(Pageable pageable) {
-    Page<ClientCredentialPermission> clientCredentialPermissions =
-        clientCredentialAdministrationService.getClientCredentialPermissions(
-            pageable);
-    return Container.<ClientCredentialModel>builder()
-        .totalCount(clientCredentialPermissions.getTotalElements())
-        .objects(ClientCredentialMapper.toModel(clientCredentialPermissions.getContent()))
-        .build();
+    List<ClientCredentialPermission> clientCredentialPermissions =  clientCredentialAdministrationService.getClientCredentialPermissions();
+    List<ClientCredentialModel> clientCredentials = ClientCredentialMapper.toModel(clientCredentialPermissions);
+    return OverviewService.toPagedContainer(clientCredentials, pageable);
   }
 
   @Override

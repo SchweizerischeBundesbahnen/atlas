@@ -17,7 +17,7 @@ import org.springframework.data.domain.Pageable;
 @UtilityClass
 public class OverviewService {
 
-  public static <T extends Versionable> Container<T> toPagedContainer(List<T> elements, Pageable pageable) {
+  public static <T> Container<T> toPagedContainer(List<T> elements, Pageable pageable) {
     return Container.<T>builder()
         .objects(elements.stream()
             .skip(Math.multiplyFull(pageable.getPageNumber(), pageable.getPageSize()))
