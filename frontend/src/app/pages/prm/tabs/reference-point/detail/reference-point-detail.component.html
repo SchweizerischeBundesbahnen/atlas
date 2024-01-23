@@ -3,14 +3,14 @@
     <div class="font-bold-4xl detail-title mb-3">
       {{ servicePoint.designationOfficial }} -
       {{ 'PRM.REFERENCE_POINTS.REFERENCE_POINT' | translate }}
-      {{ selectedVersion.designation }}
+      {{ isNew ? '' : selectedVersion.designation }}
     </div>
     <div *ngIf="!isNew" class="font-xl mb-2">
       <span data-cy="total-range">
         <date-range-text [dateRange]="maxValidity"></date-range-text>
       </span>
     </div>
-    <div class="d-flex flex-row mb-3">
+    <div *ngIf="!isNew" class="d-flex flex-row mb-3">
       <div class="d-flex flex-column me-5" data-cy="selected-version-sloid">
         <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.SLOID' | translate }}</div>
         <div>{{ selectedVersion.sloid }}</div>
