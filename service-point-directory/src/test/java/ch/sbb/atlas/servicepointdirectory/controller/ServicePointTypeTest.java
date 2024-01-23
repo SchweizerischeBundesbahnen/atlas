@@ -1,12 +1,13 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.api.location.ClaimSloidRequestModel;
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
@@ -18,7 +19,6 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.api.client.location.LocationClient;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointNumberService;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -35,9 +35,6 @@ class ServicePointTypeTest extends BaseControllerApiTest {
   @MockBean
   private LocationClient locationClient;
 
-  @MockBean
-  private ServicePointNumberService servicePointNumberService;
-
   private final ServicePointVersionRepository repository;
   private final ServicePointController servicePointController;
 
@@ -49,7 +46,7 @@ class ServicePointTypeTest extends BaseControllerApiTest {
 
   @BeforeEach
   void setUp() {
-    when(servicePointNumberService.getNextAvailableServicePointId(Country.SWITZERLAND)).thenReturn(7000);
+    when(locationClient.generateSloid(any())).thenReturn("ch:1:sloid:1");
   }
 
   @AfterEach
@@ -70,7 +67,10 @@ class ServicePointTypeTest extends BaseControllerApiTest {
 
     ReadServicePointVersionModel result = servicePointController.createServicePoint(servicePoint);
 
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:7000")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel ->
+            generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+                && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
     assertThat(result.getId()).isNotNull();
     assertThat(result.isOperatingPoint()).isFalse();
     assertThat(result.isOperatingPointWithTimetable()).isFalse();
@@ -90,7 +90,10 @@ class ServicePointTypeTest extends BaseControllerApiTest {
 
     ReadServicePointVersionModel result = servicePointController.createServicePoint(servicePoint);
 
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:7000")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel ->
+            generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+                && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
     assertThat(result.getId()).isNotNull();
     assertThat(result.isOperatingPoint()).isTrue();
     assertThat(result.isOperatingPointWithTimetable()).isFalse();
@@ -110,7 +113,10 @@ class ServicePointTypeTest extends BaseControllerApiTest {
 
     ReadServicePointVersionModel result = servicePointController.createServicePoint(servicePoint);
 
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:7000")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel ->
+            generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+                && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
     assertThat(result.getId()).isNotNull();
     assertThat(result.isOperatingPoint()).isTrue();
     assertThat(result.isOperatingPointWithTimetable()).isTrue();
@@ -130,7 +136,10 @@ class ServicePointTypeTest extends BaseControllerApiTest {
 
     ReadServicePointVersionModel result = servicePointController.createServicePoint(servicePoint);
 
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:7000")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel ->
+            generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+                && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
     assertThat(result.getId()).isNotNull();
     assertThat(result.isOperatingPoint()).isTrue();
     assertThat(result.isOperatingPointWithTimetable()).isTrue();
@@ -150,7 +159,10 @@ class ServicePointTypeTest extends BaseControllerApiTest {
 
     ReadServicePointVersionModel result = servicePointController.createServicePoint(servicePoint);
 
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:7000")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel ->
+            generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+                && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
     assertThat(result.getId()).isNotNull();
     assertThat(result.isOperatingPoint()).isTrue();
     assertThat(result.isOperatingPointWithTimetable()).isTrue();
@@ -170,7 +182,10 @@ class ServicePointTypeTest extends BaseControllerApiTest {
 
     ReadServicePointVersionModel result = servicePointController.createServicePoint(servicePoint);
 
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:7000")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel ->
+            generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+                && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
     assertThat(result.getId()).isNotNull();
     assertThat(result.isOperatingPoint()).isTrue();
     assertThat(result.isOperatingPointWithTimetable()).isTrue();

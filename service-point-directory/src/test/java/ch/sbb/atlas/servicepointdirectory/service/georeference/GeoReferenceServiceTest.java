@@ -26,8 +26,6 @@ class GeoReferenceServiceTest {
   @MockBean
   private JourneyPoiConfig journeyPoiConfig;
   @MockBean
-  private FeignConfig feignConfig;
-  @MockBean
   private JourneyPoiClient journeyPoiClient;
 
   @Autowired

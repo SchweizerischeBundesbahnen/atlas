@@ -1,6 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
-import ch.sbb.atlas.api.client.location.LocationClient;
 import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -46,15 +45,12 @@ class ServicePointServiceTest {
   @Mock
   private ServicePointStatusDecider servicePointStatusDecider;
 
-  @Mock
-  private LocationClient locationClient;
-
   @BeforeEach
   void initMocksAndService() {
     MockitoAnnotations.openMocks(this);
     servicePointService = new ServicePointService(servicePointVersionRepositoryMock, versionableServiceMock,
         servicePointValidationService, servicePointSearchVersionRepository, servicePointTerminationService,
-        servicePointStatusDecider, locationClient);
+        servicePointStatusDecider);
   }
 
   @Test

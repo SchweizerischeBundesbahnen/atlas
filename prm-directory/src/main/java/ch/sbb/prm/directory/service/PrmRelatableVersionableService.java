@@ -1,17 +1,13 @@
 package ch.sbb.prm.directory.service;
 
-import ch.sbb.atlas.api.location.ClaimSloidRequestModel;
-import ch.sbb.atlas.api.location.GenerateSloidRequestModel;
-import ch.sbb.atlas.api.client.location.LocationClient;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
-import ch.sbb.atlas.exception.SloidAlreadyExistsException;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.util.RelationUtil;
-import feign.FeignException;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,15 +17,15 @@ public abstract class PrmRelatableVersionableService<T extends Relatable & PrmVe
   protected final StopPointService stopPointService;
   protected final RelationService relationService;
   protected final ReferencePointRepository referencePointRepository;
-  private final LocationClient locationClient;
+  private final LocationService locationService;
 
   protected PrmRelatableVersionableService(VersionableService versionableService, StopPointService stopPointService,
-      RelationService relationService, ReferencePointRepository referencePointRepository, LocationClient locationClient) {
+      RelationService relationService, ReferencePointRepository referencePointRepository, LocationService locationService) {
     super(versionableService);
     this.stopPointService = stopPointService;
     this.relationService = relationService;
     this.referencePointRepository = referencePointRepository;
-    this.locationClient = locationClient;
+    this.locationService = locationService;
   }
 
   protected abstract ReferencePointElementType getReferencePointElementType();
@@ -45,16 +41,12 @@ public abstract class PrmRelatableVersionableService<T extends Relatable & PrmVe
     createRelations(version);
   }
 
+  // todo: get correct sloidType
   private void allocateSloid(T version) {
     if (version.getSloid() != null) {
-      try {
-        locationClient.claimSloid(new ClaimSloidRequestModel(version.getSloid()));
-      } catch (FeignException e) {
-        throw new SloidAlreadyExistsException(version.getSloid());
-      }
+      locationService.claimSloid(SloidType.AREA, version.getSloid());
     } else {
-      version.setSloid(
-          locationClient.generateSloid(new GenerateSloidRequestModel(SloidType.AREA, version.getParentServicePointSloid())));
+      version.setSloid(locationService.generateSloid(SloidType.AREA, version.getParentServicePointSloid()));
     }
   }
 
