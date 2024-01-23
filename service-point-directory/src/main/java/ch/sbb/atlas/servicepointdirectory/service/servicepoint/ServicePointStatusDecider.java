@@ -39,11 +39,8 @@ public class ServicePointStatusDecider {
     }
 
     private static boolean isGeolocationOrCountryNull(ServicePointVersion newServicePointVersion) {
-        if (newServicePointVersion.getServicePointGeolocation() == null
-            || newServicePointVersion.getServicePointGeolocation().getCountry() == null) {
-            return true;
-        }
-        return false;
+        return newServicePointVersion.getServicePointGeolocation() == null
+                || newServicePointVersion.getServicePointGeolocation().getCountry() == null;
     }
 
     private boolean isNameChanged(ServicePointVersion newServicePointVersion,
