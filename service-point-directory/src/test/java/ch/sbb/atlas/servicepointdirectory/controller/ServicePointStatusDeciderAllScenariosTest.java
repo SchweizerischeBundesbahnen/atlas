@@ -27,7 +27,6 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointNumberService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +41,6 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
 
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
-  @MockBean
-  private ServicePointNumberService servicePointNumberService;
   @MockBean
   private GeoReferenceService geoReferenceService;
   @MockBean
@@ -63,7 +60,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
   void createDefaultVersion() {
     GeoReference geoReference = GeoReference.builder().country(Country.SWITZERLAND).build();
     when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReference);
-    when(servicePointNumberService.getNextAvailableServicePointId(any())).thenReturn(1);
+    when(locationClient.generateSloid(any())).thenReturn("ch:1:sloid:1");
   }
 
   @AfterEach
