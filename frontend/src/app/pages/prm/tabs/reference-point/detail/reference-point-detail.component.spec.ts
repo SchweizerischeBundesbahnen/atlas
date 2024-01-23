@@ -1,20 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReferencePointDetailComponent } from './reference-point-detail.component';
-import SpyObj = jasmine.SpyObj;
 import { AuthService } from '../../../../../core/auth/auth.service';
 import { of } from 'rxjs';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import { STOP_POINT, STOP_POINT_COMPLETE } from '../../../util/stop-point-test-data.spec';
 import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
-import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../../../test/data/traffic-point-element';
 import {
   MockAtlasButtonComponent,
   MockAtlasFieldErrorComponent,
 } from '../../../../../app.testing.mocks';
 import { DisplayDatePipe } from '../../../../../core/pipe/display-date.pipe';
-import { PlatformReducedFormComponent } from './form/platform-reduced-form/platform-reduced-form.component';
-import { PlatformCompleteFormComponent } from './form/platform-complete-form/platform-complete-form.component';
 import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
 import { AtlasLabelFieldComponent } from '../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
 import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
@@ -30,85 +25,39 @@ import { ActivatedRoute } from '@angular/router';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import {
   PersonWithReducedMobilityService,
-  ReadPlatformVersion,
-  VehicleAccessAttributeType,
+  ReadReferencePointVersion,
+  ReferencePointAttributeType,
 } from '../../../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SplitServicePointNumberPipe } from '../../../../../core/search-service-point/split-service-point-number.pipe';
 import moment from 'moment';
 import { UserDetailInfoComponent } from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { ReferencePointCompleteFormComponent } from './form/reference-point-complete-form/reference-point-complete-form.component';
+import SpyObj = jasmine.SpyObj;
+import { SloidComponent } from '../../../../../core/form-components/sloid/sloid.component';
+import { AtlasSlideToggleComponent } from '../../../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
 
-const reducedPlatform: ReadPlatformVersion[] = [
+const referencePoint: ReadReferencePointVersion[] = [
   {
-    creationDate: '2024-01-11T10:08:28.446803',
+    creationDate: '2024-01-22T13:52:30.598026',
     creator: 'e524381',
-    editionDate: '2024-01-11T10:08:28.446803',
+    editionDate: '2024-01-22T13:52:30.598026',
     editor: 'e524381',
-    id: 1002,
-    sloid: 'ch:1:sloid:7000:0:100000',
-    validFrom: new Date('2024-01-01'),
-    validTo: new Date('2024-01-03'),
-    etagVersion: 8,
+    id: 1000,
+    sloid: 'ch:1:sloid:12345:1',
+    validFrom: new Date('2000-01-01'),
+    validTo: new Date('2000-12-31'),
+    etagVersion: 0,
     parentServicePointSloid: 'ch:1:sloid:7000',
-    boardingDevice: 'TO_BE_COMPLETED',
-    adviceAccessInfo: undefined,
-    additionalInformation: undefined,
-    contrastingAreas: 'YES',
-    dynamicAudio: 'TO_BE_COMPLETED',
-    dynamicVisual: 'TO_BE_COMPLETED',
-    height: undefined,
-    inclination: undefined,
-    inclinationLongitudinal: undefined,
-    inclinationWidth: undefined,
-    infoOpportunities: [],
-    levelAccessWheelchair: 'TO_BE_COMPLETED',
-    partialElevation: undefined,
-    superelevation: undefined,
-    tactileSystem: undefined,
-    vehicleAccess: undefined,
-    wheelchairAreaLength: undefined,
-    wheelchairAreaWidth: undefined,
+    designation: 'designation',
+    additionalInformation: 'additional',
+    mainReferencePoint: true,
+    referencePointType: 'PLATFORM',
     number: {
       number: 8507000,
-      checkDigit: 3,
       numberShort: 7000,
       uicCountryCode: 85,
-    },
-  },
-  {
-    creationDate: '2024-01-11T10:08:28.446803',
-    creator: 'e524381',
-    editionDate: '2024-01-11T10:08:28.446803',
-    editor: 'e524381',
-    id: 1003,
-    sloid: 'ch:1:sloid:7000:0:100000',
-    validFrom: new Date('2024-01-04'),
-    validTo: new Date('2024-01-10'),
-    etagVersion: 8,
-    parentServicePointSloid: 'ch:1:sloid:7000',
-    boardingDevice: 'LIFTS',
-    adviceAccessInfo: undefined,
-    additionalInformation: undefined,
-    contrastingAreas: 'YES',
-    dynamicAudio: 'TO_BE_COMPLETED',
-    dynamicVisual: 'TO_BE_COMPLETED',
-    height: undefined,
-    inclination: undefined,
-    inclinationLongitudinal: undefined,
-    inclinationWidth: undefined,
-    infoOpportunities: [],
-    levelAccessWheelchair: 'TO_BE_COMPLETED',
-    partialElevation: undefined,
-    superelevation: undefined,
-    tactileSystem: undefined,
-    vehicleAccess: undefined,
-    wheelchairAreaLength: undefined,
-    wheelchairAreaWidth: undefined,
-    number: {
-      number: 8507000,
       checkDigit: 3,
-      numberShort: 7000,
-      uicCountryCode: 85,
     },
   },
 ];
@@ -125,10 +74,10 @@ describe('ReferencePointDetailComponent', () => {
 
   const personWithReducedMobilityService = jasmine.createSpyObj(
     'personWithReducedMobilityService',
-    ['createPlatform', 'updatePlatform'],
+    ['createReferencePoint', 'updateReferencePoint'],
   );
-  personWithReducedMobilityService.createPlatform.and.returnValue(of(reducedPlatform[0]));
-  personWithReducedMobilityService.updatePlatform.and.returnValue(of(reducedPlatform));
+  personWithReducedMobilityService.createReferencePoint.and.returnValue(of(referencePoint[0]));
+  personWithReducedMobilityService.updateReferencePoint.and.returnValue(of(referencePoint));
 
   const notificationService = jasmine.createSpyObj('notificationService', ['success']);
   const dialogService: SpyObj<DialogService> = jasmine.createSpyObj('dialogService', ['confirm']);
@@ -137,10 +86,8 @@ describe('ReferencePointDetailComponent', () => {
   const activatedRouteMock = {
     snapshot: {
       data: {
-        stopPoint: [STOP_POINT],
         servicePoint: [BERN_WYLEREGG],
-        platform: [],
-        trafficPoint: [BERN_WYLEREGG_TRAFFIC_POINTS[0]],
+        referencePoint: [],
       },
     },
   };
@@ -149,10 +96,11 @@ describe('ReferencePointDetailComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         ReferencePointDetailComponent,
+        SloidComponent,
+        AtlasSlideToggleComponent,
         MockAtlasButtonComponent,
         DisplayDatePipe,
-        PlatformReducedFormComponent,
-        PlatformCompleteFormComponent,
+        ReferencePointCompleteFormComponent,
         TextFieldComponent,
         AtlasLabelFieldComponent,
         MockAtlasFieldErrorComponent,
@@ -179,7 +127,7 @@ describe('ReferencePointDetailComponent', () => {
     });
   });
 
-  describe('new reduced platform', () => {
+  describe('new reference point', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(ReferencePointDetailComponent);
       component = fixture.componentInstance;
@@ -190,33 +138,34 @@ describe('ReferencePointDetailComponent', () => {
       expect(component).toBeTruthy();
 
       expect(component.isNew).toBeTrue();
-      expect(component.reduced).toBeTrue();
       expect(component.selectedVersion).toBeUndefined();
 
       expect(component.form.enabled).toBeTrue();
     });
 
     it('should create on save', () => {
+      component.form.controls.designation.setValue('Haupteingang A');
       component.form.controls.validFrom.setValue(moment('31.10.2000', 'dd.MM.yyyy'));
       component.form.controls.validTo.setValue(moment('31.10.2099', 'dd.MM.yyyy'));
+      component.form.controls.referencePointType.setValue(
+        ReferencePointAttributeType.MainStationEntrance,
+      );
 
       component.save();
 
-      expect(personWithReducedMobilityService.createPlatform).toHaveBeenCalled();
+      expect(personWithReducedMobilityService.createReferencePoint).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
   });
 
-  describe('edit reduced platform', () => {
+  describe('edit reference point', () => {
     beforeEach(() => {
       TestBed.overrideProvider(ActivatedRoute, {
         useValue: {
           snapshot: {
             data: {
-              stopPoint: [STOP_POINT],
               servicePoint: [BERN_WYLEREGG],
-              platform: reducedPlatform,
-              trafficPoint: [BERN_WYLEREGG_TRAFFIC_POINTS[0]],
+              referencePoint: referencePoint,
             },
           },
         },
@@ -230,7 +179,6 @@ describe('ReferencePointDetailComponent', () => {
       expect(component).toBeTruthy();
 
       expect(component.isNew).toBeFalse();
-      expect(component.reduced).toBeTrue();
       expect(component.selectedVersion).toBeDefined();
 
       expect(component.form.enabled).toBeFalse();
@@ -247,11 +195,7 @@ describe('ReferencePointDetailComponent', () => {
       expect(component.form.enabled).toBeTrue();
       expect(component.form.dirty).toBeFalse();
 
-      component.reducedForm.controls.vehicleAccess.setValue(
-        VehicleAccessAttributeType.PlatformAccessWithAssistanceWhenNotified,
-      );
-      component.reducedForm.controls.vehicleAccess.markAsDirty();
-      component.reducedForm.markAsDirty();
+      component.form.controls.designation.markAsDirty();
 
       expect(component.form.dirty).toBeTrue();
       expect(component.isFormDirty()).toBeTrue();
@@ -263,51 +207,11 @@ describe('ReferencePointDetailComponent', () => {
     it('should update', () => {
       component.toggleEdit();
 
-      component.reducedForm.controls.vehicleAccess.setValue(
-        VehicleAccessAttributeType.PlatformAccessWithAssistanceWhenNotified,
-      );
-      component.reducedForm.controls.vehicleAccess.markAsDirty();
+      component.form.controls.designation.setValue('new designation');
+      component.form.controls.designation.markAsDirty();
 
       component.save();
-      expect(personWithReducedMobilityService.updatePlatform).toHaveBeenCalled();
-      expect(notificationService.success).toHaveBeenCalled();
-    });
-  });
-
-  describe('create complete platform', () => {
-    beforeEach(() => {
-      TestBed.overrideProvider(ActivatedRoute, {
-        useValue: {
-          snapshot: {
-            data: {
-              stopPoint: [STOP_POINT_COMPLETE],
-              servicePoint: [BERN_WYLEREGG],
-              platform: [],
-              trafficPoint: [BERN_WYLEREGG_TRAFFIC_POINTS[0]],
-            },
-          },
-        },
-      });
-      fixture = TestBed.createComponent(ReferencePointDetailComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-    });
-
-    it('should init', () => {
-      expect(component).toBeTruthy();
-
-      expect(component.isNew).toBeTrue();
-      expect(component.reduced).toBeFalse();
-
-      expect(component.form.enabled).toBeTrue();
-    });
-
-    it('should create complete platform', () => {
-      component.form.controls.validFrom.setValue(moment('31.10.2000', 'dd.MM.yyyy'));
-      component.form.controls.validTo.setValue(moment('31.10.2099', 'dd.MM.yyyy'));
-
-      component.save();
-      expect(personWithReducedMobilityService.createPlatform).toHaveBeenCalled();
+      expect(personWithReducedMobilityService.updateReferencePoint).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
   });
