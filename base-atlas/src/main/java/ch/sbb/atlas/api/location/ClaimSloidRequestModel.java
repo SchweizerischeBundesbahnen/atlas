@@ -30,6 +30,10 @@ public final class ClaimSloidRequestModel{
     this.sloid = sloid;
   }
 
+  public ClaimSloidRequestModel(String sloid) {
+    this.sloid = sloid;
+  }
+
   @AssertTrue(message = "When SloidType = SERVICE_POINT, the country has to be one of code: 85 or 11-14")
   public boolean isValidCountry() {
     return sloidType != SloidType.SERVICE_POINT || (country != null && ServicePointConstants.AUTOMATIC_SERVICE_POINT_ID.contains(
