@@ -1064,7 +1064,7 @@
     "STOP_POINTS": {
       "FORM": {
         "FREE_TEXT": "Hinweise zur Haltestelle",
-        "FREE_TEXT_INFO": "Freitextfeld für Erläuterungen zu speziellen Fällen auf Stufe Haltestelle",
+        "FREE_TEXT_INFO": "Freitextfeld für Erläuterungen zu speziellen Fällen auf Stufe Haltestelle.",
         "INTEROPERABLE": "Aktivieren wenn der Bahnhof für den interoperablen Verkehr zugelassen ist.",
         "URL": "Webseite mit zusätzlichen Informationen",
         "ADDRESS_KEY_DATA": "Adresse",
@@ -1078,9 +1078,9 @@
         "DYNAMIC_AUDIO_SYSTEM": "Akustisch",
         "DYNAMIC_AUDIO_SYSTEM_INFO": "Sind akustische Informationen gemäss Vorgabe Bundesrecht vorhanden? \n\nz.B. Lautsprecher oder Text-to-speech System",
         "ASSISTANCE_REQUEST_FULFILLED": "Voraussetzungen erfüllt",
-        "ASSISTANCE_REQUEST_FULFILLED_INFO": "Ja = Haltestelle ist komplett autonom Benutzbar \nNein = Haltestelle ist nicht autonom Benutzbar.",
+        "ASSISTANCE_REQUEST_FULFILLED_INFO": "Ja = Haltestelle ist komplett autonom Benutzbar. \nNein = Haltestelle ist nicht autonom Benutzbar.",
         "ASSISTANCE_SERVICE": "Hilfestellung durch Personal",
-        "ASSISTANCE_SERVICE_INFO": "Ist Hilfestellung durch Personal vorhanden?\n\n - Ja = Während der gesamten Betriebszeit.\n - Teilweise = Bedienzeiten im Freitextfeld ergänzen.\n - Nicht anwendbar = nicht nötig, Haltestelle autonom Benutzbar",
+        "ASSISTANCE_SERVICE_INFO": "Ist Hilfestellung durch Personal vorhanden?\n\n - Ja = Während der gesamten Betriebszeit.\n - Teilweise = Bedienzeiten im Freitextfeld ergänzen.\n - Nicht anwendbar = nicht nötig, Haltestelle autonom Benutzbar.",
         "ASSISTANCE_AVAILABILITY": "Voranmeldung für Hilfestellung nötig",
         "ASSISTANCE_AVAILABILITY_INFO": "Wenn ja/teilweise, Informationen im Hinweisfeld ergänzen.\nNicht anwendbar = nicht nötig, Haltestelle autonom Benutzbar.",
         "ASSISTANCE_CONDITION": "Hinweise zur Hilfestellung",
@@ -1088,7 +1088,7 @@
         "ALTERNATIVE_TRANSPORT": "Shuttledienst bzw. alternatives öV-Angebot",
         "ALTERNATIVE_TRANSPORT_INFO": "Ist rechtlich als Ersatzlösung gem. Art. 12 Abs. 3 BehiG nur mit schriftlicher Zustimmung des BAV zulässig! \nStandard-Ersatzlösung ist Hilfestellung durch das Personal vor Ort gem. Art. 3 Abs. 2 VböV.",
         "ALTERNATIVE_TRANSPORT_CONDITION": "Hinweise zum Shuttledienst bzw. alternativen öV-Angebot",
-        "ALTERNATIVE_TRANSPORT_CONDITION_INFO": "Ist rechtlich als Ersatzlösung gem. Art. 12 Abs. 3 BehiG nur mit schriftlicher Zustimmung des BAV zulässig! \nStandard-Ersatzlösung ist Hilfestellung durch das Personal vor Ort gem. Art. 3 Abs. 2 VböV",
+        "ALTERNATIVE_TRANSPORT_CONDITION_INFO": "Ist rechtlich als Ersatzlösung gem. Art. 12 Abs. 3 BehiG nur mit schriftlicher Zustimmung des BAV zulässig! \nStandard-Ersatzlösung ist Hilfestellung durch das Personal vor Ort gem. Art. 3 Abs. 2 VböV.",
         "ADDITIONAL_INFORMATION": "Zusätzliche Informationen",
         "TICKET_MACHINE": "Billettautomat vorhanden",
         "WHEELCHAIR_TICKET_MACHINE": "Barrierefrei",
@@ -1196,7 +1196,7 @@
         "BOARDING_DEVICE": "Hilfsmittel für Rollstuhl",
         "BOARDING_DEVICE_INFO": "Wenn Hublift und Rampe vorhanden = Hublift.\nNicht anwendbar = nicht notwendig, da autonomer Einstieg möglich.",
         "ADVICE_ACCESS_INFO": "Hinweise zum Zugang zum Verkehrsmittel",
-        "ADVICE_ACCESS_INFO_SUBTITLE": "Freitextfeld für Erläuterungen zu speziellen Fällen für den Zugang zum Verkehrsmittel, e.g. Manövrierfläche eingeschränkt"
+        "ADVICE_ACCESS_INFO_SUBTITLE": "Freitextfeld für Erläuterungen zu speziellen Fällen für den Zugang zum Verkehrsmittel. Z.B. Manövrierfläche eingeschränkt"
       },
       "REDUCED": {
         "VEHICLE_ACCESS": "Zugang zum Perron; Einstieg ins Fahrzeug",
