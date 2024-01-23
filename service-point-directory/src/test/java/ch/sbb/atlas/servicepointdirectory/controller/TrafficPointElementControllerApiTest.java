@@ -6,7 +6,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -15,8 +15,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.api.location.ClaimSloidRequestModel;
-import ch.sbb.atlas.api.location.GenerateSloidRequestModel;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
@@ -42,6 +40,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -306,7 +305,9 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.trafficPointElementGeolocation.wgs84.east", is(6.21113066932)))
         .andExpect(jsonPath("$.trafficPointElementGeolocation.height", is(-9999.0)));
 
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1400015:0:310240")));
+    verify(locationClient, times(1)).claimSloid(
+        argThat(claimSloidRequestModel -> claimSloidRequestModel.getSloidType() == SloidType.PLATFORM && Objects.equals(
+            claimSloidRequestModel.getSloid(), "ch:1:sloid:1400015:0:310240")));
   }
 
   @Test
@@ -315,9 +316,10 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
     CreateTrafficPointElementVersionModel platformToCreate = TrafficPointTestData.getCreateTrafficPointVersionModel();
     platformToCreate.setSloid(null);
 
-    when(locationClient.generateSloid(eq(new GenerateSloidRequestModel(SloidType.PLATFORM, "ch:1:sloid:1400015")))).thenReturn(
-        "ch:1:sloid"
-            + ":1400015:0:100");
+    when(locationClient.generateSloid(argThat(
+        generateSloidRequestModel -> generateSloidRequestModel.getSloidType() == SloidType.PLATFORM
+            && Objects.equals(generateSloidRequestModel.getSloidPrefix(), "ch:1:sloid:1400015")))).thenReturn(
+        "ch:1:sloid:1400015:0:100");
     mvc.perform(post("/v1/traffic-point-elements")
             .contentType(contentType)
             .content(mapper.writeValueAsString(platformToCreate)))
@@ -423,7 +425,9 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[2].trafficPointElementGeolocation.wgs84.east", is(6.21113066932)))
         .andExpect(jsonPath("$[2].trafficPointElementGeolocation.height", is(-9999.0)));
 
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1400015:0:310240")));
+    verify(locationClient, times(1)).claimSloid(
+        argThat(claimSloidRequestModel -> claimSloidRequestModel.getSloidType() == SloidType.PLATFORM && Objects.equals(
+            claimSloidRequestModel.getSloid(), "ch:1:sloid:1400015:0:310240")));
   }
 
   @Test
@@ -442,7 +446,9 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
 
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1400015:0:310240")));
+    verify(locationClient, times(1)).claimSloid(
+        argThat(claimSloidRequestModel -> claimSloidRequestModel.getSloidType() == SloidType.PLATFORM && Objects.equals(
+            claimSloidRequestModel.getSloid(), "ch:1:sloid:1400015:0:310240")));
   }
 
   @Test
@@ -469,7 +475,10 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
     assertThat(errorResponse.getMessage()).isEqualTo(
         "Sloid for provided id: ch:1:sloid:1400015:0:310240 and sloid in the request body: ch:1:sloid:1400015:0:310241 are not "
             + "equal.");
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1400015:0:310240")));
+
+    verify(locationClient, times(1)).claimSloid(
+        argThat(claimSloidRequestModel -> claimSloidRequestModel.getSloidType() == SloidType.PLATFORM && Objects.equals(
+            claimSloidRequestModel.getSloid(), "ch:1:sloid:1400015:0:310240")));
   }
 
   @Test
@@ -508,7 +517,9 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
         "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR");
     assertThat(errorResponse.getError()).isEqualTo("Stale object state error");
 
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1400015:0:310240")));
+    verify(locationClient, times(1)).claimSloid(
+        argThat(claimSloidRequestModel -> claimSloidRequestModel.getSloidType() == SloidType.PLATFORM && Objects.equals(
+            claimSloidRequestModel.getSloid(), "ch:1:sloid:1400015:0:310240")));
   }
 
   @Test
