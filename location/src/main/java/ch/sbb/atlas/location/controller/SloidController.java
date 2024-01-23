@@ -21,7 +21,7 @@ public class SloidController implements SloidApiV1 {
     String sloid;
     if (request.getSloidType() == SloidType.SERVICE_POINT) {
       sloid = sloidService.getNextAvailableSloid(request.getCountry());
-      sloidService.saveGeneratedToAllocatedSloid(sloid,request.getSloidType());
+      sloidService.saveGeneratedToAllocatedSloid(sloid, request.getSloidType());
     } else {
       final String sloidPrefix = request.getSloidType().getSloidPrefix(request.getSloidPrefix());
       final String seqName = request.getSloidType().getSeqName();
@@ -43,8 +43,9 @@ public class SloidController implements SloidApiV1 {
   }
 
   @Override
-  public ResponseEntity<String> sync() {
-    return ResponseEntity.ok(sloidService.sync());
+  public ResponseEntity<Void> sync() {
+    sloidService.sync();
+    return ResponseEntity.noContent().build();
   }
 
 }

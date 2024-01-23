@@ -2,25 +2,32 @@ package ch.sbb.atlas.location.repository;
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.servicepoint.Country;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
 public class SloidRepository {
 
+  //TODO: use NamedParameterJdbcTemplate
   @Qualifier("locationJdbcTemplate")
   private final JdbcTemplate locationJdbcTemplate;
 
-  public Set<String> getAllocatedSloid(){
+  public Set<String> getAllocatedSloid() {
     return new HashSet<>(locationJdbcTemplate.queryForList("""
-            select distinct (sloid)
-            from allocated_sloid where sloid is not null
-            """, String.class));
+        select distinct (sloid)
+        from allocated_sloid where sloid is not null
+        """, String.class));
   }
 
   public Integer getNextSeqValue(String seqName) {
@@ -37,10 +44,37 @@ public class SloidRepository {
         String.class, country.name());
   }
 
-  //  public int deleteAvailableSloid(String sloid, Country country) {
-  //    return jdbcTemplate.update("delete from available_service_point_sloid where sloid = ? and country = ?;", sloid,
-  //        country.name());
-  //  }
+  public int deleteAllocatedSloid(Set<String> sloids, SloidType sloidType) {
+    NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(locationJdbcTemplate);
+    MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+    mapSqlParameterSource.addValue("sloids", sloids);
+    mapSqlParameterSource.addValue("sloidType", sloidType.name());
+    String sqlQuery = "delete from allocated_sloid where sloid in (:sloids) and sloidType = :sloidType";
+    return namedParameterJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
+  }
+
+  public int deleteAvailableServicePointSloidAlreadyClaimed(Set<String> sloids) {
+    NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(locationJdbcTemplate);
+    MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+    mapSqlParameterSource.addValue("sloids", sloids);
+    String sqlQuery = "delete from available_service_point_sloid where sloid in (:sloids) and claimed = true";
+    return namedParameterJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
+  }
+
+  public int setAvailableSloidToUnclaimedAllocatedSloid(Set<String> sloids) {
+    NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(locationJdbcTemplate);
+    MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+    mapSqlParameterSource.addValue("sloids", sloids);
+    String sqlQuery = "update available_service_point_sloid set claimed = false where sloid in (:sloids)";
+    return namedParameterJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
+  }
+
+  public int setAvailableSloidToUnsed(String sloid, Country country) {
+    return locationJdbcTemplate.update("update available_service_point_sloid set claimed = false where sloid = ? and country = "
+            + "?;",
+        sloid,
+        country.name());
+  }
 
   public int setAvailableSloidToUsed(String sloid, Country country) {
     return locationJdbcTemplate.update("update available_service_point_sloid set claimed = true where sloid = ? and country = ?;",
@@ -48,4 +82,29 @@ public class SloidRepository {
         country.name());
   }
 
+  public int setAvailableSloidToUsed(Set<String> sloids) {
+    NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(locationJdbcTemplate);
+    MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+    mapSqlParameterSource.addValue("sloids", sloids);
+    String sqlQuery = "update available_service_point_sloid set claimed = true where sloid in (:sloids)";
+    return namedParameterJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
+  }
+
+  public void addMissingAllocatedSloid(Set<String> sloidToAdd, SloidType sloidType) {
+    ArrayList<String> sloids = new ArrayList<>(sloidToAdd);
+    String sqlQuery = "insert into allocated_sloid (sloid,sloidType) values (?,?)";
+    locationJdbcTemplate.batchUpdate(sqlQuery, new BatchPreparedStatementSetter() {
+          @Override
+          public void setValues(PreparedStatement ps, int i) throws SQLException {
+            ps.setString(1, sloids.get(i));
+            ps.setString(2, sloidType.name());
+          }
+
+          @Override
+          public int getBatchSize() {
+            return sloids.size();
+          }
+        }
+    );
+  }
 }
