@@ -1220,6 +1220,29 @@
         "ADD_SUCCESS": "Il bordo di fermata è stata aggiunta con successo.",
         "EDIT_SUCCESS": "Il bordo di fermata è stata salvata con successo."
       }
+    },
+    "REFERENCE_POINTS": {
+      "REFERENCE_POINT": "Punto di riferimento",
+      "BUTTON_NEW": "Nuovo punto di riferimento",
+      "NEW": "Nuovo punto di riferimento",
+      "DETAIL_INFORMATION": "Informazioni sul punto di riferimento",
+      "ADDITIONAL_INFORMATION": "Osservazioni sul punto di riferimento",
+      "DESIGNATION": "Denominazione",
+      "TYPE": "Tipo di punto di riferimento",
+      "TYPES": {
+        "MAIN_STATION_ENTRANCE": "Accesso principale",
+        "ALTERNATIVE_STATION_ENTRANCE": "Accesso alla fermata alternativo",
+        "ASSISTANCE_POINT": "Punto d'incontro per l’assistenza",
+        "INFORMATION_DESK": "Sportello informazioni",
+        "PLATFORM": "Marciapiede",
+        "NO_REFERENCE_POINT": "Nessun punto di riferimento"
+      },
+      "MAIN_REFERENCE_POINT": "Punto di riferimento principale",
+      "MAIN_REFERENCE_POINT_INFO": "Per lo scambio di dati internazionale è necessario definire il punto di riferimento principale (solo questo viene trasmesso). \n\nPer periodo è possibile definire un punto di riferimento principale.",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Il punto di riferimento è stato aggiunto con successo.",
+        "EDIT_SUCCESS": "Il punto di riferimento è stato salvato con successo."
+      }
     }
   }
 }
