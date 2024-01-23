@@ -24,6 +24,8 @@ spring:
             client-secret: test
             scope:
               - api://87e6e634-6ba1-4e7a-869d-3348b4c3eafc/.default
+  flyway:
+    locations: skip
 
 auth:
   audience:
