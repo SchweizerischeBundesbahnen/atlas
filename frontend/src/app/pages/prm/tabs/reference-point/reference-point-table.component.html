@@ -1,5 +1,13 @@
 <ng-container *ngIf="isStopPointExisting">
   <div class="tab-detail-container">
+    <atlas-button
+      (buttonClicked)="new()"
+      applicationType="PRM"
+      buttonDataCy="new-reference-point"
+      buttonText="PRM.REFERENCE_POINTS.BUTTON_NEW"
+      buttonType="createCheckingPermission"
+      wrapperStyleClass="mb-3"
+    ></atlas-button>
     <app-table
       data-cy="reference-points-overview-table"
       [tableData]="referencePoints"
