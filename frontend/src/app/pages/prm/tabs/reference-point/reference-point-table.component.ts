@@ -60,4 +60,8 @@ export class ReferencePointTableComponent extends BasePrmTabComponentService imp
   rowClicked(clickedRow: ReadReferencePointVersion) {
     this.router.navigate([clickedRow.sloid], { relativeTo: this.route }).then();
   }
+
+  new() {
+    this.router.navigate(['add'], { relativeTo: this.route }).then();
+  }
 }

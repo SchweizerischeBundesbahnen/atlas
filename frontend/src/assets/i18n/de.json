@@ -1223,6 +1223,7 @@
     },
     "REFERENCE_POINTS": {
       "REFERENCE_POINT": "Referenzpunkt",
+      "BUTTON_NEW": "Neuen Referenzpunkt erfassen",
       "NEW": "Neuer Referenzpunkt",
       "DETAIL_INFORMATION": "Angaben zum Referenzpunkt",
       "ADDITIONAL_INFORMATION": "Hinweise zum Referenzpunkt",
@@ -1237,7 +1238,11 @@
         "NO_REFERENCE_POINT": "Kein Referenzpunkt"
       },
       "MAIN_REFERENCE_POINT": "Hauptreferenzpunkt",
-      "MAIN_REFERENCE_POINT_INFO": "Für den internationalen Datenaustausch ist die Definition des Hauptreferenzpunkts notwendig - nur dieser wird weiterübermittelt.\n\nPro Zeitraum darf es einen definierten Hauptreferenzpunkt geben."
+      "MAIN_REFERENCE_POINT_INFO": "Für den internationalen Datenaustausch ist die Definition des Hauptreferenzpunkts notwendig - nur dieser wird weiterübermittelt.\n\nPro Zeitraum darf es einen definierten Hauptreferenzpunkt geben.",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Der Referenzpunkt wurde erfolgreich hinzugefügt.",
+        "EDIT_SUCCESS": "Der Referenzpunkt wurde erfolgreich gespeichert."
+      }
     }
   }
 }
