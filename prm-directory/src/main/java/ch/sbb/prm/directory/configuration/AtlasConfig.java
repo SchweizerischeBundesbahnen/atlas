@@ -1,7 +1,9 @@
 package ch.sbb.prm.directory.configuration;
 
+import ch.sbb.atlas.api.client.location.LocationClient;
 import ch.sbb.atlas.business.organisation.SharedBusinessOrganisationConfig;
 import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.atlas.versioning.service.VersionableServiceImpl;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -22,6 +24,11 @@ public class AtlasConfig {
   @Bean
   public AtlasExceptionHandler atlasExceptionHandler() {
     return new AtlasExceptionHandler();
+  }
+
+  @Bean
+  public LocationService locationService(LocationClient locationClient) {
+    return new LocationService(locationClient);
   }
 
 }

@@ -1,7 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
-import ch.sbb.atlas.api.location.ClaimSloidRequestModel;
+import ch.sbb.atlas.api.location.GenerateSloidRequestModel;
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
@@ -30,7 +31,6 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import ch.sbb.atlas.servicepointdirectory.service.georeference.JourneyPoiClient;
 import ch.sbb.atlas.api.client.location.LocationClient;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointNumberService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,6 +62,7 @@ import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -77,13 +78,9 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   @MockBean
   private JourneyPoiConfig journeyPoiConfig;
   @MockBean
-  private FeignConfig feignConfig;
-  @MockBean
   private JourneyPoiClient journeyPoiClient;
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
-  @MockBean
-  private ServicePointNumberService servicePointNumberService;
   @MockBean
   private LocationClient locationClient;
 
@@ -102,13 +99,13 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
 
   @BeforeEach
   void createDefaultVersion() {
-    when(servicePointNumberService.getNextAvailableServicePointId(any())).thenReturn(1);
     servicePointVersion = repository.save(ServicePointTestData.getBernWyleregg());
 
     ResponseEntity<ch.sbb.atlas.journey.poi.model.Country> poiResponse =
         ResponseEntity.ofNullable(
             new ch.sbb.atlas.journey.poi.model.Country().countryCode(new CountryCode().isoCountryCode("RO")));
     when(journeyPoiClient.closestCountry(any(), any())).thenReturn(poiResponse);
+    when(locationClient.generateSloid(any())).thenReturn("ch:1:sloid:1");
   }
 
   @AfterEach
@@ -452,7 +449,9 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0].status", is(Status.REVOKED.toString())))
         .andExpect(jsonPath("$[1].status", is(Status.REVOKED.toString())));
 
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel -> generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+            && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
   }
 
   @Test
@@ -622,7 +621,9 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/service-points/versions/" + id + "/skip-workflow"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.status", is(Status.VALIDATED.toString())));
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel -> generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+            && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
   }
 
   @Test
@@ -746,7 +747,9 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.trafficPoint", is(true)))
         .andExpect(jsonPath("$.hasGeolocation", is(true)))
         .andExpect(jsonPath("$.creator", is("e123456")));
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel -> generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+            && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
   }
 
   @Test
@@ -779,7 +782,9 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.operatingPointKilometerMaster.number", is(8500001)))
         .andExpect(jsonPath("$.operatingPointKilometerMaster.numberShort", is(1)))
         .andExpect(jsonPath("$.operatingPointKilometerMaster.checkDigit", is(8)));
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel -> generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+            && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
   }
 
   @Test
@@ -801,7 +806,9 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.operatingPointKilometerMaster.number", is(8589008)))
         .andExpect(jsonPath("$.operatingPointKilometerMaster.numberShort", is(89008)))
         .andExpect(jsonPath("$.operatingPointKilometerMaster.checkDigit", is(7)));
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel -> generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+            && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
   }
 
   @Test
@@ -818,7 +825,9 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.number.numberShort", is(1)))
         .andExpect(jsonPath("$.number.checkDigit", is(8)))
         .andExpect(jsonPath("$." + ServicePointVersionModel.Fields.operatingPointRouteNetwork, is(false)));
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel -> generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+            && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
   }
 
   @Test
@@ -890,7 +899,9 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.trafficPoint", is(true)))
         .andExpect(jsonPath("$.hasGeolocation", is(true)))
         .andExpect(jsonPath("$.creator", is("e123456")));
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel -> generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+            && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
   }
 
   @Test
@@ -930,7 +941,9 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[2].servicePointGeolocation.lv95.east", is(2600783.0)))
         .andExpect(jsonPath("$[2].servicePointGeolocation.wgs84.north", is(46.96096808019)))
         .andExpect(jsonPath("$[2].servicePointGeolocation.wgs84.east", is(7.44891972221)));
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel -> generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+            && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
   }
 
   @Test
@@ -955,7 +968,9 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.details.[0].message", endsWith(
             "OperatingPointRouteNetwork true is allowed only for StopPoint, ControlPoint and OperatingPoint." +
                 " OperatingPointKilometerMasterNumber can be set only for StopPoint, ControlPoint and OperatingPoint.")));
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel -> generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+            && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
   }
 
   @Test
@@ -976,7 +991,9 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(newServicePointVersionModel)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel -> generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+            && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
   }
 
   @Test
@@ -999,7 +1016,9 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0].operatingPointKilometerMaster.numberShort", is(1)))
         .andExpect(jsonPath("$[0].operatingPointKilometerMaster.checkDigit", is(8)))
         .andExpect(jsonPath("$", hasSize(1)));
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel -> generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+            && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
   }
 
   @Test
@@ -1018,7 +1037,9 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(newServicePointVersionModel)))
         .andExpect(status().is4xxClientError());
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel -> generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+            && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
   }
 
   @Test
@@ -1088,7 +1109,9 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     assertThat(errorResponse.getDetails().first().getDisplayInfo().getCode()).isEqualTo(
         "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR");
     assertThat(errorResponse.getError()).isEqualTo("Stale object state error");
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel -> generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+            && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
   }
 
   @Test
@@ -1141,7 +1164,9 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.servicePointGeolocation.lv03.north", is(199776.88044)))
         .andExpect(jsonPath("$.servicePointGeolocation.lv03.east", is(600127.58303)))
         .andExpect(jsonPath("$.hasGeolocation", is(true)));
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel -> generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+            && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
   }
 
   @Test
@@ -1166,7 +1191,9 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.servicePointGeolocation.lv95.east", is(2600127.58359)))
         .andExpect(jsonPath("$.servicePointGeolocation.lv95.north", is(1199776.88159)))
         .andExpect(jsonPath("$.hasGeolocation", is(true)));
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel -> generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+            && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
   }
 
   @Test
@@ -1186,7 +1213,9 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.number.number", is(8500001)))
         .andExpect(jsonPath("$.sloid", is("ch:1:sloid:1")));
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel -> generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+            && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
   }
 
   @Test
@@ -1205,7 +1234,9 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
         .andExpect(status().isBadRequest());
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel -> generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+            && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
   }
 
   @Test
@@ -1226,7 +1257,9 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(aargauServicePoint)))
         .andExpect(status().isForbidden());
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel -> generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+            && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
   }
 
   @Test
@@ -1247,7 +1280,9 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(buchsiServicePoint)))
         .andExpect(status().isForbidden());
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:1")));
+    verify(locationClient, times(1)).generateSloid(
+        argThat(generateSloidRequestModel -> generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
+            && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
   }
 
 }

@@ -1,9 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
-import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
-import ch.sbb.atlas.exception.SloidAlreadyExistsException;
 import ch.sbb.atlas.service.OverviewService;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -13,13 +11,12 @@ import ch.sbb.atlas.servicepointdirectory.mapper.TrafficPointElementVersionMappe
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
-import ch.sbb.atlas.servicepointdirectory.service.LocationService;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoAdminHeightResponse;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
-import feign.FeignException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -55,10 +52,6 @@ public class TrafficPointElementService {
     this.locationService = locationService;
   }
 
-  public void claimSloid(String sloid) throws FeignException {
-    locationService.claimSloid(SloidType.PLATFORM, sloid);
-  }
-
   public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
     return trafficPointElementVersionRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
@@ -85,20 +78,13 @@ public class TrafficPointElementService {
   public TrafficPointElementVersion create(TrafficPointElementVersion trafficPointElementVersion,
       List<ServicePointVersion> servicePointVersions) {
     if (trafficPointElementVersion.getSloid() != null) {
-      try {
-        claimSloid(trafficPointElementVersion.getSloid());
-      } catch (FeignException e) {
-        throw new SloidAlreadyExistsException(trafficPointElementVersion.getSloid());
-      }
+      locationService.claimSloid(LocationService.getSloidType(trafficPointElementVersion.getTrafficPointElementType()),
+          trafficPointElementVersion.getSloid());
     } else {
-      try {
-        trafficPointElementVersion.setSloid(
-            locationService.generateTrafficPointSloid(trafficPointElementVersion.getTrafficPointElementType(),
-                trafficPointElementVersion.getServicePointNumber())
-        );
-      } catch (FeignException e) {
-        throw new RuntimeException("Unexpected Exception occurred during generation of sloid.");
-      }
+      trafficPointElementVersion.setSloid(
+          locationService.generateTrafficPointSloid(trafficPointElementVersion.getTrafficPointElementType(),
+              trafficPointElementVersion.getServicePointNumber())
+      );
     }
     return trafficPointElementVersionRepository.saveAndFlush(trafficPointElementVersion);
   }
