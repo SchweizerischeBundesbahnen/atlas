@@ -150,6 +150,9 @@
          <testResource>
             <directory>src/test/resources</directory>
             <filtering>true</filtering>
+            <excludes>
+               <exclude>migration/**/*.zip</exclude>
+            </excludes>
          </testResource>
       </testResources>
       <extensions>
