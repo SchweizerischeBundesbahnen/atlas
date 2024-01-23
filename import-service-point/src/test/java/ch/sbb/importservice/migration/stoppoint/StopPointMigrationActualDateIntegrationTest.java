@@ -30,7 +30,7 @@ class StopPointMigrationActualDateIntegrationTest {
 
   private static final String DIDOK_STOP_PLACE_CSV_FILE = "PRM_STOP_PLACES_20240123013510.csv";
   private static final String ATLAS_STOP_POINT_CSV_FILE = "actual-date-stop-point-2024-01-23.csv";
-  private static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 10, 23);
+  private static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 1, 23);
 
   private static final List<StopPointCsvModel> didokStopPointCsvLines = new ArrayList<>();
   private static final List<StopPointVersionCsvModel> atlasStopPointCsvLines = new ArrayList<>();
