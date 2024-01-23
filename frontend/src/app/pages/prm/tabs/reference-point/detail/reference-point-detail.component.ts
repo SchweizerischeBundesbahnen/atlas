@@ -120,7 +120,7 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
     this.personWithReducedMobilityService
       .createReferencePoint(referencePointVersion)
       .subscribe(() => {
-        this.notificationService.success('PRM.PLATFORMS.NOTIFICATION.ADD_SUCCESS');
+        this.notificationService.success('PRM.REFERENCE_POINTS.NOTIFICATION.ADD_SUCCESS');
         this.reloadPage();
       });
   }
@@ -129,7 +129,7 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
     this.personWithReducedMobilityService
       .updateReferencePoint(this.selectedVersion.id!, referencePointVersion)
       .subscribe(() => {
-        this.notificationService.success('PRM.PLATFORMS.NOTIFICATION.EDIT_SUCCESS');
+        this.notificationService.success('PRM.REFERENCE_POINTS.NOTIFICATION.EDIT_SUCCESS');
         this.reloadPage();
       });
   }
