@@ -1,6 +1,6 @@
 import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
 import { inject, Injectable } from '@angular/core';
-import { catchError, Observable } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 import {
   PersonWithReducedMobilityService,
   ReadPlatformVersion,
@@ -17,15 +17,17 @@ export class PrmReferencePointResolver {
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadReferencePointVersion>> {
     const sloidParameter = route.paramMap.get('sloid') || '';
-    return this.personWithReducedMobilityService.getReferencePointVersions(sloidParameter).pipe(
-      catchError(() =>
-        this.router
-          .navigate([Pages.PRM.path], {
-            state: { notDismissSnackBar: true },
-          })
-          .then(() => []),
-      ),
-    );
+    return sloidParameter === 'add'
+      ? of([])
+      : this.personWithReducedMobilityService.getReferencePointVersions(sloidParameter).pipe(
+          catchError(() =>
+            this.router
+              .navigate([Pages.PRM.path], {
+                state: { notDismissSnackBar: true },
+              })
+              .then(() => []),
+          ),
+        );
   }
 }
 
