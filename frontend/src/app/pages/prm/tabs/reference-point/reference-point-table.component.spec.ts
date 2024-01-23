@@ -3,11 +3,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReferencePointTableComponent } from './reference-point-table.component';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ActivatedRoute } from '@angular/router';
-import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
+import { MockAtlasButtonComponent, MockTableComponent } from '../../../../app.testing.mocks';
 import { STOP_POINT } from '../../util/stop-point-test-data.spec';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 
-describe('ReferencePointComponent', () => {
+describe('ReferencePointTableComponent', () => {
   let component: ReferencePointTableComponent;
   let fixture: ComponentFixture<ReferencePointTableComponent>;
   const activatedRouteMock = {
@@ -16,7 +16,7 @@ describe('ReferencePointComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ReferencePointTableComponent, MockAtlasButtonComponent],
+      declarations: [ReferencePointTableComponent, MockAtlasButtonComponent, MockTableComponent],
       imports: [AppTestingModule],
       providers: [{ provide: ActivatedRoute, useValue: activatedRouteMock }],
     });
