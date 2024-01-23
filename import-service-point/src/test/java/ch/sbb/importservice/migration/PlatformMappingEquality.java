@@ -73,7 +73,7 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
     }
     if (atlasCsvLine.getPartialElevation() != null && didokCsvLine.getPartialElev() != null) {
       assertThat(atlasCsvLine.getPartialElevation()).isEqualTo(
-              StandardAttributeType.from(didokCsvLine.getPartialElev()).toString());
+              Boolean.valueOf(didokCsvLine.getPartialElev().toString()));
     }
     if (atlasCsvLine.getSuperElevation() != null && didokCsvLine.getSuperelevation() != null) {
       assertThat(atlasCsvLine.getSuperElevation()).isEqualTo(

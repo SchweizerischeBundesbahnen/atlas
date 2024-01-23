@@ -16,7 +16,7 @@ public class MigrationUtil {
     return Integer.parseInt(didokCodeAsString.substring(0, didokCodeAsString.length() - 1));
   }
 
-  public static int removeCheckDigitDidokPlatform(PlatformCsvModel platformCsvModel) {
+  public static int removeCheckDigit(PlatformCsvModel platformCsvModel) {
     return removeCheckDigit(platformCsvModel.getDidokCode());
   }
 }
