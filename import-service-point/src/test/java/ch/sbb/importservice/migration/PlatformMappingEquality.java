@@ -34,7 +34,8 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
           StandardAttributeType.from(didokCsvLine.getBoardingDevice()).toString());
     }
     if(atlasCsvLine.getAdditionalInformation() != null && didokCsvLine.getInfos() != null){
-      assertThat(atlasCsvLine.getAdditionalInformation()).isEqualTo(didokCsvLine.getInfos());
+      String didokInfos = didokCsvLine.getInfos().replaceAll("\r\n|\r|\n", " ");
+      assertThat(atlasCsvLine.getAdditionalInformation()).isEqualTo(didokInfos);
     }
     if (atlasCsvLine.getAdviceAccessInfo() != null && didokCsvLine.getAccessInfo() != null) {
       assertThat(atlasCsvLine.getAdviceAccessInfo()).isEqualTo(didokCsvLine.getAccessInfo());
