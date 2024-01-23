@@ -13,37 +13,36 @@ import java.util.zip.ZipInputStream;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class MigrationTestsHelper {
 
+    private static final int BUFFER_SIZE = 8192; // 8 KB
+
     public static void unzipFile(String fileZipPath, String destinationDirectoryPath) throws IOException {
         File destinationDirectory = new File(destinationDirectoryPath);
 
-        byte[] buffer = new byte[1024];
-        ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(fileZipPath));
-        ZipEntry zipEntry = zipInputStream.getNextEntry();
-        while (zipEntry != null) {
-            File newFile = newFile(destinationDirectory, zipEntry);
-            if (zipEntry.isDirectory()) {
-                if (!newFile.isDirectory() && !newFile.mkdirs()) {
-                    throw new IOException("Failed to create directory " + newFile);
-                }
-            } else {
-                // fix for Windows-created archives
-                File parent = newFile.getParentFile();
-                if (!parent.isDirectory() && !parent.mkdirs()) {
-                    throw new IOException("Failed to create directory " + parent);
-                }
+        try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(fileZipPath))) {
+            byte[] buffer = new byte[BUFFER_SIZE];
+            ZipEntry zipEntry = zipInputStream.getNextEntry();
+            while (zipEntry != null) {
+                File newFile = newFile(destinationDirectory, zipEntry);
+                if (zipEntry.isDirectory()) {
+                    if (!newFile.isDirectory() && !newFile.mkdirs()) {
+                        throw new IOException("Failed to create directory " + newFile);
+                    }
+                } else {
+                    File parent = newFile.getParentFile();
+                    if (!parent.isDirectory() && !parent.mkdirs()) {
+                        throw new IOException("Failed to create directory " + parent);
+                    }
 
-                // write file content
-                FileOutputStream fileOutputStream = new FileOutputStream(newFile);
-                int length;
-                while ((length = zipInputStream.read(buffer)) > 0) {
-                    fileOutputStream.write(buffer, 0, length);
+                    try (FileOutputStream fileOutputStream = new FileOutputStream(newFile)) {
+                        int length;
+                        while ((length = zipInputStream.read(buffer)) > 0) {
+                            fileOutputStream.write(buffer, 0, length);
+                        }
+                    }
                 }
-                fileOutputStream.close();
+                zipEntry = zipInputStream.getNextEntry();
             }
-            zipEntry = zipInputStream.getNextEntry();
         }
-        zipInputStream.closeEntry();
-        zipInputStream.close();
     }
 
     public static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
