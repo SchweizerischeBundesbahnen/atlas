@@ -42,7 +42,7 @@ public final class GenerateSloidRequestModel {
         country));
   }
 
-  @AssertTrue(message = "")
+  @AssertTrue(message = "When SloidType = PLATFORM or AREA, the sloidPrefix must be set")
   public boolean isSloidPrefixSet() {
     if (sloidType == SloidType.PLATFORM || sloidType == SloidType.AREA) {
       return sloidPrefix != null;
