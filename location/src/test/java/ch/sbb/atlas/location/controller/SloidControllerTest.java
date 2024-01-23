@@ -30,7 +30,7 @@ class SloidControllerTest extends BaseControllerApiTest {
   void generateSloid_shouldThrowWhenServicePointNoCountry() throws Exception {
     mvc.perform(post("/v1/sloid/generate").contentType(MediaType.APPLICATION_JSON).content("{\"sloidType\": \"SERVICE_POINT\"}"))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("When SloidType = SERVICE_POINT, the country has to be one of code: 85 or 11-14")));
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")));
   }
 
   @Test
@@ -53,7 +53,7 @@ class SloidControllerTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/sloid/generate").contentType(MediaType.APPLICATION_JSON)
             .content("{\"sloidType\": \"AREA\"}"))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("When SloidType = PLATFORM or AREA, the sloidPrefix must be set")));
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")));
   }
 
   @Test
@@ -97,7 +97,7 @@ class SloidControllerTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/sloid/claim").contentType(MediaType.APPLICATION_JSON).content("{\"sloidType\": \"SERVICE_POINT\", "
             + "\"sloid\": \"ch:1:sloid:7000\"}"))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("When SloidType = SERVICE_POINT, the country has to be one of code: 85 or 11-14")));
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")));
   }
 
   @Test
@@ -126,7 +126,7 @@ class SloidControllerTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/sloid/claim").contentType(MediaType.APPLICATION_JSON).content("{\"sloidType\": \"AREA\", "
             + "\"sloid\": \"ch:1:sloid:7000:1\"}"))
         .andExpect(status().isConflict())
-        .andExpect(jsonPath("$", is("ch:1:sloid:7000:1 is already used")));
+        .andExpect(jsonPath("$", is("ch:1:sloid:7000:1 is not available")));
   }
 
   /** sloid validation */
@@ -135,7 +135,7 @@ class SloidControllerTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/sloid/claim").contentType(MediaType.APPLICATION_JSON).content("{\"sloidType\": \"SERVICE_POINT\", "
             + "\"sloid\": \"ch:1:sloid:7000:1\", \"country\": \"SWITZERLAND\"}"))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Sloid not valid for provided sloidType")));
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")));
   }
 
   @Test
@@ -143,7 +143,7 @@ class SloidControllerTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/sloid/claim").contentType(MediaType.APPLICATION_JSON).content("{\"sloidType\": \"AREA\", "
             + "\"sloid\": \"ch:1:sloid:7000\"}"))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Sloid not valid for provided sloidType")));
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")));
   }
 
   @Test
@@ -151,7 +151,7 @@ class SloidControllerTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/sloid/claim").contentType(MediaType.APPLICATION_JSON).content("{\"sloidType\": \"PLATFORM\", "
             + "\"sloid\": \"ch:1:sloid:7000:1\"}"))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Sloid not valid for provided sloidType")));
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")));
   }
 
 }

@@ -1,11 +1,11 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import ch.sbb.atlas.api.location.ClaimSloidRequestModel;
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -83,8 +84,12 @@ class TrafficPointElementImportServiceTest {
         trafficPointCsvModelContainers);
 
     //then
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:700012:123:123")));
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:700012:432:422")));
+    verify(locationClient, times(1)).claimSloid(
+        argThat(claimSloidRequestModel -> claimSloidRequestModel.getSloidType() == SloidType.PLATFORM && Objects.equals(
+            claimSloidRequestModel.getSloid(), "ch:1:sloid:700012:123:123")));
+    verify(locationClient, times(1)).claimSloid(
+        argThat(claimSloidRequestModel -> claimSloidRequestModel.getSloidType() == SloidType.PLATFORM && Objects.equals(
+            claimSloidRequestModel.getSloid(), "ch:1:sloid:700012:432:422")));
 
     assertThat(trafficPointItemImportResults).hasSize(4);
     List<TrafficPointElementVersion> resultFirstContainer = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
@@ -132,7 +137,9 @@ class TrafficPointElementImportServiceTest {
         trafficPointCsvModelContainersMerged);
 
     // then
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:700012:123:123")));
+    verify(locationClient, times(1)).claimSloid(
+        argThat(claimSloidRequestModel -> claimSloidRequestModel.getSloidType() == SloidType.PLATFORM && Objects.equals(
+            claimSloidRequestModel.getSloid(), "ch:1:sloid:700012:123:123")));
 
     assertThat(trafficPointItemImportResults).hasSize(4);
     List<TrafficPointElementVersion> allBySloidOrderByValidFrom =
@@ -257,7 +264,9 @@ class TrafficPointElementImportServiceTest {
         trafficPointCsvModelContainersSecondRun);
 
     // then
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:700012:123:123")));
+    verify(locationClient, times(1)).claimSloid(
+        argThat(claimSloidRequestModel -> claimSloidRequestModel.getSloidType() == SloidType.PLATFORM && Objects.equals(
+            claimSloidRequestModel.getSloid(), "ch:1:sloid:700012:123:123")));
 
     assertThat(trafficPointItemImportResults).hasSize(1);
 
