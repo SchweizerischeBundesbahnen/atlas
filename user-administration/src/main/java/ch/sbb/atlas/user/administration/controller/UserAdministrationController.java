@@ -138,8 +138,7 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
   @Override
   public void syncPermissions() {
     log.info("Starting to sync each permission to kafka topic");
-    ClientCredentialMapper.toModel(clientCredentialAdministrationService.getClientCredentialPermissions(Pageable.unpaged())
-            .getContent())
+    ClientCredentialMapper.toModel(clientCredentialAdministrationService.getClientCredentialPermissions())
         .forEach(clientCredentialPermission -> userPermissionDistributor.pushUserPermissionToKafka(
             KafkaModelMapper.toKafkaModel(clientCredentialPermission)));
     log.info("ClientCredentials were synched to kafka");
