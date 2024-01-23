@@ -1220,6 +1220,29 @@
         "ADD_SUCCESS": "Le bordure d’arrêt a été ajouté avec succès.",
         "EDIT_SUCCESS": "Le bordure d’arrêt a été enregistré avec succès."
       }
+    },
+    "REFERENCE_POINTS": {
+      "REFERENCE_POINT": "Point de référence",
+      "BUTTON_NEW": "Ajouter un nouveau point de référence",
+      "NEW": "Nouveau point de référence",
+      "DETAIL_INFORMATION": "Données relatives au point de référence",
+      "ADDITIONAL_INFORMATION": "Remarques sur le point de référence",
+      "DESIGNATION": "Désignation",
+      "TYPE": "Type du point de référence",
+      "TYPES": {
+        "MAIN_STATION_ENTRANCE": "Entrée principale",
+        "ALTERNATIVE_STATION_ENTRANCE": "Entrée alternative",
+        "ASSISTANCE_POINT": "Point de rencontre pour l’assistance",
+        "INFORMATION_DESK": "Guichet d’information",
+        "PLATFORM": "Quai",
+        "NO_REFERENCE_POINT": "Pas de point de référence"
+      },
+      "MAIN_REFERENCE_POINT": "Point de référence principal",
+      "MAIN_REFERENCE_POINT_INFO": "La définition du point de référence principal est nécessaire pour l’échange international de données. Seul ce point de référence est transmis. \n\nIl peut y avoir un point de référence principal défini par période.",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Le point de référence a été ajouté avec succès.",
+        "EDIT_SUCCESS": "Le point de référence a été enregistré avec succès."
+      }
     }
   }
 }
