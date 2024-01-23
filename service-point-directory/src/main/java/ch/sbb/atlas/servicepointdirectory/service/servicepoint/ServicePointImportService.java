@@ -15,6 +15,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoloca
 import ch.sbb.atlas.servicepointdirectory.exception.HeightNotCalculatableException;
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportServicePointDirectoryService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoAdminHeightResponse;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
@@ -47,6 +48,7 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
   private final ServicePointFotCommentService servicePointFotCommentService;
   private final ServicePointDistributor servicePointDistributor;
   private final GeoReferenceService geoReferenceService;
+  private final LocationService locationService;
 
   @Override
   protected void save(ServicePointVersion servicePointVersion) {
@@ -161,7 +163,7 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
     List<Exception> warnings = new ArrayList<>();
     getHeightForServicePointImport(servicePointVersion, warnings);
     try {
-      servicePointService.claimSloid(servicePointVersion.getSloid(),servicePointVersion.getNumber().getCountry());
+      locationService.claimServicePointSloid(servicePointVersion.getSloid(), servicePointVersion.getNumber().getCountry());
       servicePointService.saveWithoutValidationForImportOnly(servicePointVersion, servicePointVersion.getStatus());
     } catch (Exception exception) {
       log.error("[Service-Point Import]: Error during save", exception);
