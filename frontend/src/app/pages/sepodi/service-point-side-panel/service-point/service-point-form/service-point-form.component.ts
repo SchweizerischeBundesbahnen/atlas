@@ -105,8 +105,12 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
                 canton: geoReference.swissCanton,
                 municipalityName: geoReference.swissMunicipalityName,
                 localityName: geoReference.swissLocalityName,
+                height: geoReference.height,
               })),
             );
+          this.locationInformation$.subscribe((value) => {
+            this.form?.controls.servicePointGeolocation?.controls.height.setValue(value.height);
+          });
         }
       });
     }
