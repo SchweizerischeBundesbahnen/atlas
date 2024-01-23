@@ -191,9 +191,18 @@ export class Pages {
     title: 'PRM.PLATFORMS.TITLE',
     titleMenu: 'PAGES.PLATFORMS.TITLE_HEADER',
     headerTitle: 'PAGES.PLATFORMS.TITLE_HEADER',
-    path: 'platform',
+    path: 'platforms',
     pathText: 'PAGES.PLATFORMS.TITLE_HEADER',
     description: 'PAGES.PLATFORMS.DESCRIPTION',
+  };
+
+  public static REFERENCE_POINT: Page = {
+    title: 'PRM.REFERENCE_POINTS.TITLE',
+    titleMenu: 'PAGES.REFERENCE_POINTS.TITLE_HEADER',
+    headerTitle: 'PAGES.REFERENCE_POINTS.TITLE_HEADER',
+    path: 'reference-points',
+    pathText: 'PAGES.REFERENCE_POINTS.TITLE_HEADER',
+    description: 'PAGES.REFERENCE_POINTS.DESCRIPTION',
   };
 
   public static PRM_STOP_POINT_TAB: Page = {

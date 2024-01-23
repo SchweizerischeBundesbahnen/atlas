@@ -4,7 +4,7 @@ import { Pages } from '../pages';
 import { PrmHomeSearchComponent } from './prm-home-search/prm-home-search.component';
 import { PrmPanelComponent } from './prm-panel/prm-panel.component';
 import { StopPointDetailComponent } from './tabs/stop-point/detail/stop-point-detail.component';
-import { ReferencePointComponent } from './tabs/reference-point/reference-point.component';
+import { ReferencePointTableComponent } from './tabs/reference-point/reference-point-table.component';
 import { PlatformTableComponent } from './tabs/platform/platform-table.component';
 import { TicketCounterComponent } from './tabs/ticket-counter/ticket-counter.component';
 import { InformationDeskComponent } from './tabs/information-desk/information-desk.component';
@@ -18,6 +18,8 @@ import { prmPanelResolver } from './prm-panel/resolvers/prm-panel-resolver.servi
 import { platformResolver } from './tabs/platform/detail/resolvers/platform.resolver';
 import { trafficPointElementResolver } from './tabs/platform/detail/resolvers/traffic-point-element.resolver';
 import { PlatformDetailComponent } from './tabs/platform/detail/platform-detail.component';
+import { ReferencePointDetailComponent } from './tabs/reference-point/detail/reference-point-detail.component';
+import { referencePointResolver } from './tabs/reference-point/detail/resolvers/reference-point.resolver';
 
 const routes: Routes = [
   {
@@ -37,6 +39,16 @@ const routes: Routes = [
     },
   },
   {
+    path: Pages.STOP_POINTS.path + '/:stopPointSloid/' + Pages.REFERENCE_POINT.path + '/:sloid',
+    component: ReferencePointDetailComponent,
+    runGuardsAndResolvers: 'always',
+    canDeactivate: [canLeaveDirtyForm],
+    resolve: {
+      referencePoint: referencePointResolver,
+      servicePoint: prmPanelResolver,
+    },
+  },
+  {
     path: Pages.STOP_POINTS.path + '/:stopPointSloid',
     component: PrmPanelComponent,
     resolve: { stopPoints: stopPointResolver, servicePoints: prmPanelResolver },
@@ -50,7 +62,7 @@ const routes: Routes = [
       },
       {
         path: PrmTabs.REFERENCE_POINT.link,
-        component: ReferencePointComponent,
+        component: ReferencePointTableComponent,
         runGuardsAndResolvers: 'always',
       },
       {
