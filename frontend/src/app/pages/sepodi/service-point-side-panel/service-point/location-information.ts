@@ -5,4 +5,5 @@ export interface LocationInformation {
   canton?: SwissCanton;
   municipalityName?: string;
   localityName?: string;
+  height?: number;
 }
