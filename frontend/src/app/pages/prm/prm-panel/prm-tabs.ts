@@ -6,34 +6,34 @@ export const PrmTabs = {
     title: Pages.PRM_STOP_POINT_TAB.title,
   },
   REFERENCE_POINT: {
-    link: 'reference-point',
+    link: 'reference-points',
     title: 'PRM.TABS.REFERENCE_POINT',
   },
   PLATFORM: {
-    link: 'platform',
+    link: 'platforms',
     title: 'PRM.TABS.PLATFORM',
   },
 
   TICKET_COUNTER: {
-    link: 'ticket-counter',
+    link: 'ticket-counters',
     title: 'PRM.TABS.TICKET_COUNTER',
   },
 
   INFORMATION_DESK: {
-    link: 'information-desk',
+    link: 'information-desks',
     title: 'PRM.TABS.INFORMATION_DESK',
   },
 
   TOILET: {
-    link: 'toilet',
+    link: 'toilets',
     title: 'PRM.TABS.TOILET',
   },
   PARKING_LOT: {
-    link: 'parking-lot',
+    link: 'parking-lots',
     title: 'PRM.TABS.PARKING_LOT',
   },
   CONNECTION: {
-    link: 'connection',
+    link: 'connections',
     title: 'PRM.TABS.CONNECTION',
   },
 };

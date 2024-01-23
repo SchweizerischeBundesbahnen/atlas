@@ -63,6 +63,6 @@ export interface ReferencePointVersion {
   /**
    * Main reference point
    */
-  mainReferencePoint: boolean;
+  mainReferencePoint?: boolean;
   referencePointType: ReferencePointAttributeType;
 }

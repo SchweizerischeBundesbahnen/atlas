@@ -1,0 +1,56 @@
+<div class="col-12 d-flex mt-4">
+  <div class="d-flex flex-column col-6">
+    <atlas-text-field
+      [fieldExamples]="[
+        { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
+      ]"
+      [required]="true"
+      [formGroup]="form"
+      controlName="designation"
+      fieldLabel="PRM.REFERENCE_POINTS.DESIGNATION"
+    >
+    </atlas-text-field>
+  </div>
+</div>
+<div class="col-6 pb-3 mt-4">
+  <h2 class="font-bold-2xl color-gray-900">
+    {{ 'FORM.KEY_DATA' | translate }}
+  </h2>
+  <form-date-range [formGroup]="form"></form-date-range>
+</div>
+<h2 class="font-bold-2xl color-gray-900 mt-3">
+  {{ 'FORM.SUPPLEMENTARY_INFORMATION' | translate }}
+</h2>
+<div class="col-12 d-flex mt-4">
+  <div class="d-flex flex-column col-6">
+    <atlas-select
+      [formGroup]="form"
+      controlName="referencePointType"
+      dataCy="referencePointType"
+      label="PRM.REFERENCE_POINTS.TYPE"
+      optionTranslateLabelPrefix="PRM.REFERENCE_POINTS.TYPES."
+      [options]="referencePointTypes"
+      [additionalLabelspace]="0"
+    >
+    </atlas-select>
+  </div>
+  <div class="d-flex flex-column col-6 pt-4 ps-5" [formGroup]="form">
+    <mat-checkbox formControlName="mainReferencePoint" data-cy="mainReferencePoint">
+      {{ 'PRM.REFERENCE_POINTS.MAIN_REFERENCE_POINT' | translate }}
+      <form-info-icon
+        infoTitle="{{ 'PRM.REFERENCE_POINTS.MAIN_REFERENCE_POINT_INFO' | translate }}"
+      ></form-info-icon>
+    </mat-checkbox>
+    <app-atlas-field-error [form]="form" controlName="mainReferencePoint"></app-atlas-field-error>
+  </div>
+</div>
+<div class="col-12 d-flex mt-4">
+  <div class="d-flex flex-column col-6">
+    <form-comment
+      [formGroup]="form"
+      label="PRM.REFERENCE_POINTS.ADDITIONAL_INFORMATION"
+      controlName="additionalInformation"
+      maxChars="2000"
+    ></form-comment>
+  </div>
+</div>
