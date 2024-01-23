@@ -21,6 +21,13 @@
       <div class="font-bold-3xl mb-3" *ngIf="isNew">
         {{ 'PRM.REFERENCE_POINTS.NEW' | translate }}
       </div>
+      <div class="new-sloid d-flex flex-column" *ngIf="isNew">
+        <atlas-sloid
+          [formGroup]="form"
+          [givenParts]="servicePointNumberPartForSloid"
+          [numberColons]="0"
+        ></atlas-sloid>
+      </div>
       <div class="col-12 d-flex mt-3 mb-5" *ngIf="showVersionSwitch">
         <div class="d-flex flex-column pe-3">
           <app-switch-version
