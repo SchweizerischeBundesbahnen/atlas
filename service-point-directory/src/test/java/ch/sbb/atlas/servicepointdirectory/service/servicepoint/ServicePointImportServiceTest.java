@@ -1,5 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.imports.ItemImportResult;
@@ -13,16 +15,7 @@ import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
-import ch.sbb.atlas.servicepointdirectory.repository.ServicePointNumberRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.util.Pair;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -31,8 +24,12 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.util.Pair;
+import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
@@ -45,9 +42,6 @@ class ServicePointImportServiceTest {
   // required for test functionality
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
-
-  @MockBean
-  private ServicePointNumberRepository servicePointNumberRepository;
 
   private final ServicePointImportService servicePointImportService;
   private final ServicePointVersionRepository servicePointVersionRepository;
@@ -94,9 +88,6 @@ class ServicePointImportServiceTest {
 
     // when
     servicePointImportService.importServicePoints(containers);
-
-    // then
-    Mockito.verify(servicePointNumberRepository).deleteAvailableNumber(7000, "SWITZERLAND");
   }
 
   @Test

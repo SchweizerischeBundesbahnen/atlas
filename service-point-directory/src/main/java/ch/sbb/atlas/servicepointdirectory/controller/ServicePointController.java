@@ -23,7 +23,7 @@ import ch.sbb.atlas.servicepointdirectory.exception.ServicePointStatusChangeNotA
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointFotCommentMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
-import ch.sbb.atlas.servicepointdirectory.service.LocationService;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
@@ -132,14 +132,14 @@ public class ServicePointController implements ServicePointApiV1 {
     ServicePointVersion servicePointVersion;
 
     if (createServicePointVersionModel.shouldGenerateServicePointNumber()) {
-      //case 85,11-14
+      // case 85,11-14
       String generatedSloid = locationService.generateSloid(SloidType.SERVICE_POINT, createServicePointVersionModel.getCountry());
       log.info("Generated new SLOID={}", generatedSloid);
       ServicePointNumber servicePointNumber = SloidHelper.getServicePointNumber(generatedSloid);
       log.info("Generated new service point number={}", servicePointNumber);
       servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel, servicePointNumber);
     } else {
-      //case not swiss
+      // case foreign country
       ServicePointNumber manualServicePointNumber = ServicePointNumber.of(createServicePointVersionModel.getCountry(),
           createServicePointVersionModel.getNumberShort());
       if (servicePointService.isServicePointNumberExisting(manualServicePointNumber)) {

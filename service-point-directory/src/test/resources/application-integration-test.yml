@@ -82,3 +82,8 @@ kafka:
 journeyPoi:
   client:
     url: https://journey-pois-int.api.sbb.ch:443
+
+atlas:
+  client:
+    gateway:
+      url: http://localhost:8888

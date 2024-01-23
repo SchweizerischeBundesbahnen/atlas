@@ -1,12 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
-import ch.sbb.atlas.api.client.location.LocationClient;
-import ch.sbb.atlas.api.location.GenerateSloidRequestModel;
-import ch.sbb.atlas.api.location.SloidType;
-import ch.sbb.atlas.exception.SloidAlreadyExistsException;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.service.UserService;
-import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
@@ -15,7 +10,6 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
-import feign.FeignException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -43,13 +37,6 @@ public class ServicePointService {
   private final ServicePointSearchVersionRepository servicePointSearchVersionRepository;
   private final ServicePointTerminationService servicePointTerminationService;
   private final ServicePointStatusDecider servicePointStatusDecider;
-  private final LocationClient locationClient;
-
-  public void claimSloid(String sloid, Country country) throws FeignException {
-    if (sloid != null) {
-      locationClient.generateSloid(new GenerateSloidRequestModel(SloidType.SERVICE_POINT,sloid, country));
-    }
-  }
 
   public List<ServicePointSearchResult> searchServicePointVersion(String value) {
     List<ServicePointSearchResult> servicePointSearchResults = servicePointSearchVersionRepository.searchServicePoints(value);
@@ -113,12 +100,6 @@ public class ServicePointService {
       Optional<ServicePointVersion> currentVersion,
       List<ServicePointVersion> currentVersions) {
     preSaveChecks(servicePointVersion, currentVersion, currentVersions);
-    try {
-      claimSloid(servicePointVersion.getSloid(), servicePointVersion.getNumber().getCountry());
-    } catch (FeignException e) {
-      log.error(e.getMessage());
-      throw new SloidAlreadyExistsException(servicePointVersion.getSloid());
-    }
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
