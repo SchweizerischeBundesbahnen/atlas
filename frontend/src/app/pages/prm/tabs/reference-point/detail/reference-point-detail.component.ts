@@ -55,8 +55,7 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
 
     this.isNew = this.referencePoint.length === 0;
 
-    if (this.isNew) {
-    } else {
+    if (!this.isNew) {
       VersionsHandlingService.addVersionNumbers(this.referencePoint);
       this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.referencePoint);
       this.maxValidity = VersionsHandlingService.getMaxValidity(this.referencePoint);
@@ -87,7 +86,7 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
     ];
   }
 
-  buildServicePointNumberPartForSloid() {
+  private buildServicePointNumberPartForSloid() {
     const numberAsString = String(this.servicePoint.number.number);
     if (numberAsString.startsWith(String(Countries.fromCountry(Country.Switzerland)!.uicCode!))) {
       return String(this.servicePoint.number.number % 100000);
