@@ -32,9 +32,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PlatformMigrationActualDateIntegrationTest {
 
-  private static final String DIDOK_PLATFORM_CSV_FILE = "PRM_PLATFORMS_20240117013658.csv";
-  private static final String ATLAS_PLATFORM_CSV_FILE = "actual-date-platform-2024-01-17.csv";
-  private static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 01, 17);
+  private static final String DIDOK_PLATFORM_CSV_FILE = "PRM_PLATFORMS_20240123013648.csv";
+  private static final String ATLAS_PLATFORM_CSV_FILE = "actual-date-platform-2024-01-23.csv";
+  private static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 01, 23);
 
   private static final List<PlatformCsvModel> didokPlatformCsvLines = new ArrayList<>();
   private static final List<PlatformVersionCsvModel> atlasPlatformCsvLines = new ArrayList<>();
