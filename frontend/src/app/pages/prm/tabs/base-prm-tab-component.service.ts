@@ -14,7 +14,7 @@ export abstract class BasePrmTabComponentService {
     return this._isStopPointExisting;
   }
 
-  abstract getTag(): Tab;
+  abstract getTab(): Tab;
 
   _isStopPointExisting!: boolean;
 
@@ -43,7 +43,7 @@ export abstract class BasePrmTabComponentService {
   }
 
   canShowTab() {
-    return PRM_COMPLETE_TABS.includes(this.getTag());
+    return PRM_COMPLETE_TABS.includes(this.getTab());
   }
 
   redirectToStopPoint(servicePoints: ReadServicePointVersion[]) {
