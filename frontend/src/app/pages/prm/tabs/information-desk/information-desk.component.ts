@@ -20,7 +20,7 @@ export class InformationDeskComponent extends BasePrmTabComponentService impleme
     this.showCurrentTab(this.route.parent!.snapshot.data);
   }
 
-  getTag(): Tab {
+  getTab(): Tab {
     return PrmTabs.INFORMATION_DESK;
   }
 }

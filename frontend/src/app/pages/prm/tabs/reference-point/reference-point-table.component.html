@@ -1,6 +1,16 @@
 <ng-container *ngIf="isStopPointExisting">
   <div class="tab-detail-container">
-    <p>reference-point works!</p>
+    <app-table
+      data-cy="reference-points-overview-table"
+      [tableData]="referencePoints"
+      [totalCount]="totalCount"
+      [tableColumns]="tableColumns"
+      [canEdit]="true"
+      [tableFilterConfig]="tableFilterConfig"
+      (editElementEvent)="rowClicked($event)"
+      (tableChanged)="getOverview($event)"
+      (tableInitialized)="getOverview($event)"
+    ></app-table>
   </div>
   <div class="footer-box">
     <footer class="d-flex align-items-center justify-content-center">

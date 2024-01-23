@@ -20,7 +20,7 @@ export class ParkingLotComponent extends BasePrmTabComponentService implements O
     this.showCurrentTab(this.route.parent!.snapshot.data);
   }
 
-  getTag(): Tab {
+  getTab(): Tab {
     return PrmTabs.PARKING_LOT;
   }
 }
