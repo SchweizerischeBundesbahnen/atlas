@@ -1,16 +1,12 @@
 package ch.sbb.importservice.migration;
 
 import ch.sbb.atlas.export.model.prm.PlatformVersionCsvModel;
-import ch.sbb.atlas.export.model.prm.StopPointVersionCsvModel;
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModel;
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModelContainer;
-import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModel;
-import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModelContainer;
 import ch.sbb.atlas.imports.util.CsvReader;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.service.csv.PlatformCsvService;
-import ch.sbb.importservice.service.csv.StopPointCsvService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -32,9 +28,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PlatformMigrationActualDateIntegrationTest {
 
-  private static final String DIDOK_PLATFORM_CSV_FILE = "PRM_PLATFORMS_20240123013648.csv";
-  private static final String ATLAS_PLATFORM_CSV_FILE = "actual-date-platform-2024-01-23.csv";
-  private static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 01, 23);
+  private static final String DIDOK_PLATFORM_CSV_FILE = "PRM_PLATFORMS_20240124011743.csv";
+  private static final String ATLAS_PLATFORM_CSV_FILE = "actual-date-platform-2024-01-24.csv";
+  private static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 01, 24);
 
   private static final List<PlatformCsvModel> didokPlatformCsvLines = new ArrayList<>();
   private static final List<PlatformVersionCsvModel> atlasPlatformCsvLines = new ArrayList<>();
