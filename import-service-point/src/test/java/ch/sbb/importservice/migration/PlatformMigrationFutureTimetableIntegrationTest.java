@@ -30,7 +30,7 @@ class PlatformMigrationFutureTimetableIntegrationTest {
 
   private static final String DIDOK_STOP_PLACE_CSV_FILE = "PRM_PLATFORMS_20240124011743.csv";
   private static final String ATLAS_STOP_POINT_CSV_FILE = "future-timetable-platform-2024-01-24.csv";
-  private static final LocalDate FUTURE_TIMETABLE_DATE = LocalDate.of(2024, 01, 24);
+  private static final LocalDate FUTURE_TIMETABLE_DATE = LocalDate.of(2024, 06, 02);
 
   private static final List<PlatformCsvModel> didokPlatformCsvLines = new ArrayList<>();
   private static final List<PlatformVersionCsvModel> atlasPlatformCsvLines = new ArrayList<>();
@@ -65,13 +65,19 @@ class PlatformMigrationFutureTimetableIntegrationTest {
   @Test
   @Order(2)
   void shouldHaveOnlyVersionsValidOnFutureTimetableDate() {
-    atlasPlatformCsvLines.forEach(atlasCsvLine -> assertThat(
-            DateRange.builder()
-                .from(CsvReader.dateFromString(atlasCsvLine.getValidFrom()))
-                .to(CsvReader.dateFromString(atlasCsvLine.getValidTo()))
-                .build()
-                .contains(FUTURE_TIMETABLE_DATE)
-        ).isTrue()
-    );
+    atlasPlatformCsvLines.forEach(atlasCsvLine -> {
+      DateRange dateRange = DateRange.builder()
+              .from(CsvReader.dateFromString(atlasCsvLine.getValidFrom()))
+              .to(CsvReader.dateFromString(atlasCsvLine.getValidTo()))
+              .build();
+
+      if (!dateRange.contains(FUTURE_TIMETABLE_DATE)) {
+        System.out.println("Nicht im Datumsbereich: " + atlasCsvLine);
+      }
+
+      assertThat(dateRange.contains(FUTURE_TIMETABLE_DATE)).isTrue();
+
+
+    });
   }
 }
