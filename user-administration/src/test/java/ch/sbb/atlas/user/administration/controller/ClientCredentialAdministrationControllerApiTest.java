@@ -69,4 +69,37 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
         .andExpect(jsonPath("$.permissions[1].permissionRestrictions", hasSize(1)));
   }
 
+  @Test
+  void shouldGetClientCredentialOverview() throws Exception {
+    ClientCredentialPermission clientCredentialPermission = ClientCredentialPermission.builder()
+        .role(ApplicationRole.WRITER)
+        .application(ApplicationType.TTFN)
+        .clientCredentialId(CLIENT_ID)
+        .alias(ALIAS)
+        .build();
+    clientCredentialPermission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
+        .clientCredentialPermission(clientCredentialPermission)
+        .type(PermissionRestrictionType.BUSINESS_ORGANISATION)
+        .restriction("ch:1:sboid:123123")
+        .build()));
+    clientCredentialPermissionRepository.save(clientCredentialPermission);
+    clientCredentialPermission =
+        ClientCredentialPermission.builder()
+            .role(ApplicationRole.WRITER)
+            .application(ApplicationType.TIMETABLE_HEARING)
+            .clientCredentialId(CLIENT_ID)
+            .alias(ALIAS)
+            .build();
+    clientCredentialPermission.setPermissionRestrictions(Set.of(PermissionRestriction.builder()
+        .clientCredentialPermission(clientCredentialPermission)
+        .type(PermissionRestrictionType.CANTON)
+        .restriction(SwissCanton.BERN.name())
+        .build()));
+    clientCredentialPermissionRepository.save(clientCredentialPermission);
+
+    mvc.perform(get("/v1/client-credentials"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
 }
