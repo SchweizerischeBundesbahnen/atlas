@@ -198,8 +198,11 @@ class ServicePointImportServiceTest {
     assertThat(itemImportResults1).hasSize(5);
     assertThat(result1).hasSize(3);
     assertThat(result1.get(0).getStatus()).isEqualTo(Status.DRAFT);
+    assertThat(result1.get(0).getEditionDate()).isNotEqualTo(servicePointVersionModel1.getEditionDate());
     assertThat(result1.get(1).getStatus()).isEqualTo(Status.IN_REVIEW);
+    assertThat(result1.get(1).getEditionDate()).isNotEqualTo(servicePointVersionModel2.getEditionDate());
     assertThat(result1.get(2).getStatus()).isEqualTo(Status.VALIDATED);
+    assertThat(result1.get(2).getEditionDate()).isEqualTo(servicePointVersionModel3.getEditionDate());
 
   }
 
