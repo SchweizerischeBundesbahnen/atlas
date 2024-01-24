@@ -38,7 +38,6 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
   selectedVersionIndex!: number;
 
   businessOrganisations: string[] = [];
-  servicePointNumberPartForSloid: string[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -80,18 +79,9 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
     const servicePointVersions: ReadServicePointVersion[] = this.route.snapshot.data.servicePoint;
     this.servicePoint =
       VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
-    this.servicePointNumberPartForSloid = [this.buildServicePointNumberPartForSloid()];
     this.businessOrganisations = [
       ...new Set(servicePointVersions.map((value) => value.businessOrganisation)),
     ];
-  }
-
-  private buildServicePointNumberPartForSloid() {
-    const numberAsString = String(this.servicePoint.number.number);
-    if (numberAsString.startsWith(String(Countries.fromCountry(Country.Switzerland)!.uicCode!))) {
-      return String(this.servicePoint.number.number % 100000);
-    }
-    return numberAsString;
   }
 
   switchVersion(newIndex: number) {

@@ -48,11 +48,12 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   private final PlatformRepository platformRepository;
   private final RelationService relationService;
   private final StopPointService stopPointService;
+  private final SloidService sloidService;
 
   public ReferencePointService(ReferencePointRepository referencePointRepository, TicketCounterRepository ticketCounterService,
       ToiletRepository toiletRepository, InformationDeskRepository informationDeskRepository,
       ParkingLotRepository parkingLotRepository, PlatformRepository platformRepository, RelationService relationService,
-      StopPointService stopPointService, VersionableService versionableService) {
+      StopPointService stopPointService, SloidService sloidService, VersionableService versionableService) {
     super(versionableService);
     this.referencePointRepository = referencePointRepository;
     this.ticketCounterService = ticketCounterService;
@@ -62,6 +63,7 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
     this.platformRepository = platformRepository;
     this.relationService = relationService;
     this.stopPointService = stopPointService;
+    this.sloidService = sloidService;
   }
 
   @Override
@@ -87,6 +89,8 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
 
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#referencePointVersion)")
   public ReferencePointVersion createReferencePoint(ReferencePointVersion referencePointVersion) {
+    sloidService.generateNewSloidIfNotGiven(referencePointVersion);
+
     stopPointService.checkStopPointExists(referencePointVersion.getParentServicePointSloid());
     stopPointService.validateIsNotReduced(referencePointVersion.getParentServicePointSloid());
 
