@@ -30,6 +30,8 @@ public abstract class PrmRelatableVersionableService<T extends Relatable & PrmVe
 
   protected abstract ReferencePointElementType getReferencePointElementType();
 
+  protected abstract SloidType getSloidType();
+
   protected void createRelationWithSloidAllocation(T version) {
     stopPointService.checkStopPointExists(version.getParentServicePointSloid());
     allocateSloid(version);
@@ -41,12 +43,12 @@ public abstract class PrmRelatableVersionableService<T extends Relatable & PrmVe
     createRelations(version);
   }
 
-  // todo: get correct sloidType
   private void allocateSloid(T version) {
+    final SloidType sloidType = getSloidType();
     if (version.getSloid() != null) {
-      locationService.claimSloid(SloidType.AREA, version.getSloid());
+      locationService.claimSloid(sloidType, version.getSloid());
     } else {
-      version.setSloid(locationService.generateSloid(SloidType.AREA, version.getParentServicePointSloid()));
+      version.setSloid(locationService.generateSloid(sloidType, version.getParentServicePointSloid()));
     }
   }
 

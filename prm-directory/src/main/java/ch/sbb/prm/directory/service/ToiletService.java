@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.service;
 
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TOILET;
 
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
@@ -32,6 +33,11 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
   @Override
   protected ReferencePointElementType getReferencePointElementType() {
     return TOILET;
+  }
+
+  @Override
+  protected SloidType getSloidType() {
+    return SloidType.TOILET;
   }
 
   @Override
