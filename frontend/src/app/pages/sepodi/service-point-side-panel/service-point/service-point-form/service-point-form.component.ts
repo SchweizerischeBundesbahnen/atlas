@@ -23,7 +23,7 @@ import {
   StopPointType,
 } from '../../../../../api';
 import { LocationInformation } from '../location-information';
-import { map, takeUntil } from 'rxjs/operators';
+import { map, takeUntil, tap } from 'rxjs/operators';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { GeographyComponent } from '../../../geography/geography.component';
 import { Countries } from '../../../../../core/country/Countries';
@@ -107,10 +107,12 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
                 localityName: geoReference.swissLocalityName,
                 height: geoReference.height,
               })),
+              tap((locationInfo) => {
+                this.form?.controls.servicePointGeolocation?.controls.height.setValue(
+                  locationInfo.height,
+                );
+              }),
             );
-          this.locationInformation$.subscribe((value) => {
-            this.form?.controls.servicePointGeolocation?.controls.height.setValue(value.height);
-          });
         }
       });
     }
