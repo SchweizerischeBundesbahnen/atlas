@@ -2,8 +2,10 @@ package ch.sbb.prm.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.InformationDeskTestData;
 import ch.sbb.prm.directory.ParkingLotTestData;
@@ -51,11 +53,11 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
 
   @Autowired
   ReferencePointServiceTest(ReferencePointService referencePointService, RelationService relationService,
-                            ToiletRepository toiletRepository, PlatformRepository platformRepository,
-                            StopPointRepository stopPointRepository, ParkingLotRepository parkingLotRepository,
-                            TicketCounterRepository ticketCounterRepository,
-                            InformationDeskRepository informationDeskRepository,
-                            SharedServicePointRepository sharedServicePointRepository) {
+      ToiletRepository toiletRepository, PlatformRepository platformRepository,
+      StopPointRepository stopPointRepository, ParkingLotRepository parkingLotRepository,
+      TicketCounterRepository ticketCounterRepository,
+      InformationDeskRepository informationDeskRepository,
+      SharedServicePointRepository sharedServicePointRepository) {
     super(sharedServicePointRepository);
     this.referencePointService = referencePointService;
     this.relationService = relationService;
@@ -86,10 +88,10 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
 
     //then
     List<RelationVersion> relations = relationService
-            .getRelationsByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+        .getRelationsByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     assertThat(relations).hasSize(5);
     assertThat(relations.stream().map(RelationVersion::getReferencePointElementType))
-            .containsExactlyInAnyOrder(ReferencePointElementType.values());
+        .containsExactlyInAnyOrder(ReferencePointElementType.values());
   }
 
   @Test
@@ -183,11 +185,37 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
     assertThat(result.getTotalElements()).isZero();
     assertThat(result.getContent()).isEmpty();
 
-     result = referencePointService.findAll(
+    result = referencePointService.findAll(
         ReferencePointSearchRestrictions.builder().pageable(Pageable.ofSize(1)).prmObjectRequestParams(
             PrmObjectRequestParams.builder().parentServicePointSloids(List.of(PARENT_SERVICE_POINT_SLOID)).build()).build());
     assertThat(result.getTotalElements()).isOne();
     assertThat(result.getContent()).isNotEmpty();
+  }
+
+  @Test
+  void shouldCreateOverviewForReferencePointByParentSloid() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+
+    createAndSavePlatformVersion(PARENT_SERVICE_POINT_SLOID);
+    createAndSaveTicketCounterVersion(PARENT_SERVICE_POINT_SLOID);
+    createAndSaveToiletVersion(PARENT_SERVICE_POINT_SLOID);
+    createAndSaveInformationDeskVersion(PARENT_SERVICE_POINT_SLOID);
+    createAndSaveParkingLotVersion(PARENT_SERVICE_POINT_SLOID);
+
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    //when
+    referencePointService.createReferencePoint(referencePointVersion);
+
+    //then
+    Container<ReadReferencePointVersionModel> result = referencePointService.buildOverview(
+        referencePointService.findByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID),
+        Pageable.ofSize(5));
+
+    assertThat(result.getObjects()).hasSize(1);
   }
 
 }

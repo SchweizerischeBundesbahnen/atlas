@@ -53,6 +53,7 @@ model/containerLine.ts
 model/containerLineVersionSnapshot.ts
 model/containerReadLoadingPointVersion.ts
 model/containerReadPlatformVersion.ts
+model/containerReadReferencePointVersion.ts
 model/containerReadServicePointVersion.ts
 model/containerReadStopPointVersion.ts
 model/containerReadTrafficPointElementVersion.ts

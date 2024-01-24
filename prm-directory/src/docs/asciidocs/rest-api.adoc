@@ -96,10 +96,17 @@ include::{snippets}/reference-point-version-controller-api-test/should-get-refer
 
 include::{snippets}/reference-point-version-controller-api-test/should-get-reference-point-by-sloid/auto-section.adoc[]
 
+=== Get Reference Point Overview by Parent Sloid - Successfully
+
+include::{snippets}/reference-point-version-controller-api-test/should-get-reference-point-overview/auto-section.adoc[]
 
 === Create Reference Points - Successfully
 
 include::{snippets}/reference-point-version-controller-api-test/should-create-reference-point/auto-section.adoc[]
+
+=== Create Reference Point With automatic sloid - Successfully
+
+include::{snippets}/reference-point-version-controller-api-test/should-create-reference-point-with-automatic-sloid/auto-section.adoc[]
 
 === Create Reference Points without Stop Point- Unsuccessfully
 
