@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -35,6 +36,20 @@ class SharedServicePointRepositoryTest {
   @Test
   void shouldFindServicePoints() {
     servicePointVersionRepository.saveAndFlush(ServicePointTestData.getBernWyleregg());
+
+    Set<SharedServicePointVersionModel> sharedServicePoints = sharedServicePointRepository.getAllServicePoints();
+    assertThat(sharedServicePoints).hasSize(1);
+    SharedServicePointVersionModel servicePoint = sharedServicePoints.iterator().next();
+    assertThat(servicePoint.getServicePointSloid()).isNotEmpty();
+    assertThat(servicePoint.getSboids()).isNotEmpty();
+    assertThat(servicePoint.getTrafficPointSloids()).isEmpty();
+    assertThat(servicePoint.isStopPoint()).isTrue();
+  }
+
+  void shouldFindServicePointWithMultipleMeansOfTransport() {
+    ServicePointVersion bernWyleregg = ServicePointTestData.getBernWyleregg();
+    bernWyleregg.setMeansOfTransport(Set.of(MeanOfTransport.BOAT, MeanOfTransport.BUS));
+    servicePointVersionRepository.saveAndFlush(bernWyleregg);
 
     Set<SharedServicePointVersionModel> sharedServicePoints = sharedServicePointRepository.getAllServicePoints();
     assertThat(sharedServicePoints).hasSize(1);
