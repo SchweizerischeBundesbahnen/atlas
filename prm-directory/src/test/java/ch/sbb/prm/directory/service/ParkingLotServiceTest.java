@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.service;
 
-import ch.sbb.atlas.api.location.ClaimSloidRequestModel;
 import ch.sbb.atlas.api.client.location.LocationClient;
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
@@ -16,6 +16,7 @@ import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
+import java.util.Objects;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,7 +27,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -85,7 +86,9 @@ class ParkingLotServiceTest extends BasePrmServiceTest {
     List<RelationVersion> relationVersions = relationRepository
         .findAllByParentServicePointSloid(parkingLot.getParentServicePointSloid());
     assertThat(relationVersions).isEmpty();
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:12345:1")));
+    verify(locationClient, times(1)).claimSloid(argThat(
+        claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.PARKING_LOT
+            && Objects.equals(claimSloidRequestModel.sloid(), "ch:1:sloid:12345:1")));
   }
 
   @Test
@@ -112,7 +115,9 @@ class ParkingLotServiceTest extends BasePrmServiceTest {
     assertThat(relationVersions).hasSize(1);
     assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(PARKING_LOT);
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:12345:1")));
+    verify(locationClient, times(1)).claimSloid(argThat(
+        claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.PARKING_LOT
+            && Objects.equals(claimSloidRequestModel.sloid(), "ch:1:sloid:12345:1")));
   }
 
   @Test
@@ -140,7 +145,9 @@ class ParkingLotServiceTest extends BasePrmServiceTest {
     List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
         parentServicePointSloid);
     assertThat(relationVersions).isEmpty();
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:12345:1")));
+    verify(locationClient, times(1)).claimSloid(argThat(
+        claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.PARKING_LOT
+            && Objects.equals(claimSloidRequestModel.sloid(), "ch:1:sloid:12345:1")));
   }
 
 }
