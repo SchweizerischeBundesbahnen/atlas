@@ -306,8 +306,8 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.trafficPointElementGeolocation.height", is(-9999.0)));
 
     verify(locationClient, times(1)).claimSloid(
-        argThat(claimSloidRequestModel -> claimSloidRequestModel.getSloidType() == SloidType.PLATFORM && Objects.equals(
-            claimSloidRequestModel.getSloid(), "ch:1:sloid:1400015:0:310240")));
+        argThat(claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.PLATFORM && Objects.equals(
+            claimSloidRequestModel.sloid(), "ch:1:sloid:1400015:0:310240")));
   }
 
   @Test
@@ -426,8 +426,8 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[2].trafficPointElementGeolocation.height", is(-9999.0)));
 
     verify(locationClient, times(1)).claimSloid(
-        argThat(claimSloidRequestModel -> claimSloidRequestModel.getSloidType() == SloidType.PLATFORM && Objects.equals(
-            claimSloidRequestModel.getSloid(), "ch:1:sloid:1400015:0:310240")));
+        argThat(claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.PLATFORM && Objects.equals(
+            claimSloidRequestModel.sloid(), "ch:1:sloid:1400015:0:310240")));
   }
 
   @Test
@@ -447,8 +447,8 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$", hasSize(1)));
 
     verify(locationClient, times(1)).claimSloid(
-        argThat(claimSloidRequestModel -> claimSloidRequestModel.getSloidType() == SloidType.PLATFORM && Objects.equals(
-            claimSloidRequestModel.getSloid(), "ch:1:sloid:1400015:0:310240")));
+        argThat(claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.PLATFORM && Objects.equals(
+            claimSloidRequestModel.sloid(), "ch:1:sloid:1400015:0:310240")));
   }
 
   @Test
@@ -477,8 +477,8 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
             + "equal.");
 
     verify(locationClient, times(1)).claimSloid(
-        argThat(claimSloidRequestModel -> claimSloidRequestModel.getSloidType() == SloidType.PLATFORM && Objects.equals(
-            claimSloidRequestModel.getSloid(), "ch:1:sloid:1400015:0:310240")));
+        argThat(claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.PLATFORM && Objects.equals(
+            claimSloidRequestModel.sloid(), "ch:1:sloid:1400015:0:310240")));
   }
 
   @Test
@@ -518,8 +518,8 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
     assertThat(errorResponse.getError()).isEqualTo("Stale object state error");
 
     verify(locationClient, times(1)).claimSloid(
-        argThat(claimSloidRequestModel -> claimSloidRequestModel.getSloidType() == SloidType.PLATFORM && Objects.equals(
-            claimSloidRequestModel.getSloid(), "ch:1:sloid:1400015:0:310240")));
+        argThat(claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.PLATFORM && Objects.equals(
+            claimSloidRequestModel.sloid(), "ch:1:sloid:1400015:0:310240")));
   }
 
   @Test
