@@ -10,6 +10,7 @@ import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets
 export class SloidComponent implements OnInit {
   @Input() formGroup!: FormGroup;
   @Input() givenParts: string[] = [];
+  @Input() givenPrefix?: string;
   @Input() numberColons!: number;
 
   form!: FormGroup;
@@ -29,7 +30,7 @@ export class SloidComponent implements OnInit {
   fixedSloidPart!: string;
 
   ngOnInit() {
-    this.fixedSloidPart = 'ch:1:sloid:' + this.givenParts.join(':') + ':';
+    this.fixedSloidPart = this.givenPrefix ?? 'ch:1:sloid:' + this.givenParts.join(':') + ':';
 
     this.initFormgroup();
     this.form.controls.sloid.valueChanges.subscribe((value) => {
