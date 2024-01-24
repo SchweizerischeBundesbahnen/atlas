@@ -6,6 +6,8 @@ import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.imports.util.DidokCsvMapper;
 import ch.sbb.atlas.imports.util.ImportUtils;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -28,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -134,6 +137,14 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
         new ApplyVersioningDeleteByIdLongConsumer(servicePointService.getServicePointVersionRepository()));
   }
 
+  private ServicePointVersion saveOnlyStatusIfOnlyStatusIsUpdated(Long id, Status status) {
+    ServicePointVersion existingServicePointVersion = servicePointService.findById(id)
+            .orElseThrow(() -> new NotFoundException.IdNotFoundException(id));
+    existingServicePointVersion.setStatus(status);
+    existingServicePointVersion.setEditionDate(LocalDateTime.now());
+    return existingServicePointVersion;
+  }
+
   private void saveFotComment(ServicePointCsvModelContainer container) {
     Set<String> comments = container.getServicePointCsvModelList().stream().map(ServicePointCsvModel::getComment)
         .collect(Collectors.toSet());
@@ -176,7 +187,7 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
                 servicePointVersion.getNumber().getValue(),
                 current.getStatus(),
                 servicePointVersion.getStatus());
-        servicePointService.saveOnlyStatusIfOnlyStatusIsUpdated(current.getId(), servicePointVersion.getStatus());
+        saveOnlyStatusIfOnlyStatusIsUpdated(current.getId(), servicePointVersion.getStatus());
       } else {
         log.info("Found version {} to import without modification: {}",
                 servicePointVersion.getNumber().getValue(),
