@@ -12,13 +12,11 @@ import { FormGroup } from '@angular/forms';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import {
-  Country,
   PersonWithReducedMobilityService,
   ReadReferencePointVersion,
   ReadServicePointVersion,
   ReferencePointVersion,
 } from '../../../../../api';
-import { Countries } from '../../../../../core/country/Countries';
 
 @Component({
   selector: 'app-reference-point',
