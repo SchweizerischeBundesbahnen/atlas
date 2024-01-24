@@ -62,7 +62,7 @@ export class PlatformTableComponent extends BasePrmTabComponentService implement
     this.tableFilterConfig = this.tableService.initializeFilterConfig({}, Pages.PLATFORMS);
   }
 
-  getTag(): Tab {
+  getTab(): Tab {
     return PrmTabs.PLATFORM;
   }
 

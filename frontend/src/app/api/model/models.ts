@@ -21,6 +21,7 @@ export * from './containerLine';
 export * from './containerLineVersionSnapshot';
 export * from './containerReadLoadingPointVersion';
 export * from './containerReadPlatformVersion';
+export * from './containerReadReferencePointVersion';
 export * from './containerReadServicePointVersion';
 export * from './containerReadStopPointVersion';
 export * from './containerReadTrafficPointElementVersion';
