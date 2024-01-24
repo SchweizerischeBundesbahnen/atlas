@@ -20,7 +20,7 @@ export class TicketCounterComponent extends BasePrmTabComponentService implement
     this.showCurrentTab(this.route.parent!.snapshot.data);
   }
 
-  getTag(): Tab {
+  getTab(): Tab {
     return PrmTabs.TICKET_COUNTER;
   }
 }

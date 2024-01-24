@@ -123,13 +123,25 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldGetReferencePointOverview() throws Exception {
+    //given
+    ReferencePointVersion referencePointVersion = referencePointRepository.save(
+        ReferencePointTestData.getReferencePointVersion());
+
+    //when & then
+    mvc.perform(get("/v1/reference-points/overview/" + referencePointVersion.getParentServicePointSloid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
+  @Test
   void shouldCreateReferencePoint() throws Exception {
     //given
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
     stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
-    ReferencePointVersionModel ReferencePointVersionModel = ReferencePointTestData.getReferencePointVersionModel();
-    ReferencePointVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    ReferencePointVersionModel referencePointVersionModel = ReferencePointTestData.getReferencePointVersionModel();
+    referencePointVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //Init PRM Relations
     InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
@@ -151,10 +163,46 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
     //when && then
     mvc.perform(post("/v1/reference-points")
             .contentType(contentType)
-            .content(mapper.writeValueAsString(ReferencePointVersionModel)))
+            .content(mapper.writeValueAsString(referencePointVersionModel)))
         .andExpect(status().isCreated());
     //verify that the reference point create 5 relation
     verify(relationService, times(5)).save(any(RelationVersion.class));
+  }
+
+  @Test
+  void shouldCreateReferencePointWithAutomaticSloid() throws Exception {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+
+    ReferencePointVersionModel referencePointVersionModel = ReferencePointTestData.getReferencePointVersionModel();
+    referencePointVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    // Automatic sloid generation
+    referencePointVersionModel.setSloid(null);
+
+    //Init PRM Relations
+    InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
+    informationDesk.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    informationDeskRepository.save(informationDesk);
+    TicketCounterVersion ticketCounterVersion = TicketCounterTestData.getTicketCounterVersion();
+    ticketCounterVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    ticketCounterRepository.save(ticketCounterVersion);
+    ParkingLotVersion parkingLotVersion = ParkingLotTestData.getParkingLotVersion();
+    parkingLotVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    parkingLotRepository.save(parkingLotVersion);
+    ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
+    toiletVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    toiletRepository.save(toiletVersion);
+    PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
+    platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    platformRepository.save(platformVersion);
+
+    //when && then
+    mvc.perform(post("/v1/reference-points")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(referencePointVersionModel)))
+        .andExpect(status().isCreated());
   }
 
   @Test

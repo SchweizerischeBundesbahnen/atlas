@@ -19,7 +19,7 @@ export class ToiletComponent extends BasePrmTabComponentService implements OnIni
     this.showCurrentTab(this.route.parent!.snapshot.data);
   }
 
-  getTag(): Tab {
+  getTab(): Tab {
     return PrmTabs.TOILET;
   }
 }
