@@ -27,11 +27,12 @@ public class SloidRepository {
   @Qualifier("locationJdbcTemplate")
   private final JdbcTemplate locationJdbcTemplate;
 
-  public Set<String> getAllocatedSloid() {
-    return new HashSet<>(locationJdbcTemplate.queryForList("""
-        select distinct (sloid)
-        from allocated_sloid where sloid is not null
-        """, String.class));
+  public Set<String> getAllocatedSloid(SloidType sloidType) {
+    NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(locationJdbcTemplate);
+    MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+    mapSqlParameterSource.addValue("sloidType", sloidType.name());
+    String sqlQuery = "select distinct sloid from allocated_sloid where sloid is not null and sloidType = :sloidType";
+    return new HashSet<>(namedParameterJdbcTemplate.query(sqlQuery, mapSqlParameterSource, (rs, row) -> rs.getString("sloid")));
   }
 
   public Integer getNextSeqValue(SloidType sloidType) {

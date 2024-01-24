@@ -15,7 +15,7 @@ public record ClaimSloidRequestModel(@NotNull(message = "SloidType must not be n
     }
     return switch (sloidType) {
       case SERVICE_POINT -> SloidValidation.isSloidValid(sloid, SloidValidation.EXPECTED_COLONS_SERVICE_POINT);
-      case AREA, TOILET, REFERENCE_POINT, PARKING_LOT, INFO_DESK, TICKET_COUNTER ->
+      case AREA, TOILET, REFERENCE_POINT, PARKING_LOT, INFO_DESK, TICKET_COUNTER, RELATION ->
           SloidValidation.isSloidValid(sloid, SloidValidation.EXPECTED_COLONS_AREA);
       case PLATFORM -> SloidValidation.isSloidValid(sloid, SloidValidation.EXPECTED_COLONS_PLATFORM);
     };
