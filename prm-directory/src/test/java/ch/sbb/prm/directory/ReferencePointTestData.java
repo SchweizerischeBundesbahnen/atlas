@@ -11,7 +11,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ReferencePointTestData {
 
-  public static ReferencePointVersion getReferencePointVersion(){
+  public static ReferencePointVersion getReferencePointVersion() {
     return ReferencePointVersion.builder()
         .sloid("ch:1.sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -25,7 +25,7 @@ public class ReferencePointTestData {
         .build();
   }
 
-  public static ReferencePointVersionBuilder<?, ?> builderVersion1(){
+  public static ReferencePointVersionBuilder<?, ?> builderVersion1() {
     return ReferencePointVersion.builder()
         .sloid("ch:1.sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -38,7 +38,7 @@ public class ReferencePointTestData {
         .referencePointType(ReferencePointAttributeType.PLATFORM);
   }
 
-  public static ReferencePointVersionBuilder<?, ?> builderVersion2(){
+  public static ReferencePointVersionBuilder<?, ?> builderVersion2() {
     return ReferencePointVersion.builder()
         .sloid("ch:1.sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -51,7 +51,7 @@ public class ReferencePointTestData {
         .referencePointType(ReferencePointAttributeType.PLATFORM);
   }
 
-  public static ReferencePointVersionBuilder<?, ?> builderVersion3(){
+  public static ReferencePointVersionBuilder<?, ?> builderVersion3() {
     return ReferencePointVersion.builder()
         .sloid("ch:1.sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -64,7 +64,7 @@ public class ReferencePointTestData {
         .referencePointType(ReferencePointAttributeType.PLATFORM);
   }
 
-  public static ReferencePointVersionModel getReferencePointVersionModel(){
+  public static ReferencePointVersionModel getReferencePointVersionModel() {
     return ReferencePointVersionModel.builder()
         .sloid("ch:1.sloid:12345:1")
         .validFrom(LocalDate.of(2000, 1, 1))
