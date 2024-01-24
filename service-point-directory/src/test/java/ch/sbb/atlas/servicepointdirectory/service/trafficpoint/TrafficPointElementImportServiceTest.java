@@ -85,11 +85,11 @@ class TrafficPointElementImportServiceTest {
 
     //then
     verify(locationClient, times(1)).claimSloid(
-        argThat(claimSloidRequestModel -> claimSloidRequestModel.getSloidType() == SloidType.PLATFORM && Objects.equals(
-            claimSloidRequestModel.getSloid(), "ch:1:sloid:700012:123:123")));
+        argThat(claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.PLATFORM && Objects.equals(
+            claimSloidRequestModel.sloid(), "ch:1:sloid:700012:123:123")));
     verify(locationClient, times(1)).claimSloid(
-        argThat(claimSloidRequestModel -> claimSloidRequestModel.getSloidType() == SloidType.PLATFORM && Objects.equals(
-            claimSloidRequestModel.getSloid(), "ch:1:sloid:700012:432:422")));
+        argThat(claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.PLATFORM && Objects.equals(
+            claimSloidRequestModel.sloid(), "ch:1:sloid:700012:432:422")));
 
     assertThat(trafficPointItemImportResults).hasSize(4);
     List<TrafficPointElementVersion> resultFirstContainer = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
@@ -138,8 +138,8 @@ class TrafficPointElementImportServiceTest {
 
     // then
     verify(locationClient, times(1)).claimSloid(
-        argThat(claimSloidRequestModel -> claimSloidRequestModel.getSloidType() == SloidType.PLATFORM && Objects.equals(
-            claimSloidRequestModel.getSloid(), "ch:1:sloid:700012:123:123")));
+        argThat(claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.PLATFORM && Objects.equals(
+            claimSloidRequestModel.sloid(), "ch:1:sloid:700012:123:123")));
 
     assertThat(trafficPointItemImportResults).hasSize(4);
     List<TrafficPointElementVersion> allBySloidOrderByValidFrom =
@@ -265,8 +265,8 @@ class TrafficPointElementImportServiceTest {
 
     // then
     verify(locationClient, times(1)).claimSloid(
-        argThat(claimSloidRequestModel -> claimSloidRequestModel.getSloidType() == SloidType.PLATFORM && Objects.equals(
-            claimSloidRequestModel.getSloid(), "ch:1:sloid:700012:123:123")));
+        argThat(claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.PLATFORM && Objects.equals(
+            claimSloidRequestModel.sloid(), "ch:1:sloid:700012:123:123")));
 
     assertThat(trafficPointItemImportResults).hasSize(1);
 

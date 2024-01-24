@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -18,6 +19,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 public class SloidRepository {
+
+  private static final String AREA_SEQ = "area_seq";
+  private static final String EDGE_SEQ = "edge_seq";
 
   //TODO: use NamedParameterJdbcTemplate
   @Qualifier("locationJdbcTemplate")
@@ -30,8 +34,9 @@ public class SloidRepository {
         """, String.class));
   }
 
-  public Integer getNextSeqValue(String seqName) {
-    return locationJdbcTemplate.queryForObject("select nextval(?);", Integer.class, seqName);
+  public Integer getNextSeqValue(SloidType sloidType) {
+    final String sequence = sloidType == SloidType.PLATFORM ? EDGE_SEQ : AREA_SEQ;
+    return locationJdbcTemplate.queryForObject("select nextval(?);", Integer.class, sequence);
   }
 
   public void insertSloid(String sloid, SloidType sloidType) {
@@ -42,6 +47,17 @@ public class SloidRepository {
     return locationJdbcTemplate.queryForObject(
         "select sloid from available_service_point_sloid where country = ? and claimed = false order by sloid limit 1;",
         String.class, country.name());
+  }
+
+  public boolean isSloidAvailable(String sloid) {
+    try {
+      Boolean claimed = locationJdbcTemplate.queryForObject("select claimed from available_service_point_sloid where sloid = ?;",
+          Boolean.class,
+          sloid);
+      return Boolean.FALSE.equals(claimed);
+    } catch (DataAccessException e) {
+      return false;
+    }
   }
 
   public int deleteAllocatedSloid(Set<String> sloids, SloidType sloidType) {
@@ -76,13 +92,11 @@ public class SloidRepository {
         country.name());
   }
 
-  public int setAvailableSloidToUsed(String sloid, Country country) {
-    return locationJdbcTemplate.update("update available_service_point_sloid set claimed = true where sloid = ? and country = ?;",
-        sloid,
-        country.name());
+  public int setAvailableSloidToClaimed(String sloid) {
+    return locationJdbcTemplate.update("update available_service_point_sloid set claimed = true where sloid = ?;", sloid);
   }
 
-  public int setAvailableSloidToUsed(Set<String> sloids) {
+  public int setAvailableSloidToClaimed(Set<String> sloids) {
     NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(locationJdbcTemplate);
     MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("sloids", sloids);

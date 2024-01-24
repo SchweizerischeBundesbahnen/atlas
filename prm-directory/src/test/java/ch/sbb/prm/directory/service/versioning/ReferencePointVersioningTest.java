@@ -1,12 +1,12 @@
 package ch.sbb.prm.directory.service.versioning;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.api.client.location.LocationClient;
-import ch.sbb.atlas.api.location.ClaimSloidRequestModel;
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.ReferencePointTestData;
@@ -24,6 +24,7 @@ import ch.sbb.prm.directory.service.ReferencePointService;
 import ch.sbb.prm.directory.service.RelationService;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -115,7 +116,9 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
         PARENT_SERVICE_POINT_SLOID);
     assertThat(relations).isEmpty();
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:12345:1")));
+    verify(locationClient, times(1)).claimSloid(argThat(
+        claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.REFERENCE_POINT
+            && Objects.equals(claimSloidRequestModel.sloid(), "ch:1:sloid:12345:1")));
   }
 
   /**
@@ -200,7 +203,9 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
         PARENT_SERVICE_POINT_SLOID);
     assertThat(relations).isEmpty();
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:12345:1")));
+    verify(locationClient, times(1)).claimSloid(argThat(
+        claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.REFERENCE_POINT
+            && Objects.equals(claimSloidRequestModel.sloid(), "ch:1:sloid:12345:1")));
   }
 
   /**
@@ -263,7 +268,9 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
         PARENT_SERVICE_POINT_SLOID);
     assertThat(relations).isEmpty();
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:12345:1")));
+    verify(locationClient, times(1)).claimSloid(argThat(
+        claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.REFERENCE_POINT
+            && Objects.equals(claimSloidRequestModel.sloid(), "ch:1:sloid:12345:1")));
   }
 
 }
