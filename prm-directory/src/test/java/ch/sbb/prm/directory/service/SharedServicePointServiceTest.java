@@ -1,18 +1,17 @@
 package ch.sbb.prm.directory.service;
 
-import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
-import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.prm.directory.exception.ServicePointDoesNotExistException;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Optional;
-import java.util.Set;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNoException;
+
+import ch.sbb.atlas.kafka.model.service.point.SharedServicePointVersionModel;
+import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.prm.directory.exception.ServicePointDoesNotExistException;
+import java.util.Optional;
+import java.util.Set;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
 class SharedServicePointServiceTest {
@@ -31,6 +30,7 @@ class SharedServicePointServiceTest {
         .servicePointSloid(SERVICE_POINT_SLOID)
         .sboids(Set.of("ch:1:sboid:100001"))
         .trafficPointSloids(Set.of("ch:1:sloid:12345:1"))
+        .isStopPoint(true)
         .build());
   }
 
@@ -49,5 +49,20 @@ class SharedServicePointServiceTest {
   void shouldValidateServicePointExistsAndThrowException() {
     assertThatExceptionOfType(ServicePointDoesNotExistException.class).isThrownBy(
         () -> sharedServicePointService.validateServicePointExists("spinatknödel"));
+  }
+
+  @Test
+  void shouldNotFindServicePointIfStopPointIsFalse() {
+    String servicePointSloid = "ch:1:sloid:154";
+
+    sharedServicePointConsumer.readServicePointFromKafka(SharedServicePointVersionModel.builder()
+        .servicePointSloid(servicePointSloid)
+        .sboids(Set.of("ch:1:sboid:100001"))
+        .trafficPointSloids(Set.of("ch:1:sloid:12345:1"))
+        .isStopPoint(false)
+        .build());
+
+    Optional<SharedServicePointVersionModel> servicePoint = sharedServicePointService.findServicePoint(servicePointSloid);
+    assertThat(servicePoint).isEmpty();
   }
 }
