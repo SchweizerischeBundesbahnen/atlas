@@ -76,9 +76,5 @@ public class PlatformVersion extends BaseEntity {
 
     private LocalDate validFrom;
 
-    @ToString.Include
-    public Boolean isPartialElevation() {
-        return partialElevation != null;
-    }
 
 }
