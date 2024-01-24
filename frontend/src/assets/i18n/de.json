@@ -1220,6 +1220,29 @@
         "ADD_SUCCESS": "Die Haltekante wurde erfolgreich hinzugefügt.",
         "EDIT_SUCCESS": "Die Haltekante wurde erfolgreich gespeichert."
       }
+    },
+    "REFERENCE_POINTS": {
+      "REFERENCE_POINT": "Referenzpunkt",
+      "BUTTON_NEW": "Neuen Referenzpunkt erfassen",
+      "NEW": "Neuer Referenzpunkt",
+      "DETAIL_INFORMATION": "Angaben zum Referenzpunkt",
+      "ADDITIONAL_INFORMATION": "Hinweise zum Referenzpunkt",
+      "DESIGNATION": "Bezeichnung",
+      "TYPE": "Art des Referenzpunkts",
+      "TYPES": {
+        "MAIN_STATION_ENTRANCE": "Haupteingang",
+        "ALTERNATIVE_STATION_ENTRANCE": "Alternativer Haltestelleneingang",
+        "ASSISTANCE_POINT": "Treffpunkt für Hilfestellung",
+        "INFORMATION_DESK": "Informationsschalter",
+        "PLATFORM": "Perron",
+        "NO_REFERENCE_POINT": "Kein Referenzpunkt"
+      },
+      "MAIN_REFERENCE_POINT": "Hauptreferenzpunkt",
+      "MAIN_REFERENCE_POINT_INFO": "Für den internationalen Datenaustausch ist die Definition des Hauptreferenzpunkts notwendig - nur dieser wird weiterübermittelt.\n\nPro Zeitraum darf es einen definierten Hauptreferenzpunkt geben.",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Der Referenzpunkt wurde erfolgreich hinzugefügt.",
+        "EDIT_SUCCESS": "Der Referenzpunkt wurde erfolgreich gespeichert."
+      }
     }
   }
 }
