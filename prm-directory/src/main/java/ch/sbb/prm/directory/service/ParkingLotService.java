@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.service;
 
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
 
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
@@ -32,6 +33,11 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
   @Override
   protected ReferencePointElementType getReferencePointElementType() {
     return PARKING_LOT;
+  }
+
+  @Override
+  protected SloidType getSloidType() {
+    return SloidType.PARKING_LOT;
   }
 
   @Override

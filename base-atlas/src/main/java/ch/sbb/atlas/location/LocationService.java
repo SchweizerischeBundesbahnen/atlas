@@ -21,7 +21,7 @@ public class LocationService {
     try {
       locationClient.claimSloid(request);
     } catch (Conflict e) {
-      throw new SloidAlreadyExistsException(request.getSloid());
+      throw new SloidAlreadyExistsException(request.sloid());
     }
   }
 
@@ -29,9 +29,9 @@ public class LocationService {
     claimSloid(new ClaimSloidRequestModel(sloidType, sloid));
   }
 
-  public void claimServicePointSloid(String sloid, Country country) {
+  public void claimServicePointSloid(String sloid) {
     if (sloid != null) {
-      claimSloid(new ClaimSloidRequestModel(SloidType.SERVICE_POINT, sloid, country));
+      claimSloid(new ClaimSloidRequestModel(SloidType.SERVICE_POINT, sloid));
     }
   }
 
