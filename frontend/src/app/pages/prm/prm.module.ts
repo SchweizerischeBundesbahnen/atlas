@@ -9,7 +9,7 @@ import { CoreModule } from '../../core/module/core.module';
 import { PrmPanelComponent } from './prm-panel/prm-panel.component';
 import { StopPointReducedFormComponent } from './tabs/stop-point/form/stop-point-reduced-form/stop-point-reduced-form.component';
 import { StopPointCompleteFormComponent } from './tabs/stop-point/form/stop-point-complete-form/stop-point-complete-form.component';
-import { ReferencePointComponent } from './tabs/reference-point/reference-point.component';
+import { ReferencePointTableComponent } from './tabs/reference-point/reference-point-table.component';
 import { PlatformTableComponent } from './tabs/platform/platform-table.component';
 import { TicketCounterComponent } from './tabs/ticket-counter/ticket-counter.component';
 import { InformationDeskComponent } from './tabs/information-desk/information-desk.component';
@@ -21,26 +21,30 @@ import { PrmInfoBoxComponent } from './prm-home-search/prm-info-box/prm-info-box
 import { PlatformCompleteFormComponent } from './tabs/platform/detail/form/platform-complete-form/platform-complete-form.component';
 import { PlatformReducedFormComponent } from './tabs/platform/detail/form/platform-reduced-form/platform-reduced-form.component';
 import { PlatformDetailComponent } from './tabs/platform/detail/platform-detail.component';
+import { ReferencePointCompleteFormComponent } from './tabs/reference-point/detail/form/reference-point-complete-form/reference-point-complete-form.component';
+import { ReferencePointDetailComponent } from './tabs/reference-point/detail/reference-point-detail.component';
 
 @NgModule({
   declarations: [
     PrmHomeSearchComponent,
-    StopPointDetailComponent,
+    PrmInfoBoxComponent,
     PrmPanelComponent,
+    StopPointDetailComponent,
+    CreateStopPointComponent,
     StopPointReducedFormComponent,
     StopPointCompleteFormComponent,
-    ReferencePointComponent,
-    PlatformTableComponent,
     TicketCounterComponent,
     InformationDeskComponent,
     ToiletComponent,
     ParkingLotComponent,
     ConnectionComponent,
-    CreateStopPointComponent,
-    PrmInfoBoxComponent,
+    PlatformTableComponent,
     PlatformDetailComponent,
     PlatformCompleteFormComponent,
     PlatformReducedFormComponent,
+    ReferencePointTableComponent,
+    ReferencePointDetailComponent,
+    ReferencePointCompleteFormComponent,
   ],
   imports: [CommonModule, FormModule, FormsModule, PrmRoutingModule, CoreModule],
 })
