@@ -3,7 +3,7 @@ package ch.sbb.prm.directory.controller;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.api.client.location.LocationClient;
-import ch.sbb.atlas.api.location.ClaimSloidRequestModel;
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReferencePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -44,6 +44,7 @@ import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.service.RelationService;
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -164,7 +165,9 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(status().isCreated());
     //verify that the reference point create 4 relation
     verify(relationService, times(4)).save(any(RelationVersion.class));
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:12345:1")));
+    verify(locationClient, times(1)).claimSloid(argThat(
+        claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.REFERENCE_POINT
+            && Objects.equals(claimSloidRequestModel.sloid(), "ch:1:sloid:12345:1")));
   }
 
   @Test

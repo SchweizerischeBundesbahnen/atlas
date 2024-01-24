@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.service;
 
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
 
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
 import ch.sbb.atlas.location.LocationService;
@@ -49,6 +50,11 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
   @Override
   protected ReferencePointElementType getReferencePointElementType() {
     return PLATFORM;
+  }
+
+  @Override
+  protected SloidType getSloidType() {
+    return SloidType.PLATFORM;
   }
 
   @Override
