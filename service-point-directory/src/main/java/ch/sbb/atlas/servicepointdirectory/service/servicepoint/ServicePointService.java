@@ -120,6 +120,7 @@ public class ServicePointService {
     ServicePointVersion existingServicePointVersion = this.findById(id)
             .orElseThrow(() -> new NotFoundException.IdNotFoundException(id));
     existingServicePointVersion.setStatus(status);
+    existingServicePointVersion.setEditionDate(LocalDateTime.now());
     return existingServicePointVersion;
   }
 
