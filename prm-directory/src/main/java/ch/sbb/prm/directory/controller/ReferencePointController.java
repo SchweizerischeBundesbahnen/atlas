@@ -10,7 +10,6 @@ import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.mapper.ReferencePointVersionMapper;
 import ch.sbb.prm.directory.search.ReferencePointSearchRestrictions;
 import ch.sbb.prm.directory.service.ReferencePointService;
-import ch.sbb.prm.directory.service.SloidService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReferencePointController implements ReferencePointApiV1 {
 
   private final ReferencePointService referencePointService;
-  private final SloidService sloidService;
 
   @Override
   public Container<ReadReferencePointVersionModel> getReferencePoints(Pageable pageable,
@@ -51,7 +49,6 @@ public class ReferencePointController implements ReferencePointApiV1 {
   @Override
   public ReadReferencePointVersionModel createReferencePoint(ReferencePointVersionModel model) {
     ReferencePointVersion referencePointVersion = ReferencePointVersionMapper.toEntity(model);
-    sloidService.generateNewSloidIfNotGiven(referencePointVersion);
 
     ReferencePointVersion savedReferencePointVersion = referencePointService.createReferencePoint(referencePointVersion);
     return ReferencePointVersionMapper.toModel(savedReferencePointVersion);
