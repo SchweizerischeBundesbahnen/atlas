@@ -40,7 +40,7 @@ import static org.assertj.core.api.Assertions.assertThat;
   @Test
   @Order(1)
   void shouldParseCsvsCorrectly() throws IOException {
-    MigrationTestsHelper.unzipFile(ZIPPED_DIDOK_CSV_FILE, DECOMPRESSED_FILE_PATH);
+    MigrationTestsUtilityClass.unzipFile(ZIPPED_DIDOK_CSV_FILE, DECOMPRESSED_FILE_PATH);
     try (InputStream csvStream = Files.newInputStream(Paths.get(DECOMPRESSED_FILE_PATH + "/" + DIDOK_CSV_FILE))) {
       didokCsvLines.addAll(CsvReader.parseCsv(csvStream, ServicePointDidokCsvModel.class));
     }
