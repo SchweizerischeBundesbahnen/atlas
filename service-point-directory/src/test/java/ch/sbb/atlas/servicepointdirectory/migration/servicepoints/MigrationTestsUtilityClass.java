@@ -1,7 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.migration.servicepoints;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,12 +9,12 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class MigrationTestsHelper {
+@UtilityClass
+public class MigrationTestsUtilityClass {
 
-    private static final int BUFFER_SIZE = 8192; // 8 KB
+    private final int BUFFER_SIZE = 8192; // 8 KB
 
-    public static void unzipFile(String fileZipPath, String destinationDirectoryPath) throws IOException {
+    public void unzipFile(String fileZipPath, String destinationDirectoryPath) throws IOException {
         File destinationDirectory = new File(destinationDirectoryPath);
 
         try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(fileZipPath))) {
@@ -45,7 +44,7 @@ public final class MigrationTestsHelper {
         }
     }
 
-    public static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
+    public File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
         File destFile = new File(destinationDir, zipEntry.getName());
         String destDirPath = destinationDir.getCanonicalPath();
         String destFilePath = destFile.getCanonicalPath();
