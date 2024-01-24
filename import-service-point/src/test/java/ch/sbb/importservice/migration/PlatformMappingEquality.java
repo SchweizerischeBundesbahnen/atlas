@@ -1,13 +1,9 @@
 package ch.sbb.importservice.migration;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
-import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
-import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.*;
 import ch.sbb.atlas.export.model.prm.PlatformVersionCsvModel;
-import ch.sbb.atlas.export.model.prm.StopPointVersionCsvModel;
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModel;
-import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModel;
-import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -31,7 +27,7 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
     }
     if (atlasCsvLine.getBoardingDevice() != null && didokCsvLine.getBoardingDevice() != null) {
       assertThat(atlasCsvLine.getBoardingDevice()).isEqualTo(
-          StandardAttributeType.from(didokCsvLine.getBoardingDevice()).toString());
+          BoardingDeviceAttributeType.of(didokCsvLine.getBoardingDevice()).toString());
     }
     if(atlasCsvLine.getAdditionalInformation() != null && didokCsvLine.getInfos() != null){
       String didokInfos = didokCsvLine.getInfos().replaceAll("\r\n|\r|\n", " ");
@@ -73,7 +69,7 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
     }
     if (atlasCsvLine.getPartialElevation() != null && didokCsvLine.getPartialElev() != null) {
       assertThat(atlasCsvLine.getPartialElevation()).isEqualTo(
-              Boolean.valueOf(didokCsvLine.getPartialElev().toString()));
+              BooleanIntegerAttributeType.of(didokCsvLine.getPartialElev()));
     }
     if (atlasCsvLine.getSuperElevation() != null && didokCsvLine.getSuperelevation() != null) {
       assertThat(atlasCsvLine.getSuperElevation()).isEqualTo(
@@ -85,7 +81,7 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
     }
     if (atlasCsvLine.getVehicleAccess() != null && didokCsvLine.getVehicleAccess() != null) {
       assertThat(atlasCsvLine.getVehicleAccess()).isEqualTo(
-              StandardAttributeType.from(didokCsvLine.getVehicleAccess()).toString());
+              VehicleAccessAttributeType.of(didokCsvLine.getVehicleAccess()).toString());
     }
     if (atlasCsvLine.getWheelchairAreaLength() != null && didokCsvLine.getWheelchairAreaLength() != null) {
       assertThat(atlasCsvLine.getWheelchairAreaLength()).isEqualTo(
@@ -95,7 +91,9 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
       assertThat(atlasCsvLine.getWheelChairAreaWidth()).isEqualTo(
               didokCsvLine.getWheelchairAreaWidth());
     }
-    assertThat(mapPipedInfoOpportunities(atlasCsvLine.getInfoOpportunities())).containsAll(InfoOpportunityAttributeType.fromCode(didokCsvLine.getInfoBlinds()));
+    if(atlasCsvLine.getInfoOpportunities() != null && didokCsvLine.getInfoBlinds() != null){
+      assertThat(mapPipedInfoOpportunities(atlasCsvLine.getInfoOpportunities())).containsAll(InfoOpportunityAttributeType.fromCode(didokCsvLine.getInfoBlinds()));
+    }
 
     assertThat(dateFromString(atlasCsvLine.getValidFrom())).isEqualTo(didokCsvLine.getValidFrom());
     assertThat(dateFromString(atlasCsvLine.getValidTo())).isEqualTo(didokCsvLine.getValidTo());
@@ -107,10 +105,13 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
   }
 
   private List<InfoOpportunityAttributeType> mapPipedInfoOpportunities(String infoOpportunities){
-    String[] split = infoOpportunities.split(PIPE_SEPARATOR);
-    List<InfoOpportunityAttributeType> meanOfTransports =  new ArrayList<>();
-    Arrays.asList(split).forEach(s -> meanOfTransports.add(InfoOpportunityAttributeType.valueOf(s)));
-    return meanOfTransports;
+    if(infoOpportunities != null){
+      String[] split = infoOpportunities.split(PIPE_SEPARATOR);
+      List<InfoOpportunityAttributeType> meanOfTransports =  new ArrayList<>();
+      Arrays.asList(split).forEach(s -> meanOfTransports.add(InfoOpportunityAttributeType.valueOf(s)));
+      return meanOfTransports;
+    }
+    return null;
   }
 
   public LocalDateTime localDateFromString(String string) {
