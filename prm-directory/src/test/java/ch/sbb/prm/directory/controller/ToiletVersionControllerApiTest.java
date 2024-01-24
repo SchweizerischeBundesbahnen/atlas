@@ -3,7 +3,7 @@ package ch.sbb.prm.directory.controller;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.api.client.location.LocationClient;
-import ch.sbb.atlas.api.location.ClaimSloidRequestModel;
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.api.prm.model.toilet.ToiletVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
@@ -34,6 +34,7 @@ import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.service.RelationService;
+import java.util.Objects;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -112,7 +113,9 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isCreated());
     verify(relationService, times(1)).save(any(RelationVersion.class));
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:12345:1")));
+    verify(locationClient, times(1)).claimSloid(argThat(
+        claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.TOILET
+            && Objects.equals(claimSloidRequestModel.sloid(), "ch:1:sloid:12345:1")));
   }
 
   @Test
@@ -135,7 +138,9 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isCreated());
     verify(relationService, never()).save(any(RelationVersion.class));
-    verify(locationClient, times(1)).claimSloid(eq(new ClaimSloidRequestModel("ch:1:sloid:12345:1")));
+    verify(locationClient, times(1)).claimSloid(argThat(
+        claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.TOILET
+            && Objects.equals(claimSloidRequestModel.sloid(), "ch:1:sloid:12345:1")));
   }
 
   @Test

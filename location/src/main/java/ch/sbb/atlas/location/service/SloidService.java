@@ -56,14 +56,14 @@ public class SloidService {
     log.info("Sloid not present on Location:{}", sloidToAdd);
     if (!sloidToAdd.isEmpty()) {
       sloidRepository.addMissingAllocatedSloid(sloidToAdd, SloidType.SERVICE_POINT);
-      sloidRepository.setAvailableSloidToUsed(sloidToAdd);
+      sloidRepository.setAvailableSloidToClaimed(sloidToAdd);
     }
   }
 
-  public String generateNewSloid(String sloidPrefix, String seqName, @NotNull SloidType sloidType) {
+  public String generateNewSloid(String sloidPrefix, @NotNull SloidType sloidType) {
     String generatedSloid = null;
     do {
-      final Integer nextSeqValue = sloidRepository.getNextSeqValue(seqName);
+      final Integer nextSeqValue = sloidRepository.getNextSeqValue(sloidType);
       final String sloid = sloidPrefix + ":" + nextSeqValue;
       try {
         sloidRepository.insertSloid(sloid, sloidType);
@@ -77,17 +77,38 @@ public class SloidService {
 
   public String getNextAvailableSloid(Country country) {
     String nextAvailableSloid;
-    int updateCount;
+    boolean insertDone = false;
     do {
       nextAvailableSloid = sloidRepository.getNextAvailableSloid(country);
-      updateCount = sloidRepository.setAvailableSloidToUsed(nextAvailableSloid, country);
-    } while (updateCount == 0);
+      try {
+        sloidRepository.insertSloid(nextAvailableSloid, SloidType.SERVICE_POINT);
+      } catch (DataAccessException e) {
+        continue;
+      }
+      insertDone = true;
+      int rowsAffected = sloidRepository.setAvailableSloidToClaimed(nextAvailableSloid);
+      if (rowsAffected != 1) {
+        throw new IllegalStateException("Row needs to be found after select from available sloids");
+      }
+    } while (!insertDone);
     return nextAvailableSloid;
   }
 
-  public boolean claimAvailableSloid(String sloid, Country country) {
-    int updateCount = sloidRepository.setAvailableSloidToUsed(sloid, country);
-    return updateCount != 0;
+  public boolean claimAvailableSloid(String sloid) {
+    boolean sloidAvailable = sloidRepository.isSloidAvailable(sloid);
+    if (!sloidAvailable) {
+      return false;
+    }
+    try {
+      sloidRepository.insertSloid(sloid, SloidType.SERVICE_POINT);
+    } catch (DataAccessException e) {
+      return false;
+    }
+    int rowsAffected = sloidRepository.setAvailableSloidToClaimed(sloid);
+    if (rowsAffected != 1) {
+      throw new IllegalStateException("Row needs to be found after select statement");
+    }
+    return true;
   }
 
   public boolean claimSloid(String sloid, @NotNull SloidType sloidType) {
@@ -105,4 +126,3 @@ public class SloidService {
   }
 
 }
-// todo: implement sync endpoint and cleanup endpoint for not_confirmed elements
