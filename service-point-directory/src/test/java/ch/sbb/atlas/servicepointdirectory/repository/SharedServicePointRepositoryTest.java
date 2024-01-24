@@ -8,6 +8,7 @@ import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
+import java.util.Collections;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -41,14 +42,28 @@ class SharedServicePointRepositoryTest {
     assertThat(servicePoint.getServicePointSloid()).isNotEmpty();
     assertThat(servicePoint.getSboids()).isNotEmpty();
     assertThat(servicePoint.getTrafficPointSloids()).isEmpty();
+    assertThat(servicePoint.isStopPoint()).isTrue();
   }
 
   @Test
-  void shouldNotFindServicePointsAsStopPointWithMeanOfTransportUnknown() {
-    servicePointVersionRepository.saveAndFlush(ServicePointTestData.createStopPointServicePointWithUnknownMeanOfTransportVersion());
+  void shouldFindServicePointsAsNonStopPointWithMeanOfTransportUnknown() {
+    servicePointVersionRepository.saveAndFlush(
+        ServicePointTestData.createStopPointServicePointWithUnknownMeanOfTransportVersion());
 
     Set<SharedServicePointVersionModel> sharedServicePoints = sharedServicePointRepository.getAllServicePoints();
-    assertThat(sharedServicePoints).isEmpty();
+    assertThat(sharedServicePoints).isNotEmpty().hasSize(1);
+    assertThat(sharedServicePoints.iterator().next().isStopPoint()).isFalse();
+  }
+
+  @Test
+  void shouldFindServicePointsAsNonStopPointWithNoMeanOfTransport() {
+    ServicePointVersion version = ServicePointTestData.createStopPointServicePointWithUnknownMeanOfTransportVersion();
+    version.setMeansOfTransport(Collections.emptySet());
+    servicePointVersionRepository.saveAndFlush(version);
+
+    Set<SharedServicePointVersionModel> sharedServicePoints = sharedServicePointRepository.getAllServicePoints();
+    assertThat(sharedServicePoints).isNotEmpty().hasSize(1);
+    assertThat(sharedServicePoints.iterator().next().isStopPoint()).isFalse();
   }
 
   @Test
