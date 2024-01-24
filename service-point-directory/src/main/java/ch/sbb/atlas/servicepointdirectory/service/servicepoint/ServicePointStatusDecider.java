@@ -135,7 +135,9 @@ public class ServicePointStatusDecider {
 
     private boolean isGeolocationChangedFromAbroadToSwitzerland(ServicePointVersion newServicePointVersion,
                                                                 ServicePointVersion currentServicePointVersion) {
-        if (isGeolocationOrCountryNull(newServicePointVersion)) return false;
+        if (isGeolocationOrCountryNull(newServicePointVersion)) {
+            return false;
+        }
         return Objects.equals(newServicePointVersion.getServicePointGeolocation().getCountry().getUicCode(), Country.SWITZERLAND.getUicCode())
                 && !Objects.equals(currentServicePointVersion.getServicePointGeolocation().getCountry().getUicCode(), Country.SWITZERLAND.getUicCode());
     }
