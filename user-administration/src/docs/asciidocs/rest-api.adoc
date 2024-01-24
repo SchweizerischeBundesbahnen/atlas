@@ -57,3 +57,7 @@ include::{snippets}/user-administration-controller-api-test/get-users-with-sboid
 == Get Clients
 
 include::{snippets}/client-credential-administration-controller-api-test/should-get-client/auto-section.adoc[]
+
+== Get Client Overview
+
+include::{snippets}/client-credential-administration-controller-api-test/should-get-client-credential-overview/auto-section.adoc[]
