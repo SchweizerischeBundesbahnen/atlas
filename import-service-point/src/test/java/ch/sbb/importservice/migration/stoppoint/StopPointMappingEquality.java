@@ -23,82 +23,93 @@ public record StopPointMappingEquality(StopPointCsvModel didokCsvLine, StopPoint
   public void performCheck() {
     assertThat(atlasCsvLine.getNumber()).isEqualTo(MigrationUtil.removeCheckDigit(didokCsvLine.getDidokCode()));
     assertThat(atlasCsvLine.getSloid()).isEqualTo(didokCsvLine.getSloid());
-    if (atlasCsvLine.getAssistanceAvailability() != null) {
+    if (atlasCsvLine.getAssistanceAvailability() != null && didokCsvLine.getAssistanceAvailability() != null) {
       assertThat(atlasCsvLine.getAssistanceAvailability()).isEqualTo(
           StandardAttributeType.from(didokCsvLine.getAssistanceAvailability()).toString());
     } else {
       assertThat(didokCsvLine.getAssistanceAvailability()).isNull();
+      assertThat(atlasCsvLine.getAssistanceAvailability()).isNull();
     }
 
     assertThat(atlasCsvLine.getAddress()).isEqualTo(didokCsvLine.getAddress());
     assertThat(atlasCsvLine.getZipCode()).isEqualTo(didokCsvLine.getZipCode());
     assertThat(atlasCsvLine.getCity()).isEqualTo(didokCsvLine.getCity());
     assertThat(atlasCsvLine.getFreeText()).isEqualTo(didokCsvLine.getFreeText());
-    if (atlasCsvLine.getAlternativeTransport() != null) {
+    if (atlasCsvLine.getAlternativeTransport() != null && didokCsvLine.getAlternativeTransport() != null) {
       assertThat(atlasCsvLine.getAlternativeTransport()).isEqualTo(
           StandardAttributeType.from(didokCsvLine.getAlternativeTransport()).toString());
     } else {
       assertThat(didokCsvLine.getAlternativeTransport()).isNull();
+      assertThat(atlasCsvLine.getAlternativeTransport()).isNull();
     }
     assertThat(atlasCsvLine.getAlternativeTransportCondition()).isEqualTo(didokCsvLine.getAlternativeTransportCondition());
-    if (atlasCsvLine.getAssistanceAvailability() != null) {
+    if (atlasCsvLine.getAssistanceAvailability() != null && didokCsvLine.getAssistanceAvailability() != null) {
       assertThat(atlasCsvLine.getAssistanceAvailability()).isEqualTo(
           StandardAttributeType.from(didokCsvLine.getAssistanceAvailability()).toString());
     } else {
       assertThat(didokCsvLine.getAssistanceAvailability()).isNull();
+      assertThat(atlasCsvLine.getAssistanceAvailability()).isNull();
     }
     assertThat(atlasCsvLine.getAssistanceCondition()).isEqualTo(didokCsvLine.getAssistanceCondition());
-    if (atlasCsvLine.getAssistanceService() != null) {
+    if (atlasCsvLine.getAssistanceService() != null && didokCsvLine.getAssistanceService() != null) {
       assertThat(atlasCsvLine.getAssistanceService()).isEqualTo(
           StandardAttributeType.from(didokCsvLine.getAssistanceService()).toString());
     } else {
       assertThat(didokCsvLine.getAssistanceService()).isNull();
+      assertThat(atlasCsvLine.getAssistanceService()).isNull();
     }
-    if (atlasCsvLine.getAudioTicketMachine() != null) {
+    if (atlasCsvLine.getAudioTicketMachine() != null && didokCsvLine.getAudioTickMach() != null) {
       assertThat(atlasCsvLine.getAudioTicketMachine()).isEqualTo(
           StandardAttributeType.from(didokCsvLine.getAudioTickMach()).toString());
     } else {
       assertThat(didokCsvLine.getAudioTickMach()).isNull();
+      assertThat(atlasCsvLine.getAudioTicketMachine()).isNull();
     }
     assertThat(atlasCsvLine.getAdditionalInformation()).isEqualTo(didokCsvLine.getCompInfos());
-    if (atlasCsvLine.getDynamicAudioSystem() != null) {
+    if (atlasCsvLine.getDynamicAudioSystem() != null && didokCsvLine.getDynamicAudioSys() != null) {
       assertThat(atlasCsvLine.getDynamicAudioSystem()).isEqualTo(
           StandardAttributeType.from(didokCsvLine.getDynamicAudioSys()).toString());
     } else {
       assertThat(didokCsvLine.getDynamicAudioSys()).isNull();
+      assertThat(atlasCsvLine.getDynamicAudioSystem()).isNull();
     }
-    if (atlasCsvLine.getDynamicOpticSystem() != null) {
+    if (atlasCsvLine.getDynamicOpticSystem() != null && didokCsvLine.getDynamicOpticSys() != null) {
       assertThat(atlasCsvLine.getDynamicOpticSystem()).isEqualTo(
           StandardAttributeType.from(didokCsvLine.getDynamicOpticSys()).toString());
     } else {
       assertThat(didokCsvLine.getDynamicOpticSys()).isNull();
+      assertThat(atlasCsvLine.getDynamicOpticSystem()).isNull();
     }
     assertThat(atlasCsvLine.getInfoTicketMachine()).isEqualTo(didokCsvLine.getInfoTickMach());
     assertThat(atlasCsvLine.getInteroperable()).isEqualTo(mapInteroperableFromDidok(didokCsvLine.getInteroperable()));
     assertThat(atlasCsvLine.getUrl()).isEqualTo(didokCsvLine.getUrl());
-    if (atlasCsvLine.getVisualInfo() != null) {
+    if (atlasCsvLine.getVisualInfo() != null && didokCsvLine.getVisualInfos() != null) {
       assertThat(atlasCsvLine.getVisualInfo()).isEqualTo(
           StandardAttributeType.from(didokCsvLine.getVisualInfos()).toString());
     } else {
       assertThat(didokCsvLine.getVisualInfos()).isNull();
+      assertThat(atlasCsvLine.getVisualInfo()).isNull();
     }
-    if (atlasCsvLine.getWheelchairTicketMachine() != null) {
+    if (atlasCsvLine.getWheelchairTicketMachine() != null && didokCsvLine.getWheelchairTickMach() != null) {
       assertThat(atlasCsvLine.getWheelchairTicketMachine()).isEqualTo(
           StandardAttributeType.from(didokCsvLine.getWheelchairTickMach()).toString());
     } else {
       assertThat(didokCsvLine.getWheelchairTickMach()).isNull();
+      assertThat(atlasCsvLine.getWheelchairTicketMachine()).isNull();
     }
-    if (atlasCsvLine.getAssistanceRequestFulfilled() != null) {
+    if (atlasCsvLine.getAssistanceRequestFulfilled() != null && didokCsvLine.getAssistanceReqsFulfilled() != null) {
       assertThat(atlasCsvLine.getAssistanceRequestFulfilled()).isEqualTo(
           StandardAttributeType.from(didokCsvLine.getAssistanceReqsFulfilled()).toString());
     } else {
       assertThat(didokCsvLine.getAssistanceReqsFulfilled()).isNull();
+      assertThat(atlasCsvLine.getAssistanceRequestFulfilled()).isNull();
     }
-    if (atlasCsvLine.getTicketMachine() != null) {
+    if (atlasCsvLine.getTicketMachine() != null && didokCsvLine.getTicketMachine() != null) {
       assertThat(atlasCsvLine.getTicketMachine()).isEqualTo(
           StandardAttributeType.from(didokCsvLine.getTicketMachine()).toString());
     } else {
       assertThat(didokCsvLine.getTicketMachine()).isNull();
+      assertThat(atlasCsvLine.getTicketMachine()).isNull();
     }
 
     assertThat(mapPipedMeansOfTransport(atlasCsvLine.getMeansOfTransport())).containsAll(
