@@ -39,13 +39,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
   @Test
   @Order(1)
-  void unzipDidokFile() throws IOException {
-    MigrationTestsHelper.unzipFile(ZIPPED_DIDOK_CSV_FILE, DECOMPRESSED_FILE_PATH);
-  }
-
-  @Test
-  @Order(2)
   void shouldParseCsvsCorrectly() throws IOException {
+    MigrationTestsHelper.unzipFile(ZIPPED_DIDOK_CSV_FILE, DECOMPRESSED_FILE_PATH);
     try (InputStream csvStream = Files.newInputStream(Paths.get(DECOMPRESSED_FILE_PATH + "/" + DIDOK_CSV_FILE))) {
       didokCsvLines.addAll(CsvReader.parseCsv(csvStream, ServicePointDidokCsvModel.class));
     }
@@ -58,7 +53,7 @@ import static org.assertj.core.api.Assertions.assertThat;
   }
 
   @Test
-  @Order(3)
+  @Order(2)
   void shouldHaveSameDidokCodesInBothCsvs() {
     Set<Integer> didokCodes = didokCsvLines.stream().map(ServicePointDidokCsvModel::getDidokCode).collect(Collectors.toSet());
     Set<Integer> atlasNumbers = atlasCsvLines.stream().map(ServicePointAtlasCsvModel::getNumber).collect(Collectors.toSet());
@@ -76,7 +71,7 @@ import static org.assertj.core.api.Assertions.assertThat;
   }
 
   @Test
-  @Order(4)
+  @Order(3)
   void shouldHaveSameValidityOnEachDidokCode() {
     Map<Integer, Validity> groupedDidokCodes = didokCsvLines.stream().collect(
         Collectors.groupingBy(ServicePointDidokCsvModel::getDidokCode, Collectors.collectingAndThen(Collectors.toList(),
@@ -111,7 +106,7 @@ import static org.assertj.core.api.Assertions.assertThat;
    * GUELTIG_VON) and do a comparison
    */
   @Test
-  @Order(5)
+  @Order(4)
   void shouldHaveMappedFieldsToAtlasCorrectly() {
     Map<Integer, List<ServicePointAtlasCsvModel>> groupedAtlasNumbers = atlasCsvLines.stream()
         .collect(Collectors.groupingBy(ServicePointAtlasCsvModel::getNumber));
@@ -121,6 +116,7 @@ import static org.assertj.core.api.Assertions.assertThat;
           groupedAtlasNumbers.get(didokCsvLine.getDidokCode()));
       new ServicePointMappingEquality(didokCsvLine, atlasCsvLine, true).performCheck();
     });
+    FileSystemUtils.deleteRecursively(new File(DECOMPRESSED_FILE_PATH));
   }
 
   private ServicePointAtlasCsvModel findCorrespondingAtlasServicePointVersion(ServicePointDidokCsvModel didokCsvLine,
@@ -136,12 +132,6 @@ import static org.assertj.core.api.Assertions.assertThat;
       return matchedVersions.get(0);
     }
     throw new IllegalStateException("Not exactly one match");
-  }
-
-  @Test
-  @Order(6)
-  void deleteUnzippedFolder() {
-    FileSystemUtils.deleteRecursively(new File(DECOMPRESSED_FILE_PATH));
   }
 
 }
