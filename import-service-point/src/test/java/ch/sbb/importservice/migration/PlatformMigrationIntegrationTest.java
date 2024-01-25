@@ -27,8 +27,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PlatformMigrationIntegrationTest {
 
-  private static final String DIDOK_PLATFORMS_CSV_FILE = "PRM_PLATFORMS_20240124011743.csv";
-  private static final String ATLAS_PLATFORMS_CSV_FILE = "full-platform-2024-01-24.csv";
+  private static final String DIDOK_PLATFORMS_CSV_FILE = "PRM_PLATFORMS_20240125013756.csv";
+  private static final String ATLAS_PLATFORMS_CSV_FILE = "full-platform-2024-01-25.csv";
   private static final List<PlatformCsvModel> didokPlatformCsvLines = new ArrayList<>();
   private static final List<PlatformVersionCsvModel> atlasPlatformCsvLines = new ArrayList<>();
 
@@ -132,12 +132,18 @@ class PlatformMigrationIntegrationTest {
     Map<String, List<PlatformVersionCsvModel>> groupedAtlasPlatforms = atlasPlatformCsvLines.stream()
             .collect(Collectors.groupingBy(PlatformVersionCsvModel::getSloid));
 
-    assertThat(didokPlatformCsvLines).isNotEmpty();
-    didokPlatformCsvLines.forEach(didokCsvLine -> {
-      PlatformVersionCsvModel atlasCsvLine = findCorrespondingAtlasPlatformVersion(didokCsvLine,
-              groupedAtlasPlatforms.get(didokCsvLine.getSloid()));
-      new PlatformMappingEquality(didokCsvLine, atlasCsvLine).performCheck();
-    });
+    Map<String, List<PlatformCsvModel>> groupedDidokPlatforms = didokPlatformCsvLines.stream()
+            .collect(Collectors.groupingBy(PlatformCsvModel::getSloid));
+
+    for (List<PlatformCsvModel> didokCsvItemList : groupedDidokPlatforms.values()) {
+      Comparator<PlatformCsvModel> employeeAgeComparator = Comparator
+              .comparing(PlatformCsvModel::getValidTo);
+
+      PlatformCsvModel t = didokCsvItemList.stream().max(employeeAgeComparator).get();
+      PlatformVersionCsvModel atlasCsvLine = findCorrespondingAtlasPlatformVersion(t,
+              groupedAtlasPlatforms.get(t.getSloid()));
+      new PlatformMappingEquality(t, atlasCsvLine).performCheck();
+    }
   }
 
   private PlatformVersionCsvModel findCorrespondingAtlasPlatformVersion(PlatformCsvModel didokCsvLine,

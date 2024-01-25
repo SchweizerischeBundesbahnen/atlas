@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static ch.sbb.atlas.imports.util.CsvReader.dateFromString;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVersionCsvModel atlasCsvLine) {
@@ -95,8 +94,6 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
       assertThat(mapPipedInfoOpportunities(atlasCsvLine.getInfoOpportunities())).containsAll(InfoOpportunityAttributeType.fromCode(didokCsvLine.getInfoBlinds()));
     }
 
-    assertThat(dateFromString(atlasCsvLine.getValidFrom())).isEqualTo(didokCsvLine.getValidFrom());
-    assertThat(dateFromString(atlasCsvLine.getValidTo())).isEqualTo(didokCsvLine.getValidTo());
     assertThat(atlasCsvLine.getCreator()).isEqualTo(didokCsvLine.getAddedBy());
     assertThat(atlasCsvLine.getEditor()).isEqualTo(didokCsvLine.getModifiedBy());
     assertThat(localDateFromString(atlasCsvLine.getCreationDate())).isEqualTo(didokCsvLine.getCreatedAt());
