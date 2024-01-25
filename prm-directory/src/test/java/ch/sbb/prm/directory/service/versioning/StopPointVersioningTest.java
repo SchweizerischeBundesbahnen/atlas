@@ -1,9 +1,12 @@
 package ch.sbb.prm.directory.service.versioning;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.prm.directory.SharedServicePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.SharedServicePoint;
@@ -11,17 +14,15 @@ import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.StopPointService;
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @Transactional
@@ -42,10 +43,8 @@ class StopPointVersioningTest {
 
   @BeforeEach
   public void init(){
-    SharedServicePoint servicePoint = SharedServicePoint.builder()
-        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:12345\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
-        .sloid("ch:1:sloid:12345")
-        .build();
+    SharedServicePoint servicePoint =
+        SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:12345", Set.of("ch:1:sboid:100602"), Collections.emptySet());
     sharedServicePointRepository.saveAndFlush(servicePoint);
   }
 
