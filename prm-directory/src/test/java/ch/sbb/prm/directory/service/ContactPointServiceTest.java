@@ -2,11 +2,11 @@ package ch.sbb.prm.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import ch.sbb.atlas.api.client.location.LocationClientV1;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -24,12 +24,11 @@ import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import org.assertj.core.api.AbstractComparableAssert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+
 class ContactPointServiceTest extends BasePrmServiceTest {
 
   private final ContactPointService contactPointService;
@@ -38,17 +37,15 @@ class ContactPointServiceTest extends BasePrmServiceTest {
   private final StopPointRepository stopPointRepository;
   private final ReferencePointRepository referencePointRepository;
 
-  @MockBean
-  private LocationClientV1 locationClient;
-
   @Autowired
   ContactPointServiceTest(ContactPointService contactPointService,
       ContactPointRepository contactPointRepository,
       RelationRepository relationRepository,
       StopPointRepository stopPointRepository,
       ReferencePointRepository referencePointRepository,
-      SharedServicePointRepository sharedServicePointRepository) {
-    super(sharedServicePointRepository);
+      SharedServicePointRepository sharedServicePointRepository,
+      PrmLocationService prmLocationService) {
+    super(sharedServicePointRepository, prmLocationService);
     this.contactPointService = contactPointService;
     this.contactPointRepository = contactPointRepository;
     this.relationRepository = relationRepository;
@@ -86,9 +83,7 @@ class ContactPointServiceTest extends BasePrmServiceTest {
     List<RelationVersion> relationVersions = relationRepository
         .findAllByParentServicePointSloid(contactPointVersion.getParentServicePointSloid());
     assertThat(relationVersions).isEmpty();
-    verify(locationClient, times(1)).claimSloid(argThat(
-        claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.INFO_DESK
-            && Objects.equals(claimSloidRequestModel.sloid(), "ch:1:sloid:12345:1")));
+    verify(prmLocationService, times(1)).allocateSloid(any(),eq(SloidType.INFO_DESK));
   }
 
   @Test
@@ -119,9 +114,7 @@ class ContactPointServiceTest extends BasePrmServiceTest {
         relationVersions.get(0).getReferencePointElementType()).isEqualTo(ReferencePointElementType.CONTACT_POINT);
     assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(ReferencePointElementType.CONTACT_POINT);
-    verify(locationClient, times(1)).claimSloid(argThat(
-        claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.INFO_DESK
-            && Objects.equals(claimSloidRequestModel.sloid(), "ch:1:sloid:12345:1")));
+    verify(prmLocationService, times(1)).allocateSloid(any(),eq(SloidType.INFO_DESK));
   }
 
   @Test
@@ -150,9 +143,7 @@ class ContactPointServiceTest extends BasePrmServiceTest {
     List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
         parentServicePointSloid);
     assertThat(relationVersions).isEmpty();
-    verify(locationClient, times(1)).claimSloid(argThat(
-        claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.INFO_DESK
-            && Objects.equals(claimSloidRequestModel.sloid(), "ch:1:sloid:12345:1")));
+    verify(prmLocationService, times(1)).allocateSloid(any(),eq(SloidType.INFO_DESK));
   }
 
 }
