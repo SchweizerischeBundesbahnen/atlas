@@ -30,7 +30,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
   private static final String ZIPPED_DIDOK_CSV_FILE = "src/test/resources/migration/DIDOK3_DIENSTSTELLEN_ALL_V_3_20240112011538.zip";
   private static final String DECOMPRESSED_FILE_PATH = "src/test/resources/migration/DIDOK3_DIENSTSTELLEN_ALL_V_3_20240112011538";
-  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20240112011538.csv";
   private static final String ATLAS_CSV_FILE = "full-world-service_point-2024-01-17.csv";
 
   private static final List<ServicePointAtlasCsvModel> atlasCsvLines = new ArrayList<>();
@@ -39,10 +38,8 @@ import static org.assertj.core.api.Assertions.assertThat;
   @Test
   @Order(1)
   void shouldParseCsvsCorrectly() throws IOException {
-//    MigrationTestsUtilityClass.unzipFileWithInputPathAndOutputPath(ZIPPED_DIDOK_CSV_FILE, DECOMPRESSED_FILE_PATH);
     File zippedFile = new File(ZIPPED_DIDOK_CSV_FILE);
-    File unzippedFile = MigrationTestsUtilityClass.unzipFileWithInputFileAndOutputFile(zippedFile, DECOMPRESSED_FILE_PATH);
-//    try (InputStream csvStream = Files.newInputStream(Paths.get(DECOMPRESSED_FILE_PATH + "/" + DIDOK_CSV_FILE))) {
+    File unzippedFile = MigrationTestsUtilityClass.unzipFile(zippedFile, DECOMPRESSED_FILE_PATH);
     try (InputStream csvStream = new FileInputStream(unzippedFile)) {
       didokCsvLines.addAll(CsvReader.parseCsv(csvStream, ServicePointDidokCsvModel.class));
     }
