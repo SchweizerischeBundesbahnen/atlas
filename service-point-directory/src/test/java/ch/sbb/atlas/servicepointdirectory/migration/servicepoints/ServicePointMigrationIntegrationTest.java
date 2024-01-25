@@ -1,11 +1,18 @@
 package ch.sbb.atlas.servicepointdirectory.migration.servicepoints;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.imports.util.CsvReader;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Validity;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.util.FileSystemUtils;
+
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -13,19 +20,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
  class ServicePointMigrationIntegrationTest {
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ALL_V_3_20230906021755.csv";
-  private static final String ATLAS_CSV_FILE = "full-world-service_point-2023-09-06.csv";
+  private static final String ZIPPED_DIDOK_CSV_FILE = "src/test/resources/migration/DIDOK3_DIENSTSTELLEN_ALL_V_3_20240112011538.zip";
+  private static final String DECOMPRESSED_FILE_PATH = "src/test/resources/migration/DIDOK3_DIENSTSTELLEN_ALL_V_3_20240112011538";
+  private static final String ATLAS_CSV_FILE = "full-world-service_point-2024-01-17.csv";
 
   private static final List<ServicePointAtlasCsvModel> atlasCsvLines = new ArrayList<>();
   private static final List<ServicePointDidokCsvModel> didokCsvLines = new ArrayList<>();
@@ -33,7 +38,9 @@ import org.junit.jupiter.api.TestMethodOrder;
   @Test
   @Order(1)
   void shouldParseCsvsCorrectly() throws IOException {
-    try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE)) {
+    File zippedFile = new File(ZIPPED_DIDOK_CSV_FILE);
+    File unzippedFile = MigrationTestsUtilityClass.unzipFile(zippedFile, DECOMPRESSED_FILE_PATH);
+    try (InputStream csvStream = new FileInputStream(unzippedFile)) {
       didokCsvLines.addAll(CsvReader.parseCsv(csvStream, ServicePointDidokCsvModel.class));
     }
     assertThat(didokCsvLines).isNotEmpty();
@@ -108,6 +115,7 @@ import org.junit.jupiter.api.TestMethodOrder;
           groupedAtlasNumbers.get(didokCsvLine.getDidokCode()));
       new ServicePointMappingEquality(didokCsvLine, atlasCsvLine, true).performCheck();
     });
+    FileSystemUtils.deleteRecursively(new File(DECOMPRESSED_FILE_PATH));
   }
 
   private ServicePointAtlasCsvModel findCorrespondingAtlasServicePointVersion(ServicePointDidokCsvModel didokCsvLine,

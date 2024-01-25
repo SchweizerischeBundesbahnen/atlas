@@ -33,11 +33,14 @@ public class ServicePointStatusDecider {
     }
 
     private boolean isSPLocatedInSwitzerland(ServicePointVersion newServicePointVersion) {
-        if (newServicePointVersion.getServicePointGeolocation() == null) {
-            return false;
-        }
+        if (isGeolocationOrCountryNull(newServicePointVersion)) return false;
         ServicePointGeolocation servicePointGeolocation = newServicePointVersion.getServicePointGeolocation();
         return servicePointGeolocation.getCountry().equals(Country.SWITZERLAND);
+    }
+
+    private static boolean isGeolocationOrCountryNull(ServicePointVersion newServicePointVersion) {
+        return newServicePointVersion.getServicePointGeolocation() == null
+                || newServicePointVersion.getServicePointGeolocation().getCountry() == null;
     }
 
     private boolean isNameChanged(ServicePointVersion newServicePointVersion,
@@ -132,6 +135,9 @@ public class ServicePointStatusDecider {
 
     private boolean isGeolocationChangedFromAbroadToSwitzerland(ServicePointVersion newServicePointVersion,
                                                                 ServicePointVersion currentServicePointVersion) {
+        if (isGeolocationOrCountryNull(newServicePointVersion)) {
+            return false;
+        }
         return Objects.equals(newServicePointVersion.getServicePointGeolocation().getCountry().getUicCode(), Country.SWITZERLAND.getUicCode())
                 && !Objects.equals(currentServicePointVersion.getServicePointGeolocation().getCountry().getUicCode(), Country.SWITZERLAND.getUicCode());
     }
