@@ -17,6 +17,7 @@ import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.BasePrmServiceTest;
 import ch.sbb.prm.directory.service.ParkingLotService;
+import ch.sbb.prm.directory.service.PrmLocationService;
 import ch.sbb.prm.directory.service.RelationService;
 import java.time.LocalDate;
 import java.util.List;
@@ -37,8 +38,9 @@ class ParkingLotVersioningTest extends BasePrmServiceTest {
                            RelationService relationService,
                            StopPointRepository stopPointRepository,
                            ReferencePointRepository referencePointRepository,
-                           SharedServicePointRepository sharedServicePointRepository) {
-    super(sharedServicePointRepository);
+                           SharedServicePointRepository sharedServicePointRepository,
+      PrmLocationService prmLocationService) {
+    super(sharedServicePointRepository, prmLocationService);
     this.parkingLotService = parkingLotService;
     this.parkingLotRepository = parkingLotRepository;
     this.relationService = relationService;
