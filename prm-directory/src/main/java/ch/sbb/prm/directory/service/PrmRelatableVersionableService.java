@@ -2,7 +2,6 @@ package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
-import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
@@ -17,10 +16,11 @@ public abstract class PrmRelatableVersionableService<T extends Relatable & PrmVe
   protected final StopPointService stopPointService;
   protected final RelationService relationService;
   protected final ReferencePointRepository referencePointRepository;
-  private final LocationService locationService;
+  protected final PrmLocationService locationService;
 
   protected PrmRelatableVersionableService(VersionableService versionableService, StopPointService stopPointService,
-      RelationService relationService, ReferencePointRepository referencePointRepository, LocationService locationService) {
+      RelationService relationService, ReferencePointRepository referencePointRepository,
+      PrmLocationService locationService) {
     super(versionableService);
     this.stopPointService = stopPointService;
     this.relationService = relationService;
@@ -44,12 +44,7 @@ public abstract class PrmRelatableVersionableService<T extends Relatable & PrmVe
   }
 
   private void allocateSloid(T version) {
-    final SloidType sloidType = getSloidType();
-    if (version.getSloid() != null) {
-      locationService.claimSloid(sloidType, version.getSloid());
-    } else {
-      version.setSloid(locationService.generateSloid(sloidType, version.getParentServicePointSloid()));
-    }
+    locationService.allocateSloid(version,getSloidType());
   }
 
   private void createRelations(T version) {

@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import ch.sbb.atlas.api.client.location.LocationClientV1;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -36,7 +37,7 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
   private final StopPointRepository stopPointRepository;
 
   @MockBean
-  private LocationClient locationClient;
+  private LocationClientV1 locationClient;
 
   @Autowired
   ReferencePointVersioningTest(ReferencePointService referencePointService,

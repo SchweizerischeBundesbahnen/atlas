@@ -31,7 +31,6 @@ public class SloidService {
     sloidSync(SloidType.INFO_DESK);
     sloidSync(SloidType.TICKET_COUNTER);
     sloidSync(SloidType.TOILET);
-    sloidSync(SloidType.RELATION);
   }
   private void sloidSync(SloidType sloidType) {
     log.info("**** Start Synch {} ****", sloidType);
