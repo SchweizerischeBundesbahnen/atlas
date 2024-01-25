@@ -1,4 +1,4 @@
-FROM docker.bin.sbb.ch/cloud/sbb-base-rhel-java:17-LATEST
+FROM docker.bin.sbb.ch/cloud/sbb-base-rhel-java:21-LATEST
 
 MAINTAINER techsupport-atlas@sbb.ch
 

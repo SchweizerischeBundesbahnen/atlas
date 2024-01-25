@@ -8,6 +8,7 @@
     "pipelineTimeout": "1h30m0s"
   },
   "builder": {
+    "java": "21",
     "node": "18"
   },
   "mvn": {
