@@ -1,13 +1,7 @@
 package ch.sbb.prm.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
-import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
@@ -36,15 +30,12 @@ import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.search.ReferencePointSearchRestrictions;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 class ReferencePointServiceTest extends BasePrmServiceTest {
 
@@ -61,8 +52,9 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
       ToiletRepository toiletRepository, PlatformRepository platformRepository,
       StopPointRepository stopPointRepository, ParkingLotRepository parkingLotRepository,
       ContactPointRepository contactPointRepository,
-      SharedServicePointRepository sharedServicePointRepository) {
-    super(sharedServicePointRepository);
+      SharedServicePointRepository sharedServicePointRepository,
+      PrmLocationService prmLocationService) {
+    super(sharedServicePointRepository, prmLocationService);
     this.referencePointService = referencePointService;
     this.relationService = relationService;
     this.toiletRepository = toiletRepository;
