@@ -31,7 +31,6 @@ public class PrmRepository implements BaseRepository{
       case PLATFORM, AREA, SERVICE_POINT ->
           throw new IllegalArgumentException("Wrong sloidType " + sloidType + " provided! Please"
               + " use only PRM SloidTypes!");
-      case RELATION -> "relation_version";
       case INFO_DESK -> "information_desk_version";
       case PARKING_LOT -> "parking_lot_version";
       case REFERENCE_POINT -> "reference_point_version";
