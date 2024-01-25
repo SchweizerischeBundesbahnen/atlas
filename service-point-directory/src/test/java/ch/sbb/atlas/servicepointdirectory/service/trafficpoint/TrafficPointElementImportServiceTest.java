@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import ch.sbb.atlas.api.client.location.LocationClientV1;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
@@ -37,7 +38,7 @@ class TrafficPointElementImportServiceTest {
   private CrossValidationService crossValidationService;
 
   @MockBean
-  private LocationClient locationClient;
+  private LocationClientV1 locationClient;
 
   private static final String CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_20221222011816.csv";
 
