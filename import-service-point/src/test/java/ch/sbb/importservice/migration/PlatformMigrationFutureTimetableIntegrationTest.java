@@ -28,8 +28,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PlatformMigrationFutureTimetableIntegrationTest {
 
-  private static final String DIDOK_STOP_PLACE_CSV_FILE = "PRM_PLATFORMS_20240124011743.csv";
-  private static final String ATLAS_STOP_POINT_CSV_FILE = "future-timetable-platform-2024-01-24.csv";
+  private static final String DIDOK_STOP_PLACE_CSV_FILE = "PRM_PLATFORMS_20240125013756.csv";
+  private static final String ATLAS_STOP_POINT_CSV_FILE = "future-timetable-platform-2024-01-25.csv";
   private static final LocalDate FUTURE_TIMETABLE_DATE = LocalDate.of(2024, 06, 02);
 
   private static final List<PlatformCsvModel> didokPlatformCsvLines = new ArrayList<>();
