@@ -1,9 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointGeoDataApiV1;
@@ -15,6 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.protobuf.ProtobufHttpMessageConverter;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
  class ServicePointGeoDataApiTest extends BaseControllerApiTest {
 
@@ -28,7 +28,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
   }
 
   @BeforeEach
-  void setup() {
+  void setUp() {
     repository.save(ServicePointTestData.getBernWyleregg());
 
     mvc = MockMvcBuilders.standaloneSetup(geoDataController).setMessageConverters(new ProtobufHttpMessageConverter()).build();
