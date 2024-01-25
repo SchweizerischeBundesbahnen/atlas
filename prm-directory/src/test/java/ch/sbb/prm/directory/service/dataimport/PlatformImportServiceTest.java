@@ -11,6 +11,7 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.testdata.prm.PlatformCsvTestData;
 import ch.sbb.prm.directory.PlatformTestData;
+import ch.sbb.prm.directory.SharedServicePointTestData;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.repository.PlatformRepository;
@@ -18,6 +19,7 @@ import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.service.StopPointService;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,16 +48,8 @@ class PlatformImportServiceTest {
 
   @BeforeEach
   void setUp() {
-    SharedServicePoint servicePoint = SharedServicePoint.builder()
-        .servicePoint("""
-            {
-             	"servicePointSloid": "ch:1:sloid:76646",
-             	"sboids": ["ch:1:sboid:100602"],
-             	"trafficPointSloids": ["ch:1:sloid:76646:0:17"]
-             }
-              """)
-        .sloid("ch:1:sloid:76646")
-        .build();
+    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:76646",
+        Set.of("ch:1:sboid:100602"), Set.of("ch:1:sloid:76646:0:17"));
     sharedServicePointRepository.saveAndFlush(servicePoint);
 
     when(stopPointService.isReduced(any())).thenReturn(false);
