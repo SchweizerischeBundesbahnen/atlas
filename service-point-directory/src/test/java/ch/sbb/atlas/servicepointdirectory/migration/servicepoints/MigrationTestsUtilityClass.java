@@ -14,14 +14,13 @@ public class MigrationTestsUtilityClass {
 
     private final int BUFFER_SIZE = 8192; // 8 KB
 
-    public File unzipFileWithInputFileAndOutputFile(File zippedFile, String destinationDirectoryPath) throws IOException {
+    public File unzipFile(File zippedFile, String destinationDirectoryPath) throws IOException {
         File destinationDirectory = new File(destinationDirectoryPath);
 
         try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(zippedFile))) {
             byte[] buffer = new byte[BUFFER_SIZE];
             ZipEntry zipEntry = zipInputStream.getNextEntry();
-            while (zipEntry != null) {
-//                File newFile = newFile(destinationDirectory, zipEntry);
+            if (zipEntry != null) {
                 File newFile = new File(destinationDirectory, zipEntry.getName());
                 if (zipEntry.isDirectory()) {
                     if (!newFile.isDirectory() && !newFile.mkdirs()) {
@@ -40,42 +39,11 @@ public class MigrationTestsUtilityClass {
                         }
                     }
                 }
-                zipEntry = zipInputStream.getNextEntry();
+                zipInputStream.getNextEntry();
                 return newFile;
             }
         }
         return null;
-    }
-
-    public void unzipFileWithInputPathAndOutputPath(String fileZipPath, String destinationDirectoryPath) throws IOException {
-        File destinationDirectory = new File(destinationDirectoryPath);
-
-        try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(fileZipPath))) {
-            byte[] buffer = new byte[BUFFER_SIZE];
-            ZipEntry zipEntry = zipInputStream.getNextEntry();
-            while (zipEntry != null) {
-//                File newFile = newFile(destinationDirectory, zipEntry);
-                File newFile = new File(destinationDirectory, zipEntry.getName());
-                if (zipEntry.isDirectory()) {
-                    if (!newFile.isDirectory() && !newFile.mkdirs()) {
-                        throw new IOException("Failed to create directory " + newFile);
-                    }
-                } else {
-                    File parent = newFile.getParentFile();
-                    if (!parent.isDirectory() && !parent.mkdirs()) {
-                        throw new IOException("Failed to create directory " + parent);
-                    }
-
-                    try (FileOutputStream fileOutputStream = new FileOutputStream(newFile)) {
-                        int length;
-                        while ((length = zipInputStream.read(buffer)) > 0) {
-                            fileOutputStream.write(buffer, 0, length);
-                        }
-                    }
-                }
-                zipEntry = zipInputStream.getNextEntry();
-            }
-        }
     }
 
 }
