@@ -1,7 +1,24 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
+import static ch.sbb.atlas.api.AtlasApiConstants.ZURICH_ZONE_ID;
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.WGS84;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import ch.sbb.atlas.api.AtlasApiConstants;
-import ch.sbb.atlas.api.location.GenerateSloidRequestModel;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
@@ -29,18 +46,8 @@ import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointFotCommentRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.JourneyPoiClient;
-import ch.sbb.atlas.api.client.location.LocationClient;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.servlet.MvcResult;
-
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -54,24 +61,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import static ch.sbb.atlas.api.AtlasApiConstants.ZURICH_ZONE_ID;
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.WGS84;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.endsWith;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MvcResult;
 
 class ServicePointControllerApiTest extends BaseControllerApiTest {
 
