@@ -1,6 +1,5 @@
 package ch.sbb.prm.directory.configuration;
 
-import ch.sbb.atlas.api.client.location.LocationClient;
 import ch.sbb.atlas.business.organisation.SharedBusinessOrganisationConfig;
 import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
 import ch.sbb.atlas.location.LocationService;
@@ -12,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Import({SharedBusinessOrganisationConfig.class})
-@EnableFeignClients(basePackages = {"ch.sbb.atlas.api.client.location"})
+@EnableFeignClients(basePackages = {"ch.sbb.prm.directory.configuration"})
 @Configuration
 public class AtlasConfig {
 

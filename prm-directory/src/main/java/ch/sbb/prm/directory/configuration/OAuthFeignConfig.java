@@ -1,4 +1,4 @@
-package ch.sbb.atlas.api.client.location;
+package ch.sbb.prm.directory.configuration;
 
 import ch.sbb.atlas.oauth.client.OAuthClientConfig;
 import org.springframework.context.annotation.Configuration;

@@ -13,7 +13,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.api.client.location.LocationClient;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
