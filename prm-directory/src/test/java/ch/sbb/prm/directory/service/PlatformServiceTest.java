@@ -10,13 +10,13 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
+import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.exception.TrafficPointElementDoesNotExistsException;
-import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
@@ -46,8 +46,9 @@ class PlatformServiceTest extends BasePrmServiceTest {
       RelationRepository relationRepository,
       StopPointRepository stopPointRepository,
       ReferencePointRepository referencePointRepository,
-      SharedServicePointRepository sharedServicePointRepository) {
-    super(sharedServicePointRepository);
+      SharedServicePointRepository sharedServicePointRepository,
+      PrmLocationService prmLocationService) {
+    super(sharedServicePointRepository, prmLocationService);
     this.platformService = platformService;
     this.platformRepository = platformRepository;
     this.sharedServicePointConsumer = sharedServicePointConsumer;

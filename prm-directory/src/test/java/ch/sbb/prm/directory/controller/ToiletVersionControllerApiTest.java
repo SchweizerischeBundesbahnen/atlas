@@ -3,7 +3,7 @@ package ch.sbb.prm.directory.controller;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -13,7 +13,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.api.client.location.LocationClientV1;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.api.prm.model.toilet.ToiletVersionModel;
@@ -33,8 +32,8 @@ import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
+import ch.sbb.prm.directory.service.PrmLocationService;
 import ch.sbb.prm.directory.service.RelationService;
-import java.util.Objects;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,19 +55,20 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
   private final RelationService relationService;
 
   @MockBean
-  private LocationClientV1 locationClient;
+  private final PrmLocationService prmLocationService;
 
   @Autowired
   ToiletVersionControllerApiTest(ToiletRepository toiletRepository,
       StopPointRepository stopPointRepository,
       ReferencePointRepository referencePointRepository,
       SharedServicePointRepository sharedServicePointRepository,
-      RelationService relationService) {
+      RelationService relationService, PrmLocationService prmLocationService) {
     this.toiletRepository = toiletRepository;
     this.stopPointRepository = stopPointRepository;
     this.referencePointRepository = referencePointRepository;
     this.sharedServicePointRepository = sharedServicePointRepository;
     this.relationService = relationService;
+    this.prmLocationService = prmLocationService;
   }
 
   @BeforeEach
@@ -113,9 +113,7 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isCreated());
     verify(relationService, times(1)).save(any(RelationVersion.class));
-    verify(locationClient, times(1)).claimSloid(argThat(
-        claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.TOILET
-            && Objects.equals(claimSloidRequestModel.sloid(), "ch:1:sloid:12345:1")));
+    verify(prmLocationService, times(1)).allocateSloid(any(ToiletVersion.class),eq(SloidType.TOILET));
   }
 
   @Test
@@ -138,9 +136,7 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isCreated());
     verify(relationService, never()).save(any(RelationVersion.class));
-    verify(locationClient, times(1)).claimSloid(argThat(
-        claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.TOILET
-            && Objects.equals(claimSloidRequestModel.sloid(), "ch:1:sloid:12345:1")));
+    verify(prmLocationService, times(1)).allocateSloid(any(ToiletVersion.class),eq(SloidType.TOILET));
   }
 
   @Test
@@ -159,7 +155,7 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(status().isPreconditionFailed())
         .andExpect(jsonPath("$.message", is("The stop point with sloid ch:1:sloid:7000 does not exist.")));
     verify(relationService, times(0)).save(any(RelationVersion.class));
-    verify(locationClient, never()).claimSloid(any());
+    verify(prmLocationService, never()).allocateSloid(any(),any());
   }
 
   @Test
@@ -178,7 +174,7 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isPreconditionFailed())
         .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7001 does not exist.")));
-    verify(locationClient, never()).claimSloid(any());
+    verify(prmLocationService, never()).allocateSloid(any(),any());
   }
 
   /**
@@ -230,8 +226,7 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2000-12-31")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2001-01-01")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2001-12-31")));
-    verify(locationClient, never()).claimSloid(any());
-    verify(locationClient, never()).generateSloid(any());
+    verify(prmLocationService, never()).allocateSloid(any(),any());
   }
 
 }

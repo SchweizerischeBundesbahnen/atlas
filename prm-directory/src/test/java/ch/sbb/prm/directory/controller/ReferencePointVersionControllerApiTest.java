@@ -3,7 +3,8 @@ package ch.sbb.prm.directory.controller;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -13,7 +14,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.api.client.location.LocationClientV1;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReferencePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
@@ -41,10 +41,10 @@ import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
+import ch.sbb.prm.directory.service.PrmLocationService;
 import ch.sbb.prm.directory.service.RelationService;
 import java.time.LocalDate;
 import java.util.Collections;
-import java.util.Objects;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,7 +69,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
   private final RelationService relationService;
 
   @MockBean
-  private LocationClientV1 locationClient;
+  private final PrmLocationService prmLocationService;
 
   @Autowired
   ReferencePointVersionControllerApiTest(ReferencePointRepository referencePointRepository,
@@ -79,7 +79,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
       ToiletRepository toiletRepository,
       SharedServicePointRepository sharedServicePointRepository,
       PlatformRepository platformRepository,
-      RelationService relationService) {
+      RelationService relationService, PrmLocationService prmLocationService) {
     this.referencePointRepository = referencePointRepository;
     this.stopPointRepository = stopPointRepository;
     this.contactPointRepository = contactPointRepository;
@@ -88,6 +88,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
     this.sharedServicePointRepository = sharedServicePointRepository;
     this.platformRepository = platformRepository;
     this.relationService = relationService;
+    this.prmLocationService = prmLocationService;
   }
 
   @BeforeEach
@@ -165,9 +166,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(status().isCreated());
     //verify that the reference point create 4 relation
     verify(relationService, times(4)).save(any(RelationVersion.class));
-    verify(locationClient, times(1)).claimSloid(argThat(
-        claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.REFERENCE_POINT
-            && Objects.equals(claimSloidRequestModel.sloid(), "ch:1:sloid:12345:1")));
+    verify(prmLocationService, times(1)).allocateSloid(any(ReferencePointVersion.class),eq(SloidType.REFERENCE_POINT));
   }
 
   @Test
@@ -179,8 +178,6 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
 
     ReferencePointVersionModel referencePointVersionModel = ReferencePointTestData.getReferencePointVersionModel();
     referencePointVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
-    // Automatic sloid generation
-    referencePointVersionModel.setSloid(null);
 
     //Init PRM Relations
     ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
@@ -195,6 +192,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
     PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
     platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     platformRepository.save(platformVersion);
+    doNothing().when(prmLocationService).allocateSloid(any(),eq(SloidType.REFERENCE_POINT));
 
     //when && then
     mvc.perform(post("/v1/reference-points")
@@ -220,7 +218,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(referencePointVersionModel)))
         .andExpect(status().isPreconditionFailed());
     verify(relationService, times(0)).save(any(RelationVersion.class));
-    verify(locationClient, never()).claimSloid(any());
+    verify(prmLocationService, never()).allocateSloid(any(),any());
   }
 
   @Test
@@ -250,7 +248,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(status().isPreconditionFailed())
         .andExpect(jsonPath("$.message", is("The stop point with sloid ch:1:sloid:7000 does not exist.")));
     verify(relationService, times(0)).save(any(RelationVersion.class));
-    verify(locationClient, never()).claimSloid(any());
+    verify(prmLocationService, never()).allocateSloid(any(),any());
   }
 
   /**
@@ -300,8 +298,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2000-12-31")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2001-01-01")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2001-12-31")));
-    verify(locationClient, never()).claimSloid(any());
-    verify(locationClient, never()).generateSloid(any());
+    verify(prmLocationService, never()).allocateSloid(any(),any());
   }
 
 }

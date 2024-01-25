@@ -1,16 +1,13 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doReturn;
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -21,7 +18,6 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -32,7 +28,7 @@ class ServicePointTypeTest extends BaseControllerApiTest {
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
 
   @MockBean
-  private LocationClient locationClient;
+  private LocationService locationService;
 
   private final ServicePointVersionRepository repository;
   private final ServicePointController servicePointController;
@@ -41,11 +37,6 @@ class ServicePointTypeTest extends BaseControllerApiTest {
   ServicePointTypeTest(ServicePointVersionRepository repository, ServicePointController servicePointController) {
     this.repository = repository;
     this.servicePointController = servicePointController;
-  }
-
-  @BeforeEach
-  void setUp() {
-    when(locationClient.generateSloid(any())).thenReturn("ch:1:sloid:1");
   }
 
   @AfterEach
@@ -63,13 +54,9 @@ class ServicePointTypeTest extends BaseControllerApiTest {
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
-
+    doReturn("ch:1:sloid:123").when(locationService).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
     ReadServicePointVersionModel result = servicePointController.createServicePoint(servicePoint);
 
-    verify(locationClient, times(1)).generateSloid(
-        argThat(generateSloidRequestModel ->
-            generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
-                && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
     assertThat(result.getId()).isNotNull();
     assertThat(result.isOperatingPoint()).isFalse();
     assertThat(result.isOperatingPointWithTimetable()).isFalse();
@@ -86,13 +73,10 @@ class ServicePointTypeTest extends BaseControllerApiTest {
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
+    doReturn("ch:1:sloid:123").when(locationService).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
 
     ReadServicePointVersionModel result = servicePointController.createServicePoint(servicePoint);
 
-    verify(locationClient, times(1)).generateSloid(
-        argThat(generateSloidRequestModel ->
-            generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
-                && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
     assertThat(result.getId()).isNotNull();
     assertThat(result.isOperatingPoint()).isTrue();
     assertThat(result.isOperatingPointWithTimetable()).isFalse();
@@ -109,13 +93,10 @@ class ServicePointTypeTest extends BaseControllerApiTest {
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
+    doReturn("ch:1:sloid:123").when(locationService).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
 
     ReadServicePointVersionModel result = servicePointController.createServicePoint(servicePoint);
 
-    verify(locationClient, times(1)).generateSloid(
-        argThat(generateSloidRequestModel ->
-            generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
-                && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
     assertThat(result.getId()).isNotNull();
     assertThat(result.isOperatingPoint()).isTrue();
     assertThat(result.isOperatingPointWithTimetable()).isTrue();
@@ -132,13 +113,10 @@ class ServicePointTypeTest extends BaseControllerApiTest {
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
+    doReturn("ch:1:sloid:123").when(locationService).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
 
     ReadServicePointVersionModel result = servicePointController.createServicePoint(servicePoint);
 
-    verify(locationClient, times(1)).generateSloid(
-        argThat(generateSloidRequestModel ->
-            generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
-                && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
     assertThat(result.getId()).isNotNull();
     assertThat(result.isOperatingPoint()).isTrue();
     assertThat(result.isOperatingPointWithTimetable()).isTrue();
@@ -155,13 +133,9 @@ class ServicePointTypeTest extends BaseControllerApiTest {
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
-
+    doReturn("ch:1:sloid:123").when(locationService).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
     ReadServicePointVersionModel result = servicePointController.createServicePoint(servicePoint);
 
-    verify(locationClient, times(1)).generateSloid(
-        argThat(generateSloidRequestModel ->
-            generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
-                && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
     assertThat(result.getId()).isNotNull();
     assertThat(result.isOperatingPoint()).isTrue();
     assertThat(result.isOperatingPointWithTimetable()).isTrue();
@@ -178,13 +152,9 @@ class ServicePointTypeTest extends BaseControllerApiTest {
         .validFrom(LocalDate.of(2022, 1, 1))
         .validTo(LocalDate.of(2022, 12, 31))
         .build();
-
+    doReturn("ch:1:sloid:123").when(locationService).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
     ReadServicePointVersionModel result = servicePointController.createServicePoint(servicePoint);
 
-    verify(locationClient, times(1)).generateSloid(
-        argThat(generateSloidRequestModel ->
-            generateSloidRequestModel.getSloidType() == SloidType.SERVICE_POINT
-                && generateSloidRequestModel.getCountry() == Country.SWITZERLAND));
     assertThat(result.getId()).isNotNull();
     assertThat(result.isOperatingPoint()).isTrue();
     assertThat(result.isOperatingPointWithTimetable()).isTrue();

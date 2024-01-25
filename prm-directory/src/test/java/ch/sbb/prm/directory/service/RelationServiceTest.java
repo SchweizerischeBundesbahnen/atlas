@@ -1,5 +1,7 @@
 package ch.sbb.prm.directory.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
@@ -15,14 +17,11 @@ import ch.sbb.prm.directory.exception.ReducedVariantException;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
+import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class RelationServiceTest extends BasePrmServiceTest {
 
@@ -34,8 +33,9 @@ class RelationServiceTest extends BasePrmServiceTest {
   RelationServiceTest(RelationService relationService,
                       RelationRepository relationRepository,
                       StopPointRepository stopPointRepository,
-                      SharedServicePointRepository sharedServicePointRepository) {
-    super(sharedServicePointRepository);
+                      SharedServicePointRepository sharedServicePointRepository,
+      PrmLocationService prmLocationService) {
+    super(sharedServicePointRepository, prmLocationService);
     this.relationService = relationService;
     this.relationRepository = relationRepository;
     this.stopPointRepository = stopPointRepository;
