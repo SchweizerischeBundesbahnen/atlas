@@ -11,6 +11,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
@@ -20,10 +21,13 @@ public abstract class BasePrmServiceTest {
     protected static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
 
     private final SharedServicePointRepository sharedServicePointRepository;
+    @MockBean
+    protected final PrmLocationService prmLocationService;
 
     @Autowired
-    public BasePrmServiceTest(SharedServicePointRepository sharedServicePointRepository) {
+    public BasePrmServiceTest(SharedServicePointRepository sharedServicePointRepository, PrmLocationService prmLocationService) {
         this.sharedServicePointRepository = sharedServicePointRepository;
+        this.prmLocationService = prmLocationService;
     }
 
     @BeforeEach
