@@ -59,7 +59,7 @@ public class SharedServicePointRepository {
                 .servicePointSloid(servicePointSloid)
                 .sboids(new HashSet<>(Set.of(businessOrganisation)))
                 .trafficPointSloids(new HashSet<>())
-                .isStopPoint(resultSet.getBoolean("stop_point"))
+                .stopPoint(resultSet.getBoolean("stop_point"))
                 .build();
             if (StringUtils.isNotBlank(trafficPointElementSloid)) {
               servicePoint.getTrafficPointSloids().add(trafficPointElementSloid);

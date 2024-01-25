@@ -63,6 +63,7 @@ class PlatformServiceTest extends BasePrmServiceTest {
         .servicePointSloid(PARENT_SERVICE_POINT_SLOID)
         .sboids(Set.of("ch:1:sboid:100001"))
         .trafficPointSloids(Set.of("ch:1:sloid:12345:1"))
+        .stopPoint(true)
         .build());
   }
 
