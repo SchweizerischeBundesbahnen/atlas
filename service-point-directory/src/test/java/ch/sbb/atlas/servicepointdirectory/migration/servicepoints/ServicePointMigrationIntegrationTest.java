@@ -12,10 +12,9 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.util.FileSystemUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,8 +39,11 @@ import static org.assertj.core.api.Assertions.assertThat;
   @Test
   @Order(1)
   void shouldParseCsvsCorrectly() throws IOException {
-    MigrationTestsUtilityClass.unzipFile(ZIPPED_DIDOK_CSV_FILE, DECOMPRESSED_FILE_PATH);
-    try (InputStream csvStream = Files.newInputStream(Paths.get(DECOMPRESSED_FILE_PATH + "/" + DIDOK_CSV_FILE))) {
+//    MigrationTestsUtilityClass.unzipFileWithInputPathAndOutputPath(ZIPPED_DIDOK_CSV_FILE, DECOMPRESSED_FILE_PATH);
+    File zippedFile = new File(ZIPPED_DIDOK_CSV_FILE);
+    File unzippedFile = MigrationTestsUtilityClass.unzipFileWithInputFileAndOutputFile(zippedFile, DECOMPRESSED_FILE_PATH);
+//    try (InputStream csvStream = Files.newInputStream(Paths.get(DECOMPRESSED_FILE_PATH + "/" + DIDOK_CSV_FILE))) {
+    try (InputStream csvStream = new FileInputStream(unzippedFile)) {
       didokCsvLines.addAll(CsvReader.parseCsv(csvStream, ServicePointDidokCsvModel.class));
     }
     assertThat(didokCsvLines).isNotEmpty();
