@@ -1,6 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.config;
 
-import ch.sbb.atlas.api.client.location.LocationClient;
 import ch.sbb.atlas.business.organisation.SharedBusinessOrganisationConfig;
 import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
 import ch.sbb.atlas.location.LocationService;
@@ -13,7 +12,7 @@ import org.springframework.context.annotation.Import;
 
 @Import(SharedBusinessOrganisationConfig.class)
 @EnableFeignClients(basePackages = {
-    "ch.sbb.atlas.servicepointdirectory.service.georeference", "ch.sbb.atlas.api.client.location"})
+    "ch.sbb.atlas.servicepointdirectory.service.georeference", "ch.sbb.atlas.servicepointdirectory.config"})
 @Configuration
 public class AtlasConfig {
 
