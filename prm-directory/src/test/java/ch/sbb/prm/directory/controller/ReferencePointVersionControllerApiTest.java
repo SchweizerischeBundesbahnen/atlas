@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.client.location.LocationClientV1;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReferencePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
@@ -68,7 +69,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
   private final RelationService relationService;
 
   @MockBean
-  private LocationClient locationClient;
+  private LocationClientV1 locationClient;
 
   @Autowired
   ReferencePointVersionControllerApiTest(ReferencePointRepository referencePointRepository,

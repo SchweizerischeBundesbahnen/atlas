@@ -7,6 +7,7 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import ch.sbb.atlas.api.client.location.LocationClientV1;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ParkingLotTestData;
@@ -38,7 +39,7 @@ class ParkingLotServiceTest extends BasePrmServiceTest {
   private final ReferencePointRepository referencePointRepository;
 
   @MockBean
-  private LocationClient locationClient;
+  private LocationClientV1 locationClient;
 
   @Autowired
   ParkingLotServiceTest(ParkingLotService parkingLotService,

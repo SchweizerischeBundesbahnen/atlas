@@ -47,12 +47,13 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   private final PlatformRepository platformRepository;
   private final RelationService relationService;
   private final StopPointService stopPointService;
-  private final LocationService locationService;
+  protected final PrmLocationService locationService;
 
   public ReferencePointService(ReferencePointRepository referencePointRepository,
       ToiletRepository toiletRepository, ContactPointRepository contactPointRepository,
       ParkingLotRepository parkingLotRepository, PlatformRepository platformRepository, RelationService relationService,
-      StopPointService stopPointService, VersionableService versionableService, LocationService locationService) {
+      StopPointService stopPointService, VersionableService versionableService,
+      PrmLocationService locationService) {
     super(versionableService);
     this.referencePointRepository = referencePointRepository;
     this.toiletRepository = toiletRepository;
@@ -98,7 +99,7 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   public ReferencePointVersion createReferencePoint(ReferencePointVersion referencePointVersion) {
     stopPointService.checkStopPointExists(referencePointVersion.getParentServicePointSloid());
     stopPointService.validateIsNotReduced(referencePointVersion.getParentServicePointSloid());
-    locationService.claimSloid(SloidType.REFERENCE_POINT, referencePointVersion.getSloid());
+    locationService.allocateSloid(referencePointVersion,SloidType.REFERENCE_POINT);
 
     searchAndUpdatePlatformRelation(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
     searchAndUpdateToiletRelation(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
