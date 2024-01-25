@@ -4,7 +4,6 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
-import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -24,8 +23,8 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
   private final ParkingLotRepository parkingLotRepository;
 
   public ParkingLotService(ParkingLotRepository parkingLotRepository, StopPointService stopPointService,
-      RelationService relationService, ReferencePointRepository referencePointRepository, VersionableService versionableService
-      , LocationService locationService) {
+      RelationService relationService, ReferencePointRepository referencePointRepository,
+      VersionableService versionableService, PrmLocationService locationService) {
     super(versionableService, stopPointService, relationService, referencePointRepository, locationService);
     this.parkingLotRepository = parkingLotRepository;
   }
