@@ -4,7 +4,6 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TOILET;
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
-import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -25,7 +24,7 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
 
   public ToiletService(ToiletRepository toiletRepository, StopPointService stopPointService,
       RelationService relationService, ReferencePointRepository referencePointRepository, VersionableService versionableService,
-      LocationService locationService) {
+      PrmLocationService locationService) {
     super(versionableService, stopPointService, relationService, referencePointRepository, locationService);
     this.toiletRepository = toiletRepository;
   }
