@@ -11,7 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.api.client.location.LocationClient;
+import ch.sbb.atlas.api.client.location.LocationClientV1;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
@@ -44,7 +44,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
   @MockBean
   private GeoReferenceService geoReferenceService;
   @MockBean
-  private LocationClient locationClient;
+  private LocationClientV1 locationClient;
 
   private final ServicePointVersionRepository repository;
   private final ServicePointController servicePointController;

@@ -2,11 +2,11 @@ package ch.sbb.prm.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import ch.sbb.atlas.api.client.location.LocationClientV1;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -24,11 +24,9 @@ import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 class ToiletServiceTest extends BasePrmServiceTest {
 
@@ -38,17 +36,15 @@ class ToiletServiceTest extends BasePrmServiceTest {
   private final StopPointRepository stopPointRepository;
   private final ReferencePointRepository referencePointRepository;
 
-  @MockBean
-  private LocationClientV1 locationClient;
-
   @Autowired
   ToiletServiceTest(ToiletService toiletService,
       ToiletRepository toiletRepository,
       RelationRepository relationRepository,
       StopPointRepository stopPointRepository,
       ReferencePointRepository referencePointRepository,
-      SharedServicePointRepository sharedServicePointRepository) {
-    super(sharedServicePointRepository);
+      SharedServicePointRepository sharedServicePointRepository,
+      PrmLocationService prmLocationService) {
+    super(sharedServicePointRepository, prmLocationService);
     this.toiletService = toiletService;
     this.toiletRepository = toiletRepository;
     this.relationRepository = relationRepository;
@@ -92,9 +88,7 @@ class ToiletServiceTest extends BasePrmServiceTest {
     List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
         toiletVersion.getParentServicePointSloid());
     assertThat(relationVersions).isEmpty();
-    verify(locationClient, times(1)).claimSloid(argThat(
-        claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.TOILET
-            && Objects.equals(claimSloidRequestModel.sloid(), "ch:1:sloid:12345:1")));
+    verify(prmLocationService, times(1)).allocateSloid(any(),eq(SloidType.TOILET));
   }
 
   @Test
@@ -115,9 +109,7 @@ class ToiletServiceTest extends BasePrmServiceTest {
     List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
         toiletVersion.getParentServicePointSloid());
     assertThat(relationVersions).isEmpty();
-    verify(locationClient, times(1)).claimSloid(argThat(
-        claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.TOILET
-            && Objects.equals(claimSloidRequestModel.sloid(), "ch:1:sloid:12345:1")));
+    verify(prmLocationService, times(1)).allocateSloid(any(),eq(SloidType.TOILET));
   }
 
   @Test
@@ -144,9 +136,7 @@ class ToiletServiceTest extends BasePrmServiceTest {
     assertThat(relationVersions).hasSize(1);
     assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(ReferencePointElementType.TOILET);
-    verify(locationClient, times(1)).claimSloid(argThat(
-        claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.TOILET
-            && Objects.equals(claimSloidRequestModel.sloid(), "ch:1:sloid:12345:1")));
+    verify(prmLocationService, times(1)).allocateSloid(any(),eq(SloidType.TOILET));
   }
 
 }
