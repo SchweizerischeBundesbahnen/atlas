@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
@@ -11,6 +12,7 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointNumberRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -123,6 +125,85 @@ class ServicePointImportServiceTest {
     Optional<ServicePointFotComment> fotComment = servicePointFotCommentService.findByServicePointNumber(didokCode);
     assertThat(fotComment).isPresent();
     assertThat(fotComment.get().getFotComment()).isEqualTo("BAV-Kommentar");
+  }
+
+  @Test
+  void shouldImportServicePointsAndOverwriteStatusIfOnlyStatusChanged() {
+    // given
+    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = getServicePointCsvModelContainers();
+    Integer didokCode = servicePointCsvModelContainers.get(0).getDidokCode();
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(didokCode);
+    // when
+    List<ItemImportResult> itemImportResults = servicePointImportService.importServicePoints(
+            servicePointCsvModelContainers);
+
+    // then
+    List<ServicePointVersion> result = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
+    assertThat(result).isNotNull();
+    assertThat(itemImportResults).hasSize(5);
+    assertThat(result).hasSize(3);
+    assertThat(result.get(0).getStatus()).isEqualTo(Status.DRAFT);
+    assertThat(result.get(1).getStatus()).isEqualTo(Status.IN_REVIEW);
+    assertThat(result.get(2).getStatus()).isEqualTo(Status.VALIDATED);
+    for (ServicePointVersion servicePointVersion : result) {
+      assertThat(servicePointVersion.getNumber()).isNotNull();
+      assertThat(servicePointVersion.getNumber()).isEqualTo(servicePointNumber);
+    }
+
+    // given
+    ServicePointVersionModel servicePointVersionModel1 = ServicePointVersionMapper.toModel(servicePointVersionRepository.findAll().get(0));
+    ServicePointVersionModel servicePointVersionModel2 = ServicePointVersionMapper.toModel(servicePointVersionRepository.findAll().get(1));
+    ServicePointVersionModel servicePointVersionModel3 = ServicePointVersionMapper.toModel(servicePointVersionRepository.findAll().get(2));
+    // set all statuses to VALIDATED
+    servicePointVersionRepository.findAll().forEach(spv -> spv.setStatus(Status.VALIDATED));
+
+    // make all elements in servicePointCsvModelContainers identical like in DB, meaning set edition and creation details like in DB
+    ServicePointCsvModel servicePointCsvModel1 = servicePointCsvModelContainers.get(0).getServicePointCsvModelList().get(0);
+    servicePointCsvModel1.setEditedAt(servicePointVersionModel1.getEditionDate());
+    servicePointCsvModel1.setEditedBy(servicePointVersionModel1.getEditor());
+    servicePointCsvModel1.setCreatedAt(servicePointVersionModel1.getCreationDate());
+    servicePointCsvModel1.setCreatedBy(servicePointVersionModel1.getCreator());
+
+    ServicePointCsvModel servicePointCsvModel2 = servicePointCsvModelContainers.get(0).getServicePointCsvModelList().get(1);
+    servicePointCsvModel2.setEditedAt(servicePointVersionModel2.getEditionDate());
+    servicePointCsvModel2.setEditedBy(servicePointVersionModel2.getEditor());
+    servicePointCsvModel2.setCreatedAt(servicePointVersionModel2.getCreationDate());
+    servicePointCsvModel2.setCreatedBy(servicePointVersionModel2.getCreator());
+
+    ServicePointCsvModel servicePointCsvModel3 = servicePointCsvModelContainers.get(0).getServicePointCsvModelList().get(2);
+    servicePointCsvModel3.setEditedAt(servicePointVersionModel3.getEditionDate());
+    servicePointCsvModel3.setEditedBy(servicePointVersionModel3.getEditor());
+    servicePointCsvModel3.setCreatedAt(servicePointVersionModel3.getCreationDate());
+    servicePointCsvModel3.setCreatedBy(servicePointVersionModel3.getCreator());
+
+    ServicePointCsvModel servicePointCsvModel4 = servicePointCsvModelContainers.get(0).getServicePointCsvModelList().get(3);
+    servicePointCsvModel4.setEditedAt(servicePointVersionModel3.getEditionDate());
+    servicePointCsvModel4.setEditedBy(servicePointVersionModel3.getEditor());
+    servicePointCsvModel4.setCreatedAt(servicePointVersionModel3.getCreationDate());
+    servicePointCsvModel4.setCreatedBy(servicePointVersionModel3.getCreator());
+
+    ServicePointCsvModel servicePointCsvModel5 = servicePointCsvModelContainers.get(0).getServicePointCsvModelList().get(4);
+    servicePointCsvModel5.setEditedAt(servicePointVersionModel3.getEditionDate());
+    servicePointCsvModel5.setEditedBy(servicePointVersionModel3.getEditor());
+    servicePointCsvModel5.setCreatedAt(servicePointVersionModel3.getCreationDate());
+    servicePointCsvModel5.setCreatedBy(servicePointVersionModel3.getCreator());
+
+    // when import again with the same data, only status changed
+    List<ItemImportResult> itemImportResults1 = servicePointImportService.importServicePoints(
+            servicePointCsvModelContainers);
+
+    // then status updated
+    List<ServicePointVersion> result1 = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
+    assertThat(result1).isNotNull();
+    assertThat(itemImportResults1).hasSize(5);
+    assertThat(result1).hasSize(3);
+    assertThat(result1.get(0).getStatus()).isEqualTo(Status.DRAFT);
+    assertThat(result1.get(0).getEditionDate()).isNotEqualTo(servicePointVersionModel1.getEditionDate());
+    assertThat(result1.get(1).getStatus()).isEqualTo(Status.IN_REVIEW);
+    assertThat(result1.get(1).getEditionDate()).isNotEqualTo(servicePointVersionModel2.getEditionDate());
+    assertThat(result1.get(2).getStatus()).isEqualTo(Status.VALIDATED);
+    assertThat(result1.get(2).getEditionDate()).isEqualTo(servicePointVersionModel3.getEditionDate());
+
   }
 
   /**
