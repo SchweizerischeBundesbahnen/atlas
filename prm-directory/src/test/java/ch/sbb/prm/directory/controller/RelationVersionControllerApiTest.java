@@ -14,6 +14,7 @@ import ch.sbb.atlas.api.prm.model.relation.RelationVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.RelationTestData;
+import ch.sbb.prm.directory.SharedServicePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.SharedServicePoint;
@@ -21,6 +22,8 @@ import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,9 +150,9 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldUpdateRelation() throws Exception {
     //given
-    String parentServicePointSloid = "ch:1:sloid:8507000";
+    String parentServicePointSloid = "ch:1:sloid:7000";
     stopPointRepository.save(StopPointTestData.builderVersion1().sloid(parentServicePointSloid).build());
-    String referencePointSloid = "ch:1:sloid:8507000:1";
+    String referencePointSloid = "ch:1:sloid:7000:1";
     RelationVersion version1 = RelationTestData.builderVersion1().build();
     version1.setParentServicePointSloid(parentServicePointSloid);
     version1.setReferencePointSloid(referencePointSloid);
@@ -174,11 +177,8 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setEditor(version2.getEditor());
     editedVersionModel.setEtagVersion(version2.getVersion());
 
-    SharedServicePoint servicePoint = SharedServicePoint.builder()
-            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:8507000\",\"sboids\":[\"ch:1:sboid:100602\"],"
-                    + "\"trafficPointSloids\":[]}")
-            .sloid("ch:1:sloid:8507000")
-            .build();
+    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:7000", Set.of("ch:1:sboid:100602"),
+        Collections.emptySet());
     sharedServicePointRepository.saveAndFlush(servicePoint);
 
     //when & then

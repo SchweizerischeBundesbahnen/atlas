@@ -13,11 +13,11 @@ public class InformationDeskTestData {
 
   public static InformationDeskVersion getInformationDeskVersion(){
     return InformationDeskVersion.builder()
-        .sloid("ch:1.sloid:12345:1")
+        .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
-        .parentServicePointSloid("ch:1.sloid:12345")
+        .parentServicePointSloid("ch:1:sloid:12345")
         .designation("Designation")
         .additionalInformation("Additional information")
         .inductionLoop(StandardAttributeType.NOT_APPLICABLE)
@@ -28,11 +28,11 @@ public class InformationDeskTestData {
 
   public static InformationDeskVersionBuilder<?, ?> builderVersion1(){
     return InformationDeskVersion.builder()
-        .sloid("ch:1.sloid:12345:1")
+        .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
-        .parentServicePointSloid("ch:1.sloid:12345")
+        .parentServicePointSloid("ch:1:sloid:12345")
         .designation("Designation")
         .additionalInformation("Additional information")
         .inductionLoop(StandardAttributeType.NOT_APPLICABLE)
@@ -42,11 +42,11 @@ public class InformationDeskTestData {
 
   public static InformationDeskVersionBuilder<?, ?> builderVersion2(){
     return InformationDeskVersion.builder()
-        .sloid("ch:1.sloid:12345:1")
+        .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2002, 12, 31))
-        .parentServicePointSloid("ch:1.sloid:12345")
+        .parentServicePointSloid("ch:1:sloid:12345")
         .designation("Designation wrong")
         .additionalInformation("Additional information")
         .inductionLoop(StandardAttributeType.NOT_APPLICABLE)
@@ -56,11 +56,11 @@ public class InformationDeskTestData {
 
   public static InformationDeskVersionBuilder<?, ?> builderVersion3(){
     return InformationDeskVersion.builder()
-        .sloid("ch:1.sloid:12345:1")
+        .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2003, 1, 1))
         .validTo(LocalDate.of(2004, 12, 31))
-        .parentServicePointSloid("ch:1.sloid:12345")
+        .parentServicePointSloid("ch:1:sloid:12345")
         .designation("Designation ok")
         .additionalInformation("Additional information")
         .inductionLoop(StandardAttributeType.NOT_APPLICABLE)
@@ -70,10 +70,10 @@ public class InformationDeskTestData {
 
   public static InformationDeskVersionModel getInformationDeskVersionModel(){
     return InformationDeskVersionModel.builder()
-        .sloid("ch:1.sloid:12345:1")
+        .sloid("ch:1:sloid:12345:1")
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2001, 12, 31))
-        .parentServicePointSloid("ch:1.sloid:12345")
+        .parentServicePointSloid("ch:1:sloid:12345")
         .designation("Designation")
         .additionalInformation("Additional information")
         .inductionLoop(StandardAttributeType.NOT_APPLICABLE)

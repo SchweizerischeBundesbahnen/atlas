@@ -30,7 +30,7 @@ class SharedServicePointServiceTest {
         .servicePointSloid(SERVICE_POINT_SLOID)
         .sboids(Set.of("ch:1:sboid:100001"))
         .trafficPointSloids(Set.of("ch:1:sloid:12345:1"))
-        .isStopPoint(true)
+        .stopPoint(true)
         .build());
   }
 
@@ -59,7 +59,7 @@ class SharedServicePointServiceTest {
         .servicePointSloid(servicePointSloid)
         .sboids(Set.of("ch:1:sboid:100001"))
         .trafficPointSloids(Set.of("ch:1:sloid:12345:1"))
-        .isStopPoint(false)
+        .stopPoint(false)
         .build());
 
     Optional<SharedServicePointVersionModel> servicePoint = sharedServicePointService.findServicePoint(servicePointSloid);

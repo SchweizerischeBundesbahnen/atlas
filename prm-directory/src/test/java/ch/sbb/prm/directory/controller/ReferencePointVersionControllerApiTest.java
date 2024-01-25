@@ -19,6 +19,7 @@ import ch.sbb.prm.directory.InformationDeskTestData;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
+import ch.sbb.prm.directory.SharedServicePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.TicketCounterTestData;
 import ch.sbb.prm.directory.ToiletTestData;
@@ -41,6 +42,7 @@ import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.service.RelationService;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -88,11 +90,8 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
 
   @BeforeEach
   void setUp() {
-    SharedServicePoint servicePoint = SharedServicePoint.builder()
-            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],"
-                    + "\"trafficPointSloids\":[]}")
-            .sloid("ch:1:sloid:7000")
-            .build();
+    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:7000", Set.of("ch:1:sboid:100602"),
+        Collections.emptySet());
     sharedServicePointRepository.saveAndFlush(servicePoint);
   }
 
