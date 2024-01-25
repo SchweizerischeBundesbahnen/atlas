@@ -18,6 +18,7 @@ import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ReferencePointTestData;
+import ch.sbb.prm.directory.SharedServicePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.TicketCounterTestData;
 import ch.sbb.prm.directory.ToiletTestData;
@@ -67,11 +68,8 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
 
   @BeforeEach
   void setUp() {
-    SharedServicePoint servicePoint = SharedServicePoint.builder()
-            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],"
-                    + "\"trafficPointSloids\":[\"ch:1:sloid:12345:1\"]}")
-            .sloid("ch:1:sloid:7000")
-            .build();
+    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:7000",
+        Set.of("ch:1:sboid:100602"), Set.of("ch:1:sloid:12345:1"));
     sharedServicePointRepository.saveAndFlush(servicePoint);
   }
 
