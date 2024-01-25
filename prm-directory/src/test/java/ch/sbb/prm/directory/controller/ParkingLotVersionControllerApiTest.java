@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.client.location.LocationClientV1;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
@@ -54,20 +55,22 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
 
   @MockBean
   private final RelationService relationService;
+
   @MockBean
-  private LocationClient locationClient;
+  private final LocationClientV1 locationClient;
 
   @Autowired
   ParkingLotVersionControllerApiTest(ParkingLotRepository parkingLotRepository,
       StopPointRepository stopPointRepository,
       ReferencePointRepository referencePointRepository,
       SharedServicePointRepository sharedServicePointRepository,
-      RelationService relationService) {
+      RelationService relationService, LocationClientV1 locationClient) {
     this.parkingLotRepository = parkingLotRepository;
     this.stopPointRepository = stopPointRepository;
     this.referencePointRepository = referencePointRepository;
     this.sharedServicePointRepository = sharedServicePointRepository;
     this.relationService = relationService;
+    this.locationClient = locationClient;
   }
 
   @BeforeEach
