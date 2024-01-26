@@ -32,6 +32,7 @@ public class SloidService {
     sloidSync(SloidType.TICKET_COUNTER);
     sloidSync(SloidType.TOILET);
   }
+
   private void sloidSync(SloidType sloidType) {
     log.info("**** Start Synch {} ****", sloidType);
     Set<String> alreadyDistributedSloid = getAlreadyDistributedSloid(sloidType);
@@ -43,8 +44,8 @@ public class SloidService {
     log.info("**** End Synch {} ****", sloidType);
   }
 
-  private Set<String> getAlreadyDistributedSloid(SloidType sloidType){
-    if(SloidType.PLATFORM == sloidType || SloidType.AREA == sloidType){
+  private Set<String> getAlreadyDistributedSloid(SloidType sloidType) {
+    if (SloidType.PLATFORM == sloidType || SloidType.AREA == sloidType) {
       return sePoDiRepository.getAlreadyDistributedSloid(sloidType);
     }
     return prmRepository.getAlreadyDistributedSloid(sloidType);
@@ -103,6 +104,7 @@ public class SloidService {
       sloidRepository.setAvailableSloidToClaimed(sloidToAdd);
     }
   }
+
   private void addUsedMissingSloidToAllocatedSloid(Set<String> servicePointSePoDiAllocatedSloid,
       Set<String> servicePointLocationAllocatedSloid, SloidType sloidType) {
     Set<String> sloidToAdd = getSloidToAdd(servicePointSePoDiAllocatedSloid, servicePointLocationAllocatedSloid);
@@ -145,10 +147,7 @@ public class SloidService {
         continue;
       }
       insertDone = true;
-      int rowsAffected = sloidRepository.setAvailableSloidToClaimed(nextAvailableSloid);
-      if (rowsAffected != 1) {
-        throw new IllegalStateException("Row needs to be found after select from available sloids");
-      }
+      sloidRepository.setAvailableSloidToClaimed(nextAvailableSloid);
     } while (!insertDone);
     return nextAvailableSloid;
   }
@@ -163,10 +162,7 @@ public class SloidService {
     } catch (DataAccessException e) {
       return false;
     }
-    int rowsAffected = sloidRepository.setAvailableSloidToClaimed(sloid);
-    if (rowsAffected != 1) {
-      throw new IllegalStateException("Row needs to be found after select statement");
-    }
+    sloidRepository.setAvailableSloidToClaimed(sloid);
     return true;
   }
 
@@ -178,10 +174,6 @@ public class SloidService {
       log.info("{} occupied", sloid);
       return false;
     }
-  }
-
-  public void saveGeneratedToAllocatedSloid(String sloid, SloidType sloidType) {
-    sloidRepository.insertSloid(sloid, sloidType);
   }
 
 }
