@@ -86,13 +86,6 @@ public class SloidRepository {
     return namedParameterJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
   }
 
-  public int setAvailableSloidToUnsed(String sloid, Country country) {
-    return locationJdbcTemplate.update("update available_service_point_sloid set claimed = false where sloid = ? and country = "
-            + "?;",
-        sloid,
-        country.name());
-  }
-
   public int setAvailableSloidToClaimed(String sloid) {
     return locationJdbcTemplate.update("update available_service_point_sloid set claimed = true where sloid = ?;", sloid);
   }
