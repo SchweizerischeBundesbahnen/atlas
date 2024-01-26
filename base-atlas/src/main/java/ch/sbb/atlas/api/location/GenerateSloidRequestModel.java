@@ -25,12 +25,6 @@ public final class GenerateSloidRequestModel {
     this.sloidPrefix = sloidPrefix;
   }
 
-  public GenerateSloidRequestModel(@NotNull SloidType sloidType, String sloidPrefix, Country country) {
-    this.sloidType = sloidType;
-    this.sloidPrefix = sloidPrefix;
-    this.country = country;
-  }
-
   public GenerateSloidRequestModel(@NotNull SloidType sloidType, Country country) {
     this.sloidType = sloidType;
     this.country = country;
