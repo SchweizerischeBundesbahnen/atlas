@@ -73,6 +73,11 @@
       "imageName": "workflow"
     },
     {
+      "artifactoryDockerRepo": "atlas.docker",
+      "dockerFile": "location/docker/Dockerfile",
+      "imageName": "location"
+    },
+    {
       "dockerFile": "frontend/docker/Dockerfile",
       "imageName": "atlas-frontend",
       "artifactoryDockerRepo": "atlas.docker",
