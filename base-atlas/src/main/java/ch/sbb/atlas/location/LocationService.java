@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LocationService {
 
+  public static final String SLOID_PREFIX = "ch:1:sloid:";
   private final LocationClientV1 locationClient;
 
   private void claimSloid(ClaimSloidRequestModel request) {
@@ -38,7 +39,7 @@ public class LocationService {
   public String generateTrafficPointSloid(TrafficPointElementType trafficPointElementType, ServicePointNumber servicePointNumber)
       throws FeignException {
     final SloidType sloidType = getSloidType(trafficPointElementType);
-    final String sloidPrefix = "ch:1:sloid:" + (servicePointNumber.getCountry() == Country.SWITZERLAND ?
+    final String sloidPrefix = SLOID_PREFIX + (servicePointNumber.getCountry() == Country.SWITZERLAND ?
         servicePointNumber.getNumberShort()
         : servicePointNumber.getNumber());
     return locationClient.generateSloid(new GenerateSloidRequestModel(sloidType, sloidPrefix));
