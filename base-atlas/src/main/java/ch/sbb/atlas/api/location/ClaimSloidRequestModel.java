@@ -10,7 +10,7 @@ public record ClaimSloidRequestModel(@NotNull(message = "SloidType must not be n
 
   @AssertTrue(message = "Sloid not valid for provided sloidType")
   public boolean isValidSloid() {
-    if (sloidType == null || sloid == null) {
+    if (sloid == null) {
       return false;
     }
     return switch (sloidType) {
