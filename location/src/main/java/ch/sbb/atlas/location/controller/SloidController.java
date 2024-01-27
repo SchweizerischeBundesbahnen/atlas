@@ -5,6 +5,7 @@ import ch.sbb.atlas.api.location.GenerateSloidRequestModel;
 import ch.sbb.atlas.api.location.SloidApiV1;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.location.service.SloidService;
+import ch.sbb.atlas.location.service.SloidSynchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class SloidController implements SloidApiV1 {
 
   private final SloidService sloidService;
+  private final SloidSynchService sloidSynchService;
 
   @Override
   public ResponseEntity<String> generateSloid(GenerateSloidRequestModel request) {
     String sloid;
+    //TODO: move this logic to Service
     if (request.getSloidType() == SloidType.SERVICE_POINT) {
-      sloid = sloidService.getNextAvailableSloid(request.getCountry());
+      sloid = sloidService.getNextAvailableServicePointSloid(request.getCountry());
     } else {
       final String sloidPrefix = SloidType.transformSloidPrefix(request.getSloidType(), request.getSloidPrefix());
       sloid = sloidService.generateNewSloid(sloidPrefix, request.getSloidType());
@@ -31,8 +34,9 @@ public class SloidController implements SloidApiV1 {
   @Override
   public ResponseEntity<String> claimSloid(ClaimSloidRequestModel request) {
     boolean claimed;
+    //TODO: move this logic to Service
     if (request.sloidType() == SloidType.SERVICE_POINT) {
-      claimed = sloidService.claimAvailableSloid(request.sloid());
+      claimed = sloidService.claimAvailableServicePointSloid(request.sloid());
     } else {
       claimed = sloidService.claimSloid(request.sloid(), request.sloidType());
     }
@@ -42,7 +46,7 @@ public class SloidController implements SloidApiV1 {
 
   @Override
   public ResponseEntity<Void> sync() {
-    sloidService.sync();
+    sloidSynchService.sync();
     return ResponseEntity.noContent().build();
   }
 
