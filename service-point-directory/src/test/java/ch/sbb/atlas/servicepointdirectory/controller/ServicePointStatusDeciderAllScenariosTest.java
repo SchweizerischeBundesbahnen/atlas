@@ -11,13 +11,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.api.client.location.LocationClientV1;
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.Country;
@@ -44,7 +45,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
   @MockBean
   private GeoReferenceService geoReferenceService;
   @MockBean
-  private LocationClientV1 locationClient;
+  private LocationService locationService;
 
   private final ServicePointVersionRepository repository;
   private final ServicePointController servicePointController;
@@ -60,7 +61,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
   void createDefaultVersion() {
     GeoReference geoReference = GeoReference.builder().country(Country.SWITZERLAND).build();
     when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReference);
-    when(locationClient.generateSloid(any())).thenReturn("ch:1:sloid:1");
+    when(locationService.generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND)).thenReturn("ch:1:sloid:1");
   }
 
   @AfterEach

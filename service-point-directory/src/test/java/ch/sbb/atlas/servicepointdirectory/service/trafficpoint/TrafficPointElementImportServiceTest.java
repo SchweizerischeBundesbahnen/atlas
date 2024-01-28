@@ -1,16 +1,15 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import ch.sbb.atlas.api.client.location.LocationClientV1;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
@@ -23,7 +22,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -38,7 +36,7 @@ class TrafficPointElementImportServiceTest {
   private CrossValidationService crossValidationService;
 
   @MockBean
-  private LocationClientV1 locationClient;
+  private LocationService locationService;
 
   private static final String CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_20221222011816.csv";
 
@@ -71,12 +69,12 @@ class TrafficPointElementImportServiceTest {
     //given
     List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = List.of(
         TrafficPointCsvModelContainer.builder()
-            .sloid("ch:1:sloid:700012:123:123")
-            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:700012:123:123", 2020, 1, 2, 1))
+            .sloid("ch:1:sloid:70001:123:123")
+            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:70001:123:123", 2020, 1, 2, 1))
             .build(),
         TrafficPointCsvModelContainer.builder()
-            .sloid("ch:1:sloid:700012:432:422")
-            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:700012:432:422", 2020, 1, 2, 1))
+            .sloid("ch:1:sloid:70001:432:422")
+            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:70001:432:422", 2020, 1, 2, 1))
             .build()
     );
     //when
@@ -84,22 +82,20 @@ class TrafficPointElementImportServiceTest {
         trafficPointCsvModelContainers);
 
     //then
-    verify(locationClient, times(1)).claimSloid(
-        argThat(claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.PLATFORM && Objects.equals(
-            claimSloidRequestModel.sloid(), "ch:1:sloid:700012:123:123")));
-    verify(locationClient, times(1)).claimSloid(
-        argThat(claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.PLATFORM && Objects.equals(
-            claimSloidRequestModel.sloid(), "ch:1:sloid:700012:432:422")));
+    verify(locationService, times(1)).claimSloid(SloidType.PLATFORM,
+        "ch:1:sloid:70001:123:123");
+    verify(locationService, times(1)).claimSloid(SloidType.PLATFORM,
+        "ch:1:sloid:70001:432:422");
 
     assertThat(trafficPointItemImportResults).hasSize(4);
     List<TrafficPointElementVersion> resultFirstContainer = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
-        "ch:1:sloid:700012:123:123");
+        "ch:1:sloid:70001:123:123");
     assertThat(resultFirstContainer).hasSize(2);
     assertThat(resultFirstContainer.get(0).getId()).isNotNull();
     assertThat(resultFirstContainer.get(1).getId()).isNotNull();
 
     List<TrafficPointElementVersion> resultSecondContainer = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
-        "ch:1:sloid:700012:432:422");
+        "ch:1:sloid:70001:432:422");
     assertThat(resultSecondContainer).hasSize(2);
     assertThat(resultSecondContainer.get(0).getId()).isNotNull();
     assertThat(resultSecondContainer.get(1).getId()).isNotNull();
@@ -110,24 +106,24 @@ class TrafficPointElementImportServiceTest {
     // given
     List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = List.of(
         TrafficPointCsvModelContainer.builder()
-            .sloid("ch:1:sloid:700012:123:123")
-            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:700012:123:123", 2020, 1, 6, 1))
+            .sloid("ch:1:sloid:70001:123:123")
+            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:70001:123:123", 2020, 1, 6, 1))
             .build()
     );
     trafficPointElementImportService.importTrafficPoints(trafficPointCsvModelContainers);
 
     List<TrafficPointElementCsvModel> trafficPointCsvModelVersionsMerged =
-        getTrafficPointCsvModelVersions("ch:1:sloid:700012:123:123", 2020, 2, 1, 1);
+        getTrafficPointCsvModelVersions("ch:1:sloid:70001:123:123", 2020, 2, 1, 1);
     trafficPointCsvModelVersionsMerged.addAll(
-        getTrafficPointCsvModelVersions("ch:1:sloid:700012:123:123", 2022, 1, 2, 2)
+        getTrafficPointCsvModelVersions("ch:1:sloid:70001:123:123", 2022, 1, 2, 2)
     );
     trafficPointCsvModelVersionsMerged.addAll(
-        getTrafficPointCsvModelVersions("ch:1:sloid:700012:123:123", 2024, 2, 1, 4)
+        getTrafficPointCsvModelVersions("ch:1:sloid:70001:123:123", 2024, 2, 1, 4)
     );
 
     List<TrafficPointCsvModelContainer> trafficPointCsvModelContainersMerged = List.of(
         TrafficPointCsvModelContainer.builder()
-            .sloid("ch:1:sloid:700012:123:123")
+            .sloid("ch:1:sloid:70001:123:123")
             .csvModelList(trafficPointCsvModelVersionsMerged)
             .build()
     );
@@ -137,14 +133,13 @@ class TrafficPointElementImportServiceTest {
         trafficPointCsvModelContainersMerged);
 
     // then
-    verify(locationClient, times(1)).claimSloid(
-        argThat(claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.PLATFORM && Objects.equals(
-            claimSloidRequestModel.sloid(), "ch:1:sloid:700012:123:123")));
+    verify(locationService, times(1)).claimSloid(SloidType.PLATFORM,
+        "ch:1:sloid:70001:123:123");
 
     assertThat(trafficPointItemImportResults).hasSize(4);
     List<TrafficPointElementVersion> allBySloidOrderByValidFrom =
         trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
-            "ch:1:sloid:700012:123:123");
+            "ch:1:sloid:70001:123:123");
     assertThat(allBySloidOrderByValidFrom).hasSize(4);
     assertThat(allBySloidOrderByValidFrom.get(0).getValidFrom()).isEqualTo(
         LocalDate.of(2020, 1, 1)
@@ -220,8 +215,8 @@ class TrafficPointElementImportServiceTest {
     // given
     final List<TrafficPointElementCsvModel> trafficPointCsvModels = List.of(
         TrafficPointElementCsvModel.builder()
-            .sloid("ch:1:sloid:700012:123:123")
-            .servicePointNumber(85700012)
+            .sloid("ch:1:sloid:70001:123:123")
+            .servicePointNumber(8570001)
             .validFrom(LocalDate.of(2020, 1, 1))
             .validTo(LocalDate.of(2023, 12, 31))
             .createdAt(LocalDateTime.of(2020, 1, 15, 5, 5))
@@ -241,8 +236,8 @@ class TrafficPointElementImportServiceTest {
 
     final List<TrafficPointElementCsvModel> trafficPointCsvModelsSecondRun = List.of(
         TrafficPointElementCsvModel.builder()
-            .sloid("ch:1:sloid:700012:123:123")
-            .servicePointNumber(85700012)
+            .sloid("ch:1:sloid:70001:123:123")
+            .servicePointNumber(8570001)
             .validFrom(LocalDate.of(2020, 1, 1))
             .validTo(LocalDate.of(2021, 6, 15))
             .createdAt(LocalDateTime.of(2020, 1, 15, 5, 5))
@@ -255,7 +250,7 @@ class TrafficPointElementImportServiceTest {
     final List<TrafficPointCsvModelContainer> trafficPointCsvModelContainersSecondRun = List.of(
         TrafficPointCsvModelContainer.builder()
             .csvModelList(trafficPointCsvModelsSecondRun)
-            .sloid("ch:1:sloid:700012:123:123")
+            .sloid("ch:1:sloid:70001:123:123")
             .build()
     );
 
@@ -264,14 +259,12 @@ class TrafficPointElementImportServiceTest {
         trafficPointCsvModelContainersSecondRun);
 
     // then
-    verify(locationClient, times(1)).claimSloid(
-        argThat(claimSloidRequestModel -> claimSloidRequestModel.sloidType() == SloidType.PLATFORM && Objects.equals(
-            claimSloidRequestModel.sloid(), "ch:1:sloid:700012:123:123")));
-
+    verify(locationService, times(1)).claimSloid(SloidType.PLATFORM,
+        "ch:1:sloid:70001:123:123");
     assertThat(trafficPointItemImportResults).hasSize(1);
 
     final List<TrafficPointElementVersion> dbVersions =
-        trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom("ch:1:sloid:700012:123:123");
+        trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom("ch:1:sloid:70001:123:123");
 
     assertThat(dbVersions).hasSize(1);
     assertThat(dbVersions.get(0).getEditor()).isEqualTo("fs22222");
@@ -293,7 +286,7 @@ class TrafficPointElementImportServiceTest {
               .eWgs84(7.536484397)
               .height(startingHeight)
               .spatialReference(SpatialReference.WGS84)
-              .servicePointNumber(85700012)
+              .servicePointNumber(8570001)
               .validFrom(LocalDate.of(startingYear, 1, 1))
               .validTo(LocalDate.of(startingYear + yearsPerVersion - 1, 12, 31))
               .createdAt(LocalDateTime.of(LocalDate.of(2020, 1, 1), LocalTime.of(5, 5)))
