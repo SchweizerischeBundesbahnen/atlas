@@ -14,6 +14,7 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepointdirectory.config.JourneyPoiConfig;
+import ch.sbb.atlas.servicepointdirectory.config.OAuthFeignConfig;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ class GeoReferenceServiceTest {
 
   @MockBean
   private JourneyPoiConfig journeyPoiConfig;
+  @MockBean
+  private OAuthFeignConfig oAuthFeignConfig;
   @MockBean
   private JourneyPoiClient journeyPoiClient;
 
