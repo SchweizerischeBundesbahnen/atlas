@@ -310,13 +310,13 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
     repository.deleteAll();
     CreateTrafficPointElementVersionModel platformToCreate = TrafficPointTestData.getCreateTrafficPointVersionModel();
     platformToCreate.setSloid(null);
-    doReturn("ch:1:sloid:1234567:0:123").when(locationService).generateTrafficPointSloid(TrafficPointElementType.BOARDING_AREA,
-        ServicePointNumber.ofNumberWithoutCheckDigit(1234567));
+    doReturn("ch:1:sloid:1400015:0:123").when(locationService).generateTrafficPointSloid(TrafficPointElementType.BOARDING_PLATFORM,
+        ServicePointNumber.ofNumberWithoutCheckDigit(1400015));
     mvc.perform(post("/v1/traffic-point-elements")
             .contentType(contentType)
             .content(mapper.writeValueAsString(platformToCreate)))
         .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.servicePointNumber.number", is(1234567)))
+        .andExpect(jsonPath("$.servicePointNumber.number", is(1400015)))
         .andExpect(
             jsonPath("$." + TrafficPointElementVersion.Fields.designation, is(platformToCreate.getDesignation())))
         .andExpect(jsonPath("$." + TrafficPointElementVersion.Fields.designationOperational,
