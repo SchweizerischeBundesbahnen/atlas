@@ -105,9 +105,6 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
             height: geoReference.height,
           })),
         );
-        this.locationInformation$?.subscribe((value) => {
-          this.form?.controls.servicePointGeolocation?.controls.height.setValue(value.height);
-        });
       }
     });
   }
