@@ -3,7 +3,7 @@ package ch.sbb.prm.directory.mapper;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
 import ch.sbb.prm.directory.entity.PlatformVersion;
-import java.util.Set;
+import java.util.HashSet;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -27,7 +27,7 @@ public class PlatformVersionMapper {
         .inclination(version.getInclination())
         .inclinationLongitudinal(version.getInclinationLongitudinal())
         .inclinationWidth(version.getInclinationWidth())
-        .infoOpportunities(version.getInfoOpportunities() != null ?  version.getInfoOpportunities() : null)
+        .infoOpportunities(version.getInfoOpportunities() != null ?  version.getInfoOpportunities().stream().toList() : null)
         .levelAccessWheelchair(version.getLevelAccessWheelchair())
         .partialElevation(version.getPartialElevation())
         .superelevation(version.getSuperelevation())
@@ -60,7 +60,7 @@ public class PlatformVersionMapper {
         .inclination(model.getInclination())
         .inclinationLongitudinal(model.getInclinationLongitudinal())
         .inclinationWidth(model.getInclinationWidth())
-        .infoOpportunities(model.getInfoOpportunities() != null ? model.getInfoOpportunities() : null)
+        .infoOpportunities(model.getInfoOpportunities() != null ? new HashSet<>(model.getInfoOpportunities()) : null)
         .levelAccessWheelchair(model.getLevelAccessWheelchair())
         .partialElevation(model.getPartialElevation())
         .superelevation(model.getSuperelevation())
