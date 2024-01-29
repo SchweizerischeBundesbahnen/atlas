@@ -9,7 +9,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { CoordinatePair, SpatialReference } from '../../../api';
+import { CoordinatePair, GeoDataService, SpatialReference } from '../../../api';
 import { GeographyFormGroup } from './geography-form-group';
 import { CoordinateTransformationService } from './coordinate-transformation.service';
 import { debounceTime, merge, Subject } from 'rxjs';
@@ -73,6 +73,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     private coordinateTransformationService: CoordinateTransformationService,
     private mapService: MapService,
     private changeDetector: ChangeDetectorRef,
+    private readonly geoDataService: GeoDataService,
   ) {
     this.mapService.clickedGeographyCoordinates
       .pipe(takeUntilDestroyed())
@@ -126,6 +127,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
       this.currentCoordinates,
       this.transformedSpatialReference,
     );
+    this.setHeightFromGeoData(this.transformedCoordinatePair!);
     this.changeDetector.detectChanges();
   }
 
@@ -195,6 +197,16 @@ export class GeographyComponent implements OnDestroy, OnChanges {
       this.mapService.enterCoordinateSelectionMode();
     } else {
       this.mapService.exitCoordinateSelectionMode();
+    }
+  }
+
+  private setHeightFromGeoData(coordinatePair: CoordinatePair) {
+    if (coordinatePair) {
+      this.geoDataService.getLocationInformation(coordinatePair).subscribe((value) => {
+        this._form?.patchValue({
+          height: value.height,
+        });
+      });
     }
   }
 }
