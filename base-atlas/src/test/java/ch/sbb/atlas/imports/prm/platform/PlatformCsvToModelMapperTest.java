@@ -11,7 +11,7 @@ import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.testdata.prm.PlatformCsvTestData;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -38,7 +38,7 @@ class PlatformCsvToModelMapperTest {
         .inclination(0.0)
         .inclinationLongitudinal(0.0)
         .inclinationWidth(0.0)
-        .infoOpportunities(Set.of(InfoOpportunityAttributeType.STATIC_VISUAL_INFORMATION,
+        .infoOpportunities(List.of(InfoOpportunityAttributeType.STATIC_VISUAL_INFORMATION,
             InfoOpportunityAttributeType.ELECTRONIC_VISUAL_INFORMATION_COMPLETE,InfoOpportunityAttributeType.TEXT_TO_SPEECH_COMPLETE))
         .levelAccessWheelchair(BasicAttributeType.TO_BE_COMPLETED)
         .partialElevation(false)
