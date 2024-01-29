@@ -22,9 +22,7 @@ public class ReferencePointVersionCsvProcessor extends BaseServicePointProcessor
         .validFrom(DATE_FORMATTER.format(version.getValidFrom()))
         .validTo(DATE_FORMATTER.format(version.getValidTo()))
         .creationDate(LOCAL_DATE_FORMATTER.format(version.getCreationDate()))
-        .creator(version.getCreator())
         .editionDate(LOCAL_DATE_FORMATTER.format(version.getEditionDate()))
-        .editor(version.getEditor())
         .build();
   }
 
