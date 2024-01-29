@@ -48,14 +48,14 @@ public class PlatformCsvToModelMapper {
         .build();
   }
 
-  private static Set<InfoOpportunityAttributeType> getInfoOpportunities(PlatformCsvModel csvModel) {
+  private static List<InfoOpportunityAttributeType> getInfoOpportunities(PlatformCsvModel csvModel) {
     if (StringUtils.isBlank(csvModel.getInfoBlinds())) {
-      return Collections.emptySet();
+      return Collections.emptyList();
     }
     return Stream.of(csvModel.getInfoBlinds().split("~"))
             .filter(StringUtils::isNotBlank)
             .map(Integer::parseInt)
             .map(InfoOpportunityAttributeType::of)
-            .collect(Collectors.toSet());
+            .collect(Collectors.toList());
   }
 }
