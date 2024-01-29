@@ -15,6 +15,9 @@ public class JobDescriptionConstants {
   public static final String EXPORT_STOP_POINT_CSV_JOB_NAME = "exportStopPointCsvJob";
   public static final String EXPORT_STOP_POINT_JSON_JOB_NAME = "exportStopPointJsonJob";
 
+  public static final String EXPORT_REFERENCE_POINT_CSV_JOB_NAME = "exportReferencePointCsvJob";
+  public static final String EXPORT_REFERENCE_POINT_JSON_JOB_NAME = "exportReferencePointJsonJob";
+
   public static final String EXPORT_TYPE_JOB_PARAMETER = "exportType";
   public static final String START_AT_JOB_PARAMETER = "startAt";
   public static final String EXECUTION_TYPE_PARAMETER = "EXECUTION";
