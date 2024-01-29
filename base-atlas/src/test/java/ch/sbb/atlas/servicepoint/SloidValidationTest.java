@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import org.junit.jupiter.api.Test;
 
@@ -29,29 +30,29 @@ class SloidValidationTest {
 
   @Test
   void shouldReportInvalidSloidForWrongPrefix() {
-    boolean isValid = SloidValidation.isSloidValid("ch.1:sloid:7000::", SloidValidation.EXPECTED_COLONS_PLATFORM,
-        ServicePointNumber.ofNumberWithoutCheckDigit(8507000));
-    assertThat(isValid).isFalse();
+    assertThatExceptionOfType(SloidNotValidException.class).isThrownBy(
+        () -> SloidValidation.isSloidValid("ch.1:sloid:7000::", SloidValidation.EXPECTED_COLONS_PLATFORM,
+            ServicePointNumber.ofNumberWithoutCheckDigit(8507000)));
   }
 
   @Test
   void shouldReportInvalidSloidForWrongServicePointId() {
-    boolean isValid = SloidValidation.isSloidValid("ch:1:sloid:8507000::", SloidValidation.EXPECTED_COLONS_PLATFORM,
-        ServicePointNumber.ofNumberWithoutCheckDigit(8507000));
-    assertThat(isValid).isFalse();
+    assertThatExceptionOfType(SloidNotValidException.class).isThrownBy(
+        () -> SloidValidation.isSloidValid("ch:1:sloid:8507000::", SloidValidation.EXPECTED_COLONS_PLATFORM,
+            ServicePointNumber.ofNumberWithoutCheckDigit(8507000)));
   }
 
   @Test
   void shouldReportInvalidSloidForWrongServicePointNumber() {
-    boolean isValid = SloidValidation.isSloidValid("ch:1:sloid:7500::1", SloidValidation.EXPECTED_COLONS_PLATFORM,
-        ServicePointNumber.ofNumberWithoutCheckDigit(8507000));
-    assertThat(isValid).isFalse();
+    assertThatExceptionOfType(SloidNotValidException.class).isThrownBy(
+        () -> SloidValidation.isSloidValid("ch:1:sloid:7500::1", SloidValidation.EXPECTED_COLONS_PLATFORM,
+            ServicePointNumber.ofNumberWithoutCheckDigit(8507000)));
   }
 
   @Test
   void shouldReportInvalidSloidForWrongSid4ptChar() {
-    boolean isValid = SloidValidation.isSloidValid("ch:1:sloid:7000::;", SloidValidation.EXPECTED_COLONS_PLATFORM,
-        ServicePointNumber.ofNumberWithoutCheckDigit(8507000));
-    assertThat(isValid).isFalse();
+    assertThatExceptionOfType(SloidNotValidException.class).isThrownBy(
+        () -> SloidValidation.isSloidValid("ch:1:sloid:7000::;", SloidValidation.EXPECTED_COLONS_PLATFORM,
+            ServicePointNumber.ofNumberWithoutCheckDigit(8507000)));
   }
 }
