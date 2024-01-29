@@ -36,12 +36,9 @@ public final class GenerateSloidRequestModel {
         country));
   }
 
-  @AssertTrue(message = "When SloidType = PLATFORM or AREA, the sloidPrefix must be set")
+  @AssertTrue(message = "When SloidType is other than SERVICE_POINT, the sloidPrefix must be set")
   public boolean isSloidPrefixSet() {
-    if (sloidType == SloidType.PLATFORM || sloidType == SloidType.AREA) {
-      return sloidPrefix != null;
-    }
-    return true;
+    return sloidType == SloidType.SERVICE_POINT || sloidPrefix != null;
   }
 
 }
