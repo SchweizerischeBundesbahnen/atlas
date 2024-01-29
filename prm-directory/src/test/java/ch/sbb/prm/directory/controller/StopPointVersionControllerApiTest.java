@@ -12,6 +12,7 @@ import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.prm.directory.SharedServicePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.entity.StopPointVersion;
@@ -19,6 +20,8 @@ import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -100,10 +103,8 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
   void shouldCreateStopPoint() throws Exception {
     //given
     StopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
-    SharedServicePoint servicePoint = SharedServicePoint.builder()
-        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
-        .sloid("ch:1:sloid:7000")
-        .build();
+    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:7000", Set.of("ch:1:sboid:100602"),
+        Collections.emptySet());
     sharedServicePointRepository.saveAndFlush(servicePoint);
     //when && then
     mvc.perform(post("/v1/stop-points").contentType(contentType)
@@ -115,10 +116,10 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
   void shouldNotCreateStopPointReducedIfCompletePropertiesProvided() throws Exception {
     //given
     StopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getWrongStopPointReducedCreateVersionModel();
-    SharedServicePoint servicePoint = SharedServicePoint.builder()
-        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
-        .sloid("ch:1:sloid:7000")
-        .build();
+    SharedServicePoint servicePoint =
+        SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:7000", Set.of("ch:1:sboid:100602"),
+            Collections.emptySet());
+
     sharedServicePointRepository.saveAndFlush(servicePoint);
     //when && then
     mvc.perform(post("/v1/stop-points").contentType(contentType)
@@ -247,10 +248,9 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setEditor(version2.getEditor());
     editedVersionModel.setEtagVersion(version2.getVersion());
     editedVersionModel.setSloid("ch:1:sloid:12345");
-    SharedServicePoint servicePoint = SharedServicePoint.builder()
-        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:12345\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
-        .sloid("ch:1:sloid:12345")
-        .build();
+
+    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:12345", Set.of("ch:1:sboid"
+        + ":100602"),Collections.emptySet());
     sharedServicePointRepository.saveAndFlush(servicePoint);
 
     //when && then

@@ -11,6 +11,7 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.testdata.prm.StopPointCsvTestData;
 import ch.sbb.atlas.versioning.service.VersionableService;
+import ch.sbb.prm.directory.SharedServicePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.entity.StopPointVersion;
@@ -19,6 +20,7 @@ import ch.sbb.prm.directory.repository.StopPointRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
@@ -55,11 +57,8 @@ class StopPointImportServiceTest {
   @Test
   void shouldImportWhenStopPointsDoesNotExists() {
     //given
-    SharedServicePoint servicePoint = SharedServicePoint.builder()
-        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:12345\",\"sboids\":[\"ch:1:sboid:100602\"],"
-            + "\"trafficPointSloids\":[]}")
-        .sloid("ch:1:sloid:12345")
-        .build();
+    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:12345",
+        Set.of("ch:1:sboid:100602"), Collections.emptySet());
     sharedServicePointRepository.saveAndFlush(servicePoint);
 
     //when
@@ -108,11 +107,9 @@ class StopPointImportServiceTest {
   @Test
   void shouldImportWhenStopPointsExists() {
     //then
-    SharedServicePoint servicePoint = SharedServicePoint.builder()
-        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:12345\",\"sboids\":[\"ch:1:sboid:100602\"],"
-            + "\"trafficPointSloids\":[]}")
-        .sloid("ch:1:sloid:12345")
-        .build();
+    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:12345",
+        Set.of("ch:1:sboid:100602"), Collections.emptySet());
+
     sharedServicePointRepository.saveAndFlush(servicePoint);
     StopPointCsvModelContainer stopPointCsvModelContainer = StopPointCsvTestData.getStopPointCsvModelContainer();
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
@@ -134,11 +131,8 @@ class StopPointImportServiceTest {
   @Test
   void shouldReplaceAndMerge(){
     //given
-    SharedServicePoint servicePoint = SharedServicePoint.builder()
-        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:4761\",\"sboids\":[\"ch:1:sboid:100602\"],"
-            + "\"trafficPointSloids\":[]}")
-        .sloid("ch:1:sloid:4761")
-        .build();
+    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:4761",
+            Set.of("ch:1:sboid:100602"), Collections.emptySet());
     sharedServicePointRepository.saveAndFlush(servicePoint);
 
     StopPointVersion dbVersion1 = StopPointVersion.builder()
