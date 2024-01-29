@@ -7,52 +7,59 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@RequiredArgsConstructor
 public class SloidRepository {
 
   private static final String AREA_SEQ = "area_seq";
   private static final String EDGE_SEQ = "edge_seq";
 
-  //TODO: use NamedParameterJdbcTemplate
   @Qualifier("locationJdbcTemplate")
-  private final JdbcTemplate locationJdbcTemplate;
+  private final NamedParameterJdbcTemplate locationJdbcTemplate;
+
+  public SloidRepository(NamedParameterJdbcTemplate locationJdbcTemplate) {
+    this.locationJdbcTemplate = locationJdbcTemplate;
+  }
 
   public Set<String> getAllocatedSloid(SloidType sloidType) {
-    NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(locationJdbcTemplate);
     MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("sloidType", sloidType.name());
     String sqlQuery = "select distinct sloid from allocated_sloid where sloid is not null and sloidType = :sloidType";
-    return new HashSet<>(namedParameterJdbcTemplate.query(sqlQuery, mapSqlParameterSource, (rs, row) -> rs.getString("sloid")));
+    return new HashSet<>(locationJdbcTemplate.query(sqlQuery, mapSqlParameterSource, (rs, row) -> rs.getString("sloid")));
   }
 
   public Integer getNextSeqValue(SloidType sloidType) {
     final String sequence = sloidType == SloidType.PLATFORM ? EDGE_SEQ : AREA_SEQ;
-    return locationJdbcTemplate.queryForObject("select nextval(?);", Integer.class, sequence);
+    MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+    mapSqlParameterSource.addValue("sequence", sequence);
+    String sqlQuery = "select nextval(:sequence);";
+    return locationJdbcTemplate.queryForObject(sqlQuery, mapSqlParameterSource, (rs, row) -> rs.getInt(1));
   }
 
   public void insertSloid(String sloid, SloidType sloidType) {
-    locationJdbcTemplate.update("insert into allocated_sloid (sloid,sloidType) values (?,?);", sloid, sloidType.name());
+    MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+    mapSqlParameterSource.addValue("sloid", sloid);
+    mapSqlParameterSource.addValue("sloidType", sloidType.name());
+    String sqlQuery = "insert into allocated_sloid (sloid,sloidType) values (:sloid,:sloidType);";
+    locationJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
   }
 
   public String getNextAvailableSloid(Country country) {
-    return locationJdbcTemplate.queryForObject(
-        "select sloid from available_service_point_sloid where country = ? and claimed = false limit 1;", String.class,
-        country.name());
+    MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+    mapSqlParameterSource.addValue("country", country.name());
+    String sqlQuery = "select sloid from available_service_point_sloid where country = :country and claimed = false order by "
+        + "sloid limit 1;";
+    return locationJdbcTemplate.queryForObject(sqlQuery, mapSqlParameterSource, (rs, row) -> rs.getString("sloid"));
   }
 
   public boolean isSloidAllocated(String sloid) {
-    Byte nbOfFoundSloids = locationJdbcTemplate.queryForObject("select count(*) from allocated_sloid where sloid = ?;",
-        Byte.class,
-        sloid);
+    Byte nbOfFoundSloids = locationJdbcTemplate.getJdbcTemplate()
+        .queryForObject("select count(*) from allocated_sloid where sloid = ?;",Byte.class,sloid);
     if (nbOfFoundSloids == null) {
       throw new IllegalStateException("select count query should not return null!");
     }
@@ -60,46 +67,45 @@ public class SloidRepository {
   }
 
   public int deleteAllocatedSloid(Set<String> sloids, SloidType sloidType) {
-    NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(locationJdbcTemplate);
     MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("sloids", sloids);
     mapSqlParameterSource.addValue("sloidType", sloidType.name());
     String sqlQuery = "delete from allocated_sloid where sloid in (:sloids) and sloidType = :sloidType";
-    return namedParameterJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
+    locationJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
   }
 
-  public int deleteAvailableServicePointSloidAlreadyClaimed(Set<String> sloids) {
-    NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(locationJdbcTemplate);
+  public void deleteAvailableServicePointSloidAlreadyClaimed(Set<String> sloids) {
     MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("sloids", sloids);
     String sqlQuery = "delete from available_service_point_sloid where sloid in (:sloids) and claimed = true";
-    return namedParameterJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
+    locationJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
   }
 
-  public int setAvailableSloidToUnclaimedAllocatedSloid(Set<String> sloids) {
-    NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(locationJdbcTemplate);
+  public void setAvailableSloidToUnclaimedAllocatedSloid(Set<String> sloids) {
     MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("sloids", sloids);
     String sqlQuery = "update available_service_point_sloid set claimed = false where sloid in (:sloids)";
-    return namedParameterJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
+    locationJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
   }
 
-  public int setAvailableSloidToClaimed(String sloid) {
-    return locationJdbcTemplate.update("update available_service_point_sloid set claimed = true where sloid = ?;", sloid);
+  public void setAvailableSloidToClaimed(String sloid) {
+    MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+    mapSqlParameterSource.addValue("sloid", sloid);
+    String sqlQuery = "update available_service_point_sloid set claimed = true where sloid = :sloid;";
+    locationJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
   }
 
-  public int setAvailableSloidToClaimed(Set<String> sloids) {
-    NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(locationJdbcTemplate);
+  public void setAvailableSloidToClaimed(Set<String> sloids) {
     MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("sloids", sloids);
     String sqlQuery = "update available_service_point_sloid set claimed = true where sloid in (:sloids)";
-    return namedParameterJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
+    locationJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
   }
 
   public void addMissingAllocatedSloid(Set<String> sloidToAdd, SloidType sloidType) {
     ArrayList<String> sloids = new ArrayList<>(sloidToAdd);
     String sqlQuery = "insert into allocated_sloid (sloid,sloidType) values (?,?)";
-    locationJdbcTemplate.batchUpdate(sqlQuery, new BatchPreparedStatementSetter() {
+    locationJdbcTemplate.getJdbcTemplate().batchUpdate(sqlQuery, new BatchPreparedStatementSetter() {
           @Override
           public void setValues(PreparedStatement ps, int i) throws SQLException {
             ps.setString(1, sloids.get(i));

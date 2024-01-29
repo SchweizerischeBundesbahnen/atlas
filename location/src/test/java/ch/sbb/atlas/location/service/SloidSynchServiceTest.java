@@ -1,6 +1,5 @@
 package ch.sbb.atlas.location.service;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -14,6 +13,7 @@ import ch.sbb.atlas.location.repository.SloidRepository;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import java.sql.SQLException;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,10 +38,10 @@ class SloidSynchServiceTest {
   private final NamedParameterJdbcTemplate prmJdbcTemplate;
 
   @Qualifier("sePoDiJdbcTemplate")
-  private final JdbcTemplate sePoDiJdbcTemplate;
+  private final NamedParameterJdbcTemplate sePoDiJdbcTemplate;
 
   @Qualifier("locationJdbcTemplate")
-  private final JdbcTemplate locationJdbcTemplate;
+  private final NamedParameterJdbcTemplate locationJdbcTemplate;
   private final SloidRepository sloidRepository;
 
   @MockBean
@@ -54,8 +53,9 @@ class SloidSynchServiceTest {
   private final SloidSynchService sloidSynchService;
 
   @Autowired
-  SloidSynchServiceTest(NamedParameterJdbcTemplate prmJdbcTemplate, JdbcTemplate sePoDiJdbcTemplate,
-      JdbcTemplate locationJdbcTemplate, SloidRepository sloidRepository, PrmRepository prmRepository, SePoDiRepository sePoDiRepository, SloidSynchService sloidSynchService) {
+  SloidSynchServiceTest(NamedParameterJdbcTemplate prmJdbcTemplate, NamedParameterJdbcTemplate sePoDiJdbcTemplate,
+      NamedParameterJdbcTemplate locationJdbcTemplate, SloidRepository sloidRepository, PrmRepository prmRepository,
+      SePoDiRepository sePoDiRepository, SloidSynchService sloidSynchService) {
     this.prmJdbcTemplate = prmJdbcTemplate;
     this.sePoDiJdbcTemplate = sePoDiJdbcTemplate;
     this.locationJdbcTemplate = locationJdbcTemplate;
@@ -68,48 +68,52 @@ class SloidSynchServiceTest {
   @Test
   void shouldSyncServicePointWhenAlreadyDistributedSloidAreMoreThenAllocated() throws SQLException {
     //given
-    Set<String> allocatedSloids = Set.of("ch:sloid:1","ch:sloid:2","ch:sloid:3");
-    Set<String> alreadyDistributedSloids = Set.of("ch:sloid:1","ch:sloid:2","ch:sloid:3","ch:sloid:4");
-    allocatedSloids.forEach(s -> sloidRepository.insertSloid(s,SloidType.SERVICE_POINT));
+    Set<String> allocatedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3");
+    Set<String> alreadyDistributedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3", "ch:sloid:4");
+    allocatedSloids.forEach(s -> sloidRepository.insertSloid(s, SloidType.SERVICE_POINT));
     when(sePoDiRepository.getAlreadyServicePointDistributedSloid()).thenReturn(alreadyDistributedSloids);
     //when
     sloidSynchService.sync();
     //then
     Set<String> result = sloidRepository.getAllocatedSloid(SloidType.SERVICE_POINT);
-    assertThat(result).isNotNull().hasSize(4);
-    assertThat(result).containsAnyElementsOf(alreadyDistributedSloids);
+    assertThat(result)
+        .isNotNull()
+        .hasSize(4)
+        .containsAnyElementsOf(alreadyDistributedSloids);
     Set<String> claimedAvailableSloid = getClaimedAvailableSloid();
-    assertThat(claimedAvailableSloid).isNotNull().hasSize(0);
+    assertThat(claimedAvailableSloid).isNotNull().isEmpty();
   }
 
   @Test
   void shouldSyncServicePointWhenAllocatedSloidAreMoreThenAlreadyDistributed() throws SQLException {
     //given
-    Set<String> allocatedSloids = Set.of("ch:sloid:1","ch:sloid:2","ch:sloid:3","ch:sloid:4");
-    Set<String> alreadyDistributedSloids = Set.of("ch:sloid:1","ch:sloid:2","ch:sloid:3");
-    allocatedSloids.forEach(s -> sloidRepository.insertSloid(s,SloidType.SERVICE_POINT));
+    Set<String> allocatedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3", "ch:sloid:4");
+    Set<String> alreadyDistributedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3");
+    allocatedSloids.forEach(s -> sloidRepository.insertSloid(s, SloidType.SERVICE_POINT));
     when(sePoDiRepository.getAlreadyServicePointDistributedSloid()).thenReturn(alreadyDistributedSloids);
     //when
     sloidSynchService.sync();
     //then
     Set<String> result = sloidRepository.getAllocatedSloid(SloidType.SERVICE_POINT);
-    assertThat(result).isNotNull().hasSize(3);
-    assertThat(result).containsAnyElementsOf(alreadyDistributedSloids);
+    assertThat(result)
+        .isNotNull()
+        .hasSize(3)
+        .containsAnyElementsOf(alreadyDistributedSloids);
     Set<String> claimedAvailableSloid = getClaimedAvailableSloid();
-    assertThat(claimedAvailableSloid).isNotNull().hasSize(0);
+    assertThat(claimedAvailableSloid).isNotNull().isEmpty();
   }
 
   @ParameterizedTest
-  @EnumSource
-      (value = SloidType.class, names = {"PLATFORM","AREA","REFERENCE_POINT","PARKING_LOT","INFO_DESK","TICKET_COUNTER","TOILET"})
+  @EnumSource(value = SloidType.class,
+          names = {"PLATFORM", "AREA", "REFERENCE_POINT", "PARKING_LOT", "INFO_DESK", "TICKET_COUNTER", "TOILET"})
   void shouldSyncSloidWhenAlreadyDistributedSloidAreMoreThenAllocated(SloidType sloidType) {
     //given
-    Set<String> allocatedSloids = Set.of("ch:sloid:1","ch:sloid:2","ch:sloid:3");
-    Set<String> alreadyDistributedSloids = Set.of("ch:sloid:1","ch:sloid:2","ch:sloid:3","ch:sloid:4");
-    allocatedSloids.forEach(s -> sloidRepository.insertSloid(s,sloidType));
+    Set<String> allocatedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3");
+    Set<String> alreadyDistributedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3", "ch:sloid:4");
+    allocatedSloids.forEach(s -> sloidRepository.insertSloid(s, sloidType));
     if (SloidType.PLATFORM == sloidType || SloidType.AREA == sloidType) {
       when(sePoDiRepository.getAlreadyDistributedSloid(sloidType)).thenReturn(alreadyDistributedSloids);
-    }else {
+    } else {
       when(prmRepository.getAlreadyDistributedSloid(sloidType)).thenReturn(alreadyDistributedSloids);
     }
     //when
@@ -120,16 +124,16 @@ class SloidSynchServiceTest {
   }
 
   @ParameterizedTest
-  @EnumSource
-      (value = SloidType.class, names = {"PLATFORM","AREA","REFERENCE_POINT","PARKING_LOT","INFO_DESK","TICKET_COUNTER","TOILET"})
-  void shouldSyncSloidWhenAllocatedAreModerThenDistributed(SloidType sloidType) {
+  @EnumSource(value = SloidType.class,
+          names = {"PLATFORM", "AREA", "REFERENCE_POINT", "PARKING_LOT", "INFO_DESK", "TICKET_COUNTER", "TOILET"})
+  void shouldSyncSloidWhenAllocatedAreMoreThenDistributed(SloidType sloidType) {
     //given
-    Set<String> allocatedSloids = Set.of("ch:sloid:1","ch:sloid:2","ch:sloid:3","ch:sloid:4");
-    Set<String> alreadyDistributedSloids = Set.of("ch:sloid:1","ch:sloid:2","ch:sloid:3");
-    allocatedSloids.forEach(s -> sloidRepository.insertSloid(s,sloidType));
+    Set<String> allocatedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3", "ch:sloid:4");
+    Set<String> alreadyDistributedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3");
+    allocatedSloids.forEach(s -> sloidRepository.insertSloid(s, sloidType));
     if (SloidType.PLATFORM == sloidType || SloidType.AREA == sloidType) {
       when(sePoDiRepository.getAlreadyDistributedSloid(sloidType)).thenReturn(alreadyDistributedSloids);
-    }else {
+    } else {
       when(prmRepository.getAlreadyDistributedSloid(sloidType)).thenReturn(alreadyDistributedSloids);
     }
     //when
@@ -140,12 +144,10 @@ class SloidSynchServiceTest {
   }
 
   private Set<String> getClaimedAvailableSloid() throws SQLException {
-    locationJdbcTemplate.getDataSource().getConnection().commit();
-    NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(locationJdbcTemplate);
+    Objects.requireNonNull(locationJdbcTemplate.getJdbcTemplate().getDataSource()).getConnection().commit();
     MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
     String sqlQuery = "select sloid from available_service_point_sloid where claimed = true";
-    return new HashSet<>(namedParameterJdbcTemplate.query(sqlQuery, mapSqlParameterSource, (rs, row) -> rs.getString("sloid")));
+    return new HashSet<>(locationJdbcTemplate.query(sqlQuery, mapSqlParameterSource, (rs, row) -> rs.getString("sloid")));
   }
-
 
 }
