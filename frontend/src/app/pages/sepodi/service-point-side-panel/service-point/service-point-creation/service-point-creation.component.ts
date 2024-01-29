@@ -22,6 +22,7 @@ import { ServicePointType } from '../service-point-type';
 import { NotificationService } from '../../../../../core/notification/notification.service';
 import { GeographyFormGroupBuilder } from '../../../geography/geography-form-group';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MapService } from '../../../map/map.service';
 
 @Component({
   selector: 'app-service-point-creation',
@@ -45,6 +46,7 @@ export class ServicePointCreationComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly servicePointService: ServicePointsService,
     private readonly notificationService: NotificationService,
+    private readonly mapService: MapService,
   ) {
     this.form.controls.country?.valueChanges
       .pipe(mergeWith(this.servicePointTypeChanged$), takeUntilDestroyed())
@@ -131,11 +133,15 @@ export class ServicePointCreationComponent implements OnInit {
       this.servicePointService
         .createServicePoint(servicePointVersion)
         .pipe(catchError(() => this.handleError(controlsAlreadyDisabled)))
-        .subscribe(async (servicePointVersion) => {
+        .subscribe((servicePointVersion) => {
           this.notificationService.success('SEPODI.SERVICE_POINTS.NOTIFICATION.ADD_SUCCESS');
-          await this.router.navigate([servicePointVersion.number.number], {
-            relativeTo: this.route,
-          });
+          this.router
+            .navigate([servicePointVersion.number.number], {
+              relativeTo: this.route,
+            })
+            .then(() => {
+              this.mapService.refreshMap();
+            });
         });
     }
   }

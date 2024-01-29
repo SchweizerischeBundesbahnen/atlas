@@ -17,6 +17,7 @@ import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.RelationTestData;
+import ch.sbb.prm.directory.SharedServicePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.TicketCounterTestData;
 import ch.sbb.prm.directory.ToiletTestData;
@@ -45,23 +46,18 @@ class PrmUserAdministrationServiceTest {
 
     private final PrmUserAdministrationService prmBOBasedUserAdministrationService;
 
-    private static final SharedServicePoint sharedServicePoint1 =  SharedServicePoint.builder()
-            .servicePoint("{\"servicePointSloid\":\"ch:1.sloid:12345\",\"sboids\":[\"ch:1:sboid:100001\",\"ch:1:sboid:100002\",\"ch:1:sboid:100003\",\"ch:1:sboid:100004\",\"ch:1:sboid:100005\"],"
-                    + "\"trafficPointSloids\":[\"ch:1.sloid:12345:1\"]}")
-            .sloid("ch:1.sloid:12345")
-            .build();
+    private static final SharedServicePoint sharedServicePoint1 =
+        SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:12345", Set.of("ch:1:sboid:100001", "ch:1:sboid:100002",
+            "ch:1:sboid:100003", "ch:1:sboid:100004", "ch:1:sboid:100005"), Set.of("ch:1:sloid:12345:1"));
 
-    private static final SharedServicePoint sharedServicePoint2 =  SharedServicePoint.builder()
-            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:12345\",\"sboids\":[\"ch:1:sboid:100001\",\"ch:1:sboid:100002\",\"ch:1:sboid:100003\",\"ch:1:sboid:100004\",\"ch:1:sboid:100005\"],"
-                    + "\"trafficPointSloids\":[\"ch:1:sloid:12345:1\"]}")
-            .sloid("ch:1:sloid:12345")
-            .build();
+    private static final SharedServicePoint sharedServicePoint2 =
+        SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:12345", Set.of("ch:1:sboid:100001", "ch:1:sboid:100002",
+            "ch:1:sboid:100003", "ch:1:sboid:100004", "ch:1:sboid:100005"), Set.of("ch:1:sloid:12345:1"));
 
-    private static final SharedServicePoint sharedServicePoint3 = SharedServicePoint.builder()
-            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:8507000\",\"sboids\":[\"ch:1:sboid:100001\",\"ch:1:sboid:100002\",\"ch:1:sboid:100003\",\"ch:1:sboid:100004\",\"ch:1:sboid:100005\"],"
-                    + "\"trafficPointSloids\":[\"ch:1:sloid:8507000:1\"]}")
-            .sloid("ch:1:sloid:8507000")
-            .build();
+    private static final SharedServicePoint sharedServicePoint3 =
+        SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:8507000", Set.of("ch:1:sboid:100001", "ch:1:sboid:100002",
+            "ch:1:sboid:100003", "ch:1:sboid:100004", "ch:1:sboid:100005"), Set.of("ch:1:sloid:8507000:1"));
+
 
     @Autowired
     public PrmUserAdministrationServiceTest(SharedServicePointRepository sharedServicePointRepository,
