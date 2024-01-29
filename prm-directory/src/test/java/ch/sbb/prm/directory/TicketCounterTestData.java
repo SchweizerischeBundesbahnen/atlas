@@ -13,11 +13,11 @@ public class TicketCounterTestData {
 
   public static TicketCounterVersion getTicketCounterVersion(){
     return TicketCounterVersion.builder()
-        .sloid("ch:1.sloid:12345:1")
+        .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
-        .parentServicePointSloid("ch:1.sloid:12345")
+        .parentServicePointSloid("ch:1:sloid:12345")
         .designation("Designation")
         .additionalInformation("Additional information")
         .inductionLoop(StandardAttributeType.NOT_APPLICABLE)
@@ -28,11 +28,11 @@ public class TicketCounterTestData {
 
   public static TicketCounterVersionBuilder<?, ?> builderVersion1(){
     return TicketCounterVersion.builder()
-        .sloid("ch:1.sloid:12345:1")
+        .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
-        .parentServicePointSloid("ch:1.sloid:12345")
+        .parentServicePointSloid("ch:1:sloid:12345")
         .designation("Designation")
         .additionalInformation("Additional information")
         .inductionLoop(StandardAttributeType.NOT_APPLICABLE)
@@ -42,11 +42,11 @@ public class TicketCounterTestData {
 
   public static TicketCounterVersionBuilder<?, ?> builderVersion2(){
     return TicketCounterVersion.builder()
-        .sloid("ch:1.sloid:12345:1")
+        .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2002, 12, 31))
-        .parentServicePointSloid("ch:1.sloid:12345")
+        .parentServicePointSloid("ch:1:sloid:12345")
         .designation("Designation Napoli")
         .additionalInformation("Additional information")
         .inductionLoop(StandardAttributeType.NOT_APPLICABLE)
@@ -56,11 +56,11 @@ public class TicketCounterTestData {
 
   public static TicketCounterVersionBuilder<?, ?> builderVersion3(){
     return TicketCounterVersion.builder()
-        .sloid("ch:1.sloid:12345:1")
+        .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2003, 1, 1))
         .validTo(LocalDate.of(2003, 12, 31))
-        .parentServicePointSloid("ch:1.sloid:12345")
+        .parentServicePointSloid("ch:1:sloid:12345")
         .designation("Designation bern")
         .additionalInformation("Additional information")
         .inductionLoop(StandardAttributeType.NOT_APPLICABLE)
@@ -70,10 +70,10 @@ public class TicketCounterTestData {
 
   public static TicketCounterVersionModel getCreateTicketCounterVersionVersionModel(){
     return TicketCounterVersionModel.builder()
-        .sloid("ch:1.sloid:12345:1")
+        .sloid("ch:1:sloid:12345:1")
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2001, 12, 31))
-        .parentServicePointSloid("ch:1.sloid:12345")
+        .parentServicePointSloid("ch:1:sloid:12345")
         .designation("Designation")
         .additionalInformation("Additional information")
         .inductionLoop(StandardAttributeType.NOT_APPLICABLE)

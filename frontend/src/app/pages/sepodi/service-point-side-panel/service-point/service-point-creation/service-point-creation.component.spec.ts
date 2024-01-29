@@ -15,15 +15,18 @@ import { ServicePointFormGroupBuilder } from '../service-point-detail-form-group
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../../../core/auth/auth.service';
 import { Countries } from '../../../../../core/country/Countries';
+import { TestBed } from '@angular/core/testing';
+import { MapService } from '../../../map/map.service';
 import SpyObj = jasmine.SpyObj;
 import anything = jasmine.anything;
 import Spy = jasmine.Spy;
-import { TestBed } from '@angular/core/testing';
 
 class AuthServiceMock implements Partial<AuthService> {
   getApplicationUserPermission = jasmine.createSpy();
   isAdmin = false;
 }
+
+const mapServiceSpy = jasmine.createSpyObj('MapService', ['refreshMap']);
 
 describe('ServicePointCreationComponent', () => {
   let component: ServicePointCreationComponent;
@@ -39,6 +42,7 @@ describe('ServicePointCreationComponent', () => {
     servicePointServiceSpy = jasmine.createSpyObj(['createServicePoint']);
     notificationServiceSpy = jasmine.createSpyObj(['success']);
     routerSpy = jasmine.createSpyObj(['navigate']);
+    routerSpy.navigate.and.returnValue(Promise.resolve(true));
     authServiceMock = new AuthServiceMock();
 
     TestBed.configureTestingModule({
@@ -64,6 +68,7 @@ describe('ServicePointCreationComponent', () => {
           provide: Router,
           useValue: routerSpy,
         },
+        { provide: MapService, useValue: mapServiceSpy },
       ],
     });
 
