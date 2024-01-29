@@ -5,16 +5,17 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.location.LocationSchemaCreation;
 import ch.sbb.atlas.location.repository.SloidRepository;
-import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.Country;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
+@IntegrationTest
 @LocationSchemaCreation
-@Transactional
-class SloidServiceTest extends BaseControllerApiTest {
+class SloidServiceTest {
 
   private final SloidRepository sloidRepository;
   private final SloidService sloidService;
@@ -39,7 +40,6 @@ class SloidServiceTest extends BaseControllerApiTest {
     boolean result = sloidService.claimAvailableServicePointSloid(sloid);
     //then
     assertThat(result).isTrue();
-
   }
 
   @Test
@@ -54,56 +54,84 @@ class SloidServiceTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldClaimAvailableSloidWhenAvailable() {
+  void shouldClaimSloidWhenAvailable() {
     //given
     String sloid = "ch:1:sloid:7001:0:1";
     //when
     boolean result = sloidService.claimSloid(sloid, SloidType.PLATFORM);
     //then
     assertThat(result).isTrue();
-
   }
 
   @Test
-  void shouldNotClaimAvailableeWhenNotAvailable() {
+  void shouldNotClaimSloidWhenNotAvailable() {
     //given
     String sloid = "ch:1:sloid:7000:0:1";
     sloidService.claimSloid(sloid, SloidType.PLATFORM);
     //when
-    boolean result = sloidService.claimAvailableServicePointSloid(sloid);
+    boolean result = sloidService.claimSloid(sloid, SloidType.PLATFORM);
     //then
     assertThat(result).isFalse();
   }
 
-  @Test
-  void shouldGenerateNewSloid() {
+  @ParameterizedTest
+  @EnumSource(value = SloidType.class, names = {"AREA", "REFERENCE_POINT", "PARKING_LOT", "INFO_DESK",
+      "TICKET_COUNTER",
+      "TOILET"})
+  void shouldGenerateNewSloid(SloidType sloidType) {
     //given
-    String sloidPrefix = "ch:1:sloid:";
+    String sloidPrefix = "ch:1:sloid:7000";
     //when
-    String result = sloidService.generateNewSloid(sloidPrefix, SloidType.PLATFORM);
+    String result = sloidService.generateNewSloid(sloidPrefix, sloidType);
     //then
-    assertThat(result).isNotNull();
+    assertThat(result).isEqualTo("ch:1:sloid:7000:100");
   }
 
   @Test
-  void shouldGenerateNewSloidEvenWhenSloidAlreadyOccupied() {
+  void shouldGenerateNewSloidPlatformCase() {
     //given
-    String sloidPrefix = "ch:1:sloid:";
+    String sloidPrefix = "ch:1:sloid:7000:0";
+    //when
+    String result = sloidService.generateNewSloid(sloidPrefix, SloidType.PLATFORM);
+    //then
+    assertThat(result).isEqualTo("ch:1:sloid:7000:0:1");
+  }
+
+  @ParameterizedTest
+  @EnumSource(value = SloidType.class, names = {"AREA", "REFERENCE_POINT", "PARKING_LOT", "INFO_DESK",
+      "TICKET_COUNTER",
+      "TOILET"})
+  void shouldGenerateNewSloidEvenWhenSloidAlreadyOccupied(SloidType sloidType) {
+    //given
+    String sloidPrefix = "ch:1:sloid:7000";
+    int nextSeqValue = sloidRepository.getNextSeqValue(sloidType) + 1;
+    sloidRepository.insertSloid(sloidPrefix + ":" + nextSeqValue, sloidType);
+    //when
+    String result = sloidService.generateNewSloid(sloidPrefix, sloidType);
+    //then
+    assertThat(result).isEqualTo("ch:1:sloid:7000:102");
+  }
+
+  @Test
+  void shouldGenerateNewSloidEvenWhenSloidAlreadyOccupiedPlatformCase() {
+    //given
+    String sloidPrefix = "ch:1:sloid:7000:0";
     int nextSeqValue = sloidRepository.getNextSeqValue(SloidType.PLATFORM) + 1;
     sloidRepository.insertSloid(sloidPrefix + ":" + nextSeqValue, SloidType.PLATFORM);
     //when
     String result = sloidService.generateNewSloid(sloidPrefix, SloidType.PLATFORM);
     //then
-    assertThat(result).isNotNull();
+    assertThat(result).isEqualTo("ch:1:sloid:7000:0:3");
   }
 
   @Test
-  void shouldGenerateNewServicePointSloid() {
+  void shouldGetNextAvailableServicePointSloid() {
+    //given
+    sloidRepository.setAvailableSloidToClaimed("ch:1:sloid:1");
     //when
     String result = sloidService.getNextAvailableServicePointSloid(Country.SWITZERLAND);
     //then
-    assertThat(result).isNotNull();
+    assertThat(result).isEqualTo("ch:1:sloid:2");
   }
-
 
 }
