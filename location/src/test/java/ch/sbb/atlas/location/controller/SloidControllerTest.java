@@ -127,7 +127,7 @@ class SloidControllerTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/sloid/claim").contentType(MediaType.APPLICATION_JSON).content("{\"sloidType\": \"SERVICE_POINT\", "
             + "\"sloid\": \"ch:1:sloid:7000:1\", \"country\": \"SWITZERLAND\"}"))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")));
+        .andExpect(jsonPath("$.message", is("The SLOID ch:1:sloid:7000:1 is not valid due to: did not have 3 colons as expected")));
   }
 
   @Test
@@ -135,7 +135,7 @@ class SloidControllerTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/sloid/claim").contentType(MediaType.APPLICATION_JSON).content("{\"sloidType\": \"AREA\", "
             + "\"sloid\": \"ch:1:sloid:7000\"}"))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")));
+        .andExpect(jsonPath("$.message", is("The SLOID ch:1:sloid:7000 is not valid due to: did not have 4 colons as expected")));
   }
 
   @Test
@@ -143,7 +143,7 @@ class SloidControllerTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/sloid/claim").contentType(MediaType.APPLICATION_JSON).content("{\"sloidType\": \"PLATFORM\", "
             + "\"sloid\": \"ch:1:sloid:7000:1\"}"))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")));
+        .andExpect(jsonPath("$.message", is("The SLOID ch:1:sloid:7000:1 is not valid due to: did not have 5 colons as expected")));
   }
 
 }
