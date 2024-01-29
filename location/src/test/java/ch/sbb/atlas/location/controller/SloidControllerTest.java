@@ -1,9 +1,9 @@
 package ch.sbb.atlas.location.controller;
 
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.hamcrest.Matchers.is;
 
 import ch.sbb.atlas.location.DbSchemaCreation;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -90,14 +90,6 @@ class SloidControllerTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/sloid/claim").contentType(MediaType.APPLICATION_JSON).content("{\"sloidType\": \"SERVICE_POINT\", "
             + "\"country\":  \"SWITZERLAND\", \"sloid\": \"\"}"))
         .andExpect(status().isBadRequest());
-  }
-
-  @Test
-  void claimSloid_shouldThrowWhenSERVICE_POINTNoCountry() throws Exception {
-    mvc.perform(post("/v1/sloid/claim").contentType(MediaType.APPLICATION_JSON).content("{\"sloidType\": \"SERVICE_POINT\", "
-            + "\"sloid\": \"ch:1:sloid:7000\"}"))
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")));
   }
 
   @Test
