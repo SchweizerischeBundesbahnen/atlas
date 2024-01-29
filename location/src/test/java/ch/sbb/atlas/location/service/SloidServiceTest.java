@@ -3,7 +3,7 @@ package ch.sbb.atlas.location.service;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import ch.sbb.atlas.api.location.SloidType;
-import ch.sbb.atlas.location.DbSchemaCreation;
+import ch.sbb.atlas.location.LocationSchemaCreation;
 import ch.sbb.atlas.location.repository.SloidRepository;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.Country;
@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-@DbSchemaCreation
+@LocationSchemaCreation
 @Transactional
 class SloidServiceTest extends BaseControllerApiTest {
 
