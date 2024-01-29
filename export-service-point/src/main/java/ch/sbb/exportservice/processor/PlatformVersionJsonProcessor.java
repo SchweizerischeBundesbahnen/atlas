@@ -26,7 +26,7 @@ public class PlatformVersionJsonProcessor extends BaseServicePointProcessor impl
             .inclinationLongitudinal(version.getInclinationLongitudinal())
             .inclinationWidth(version.getInclinationWidth())
             .infoOpportunities(
-                    version.getInfoOpportunities() != null ? version.getInfoOpportunities() : null)
+                    version.getInfoOpportunities() != null ? version.getInfoOpportunities().stream().toList() : null)
             .levelAccessWheelchair(version.getLevelAccessWheelchair())
             .partialElevation(version.getPartialElevation())
             .superelevation(version.getSuperElevation())
