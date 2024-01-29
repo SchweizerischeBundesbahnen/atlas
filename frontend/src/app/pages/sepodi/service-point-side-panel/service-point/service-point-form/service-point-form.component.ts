@@ -94,19 +94,23 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
     this.initSortedOperatingPointTypes();
     this.initBoSboidRestriction();
 
-    this.geographyComponent?.coordinatesChanged.subscribe((coordinatePair) => {
-      if (coordinatePair.north && coordinatePair.east) {
-        this.locationInformation$ = this.geoDataService.getLocationInformation(coordinatePair).pipe(
-          map((geoReference) => ({
-            isoCountryCode: Countries.fromCountry(geoReference.country)?.short,
-            canton: geoReference.swissCanton,
-            municipalityName: geoReference.swissMunicipalityName,
-            localityName: geoReference.swissLocalityName,
-            height: geoReference.height,
-          })),
-        );
-      }
-    });
+    if (!this.isNew) {
+      this.geographyComponent?.coordinatesChanged.subscribe((coordinatePair) => {
+        if (coordinatePair.north && coordinatePair.east) {
+          this.locationInformation$ = this.geoDataService
+            .getLocationInformation(coordinatePair)
+            .pipe(
+              map((geoReference) => ({
+                isoCountryCode: Countries.fromCountry(geoReference.country)?.short,
+                canton: geoReference.swissCanton,
+                municipalityName: geoReference.swissMunicipalityName,
+                localityName: geoReference.swissLocalityName,
+                height: geoReference.height,
+              })),
+            );
+        }
+      });
+    }
   }
 
   ngOnDestroy() {
