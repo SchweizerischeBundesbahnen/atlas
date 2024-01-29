@@ -37,10 +37,6 @@ public class ReferencePointVersionCsvModel {
 
   private String creationDate;
 
-  private String creator;
-
   private String editionDate;
-
-  private String editor;
 
 }
