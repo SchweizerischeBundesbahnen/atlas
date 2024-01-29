@@ -66,7 +66,7 @@ public class SloidRepository {
     return nbOfFoundSloids == 1;
   }
 
-  public int deleteAllocatedSloid(Set<String> sloids, SloidType sloidType) {
+  public void deleteAllocatedSloid(Set<String> sloids, SloidType sloidType) {
     MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("sloids", sloids);
     mapSqlParameterSource.addValue("sloidType", sloidType.name());
