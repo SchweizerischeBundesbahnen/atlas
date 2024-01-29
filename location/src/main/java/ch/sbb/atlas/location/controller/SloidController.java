@@ -21,7 +21,6 @@ public class SloidController implements SloidApiV1 {
   @Override
   public ResponseEntity<String> generateSloid(GenerateSloidRequestModel request) {
     String sloid;
-    //TODO: move this logic to Service
     if (request.getSloidType() == SloidType.SERVICE_POINT) {
       sloid = sloidService.getNextAvailableServicePointSloid(request.getCountry());
     } else {
@@ -34,7 +33,6 @@ public class SloidController implements SloidApiV1 {
   @Override
   public ResponseEntity<String> claimSloid(ClaimSloidRequestModel request) {
     boolean claimed;
-    //TODO: move this logic to Service
     if (request.sloidType() == SloidType.SERVICE_POINT) {
       claimed = sloidService.claimAvailableServicePointSloid(request.sloid());
     } else {
