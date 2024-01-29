@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -48,17 +47,6 @@ public class SloidRepository {
     return locationJdbcTemplate.queryForObject(
         "select sloid from available_service_point_sloid where country = ? and claimed = false order by sloid limit 1;",
         String.class, country.name());
-  }
-
-  public boolean isSloidAvailable(String sloid) {
-    try {
-      Boolean claimed = locationJdbcTemplate.queryForObject("select claimed from available_service_point_sloid where sloid = ?;",
-          Boolean.class,
-          sloid);
-      return Boolean.FALSE.equals(claimed);
-    } catch (DataAccessException e) {
-      return false;
-    }
   }
 
   public int deleteAllocatedSloid(Set<String> sloids, SloidType sloidType) {
