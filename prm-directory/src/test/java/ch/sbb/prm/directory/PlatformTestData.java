@@ -15,6 +15,7 @@ import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.PlatformVersion.PlatformVersionBuilder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import lombok.experimental.UtilityClass;
 
@@ -106,7 +107,7 @@ public class PlatformTestData {
         .inclination(123.12)
         .inclinationLongitudinal(123.12)
         .inclinationWidth(123.12)
-        .infoOpportunities(Set.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
+        .infoOpportunities(List.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
         .levelAccessWheelchair(BasicAttributeType.NO)
         .partialElevation(false)
         .superelevation(321.123)
@@ -144,7 +145,7 @@ public class PlatformTestData {
         .parentServicePointSloid("ch:1:sloid:12345")
         .height(333.12)
         .inclinationLongitudinal(123.12)
-        .infoOpportunities(Set.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
+        .infoOpportunities(List.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
         .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .vehicleAccess(VehicleAccessAttributeType.PLATFORM_ACCESS_WITH_ASSISTANCE_WHEN_NOTIFIED)
         .wheelchairAreaLength(456.321)
