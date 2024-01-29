@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
+import ch.sbb.atlas.service.OverviewService;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
@@ -10,8 +11,6 @@ import ch.sbb.atlas.servicepointdirectory.exception.SloidAlreadyExistsException;
 import ch.sbb.atlas.servicepointdirectory.mapper.TrafficPointElementVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
-import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
-import ch.sbb.atlas.service.OverviewService;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoAdminHeightResponse;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
@@ -37,16 +36,16 @@ public class TrafficPointElementService {
 
   private final TrafficPointElementVersionRepository trafficPointElementVersionRepository;
   private final VersionableService versionableService;
-  private final CrossValidationService crossValidationService;
+  private final TrafficPointElementValidationService trafficPointElementValidationService;
   private final TrafficPointElementSloidService trafficPointElementSloidService;
   private final GeoReferenceService geoReferenceService;
 
   public TrafficPointElementService(TrafficPointElementVersionRepository trafficPointElementVersionRepository,
-      VersionableService versionableService, CrossValidationService crossValidationService,
+      VersionableService versionableService, TrafficPointElementValidationService trafficPointElementValidationService,
       TrafficPointElementSloidService trafficPointElementSloidService, GeoReferenceService geoReferenceService) {
     this.trafficPointElementVersionRepository = trafficPointElementVersionRepository;
     this.versionableService = versionableService;
-    this.crossValidationService = crossValidationService;
+    this.trafficPointElementValidationService = trafficPointElementValidationService;
     this.trafficPointElementSloidService = trafficPointElementSloidService;
     this.geoReferenceService = geoReferenceService;
   }
@@ -87,7 +86,8 @@ public class TrafficPointElementService {
   }
 
   public TrafficPointElementVersion save(TrafficPointElementVersion trafficPointElementVersion) {
-    crossValidationService.validateServicePointNumberExists(trafficPointElementVersion.getServicePointNumber());
+    trafficPointElementValidationService.validatePreconditionBusinessRules(trafficPointElementVersion);
+
     return trafficPointElementVersionRepository.saveAndFlush(trafficPointElementVersion);
   }
 
@@ -135,7 +135,7 @@ public class TrafficPointElementService {
         .map(TrafficPointElementVersionMapper::toModel).toList();
 
     List<ReadTrafficPointElementVersionModel> displayableVersions = OverviewService.mergeVersionsForDisplay(trafficPointElements,
-        (previous, current)->previous.getSloid().equals(current.getSloid()));
+        (previous, current) -> previous.getSloid().equals(current.getSloid()));
     return OverviewService.toPagedContainer(displayableVersions, pageable);
   }
 
@@ -150,9 +150,11 @@ public class TrafficPointElementService {
   }
 
   public void setHeightForTrafficPoints(TrafficPointElementVersion trafficPointElementVersion) {
-    TrafficPointElementGeolocation trafficPointElementGeolocation = trafficPointElementVersion.getTrafficPointElementGeolocation();
+    TrafficPointElementGeolocation trafficPointElementGeolocation =
+        trafficPointElementVersion.getTrafficPointElementGeolocation();
     if (trafficPointElementGeolocation != null && trafficPointElementGeolocation.getHeight() == null) {
-      GeoAdminHeightResponse geoAdminHeightResponse = geoReferenceService.getHeight(trafficPointElementGeolocation.asCoordinatePair());
+      GeoAdminHeightResponse geoAdminHeightResponse = geoReferenceService.getHeight(
+          trafficPointElementGeolocation.asCoordinatePair());
       trafficPointElementGeolocation.setHeight(geoAdminHeightResponse.getHeight());
     }
   }
