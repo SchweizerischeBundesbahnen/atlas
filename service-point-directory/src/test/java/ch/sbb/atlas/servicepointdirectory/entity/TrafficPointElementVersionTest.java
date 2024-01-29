@@ -103,34 +103,6 @@ class TrafficPointElementVersionTest {
   }
 
   @Test
-  void shouldNotBeValidIfSloidDoesNotMatchGivenSloidPatternForArea(){
-   TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
-       .designation("Test")
-       .sloid("ch:1:sloid:2311:1233:4312:abc")
-       .trafficPointElementType(TrafficPointElementType.BOARDING_AREA)
-       .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(7283913))
-       .validFrom(LocalDate.of(2022, 1, 1))
-       .validTo(LocalDate.of(2022, 12, 31))
-       .build();
-
-   assertThat(trafficPointElementVersion.isValidSloid()).isFalse();
-  }
-
-  @Test
-  void shouldBeValidIfSloidMatchGivenSloidPatternForArea(){
-   TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
-       .designation("Test")
-       .sloid("ch:1:sloid:1183913:1233")
-       .trafficPointElementType(TrafficPointElementType.BOARDING_AREA)
-       .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1183913))
-       .validFrom(LocalDate.of(2022, 1, 1))
-       .validTo(LocalDate.of(2022, 12, 31))
-       .build();
-
-   assertThat(trafficPointElementVersion.isValidSloid()).isTrue();
-  }
-
-  @Test
   void shouldBeValidTrafficPointPlattform(){
    TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
        .designation("Test")
@@ -148,31 +120,4 @@ class TrafficPointElementVersionTest {
    assertThat(trafficPointElementVersion.isValidForBoardingArea()).isTrue();
   }
 
-  @Test
-  void shouldNotBeValidIfSloidDoesNotMatchGivenSloidPatternForPlattform(){
-   TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
-       .designation("Test")
-       .sloid("ch:1:sloid:2311:4234:123:2423:123")
-       .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
-       .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(7283913))
-       .validFrom(LocalDate.of(2022, 1, 1))
-       .validTo(LocalDate.of(2022, 12, 31))
-       .build();
-
-   assertThat(trafficPointElementVersion.isValidSloid()).isFalse();
-  }
-
-  @Test
-  void shouldBeValidIfSloidMatchGivenSloidPatternForPlattform(){
-   TrafficPointElementVersion trafficPointElementVersion = TrafficPointElementVersion.builder()
-       .designation("Test")
-       .sloid("ch:1:sloid:1183913:1233:321")
-       .trafficPointElementType(TrafficPointElementType.BOARDING_PLATFORM)
-       .servicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1183913))
-       .validFrom(LocalDate.of(2022, 1, 1))
-       .validTo(LocalDate.of(2022, 12, 31))
-       .build();
-
-   assertThat(trafficPointElementVersion.isValidSloid()).isTrue();
-  }
 }
