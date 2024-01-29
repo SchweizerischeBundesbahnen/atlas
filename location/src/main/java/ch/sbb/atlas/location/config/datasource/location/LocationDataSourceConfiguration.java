@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.JdbcTransactionManager;
 
 @Configuration
@@ -37,8 +37,8 @@ public class LocationDataSourceConfiguration {
   }
 
   @Bean(name = "locationJdbcTemplate")
-  public JdbcTemplate locationJdbcTemplate(@Qualifier("locationDataSource") DataSource dataSource) {
-    return new JdbcTemplate(dataSource);
+  public NamedParameterJdbcTemplate locationJdbcTemplate(@Qualifier("locationDataSource") DataSource dataSource) {
+    return new NamedParameterJdbcTemplate(dataSource);
   }
 
 }
