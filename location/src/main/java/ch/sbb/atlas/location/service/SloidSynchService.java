@@ -4,13 +4,11 @@ import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.location.repository.PrmRepository;
 import ch.sbb.atlas.location.repository.SePoDiRepository;
 import ch.sbb.atlas.location.repository.SloidRepository;
-import ch.sbb.atlas.servicepoint.Country;
-import jakarta.validation.constraints.NotNull;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,15 +20,12 @@ public class SloidSynchService {
   private final SePoDiRepository sePoDiRepository;
   private final PrmRepository prmRepository;
 
+  private static final List<SloidType> SLOID_TYPES = List.of(SloidType.PLATFORM,SloidType.AREA,SloidType.REFERENCE_POINT,
+      SloidType.PARKING_LOT,SloidType.INFO_DESK,SloidType.TICKET_COUNTER,SloidType.TOILET);
+
   public void sync() {
     servicePointSloidSync();
-    sloidSync(SloidType.PLATFORM);
-    sloidSync(SloidType.AREA);
-    sloidSync(SloidType.REFERENCE_POINT);
-    sloidSync(SloidType.PARKING_LOT);
-    sloidSync(SloidType.INFO_DESK);
-    sloidSync(SloidType.TICKET_COUNTER);
-    sloidSync(SloidType.TOILET);
+    SLOID_TYPES.forEach(this::sloidSync);
   }
 
   private void sloidSync(SloidType sloidType) {
@@ -64,7 +59,7 @@ public class SloidSynchService {
     //case_2: Location has more Sloids then SePoDi ServicePoints-> remove SLOID from Location
     removeUnusedServicePointSloidFromAllocatedSloid(servicePointSePoDiAllocatedSloid, servicePointLocationAllocatedSloid);
     //case_3: delete all available_service_point_sloid already claimed
-    deleteAllAvailableServicePointSloidAlreadyClaimed(servicePointSePoDiAllocatedSloid);//TODO: fixme
+    deleteAllAvailableServicePointSloidAlreadyClaimed(servicePointSePoDiAllocatedSloid);
     log.info("**** End Synch SERVICE_POINT ****");
   }
 
@@ -121,61 +116,6 @@ public class SloidSynchService {
     sloidToAdd.removeAll(servicePointLocationAllocatedSloid);
     log.info("Sloid not present on Location:{}", sloidToAdd);
     return sloidToAdd;
-  }
-
-  public String generateNewSloid(String sloidPrefix, @NotNull SloidType sloidType) {
-    String generatedSloid = null;
-    do {
-      final Integer nextSeqValue = sloidRepository.getNextSeqValue(sloidType);
-      final String sloid = sloidPrefix + ":" + nextSeqValue;
-      try {
-        sloidRepository.insertSloid(sloid, sloidType);
-        generatedSloid = sloid;
-      } catch (DataAccessException e) {
-        log.info("{} occupied", sloid);
-      }
-    } while (generatedSloid == null);
-    return generatedSloid;
-  }
-
-  public String getNextAvailableSloid(Country country) {
-    String nextAvailableSloid;
-    boolean insertDone = false;
-    do {
-      nextAvailableSloid = sloidRepository.getNextAvailableSloid(country);
-      try {
-        sloidRepository.insertSloid(nextAvailableSloid, SloidType.SERVICE_POINT);
-      } catch (DataAccessException e) {
-        continue;
-      }
-      insertDone = true;
-      sloidRepository.setAvailableSloidToClaimed(nextAvailableSloid);
-    } while (!insertDone);
-    return nextAvailableSloid;
-  }
-
-  public boolean claimAvailableSloid(String sloid) {
-    boolean sloidAvailable = sloidRepository.isSloidAvailable(sloid);
-    if (!sloidAvailable) {
-      return false;
-    }
-    try {
-      sloidRepository.insertSloid(sloid, SloidType.SERVICE_POINT);
-    } catch (DataAccessException e) {
-      return false;
-    }
-    sloidRepository.setAvailableSloidToClaimed(sloid);
-    return true;
-  }
-
-  public boolean claimSloid(String sloid, @NotNull SloidType sloidType) {
-    try {
-      sloidRepository.insertSloid(sloid, sloidType);
-      return true;
-    } catch (DataAccessException e) {
-      log.info("{} occupied", sloid);
-      return false;
-    }
   }
 
 }
