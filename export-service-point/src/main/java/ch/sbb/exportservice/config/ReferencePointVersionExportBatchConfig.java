@@ -1,7 +1,6 @@
 package ch.sbb.exportservice.config;
 
 import static ch.sbb.exportservice.model.PrmBatchExportFileName.REFERENCE_POINT_VERSION;
-import static ch.sbb.exportservice.model.PrmBatchExportFileName.STOP_POINT_VERSION;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_REFERENCE_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_REFERENCE_POINT_JSON_JOB_NAME;
 
@@ -121,7 +120,7 @@ public class ReferencePointVersionExportBatchConfig {
   public UploadCsvFileTasklet uploadReferencePointCsvFileTasklet(
       @Value("#{jobParameters[exportType]}") PrmExportType exportType
   ) {
-    return new UploadCsvFileTasklet(exportType, STOP_POINT_VERSION);
+    return new UploadCsvFileTasklet(exportType, REFERENCE_POINT_VERSION);
   }
 
   @Bean
@@ -165,7 +164,7 @@ public class ReferencePointVersionExportBatchConfig {
   @StepScope
   public UploadJsonFileTasklet uploadReferencePointJsonFileTasklet(
       @Value("#{jobParameters[exportType]}") PrmExportType exportType) {
-    return new UploadJsonFileTasklet(exportType, STOP_POINT_VERSION);
+    return new UploadJsonFileTasklet(exportType, REFERENCE_POINT_VERSION);
   }
 
   @Bean
