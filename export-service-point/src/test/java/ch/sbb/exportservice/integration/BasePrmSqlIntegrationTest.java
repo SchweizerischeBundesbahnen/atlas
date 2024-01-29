@@ -2,6 +2,7 @@ package ch.sbb.exportservice.integration;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.PrmDbSchemaCreation;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -45,6 +46,21 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
     final String insertSql = """
         INSERT INTO stop_point_version_means_of_transport (stop_point_version_id, means_of_transport) VALUES (1000, 'BUS');
         """;
+    execute(insertSql);
+  }
+
+  protected void insertReferencePoint(int id, String sloid, ServicePointNumber parentServicePointNumber,
+      LocalDate validFrom, LocalDate validTo) throws SQLException {
+    final String insertSql = """
+        INSERT INTO reference_point_version (id, sloid, parent_service_point_sloid, number, designation, additional_information,
+        main_reference_point, reference_point_type, valid_from, valid_to, creation_date, creator, edition_date, editor, version)
+        VALUES (%d, '%s', '%s', %d, 'Haupteingang', 'Kann voll genutzt werden zum rein und raus gehen', false, 'MAIN_STATION_ENTRANCE',
+         '%s', '%s', '2022-02-19 09:54:38.000000', 'u123456',
+        '2022-02-19 09:54:38.000000', 'u123456', 0);
+        """
+        .formatted(id, sloid, ServicePointNumber.calculateSloid(parentServicePointNumber), parentServicePointNumber.getNumber(),
+            formatDate(validFrom),
+            formatDate(validTo));
     execute(insertSql);
   }
 
