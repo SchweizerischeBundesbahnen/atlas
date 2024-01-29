@@ -6,7 +6,6 @@ import ch.sbb.atlas.servicepoint.converter.ServicePointNumberConverter;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.GeolocationBaseEntity;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
-import ch.sbb.atlas.servicepoint.SloidValidation;
 import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
@@ -128,22 +127,6 @@ public class TrafficPointElementVersion extends BasePointVersion<TrafficPointEle
   @NotNull
   @Column(columnDefinition = "DATE")
   private LocalDate validTo;
-
-  @JsonIgnore
-  @AssertTrue(message = """
-      SLOID does not match the specified pattern of:
-      ch:1:sloid:7000:088946 for area or
-      ch:1:sloid:7000:1234:088946 for stop points!
-      """)
-  public boolean isValidSloid() {
-    if (trafficPointElementType == null) {
-      return true;
-    }
-    int expectedColons = trafficPointElementType == TrafficPointElementType.BOARDING_AREA ?
-        SloidValidation.EXPECTED_COLONS_AREA : SloidValidation.EXPECTED_COLONS_PLATFORM;
-
-    return SloidValidation.isSloidValid(sloid, expectedColons, servicePointNumber);
-  }
 
   @JsonIgnore
   @AssertTrue(message = """
