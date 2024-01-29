@@ -96,7 +96,7 @@ public class PlatformTestData {
         .sloid("ch:1:sloid:12345:1")
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
-        .parentServicePointSloid("ch:1.sloid:12345")
+        .parentServicePointSloid("ch:1:sloid:12345")
         .boardingDevice(BoardingDeviceAttributeType.LIFTS)
         .adviceAccessInfo("Access Information Advice")
         .contrastingAreas(BooleanOptionalAttributeType.YES)
@@ -123,7 +123,7 @@ public class PlatformTestData {
         .sloid("ch:1:sloid:12345:1")
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
-        .parentServicePointSloid("ch:1.sloid:12345")
+        .parentServicePointSloid("ch:1:sloid:12345")
         .boardingDevice(BoardingDeviceAttributeType.LIFTS)
         .adviceAccessInfo("Access Information Advice")
         .contrastingAreas(BooleanOptionalAttributeType.YES)
@@ -142,7 +142,7 @@ public class PlatformTestData {
         .sloid("ch:1:sloid:12345:1")
         .validFrom(LocalDate.of(2003, 1, 1))
         .validTo(LocalDate.of(2003, 12, 31))
-        .parentServicePointSloid("ch:1.sloid:12345")
+        .parentServicePointSloid("ch:1:sloid:12345")
         .height(333.12)
         .inclinationLongitudinal(123.12)
         .infoOpportunities(List.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
@@ -156,11 +156,11 @@ public class PlatformTestData {
 
   public static PlatformVersionBuilder<?, ?> builderVersion1(){
     return PlatformVersion.builder()
-        .sloid("ch:1.sloid:12345:1")
+        .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
-        .parentServicePointSloid("ch:1.sloid:12345")
+        .parentServicePointSloid("ch:1:sloid:12345")
         .boardingDevice(BoardingDeviceAttributeType.LIFTS)
         .additionalInformation("additional")
         .adviceAccessInfo("Access Information Advice")
@@ -183,11 +183,11 @@ public class PlatformTestData {
 
   public static PlatformVersionBuilder<?, ?> builderCompleteVersion1(){
     return PlatformVersion.builder()
-        .sloid("ch:1.sloid:12345:1")
+        .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
-        .parentServicePointSloid("ch:1.sloid:12345")
+        .parentServicePointSloid("ch:1:sloid:12345")
         .boardingDevice(BoardingDeviceAttributeType.LIFTS)
         .additionalInformation("additional 1")
         .adviceAccessInfo("Access Information Advice")
@@ -202,11 +202,11 @@ public class PlatformTestData {
 
   public static PlatformVersionBuilder<?, ?> builderCompleteVersion2(){
     return PlatformVersion.builder()
-        .sloid("ch:1.sloid:12345:1")
+        .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2002, 12, 31))
-        .parentServicePointSloid("ch:1.sloid:12345")
+        .parentServicePointSloid("ch:1:sloid:12345")
         .boardingDevice(BoardingDeviceAttributeType.LIFTS)
         .additionalInformation("additional 2")
         .adviceAccessInfo("Access Information Advice")
@@ -221,11 +221,11 @@ public class PlatformTestData {
 
   public static PlatformVersionBuilder<?, ?> builderCompleteVersion3(){
     return PlatformVersion.builder()
-        .sloid("ch:1.sloid:12345:1")
+        .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2003, 1, 1))
         .validTo(LocalDate.of(2003, 12, 31))
-        .parentServicePointSloid("ch:1.sloid:12345")
+        .parentServicePointSloid("ch:1:sloid:12345")
         .boardingDevice(BoardingDeviceAttributeType.LIFTS)
         .additionalInformation("additional")
         .adviceAccessInfo("yes Access Information Advice")
@@ -240,11 +240,11 @@ public class PlatformTestData {
 
   public static PlatformVersionBuilder<?, ?> builderVersion2(){
     return PlatformVersion.builder()
-        .sloid("ch:1.sloid:12345:1")
+        .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2002, 12, 31))
-        .parentServicePointSloid("ch:1.sloid:12345")
+        .parentServicePointSloid("ch:1:sloid:12345")
         .boardingDevice(BoardingDeviceAttributeType.LIFTS)
         .additionalInformation("additional")
         .adviceAccessInfo("No Access Information Advice")
@@ -267,11 +267,11 @@ public class PlatformTestData {
 
   public static PlatformVersionBuilder<?, ?> builderVersion3(){
     return PlatformVersion.builder()
-        .sloid("ch:1.sloid:12345:1")
+        .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2003, 1, 1))
         .validTo(LocalDate.of(2003, 12, 31))
-        .parentServicePointSloid("ch:1.sloid:12345")
+        .parentServicePointSloid("ch:1:sloid:12345")
         .boardingDevice(BoardingDeviceAttributeType.LIFTS)
         .additionalInformation("additional")
         .adviceAccessInfo("yes Access Information Advice")
@@ -294,11 +294,11 @@ public class PlatformTestData {
 
   public static PlatformVersionBuilder<?, ?> builderReducedVersion1(){
     return PlatformVersion.builder()
-        .sloid("ch:1.sloid:12345:1")
+        .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
-        .parentServicePointSloid("ch:1.sloid:12345")
+        .parentServicePointSloid("ch:1:sloid:12345")
         .height(123.12)
         .inclinationLongitudinal(123.12)
         .infoOpportunities(Set.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
@@ -312,11 +312,11 @@ public class PlatformTestData {
 
   public static PlatformVersionBuilder<?, ?> builderReducedVersion2(){
     return PlatformVersion.builder()
-        .sloid("ch:1.sloid:12345:1")
+        .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2002, 12, 31))
-        .parentServicePointSloid("ch:1.sloid:12345")
+        .parentServicePointSloid("ch:1:sloid:12345")
         .height(111.12)
         .inclinationLongitudinal(123.12)
         .infoOpportunities(Set.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
@@ -328,11 +328,11 @@ public class PlatformTestData {
 
   public static PlatformVersionBuilder<?, ?> builderReducedVersion3(){
     return PlatformVersion.builder()
-        .sloid("ch:1.sloid:12345:1")
+        .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2003, 1, 1))
         .validTo(LocalDate.of(2003, 12, 31))
-        .parentServicePointSloid("ch:1.sloid:12345")
+        .parentServicePointSloid("ch:1:sloid:12345")
         .height(333.12)
         .inclinationLongitudinal(123.12)
         .infoOpportunities(Set.of(ACOUSTIC_INFORMATION, ELECTRONIC_VISUAL_INFORMATION_COMPLETE, TEXT_TO_SPEECH_DEPARTURES))
