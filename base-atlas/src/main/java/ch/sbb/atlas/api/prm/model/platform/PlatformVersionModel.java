@@ -15,7 +15,7 @@ import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.util.Set;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -73,7 +73,7 @@ public class PlatformVersionModel extends BasePrmVersionModel implements DatesVa
   private Double inclinationWidth;
 
   @Schema(description = "Information options")
-  private Set<InfoOpportunityAttributeType> infoOpportunities;
+  private List<InfoOpportunityAttributeType> infoOpportunities;
 
   private BasicAttributeType levelAccessWheelchair;
 
