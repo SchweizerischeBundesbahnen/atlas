@@ -3,11 +3,9 @@ package ch.sbb.atlas.servicepoint;
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import java.util.regex.Pattern;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 @UtilityClass
-@Slf4j
 public class SloidValidation {
 
   public static final String SLOID_PREFIX = "ch:1:sloid:";
@@ -33,18 +31,18 @@ public class SloidValidation {
     boolean result = pattern.matcher(sloid).matches();
 
     if (!result) {
-      log.error("SLOID '{}' contains SID4PT invalid characters", sloid);
+      throw new SloidNotValidException(sloid, "contains SID4PT invalid characters");
     }
-    return result;
+    return true;
   }
 
   private static boolean prefixIsCorrect(String sloid) {
     boolean result = StringUtils.startsWith(sloid, SLOID_PREFIX);
 
     if (!result) {
-      log.error("SLOID '{}' did not start with '{}'", sloid, SLOID_PREFIX);
+      throw new SloidNotValidException(sloid, "did not start with " + SLOID_PREFIX);
     }
-    return result;
+    return true;
   }
 
   private static boolean isServicePointNumberCorrect(String sloid, ServicePointNumber servicePointNumber) {
@@ -52,9 +50,9 @@ public class SloidValidation {
     boolean result = StringUtils.startsWith(sloid, servicePointSloid);
 
     if (!result) {
-      log.error("SLOID '{}' did not start with '{}'", sloid, servicePointSloid);
+      throw new SloidNotValidException(sloid, "did not start with " + servicePointSloid);
     }
-    return result;
+    return true;
   }
 
   private static boolean amountOfColonsIsCorrect(String sloid, int expectedAmountOfColons) {
@@ -62,9 +60,9 @@ public class SloidValidation {
     boolean result = actualColons == expectedAmountOfColons;
 
     if (!result) {
-      log.error("SLOID '{}' did not have {} colons as expected", sloid, expectedAmountOfColons);
+      throw new SloidNotValidException(sloid, "did not have " + expectedAmountOfColons + " colons as expected");
     }
-    return result;
+    return true;
   }
 
 }
