@@ -59,6 +59,7 @@ public class SharedServicePointRepository {
                 .servicePointSloid(servicePointSloid)
                 .sboids(new HashSet<>(Set.of(businessOrganisation)))
                 .trafficPointSloids(new HashSet<>())
+                .stopPoint(resultSet.getBoolean("stop_point"))
                 .build();
             if (StringUtils.isNotBlank(trafficPointElementSloid)) {
               servicePoint.getTrafficPointSloids().add(trafficPointElementSloid);
@@ -82,15 +83,15 @@ public class SharedServicePointRepository {
     return """
         select sp.sloid as service_point_sloid,
                sp.business_organisation,
-               tp.sloid as traffic_point_element_sloid
+               tp.sloid as traffic_point_element_sloid,
+               CASE WHEN spvmot.means_of_transport != :mean_of_transport_unknown THEN 'true' ELSE 'false' END as stop_point
         from service_point_version sp
-             join service_point_version_means_of_transport spvmot
+             left join service_point_version_means_of_transport spvmot
                 on sp.id = spvmot.service_point_version_id
              left join traffic_point_element_version tp
                 on sp.number=tp.service_point_number
         where sp.sloid is not null
         and sp.country in (:countries)
-        and spvmot.means_of_transport != :mean_of_transport_unknown
         """;
   }
 
