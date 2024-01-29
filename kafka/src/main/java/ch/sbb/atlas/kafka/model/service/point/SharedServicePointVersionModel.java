@@ -21,5 +21,6 @@ public class SharedServicePointVersionModel implements AtlasEvent {
   private String servicePointSloid;
   private Set<String> sboids;
   private Set<String> trafficPointSloids;
+  private boolean stopPoint;
 
 }

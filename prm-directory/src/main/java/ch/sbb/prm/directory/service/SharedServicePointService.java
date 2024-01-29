@@ -7,12 +7,13 @@ import ch.sbb.prm.directory.exception.TrafficPointElementDoesNotExistsException;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class SharedServicePointService {
 
@@ -23,7 +24,13 @@ public class SharedServicePointService {
     Optional<SharedServicePoint> servicePoint = sharedServicePointRepository.findById(sloid);
     return servicePoint.map(i -> {
       try {
-        return objectMapper.readValue(i.getServicePoint(), SharedServicePointVersionModel.class);
+        SharedServicePointVersionModel sharedServicePointVersion = objectMapper.readValue(i.getServicePoint(),
+            SharedServicePointVersionModel.class);
+        if (!sharedServicePointVersion.isStopPoint()) {
+          log.info("StopPoint with sloid={} was found but is not a stopPoint at the moment", sloid);
+          return null;
+        }
+        return sharedServicePointVersion;
       } catch (JsonProcessingException e) {
         throw new IllegalStateException(e);
       }
