@@ -45,8 +45,18 @@ public class SloidRepository {
 
   public String getNextAvailableSloid(Country country) {
     return locationJdbcTemplate.queryForObject(
-        "select sloid from available_service_point_sloid where country = ? and claimed = false order by sloid limit 1;",
-        String.class, country.name());
+        "select sloid from available_service_point_sloid where country = ? and claimed = false limit 1;", String.class,
+        country.name());
+  }
+
+  public boolean isSloidAllocated(String sloid) {
+    Byte nbOfFoundSloids = locationJdbcTemplate.queryForObject("select count(*) from allocated_sloid where sloid = ?;",
+        Byte.class,
+        sloid);
+    if (nbOfFoundSloids == null) {
+      throw new IllegalStateException("select count query should not return null!");
+    }
+    return nbOfFoundSloids == 1;
   }
 
   public int deleteAllocatedSloid(Set<String> sloids, SloidType sloidType) {
