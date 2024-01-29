@@ -94,28 +94,22 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
     this.initSortedOperatingPointTypes();
     this.initBoSboidRestriction();
 
-    if (!this.isNew) {
-      this.geographyComponent?.coordinatesChanged.subscribe((coordinatePair) => {
-        if (coordinatePair.north && coordinatePair.east) {
-          this.locationInformation$ = this.geoDataService
-            .getLocationInformation(coordinatePair)
-            .pipe(
-              map((geoReference) => ({
-                isoCountryCode: Countries.fromCountry(geoReference.country)?.short,
-                canton: geoReference.swissCanton,
-                municipalityName: geoReference.swissMunicipalityName,
-                localityName: geoReference.swissLocalityName,
-                height: geoReference.height,
-              })),
-              tap((locationInfo) => {
-                this.form?.controls.servicePointGeolocation?.controls.height.setValue(
-                  locationInfo.height,
-                );
-              }),
-            );
-        }
-      });
-    }
+    this.geographyComponent?.coordinatesChanged.subscribe((coordinatePair) => {
+      if (coordinatePair.north && coordinatePair.east) {
+        this.locationInformation$ = this.geoDataService.getLocationInformation(coordinatePair).pipe(
+          map((geoReference) => ({
+            isoCountryCode: Countries.fromCountry(geoReference.country)?.short,
+            canton: geoReference.swissCanton,
+            municipalityName: geoReference.swissMunicipalityName,
+            localityName: geoReference.swissLocalityName,
+            height: geoReference.height,
+          })),
+        );
+        this.locationInformation$?.subscribe((value) => {
+          this.form?.controls.servicePointGeolocation?.controls.height.setValue(value.height);
+        });
+      }
+    });
   }
 
   ngOnDestroy() {
