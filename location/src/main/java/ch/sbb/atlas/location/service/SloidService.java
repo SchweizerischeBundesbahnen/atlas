@@ -23,7 +23,7 @@ public class SloidService {
     String sloidToInsert = null;
     do {
       final Integer nextSeqValue = sloidRepository.getNextSeqValue(sloidType);
-      final String sloid = sloidPrefix + ":" + nextSeqValue;
+      final String sloid = createFormattedSloid(sloidPrefix, nextSeqValue);
       if (!sloidRepository.isSloidAllocated(sloid)) {
         sloidToInsert = sloid;
       }
@@ -42,12 +42,12 @@ public class SloidService {
 
   @Transactional
   public boolean claimAvailableServicePointSloid(String sloid) {
-    if (sloidRepository.isSloidAvailable(sloid)) {
+    if (!sloidRepository.isSloidAllocated(sloid)) {
       sloidRepository.insertSloid(sloid, SloidType.SERVICE_POINT);
       sloidRepository.setAvailableSloidToClaimed(sloid);
       return true;
     } else {
-      log.info("Could not claim Service Point sloid: " + sloid);
+      log.info("Could not claim Service Point sloid {} ", sloid);
       return false;
     }
   }
@@ -57,9 +57,13 @@ public class SloidService {
       sloidRepository.insertSloid(sloid, sloidType);
       return true;
     } else {
-      log.info("Could not claim {} sloid: " + sloid, sloidType);
+      log.info("Could not claim {} sloid: {}", sloidType, sloid);
       return false;
     }
+  }
+
+  private String createFormattedSloid(String sloidPrefix, Integer nextSeqValue) {
+    return sloidPrefix + ":" + nextSeqValue;
   }
 
 }
