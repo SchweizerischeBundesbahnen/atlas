@@ -2,9 +2,6 @@ package ch.sbb.prm.directory.api;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
-import ch.sbb.atlas.configuration.Role;
-import ch.sbb.atlas.imports.ItemImportResult;
-import ch.sbb.atlas.imports.prm.referencepoint.ReferencePointImportRequestModel;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReferencePointVersionModel;
 import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.imports.ItemImportResult;
@@ -14,6 +11,7 @@ import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
@@ -27,8 +25,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import java.util.List;
 
 @Tag(name = "Person with Reduced Mobility")
 @RequestMapping("v1/reference-points")
