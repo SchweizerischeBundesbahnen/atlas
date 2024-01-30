@@ -42,12 +42,12 @@ public class SloidService {
 
   @Transactional
   public boolean claimAvailableServicePointSloid(String sloid) {
-    if (!sloidRepository.isSloidAllocated(sloid)) {
+    if (sloidRepository.isServicePointSloidAvailable(sloid)) {
       sloidRepository.insertSloid(sloid, SloidType.SERVICE_POINT);
       sloidRepository.setAvailableSloidToClaimed(sloid);
       return true;
     } else {
-      log.info("Could not claim Service Point sloid {} ", sloid);
+      log.info("Could not claim Service Point sloid: {}", sloid);
       return false;
     }
   }
