@@ -28,19 +28,4 @@ public class StopPointVersionSqlQueryUtil extends SqlQueryUtil {
     log.info(sqlQuery);
     return sqlQuery;
   }
-
-  public String getWhereClause(PrmExportType exportType, String whereStatement) {
-    if (exportType.equals(PrmExportType.FULL)) {
-      return "";
-    }
-    if(exportType.equals(PrmExportType.ACTUAL)){
-      return String.format(whereStatement, DateHelper.getDateAsSqlString(LocalDate.now()));
-    }
-    if (exportType.equals(PrmExportType.TIMETABLE_FUTURE)) {
-      LocalDate futureTimeTableYearDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
-      return String.format(whereStatement, DateHelper.getDateAsSqlString(futureTimeTableYearDate));
-    }
-    throw new IllegalArgumentException("Value not allowed: " + exportType);
-  }
-
 }

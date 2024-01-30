@@ -3,6 +3,7 @@ package ch.sbb.exportservice.integration;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.exportservice.BatchDataSourceConfigTest;
 import ch.sbb.exportservice.PrmDbSchemaCreation;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
 @PrmDbSchemaCreation
+@BatchDataSourceConfigTest
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
  abstract class BasePrmSqlIntegrationTest {

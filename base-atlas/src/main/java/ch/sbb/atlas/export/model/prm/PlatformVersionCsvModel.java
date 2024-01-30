@@ -1,5 +1,6 @@
 package ch.sbb.atlas.export.model.prm;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,7 @@ import lombok.experimental.FieldNameConstants;
 @Builder
 @FieldNameConstants
 @EqualsAndHashCode
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PlatformVersionCsvModel {
 
     private String sloid;
@@ -65,9 +67,5 @@ public class PlatformVersionCsvModel {
 
     private String creationDate;
 
-    private String creator;
-
     private String editionDate;
-
-    private String editor;
 }

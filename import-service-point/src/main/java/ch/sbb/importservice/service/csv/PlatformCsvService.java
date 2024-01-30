@@ -55,18 +55,10 @@ public class PlatformCsvService extends PrmCsvService<PlatformCsvModel> {
     Map<String, List<PlatformCsvModel>> groupedPlatforms = filterForActive(platformCsvModels).stream()
         .collect(Collectors.groupingBy(PlatformCsvModel::getSloid));
 
-    List<PlatformCsvModelContainer> platformCsvModelContainers = new ArrayList<>();
+    List<PlatformCsvModelContainer> result = new ArrayList<>(groupedPlatforms.entrySet().stream().map(toContainer()).toList());
 
-    groupedPlatforms.forEach((key, value) -> {
-      PlatformCsvModelContainer platformCsvModelContainer = PlatformCsvModelContainer.builder()
-              .csvModels(value)
-              .build();
-
-      platformCsvModelContainers.add(platformCsvModelContainer);
-    });
-
-    mergePlatforms(platformCsvModelContainers);
-    return platformCsvModelContainers;
+    mergePlatforms(result);
+    return result;
   }
 
   private static Function<Entry<String, List<PlatformCsvModel>>, PlatformCsvModelContainer> toContainer() {

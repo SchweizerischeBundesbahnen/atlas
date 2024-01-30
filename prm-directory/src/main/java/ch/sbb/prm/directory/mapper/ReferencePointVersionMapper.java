@@ -18,7 +18,7 @@ public class ReferencePointVersionMapper {
         .validTo(version.getValidTo())
         .designation(version.getDesignation())
         .additionalInformation(version.getAdditionalInformation())
-        .mainReferencePoint(version.isMainReferencePoint())
+        .mainReferencePoint(version.getMainReferencePoint())
         .referencePointType(version.getReferencePointType())
         .creator(version.getCreator())
         .creationDate(version.getCreationDate())
