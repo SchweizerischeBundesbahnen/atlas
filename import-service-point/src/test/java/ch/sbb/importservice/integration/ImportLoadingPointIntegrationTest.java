@@ -1,23 +1,10 @@
 package ch.sbb.importservice.integration;
 
-import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_BATCH_PARAMETER;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.FULL_PATH_FILENAME_JOB_PARAMETER;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.client.SePoDiClient;
 import ch.sbb.importservice.service.MailProducerService;
 import ch.sbb.importservice.service.csv.LoadingPointCsvService;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
@@ -34,6 +21,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_BATCH_PARAMETER;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.FULL_PATH_FILENAME_JOB_PARAMETER;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
@@ -80,7 +82,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
       throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException,
       JobRestartException {
     // given
-    File file = new File(this.getClass().getClassLoader().getResource("LADESTELLEN_V3_IMPORT.csv").getFile());
+    File file = new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource("LADESTELLEN_V3_IMPORT.csv")).getFile());
 
     when(sePoDiClient.postLoadingPointsImport(any())).thenReturn(List.of());
     doNothing().when(mailProducerService).produceMailNotification(any());
