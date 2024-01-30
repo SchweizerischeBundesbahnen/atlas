@@ -7,6 +7,7 @@ import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.exportservice.exception.NotAllowedExportFileException;
 import ch.sbb.exportservice.model.PrmBatchExportFileName;
 import ch.sbb.exportservice.model.PrmExportType;
+import ch.sbb.exportservice.service.ExportReferencePointJobService;
 import ch.sbb.exportservice.service.ExportStopPointJobService;
 import ch.sbb.exportservice.service.FileExportService;
 import io.micrometer.tracing.annotation.NewSpan;
@@ -41,6 +42,7 @@ public class ExportStopPointBatchControllerApiV1 {
   private static final String START_STREAMING_FILE_LOG_MSG = "Start streaming file ";
 
   private final ExportStopPointJobService exportStopPointJobService;
+  private final ExportReferencePointJobService exportReferencePointJobService;
 
   private final FileExportService<PrmExportType> fileExportService;
 
@@ -122,6 +124,17 @@ public class ExportStopPointBatchControllerApiV1 {
   @Async
   public void startExportServicePointBatch() {
     exportStopPointJobService.startExportJobs();
+  }
+
+  @PostMapping("reference-point-batch")
+  @ResponseStatus(HttpStatus.OK)
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200"),
+  })
+  @NewSpan
+  @Async
+  public void startExportReferencePointBatch() {
+    exportReferencePointJobService.startExportJobs();
   }
 
 }
