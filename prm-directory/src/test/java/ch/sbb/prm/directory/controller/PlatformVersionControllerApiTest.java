@@ -1,17 +1,5 @@
 package ch.sbb.prm.directory.controller;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -30,13 +18,26 @@ import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.RelationService;
-import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
 class PlatformVersionControllerApiTest extends BaseControllerApiTest {
@@ -136,13 +137,13 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
-    PlatformVersionModel PlatformVersionModel = PlatformTestData.getCreateCompletePlatformVersionModel();
-    PlatformVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    PlatformVersionModel platformVersionModel = PlatformTestData.getCreateCompletePlatformVersionModel();
+    platformVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //when && then
     mvc.perform(post("/v1/platforms")
             .contentType(contentType)
-            .content(mapper.writeValueAsString(PlatformVersionModel)))
+            .content(mapper.writeValueAsString(platformVersionModel)))
         .andExpect(status().isCreated());
     verify(relationService, times(1)).save(any(RelationVersion.class));
   }
@@ -158,13 +159,13 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
-    PlatformVersionModel PlatformVersionModel = PlatformTestData.getCreateReducedPlatformVersionModel();
-    PlatformVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    PlatformVersionModel platformVersionModel = PlatformTestData.getCreateReducedPlatformVersionModel();
+    platformVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //when && then
     mvc.perform(post("/v1/platforms")
             .contentType(contentType)
-            .content(mapper.writeValueAsString(PlatformVersionModel)))
+            .content(mapper.writeValueAsString(platformVersionModel)))
         .andExpect(status().isCreated());
     verify(relationService, times(0)).save(any(RelationVersion.class));
   }
@@ -181,13 +182,13 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);
 
-    PlatformVersionModel PlatformVersionModel = PlatformTestData.getPlatformVersionModel();
-    PlatformVersionModel.setParentServicePointSloid(parentServicePointSloid);
+    PlatformVersionModel platformVersionModel = PlatformTestData.getPlatformVersionModel();
+    platformVersionModel.setParentServicePointSloid(parentServicePointSloid);
 
     //when && then
     mvc.perform(post("/v1/platforms")
             .contentType(contentType)
-            .content(mapper.writeValueAsString(PlatformVersionModel)))
+            .content(mapper.writeValueAsString(platformVersionModel)))
         .andExpect(status().isBadRequest());
     verify(relationService, never()).save(any(RelationVersion.class));
 
@@ -205,14 +206,14 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);
 
-    PlatformVersionModel PlatformVersionModel = PlatformTestData.getCreateCompletePlatformVersionModel();
-    PlatformVersionModel.setParentServicePointSloid(parentServicePointSloid);
-    PlatformVersionModel.setHeight(123.1);
+    PlatformVersionModel platformVersionModel = PlatformTestData.getCreateCompletePlatformVersionModel();
+    platformVersionModel.setParentServicePointSloid(parentServicePointSloid);
+    platformVersionModel.setHeight(123.1);
 
     //when && then
     mvc.perform(post("/v1/platforms")
             .contentType(contentType)
-            .content(mapper.writeValueAsString(PlatformVersionModel)))
+            .content(mapper.writeValueAsString(platformVersionModel)))
         .andExpect(status().isBadRequest());
     verify(relationService, never()).save(any(RelationVersion.class));
 
@@ -225,13 +226,13 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
-    PlatformVersionModel PlatformVersionModel = PlatformTestData.getPlatformVersionModel();
-    PlatformVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    PlatformVersionModel platformVersionModel = PlatformTestData.getPlatformVersionModel();
+    platformVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
 
     //when && then
     mvc.perform(post("/v1/platforms")
             .contentType(contentType)
-            .content(mapper.writeValueAsString(PlatformVersionModel)))
+            .content(mapper.writeValueAsString(platformVersionModel)))
         .andExpect(status().isPreconditionFailed())
         .andExpect(jsonPath("$.message", is("The stop point with sloid ch:1:sloid:7000 does not exist.")));
     verify(relationService, times(0)).save(any(RelationVersion.class));
@@ -244,13 +245,13 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     referencePointVersion.setParentServicePointSloid("ch:1:sloid:7001");
     referencePointRepository.save(referencePointVersion);
 
-    PlatformVersionModel PlatformVersionModel = PlatformTestData.getPlatformVersionModel();
-    PlatformVersionModel.setParentServicePointSloid("ch:1:sloid:7001");
+    PlatformVersionModel platformVersionModel = PlatformTestData.getPlatformVersionModel();
+    platformVersionModel.setParentServicePointSloid("ch:1:sloid:7001");
 
     //when && then
     mvc.perform(post("/v1/platforms")
             .contentType(contentType)
-            .content(mapper.writeValueAsString(PlatformVersionModel)))
+            .content(mapper.writeValueAsString(platformVersionModel)))
         .andExpect(status().isPreconditionFailed())
         .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7001 does not exist.")));
   }

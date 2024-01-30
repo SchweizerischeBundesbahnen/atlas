@@ -15,7 +15,7 @@ public class CsvPlatformVersionWriter extends BaseCsvWriter<PlatformVersionCsvMo
                 Fields.dynamicVisual, Fields.height, Fields.inclination, Fields.inclinationLongitudal, Fields.inclinationWidth,
                 Fields.infoOpportunities, Fields.levelAccessWheelchair, Fields.partialElevation, Fields.superElevation, Fields.tactileSystems,
                 Fields.vehicleAccess, Fields.wheelchairAreaLength, Fields.wheelChairAreaWidth, Fields.validFrom, Fields.validTo,
-                Fields.creationDate, Fields.creator, Fields.editionDate, Fields.editor
+                Fields.creationDate, Fields.editionDate
         };
     }
 }

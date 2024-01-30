@@ -20,8 +20,8 @@ public class PlatformVersionCsvProcessor extends BaseServicePointProcessor imple
             .parentSloidServicePoint(version.getParentSloidServicePoint())
             .parentNumberServicePoint(version.getParentNumberServicePoint().getNumber())
             .boardingDevice(mapBoardingDeviceAttributeType(version.getBoardingDevice()))
-            .adviceAccessInfo(version.getAdviceAccessInfo())
-            .additionalInformation(version.getAdditionalInformation())
+            .adviceAccessInfo(CsvProcessorUtil.removeNewLine(version.getAdviceAccessInfo()))
+            .additionalInformation(CsvProcessorUtil.removeNewLine(version.getAdditionalInformation()))
             .contrastingAreas(mapBooleanOptionalAttributeType(version.getContrastingAreas()))
             .dynamicAudio(mapBasicAttributeType(version.getDynamicAudio()))
             .dynamicVisual(mapBasicAttributeType(version.getDynamicVisual()))
@@ -40,9 +40,7 @@ public class PlatformVersionCsvProcessor extends BaseServicePointProcessor imple
             .validFrom(DATE_FORMATTER.format(version.getValidFrom()))
             .validTo(DATE_FORMATTER.format(version.getValidTo()))
             .creationDate(LOCAL_DATE_FORMATTER.format(version.getCreationDate()))
-            .creator(version.getCreator())
             .editionDate(LOCAL_DATE_FORMATTER.format(version.getEditionDate()))
-            .editor(version.getEditor())
             .build();
     }
 

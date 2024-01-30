@@ -72,7 +72,7 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   }
 
   @Override
-  protected ReferencePointVersion save(ReferencePointVersion version) {
+  public ReferencePointVersion save(ReferencePointVersion version) {
     return this.saveReferencePoint(version);
   }
 
