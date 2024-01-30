@@ -5,6 +5,8 @@ import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.prm.directory.service.PrmVersionable;
+import ch.sbb.prm.directory.validation.annotation.PrmVariant;
+import ch.sbb.prm.directory.validation.annotation.RecordingVariant;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -12,7 +14,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,19 +41,21 @@ public class ReferencePointVersion extends BasePrmEntityVersion implements PrmVe
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
-  @NotNull
+  @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
   @AtlasVersionableProperty
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String designation;
 
+  @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
   @AtlasVersionableProperty
   @Size(max = AtlasFieldLengths.LENGTH_2000)
   private String additionalInformation;
 
+  @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
   @AtlasVersionableProperty
-  private boolean mainReferencePoint;
+  private Boolean mainReferencePoint;
 
-  @NotNull
+  @PrmVariant(variant = RecordingVariant.COMPLETE, nullable = false)
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private ReferencePointAttributeType referencePointType;

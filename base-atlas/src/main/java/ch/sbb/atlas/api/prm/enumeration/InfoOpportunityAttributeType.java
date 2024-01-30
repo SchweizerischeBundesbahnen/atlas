@@ -29,14 +29,17 @@ public enum InfoOpportunityAttributeType {
     return Stream.of(values()).filter(i -> i.getRank().equals(value)).findFirst().orElseThrow();
   }
 
-  public static InfoOpportunityAttributeType from(String code) {
-    return Arrays.stream(InfoOpportunityAttributeType.values()).filter(infoOpportunity -> Objects.equals(infoOpportunity.getRank(), code))
-            .findFirst().orElse(null);
+  public static InfoOpportunityAttributeType from(Integer value) {
+    return Arrays.stream(InfoOpportunityAttributeType.values())
+            .filter(infoOpportunity -> infoOpportunity.getRank().equals(value))
+            .findFirst()
+            .orElse(null);
   }
 
-  public static Set<InfoOpportunityAttributeType> fromCode(
-          String infoOpportunitiesCode) {
-    return Arrays.stream(Objects.nonNull(infoOpportunitiesCode) ? infoOpportunitiesCode.split("~") : new String[]{})
+  public static Set<InfoOpportunityAttributeType> fromCode(String infoOpportunities) {
+    return Arrays.stream(Objects.nonNull(infoOpportunities) ? infoOpportunities.split("~") : new String[]{})
+            .filter(s -> !s.isEmpty())
+            .map(Integer::valueOf)
             .map(InfoOpportunityAttributeType::from)
             .filter(Objects::nonNull)
             .collect(Collectors.toSet());

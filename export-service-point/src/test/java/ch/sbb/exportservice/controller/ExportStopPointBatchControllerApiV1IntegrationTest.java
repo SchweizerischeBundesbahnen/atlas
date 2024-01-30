@@ -7,16 +7,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.exportservice.service.ExportReferencePointJobService;
 import ch.sbb.exportservice.service.ExportStopPointJobService;
-import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ExportStopPointBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
 
   @MockBean
   private ExportStopPointJobService exportStopPointJobService;
+
   @MockBean
   private ExportReferencePointJobService exportReferencePointJobService;
 

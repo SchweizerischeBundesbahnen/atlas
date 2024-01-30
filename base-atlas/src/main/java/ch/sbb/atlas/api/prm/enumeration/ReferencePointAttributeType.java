@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.stream.Stream;
+
 @Schema(enumAsRef = true, example = "MAIN_STATION_ENTRANCE")
 @Getter
 @RequiredArgsConstructor
@@ -17,5 +19,12 @@ public enum ReferencePointAttributeType {
   NO_REFERENCE_POINT(5);
 
   private final Integer rank;
+
+  public static ReferencePointAttributeType of(Integer value) {
+    if (value == null) {
+      return null;
+    }
+    return Stream.of(values()).filter(i -> i.getRank().equals(value)).findFirst().orElseThrow();
+  }
 
 }

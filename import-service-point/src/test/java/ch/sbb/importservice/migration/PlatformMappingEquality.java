@@ -94,8 +94,6 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
       assertThat(mapPipedInfoOpportunities(atlasCsvLine.getInfoOpportunities())).containsAll(InfoOpportunityAttributeType.fromCode(didokCsvLine.getInfoBlinds()));
     }
 
-    assertThat(atlasCsvLine.getCreator()).isEqualTo(didokCsvLine.getAddedBy());
-    assertThat(atlasCsvLine.getEditor()).isEqualTo(didokCsvLine.getModifiedBy());
     assertThat(localDateFromString(atlasCsvLine.getCreationDate())).isEqualTo(didokCsvLine.getCreatedAt());
     assertThat(localDateFromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getModifiedAt());
 

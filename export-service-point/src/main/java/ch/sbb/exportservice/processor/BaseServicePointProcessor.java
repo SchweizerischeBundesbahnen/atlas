@@ -1,7 +1,6 @@
 package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
-import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.servicepoint.Canton;
 import ch.sbb.atlas.api.servicepoint.DistrictModel;
 import ch.sbb.atlas.api.servicepoint.GeolocationBaseReadModel;

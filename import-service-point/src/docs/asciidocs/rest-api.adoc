@@ -49,3 +49,15 @@ include::{snippets}/import-service-point-batch-controller-test/should-post-traff
 == Trigger import Loading Point by providing file (Massenimport) - Successfully
 
 include::{snippets}/import-service-point-batch-controller-test/should-post-loading-point-import-with-file-parameter-successfully/auto-section.adoc[]
+
+== Trigger import Stop Point by providing file (Massenimport) - Successfully
+
+include::{snippets}/import-stop-point-batch-controller-test/should-post-stop-point-import-with-file-parameter-successfully/auto-section.adoc[]
+
+== Trigger import Platform by providing file (Massenimport) - Successfully
+
+include::{snippets}/import-platform-batch-controller-test/should-post-platform-import-with-file-parameter-successfully/auto-section.adoc[]
+
+== Trigger import Reference Point by providing file (Massenimport) - Successfully
+
+include::{snippets}/import-reference-point-batch-controller-test/should-post-reference-point-import-with-file-parameter-successfully/auto-section.adoc[]

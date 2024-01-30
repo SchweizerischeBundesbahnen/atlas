@@ -42,9 +42,7 @@ public class PlatformCsvToModelMapper {
         .validFrom(csvModel.getValidFrom())
         .validTo(csvModel.getValidTo())
         .creationDate(csvModel.getCreatedAt())
-        .creator(csvModel.getAddedBy())
         .editionDate(csvModel.getModifiedAt())
-        .editor(csvModel.getModifiedBy())
         .build();
   }
 
@@ -56,6 +54,6 @@ public class PlatformCsvToModelMapper {
             .filter(StringUtils::isNotBlank)
             .map(Integer::parseInt)
             .map(InfoOpportunityAttributeType::of)
-            .collect(Collectors.toList());
+            .toList();
   }
 }
