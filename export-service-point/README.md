@@ -5,22 +5,22 @@
 - [ATLAS](#atlas)
 - [Project Versioning](#project-versioning)
 - [Links](#links)
-  * [Localhost](#localhost)
-  * [Development](#development)
-  * [Test](#test)
-  * [Integration](#integration)
-  * [Production](#production)
-  * [Project Infrastructure](#project-infrastructure)
+    * [Localhost](#localhost)
+    * [Development](#development)
+    * [Test](#test)
+    * [Integration](#integration)
+    * [Production](#production)
+    * [Project Infrastructure](#project-infrastructure)
 - [Big Picture Architecture](#big-picture-architecture)
 - [Development](#development-1)
-  * [Spring Batch](#spring-batch)
-  * [Multiple DataSources](#multiple-datasources)
+    * [Spring Batch](#spring-batch)
+    * [Multiple DataSources](#multiple-datasources)
 - [Jobs](#jobs)
-  * [Export ServicePointVersions](#export-servicepointversions)
-  * [Export TrafficPointElementVersions](#export-trafficpointelementversions)
-  * [Export LoadingPointVersions](#export-loadingpointversions)
-  * [Export StopPointVersions](#export-stoppointversions)
-  * [Jobs Recovery](#jobs-recovery)
+    * [Export ServicePointVersions](#export-servicepointversions)
+    * [Export TrafficPointElementVersions](#export-trafficpointelementversions)
+    * [Export LoadingPointVersions](#export-loadingpointversions)
+    * [Export StopPointVersions](#export-stoppointversions)
+    * [Jobs Recovery](#jobs-recovery)
 - [Tech Stack](#tech-stack)
 
 <!-- tocstop -->
@@ -33,7 +33,7 @@ See [ADR-0017](https://confluence.sbb.ch/display/ATLAS/ADR-0017%3A++Service+Poin
 ## ATLAS
 
 This application is part of ATLAS. General documentation is
-available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-backend/browse/README.md#big-picture)
+available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas/browse/README.md)
 .
 
 ## Project Versioning
@@ -139,7 +139,6 @@ Job is responsible to:
     * future-timetable
         * world
 
-
 ### Export LoadingPointVersions
 
 The
@@ -175,7 +174,8 @@ Job is responsible to:
 
 * a retry system is configured on the step level when certain exception are thrown (
   see [StepUtils.java](src/main/java/ch/sbb/exportservice/utils/StepUtils.java))
-* [RecoveryJobsRunner.java](src/main/java/ch/sbb/exportservice/recovery/RecoveryJobsRunner.java) checks at startup if there are any unfinished jobs or if all jobs have been run. In case
+* [RecoveryJobsRunner.java](src/main/java/ch/sbb/exportservice/recovery/RecoveryJobsRunner.java) checks at startup if there are
+  any unfinished jobs or if all jobs have been run. In case
   there are incomplete jobs or not all jobs have been run all jobs are run again.
 * If a job has been completed unsuccessfully an email notification is sent to TechSupport-ATLAS@sbb.ch
 

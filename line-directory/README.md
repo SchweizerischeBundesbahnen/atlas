@@ -2,9 +2,9 @@
 
 <!-- toc -->
 
-  * [ATLAS](#atlas)
-  * [Project Versioning](#project-versioning)
-  * [Links](#links)
+* [ATLAS](#atlas)
+* [Project Versioning](#project-versioning)
+* [Links](#links)
     + [Localhost](#localhost)
     + [Development](#development)
     + [Test](#test)
@@ -13,8 +13,9 @@
     + [Project Infrastructure](#project-infrastructure)
     + [Tech Stack](#tech-stack)
     + [Test RESTful Web services](#test-restful-web-services)
-  * [Scheduler Export](#scheduler-export)
+* [Scheduler Export](#scheduler-export)
     + [Line Export Bucket expiration policy](#line-export-bucket-expiration-policy)
+
 - [Timetable Hearing](#timetable-hearing)
 
 <!-- tocstop -->
@@ -22,7 +23,7 @@
 ## ATLAS
 
 This application is part of ATLAS. General documentation is
-available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-backend/browse/README.md#big-picture)
+available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas/browse/README.md)
 .
 
 ## Project Versioning
