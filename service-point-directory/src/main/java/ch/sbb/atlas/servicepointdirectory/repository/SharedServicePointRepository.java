@@ -47,6 +47,7 @@ public class SharedServicePointRepository {
           String servicePointSloid = resultSet.getString("service_point_sloid");
           String businessOrganisation = resultSet.getString("business_organisation");
           String trafficPointElementSloid = resultSet.getString("traffic_point_element_sloid");
+          boolean stopPoint = resultSet.getBoolean("stop_point");
 
           if (servicePointSearchResults.containsKey(servicePointSloid)) {
             SharedServicePointVersionModel sharedServicePointVersionModel = servicePointSearchResults.get(servicePointSloid);
@@ -54,12 +55,15 @@ public class SharedServicePointRepository {
             if (StringUtils.isNotBlank(trafficPointElementSloid)) {
               sharedServicePointVersionModel.getTrafficPointSloids().add(trafficPointElementSloid);
             }
+            if (stopPoint) {
+              sharedServicePointVersionModel.setStopPoint(stopPoint);
+            }
           } else {
             SharedServicePointVersionModel servicePoint = SharedServicePointVersionModel.builder()
                 .servicePointSloid(servicePointSloid)
                 .sboids(new HashSet<>(Set.of(businessOrganisation)))
                 .trafficPointSloids(new HashSet<>())
-                .stopPoint(resultSet.getBoolean("stop_point"))
+                .stopPoint(stopPoint)
                 .build();
             if (StringUtils.isNotBlank(trafficPointElementSloid)) {
               servicePoint.getTrafficPointSloids().add(trafficPointElementSloid);
