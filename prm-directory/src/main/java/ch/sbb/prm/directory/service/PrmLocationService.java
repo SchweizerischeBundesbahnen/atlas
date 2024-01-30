@@ -11,13 +11,12 @@ public class PrmLocationService {
 
   private final LocationService locationService;
 
-  public <T extends Relatable & PrmVersionable > void allocateSloid( T version, SloidType sloidType) {
+  public <T extends Relatable & PrmVersionable> void allocateSloid(T version, SloidType sloidType) {
     if (version.getSloid() != null) {
       locationService.claimSloid(sloidType, version.getSloid());
     } else {
       version.setSloid(locationService.generateSloid(sloidType, version.getParentServicePointSloid()));
     }
   }
-
 
 }

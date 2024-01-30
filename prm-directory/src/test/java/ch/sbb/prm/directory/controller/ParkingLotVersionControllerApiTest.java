@@ -33,7 +33,6 @@ import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.PrmLocationService;
 import ch.sbb.prm.directory.service.RelationService;
-import java.util.Objects;
 import java.util.Collections;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
@@ -113,7 +112,7 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isCreated());
     verify(relationService, times(1)).save(any(RelationVersion.class));
-    verify(prmLocationService, times(1)).allocateSloid(any(ParkingLotVersion.class),eq(SloidType.PARKING_LOT));
+    verify(prmLocationService, times(1)).allocateSloid(any(ParkingLotVersion.class), eq(SloidType.PARKING_LOT));
   }
 
   @Test
@@ -134,7 +133,7 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isCreated());
     verify(relationService, never()).save(any(RelationVersion.class));
-    verify(prmLocationService, times(1)).allocateSloid(any(ParkingLotVersion.class),eq(SloidType.PARKING_LOT));
+    verify(prmLocationService, times(1)).allocateSloid(any(ParkingLotVersion.class), eq(SloidType.PARKING_LOT));
   }
 
   @Test
