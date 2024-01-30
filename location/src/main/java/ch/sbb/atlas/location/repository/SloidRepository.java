@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -57,18 +58,32 @@ public class SloidRepository {
   public String getNextAvailableSloid(Country country) {
     MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("country", country.name());
-    String sqlQuery = "select sloid from available_service_point_sloid where country = :country and claimed = false order by "
-        + "sloid limit 1;";
+    String sqlQuery = "select sloid from available_service_point_sloid where country = :country and claimed = false limit 1;";
     return locationJdbcTemplate.queryForObject(sqlQuery, mapSqlParameterSource, (rs, row) -> rs.getString("sloid"));
   }
 
   public boolean isSloidAllocated(String sloid) {
-    Byte nbOfFoundSloids = locationJdbcTemplate.getJdbcTemplate()
-        .queryForObject("select count(*) from allocated_sloid where sloid = ?;", Byte.class, sloid);
+    MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+    mapSqlParameterSource.addValue("sloid", sloid);
+    String sqlQuery = "select count(*) from allocated_sloid where sloid = :sloid;";
+    Byte nbOfFoundSloids = locationJdbcTemplate.queryForObject(sqlQuery, mapSqlParameterSource, (rs, row) -> rs.getByte(1));
     if (nbOfFoundSloids == null) {
       throw new IllegalStateException("select count query should not return null!");
     }
     return nbOfFoundSloids == 1;
+  }
+
+  public boolean isServicePointSloidAvailable(String sloid) {
+    MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+    mapSqlParameterSource.addValue("sloid", sloid);
+    String sqlQuery = "select claimed from available_service_point_sloid where sloid = :sloid;";
+    try {
+      Boolean claimed = locationJdbcTemplate.queryForObject(sqlQuery, mapSqlParameterSource,
+          (rs, row) -> rs.getBoolean("claimed"));
+      return Boolean.FALSE.equals(claimed);
+    } catch (DataAccessException e) {
+      return false;
+    }
   }
 
   public void deleteAllocatedSloid(Set<String> sloids, SloidType sloidType) {
@@ -94,13 +109,13 @@ public class SloidRepository {
   }
 
   public void setAvailableSloidToClaimed(Set<String> sloids) {
-    log.info("Updating available_service_point_sloid clamed to true..." );
+    log.info("Updating available_service_point_sloid clamed to true...");
     String sqlQuery = "update available_service_point_sloid set claimed = true where sloid in (?)";
     executeBatchUpdate(sloids, sqlQuery);
   }
 
   public void deleteAvailableServicePointSloidAlreadyClaimed(Set<String> sloids) {
-    log.info("Deleting available_service_point_sloid already claimed..." );
+    log.info("Deleting available_service_point_sloid already claimed...");
     String sqlQuery = "delete from available_service_point_sloid where sloid in (?) and claimed = true";
     executeBatchUpdate(sloids, sqlQuery);
   }
