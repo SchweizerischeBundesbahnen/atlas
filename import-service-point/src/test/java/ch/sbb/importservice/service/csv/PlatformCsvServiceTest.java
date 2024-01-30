@@ -1,18 +1,19 @@
 package ch.sbb.importservice.service.csv;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.MockitoAnnotations.openMocks;
-
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModel;
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModelContainer;
 import ch.sbb.atlas.testdata.prm.PlatformCsvTestData;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
-import java.time.LocalDate;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 class PlatformCsvServiceTest {
 
@@ -74,7 +75,7 @@ class PlatformCsvServiceTest {
   }
 
   @Test
-  void shouldReturnOnlyActiveStopPlaces() {
+  void shouldReturnOnlyActivePlatforms() {
     // given
     PlatformCsvModel platformCsvModel1 = PlatformCsvTestData.getCsvModel();
     platformCsvModel1.setStatus(1);

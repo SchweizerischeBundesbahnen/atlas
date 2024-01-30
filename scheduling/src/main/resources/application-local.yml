@@ -93,13 +93,15 @@ scheduler:
     service-point-trigger-batch:
       chron: "0 0 3 * * ?" #At 03:00:00am every day
     traffic-point-trigger-batch:
-      chron: "0 30 3 * * ?" #At 03:30:00am every day
-    loading-point-trigger-batch:
-      chron: "0 0 4 * * ?" #At 04:00:00am every day
-    stop-point-trigger-batch:
       chron: "0 30 4 * * ?" #At 04:30:00am every day
+    loading-point-trigger-batch:
+      chron: "0 30 4 * * ?" #At 04:30:00am every day
+    stop-point-trigger-batch:
+      chron: "0 00 5 * * ?" #At 05:00:00am every day
     platform-trigger-batch:
-      chron: "0 40 4 * * ?" #At 04:40:00am every day
+      chron: "0 10 5 * * ?" #At 05:10:00am every day
+    reference-point-trigger-batch:
+      chron: "0 20 5 * * ?" #At 05:20:00am every day
 
   lidi:
     export:
