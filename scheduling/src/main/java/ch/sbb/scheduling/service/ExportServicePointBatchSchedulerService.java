@@ -59,7 +59,17 @@ public class ExportServicePointBatchSchedulerService extends BaseSchedulerServic
   @SchedulerLock(name = "triggerExportStopPointBatch", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response postTriggerExportStopPointBatch() {
     return executeRequest(exportServicePointBatchClient::postTriggerExportStopPointBatch,
-        "Trigger Export Loading Point Batch");
+        "Trigger Export Stop Point Batch");
+  }
+
+  @SpanTracing
+  @Retryable(label = "triggerExportReferencePointBatch", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
+  @Backoff(delay = 65000))
+  @Scheduled(cron = "${scheduler.export-service-point.reference-point-trigger-batch.chron}", zone = "${scheduler.zone}")
+  @SchedulerLock(name = "triggerExportReferencePointBatch", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
+  public Response postTriggerExportReferencePointBatch() {
+    return executeRequest(exportServicePointBatchClient::postTriggerExportReferencePointBatch,
+        "Trigger Export Reference Point Batch");
   }
 
 }

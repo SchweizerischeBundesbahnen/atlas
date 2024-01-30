@@ -16,6 +16,7 @@ import ch.sbb.atlas.amazon.exception.FileException;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.exportservice.model.PrmBatchExportFileName;
 import ch.sbb.exportservice.model.PrmExportType;
+import ch.sbb.exportservice.service.ExportReferencePointJobService;
 import ch.sbb.exportservice.service.ExportStopPointJobService;
 import ch.sbb.exportservice.service.FileExportService;
 import java.io.InputStream;
@@ -35,6 +36,8 @@ class ExportStopPointBatchControllerApiV1IntegrationTest extends BaseControllerA
 
   @MockBean
   private ExportStopPointJobService exportStopPointJobService;
+  @MockBean
+  private ExportReferencePointJobService exportReferencePointJobService;
 
   @Test
   @Order(1)
@@ -163,6 +166,18 @@ class ExportStopPointBatchControllerApiV1IntegrationTest extends BaseControllerA
           .andExpect(status().isOk())
           .andExpect(content().contentType("application/json"));
     }
+  }
+
+  @Test
+  @Order(8)
+  void shouldPostReferencePointExportBatchSuccessfully() throws Exception {
+    //given
+    doNothing().when(exportReferencePointJobService).startExportJobs();
+
+    //when & then
+    mvc.perform(post("/v1/export/prm/reference-point-batch")
+            .contentType(contentType))
+        .andExpect(status().isOk());
   }
 
 }

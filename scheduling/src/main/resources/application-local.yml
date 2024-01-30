@@ -134,6 +134,8 @@ scheduler:
       chron: "0 20 5 * * ?" #At 05:20:00am every day
     stop-point-trigger-batch:
       chron: "0 25 5 * * ?" #At 05:25:00am every day
+    reference-point-trigger-batch:
+      chron: "0 35 5 * * ?" #At 05:35:00am every day
 
 atlas:
   client:
