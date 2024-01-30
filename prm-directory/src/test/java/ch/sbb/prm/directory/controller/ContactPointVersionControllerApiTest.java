@@ -111,7 +111,7 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(contactPointVersionModel)))
         .andExpect(status().isCreated());
     verify(relationService, times(1)).save(any(RelationVersion.class));
-    verify(prmLocationService, times(1)).allocateSloid(any(InformationDeskVersion.class),eq(SloidType.INFO_DESK));
+    verify(prmLocationService, times(1)).allocateSloid(any(InformationDeskVersion.class), eq(SloidType.INFO_DESK));
   }
 
   @Test
@@ -131,7 +131,7 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(contactPointVersionModel)))
         .andExpect(status().isCreated());
     verify(relationService, never()).save(any(RelationVersion.class));
-    verify(prmLocationService, times(1)).allocateSloid(any(InformationDeskVersion.class),eq(SloidType.INFO_DESK));
+    verify(prmLocationService, times(1)).allocateSloid(any(InformationDeskVersion.class), eq(SloidType.INFO_DESK));
   }
 
   @Test
@@ -150,7 +150,7 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(status().isPreconditionFailed())
         .andExpect(jsonPath("$.message", is("The stop point with sloid ch:1:sloid:7000 does not exist.")));
     verify(relationService, times(0)).save(any(RelationVersion.class));
-    verify(prmLocationService, never()).allocateSloid(any(),any());
+    verify(prmLocationService, never()).allocateSloid(any(), any());
   }
 
   @Test
@@ -168,7 +168,7 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(contactPointVersionModel)))
         .andExpect(status().isPreconditionFailed())
         .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7001 does not exist.")));
-    verify(prmLocationService, never()).allocateSloid(any(),any());
+    verify(prmLocationService, never()).allocateSloid(any(), any());
   }
 
   /**
@@ -223,7 +223,7 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2000-12-31")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2001-01-01")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2001-12-31")));
-    verify(prmLocationService, never()).allocateSloid(any(),any());
+    verify(prmLocationService, never()).allocateSloid(any(), any());
   }
 
 }
