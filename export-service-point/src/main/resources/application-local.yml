@@ -27,9 +27,9 @@ spring:
       password: pwd
       driver-class-name: org.postgresql.Driver
     prm:
-      url: jdbc:postgresql://localhost:5442/prm-directory?currentSchema=prm_directory
-      username: user
-      password: pwd
+      url: jdbc:postgresql://prm-directory-dev.cwirf2yo04eo.eu-central-1.rds.amazonaws.com:5432/prm_directory
+      username: prm_directory
+      password: MYFsSPYyJUYqDfQhMWe?3PWt!Naekh
       driver-class-name: org.postgresql.Driver
     hikari:
       minimumIdle: 2
