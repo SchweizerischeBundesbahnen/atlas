@@ -2,6 +2,8 @@ package ch.sbb.exportservice.recovery;
 
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LOADING_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LOADING_POINT_JSON_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_REFERENCE_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_REFERENCE_POINT_JSON_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_JSON_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POINT_CSV_JOB_NAME;
@@ -13,6 +15,7 @@ import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.batch.exception.JobExecutionException;
 import ch.sbb.exportservice.service.BaseExportJobService;
 import ch.sbb.exportservice.service.ExportLoadingPointJobService;
+import ch.sbb.exportservice.service.ExportReferencePointJobService;
 import ch.sbb.exportservice.service.ExportServicePointJobService;
 import ch.sbb.exportservice.service.ExportStopPointJobService;
 import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
@@ -48,6 +51,8 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
       EXPORT_LOADING_POINT_JSON_JOB_NAME);
   private static final List<String> EXPORT_STOP_POINT_JOBS_NAME = List.of(EXPORT_STOP_POINT_CSV_JOB_NAME,
       EXPORT_STOP_POINT_JSON_JOB_NAME);
+  private static final List<String> EXPORT_REFERENCE_POINT_JOB_NAME = List.of(EXPORT_REFERENCE_POINT_CSV_JOB_NAME,
+      EXPORT_REFERENCE_POINT_JSON_JOB_NAME);
   static final int TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE = 8;
   public static final String ATLAS_BATCH_STATUS_RECOVERED = "RECOVERED";
 
@@ -59,6 +64,7 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
   private final ExportTrafficPointElementJobService exportTrafficPointElementJobService;
   private final ExportLoadingPointJobService exportLoadingPointJobService;
   private final ExportStopPointJobService exportStopPointJobService;
+  private final ExportReferencePointJobService exportReferencePointJobService;
 
   @Override
   @Async
@@ -69,6 +75,7 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
     checkExportTrafficPointJobToRecover();
     checkExportLoadingPointJobToRecover();
     checkExportStopPointJobToRecover();
+    checkExportReferencePointJobToRecover();
   }
 
   private boolean checkIfHasJobsToRecover(List<String> exportJobsName) {
@@ -138,6 +145,10 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
 
   private void checkExportStopPointJobToRecover() {
     checkJobToRecover(exportStopPointJobService, EXPORT_STOP_POINT_JOBS_NAME);
+  }
+
+  private void checkExportReferencePointJobToRecover() {
+    checkJobToRecover(exportReferencePointJobService, EXPORT_REFERENCE_POINT_JOB_NAME);
   }
 
   private void checkJobToRecover(BaseExportJobService jobService, List<String> jobsName) {
