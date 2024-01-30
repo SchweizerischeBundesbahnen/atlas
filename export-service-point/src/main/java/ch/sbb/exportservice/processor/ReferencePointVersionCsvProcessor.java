@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
 @Slf4j
-public class ReferencePointVersionCsvProcessor extends BaseServicePointProcessor implements
+public class ReferencePointVersionCsvProcessor implements
     ItemProcessor<ReferencePointVersion, ReferencePointVersionCsvModel> {
 
   @Override
@@ -19,10 +19,10 @@ public class ReferencePointVersionCsvProcessor extends BaseServicePointProcessor
         .mainReferencePoint(version.isMainReferencePoint())
         .additionalInformation(CsvProcessorUtil.removeNewLine(version.getAdditionalInformation()))
         .rpType(version.getReferencePointType().toString())
-        .validFrom(DATE_FORMATTER.format(version.getValidFrom()))
-        .validTo(DATE_FORMATTER.format(version.getValidTo()))
-        .creationDate(LOCAL_DATE_FORMATTER.format(version.getCreationDate()))
-        .editionDate(LOCAL_DATE_FORMATTER.format(version.getEditionDate()))
+        .validFrom(BaseServicePointProcessor.DATE_FORMATTER.format(version.getValidFrom()))
+        .validTo(BaseServicePointProcessor.DATE_FORMATTER.format(version.getValidTo()))
+        .creationDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(version.getCreationDate()))
+        .editionDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(version.getEditionDate()))
         .build();
   }
 
