@@ -2,6 +2,7 @@ package ch.sbb.exportservice.recovery;
 
 import static ch.sbb.exportservice.recovery.RecoveryJobsRunner.TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LOADING_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_REFERENCE_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME;
@@ -14,6 +15,7 @@ import static org.mockito.Mockito.when;
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.exportservice.model.SePoDiExportType;
 import ch.sbb.exportservice.service.ExportLoadingPointJobService;
+import ch.sbb.exportservice.service.ExportReferencePointJobService;
 import ch.sbb.exportservice.service.ExportServicePointJobService;
 import ch.sbb.exportservice.service.ExportStopPointJobService;
 import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
@@ -66,6 +68,9 @@ class RecoveryJobsRunnerTest {
   private ExportStopPointJobService exportStopPointJobService;
 
   @Mock
+  private ExportReferencePointJobService exportReferencePointJobService;
+
+  @Mock
   private JobInstance jobInstance;
 
   @Mock
@@ -84,7 +89,7 @@ class RecoveryJobsRunnerTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     recoveryJobsRunner = new RecoveryJobsRunner(jobExplorer, fileService, jobRepository, exportServicePointJobService,
-        exportTrafficPointElementJobService, exportLoadingPointJobService, exportStopPointJobService);
+        exportTrafficPointElementJobService, exportLoadingPointJobService, exportStopPointJobService, exportReferencePointJobService);
   }
 
   @Test
@@ -196,6 +201,35 @@ class RecoveryJobsRunnerTest {
 
     //then
     verify(exportStopPointJobService).startExportJobs();
+    verify(fileService).clearDir();
+  }
+
+  @Test
+  void shouldRecoverExportReferencePointWhenOneJobIsNotSuccessfullyExecuted() throws Exception {
+    //given
+    StepExecution stepExecution = new StepExecution("myStep", jobExecution);
+    stepExecution.setId(132L);
+    Map<String, JobParameter<?>> parameters = new HashMap<>();
+    parameters.put(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
+    parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(SePoDiExportType.WORLD_FULL.name(), String.class));
+
+    when(jobParameters.getParameters()).thenReturn(parameters);
+    when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);
+    when(jobExecution.getJobParameters()).thenReturn(jobParameters);
+    when(jobExecution.getStepExecutions()).thenReturn(List.of(stepExecution));
+    when(jobExecution.getCreateTime()).thenReturn(LocalDateTime.now());
+    when(jobExplorer.getJobInstanceCount(EXPORT_REFERENCE_POINT_CSV_JOB_NAME)).thenReturn(Long.valueOf(
+        TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE));
+    when(jobExplorer.getJobInstances(EXPORT_REFERENCE_POINT_CSV_JOB_NAME, 0, TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE)).thenReturn(
+        List.of(jobInstance));
+    when(jobExplorer.getJobExecutions(jobInstance)).thenReturn(List.of(jobExecution));
+    when(jobLauncher.run(any(), any())).thenReturn(jobExecution);
+
+    //when
+    recoveryJobsRunner.onApplicationEvent(applicationReadyEvent);
+
+    //then
+    verify(exportReferencePointJobService).startExportJobs();
     verify(fileService).clearDir();
   }
 
