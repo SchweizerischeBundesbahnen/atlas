@@ -1,21 +1,22 @@
 package ch.sbb.scheduling.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
-
 import ch.sbb.scheduling.client.ImportServicePointBatchClient;
 import ch.sbb.scheduling.exception.SchedulingExecutionException;
 import feign.Request;
 import feign.Request.HttpMethod;
 import feign.Response;
 import feign.Util;
-import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
+
+import java.util.Collections;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
  class ImportServicePointBatchSchedulerServiceTest {
 
@@ -105,6 +106,26 @@ import org.springframework.http.HttpStatus;
   }
 
   @Test
+  void shouldTriggerImportLoadingPointBatchSuccessfully() {
+   //given
+   Response response = Response.builder()
+           .status(200)
+           .reason("OK")
+           .request(
+                   Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                           null, Util.UTF_8, null))
+           .build();
+   when(client.triggerImportLoadingPointBatch()).thenReturn(response);
+
+   //when
+   Response result = importServicePointBatchSchedulerService.triggerImportLoadingPointBatch();
+
+   //then
+   assertThat(result).isNotNull();
+   assertThat(result.status()).isEqualTo(200);
+  }
+
+  @Test
   void shouldTriggerImportStopPointBatchSuccessfully() {
    //given
    Response response = Response.builder()
@@ -138,6 +159,26 @@ import org.springframework.http.HttpStatus;
 
    //when
    Response result = importServicePointBatchSchedulerService.triggerImportPlatformBatch();
+
+   //then
+   assertThat(result).isNotNull();
+   assertThat(result.status()).isEqualTo(200);
+  }
+
+  @Test
+  void shouldTriggerImportReferencePointBatchSuccessfully() {
+   //given
+   Response response = Response.builder()
+       .status(200)
+       .reason("OK")
+       .request(
+           Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+               null, Util.UTF_8, null))
+       .build();
+   when(client.triggerImportReferencePointBatch()).thenReturn(response);
+
+   //when
+   Response result = importServicePointBatchSchedulerService.triggerImportReferencePointBatch();
 
    //then
    assertThat(result).isNotNull();

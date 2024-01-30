@@ -72,4 +72,13 @@ public class ImportServicePointBatchSchedulerService extends BaseSchedulerServic
     return executeRequest(importServicePointBatchClient::triggerImportPlatformBatch, "Trigger Import Platform Batch");
   }
 
+  @SpanTracing
+  @Retryable(label = "triggerImportReferencePointBatch", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
+  @Backoff(delay = 65000))
+  @Scheduled(cron = "${scheduler.import-service-point.reference-point-trigger-batch.chron}", zone = "${scheduler.zone}")
+  @SchedulerLock(name = "triggerImportReferencePointBatch", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
+  public Response triggerImportReferencePointBatch() {
+    return executeRequest(importServicePointBatchClient::triggerImportReferencePointBatch, "Trigger Import Reference Point Batch");
+  }
+
 }

@@ -1,5 +1,32 @@
 package ch.sbb.importservice.integration;
 
+import ch.sbb.atlas.imports.ItemImportResult;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
+import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.importservice.ServicePointTestData;
+import ch.sbb.importservice.client.SePoDiClient;
+import ch.sbb.importservice.service.FileHelperService;
+import ch.sbb.importservice.service.MailProducerService;
+import ch.sbb.importservice.service.csv.CsvFileNameModel;
+import ch.sbb.importservice.service.csv.ServicePointCsvService;
+import org.junit.jupiter.api.Test;
+import org.springframework.batch.core.ExitStatus;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobInstance;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import java.io.File;
+import java.util.List;
+import java.util.Objects;
+
 import static ch.sbb.importservice.service.JobHelperService.MIN_LOCAL_DATE;
 import static ch.sbb.importservice.service.csv.CsvFileNameModel.SERVICEPOINT_DIDOK_DIR_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_BATCH_PARAMETER;
@@ -14,31 +41,6 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import ch.sbb.atlas.imports.ItemImportResult;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
-import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.importservice.ServicePointTestData;
-import ch.sbb.importservice.client.SePoDiClient;
-import ch.sbb.importservice.service.FileHelperService;
-import ch.sbb.importservice.service.MailProducerService;
-import ch.sbb.importservice.service.csv.CsvFileNameModel;
-import ch.sbb.importservice.service.csv.ServicePointCsvService;
-import java.io.File;
-import java.util.List;
-import org.junit.jupiter.api.Test;
-import org.springframework.batch.core.ExitStatus;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobInstance;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
@@ -102,7 +104,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
    void shouldExecuteImportServicePointJobFromGivenFile() throws Exception {
     // given
 
-    File file = new File(this.getClass().getClassLoader().getResource("DIENSTSTELLEN_V3_IMPORT.csv").getFile());
+    File file = new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource("DIENSTSTELLEN_V3_IMPORT.csv")).getFile());
     when(fileHelperService.downloadImportFileFromS3(csvFileNameModel)).thenReturn(file);
     List<ServicePointCsvModelContainer> servicePointCsvModelContainers = ServicePointTestData
         .getServicePointCsvModelContainers();

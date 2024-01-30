@@ -23,8 +23,8 @@ public class PlatformVersionRowMapper extends BaseRowMapper implements RowMapper
         builder.parentNumberServicePoint(ServicePointNumber.ofNumberWithoutCheckDigit(ServicePointNumber.removeCheckDigit(rs.getInt("number"))));
         builder.boardingDevice(
                 rs.getObject("boarding_device") != null ? BoardingDeviceAttributeType.valueOf(rs.getString("boarding_device")) : null);
-        builder.adviceAccessInfo(rs.getObject("boarding_device") != null ? removeNewLine(rs.getString("advice_access_info")) : null);
-        builder.additionalInformation(removeNewLine(rs.getString("additional_information")));
+        builder.adviceAccessInfo(rs.getObject("advice_access_info") != null ? rs.getString("advice_access_info") : null);
+        builder.additionalInformation(rs.getString("additional_information"));
         builder.contrastingAreas(
                 rs.getObject("contrasting_areas") != null ? BooleanOptionalAttributeType.valueOf(rs.getString("contrasting_areas")) : null);
         builder.dynamicAudio(
@@ -59,13 +59,8 @@ public class PlatformVersionRowMapper extends BaseRowMapper implements RowMapper
 
     void setInfoOpportunities(PlatformVersion.PlatformVersionBuilder<?, ?> platformVersionBuilder, String listOfInfoOpportunities) {
         if (listOfInfoOpportunities != null) {
-            Set<InfoOpportunityAttributeType> infoOpportunities = RowMapperUtil.stringToSet(listOfInfoOpportunities, InfoOpportunityAttributeType::valueOf);
-            platformVersionBuilder.infoOpportunities(infoOpportunities);
-            platformVersionBuilder.infoOpportunitiesPipeList(RowMapperUtil.toPipedString(infoOpportunities));
+            platformVersionBuilder.infoOpportunities(RowMapperUtil.stringToSet(listOfInfoOpportunities, InfoOpportunityAttributeType::valueOf));
+            platformVersionBuilder.infoOpportunitiesPipeList(RowMapperUtil.toPipedString(RowMapperUtil.stringToSet(listOfInfoOpportunities, InfoOpportunityAttributeType::valueOf)));
         }
-    }
-
-    String removeNewLine(String text){
-       return text != null ? text.replaceAll("\r\n|\r|\n", " ") : null;
     }
 }
