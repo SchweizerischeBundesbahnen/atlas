@@ -93,8 +93,9 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
 
   @BeforeEach
   void setUp() {
-    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:7000", Set.of("ch:1:sboid:100602"),
-            Collections.emptySet());
+    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:7000",
+        Set.of("ch:1:sboid:100602"),
+        Collections.emptySet());
     sharedServicePointRepository.saveAndFlush(servicePoint);
   }
 
@@ -166,7 +167,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(status().isCreated());
     //verify that the reference point create 4 relation
     verify(relationService, times(4)).save(any(RelationVersion.class));
-    verify(prmLocationService, times(1)).allocateSloid(any(ReferencePointVersion.class),eq(SloidType.REFERENCE_POINT));
+    verify(prmLocationService, times(1)).allocateSloid(any(ReferencePointVersion.class), eq(SloidType.REFERENCE_POINT));
   }
 
   @Test
@@ -192,7 +193,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
     PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
     platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     platformRepository.save(platformVersion);
-    doNothing().when(prmLocationService).allocateSloid(any(),eq(SloidType.REFERENCE_POINT));
+    doNothing().when(prmLocationService).allocateSloid(any(), eq(SloidType.REFERENCE_POINT));
 
     //when && then
     mvc.perform(post("/v1/reference-points")
@@ -218,7 +219,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(referencePointVersionModel)))
         .andExpect(status().isPreconditionFailed());
     verify(relationService, times(0)).save(any(RelationVersion.class));
-    verify(prmLocationService, never()).allocateSloid(any(),any());
+    verify(prmLocationService, never()).allocateSloid(any(), any());
   }
 
   @Test
@@ -248,7 +249,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(status().isPreconditionFailed())
         .andExpect(jsonPath("$.message", is("The stop point with sloid ch:1:sloid:7000 does not exist.")));
     verify(relationService, times(0)).save(any(RelationVersion.class));
-    verify(prmLocationService, never()).allocateSloid(any(),any());
+    verify(prmLocationService, never()).allocateSloid(any(), any());
   }
 
   /**
@@ -298,7 +299,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2000-12-31")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2001-01-01")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2001-12-31")));
-    verify(prmLocationService, never()).allocateSloid(any(),any());
+    verify(prmLocationService, never()).allocateSloid(any(), any());
   }
 
 }
