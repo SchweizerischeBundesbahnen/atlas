@@ -14,7 +14,7 @@ public abstract class BaseSchedulerService {
   protected Response executeRequest(Supplier<Response> clientCall, String jobName) {
     log.info("{}: Starting Export {}...", clientName, jobName);
     try (Response response = clientCall.get()) {
-      if (HttpStatus.OK.value() == response.status()) {
+      if (HttpStatus.OK.value() == response.status() || HttpStatus.NO_CONTENT.value() == response.status()) {
         log.info("{}: Export {} Successfully completed", clientName, jobName);
       } else {
         log.error("{}: Export {} Unsuccessful completed. Response Status: {} \nResponse: \n{}",
