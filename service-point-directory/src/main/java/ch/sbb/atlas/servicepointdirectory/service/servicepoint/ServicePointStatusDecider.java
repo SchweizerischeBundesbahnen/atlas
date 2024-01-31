@@ -78,6 +78,7 @@ public class ServicePointStatusDecider {
                     || findIsolatedOrTouchingServicePointVersion(newServicePointVersion, servicePointVersions).isPresent()
                     || isPreviousVersionDraft(currentServicePointVersion.get())
                     || isGeolocationChangedFromAbroadToSwitzerland(newServicePointVersion, currentServicePointVersion.get())
+                    || isTimeslotChangeFromLessThan60DaysToMoreThan60Days(newServicePointVersion, currentServicePointVersion.get())
                     || isChangeFromServicePointToStopPoint(newServicePointVersion, currentServicePointVersion.get())
                     || isVersionIsolated(newServicePointVersion, servicePointVersions)) {
                 return setStatusForStopPoint(newServicePointVersion, currentServicePointVersion.get(),
@@ -131,6 +132,13 @@ public class ServicePointStatusDecider {
 
     private boolean isPreviousVersionDraft(ServicePointVersion currentServicePointVersion) {
         return currentServicePointVersion.getStatus() == Status.DRAFT;
+    }
+
+    private boolean isTimeslotChangeFromLessThan60DaysToMoreThan60Days(ServicePointVersion newServicePointVersion,
+                                                                ServicePointVersion currentServicePointVersion) {
+        long diffForCurrentVersion = ChronoUnit.DAYS.between(currentServicePointVersion.getValidFrom(), currentServicePointVersion.getValidTo());
+        long diffForNewVersion = ChronoUnit.DAYS.between(newServicePointVersion.getValidFrom(), newServicePointVersion.getValidTo());
+        return diffForCurrentVersion <= VALIDITY_IN_DAYS && diffForNewVersion > VALIDITY_IN_DAYS;
     }
 
     private boolean isGeolocationChangedFromAbroadToSwitzerland(ServicePointVersion newServicePointVersion,
