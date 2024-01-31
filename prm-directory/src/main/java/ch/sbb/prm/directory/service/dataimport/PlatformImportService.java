@@ -49,24 +49,50 @@ public class PlatformImportService extends BasePrmImportService<PlatformVersion>
 
   public List<ItemImportResult> importPlatforms(List<PlatformCsvModelContainer> csvModelContainers) {
     List<ItemImportResult> importResults = new ArrayList<>();
+
     for (PlatformCsvModelContainer container : csvModelContainers) {
       List<PlatformVersion> csvVersions = container.getCreateModels().stream().map(PlatformVersionMapper::toEntity).toList();
-      csvVersions.forEach(this::clearVariantDependentProperties);
 
-      List<PlatformVersion> dbVersions = platformService.getAllVersions(csvVersions.iterator().next().getSloid());
-      replaceCsvMergedVersions(dbVersions, csvVersions);
-
-      for (PlatformVersion platformVersion : csvVersions) {
-        boolean platformExists = platformRepository.existsBySloid(platformVersion.getSloid());
-        ItemImportResult itemImportResult;
-        if (platformExists) {
-          itemImportResult = updatePlatform(platformVersion);
-        } else {
-          itemImportResult = createVersion(platformVersion);
-        }
-        importResults.add(itemImportResult);
+      List<ItemImportResult> replacingErrors = replaceCsvMergedVersionsInDb(csvVersions);
+      if (replacingErrors.isEmpty()) {
+        List<ItemImportResult> versioningResult = insertOrUpdateViaVersioning(csvVersions);
+        importResults.addAll(versioningResult);
+      } else {
+        importResults.addAll(replacingErrors);
       }
     }
+    return importResults;
+  }
+
+  private List<ItemImportResult> insertOrUpdateViaVersioning(List<PlatformVersion> csvVersions) {
+    List<ItemImportResult> importResults = new ArrayList<>();
+    for (PlatformVersion platformVersion : csvVersions) {
+      boolean platformExists = platformRepository.existsBySloid(platformVersion.getSloid());
+      ItemImportResult itemImportResult;
+      if (platformExists) {
+        itemImportResult = updatePlatform(platformVersion);
+      } else {
+        itemImportResult = createVersion(platformVersion);
+      }
+      importResults.add(itemImportResult);
+    }
+    return importResults;
+  }
+
+  private List<ItemImportResult> replaceCsvMergedVersionsInDb(List<PlatformVersion> csvVersions) {
+    List<ItemImportResult> importResults = new ArrayList<>();
+    for (PlatformVersion platformVersion : csvVersions) {
+      try {
+        clearVariantDependentProperties(platformVersion);
+      } catch (AtlasException exception) {
+        log.error("[Platform Import]: Error during clearVariantDependentProperties", exception);
+        importResults.add(buildFailedImportResult(platformVersion, exception));
+      }
+    }
+
+    List<PlatformVersion> dbVersions = platformService.getAllVersions(csvVersions.iterator().next().getSloid());
+    replaceCsvMergedVersions(dbVersions, csvVersions);
+
     return importResults;
   }
 
@@ -128,5 +154,4 @@ public class PlatformImportService extends BasePrmImportService<PlatformVersion>
       version.setWheelchairAreaWidth(null);
     }
   }
-
 }
