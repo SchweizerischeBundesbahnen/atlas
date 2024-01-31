@@ -200,7 +200,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     }
   }
 
-  private setHeightFromGeoData(coordinatePair: CoordinatePair) {
+  public setHeightFromGeoData(coordinatePair: CoordinatePair) {
     if (coordinatePair) {
       this.geoDataService.getLocationInformation(coordinatePair).subscribe((value) => {
         this._form?.patchValue({

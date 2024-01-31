@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, TestBed, tick, waitForAsync} from '@angular/core/testing';
 import {
   TranslateFakeLoader,
   TranslateLoader,
@@ -91,5 +91,18 @@ describe('GeographyComponent', () => {
       SpatialReference.Wgs84,
     );
     expect(mapService.placeMarkerAndFlyTo).toHaveBeenCalledWith({ lng: 12, lat: 12 });
+  });
+
+  it('should set height to form', () => {
+    const coordinates: CoordinatePair = {
+      north: 1207935,
+      east: 2600464,
+      spatialReference: SpatialReference.Lv95,
+    };
+    spyOn(component, 'setHeightFromGeoData');
+
+    component.setHeightFromGeoData(coordinates)
+
+    expect(component.setHeightFromGeoData).toHaveBeenCalledWith(coordinates)
   });
 });
