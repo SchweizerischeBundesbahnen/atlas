@@ -117,6 +117,10 @@ delete
 from platform_version_info_opportunities;
 delete
 from platform_version;
+
+-- Reference Points
+delete
+from reference_point_version;
 ```
 
 Further we need to clear the import-service-point db: see * [Reset Batch](../documentation/batch_util.md)
