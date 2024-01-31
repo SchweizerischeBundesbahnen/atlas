@@ -139,7 +139,8 @@ public class ServicePointStatusDecider {
             return false;
         }
         return Objects.equals(newServicePointVersion.getServicePointGeolocation().getCountry().getUicCode(), Country.SWITZERLAND.getUicCode())
-                && !Objects.equals(currentServicePointVersion.getServicePointGeolocation().getCountry().getUicCode(), Country.SWITZERLAND.getUicCode());
+                && (isGeolocationOrCountryNull(currentServicePointVersion) ||
+                !Objects.equals(currentServicePointVersion.getServicePointGeolocation().getCountry().getUicCode(), Country.SWITZERLAND.getUicCode()));
     }
 
     boolean isVersionIsolated(ServicePointVersion newServicePointVersion,
