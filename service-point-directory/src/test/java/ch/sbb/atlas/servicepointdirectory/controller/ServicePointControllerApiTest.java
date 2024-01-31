@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import static ch.sbb.atlas.api.AtlasApiConstants.ZURICH_ZONE_ID;
 import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
@@ -603,6 +604,82 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/service-points/versions/" + id + "/skip-workflow"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.status", is(Status.VALIDATED.toString())));
+  }
+
+  @Test
+  void shouldNotAllowSetStatusToValidatedForServicePointWithValidatedStatus() throws Exception {
+    CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+            aargauServicePointVersionModel);
+    Long id = servicePointVersionModel.getId();
+    Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
+    servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+    servicePointVersion1.ifPresent(repository::save);
+
+    mvc.perform(post("/v1/service-points/versions/" + id + "/skip-workflow")
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
+            .andExpect(status().isPreconditionFailed())
+            .andExpect(jsonPath("$.message", is("ServicePoint Status can be updated only from DRAFT to VALIDATED!")))
+            .andExpect(jsonPath("$.error", endsWith(
+                    "Trying to update status to VALIDATED for the ServicePointNumber 8500001 and current status: VALIDATED")));
+  }
+
+  @Test
+  void shouldNotAllowSetStatusToValidatedForServicePointWithRevokedStatus() throws Exception {
+    CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+            aargauServicePointVersionModel);
+    Long id = servicePointVersionModel.getId();
+    Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
+    servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.REVOKED));
+    servicePointVersion1.ifPresent(repository::save);
+
+    mvc.perform(post("/v1/service-points/versions/" + id + "/skip-workflow")
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
+            .andExpect(status().isPreconditionFailed())
+            .andExpect(jsonPath("$.message", is("ServicePoint Status can be updated only from DRAFT to VALIDATED!")))
+            .andExpect(jsonPath("$.error", endsWith(
+                    "Trying to update status to VALIDATED for the ServicePointNumber 8500001 and current status: REVOKED")));
+  }
+
+  @Test
+  void shouldNotAllowSetStatusToValidatedForServicePointWithInReviewStatus() throws Exception {
+    CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+            aargauServicePointVersionModel);
+    Long id = servicePointVersionModel.getId();
+    Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
+    servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.IN_REVIEW));
+    servicePointVersion1.ifPresent(repository::save);
+
+    mvc.perform(post("/v1/service-points/versions/" + id + "/skip-workflow")
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
+            .andExpect(status().isPreconditionFailed())
+            .andExpect(jsonPath("$.message", is("ServicePoint Status can be updated only from DRAFT to VALIDATED!")))
+            .andExpect(jsonPath("$.error", endsWith(
+                    "Trying to update status to VALIDATED for the ServicePointNumber 8500001 and current status: IN_REVIEW")));
+  }
+
+  @Test
+  void shouldNotAllowSetStatusToValidatedForServicePointWithWithdrownStatus() throws Exception {
+    CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+            aargauServicePointVersionModel);
+    Long id = servicePointVersionModel.getId();
+    Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
+    servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.WITHDRAWN));
+    servicePointVersion1.ifPresent(repository::save);
+
+    mvc.perform(post("/v1/service-points/versions/" + id + "/skip-workflow")
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
+            .andExpect(status().isPreconditionFailed())
+            .andExpect(jsonPath("$.message", is("ServicePoint Status can be updated only from DRAFT to VALIDATED!")))
+            .andExpect(jsonPath("$.error", endsWith(
+                    "Trying to update status to VALIDATED for the ServicePointNumber 8500001 and current status: WITHDRAWN")));
   }
 
   @Test
