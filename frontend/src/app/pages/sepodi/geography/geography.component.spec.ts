@@ -105,4 +105,12 @@ describe('GeographyComponent', () => {
 
     expect(component.setHeightFromGeoData).toHaveBeenCalledWith(coordinates)
   });
+
+  it('should call setHeightFromGeoData', () => {
+    spyOn(component, 'setHeightFromGeoData');
+
+    component.initTransformedCoordinatePair()
+
+    expect(component.setHeightFromGeoData).toHaveBeenCalled()
+  });
 });
