@@ -8,6 +8,7 @@ import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
@@ -16,6 +17,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberAlreadyExistsException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
+import ch.sbb.atlas.servicepointdirectory.exception.ServicePointStatusChangeNotAllowedException;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointFotCommentMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
@@ -165,6 +167,10 @@ public class ServicePointController implements ServicePointApiV1 {
   public ReadServicePointVersionModel validateServicePoint(Long id) {
     ServicePointVersion servicePointVersion = servicePointService.findById(id)
             .orElseThrow(() -> new IdNotFoundException(id));
+
+    if (!Status.DRAFT.equals(servicePointVersion.getStatus())) {
+      throw new ServicePointStatusChangeNotAllowedException(servicePointVersion.getNumber(), servicePointVersion.getStatus());
+    }
 
     ServicePointVersion validatedServicePointVersion = servicePointService.validate(servicePointVersion);
 
