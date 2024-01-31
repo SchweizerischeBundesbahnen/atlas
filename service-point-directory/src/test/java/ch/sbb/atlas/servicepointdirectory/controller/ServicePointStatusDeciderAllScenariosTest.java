@@ -1142,8 +1142,43 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
         // Check that status for no geolocation is validated
         assertThat(servicePointVersionModel.getStatus()).isEqualTo(Status.VALIDATED);
 
-        GeoReference geoReferenceSwitzerland = GeoReference.builder().country(Country.SWITZERLAND).build();
-        when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReferenceSwitzerland);
+        UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint3.setServicePointGeolocation(ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
+        stopPoint3.setValidTo(LocalDate.of(2015, 12, 31));
+        stopPoint3.setDesignationOfficial("A Hausen");
+
+        mvc.perform(put("/v1/service-points/" + id)
+                        .contentType(contentType)
+                        .content(mapper.writeValueAsString(stopPoint3)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
+                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
+                .andExpect(jsonPath("$[0].status", is(Status.DRAFT.toString())));
+    }
+
+    /**
+     * Szenario 23: Haltestelle (stopPoint = true) in Status VALIDATED und Validity less than 60 days, update to Validity longer than 60 days
+     * <p>
+     * NEU:       |________________Haltestelle A Hausen + Validity longer than 60 days____________|
+     * <p>
+     * IST:       |________________Haltestelle A Hausen + Validity less than 60 days______________|
+     * Status:                      VALIDATED
+     * <p>
+     * RESULTAT:  |________________Haltestelle A Hausen + Validity longer than 60 days____________|
+     * Status:                      DRAFT
+     */
+    @Test
+    void scenario23WhenStopPointWithValidityLessThan60DaysAndUpdateStopPointWithValidityLongerThan60DaysThenStopPointDraft() throws Exception {
+        CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint1.setValidTo(LocalDate.of(2011, 1, 1));
+        stopPoint1.setDesignationOfficial("A Hausen");
+        ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+                stopPoint1);
+        Long id = servicePointVersionModel.getId();
+        // Check that status for not enough long validity is validated
+        assertThat(servicePointVersionModel.getStatus()).isEqualTo(Status.VALIDATED);
+
         UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
         stopPoint3.setServicePointGeolocation(ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
         stopPoint3.setValidTo(LocalDate.of(2015, 12, 31));
