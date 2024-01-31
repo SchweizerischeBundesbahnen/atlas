@@ -19,19 +19,19 @@ import org.springframework.http.HttpStatus;
 
 class LocationSchedulerServiceTest {
 
-  private LocationSchedulerService lidiSchedulerService;
+  private LocationSchedulerService locationSchedulerService;
 
   @Mock
   private LocationClient locationClient;
 
   @BeforeEach
-   void setUp() {
+  void setUp() {
     MockitoAnnotations.openMocks(this);
-    lidiSchedulerService = new LocationSchedulerService(locationClient);
+    locationSchedulerService = new LocationSchedulerService(locationClient);
   }
 
   @Test
-   void shouldSyncSloidSuccessfully() {
+  void shouldSyncSloidSuccessfully() {
     //given
     Response response = Response.builder()
         .status(204)
@@ -43,7 +43,7 @@ class LocationSchedulerServiceTest {
     when(locationClient.syncSloid()).thenReturn(response);
 
     //when
-    Response result = lidiSchedulerService.syncSloid();
+    Response result = locationSchedulerService.syncSloid();
 
     //then
     assertThat(result).isNotNull();
@@ -64,8 +64,7 @@ class LocationSchedulerServiceTest {
 
     //when
     assertThrows(SchedulingExecutionException.class,
-        () -> lidiSchedulerService.syncSloid());
+        () -> locationSchedulerService.syncSloid());
   }
-
 
 }
