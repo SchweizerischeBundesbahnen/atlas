@@ -4,11 +4,12 @@ import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.entity.ReferencePointVersion;
 import ch.sbb.exportservice.entity.ReferencePointVersion.ReferencePointVersionBuilder;
+import org.springframework.jdbc.core.RowMapper;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import org.springframework.jdbc.core.RowMapper;
 
 public class ReferencePointVersionRowMapper extends BaseRowMapper implements RowMapper<ReferencePointVersion> {
 
@@ -20,7 +21,7 @@ public class ReferencePointVersionRowMapper extends BaseRowMapper implements Row
     builder.parentServicePointSloid(rs.getString("parent_service_point_sloid"));
     builder.parentServicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(ServicePointNumber.removeCheckDigit(rs.getInt("number"))));
     builder.designation(rs.getString("designation"));
-    builder.designation(rs.getString("additional_information"));
+    builder.additionalInformation(rs.getString("additional_information"));
     builder.mainReferencePoint(rs.getBoolean("main_reference_point"));
     builder.referencePointType(ReferencePointAttributeType.valueOf(rs.getString("reference_point_type")));
     builder.validFrom(rs.getObject("valid_from", LocalDate.class));
