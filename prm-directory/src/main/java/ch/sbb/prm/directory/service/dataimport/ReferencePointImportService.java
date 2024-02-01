@@ -12,13 +12,11 @@ import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.mapper.ReferencePointVersionMapper;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.service.ReferencePointService;
-import ch.sbb.prm.directory.service.StopPointService;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -28,11 +26,10 @@ public class ReferencePointImportService extends BasePrmImportService<ReferenceP
     private final ReferencePointRepository referencePointRepository;
     private final ReferencePointService referencePointService;
     private final VersionableService versionableService;
-    private final StopPointService stopPointService;
 
     @Override
     protected void save(ReferencePointVersion version) {
-        referencePointService.save(version);
+        referencePointService.saveForImport(version);
     }
 
     @Override
@@ -93,7 +90,7 @@ public class ReferencePointImportService extends BasePrmImportService<ReferenceP
 
     private ItemImportResult createVersion(ReferencePointVersion referencePointVersion) {
         try {
-            ReferencePointVersion savedVersion = referencePointService.save(referencePointVersion);
+            ReferencePointVersion savedVersion = referencePointService.saveForImport(referencePointVersion);
             return buildSuccessImportResult(savedVersion);
         } catch (AtlasException exception) {
             log.error("[ReferencePoint Import]: Error during save", exception);
