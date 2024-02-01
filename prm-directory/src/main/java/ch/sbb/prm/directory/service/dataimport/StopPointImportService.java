@@ -39,7 +39,7 @@ public class StopPointImportService extends BasePrmImportService<StopPointVersio
 
   @Override
   protected void save(StopPointVersion version) {
-    stopPointService.save(version);
+    stopPointService.saveForImport(version);
   }
 
   @Override
@@ -100,7 +100,7 @@ public class StopPointImportService extends BasePrmImportService<StopPointVersio
 
   private ItemImportResult saveStopPointVersion(StopPointVersion servicePointVersion) {
     try {
-      StopPointVersion stopPointVersion = stopPointService.save(servicePointVersion);
+      StopPointVersion stopPointVersion = stopPointService.saveForImport(servicePointVersion);
       return buildSuccessImportResult(stopPointVersion);
     } catch (AtlasException exception) {
       log.error("[Stop-Point Import]: Error during save", exception);
