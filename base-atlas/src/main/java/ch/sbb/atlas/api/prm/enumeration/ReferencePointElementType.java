@@ -10,8 +10,7 @@ import lombok.RequiredArgsConstructor;
 public enum ReferencePointElementType {
 
   PLATFORM,
-  TICKET_COUNTER,
-  INFORMATION_DESK,
+  CONTACT_POINT,
   TOILET,
   PARKING_LOT;
 
