@@ -34,7 +34,7 @@ public class PlatformImportService extends BasePrmImportService<PlatformVersion>
 
   @Override
   protected void save(PlatformVersion version) {
-    platformService.save(version);
+    platformService.saveForImport(version);
   }
 
   @Override
@@ -123,7 +123,7 @@ public class PlatformImportService extends BasePrmImportService<PlatformVersion>
     try {
       sharedServicePointService.validateTrafficPointElementExists(platformVersion.getParentServicePointSloid(),
           platformVersion.getSloid());
-      PlatformVersion savedVersion = platformService.save(platformVersion);
+      PlatformVersion savedVersion = platformService.saveForImport(platformVersion);
       return buildSuccessImportResult(savedVersion);
     } catch (AtlasException exception) {
       log.error("[Platform Import]: Error during save", exception);
