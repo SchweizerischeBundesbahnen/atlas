@@ -12,26 +12,25 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.api.prm.model.ticketcounter.TicketCounterVersionModel;
-import ch.sbb.atlas.api.prm.model.toilet.ToiletVersionModel;
+import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.prm.directory.ContactPointTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.SharedServicePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.TicketCounterTestData;
-import ch.sbb.prm.directory.ToiletTestData;
+import ch.sbb.prm.directory.entity.ContactPointVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.entity.StopPointVersion;
-import ch.sbb.prm.directory.entity.TicketCounterVersion;
+import ch.sbb.prm.directory.repository.ContactPointRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
-import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import ch.sbb.prm.directory.service.RelationService;
+import java.util.Collections;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,10 +40,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
+class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
 
   private static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:7000";
-  private final TicketCounterRepository ticketCounterRepository;
+  private final ContactPointRepository contactPointRepository;
   private final StopPointRepository stopPointRepository;
   private final ReferencePointRepository referencePointRepository;
   private final SharedServicePointRepository sharedServicePointRepository;
@@ -53,12 +52,12 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
   private final RelationService relationService;
 
   @Autowired
-  TicketCounterVersionControllerApiTest(TicketCounterRepository ticketCounterRepository,
-                                        StopPointRepository stopPointRepository,
-                                        ReferencePointRepository referencePointRepository,
-                                        SharedServicePointRepository sharedServicePointRepository,
-                                        RelationService relationService) {
-    this.ticketCounterRepository = ticketCounterRepository;
+  ContactPointVersionControllerApiTest(ContactPointRepository contactPointRepository,
+                                       StopPointRepository stopPointRepository,
+                                       ReferencePointRepository referencePointRepository,
+                                       SharedServicePointRepository sharedServicePointRepository,
+                                       RelationService relationService) {
+    this.contactPointRepository = contactPointRepository;
     this.stopPointRepository = stopPointRepository;
     this.referencePointRepository = referencePointRepository;
     this.sharedServicePointRepository = sharedServicePointRepository;
@@ -68,7 +67,7 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
   @BeforeEach
   void setUp() {
     SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:7000",
-        Set.of("ch:1:sboid:100602"), Set.of("ch:1:sloid:12345:1"));
+        Set.of("ch:1:sboid:100602"), Collections.emptySet());
     sharedServicePointRepository.saveAndFlush(servicePoint);
   }
 
@@ -78,18 +77,17 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldGetTicketCountersVersion() throws Exception {
+  void shouldGetContactPointsVersion() throws Exception {
     //given
-    ticketCounterRepository.save(TicketCounterTestData.getTicketCounterVersion());
-
-    //when
-    mvc.perform(get("/v1/ticket-counters"))
+    contactPointRepository.save(ContactPointTestData.getContactPointVersion());
+    //when & then
+    mvc.perform(get("/v1/contact-points"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
   }
 
   @Test
-  void shouldCreateTicketCounter() throws Exception {
+  void shouldCreateContactPoint() throws Exception {
     //given
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
     stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
@@ -98,18 +96,18 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
     referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
-    TicketCounterVersionModel model = TicketCounterTestData.getCreateTicketCounterVersionVersionModel();
-    model.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
-
+    ContactPointVersionModel contactPointVersionModel = ContactPointTestData.getContactPointVersionModel();
+    contactPointVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when && then
-    mvc.perform(post("/v1/ticket-counters").contentType(contentType)
-            .content(mapper.writeValueAsString(model)))
+    mvc.perform(post("/v1/contact-points")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(contactPointVersionModel)))
         .andExpect(status().isCreated());
     verify(relationService, times(1)).save(any(RelationVersion.class));
   }
 
   @Test
-  void shouldCreateTicketCounterWhenStopPointIsReduced() throws Exception {
+  void shouldCreateContactPointWithoutRelationWhenStopPointIsReduced() throws Exception {
     //given
     String parentServicePointSloid = "ch:1:sloid:7000";
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
@@ -117,49 +115,48 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
     stopPointVersion.setMeansOfTransport(Set.of(MeanOfTransport.BUS));
     stopPointRepository.save(stopPointVersion);
 
-    TicketCounterVersionModel model = TicketCounterTestData.getCreateTicketCounterVersionVersionModel();
-    model.setParentServicePointSloid(parentServicePointSloid);
-
+    ContactPointVersionModel contactPointVersionModel = ContactPointTestData.getContactPointVersionModel();
+    contactPointVersionModel.setParentServicePointSloid(parentServicePointSloid);
     //when && then
-    mvc.perform(post("/v1/ticket-counters").contentType(contentType)
-            .content(mapper.writeValueAsString(model)))
+    mvc.perform(post("/v1/contact-points")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(contactPointVersionModel)))
         .andExpect(status().isCreated());
     verify(relationService, never()).save(any(RelationVersion.class));
-
   }
 
   @Test
-  void shouldNotCreateTicketCounterWhenStopPointDoesNotExist() throws Exception {
+  void shouldNotCreateContactPointWhenStopPointDoesExist() throws Exception {
     //given
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
-    TicketCounterVersionModel model = TicketCounterTestData.getCreateTicketCounterVersionVersionModel();
-    model.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
-
+    ContactPointVersionModel contactPointVersionModel = ContactPointTestData.getContactPointVersionModel();
+    contactPointVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when && then
-    mvc.perform(post("/v1/ticket-counters").contentType(contentType)
-            .content(mapper.writeValueAsString(model)))
+    mvc.perform(post("/v1/contact-points")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(contactPointVersionModel)))
         .andExpect(status().isPreconditionFailed())
         .andExpect(jsonPath("$.message", is("The stop point with sloid ch:1:sloid:7000 does not exist.")));
     verify(relationService, times(0)).save(any(RelationVersion.class));
   }
 
+
   @Test
-  void shouldNotCreateTicketCounterVersionWhenParentSloidDoesNotExist() throws Exception {
+  void shouldNotCreateContactPointVersionWhenParentSloidDoesNotExist() throws Exception {
     //given
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setParentServicePointSloid("ch:1:sloid:7001");
     referencePointRepository.save(referencePointVersion);
 
-    ToiletVersionModel model = ToiletTestData.getToiletVersionModel();
-    model.setParentServicePointSloid("ch:1:sloid:7001");
-
+    ContactPointVersionModel contactPointVersionModel = ContactPointTestData.getContactPointVersionModel();
+    contactPointVersionModel.setParentServicePointSloid("ch:1:sloid:7001");
     //when && then
-    mvc.perform(post("/v1/toilets").contentType(contentType)
+    mvc.perform(post("/v1/contact-points")
                     .contentType(contentType)
-                    .content(mapper.writeValueAsString(model)))
+                    .content(mapper.writeValueAsString(contactPointVersionModel)))
             .andExpect(status().isPreconditionFailed())
             .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7001 does not exist.")));
   }
@@ -174,8 +171,8 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
    * Version:         1
    */
   @Test
-  void shouldUpdateTicketCounter() throws Exception {
-    //given
+  void shouldUpdateContactPoint() throws Exception {
+    // given
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
     stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
@@ -183,14 +180,14 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
     referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
 
-    TicketCounterVersion version1 = TicketCounterTestData.builderVersion1().build();
+    ContactPointVersion version1 = ContactPointTestData.builderVersion1().build();
     version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
-    ticketCounterRepository.saveAndFlush(version1);
-    TicketCounterVersion version2 = TicketCounterTestData.builderVersion2().build();
+    contactPointRepository.saveAndFlush(version1);
+    ContactPointVersion version2 = ContactPointTestData.builderVersion2().build();
     version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
-    ticketCounterRepository.saveAndFlush(version2);
+    contactPointRepository.saveAndFlush(version2);
 
-    TicketCounterVersionModel editedVersionModel = new TicketCounterVersionModel();
+    ContactPointVersionModel editedVersionModel = new ContactPointVersionModel();
     editedVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     editedVersionModel.setSloid(version2.getSloid());
     editedVersionModel.setValidFrom(version2.getValidFrom());
@@ -207,7 +204,7 @@ class TicketCounterVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setEtagVersion(version2.getVersion());
 
     //when & then
-    mvc.perform(put("/v1/ticket-counters/" + version2.getId()).contentType(contentType)
+    mvc.perform(put("/v1/contact-points/" + version2.getId()).contentType(contentType)
             .content(mapper.writeValueAsString(editedVersionModel)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(2)))

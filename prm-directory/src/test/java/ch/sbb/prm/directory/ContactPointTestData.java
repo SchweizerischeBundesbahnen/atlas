@@ -1,18 +1,18 @@
 package ch.sbb.prm.directory;
 
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
-import ch.sbb.atlas.api.prm.model.informationdesk.InformationDeskVersionModel;
+import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.prm.directory.entity.InformationDeskVersion;
-import ch.sbb.prm.directory.entity.InformationDeskVersion.InformationDeskVersionBuilder;
+import ch.sbb.prm.directory.entity.ContactPointVersion;
+import ch.sbb.prm.directory.entity.ContactPointVersion.ContactPointVersionBuilder;
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class InformationDeskTestData {
+public class ContactPointTestData {
 
-  public static InformationDeskVersion getInformationDeskVersion(){
-    return InformationDeskVersion.builder()
+  public static ContactPointVersion getContactPointVersion(){
+    return ContactPointVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -26,8 +26,8 @@ public class InformationDeskTestData {
         .build();
   }
 
-  public static InformationDeskVersionBuilder<?, ?> builderVersion1(){
-    return InformationDeskVersion.builder()
+  public static ContactPointVersionBuilder<?, ?> builderVersion1(){
+    return ContactPointVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -40,8 +40,8 @@ public class InformationDeskTestData {
         .wheelchairAccess(StandardAttributeType.YES);
   }
 
-  public static InformationDeskVersionBuilder<?, ?> builderVersion2(){
-    return InformationDeskVersion.builder()
+  public static ContactPointVersionBuilder<?, ?> builderVersion2(){
+    return ContactPointVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2001, 1, 1))
@@ -54,8 +54,8 @@ public class InformationDeskTestData {
         .wheelchairAccess(StandardAttributeType.YES);
   }
 
-  public static InformationDeskVersionBuilder<?, ?> builderVersion3(){
-    return InformationDeskVersion.builder()
+  public static ContactPointVersionBuilder<?, ?> builderVersion3(){
+    return ContactPointVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2003, 1, 1))
@@ -68,8 +68,8 @@ public class InformationDeskTestData {
         .wheelchairAccess(StandardAttributeType.YES);
   }
 
-  public static InformationDeskVersionModel getInformationDeskVersionModel(){
-    return InformationDeskVersionModel.builder()
+  public static ContactPointVersionModel getContactPointVersionModel(){
+    return ContactPointVersionModel.builder()
         .sloid("ch:1:sloid:12345:1")
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2001, 12, 31))
@@ -81,5 +81,4 @@ public class InformationDeskTestData {
         .wheelchairAccess(StandardAttributeType.YES)
         .build();
   }
-
 }

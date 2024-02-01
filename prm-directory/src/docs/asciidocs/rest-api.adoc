@@ -164,45 +164,27 @@ include::{snippets}/toilet-version-controller-api-test/should-get-toilet/auto-se
 
 include::{snippets}/toilet-version-controller-api-test/should-create-toilet/auto-section.adoc[]
 
-=== Update Toilets without Stop Point - Unsuccessfully
+=== Create Toilets without Stop Point - Unsuccessfully
 
-include::{snippets}/toilet-version-controller-api-test/should-update-ticket-counter/auto-section.adoc[]
+include::{snippets}/toilet-version-controller-api-test/should-not-create-toilet-when-stop-point-does-not-exist/auto-section.adoc[]
 
-== Ticket Counter
+== Contact Point
 
-=== Get Ticket Counters - Successfully
+=== Get Contact Points - Successfully
 
-include::{snippets}/ticket-counter-version-controller-api-test/should-get-ticket-counters-version/auto-section.adoc[]
+include::{snippets}/contact-point-version-controller-api-test/should-get-contact-points-version/auto-section.adoc[]
 
-=== Create Ticket Counters - Successfully
+=== Create Contact Point - Successfully
 
-include::{snippets}/ticket-counter-version-controller-api-test/should-create-ticket-counter/auto-section.adoc[]
+include::{snippets}/contact-point-version-controller-api-test/should-create-contact-point/auto-section.adoc[]
 
-=== Update Ticket Counters - Successfully
+=== Update Contact Point - Successfully
 
-include::{snippets}/ticket-counter-version-controller-api-test/should-update-ticket-counter/auto-section.adoc[]
+include::{snippets}/contact-point-version-controller-api-test/should-update-contact-point/auto-section.adoc[]
 
-=== Create Ticket Counters without Stop Point - Unsuccessfully
+=== Create Contact Point without Stop Point - Unsuccessfully
 
-include::{snippets}/ticket-counter-version-controller-api-test/should-not-create-ticket-counter-when-stop-point-does-not-exist/auto-section.adoc[]
-
-== Information Desk
-
-=== Get Information Desks - Successfully
-
-include::{snippets}/information-desk-version-controller-api-test/should-get-information-desks-version/auto-section.adoc[]
-
-=== Create Information Desks - Successfully
-
-include::{snippets}/information-desk-version-controller-api-test/should-create-information-desk/auto-section.adoc[]
-
-=== Update Information Desks - Successfully
-
-include::{snippets}/information-desk-version-controller-api-test/should-update-information-desk/auto-section.adoc[]
-
-=== Create Information Desks without Stop Point - Successfully
-
-include::{snippets}/information-desk-version-controller-api-test/should-not-create-information-desk-when-stop-point-does-exist/auto-section.adoc[]
+include::{snippets}/contact-point-version-controller-api-test/should-not-create-contact-point-when-stop-point-does-exist/auto-section.adoc[]
 
 == Parking Lot
 
