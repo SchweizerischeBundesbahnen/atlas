@@ -2,10 +2,11 @@ package ch.sbb.atlas.testdata.prm;
 
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModel;
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModelContainer;
+import lombok.experimental.UtilityClass;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class PlatformCsvTestData {

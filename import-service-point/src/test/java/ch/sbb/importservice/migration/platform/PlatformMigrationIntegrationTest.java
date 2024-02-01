@@ -1,4 +1,4 @@
-package ch.sbb.importservice.migration;
+package ch.sbb.importservice.migration.platform;
 
 import ch.sbb.atlas.export.model.prm.PlatformVersionCsvModel;
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModel;
@@ -7,6 +7,7 @@ import ch.sbb.atlas.imports.util.CsvReader;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Validity;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.importservice.migration.MigrationUtil;
 import ch.sbb.importservice.service.csv.PlatformCsvService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.MethodOrderer;
@@ -17,7 +18,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -126,7 +132,7 @@ class PlatformMigrationIntegrationTest {
   }
 
   @Test
-  @Order(5)
+  @Order(4)
   void shouldHaveMappedFieldsToAtlasUsingSloidCorrectly() {
     assertThat(atlasPlatformCsvLines).isNotEmpty();
     Map<String, List<PlatformVersionCsvModel>> groupedAtlasPlatforms = atlasPlatformCsvLines.stream()
