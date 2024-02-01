@@ -1,5 +1,6 @@
 package ch.sbb.prm.directory.service;
 
+import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -10,6 +11,7 @@ import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
 import ch.sbb.prm.directory.validation.StopPointValidationService;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +47,15 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
   @Override
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#version)")
   public StopPointVersion save(StopPointVersion version) {
+    version.setEditionDate(LocalDateTime.now());
+    version.setEditor(UserService.getUserIdentifier());
+
+    sharedServicePointService.validateServicePointExists(version.getSloid()); // This check is still needed because of import StopPoint
+    stopPointValidationService.validateStopPointRecordingVariants(version);
+    return stopPointRepository.saveAndFlush(version);
+  }
+
+  public StopPointVersion saveForImport(StopPointVersion version) {
     sharedServicePointService.validateServicePointExists(version.getSloid()); // This check is still needed because of import StopPoint
     stopPointValidationService.validateStopPointRecordingVariants(version);
     return stopPointRepository.saveAndFlush(version);
