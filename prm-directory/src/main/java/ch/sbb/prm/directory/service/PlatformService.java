@@ -5,6 +5,7 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFOR
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
 import ch.sbb.atlas.service.OverviewService;
+import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -14,6 +15,7 @@ import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.search.PlatformSearchRestrictions;
 import ch.sbb.prm.directory.validation.PlatformValidationService;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -55,6 +57,15 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
 
   @Override
   public PlatformVersion save(PlatformVersion version) {
+    version.setEditionDate(LocalDateTime.now());
+    version.setEditor(UserService.getUserIdentifier());
+
+    boolean reduced = stopPointService.isReduced(version.getParentServicePointSloid());
+    platformValidationService.validateRecordingVariants(version, reduced);
+    return platformRepository.saveAndFlush(version);
+  }
+
+  public PlatformVersion saveForImport(PlatformVersion version) {
     boolean reduced = stopPointService.isReduced(version.getParentServicePointSloid());
     platformValidationService.validateRecordingVariants(version, reduced);
     return platformRepository.saveAndFlush(version);
