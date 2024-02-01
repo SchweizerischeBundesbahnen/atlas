@@ -106,7 +106,7 @@ describe('GeographyComponent', () => {
     expect(component.setHeightFromGeoData).toHaveBeenCalledWith(coordinates)
   });
 
-  it('should call setHeightFromGeoData', () => {
+  it('should call setHeightFromGeoData if initTransformedCoordinatePair is called', () => {
     spyOn(component, 'setHeightFromGeoData');
 
     component.initTransformedCoordinatePair()
