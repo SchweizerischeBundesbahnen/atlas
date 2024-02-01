@@ -1,4 +1,4 @@
-package ch.sbb.atlas.api.prm.model.informationdesk;
+package ch.sbb.atlas.api.prm.model.contactpoint;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.validation.DatesValidator;
@@ -18,8 +18,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "ReadInformationDeskVersion")
-public class ReadInformationDeskVersionModel extends InformationDeskVersionModel implements DatesValidator {
+@Schema(name = "ReadContactPointVersion")
+public class ReadContactPointVersionModel extends ContactPointVersionModel implements DatesValidator {
 
   @NotNull
   @Valid
