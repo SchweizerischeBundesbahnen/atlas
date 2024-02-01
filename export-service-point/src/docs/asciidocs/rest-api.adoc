@@ -51,6 +51,7 @@ This service exports the following data:
 * *Stop Point Versions*
 
 == Service Point Directory
+
 === Service Point Versions
 
 Service Point Versions data is available via the ServicePoint API or as a File (CSV or JSON) via the Export Service Point API or through the Amazon S3 Bucket Client (CSV and JSON);
@@ -157,8 +158,7 @@ include::{snippets}/export-service-point-batch-controller-api-v1-integration-tes
 
 === Stop Point Versions
 
-Stop Point Versions data is available via the PRM-Directory StopPoint API or as a File (CSV or JSON) via the Export Stop Point
-API or through the Amazon S3 Bucket Client (CSV and JSON);
+Stop Point Versions data is available via the PRM-Directory StopPoint API or as a File (CSV or JSON) via the Export Stop Point API or through the Amazon S3 Bucket Client (CSV and JSON);
 
 The Export Stop Point generates nightly the following zipped CSV and gzipped JSON files:
 
@@ -179,22 +179,26 @@ See https://confluence.sbb.ch/x/GI3aj to get additional information about the da
 
 include::{snippets}/export-stop-point-batch-controller-api-v1-integration-test/should-post-stop-point-export-batch-successfully/auto-section.adoc[]
 
-=== Get Stop Point Json - Successfully
+=== Get Json - Successfully
 
-include::{snippets}/export-stop-point-batch-controller-api-v1-integration-test/should-get-json-successfully/auto-section.adoc[]
+include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-get-json-successfully/auto-section.adoc[]
 
-=== Get Stop Point Json - Unsuccessfully
+=== Get Json - Unsuccessfully
 
-include::{snippets}/export-stop-point-batch-controller-api-v1-integration-test/should-get-json-unsuccessfully/auto-section.adoc[]
+include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-get-json-unsuccessfully/auto-section.adoc[]
 
-=== Get Download Gzip Json Point Json - Successfully
+=== Download Gzip Json - Successfully
 
-include::{snippets}/export-stop-point-batch-controller-api-v1-integration-test/should-download-gzip-json-successfully/auto-section.adoc[]
+include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-download-gzip-json-successfully/auto-section.adoc[]
 
-=== Get Download Gzip Json Point Json - Unsuccessfully
+=== Download Gzip Json - Unsuccessfully
 
-include::{snippets}/export-stop-point-batch-controller-api-v1-integration-test/should-download-gzip-json-unsuccessfully/auto-section.adoc[]
+include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-download-gzip-json-unsuccessfully/auto-section.adoc[]
 
-=== Get Download Latest Gzip Json Point Json - Unsuccessfully
+=== Download Latest Json - Successfully
 
-include::{snippets}/export-stop-point-batch-controller-api-v1-integration-test/should-download-latest-gzip-json-successfully/auto-section.adoc[]
+include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-download-latest-json-successfully/auto-section.adoc[]
+
+=== Download Latest Gzip Json - Successfully
+
+include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-download-latest-gzip-json-successfully/auto-section.adoc[]
