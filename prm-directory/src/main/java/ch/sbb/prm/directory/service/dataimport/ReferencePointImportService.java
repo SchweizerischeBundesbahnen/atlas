@@ -23,14 +23,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ReferencePointImportService extends BasePrmImportService<ReferencePointVersion> {
 
-    private final ReferencePointRepository referencePointRepository;
-    private final ReferencePointService referencePointService;
-    private final VersionableService versionableService;
+  private final ReferencePointRepository referencePointRepository;
+  private final ReferencePointService referencePointService;
+  private final VersionableService versionableService;
 
-    @Override
-    protected void save(ReferencePointVersion version) {
-        referencePointService.saveForImport(version);
-    }
+  @Override
+  protected void save(ReferencePointVersion version) {
+    referencePointService.saveForImport(version);
+  }
 
   @Override
   protected ItemImportResult addInfoToItemImportResult(ItemImportResult.ItemImportResultBuilder itemImportResultBuilder,
@@ -90,14 +90,14 @@ public class ReferencePointImportService extends BasePrmImportService<ReferenceP
         new ApplyVersioningDeleteByIdLongConsumer(referencePointRepository));
   }
 
-    private ItemImportResult createVersion(ReferencePointVersion referencePointVersion) {
-        try {
-            ReferencePointVersion savedVersion = referencePointService.saveForImport(referencePointVersion);
-            return buildSuccessImportResult(savedVersion);
-        } catch (AtlasException exception) {
-            log.error("[ReferencePoint Import]: Error during save", exception);
-            return buildFailedImportResult(referencePointVersion, exception);
-        }
+  private ItemImportResult createVersion(ReferencePointVersion referencePointVersion) {
+    try {
+      ReferencePointVersion savedVersion = referencePointService.createReferencePointThroughImport(referencePointVersion);
+      return buildSuccessImportResult(savedVersion);
+    } catch (AtlasException exception) {
+      log.error("[ReferencePoint Import]: Error during save", exception);
+      return buildFailedImportResult(referencePointVersion, exception);
     }
+  }
 
 }
