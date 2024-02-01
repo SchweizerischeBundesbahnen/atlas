@@ -92,4 +92,25 @@ describe('GeographyComponent', () => {
     );
     expect(mapService.placeMarkerAndFlyTo).toHaveBeenCalledWith({ lng: 12, lat: 12 });
   });
+
+  it('should set height to form', () => {
+    const coordinates: CoordinatePair = {
+      north: 1207935,
+      east: 2600464,
+      spatialReference: SpatialReference.Lv95,
+    };
+    spyOn(component, 'setHeightFromGeoData');
+
+    component.setHeightFromGeoData(coordinates)
+
+    expect(component.setHeightFromGeoData).toHaveBeenCalledWith(coordinates)
+  });
+
+  it('should call setHeightFromGeoData if initTransformedCoordinatePair is called', () => {
+    spyOn(component, 'setHeightFromGeoData');
+
+    component.initTransformedCoordinatePair()
+
+    expect(component.setHeightFromGeoData).toHaveBeenCalled()
+  });
 });
