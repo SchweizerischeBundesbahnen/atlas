@@ -1,18 +1,20 @@
-package ch.sbb.importservice.migration;
-
-import static ch.sbb.atlas.imports.util.CsvReader.dateFromString;
-import static org.assertj.core.api.Assertions.assertThat;
+package ch.sbb.importservice.migration.stoppoint;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.export.model.prm.StopPointVersionCsvModel;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.importservice.migration.MigrationUtil;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static ch.sbb.atlas.imports.util.CsvReader.dateFromString;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public record StopPointMappingEquality(StopPointCsvModel didokCsvLine, StopPointVersionCsvModel atlasCsvLine) {
 
