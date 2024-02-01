@@ -15,7 +15,7 @@ public interface SloidApiV1 {
   @PostMapping("claim")
   ResponseEntity<String> claimSloid(@RequestBody @Valid ClaimSloidRequestModel claimSloidRequestModel);
 
-  @PostMapping("sync")
+  @PostMapping("maintenance/sync")
   ResponseEntity<Void> sync();
 
 }
