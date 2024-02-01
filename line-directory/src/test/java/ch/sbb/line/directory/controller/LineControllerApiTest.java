@@ -1,26 +1,5 @@
 package ch.sbb.line.directory.controller;
 
-import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.alternativeName;
-import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.businessOrganisation;
-import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.combinationName;
-import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.lineType;
-import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.longName;
-import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.paymentType;
-import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.slnid;
-import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.swissLineNumber;
-import static ch.sbb.atlas.api.lidi.enumaration.ModelType.LINE;
-import static ch.sbb.line.directory.converter.CmykColorConverter.fromCmykString;
-import static ch.sbb.line.directory.converter.RgbColorConverter.fromHex;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.lidi.LineVersionModel;
 import ch.sbb.atlas.api.lidi.LineVersionModel.Fields;
@@ -42,15 +21,37 @@ import ch.sbb.line.directory.repository.LineVersionRepository;
 import ch.sbb.line.directory.repository.LineVersionSnapshotRepository;
 import ch.sbb.line.directory.repository.SublineVersionRepository;
 import ch.sbb.line.directory.service.export.LineVersionExportService;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.alternativeName;
+import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.businessOrganisation;
+import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.combinationName;
+import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.lineType;
+import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.longName;
+import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.paymentType;
+import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.slnid;
+import static ch.sbb.atlas.api.lidi.LineVersionModel.Fields.swissLineNumber;
+import static ch.sbb.atlas.api.lidi.enumaration.ModelType.LINE;
+import static ch.sbb.line.directory.converter.CmykColorConverter.fromCmykString;
+import static ch.sbb.line.directory.converter.RgbColorConverter.fromHex;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
  class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
 

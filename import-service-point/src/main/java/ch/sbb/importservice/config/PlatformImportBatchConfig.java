@@ -1,7 +1,5 @@
 package ch.sbb.importservice.config;
 
-import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_PLATFORM_CSV_JOB_NAME;
-
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModel;
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModelContainer;
 import ch.sbb.importservice.listener.JobCompletionListener;
@@ -10,9 +8,6 @@ import ch.sbb.importservice.reader.ThreadSafeListItemReader;
 import ch.sbb.importservice.service.csv.PlatformCsvService;
 import ch.sbb.importservice.utils.StepUtils;
 import ch.sbb.importservice.writer.prm.PlatformApiWriter;
-import java.io.File;
-import java.util.Collections;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -25,6 +20,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import java.io.File;
+import java.util.Collections;
+import java.util.List;
+
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_PLATFORM_CSV_JOB_NAME;
 
 @Configuration
 @Slf4j
