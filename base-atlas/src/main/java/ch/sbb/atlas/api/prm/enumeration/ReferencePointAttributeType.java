@@ -14,6 +14,8 @@ public enum ReferencePointAttributeType {
   MAIN_STATION_ENTRANCE(0),
   ALTERNATIVE_STATION_ENTRANCE(1),
   ASSISTANCE_POINT(2),
+
+  //Unklar ob hier Information_desk ersetzt werden muss durch contact_point
   INFORMATION_DESK(3),
   PLATFORM(4),
   NO_REFERENCE_POINT(5);

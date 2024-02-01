@@ -1,7 +1,7 @@
 package ch.sbb.prm.directory.api;
 
-import ch.sbb.atlas.api.prm.model.informationdesk.InformationDeskVersionModel;
-import ch.sbb.atlas.api.prm.model.informationdesk.ReadInformationDeskVersionModel;
+import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
+import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -15,18 +15,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Tag(name = "Person with Reduced Mobility")
-@RequestMapping("v1/information-desks")
-public interface InformationDeskApiV1 {
+@RequestMapping("v1/contact-points")
+public interface ContactPointApiV1 {
 
   @GetMapping
-  List<ReadInformationDeskVersionModel> getInformationDesks();
+  List<ReadContactPointVersionModel> getContactPoints();
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
-  ReadInformationDeskVersionModel createInformationDesk(@RequestBody @Valid InformationDeskVersionModel model);
+  ReadContactPointVersionModel createContactPoint(@RequestBody @Valid ContactPointVersionModel model);
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}")
-  List<ReadInformationDeskVersionModel> updateInformationDesk(@PathVariable Long id,
-      @RequestBody @Valid InformationDeskVersionModel model);
+  List<ReadContactPointVersionModel> updateContactPoint(@PathVariable Long id,
+                                                           @RequestBody @Valid ContactPointVersionModel model);
 }

@@ -7,29 +7,26 @@ import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.prm.directory.InformationDeskTestData;
+import ch.sbb.prm.directory.ContactPointTestData;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.TicketCounterTestData;
 import ch.sbb.prm.directory.ToiletTestData;
 import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
-import ch.sbb.prm.directory.entity.InformationDeskVersion;
+import ch.sbb.prm.directory.entity.ContactPointVersion;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
-import ch.sbb.prm.directory.entity.TicketCounterVersion;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.exception.ReducedVariantException;
-import ch.sbb.prm.directory.repository.InformationDeskRepository;
+import ch.sbb.prm.directory.repository.ContactPointRepository;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
-import ch.sbb.prm.directory.repository.TicketCounterRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.search.ReferencePointSearchRestrictions;
 import java.util.List;
@@ -48,15 +45,13 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
   private final PlatformRepository platformRepository;
   private final StopPointRepository stopPointRepository;
   private final ParkingLotRepository parkingLotRepository;
-  private final TicketCounterRepository ticketCounterRepository;
-  private final InformationDeskRepository informationDeskRepository;
+  private final ContactPointRepository contactPointRepository;
 
   @Autowired
   ReferencePointServiceTest(ReferencePointService referencePointService, RelationService relationService,
       ToiletRepository toiletRepository, PlatformRepository platformRepository,
       StopPointRepository stopPointRepository, ParkingLotRepository parkingLotRepository,
-      TicketCounterRepository ticketCounterRepository,
-      InformationDeskRepository informationDeskRepository,
+      ContactPointRepository contactPointRepository,
       SharedServicePointRepository sharedServicePointRepository) {
     super(sharedServicePointRepository);
     this.referencePointService = referencePointService;
@@ -65,8 +60,7 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
     this.platformRepository = platformRepository;
     this.stopPointRepository = stopPointRepository;
     this.parkingLotRepository = parkingLotRepository;
-    this.ticketCounterRepository = ticketCounterRepository;
-    this.informationDeskRepository = informationDeskRepository;
+    this.contactPointRepository = contactPointRepository;
   }
 
   @Test
@@ -76,9 +70,8 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
     stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     createAndSavePlatformVersion(PARENT_SERVICE_POINT_SLOID);
-    createAndSaveTicketCounterVersion(PARENT_SERVICE_POINT_SLOID);
     createAndSaveToiletVersion(PARENT_SERVICE_POINT_SLOID);
-    createAndSaveInformationDeskVersion(PARENT_SERVICE_POINT_SLOID);
+    createAndSaveContactPointVersion(PARENT_SERVICE_POINT_SLOID);
     createAndSaveParkingLotVersion(PARENT_SERVICE_POINT_SLOID);
 
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
@@ -89,7 +82,7 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
     //then
     List<RelationVersion> relations = relationService
         .getRelationsByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
-    assertThat(relations).hasSize(5);
+    assertThat(relations).hasSize(4);
     assertThat(relations.stream().map(RelationVersion::getReferencePointElementType))
         .containsExactlyInAnyOrder(ReferencePointElementType.values());
   }
@@ -102,9 +95,8 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
     stopPointVersion.setSloid(parentServicePointSloid);
     stopPointRepository.save(stopPointVersion);
     createAndSavePlatformVersion(parentServicePointSloid);
-    createAndSaveTicketCounterVersion(parentServicePointSloid);
     createAndSaveToiletVersion(parentServicePointSloid);
-    createAndSaveInformationDeskVersion(parentServicePointSloid);
+    createAndSaveContactPointVersion(parentServicePointSloid);
     createAndSaveParkingLotVersion(parentServicePointSloid);
 
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
@@ -132,11 +124,11 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
     parkingLotRepository.save(parkingLot);
   }
 
-  private void createAndSaveInformationDeskVersion(String parentServicePointSloid) {
-    InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
-    informationDesk.setParentServicePointSloid(parentServicePointSloid);
-    informationDesk.setSloid("ch:1:sloid:70000:4");
-    informationDeskRepository.save(informationDesk);
+  private void createAndSaveContactPointVersion(String parentServicePointSloid) {
+    ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
+    contactPointVersion.setParentServicePointSloid(parentServicePointSloid);
+    contactPointVersion.setSloid("ch:1:sloid:70000:4");
+    contactPointRepository.save(contactPointVersion);
   }
 
   private void createAndSaveToiletVersion(String parentServicePointSloid) {
@@ -144,13 +136,6 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
     toiletVersion.setParentServicePointSloid(parentServicePointSloid);
     toiletVersion.setSloid("ch:1:sloid:70000:3");
     toiletRepository.save(toiletVersion);
-  }
-
-  private void createAndSaveTicketCounterVersion(String parentServicePointSloid) {
-    TicketCounterVersion ticketCounterversion = TicketCounterTestData.getTicketCounterVersion();
-    ticketCounterversion.setParentServicePointSloid(parentServicePointSloid);
-    ticketCounterversion.setSloid("ch:1:sloid:70000:2");
-    ticketCounterRepository.save(ticketCounterversion);
   }
 
   private void createAndSavePlatformVersion(String parentServicePointSloid) {
@@ -168,9 +153,8 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
     stopPointRepository.save(stopPointVersion);
 
     createAndSavePlatformVersion(PARENT_SERVICE_POINT_SLOID);
-    createAndSaveTicketCounterVersion(PARENT_SERVICE_POINT_SLOID);
     createAndSaveToiletVersion(PARENT_SERVICE_POINT_SLOID);
-    createAndSaveInformationDeskVersion(PARENT_SERVICE_POINT_SLOID);
+    createAndSaveContactPointVersion(PARENT_SERVICE_POINT_SLOID);
     createAndSaveParkingLotVersion(PARENT_SERVICE_POINT_SLOID);
 
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
@@ -200,9 +184,8 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
     stopPointRepository.save(stopPointVersion);
 
     createAndSavePlatformVersion(PARENT_SERVICE_POINT_SLOID);
-    createAndSaveTicketCounterVersion(PARENT_SERVICE_POINT_SLOID);
     createAndSaveToiletVersion(PARENT_SERVICE_POINT_SLOID);
-    createAndSaveInformationDeskVersion(PARENT_SERVICE_POINT_SLOID);
+    createAndSaveContactPointVersion(PARENT_SERVICE_POINT_SLOID);
     createAndSaveParkingLotVersion(PARENT_SERVICE_POINT_SLOID);
 
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
@@ -213,7 +196,7 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
     //then
     Container<ReadReferencePointVersionModel> result = referencePointService.buildOverview(
         referencePointService.findByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID),
-        Pageable.ofSize(5));
+        Pageable.ofSize(4));
 
     assertThat(result.getObjects()).hasSize(1);
   }
