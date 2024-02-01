@@ -74,13 +74,18 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   public ReferencePointVersion save(ReferencePointVersion version) {
     version.setEditionDate(LocalDateTime.now());
     version.setEditor(UserService.getUserIdentifier());
-
     stopPointService.validateIsNotReduced(version.getParentServicePointSloid());
     return referencePointRepository.saveAndFlush(version);
   }
 
   public ReferencePointVersion saveForImport(ReferencePointVersion version) {
     stopPointService.validateIsNotReduced(version.getParentServicePointSloid());
+    return referencePointRepository.saveAndFlush(version);
+  }
+
+  public ReferencePointVersion createReferencePointThroughImport(ReferencePointVersion version) {
+    stopPointService.validateIsNotReduced(version.getParentServicePointSloid());
+    locationService.allocateSloid(version, SloidType.REFERENCE_POINT);
     return referencePointRepository.saveAndFlush(version);
   }
 
