@@ -105,7 +105,9 @@ describe('ServicePointFormGroup', () => {
     servicePointFormGroup = ServicePointFormGroupBuilder.buildFormGroup(BERN_WYLEREGG);
 
     servicePointFormGroup.controls.meansOfTransport.setValue([]);
-
     expect(servicePointFormGroup.valid).toEqual(false);
+
+    servicePointFormGroup.controls.meansOfTransport.setValue([MeanOfTransport.Bus]);
+    expect(servicePointFormGroup.valid).toEqual(true);
   });
 });
