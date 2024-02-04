@@ -34,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ReferencePointMigrationIntegrationTest {
 
     private static final String DIDOK_REFERENCE_POINT_CSV_FILE = "PRM_REFERENCE_POINTS_TEST_20240201013707.csv";
-    private static final String ATLAS_REFERENCE_POINT_CSV_FILE = "full-reference-point-int-2024-02-01.csv";
+    private static final String ATLAS_REFERENCE_POINT_CSV_FILE = "full-reference-point-2024-02-04.csv";
     private static final List<ReferencePointCsvModel> didokReferencePointCsvLines = new ArrayList<>();
     private static final List<ReferencePointVersionCsvModel> atlasReferencePointCsvLines = new ArrayList<>();
 
