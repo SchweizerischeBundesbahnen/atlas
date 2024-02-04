@@ -20,9 +20,9 @@ public record ReferencePointMappingEquality(ReferencePointCsvModel didokCsvLine,
             assertThat(atlasCsvLine.getParentSloidServicePoint()).isEqualTo(
                     didokCsvLine.getDsSloid());
         }
-//        if (atlasCsvLine.getDesignation() != null && didokCsvLine.getDescription() != null) {
-//            assertThat(atlasCsvLine.getDesignation()).isEqualTo((didokCsvLine.getDescription()));
-//        }
+        if (atlasCsvLine.getDesignation() != null && didokCsvLine.getDescription() != null) {
+            assertThat(atlasCsvLine.getDesignation()).isEqualTo((didokCsvLine.getDescription()));
+        }
         assertThat(atlasCsvLine.isMainReferencePoint()).isEqualTo((didokCsvLine.getExport() == 1));
         if(atlasCsvLine.getAdditionalInformation() != null && didokCsvLine.getInfos() != null){
             String didokInfos = didokCsvLine.getInfos().replaceAll("\r\n|\r|\n", " ");
