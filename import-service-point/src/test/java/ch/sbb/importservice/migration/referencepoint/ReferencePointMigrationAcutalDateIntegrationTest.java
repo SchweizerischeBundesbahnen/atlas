@@ -7,6 +7,7 @@ import ch.sbb.atlas.imports.util.CsvReader;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.service.csv.ReferencePointCsvService;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -23,12 +24,13 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
+@Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ReferencePointMigrationAcutalDateIntegrationTest {
 
     private static final String DIDOK_REFERENCE_POINT_CSV_FILE = "PRM_REFERENCE_POINTS_TEST_20240201013707.csv";
-    private static final String ATLAS_REFERENCE_POINT_CSV_FILE = "actual-date-reference-point-2024-02-01.csv";
-    private static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 2, 1);
+    private static final String ATLAS_REFERENCE_POINT_CSV_FILE = "actual-date-reference-point-2024-02-04.csv";
+    private static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 2, 4);
 
     private static final List<ReferencePointCsvModel> didokReferencePointCsvLines = new ArrayList<>();
     private static final List<ReferencePointVersionCsvModel> atlasReferencePointCsvLines = new ArrayList<>();
