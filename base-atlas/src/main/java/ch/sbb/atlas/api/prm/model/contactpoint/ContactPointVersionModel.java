@@ -1,6 +1,7 @@
 package ch.sbb.atlas.api.prm.model.contactpoint;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.BasePrmVersionModel;
 import ch.sbb.atlas.api.prm.model.PrmApiConstants;
@@ -42,4 +43,6 @@ public class ContactPointVersionModel extends BasePrmVersionModel implements Dat
 
   private StandardAttributeType wheelchairAccess;
 
+  @NotNull
+  private ContactPointType type;
 }
