@@ -1,6 +1,6 @@
 package ch.sbb.prm.directory.entity;
 
-import ch.sbb.atlas.api.prm.enumeration.ContactPointAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
@@ -58,6 +58,6 @@ public class ContactPointVersion extends BasePrmEntityVersion implements Relatab
 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
-  private ContactPointAttributeType type;
+  private ContactPointType type;
 
 }
