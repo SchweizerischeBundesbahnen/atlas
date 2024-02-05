@@ -82,4 +82,14 @@ public class ExportServicePointBatchSchedulerService extends BaseSchedulerServic
         "Trigger Export Reference Point Batch");
   }
 
+  @SpanTracing
+  @Retryable(label = "triggerExportContactPointBatch", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
+  @Backoff(delay = 65000))
+  @Scheduled(cron = "${scheduler.export-service-point.contact-point-trigger-batch.chron}", zone = "${scheduler.zone}")
+  @SchedulerLock(name = "triggerExportContactPointBatch", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
+  public Response postTriggerExportContactPointBatch() {
+    return executeRequest(exportServicePointBatchClient::postTriggerExportContactPointBatch,
+        "Trigger Export Contact Point Batch");
+  }
+
 }
