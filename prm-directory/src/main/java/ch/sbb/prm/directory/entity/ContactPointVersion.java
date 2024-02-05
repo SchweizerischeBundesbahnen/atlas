@@ -56,7 +56,6 @@ public class ContactPointVersion extends BasePrmEntityVersion implements Relatab
   @AtlasVersionableProperty
   private StandardAttributeType wheelchairAccess;
 
-
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private ContactPointAttributeType type;
