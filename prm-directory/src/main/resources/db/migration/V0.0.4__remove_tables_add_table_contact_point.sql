@@ -15,6 +15,7 @@ CREATE TABLE contact_point_version
     induction_loop                  VARCHAR(50),
     opening_hours                   VARCHAR(2000),
     wheelchair_access               VARCHAR(50),
+    type                            VARCHAR(50)  NOT NULL,
     valid_from                      DATE         NOT NULL,
     valid_to                        DATE         NOT NULL,
     creation_date                   TIMESTAMP    NOT NULL,
