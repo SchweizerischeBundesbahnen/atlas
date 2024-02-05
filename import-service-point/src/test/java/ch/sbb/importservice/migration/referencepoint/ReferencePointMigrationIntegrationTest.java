@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -111,7 +112,8 @@ public class ReferencePointMigrationIntegrationTest {
         groupedSloidsDidok.forEach((sloid, didokValidity) -> {
             Validity atlasValidity = groupedSloidsAtlas.get(sloid);
             if (atlasValidity == null || !atlasValidity.equals(didokValidity)) {
-                log.error("error: ", didokValidity.getDateRanges());
+                log.error("error: " + didokValidity.getDateRanges());
+                assert atlasValidity != null;
                 validityErrors.add(
                         "ValidityError on sloid: " + sloid + " didokValidity=" + didokValidity.getDateRanges() + ", atlasValidity=" + atlasValidity.getDateRanges());
             }
@@ -132,15 +134,16 @@ public class ReferencePointMigrationIntegrationTest {
         Map<String, List<ReferencePointCsvModel>> groupedDidokReferencePoints = didokReferencePointCsvLines.stream()
                 .collect(Collectors.groupingBy(ReferencePointCsvModel::getSloid));
 
-        for (List<ReferencePointCsvModel> didokCsvItemList : groupedDidokReferencePoints.values()) {
-            Comparator<ReferencePointCsvModel> employeeAgeComparator = Comparator
-                    .comparing(ReferencePointCsvModel::getValidTo);
-
-            ReferencePointCsvModel t = didokCsvItemList.stream().max(employeeAgeComparator).get();
-            ReferencePointVersionCsvModel atlasCsvLine = findCorrespondingAtlasReferencePointVersion(t,
-                    groupedAtlasReferencePoints.get(t.getSloid()));
-            new ReferencePointMappingEquality(t, atlasCsvLine).performCheck();
-        }
+        groupedDidokReferencePoints.values().stream()
+                .map(didokCsvItemList -> didokCsvItemList.stream()
+                        .max(Comparator.comparing(ReferencePointCsvModel::getValidTo))
+                        .orElse(null))
+                .filter(Objects::nonNull)
+                .forEach(t -> {
+                    ReferencePointVersionCsvModel atlasCsvLine = findCorrespondingAtlasReferencePointVersion(t,
+                            groupedAtlasReferencePoints.get(t.getSloid()));
+                    new ReferencePointMappingEquality(t, atlasCsvLine).performCheck();
+                });
     }
 
     private ReferencePointVersionCsvModel findCorrespondingAtlasReferencePointVersion(ReferencePointCsvModel didokCsvLine,
