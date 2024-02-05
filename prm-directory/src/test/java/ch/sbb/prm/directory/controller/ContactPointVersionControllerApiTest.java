@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -197,6 +198,7 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setInductionLoop(version2.getInductionLoop());
     editedVersionModel.setOpeningHours(version2.getOpeningHours());
     editedVersionModel.setWheelchairAccess(version2.getWheelchairAccess());
+    editedVersionModel.setType(ContactPointType.INFORMATION_DESK);
     editedVersionModel.setCreationDate(version2.getCreationDate());
     editedVersionModel.setEditionDate(version2.getEditionDate());
     editedVersionModel.setCreator(version2.getCreator());

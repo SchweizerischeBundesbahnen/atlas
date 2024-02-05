@@ -1,5 +1,6 @@
 package ch.sbb.prm.directory;
 
+import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -23,6 +24,7 @@ public class ContactPointTestData {
         .inductionLoop(StandardAttributeType.NOT_APPLICABLE)
         .openingHours("10:00-22:00")
         .wheelchairAccess(StandardAttributeType.YES)
+        .type(ContactPointType.INFORMATION_DESK)
         .build();
   }
 
@@ -37,7 +39,8 @@ public class ContactPointTestData {
         .additionalInformation("Additional information")
         .inductionLoop(StandardAttributeType.NOT_APPLICABLE)
         .openingHours("10:00-22:00")
-        .wheelchairAccess(StandardAttributeType.YES);
+        .wheelchairAccess(StandardAttributeType.YES)
+        .type(ContactPointType.INFORMATION_DESK);
   }
 
   public static ContactPointVersionBuilder<?, ?> builderVersion2(){
@@ -51,7 +54,8 @@ public class ContactPointTestData {
         .additionalInformation("Additional information")
         .inductionLoop(StandardAttributeType.NOT_APPLICABLE)
         .openingHours("10:00-22:00")
-        .wheelchairAccess(StandardAttributeType.YES);
+        .wheelchairAccess(StandardAttributeType.YES)
+        .type(ContactPointType.INFORMATION_DESK);
   }
 
   public static ContactPointVersionBuilder<?, ?> builderVersion3(){
@@ -65,7 +69,8 @@ public class ContactPointTestData {
         .additionalInformation("Additional information")
         .inductionLoop(StandardAttributeType.NOT_APPLICABLE)
         .openingHours("10:00-22:00")
-        .wheelchairAccess(StandardAttributeType.YES);
+        .wheelchairAccess(StandardAttributeType.YES)
+        .type(ContactPointType.INFORMATION_DESK);
   }
 
   public static ContactPointVersionModel getContactPointVersionModel(){
@@ -79,6 +84,7 @@ public class ContactPointTestData {
         .inductionLoop(StandardAttributeType.NOT_APPLICABLE)
         .openingHours("10:00-22:00")
         .wheelchairAccess(StandardAttributeType.YES)
+        .type(ContactPointType.INFORMATION_DESK)
         .build();
   }
 }
