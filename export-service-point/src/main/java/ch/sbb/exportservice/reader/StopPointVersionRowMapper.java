@@ -51,6 +51,8 @@ public class StopPointVersionRowMapper extends BaseRowMapper implements RowMappe
     builder.infoTicketMachine(rs.getString("info_ticket_machine"));
     builder.interoperable(mapBooleanObject(rs));
     builder.url(rs.getString("url"));
+    builder.visualInfo(rs.getObject("visual_info") != null ?
+            StandardAttributeType.valueOf(rs.getString("visual_info")) : null);
     builder.wheelchairTicketMachine(
         rs.getObject("wheelchair_ticket_machine") != null ?
             StandardAttributeType.valueOf(rs.getString("wheelchair_ticket_machine")) : null);
