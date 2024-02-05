@@ -24,4 +24,5 @@ public class ReferencePointVersionSqlQueryUtil extends SqlQueryUtil {
     log.info(sqlQuery);
     return sqlQuery;
   }
+
 }
