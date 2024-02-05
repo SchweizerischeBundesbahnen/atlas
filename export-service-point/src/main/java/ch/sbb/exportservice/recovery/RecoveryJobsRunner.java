@@ -2,12 +2,15 @@ package ch.sbb.exportservice.recovery;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.batch.exception.JobExecutionException;
-import ch.sbb.exportservice.service.*;
+import ch.sbb.exportservice.service.BaseExportJobService;
+import ch.sbb.exportservice.service.ExportContactPointJobService;
+import ch.sbb.exportservice.service.ExportLoadingPointJobService;
+import ch.sbb.exportservice.service.ExportPlatformJobService;
+import ch.sbb.exportservice.service.ExportReferencePointJobService;
+import ch.sbb.exportservice.service.ExportServicePointJobService;
+import ch.sbb.exportservice.service.ExportStopPointJobService;
+import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.BatchStatus;
@@ -22,7 +25,25 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.*;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_CONTACT_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_CONTACT_POINT_JSON_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LOADING_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LOADING_POINT_JSON_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PLATFORM_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PLATFORM_JSON_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_REFERENCE_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_REFERENCE_POINT_JSON_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_JSON_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POINT_JSON_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_JSON_JOB_NAME;
 
 @Component
 @AllArgsConstructor
@@ -41,6 +62,8 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
           EXPORT_PLATFORM_JSON_JOB_NAME);
   private static final List<String> EXPORT_REFERENCE_POINT_JOB_NAME = List.of(EXPORT_REFERENCE_POINT_CSV_JOB_NAME,
       EXPORT_REFERENCE_POINT_JSON_JOB_NAME);
+  private static final List<String> EXPORT_CONTACT_POINT_JOB_NAME = List.of(EXPORT_CONTACT_POINT_CSV_JOB_NAME,
+      EXPORT_CONTACT_POINT_JSON_JOB_NAME);
   static final int TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE = 8;
   public static final String ATLAS_BATCH_STATUS_RECOVERED = "RECOVERED";
 
@@ -54,6 +77,7 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
   private final ExportStopPointJobService exportStopPointJobService;
   private final ExportPlatformJobService exportPlatformJobService;
   private final ExportReferencePointJobService exportReferencePointJobService;
+  private final ExportContactPointJobService exportContactPointJobService;
 
   @Override
   @Async
@@ -66,6 +90,7 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
     checkExportStopPointJobToRecover();
     checkExportPlatformJobToRecover();
     checkExportReferencePointJobToRecover();
+    checkExportContactPointJobToRecover();
   }
 
   private boolean checkIfHasJobsToRecover(List<String> exportJobsName) {
@@ -143,6 +168,10 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
 
   private void checkExportReferencePointJobToRecover() {
     checkJobToRecover(exportReferencePointJobService, EXPORT_REFERENCE_POINT_JOB_NAME);
+  }
+
+  private void checkExportContactPointJobToRecover() {
+    checkJobToRecover(exportContactPointJobService, EXPORT_CONTACT_POINT_JOB_NAME);
   }
 
   private void checkJobToRecover(BaseExportJobService jobService, List<String> jobsName) {
