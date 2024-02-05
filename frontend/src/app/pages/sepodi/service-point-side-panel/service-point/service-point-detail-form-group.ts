@@ -242,6 +242,9 @@ export class ServicePointFormGroupBuilder {
   }
 
   private static initStopPointValidation(formGroup: FormGroup<ServicePointDetailFormGroup>) {
+    if (formGroup.controls.stopPoint.value) {
+      formGroup.controls.meansOfTransport.setValidators([Validators.required]);
+    }
     formGroup.controls.stopPoint.valueChanges.subscribe((isStopPoint) => {
       if (isStopPoint) {
         formGroup.controls.meansOfTransport.setValidators([Validators.required]);
