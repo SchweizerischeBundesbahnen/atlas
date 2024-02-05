@@ -28,8 +28,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ReferencePointMigrationFutureTimetableIntegrationTest {
 
-    private static final String DIDOK_STOP_PLACE_CSV_FILE = "PRM_REFERENCE_POINTS_TEST_20240201013707.csv";
-    private static final String ATLAS_STOP_POINT_CSV_FILE = "future-timetable-reference-point-2024-02-04.csv";
+    private static final String DIDOK_STOP_PLACE_CSV_FILE = "PRM_REFERENCE_POINTS_20240205013249.csv";
+    private static final String ATLAS_STOP_POINT_CSV_FILE = "future-timetable-reference-point-2024-02-05.csv";
     private static final LocalDate FUTURE_TIMETABLE_DATE = LocalDate.of(2024, 12, 15);
 
     private static final List<ReferencePointCsvModel> didokReferencePointCsvLines = new ArrayList<>();
