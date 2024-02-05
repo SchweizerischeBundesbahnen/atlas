@@ -11,6 +11,7 @@ import {
   OperatingPointType,
 } from '../../../../api';
 import moment from 'moment';
+import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 
 describe('ServicePointFormGroup', () => {
   let servicePointFormGroup: FormGroup<ServicePointDetailFormGroup>;
@@ -98,5 +99,15 @@ describe('ServicePointFormGroup', () => {
 
     expect(createServicePointVersion.operatingPointKilometerMasterNumber).toEqual(undefined);
     expect(createServicePointVersion.operatingPointRouteNetwork).toEqual(true);
+  });
+
+  it('should init MoT required on existing StopPoint', () => {
+    servicePointFormGroup = ServicePointFormGroupBuilder.buildFormGroup(BERN_WYLEREGG);
+
+    servicePointFormGroup.controls.meansOfTransport.setValue([]);
+    expect(servicePointFormGroup.valid).toEqual(false);
+
+    servicePointFormGroup.controls.meansOfTransport.setValue([MeanOfTransport.Bus]);
+    expect(servicePointFormGroup.valid).toEqual(true);
   });
 });
