@@ -1,9 +1,14 @@
-package ch.sbb.importservice.migration;
+package ch.sbb.importservice.migration.platform;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
-import ch.sbb.atlas.api.prm.enumeration.*;
+import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.BooleanIntegerAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.export.model.prm.PlatformVersionCsvModel;
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModel;
+import ch.sbb.importservice.migration.MigrationUtil;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

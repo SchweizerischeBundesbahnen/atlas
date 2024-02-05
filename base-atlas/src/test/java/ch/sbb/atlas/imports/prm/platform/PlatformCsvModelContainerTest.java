@@ -1,12 +1,13 @@
 package ch.sbb.atlas.imports.prm.platform;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.testdata.prm.PlatformCsvTestData;
+import org.junit.jupiter.api.Test;
+
 import java.util.Arrays;
 import java.util.List;
-import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class PlatformCsvModelContainerTest {
