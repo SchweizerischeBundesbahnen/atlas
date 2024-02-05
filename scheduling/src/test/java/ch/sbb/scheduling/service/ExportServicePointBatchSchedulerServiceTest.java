@@ -1,21 +1,22 @@
 package ch.sbb.scheduling.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
-
 import ch.sbb.scheduling.client.ExportServicePointBatchClient;
 import ch.sbb.scheduling.exception.SchedulingExecutionException;
 import feign.Request;
 import feign.Request.HttpMethod;
 import feign.Response;
 import feign.Util;
-import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
+
+import java.util.Collections;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
  class ExportServicePointBatchSchedulerServiceTest {
 
@@ -151,6 +152,26 @@ import org.springframework.http.HttpStatus;
   }
 
   @Test
+  void shouldTriggerExportContactPointBatchSuccessfully() {
+   //given
+   Response response = Response.builder()
+       .status(200)
+       .reason("OK")
+       .request(
+           Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+               null, Util.UTF_8, null))
+       .build();
+   when(client.postTriggerExportContactPointBatch()).thenReturn(response);
+
+   //when
+   Response result = exportServicePointBatchSchedulerService.postTriggerExportContactPointBatch();
+
+   //then
+   assertThat(result).isNotNull();
+   assertThat(result.status()).isEqualTo(200);
+  }
+
+  @Test
    void shouldPostLoadCompaniesFromCRDUnsuccessful() {
     //given
     Response response = Response.builder()
@@ -166,7 +187,6 @@ import org.springframework.http.HttpStatus;
     assertThrows(SchedulingExecutionException.class, () -> {
       exportServicePointBatchSchedulerService.postTriggerExportServicePointBatch();
     });
-
   }
 
 }

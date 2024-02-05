@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.controller;
 
+import ch.sbb.exportservice.service.ExportContactPointJobService;
 import ch.sbb.exportservice.service.ExportReferencePointJobService;
 import ch.sbb.exportservice.service.ExportStopPointJobService;
 import io.micrometer.tracing.annotation.NewSpan;
@@ -24,6 +25,7 @@ public class ExportStopPointBatchControllerApiV1 {
 
   private final ExportStopPointJobService exportStopPointJobService;
   private final ExportReferencePointJobService exportReferencePointJobService;
+  private final ExportContactPointJobService exportContactPointJobService;
 
   @PostMapping("stop-point-batch")
   @ResponseStatus(HttpStatus.OK)
@@ -45,6 +47,17 @@ public class ExportStopPointBatchControllerApiV1 {
   @Async
   public void startExportReferencePointBatch() {
     exportReferencePointJobService.startExportJobs();
+  }
+
+  @PostMapping("contact-point-batch")
+  @ResponseStatus(HttpStatus.OK)
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200"),
+  })
+  @NewSpan
+  @Async
+  public void startExportContactPointBatch() {
+    exportContactPointJobService.startExportJobs();
   }
 
 }
