@@ -9,7 +9,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.api.client.location.LocationClientV1;
+import ch.sbb.atlas.api.client.location.BaseLocationClient;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.exception.SloidAlreadyExistsException;
 import ch.sbb.atlas.servicepoint.Country;
@@ -24,7 +24,7 @@ import org.mockito.MockitoAnnotations;
 class LocationServiceTest {
 
   @Mock
-  private LocationClientV1 locationClient;
+  private BaseLocationClient locationClient;
 
   private LocationService locationService;
 
