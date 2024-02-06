@@ -1,9 +1,12 @@
 package ch.sbb.atlas.location.config;
 
 import static ch.sbb.atlas.configuration.Role.ATLAS_ADMIN;
+import static ch.sbb.atlas.configuration.Role.ROLES_JWT_KEY;
+import static ch.sbb.atlas.configuration.Role.ROLE_PREFIX;
 import static org.springframework.security.config.Customizer.withDefaults;
 import static org.springframework.security.oauth2.jwt.JwtClaimNames.AUD;
 
+import ch.sbb.atlas.configuration.BaseSecurityConfig;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -30,9 +33,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-  private static final String ROLE_PREFIX = "ROLE_";
-  private static final String ROLES_KEY = "roles";
-
   @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
   private String issuerUri;
 
@@ -49,8 +49,7 @@ public class SecurityConfig {
         .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
         .authorizeHttpRequests(authorizeRequests ->
-            authorizeRequests
-                .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+            BaseSecurityConfig.addAllowedActuatorPaths(authorizeRequests)
                 .requestMatchers(HttpMethod.POST, "/**").hasRole(ATLAS_ADMIN)
                 .anyRequest().authenticated()
         )
@@ -93,7 +92,7 @@ public class SecurityConfig {
   private JwtGrantedAuthoritiesConverter azureAdRoleConverter() {
     JwtGrantedAuthoritiesConverter roleConverter = new JwtGrantedAuthoritiesConverter();
     roleConverter.setAuthorityPrefix(ROLE_PREFIX);
-    roleConverter.setAuthoritiesClaimName(ROLES_KEY);
+    roleConverter.setAuthoritiesClaimName(ROLES_JWT_KEY);
     return roleConverter;
   }
 

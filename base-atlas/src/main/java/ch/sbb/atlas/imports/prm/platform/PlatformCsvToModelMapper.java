@@ -6,11 +6,11 @@ import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
-import lombok.experimental.UtilityClass;
-import org.apache.commons.lang3.StringUtils;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
+import lombok.experimental.UtilityClass;
+import org.apache.commons.lang3.StringUtils;
 
 @UtilityClass
 public class PlatformCsvToModelMapper {

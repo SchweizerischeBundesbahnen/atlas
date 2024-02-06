@@ -7,15 +7,14 @@ import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.exception.SloidAlreadyExistsException;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.SloidValidation;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
-import feign.FeignException;
 import feign.FeignException.Conflict;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class LocationService {
 
-  public static final String SLOID_PREFIX = "ch:1:sloid:";
   private final LocationClientV1 locationClient;
 
   private void claimSloid(ClaimSloidRequestModel request) {
@@ -36,10 +35,10 @@ public class LocationService {
     }
   }
 
-  public String generateTrafficPointSloid(TrafficPointElementType trafficPointElementType, ServicePointNumber servicePointNumber)
-      throws FeignException {
+  public String generateTrafficPointSloid(TrafficPointElementType trafficPointElementType,
+      ServicePointNumber servicePointNumber) {
     final SloidType sloidType = getSloidType(trafficPointElementType);
-    final String sloidPrefix = SLOID_PREFIX + (servicePointNumber.getCountry() == Country.SWITZERLAND ?
+    final String sloidPrefix = SloidValidation.SLOID_PREFIX + (servicePointNumber.getCountry() == Country.SWITZERLAND ?
         servicePointNumber.getNumberShort()
         : servicePointNumber.getNumber());
     return locationClient.generateSloid(new GenerateSloidRequestModel(sloidType, sloidPrefix));
