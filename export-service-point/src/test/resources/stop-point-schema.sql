@@ -4,9 +4,7 @@ create sequence platform_version_seq start with 1000;
 
 create sequence toilet_version_seq start with 1000;
 
-create sequence ticket_counter_version_seq start with 1000;
-
-create sequence information_desk_version_seq start with 1000;
+create sequence contact_point_version_seq start with 1000;
 
 create sequence parking_lot_version_seq start with 1000;
 
@@ -157,7 +155,7 @@ create table toilet_version
         unique (sloid, valid_from)
 );
 
-create table ticket_counter_version
+create table contact_point_version
 (
     id                         bigint           not null primary key,
     sloid                      varchar(500)     not null,
@@ -168,6 +166,7 @@ create table ticket_counter_version
     induction_loop             varchar(50),
     opening_hours              varchar(2000),
     wheelchair_access          varchar(50),
+    type                       varchar(50)      not null,
     valid_from                 date             not null,
     valid_to                   date             not null,
     creation_date              timestamp        not null,
@@ -175,29 +174,7 @@ create table ticket_counter_version
     edition_date               timestamp        not null,
     editor                     varchar(50)      not null,
     version                    bigint default 0 not null,
-    constraint ticket_counter_sloid_unique
-        unique (sloid, valid_from)
-);
-
-create table information_desk_version
-(
-    id                         bigint           not null primary key,
-    sloid                      varchar(500)     not null,
-    number                     integer          not null,
-    parent_service_point_sloid varchar(500)     not null,
-    designation                varchar(50),
-    additional_information     varchar(2000),
-    induction_loop             varchar(50),
-    opening_hours              varchar(2000),
-    wheelchair_access          varchar(50),
-    valid_from                 date             not null,
-    valid_to                   date             not null,
-    creation_date              timestamp        not null,
-    creator                    varchar(50)      not null,
-    edition_date               timestamp        not null,
-    editor                     varchar(50)      not null,
-    version                    bigint default 0 not null,
-    constraint information_desk_sloid_unique
+    constraint contact_point_sloid_unique
         unique (sloid, valid_from)
 );
 

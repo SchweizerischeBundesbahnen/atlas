@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import static ch.sbb.exportservice.recovery.RecoveryJobsRunner.TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_CONTACT_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LOADING_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PLATFORM_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_REFERENCE_POINT_CSV_JOB_NAME;
@@ -216,6 +217,34 @@ class RecoveryJobsRunnerTest {
   }
 
   @Test
+  void shouldRecoverExportPlatformWhenOneJobIsNotSuccessfullyExecuted() throws Exception {
+    //given
+    StepExecution stepExecution = new StepExecution("myStep", jobExecution);
+    stepExecution.setId(132L);
+    Map<String, JobParameter<?>> parameters = new HashMap<>();
+    parameters.put(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
+    parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(SePoDiExportType.WORLD_FULL.name(), String.class));
+    when(jobParameters.getParameters()).thenReturn(parameters);
+    when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);
+    when(jobExecution.getJobParameters()).thenReturn(jobParameters);
+    when(jobExecution.getStepExecutions()).thenReturn(List.of(stepExecution));
+    when(jobExecution.getCreateTime()).thenReturn(LocalDateTime.now());
+    when(jobExplorer.getJobInstanceCount(EXPORT_PLATFORM_CSV_JOB_NAME)).thenReturn(Long.valueOf(
+            TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE));
+    when(jobExplorer.getJobInstances(EXPORT_PLATFORM_CSV_JOB_NAME, 0, TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE)).thenReturn(
+            List.of(jobInstance));
+    when(jobExplorer.getJobExecutions(jobInstance)).thenReturn(List.of(jobExecution));
+    when(jobLauncher.run(any(), any())).thenReturn(jobExecution);
+
+    //when
+    recoveryJobsRunner.onApplicationEvent(applicationReadyEvent);
+
+    //then
+    verify(exportPlatformJobService).startExportJobs();
+    verify(fileService).clearDir();
+  }
+
+  @Test
   void shouldRecoverExportReferencePointWhenOneJobIsNotSuccessfullyExecuted() throws Exception {
     //given
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
@@ -245,22 +274,23 @@ class RecoveryJobsRunnerTest {
   }
 
   @Test
-  void shouldRecoverExportPlatformWhenOneJobIsNotSuccessfullyExecuted() throws Exception {
+  void shouldRecoverExportContactPointWhenOneJobIsNotSuccessfullyExecuted() throws Exception {
     //given
     StepExecution stepExecution = new StepExecution("myStep", jobExecution);
     stepExecution.setId(132L);
     Map<String, JobParameter<?>> parameters = new HashMap<>();
     parameters.put(JobDescriptionConstants.EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
     parameters.put(EXPORT_TYPE_JOB_PARAMETER, new JobParameter<>(SePoDiExportType.WORLD_FULL.name(), String.class));
+
     when(jobParameters.getParameters()).thenReturn(parameters);
     when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);
     when(jobExecution.getJobParameters()).thenReturn(jobParameters);
     when(jobExecution.getStepExecutions()).thenReturn(List.of(stepExecution));
     when(jobExecution.getCreateTime()).thenReturn(LocalDateTime.now());
-    when(jobExplorer.getJobInstanceCount(EXPORT_PLATFORM_CSV_JOB_NAME)).thenReturn(Long.valueOf(
-            TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE));
-    when(jobExplorer.getJobInstances(EXPORT_PLATFORM_CSV_JOB_NAME, 0, TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE)).thenReturn(
-            List.of(jobInstance));
+    when(jobExplorer.getJobInstanceCount(EXPORT_CONTACT_POINT_CSV_JOB_NAME)).thenReturn(Long.valueOf(
+        TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE));
+    when(jobExplorer.getJobInstances(EXPORT_CONTACT_POINT_CSV_JOB_NAME, 0, TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE)).thenReturn(
+        List.of(jobInstance));
     when(jobExplorer.getJobExecutions(jobInstance)).thenReturn(List.of(jobExecution));
     when(jobLauncher.run(any(), any())).thenReturn(jobExecution);
 
@@ -268,9 +298,10 @@ class RecoveryJobsRunnerTest {
     recoveryJobsRunner.onApplicationEvent(applicationReadyEvent);
 
     //then
-    verify(exportPlatformJobService).startExportJobs();
+    verify(exportContactPointJobService).startExportJobs();
     verify(fileService).clearDir();
   }
+
   @Test
   void shouldNotRecoverAnyJob() {
     //when
