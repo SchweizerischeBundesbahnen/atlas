@@ -1,8 +1,7 @@
-package ch.sbb.atlas.servicepointdirectory.exception;
+package ch.sbb.atlas.exception;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.exception.SloidAlreadyExistsException;
 import org.junit.jupiter.api.Test;
 
 class SloidAlreadyExistsExceptionTest {
