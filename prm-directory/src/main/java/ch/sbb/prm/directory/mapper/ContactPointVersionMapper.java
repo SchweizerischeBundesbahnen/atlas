@@ -1,15 +1,15 @@
 package ch.sbb.prm.directory.mapper;
 
-import ch.sbb.atlas.api.prm.model.informationdesk.InformationDeskVersionModel;
-import ch.sbb.atlas.api.prm.model.informationdesk.ReadInformationDeskVersionModel;
-import ch.sbb.prm.directory.entity.InformationDeskVersion;
+import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
+import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
+import ch.sbb.prm.directory.entity.ContactPointVersion;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class InformationDeskVersionMapper {
+public class ContactPointVersionMapper {
 
-  public static ReadInformationDeskVersionModel toModel(InformationDeskVersion version){
-    return ReadInformationDeskVersionModel.builder()
+  public static ReadContactPointVersionModel toModel(ContactPointVersion version){
+    return ReadContactPointVersionModel.builder()
         .id(version.getId())
         .sloid(version.getSloid())
         .parentServicePointSloid(version.getParentServicePointSloid())
@@ -21,6 +21,7 @@ public class InformationDeskVersionMapper {
         .inductionLoop(version.getInductionLoop())
         .openingHours(version.getOpeningHours())
         .wheelchairAccess(version.getWheelchairAccess())
+        .type(version.getType())
         .creator(version.getCreator())
         .creationDate(version.getCreationDate())
         .editor(version.getEditor())
@@ -29,8 +30,8 @@ public class InformationDeskVersionMapper {
         .build();
   }
 
-  public static InformationDeskVersion toEntity(InformationDeskVersionModel model){
-    return InformationDeskVersion.builder()
+  public static ContactPointVersion toEntity(ContactPointVersionModel model){
+    return ContactPointVersion.builder()
         .id(model.getId())
         .sloid(model.getSloid())
         .parentServicePointSloid(model.getParentServicePointSloid())
@@ -42,6 +43,7 @@ public class InformationDeskVersionMapper {
         .inductionLoop(model.getInductionLoop())
         .openingHours(model.getOpeningHours())
         .wheelchairAccess(model.getWheelchairAccess())
+        .type(model.getType())
         .creator(model.getCreator())
         .creationDate(model.getCreationDate())
         .editor(model.getEditor())
