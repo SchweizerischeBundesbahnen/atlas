@@ -19,9 +19,7 @@ public enum SloidType {
   /** PRM ex. ch:1:sloid:7000:5 */
   PARKING_LOT,
   /** PRM ex. ch:1:sloid:7000:5 */
-  INFO_DESK,
-  /** PRM ex. ch:1:sloid:7000:5 */
-  TICKET_COUNTER;
+  CONTACT_POINT;
 
   public static String transformSloidPrefix(SloidType sloidType, String sloidPrefix) {
     return sloidType == PLATFORM ? sloidPrefix + ":0" : sloidPrefix;

@@ -21,7 +21,7 @@ public class SloidSyncService {
   private final PrmRepository prmRepository;
 
   private static final List<SloidType> SLOID_TYPES = List.of(SloidType.PLATFORM, SloidType.AREA, SloidType.REFERENCE_POINT,
-      SloidType.PARKING_LOT, SloidType.INFO_DESK, SloidType.TICKET_COUNTER, SloidType.TOILET);
+      SloidType.PARKING_LOT, SloidType.CONTACT_POINT, SloidType.TOILET);
 
   public void sync() {
     servicePointSloidSync();
