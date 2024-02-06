@@ -1,6 +1,7 @@
-package ch.sbb.atlas.api.prm.model.ticketcounter;
+package ch.sbb.atlas.api.prm.model.contactpoint;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.BasePrmVersionModel;
 import ch.sbb.atlas.api.prm.model.PrmApiConstants;
@@ -21,8 +22,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "TicketCounterVersion")
-public class TicketCounterVersionModel extends BasePrmVersionModel implements DatesValidator {
+@Schema(name = "ContactPointVersion")
+public class ContactPointVersionModel extends BasePrmVersionModel implements DatesValidator {
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @Schema(description = PrmApiConstants.PARENT_SLOID_DESCRIPTION, example = "ch:1:sloid:18771")
@@ -42,4 +43,6 @@ public class TicketCounterVersionModel extends BasePrmVersionModel implements Da
 
   private StandardAttributeType wheelchairAccess;
 
+  @NotNull
+  private ContactPointType type;
 }

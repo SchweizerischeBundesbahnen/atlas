@@ -1,15 +1,11 @@
 package ch.sbb.prm.directory.controller;
 
-import ch.sbb.atlas.api.prm.model.ticketcounter.TicketCounterVersionModel;
+import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.api.prm.model.toilet.ToiletVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.prm.directory.ReferencePointTestData;
-import ch.sbb.prm.directory.SharedServicePointTestData;
-import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.TicketCounterTestData;
-import ch.sbb.prm.directory.ToiletTestData;
+import ch.sbb.prm.directory.*;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.SharedServicePoint;
@@ -157,11 +153,11 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
     referencePointVersion.setParentServicePointSloid("ch:1:sloid:7001");
     referencePointRepository.save(referencePointVersion);
 
-    TicketCounterVersionModel model = TicketCounterTestData.getCreateTicketCounterVersionVersionModel();
+    ContactPointVersionModel model = ContactPointTestData.getContactPointVersionModel();
     model.setParentServicePointSloid("ch:1:sloid:7001");
 
     //when && then
-    mvc.perform(post("/v1/ticket-counters").contentType(contentType)
+    mvc.perform(post("/v1/contact-points").contentType(contentType)
                     .contentType(contentType)
                     .content(mapper.writeValueAsString(model)))
             .andExpect(status().isPreconditionFailed())

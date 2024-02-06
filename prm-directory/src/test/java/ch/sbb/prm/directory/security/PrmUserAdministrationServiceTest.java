@@ -12,14 +12,13 @@ import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionRestrictionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.user.administration.security.UserPermissionHolder;
-import ch.sbb.prm.directory.InformationDeskTestData;
+import ch.sbb.prm.directory.ContactPointTestData;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.RelationTestData;
 import ch.sbb.prm.directory.SharedServicePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.TicketCounterTestData;
 import ch.sbb.prm.directory.ToiletTestData;
 import ch.sbb.prm.directory.entity.PrmSharedVersion;
 import ch.sbb.prm.directory.entity.SharedServicePoint;
@@ -85,12 +84,12 @@ class PrmUserAdministrationServiceTest {
         String parentServicePointSloid = "ch:1:sloid:8507000";
         return Stream.of(
                 Arguments.of(StopPointTestData.getStopPointVersion(), sharedServicePoint2),
-                Arguments.of(InformationDeskTestData.getInformationDeskVersion(), sharedServicePoint1),
+                Arguments.of(ContactPointTestData.getContactPointVersion(), sharedServicePoint1),
                 Arguments.of(ParkingLotTestData.getParkingLotVersion(), sharedServicePoint1),
                 Arguments.of(PlatformTestData.getPlatformVersion(), sharedServicePoint2),
                 Arguments.of(ReferencePointTestData.getReferencePointVersion(), sharedServicePoint1),
                 Arguments.of(RelationTestData.getRelation(parentServicePointSloid, relationSloid, PLATFORM), sharedServicePoint3),
-                Arguments.of(TicketCounterTestData.getTicketCounterVersion(), sharedServicePoint1),
+                Arguments.of(ContactPointTestData.getContactPointVersion(), sharedServicePoint1),
                 Arguments.of(ToiletTestData.getToiletVersion(), sharedServicePoint1)
                 );
     }
