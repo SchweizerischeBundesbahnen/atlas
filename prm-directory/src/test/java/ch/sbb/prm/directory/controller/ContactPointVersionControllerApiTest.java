@@ -9,6 +9,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -111,7 +112,7 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(contactPointVersionModel)))
         .andExpect(status().isCreated());
     verify(relationService, times(1)).save(any(RelationVersion.class));
-    verify(prmLocationService, times(1)).allocateSloid(any(InformationDeskVersion.class), eq(SloidType.INFO_DESK));
+    verify(prmLocationService, times(1)).allocateSloid(any(ContactPointVersion.class), eq(SloidType.CONTACT_POINT));
   }
 
   @Test
@@ -131,7 +132,7 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(contactPointVersionModel)))
         .andExpect(status().isCreated());
     verify(relationService, never()).save(any(RelationVersion.class));
-    verify(prmLocationService, times(1)).allocateSloid(any(InformationDeskVersion.class), eq(SloidType.INFO_DESK));
+    verify(prmLocationService, times(1)).allocateSloid(any(ContactPointVersion.class), eq(SloidType.CONTACT_POINT));
   }
 
   @Test

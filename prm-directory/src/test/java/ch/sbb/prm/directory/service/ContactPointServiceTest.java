@@ -83,7 +83,7 @@ class ContactPointServiceTest extends BasePrmServiceTest {
     List<RelationVersion> relationVersions = relationRepository
         .findAllByParentServicePointSloid(contactPointVersion.getParentServicePointSloid());
     assertThat(relationVersions).isEmpty();
-    verify(prmLocationService, times(1)).allocateSloid(any(),eq(SloidType.INFO_DESK));
+    verify(prmLocationService, times(1)).allocateSloid(any(), eq(SloidType.CONTACT_POINT));
   }
 
   @Test
@@ -114,7 +114,7 @@ class ContactPointServiceTest extends BasePrmServiceTest {
         relationVersions.get(0).getReferencePointElementType()).isEqualTo(ReferencePointElementType.CONTACT_POINT);
     assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(ReferencePointElementType.CONTACT_POINT);
-    verify(prmLocationService, times(1)).allocateSloid(any(),eq(SloidType.INFO_DESK));
+    verify(prmLocationService, times(1)).allocateSloid(any(), eq(SloidType.CONTACT_POINT));
   }
 
   @Test
@@ -136,14 +136,14 @@ class ContactPointServiceTest extends BasePrmServiceTest {
 
     //then
     List<ContactPointVersion> contactPointVersions = contactPointRepository.findByParentServicePointSloid(
-            contactPointVersion.getParentServicePointSloid());
+        contactPointVersion.getParentServicePointSloid());
     assertThat(contactPointVersions).hasSize(1);
     assertThat(contactPointVersions.get(0).getParentServicePointSloid()).isEqualTo(
         contactPointVersion.getParentServicePointSloid());
     List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
         parentServicePointSloid);
     assertThat(relationVersions).isEmpty();
-    verify(prmLocationService, times(1)).allocateSloid(any(),eq(SloidType.INFO_DESK));
+    verify(prmLocationService, times(1)).allocateSloid(any(), eq(SloidType.CONTACT_POINT));
   }
 
 }
