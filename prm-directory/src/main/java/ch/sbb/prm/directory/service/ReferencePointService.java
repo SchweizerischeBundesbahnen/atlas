@@ -1,5 +1,6 @@
 package ch.sbb.prm.directory.service;
 
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.CONTACT_POINT;
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TOILET;
@@ -8,7 +9,6 @@ import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
-import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.service.OverviewService;
 import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
