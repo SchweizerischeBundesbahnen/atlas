@@ -6,11 +6,8 @@ import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.ContactPointTestData;
 import ch.sbb.prm.directory.entity.ContactPointVersion;
-import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class ContactPointMapperTest {
 

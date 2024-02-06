@@ -1,10 +1,9 @@
-package ch.sbb.prm.directory.mapper;
+package ch.sbb.atlas.location;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import ch.sbb.atlas.model.exception.BadRequestException;
-import ch.sbb.atlas.location.SloidHelper;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import org.junit.jupiter.api.Test;
 
@@ -26,4 +25,5 @@ class SloidHelperTest {
   void shouldReturnBadRequestOnInvalidSloid() {
     assertThatExceptionOfType(BadRequestException.class).isThrownBy(() -> SloidHelper.getServicePointNumber("ch:1:sloid:a"));
   }
+
 }
