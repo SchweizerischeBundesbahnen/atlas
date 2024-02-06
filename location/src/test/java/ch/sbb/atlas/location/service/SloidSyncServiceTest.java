@@ -32,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SePoDiSchemaCreation
 @AutoConfigureMockMvc(addFilters = false)
 @Transactional
-class SloidSynchServiceTest {
+class SloidSyncServiceTest {
 
   @Qualifier("prmJdbcTemplate")
   private final NamedParameterJdbcTemplate prmJdbcTemplate;
@@ -50,19 +50,19 @@ class SloidSynchServiceTest {
   @MockBean
   private final SePoDiRepository sePoDiRepository;
 
-  private final SloidSynchService sloidSynchService;
+  private final SloidSyncService sloidSyncService;
 
   @Autowired
-  SloidSynchServiceTest(NamedParameterJdbcTemplate prmJdbcTemplate, NamedParameterJdbcTemplate sePoDiJdbcTemplate,
+  SloidSyncServiceTest(NamedParameterJdbcTemplate prmJdbcTemplate, NamedParameterJdbcTemplate sePoDiJdbcTemplate,
       NamedParameterJdbcTemplate locationJdbcTemplate, SloidRepository sloidRepository, PrmRepository prmRepository,
-      SePoDiRepository sePoDiRepository, SloidSynchService sloidSynchService) {
+      SePoDiRepository sePoDiRepository, SloidSyncService sloidSyncService) {
     this.prmJdbcTemplate = prmJdbcTemplate;
     this.sePoDiJdbcTemplate = sePoDiJdbcTemplate;
     this.locationJdbcTemplate = locationJdbcTemplate;
     this.sloidRepository = sloidRepository;
     this.prmRepository = prmRepository;
     this.sePoDiRepository = sePoDiRepository;
-    this.sloidSynchService = sloidSynchService;
+    this.sloidSyncService = sloidSyncService;
   }
 
   @Test
@@ -73,7 +73,7 @@ class SloidSynchServiceTest {
     allocatedSloids.forEach(s -> sloidRepository.insertSloid(s, SloidType.SERVICE_POINT));
     when(sePoDiRepository.getAlreadyServicePointDistributedSloid()).thenReturn(alreadyDistributedSloids);
     //when
-    sloidSynchService.sync();
+    sloidSyncService.sync();
     //then
     Set<String> result = sloidRepository.getAllocatedSloid(SloidType.SERVICE_POINT);
     assertThat(result)
@@ -92,7 +92,7 @@ class SloidSynchServiceTest {
     allocatedSloids.forEach(s -> sloidRepository.insertSloid(s, SloidType.SERVICE_POINT));
     when(sePoDiRepository.getAlreadyServicePointDistributedSloid()).thenReturn(alreadyDistributedSloids);
     //when
-    sloidSynchService.sync();
+    sloidSyncService.sync();
     //then
     Set<String> result = sloidRepository.getAllocatedSloid(SloidType.SERVICE_POINT);
     assertThat(result)
@@ -105,7 +105,7 @@ class SloidSynchServiceTest {
 
   @ParameterizedTest
   @EnumSource(value = SloidType.class,
-          names = {"PLATFORM", "AREA", "REFERENCE_POINT", "PARKING_LOT", "INFO_DESK", "TICKET_COUNTER", "TOILET"})
+      names = {"PLATFORM", "AREA", "REFERENCE_POINT", "PARKING_LOT", "INFO_DESK", "TICKET_COUNTER", "TOILET"})
   void shouldSyncSloidWhenAlreadyDistributedSloidAreMoreThenAllocated(SloidType sloidType) {
     //given
     Set<String> allocatedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3");
@@ -117,7 +117,7 @@ class SloidSynchServiceTest {
       when(prmRepository.getAlreadyDistributedSloid(sloidType)).thenReturn(alreadyDistributedSloids);
     }
     //when
-    sloidSynchService.sync();
+    sloidSyncService.sync();
     //then
     Set<String> result = sloidRepository.getAllocatedSloid(sloidType);
     assertThat(result).isNotNull().hasSize(4);
@@ -125,7 +125,7 @@ class SloidSynchServiceTest {
 
   @ParameterizedTest
   @EnumSource(value = SloidType.class,
-          names = {"PLATFORM", "AREA", "REFERENCE_POINT", "PARKING_LOT", "INFO_DESK", "TICKET_COUNTER", "TOILET"})
+      names = {"PLATFORM", "AREA", "REFERENCE_POINT", "PARKING_LOT", "INFO_DESK", "TICKET_COUNTER", "TOILET"})
   void shouldSyncSloidWhenAllocatedAreMoreThenDistributed(SloidType sloidType) {
     //given
     Set<String> allocatedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3", "ch:sloid:4");
@@ -137,7 +137,7 @@ class SloidSynchServiceTest {
       when(prmRepository.getAlreadyDistributedSloid(sloidType)).thenReturn(alreadyDistributedSloids);
     }
     //when
-    sloidSynchService.sync();
+    sloidSyncService.sync();
     //then
     Set<String> result = sloidRepository.getAllocatedSloid(sloidType);
     assertThat(result).isNotNull().hasSize(3);
