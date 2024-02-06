@@ -48,7 +48,7 @@ public class SloidControllerTest {
   }
 
   @ParameterizedTest
-  @EnumSource(names = {"AREA", "TOILET", "REFERENCE_POINT", "PARKING_LOT", "INFO_DESK", "TICKET_COUNTER"})
+  @EnumSource(names = {"AREA", "TOILET", "REFERENCE_POINT", "PARKING_LOT", "CONTACT_POINT"})
   void shouldThrowWhenSloidNotValidTypeArea(SloidType sloidType) {
     // given
     ClaimSloidRequestModel requestModel = new ClaimSloidRequestModel(sloidType, "ch:1:sloid:7000");
