@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.config;
 
+import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
 import ch.sbb.atlas.export.model.prm.ContactPointVersionCsvModel;
 import ch.sbb.exportservice.entity.ContactPointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
