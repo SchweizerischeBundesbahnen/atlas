@@ -6,10 +6,10 @@
 - [ADR Architecture Decision Record](#adr-architecture-decision-record)
 - [Project Versioning](#project-versioning)
 - [Links](#links)
-  * [Development](#development)
-  * [Test](#test)
-  * [Integration](#integration)
-  * [Production](#production)
+    * [Development](#development)
+    * [Test](#test)
+    * [Integration](#integration)
+    * [Production](#production)
 
 <!-- tocstop -->
 
@@ -20,7 +20,9 @@ available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas/browse/README
 
 ## ADR Architecture Decision Record
 
-Siehe [ADR-0021: SLOID Service](https://confluence.sbb.ch/x/LCRTmw).
+The aim of this service is to assign the SLOIDs centrally and thus ensure that they are unique across all services.
+Currently, this service is used by the prm-directory and service-point-directory to obtain/verify their SLOIDs.
+See [ADR-0021: SLOID Service](https://confluence.sbb.ch/x/LCRTmw).
 
 ## Project Versioning
 

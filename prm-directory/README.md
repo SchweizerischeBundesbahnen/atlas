@@ -26,7 +26,7 @@ available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas/browse/README
 
 ## ADR Architecture Decision Record
 
-Siehe [ADR-0020: PRM (BehiG) Migration](https://confluence.sbb.ch/x/3RTcl)
+See [ADR-0020: PRM (BehiG) Migration](https://confluence.sbb.ch/x/3RTcl)
 
 ## Architecture
 
