@@ -10,31 +10,29 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class PrmRepository implements BaseRepository{
+public class PrmRepository implements BaseRepository {
 
   @Qualifier("prmJdbcTemplate")
   private final NamedParameterJdbcTemplate prmJdbcTemplate;
 
-
   @Override
   public Set<String> getAlreadyDistributedSloid(SloidType sloidType) {
     String entityName = getEntityName(sloidType);
-    String sqlQuery = "select distinct sloid from "+ entityName + " where sloid is not null";
+    String sqlQuery = "select distinct sloid from " + entityName + " where sloid is not null";
     return new HashSet<>(prmJdbcTemplate.query(sqlQuery,
         (rs, rowNum) -> rs.getString("sloid")
     ));
   }
 
   @Override
-  public String getEntityName(SloidType sloidType){
+  public String getEntityName(SloidType sloidType) {
     return switch (sloidType) {
       case PLATFORM, AREA, SERVICE_POINT ->
           throw new IllegalArgumentException("Wrong sloidType " + sloidType + " provided! Please"
               + " use only PRM SloidTypes!");
-      case INFO_DESK -> "information_desk_version";
+      case CONTACT_POINT -> "contact_point_version";
       case PARKING_LOT -> "parking_lot_version";
       case REFERENCE_POINT -> "reference_point_version";
-      case TICKET_COUNTER -> "ticket_counter_version";
       case TOILET -> "toilet_version";
     };
   }
