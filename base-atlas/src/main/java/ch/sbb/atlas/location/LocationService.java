@@ -1,6 +1,6 @@
 package ch.sbb.atlas.location;
 
-import ch.sbb.atlas.api.client.location.LocationClientV1;
+import ch.sbb.atlas.api.client.location.BaseLocationClient;
 import ch.sbb.atlas.api.location.ClaimSloidRequestModel;
 import ch.sbb.atlas.api.location.GenerateSloidRequestModel;
 import ch.sbb.atlas.api.location.SloidType;
@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LocationService {
 
-  private final LocationClientV1 locationClient;
+  private final BaseLocationClient locationClient;
 
   private void claimSloid(ClaimSloidRequestModel request) {
     try {

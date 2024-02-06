@@ -44,7 +44,7 @@ public abstract class PrmRelatableVersionableService<T extends Relatable & PrmVe
   }
 
   private void allocateSloid(T version) {
-    locationService.allocateSloid(version,getSloidType());
+    locationService.allocateSloid(version, getSloidType());
   }
 
   private void createRelations(T version) {

@@ -75,9 +75,7 @@ class SloidServiceTest {
   }
 
   @ParameterizedTest
-  @EnumSource(value = SloidType.class, names = {"AREA", "REFERENCE_POINT", "PARKING_LOT", "INFO_DESK",
-      "TICKET_COUNTER",
-      "TOILET"})
+  @EnumSource(value = SloidType.class, names = {"AREA", "REFERENCE_POINT", "PARKING_LOT", "CONTACT_POINT", "TOILET"})
   void shouldGenerateNewSloid(SloidType sloidType) {
     //given
     String sloidPrefix = "ch:1:sloid:7000";
@@ -98,9 +96,7 @@ class SloidServiceTest {
   }
 
   @ParameterizedTest
-  @EnumSource(value = SloidType.class, names = {"AREA", "REFERENCE_POINT", "PARKING_LOT", "INFO_DESK",
-      "TICKET_COUNTER",
-      "TOILET"})
+  @EnumSource(value = SloidType.class, names = {"AREA", "REFERENCE_POINT", "PARKING_LOT", "CONTACT_POINT", "TOILET"})
   void shouldGenerateNewSloidEvenWhenSloidAlreadyOccupied(SloidType sloidType) {
     //given
     String sloidPrefix = "ch:1:sloid:7000";

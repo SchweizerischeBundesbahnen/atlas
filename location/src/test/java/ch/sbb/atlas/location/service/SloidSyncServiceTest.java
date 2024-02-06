@@ -105,7 +105,7 @@ class SloidSyncServiceTest {
 
   @ParameterizedTest
   @EnumSource(value = SloidType.class,
-      names = {"PLATFORM", "AREA", "REFERENCE_POINT", "PARKING_LOT", "INFO_DESK", "TICKET_COUNTER", "TOILET"})
+      names = {"PLATFORM", "AREA", "REFERENCE_POINT", "PARKING_LOT", "CONTACT_POINT", "TOILET"})
   void shouldSyncSloidWhenAlreadyDistributedSloidAreMoreThenAllocated(SloidType sloidType) {
     //given
     Set<String> allocatedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3");
@@ -125,7 +125,7 @@ class SloidSyncServiceTest {
 
   @ParameterizedTest
   @EnumSource(value = SloidType.class,
-      names = {"PLATFORM", "AREA", "REFERENCE_POINT", "PARKING_LOT", "INFO_DESK", "TICKET_COUNTER", "TOILET"})
+      names = {"PLATFORM", "AREA", "REFERENCE_POINT", "PARKING_LOT", "CONTACT_POINT", "TOILET"})
   void shouldSyncSloidWhenAllocatedAreMoreThenDistributed(SloidType sloidType) {
     //given
     Set<String> allocatedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3", "ch:sloid:4");
