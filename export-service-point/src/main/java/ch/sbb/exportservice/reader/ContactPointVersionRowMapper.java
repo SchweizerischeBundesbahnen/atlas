@@ -1,5 +1,7 @@
 package ch.sbb.exportservice.reader;
 
+import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.entity.ContactPointVersion;
 import org.springframework.jdbc.core.RowMapper;
@@ -18,12 +20,12 @@ public class ContactPointVersionRowMapper extends BaseRowMapper implements RowMa
         builder.sloid(rs.getString("sloid"));
         builder.parentServicePointSloid(rs.getString("parent_service_point_sloid"));
         builder.parentServicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(ServicePointNumber.removeCheckDigit(rs.getInt("number"))));
-        builder.type(rs.getString("type"));
+        builder.type(ContactPointType.valueOf(rs.getString("type")));
         builder.designation(rs.getString("designation"));
         builder.additionalInformation(rs.getString("additional_information"));
-        builder.inductionLoop(rs.getString("induction_loop"));
+        builder.inductionLoop(StandardAttributeType.valueOf(rs.getString("induction_loop")));
         builder.openingHours(rs.getString("opening_hours"));
-        builder.wheelchairAccess(rs.getString("wheelchair_access"));
+        builder.wheelchairAccess(StandardAttributeType.valueOf(rs.getString("wheelchair_access")));
         builder.validFrom(rs.getObject("valid_from", LocalDate.class));
         builder.validTo(rs.getObject("valid_to", LocalDate.class));
         builder.creationDate(rs.getObject("creation_date", LocalDateTime.class));

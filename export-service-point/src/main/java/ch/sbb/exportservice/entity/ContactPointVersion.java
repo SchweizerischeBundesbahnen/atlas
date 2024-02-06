@@ -1,5 +1,7 @@
 package ch.sbb.exportservice.entity;
 
+import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,17 +30,17 @@ public class ContactPointVersion extends BaseEntity {
 
     private ServicePointNumber parentServicePointNumber;
 
-    private String type;
+    private ContactPointType type;
 
     private String designation;
 
     private String additionalInformation;
 
-    private String inductionLoop;
+    private StandardAttributeType inductionLoop;
 
     private String openingHours;
 
-    private String wheelchairAccess;
+    private StandardAttributeType wheelchairAccess;
 
     private LocalDate validFrom;
 

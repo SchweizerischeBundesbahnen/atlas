@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.processor;
 
+import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
 import ch.sbb.exportservice.entity.ContactPointVersion;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
