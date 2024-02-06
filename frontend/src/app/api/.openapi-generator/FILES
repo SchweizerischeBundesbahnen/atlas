@@ -80,7 +80,7 @@ model/geolocation.ts
 model/geolocationCreate.ts
 model/hearingStatus.ts
 model/infoOpportunityAttributeType.ts
-model/informationDeskVersion.ts
+model/contactPointVersion.ts
 model/inlineObject.ts
 model/inlineObject1.ts
 model/inlineObject2.ts
@@ -119,7 +119,7 @@ model/platformOverview.ts
 model/platformVersion.ts
 model/prmBatchExportFileName.ts
 model/prmExportType.ts
-model/readInformationDeskVersion.ts
+model/readContactPointVersion.ts
 model/readLoadingPointVersion.ts
 model/readParkingLotVersion.ts
 model/readPlatformVersion.ts
@@ -127,7 +127,6 @@ model/readReferencePointVersion.ts
 model/readRelationVersion.ts
 model/readServicePointVersion.ts
 model/readStopPointVersion.ts
-model/readTicketCounterVersion.ts
 model/readToiletVersion.ts
 model/readTrafficPointElementVersion.ts
 model/referencePointAttributeType.ts
@@ -161,7 +160,6 @@ model/sublineVersion.ts
 model/swissCanton.ts
 model/swissLocation.ts
 model/tactileVisualAttributeType.ts
-model/ticketCounterVersion.ts
 model/timetableFieldNumber.ts
 model/timetableFieldNumberVersion.ts
 model/timetableHearingStatement.ts

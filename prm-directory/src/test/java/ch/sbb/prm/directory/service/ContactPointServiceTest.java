@@ -2,15 +2,15 @@ package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.prm.directory.InformationDeskTestData;
+import ch.sbb.prm.directory.ContactPointTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.entity.InformationDeskVersion;
+import ch.sbb.prm.directory.entity.ContactPointVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
-import ch.sbb.prm.directory.repository.InformationDeskRepository;
+import ch.sbb.prm.directory.repository.ContactPointRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
@@ -25,57 +25,57 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class InformationDeskServiceTest extends BasePrmServiceTest {
+class ContactPointServiceTest extends BasePrmServiceTest {
 
-  private final InformationDeskService informationDeskService;
-  private final InformationDeskRepository informationDeskRepository;
+  private final ContactPointService contactPointService;
+  private final ContactPointRepository contactPointRepository;
   private final RelationRepository relationRepository;
   private final StopPointRepository stopPointRepository;
   private final ReferencePointRepository referencePointRepository;
 
   @Autowired
-  InformationDeskServiceTest(InformationDeskService informationDeskService,
-                             InformationDeskRepository informationDeskRepository,
-                             RelationRepository relationRepository,
-                             StopPointRepository stopPointRepository,
-                             ReferencePointRepository referencePointRepository,
-                             SharedServicePointRepository sharedServicePointRepository) {
+  ContactPointServiceTest(ContactPointService contactPointService,
+                          ContactPointRepository contactPointRepository,
+                          RelationRepository relationRepository,
+                          StopPointRepository stopPointRepository,
+                          ReferencePointRepository referencePointRepository,
+                          SharedServicePointRepository sharedServicePointRepository) {
     super(sharedServicePointRepository);
-    this.informationDeskService = informationDeskService;
-    this.informationDeskRepository = informationDeskRepository;
+    this.contactPointService = contactPointService;
+    this.contactPointRepository = contactPointRepository;
     this.relationRepository = relationRepository;
     this.stopPointRepository = stopPointRepository;
     this.referencePointRepository = referencePointRepository;
   }
 
   @Test
-  void shouldNotCreateInformationDeskWhenStopPointDoesNotExist() {
+  void shouldNotCreateContactPointWhenStopPointDoesNotExist() {
     //given
-    InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
-    informationDesk.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
+    contactPointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when & then
     assertThrows(StopPointDoesNotExistException.class,
-        () -> informationDeskService.createInformationDesk(informationDesk)).getLocalizedMessage();
+        () -> contactPointService.createContactPoint(contactPointVersion)).getLocalizedMessage();
   }
 
   @Test
-  void shouldCreateInformationDeskWhenNoReferencePointExists() {
+  void shouldCreateContactPointWhenNoReferencePointExists() {
     //given
     StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
     stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
-    InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
-    informationDesk.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
+    contactPointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when
-    informationDeskService.createInformationDesk(informationDesk);
+    contactPointService.createContactPoint(contactPointVersion);
 
     //then
-    List<InformationDeskVersion> informationDeskVersions = informationDeskRepository
-            .findByParentServicePointSloid(informationDesk.getParentServicePointSloid());
-    assertThat(informationDeskVersions).hasSize(1);
-    assertThat(informationDeskVersions.get(0).getParentServicePointSloid()).isEqualTo(informationDesk.getParentServicePointSloid());
+    List<ContactPointVersion> contactPointVersions = contactPointRepository
+            .findByParentServicePointSloid(contactPointVersion.getParentServicePointSloid());
+    assertThat(contactPointVersions).hasSize(1);
+    assertThat(contactPointVersions.get(0).getParentServicePointSloid()).isEqualTo(contactPointVersion.getParentServicePointSloid());
     List<RelationVersion> relationVersions = relationRepository
-            .findAllByParentServicePointSloid(informationDesk.getParentServicePointSloid());
+            .findAllByParentServicePointSloid(contactPointVersion.getParentServicePointSloid());
     assertThat(relationVersions).isEmpty();
   }
 
@@ -88,24 +88,24 @@ class InformationDeskServiceTest extends BasePrmServiceTest {
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     referencePointRepository.save(referencePointVersion);
-    InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
-    informationDesk.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
+    contactPointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     //when
-    informationDeskService.createInformationDesk(informationDesk);
+    contactPointService.createContactPoint(contactPointVersion);
 
     //then
-    List<InformationDeskVersion> informationDeskVersions = informationDeskRepository
-            .findByParentServicePointSloid(informationDesk.getParentServicePointSloid());
-    assertThat(informationDeskVersions).hasSize(1);
-    assertThat(informationDeskVersions.get(0).getParentServicePointSloid()).isEqualTo(informationDesk.getParentServicePointSloid());
+    List<ContactPointVersion> contactPointVersions = contactPointRepository
+            .findByParentServicePointSloid(contactPointVersion.getParentServicePointSloid());
+    assertThat(contactPointVersions).hasSize(1);
+    assertThat(contactPointVersions.get(0).getParentServicePointSloid()).isEqualTo(contactPointVersion.getParentServicePointSloid());
     List<RelationVersion> relationVersions = relationRepository
             .findAllByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions).hasSize(1);
     assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
     AbstractComparableAssert<?, ReferencePointElementType> equalTo = assertThat(
-        relationVersions.get(0).getReferencePointElementType()).isEqualTo(ReferencePointElementType.INFORMATION_DESK);
+        relationVersions.get(0).getReferencePointElementType()).isEqualTo(ReferencePointElementType.CONTACT_POINT);
     assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
-    assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(ReferencePointElementType.INFORMATION_DESK);
+    assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(ReferencePointElementType.CONTACT_POINT);
   }
   @Test
   void shouldNotCreateToiletRelationWhenStopPointIsReduced() {
@@ -118,17 +118,17 @@ class InformationDeskServiceTest extends BasePrmServiceTest {
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
     referencePointRepository.save(referencePointVersion);
-    InformationDeskVersion informationDesk = InformationDeskTestData.getInformationDeskVersion();
-    informationDesk.setParentServicePointSloid(parentServicePointSloid);
+    ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
+    contactPointVersion.setParentServicePointSloid(parentServicePointSloid);
 
     //when
-    informationDeskService.createInformationDesk(informationDesk);
+    contactPointService.createContactPoint(contactPointVersion);
 
     //then
-    List<InformationDeskVersion> informationDeskVersions = informationDeskRepository.findByParentServicePointSloid(
-        informationDesk.getParentServicePointSloid());
-    assertThat(informationDeskVersions).hasSize(1);
-    assertThat(informationDeskVersions.get(0).getParentServicePointSloid()).isEqualTo(informationDesk.getParentServicePointSloid());
+    List<ContactPointVersion> contactPointVersions = contactPointRepository.findByParentServicePointSloid(
+            contactPointVersion.getParentServicePointSloid());
+    assertThat(contactPointVersions).hasSize(1);
+    assertThat(contactPointVersions.get(0).getParentServicePointSloid()).isEqualTo(contactPointVersion.getParentServicePointSloid());
     List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
         parentServicePointSloid);
     assertThat(relationVersions).isEmpty();
