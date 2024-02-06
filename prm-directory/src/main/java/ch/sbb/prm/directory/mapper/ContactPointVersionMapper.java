@@ -9,7 +9,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ContactPointVersionMapper {
 
-  public static ReadContactPointVersionModel toModel(ContactPointVersion version){
+  public static ReadContactPointVersionModel toModel(ContactPointVersion version) {
     return ReadContactPointVersionModel.builder()
         .id(version.getId())
         .sloid(version.getSloid())
@@ -31,7 +31,7 @@ public class ContactPointVersionMapper {
         .build();
   }
 
-  public static ContactPointVersion toEntity(ContactPointVersionModel model){
+  public static ContactPointVersion toEntity(ContactPointVersionModel model) {
     return ContactPointVersion.builder()
         .id(model.getId())
         .sloid(model.getSloid())
