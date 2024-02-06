@@ -14,7 +14,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class LocationSchedulerService extends BaseSchedulerService {
- private final LocationClient locationClient;
+
+  private final LocationClient locationClient;
 
   public LocationSchedulerService(LocationClient locationClient) {
     this.locationClient = locationClient;
