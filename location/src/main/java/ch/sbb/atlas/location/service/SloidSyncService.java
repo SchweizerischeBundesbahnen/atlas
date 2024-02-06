@@ -14,14 +14,14 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class SloidSynchService {
+public class SloidSyncService {
 
   private final SloidRepository sloidRepository;
   private final SePoDiRepository sePoDiRepository;
   private final PrmRepository prmRepository;
 
-  private static final List<SloidType> SLOID_TYPES = List.of(SloidType.PLATFORM,SloidType.AREA,SloidType.REFERENCE_POINT,
-      SloidType.PARKING_LOT,SloidType.INFO_DESK,SloidType.TICKET_COUNTER,SloidType.TOILET);
+  private static final List<SloidType> SLOID_TYPES = List.of(SloidType.PLATFORM, SloidType.AREA, SloidType.REFERENCE_POINT,
+      SloidType.PARKING_LOT, SloidType.INFO_DESK, SloidType.TICKET_COUNTER, SloidType.TOILET);
 
   public void sync() {
     servicePointSloidSync();
