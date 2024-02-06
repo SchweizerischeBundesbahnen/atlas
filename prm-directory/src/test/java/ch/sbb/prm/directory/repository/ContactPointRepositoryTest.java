@@ -3,8 +3,8 @@ package ch.sbb.prm.directory.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.prm.directory.TicketCounterTestData;
-import ch.sbb.prm.directory.entity.TicketCounterVersion;
+import ch.sbb.prm.directory.ContactPointTestData;
+import ch.sbb.prm.directory.entity.ContactPointVersion;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,24 +13,24 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
-class TicketCounterRepositoryTest {
+class ContactPointRepositoryTest {
 
-  private final TicketCounterRepository ticketCounterRepository;
+  private final ContactPointRepository contactPointRepository;
 
   @Autowired
-  TicketCounterRepositoryTest(TicketCounterRepository ticketCounterRepository) {
-    this.ticketCounterRepository = ticketCounterRepository;
+  ContactPointRepositoryTest(ContactPointRepository contactPointRepository) {
+    this.contactPointRepository = contactPointRepository;
   }
 
   @BeforeEach()
   void initDB() {
-    ticketCounterRepository.save(TicketCounterTestData.getTicketCounterVersion());
+    contactPointRepository.save(ContactPointTestData.getContactPointVersion());
   }
 
   @Test
-  void shouldReturnStopPoints() {
+  void shouldReturnContactPoints() {
     //when
-   List<TicketCounterVersion> result = ticketCounterRepository.findAll();
+   List<ContactPointVersion> result = contactPointRepository.findAll();
    //then
    assertThat(result).hasSize(1);
   }

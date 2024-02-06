@@ -1,5 +1,6 @@
 package ch.sbb.prm.directory.entity;
 
+import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
@@ -27,11 +28,11 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-@Entity(name = "information_desk_version")
+@Entity(name = "contact_point_version")
 @AtlasVersionable
-public class InformationDeskVersion extends BasePrmEntityVersion implements Relatable, PrmVersionable {
+public class ContactPointVersion extends BasePrmEntityVersion implements Relatable, PrmVersionable {
 
-  private static final String VERSION_SEQ = "information_desk_version_seq";
+  private static final String VERSION_SEQ = "contact_point_version_seq";
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
@@ -54,5 +55,9 @@ public class InformationDeskVersion extends BasePrmEntityVersion implements Rela
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType wheelchairAccess;
+
+  @Enumerated(EnumType.STRING)
+  @AtlasVersionableProperty
+  private ContactPointType type;
 
 }
