@@ -22,6 +22,8 @@ public class PlatformVersionCsvProcessorTest {
 
     @Test
     void shouldMapToCsvModel() {
+        LocalDateTime creationDate = LocalDateTime.now();
+        LocalDateTime editionDate = LocalDateTime.now();
         PlatformVersion entity = PlatformVersion.builder()
                 .id(1L)
                 .sloid("ch:1:sloid:112:23")
@@ -49,8 +51,8 @@ public class PlatformVersionCsvProcessorTest {
                 .vehicleAccess(VehicleAccessAttributeType.TO_BE_COMPLETED)
                 .validFrom(LocalDate.of(2020, 1, 1))
                 .validTo(LocalDate.of(2020, 12, 31))
-                .creationDate(LocalDateTime.now())
-                .editionDate(LocalDateTime.now())
+                .creationDate(creationDate)
+                .editionDate(editionDate)
                 .build();
 
         PlatformVersionCsvModel expected = PlatformVersionCsvModel.builder()
@@ -78,8 +80,8 @@ public class PlatformVersionCsvProcessorTest {
                 .vehicleAccess(VehicleAccessAttributeType.TO_BE_COMPLETED.toString())
                 .validFrom(BaseServicePointProcessor.DATE_FORMATTER.format(LocalDate.of(2020, 1, 1)))
                 .validTo(BaseServicePointProcessor.DATE_FORMATTER.format(LocalDate.of(2020, 12, 31)))
-                .creationDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(LocalDateTime.now()))
-                .editionDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(LocalDateTime.now()))
+                .creationDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(creationDate))
+                .editionDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(editionDate))
                 .build();
 
         PlatformVersionCsvModel result = processor.process(entity);
