@@ -3,6 +3,7 @@ package ch.sbb.prm.directory.controller;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -12,6 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -29,6 +31,7 @@ import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
+import ch.sbb.prm.directory.service.PrmLocationService;
 import ch.sbb.prm.directory.service.RelationService;
 import java.util.Collections;
 import java.util.Set;
@@ -51,17 +54,21 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
   @MockBean
   private final RelationService relationService;
 
+  @MockBean
+  private final PrmLocationService prmLocationService;
+
   @Autowired
   ParkingLotVersionControllerApiTest(ParkingLotRepository parkingLotRepository,
-                                     StopPointRepository stopPointRepository,
-                                     ReferencePointRepository referencePointRepository,
-                                     SharedServicePointRepository sharedServicePointRepository,
-                                     RelationService relationService) {
+      StopPointRepository stopPointRepository,
+      ReferencePointRepository referencePointRepository,
+      SharedServicePointRepository sharedServicePointRepository,
+      RelationService relationService, PrmLocationService prmLocationService) {
     this.parkingLotRepository = parkingLotRepository;
     this.stopPointRepository = stopPointRepository;
     this.referencePointRepository = referencePointRepository;
     this.sharedServicePointRepository = sharedServicePointRepository;
     this.relationService = relationService;
+    this.prmLocationService = prmLocationService;
   }
 
   @BeforeEach
@@ -105,6 +112,7 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isCreated());
     verify(relationService, times(1)).save(any(RelationVersion.class));
+    verify(prmLocationService, times(1)).allocateSloid(any(ParkingLotVersion.class), eq(SloidType.PARKING_LOT));
   }
 
   @Test
@@ -125,7 +133,7 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(model)))
         .andExpect(status().isCreated());
     verify(relationService, never()).save(any(RelationVersion.class));
-
+    verify(prmLocationService, times(1)).allocateSloid(any(ParkingLotVersion.class), eq(SloidType.PARKING_LOT));
   }
 
   @Test
@@ -159,10 +167,10 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
 
     //when && then
     mvc.perform(post("/v1/parking-lots")
-                    .contentType(contentType)
-                    .content(mapper.writeValueAsString(model)))
-            .andExpect(status().isPreconditionFailed())
-            .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7001 does not exist.")));
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(model)))
+        .andExpect(status().isPreconditionFailed())
+        .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7001 does not exist.")));
   }
 
   /**
@@ -170,7 +178,7 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
    * NEU:      |______________________|
    * IST:      |-------------------------------------------------------
    * Version:                            1
-   *
+   * <p>
    * RESULTAT: |----------------------| Version wird per xx aufgehoben
    * Version:         1
    */

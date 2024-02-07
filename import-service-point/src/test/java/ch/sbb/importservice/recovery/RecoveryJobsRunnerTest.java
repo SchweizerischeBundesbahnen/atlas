@@ -269,4 +269,5 @@ class RecoveryJobsRunnerTest {
     verify(jobLauncher, never()).run(eq(importPlatformCsvJob), any());
     verify(fileService).clearDir();
   }
+
 }

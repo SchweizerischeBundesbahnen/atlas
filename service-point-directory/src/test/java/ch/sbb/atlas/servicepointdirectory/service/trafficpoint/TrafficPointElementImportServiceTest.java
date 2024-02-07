@@ -1,11 +1,15 @@
 package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
@@ -25,11 +29,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @IntegrationTest
 @Transactional
- class TrafficPointElementImportServiceTest {
+class TrafficPointElementImportServiceTest {
 
   // required for test functionality
   @MockBean
   private CrossValidationService crossValidationService;
+
+  @MockBean
+  private LocationService locationService;
 
   private static final String CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_20221222011816.csv";
 
@@ -37,7 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
   private final TrafficPointElementVersionRepository trafficPointElementVersionRepository;
 
   @Autowired
-   TrafficPointElementImportServiceTest(TrafficPointElementImportService trafficPointElementImportService,
+  TrafficPointElementImportServiceTest(TrafficPointElementImportService trafficPointElementImportService,
       TrafficPointElementVersionRepository trafficPointElementVersionRepository) {
     this.trafficPointElementImportService = trafficPointElementImportService;
     this.trafficPointElementVersionRepository = trafficPointElementVersionRepository;
@@ -58,16 +65,16 @@ import org.springframework.transaction.annotation.Transactional;
   }
 
   @Test
-   void shouldImportTrafficPoints() {
+  void shouldImportTrafficPoints() {
     //given
     List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = List.of(
         TrafficPointCsvModelContainer.builder()
-            .sloid("ch:1:sloid:700012:123:123")
-            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:700012:123:123", 2020, 1, 2, 1))
+            .sloid("ch:1:sloid:70001:123:123")
+            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:70001:123:123", 2020, 1, 2, 1))
             .build(),
         TrafficPointCsvModelContainer.builder()
-            .sloid("ch:1:sloid:700012:432:422")
-            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:700012:432:422", 2020, 1, 2, 1))
+            .sloid("ch:1:sloid:70001:432:422")
+            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:70001:432:422", 2020, 1, 2, 1))
             .build()
     );
     //when
@@ -75,15 +82,20 @@ import org.springframework.transaction.annotation.Transactional;
         trafficPointCsvModelContainers);
 
     //then
+    verify(locationService, times(1)).claimSloid(SloidType.PLATFORM,
+        "ch:1:sloid:70001:123:123");
+    verify(locationService, times(1)).claimSloid(SloidType.PLATFORM,
+        "ch:1:sloid:70001:432:422");
+
     assertThat(trafficPointItemImportResults).hasSize(4);
     List<TrafficPointElementVersion> resultFirstContainer = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
-        "ch:1:sloid:700012:123:123");
+        "ch:1:sloid:70001:123:123");
     assertThat(resultFirstContainer).hasSize(2);
     assertThat(resultFirstContainer.get(0).getId()).isNotNull();
     assertThat(resultFirstContainer.get(1).getId()).isNotNull();
 
     List<TrafficPointElementVersion> resultSecondContainer = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
-        "ch:1:sloid:700012:432:422");
+        "ch:1:sloid:70001:432:422");
     assertThat(resultSecondContainer).hasSize(2);
     assertThat(resultSecondContainer.get(0).getId()).isNotNull();
     assertThat(resultSecondContainer.get(1).getId()).isNotNull();
@@ -94,24 +106,24 @@ import org.springframework.transaction.annotation.Transactional;
     // given
     List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = List.of(
         TrafficPointCsvModelContainer.builder()
-            .sloid("ch:1:sloid:700012:123:123")
-            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:700012:123:123", 2020, 1, 6, 1))
+            .sloid("ch:1:sloid:70001:123:123")
+            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:70001:123:123", 2020, 1, 6, 1))
             .build()
     );
     trafficPointElementImportService.importTrafficPoints(trafficPointCsvModelContainers);
 
     List<TrafficPointElementCsvModel> trafficPointCsvModelVersionsMerged =
-        getTrafficPointCsvModelVersions("ch:1:sloid:700012:123:123", 2020, 2, 1, 1);
+        getTrafficPointCsvModelVersions("ch:1:sloid:70001:123:123", 2020, 2, 1, 1);
     trafficPointCsvModelVersionsMerged.addAll(
-        getTrafficPointCsvModelVersions("ch:1:sloid:700012:123:123", 2022, 1, 2, 2)
+        getTrafficPointCsvModelVersions("ch:1:sloid:70001:123:123", 2022, 1, 2, 2)
     );
     trafficPointCsvModelVersionsMerged.addAll(
-        getTrafficPointCsvModelVersions("ch:1:sloid:700012:123:123", 2024, 2, 1, 4)
+        getTrafficPointCsvModelVersions("ch:1:sloid:70001:123:123", 2024, 2, 1, 4)
     );
 
     List<TrafficPointCsvModelContainer> trafficPointCsvModelContainersMerged = List.of(
         TrafficPointCsvModelContainer.builder()
-            .sloid("ch:1:sloid:700012:123:123")
+            .sloid("ch:1:sloid:70001:123:123")
             .csvModelList(trafficPointCsvModelVersionsMerged)
             .build()
     );
@@ -121,10 +133,13 @@ import org.springframework.transaction.annotation.Transactional;
         trafficPointCsvModelContainersMerged);
 
     // then
+    verify(locationService, times(1)).claimSloid(SloidType.PLATFORM,
+        "ch:1:sloid:70001:123:123");
+
     assertThat(trafficPointItemImportResults).hasSize(4);
     List<TrafficPointElementVersion> allBySloidOrderByValidFrom =
         trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
-            "ch:1:sloid:700012:123:123");
+            "ch:1:sloid:70001:123:123");
     assertThat(allBySloidOrderByValidFrom).hasSize(4);
     assertThat(allBySloidOrderByValidFrom.get(0).getValidFrom()).isEqualTo(
         LocalDate.of(2020, 1, 1)
@@ -200,8 +215,8 @@ import org.springframework.transaction.annotation.Transactional;
     // given
     final List<TrafficPointElementCsvModel> trafficPointCsvModels = List.of(
         TrafficPointElementCsvModel.builder()
-            .sloid("ch:1:sloid:700012:123:123")
-            .servicePointNumber(85700012)
+            .sloid("ch:1:sloid:70001:123:123")
+            .servicePointNumber(8570001)
             .validFrom(LocalDate.of(2020, 1, 1))
             .validTo(LocalDate.of(2023, 12, 31))
             .createdAt(LocalDateTime.of(2020, 1, 15, 5, 5))
@@ -221,8 +236,8 @@ import org.springframework.transaction.annotation.Transactional;
 
     final List<TrafficPointElementCsvModel> trafficPointCsvModelsSecondRun = List.of(
         TrafficPointElementCsvModel.builder()
-            .sloid("ch:1:sloid:700012:123:123")
-            .servicePointNumber(85700012)
+            .sloid("ch:1:sloid:70001:123:123")
+            .servicePointNumber(8570001)
             .validFrom(LocalDate.of(2020, 1, 1))
             .validTo(LocalDate.of(2021, 6, 15))
             .createdAt(LocalDateTime.of(2020, 1, 15, 5, 5))
@@ -235,7 +250,7 @@ import org.springframework.transaction.annotation.Transactional;
     final List<TrafficPointCsvModelContainer> trafficPointCsvModelContainersSecondRun = List.of(
         TrafficPointCsvModelContainer.builder()
             .csvModelList(trafficPointCsvModelsSecondRun)
-            .sloid("ch:1:sloid:700012:123:123")
+            .sloid("ch:1:sloid:70001:123:123")
             .build()
     );
 
@@ -244,10 +259,12 @@ import org.springframework.transaction.annotation.Transactional;
         trafficPointCsvModelContainersSecondRun);
 
     // then
+    verify(locationService, times(1)).claimSloid(SloidType.PLATFORM,
+        "ch:1:sloid:70001:123:123");
     assertThat(trafficPointItemImportResults).hasSize(1);
 
     final List<TrafficPointElementVersion> dbVersions =
-        trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom("ch:1:sloid:700012:123:123");
+        trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom("ch:1:sloid:70001:123:123");
 
     assertThat(dbVersions).hasSize(1);
     assertThat(dbVersions.get(0).getEditor()).isEqualTo("fs22222");
@@ -269,7 +286,7 @@ import org.springframework.transaction.annotation.Transactional;
               .eWgs84(7.536484397)
               .height(startingHeight)
               .spatialReference(SpatialReference.WGS84)
-              .servicePointNumber(85700012)
+              .servicePointNumber(8570001)
               .validFrom(LocalDate.of(startingYear, 1, 1))
               .validTo(LocalDate.of(startingYear + yearsPerVersion - 1, 12, 31))
               .createdAt(LocalDateTime.of(LocalDate.of(2020, 1, 1), LocalTime.of(5, 5)))

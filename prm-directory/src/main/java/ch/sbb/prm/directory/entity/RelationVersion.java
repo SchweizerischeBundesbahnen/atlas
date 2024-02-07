@@ -8,6 +8,7 @@ import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.prm.directory.service.PrmVersionable;
+import ch.sbb.prm.directory.service.Relatable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -34,7 +35,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "relation_version")
 @AtlasVersionable
-public class RelationVersion extends BasePrmEntityVersion implements PrmVersionable {
+public class RelationVersion extends BasePrmEntityVersion implements Relatable, PrmVersionable {
 
   private static final String VERSION_SEQ = "relation_version_seq";
 
