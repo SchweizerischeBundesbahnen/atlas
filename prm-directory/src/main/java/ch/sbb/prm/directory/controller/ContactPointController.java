@@ -3,6 +3,8 @@ package ch.sbb.prm.directory.controller;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
+import ch.sbb.atlas.imports.ItemImportResult;
+import ch.sbb.atlas.imports.prm.contactpoint.ContactPointImportRequestModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.ContactPointApiV1;
 import ch.sbb.prm.directory.controller.model.ContactPointObjectRequestParams;
@@ -65,4 +67,8 @@ public class ContactPointController implements ContactPointApiV1 {
     return contactPointService.getAllVersions(sloid).stream().map(ContactPointVersionMapper::toModel).toList();
   }
 
+  @Override
+  public List<ItemImportResult> importContactPoints(ContactPointImportRequestModel contactPointImportRequestModel) {
+    return contactPointService.importContactPoints(contactPointImportRequestModel.getContactPointCsvModelContainers());
+  }
 }
