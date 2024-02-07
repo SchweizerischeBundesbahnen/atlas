@@ -10,6 +10,7 @@ public class SloidValidation {
 
   public static final String SLOID_PREFIX = "ch:1:sloid:";
 
+  public static final int EXPECTED_COLONS_SERVICE_POINT = 3;
   public static final int EXPECTED_COLONS_AREA = 4;
   public static final int EXPECTED_COLONS_PLATFORM = 5;
 

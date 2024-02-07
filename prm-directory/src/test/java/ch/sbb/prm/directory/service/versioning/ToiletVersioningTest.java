@@ -16,6 +16,7 @@ import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.service.BasePrmServiceTest;
+import ch.sbb.prm.directory.service.PrmLocationService;
 import ch.sbb.prm.directory.service.RelationService;
 import ch.sbb.prm.directory.service.ToiletService;
 import java.time.LocalDate;
@@ -37,8 +38,9 @@ class ToiletVersioningTest extends BasePrmServiceTest {
                        RelationService relationService,
                        StopPointRepository stopPointRepository,
                        ReferencePointRepository referencePointRepository,
-                       SharedServicePointRepository sharedServicePointRepository) {
-    super(sharedServicePointRepository);
+                       SharedServicePointRepository sharedServicePointRepository,
+      PrmLocationService prmLocationService) {
+    super(sharedServicePointRepository, prmLocationService);
     this.toiletService = toiletService;
     this.toiletRepository = toiletRepository;
     this.relationService = relationService;
