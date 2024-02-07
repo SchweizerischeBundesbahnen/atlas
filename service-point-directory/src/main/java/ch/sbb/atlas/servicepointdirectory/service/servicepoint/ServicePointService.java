@@ -10,6 +10,9 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +21,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Getter
@@ -53,10 +52,9 @@ public class ServicePointService {
   public List<ServicePointSearchResult> searchServicePointsWithRouteNetworkTrue(String value) {
     List<ServicePointSearchResult> servicePointSearchResults =
         servicePointSearchVersionRepository.searchServicePointsWithRouteNetworkTrue(
-        value);
+            value);
     return getSearchResults(servicePointSearchResults);
   }
-
 
   public Page<ServicePointVersion> findAll(ServicePointSearchRestrictions servicePointSearchRestrictions) {
     return servicePointVersionRepository.loadByIdsFindBySpecification(servicePointSearchRestrictions.getSpecification(),
@@ -67,7 +65,7 @@ public class ServicePointService {
     return servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
   }
 
-  public List<ServicePointVersion> findBySloidAndOrderByValidFrom(String sloid){
+  public List<ServicePointVersion> findBySloidAndOrderByValidFrom(String sloid) {
     return servicePointVersionRepository.findBySloidOrderByValidFrom(sloid);
   }
 
@@ -85,7 +83,8 @@ public class ServicePointService {
   }
 
   public List<ServicePointVersion> revokeServicePoint(ServicePointNumber servicePointNumber) {
-    List<ServicePointVersion> servicePointVersions = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
+    List<ServicePointVersion> servicePointVersions = servicePointVersionRepository.findAllByNumberOrderByValidFrom(
+        servicePointNumber);
     servicePointVersions.forEach(servicePointVersion -> servicePointVersion.setStatus(Status.REVOKED));
     return servicePointVersions;
   }
@@ -97,17 +96,21 @@ public class ServicePointService {
 
   @PreAuthorize("@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#servicePointVersion, "
       + "T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
-  public ServicePointVersion save(ServicePointVersion servicePointVersion,
-                                  Optional<ServicePointVersion> currentVersion,
-                                  List<ServicePointVersion> currentVersions) {
+  public ServicePointVersion create(ServicePointVersion servicePointVersion,
+      Optional<ServicePointVersion> currentVersion,
+      List<ServicePointVersion> currentVersions) {
+    preSaveChecks(servicePointVersion, currentVersion, currentVersions);
+    return servicePointVersionRepository.saveAndFlush(servicePointVersion);
+  }
+
+  private void preSaveChecks(ServicePointVersion servicePointVersion, Optional<ServicePointVersion> currentVersion,
+      List<ServicePointVersion> currentVersions) {
     servicePointVersion.setStatus(servicePointStatusDecider
-            .getStatusForServicePoint(servicePointVersion, currentVersion, currentVersions));
+        .getStatusForServicePoint(servicePointVersion, currentVersion, currentVersions));
     servicePointVersion.setEditionDate(LocalDateTime.now());
     servicePointVersion.setEditor(UserService.getUserIdentifier());
-
     servicePointValidationService.validateAndSetAbbreviation(servicePointVersion);
     servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
-    return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
   public ServicePointVersion saveWithoutValidationForImportOnly(ServicePointVersion servicePointVersion, Status status) {
@@ -139,11 +142,19 @@ public class ServicePointService {
         editedVersion, existingDbVersions);
 
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
-        version -> save(version, Optional.of(currentVersion), currentVersions), new ApplyVersioningDeleteByIdLongConsumer(servicePointVersionRepository));
+        version -> save(version, Optional.of(currentVersion), currentVersions),
+        new ApplyVersioningDeleteByIdLongConsumer(servicePointVersionRepository));
 
     List<ServicePointVersion> afterUpdateServicePoint = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
     servicePointTerminationService.checkTerminationAllowed(currentVersions, afterUpdateServicePoint);
     return currentVersion;
+  }
+
+  private void save(ServicePointVersion servicePointVersion,
+      Optional<ServicePointVersion> currentVersion,
+      List<ServicePointVersion> currentVersions) {
+    preSaveChecks(servicePointVersion, currentVersion, currentVersions);
+    servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
   private List<ServicePointSearchResult> getSearchResults(List<ServicePointSearchResult> servicePointSearchResults) {

@@ -2,7 +2,6 @@
 
 This is the repository for business relevant services for ATLAS.
 
-
 <!-- toc -->
 
 - [Big Picture](#big-picture)
@@ -29,6 +28,7 @@ This is the repository for business relevant services for ATLAS.
   * [Service-Point-Directory](#service-point-directory)
   * [Prm-Directory](#prm-directory)
   * [Import Service-Point](#import-service-point)
+  * [Location Service](#location-service)
   * [Base Service lib](#base-service-lib)
   * [Frontend](#frontend)
 - [Troubleshooting](#troubleshooting)
@@ -75,11 +75,11 @@ Application MEGAID: `ADB3AE9A60E510ED`
     - **Int**: https://atlas.int.sbb-cloud.net
     - **Prod**: https://atlas.sbb-cloud.net
 - **Developer Portal**:
-  - **INT**: https://developer-int.sbb.ch/apis?text=atlas&all=
-  - **PROD**: https://developer.sbb.ch/apis?text=atlas&all=
+    - **INT**: https://developer-int.sbb.ch/apis?text=atlas&all=
+    - **PROD**: https://developer.sbb.ch/apis?text=atlas&all=
 - **API Management - 3scale**:
-  - **INT**: https://api-management.int.sbb-cloud.net
-  - **PROD**: https://api-management.prod.sbb-cloud.net
+    - **INT**: https://api-management.int.sbb-cloud.net
+    - **PROD**: https://api-management.prod.sbb-cloud.net
 - **Vulnerability Management (VMC)**: https://vmc.sbb.ch/de/reporting/mg/ADB3AE9A60E510ED/vulnerabilitylist
 
 ## ATLAS CI/CD
@@ -146,7 +146,6 @@ Stop infrastructure container and remove volume (deletes persistent content):
 ~~~
 docker-compose down -v 
 ~~~
-
 
 ### Monorepo
 
@@ -240,6 +239,11 @@ See [Prm-Directory documentation](prm-directory/README.md);
 
 Spring Batch Job to import CSV from Amazon or provided files to [Service-Point-Directory](#service-point-directory)
 See [Import-Service-Point documentation](import-service-point/README.md);
+
+### Location Service
+
+Service to assign SLOIDs centrally for all ATLAS applications.
+See [Location Service documentation](location/README.md);
 
 ### Base Service lib
 

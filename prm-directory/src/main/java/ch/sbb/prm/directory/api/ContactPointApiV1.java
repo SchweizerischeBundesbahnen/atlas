@@ -28,5 +28,6 @@ public interface ContactPointApiV1 {
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}")
   List<ReadContactPointVersionModel> updateContactPoint(@PathVariable Long id,
-                                                           @RequestBody @Valid ContactPointVersionModel model);
+      @RequestBody @Valid ContactPointVersionModel model);
+
 }

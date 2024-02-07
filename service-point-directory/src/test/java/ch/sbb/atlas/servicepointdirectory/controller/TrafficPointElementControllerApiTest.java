@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
+import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -17,7 +18,10 @@ import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointImportRequestModel;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.TrafficPointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
@@ -42,10 +46,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
- class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
+class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
 
   @MockBean
   private CrossValidationService crossValidationService;
+
+  @MockBean
+  private LocationService locationService;
 
   private final TrafficPointElementVersionRepository repository;
   private final ServicePointVersionRepository servicePointVersionRepository;
@@ -54,7 +61,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
   private TrafficPointElementVersion trafficPointElementVersion;
 
   @Autowired
-   TrafficPointElementControllerApiTest(TrafficPointElementVersionRepository repository,
+  TrafficPointElementControllerApiTest(TrafficPointElementVersionRepository repository,
       TrafficPointElementController trafficPointElementController,
       ServicePointVersionRepository servicePointVersionRepository) {
     this.repository = repository;
@@ -88,12 +95,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
         .andExpect(jsonPath("$[0].creator", is("fs45117")));
   }
 
-   @Test
-   void shouldGetTrafficPointElementValidTodayByServicePointNumber() throws Exception {
-     mvc.perform(get("/v1/traffic-point-elements/actual-date/" + trafficPointElementVersion.getServicePointNumber().getNumber()))
-         .andExpect(status().isOk())
-         .andExpect(jsonPath("$[0]." + Fields.sloid, is("ch:1:sloid:1400015:0:310240")));
-   }
+  @Test
+  void shouldGetTrafficPointElementValidTodayByServicePointNumber() throws Exception {
+    mvc.perform(get("/v1/traffic-point-elements/actual-date/" + trafficPointElementVersion.getServicePointNumber().getNumber()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0]." + Fields.sloid, is("ch:1:sloid:1400015:0:310240")));
+  }
 
   @Test
   void shouldGetTrafficPointElementVersions() throws Exception {
@@ -242,6 +249,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
     // given
     TrafficPointImportRequestModel importRequestModel = new TrafficPointImportRequestModel();
     String jsonString = mapper.writeValueAsString(importRequestModel);
+    doReturn("ch:1:sloid:123:0:123").when(locationService).generateTrafficPointSloid(TrafficPointElementType.BOARDING_AREA,
+        ServicePointNumber.ofNumberWithoutCheckDigit(1234567));
 
     // when
     mvc.perform(post("/v1/traffic-point-elements/import")
@@ -264,7 +273,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
   @Test
   void shouldCreateTrafficPointElementPlatformWithGivenSloid() throws Exception {
     repository.deleteAll();
-    CreateTrafficPointElementVersionModel platformToCreate =        TrafficPointTestData.getCreateTrafficPointVersionModel();
+    CreateTrafficPointElementVersionModel platformToCreate = TrafficPointTestData.getCreateTrafficPointVersionModel();
 
     mvc.perform(post("/v1/traffic-point-elements")
             .contentType(contentType)
@@ -293,28 +302,31 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
         .andExpect(jsonPath("$.trafficPointElementGeolocation.wgs84.north", is(46.19168377864)))
         .andExpect(jsonPath("$.trafficPointElementGeolocation.wgs84.east", is(6.21113066932)))
         .andExpect(jsonPath("$.trafficPointElementGeolocation.height", is(-9999.0)));
+
   }
 
-   @Test
-   void shouldCreateTrafficPointElementPlatformWithAutomaticSloid() throws Exception {
-     repository.deleteAll();
-     CreateTrafficPointElementVersionModel platformToCreate =        TrafficPointTestData.getCreateTrafficPointVersionModel();
-     platformToCreate.setSloid(null);
+  @Test
+  void shouldCreateTrafficPointElementPlatformWithAutomaticSloid() throws Exception {
+    repository.deleteAll();
+    CreateTrafficPointElementVersionModel platformToCreate = TrafficPointTestData.getCreateTrafficPointVersionModel();
+    platformToCreate.setSloid(null);
+    doReturn("ch:1:sloid:1400015:0:123").when(locationService).generateTrafficPointSloid(TrafficPointElementType.BOARDING_PLATFORM,
+        ServicePointNumber.ofNumberWithoutCheckDigit(1400015));
+    mvc.perform(post("/v1/traffic-point-elements")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(platformToCreate)))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.servicePointNumber.number", is(1400015)))
+        .andExpect(
+            jsonPath("$." + TrafficPointElementVersion.Fields.designation, is(platformToCreate.getDesignation())))
+        .andExpect(jsonPath("$." + TrafficPointElementVersion.Fields.designationOperational,
+            is(platformToCreate.getDesignationOperational())))
+        .andExpect(jsonPath("$." + TrafficPointElementVersion.Fields.sloid, startsWith("ch:1:sloid:1400015:0:")));
 
-     mvc.perform(post("/v1/traffic-point-elements")
-             .contentType(contentType)
-             .content(mapper.writeValueAsString(platformToCreate)))
-         .andExpect(status().isCreated())
-         .andExpect(jsonPath("$.servicePointNumber.number", is(1400015)))
-         .andExpect(
-             jsonPath("$." + TrafficPointElementVersion.Fields.designation, is(platformToCreate.getDesignation())))
-         .andExpect(jsonPath("$." + TrafficPointElementVersion.Fields.designationOperational,
-             is(platformToCreate.getDesignationOperational())))
-         .andExpect(jsonPath("$." + TrafficPointElementVersion.Fields.sloid, startsWith("ch:1:sloid:1400015:0:")));
-   }
+  }
 
   @Test
-   void shouldUpdateTrafficPointAndCreateMultipleVersions() throws Exception {
+  void shouldUpdateTrafficPointAndCreateMultipleVersions() throws Exception {
     repository.deleteAll();
     ReadTrafficPointElementVersionModel trafficPointElementVersionModel = trafficPointElementController.createTrafficPoint(
         TrafficPointTestData.getCreateTrafficPointVersionModel());
@@ -403,10 +415,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
         .andExpect(jsonPath("$[2].trafficPointElementGeolocation.wgs84.north", is(46.19168377864)))
         .andExpect(jsonPath("$[2].trafficPointElementGeolocation.wgs84.east", is(6.21113066932)))
         .andExpect(jsonPath("$[2].trafficPointElementGeolocation.height", is(-9999.0)));
+
   }
 
   @Test
-   void shouldUpdateTrafficPointAndNotCreateMultipleVersions() throws Exception {
+  void shouldUpdateTrafficPointAndNotCreateMultipleVersions() throws Exception {
     repository.deleteAll();
     ReadTrafficPointElementVersionModel trafficPointElementVersionModel = trafficPointElementController
         .createTrafficPoint(TrafficPointTestData.getCreateTrafficPointVersionModel());
@@ -420,10 +433,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
             .content(mapper.writeValueAsString(newTrafficPointVersionModel)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
+
   }
 
   @Test
-   void shouldThrowSloidsNotEqualExceptionWhenUpdate() throws Exception {
+  void shouldThrowSloidsNotEqualExceptionWhenUpdate() throws Exception {
     repository.deleteAll();
     // given
     CreateTrafficPointElementVersionModel newTrafficPointElementVersionModel =
@@ -450,7 +464,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
   }
 
   @Test
-   void shouldReturnOptimisticLockingErrorResponse() throws Exception {
+  void shouldReturnOptimisticLockingErrorResponse() throws Exception {
     repository.deleteAll();
     // given
     CreateTrafficPointElementVersionModel createTrafficPointElementVersionModel =
@@ -484,6 +498,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
     assertThat(errorResponse.getDetails().first().getDisplayInfo().getCode()).isEqualTo(
         "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR");
     assertThat(errorResponse.getError()).isEqualTo("Stale object state error");
+
   }
 
   @Test
@@ -494,6 +509,5 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
         .andExpect(jsonPath("$.details[0].message",
             is("Value 12345678 rejected due to must be less than or equal to 9999999")));
   }
-
 
 }
