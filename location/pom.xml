@@ -10,7 +10,7 @@
       <groupId>ch.sbb.atlas</groupId>
       <artifactId>atlas</artifactId>
       <relativePath>../pom.xml</relativePath>
-      <version>1.609.0</version>
+      <version>1.611.0</version>
    </parent>
 
    <artifactId>location</artifactId>
