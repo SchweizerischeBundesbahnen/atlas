@@ -113,8 +113,6 @@ include::{snippets}/service-point-controller-api-test/should-get-service-point-f
 
 include::{snippets}/service-point-controller-api-test/should-create-service-point-fot-comment/auto-section.adoc[]
 
-
-
 = Traffic Point Elements
 
 == Read TrafficPointElements - Successfully
@@ -161,7 +159,6 @@ include::{snippets}/traffic-point-element-controller-api-test/should-throw-sloid
 
 include::{snippets}/traffic-point-element-controller-api-test/should-return-optimistic-locking-error-response/auto-section.adoc[]
 
-
 = Loading Points
 
 == Read LoadingPoint by number - Successfully
@@ -178,7 +175,7 @@ include::{snippets}/loading-point-controller-api-test/should-fail-on-invalid-loa
 
 == Read LoadingPoint by number - Unsuccessfully
 
-include::{snippets}/loading-point-controller-api-test/should-fail-on-find-with-invalid-number/auto-section.adoc[]
+include::{snippets}/loading-point-controller-api-test/should-fail-on-invalid-loading-point-number/auto-section.adoc[]
 
 == Read LoadingPoint by servicePointNumber - Unsuccessfully
 

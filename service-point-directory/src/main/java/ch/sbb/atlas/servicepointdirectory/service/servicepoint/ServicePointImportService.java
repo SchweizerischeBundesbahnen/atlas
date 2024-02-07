@@ -15,6 +15,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoloca
 import ch.sbb.atlas.servicepointdirectory.exception.HeightNotCalculatableException;
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportServicePointDirectoryService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoAdminHeightResponse;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
@@ -23,12 +24,6 @@ import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import com.fasterxml.jackson.databind.MappingIterator;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
@@ -36,6 +31,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
@@ -47,8 +47,8 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
   private final VersionableService versionableService;
   private final ServicePointFotCommentService servicePointFotCommentService;
   private final ServicePointDistributor servicePointDistributor;
-  private final ServicePointNumberService servicePointNumberService;
   private final GeoReferenceService geoReferenceService;
+  private final LocationService locationService;
 
   @Override
   protected void save(ServicePointVersion servicePointVersion) {
@@ -161,18 +161,14 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
 
   private ItemImportResult saveServicePointVersion(ServicePointVersion servicePointVersion) {
     List<Exception> warnings = new ArrayList<>();
-
     getHeightForServicePointImport(servicePointVersion, warnings);
-
     try {
-      ServicePointVersion savedServicePointVersion = servicePointService.saveWithoutValidationForImportOnly(servicePointVersion, servicePointVersion.getStatus());
-      servicePointNumberService.deleteAvailableNumber(savedServicePointVersion.getNumber(),
-          savedServicePointVersion.getCountry());
+      locationService.claimServicePointSloid(servicePointVersion.getSloid());
+      servicePointService.saveWithoutValidationForImportOnly(servicePointVersion, servicePointVersion.getStatus());
     } catch (Exception exception) {
-        log.error("[Service-Point Import]: Error during save", exception);
-        return buildFailedImportResult(servicePointVersion, exception);
+      log.error("[Service-Point Import]: Error during save", exception);
+      return buildFailedImportResult(servicePointVersion, exception);
     }
-
     return buildSuccessMessageBasedOnWarnings(servicePointVersion, warnings);
   }
 
@@ -205,7 +201,7 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
     return buildSuccessMessageBasedOnWarnings(servicePointVersion, warnings);
   }
 
-  private void getHeightForServicePointImport(ServicePointVersion servicePointVersion, List<Exception> warnings){
+  private void getHeightForServicePointImport(ServicePointVersion servicePointVersion, List<Exception> warnings) {
     ServicePointGeolocation servicePointGeolocation = servicePointVersion.getServicePointGeolocation();
     try {
       if (servicePointGeolocation != null && servicePointGeolocation.getHeight() == null) {
@@ -218,12 +214,11 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
     }
   }
 
-  private ItemImportResult buildSuccessMessageBasedOnWarnings(ServicePointVersion servicePointVersion, List<Exception> warnings){
-    if(!warnings.isEmpty()) {
+  private ItemImportResult buildSuccessMessageBasedOnWarnings(ServicePointVersion servicePointVersion, List<Exception> warnings) {
+    if (!warnings.isEmpty()) {
       return buildWarningImportResult(servicePointVersion, warnings);
     } else {
       return buildSuccessImportResult(servicePointVersion);
     }
   }
 }
-

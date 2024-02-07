@@ -1,5 +1,6 @@
 package ch.sbb.prm.directory.service;
 
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
@@ -15,19 +16,38 @@ public abstract class PrmRelatableVersionableService<T extends Relatable & PrmVe
   protected final StopPointService stopPointService;
   protected final RelationService relationService;
   protected final ReferencePointRepository referencePointRepository;
+  protected final PrmLocationService locationService;
 
   protected PrmRelatableVersionableService(VersionableService versionableService, StopPointService stopPointService,
-      RelationService relationService, ReferencePointRepository referencePointRepository) {
+      RelationService relationService, ReferencePointRepository referencePointRepository,
+      PrmLocationService locationService) {
     super(versionableService);
     this.stopPointService = stopPointService;
     this.relationService = relationService;
     this.referencePointRepository = referencePointRepository;
+    this.locationService = locationService;
   }
 
   protected abstract ReferencePointElementType getReferencePointElementType();
 
+  protected abstract SloidType getSloidType();
+
+  protected void createRelationWithSloidAllocation(T version) {
+    stopPointService.checkStopPointExists(version.getParentServicePointSloid());
+    allocateSloid(version);
+    createRelations(version);
+  }
+
   protected void createRelation(T version) {
     stopPointService.checkStopPointExists(version.getParentServicePointSloid());
+    createRelations(version);
+  }
+
+  private void allocateSloid(T version) {
+    locationService.allocateSloid(version, getSloidType());
+  }
+
+  private void createRelations(T version) {
     if (!stopPointService.isReduced(version.getParentServicePointSloid())) {
       List<ReferencePointVersion> referencePointVersions = referencePointRepository.findByParentServicePointSloid(
           version.getParentServicePointSloid());
