@@ -32,18 +32,22 @@ public class SqlQueryUtil {
     return String.format(whereStatement, DateHelper.getDateAsSqlString(exportDate));
   }
 
-  public static String getWhereClause(PrmExportType exportType, String whereStatement) {
-    String spaceAtTheEndOfWhereClause = StringUtils.SPACE;
+  public static String getWholeSqlStatement(PrmExportType exportType, String selectStatement, String whereStatement, String groupByStatement) {
+    String spaceInSqlStatement = StringUtils.SPACE;
+    String semicolonAtTheEndOfSqlStatement = ";";
     if (exportType.equals(PrmExportType.FULL)) {
-      return "";
+      return selectStatement + spaceInSqlStatement + groupByStatement + semicolonAtTheEndOfSqlStatement;
     }
     if(exportType.equals(PrmExportType.ACTUAL)){
-      return String.format(whereStatement + spaceAtTheEndOfWhereClause, DateHelper.getDateAsSqlString(LocalDate.now()));
+      return String.format(selectStatement + spaceInSqlStatement + whereStatement + spaceInSqlStatement + groupByStatement + semicolonAtTheEndOfSqlStatement,
+              DateHelper.getDateAsSqlString(LocalDate.now()));
     }
     if (exportType.equals(PrmExportType.TIMETABLE_FUTURE)) {
       LocalDate futureTimeTableYearDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
-      return String.format(whereStatement + spaceAtTheEndOfWhereClause, DateHelper.getDateAsSqlString(futureTimeTableYearDate));
+      return String.format(selectStatement + spaceInSqlStatement + whereStatement + spaceInSqlStatement + groupByStatement + semicolonAtTheEndOfSqlStatement,
+              DateHelper.getDateAsSqlString(futureTimeTableYearDate));
     }
     throw new IllegalArgumentException("Value not allowed: " + exportType);
   }
+
 }
