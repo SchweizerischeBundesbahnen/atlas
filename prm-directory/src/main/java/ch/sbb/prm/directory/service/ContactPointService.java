@@ -8,11 +8,14 @@ import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.ContactPointVersion;
 import ch.sbb.prm.directory.repository.ContactPointRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
-import java.util.List;
-import java.util.Optional;
+import ch.sbb.prm.directory.search.ContactPointSearchRestrictions;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -58,10 +61,6 @@ public class ContactPointService extends PrmRelatableVersionableService<ContactP
         new ApplyVersioningDeleteByIdLongConsumer(contactPointRepository));
   }
 
-  public List<ContactPointVersion> getAllContactPoints() {
-    return contactPointRepository.findAll();
-  }
-
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#version)")
   public ContactPointVersion createContactPoint(ContactPointVersion version) {
     createRelationWithSloidAllocation(version);
@@ -76,6 +75,10 @@ public class ContactPointService extends PrmRelatableVersionableService<ContactP
 
   public Optional<ContactPointVersion> getContactPointVersionById(Long id) {
     return contactPointRepository.findById(id);
+  }
+
+  public Page<ContactPointVersion> findAll(ContactPointSearchRestrictions searchRestrictions) {
+    return contactPointRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
 
 }
