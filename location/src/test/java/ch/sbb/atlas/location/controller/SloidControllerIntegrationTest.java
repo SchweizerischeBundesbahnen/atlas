@@ -120,7 +120,7 @@ class SloidControllerIntegrationTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/sloid/claim").contentType(MediaType.APPLICATION_JSON).content("""
             {"sloidType": "AREA", "sloid": "ch:1:sloid:7000:1"}"""))
         .andExpect(status().isConflict())
-        .andExpect(jsonPath("$", is("ch:1:sloid:7000:1 is not available")));
+        .andExpect(jsonPath("$.message", is("The SLOID ch:1:sloid:7000:1 is already in use.")));
   }
 
   /** sloid validation */
