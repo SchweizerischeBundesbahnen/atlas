@@ -166,6 +166,44 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
     }
 
     @Test
+    void shouldDownloadLatestPlatformGzipJsonSuccessfully() throws Exception {
+        //given
+        try (InputStream inputStream = this.getClass().getResourceAsStream("/platform-data.json.gz")) {
+            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+            doReturn(inputStreamResource).when(fileExportService)
+                    .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.PLATFORM_VERSION);
+            doReturn("prm/full/full_platform-2023-10-27.json.gz").when(fileExportService)
+                    .getLatestUploadedFileName(PrmBatchExportFileName.PLATFORM_VERSION, PrmExportType.FULL);
+            //when & then
+            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/latest/platform-version/full")
+                            .contentType(contentType)).andExpect(request().asyncStarted())
+                    .andReturn();
+            mvc.perform(asyncDispatch(mvcResult))
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType("application/gzip"));
+        }
+    }
+
+    @Test
+    void shouldDownloadLatestPlatformJsonSuccessfully() throws Exception {
+        //given
+        try (InputStream inputStream = this.getClass().getResourceAsStream("/platform-data.json.gz")) {
+            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+            doReturn(inputStreamResource).when(fileExportService)
+                    .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.PLATFORM_VERSION);
+            doReturn("prm/full/full_platform-2023-10-27.json.gz").when(fileExportService)
+                    .getLatestUploadedFileName(PrmBatchExportFileName.PLATFORM_VERSION, PrmExportType.FULL);
+            //when & then
+            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/latest/platform-version/full")
+                            .contentType(contentType)).andExpect(request().asyncStarted())
+                    .andReturn();
+            mvc.perform(asyncDispatch(mvcResult))
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType("application/json"));
+        }
+    }
+
+    @Test
     void shouldGetReferencePointJsonSuccessfully() throws Exception {
         //given
         try (InputStream inputStream = this.getClass().getResourceAsStream("/reference-point-data.json")) {
