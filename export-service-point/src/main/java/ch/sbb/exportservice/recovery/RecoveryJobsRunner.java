@@ -64,7 +64,7 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
       EXPORT_REFERENCE_POINT_JSON_JOB_NAME);
   private static final List<String> EXPORT_CONTACT_POINT_JOB_NAME = List.of(EXPORT_CONTACT_POINT_CSV_JOB_NAME,
       EXPORT_CONTACT_POINT_JSON_JOB_NAME);
-  static final int TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE = 8;
+  static final int TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE = 14;
   public static final String ATLAS_BATCH_STATUS_RECOVERED = "RECOVERED";
 
   private final JobExplorer jobExplorer;
