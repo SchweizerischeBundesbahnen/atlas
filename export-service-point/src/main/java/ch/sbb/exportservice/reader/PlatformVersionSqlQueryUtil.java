@@ -19,8 +19,7 @@ public class PlatformVersionSqlQueryUtil extends SqlQueryUtil{
     public String getSqlQuery(PrmExportType exportType) {
         final String sqlQuery =
             SELECT_STATEMENT
-                + getWhereClause(exportType, WHERE_STATEMENT)
-                + GROUP_BY_STATEMENT;
+                + getWholeSqlStatement(exportType, SELECT_STATEMENT, WHERE_STATEMENT, GROUP_BY_STATEMENT);
         log.info("Execution SQL query:");
         log.info(sqlQuery);
         return sqlQuery;
