@@ -9,4 +9,5 @@ public class OAuthFeignConfig extends OAuthClientConfig {
   public OAuthFeignConfig() {
     super("azure");
   }
+
 }

@@ -17,6 +17,7 @@ import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
+import ch.sbb.prm.directory.service.PrmLocationService;
 import ch.sbb.prm.directory.service.RelationService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,17 +53,21 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
   @MockBean
   private final RelationService relationService;
 
+  @MockBean
+  private final PrmLocationService prmLocationService;
+
   @Autowired
   PlatformVersionControllerApiTest(PlatformRepository platformRepository,
       StopPointRepository stopPointRepository,
       ReferencePointRepository referencePointRepository,
       SharedServicePointRepository sharedServicePointRepository,
-      RelationService relationService) {
+      RelationService relationService, PrmLocationService prmLocationService) {
     this.platformRepository = platformRepository;
     this.stopPointRepository = stopPointRepository;
     this.referencePointRepository = referencePointRepository;
     this.sharedServicePointRepository = sharedServicePointRepository;
     this.relationService = relationService;
+    this.prmLocationService = prmLocationService;
   }
 
   @BeforeEach

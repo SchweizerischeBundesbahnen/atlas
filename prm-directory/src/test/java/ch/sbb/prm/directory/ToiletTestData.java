@@ -11,7 +11,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ToiletTestData {
 
-  public static ToiletVersion getToiletVersion(){
+  public static ToiletVersion getToiletVersion() {
     return ToiletVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -24,7 +24,7 @@ public class ToiletTestData {
         .build();
   }
 
-  public static ToiletVersionBuilder<?, ?> builderVersion1(){
+  public static ToiletVersionBuilder<?, ?> builderVersion1() {
     return ToiletVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -36,7 +36,7 @@ public class ToiletTestData {
         .additionalInformation("Additional information");
   }
 
-  public static ToiletVersionBuilder<?, ?> builderVersion2(){
+  public static ToiletVersionBuilder<?, ?> builderVersion2() {
     return ToiletVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -48,7 +48,7 @@ public class ToiletTestData {
         .additionalInformation("Additional information");
   }
 
-  public static ToiletVersionBuilder<?, ?> builderVersion3(){
+  public static ToiletVersionBuilder<?, ?> builderVersion3() {
     return ToiletVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -60,7 +60,7 @@ public class ToiletTestData {
         .additionalInformation("Additional information");
   }
 
-  public static ToiletVersionModel getToiletVersionModel(){
+  public static ToiletVersionModel getToiletVersionModel() {
     return ToiletVersionModel.builder()
         .sloid("ch:1:sloid:12345:1")
         .validFrom(LocalDate.of(2001, 1, 1))
