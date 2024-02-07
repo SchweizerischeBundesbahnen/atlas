@@ -59,8 +59,8 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
       assertThat(atlasCsvLine.getInclination()).isEqualTo(
           didokCsvLine.getInclination());
     }
-    if (atlasCsvLine.getInclinationLongitudal() != null && didokCsvLine.getInclinationLong() != null) {
-      assertThat(atlasCsvLine.getInclinationLongitudal()).isEqualTo(
+    if (atlasCsvLine.getInclinationLongitudinal() != null && didokCsvLine.getInclinationLong() != null) {
+      assertThat(atlasCsvLine.getInclinationLongitudinal()).isEqualTo(
           didokCsvLine.getInclinationLong());
     }
     if (atlasCsvLine.getInclinationWidth() != null && didokCsvLine.getInclinationWidth() != null) {
@@ -87,8 +87,8 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
       assertThat(atlasCsvLine.getVehicleAccess()).isEqualTo(
               VehicleAccessAttributeType.of(didokCsvLine.getVehicleAccess()).toString());
     }
-    if (atlasCsvLine.getWheelchairAreaLength() != null && didokCsvLine.getWheelchairAreaLength() != null) {
-      assertThat(atlasCsvLine.getWheelchairAreaLength()).isEqualTo(
+    if (atlasCsvLine.getWheelChairAreaLength() != null && didokCsvLine.getWheelchairAreaLength() != null) {
+      assertThat(atlasCsvLine.getWheelChairAreaLength()).isEqualTo(
               didokCsvLine.getWheelchairAreaLength());
     }
     if (atlasCsvLine.getWheelChairAreaWidth() != null && didokCsvLine.getWheelchairAreaWidth() != null) {
