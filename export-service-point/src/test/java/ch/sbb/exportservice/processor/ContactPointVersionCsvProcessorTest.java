@@ -18,6 +18,8 @@ public class ContactPointVersionCsvProcessorTest {
 
     @Test
     void shouldMapToCsvModel() {
+        LocalDateTime creationDate = LocalDateTime.now();
+        LocalDateTime editionDate = LocalDateTime.now();
         ContactPointVersion entity = ContactPointVersion.builder()
                 .id(1L)
                 .sloid("ch:1:sloid:112:23")
@@ -38,8 +40,8 @@ public class ContactPointVersionCsvProcessorTest {
                 .type(ContactPointType.TICKET_COUNTER)
                 .validFrom(LocalDate.of(2020, 1, 1))
                 .validTo(LocalDate.of(2020, 12, 31))
-                .creationDate(LocalDateTime.now())
-                .editionDate(LocalDateTime.now())
+                .creationDate(creationDate)
+                .editionDate(editionDate)
                 .build();
 
         ContactPointVersionCsvModel expected = ContactPointVersionCsvModel.builder()
@@ -54,8 +56,8 @@ public class ContactPointVersionCsvProcessorTest {
                 .type(ContactPointType.TICKET_COUNTER.toString())
                 .validFrom(BaseServicePointProcessor.DATE_FORMATTER.format(LocalDate.of(2020, 1, 1)))
                 .validTo(BaseServicePointProcessor.DATE_FORMATTER.format(LocalDate.of(2020, 12, 31)))
-                .creationDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(LocalDateTime.now()))
-                .editionDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(LocalDateTime.now()))
+                .creationDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(creationDate))
+                .editionDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(editionDate))
                 .build();
 
         ContactPointVersionCsvModel result = processor.process(entity);
