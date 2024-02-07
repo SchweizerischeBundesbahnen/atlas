@@ -1,6 +1,7 @@
 package ch.sbb.exportservice.controller;
 
 import ch.sbb.exportservice.service.ExportContactPointJobService;
+import ch.sbb.exportservice.service.ExportPlatformJobService;
 import ch.sbb.exportservice.service.ExportReferencePointJobService;
 import ch.sbb.exportservice.service.ExportStopPointJobService;
 import io.micrometer.tracing.annotation.NewSpan;
@@ -21,11 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 @Slf4j
-public class ExportStopPointBatchControllerApiV1 {
+public class ExportPrmBatchControllerApiV1 {
 
   private final ExportStopPointJobService exportStopPointJobService;
+  private final ExportPlatformJobService exportPlatformJobService;
   private final ExportReferencePointJobService exportReferencePointJobService;
   private final ExportContactPointJobService exportContactPointJobService;
+
 
   @PostMapping("stop-point-batch")
   @ResponseStatus(HttpStatus.OK)
@@ -34,8 +37,18 @@ public class ExportStopPointBatchControllerApiV1 {
   })
   @NewSpan
   @Async
-  public void startExportServicePointBatch() {
+  public void startExportStopPointBatch() {
     exportStopPointJobService.startExportJobs();
+  }
+
+  @PostMapping("platform-batch")
+  @ResponseStatus(HttpStatus.OK)
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200"),
+  })
+  @Async
+  public void startExportPlatformBatch() {
+    exportPlatformJobService.startExportJobs();
   }
 
   @PostMapping("reference-point-batch")
