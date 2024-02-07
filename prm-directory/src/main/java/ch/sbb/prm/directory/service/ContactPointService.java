@@ -1,6 +1,6 @@
 package ch.sbb.prm.directory.service;
 
-
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -21,15 +21,20 @@ public class ContactPointService extends PrmRelatableVersionableService<ContactP
   private final ContactPointRepository contactPointRepository;
 
   public ContactPointService(ContactPointRepository contactPointRepository, StopPointService stopPointService,
-                             RelationService relationRepository, ReferencePointRepository referencePointRepository,
-                             VersionableService versionableService) {
-    super(versionableService, stopPointService, relationRepository, referencePointRepository);
+      RelationService relationRepository, ReferencePointRepository referencePointRepository,
+      VersionableService versionableService, PrmLocationService locationService) {
+    super(versionableService, stopPointService, relationRepository, referencePointRepository, locationService);
     this.contactPointRepository = contactPointRepository;
   }
 
   @Override
   protected ReferencePointElementType getReferencePointElementType() {
     return ReferencePointElementType.CONTACT_POINT;
+  }
+
+  @Override
+  protected SloidType getSloidType() {
+    return SloidType.CONTACT_POINT;
   }
 
   @Override
@@ -59,13 +64,13 @@ public class ContactPointService extends PrmRelatableVersionableService<ContactP
 
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#version)")
   public ContactPointVersion createContactPoint(ContactPointVersion version) {
-    createRelation(version);
+    createRelationWithSloidAllocation(version);
     return save(version);
   }
 
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#editedVersion)")
   public ContactPointVersion updateContactPointVersion(ContactPointVersion currentVersion,
-                                                       ContactPointVersion editedVersion) {
+      ContactPointVersion editedVersion) {
     return updateVersion(currentVersion, editedVersion);
   }
 

@@ -1,11 +1,17 @@
 package ch.sbb.prm.directory.service.versioning;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
+import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
@@ -14,6 +20,7 @@ import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.BasePrmServiceTest;
+import ch.sbb.prm.directory.service.PrmLocationService;
 import ch.sbb.prm.directory.service.ReferencePointService;
 import ch.sbb.prm.directory.service.RelationService;
 import java.time.LocalDate;
@@ -30,11 +37,12 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
 
   @Autowired
   ReferencePointVersioningTest(ReferencePointService referencePointService,
-                               ReferencePointRepository referencePointRepository,
-                               RelationService relationService,
-                               StopPointRepository stopPointRepository,
-                               SharedServicePointRepository sharedServicePointRepository) {
-    super(sharedServicePointRepository);
+      ReferencePointRepository referencePointRepository,
+      RelationService relationService,
+      StopPointRepository stopPointRepository,
+      SharedServicePointRepository sharedServicePointRepository,
+      PrmLocationService prmLocationService) {
+    super(sharedServicePointRepository, prmLocationService);
     this.referencePointService = referencePointService;
     this.referencePointRepository = referencePointRepository;
     this.relationService = relationService;
@@ -46,7 +54,7 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
    * NEU:                             |________________________________
    * IST:      |----------------------|--------------------------------
    * Version:        1                                2
-   *
+   * <p>
    * RESULTAT: |----------------------|________________________________
    * Version:        1                                2
    */
@@ -59,11 +67,12 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
 
     ReferencePointVersion version1 = ReferencePointTestData.builderVersion1().build();
     version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
-    referencePointService.createReferencePoint(version1);
+    ReferencePointVersion referencePoint1 = referencePointService.createReferencePoint(version1);
 
     ReferencePointVersion version2 = ReferencePointTestData.builderVersion2().build();
     version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
-    referencePointService.createReferencePoint(version2);
+    version2.setVersion(0);
+    referencePointService.updateReferencePointVersion(referencePoint1, version2);
 
     ReferencePointVersion editedVersion = ReferencePointTestData.builderVersion2().build();
     editedVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(1234567));
@@ -78,6 +87,9 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
     editedVersion.setVersion(version2.getVersion());
 
     //when
+    List<ReferencePointVersion> allReferencePointsInDb = referencePointRepository.findAllBySloidOrderByValidFrom(
+        version2.getSloid());
+    version2.setId(allReferencePointsInDb.get(allReferencePointsInDb.size() - 1).getId());
     referencePointService.updateReferencePointVersion(version2, editedVersion);
 
     //then
@@ -89,17 +101,19 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
-        .isEqualTo(version1);
+        .isEqualTo(referencePoint1);
 
     ReferencePointVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.id)
+        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor,
+            Fields.creator, ReferencePointVersion.Fields.id)
         .isEqualTo(editedVersion);
 
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
-            PARENT_SERVICE_POINT_SLOID);
+        PARENT_SERVICE_POINT_SLOID);
     assertThat(relations).isEmpty();
+    verify(prmLocationService, times(1)).allocateSloid(any(),eq(SloidType.REFERENCE_POINT));
   }
 
   /**
@@ -107,7 +121,7 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
    * NEU:                       |___________|
    * IST:      |-----------|----------------------|--------------------
    * Version:        1                 2                  3
-   *
+   * <p>
    * RESULTAT: |-----------|----|___________|-----|--------------------     NEUE VERSION EINGEFÜGT
    * Version:        1       2         4       5          3
    */
@@ -120,15 +134,17 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
 
     ReferencePointVersion version1 = ReferencePointTestData.builderVersion1().build();
     version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
-    referencePointService.createReferencePoint(version1);
+    ReferencePointVersion referencePoint1 = referencePointService.createReferencePoint(version1);
 
     ReferencePointVersion version2 = ReferencePointTestData.builderVersion2().build();
     version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
-    referencePointService.createReferencePoint(version2);
+    version2.setVersion(0);
+    referencePointService.updateReferencePointVersion(referencePoint1, version2);
 
     ReferencePointVersion version3 = ReferencePointTestData.builderVersion3().build();
     version3.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
-    referencePointService.createReferencePoint(version3);
+    version3.setVersion(0);
+    referencePointService.updateReferencePointVersion(version2, version3);
 
     ReferencePointVersion editedVersion = ReferencePointTestData.builderVersion2().build();
     editedVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
@@ -154,7 +170,7 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
-        .isEqualTo(version1);
+        .isEqualTo(referencePoint1);
 
     ReferencePointVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2001, 1, 1));
@@ -174,12 +190,15 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
     ReferencePointVersion fifthTemporalVersion = result.get(4);
     assertThat(fifthTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
+        .ignoringFields(ReferencePointVersion.Fields.id, Fields.version, Fields.editionDate, Fields.creationDate,
+            Fields.editor,
+            Fields.creator)
         .isEqualTo(version3);
 
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
-            PARENT_SERVICE_POINT_SLOID);
+        PARENT_SERVICE_POINT_SLOID);
     assertThat(relations).isEmpty();
+    verify(prmLocationService, times(1)).allocateSloid(any(),eq(SloidType.REFERENCE_POINT));
   }
 
   /**
@@ -187,7 +206,7 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
    * NEU:      |______________________|
    * IST:      |-------------------------------------------------------
    * Version:                            1
-   *
+   * <p>
    * RESULTAT: |----------------------| Version wird per xx aufgehoben
    * Version:         1
    */
@@ -200,11 +219,12 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
 
     ReferencePointVersion version1 = ReferencePointTestData.builderVersion1().build();
     version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
-    referencePointService.createReferencePoint(version1);
+    ReferencePointVersion referencePoint1 = referencePointService.createReferencePoint(version1);
 
     ReferencePointVersion version2 = ReferencePointTestData.builderVersion2().build();
     version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
-    referencePointService.createReferencePoint(version2);
+    version2.setVersion(0);
+    referencePointService.updateReferencePointVersion(referencePoint1, version2);
 
     ReferencePointVersion editedVersion = ReferencePointTestData.builderVersion2().build();
     editedVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
@@ -228,18 +248,20 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
         .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
-        .isEqualTo(version1);
+        .isEqualTo(referencePoint1);
 
     ReferencePointVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.validTo)
+        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor,
+            Fields.creator, ReferencePointVersion.Fields.id, BasePrmEntityVersion.Fields.validTo)
         .isEqualTo(version2);
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2001, 12, 31));
 
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
-            PARENT_SERVICE_POINT_SLOID);
+        PARENT_SERVICE_POINT_SLOID);
     assertThat(relations).isEmpty();
+    verify(prmLocationService, times(1)).allocateSloid(any(),eq(SloidType.REFERENCE_POINT));
   }
 
 }

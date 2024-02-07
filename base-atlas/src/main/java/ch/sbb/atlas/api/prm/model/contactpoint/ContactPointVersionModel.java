@@ -45,4 +45,5 @@ public class ContactPointVersionModel extends BasePrmVersionModel implements Dat
 
   @NotNull
   private ContactPointType type;
+
 }

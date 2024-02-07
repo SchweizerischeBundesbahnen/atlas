@@ -10,13 +10,13 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
+import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.exception.TrafficPointElementDoesNotExistsException;
-import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
@@ -41,13 +41,14 @@ class PlatformServiceTest extends BasePrmServiceTest {
 
   @Autowired
   PlatformServiceTest(PlatformService platformService,
-                      PlatformRepository platformRepository,
-                      SharedServicePointConsumer sharedServicePointConsumer,
-                      RelationRepository relationRepository,
-                      StopPointRepository stopPointRepository,
-                      ReferencePointRepository referencePointRepository,
-                      SharedServicePointRepository sharedServicePointRepository) {
-    super(sharedServicePointRepository);
+      PlatformRepository platformRepository,
+      SharedServicePointConsumer sharedServicePointConsumer,
+      RelationRepository relationRepository,
+      StopPointRepository stopPointRepository,
+      ReferencePointRepository referencePointRepository,
+      SharedServicePointRepository sharedServicePointRepository,
+      PrmLocationService prmLocationService) {
+    super(sharedServicePointRepository, prmLocationService);
     this.platformService = platformService;
     this.platformRepository = platformRepository;
     this.sharedServicePointConsumer = sharedServicePointConsumer;
@@ -90,11 +91,11 @@ class PlatformServiceTest extends BasePrmServiceTest {
 
     //then
     List<PlatformVersion> platformVersions = platformRepository
-            .findByParentServicePointSloid(platformVersion.getParentServicePointSloid());
+        .findByParentServicePointSloid(platformVersion.getParentServicePointSloid());
     assertThat(platformVersions).hasSize(1);
     assertThat(platformVersions.get(0).getParentServicePointSloid()).isEqualTo(platformVersion.getParentServicePointSloid());
     List<RelationVersion> relationVersions = relationRepository
-            .findAllByParentServicePointSloid(platformVersion.getParentServicePointSloid());
+        .findAllByParentServicePointSloid(platformVersion.getParentServicePointSloid());
     assertThat(relationVersions).isEmpty();
   }
 
@@ -120,7 +121,7 @@ class PlatformServiceTest extends BasePrmServiceTest {
     assertThat(platformVersions).hasSize(1);
     assertThat(platformVersions.get(0).getParentServicePointSloid()).isEqualTo(platformVersion.getParentServicePointSloid());
     List<RelationVersion> relationVersions = relationRepository
-            .findAllByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+        .findAllByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions).hasSize(1);
     assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(PLATFORM);
@@ -132,7 +133,8 @@ class PlatformServiceTest extends BasePrmServiceTest {
   @Test
   void shouldCreatePlatformWhenStopPointIsComplete() {
     //given
-    StopPointVersion stopPointVersion = StopPointTestData.builderVersion1().meansOfTransport(Set.of(MeanOfTransport.TRAIN)).build();
+    StopPointVersion stopPointVersion = StopPointTestData.builderVersion1().meansOfTransport(Set.of(MeanOfTransport.TRAIN))
+        .build();
     stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
     stopPointRepository.save(stopPointVersion);
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
