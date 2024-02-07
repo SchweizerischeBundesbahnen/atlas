@@ -1,12 +1,15 @@
 package ch.sbb.exportservice.reader;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.versioning.date.DateHelper;
+import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.model.SePoDiExportType;
-import java.time.LocalDate;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class SqlQueryUtilTest {
 
@@ -84,6 +87,43 @@ class SqlQueryUtilTest {
     final LocalDate expectedDate = LocalDate.now();
     final String expectedDateAsString = DateHelper.getDateAsSqlString(expectedDate);
     assertThat(query).isEqualTo(WHERE_CLAUSE.formatted(expectedDateAsString));
+  }
+
+  @Test
+  void shouldReturnNoWhereClauseWithSpaceForFullAndContactPointVersion() {
+    // given
+    // when
+    String whereStatementContactPointVersion = "WHERE '%s' between cpv.valid_from and cpv.valid_to";
+    final String query = SqlQueryUtil.getWhereClause(PrmExportType.FULL, whereStatementContactPointVersion);
+
+    // then
+    assertThat(query).isEqualTo("");
+  }
+
+  @Test
+  void shouldReturnWhereClauseWithSpaceForActualAndContactPointVersion() {
+    // given
+    // when
+    String whereStatementContactPointVersion = "WHERE '%s' between cpv.valid_from and cpv.valid_to";
+    final String query = SqlQueryUtil.getWhereClause(PrmExportType.ACTUAL, whereStatementContactPointVersion);
+
+    // then
+    final LocalDate expectedDate = LocalDate.now();
+    final String expectedDateAsString = DateHelper.getDateAsSqlString(expectedDate);
+    assertThat(query).isEqualTo(whereStatementContactPointVersion.formatted(expectedDateAsString) + StringUtils.SPACE);
+  }
+
+  @Test
+  void shouldReturnWhereClauseWithSpaceForTimetableFutureAndContactPointVersion() {
+    // given
+    // when
+    String whereStatementContactPointVersion = "WHERE '%s' between cpv.valid_from and cpv.valid_to";
+    final String query = SqlQueryUtil.getWhereClause(PrmExportType.TIMETABLE_FUTURE, whereStatementContactPointVersion);
+
+    // then
+    final LocalDate futureTimeTableYearDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
+    final String expectedDateAsString = DateHelper.getDateAsSqlString(futureTimeTableYearDate);
+    assertThat(query).isEqualTo(whereStatementContactPointVersion.formatted(expectedDateAsString) + StringUtils.SPACE);
   }
 
 }
