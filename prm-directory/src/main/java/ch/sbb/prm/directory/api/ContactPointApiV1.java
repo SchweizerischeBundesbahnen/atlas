@@ -3,7 +3,7 @@ package ch.sbb.prm.directory.api;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
-import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
+import ch.sbb.prm.directory.controller.model.ContactPointObjectRequestParams;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,7 +32,7 @@ public interface ContactPointApiV1 {
   Container<ReadContactPointVersionModel> getContactPoints(
           @Parameter(hidden = true) @PageableDefault(sort = {BasePrmEntityVersion.Fields.number,
                   BasePrmEntityVersion.Fields.validFrom}) Pageable pageable,
-          @Valid @ParameterObject PrmObjectRequestParams prmObjectRequestParams);
+          @Valid @ParameterObject ContactPointObjectRequestParams contactPointObjectRequestParams);
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
