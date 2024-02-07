@@ -30,7 +30,7 @@ tasks are able to automatic re-executed.
 ## ATLAS
 
 This application is part of ATLAS. General documentation is
-available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-backend/browse/README.md#big-picture)
+available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas/browse/README.md)
 .
 
 ## Project Versioning

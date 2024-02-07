@@ -73,6 +73,11 @@
       "imageName": "workflow"
     },
     {
+      "artifactoryDockerRepo": "atlas.docker",
+      "dockerFile": "location/docker/Dockerfile",
+      "imageName": "location"
+    },
+    {
       "dockerFile": "frontend/docker/Dockerfile",
       "imageName": "atlas-frontend",
       "artifactoryDockerRepo": "atlas.docker",
@@ -207,7 +212,8 @@
         "FAILURE",
         "ABORTED"
       ],
-      "webhookUrl": "https://sbb.webhook.office.com/webhookb2/e262e9dc-5836-4c36-b3e5-0e827f2a2787@2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/JenkinsCI/1d957b31eb2c46aeac8003d5a70e1926/8231c64b-bcb4-497e-93bf-0213ebdac9e4"
+      "webhookSecretName": "esta-tekton-pipeline-env"
     }
   ]
 }
+

@@ -44,4 +44,3 @@ public class ContactPointController implements ContactPointApiV1 {
   }
 
 }
-

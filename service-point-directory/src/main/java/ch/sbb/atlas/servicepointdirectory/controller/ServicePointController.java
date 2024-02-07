@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.GeoReference;
@@ -9,6 +10,7 @@ import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.location.SloidHelper;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
@@ -21,23 +23,22 @@ import ch.sbb.atlas.servicepointdirectory.exception.ServicePointStatusChangeNotA
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointFotCommentMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointNumberService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchResult;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @Slf4j
@@ -49,7 +50,7 @@ public class ServicePointController implements ServicePointApiV1 {
   private final ServicePointImportService servicePointImportService;
   private final GeoReferenceService geoReferenceService;
   private final ServicePointDistributor servicePointDistributor;
-  private final ServicePointNumberService servicePointNumberService;
+  private final LocationService locationService;
 
   @Override
   public Container<ReadServicePointVersionModel> getServicePoints(Pageable pageable,
@@ -115,10 +116,11 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public List<ReadServicePointVersionModel> revokeServicePoint(Integer servicePointNumber) {
-    List<ReadServicePointVersionModel> servicePointVersionModels = servicePointService.revokeServicePoint(ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber))
-            .stream()
-            .map(ServicePointVersionMapper::toModel)
-            .toList();
+    List<ReadServicePointVersionModel> servicePointVersionModels = servicePointService.revokeServicePoint(
+            ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber))
+        .stream()
+        .map(ServicePointVersionMapper::toModel)
+        .toList();
     if (servicePointVersionModels.isEmpty()) {
       throw new ServicePointNumberNotFoundException(ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber));
     }
@@ -130,26 +132,24 @@ public class ServicePointController implements ServicePointApiV1 {
     ServicePointVersion servicePointVersion;
 
     if (createServicePointVersionModel.shouldGenerateServicePointNumber()) {
-      int nextAvailableServicePointId = servicePointNumberService.getNextAvailableServicePointId(
-          createServicePointVersionModel.getCountry());
-
-      ServicePointNumber servicePointNumber = ServicePointNumber.of(createServicePointVersionModel.getCountry(),
-          nextAvailableServicePointId);
+      // case 85,11-14
+      String generatedSloid = locationService.generateSloid(SloidType.SERVICE_POINT, createServicePointVersionModel.getCountry());
+      log.info("Generated new SLOID={}", generatedSloid);
+      ServicePointNumber servicePointNumber = SloidHelper.getServicePointNumber(generatedSloid);
       log.info("Generated new service point number={}", servicePointNumber);
-
       servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel, servicePointNumber);
     } else {
+      // case foreign country
       ServicePointNumber manualServicePointNumber = ServicePointNumber.of(createServicePointVersionModel.getCountry(),
           createServicePointVersionModel.getNumberShort());
       if (servicePointService.isServicePointNumberExisting(manualServicePointNumber)) {
         throw new ServicePointNumberAlreadyExistsException(manualServicePointNumber);
       }
-
       servicePointVersion = ServicePointVersionMapper.toEntity(createServicePointVersionModel, manualServicePointNumber);
     }
     addGeoReferenceInformation(servicePointVersion);
     setCreationDateAndCreatorToNull(servicePointVersion);
-    ServicePointVersion createdVersion = servicePointService.save(servicePointVersion, Optional.empty(), List.of());
+    ServicePointVersion createdVersion = servicePointService.create(servicePointVersion, Optional.empty(), List.of());
     servicePointDistributor.publishServicePointsWithNumbers(createdVersion.getNumber());
     return ServicePointVersionMapper.toModel(createdVersion);
   }
@@ -166,7 +166,7 @@ public class ServicePointController implements ServicePointApiV1 {
   @Override
   public ReadServicePointVersionModel validateServicePoint(Long id) {
     ServicePointVersion servicePointVersion = servicePointService.findById(id)
-            .orElseThrow(() -> new IdNotFoundException(id));
+        .orElseThrow(() -> new IdNotFoundException(id));
 
     if (!Status.DRAFT.equals(servicePointVersion.getStatus())) {
       throw new ServicePointStatusChangeNotAllowedException(servicePointVersion.getNumber(), servicePointVersion.getStatus());
@@ -225,9 +225,10 @@ public class ServicePointController implements ServicePointApiV1 {
   private void addGeoReferenceInformation(ServicePointVersion servicePointVersion) {
     if (servicePointVersion.hasGeolocation()) {
       ServicePointGeolocation servicePointGeolocation = servicePointVersion.getServicePointGeolocation();
-      GeoReference geoReference = geoReferenceService.getGeoReference(servicePointGeolocation.asCoordinatePair(), servicePointGeolocation.getHeight() == null);
+      GeoReference geoReference = geoReferenceService.getGeoReference(servicePointGeolocation.asCoordinatePair(),
+          servicePointGeolocation.getHeight() == null);
 
-      if (geoReference.getHeight() != null){
+      if (geoReference.getHeight() != null) {
         servicePointGeolocation.setHeight(geoReference.getHeight());
       }
 

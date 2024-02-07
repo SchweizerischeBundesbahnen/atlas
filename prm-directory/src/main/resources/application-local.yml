@@ -23,6 +23,18 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
+      client:
+        provider:
+          azure:
+            issuer-uri: https://login.microsoftonline.com/2cda5d11-f0ac-46b3-967d-af1b2e1bd01a/v2.0
+        registration:
+          azure:
+            authorization-grant-type: client_credentials
+            client-id: ${SCHEDULING_CLIENT_ID}
+            client-secret: ${SCHEDULING_CLIENT_SECRET}
+            scope:
+              - api://87e6e634-6ba1-4e7a-869d-3348b4c3eafc/.default
+
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
@@ -93,4 +105,3 @@ atlas:
   client:
     gateway:
       url: "http://localhost:8888"
-

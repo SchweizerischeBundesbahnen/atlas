@@ -141,6 +141,10 @@ scheduler:
     reference-point-trigger-batch:
       chron: "0 35 5 * * ?" #At 05:35:00am every day
 
+  location:
+    sync:
+      chron: "0 0 6 * * 1" #At 06:00 AM, only on Monday
+
 atlas:
   client:
     gateway:
