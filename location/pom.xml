@@ -51,7 +51,7 @@
       <dependency>
          <artifactId>base-atlas</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.609.0</version>
+         <version>1.611.0</version>
       </dependency>
 
       <dependency>
@@ -65,7 +65,7 @@
          <groupId>ch.sbb.atlas</groupId>
          <scope>test</scope>
          <type>test-jar</type>
-         <version>1.609.0</version>
+         <version>1.611.0</version>
       </dependency>
       <dependency>
          <artifactId>spring-restdocs-mockmvc</artifactId>
