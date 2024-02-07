@@ -1,9 +1,6 @@
 package ch.sbb.exportservice.reader;
 
-import ch.sbb.atlas.model.FutureTimetableHelper;
-import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.exportservice.model.PrmExportType;
-import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,8 +18,8 @@ public class ReferencePointVersionSqlQueryUtil extends SqlQueryUtil {
   public String getSqlQuery(PrmExportType exportType) {
     final String sqlQuery =
         SELECT_STATEMENT
-        + getWhereClause(exportType, WHERE_STATEMENT)
-        + GROUP_BY_STATEMENT;
+            + getWhereClause(exportType, WHERE_STATEMENT)
+            + GROUP_BY_STATEMENT;
     log.info("Execution SQL query:");
     log.info(sqlQuery);
     return sqlQuery;
