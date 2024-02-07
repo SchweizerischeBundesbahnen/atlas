@@ -37,7 +37,6 @@ import static ch.sbb.atlas.api.controller.GzipFileDownloadHttpHeader.extractFile
 @Slf4j
 public class ServicePointBatchControllerApiV1 {
 
-    public static final String START_STREAMING_FILE_LOG_MSG = "Start streaming file ";
     private final FileExportService<SePoDiExportType> fileExportService;
 
     @GetMapping(value = "json/{exportFileName}/{sePoDiExportType}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -52,7 +51,7 @@ public class ServicePointBatchControllerApiV1 {
             @PathVariable SePoDiBatchExportFileName exportFileName,
             @PathVariable SePoDiExportType sePoDiExportType) {
         checkInputPath(exportFileName, sePoDiExportType);
-        log.info("Start streaming file...");
+        logInfo(exportFileName.getFileName());
         InputStreamResource body = fileExportService.streamJsonFile(sePoDiExportType, exportFileName);
         return CompletableFuture.supplyAsync(() ->
                 ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body));
@@ -71,7 +70,7 @@ public class ServicePointBatchControllerApiV1 {
             @PathVariable SePoDiExportType sePoDiExportType) {
         checkInputPath(exportFileName, sePoDiExportType);
         String fileName = fileExportService.getLatestUploadedFileName(exportFileName, sePoDiExportType);
-        log.info(START_STREAMING_FILE_LOG_MSG + fileName + "...");
+        logInfo(fileName);
         InputStreamResource body = fileExportService.streamLatestJsonFile(fileName);
         return CompletableFuture.supplyAsync(() ->
                 ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body));
@@ -90,7 +89,7 @@ public class ServicePointBatchControllerApiV1 {
             @PathVariable SePoDiExportType sePoDiExportType) throws NotAllowedExportFileException {
         checkInputPath(exportFileName, sePoDiExportType);
         String fileName = fileExportService.getBaseFileName(sePoDiExportType, exportFileName);
-        log.info(START_STREAMING_FILE_LOG_MSG + fileName + "...");
+        logInfo(fileName);
         HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(fileName);
         InputStreamResource body = fileExportService.streamGzipFile(sePoDiExportType, exportFileName);
         return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));
@@ -109,7 +108,7 @@ public class ServicePointBatchControllerApiV1 {
             @PathVariable SePoDiExportType sePoDiExportType) throws NotAllowedExportFileException {
         checkInputPath(exportFileName, sePoDiExportType);
         String fileName = fileExportService.getLatestUploadedFileName(exportFileName, sePoDiExportType);
-        log.info(START_STREAMING_FILE_LOG_MSG + fileName + "...");
+        logInfo(fileName);
         HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(extractFileNameFromS3ObjectName(fileName));
         InputStreamResource body = fileExportService.streamLatestGzipFile(fileName);
         return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));
@@ -123,6 +122,10 @@ public class ServicePointBatchControllerApiV1 {
         if (worldOnlyTypes.contains(exportFileName) && !SePoDiExportType.getWorldOnly().contains(sePoDiExportType)) {
             throw new NotAllowedExportFileException(exportFileName, sePoDiExportType);
         }
+    }
+
+    private void logInfo(String fileName) {
+        log.info("Start streaming file " + fileName + "...");
     }
 
 }
