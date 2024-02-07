@@ -5,7 +5,7 @@ import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.ContactPointApiV1;
-import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
+import ch.sbb.prm.directory.controller.model.ContactPointObjectRequestParams;
 import ch.sbb.prm.directory.entity.ContactPointVersion;
 import ch.sbb.prm.directory.mapper.ContactPointVersionMapper;
 import ch.sbb.prm.directory.search.ContactPointSearchRestrictions;
@@ -27,10 +27,10 @@ public class ContactPointController implements ContactPointApiV1 {
 
   @Override
   public Container<ReadContactPointVersionModel> getContactPoints(Pageable pageable,
-                                                                    PrmObjectRequestParams prmObjectRequestParams) {
+                                                                    ContactPointObjectRequestParams contactPointObjectRequestParams) {
     ContactPointSearchRestrictions searchRestrictions = ContactPointSearchRestrictions.builder()
             .pageable(pageable)
-            .prmObjectRequestParams(prmObjectRequestParams)
+            .contactPointObjectRequestParams(contactPointObjectRequestParams)
             .build();
 
     Page<ContactPointVersion> contactPointVersions = contactPointService.findAll(searchRestrictions);
