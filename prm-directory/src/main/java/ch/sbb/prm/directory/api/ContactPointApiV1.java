@@ -3,6 +3,9 @@ package ch.sbb.prm.directory.api;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
+import ch.sbb.atlas.configuration.Role;
+import ch.sbb.atlas.imports.ItemImportResult;
+import ch.sbb.atlas.imports.prm.contactpoint.ContactPointImportRequestModel;
 import ch.sbb.prm.directory.controller.model.ContactPointObjectRequestParams;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -13,6 +16,7 @@ import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,4 +50,8 @@ public interface ContactPointApiV1 {
   @GetMapping("{sloid}")
   List<ReadContactPointVersionModel> getContactPointVersions(@PathVariable String sloid);
 
+
+  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
+  @PostMapping("import")
+  List<ItemImportResult> importContactPoints(@RequestBody @Valid ContactPointImportRequestModel contactPointImportRequestModel);
 }
