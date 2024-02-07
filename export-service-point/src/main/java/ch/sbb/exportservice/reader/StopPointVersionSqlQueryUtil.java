@@ -17,9 +17,7 @@ public class StopPointVersionSqlQueryUtil extends SqlQueryUtil {
   private static final String GROUP_BY_STATEMENT = "GROUP BY spv.id";
 
   public String getSqlQuery(PrmExportType exportType) {
-    final String sqlQuery =
-        SELECT_STATEMENT
-            + getWholeSqlStatement(exportType, SELECT_STATEMENT, WHERE_STATEMENT, GROUP_BY_STATEMENT);
+    final String sqlQuery = getWholeSqlStatement(exportType, SELECT_STATEMENT, WHERE_STATEMENT, GROUP_BY_STATEMENT);
     log.info("Execution SQL query:");
     log.info(sqlQuery);
     return sqlQuery;
