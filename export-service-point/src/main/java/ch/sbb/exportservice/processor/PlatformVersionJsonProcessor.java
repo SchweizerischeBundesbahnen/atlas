@@ -13,7 +13,7 @@ public class PlatformVersionJsonProcessor extends BaseServicePointProcessor impl
         return ReadPlatformVersionModel.builder()
             .id(version.getId())
             .sloid(version.getSloid())
-            .parentServicePointSloid(version.getParentSloidServicePoint())
+            .parentServicePointSloid(version.getParentServicePointSloid())
             .number(version.getParentNumberServicePoint())
             .boardingDevice(version.getBoardingDevice())
             .adviceAccessInfo(version.getAdviceAccessInfo())
