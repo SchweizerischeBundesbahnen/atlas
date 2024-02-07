@@ -6,6 +6,7 @@ import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.model.SePoDiExportType;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
 
@@ -32,15 +33,16 @@ public class SqlQueryUtil {
   }
 
   public static String getWhereClause(PrmExportType exportType, String whereStatement) {
+    String spaceAtTheEndOfWhereClause = StringUtils.SPACE;
     if (exportType.equals(PrmExportType.FULL)) {
       return "";
     }
     if(exportType.equals(PrmExportType.ACTUAL)){
-      return String.format(whereStatement, DateHelper.getDateAsSqlString(LocalDate.now()));
+      return String.format(whereStatement + spaceAtTheEndOfWhereClause, DateHelper.getDateAsSqlString(LocalDate.now()));
     }
     if (exportType.equals(PrmExportType.TIMETABLE_FUTURE)) {
       LocalDate futureTimeTableYearDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
-      return String.format(whereStatement, DateHelper.getDateAsSqlString(futureTimeTableYearDate));
+      return String.format(whereStatement + spaceAtTheEndOfWhereClause, DateHelper.getDateAsSqlString(futureTimeTableYearDate));
     }
     throw new IllegalArgumentException("Value not allowed: " + exportType);
   }
