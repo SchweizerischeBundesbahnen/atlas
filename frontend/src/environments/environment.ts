@@ -24,7 +24,7 @@ export const environment: Environment = {
   sepodiWorkflowEnabled: true,
   label: 'dev',
   appVersion: packageJson.version,
-  atlasApiUrl: 'http://localhost:8888',
+  atlasApiUrl: 'http://localhost:6969',
   atlasReleaseNotes: 'https://atlas-info.app.sbb.ch/static/atlas-release-notes.html',
   authConfig,
 };
