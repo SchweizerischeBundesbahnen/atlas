@@ -8,13 +8,13 @@
 - [DB Compact](#db-compact)
 - [Project Versioning](#project-versioning)
 - [Links](#links)
-  * [Localhost](#localhost)
-  * [Development](#development)
-  * [Test](#test)
-  * [Integration](#integration)
-  * [Production](#production)
-  * [Project Infrastructure](#project-infrastructure)
-  * [Tech Stack](#tech-stack)
+    * [Localhost](#localhost)
+    * [Development](#development)
+    * [Test](#test)
+    * [Integration](#integration)
+    * [Production](#production)
+    * [Project Infrastructure](#project-infrastructure)
+    * [Tech Stack](#tech-stack)
 - [Full clean import of stop points](#full-clean-import-of-stop-points)
 
 <!-- tocstop -->
@@ -22,12 +22,11 @@
 ## ATLAS
 
 This application is part of ATLAS. General documentation is
-available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-backend/browse/README.md#big-picture)
-.
+available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas/browse/README.md).
 
 ## ADR Architecture Decision Record
 
-Sie [ADR-0020: PRM (BehiG) Migration](https://confluence.sbb.ch/x/3RTcl)
+See [ADR-0020: PRM (BehiG) Migration](https://confluence.sbb.ch/x/3RTcl)
 
 ## Architecture
 
@@ -36,7 +35,6 @@ Sie [ADR-0020: PRM (BehiG) Migration](https://confluence.sbb.ch/x/3RTcl)
 ## DB Compact
 
 ![PRM-DB-Compact](documentation/PRM-DB-Compact.drawio.svg)
-
 
 ## Project Versioning
 

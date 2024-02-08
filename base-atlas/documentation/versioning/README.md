@@ -4,18 +4,18 @@
 
 - [ATLAS](#atlas)
 - [Atlas Versioning Library](#atlas-versioning-library)
-  * [How to](#how-to)
-  * [Add atlas-library to the pom.xml](#add-atlas-library-to-the-pomxml)
-  * [Integrate versioning-library](#integrate-versioning-library)
-  * [Define VersionableService as Bean for SpringBoot](#define-versionableservice-as-bean-for-springboot)
-  * [How to use VersionableService](#how-to-use-versionableservice)
+    * [How to](#how-to)
+    * [Add atlas-library to the pom.xml](#add-atlas-library-to-the-pomxml)
+    * [Integrate versioning-library](#integrate-versioning-library)
+    * [Define VersionableService as Bean for SpringBoot](#define-versionableservice-as-bean-for-springboot)
+    * [How to use VersionableService](#how-to-use-versionableservice)
 
 <!-- tocstop -->
 
 ## ATLAS
 
 This library is part of ATLAS. General documentation is
-available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-backend/browse/README.md#big-picture)
+available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas/browse/README.md)
 .
 
 ## Atlas Versioning Library

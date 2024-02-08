@@ -5,21 +5,21 @@
 - [ATLAS](#atlas)
 - [Project Versioning](#project-versioning)
 - [Links](#links)
-  * [Localhost](#localhost)
-  * [Development](#development)
-  * [Test](#test)
-  * [Integration](#integration)
-  * [Production](#production)
-  * [Project Infrastructure](#project-infrastructure)
+    * [Localhost](#localhost)
+    * [Development](#development)
+    * [Test](#test)
+    * [Integration](#integration)
+    * [Production](#production)
+    * [Project Infrastructure](#project-infrastructure)
 - [Big Picture Architecture](#big-picture-architecture)
 - [Development](#development-1)
-  * [Spring Batch](#spring-batch)
+    * [Spring Batch](#spring-batch)
 - [Jobs](#jobs)
-  * [Import ServicePoint](#import-servicepoint)
-  * [Import TrafficPoint](#import-trafficpoint)
-  * [Import LoadingPoint](#import-loadingpoint)
-  * [Import Service API calls](#import-service-api-calls)
-  * [Tech Stack](#tech-stack)
+    * [Import ServicePoint](#import-servicepoint)
+    * [Import TrafficPoint](#import-trafficpoint)
+    * [Import LoadingPoint](#import-loadingpoint)
+    * [Import Service API calls](#import-service-api-calls)
+    * [Tech Stack](#tech-stack)
 
 <!-- tocstop -->
 
@@ -31,7 +31,7 @@ See [ADR-0015](https://confluence.sbb.ch/display/ATLAS/ADR-0015%3A++Service+Poin
 ## ATLAS
 
 This application is part of ATLAS. General documentation is
-available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-backend/browse/README.md#big-picture)
+available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas/browse/README.md)
 .
 
 ## Project Versioning
@@ -142,6 +142,6 @@ See [ImportServicePointBatchControllerApiV1.java](src/main/java/ch/sbb/importser
 
 See [Tech Stack Documentation](../documentation/tech-stack-service.md)
 
-### Reset Batch 
+### Reset Batch
 
 See [Batch Reset](../documentation/batch_util.md)

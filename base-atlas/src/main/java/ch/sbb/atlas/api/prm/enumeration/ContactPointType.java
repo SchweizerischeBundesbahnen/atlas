@@ -4,6 +4,6 @@ import lombok.Getter;
 
 @Getter
 public enum ContactPointType {
-    INFORMATION_DESK,
-    TICKET_COUNTER
+  INFORMATION_DESK,
+  TICKET_COUNTER
 }

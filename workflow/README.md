@@ -24,7 +24,7 @@ For more information see [Workflow Lidi & FPFN](https://confluence.sbb.ch/pages/
 ## ATLAS
 
 This application is part of ATLAS. General documentation is
-available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-backend/browse/README.md#big-picture).
+available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas/browse/README.md).
 
 ## Use Cases
 
