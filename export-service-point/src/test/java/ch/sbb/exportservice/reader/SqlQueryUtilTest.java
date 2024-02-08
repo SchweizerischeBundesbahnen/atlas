@@ -93,8 +93,8 @@ class SqlQueryUtilTest {
   void shouldReturnSqlStatementForFullAndContactPointVersion() {
     // given
     String select = """
-      SELECT rpv.*
-      FROM reference_point_version rpv
+      SELECT cpv.*
+      FROM contact_point_version cpv
       """;
     String whereStatementContactPointVersion = "WHERE '%s' between cpv.valid_from and cpv.valid_to";
     String groupByStatement = "GROUP BY cpv.id";
@@ -109,8 +109,8 @@ class SqlQueryUtilTest {
   void shouldReturnSqlStatementForActualAndContactPointVersion() {
     // given
     String select = """
-      SELECT rpv.*
-      FROM reference_point_version rpv
+      SELECT cpv.*
+      FROM contact_point_version cpv
       """;
     String whereStatementContactPointVersion = "WHERE '%s' between cpv.valid_from and cpv.valid_to";
     String groupByStatement = "GROUP BY cpv.id";
@@ -127,8 +127,8 @@ class SqlQueryUtilTest {
   void shouldReturnSqlStatementForTimetableFutureAndContactPointVersion() {
     // given
     String select = """
-      SELECT rpv.*
-      FROM reference_point_version rpv
+      SELECT cpv.*
+      FROM contact_point_version cpv
       """;
     String whereStatementContactPointVersion = "WHERE '%s' between cpv.valid_from and cpv.valid_to";
     String groupByStatement = "GROUP BY cpv.id";
