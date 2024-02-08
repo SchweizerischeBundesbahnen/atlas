@@ -29,7 +29,7 @@ export class AuthService {
     this.oauthService.configure(environment.authConfig);
     this.oauthService.setupAutomaticSilentRefresh();
 
-    this.oauthService.loadDiscoveryDocumentAndLogin().then(() => {
+    this.oauthService.loadDiscoveryDocument().then(() => {
       if (this.loggedIn) {
         this.eventUserComponentNotification.emit(this.claims);
         if (this.accessToken) {
