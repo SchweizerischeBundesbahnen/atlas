@@ -6,9 +6,10 @@ import ch.sbb.atlas.versioning.date.DateHelper;
 import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.model.SePoDiExportType;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class SqlQueryUtil {
@@ -32,22 +33,34 @@ public class SqlQueryUtil {
     return String.format(whereStatement, DateHelper.getDateAsSqlString(exportDate));
   }
 
-  public static String getWholeSqlStatement(PrmExportType exportType, String selectStatement, String whereStatement, String groupByStatement) {
-    String spaceInSqlStatement = StringUtils.SPACE;
-    String semicolonAtTheEndOfSqlStatement = ";";
+  public static String getWhereClause(PrmExportType exportType, String whereStatement) {
     if (exportType.equals(PrmExportType.FULL)) {
-      return selectStatement + spaceInSqlStatement + groupByStatement + semicolonAtTheEndOfSqlStatement;
+      return "";
     }
     if(exportType.equals(PrmExportType.ACTUAL)){
-      return String.format(selectStatement + spaceInSqlStatement + whereStatement + spaceInSqlStatement + groupByStatement + semicolonAtTheEndOfSqlStatement,
-              DateHelper.getDateAsSqlString(LocalDate.now()));
+      return String.format(whereStatement, DateHelper.getDateAsSqlString(LocalDate.now()));
     }
     if (exportType.equals(PrmExportType.TIMETABLE_FUTURE)) {
       LocalDate futureTimeTableYearDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
-      return String.format(selectStatement + spaceInSqlStatement + whereStatement + spaceInSqlStatement + groupByStatement + semicolonAtTheEndOfSqlStatement,
-              DateHelper.getDateAsSqlString(futureTimeTableYearDate));
+      return String.format(whereStatement, DateHelper.getDateAsSqlString(futureTimeTableYearDate));
     }
     throw new IllegalArgumentException("Value not allowed: " + exportType);
   }
+
+  public static String buildSqlQuery(String... parts) {
+    return Arrays.stream(parts)
+            .filter(part -> part != null && !part.trim().isEmpty())
+//            .map(String::trim)
+            .collect(Collectors.joining(" ", "", ";"));
+  }
+
+//  public static String buildSqlQuery(String... parts){
+//    String result = Stream.of(parts)
+//            .filter(s -> s != null && !s.isEmpty())
+//            .collect(Collectors.joining(StringUtils.SPACE));
+//    return result + ";";
+//
+//    return String.join(" ", parts) + ";";
+//  }
 
 }
