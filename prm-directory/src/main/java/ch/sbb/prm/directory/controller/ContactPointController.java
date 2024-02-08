@@ -12,13 +12,15 @@ import ch.sbb.prm.directory.entity.ContactPointVersion;
 import ch.sbb.prm.directory.mapper.ContactPointVersionMapper;
 import ch.sbb.prm.directory.search.ContactPointSearchRestrictions;
 import ch.sbb.prm.directory.service.ContactPointService;
+import java.util.List;
+
+import ch.sbb.prm.directory.service.dataimport.ContactPointImportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -26,6 +28,7 @@ import java.util.List;
 public class ContactPointController implements ContactPointApiV1 {
 
   private final ContactPointService contactPointService;
+  private final ContactPointImportService contactPointImportService;
 
   @Override
   public Container<ReadContactPointVersionModel> getContactPoints(Pageable pageable,
@@ -69,6 +72,6 @@ public class ContactPointController implements ContactPointApiV1 {
 
   @Override
   public List<ItemImportResult> importContactPoints(ContactPointImportRequestModel contactPointImportRequestModel) {
-    return contactPointService.importContactPoints(contactPointImportRequestModel.getContactPointCsvModelContainers());
+    return contactPointImportService.importContactPoints(contactPointImportRequestModel.getContactPointCsvModelContainers());
   }
 }
