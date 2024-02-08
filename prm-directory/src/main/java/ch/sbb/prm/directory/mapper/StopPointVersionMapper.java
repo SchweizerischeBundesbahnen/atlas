@@ -4,6 +4,7 @@ import static ch.sbb.atlas.servicepoint.Country.SWITZERLAND;
 
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
+import ch.sbb.atlas.location.SloidHelper;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.ServicePointNonSwissCountryNotAllowedException;

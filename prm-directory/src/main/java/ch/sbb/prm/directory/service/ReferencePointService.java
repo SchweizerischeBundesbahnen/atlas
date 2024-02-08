@@ -1,5 +1,11 @@
 package ch.sbb.prm.directory.service;
 
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.CONTACT_POINT;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TOILET;
+
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
@@ -30,8 +36,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.*;
-
 @Service
 @Transactional
 public class ReferencePointService extends PrmVersionableService<ReferencePointVersion> {
@@ -43,12 +47,13 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   private final PlatformRepository platformRepository;
   private final RelationService relationService;
   private final StopPointService stopPointService;
-  private final SloidService sloidService;
+  protected final PrmLocationService locationService;
 
   public ReferencePointService(ReferencePointRepository referencePointRepository,
       ToiletRepository toiletRepository, ContactPointRepository contactPointRepository,
       ParkingLotRepository parkingLotRepository, PlatformRepository platformRepository, RelationService relationService,
-      StopPointService stopPointService, SloidService sloidService, VersionableService versionableService) {
+      StopPointService stopPointService, VersionableService versionableService,
+      PrmLocationService locationService) {
     super(versionableService);
     this.referencePointRepository = referencePointRepository;
     this.toiletRepository = toiletRepository;
@@ -57,7 +62,7 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
     this.platformRepository = platformRepository;
     this.relationService = relationService;
     this.stopPointService = stopPointService;
-    this.sloidService = sloidService;
+    this.locationService = locationService;
   }
 
   @Override
@@ -69,13 +74,18 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   public ReferencePointVersion save(ReferencePointVersion version) {
     version.setEditionDate(LocalDateTime.now());
     version.setEditor(UserService.getUserIdentifier());
-
     stopPointService.validateIsNotReduced(version.getParentServicePointSloid());
     return referencePointRepository.saveAndFlush(version);
   }
 
   public ReferencePointVersion saveForImport(ReferencePointVersion version) {
     stopPointService.validateIsNotReduced(version.getParentServicePointSloid());
+    return referencePointRepository.saveAndFlush(version);
+  }
+
+  public ReferencePointVersion createReferencePointThroughImport(ReferencePointVersion version) {
+    stopPointService.validateIsNotReduced(version.getParentServicePointSloid());
+    locationService.allocateSloid(version, SloidType.REFERENCE_POINT);
     return referencePointRepository.saveAndFlush(version);
   }
 
@@ -92,10 +102,9 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
 
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#referencePointVersion)")
   public ReferencePointVersion createReferencePoint(ReferencePointVersion referencePointVersion) {
-    sloidService.generateNewSloidIfNotGiven(referencePointVersion);
-
     stopPointService.checkStopPointExists(referencePointVersion.getParentServicePointSloid());
     stopPointService.validateIsNotReduced(referencePointVersion.getParentServicePointSloid());
+    locationService.allocateSloid(referencePointVersion, SloidType.REFERENCE_POINT);
 
     searchAndUpdatePlatformRelation(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
     searchAndUpdateToiletRelation(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
