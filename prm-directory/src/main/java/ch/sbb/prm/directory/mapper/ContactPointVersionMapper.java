@@ -2,13 +2,14 @@ package ch.sbb.prm.directory.mapper;
 
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
+import ch.sbb.atlas.location.SloidHelper;
 import ch.sbb.prm.directory.entity.ContactPointVersion;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ContactPointVersionMapper {
 
-  public static ReadContactPointVersionModel toModel(ContactPointVersion version){
+  public static ReadContactPointVersionModel toModel(ContactPointVersion version) {
     return ReadContactPointVersionModel.builder()
         .id(version.getId())
         .sloid(version.getSloid())
@@ -30,7 +31,7 @@ public class ContactPointVersionMapper {
         .build();
   }
 
-  public static ContactPointVersion toEntity(ContactPointVersionModel model){
+  public static ContactPointVersion toEntity(ContactPointVersionModel model) {
     return ContactPointVersion.builder()
         .id(model.getId())
         .sloid(model.getSloid())
