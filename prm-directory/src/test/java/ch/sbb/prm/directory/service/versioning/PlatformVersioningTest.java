@@ -17,6 +17,7 @@ import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.BasePrmServiceTest;
 import ch.sbb.prm.directory.service.PlatformService;
+import ch.sbb.prm.directory.service.PrmLocationService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -33,8 +34,9 @@ class PlatformVersioningTest extends BasePrmServiceTest {
   PlatformVersioningTest(PlatformService platformService,
                          PlatformRepository platformRepository,
                          StopPointRepository stopPointRepository,
-                         SharedServicePointRepository sharedServicePointRepository) {
-    super(sharedServicePointRepository);
+                         SharedServicePointRepository sharedServicePointRepository,
+      PrmLocationService prmLocationService) {
+    super(sharedServicePointRepository, prmLocationService);
     this.platformService = platformService;
     this.platformRepository = platformRepository;
     this.stopPointRepository = stopPointRepository;

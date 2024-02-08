@@ -52,8 +52,9 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
       ToiletRepository toiletRepository, PlatformRepository platformRepository,
       StopPointRepository stopPointRepository, ParkingLotRepository parkingLotRepository,
       ContactPointRepository contactPointRepository,
-      SharedServicePointRepository sharedServicePointRepository) {
-    super(sharedServicePointRepository);
+      SharedServicePointRepository sharedServicePointRepository,
+      PrmLocationService prmLocationService) {
+    super(sharedServicePointRepository, prmLocationService);
     this.referencePointService = referencePointService;
     this.relationService = relationService;
     this.toiletRepository = toiletRepository;

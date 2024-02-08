@@ -11,7 +11,7 @@
    </parent>
    <groupId>ch.sbb.atlas</groupId>
    <artifactId>atlas</artifactId>
-   <version>1.608.0</version>
+   <version>1.613.0</version>
    <packaging>pom</packaging>
    <name>Atlas</name>
    <description>ATLAS - SKI Business Application</description>
@@ -56,6 +56,7 @@
       <module>import-service-point</module>
       <module>user-administration</module>
       <module>workflow</module>
+      <module>location</module>
       <!-- Combine APIs -->
       <module>apim-configuration</module>
       <module>gateway</module>
@@ -123,7 +124,7 @@
          <dependency>
             <artifactId>aws-java-sdk-s3</artifactId>
             <groupId>com.amazonaws</groupId>
-            <version>1.12.652</version>
+            <version>1.12.654</version>
          </dependency>
 
          <dependency>
