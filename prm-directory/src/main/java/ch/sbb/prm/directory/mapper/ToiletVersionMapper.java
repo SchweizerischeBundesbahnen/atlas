@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.mapper;
 
 import ch.sbb.atlas.api.prm.model.toilet.ReadToiletVersionModel;
 import ch.sbb.atlas.api.prm.model.toilet.ToiletVersionModel;
+import ch.sbb.atlas.location.SloidHelper;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import lombok.experimental.UtilityClass;
 

@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.service;
 
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
 
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
 import ch.sbb.atlas.service.OverviewService;
@@ -9,8 +10,8 @@ import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
-import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
+import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.search.PlatformSearchRestrictions;
@@ -38,8 +39,8 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
   public PlatformService(StopPointService stopPointService, RelationService relationService,
       PlatformRepository platformRepository, ReferencePointRepository referencePointRepository,
       VersionableService versionableService, SharedServicePointService sharedServicePointService,
-      PlatformValidationService platformValidationService) {
-    super(versionableService, stopPointService, relationService, referencePointRepository);
+      PlatformValidationService platformValidationService, PrmLocationService locationService) {
+    super(versionableService, stopPointService, relationService, referencePointRepository, locationService);
     this.platformRepository = platformRepository;
     this.sharedServicePointService = sharedServicePointService;
     this.platformValidationService = platformValidationService;
@@ -48,6 +49,11 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
   @Override
   protected ReferencePointElementType getReferencePointElementType() {
     return PLATFORM;
+  }
+
+  @Override
+  protected SloidType getSloidType() {
+    return SloidType.PLATFORM;
   }
 
   @Override
@@ -135,6 +141,5 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
     });
     return overviewModels;
   }
-
 
 }

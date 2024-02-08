@@ -24,7 +24,7 @@
     "type": "git",
     "url": "git+https://code.sbb.ch/scm/ki_atlas/atlas.git"
   },
-  "version": "1.608.0",
+  "version": "1.613.0",
   "files": [
     "dist/*"
   ],
@@ -55,7 +55,7 @@
     "angular-server-side-configuration": "^17.0.2",
     "bootstrap": "^5.3",
     "jwt-decode": "^4.0.0",
-    "maplibre-gl": "^3.6.1",
+    "maplibre-gl": "^4.0.0",
     "moment": "^2.29",
     "ngx-color-picker": "^16.0.0",
     "proj4": "^2.9.0",
@@ -100,6 +100,6 @@
     "typescript": "^5.1"
   },
   "optionalDependencies": {
-    "puppeteer": "^21.5.2"
+    "puppeteer": "^22.0.0"
   }
 }

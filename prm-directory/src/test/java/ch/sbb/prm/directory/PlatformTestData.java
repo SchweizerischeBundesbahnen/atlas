@@ -53,6 +53,7 @@ public class PlatformTestData {
         .build();
 
   }
+
   public static PlatformVersion getCompletePlatformVersion() {
     return PlatformVersion.builder()
         .sloid("ch:1:sloid:12345:1")
@@ -118,6 +119,7 @@ public class PlatformTestData {
         .build();
 
   }
+
   public static PlatformVersionModel getCreateCompletePlatformVersionModel() {
     return PlatformVersionModel.builder()
         .sloid("ch:1:sloid:12345:1")
@@ -137,6 +139,7 @@ public class PlatformTestData {
         .build();
 
   }
+
   public static PlatformVersionModel getCreateReducedPlatformVersionModel() {
     return PlatformVersionModel.builder()
         .sloid("ch:1:sloid:12345:1")
@@ -154,7 +157,7 @@ public class PlatformTestData {
 
   }
 
-  public static PlatformVersionBuilder<?, ?> builderVersion1(){
+  public static PlatformVersionBuilder<?, ?> builderVersion1() {
     return PlatformVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -181,7 +184,7 @@ public class PlatformTestData {
         .wheelchairAreaWidth(321.123);
   }
 
-  public static PlatformVersionBuilder<?, ?> builderCompleteVersion1(){
+  public static PlatformVersionBuilder<?, ?> builderCompleteVersion1() {
     return PlatformVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -200,7 +203,7 @@ public class PlatformTestData {
         .superelevation(321.123);
   }
 
-  public static PlatformVersionBuilder<?, ?> builderCompleteVersion2(){
+  public static PlatformVersionBuilder<?, ?> builderCompleteVersion2() {
     return PlatformVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -219,7 +222,7 @@ public class PlatformTestData {
         .superelevation(321.123);
   }
 
-  public static PlatformVersionBuilder<?, ?> builderCompleteVersion3(){
+  public static PlatformVersionBuilder<?, ?> builderCompleteVersion3() {
     return PlatformVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -238,7 +241,7 @@ public class PlatformTestData {
         .superelevation(321.123);
   }
 
-  public static PlatformVersionBuilder<?, ?> builderVersion2(){
+  public static PlatformVersionBuilder<?, ?> builderVersion2() {
     return PlatformVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -265,7 +268,7 @@ public class PlatformTestData {
         .wheelchairAreaWidth(321.123);
   }
 
-  public static PlatformVersionBuilder<?, ?> builderVersion3(){
+  public static PlatformVersionBuilder<?, ?> builderVersion3() {
     return PlatformVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -292,7 +295,7 @@ public class PlatformTestData {
         .wheelchairAreaWidth(321.123);
   }
 
-  public static PlatformVersionBuilder<?, ?> builderReducedVersion1(){
+  public static PlatformVersionBuilder<?, ?> builderReducedVersion1() {
     return PlatformVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -307,10 +310,9 @@ public class PlatformTestData {
         .wheelchairAreaLength(456.321)
         .wheelchairAreaWidth(321.123);
 
-
   }
 
-  public static PlatformVersionBuilder<?, ?> builderReducedVersion2(){
+  public static PlatformVersionBuilder<?, ?> builderReducedVersion2() {
     return PlatformVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -326,7 +328,7 @@ public class PlatformTestData {
         .wheelchairAreaWidth(321.123);
   }
 
-  public static PlatformVersionBuilder<?, ?> builderReducedVersion3(){
+  public static PlatformVersionBuilder<?, ?> builderReducedVersion3() {
     return PlatformVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))

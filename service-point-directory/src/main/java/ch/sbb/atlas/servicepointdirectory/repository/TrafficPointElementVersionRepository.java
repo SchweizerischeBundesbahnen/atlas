@@ -24,6 +24,4 @@ public interface TrafficPointElementVersionRepository extends
   @Query("update traffic_point_element_version v set v.version = (v.version + 1) where v.sloid = :sloid")
   void incrementVersion(@Param("sloid") String sloid);
 
-  @Query(value = "select nextval('sloid_platform_seq')", nativeQuery = true)
-  Long getNextRandomNumberForSloid();
 }
