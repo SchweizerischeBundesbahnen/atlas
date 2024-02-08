@@ -99,7 +99,7 @@ class SqlQueryUtilTest {
     String whereStatementContactPointVersion = "WHERE '%s' between cpv.valid_from and cpv.valid_to";
     String groupByStatement = "GROUP BY cpv.id";
     // when
-    final String query = SqlQueryUtil.getWholeSqlStatement(PrmExportType.FULL, select, whereStatementContactPointVersion, groupByStatement);
+    final String query = SqlQueryUtil.buildSqlQuery(select, SqlQueryUtil.getWhereClause(PrmExportType.FULL, whereStatementContactPointVersion), groupByStatement);
 
     // then
     assertThat(query).isEqualTo(select + StringUtils.SPACE + groupByStatement + ";");
@@ -115,7 +115,7 @@ class SqlQueryUtilTest {
     String whereStatementContactPointVersion = "WHERE '%s' between cpv.valid_from and cpv.valid_to";
     String groupByStatement = "GROUP BY cpv.id";
     // when
-    final String query = SqlQueryUtil.getWholeSqlStatement(PrmExportType.ACTUAL, select, whereStatementContactPointVersion, groupByStatement);
+    final String query = SqlQueryUtil.buildSqlQuery(select, SqlQueryUtil.getWhereClause(PrmExportType.ACTUAL, whereStatementContactPointVersion), groupByStatement);
 
     // then
     final LocalDate expectedDate = LocalDate.now();
@@ -133,7 +133,7 @@ class SqlQueryUtilTest {
     String whereStatementContactPointVersion = "WHERE '%s' between cpv.valid_from and cpv.valid_to";
     String groupByStatement = "GROUP BY cpv.id";
     // when
-    final String query = SqlQueryUtil.getWholeSqlStatement(PrmExportType.TIMETABLE_FUTURE, select, whereStatementContactPointVersion, groupByStatement);
+    final String query = SqlQueryUtil.buildSqlQuery(select, SqlQueryUtil.getWhereClause(PrmExportType.TIMETABLE_FUTURE, whereStatementContactPointVersion), groupByStatement);
 
     // then
     final LocalDate futureTimeTableYearDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
