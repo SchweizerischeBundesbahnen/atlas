@@ -10,7 +10,7 @@
       <artifactId>atlas</artifactId>
       <groupId>ch.sbb.atlas</groupId>
       <relativePath>../pom.xml</relativePath>
-      <version>1.613.0</version>
+      <version>1.614.0</version>
    </parent>
    <artifactId>line-directory</artifactId>
    <description>LineDirectory</description>
@@ -56,12 +56,12 @@
       <dependency>
          <artifactId>base-atlas</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.613.0</version>
+         <version>1.614.0</version>
       </dependency>
       <dependency>
          <groupId>ch.sbb.atlas</groupId>
          <artifactId>user-administration-security</artifactId>
-         <version>1.613.0</version>
+         <version>1.614.0</version>
       </dependency>
       <dependency>
          <artifactId>postgresql</artifactId>
@@ -79,7 +79,7 @@
          <groupId>ch.sbb.atlas</groupId>
          <scope>test</scope>
          <type>test-jar</type>
-         <version>1.613.0</version>
+         <version>1.614.0</version>
       </dependency>
       <dependency>
          <groupId>org.springframework.kafka</groupId>
