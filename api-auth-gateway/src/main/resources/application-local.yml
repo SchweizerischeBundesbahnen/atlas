@@ -10,14 +10,27 @@ spring:
           uri: http://localhost:8888
           predicates:
             - Path=/**
-      default-filters: AssureAuthorizationFilter
+      default-filters:
+        - AssureAuthorizationFilter
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+      httpclient:
+        connect-timeout: 2000
+        response-timeout: 20000
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: http://localhost:4200,https://developer-int.sbb.ch
+            allowed-methods: GET,PUT,POST,DELETE
+            allowed-headers: "*"
+            exposed-headers:
+              - "Correlation-Id"
   # Client Credentials for Unauthenticated Requests
   security:
     oauth2:
       client:
         registration:
           sbb:
-            client-id: 39ff0746-6345-4204-afd3-3e114e5ab715
+            client-id: abab81fb-6ba0-4153-af93-8fb3dc910210
             client-secret: super-secret
             authorization-grant-type: client_credentials
             scope: api://87e6e634-6ba1-4e7a-869d-3348b4c3eafc/.default
@@ -40,4 +53,4 @@ info:
     buildtime: @timestamp@
 logging:
   level:
-    root: INFO
+    root: DEBUG

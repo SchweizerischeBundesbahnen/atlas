@@ -59,6 +59,7 @@
       <module>location</module>
       <!-- Combine APIs -->
       <module>apim-configuration</module>
+      <module>api-auth-gateway</module>
       <module>gateway</module>
       <module>frontend</module>
    </modules>
