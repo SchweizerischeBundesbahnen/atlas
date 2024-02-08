@@ -1,6 +1,7 @@
 package ch.sbb.atlas.gateway;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
@@ -25,6 +26,7 @@ import reactor.core.publisher.Mono;
  */
 @RequiredArgsConstructor
 @Component
+@Slf4j
 public class AssureAuthorizationFilter extends AbstractGatewayFilterFactory<Object> {
 
   private final ReactiveClientRegistrationRepository clientRegistrations;
