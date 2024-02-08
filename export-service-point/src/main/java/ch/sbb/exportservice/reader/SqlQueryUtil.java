@@ -50,17 +50,7 @@ public class SqlQueryUtil {
   public static String buildSqlQuery(String... parts) {
     return Arrays.stream(parts)
             .filter(part -> part != null && !part.trim().isEmpty())
-//            .map(String::trim)
             .collect(Collectors.joining(" ", "", ";"));
   }
-
-//  public static String buildSqlQuery(String... parts){
-//    String result = Stream.of(parts)
-//            .filter(s -> s != null && !s.isEmpty())
-//            .collect(Collectors.joining(StringUtils.SPACE));
-//    return result + ";";
-//
-//    return String.join(" ", parts) + ";";
-//  }
 
 }
