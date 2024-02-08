@@ -16,6 +16,7 @@ import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.BasePrmServiceTest;
+import ch.sbb.prm.directory.service.PrmLocationService;
 import ch.sbb.prm.directory.service.RelationService;
 import java.time.LocalDate;
 import java.util.List;
@@ -32,8 +33,9 @@ class RelationVersioningTest extends BasePrmServiceTest {
   RelationVersioningTest(RelationService relationService,
                          RelationRepository relationRepository,
                          StopPointRepository stopPointRepository,
-                         SharedServicePointRepository sharedServicePointRepository) {
-    super(sharedServicePointRepository);
+                         SharedServicePointRepository sharedServicePointRepository,
+      PrmLocationService prmLocationService) {
+    super(sharedServicePointRepository, prmLocationService);
     this.relationService = relationService;
     this.relationRepository = relationRepository;
     this.stopPointRepository = stopPointRepository;

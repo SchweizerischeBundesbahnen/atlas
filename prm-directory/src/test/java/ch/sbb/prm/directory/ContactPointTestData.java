@@ -12,7 +12,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ContactPointTestData {
 
-  public static ContactPointVersion getContactPointVersion(){
+  public static ContactPointVersion getContactPointVersion() {
     return ContactPointVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -28,7 +28,7 @@ public class ContactPointTestData {
         .build();
   }
 
-  public static ContactPointVersionBuilder<?, ?> builderVersion1(){
+  public static ContactPointVersionBuilder<?, ?> builderVersion1() {
     return ContactPointVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -43,7 +43,7 @@ public class ContactPointTestData {
         .type(ContactPointType.INFORMATION_DESK);
   }
 
-  public static ContactPointVersionBuilder<?, ?> builderVersion2(){
+  public static ContactPointVersionBuilder<?, ?> builderVersion2() {
     return ContactPointVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -58,7 +58,7 @@ public class ContactPointTestData {
         .type(ContactPointType.INFORMATION_DESK);
   }
 
-  public static ContactPointVersionBuilder<?, ?> builderVersion3(){
+  public static ContactPointVersionBuilder<?, ?> builderVersion3() {
     return ContactPointVersion.builder()
         .sloid("ch:1:sloid:12345:1")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
@@ -73,7 +73,7 @@ public class ContactPointTestData {
         .type(ContactPointType.INFORMATION_DESK);
   }
 
-  public static ContactPointVersionModel getContactPointVersionModel(){
+  public static ContactPointVersionModel getContactPointVersionModel() {
     return ContactPointVersionModel.builder()
         .sloid("ch:1:sloid:12345:1")
         .validFrom(LocalDate.of(2001, 1, 1))
