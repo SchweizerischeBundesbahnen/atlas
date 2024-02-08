@@ -15,7 +15,6 @@ public class ServicePointConstants {
       Country.FRANCE_BUS
   );
 
-
   public static final long LOADING_POINT_NUMBER_MIN = 0;
   public static final long LOADING_POINT_NUMBER_MAX = 9999;
 

@@ -17,7 +17,6 @@ import ch.sbb.atlas.servicepointdirectory.mapper.TrafficPointElementVersionMappe
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
-import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementImportService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
@@ -38,25 +37,26 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
 
   private final TrafficPointElementService trafficPointElementService;
   private final ServicePointService servicePointService;
-  private final GeoReferenceService geoReferenceService;
   private final CrossValidationService crossValidationService;
   private final TrafficPointElementImportService trafficPointElementImportService;
   private final ServicePointDistributor servicePointDistributor;
 
   @Override
-  public Container<ReadTrafficPointElementVersionModel> getTrafficPointElements(Pageable pageable, TrafficPointElementRequestParams trafficPointElementRequestParams ) {
+  public Container<ReadTrafficPointElementVersionModel> getTrafficPointElements(Pageable pageable,
+      TrafficPointElementRequestParams trafficPointElementRequestParams) {
 
     TrafficPointElementSearchRestrictions trafficPointElementSearchRestrictions = TrafficPointElementSearchRestrictions.builder()
         .pageable(pageable)
         .trafficPointElementRequestParams(trafficPointElementRequestParams)
         .build();
 
-    Page<TrafficPointElementVersion> trafficPointElementVersions = trafficPointElementService.findAll(trafficPointElementSearchRestrictions);
+    Page<TrafficPointElementVersion> trafficPointElementVersions = trafficPointElementService.findAll(
+        trafficPointElementSearchRestrictions);
 
     return Container.<ReadTrafficPointElementVersionModel>builder()
         .objects(trafficPointElementVersions.stream()
-                .map(TrafficPointElementVersionMapper::toModel)
-                .toList())
+            .map(TrafficPointElementVersionMapper::toModel)
+            .toList())
         .totalCount(trafficPointElementVersions.getTotalElements())
         .build();
   }
@@ -81,7 +81,8 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   }
 
   @Override
-  public Container<ReadTrafficPointElementVersionModel> getPlatformsOfServicePoint(Integer servicePointNumber, Pageable pageable) {
+  public Container<ReadTrafficPointElementVersionModel> getPlatformsOfServicePoint(Integer servicePointNumber,
+      Pageable pageable) {
     return trafficPointElementService.getTrafficPointElementsByServicePointNumber(servicePointNumber, pageable,
         TrafficPointElementType.BOARDING_PLATFORM);
   }
@@ -141,7 +142,8 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
     ServicePointNumber servicePointNumber = trafficPointElementVersion.getServicePointNumber();
     crossValidationService.validateServicePointNumberExists(servicePointNumber);
     trafficPointElementService.setHeightForTrafficPoints(trafficPointElementVersion);
-    return trafficPointElementService.create(trafficPointElementVersion, servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber));
+    return trafficPointElementService.create(trafficPointElementVersion,
+        servicePointService.findAllByNumberOrderByValidFrom(servicePointNumber));
   }
 
   private void update(TrafficPointElementVersion currentVersion, TrafficPointElementVersion editedVersion) {

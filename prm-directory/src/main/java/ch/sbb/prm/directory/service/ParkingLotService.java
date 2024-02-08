@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.service;
 
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
 
+import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -22,14 +23,20 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
   private final ParkingLotRepository parkingLotRepository;
 
   public ParkingLotService(ParkingLotRepository parkingLotRepository, StopPointService stopPointService,
-      RelationService relationService, ReferencePointRepository referencePointRepository, VersionableService versionableService) {
-    super(versionableService, stopPointService, relationService, referencePointRepository);
+      RelationService relationService, ReferencePointRepository referencePointRepository,
+      VersionableService versionableService, PrmLocationService locationService) {
+    super(versionableService, stopPointService, relationService, referencePointRepository, locationService);
     this.parkingLotRepository = parkingLotRepository;
   }
 
   @Override
   protected ReferencePointElementType getReferencePointElementType() {
     return PARKING_LOT;
+  }
+
+  @Override
+  protected SloidType getSloidType() {
+    return SloidType.PARKING_LOT;
   }
 
   @Override
@@ -59,7 +66,7 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
 
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#version)")
   public ParkingLotVersion createParkingLot(ParkingLotVersion version) {
-    createRelation(version);
+    createRelationWithSloidAllocation(version);
     return save(version);
   }
 

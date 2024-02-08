@@ -31,6 +31,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -38,6 +39,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @Slf4j
 @ControllerAdvice
@@ -262,6 +264,29 @@ public class AtlasExceptionHandler {
         .error("Access denied")
         .details(details).build();
     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
+  }
+
+  @ExceptionHandler(value = NoResourceFoundException.class)
+  public ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException exception) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+        ErrorResponse.builder()
+            .status(HttpStatus.NOT_FOUND.value())
+            .error(exception.getMessage())
+            .message(exception.getMessage())
+            .build()
+    );
+  }
+
+  @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
+  public ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(
+      HttpRequestMethodNotSupportedException exception) {
+    return ResponseEntity.badRequest().body(
+        ErrorResponse.builder()
+            .status(HttpStatus.BAD_REQUEST.value())
+            .error(exception.getMessage())
+            .message(exception.getMessage())
+            .build()
+    );
   }
 
   @ExceptionHandler(value = Exception.class)
