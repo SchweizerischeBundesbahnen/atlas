@@ -2,12 +2,12 @@ package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.service.OverviewService;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
-import ch.sbb.atlas.servicepointdirectory.exception.SloidAlreadyExistsException;
 import ch.sbb.atlas.servicepointdirectory.mapper.TrafficPointElementVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionRepository;
@@ -37,17 +37,18 @@ public class TrafficPointElementService {
   private final TrafficPointElementVersionRepository trafficPointElementVersionRepository;
   private final VersionableService versionableService;
   private final TrafficPointElementValidationService trafficPointElementValidationService;
-  private final TrafficPointElementSloidService trafficPointElementSloidService;
   private final GeoReferenceService geoReferenceService;
+  private final LocationService locationService;
 
   public TrafficPointElementService(TrafficPointElementVersionRepository trafficPointElementVersionRepository,
       VersionableService versionableService, TrafficPointElementValidationService trafficPointElementValidationService,
-      TrafficPointElementSloidService trafficPointElementSloidService, GeoReferenceService geoReferenceService) {
+      GeoReferenceService geoReferenceService,
+      LocationService locationService) {
     this.trafficPointElementVersionRepository = trafficPointElementVersionRepository;
     this.versionableService = versionableService;
-    this.trafficPointElementValidationService = trafficPointElementValidationService;
-    this.trafficPointElementSloidService = trafficPointElementSloidService;
     this.geoReferenceService = geoReferenceService;
+    this.trafficPointElementValidationService = trafficPointElementValidationService;
+    this.locationService = locationService;
   }
 
   public Page<TrafficPointElementVersion> findAll(TrafficPointElementSearchRestrictions searchRestrictions) {
@@ -66,23 +67,25 @@ public class TrafficPointElementService {
     return trafficPointElementVersionRepository.existsBySloid(sloid);
   }
 
+  public void createThroughImport(TrafficPointElementVersion trafficPointElementVersion) {
+    create(trafficPointElementVersion, null);
+  }
+
   @PreAuthorize("""
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
       (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
   public TrafficPointElementVersion create(TrafficPointElementVersion trafficPointElementVersion,
       List<ServicePointVersion> servicePointVersions) {
-    if (trafficPointElementVersion.getSloid() != null && isTrafficPointElementExisting(trafficPointElementVersion.getSloid())) {
-      throw new SloidAlreadyExistsException(trafficPointElementVersion.getSloid());
-    }
-
-    if (trafficPointElementVersion.getSloid() == null) {
-      boolean isBoardingArea = trafficPointElementVersion.getTrafficPointElementType() == TrafficPointElementType.BOARDING_AREA;
-
+    if (trafficPointElementVersion.getSloid() != null) {
+      locationService.claimSloid(LocationService.getSloidType(trafficPointElementVersion.getTrafficPointElementType()),
+          trafficPointElementVersion.getSloid());
+    } else {
       trafficPointElementVersion.setSloid(
-          trafficPointElementSloidService.getNextSloid(trafficPointElementVersion.getServicePointNumber(), isBoardingArea)
+          locationService.generateTrafficPointSloid(trafficPointElementVersion.getTrafficPointElementType(),
+              trafficPointElementVersion.getServicePointNumber())
       );
     }
-    return save(trafficPointElementVersion);
+    return trafficPointElementVersionRepository.saveAndFlush(trafficPointElementVersion);
   }
 
   public TrafficPointElementVersion save(TrafficPointElementVersion trafficPointElementVersion) {

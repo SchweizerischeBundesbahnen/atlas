@@ -7,6 +7,7 @@ import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.prm.directory.service.PrmVersionable;
 import ch.sbb.prm.directory.validation.annotation.PrmVariant;
 import ch.sbb.prm.directory.validation.annotation.RecordingVariant;
+import ch.sbb.prm.directory.service.Relatable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -32,7 +33,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "reference_point_version")
 @AtlasVersionable
-public class ReferencePointVersion extends BasePrmEntityVersion implements PrmVersionable {
+public class ReferencePointVersion extends BasePrmEntityVersion implements PrmVersionable, Relatable {
 
   private static final String VERSION_SEQ = "reference_point_version_seq";
 

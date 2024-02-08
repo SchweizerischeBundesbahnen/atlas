@@ -120,21 +120,12 @@ include::{snippets}/company-controller-api-test/should-get-companies/auto-sectio
 
 include::{snippets}/company-controller-api-test/should-get-company/auto-section.adoc[]
 
-== Get Business Organisation Json - Successfully
+== Export Business Organisation - Successfully
 
-include::{snippets}/business-organisation-controller-integration-test/should-read-json-after-export-actual-business-organisation-versions/auto-section.adoc[]
-include::{snippets}/business-organisation-controller-integration-test/should-read-json-after-export-full-business-organisation-versions/auto-section.adoc[]
-include::{snippets}/business-organisation-controller-integration-test/should-read-json-after-export-timetable-year-change-business-organisation-versions/auto-section.adoc[]
+include::{snippets}/business-organisation-controller-integration-test/should-export-actual-business-organisation-versions/auto-section.adoc[]
+include::{snippets}/business-organisation-controller-integration-test/should-export-full-business-organisation-versions/auto-section.adoc[]
+include::{snippets}/business-organisation-controller-integration-test/should-export-future-timetable-business-organisation-versions/auto-section.adoc[]
 
-== Get Business Organisation Json - Unsuccessfully
+== Stream Business Organisation Json - Successfully
 
-include::{snippets}/business-organisation-controller-integration-test/should-fail-to-read-json/auto-section.adoc[]
-
-== Get download Business Organisation Gz Json - Successfully
-
-include::{snippets}/business-organisation-controller-integration-test/should-get-json-gz-after-export-actual-business-organisation-versions/auto-section.adoc[]
-include::{snippets}/business-organisation-controller-integration-test/should-get-json-gz-after-export-timetable-year-change-business-organisation-versions/auto-section.adoc[]
-
-== Get download Business Organisation Gz Json - Unsuccessfully
-
-include::{snippets}/business-organisation-controller-integration-test/should-fail-to-get-json-gz/auto-section.adoc[]
+include::{snippets}/business-organisation-controller-streaming-response-body-tests/should-read-json-after-export-timetable-year-change-business-organisation-versions/auto-section.adoc[]

@@ -129,16 +129,15 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
   private ItemImportResult updateTrafficPointVersion(TrafficPointElementVersion trafficPointElementVersion) {
     List<Exception> warnings = new ArrayList<>();
     getHeightForTrafficPoint(trafficPointElementVersion, warnings);
-
     try {
       updateTrafficPointElementVersionImport(trafficPointElementVersion);
-    }catch (VersioningNoChangesException exception) {
+    } catch (VersioningNoChangesException exception) {
       log.info("Found version {} to import without modification: {}",
           trafficPointElementVersion.getSloid(),
           exception.getMessage()
       );
       return buildSuccessImportResult(trafficPointElementVersion);
-    } catch (Exception exception){
+    } catch (Exception exception) {
       log.error("[Traffic-Point Import]: Error during update with sloid: " + trafficPointElementVersion.getSloid(), exception);
       return buildFailedImportResult(trafficPointElementVersion, exception);
     }
@@ -149,9 +148,8 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
   private ItemImportResult saveTrafficPointVersion(TrafficPointElementVersion trafficPointElementVersion) {
     List<Exception> warnings = new ArrayList<>();
     getHeightForTrafficPoint(trafficPointElementVersion, warnings);
-
     try {
-      trafficPointElementService.save(trafficPointElementVersion);
+      trafficPointElementService.createThroughImport(trafficPointElementVersion);
     } catch (Exception exception) {
       log.error("[Traffic-Point Import]: Error during save with sloid: " + trafficPointElementVersion.getSloid(), exception);
       return buildFailedImportResult(trafficPointElementVersion, exception);
@@ -160,7 +158,7 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
     return buildWarningMessage(trafficPointElementVersion, warnings);
   }
 
-  private void getHeightForTrafficPoint(TrafficPointElementVersion trafficPointElementVersion, List<Exception> warnings){
+  private void getHeightForTrafficPoint(TrafficPointElementVersion trafficPointElementVersion, List<Exception> warnings) {
     try {
       trafficPointElementService.setHeightForTrafficPoints(trafficPointElementVersion);
     } catch (HeightNotCalculatableException exception) {
@@ -169,8 +167,8 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
     }
   }
 
-  private ItemImportResult buildWarningMessage(TrafficPointElementVersion trafficPointElementVersion, List<Exception> warnings){
-    if(!warnings.isEmpty()) {
+  private ItemImportResult buildWarningMessage(TrafficPointElementVersion trafficPointElementVersion, List<Exception> warnings) {
+    if (!warnings.isEmpty()) {
       return buildWarningImportResult(trafficPointElementVersion, warnings);
     } else {
       return buildSuccessImportResult(trafficPointElementVersion);

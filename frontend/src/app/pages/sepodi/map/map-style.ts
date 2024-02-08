@@ -65,6 +65,7 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
           type: 'Point',
           coordinates: [0, 0],
         },
+        properties: null
       },
     },
     traffic_points: {
@@ -75,6 +76,7 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
           type: 'Point',
           coordinates: [0, 0],
         },
+        properties: null
       },
     },
     current_traffic_point: {
@@ -85,6 +87,7 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
           type: 'Point',
           coordinates: [0, 0],
         },
+        properties: null
       },
     },
   },
