@@ -71,11 +71,11 @@ class SloidSyncServiceTest {
     Set<String> allocatedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3");
     Set<String> alreadyDistributedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3", "ch:sloid:4");
     allocatedSloids.forEach(s -> sloidRepository.insertSloid(s, SloidType.SERVICE_POINT));
-    when(sePoDiRepository.getAlreadyServicePointDistributedSloid()).thenReturn(alreadyDistributedSloids);
+    when(sePoDiRepository.getAlreadyDistributedServicePointSloids()).thenReturn(alreadyDistributedSloids);
     //when
     sloidSyncService.sync();
     //then
-    Set<String> result = sloidRepository.getAllocatedSloid(SloidType.SERVICE_POINT);
+    Set<String> result = sloidRepository.getAllocatedSloids(SloidType.SERVICE_POINT);
     assertThat(result)
         .isNotNull()
         .hasSize(4)
@@ -90,11 +90,11 @@ class SloidSyncServiceTest {
     Set<String> allocatedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3", "ch:sloid:4");
     Set<String> alreadyDistributedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3");
     allocatedSloids.forEach(s -> sloidRepository.insertSloid(s, SloidType.SERVICE_POINT));
-    when(sePoDiRepository.getAlreadyServicePointDistributedSloid()).thenReturn(alreadyDistributedSloids);
+    when(sePoDiRepository.getAlreadyDistributedServicePointSloids()).thenReturn(alreadyDistributedSloids);
     //when
     sloidSyncService.sync();
     //then
-    Set<String> result = sloidRepository.getAllocatedSloid(SloidType.SERVICE_POINT);
+    Set<String> result = sloidRepository.getAllocatedSloids(SloidType.SERVICE_POINT);
     assertThat(result)
         .isNotNull()
         .hasSize(3)
@@ -112,14 +112,14 @@ class SloidSyncServiceTest {
     Set<String> alreadyDistributedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3", "ch:sloid:4");
     allocatedSloids.forEach(s -> sloidRepository.insertSloid(s, sloidType));
     if (SloidType.PLATFORM == sloidType || SloidType.AREA == sloidType) {
-      when(sePoDiRepository.getAlreadyDistributedSloid(sloidType)).thenReturn(alreadyDistributedSloids);
+      when(sePoDiRepository.getAlreadyDistributedSloids(sloidType)).thenReturn(alreadyDistributedSloids);
     } else {
-      when(prmRepository.getAlreadyDistributedSloid(sloidType)).thenReturn(alreadyDistributedSloids);
+      when(prmRepository.getAlreadyDistributedSloids(sloidType)).thenReturn(alreadyDistributedSloids);
     }
     //when
     sloidSyncService.sync();
     //then
-    Set<String> result = sloidRepository.getAllocatedSloid(sloidType);
+    Set<String> result = sloidRepository.getAllocatedSloids(sloidType);
     assertThat(result).isNotNull().hasSize(4);
   }
 
@@ -132,14 +132,14 @@ class SloidSyncServiceTest {
     Set<String> alreadyDistributedSloids = Set.of("ch:sloid:1", "ch:sloid:2", "ch:sloid:3");
     allocatedSloids.forEach(s -> sloidRepository.insertSloid(s, sloidType));
     if (SloidType.PLATFORM == sloidType || SloidType.AREA == sloidType) {
-      when(sePoDiRepository.getAlreadyDistributedSloid(sloidType)).thenReturn(alreadyDistributedSloids);
+      when(sePoDiRepository.getAlreadyDistributedSloids(sloidType)).thenReturn(alreadyDistributedSloids);
     } else {
-      when(prmRepository.getAlreadyDistributedSloid(sloidType)).thenReturn(alreadyDistributedSloids);
+      when(prmRepository.getAlreadyDistributedSloids(sloidType)).thenReturn(alreadyDistributedSloids);
     }
     //when
     sloidSyncService.sync();
     //then
-    Set<String> result = sloidRepository.getAllocatedSloid(sloidType);
+    Set<String> result = sloidRepository.getAllocatedSloids(sloidType);
     assertThat(result).isNotNull().hasSize(3);
   }
 
