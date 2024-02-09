@@ -31,7 +31,7 @@ public class SloidSyncService {
   private void sloidSync(SloidType sloidType) {
     log.info("**** Start Synch {} ****", sloidType);
     Set<String> alreadyDistributedSloid = getAlreadyDistributedSloid(sloidType);
-    Set<String> alreadyAllocatedSloid = sloidRepository.getAllocatedSloid(sloidType);
+    Set<String> alreadyAllocatedSloid = sloidRepository.getAllocatedSloids(sloidType);
     log.info("Used {} sloid: {}", sloidType, alreadyDistributedSloid.size());
     log.info("Allocated servicePoint sloid: {}", alreadyAllocatedSloid.size());
     addUsedMissingSloidToAllocatedSloid(alreadyDistributedSloid, alreadyAllocatedSloid, sloidType);
@@ -41,15 +41,15 @@ public class SloidSyncService {
 
   private Set<String> getAlreadyDistributedSloid(SloidType sloidType) {
     if (SloidType.PLATFORM == sloidType || SloidType.AREA == sloidType) {
-      return sePoDiRepository.getAlreadyDistributedSloid(sloidType);
+      return sePoDiRepository.getAlreadyDistributedSloids(sloidType);
     }
-    return prmRepository.getAlreadyDistributedSloid(sloidType);
+    return prmRepository.getAlreadyDistributedSloids(sloidType);
   }
 
   private void servicePointSloidSync() {
     log.info("**** Start Synch SERVICE_POINT ****");
-    Set<String> servicePointSePoDiAllocatedSloid = sePoDiRepository.getAlreadyServicePointDistributedSloid();
-    Set<String> servicePointLocationAllocatedSloid = sloidRepository.getAllocatedSloid(SloidType.SERVICE_POINT);
+    Set<String> servicePointSePoDiAllocatedSloid = sePoDiRepository.getAlreadyDistributedServicePointSloids();
+    Set<String> servicePointLocationAllocatedSloid = sloidRepository.getAllocatedSloids(SloidType.SERVICE_POINT);
     log.info("Used ServicePoint sloid: {}", servicePointSePoDiAllocatedSloid.size());
     log.info("Allocated servicePoint sloid: {}", servicePointLocationAllocatedSloid.size());
     log.info("Diff between Allocated and used servicePoint sloid: {}",
@@ -65,15 +65,15 @@ public class SloidSyncService {
 
   private void deleteAllAvailableServicePointSloidAlreadyClaimed(Set<String> servicePointSePoDiAllocatedSloid) {
     log.info("Delete already claimed availableServicePointSloids: {}", servicePointSePoDiAllocatedSloid);
-    sloidRepository.deleteAvailableServicePointSloidAlreadyClaimed(servicePointSePoDiAllocatedSloid);
+    sloidRepository.deleteAvailableServicePointSloidsAlreadyClaimed(servicePointSePoDiAllocatedSloid);
   }
 
   private void removeUnusedServicePointSloidFromAllocatedSloid(Set<String> servicePointSePoDiAllocatedSloid,
       Set<String> servicePointLocationAllocatedSloid) {
     Set<String> sloidToRemove = getSloidToRemove(servicePointSePoDiAllocatedSloid, servicePointLocationAllocatedSloid);
     if (!sloidToRemove.isEmpty()) {
-      sloidRepository.deleteAllocatedSloid(sloidToRemove, SloidType.SERVICE_POINT);
-      sloidRepository.setAvailableSloidToUnclaimedAllocatedSloid(sloidToRemove);
+      sloidRepository.deleteAllocatedSloids(sloidToRemove, SloidType.SERVICE_POINT);
+      sloidRepository.setAvailableSloidsToUnclaimed(sloidToRemove);
     }
   }
 
@@ -81,7 +81,7 @@ public class SloidSyncService {
       Set<String> servicePointLocationAllocatedSloid, SloidType sloidType) {
     Set<String> sloidToRemove = getSloidToRemove(servicePointSePoDiAllocatedSloid, servicePointLocationAllocatedSloid);
     if (!sloidToRemove.isEmpty()) {
-      sloidRepository.deleteAllocatedSloid(sloidToRemove, sloidType);
+      sloidRepository.deleteAllocatedSloids(sloidToRemove, sloidType);
     }
   }
 
@@ -97,8 +97,8 @@ public class SloidSyncService {
       Set<String> servicePointLocationAllocatedSloid) {
     Set<String> sloidToAdd = getSloidToAdd(servicePointSePoDiAllocatedSloid, servicePointLocationAllocatedSloid);
     if (!sloidToAdd.isEmpty()) {
-      sloidRepository.addMissingAllocatedSloid(sloidToAdd, SloidType.SERVICE_POINT);
-      sloidRepository.setAvailableSloidToClaimed(sloidToAdd);
+      sloidRepository.addMissingAllocatedSloids(sloidToAdd, SloidType.SERVICE_POINT);
+      sloidRepository.setAvailableSloidsToClaimed(sloidToAdd);
     }
   }
 
@@ -106,7 +106,7 @@ public class SloidSyncService {
       Set<String> servicePointLocationAllocatedSloid, SloidType sloidType) {
     Set<String> sloidToAdd = getSloidToAdd(servicePointSePoDiAllocatedSloid, servicePointLocationAllocatedSloid);
     if (!sloidToAdd.isEmpty()) {
-      sloidRepository.addMissingAllocatedSloid(sloidToAdd, sloidType);
+      sloidRepository.addMissingAllocatedSloids(sloidToAdd, sloidType);
     }
   }
 
