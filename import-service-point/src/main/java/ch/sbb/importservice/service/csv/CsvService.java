@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -69,6 +72,7 @@ public abstract class CsvService<T> {
   public List<T> getCsvModelsToUpdate(File importFile, LocalDate matchingDate) {
     try (BufferedReader bufferedReader = new BufferedReader(new FileReader(importFile))) {
       String headerLine = skipUntilHeaderLine(bufferedReader);
+      int numberOfAttributes = headerLine.split(CSV_DELIMITER).length;
       int editedAtColumnIndex = getColumnIndexOfEditedAt(headerLine);
       List<String> mismatchedLines = getMismatchedLines(matchingDate, bufferedReader, editedAtColumnIndex);
       log.info("Found {} lines to update", mismatchedLines.size());
@@ -76,6 +80,25 @@ public abstract class CsvService<T> {
       if (mismatchedLines.isEmpty()) {
         return Collections.emptyList();
       }
+
+      Pattern pattern = Pattern.compile("\\$newline\\$");
+      mismatchedLines = mismatchedLines.stream().map((line) -> {
+        Matcher matcher = pattern.matcher(line);
+        if (matcher.find()) {
+          String[] attributes = line.split(CSV_DELIMITER);
+          if (attributes.length == numberOfAttributes) {
+            String[] newLine = matcher.replaceAll("\r\n").split(CSV_DELIMITER);
+            newLine[editedAtColumnIndex] =
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN));
+            return String.join(CSV_DELIMITER, newLine);
+          } else {
+            log.error("Could not replace newline because numberOfAttributes is not correct for line: {}", line);
+            return line;
+          }
+        }
+        return line;
+      }).toList();
+
       List<String> csvLinesToProcess = new ArrayList<>();
       csvLinesToProcess.add(headerLine);
       csvLinesToProcess.addAll(mismatchedLines);
