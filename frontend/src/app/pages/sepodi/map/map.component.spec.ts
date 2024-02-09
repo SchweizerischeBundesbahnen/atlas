@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MapComponent } from './map.component';
 import { AppTestingModule } from '../../../app.testing.module';
-import { MAP_STYLES } from './map-options.service';
+import { MAP_STYLES } from './map-options';
 import { CoordinatePairWGS84, MapService } from './map.service';
 import maplibregl, { Map } from 'maplibre-gl';
 import { BehaviorSubject } from 'rxjs';

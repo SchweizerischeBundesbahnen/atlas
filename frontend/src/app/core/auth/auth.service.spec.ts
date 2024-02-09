@@ -1,6 +1,6 @@
 import {TestBed} from '@angular/core/testing';
 import {AuthService} from './auth.service';
-import {OAuthService} from 'angular-oauth2-oidc';
+import {OAuthService, OAuthSuccessEvent} from 'angular-oauth2-oidc';
 import {of, Subject} from 'rxjs';
 import {Role} from './role';
 import {Component} from '@angular/core';
@@ -22,6 +22,7 @@ function createOauthServiceSpy() {
     'configure',
     'setupAutomaticSilentRefresh',
     'loadDiscoveryDocumentAndLogin',
+    'loadDiscoveryDocument',
     'logOut',
     'initCodeFlow',
     'getAccessToken',
@@ -30,6 +31,12 @@ function createOauthServiceSpy() {
     new Promise((resolve: (v: boolean) => void): void => {
       oauthServiceSpy.state = undefined;
       resolve(true);
+    })
+  );
+  oauthServiceSpy.loadDiscoveryDocument.and.returnValue(
+    new Promise((resolve: (v: OAuthSuccessEvent) => void): void => {
+      oauthServiceSpy.state = undefined;
+      resolve({} as OAuthSuccessEvent);
     })
   );
   oauthServiceSpy.events = new Subject();
