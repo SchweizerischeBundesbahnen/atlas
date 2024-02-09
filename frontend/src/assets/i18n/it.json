@@ -1242,7 +1242,8 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Il punto di riferimento è stato aggiunto con successo.",
         "EDIT_SUCCESS": "Il punto di riferimento è stato salvato con successo."
-      }
+      },
+      "CONFLICT": "Il punto di riferimento principale da {{validFrom}} a {{validTo}} è già rivendicato da {{sloid}}."
     }
   }
 }
