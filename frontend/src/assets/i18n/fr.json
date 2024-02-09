@@ -1242,7 +1242,8 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Le point de référence a été ajouté avec succès.",
         "EDIT_SUCCESS": "Le point de référence a été enregistré avec succès."
-      }
+      },
+      "CONFLICT": "Le point de référence principal est déjà occupé par {{sloid}} de {{validFrom}} à {{validTo}}."
     }
   }
 }

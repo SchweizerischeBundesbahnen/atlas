@@ -48,12 +48,13 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   private final RelationService relationService;
   private final StopPointService stopPointService;
   protected final PrmLocationService locationService;
+  private final ReferencePointValidationService referencePointValidationService;
 
   public ReferencePointService(ReferencePointRepository referencePointRepository,
       ToiletRepository toiletRepository, ContactPointRepository contactPointRepository,
       ParkingLotRepository parkingLotRepository, PlatformRepository platformRepository, RelationService relationService,
       StopPointService stopPointService, VersionableService versionableService,
-      PrmLocationService locationService) {
+      PrmLocationService locationService, ReferencePointValidationService referencePointValidationService) {
     super(versionableService);
     this.referencePointRepository = referencePointRepository;
     this.toiletRepository = toiletRepository;
@@ -63,6 +64,7 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
     this.relationService = relationService;
     this.stopPointService = stopPointService;
     this.locationService = locationService;
+    this.referencePointValidationService = referencePointValidationService;
   }
 
   @Override
@@ -74,6 +76,7 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   public ReferencePointVersion save(ReferencePointVersion version) {
     version.setEditionDate(LocalDateTime.now());
     version.setEditor(UserService.getUserIdentifier());
+    referencePointValidationService.validatePreconditionBusinessRule(version);
     stopPointService.validateIsNotReduced(version.getParentServicePointSloid());
     return referencePointRepository.saveAndFlush(version);
   }
@@ -104,6 +107,7 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   public ReferencePointVersion createReferencePoint(ReferencePointVersion referencePointVersion) {
     stopPointService.checkStopPointExists(referencePointVersion.getParentServicePointSloid());
     stopPointService.validateIsNotReduced(referencePointVersion.getParentServicePointSloid());
+    referencePointValidationService.validatePreconditionBusinessRule(referencePointVersion);
     locationService.allocateSloid(referencePointVersion, SloidType.REFERENCE_POINT);
 
     searchAndUpdatePlatformRelation(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
