@@ -32,10 +32,10 @@ public class SloidRepository {
     this.locationJdbcTemplate = locationJdbcTemplate;
   }
 
-  public Set<String> getAllocatedSloid(SloidType sloidType) {
+  public Set<String> getAllocatedSloids(SloidType sloidType) {
     MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("sloidType", sloidType.name());
-    String sqlQuery = "select distinct sloid from allocated_sloid where sloid is not null and sloidType = :sloidType";
+    String sqlQuery = "select distinct sloid from allocated_sloid where sloid is not null and sloidtype = :sloidType;";
     return new HashSet<>(locationJdbcTemplate.query(sqlQuery, mapSqlParameterSource, (rs, row) -> rs.getString("sloid")));
   }
 
@@ -51,7 +51,7 @@ public class SloidRepository {
     MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("sloid", sloid);
     mapSqlParameterSource.addValue("sloidType", sloidType.name());
-    String sqlQuery = "insert into allocated_sloid (sloid,sloidType) values (:sloid,:sloidType);";
+    String sqlQuery = "insert into allocated_sloid (sloid, sloidtype) values (:sloid, :sloidType);";
     locationJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
   }
 
@@ -86,18 +86,18 @@ public class SloidRepository {
     }
   }
 
-  public void deleteAllocatedSloid(Set<String> sloids, SloidType sloidType) {
+  public void deleteAllocatedSloids(Set<String> sloids, SloidType sloidType) {
     MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("sloids", sloids);
     mapSqlParameterSource.addValue("sloidType", sloidType.name());
-    String sqlQuery = "delete from allocated_sloid where sloid in (:sloids) and sloidType = :sloidType";
+    String sqlQuery = "delete from allocated_sloid where sloid in (:sloids) and sloidtype = :sloidType;";
     locationJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
   }
 
-  public void setAvailableSloidToUnclaimedAllocatedSloid(Set<String> sloids) {
+  public void setAvailableSloidsToUnclaimed(Set<String> sloids) {
     MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("sloids", sloids);
-    String sqlQuery = "update available_service_point_sloid set claimed = false where sloid in (:sloids)";
+    String sqlQuery = "update available_service_point_sloid set claimed = false where sloid in (:sloids);";
     locationJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
   }
 
@@ -108,15 +108,15 @@ public class SloidRepository {
     locationJdbcTemplate.update(sqlQuery, mapSqlParameterSource);
   }
 
-  public void setAvailableSloidToClaimed(Set<String> sloids) {
+  public void setAvailableSloidsToClaimed(Set<String> sloids) {
     log.info("Updating available_service_point_sloid clamed to true...");
-    String sqlQuery = "update available_service_point_sloid set claimed = true where sloid in (?)";
+    String sqlQuery = "update available_service_point_sloid set claimed = true where sloid in (?);";
     executeBatchUpdate(sloids, sqlQuery);
   }
 
-  public void deleteAvailableServicePointSloidAlreadyClaimed(Set<String> sloids) {
+  public void deleteAvailableServicePointSloidsAlreadyClaimed(Set<String> sloids) {
     log.info("Deleting available_service_point_sloid already claimed...");
-    String sqlQuery = "delete from available_service_point_sloid where sloid in (?) and claimed = true";
+    String sqlQuery = "delete from available_service_point_sloid where sloid in (?) and claimed = true;";
     executeBatchUpdate(sloids, sqlQuery);
   }
 
@@ -139,9 +139,9 @@ public class SloidRepository {
     });
   }
 
-  public void addMissingAllocatedSloid(Set<String> sloidToAdd, SloidType sloidType) {
-    ArrayList<String> sloids = new ArrayList<>(sloidToAdd);
-    String sqlQuery = "insert into allocated_sloid (sloid,sloidType) values (?,?)";
+  public void addMissingAllocatedSloids(Set<String> sloidsToAdd, SloidType sloidType) {
+    ArrayList<String> sloids = new ArrayList<>(sloidsToAdd);
+    String sqlQuery = "insert into allocated_sloid (sloid, sloidtype) values (?, ?);";
     AtlasListUtil.getPartitionedSublists(sloids, BATCH_SIZE).forEach(sloidSubList -> {
       log.info("Execution batching update: provided list size: {}", sloidSubList.size());
       locationJdbcTemplate.getJdbcTemplate().batchUpdate(sqlQuery, new BatchPreparedStatementSetter() {
@@ -160,4 +160,5 @@ public class SloidRepository {
       );
     });
   }
+
 }

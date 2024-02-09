@@ -184,4 +184,45 @@ delete
 from loading_point_version;
 ```
 
-Further we need to clear the import-service-point db: see * [Reset Batch](../documentation/batch_util.md)
+Further we need to clear the import-service-point db: see * [Reset Batch](../documentation/batch_util.md).
+
+And the Location DB:
+
+For Traffic Point Elements:
+
+```sql
+delete
+from allocated_sloid
+where sloidtype = 'AREA'
+   or sloidtype = 'PLATFORM';
+```
+
+For Service Points:
+
+```sql
+delete
+from allocated_sloid
+where sloidtype = 'SERVICE_POINT';
+
+truncate table available_service_point_sloid;
+
+insert into available_service_point_sloid
+select ('ch:1:sloid:' || available_sloids) as sloid, 'SWITZERLAND' as country
+from generate_series(1, 99999) as available_sloids;
+
+insert into available_service_point_sloid
+select ('ch:1:sloid:' || available_sloids + 1100000) as sloid, 'GERMANY_BUS' as country
+from generate_series(1, 99999) as available_sloids;
+
+insert into available_service_point_sloid
+select ('ch:1:sloid:' || available_sloids + 1200000) as sloid, 'AUSTRIA_BUS' as country
+from generate_series(1, 99999) as available_sloids;
+
+insert into available_service_point_sloid
+select ('ch:1:sloid:' || available_sloids + 1300000) as sloid, 'ITALY_BUS' as country
+from generate_series(1, 99999) as available_sloids;
+
+insert into available_service_point_sloid
+select ('ch:1:sloid:' || available_sloids + 1400000) as sloid, 'FRANCE_BUS' as country
+from generate_series(1, 99999) as available_sloids;
+```

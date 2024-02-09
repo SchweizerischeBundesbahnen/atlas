@@ -122,3 +122,13 @@ from reference_point_version;
 ```
 
 Further we need to clear the import-service-point db: see * [Reset Batch](../documentation/batch_util.md)
+
+And the Location DB:
+
+For the sloid-types REFERENCE_POINT, TOILET, PARKING_LOT, CONTACT_POINT:
+
+```sql
+delete
+from allocated_sloid
+where sloidtype = '{{sloidtype}}';
+```
