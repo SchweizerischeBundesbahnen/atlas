@@ -1242,7 +1242,8 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Der Referenzpunkt wurde erfolgreich hinzugefügt.",
         "EDIT_SUCCESS": "Der Referenzpunkt wurde erfolgreich gespeichert."
-      }
+      },
+      "CONFLICT": "Hauptreferenzpunkt wird von {{validFrom}} bis {{validTo}} bereits von {{sloid}} beansprucht."
     }
   }
 }
