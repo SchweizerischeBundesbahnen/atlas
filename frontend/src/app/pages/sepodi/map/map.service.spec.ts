@@ -1,16 +1,17 @@
 import {TestBed} from '@angular/core/testing';
 import {MapService} from './map.service';
 import {AuthService} from '../../../core/auth/auth.service';
-import {MAP_STYLES, MapOptionsService} from './map-options.service';
 import {
   DragRotateHandler,
   GeoJSONSource,
   Map,
   MapGeoJSONFeature,
-  MapMouseEvent, ScrollZoomHandler,
+  MapMouseEvent,
+  ScrollZoomHandler,
   TwoFingersTouchZoomRotateHandler
 } from 'maplibre-gl';
 import {SpatialReference} from '../../../api';
+import {MAP_STYLES} from './map-options';
 
 const authService: Partial<AuthService> = {};
 
@@ -40,7 +41,7 @@ describe('MapService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [{ provide: AuthService, useValue: authService }, { provide: MapOptionsService }],
+      providers: [{ provide: AuthService, useValue: authService }],
     });
     service = TestBed.inject(MapService);
   });

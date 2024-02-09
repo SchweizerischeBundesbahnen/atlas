@@ -1,7 +1,6 @@
-import {Injectable} from '@angular/core';
 import {LngLatBoundsLike} from 'maplibre-gl';
 
-const SWISS_BOUNDING_BOX: LngLatBoundsLike = [
+export const SWISS_BOUNDING_BOX: LngLatBoundsLike = [
   [5.7349, 45.6755],
   [10.6677, 47.9163],
 ];
@@ -19,12 +18,3 @@ export interface MapStyle {
   label: string;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
-export class MapOptionsService {
-
-  getInitialBoundingBox(): LngLatBoundsLike {
-    return SWISS_BOUNDING_BOX;
-  }
-}
