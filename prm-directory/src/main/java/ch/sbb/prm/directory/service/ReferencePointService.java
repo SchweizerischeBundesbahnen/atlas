@@ -107,8 +107,8 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   public ReferencePointVersion createReferencePoint(ReferencePointVersion referencePointVersion) {
     stopPointService.checkStopPointExists(referencePointVersion.getParentServicePointSloid());
     stopPointService.validateIsNotReduced(referencePointVersion.getParentServicePointSloid());
-    locationService.allocateSloid(referencePointVersion, SloidType.REFERENCE_POINT);
     referencePointValidationService.validatePreconditionBusinessRule(referencePointVersion);
+    locationService.allocateSloid(referencePointVersion, SloidType.REFERENCE_POINT);
 
     searchAndUpdatePlatformRelation(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
     searchAndUpdateToiletRelation(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
