@@ -10,22 +10,20 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class PrmRepository implements BaseRepository {
+public class PrmRepository {
 
   @Qualifier("prmJdbcTemplate")
   private final NamedParameterJdbcTemplate prmJdbcTemplate;
 
-  @Override
-  public Set<String> getAlreadyDistributedSloid(SloidType sloidType) {
+  public Set<String> getAlreadyDistributedSloids(SloidType sloidType) {
     String entityName = getEntityName(sloidType);
-    String sqlQuery = "select distinct sloid from " + entityName + " where sloid is not null";
+    String sqlQuery = "select distinct sloid from " + entityName + " where sloid is not null;";
     return new HashSet<>(prmJdbcTemplate.query(sqlQuery,
         (rs, rowNum) -> rs.getString("sloid")
     ));
   }
 
-  @Override
-  public String getEntityName(SloidType sloidType) {
+  private String getEntityName(SloidType sloidType) {
     return switch (sloidType) {
       case PLATFORM, AREA, SERVICE_POINT ->
           throw new IllegalArgumentException("Wrong sloidType " + sloidType + " provided! Please"
