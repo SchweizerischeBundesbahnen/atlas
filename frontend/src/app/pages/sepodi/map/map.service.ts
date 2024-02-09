@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import maplibregl, {GeoJSONSource, LngLat, LngLatLike, Map, MapGeoJSONFeature, MapMouseEvent, Popup,} from 'maplibre-gl';
 import {MAP_SOURCE_NAME, MAP_STYLE_SPEC, MAP_TRAFFIC_POINT_LAYER_NAME, MAP_ZOOM_DETAILS,} from './map-style';
 import {GeoJsonProperties, Point} from 'geojson';
-import {MAP_STYLES, MapOptionsService, MapStyle} from './map-options.service';
+import {MAP_STYLES, MapStyle, SWISS_BOUNDING_BOX} from './map-options';
 import {BehaviorSubject, Subject} from 'rxjs';
 import {CoordinatePair, SpatialReference} from '../../../api';
 import {Pages} from '../../pages';
@@ -40,7 +40,6 @@ export class MapService {
   private _keepPopup = false;
 
   constructor(
-    private mapOptionsService: MapOptionsService,
     private router: Router,
   ) {}
 
@@ -62,7 +61,7 @@ export class MapService {
     return new Map({
       container: mapContainer,
       style: MAP_STYLE_SPEC,
-      bounds: this.mapOptionsService.getInitialBoundingBox(),
+      bounds: SWISS_BOUNDING_BOX,
       minZoom: 5,
     });
   }
