@@ -32,6 +32,7 @@ public class ContactPointSearchRestrictions {
                 .and(specBuilder().validOnSpecification(Optional.ofNullable(contactPointObjectRequestParams.getValidOn())))
                 .and(specBuilder().inSpecification(contactPointObjectRequestParams.getServicePointNumbers(), BasePrmEntityVersion.Fields.number))
                 .and(specBuilder().inSpecification(contactPointObjectRequestParams.getSloids(), BasePrmEntityVersion.Fields.sloid))
+                .and(specBuilder().inSpecification(contactPointObjectRequestParams.getParentServicePointSloids(), BasePrmEntityVersion.Fields.parentServicePointSloid))
                 .and(specBuilder().inSpecification(contactPointObjectRequestParams.getContactPointTypes(), ContactPointVersion.Fields.type))
                 .and(new ValidOrEditionTimerangeSpecification<>(
                         contactPointObjectRequestParams.getFromDate(),
