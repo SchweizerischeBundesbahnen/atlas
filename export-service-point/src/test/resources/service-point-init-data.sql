@@ -168,7 +168,7 @@ values (1000, 1000, 8572241, 'ch:1:sloid:72241', 72241, 'SWITZERLAND', null, 'Ma
         null, null);
 insert into service_point_fot_comment (service_point_number, fot_comment, creation_date, creator, edition_date, editor,
                                        version)
-values (8572241, '(Bus) ohne Fahrplandaten 2016/2018', '2017-11-09 11:53:05.000000', 'GSU_DIDOK',
+values (8572241, '(Bus); ohne; Fahrplandaten 2016/2018', '2017-11-09 11:53:05.000000', 'GSU_DIDOK',
         '2022-02-23 17:53:50.000000',
         'GSU_DIDOK', 0);
 insert into service_point_version (id, service_point_geolocation_id, number, sloid, number_short, country,
