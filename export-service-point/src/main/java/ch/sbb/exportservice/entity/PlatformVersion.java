@@ -30,7 +30,7 @@ public class PlatformVersion extends BaseEntity {
 
     private String sloid;
 
-    private String parentSloidServicePoint;
+    private String parentServicePointSloid;
 
     private ServicePointNumber parentNumberServicePoint;
 
