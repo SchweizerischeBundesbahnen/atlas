@@ -185,6 +185,13 @@ values (1001, null, 9411114, null, 11114, 'PORTUGAL', null, 'Ferradosa', null, '
         'ch:1:sboid:100885', null,
         null, 'VALIDATED', null, false, '2001-01-01', '2010-12-11', '2018-02-15 23:28:53.000000', 'fs45117',
         '2018-03-08 18:21:49.000000', 'fs45117', 0, false, true, true, null, null);
+insert into service_point_fot_comment (service_point_number, fot_comment, creation_date, creator, edition_date, editor,
+                                       version)
+values (9411114, 'bern
+sbb
+ch', '2017-11-09 11:53:05.000000', 'GSU_DIDOK',
+        '2022-02-23 17:53:50.000000',
+        'GSU_DIDOK', 0);
 insert into service_point_version (id, service_point_geolocation_id, number, sloid, number_short, country,
                                    designation_long,
                                    designation_official, abbreviation, status_didok3, sort_code_of_destination_station,
@@ -378,7 +385,8 @@ insert into traffic_point_element_version (id, sloid, parent_sloid, designation,
                                            service_point_number, valid_from, valid_to,
                                            traffic_point_geolocation_id, creation_date, creator,
                                            edition_date, editor, version)
-values (1000, 'ch:1:sloid:77559:0:2', null, null, '2', 'BOARDING_PLATFORM', 18.000, 2.00, null, 1205887, '2022-03-01', '2099-12-31',
+values (1000, 'ch:1:sloid:77559:0:2', null, null, '2', 'BOARDING_PLATFORM', 18.000, 2.00, null, 1205887, '2022-03-01',
+        '2099-12-31',
         1000, '2022-03-03 07:56:42.000000', 'fs45117', '2022-05-03 11:50:46.000000', 'e536178', 0);
 insert into traffic_point_element_version (id, sloid, parent_sloid, designation,
                                            designation_operational, traffic_point_element_type,
@@ -386,7 +394,8 @@ insert into traffic_point_element_version (id, sloid, parent_sloid, designation,
                                            service_point_number, valid_from, valid_to,
                                            traffic_point_geolocation_id, creation_date, creator,
                                            edition_date, editor, version)
-values (1001, 'ch:1:sloid:88253:0:1', null, null, '1', 'BOARDING_PLATFORM', null, null, 57.00, 9411114, '2020-07-03', '2099-12-31',
+values (1001, 'ch:1:sloid:88253:0:1', null, null, '1', 'BOARDING_PLATFORM', null, null, 57.00, 9411114, '2020-07-03',
+        '2099-12-31',
         1001, '2020-07-03 08:12:08.000000', 'fs45117', '2020-07-03 08:22:43.000000', 'fs45117', 0);
 insert into traffic_point_element_version (id, sloid, parent_sloid, designation,
                                            designation_operational, traffic_point_element_type,
