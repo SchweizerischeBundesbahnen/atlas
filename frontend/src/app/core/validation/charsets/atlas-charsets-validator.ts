@@ -43,6 +43,30 @@ export class AtlasCharsetsValidator {
     };
   }
 
+  static integerWithFraction(decimalDigits: number, fractionDigit: number): ValidatorFn {
+    return (control) => {
+      const patternErrors = Validators.pattern(
+        '^\\d{1,' +
+          decimalDigits +
+          '}(\\.\\d{0,' +
+          fractionDigit +
+          '})?$|^\\.\\d{0,' +
+          fractionDigit +
+          '}$',
+      )(control);
+      if (patternErrors) {
+        const error: ValidationErrors = {
+          integer_with_fraction: {
+            maxFractionDigits: fractionDigit,
+            maxDecimalDigits: decimalDigits,
+          },
+        };
+        return error;
+      }
+      return patternErrors;
+    };
+  }
+
   static uppercaseNumeric(control: AbstractControl) {
     return AtlasCharsetsValidator.validateAllowedCharacters(control, '[A-Z0-9]*', '"A-Z & 0-9"');
   }
