@@ -72,17 +72,17 @@ export class PlatformFormGroupBuilder {
           [Validators.required],
         ),
         inclination: new FormControl(version?.inclination, [
-          AtlasCharsetsValidator.decimalWithDigits(3),
+          AtlasCharsetsValidator.integerWithFraction(7, 3),
         ]),
         inclinationWidth: new FormControl(version?.inclinationWidth, [
-          AtlasCharsetsValidator.decimalWithDigits(3),
+          AtlasCharsetsValidator.integerWithFraction(7, 3),
         ]),
         levelAccessWheelchair: new FormControl(
           version?.levelAccessWheelchair ?? BooleanOptionalAttributeType.ToBeCompleted,
           [Validators.required],
         ),
         superelevation: new FormControl(version?.superelevation, [
-          AtlasCharsetsValidator.decimalWithDigits(3),
+          AtlasCharsetsValidator.integerWithFraction(7, 3),
         ]),
         validFrom: new FormControl(version?.validFrom ? moment(version.validFrom) : null, [
           Validators.required,
@@ -108,9 +108,11 @@ export class PlatformFormGroupBuilder {
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(2000),
         ]),
-        height: new FormControl(version?.height, [AtlasCharsetsValidator.decimalWithDigits(3)]),
+        height: new FormControl(version?.height, [
+          AtlasCharsetsValidator.integerWithFraction(7, 3),
+        ]),
         inclinationLongitudinal: new FormControl(version?.inclinationLongitudinal, [
-          AtlasCharsetsValidator.decimalWithDigits(3),
+          AtlasCharsetsValidator.integerWithFraction(7, 3),
         ]),
         infoOpportunities: new FormControl(
           version?.infoOpportunities ?? [InfoOpportunityAttributeType.ToBeCompleted],
@@ -125,10 +127,10 @@ export class PlatformFormGroupBuilder {
           [Validators.required],
         ),
         wheelchairAreaLength: new FormControl(version?.wheelchairAreaLength, [
-          AtlasCharsetsValidator.decimalWithDigits(3),
+          AtlasCharsetsValidator.integerWithFraction(7, 3),
         ]),
         wheelchairAreaWidth: new FormControl(version?.wheelchairAreaWidth, [
-          AtlasCharsetsValidator.decimalWithDigits(3),
+          AtlasCharsetsValidator.integerWithFraction(7, 3),
         ]),
         validFrom: new FormControl(version?.validFrom ? moment(version.validFrom) : null, [
           Validators.required,
