@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.writer;
 
+import static ch.sbb.exportservice.utils.StringUtils.NEW_LINE;
 import static ch.sbb.exportservice.utils.StringUtils.SEMICOLON;
 
 import ch.sbb.exportservice.utils.StringUtils;
@@ -23,14 +24,21 @@ public class AtlasWrapperFieldExtractor<T> extends BeanWrapperFieldExtractor<T> 
     BeanWrapper bw = new BeanWrapperImpl(item);
     for (String propertyName : this.names) {
       Object propertyValue = bw.getPropertyValue(propertyName);
-      if(String.valueOf(propertyValue).contains(SEMICOLON)){
-        String prunedValue = StringUtils.replaceSemiColonWithColon(String.valueOf(propertyValue));
-        values.add(prunedValue);
-      }else {
-        values.add(propertyValue);
-      }
+      pruneValue(values, propertyValue);
     }
     return values.toArray();
+  }
+
+  private static void pruneValue(List<Object> values, Object propertyValue) {
+    if(String.valueOf(propertyValue).contains(NEW_LINE)){
+      String prunedValue = StringUtils.removeNewLine(String.valueOf(propertyValue));
+      values.add(prunedValue);
+    }else if(String.valueOf(propertyValue).contains(SEMICOLON)){
+      String prunedValue = StringUtils.replaceSemiColonWithColon(String.valueOf(propertyValue));
+      values.add(prunedValue);
+    }else {
+      values.add(propertyValue);
+    }
   }
 
 }
