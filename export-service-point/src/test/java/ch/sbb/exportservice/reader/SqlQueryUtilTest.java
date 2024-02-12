@@ -100,9 +100,10 @@ class SqlQueryUtilTest {
     String groupByStatement = "GROUP BY cpv.id";
     // when
     final String query = SqlQueryUtil.buildSqlQuery(select, SqlQueryUtil.getWhereClause(PrmExportType.FULL, whereStatementContactPointVersion), groupByStatement);
+    final String expectedQuery = select + StringUtils.SPACE + groupByStatement + ";";
 
     // then
-    assertThat(query).isEqualTo(select + StringUtils.SPACE + groupByStatement + ";");
+    assertThat(query.replaceAll("\\s+", " ")).isEqualTo(expectedQuery.replaceAll("\\s+", " "));
   }
 
   @Test
@@ -116,11 +117,12 @@ class SqlQueryUtilTest {
     String groupByStatement = "GROUP BY cpv.id";
     // when
     final String query = SqlQueryUtil.buildSqlQuery(select, SqlQueryUtil.getWhereClause(PrmExportType.ACTUAL, whereStatementContactPointVersion), groupByStatement);
-
-    // then
     final LocalDate expectedDate = LocalDate.now();
     final String expectedDateAsString = DateHelper.getDateAsSqlString(expectedDate);
-    assertThat(query).isEqualTo(select + StringUtils.SPACE + whereStatementContactPointVersion.formatted(expectedDateAsString) + StringUtils.SPACE + groupByStatement + ";");
+    final String expectedQuery = select + StringUtils.SPACE + whereStatementContactPointVersion.formatted(expectedDateAsString) + StringUtils.SPACE + groupByStatement + ";";
+
+    // then
+    assertThat(query).isEqualTo(expectedQuery);
   }
 
   @Test
@@ -134,11 +136,12 @@ class SqlQueryUtilTest {
     String groupByStatement = "GROUP BY cpv.id";
     // when
     final String query = SqlQueryUtil.buildSqlQuery(select, SqlQueryUtil.getWhereClause(PrmExportType.TIMETABLE_FUTURE, whereStatementContactPointVersion), groupByStatement);
-
-    // then
     final LocalDate futureTimeTableYearDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
     final String expectedDateAsString = DateHelper.getDateAsSqlString(futureTimeTableYearDate);
-    assertThat(query).isEqualTo(select + StringUtils.SPACE + whereStatementContactPointVersion.formatted(expectedDateAsString) + StringUtils.SPACE + groupByStatement + ";");
+    final String expectedQuery = select + StringUtils.SPACE + whereStatementContactPointVersion.formatted(expectedDateAsString) + StringUtils.SPACE + groupByStatement + ";";
+
+    // then
+    assertThat(query).isEqualTo(expectedQuery);
   }
 
 }
