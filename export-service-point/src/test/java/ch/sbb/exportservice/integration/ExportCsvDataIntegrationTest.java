@@ -22,10 +22,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 @BatchDataSourceConfigTest
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
- class ExportCsvServicePointDataIntegrationTest extends BaseExportCsvDataIntegrationTest{
+ class ExportCsvDataIntegrationTest extends BaseExportCsvDataIntegrationTest{
+
 
   @Test
-   void shouldExportServicePointToCsvWithCorrectData() throws Exception {
+   void shouldExportDataWithoutSemiColonContent() throws Exception {
     when(amazonService.putZipFile(any(), fileArgumentCaptor.capture(), any())).thenReturn(new URL("https://sbb.ch"));
     when(fileCsvDeletingTasklet.execute(any(), any())).thenReturn(null);
 
@@ -42,11 +43,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
     List<ServicePointVersionCsvModel> exportedCsv = parseCsv(exportedCsvFile);
     Files.delete(exportedCsvFile.toPath());
 
-    ServicePointVersionCsvModel magdenObrist = exportedCsv.stream().filter(i -> i.getNumber().equals(8572241)).findFirst()
+    ServicePointVersionCsvModel servicePointVersionCsvModel = exportedCsv.stream().filter(i -> i.getNumber().equals(8572241)).findFirst()
         .orElseThrow();
-    assertThat(magdenObrist.getBusinessOrganisationNumber()).isEqualTo(999);
-    assertThat(magdenObrist.getBusinessOrganisationAbbreviationDe()).isEqualTo("SAS-Code");
-    assertThat(magdenObrist.getIsoCountryCode()).isEqualTo("RU");
+    assertThat(servicePointVersionCsvModel.getFotComment()).isEqualTo("(Bus): ohne: Fahrplandaten 2016/2018");
   }
+
 
 }

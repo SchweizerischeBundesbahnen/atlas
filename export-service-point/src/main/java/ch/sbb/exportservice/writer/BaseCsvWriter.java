@@ -6,7 +6,6 @@ import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.service.FileExportService;
 import java.nio.charset.StandardCharsets;
 import org.springframework.batch.item.file.FlatFileItemWriter;
-import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -44,10 +43,8 @@ public abstract class BaseCsvWriter<T> {
     return lineAggregator;
   }
 
-  private BeanWrapperFieldExtractor<T> getFieldExtractor() {
-    BeanWrapperFieldExtractor<T> fieldExtractor = new BeanWrapperFieldExtractor<>();
-    fieldExtractor.setNames(getCsvHeader());
-    return fieldExtractor;
+  private AtlasWrapperFieldExtractor<T> getFieldExtractor() {
+    return new AtlasWrapperFieldExtractor<>(getCsvHeader());
   }
 
 }
