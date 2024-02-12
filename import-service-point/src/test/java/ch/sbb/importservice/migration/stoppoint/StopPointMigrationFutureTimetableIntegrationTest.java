@@ -28,9 +28,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StopPointMigrationFutureTimetableIntegrationTest {
 
-  private static final String DIDOK_STOP_PLACE_CSV_FILE = "PRM_STOP_PLACES_20231115022314.csv";
-  private static final String ATLAS_STOP_POINT_CSV_FILE = "future-timetable-stop-point-2023-11-15.csv";
-  private static final LocalDate FUTURE_TIMETABLE_DATE = LocalDate.of(2023, 12, 10);
+  private static final String DIDOK_STOP_PLACE_CSV_FILE = "PRM_STOP_PLACES_20240205013123.csv";
+  private static final String ATLAS_STOP_POINT_CSV_FILE = "future-timetable-stop-point-2024-02-05.csv";
+  private static final LocalDate FUTURE_TIMETABLE_DATE = LocalDate.of(2024, 12, 15);
 
   private static final List<StopPointCsvModel> didokStopPointCsvLines = new ArrayList<>();
   private static final List<StopPointVersionCsvModel> atlasStopPointCsvLines = new ArrayList<>();
