@@ -8,8 +8,6 @@ import ch.sbb.exportservice.model.SePoDiExportType;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class SqlQueryUtil {
@@ -48,9 +46,7 @@ public class SqlQueryUtil {
   }
 
   public static String buildSqlQuery(String... parts) {
-    return Arrays.stream(parts)
-            .filter(part -> part != null && !part.trim().isEmpty())
-            .collect(Collectors.joining(" ", "", ";"));
+    return String.join(" ", parts) + ";";
   }
 
 }
