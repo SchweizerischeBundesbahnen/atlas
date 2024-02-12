@@ -44,7 +44,7 @@ public class ContactPointObjectRequestParams extends VersionedObjectDateRequestP
             @Min(AtlasFieldLengths.MIN_SEVEN_DIGITS_NUMBER)
             @Max(AtlasFieldLengths.MAX_SEVEN_DIGITS_NUMBER) Integer> servicePointNumbers = new ArrayList<>();
 
-    public List<ServicePointNumber> getNumbers() {
+    public List<ServicePointNumber> getServicePointNumbers() {
         return servicePointNumbers.stream().map(ServicePointNumber::ofNumberWithoutCheckDigit).toList();
     }
 
