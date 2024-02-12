@@ -44,7 +44,6 @@ public class ContactPointSearchRestrictions {
 
     protected SpecificationBuilder<ContactPointVersion> specBuilder() {
         return SpecificationBuilder.<ContactPointVersion>builder()
-                .stringAttributes(List.of(BasePrmEntityVersion.Fields.number))
                 .validFromAttribute(ContactPointVersion_.validFrom)
                 .validToAttribute(ContactPointVersion_.validTo)
                 .build();
