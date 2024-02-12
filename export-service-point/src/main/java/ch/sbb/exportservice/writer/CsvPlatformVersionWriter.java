@@ -12,9 +12,9 @@ public class CsvPlatformVersionWriter extends BaseCsvWriter<PlatformVersionCsvMo
         return new String[]{
                 Fields.sloid, Fields.parentSloidServicePoint, Fields.parentNumberServicePoint, Fields.boardingDevice,
                 Fields.adviceAccessInfo, Fields.additionalInformation, Fields.contrastingAreas, Fields.dynamicAudio,
-                Fields.dynamicVisual, Fields.height, Fields.inclination, Fields.inclinationLongitudal, Fields.inclinationWidth,
+                Fields.dynamicVisual, Fields.height, Fields.inclination, Fields.inclinationLongitudinal, Fields.inclinationWidth,
                 Fields.infoOpportunities, Fields.levelAccessWheelchair, Fields.partialElevation, Fields.superElevation, Fields.tactileSystems,
-                Fields.vehicleAccess, Fields.wheelchairAreaLength, Fields.wheelChairAreaWidth, Fields.validFrom, Fields.validTo,
+                Fields.vehicleAccess, Fields.wheelChairAreaLength, Fields.wheelChairAreaWidth, Fields.validFrom, Fields.validTo,
                 Fields.creationDate, Fields.editionDate
         };
     }

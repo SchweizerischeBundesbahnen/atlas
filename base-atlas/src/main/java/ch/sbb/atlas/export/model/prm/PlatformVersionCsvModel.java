@@ -41,7 +41,7 @@ public class PlatformVersionCsvModel {
 
     private Double inclination;
 
-    private Double inclinationLongitudal;
+    private Double inclinationLongitudinal;
 
     private Double inclinationWidth;
 
@@ -57,7 +57,7 @@ public class PlatformVersionCsvModel {
 
     private String vehicleAccess;
 
-    private Double wheelchairAreaLength;
+    private Double wheelChairAreaLength;
 
     private Double wheelChairAreaWidth;
 
