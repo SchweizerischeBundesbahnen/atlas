@@ -5,22 +5,26 @@
 - [ATLAS](#atlas)
 - [Project Versioning](#project-versioning)
 - [Links](#links)
-    * [Localhost](#localhost)
-    * [Development](#development)
-    * [Test](#test)
-    * [Integration](#integration)
-    * [Production](#production)
-    * [Project Infrastructure](#project-infrastructure)
+  * [Localhost](#localhost)
+  * [Development](#development)
+  * [Test](#test)
+  * [Integration](#integration)
+  * [Production](#production)
+  * [Project Infrastructure](#project-infrastructure)
 - [Big Picture Architecture](#big-picture-architecture)
 - [Development](#development-1)
-    * [Spring Batch](#spring-batch)
-    * [Multiple DataSources](#multiple-datasources)
+  * [Spring Batch](#spring-batch)
+  * [Multiple DataSources](#multiple-datasources)
 - [Jobs](#jobs)
-    * [Export ServicePointVersions](#export-servicepointversions)
-    * [Export TrafficPointElementVersions](#export-trafficpointelementversions)
-    * [Export LoadingPointVersions](#export-loadingpointversions)
-    * [Export StopPointVersions](#export-stoppointversions)
-    * [Jobs Recovery](#jobs-recovery)
+  * [Export ServicePointVersions](#export-servicepointversions)
+  * [Export TrafficPointElementVersions](#export-trafficpointelementversions)
+  * [Export LoadingPointVersions](#export-loadingpointversions)
+  * [Export StopPointVersions](#export-stoppointversions)
+  * [Export PlatformVersion](#export-platformversion)
+  * [Export PlatformVersion](#export-platformversion-1)
+  * [Export ContactPointVersion](#export-contactpointversion)
+  * [Export Toilet](#export-toilet)
+  * [Jobs Recovery](#jobs-recovery)
 - [Tech Stack](#tech-stack)
 
 <!-- tocstop -->
@@ -163,6 +167,62 @@ export [StopPointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/co
 Job is responsible to:
 
 * read [StopPointVersions](src/main/java/ch/sbb/exportservice/entity/StopPointVersion.java) data
+  from Prm dataSource
+* generate zipped CSV and gzipped JSON Files based
+  on [PrmExportType.java](src/main/java/ch/sbb/exportservice/model/PrmExportType.java):
+    * actual-date
+    * full
+    * future-timetable
+
+### Export PlatformVersion
+
+The
+export [PlatformVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/PlatformVersionExportBatchConfig.java)
+Job is responsible to:
+
+* read [PlatformVersion](src/main/java/ch/sbb/exportservice/entity/PlatformVersion.java) data
+  from Prm dataSource
+* generate zipped CSV and gzipped JSON Files based
+  on [PrmExportType.java](src/main/java/ch/sbb/exportservice/model/PrmExportType.java):
+    * actual-date
+    * full
+    * future-timetable
+
+### Export PlatformVersion
+
+The
+export [ReferencePointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/ReferencePointVersionExportBatchConfig.java)
+Job is responsible to:
+
+* read [ReferencePointVersion](src/main/java/ch/sbb/exportservice/entity/ReferencePointVersion.java) data
+  from Prm dataSource
+* generate zipped CSV and gzipped JSON Files based
+  on [PrmExportType.java](src/main/java/ch/sbb/exportservice/model/PrmExportType.java):
+    * actual-date
+    * full
+    * future-timetable
+
+### Export ContactPointVersion
+
+The
+export [ContactPointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/ContactPointVersionExportBatchConfig.java)
+Job is responsible to:
+
+* read [ContactPointVersion](src/main/java/ch/sbb/exportservice/entity/ContactPointVersion.java) data
+  from Prm dataSource
+* generate zipped CSV and gzipped JSON Files based
+  on [PrmExportType.java](src/main/java/ch/sbb/exportservice/model/PrmExportType.java):
+    * actual-date
+    * full
+    * future-timetable
+
+### Export Toilet
+
+The
+export [ToiletVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/ToiletVersionExportBatchConfig.java)
+Job is responsible to:
+
+* read [ToiletVersion](src/main/java/ch/sbb/exportservice/entity/ToiletVersion.java) data
   from Prm dataSource
 * generate zipped CSV and gzipped JSON Files based
   on [PrmExportType.java](src/main/java/ch/sbb/exportservice/model/PrmExportType.java):

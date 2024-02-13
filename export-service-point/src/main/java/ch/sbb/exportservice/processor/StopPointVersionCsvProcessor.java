@@ -1,7 +1,6 @@
 package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
-import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.export.model.prm.StopPointVersionCsvModel;
 import ch.sbb.exportservice.entity.StopPointVersion;
 import lombok.extern.slf4j.Slf4j;
@@ -44,10 +43,6 @@ public class StopPointVersionCsvProcessor extends BaseServicePointProcessor impl
         .editionDate(LOCAL_DATE_FORMATTER.format(version.getEditionDate()))
         .build();
 
-  }
-
-  private String mapStandardAttributeType(StandardAttributeType attributeType){
-    return attributeType != null ? attributeType.toString() : null;
   }
 
   private String mapBooleanOptionalAttributeType(BooleanOptionalAttributeType booleanOptionalAttributeType){
