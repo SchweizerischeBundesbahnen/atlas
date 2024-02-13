@@ -20,4 +20,6 @@ public interface ParkingLotRepository extends JpaRepository<ParkingLotVersion, L
   @Modifying(clearAutomatically = true)
   @Query("update parking_lot_version v set v.version = (v.version + 1) where v.sloid = :sloid")
   void incrementVersion(@Param("sloid") String sloid);
+
+  boolean existsBySloid(String sloid);
 }
