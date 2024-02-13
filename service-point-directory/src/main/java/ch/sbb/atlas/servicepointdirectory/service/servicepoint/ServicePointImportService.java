@@ -128,7 +128,9 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
     return importResults;
   }
 
-  public void updateServicePointVersionForImportService(ServicePointVersion edited, List<ServicePointVersion> dbVersions, ServicePointVersion current) {
+  public void updateServicePointVersionForImportService(ServicePointVersion edited, List<ServicePointVersion> dbVersions) {
+    ServicePointVersion current = ImportUtils.getCurrentPointVersion(dbVersions, edited);
+
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(current, edited,
         dbVersions);
     ImportUtils.overrideEditionDateAndEditorOnVersionedObjects(edited, versionedObjects);
@@ -139,12 +141,11 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
         new ApplyVersioningDeleteByIdLongConsumer(servicePointService.getServicePointVersionRepository()));
   }
 
-  private ServicePointVersion saveOnlyStatusIfOnlyStatusIsUpdated(Long id, Status status) {
+  private void saveOnlyStatusIfOnlyStatusIsUpdated(Long id, Status status) {
     ServicePointVersion existingServicePointVersion = servicePointService.findById(id)
             .orElseThrow(() -> new NotFoundException.IdNotFoundException(id));
     existingServicePointVersion.setStatus(status);
     existingServicePointVersion.setEditionDate(LocalDateTime.now());
-    return existingServicePointVersion;
   }
 
   private void saveFotComment(ServicePointCsvModelContainer container) {
@@ -164,6 +165,9 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
     getHeightForServicePointImport(servicePointVersion, warnings);
     try {
       locationService.claimServicePointSloid(servicePointVersion.getSloid());
+      if (servicePointVersion.getStatus() != Status.VALIDATED) {
+        servicePointVersion.setEditionDate(LocalDateTime.now());
+      }
       servicePointService.saveWithoutValidationForImportOnly(servicePointVersion, servicePointVersion.getStatus());
     } catch (Exception exception) {
       log.error("[Service-Point Import]: Error during save", exception);
@@ -175,11 +179,12 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
   private ItemImportResult updateServicePointVersion(ServicePointVersion servicePointVersion) {
     List<Exception> warnings = new ArrayList<>();
     getHeightForServicePointImport(servicePointVersion, warnings);
+
     List<ServicePointVersion> dbVersions = servicePointService.findAllByNumberOrderByValidFrom(servicePointVersion.getNumber());
-    ServicePointVersion current = ImportUtils.getCurrentPointVersion(dbVersions, servicePointVersion);
     try {
-      updateServicePointVersionForImportService(servicePointVersion, dbVersions, current);
+      updateServicePointVersionForImportService(servicePointVersion, dbVersions);
     } catch (VersioningNoChangesException exception) {
+      ServicePointVersion current = ImportUtils.getCurrentPointVersion(dbVersions, servicePointVersion);
       if (!servicePointVersion.getStatus().equals(current.getStatus())) {
         log.info("During the service point import, a service point with the number {} was identified, where only the status changed from {} to {}",
                 servicePointVersion.getNumber().getValue(),
