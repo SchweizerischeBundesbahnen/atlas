@@ -1058,6 +1058,30 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
   }
 
   @Test
+  void newStopPointWhenValidityIsExactly60DaysShouldSetStatusToValidated() throws Exception {
+    CreateServicePointVersionModel createServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    createServicePointVersionModel.setValidFrom(LocalDate.of(2020, 1, 1));
+    createServicePointVersionModel.setValidTo(LocalDate.of(2020, 2, 29));
+    mvc.perform(post("/v1/service-points")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(createServicePointVersionModel)))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.status", is(Status.VALIDATED.toString())));
+  }
+
+  @Test
+  void newStopPointWhenValidityIsExactlyEnoughShouldSetStatusToDraft() throws Exception {
+    CreateServicePointVersionModel createServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    createServicePointVersionModel.setValidFrom(LocalDate.of(2020, 1, 1));
+    createServicePointVersionModel.setValidTo(LocalDate.of(2020, 3, 1));
+    mvc.perform(post("/v1/service-points")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(createServicePointVersionModel)))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.status", is(Status.DRAFT.toString())));
+  }
+
+  @Test
   void newStopPointWhenValidityIsNotSwissLocationShouldSetStatusToValidated() throws Exception {
     GeoReference geoReference = GeoReference.builder().country(Country.ITALY).build();
     when(geoReferenceService.getGeoReference(any(), anyBoolean())).thenReturn(geoReference);
