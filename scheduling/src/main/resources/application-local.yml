@@ -104,6 +104,8 @@ scheduler:
       chron: "0 20 5 * * ?" #At 05:20:00am every day
     toilet-trigger-batch:
       chron: "0 25 5 * * ?" #At 05:25:00am every day
+    parking-lot-trigger-batch:
+      chron: "0 30 5 * * ?" #At 05:30:00am every day
 
   lidi:
     export:
