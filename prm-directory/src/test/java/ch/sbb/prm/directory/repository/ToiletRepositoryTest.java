@@ -28,7 +28,7 @@ class ToiletRepositoryTest {
   }
 
   @Test
-  void shouldReturnStopPoints() {
+  void shouldReturnToilets() {
     //when
    List<ToiletVersion> result = toiletRepository.findAll();
    //then
