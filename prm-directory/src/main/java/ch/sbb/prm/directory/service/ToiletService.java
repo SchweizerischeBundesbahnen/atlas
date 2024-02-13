@@ -85,6 +85,7 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
   }
 
   public ToiletVersion createToiletPointThroughImport(ToiletVersion version) {
+    stopPointService.checkStopPointExists(version.getParentServicePointSloid());
     locationService.allocateSloid(version, SloidType.TOILET);
     return toiletRepository.saveAndFlush(version);
   }
