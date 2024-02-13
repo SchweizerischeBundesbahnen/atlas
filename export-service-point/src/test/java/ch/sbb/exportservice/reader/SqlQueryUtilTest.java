@@ -1,12 +1,15 @@
 package ch.sbb.exportservice.reader;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.versioning.date.DateHelper;
+import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.model.SePoDiExportType;
-import java.time.LocalDate;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class SqlQueryUtilTest {
 
@@ -84,6 +87,61 @@ class SqlQueryUtilTest {
     final LocalDate expectedDate = LocalDate.now();
     final String expectedDateAsString = DateHelper.getDateAsSqlString(expectedDate);
     assertThat(query).isEqualTo(WHERE_CLAUSE.formatted(expectedDateAsString));
+  }
+
+  @Test
+  void shouldReturnSqlStatementForFullAndContactPointVersion() {
+    // given
+    String select = """
+      SELECT cpv.*
+      FROM contact_point_version cpv
+      """;
+    String whereStatementContactPointVersion = "WHERE '%s' between cpv.valid_from and cpv.valid_to";
+    String groupByStatement = "GROUP BY cpv.id";
+    // when
+    final String query = SqlQueryUtil.buildSqlQuery(select, SqlQueryUtil.getWhereClause(PrmExportType.FULL, whereStatementContactPointVersion), groupByStatement);
+    final String expectedQuery = select + StringUtils.SPACE + groupByStatement + ";";
+
+    // then
+    assertThat(query.replaceAll("\\s+", " ")).isEqualTo(expectedQuery.replaceAll("\\s+", " "));
+  }
+
+  @Test
+  void shouldReturnSqlStatementForActualAndContactPointVersion() {
+    // given
+    String select = """
+      SELECT cpv.*
+      FROM contact_point_version cpv
+      """;
+    String whereStatementContactPointVersion = "WHERE '%s' between cpv.valid_from and cpv.valid_to";
+    String groupByStatement = "GROUP BY cpv.id";
+    // when
+    final String query = SqlQueryUtil.buildSqlQuery(select, SqlQueryUtil.getWhereClause(PrmExportType.ACTUAL, whereStatementContactPointVersion), groupByStatement);
+    final LocalDate expectedDate = LocalDate.now();
+    final String expectedDateAsString = DateHelper.getDateAsSqlString(expectedDate);
+    final String expectedQuery = select + StringUtils.SPACE + whereStatementContactPointVersion.formatted(expectedDateAsString) + StringUtils.SPACE + groupByStatement + ";";
+
+    // then
+    assertThat(query).isEqualTo(expectedQuery);
+  }
+
+  @Test
+  void shouldReturnSqlStatementForTimetableFutureAndContactPointVersion() {
+    // given
+    String select = """
+      SELECT cpv.*
+      FROM contact_point_version cpv
+      """;
+    String whereStatementContactPointVersion = "WHERE '%s' between cpv.valid_from and cpv.valid_to";
+    String groupByStatement = "GROUP BY cpv.id";
+    // when
+    final String query = SqlQueryUtil.buildSqlQuery(select, SqlQueryUtil.getWhereClause(PrmExportType.TIMETABLE_FUTURE, whereStatementContactPointVersion), groupByStatement);
+    final LocalDate futureTimeTableYearDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
+    final String expectedDateAsString = DateHelper.getDateAsSqlString(futureTimeTableYearDate);
+    final String expectedQuery = select + StringUtils.SPACE + whereStatementContactPointVersion.formatted(expectedDateAsString) + StringUtils.SPACE + groupByStatement + ";";
+
+    // then
+    assertThat(query).isEqualTo(expectedQuery);
   }
 
 }

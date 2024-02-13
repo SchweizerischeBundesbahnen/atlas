@@ -44,4 +44,9 @@ public class SqlQueryUtil {
     }
     throw new IllegalArgumentException("Value not allowed: " + exportType);
   }
+
+  public static String buildSqlQuery(String... parts) {
+    return String.join(" ", parts) + ";";
+  }
+
 }

@@ -5,15 +5,16 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.BatchDataSourceConfigTest;
 import ch.sbb.exportservice.PrmDbSchemaCreation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import javax.sql.DataSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
 @PrmDbSchemaCreation
 @BatchDataSourceConfigTest
@@ -51,6 +52,25 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
     execute(insertSql);
   }
 
+  protected void insertPlatform(int id, String sloid, ServicePointNumber parentServicePointNumber,
+      LocalDate validFrom, LocalDate validTo) throws SQLException {
+    final String insertSql = """
+        INSERT INTO platform_version (id, sloid, number, parent_service_point_sloid, boarding_device, additional_information,
+        advice_access_info, contrasting_areas, dynamic_audio, dynamic_visual, height, inclination, inclination_longitudinal, inclination_width, 
+        level_access_wheelchair, partial_elevation, superelevation, tactile_system, vehicle_access, wheelchair_area_length, wheelchair_area_width, 
+        valid_from, valid_to, creation_date, creator, edition_date, editor, version)
+        VALUES (%d, '%s', %d, '%s', 'LIFTS', '[Shuttle]', 
+        'Somit ist ein Niveaugleicher Einstieg gesichert.', 'YES', 'YES', 'YES', 2.000, 2.000, 2.000, 0.000,
+        'YES', false, 0.000, 'YES', 'TO_BE_COMPLETED', 0.000, 0.000,
+         '%s', '%s', '2022-02-19 09:54:38.000000', 'u123456',
+        '2022-02-19 09:54:38.000000', 'u123456', 0);
+        """
+        .formatted(id, sloid, parentServicePointNumber.getNumber(), ServicePointNumber.calculateSloid(parentServicePointNumber),
+            formatDate(validFrom),
+            formatDate(validTo));
+    execute(insertSql);
+  }
+
   protected void insertReferencePoint(int id, String sloid, ServicePointNumber parentServicePointNumber,
       LocalDate validFrom, LocalDate validTo) throws SQLException {
     final String insertSql = """
@@ -61,6 +81,21 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
         '2022-02-19 09:54:38.000000', 'u123456', 0);
         """
         .formatted(id, sloid, ServicePointNumber.calculateSloid(parentServicePointNumber), parentServicePointNumber.getNumber(),
+            formatDate(validFrom),
+            formatDate(validTo));
+    execute(insertSql);
+  }
+
+  protected void insertContactPoint(int id, String sloid, ServicePointNumber parentServicePointNumber,
+      LocalDate validFrom, LocalDate validTo) throws SQLException {
+    final String insertSql = """
+        INSERT INTO contact_point_version (id, sloid, number, parent_service_point_sloid, designation, additional_information,
+        induction_loop, opening_hours, wheelchair_access, type, valid_from, valid_to, creation_date, creator, edition_date, editor, version)
+        VALUES (%d, '%s', %d, '%s', 'Haupteingang', 'Kann voll genutzt werden zum rein und raus gehen', 'TO_BE_COMPLETED', 'Während der Fahrplanzeiten der Linie 2830',
+        'TO_BE_COMPLETED', 'INFORMATION_DESK', '%s', '%s', '2022-02-19 09:54:38.000000', 'u123456',
+        '2022-02-19 09:54:38.000000', 'u123456', 0);
+        """
+        .formatted(id, sloid, parentServicePointNumber.getNumber(), ServicePointNumber.calculateSloid(parentServicePointNumber),
             formatDate(validFrom),
             formatDate(validTo));
     execute(insertSql);
