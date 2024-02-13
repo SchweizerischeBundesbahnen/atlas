@@ -62,7 +62,7 @@ describe('Atlas Charsets Validator', () => {
   });
 
   it('should allow Decimal with max digits', () => {
-    const decimalWithDigits = AtlasCharsetsValidator.decimalWithDigits(3);
+    const decimalWithDigits = AtlasCharsetsValidator.decimalWithMaxDigits(3);
 
     expect(decimalWithDigits(new FormControl('123'))).toBeNull();
     expect(decimalWithDigits(new FormControl('1.002'))).toBeNull();
@@ -70,6 +70,23 @@ describe('Atlas Charsets Validator', () => {
 
     expect(decimalWithDigits(new FormControl('a'))).toBeDefined();
     expect(decimalWithDigits(new FormControl('1.0002'))).toBeDefined();
+  });
+
+  it('should allow integer with fractions', () => {
+    const integerWithFraction = AtlasCharsetsValidator.decimalWithDigits(7, 3);
+
+    expect(integerWithFraction(new FormControl('123'))).toBeNull();
+    expect(integerWithFraction(new FormControl('1.002'))).toBeNull();
+    expect(integerWithFraction(new FormControl('500.0'))).toBeNull();
+    expect(integerWithFraction(new FormControl('500.000'))).toBeNull();
+    expect(integerWithFraction(new FormControl('1234567.123'))).toBeNull();
+    expect(integerWithFraction(new FormControl('0.123'))).toBeNull();
+    expect(integerWithFraction(new FormControl('1.123'))).toBeNull();
+
+    expect(integerWithFraction(new FormControl('a'))).toBeDefined();
+    expect(integerWithFraction(new FormControl('1.0002'))).toBeDefined();
+    expect(integerWithFraction(new FormControl('12345678'))).toBeDefined();
+    expect(integerWithFraction(new FormControl('1234567.1234'))).toBeDefined();
   });
 
   it('should allow sid4pt with 1 colon', () => {

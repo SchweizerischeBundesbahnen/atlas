@@ -26,7 +26,7 @@ export class AtlasCharsetsValidator {
     };
   }
 
-  static decimalWithDigits(decimalDigits: number): ValidatorFn {
+  static decimalWithMaxDigits(decimalDigits: number): ValidatorFn {
     return (control) => {
       const patternErrors = Validators.pattern('^-?[0-9]*\\.?[0-9]{0,' + decimalDigits + '}')(
         control,
@@ -34,6 +34,30 @@ export class AtlasCharsetsValidator {
       if (patternErrors) {
         const error: ValidationErrors = {
           decimal_number: {
+            maxDecimalDigits: decimalDigits,
+          },
+        };
+        return error;
+      }
+      return patternErrors;
+    };
+  }
+
+  static decimalWithDigits(decimalDigits: number, fractionDigit: number): ValidatorFn {
+    return (control) => {
+      const patternErrors = Validators.pattern(
+        '^\\d{1,' +
+          decimalDigits +
+          '}(\\.\\d{0,' +
+          fractionDigit +
+          '})?$|^\\.\\d{0,' +
+          fractionDigit +
+          '}$',
+      )(control);
+      if (patternErrors) {
+        const error: ValidationErrors = {
+          integer_with_fraction: {
+            maxFractionDigits: fractionDigit,
             maxDecimalDigits: decimalDigits,
           },
         };

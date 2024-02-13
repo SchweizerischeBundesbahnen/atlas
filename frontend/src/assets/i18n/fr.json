@@ -225,6 +225,7 @@
     "AT_LEAST_ONE": "Sélectionnez au moins une modalité.",
     "MEANSOFTRANSPORTWRONGCOMBINATION": "Cette combinaison de moyens de transport n'est pas autorisée",
     "DECIMAL_NUMBER": "Saisissez un nombre décimal avec un maximum de {{maxDecimalDigits}} chiffres après la virgule.",
+    "INTEGER_WITH_FRACTION": "Entrez un nombre décimal comprenant jusqu'à {{maxDecimalDigits}} chiffres et jusqu'à {{maxFractionDigits}} décimales.",
     "COLON_SEPERATED_SID4PT": "Utilisez le jeu de caractères SID4PT (-._0-9a-zA-Z) avec des deux-points séparant exactement {{numbersWithColons}}."
   },
   "USER_ADMIN": {
