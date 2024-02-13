@@ -1,7 +1,21 @@
 package ch.sbb.importservice.recovery;
 
+import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_BATCH_PARAMETER;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.FULL_PATH_FILENAME_JOB_PARAMETER;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_PLATFORM_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_REFERENCE_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_STOP_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_TOILET_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_TRAFFIC_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
+
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.importservice.repository.ImportProcessedItemRepository;
+import java.util.Map;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.BatchStatus;
@@ -24,20 +38,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
-import java.util.Optional;
-
-import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_BATCH_PARAMETER;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.FULL_PATH_FILENAME_JOB_PARAMETER;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_PLATFORM_CSV_JOB_NAME;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_REFERENCE_POINT_CSV_JOB_NAME;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_STOP_POINT_CSV_JOB_NAME;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_TRAFFIC_POINT_CSV_JOB_NAME;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
 
 @Component
 @AllArgsConstructor
@@ -72,6 +72,9 @@ public class RecoveryJobsRunner implements ApplicationRunner {
   @Qualifier(IMPORT_REFERENCE_POINT_CSV_JOB_NAME)
   private final Job importReferencePointCsvJob;
 
+  @Qualifier(IMPORT_TOILET_CSV_JOB_NAME)
+  private final Job importToiletCsvJob;
+
   private final FileService fileService;
 
   @Override
@@ -84,6 +87,7 @@ public class RecoveryJobsRunner implements ApplicationRunner {
     recoverJob(IMPORT_STOP_POINT_CSV_JOB_NAME);
     recoverJob(IMPORT_PLATFORM_CSV_JOB_NAME);
     recoverJob(IMPORT_REFERENCE_POINT_CSV_JOB_NAME);
+    recoverJob(IMPORT_TOILET_CSV_JOB_NAME);
   }
 
   void recoverJob(String jobName)
@@ -162,6 +166,9 @@ public class RecoveryJobsRunner implements ApplicationRunner {
     }
     if (IMPORT_REFERENCE_POINT_CSV_JOB_NAME.equals(jobName)) {
       return importReferencePointCsvJob;
+    }
+    if (IMPORT_TOILET_CSV_JOB_NAME.equals(jobName)) {
+      return importToiletCsvJob;
     }
     throw new IllegalStateException("No job found with name: " + jobName);
   }
