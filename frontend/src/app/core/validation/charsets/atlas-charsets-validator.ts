@@ -26,7 +26,7 @@ export class AtlasCharsetsValidator {
     };
   }
 
-  static decimalWithDigits(decimalDigits: number): ValidatorFn {
+  static decimalWithMaxDigits(decimalDigits: number): ValidatorFn {
     return (control) => {
       const patternErrors = Validators.pattern('^-?[0-9]*\\.?[0-9]{0,' + decimalDigits + '}')(
         control,
@@ -43,7 +43,7 @@ export class AtlasCharsetsValidator {
     };
   }
 
-  static integerWithFraction(decimalDigits: number, fractionDigit: number): ValidatorFn {
+  static decimalWithDigits(decimalDigits: number, fractionDigit: number): ValidatorFn {
     return (control) => {
       const patternErrors = Validators.pattern(
         '^\\d{1,' +
