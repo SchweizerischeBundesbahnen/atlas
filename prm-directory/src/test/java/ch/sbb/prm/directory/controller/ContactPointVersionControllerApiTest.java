@@ -1,18 +1,5 @@
 package ch.sbb.prm.directory.controller;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
@@ -34,14 +21,28 @@ import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.PrmLocationService;
 import ch.sbb.prm.directory.service.RelationService;
-import java.util.Collections;
-import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
+import java.util.Set;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
 class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
@@ -91,7 +92,73 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
     //when & then
     mvc.perform(get("/v1/contact-points"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(1)));
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
+  @Test
+  void shouldGetContactPointsBySloids() throws Exception {
+    //given
+    ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
+    contactPointRepository.save(contactPointVersion);
+    //when & then
+    mvc.perform(get("/v1/contact-points?sloids=" + contactPointVersion.getSloid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
+  @Test
+  void shouldGetContactPointsByParentSloids() throws Exception {
+    //given
+    ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
+    contactPointRepository.save(contactPointVersion);
+    //when & then
+    mvc.perform(get("/v1/contact-points?parentServicePointSloids=" + contactPointVersion.getParentServicePointSloid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
+  @Test
+  void shouldGetContactPointsByServicePointNumbers() throws Exception {
+    //given
+    ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
+    contactPointRepository.save(contactPointVersion);
+    //when & then
+    mvc.perform(get("/v1/contact-points?servicePointNumbers=" + contactPointVersion.getNumber().getNumber()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
+  @Test
+  void shouldGetContactPointsByContactPointTypes() throws Exception {
+    //given
+    ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
+    contactPointRepository.save(contactPointVersion);
+    //when & then
+    mvc.perform(get("/v1/contact-points?contactPointTypes=" + contactPointVersion.getType()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
+  @Test
+  void shouldGetZeroContactPointsByContactPointTypes() throws Exception {
+    //given
+    ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
+    contactPointRepository.save(contactPointVersion);
+    //when & then
+    mvc.perform(get("/v1/contact-points?contactPointTypes=" + ContactPointType.TICKET_COUNTER))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(0)));
+  }
+
+  @Test
+  void shouldGetAllContactPointVersions() throws Exception {
+    //given
+    ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
+    contactPointRepository.save(contactPointVersion);
+    //when & then
+    mvc.perform(get("/v1/contact-points/" + contactPointVersion.getSloid()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(1)));
   }
 
   @Test
