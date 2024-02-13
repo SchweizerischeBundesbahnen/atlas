@@ -4,6 +4,7 @@ import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_BATCH
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.FULL_PATH_FILENAME_JOB_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_PARKING_LOT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_PLATFORM_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_REFERENCE_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
@@ -74,6 +75,9 @@ public class RecoveryJobsRunner implements ApplicationRunner {
 
   @Qualifier(IMPORT_TOILET_CSV_JOB_NAME)
   private final Job importToiletCsvJob;
+
+  @Qualifier(IMPORT_PARKING_LOT_CSV_JOB_NAME)
+  private final Job importParkingLotCsvJob;
 
   private final FileService fileService;
 
@@ -169,6 +173,9 @@ public class RecoveryJobsRunner implements ApplicationRunner {
     }
     if (IMPORT_TOILET_CSV_JOB_NAME.equals(jobName)) {
       return importToiletCsvJob;
+    }
+    if (IMPORT_PARKING_LOT_CSV_JOB_NAME.equals(jobName)) {
+      return importParkingLotCsvJob;
     }
     throw new IllegalStateException("No job found with name: " + jobName);
   }
