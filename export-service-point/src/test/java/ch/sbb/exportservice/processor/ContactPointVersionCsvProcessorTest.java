@@ -1,16 +1,15 @@
 package ch.sbb.exportservice.processor;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.export.model.prm.ContactPointVersionCsvModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.entity.ContactPointVersion;
-import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 public class ContactPointVersionCsvProcessorTest {
 
@@ -26,16 +25,9 @@ public class ContactPointVersionCsvProcessorTest {
                 .parentServicePointSloid("ch:1:sloid:112")
                 .parentServicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8500112))
                 .designation("Haupteingang")
-                .additionalInformation("""
-            Langer
-            Text""")
+                .additionalInformation("Langer Text")
                 .inductionLoop(StandardAttributeType.TO_BE_COMPLETED)
-                .openingHours("""
-                        Während 
-                        der 
-                        Fahrplanzeiten 
-                        der 
-                        Linie 2830""")
+                .openingHours("Während der Fahrplanzeiten der Linie 2830")
                 .wheelchairAccess(StandardAttributeType.TO_BE_COMPLETED)
                 .type(ContactPointType.TICKET_COUNTER)
                 .validFrom(LocalDate.of(2020, 1, 1))
