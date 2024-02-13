@@ -1,5 +1,6 @@
 package ch.sbb.importservice.controller.prm;
 
+import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
 import ch.sbb.importservice.service.FileHelperService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -16,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_CONTACT_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.*;
 
 
 @Tag(name = "Import Prm Batch")
@@ -24,13 +25,16 @@ import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_CONTACT_
 @RestController
 @Slf4j
 public class ImportContactPointBatchController extends ImportPrmBatchBaseController{
-    private final Job importContactPointCsvJob;
+    private final Job importInfoDeskCsvJob;
+    private final Job importTicketCounterCsvJob;
 
 
     public ImportContactPointBatchController(JobLauncher jobLauncher, FileHelperService fileHelperService,
-                                        @Qualifier(IMPORT_CONTACT_POINT_CSV_JOB_NAME) Job importContactPointCsvJob) {
+                                        @Qualifier(IMPORT_INFO_DESK_CSV_JOB_NAME) Job importInfoDeskCsvJob,
+                                        @Qualifier(IMPORT_TICKET_COUNTER_CSV_JOB_NAME) Job importTicketCiunterCsvJob) {
         super(jobLauncher, fileHelperService);
-        this.importContactPointCsvJob = importContactPointCsvJob;
+        this.importInfoDeskCsvJob = importInfoDeskCsvJob;
+        this.importTicketCounterCsvJob = importTicketCiunterCsvJob;
     }
 
     @PostMapping("contact-point-batch")
@@ -40,15 +44,25 @@ public class ImportContactPointBatchController extends ImportPrmBatchBaseControl
     })
     @Async
     public void startContactPointImportBatch() {
-        startBatch(importContactPointCsvJob, IMPORT_CONTACT_POINT_CSV_JOB_NAME);
+        startBatch(importInfoDeskCsvJob, IMPORT_INFO_DESK_CSV_JOB_NAME);
+        startBatch(importTicketCounterCsvJob, IMPORT_TICKET_COUNTER_CSV_JOB_NAME);
     }
 
-    @PostMapping("contact-point")
+    @PostMapping("info-desk")
     @ResponseStatus(HttpStatus.OK)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200"),
     })
-    public ResponseEntity<String> startContactPointImport(@RequestParam("file") MultipartFile multipartFile) throws IOException {
-        return startFileImport(importContactPointCsvJob, IMPORT_CONTACT_POINT_CSV_JOB_NAME, multipartFile);
+    public ResponseEntity<String> startInfoDeskImport(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+        return startFileImport(importInfoDeskCsvJob, IMPORT_INFO_DESK_CSV_JOB_NAME, multipartFile);
+    }
+
+    @PostMapping("ticket-counter")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200"),
+    })
+    public ResponseEntity<String> startTicketCounterImport(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+        return startFileImport(importTicketCounterCsvJob, IMPORT_TICKET_COUNTER_CSV_JOB_NAME, multipartFile);
     }
 }
