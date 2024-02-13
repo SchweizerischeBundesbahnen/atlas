@@ -53,15 +53,15 @@ export class TrafficPointElementFormGroupBuilder {
         ]),
         parentSloid: new FormControl(version?.parentSloid),
         length: new FormControl(version?.length, [
-          AtlasCharsetsValidator.decimalWithDigits(3),
+          AtlasCharsetsValidator.decimalWithDigits(10, 3),
           Validators.min(0),
         ]),
         boardingAreaHeight: new FormControl(version?.boardingAreaHeight, [
-          AtlasCharsetsValidator.decimalWithDigits(2),
+          AtlasCharsetsValidator.decimalWithDigits(3, 2),
           Validators.min(0),
         ]),
         compassDirection: new FormControl(version?.compassDirection, [
-          AtlasCharsetsValidator.decimalWithDigits(2),
+          AtlasCharsetsValidator.decimalWithDigits(3, 2),
           Validators.min(0),
           Validators.max(360),
         ]),
