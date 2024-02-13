@@ -4,8 +4,8 @@ import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification;
 import ch.sbb.prm.directory.controller.model.ContactPointObjectRequestParams;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
+import ch.sbb.prm.directory.entity.BasePrmEntityVersion_;
 import ch.sbb.prm.directory.entity.ContactPointVersion;
-import ch.sbb.prm.directory.entity.ContactPointVersion_;
 import lombok.Getter;
 import lombok.Singular;
 import lombok.ToString;
@@ -44,8 +44,8 @@ public class ContactPointSearchRestrictions {
 
     protected SpecificationBuilder<ContactPointVersion> specBuilder() {
         return SpecificationBuilder.<ContactPointVersion>builder()
-                .validFromAttribute(ContactPointVersion_.validFrom)
-                .validToAttribute(ContactPointVersion_.validTo)
+                .validFromAttribute(BasePrmEntityVersion_.validFrom)
+                .validToAttribute(BasePrmEntityVersion_.validTo)
                 .build();
     }
 }
