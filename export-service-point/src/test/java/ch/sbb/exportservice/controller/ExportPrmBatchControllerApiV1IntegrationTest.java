@@ -1,16 +1,17 @@
 package ch.sbb.exportservice.controller;
 
+import static org.mockito.Mockito.doNothing;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.exportservice.service.ExportContactPointJobService;
 import ch.sbb.exportservice.service.ExportPlatformJobService;
 import ch.sbb.exportservice.service.ExportReferencePointJobService;
 import ch.sbb.exportservice.service.ExportStopPointJobService;
+import ch.sbb.exportservice.service.ExportToiletJobService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
-import static org.mockito.Mockito.doNothing;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class ExportPrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
 
@@ -25,6 +26,9 @@ class ExportPrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTest
 
   @MockBean
   private ExportContactPointJobService exportContactPointJobService;
+
+  @MockBean
+  private ExportToiletJobService exportToiletJobService;
 
   @Test
   void shouldPostStopPointExportBatchSuccessfully() throws Exception {
@@ -66,6 +70,17 @@ class ExportPrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTest
 
     //when & then
     mvc.perform(post("/v1/export/prm/contact-point-batch")
+            .contentType(contentType))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void shouldPostToiletExportBatchSuccessfully() throws Exception {
+    //given
+    doNothing().when(exportToiletJobService).startExportJobs();
+
+    //when & then
+    mvc.perform(post("/v1/export/prm/toilet-batch")
             .contentType(contentType))
         .andExpect(status().isOk());
   }
