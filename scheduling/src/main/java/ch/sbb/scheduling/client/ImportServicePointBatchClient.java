@@ -32,4 +32,7 @@ public interface ImportServicePointBatchClient {
 
   @PostMapping(value = "/import-service-point/v1/import-prm/parking-lot-batch", produces = MediaType.APPLICATION_JSON_VALUE)
   Response triggerImportParkingLotBatch();
+
+  @PostMapping(value = "/import-service-point/v1/import-prm/contact-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response triggerImportContactPointBatch();
 }

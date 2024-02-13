@@ -1,5 +1,6 @@
 package ch.sbb.atlas.imports.prm.contactpoint;
 
+import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
 import ch.sbb.atlas.imports.prm.BasePrmCsvModel;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -34,11 +35,13 @@ public class ContactPointCsvModel extends BasePrmCsvModel {
     private String openHours;
 
     @JsonProperty("STATUS")
-    private String status;
+    private Integer status;
 
     @JsonProperty("WHEELCHAIR_ACCESS")
     private Integer wheelChairAccess;
 
     @JsonProperty("DS_SLOID")
     private String dsSloid;
+
+    private ContactPointType type;
 }
