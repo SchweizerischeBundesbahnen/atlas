@@ -204,4 +204,24 @@ import org.springframework.http.HttpStatus;
    assertThat(result.status()).isEqualTo(200);
   }
 
+  @Test
+  void shouldTriggerImportParkingLotBatchSuccessfully() {
+   //given
+   Response response = Response.builder()
+       .status(200)
+       .reason("OK")
+       .request(
+           Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+               null, Util.UTF_8, null))
+       .build();
+   when(client.triggerImportParkingLotBatch()).thenReturn(response);
+
+   //when
+   Response result = importBatchSchedulerService.triggerImportParkingLotBatch();
+
+   //then
+   assertThat(result).isNotNull();
+   assertThat(result.status()).isEqualTo(200);
+  }
+
 }
