@@ -62,7 +62,7 @@ describe('Atlas Charsets Validator', () => {
   });
 
   it('should allow Decimal with max digits', () => {
-    const decimalWithDigits = AtlasCharsetsValidator.decimalWithDigits(3);
+    const decimalWithDigits = AtlasCharsetsValidator.decimalWithMaxDigits(3);
 
     expect(decimalWithDigits(new FormControl('123'))).toBeNull();
     expect(decimalWithDigits(new FormControl('1.002'))).toBeNull();
@@ -73,7 +73,7 @@ describe('Atlas Charsets Validator', () => {
   });
 
   it('should allow integer with fractions', () => {
-    const integerWithFraction = AtlasCharsetsValidator.integerWithFraction(7, 3);
+    const integerWithFraction = AtlasCharsetsValidator.decimalWithDigits(7, 3);
 
     expect(integerWithFraction(new FormControl('123'))).toBeNull();
     expect(integerWithFraction(new FormControl('1.002'))).toBeNull();
