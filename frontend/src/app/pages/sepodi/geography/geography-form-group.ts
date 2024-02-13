@@ -22,7 +22,7 @@ export class GeographyFormGroupBuilder {
         this.getValidatorsForCoordinates(geolocation?.spatialReference, 'NORTH'),
       ),
       height: new FormControl(geolocation?.height, [
-        AtlasCharsetsValidator.integerWithFraction(5, 4),
+        AtlasCharsetsValidator.decimalWithDigits(5, 4),
       ]),
       spatialReference: new FormControl(geolocation?.spatialReference ?? SpatialReference.Lv95),
     });
@@ -53,7 +53,7 @@ export class GeographyFormGroupBuilder {
     northOrEast: 'NORTH' | 'EAST',
   ) {
     if (spatialReference === SpatialReference.Lv95) {
-      return [Validators.required, AtlasCharsetsValidator.decimalWithDigits(LV95_MAX_DIGITS)];
+      return [Validators.required, AtlasCharsetsValidator.decimalWithMaxDigits(LV95_MAX_DIGITS)];
     }
     if (spatialReference === SpatialReference.Wgs84) {
       const minMax = northOrEast === 'NORTH' ? 90 : 180;
@@ -61,7 +61,7 @@ export class GeographyFormGroupBuilder {
         Validators.required,
         Validators.min(-minMax),
         Validators.max(minMax),
-        AtlasCharsetsValidator.decimalWithDigits(WGS84_MAX_DIGITS),
+        AtlasCharsetsValidator.decimalWithMaxDigits(WGS84_MAX_DIGITS),
       ];
     }
     return [];
