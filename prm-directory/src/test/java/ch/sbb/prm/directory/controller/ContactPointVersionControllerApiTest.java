@@ -96,7 +96,7 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldGetContactPointsVersionBySloids() throws Exception {
+  void shouldGetContactPointsBySloids() throws Exception {
     //given
     ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
     contactPointRepository.save(contactPointVersion);
@@ -107,7 +107,7 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldGetContactPointsVersionByParentSloids() throws Exception {
+  void shouldGetContactPointsByParentSloids() throws Exception {
     //given
     ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
     contactPointRepository.save(contactPointVersion);
@@ -118,7 +118,7 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldGetContactPointsVersionByServicePointNumbers() throws Exception {
+  void shouldGetContactPointsByServicePointNumbers() throws Exception {
     //given
     ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
     contactPointRepository.save(contactPointVersion);
@@ -129,7 +129,7 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldGetContactPointsVersionByContactPointTypes() throws Exception {
+  void shouldGetContactPointsByContactPointTypes() throws Exception {
     //given
     ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
     contactPointRepository.save(contactPointVersion);
@@ -140,7 +140,7 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldGetZeroContactPointsVersionByContactPointTypes() throws Exception {
+  void shouldGetZeroContactPointsByContactPointTypes() throws Exception {
     //given
     ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
     contactPointRepository.save(contactPointVersion);
@@ -148,6 +148,17 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/contact-points?contactPointTypes=" + ContactPointType.TICKET_COUNTER))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.objects", hasSize(0)));
+  }
+
+  @Test
+  void shouldGetAllContactPointVersions() throws Exception {
+    //given
+    ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
+    contactPointRepository.save(contactPointVersion);
+    //when & then
+    mvc.perform(get("/v1/contact-points/" + contactPointVersion.getSloid()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(1)));
   }
 
   @Test
