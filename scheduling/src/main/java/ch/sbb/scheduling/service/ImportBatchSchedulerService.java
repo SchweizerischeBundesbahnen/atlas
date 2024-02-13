@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ImportServicePointBatchSchedulerService extends BaseSchedulerService {
+public class ImportBatchSchedulerService extends BaseSchedulerService {
 
   private final ImportServicePointBatchClient importServicePointBatchClient;
 
-  public ImportServicePointBatchSchedulerService(ImportServicePointBatchClient importServicePointBatchClient) {
+  public ImportBatchSchedulerService(ImportServicePointBatchClient importServicePointBatchClient) {
     this.importServicePointBatchClient = importServicePointBatchClient;
     this.clientName = "ImportServicePoint-Client";
   }
@@ -79,6 +79,15 @@ public class ImportServicePointBatchSchedulerService extends BaseSchedulerServic
   @SchedulerLock(name = "triggerImportReferencePointBatch", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response triggerImportReferencePointBatch() {
     return executeRequest(importServicePointBatchClient::triggerImportReferencePointBatch, "Trigger Import Reference Point Batch");
+  }
+
+  @SpanTracing
+  @Retryable(label = "triggerImportToiletBatch", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
+  @Backoff(delay = 65000))
+  @Scheduled(cron = "${scheduler.import-service-point.toilet-trigger-batch.chron}", zone = "${scheduler.zone}")
+  @SchedulerLock(name = "triggerImportToiletBatch", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
+  public Response triggerImportToiletBatch() {
+    return executeRequest(importServicePointBatchClient::triggerImportToiletBatch, "Trigger Import Toilet Point Batch");
   }
 
 }
