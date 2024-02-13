@@ -103,7 +103,7 @@
   "FORM": {
     "MAX_CHARS": "{{numberOfChars}} caratteri max.",
     "MAX_NUMBER_OF_DIGITS": "{{numberOfDigits}} numeri max.",
-    "MAX_DIGITS": "{{numberOfChars}} cifre decimali max.",
+    "MAX_DIGITS": "{{amount}} cifre decimali max.",
     "DROPDOWN_PLACEHOLDER": "selezionare",
     "FOR_EXAMPLE": "p.e.:",
     "DESIGN_INFORMATION": "Informazioni sulla creazione",
@@ -225,6 +225,7 @@
     "AT_LEAST_ONE": "Selezionare almeno un'espressione.",
     "MEANSOFTRANSPORTWRONGCOMBINATION": "Questa combinazione di mezzi di trasporto non è consentita",
     "DECIMAL_NUMBER": "Inserire un numero decimale con un massimo di {{maxDecimalDigits}} cifre decimali.",
+    "INTEGER_WITH_FRACTION": "Inserire un numero decimale composto da un massimo di {{maxDecimalDigits}} cifre e con un massimo di {{maxFractionDigits}} cifre decimali.",
     "COLON_SEPERATED_SID4PT": "Utilizzare i caratteri SID4PT (-._0-9a-zA-Z) con esattamente {{numbersWithColons}} due punti."
   },
   "USER_ADMIN": {

@@ -26,9 +26,7 @@ class ReferencePointVersionCsvProcessorTest {
         .parentServicePointNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8500112))
         .designation("Haupteingang")
         .mainReferencePoint(true)
-        .additionalInformation("""
-            Langer
-            Text""")
+        .additionalInformation("Langer Text")
         .referencePointType(ReferencePointAttributeType.MAIN_STATION_ENTRANCE)
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
