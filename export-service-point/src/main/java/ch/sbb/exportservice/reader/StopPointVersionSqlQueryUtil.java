@@ -13,14 +13,11 @@ public class StopPointVersionSqlQueryUtil extends SqlQueryUtil {
       FROM stop_point_version spv
         LEFT JOIN stop_point_version_means_of_transport spvmot on spv.id = spvmot.stop_point_version_id
       """;
-  private static final String WHERE_STATEMENT = "WHERE '%s' between spv.valid_from and spv.valid_to ";
+  private static final String WHERE_STATEMENT = "WHERE '%s' between spv.valid_from and spv.valid_to";
   private static final String GROUP_BY_STATEMENT = "GROUP BY spv.id";
 
   public String getSqlQuery(PrmExportType exportType) {
-    final String sqlQuery =
-        SELECT_STATEMENT
-            + getWhereClause(exportType, WHERE_STATEMENT)
-            + GROUP_BY_STATEMENT;
+    final String sqlQuery = buildSqlQuery(SELECT_STATEMENT, getWhereClause(exportType, WHERE_STATEMENT), GROUP_BY_STATEMENT);
     log.info("Execution SQL query:");
     log.info(sqlQuery);
     return sqlQuery;
