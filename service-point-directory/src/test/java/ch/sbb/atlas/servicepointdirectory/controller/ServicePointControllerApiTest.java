@@ -1,22 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import static ch.sbb.atlas.api.AtlasApiConstants.ZURICH_ZONE_ID;
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.WGS84;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.endsWith;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.ErrorResponse;
@@ -49,6 +32,15 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import ch.sbb.atlas.servicepointdirectory.service.georeference.JourneyPoiClient;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MvcResult;
+
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -62,14 +54,22 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.servlet.MvcResult;
+import static ch.sbb.atlas.api.AtlasApiConstants.ZURICH_ZONE_ID;
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.WGS84;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class ServicePointControllerApiTest extends BaseControllerApiTest {
 
@@ -636,9 +636,10 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
                     .contentType(contentType)
                     .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
             .andExpect(status().isPreconditionFailed())
-            .andExpect(jsonPath("$.message", is("ServicePoint Status can be updated only from DRAFT to VALIDATED!")))
+            .andExpect(jsonPath("$.message", is(
+                    "ServicePoint Status cannot be changed for Status REVOKED and can be updated only from DRAFT to VALIDATED!")))
             .andExpect(jsonPath("$.error", endsWith(
-                    "Trying to update status to VALIDATED for the ServicePointNumber 8500001 and current status: VALIDATED")));
+                    "Trying to update status for ServicePointNumber 8500001 and current status: VALIDATED")));
   }
 
   @Test
@@ -655,9 +656,10 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
                     .contentType(contentType)
                     .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
             .andExpect(status().isPreconditionFailed())
-            .andExpect(jsonPath("$.message", is("ServicePoint Status can be updated only from DRAFT to VALIDATED!")))
+            .andExpect(jsonPath("$.message", is(
+                    "ServicePoint Status cannot be changed for Status REVOKED and can be updated only from DRAFT to VALIDATED!")))
             .andExpect(jsonPath("$.error", endsWith(
-                    "Trying to update status to VALIDATED for the ServicePointNumber 8500001 and current status: REVOKED")));
+                    "Trying to update status for ServicePointNumber 8500001 and current status: REVOKED")));
   }
 
   @Test
@@ -674,9 +676,10 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
                     .contentType(contentType)
                     .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
             .andExpect(status().isPreconditionFailed())
-            .andExpect(jsonPath("$.message", is("ServicePoint Status can be updated only from DRAFT to VALIDATED!")))
+            .andExpect(jsonPath("$.message", is(
+                    "ServicePoint Status cannot be changed for Status REVOKED and can be updated only from DRAFT to VALIDATED!")))
             .andExpect(jsonPath("$.error", endsWith(
-                    "Trying to update status to VALIDATED for the ServicePointNumber 8500001 and current status: IN_REVIEW")));
+                    "Trying to update status for ServicePointNumber 8500001 and current status: IN_REVIEW")));
   }
 
   @Test
@@ -693,9 +696,33 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
                     .contentType(contentType)
                     .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
             .andExpect(status().isPreconditionFailed())
-            .andExpect(jsonPath("$.message", is("ServicePoint Status can be updated only from DRAFT to VALIDATED!")))
+            .andExpect(jsonPath("$.message", is(
+                    "ServicePoint Status cannot be changed for Status REVOKED and can be updated only from DRAFT to VALIDATED!")))
             .andExpect(jsonPath("$.error", endsWith(
-                    "Trying to update status to VALIDATED for the ServicePointNumber 8500001 and current status: WITHDRAWN")));
+                    "Trying to update status for ServicePointNumber 8500001 and current status: WITHDRAWN")));
+  }
+  @Test
+  void shouldNotAllowServicePointUpdateWhenStatusRevoked() throws Exception {
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+            ServicePointTestData.getAargauServicePointVersionModel());
+    Long id = servicePointVersionModel.getId();
+    Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
+    servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.REVOKED));
+    servicePointVersion1.ifPresent(repository::save);
+
+    UpdateServicePointVersionModel newServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    newServicePointVersionModel.setServicePointGeolocation(
+            ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
+    newServicePointVersionModel.setOperatingPointRouteNetwork(true);
+
+    mvc.perform(put("/v1/service-points/" + id)
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(newServicePointVersionModel)))
+            .andExpect(status().isPreconditionFailed())
+            .andExpect(jsonPath("$.message", is(
+                    "ServicePoint Status cannot be changed for Status REVOKED and can be updated only from DRAFT to VALIDATED!")))
+            .andExpect(jsonPath("$.error", endsWith(
+                    "Trying to update status for ServicePointNumber 8500001 and current status: REVOKED")));
   }
 
   @Test
