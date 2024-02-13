@@ -28,7 +28,7 @@ public class ParkingLotCsvModel extends BasePrmCsvModel {
     @JsonProperty("DESCRIPTION")
     private String description;
 
-    @JsonProperty("DESCRIPTION")
+    @JsonProperty("INFO")
     private String info;
 
     @JsonProperty("PLACES_AVAILABLE")
