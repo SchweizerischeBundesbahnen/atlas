@@ -1,5 +1,6 @@
 package ch.sbb.atlas.imports.prm.contactpoint;
 
+import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import lombok.experimental.UtilityClass;
@@ -22,6 +23,7 @@ public class ContactPointCsvToModelMapper {
                 .creator(contactPointCsvModel.getAddedBy())
                 .editionDate(contactPointCsvModel.getModifiedAt())
                 .editor(contactPointCsvModel.getModifiedBy())
+                .type(contactPointCsvModel.getType())
                 .build();
     }
 
