@@ -113,9 +113,9 @@ public class ServicePointService {
     servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
   }
 
-  public ServicePointVersion saveWithoutValidationForImportOnly(ServicePointVersion servicePointVersion, Status status) {
+  public void saveWithoutValidationForImportOnly(ServicePointVersion servicePointVersion, Status status) {
     servicePointVersion.setStatus(status);
-    return servicePointVersionRepository.saveAndFlush(servicePointVersion);
+    servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
   @PreAuthorize(
