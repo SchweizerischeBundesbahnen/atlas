@@ -469,15 +469,12 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
   /**
    * Szenario 10: Haltestelle (stopPoint = true) Namensänderung + wieteres Attribut (Category)
    * <p>
-   * NEU:                                                                                             |________Haltestelle B
-   * Hausen + Category 3_______|
+   * NEU:                                                                                             |________Haltestelle B Hausen + Category 3_______|
    * <p>
-   * IST:       |________________Haltestelle A Hausen + Category 1________|________________Haltestelle A Hausen + Category
-   * 2___________________________|
+   * IST:       |________________Haltestelle A Hausen + Category 1________|________________Haltestelle A Hausen + Category 2___________________________|
    * Status:                         VALIDATED                                                      VALIDATED
    * <p>
-   * RESULTAT:  |_____________Haltestelle A Hausen + Category 1___________|_HS A Hausen + Category 2__|________Haltestelle B
-   * Hausen + Category 3 ______|
+   * RESULTAT:  |_____________Haltestelle A Hausen + Category 1___________|_HS A Hausen + Category 2__|________Haltestelle B Hausen + Category 3 ______|
    * Status:                           VALIDATED                                    VALIDATED                           DRAFT
    */
   @Test
@@ -536,16 +533,12 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
   /**
    * Szenario 11: Haltestelle (stopPoint = true) Namensänderung + wieteres Attribut (Koordinatensänderung)
    * <p>
-   * NEU:                                              |_______________________________Haltestelle B Hausen + Koordinaten 3
-   * _______________________________________________|
+   * NEU:                                              |_______________________________Haltestelle B Hausen + Koordinaten 3_______________________________________________|
    * <p>
-   * IST:       |_______________________Haltestelle A Hausen + Koordinaten 1__________________|_____________________Haltestelle A
-   * Hausen + Koordinaten 2___________________|
-   * Status:                                 VALIDATED
-   * VALIDATED
+   * IST:       |_______________________Haltestelle A Hausen + Koordinaten 1__________________|_____________________Haltestelle A Hausen + Koordinaten 2__________________|
+   * Status:                                 VALIDATED                                                                    VALIDATED
    * <p>
-   * RESULTAT:  |_Haltestelle A Hausen + Koordinaten 1_|_Haltestelle B Hausen + Koordinaten 3_|___________________Haltestelle A
-   * Hausen + Koordinaten 2_____________________|
+   * RESULTAT:  |_Haltestelle A Hausen + Koordinaten 1_|_Haltestelle B Hausen + Koordinaten 3_|___________________Haltestelle A Hausen + Koordinaten 2____________________|
    * Status:                  VALIDATED                               DRAFT                                                 DRAFT
    */
   @Test
@@ -602,16 +595,13 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
   /**
    * Szenario 12: Haltestelle (stopPoint = true) Verlängerung mit Namenwechseln
    * <p>
-   * NEU:                                                                                                      |__Verlängerung &
-   * Wechseln C Hausen__|
+   * NEU:                                                                                                      |__Verlängerung & Wechseln C Hausen__|
    * <p>
    * IST:       |______________Haltestelle A Hausen__________|__________________Haltestelle B Hausen___________|
    * Status:                      VALIDATED                                         VALIDATED
    * <p>
-   * RESULTAT:  |______________Haltestelle A Hausen__________|________________Haltestelle B Hausen______________|__Verlängerung &
-   * Wechseln C Hausen__|
-   * Status:                       VALIDATED                                         VALIDATED
-   * DRAFT
+   * RESULTAT:  |______________Haltestelle A Hausen__________|________________Haltestelle B Hausen______________|__Verlängerung & Wechseln C Hausen__|
+   * Status:                       VALIDATED                                         VALIDATED                            DRAFT
    */
   @Test
   void scenario12WhenTwoStopPointsWith2NamesAndStopPointNameChangeAndExtendThenStopPointWithNewNameDRAFT() throws Exception {
@@ -663,12 +653,10 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
    * <p>
    * NEU:       |__Verlängerung & Wechseln C Hausen__|
    * <p>*
-   * IST:                                            |_____________Haltestelle A Hausen___________|________________Haltestelle B
-   * Hausen_____________|
+   * IST:                                            |_____________Haltestelle A Hausen___________|________________Haltestelle B Hausen_____________|
    * Status:                                                        VALIDATED                                         VALIDATED
    * <p>
-   * RESULTAT:  |__Verlängerung & Wechseln C Hausen__|_____________Haltestelle A Hausen___________|_________________Haltestelle B
-   * Hausen_____________|
+   * RESULTAT:  |__Verlängerung & Wechseln C Hausen__|_____________Haltestelle A Hausen___________|_________________Haltestelle B Hausen_____________|
    * Status:                 DRAFT                                  VALIDATED                                          VALIDATED
    */
   @Test
@@ -719,14 +707,12 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
   /**
    * Szenario 14: Haltestelle (stopPoint = true) Verlängerung ohne Namenwechsel
    * <p>
-   * NEU:                                                                                                      |__Verlängerung B
-   * Hausen__|
+   * NEU:                                                                                                      |__Verlängerung B Hausen__|
    * <p>
    * IST:       |________________Haltestelle A Hausen________|_____________________Haltestelle B Hausen________|
    * Status:                       VALIDATED                                          VALIDATED
    * <p>
-   * RESULTAT:  |________________Haltestelle A Hausen________|_____________________Haltestelle B
-   * Hausen__________________________________|
+   * RESULTAT:  |________________Haltestelle A Hausen________|_____________________Haltestelle B Hausen__________________________________|
    * Status:                       VALIDATED                                          VALIDATED
    */
   @Test
@@ -776,12 +762,10 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
    * <p>
    * NEU:       |__Verlängerung A Hausen__|
    * <p>
-   * IST:                                 |_____________Haltestelle A Hausen___________|________________Haltestelle B
-   * Hausen_____________|
+   * IST:                                 |_____________Haltestelle A Hausen___________|________________Haltestelle B Hausen_____________|
    * Status:                                               VALIDATED                                         VALIDATED
    * <p>
-   * RESULTAT:  |______________________Haltestelle A Hausen____________________________|_________________Haltestelle B
-   * Hausen____________|
+   * RESULTAT:  |______________________Haltestelle A Hausen____________________________|_________________Haltestelle B Hausen____________|
    * Status:                              VALIDATED                                                           VALIDATED
    */
   @Test
@@ -937,14 +921,12 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
   /**
    * Szenario 18: Haltestelle (stopPoint = true) Wiedereinführung mit Namenwechsel, mit Lücke
    * <p>
-   * NEU:                                                                    |________________Wiedereinführung & Wechsel zu B
-   * Hausen____________|
+   * NEU:                                                                    |________________Wiedereinführung & Wechsel zu B Hausen____________|
    * <p>
    * IST:       |___________Haltestelle A Hausen_____________|
    * Status:                    VALIDATED
    * <p>
-   * RESULTAT:  |___________Haltestelle A Hausen_____________|               |________________________Haltestelle B
-   * Hausen______________________|
+   * RESULTAT:  |___________Haltestelle A Hausen_____________|               |________________________Haltestelle B Hausen______________________|
    * Status:                    VALIDATED                                                                  DRAFT
    */
   @Test
@@ -980,14 +962,12 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
   /**
    * Szenario 19: Haltestelle (stopPoint = true) Wiedereinführung ohne Namenwechsel, mit Lücke
    * <p>
-   * NEU:                                                                    |________________Wiedereinführung ohne
-   * Wechsel____________|
+   * NEU:                                                                    |________________Wiedereinführung ohne Wechsel____________|
    * <p>
    * IST:       |_____________Haltestelle A Hausen___________|
    * Status:                      VALIDATED
    * <p>
-   * RESULTAT:  |_____________Haltestelle A Hausen____________|              |__________________Haltestelle A
-   * Hausen___________________|
+   * RESULTAT:  |_____________Haltestelle A Hausen____________|              |__________________Haltestelle A Hausen___________________|
    * Status:                      VALIDATED                                                            DRAFT
    */
   @Test
