@@ -6,15 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @UtilityClass
-public class PlatformVersionSqlQueryUtil extends SqlQueryUtil{
+public class ContactPointVersionSqlQueryUtil extends SqlQueryUtil {
 
     private static final String SELECT_STATEMENT = """
-      SELECT pv.id, string_agg(pvio.info_opportunities, '|') as info_opportunities, pv.* 
-      FROM platform_version pv
-      LEFT JOIN platform_version_info_opportunities pvio on pv.id = pvio.platform_version_id
+      SELECT cpv.*
+      FROM contact_point_version cpv
       """;
-    private static final String WHERE_STATEMENT = "WHERE '%s' between pv.valid_from and pv.valid_to";
-    private static final String GROUP_BY_STATEMENT = "GROUP BY pv.id";
+    private static final String WHERE_STATEMENT = "WHERE '%s' between cpv.valid_from and cpv.valid_to";
+    private static final String GROUP_BY_STATEMENT = "GROUP BY cpv.id";
 
     public String getSqlQuery(PrmExportType exportType) {
         final String sqlQuery = buildSqlQuery(SELECT_STATEMENT, getWhereClause(exportType, WHERE_STATEMENT), GROUP_BY_STATEMENT);
@@ -22,4 +21,5 @@ public class PlatformVersionSqlQueryUtil extends SqlQueryUtil{
         log.info(sqlQuery);
         return sqlQuery;
     }
+
 }
