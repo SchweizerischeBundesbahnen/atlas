@@ -27,7 +27,7 @@ public class ServicePointStatusDecider {
         boolean isStopPoint = newServicePointVersion.isStopPoint();
         boolean isSwissCountryCode = Objects.equals(newServicePointVersion.getCountry().getUicCode(), Country.SWITZERLAND.getUicCode());
         boolean isSwissLocation = isSPLocatedInSwitzerland(newServicePointVersion);
-        boolean isValidityLongEnough = ChronoUnit.DAYS.between(newServicePointVersion.getValidFrom(), newServicePointVersion.getValidTo()) > VALIDITY_IN_DAYS;
+        boolean isValidityLongEnough = ChronoUnit.DAYS.between(newServicePointVersion.getValidFrom(), newServicePointVersion.getValidTo()) + 1 > VALIDITY_IN_DAYS;
 
         return isSwissCountryCode && isStopPoint && isSwissLocation && isValidityLongEnough ? Status.DRAFT : Status.VALIDATED;
     }
@@ -101,7 +101,6 @@ public class ServicePointStatusDecider {
                                                   Optional<ServicePointVersion> currentServicePointVersion,
                                                   String logMessage) {
         log.info(logMessage, currentServicePointVersion, newServicePointVersion);
-//        return Status.VALIDATED;
         return currentServicePointVersion.map(ServicePointVersion::getStatus).orElse(Status.VALIDATED);
     }
 
