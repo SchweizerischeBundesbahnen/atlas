@@ -101,7 +101,8 @@ public class ServicePointStatusDecider {
                                                   Optional<ServicePointVersion> currentServicePointVersion,
                                                   String logMessage) {
         log.info(logMessage, currentServicePointVersion, newServicePointVersion);
-        return Status.VALIDATED;
+//        return Status.VALIDATED;
+        return currentServicePointVersion.map(ServicePointVersion::getStatus).orElse(Status.VALIDATED);
     }
 
     private Optional<ServicePointVersion> findPreviousVersionOnTheSameTimeslot(ServicePointVersion newServicePointVersion,

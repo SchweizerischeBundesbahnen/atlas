@@ -20,8 +20,8 @@ public class ServicePointStatusChangeNotAllowedException extends AtlasException 
     public ErrorResponse getErrorResponse() {
         return ErrorResponse.builder()
                 .status(HttpStatus.PRECONDITION_FAILED.value())
-                .message("ServicePoint Status can be updated only from DRAFT to VALIDATED!")
-                .error("Trying to update status to VALIDATED for the ServicePointNumber " +
+                .message("ServicePoint Status cannot be changed for Status REVOKED and can be updated only from DRAFT to VALIDATED!")
+                .error("Trying to update status for ServicePointNumber " +
                         servicePointNumber.getNumber() + " and current status: " + servicePointStatus)
                 .build();
     }

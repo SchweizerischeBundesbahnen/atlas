@@ -1,16 +1,5 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.GeoReference;
@@ -28,15 +17,27 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
 
@@ -1373,6 +1374,61 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
                 .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
                 .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
                 .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())));
+    }
+
+    @Test
+    void whenStopPointWithStatusInReviewAndUpdateStopPointWithValidityChangeThenStopPointStaysInReview() throws Exception {
+        CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
+        stopPoint1.setDesignationOfficial("A Hausen");
+        ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+                stopPoint1);
+        Long id = servicePointVersionModel.getId();
+        Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
+        servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.IN_REVIEW));
+        servicePointVersion1.ifPresent(repository::save);
+
+        UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint3.setServicePointGeolocation(ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
+        stopPoint3.setValidTo(LocalDate.of(2016, 12, 31));
+        stopPoint3.setDesignationOfficial("A Hausen");
+
+        mvc.perform(put("/v1/service-points/" + id)
+                        .contentType(contentType)
+                        .content(mapper.writeValueAsString(stopPoint3)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
+                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2016-12-31")))
+                .andExpect(jsonPath("$[0].status", is(Status.IN_REVIEW.toString())));
+    }
+
+    @Test
+    void whenStopPointWithStatusWithdrawnAndUpdateStopPointWithDesignationLongChangeThenStopPointStaysInReview() throws Exception {
+        CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint1.setValidTo(LocalDate.of(2015, 12, 31));
+        stopPoint1.setDesignationOfficial("A Hausen");
+        ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+                stopPoint1);
+        Long id = servicePointVersionModel.getId();
+        Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
+        servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.WITHDRAWN));
+        servicePointVersion1.ifPresent(repository::save);
+
+        UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
+        stopPoint3.setServicePointGeolocation(ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
+        stopPoint3.setValidTo(LocalDate.of(2015, 12, 31));
+        stopPoint3.setDesignationOfficial("A Hausen");
+        stopPoint3.setDesignationLong("designation long modified");
+
+        mvc.perform(put("/v1/service-points/" + id)
+                        .contentType(contentType)
+                        .content(mapper.writeValueAsString(stopPoint3)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2010-12-11")))
+                .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2015-12-31")))
+                .andExpect(jsonPath("$[0].status", is(Status.WITHDRAWN.toString())));
     }
 
 }
