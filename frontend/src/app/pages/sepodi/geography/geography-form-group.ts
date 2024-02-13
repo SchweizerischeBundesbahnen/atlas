@@ -22,8 +22,7 @@ export class GeographyFormGroupBuilder {
         this.getValidatorsForCoordinates(geolocation?.spatialReference, 'NORTH'),
       ),
       height: new FormControl(geolocation?.height, [
-        AtlasCharsetsValidator.decimalWithDigits(4),
-        Validators.max(99999),
+        AtlasCharsetsValidator.integerWithFraction(5, 4),
       ]),
       spatialReference: new FormControl(geolocation?.spatialReference ?? SpatialReference.Lv95),
     });
