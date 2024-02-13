@@ -1,14 +1,6 @@
 package ch.sbb.importservice.recovery;
 
-import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_PARKING_LOT_CSV_JOB_NAME;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_PLATFORM_CSV_JOB_NAME;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_REFERENCE_POINT_CSV_JOB_NAME;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_STOP_POINT_CSV_JOB_NAME;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_TOILET_CSV_JOB_NAME;
-import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_TRAFFIC_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
@@ -95,6 +87,13 @@ class RecoveryJobsRunnerTest {
   private Job importParkingLotCsvJob;
 
   @Mock
+  @Qualifier(IMPORT_INFO_DESK_CSV_JOB_NAME)
+  private Job importInfoDeskCsvJob;
+
+  @Mock
+  @Qualifier(IMPORT_TICKET_COUNTER_CSV_JOB_NAME)
+  private Job importTicketCounterCsvJob;
+  @Mock
   private ImportProcessedItemRepository importProcessedItemRepository;
 
   @BeforeEach
@@ -102,7 +101,7 @@ class RecoveryJobsRunnerTest {
     MockitoAnnotations.openMocks(this);
     recoveryJobsRunner = new RecoveryJobsRunner(jobExplorer, jobLauncher, jobRepository, importProcessedItemRepository,
         importServicePointCsvJob, importLoadingPointCsvJob, importTrafficPointCsvJob, importStopPointCsvJob,
-        importPlatformCsvJob, importReferencePointCsvJob, importToiletPointCsvJob, importParkingLotCsvJob, fileService);
+        importPlatformCsvJob, importReferencePointCsvJob, importToiletPointCsvJob, importParkingLotCsvJob, importInfoDeskCsvJob, importTicketCounterCsvJob, fileService);
   }
 
   @Test
@@ -118,6 +117,8 @@ class RecoveryJobsRunnerTest {
     verify(jobLauncher, never()).run(eq(importReferencePointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importToiletPointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importParkingLotCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importInfoDeskCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importTicketCounterCsvJob), any());
     verify(fileService).clearDir();
   }
 
@@ -147,6 +148,8 @@ class RecoveryJobsRunnerTest {
     verify(jobLauncher, never()).run(eq(importReferencePointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importToiletPointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importParkingLotCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importInfoDeskCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importTicketCounterCsvJob), any());
     verify(fileService).clearDir();
   }
 
@@ -176,6 +179,8 @@ class RecoveryJobsRunnerTest {
     verify(jobLauncher, never()).run(eq(importReferencePointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importToiletPointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importParkingLotCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importInfoDeskCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importTicketCounterCsvJob), any());
     verify(fileService).clearDir();
   }
 
@@ -205,6 +210,8 @@ class RecoveryJobsRunnerTest {
     verify(jobLauncher, never()).run(eq(importReferencePointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importToiletPointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importParkingLotCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importInfoDeskCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importTicketCounterCsvJob), any());
     verify(fileService).clearDir();
   }
 
@@ -234,6 +241,8 @@ class RecoveryJobsRunnerTest {
     verify(jobLauncher, never()).run(eq(importReferencePointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importToiletPointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importParkingLotCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importInfoDeskCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importTicketCounterCsvJob), any());
     verify(fileService).clearDir();
   }
 
@@ -262,6 +271,8 @@ class RecoveryJobsRunnerTest {
     verify(jobLauncher, never()).run(eq(importReferencePointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importToiletPointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importParkingLotCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importInfoDeskCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importTicketCounterCsvJob), any());
     verify(fileService).clearDir();
   }
 
@@ -317,6 +328,8 @@ class RecoveryJobsRunnerTest {
     verify(jobLauncher, never()).run(eq(importStopPointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importPlatformCsvJob), any());
     verify(jobLauncher, never()).run(eq(importParkingLotCsvJob), any());
+      verify(jobLauncher, never()).run(eq(importInfoDeskCsvJob), any());
+      verify(jobLauncher, never()).run(eq(importTicketCounterCsvJob), any());
     verify(fileService).clearDir();
   }
 
@@ -344,6 +357,8 @@ class RecoveryJobsRunnerTest {
     verify(jobLauncher, never()).run(eq(importStopPointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importPlatformCsvJob), any());
     verify(jobLauncher, never()).run(eq(importToiletPointCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importInfoDeskCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importTicketCounterCsvJob), any());
     verify(fileService).clearDir();
   }
 
