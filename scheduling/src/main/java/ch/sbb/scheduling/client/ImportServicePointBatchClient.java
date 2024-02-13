@@ -26,4 +26,6 @@ public interface ImportServicePointBatchClient {
 
   @PostMapping(value = "/import-service-point/v1/import-prm/reference-point-batch", produces = MediaType.APPLICATION_JSON_VALUE)
   Response triggerImportReferencePointBatch();
+  @PostMapping(value = "/import-service-point/v1/import-prm/toilet-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response triggerImportToiletBatch();
 }
