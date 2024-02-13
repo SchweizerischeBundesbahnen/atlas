@@ -41,7 +41,7 @@ public class ImportToiletBatchController extends ImportPrmBatchBaseController {
       @ApiResponse(responseCode = "200"),
   })
   @Async
-  public void startStopPointImportBatch() {
+  public void startToiletImportBatch() {
     startBatch(importToiletCsvJob, IMPORT_TOILET_CSV_JOB_NAME);
   }
 
