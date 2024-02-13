@@ -1,8 +1,9 @@
-package ch.sbb.importservice.writer;
+package ch.sbb.importservice.writer.sepodi;
 
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointImportRequestModel;
+import ch.sbb.importservice.writer.BaseApiWriter;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;

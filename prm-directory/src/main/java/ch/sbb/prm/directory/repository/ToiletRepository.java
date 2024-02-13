@@ -20,4 +20,6 @@ public interface ToiletRepository extends JpaRepository<ToiletVersion, Long>,
   @Modifying(clearAutomatically = true)
   @Query("update toilet_version v set v.version = (v.version + 1) where v.sloid = :sloid")
   void incrementVersion(@Param("sloid") String sloid);
+
+  boolean existsBySloid(String sloid);
 }
