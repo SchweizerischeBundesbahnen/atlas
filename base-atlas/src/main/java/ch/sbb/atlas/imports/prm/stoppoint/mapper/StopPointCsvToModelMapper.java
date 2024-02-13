@@ -1,8 +1,9 @@
 package ch.sbb.atlas.imports.prm.stoppoint.mapper;
 
+
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
-import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
+import ch.sbb.atlas.imports.prm.ImportMapperUtil;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import lombok.experimental.UtilityClass;
@@ -20,20 +21,20 @@ public class StopPointCsvToModelMapper {
         .address(csvModel.getAddress())
         .zipCode(csvModel.getZipCode())
         .city(csvModel.getCity())
-        .alternativeTransport(mapStandardAttributeType(csvModel.getAlternativeTransport()))
+        .alternativeTransport(ImportMapperUtil.mapStandardAttributeType(csvModel.getAlternativeTransport()))
         .alternativeTransportCondition(csvModel.getAlternativeTransportCondition())
-        .assistanceAvailability(mapStandardAttributeType(csvModel.getAssistanceAvailability()))
+        .assistanceAvailability(ImportMapperUtil.mapStandardAttributeType(csvModel.getAssistanceAvailability()))
         .assistanceCondition(csvModel.getAssistanceCondition())
-        .assistanceService(mapStandardAttributeType(csvModel.getAssistanceService()))
-        .audioTicketMachine(mapStandardAttributeType(csvModel.getAudioTickMach()))
+        .assistanceService(ImportMapperUtil.mapStandardAttributeType(csvModel.getAssistanceService()))
+        .audioTicketMachine(ImportMapperUtil.mapStandardAttributeType(csvModel.getAudioTickMach()))
         .additionalInformation(csvModel.getCompInfos())
-        .dynamicAudioSystem(mapStandardAttributeType(csvModel.getDynamicAudioSys()))
-        .dynamicOpticSystem(mapStandardAttributeType(csvModel.getDynamicOpticSys()))
+        .dynamicAudioSystem(ImportMapperUtil.mapStandardAttributeType(csvModel.getDynamicAudioSys()))
+        .dynamicOpticSystem(ImportMapperUtil.mapStandardAttributeType(csvModel.getDynamicOpticSys()))
         .infoTicketMachine(csvModel.getInfoTickMach())
         .interoperable(mapInteroperable(csvModel.getInteroperable()))
         .url(csvModel.getUrl())
-        .visualInfo(mapStandardAttributeType(csvModel.getVisualInfos()))
-        .wheelchairTicketMachine(mapStandardAttributeType(csvModel.getWheelchairTickMach()))
+        .visualInfo(ImportMapperUtil.mapStandardAttributeType(csvModel.getVisualInfos()))
+        .wheelchairTicketMachine(ImportMapperUtil.mapStandardAttributeType(csvModel.getWheelchairTickMach()))
         .assistanceRequestFulfilled(mapBooleanOptionalAttributeType(csvModel.getAssistanceReqsFulfilled()))
         .ticketMachine(mapBooleanOptionalAttributeType(csvModel.getTicketMachine()))
         .creationDate(csvModel.getCreatedAt())
@@ -42,10 +43,6 @@ public class StopPointCsvToModelMapper {
         .editor(csvModel.getModifiedBy())
         .build();
 
-  }
-
-  StandardAttributeType mapStandardAttributeType(Integer standardAttributeTypeCode) {
-    return standardAttributeTypeCode != null ? StandardAttributeType.from(standardAttributeTypeCode) : null;
   }
 
   BooleanOptionalAttributeType mapBooleanOptionalAttributeType(Integer standardAttributeTypeCode) {

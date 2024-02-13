@@ -28,7 +28,7 @@ class ReferencePointRepositoryTest {
   }
 
   @Test
-  void shouldReturnStopPoints() {
+  void shouldReturnToilets() {
     //when
    List<ReferencePointVersion> result = referencePointRepository.findAll();
    //then
