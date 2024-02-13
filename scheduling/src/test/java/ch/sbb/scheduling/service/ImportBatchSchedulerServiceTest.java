@@ -1,26 +1,25 @@
 package ch.sbb.scheduling.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
+
 import ch.sbb.scheduling.client.ImportServicePointBatchClient;
 import ch.sbb.scheduling.exception.SchedulingExecutionException;
 import feign.Request;
 import feign.Request.HttpMethod;
 import feign.Response;
 import feign.Util;
+import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 
-import java.util.Collections;
+ class ImportBatchSchedulerServiceTest {
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
-
- class ImportServicePointBatchSchedulerServiceTest {
-
-  private ImportServicePointBatchSchedulerService importServicePointBatchSchedulerService;
+  private ImportBatchSchedulerService importBatchSchedulerService;
 
   @Mock
   private ImportServicePointBatchClient client;
@@ -28,7 +27,7 @@ import static org.mockito.Mockito.when;
   @BeforeEach
    void setUp() {
     MockitoAnnotations.openMocks(this);
-    importServicePointBatchSchedulerService = new ImportServicePointBatchSchedulerService(client);
+    importBatchSchedulerService = new ImportBatchSchedulerService(client);
   }
 
   @Test
@@ -44,7 +43,7 @@ import static org.mockito.Mockito.when;
     when(client.triggerImportServicePointBatch()).thenReturn(response);
 
     //when
-    Response result = importServicePointBatchSchedulerService.triggerImportServicePointBatch();
+    Response result = importBatchSchedulerService.triggerImportServicePointBatch();
 
     //then
     assertThat(result).isNotNull();
@@ -64,7 +63,7 @@ import static org.mockito.Mockito.when;
     when(client.triggerImportTrafficPointBatch()).thenReturn(response);
 
     //when
-    Response result = importServicePointBatchSchedulerService.triggerImportTrafficPointBatch();
+    Response result = importBatchSchedulerService.triggerImportTrafficPointBatch();
 
     //then
     assertThat(result).isNotNull();
@@ -85,7 +84,7 @@ import static org.mockito.Mockito.when;
 
     //when & then
     assertThrows(SchedulingExecutionException.class,
-        () -> importServicePointBatchSchedulerService.triggerImportServicePointBatch().close());
+        () -> importBatchSchedulerService.triggerImportServicePointBatch().close());
   }
 
   @Test
@@ -102,7 +101,7 @@ import static org.mockito.Mockito.when;
 
     //when & then
     assertThrows(SchedulingExecutionException.class,
-        () -> importServicePointBatchSchedulerService.triggerImportTrafficPointBatch().close());
+        () -> importBatchSchedulerService.triggerImportTrafficPointBatch().close());
   }
 
   @Test
@@ -118,7 +117,7 @@ import static org.mockito.Mockito.when;
    when(client.triggerImportLoadingPointBatch()).thenReturn(response);
 
    //when
-   Response result = importServicePointBatchSchedulerService.triggerImportLoadingPointBatch();
+   Response result = importBatchSchedulerService.triggerImportLoadingPointBatch();
 
    //then
    assertThat(result).isNotNull();
@@ -138,7 +137,7 @@ import static org.mockito.Mockito.when;
    when(client.triggerImportStopPointBatch()).thenReturn(response);
 
    //when
-   Response result = importServicePointBatchSchedulerService.triggerImportStopPointBatch();
+   Response result = importBatchSchedulerService.triggerImportStopPointBatch();
 
    //then
    assertThat(result).isNotNull();
@@ -158,7 +157,7 @@ import static org.mockito.Mockito.when;
    when(client.triggerImportPlatformBatch()).thenReturn(response);
 
    //when
-   Response result = importServicePointBatchSchedulerService.triggerImportPlatformBatch();
+   Response result = importBatchSchedulerService.triggerImportPlatformBatch();
 
    //then
    assertThat(result).isNotNull();
@@ -178,7 +177,27 @@ import static org.mockito.Mockito.when;
    when(client.triggerImportReferencePointBatch()).thenReturn(response);
 
    //when
-   Response result = importServicePointBatchSchedulerService.triggerImportReferencePointBatch();
+   Response result = importBatchSchedulerService.triggerImportReferencePointBatch();
+
+   //then
+   assertThat(result).isNotNull();
+   assertThat(result.status()).isEqualTo(200);
+  }
+
+  @Test
+  void shouldTriggerImportToiletBatchSuccessfully() {
+   //given
+   Response response = Response.builder()
+       .status(200)
+       .reason("OK")
+       .request(
+           Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+               null, Util.UTF_8, null))
+       .build();
+   when(client.triggerImportToiletBatch()).thenReturn(response);
+
+   //when
+   Response result = importBatchSchedulerService.triggerImportToiletBatch();
 
    //then
    assertThat(result).isNotNull();
