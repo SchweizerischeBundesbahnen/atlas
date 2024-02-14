@@ -1,6 +1,7 @@
 package ch.sbb.exportservice.controller;
 
 import ch.sbb.exportservice.service.ExportContactPointJobService;
+import ch.sbb.exportservice.service.ExportParkingLotJobService;
 import ch.sbb.exportservice.service.ExportPlatformJobService;
 import ch.sbb.exportservice.service.ExportReferencePointJobService;
 import ch.sbb.exportservice.service.ExportStopPointJobService;
@@ -30,6 +31,7 @@ public class ExportPrmBatchControllerApiV1 {
   private final ExportReferencePointJobService exportReferencePointJobService;
   private final ExportContactPointJobService exportContactPointJobService;
   private final ExportToiletJobService exportToiletJobService;
+  private final ExportParkingLotJobService exportParkingLotJobService;
 
 
   @PostMapping("stop-point-batch")
@@ -84,6 +86,17 @@ public class ExportPrmBatchControllerApiV1 {
   @Async
   public void startExportToiletBatch() {
     exportToiletJobService.startExportJobs();
+  }
+
+  @PostMapping("parking-lot-batch")
+  @ResponseStatus(HttpStatus.OK)
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200"),
+  })
+  @NewSpan
+  @Async
+  public void startExportParkingLotBatch() {
+    exportParkingLotJobService.startExportJobs();
   }
 
 }
