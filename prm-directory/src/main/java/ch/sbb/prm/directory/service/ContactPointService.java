@@ -48,7 +48,7 @@ public class ContactPointService extends PrmRelatableVersionableService<ContactP
   }
 
   @Override
-  protected ContactPointVersion save(ContactPointVersion version) {
+  public ContactPointVersion save(ContactPointVersion version) {
     return contactPointRepository.saveAndFlush(version);
   }
 
