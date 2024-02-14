@@ -75,7 +75,7 @@ class ImportContactPointBatchControllerTest extends BaseControllerApiTest {
     }
 
     @Test
-    void shouldReturnBadRequestWhenFileIsNotProvidedOnContactPointFileImport() throws Exception {
+    void shouldReturnBadRequestWhenFileIsNotProvidedOnInfoDeskFileImport() throws Exception {
         //given
         doNothing().when(mailProducerService).produceMailNotification(any());
 

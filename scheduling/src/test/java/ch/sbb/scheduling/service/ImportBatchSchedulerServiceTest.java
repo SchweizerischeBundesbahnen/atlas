@@ -225,7 +225,7 @@ import org.springframework.http.HttpStatus;
   }
 
   @Test
-  void shouldTriggerImportParkingLotBatchSuccessfully() {
+  void shouldTriggerImportContactPointBatchSuccessfully() {
    //given
    Response response = Response.builder()
            .status(200)
