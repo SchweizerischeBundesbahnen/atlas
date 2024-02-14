@@ -4,14 +4,13 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
@@ -63,6 +62,14 @@ public class ServicePointStatusDecider {
             // Create Scenario: Scenario when we create completely new StopPoint (1)
             return setStatusForStopPoint(newServicePointVersion, null, "Deciding on ServicePoint.Status when creating new StopPoint={}");
         } else {
+
+            if (isPreviousVersionDraft(currentServicePointVersion.get())
+                || isGeolocationChangedFromAbroadToSwitzerland(newServicePointVersion, currentServicePointVersion.get())
+                || isTimeslotChangeFromLessThan60DaysToMoreThan60Days(newServicePointVersion, currentServicePointVersion.get())
+                || isChangeFromServicePointToStopPoint(newServicePointVersion, currentServicePointVersion.get())) {
+                return setStatusForStopPoint(newServicePointVersion, currentServicePointVersion.get(),
+                    "Deciding on ServicePoint.Status when update scenario where newServicePointVersion={} and currentServicePointVersion={}.");
+            }
             // Update Scenario: extension of version with the same name (7, 14, 16, 17)
             if (isNameChanged(newServicePointVersion, currentServicePointVersion.get())
                     && isThereOverlappingVersionWithTheSameName(newServicePointVersion, servicePointVersions)) {
@@ -76,10 +83,10 @@ public class ServicePointStatusDecider {
             // Update Scenario: Scenario update when previous version is DRAFT (20). Scenario update from wrong Geolocation outside of Switzerland to geolocation inside of Switzerland (21)
             if (isNameChanged(newServicePointVersion, currentServicePointVersion.get()) && findPreviousVersionOnTheSameTimeslot(newServicePointVersion, servicePointVersions).isPresent()
                     || findIsolatedOrTouchingServicePointVersion(newServicePointVersion, servicePointVersions).isPresent()
-                    || isPreviousVersionDraft(currentServicePointVersion.get())
-                    || isGeolocationChangedFromAbroadToSwitzerland(newServicePointVersion, currentServicePointVersion.get())
-                    || isTimeslotChangeFromLessThan60DaysToMoreThan60Days(newServicePointVersion, currentServicePointVersion.get())
-                    || isChangeFromServicePointToStopPoint(newServicePointVersion, currentServicePointVersion.get())
+//                    || isPreviousVersionDraft(currentServicePointVersion.get())
+//                    || isGeolocationChangedFromAbroadToSwitzerland(newServicePointVersion, currentServicePointVersion.get())
+//                    || isTimeslotChangeFromLessThan60DaysToMoreThan60Days(newServicePointVersion, currentServicePointVersion.get())
+//                    || isChangeFromServicePointToStopPoint(newServicePointVersion, currentServicePointVersion.get())
                     || isVersionIsolated(newServicePointVersion, servicePointVersions)) {
                 return setStatusForStopPoint(newServicePointVersion, currentServicePointVersion.get(),
                         "Deciding on ServicePoint.Status when update scenario where newServicePointVersion={} and currentServicePointVersion={}.");
