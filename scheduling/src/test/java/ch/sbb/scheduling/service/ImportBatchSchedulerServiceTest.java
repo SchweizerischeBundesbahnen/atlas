@@ -237,7 +237,7 @@ import org.springframework.http.HttpStatus;
    when(client.triggerImportContactPointBatch()).thenReturn(response);
 
    //when
-   Response result = importServicePointBatchSchedulerService.triggerImportContactPointBatch();
+   Response result = importBatchSchedulerService.triggerImportContactPointBatch();
 
    //then
    assertThat(result).isNotNull();
