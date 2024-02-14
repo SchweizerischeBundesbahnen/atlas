@@ -91,5 +91,14 @@ public class ExportServicePointBatchSchedulerService extends BaseSchedulerServic
     return executeRequest(exportServicePointBatchClient::postTriggerExportContactPointBatch,
         "Trigger Export Contact Point Batch");
   }
+  @SpanTracing
+  @Retryable(label = "triggerExportToiletBatch", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
+  @Backoff(delay = 65000))
+  @Scheduled(cron = "${scheduler.export-service-point.toilet-trigger-batch.chron}", zone = "${scheduler.zone}")
+  @SchedulerLock(name = "triggerExportToiletBatch", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
+  public Response postTriggerExportToiletBatch() {
+    return executeRequest(exportServicePointBatchClient::postTriggerExportToiletBatch,
+        "Trigger Export Toilet Batch");
+  }
 
 }
