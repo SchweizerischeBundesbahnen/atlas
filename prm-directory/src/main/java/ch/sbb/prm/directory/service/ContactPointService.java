@@ -12,7 +12,9 @@ import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import java.util.List;
 import java.util.Optional;
 
+import ch.sbb.prm.directory.search.ContactPointSearchRestrictions;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,8 +50,12 @@ public class ContactPointService extends PrmRelatableVersionableService<ContactP
   }
 
   @Override
-  public ContactPointVersion save(ContactPointVersion version) {
+  protected ContactPointVersion save(ContactPointVersion version) {
     return contactPointRepository.saveAndFlush(version);
+  }
+
+  public Page<ContactPointVersion> findAll(ContactPointSearchRestrictions searchRestrictions) {
+    return contactPointRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
 
   @Override
@@ -77,5 +83,11 @@ public class ContactPointService extends PrmRelatableVersionableService<ContactP
 
   public Optional<ContactPointVersion> getContactPointVersionById(Long id) {
     return contactPointRepository.findById(id);
+  }
+
+  public ContactPointVersion createContactPointThroughImport(ContactPointVersion version) {
+    stopPointService.checkStopPointExists(version.getParentServicePointSloid());
+    locationService.allocateSloid(version, SloidType.CONTACT_POINT);
+    return contactPointRepository.saveAndFlush(version);
   }
 }

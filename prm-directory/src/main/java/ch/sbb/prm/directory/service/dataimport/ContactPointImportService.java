@@ -29,7 +29,8 @@ public class ContactPointImportService extends BasePrmImportService<ContactPoint
     private final VersionableService versionableService;
 
     @Override
-    protected void save(ContactPointVersion version) {contactPointService.save(version);
+    protected void save(ContactPointVersion version) {
+        contactPointRepository.saveAndFlush(version);
     }
 
     @Override
@@ -92,7 +93,7 @@ public class ContactPointImportService extends BasePrmImportService<ContactPoint
 
     private ItemImportResult createVersion(ContactPointVersion contactPointVersion) {
         try {
-            ContactPointVersion savedVersion = contactPointService.save(contactPointVersion);
+            ContactPointVersion savedVersion = contactPointService.createContactPointThroughImport(contactPointVersion);
             return buildSuccessImportResult(savedVersion);
         } catch (AtlasException exception) {
             log.error("[Contact Point Import]: Error during save", exception);
