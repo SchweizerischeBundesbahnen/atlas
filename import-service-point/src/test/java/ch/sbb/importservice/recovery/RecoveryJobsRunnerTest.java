@@ -2,6 +2,7 @@ package ch.sbb.importservice.recovery;
 
 import static ch.sbb.importservice.utils.JobDescriptionConstants.EXECUTION_TYPE_PARAMETER;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_LOADING_POINT_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_PARKING_LOT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_PLATFORM_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_REFERENCE_POINT_CSV_JOB_NAME;
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_SERVICE_POINT_CSV_JOB_NAME;
@@ -84,9 +85,14 @@ class RecoveryJobsRunnerTest {
   @Mock
   @Qualifier(IMPORT_REFERENCE_POINT_CSV_JOB_NAME)
   private Job importReferencePointCsvJob;
+
   @Mock
   @Qualifier(IMPORT_TOILET_CSV_JOB_NAME)
   private Job importToiletPointCsvJob;
+
+  @Mock
+  @Qualifier(IMPORT_PARKING_LOT_CSV_JOB_NAME)
+  private Job importParkingLotCsvJob;
 
   @Mock
   private ImportProcessedItemRepository importProcessedItemRepository;
@@ -96,7 +102,7 @@ class RecoveryJobsRunnerTest {
     MockitoAnnotations.openMocks(this);
     recoveryJobsRunner = new RecoveryJobsRunner(jobExplorer, jobLauncher, jobRepository, importProcessedItemRepository,
         importServicePointCsvJob, importLoadingPointCsvJob, importTrafficPointCsvJob, importStopPointCsvJob,
-        importPlatformCsvJob, importReferencePointCsvJob, importToiletPointCsvJob, fileService);
+        importPlatformCsvJob, importReferencePointCsvJob, importToiletPointCsvJob, importParkingLotCsvJob, fileService);
   }
 
   @Test
@@ -111,6 +117,7 @@ class RecoveryJobsRunnerTest {
     verify(jobLauncher, never()).run(eq(importPlatformCsvJob), any());
     verify(jobLauncher, never()).run(eq(importReferencePointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importToiletPointCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importParkingLotCsvJob), any());
     verify(fileService).clearDir();
   }
 
@@ -139,6 +146,7 @@ class RecoveryJobsRunnerTest {
     verify(jobLauncher, never()).run(eq(importPlatformCsvJob), any());
     verify(jobLauncher, never()).run(eq(importReferencePointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importToiletPointCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importParkingLotCsvJob), any());
     verify(fileService).clearDir();
   }
 
@@ -167,6 +175,7 @@ class RecoveryJobsRunnerTest {
     verify(jobLauncher, never()).run(eq(importPlatformCsvJob), any());
     verify(jobLauncher, never()).run(eq(importReferencePointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importToiletPointCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importParkingLotCsvJob), any());
     verify(fileService).clearDir();
   }
 
@@ -195,6 +204,7 @@ class RecoveryJobsRunnerTest {
     verify(jobLauncher, never()).run(eq(importPlatformCsvJob), any());
     verify(jobLauncher, never()).run(eq(importReferencePointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importToiletPointCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importParkingLotCsvJob), any());
     verify(fileService).clearDir();
   }
 
@@ -223,6 +233,7 @@ class RecoveryJobsRunnerTest {
     verify(jobLauncher, never()).run(eq(importPlatformCsvJob), any());
     verify(jobLauncher, never()).run(eq(importReferencePointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importToiletPointCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importParkingLotCsvJob), any());
     verify(fileService).clearDir();
   }
 
@@ -250,6 +261,7 @@ class RecoveryJobsRunnerTest {
     verify(jobLauncher, never()).run(eq(importStopPointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importReferencePointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importToiletPointCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importParkingLotCsvJob), any());
     verify(fileService).clearDir();
   }
 
@@ -277,6 +289,7 @@ class RecoveryJobsRunnerTest {
     verify(jobLauncher, never()).run(eq(importStopPointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importPlatformCsvJob), any());
     verify(jobLauncher, never()).run(eq(importToiletPointCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importParkingLotCsvJob), any());
     verify(fileService).clearDir();
   }
 
@@ -303,6 +316,34 @@ class RecoveryJobsRunnerTest {
     verify(jobLauncher, never()).run(eq(importTrafficPointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importStopPointCsvJob), any());
     verify(jobLauncher, never()).run(eq(importPlatformCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importParkingLotCsvJob), any());
+    verify(fileService).clearDir();
+  }
+
+  @Test
+  void shouldRecoverImportParkingLotCsvJob() throws Exception {
+    //given
+    StepExecution stepExecution = new StepExecution("myStep", jobExecution);
+    stepExecution.setId(132L);
+    Map<String, JobParameter<?>> parameters = new HashMap<>();
+    parameters.put(EXECUTION_TYPE_PARAMETER, new JobParameter<>("BATCH", String.class));
+    when(jobParameters.getParameters()).thenReturn(parameters);
+    when(jobExecution.getStatus()).thenReturn(BatchStatus.STARTING);
+    when(jobExecution.getJobParameters()).thenReturn(jobParameters);
+    when(jobExecution.getStepExecutions()).thenReturn(List.of(stepExecution));
+    when(jobExplorer.getLastJobInstance(IMPORT_PARKING_LOT_CSV_JOB_NAME)).thenReturn(jobInstance);
+    when(jobExplorer.getLastJobExecution(jobInstance)).thenReturn(jobExecution);
+    when(jobLauncher.run(any(), any())).thenReturn(jobExecution);
+    //when
+    recoveryJobsRunner.run(new DefaultApplicationArguments());
+    //then
+    verify(jobLauncher).run(eq(importParkingLotCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importServicePointCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importLoadingPointCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importTrafficPointCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importStopPointCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importPlatformCsvJob), any());
+    verify(jobLauncher, never()).run(eq(importToiletPointCsvJob), any());
     verify(fileService).clearDir();
   }
 
