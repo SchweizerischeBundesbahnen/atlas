@@ -19,13 +19,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 @BatchDataSourceConfigTest
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
- abstract class BasePrmSqlIntegrationTest {
+abstract class BasePrmSqlIntegrationTest {
 
   @Autowired
   @Qualifier("prmDataSource")
   protected DataSource prmDataSource;
 
-  protected void insertStopPoint(Integer number, String sloid , LocalDate validFrom, LocalDate validTo) throws SQLException {
+  protected void insertStopPoint(Integer number, String sloid, LocalDate validFrom, LocalDate validTo) throws SQLException {
     final String insertSql = """
         INSERT INTO stop_point_version (id, sloid, number, free_text, address, zip_code, city, alternative_transport,
                                               alternative_transport_condition, assistance_availability, assistance_condition,
@@ -39,7 +39,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
         'YES', 'NO', 'YES', '%s', '%s', '2022-02-19 09:54:38.000000', 'u123456',
         '2022-02-19 09:54:38.000000', 'u123456', 0);
         """
-        .formatted(sloid,number, formatDate(validFrom), formatDate(validTo));
+        .formatted(sloid, number, formatDate(validFrom), formatDate(validTo));
     execute(insertSql);
     insertMeansOfTransport();
   }
@@ -106,6 +106,19 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
         INSERT INTO toilet_version (id, sloid, number, parent_service_point_sloid, designation, additional_information, wheelchair_toilet,
                             valid_from, valid_to, creation_date, creator, edition_date, editor, version)
         VALUES (%d, '%s', %d, '%s', 'Haupteingang', 'Kann voll genutzt werden zum rein und raus gehen', 'TO_BE_COMPLETED', '%s', '%s', '2022-02-19 09:54:38.000000', 'u123456',
+        """
+        .formatted(id, sloid, parentServicePointNumber.getNumber(), ServicePointNumber.calculateSloid(parentServicePointNumber),
+            formatDate(validFrom),
+            formatDate(validTo));
+    execute(insertSql);
+  }
+
+  protected void insertParkingLot(int id, String sloid, ServicePointNumber parentServicePointNumber,
+      LocalDate validFrom, LocalDate validTo) throws SQLException {
+    final String insertSql = """
+        INSERT INTO parking_lot_version (id, sloid, number, parent_service_point_sloid, designation, additional_information,
+        places_available, prm_places_available, valid_from, valid_to, creation_date, creator, edition_date, editor, version)
+        VALUES (%d, '%s', %d, '%s', 'Hauptparkplatz', 'Viel Platz', 'YES', 'NO', '%s', '%s', '2022-02-19 09:54:38.000000', 'u123456',
         '2022-02-19 09:54:38.000000', 'u123456', 0);
         """
         .formatted(id, sloid, parentServicePointNumber.getNumber(), ServicePointNumber.calculateSloid(parentServicePointNumber),

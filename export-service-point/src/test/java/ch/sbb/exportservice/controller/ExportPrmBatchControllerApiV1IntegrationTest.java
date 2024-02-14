@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.exportservice.service.ExportContactPointJobService;
+import ch.sbb.exportservice.service.ExportParkingLotJobService;
 import ch.sbb.exportservice.service.ExportPlatformJobService;
 import ch.sbb.exportservice.service.ExportReferencePointJobService;
 import ch.sbb.exportservice.service.ExportStopPointJobService;
@@ -29,6 +30,9 @@ class ExportPrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTest
 
   @MockBean
   private ExportToiletJobService exportToiletJobService;
+
+  @MockBean
+  private ExportParkingLotJobService exportParkingLotJobService;
 
   @Test
   void shouldPostStopPointExportBatchSuccessfully() throws Exception {
@@ -80,7 +84,17 @@ class ExportPrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTest
     doNothing().when(exportToiletJobService).startExportJobs();
 
     //when & then
-    mvc.perform(post("/v1/export/prm/toilet-batch")
+    mvc.perform(post("/v1/export/prm/toilet-batch").contentType(contentType))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void shouldPostParkingLotExportBatchSuccessfully() throws Exception {
+    //given
+    doNothing().when(exportParkingLotJobService).startExportJobs();
+
+    //when & then
+    mvc.perform(post("/v1/export/prm/parking-lot-batch")
             .contentType(contentType))
         .andExpect(status().isOk());
   }
