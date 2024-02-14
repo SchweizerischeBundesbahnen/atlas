@@ -101,6 +101,8 @@ public class RecoveryJobsRunner implements ApplicationRunner {
     recoverJob(IMPORT_REFERENCE_POINT_CSV_JOB_NAME);
     recoverJob(IMPORT_TOILET_CSV_JOB_NAME);
     recoverJob(IMPORT_PARKING_LOT_CSV_JOB_NAME);
+    recoverJob(IMPORT_INFO_DESK_CSV_JOB_NAME);
+    recoverJob(IMPORT_TICKET_COUNTER_CSV_JOB_NAME);
   }
 
   void recoverJob(String jobName)
