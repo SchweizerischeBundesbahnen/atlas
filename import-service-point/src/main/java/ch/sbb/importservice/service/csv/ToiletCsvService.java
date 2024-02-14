@@ -42,7 +42,7 @@ public class ToiletCsvService extends PrmCsvService<ToiletCsvModel> {
 
   @Override
   protected String getImportCsvJobName() {
-    return JobDescriptionConstants.IMPORT_PLATFORM_CSV_JOB_NAME;
+    return JobDescriptionConstants.IMPORT_TOILET_CSV_JOB_NAME;
   }
 
   @Override
@@ -84,7 +84,7 @@ public class ToiletCsvService extends PrmCsvService<ToiletCsvModel> {
           mergedSloids.addAll(prmCsvMergeResult.getMergedSloids());
         });
     log.info("Total merged sequential Toilet versions {}", mergedSloids.size());
-    log.info("Merged Platform Sloids {}", mergedSloids);
+    log.info("Merged Toilet Sloids {}", mergedSloids);
   }
 
   private void mergeEqualsVersions(List<ToiletCsvModelContainer> csvModelContainers) {
@@ -98,8 +98,8 @@ public class ToiletCsvService extends PrmCsvService<ToiletCsvModel> {
           mergedSloids.addAll(prmCsvMergeResult.getMergedSloids());
         });
 
-    log.info("Total Merged equals Platform versions {}", mergedSloids.size());
-    log.info("Merged equals Platform Sloids {}", mergedSloids);
+    log.info("Total Merged equals Toilet versions {}", mergedSloids.size());
+    log.info("Merged equals Toilet Sloids {}", mergedSloids);
   }
 
 }
