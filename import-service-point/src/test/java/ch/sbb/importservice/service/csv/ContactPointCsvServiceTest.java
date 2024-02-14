@@ -30,14 +30,21 @@ public class ContactPointCsvServiceTest {
     }
 
     @Test
-    void shouldHaveCorrectFileName() {
+    void shouldHaveCorrectFileNameInfoDesk() {
         contactPointCsvService.setFilename("PRM_INFO_DESKS");
         CsvFileNameModel csvFileName = contactPointCsvService.csvFileNameModel();
         assertThat(csvFileName.getFileName()).startsWith("PRM_INFO_DESKS");
     }
 
     @Test
-    void shouldMergeSequentialEqualsInfoDesks() {
+    void shouldHaveCorrectFileNameTicketCounter() {
+        contactPointCsvService.setFilename("PRM_TICKET_COUNTER");
+        CsvFileNameModel csvFileName = contactPointCsvService.csvFileNameModel();
+        assertThat(csvFileName.getFileName()).startsWith("PRM_TICKET_COUNTER");
+    }
+
+    @Test
+    void shouldMergeSequentialEqualsContactPoints() {
         // given
         ContactPointCsvModel contactPointCsvModel1 = ContactPointCsvTestData.getCsvModel();
         ContactPointCsvModel contactPointCsvModel2 = ContactPointCsvTestData.getCsvModel();
@@ -56,7 +63,7 @@ public class ContactPointCsvServiceTest {
     }
 
     @Test
-    void shouldMergeEqualsParkingLots() {
+    void shouldMergeEqualsContactPoints() {
         // given
         ContactPointCsvModel contactPointCsvModel1 = ContactPointCsvTestData.getCsvModel();
         ContactPointCsvModel contactPointCsvModel2 = ContactPointCsvTestData.getCsvModel();
@@ -73,7 +80,7 @@ public class ContactPointCsvServiceTest {
     }
 
     @Test
-    void shouldReturnOnlyActiveParkingLots() {
+    void shouldReturnOnlyActiveContactPoint() {
         // given
         ContactPointCsvModel contactPointCsvModel1 = ContactPointCsvTestData.getCsvModel();
         contactPointCsvModel1.setStatus(1);
