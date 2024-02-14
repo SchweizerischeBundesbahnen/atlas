@@ -1,5 +1,7 @@
 package ch.sbb.importservice.migration.referencepoint;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.export.model.prm.ReferencePointVersionCsvModel;
 import ch.sbb.atlas.imports.prm.referencepoint.ReferencePointCsvModel;
 import ch.sbb.atlas.imports.prm.referencepoint.ReferencePointCsvModelContainer;
@@ -7,6 +9,12 @@ import ch.sbb.atlas.imports.util.CsvReader;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.service.csv.ReferencePointCsvService;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -14,19 +22,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ReferencePointMigrationAcutalDateIntegrationTest {
+public class ReferencePointMigrationActualDateIntegrationTest {
 
     private static final String DIDOK_REFERENCE_POINT_CSV_FILE = "PRM_REFERENCE_POINTS_20240205013249.csv";
     private static final String ATLAS_REFERENCE_POINT_CSV_FILE = "actual-date-reference-point-2024-02-05.csv";
@@ -38,7 +37,7 @@ public class ReferencePointMigrationAcutalDateIntegrationTest {
     private final ReferencePointCsvService referencePointCsvService;
 
     @Autowired
-    public ReferencePointMigrationAcutalDateIntegrationTest(ReferencePointCsvService referencePointCsvService) {
+    public ReferencePointMigrationActualDateIntegrationTest(ReferencePointCsvService referencePointCsvService) {
         this.referencePointCsvService = referencePointCsvService;
     }
 
