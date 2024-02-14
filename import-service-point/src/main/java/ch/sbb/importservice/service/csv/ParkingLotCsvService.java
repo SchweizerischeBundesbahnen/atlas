@@ -50,15 +50,15 @@ public class ParkingLotCsvService extends PrmCsvService<ParkingLotCsvModel> {
     }
 
     public List<ParkingLotCsvModelContainer> mapToParkingLotCsvModelContainers(List<ParkingLotCsvModel> parkingLotCsvModels) {
-        Map<String, List<ParkingLotCsvModel>> groupedReferencePoints = filterForActive(parkingLotCsvModels).stream()
+        Map<String, List<ParkingLotCsvModel>> groupedParkingLots = filterForActive(parkingLotCsvModels).stream()
                 .collect(Collectors.groupingBy(ParkingLotCsvModel::getSloid));
         List<ParkingLotCsvModelContainer> result = new ArrayList<>(
-                groupedReferencePoints.entrySet().stream().map(toContainer()).toList());
-        mergeReferencePoints(result);
+                groupedParkingLots.entrySet().stream().map(toContainer()).toList());
+        mergeParkingLots(result);
         return result;
     }
 
-    private void mergeReferencePoints(List<ParkingLotCsvModelContainer> parkingLotCsvModelContainers) {
+    private void mergeParkingLots(List<ParkingLotCsvModelContainer> parkingLotCsvModelContainers) {
         mergeSequentialEqualsVersions(parkingLotCsvModelContainers);
         mergeEqualsVersions(parkingLotCsvModelContainers);
     }
@@ -81,11 +81,11 @@ public class ParkingLotCsvService extends PrmCsvService<ParkingLotCsvModel> {
                     mergedSloids.addAll(prmCsvMergeResult.getMergedSloids());
                 });
         log.info("Total merged sequential ParkingLot versions {}", mergedSloids.size());
-        log.info("Merged ReferencePoint Sloids {}", mergedSloids);
+        log.info("Merged ParkingLots Sloids {}", mergedSloids);
     }
 
     private void mergeEqualsVersions(List<ParkingLotCsvModelContainer> csvModelContainers) {
-        log.info("Starting checking equals ReferencePoint versions...");
+        log.info("Starting checking equals ParkingLots versions...");
 
         List<String> mergedSloids = new ArrayList<>();
         csvModelContainers.forEach(
@@ -95,8 +95,8 @@ public class ParkingLotCsvService extends PrmCsvService<ParkingLotCsvModel> {
                     mergedSloids.addAll(prmCsvMergeResult.getMergedSloids());
                 });
 
-        log.info("Total Merged equals ReferencePoint versions {}", mergedSloids.size());
-        log.info("Merged equals ReferencePoint Sloids {}", mergedSloids);
+        log.info("Total Merged equals ParkingLots versions {}", mergedSloids.size());
+        log.info("Merged equals ParkingLots Sloids {}", mergedSloids);
     }
 
 }
