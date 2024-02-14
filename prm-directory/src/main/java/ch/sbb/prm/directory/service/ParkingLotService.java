@@ -78,4 +78,15 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
   public Optional<ParkingLotVersion> getPlatformVersionById(Long id) {
     return parkingLotRepository.findById(id);
   }
+
+  public void saveForImport(ParkingLotVersion version) {
+    stopPointService.checkStopPointExists(version.getParentServicePointSloid());
+    parkingLotRepository.saveAndFlush(version);
+  }
+
+  public ParkingLotVersion createParkingLotThroughImport(ParkingLotVersion version) {
+    stopPointService.checkStopPointExists(version.getParentServicePointSloid());
+    locationService.allocateSloid(version, SloidType.PARKING_LOT);
+    return parkingLotRepository.saveAndFlush(version);
+  }
 }
