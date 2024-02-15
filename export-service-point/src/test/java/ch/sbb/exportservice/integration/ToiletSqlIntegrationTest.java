@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 public class ToiletSqlIntegrationTest extends BasePrmSqlIntegrationTest {
 
     @Test
-    void shouldReturnFullPlatforms() throws SQLException {
+    void shouldReturnFullToilets() throws SQLException {
         //given
 
         insertToilet(1, "ch:1:sloid:7000:1", ServicePointNumber.ofNumberWithoutCheckDigit(8507000), LocalDate.of(2000, 1, 1),
@@ -36,7 +36,7 @@ public class ToiletSqlIntegrationTest extends BasePrmSqlIntegrationTest {
     }
 
     @Test
-    void shouldReturnActualPlatforms() throws SQLException {
+    void shouldReturnActualToilets() throws SQLException {
         //given
         insertToilet(2, "ch:1:sloid:7001:1", ServicePointNumber.ofNumberWithoutCheckDigit(8507000), LocalDate.now(),
                 LocalDate.now());
@@ -52,7 +52,7 @@ public class ToiletSqlIntegrationTest extends BasePrmSqlIntegrationTest {
     }
 
     @Test
-    void shouldReturnTimetableFuturePlatforms() throws SQLException {
+    void shouldReturnTimetableFutureToilets() throws SQLException {
         //given
         LocalDate actualTimetableYearChangeDate = FutureTimetableHelper.getTimetableYearChangeDateToExportData(LocalDate.now());
         insertToilet(1, "ch:1:sloid:7000:1", ServicePointNumber.ofNumberWithoutCheckDigit(8507000),
