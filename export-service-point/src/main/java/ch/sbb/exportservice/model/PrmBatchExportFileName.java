@@ -10,12 +10,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum PrmBatchExportFileName implements ExportFileName {
 
-  STOP_POINT_VERSION("stop_point", "stop_point" ),
+  STOP_POINT_VERSION("stop_point", "stop_point"),
   PLATFORM_VERSION("platform", "platform"),
-  REFERENCE_POINT_VERSION("reference_point", "reference-point" ),
-  CONTACT_POINT_VERSION("contact_point", "contact_point" ),
-  TOILET_VERSION("toilet", "toilet" ),
-  PARKING_LOT_VERSION("parking_lot", "parking_lot" )
+  REFERENCE_POINT_VERSION("reference_point", "reference_point"),
+  CONTACT_POINT_VERSION("contact_point", "contact_point"),
+  TOILET_VERSION("toilet", "toilet"),
+  PARKING_LOT_VERSION("parking_lot", "parking_lot"),
 
   ;
 
