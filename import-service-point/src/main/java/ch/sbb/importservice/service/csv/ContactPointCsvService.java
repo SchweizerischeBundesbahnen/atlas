@@ -20,8 +20,8 @@ import static ch.sbb.importservice.service.csv.CsvFileNameModel.SERVICEPOINT_DID
 @Service
 @Slf4j
 public class ContactPointCsvService extends PrmCsvService<ContactPointCsvModel>{
-    public String filename;
-    public String jobName;
+    private String filename;
+    private String jobName;
 
     protected ContactPointCsvService(FileHelperService fileHelperService, JobHelperService jobHelperService) {
         super(fileHelperService, jobHelperService);
