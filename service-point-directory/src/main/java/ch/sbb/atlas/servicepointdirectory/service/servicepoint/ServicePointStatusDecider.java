@@ -64,8 +64,8 @@ public class ServicePointStatusDecider {
         } else {
 
             if (isPreviousVersionDraft(currentServicePointVersion.get())
-                || isGeolocationChangedFromAbroadToSwitzerland(newServicePointVersion, currentServicePointVersion.get())
-                || isTimeslotChangeFromLessThan60DaysToMoreThan60Days(newServicePointVersion, currentServicePointVersion.get())
+                || isGeolocationChangedFromNoGeoOrAbroadGeoToSwitzerlandGeo(newServicePointVersion, currentServicePointVersion.get())
+                || isTimeslotChangeFromLessOrEqualThan60DaysToMoreThan60Days(newServicePointVersion, currentServicePointVersion.get())
                 || isChangeFromServicePointToStopPoint(newServicePointVersion, currentServicePointVersion.get())) {
                 return setStatusForStopPoint(newServicePointVersion, currentServicePointVersion.get(),
                     "Deciding on ServicePoint.Status when update scenario where newServicePointVersion={} and currentServicePointVersion={}.");
@@ -73,7 +73,7 @@ public class ServicePointStatusDecider {
             // Update Scenario: extension of version with the same name (7, 14, 16, 17)
             if (isNameChanged(newServicePointVersion, currentServicePointVersion.get())
                     && isThereOverlappingVersionWithTheSameName(newServicePointVersion, servicePointVersions)) {
-                return setStatusPerDefaultAsValidated(newServicePointVersion, currentServicePointVersion,
+                return setStatusAsItWasInPreviousVersionOrPerDefaultToValidated(newServicePointVersion, currentServicePointVersion,
                         "Deciding on ServicePoint.Status when updating where, newServicePointVersion={}, and currentServicePointVersion={}. " +
                                          "DesignationOfficial name is changed, but there are exisiting touching versions with the same name");
             }
@@ -93,7 +93,7 @@ public class ServicePointStatusDecider {
             }
         }
         // (15)
-        return setStatusPerDefaultAsValidated(newServicePointVersion, currentServicePointVersion,
+        return setStatusAsItWasInPreviousVersionOrPerDefaultToValidated(newServicePointVersion, currentServicePointVersion,
                 "Deciding on ServicePoint.Status when updating where, newServicePointVersion={}, and currentServicePointVersion={}. Status will be set to Validated per default.");
     }
 
@@ -104,7 +104,7 @@ public class ServicePointStatusDecider {
         return calculateStatusAccordingToStatusDecisionAlgorithm(newServicePointVersion);
     }
 
-    private Status setStatusPerDefaultAsValidated(ServicePointVersion newServicePointVersion,
+    private Status setStatusAsItWasInPreviousVersionOrPerDefaultToValidated(ServicePointVersion newServicePointVersion,
                                                   Optional<ServicePointVersion> currentServicePointVersion,
                                                   String logMessage) {
         log.info(logMessage, currentServicePointVersion, newServicePointVersion);
@@ -117,7 +117,8 @@ public class ServicePointStatusDecider {
                 .stream()
                 .filter(currentServicePointVersion -> (!currentServicePointVersion.getValidTo().isBefore(newServicePointVersion.getValidFrom())
                         && !currentServicePointVersion.getValidFrom().isAfter(newServicePointVersion.getValidFrom()))
-                        && (isNameChanged(newServicePointVersion, currentServicePointVersion)))
+                        && (isNameChanged(newServicePointVersion, currentServicePointVersion))
+                )
                 .findFirst();
     }
 
@@ -141,14 +142,14 @@ public class ServicePointStatusDecider {
         return currentServicePointVersion.getStatus() == Status.DRAFT;
     }
 
-    private boolean isTimeslotChangeFromLessThan60DaysToMoreThan60Days(ServicePointVersion newServicePointVersion,
+    private boolean isTimeslotChangeFromLessOrEqualThan60DaysToMoreThan60Days(ServicePointVersion newServicePointVersion,
                                                                 ServicePointVersion currentServicePointVersion) {
         long diffForCurrentVersion = ChronoUnit.DAYS.between(currentServicePointVersion.getValidFrom(), currentServicePointVersion.getValidTo());
         long diffForNewVersion = ChronoUnit.DAYS.between(newServicePointVersion.getValidFrom(), newServicePointVersion.getValidTo());
         return diffForCurrentVersion <= VALIDITY_IN_DAYS && diffForNewVersion > VALIDITY_IN_DAYS;
     }
 
-    private boolean isGeolocationChangedFromAbroadToSwitzerland(ServicePointVersion newServicePointVersion,
+    private boolean isGeolocationChangedFromNoGeoOrAbroadGeoToSwitzerlandGeo(ServicePointVersion newServicePointVersion,
                                                                 ServicePointVersion currentServicePointVersion) {
         if (isGeolocationOrCountryNull(newServicePointVersion)) {
             return false;
