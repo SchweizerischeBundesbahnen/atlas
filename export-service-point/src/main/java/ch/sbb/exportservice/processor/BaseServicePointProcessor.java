@@ -1,6 +1,7 @@
 package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.servicepoint.Canton;
 import ch.sbb.atlas.api.servicepoint.DistrictModel;
 import ch.sbb.atlas.api.servicepoint.GeolocationBaseReadModel;
@@ -102,6 +103,10 @@ public abstract class BaseServicePointProcessor {
       }
     });
     return coordinates;
+  }
+
+  protected String mapStandardAttributeType(StandardAttributeType attributeType){
+    return attributeType != null ? attributeType.toString() : null;
   }
 
 }
