@@ -4,6 +4,8 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_CONTACT_
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_CONTACT_POINT_JSON_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LOADING_POINT_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LOADING_POINT_JSON_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PARKING_LOT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PARKING_LOT_JSON_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PLATFORM_CSV_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PLATFORM_JSON_JOB_NAME;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_REFERENCE_POINT_CSV_JOB_NAME;
@@ -22,6 +24,7 @@ import ch.sbb.atlas.batch.exception.JobExecutionException;
 import ch.sbb.exportservice.service.BaseExportJobService;
 import ch.sbb.exportservice.service.ExportContactPointJobService;
 import ch.sbb.exportservice.service.ExportLoadingPointJobService;
+import ch.sbb.exportservice.service.ExportParkingLotJobService;
 import ch.sbb.exportservice.service.ExportPlatformJobService;
 import ch.sbb.exportservice.service.ExportReferencePointJobService;
 import ch.sbb.exportservice.service.ExportServicePointJobService;
@@ -68,6 +71,8 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
       EXPORT_CONTACT_POINT_JSON_JOB_NAME);
   private static final List<String> EXPORT_TOILET_JOB_NAME = List.of(EXPORT_TOILET_CSV_JOB_NAME,
       EXPORT_TOILET_JSON_JOB_NAME);
+  private static final List<String> EXPORT_PARKING_LOT_JOB_NAME = List.of(EXPORT_PARKING_LOT_CSV_JOB_NAME,
+      EXPORT_PARKING_LOT_JSON_JOB_NAME);
   static final int TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE = 16;
   public static final String ATLAS_BATCH_STATUS_RECOVERED = "RECOVERED";
 
@@ -83,6 +88,7 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
   private final ExportReferencePointJobService exportReferencePointJobService;
   private final ExportContactPointJobService exportContactPointJobService;
   private final ExportToiletJobService exportToiletJobService;
+  private final ExportParkingLotJobService exportParkingLotJobService;
 
   @Override
   @Async
@@ -97,6 +103,7 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
     checkExportReferencePointJobToRecover();
     checkExportContactPointJobToRecover();
     checkExportToiletJobToRecover();
+    checkExportParkingLotJobToRecover();
   }
 
   private boolean checkIfHasJobsToRecover(List<String> exportJobsName) {
@@ -182,6 +189,10 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
 
   private void checkExportToiletJobToRecover() {
     checkJobToRecover(exportToiletJobService, EXPORT_TOILET_JOB_NAME);
+  }
+
+  private void checkExportParkingLotJobToRecover() {
+    checkJobToRecover(exportParkingLotJobService, EXPORT_PARKING_LOT_JOB_NAME);
   }
 
   private void checkJobToRecover(BaseExportJobService jobService, List<String> jobsName) {
