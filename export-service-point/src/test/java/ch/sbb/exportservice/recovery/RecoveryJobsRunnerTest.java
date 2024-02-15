@@ -18,6 +18,7 @@ import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.exportservice.model.SePoDiExportType;
 import ch.sbb.exportservice.service.ExportContactPointJobService;
 import ch.sbb.exportservice.service.ExportLoadingPointJobService;
+import ch.sbb.exportservice.service.ExportParkingLotJobService;
 import ch.sbb.exportservice.service.ExportPlatformJobService;
 import ch.sbb.exportservice.service.ExportReferencePointJobService;
 import ch.sbb.exportservice.service.ExportServicePointJobService;
@@ -85,6 +86,9 @@ class RecoveryJobsRunnerTest {
   private ExportToiletJobService exportToiletJobService;
 
   @Mock
+  private ExportParkingLotJobService exportParkingLotJobService;
+
+  @Mock
   private JobInstance jobInstance;
 
   @Mock
@@ -104,7 +108,8 @@ class RecoveryJobsRunnerTest {
     MockitoAnnotations.openMocks(this);
     recoveryJobsRunner = new RecoveryJobsRunner(jobExplorer, fileService, jobRepository,
             exportServicePointJobService, exportTrafficPointElementJobService, exportLoadingPointJobService,
-            exportStopPointJobService, exportPlatformJobService, exportReferencePointJobService, exportContactPointJobService, exportToiletJobService);
+            exportStopPointJobService, exportPlatformJobService, exportReferencePointJobService, exportContactPointJobService,
+        exportToiletJobService ,exportParkingLotJobService);
   }
 
   @Test
