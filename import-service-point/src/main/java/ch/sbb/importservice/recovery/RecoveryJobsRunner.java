@@ -40,6 +40,8 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import static ch.sbb.importservice.utils.JobDescriptionConstants.*;
+
 @Component
 @AllArgsConstructor
 @Slf4j
@@ -79,6 +81,12 @@ public class RecoveryJobsRunner implements ApplicationRunner {
   @Qualifier(IMPORT_PARKING_LOT_CSV_JOB_NAME)
   private final Job importParkingLotCsvJob;
 
+  @Qualifier(IMPORT_INFO_DESK_CSV_JOB_NAME)
+  private final Job importInfoDeskCsvJob;
+
+  @Qualifier(IMPORT_TICKET_COUNTER_CSV_JOB_NAME)
+  private final Job importTicketCounterCsvJob;
+
   private final FileService fileService;
 
   @Override
@@ -93,6 +101,8 @@ public class RecoveryJobsRunner implements ApplicationRunner {
     recoverJob(IMPORT_REFERENCE_POINT_CSV_JOB_NAME);
     recoverJob(IMPORT_TOILET_CSV_JOB_NAME);
     recoverJob(IMPORT_PARKING_LOT_CSV_JOB_NAME);
+    recoverJob(IMPORT_INFO_DESK_CSV_JOB_NAME);
+    recoverJob(IMPORT_TICKET_COUNTER_CSV_JOB_NAME);
   }
 
   void recoverJob(String jobName)
@@ -177,6 +187,12 @@ public class RecoveryJobsRunner implements ApplicationRunner {
     }
     if (IMPORT_PARKING_LOT_CSV_JOB_NAME.equals(jobName)) {
       return importParkingLotCsvJob;
+    }
+    if (IMPORT_INFO_DESK_CSV_JOB_NAME.equals(jobName)) {
+      return importInfoDeskCsvJob;
+    }
+    if (IMPORT_TICKET_COUNTER_CSV_JOB_NAME.equals(jobName)) {
+      return importTicketCounterCsvJob;
     }
     throw new IllegalStateException("No job found with name: " + jobName);
   }
