@@ -208,4 +208,24 @@ import org.springframework.http.HttpStatus;
     });
   }
 
+  @Test
+  void shouldTriggerExportParkingLotBatchSuccessfully() {
+   //given
+   Response response = Response.builder()
+       .status(200)
+       .reason("OK")
+       .request(
+           Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+               null, Util.UTF_8, null))
+       .build();
+   when(client.postTriggerExportParkingLotBatch()).thenReturn(response);
+
+   //when
+   Response result = exportServicePointBatchSchedulerService.postTriggerExportParkingLotBatch();
+
+   //then
+   assertThat(result).isNotNull();
+   assertThat(result.status()).isEqualTo(200);
+  }
+
 }
