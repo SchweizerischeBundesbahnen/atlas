@@ -1,7 +1,8 @@
 package ch.sbb.exportservice.config;
 
 import static ch.sbb.exportservice.model.PrmBatchExportFileName.PLATFORM_VERSION;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.*;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PLATFORM_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PLATFORM_JSON_JOB_NAME;
 
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
 import ch.sbb.atlas.export.model.prm.PlatformVersionCsvModel;
