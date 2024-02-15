@@ -1,9 +1,7 @@
 package ch.sbb.atlas.imports.prm.contactpoint;
 
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
-import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.imports.prm.BasePrmCsvModelContainer;
-import ch.sbb.atlas.imports.prm.platform.PlatformCsvToModelMapper;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
