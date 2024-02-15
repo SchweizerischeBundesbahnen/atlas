@@ -119,6 +119,10 @@ from platform_version;
 -- Reference Points
 delete
 from reference_point_version;
+
+-- Parking Lots
+delete
+from parking_lot_version;
 ```
 
 Further we need to clear the import-service-point db: see * [Reset Batch](../documentation/batch_util.md)
