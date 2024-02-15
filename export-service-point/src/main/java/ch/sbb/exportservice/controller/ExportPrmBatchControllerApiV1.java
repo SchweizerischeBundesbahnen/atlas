@@ -4,6 +4,7 @@ import ch.sbb.exportservice.service.ExportContactPointJobService;
 import ch.sbb.exportservice.service.ExportPlatformJobService;
 import ch.sbb.exportservice.service.ExportReferencePointJobService;
 import ch.sbb.exportservice.service.ExportStopPointJobService;
+import ch.sbb.exportservice.service.ExportToiletJobService;
 import io.micrometer.tracing.annotation.NewSpan;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -28,6 +29,7 @@ public class ExportPrmBatchControllerApiV1 {
   private final ExportPlatformJobService exportPlatformJobService;
   private final ExportReferencePointJobService exportReferencePointJobService;
   private final ExportContactPointJobService exportContactPointJobService;
+  private final ExportToiletJobService exportToiletJobService;
 
 
   @PostMapping("stop-point-batch")
@@ -71,6 +73,17 @@ public class ExportPrmBatchControllerApiV1 {
   @Async
   public void startExportContactPointBatch() {
     exportContactPointJobService.startExportJobs();
+  }
+
+  @PostMapping("toilet-batch")
+  @ResponseStatus(HttpStatus.OK)
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200"),
+  })
+  @NewSpan
+  @Async
+  public void startExportToiletBatch() {
+    exportToiletJobService.startExportJobs();
   }
 
 }
