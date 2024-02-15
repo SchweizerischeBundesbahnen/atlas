@@ -1,0 +1,23 @@
+[
+  {
+    "creationDate": "2022-02-19T09:54:38",
+    "creator": "u123456",
+    "editionDate": "2022-02-19T09:54:38",
+    "editor": "u123456",
+    "id": 1,
+    "sloid": "ch:1:sloid:7000:1",
+    "validFrom": "2023-12-15",
+    "validTo": "2025-12-15",
+    "etagVersion": 0,
+    "parentServicePointSloid": "ch:1:sloid:7000",
+    "designation": "Haupteingang",
+    "additionalInformation": "Kann voll genutzt werden zum rein und raus gehen",
+    "wheelchairToilet": "TO_BE_COMPLETED",
+    "number": {
+      "number": 8507000,
+      "checkDigit": 3,
+      "numberShort": 7000,
+      "uicCountryCode": 85
+    }
+  }
+]

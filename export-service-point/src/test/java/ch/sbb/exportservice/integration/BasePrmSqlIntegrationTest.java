@@ -5,16 +5,15 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.BatchDataSourceConfigTest;
 import ch.sbb.exportservice.PrmDbSchemaCreation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
 @PrmDbSchemaCreation
 @BatchDataSourceConfigTest
@@ -93,6 +92,20 @@ import java.time.format.DateTimeFormatter;
         induction_loop, opening_hours, wheelchair_access, type, valid_from, valid_to, creation_date, creator, edition_date, editor, version)
         VALUES (%d, '%s', %d, '%s', 'Haupteingang', 'Kann voll genutzt werden zum rein und raus gehen', 'TO_BE_COMPLETED', 'Während der Fahrplanzeiten der Linie 2830',
         'TO_BE_COMPLETED', 'INFORMATION_DESK', '%s', '%s', '2022-02-19 09:54:38.000000', 'u123456',
+        '2022-02-19 09:54:38.000000', 'u123456', 0);
+        """
+        .formatted(id, sloid, parentServicePointNumber.getNumber(), ServicePointNumber.calculateSloid(parentServicePointNumber),
+            formatDate(validFrom),
+            formatDate(validTo));
+    execute(insertSql);
+  }
+
+  protected void insertToilet(int id, String sloid, ServicePointNumber parentServicePointNumber,
+      LocalDate validFrom, LocalDate validTo) throws SQLException {
+    final String insertSql = """
+        INSERT INTO toilet_version (id, sloid, number, parent_service_point_sloid, designation, additional_information, wheelchair_toilet,
+                            valid_from, valid_to, creation_date, creator, edition_date, editor, version)
+        VALUES (%d, '%s', %d, '%s', 'Haupteingang', 'Kann voll genutzt werden zum rein und raus gehen', 'TO_BE_COMPLETED', '%s', '%s', '2022-02-19 09:54:38.000000', 'u123456',
         '2022-02-19 09:54:38.000000', 'u123456', 0);
         """
         .formatted(id, sloid, parentServicePointNumber.getNumber(), ServicePointNumber.calculateSloid(parentServicePointNumber),

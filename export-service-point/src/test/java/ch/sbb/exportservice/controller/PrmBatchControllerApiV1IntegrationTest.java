@@ -1,17 +1,5 @@
 package ch.sbb.exportservice.controller;
 
-import ch.sbb.atlas.amazon.exception.FileException;
-import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.exportservice.model.PrmBatchExportFileName;
-import ch.sbb.exportservice.model.PrmExportType;
-import ch.sbb.exportservice.service.FileExportService;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.test.web.servlet.MvcResult;
-
-import java.io.InputStream;
-
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
@@ -21,6 +9,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import ch.sbb.atlas.amazon.exception.FileException;
+import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.exportservice.model.PrmBatchExportFileName;
+import ch.sbb.exportservice.model.PrmExportType;
+import ch.sbb.exportservice.service.FileExportService;
+import java.io.InputStream;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.test.web.servlet.MvcResult;
 
 public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
 
@@ -269,6 +268,43 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
                     .getBaseFileName(PrmExportType.FULL, PrmBatchExportFileName.CONTACT_POINT_VERSION);
             //when & then
             MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/contact-point-version/full")
+                            .contentType(contentType)).andExpect(request().asyncStarted())
+                    .andReturn();
+            mvc.perform(asyncDispatch(mvcResult))
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType("application/gzip"));
+        }
+    }
+
+    @Test
+    void shouldGetToiletJsonSuccessfully() throws Exception {
+        //given
+        try (InputStream inputStream = this.getClass().getResourceAsStream("/toilet-data.json")) {
+            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+            doReturn(inputStreamResource).when(fileExportService)
+                    .streamJsonFile(PrmExportType.FULL, PrmBatchExportFileName.TOILET_VERSION);
+            //when & then
+            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/toilet-version/full")
+                            .contentType(contentType))
+                    .andExpect(request().asyncStarted())
+                    .andReturn();
+            mvc.perform(asyncDispatch(mvcResult))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$", hasSize(1)));
+        }
+    }
+
+    @Test
+    void shouldDownloadToiletGzipJsonSuccessfully() throws Exception {
+        //given
+        try (InputStream inputStream = this.getClass().getResourceAsStream("/toilet-data.json.gz")) {
+            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+            doReturn(inputStreamResource).when(fileExportService)
+                    .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.TOILET_VERSION);
+            doReturn("toilet").when(fileExportService)
+                    .getBaseFileName(PrmExportType.FULL, PrmBatchExportFileName.TOILET_VERSION);
+            //when & then
+            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/toilet-version/full")
                             .contentType(contentType)).andExpect(request().asyncStarted())
                     .andReturn();
             mvc.perform(asyncDispatch(mvcResult))
