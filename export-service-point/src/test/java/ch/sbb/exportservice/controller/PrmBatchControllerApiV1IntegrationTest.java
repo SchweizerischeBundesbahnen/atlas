@@ -313,4 +313,41 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
         }
     }
 
+    @Test
+    void shouldGetParkingLotJsonSuccessfully() throws Exception {
+        //given
+        try (InputStream inputStream = this.getClass().getResourceAsStream("/toilet-data.json")) {
+            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+            doReturn(inputStreamResource).when(fileExportService)
+                .streamJsonFile(PrmExportType.FULL, PrmBatchExportFileName.PARKING_LOT_VERSION);
+            //when & then
+            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/PARKING_LOT_VERSION/FULL")
+                    .contentType(contentType))
+                .andExpect(request().asyncStarted())
+                .andReturn();
+            mvc.perform(asyncDispatch(mvcResult))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+        }
+    }
+
+    @Test
+    void shouldDownloadParkingLotGzipJsonSuccessfully() throws Exception {
+        //given
+        try (InputStream inputStream = this.getClass().getResourceAsStream("/toilet-data.json.gz")) {
+            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+            doReturn(inputStreamResource).when(fileExportService)
+                .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.PARKING_LOT_VERSION);
+            doReturn("parking_lot").when(fileExportService)
+                .getBaseFileName(PrmExportType.FULL, PrmBatchExportFileName.PARKING_LOT_VERSION);
+            //when & then
+            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/PARKING_LOT_VERSION/FULL")
+                    .contentType(contentType)).andExpect(request().asyncStarted())
+                .andReturn();
+            mvc.perform(asyncDispatch(mvcResult))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/gzip"));
+        }
+    }
+
 }
