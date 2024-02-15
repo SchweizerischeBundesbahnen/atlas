@@ -8,16 +8,20 @@ import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.ContactPointVersion;
 import ch.sbb.prm.directory.repository.ContactPointRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
+
+import java.util.List;
+import java.util.Optional;
+
 import ch.sbb.prm.directory.search.ContactPointSearchRestrictions;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
 
 @Service
+@Slf4j
 @Transactional
 public class ContactPointService extends PrmRelatableVersionableService<ContactPointVersion> {
 
@@ -50,6 +54,10 @@ public class ContactPointService extends PrmRelatableVersionableService<ContactP
     return contactPointRepository.saveAndFlush(version);
   }
 
+  public Page<ContactPointVersion> findAll(ContactPointSearchRestrictions searchRestrictions) {
+    return contactPointRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
+  }
+
   @Override
   public List<ContactPointVersion> getAllVersions(String sloid) {
     return contactPointRepository.findAllBySloidOrderByValidFrom(sloid);
@@ -77,8 +85,9 @@ public class ContactPointService extends PrmRelatableVersionableService<ContactP
     return contactPointRepository.findById(id);
   }
 
-  public Page<ContactPointVersion> findAll(ContactPointSearchRestrictions searchRestrictions) {
-    return contactPointRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
+  public ContactPointVersion createContactPointThroughImport(ContactPointVersion version) {
+    stopPointService.checkStopPointExists(version.getParentServicePointSloid());
+    locationService.allocateSloid(version, SloidType.CONTACT_POINT);
+    return contactPointRepository.saveAndFlush(version);
   }
-
 }
