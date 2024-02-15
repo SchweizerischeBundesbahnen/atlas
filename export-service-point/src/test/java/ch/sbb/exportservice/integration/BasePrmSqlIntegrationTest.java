@@ -106,6 +106,7 @@ abstract class BasePrmSqlIntegrationTest {
         INSERT INTO toilet_version (id, sloid, number, parent_service_point_sloid, designation, additional_information, wheelchair_toilet,
                             valid_from, valid_to, creation_date, creator, edition_date, editor, version)
         VALUES (%d, '%s', %d, '%s', 'Haupteingang', 'Kann voll genutzt werden zum rein und raus gehen', 'TO_BE_COMPLETED', '%s', '%s', '2022-02-19 09:54:38.000000', 'u123456',
+        '2022-02-19 09:54:38.000000', 'u123456', 0);
         """
         .formatted(id, sloid, parentServicePointNumber.getNumber(), ServicePointNumber.calculateSloid(parentServicePointNumber),
             formatDate(validFrom),
