@@ -52,6 +52,7 @@ This service exports the following data:
 * *Platform Versions*
 * *Reference Point Versions*
 * *Contact Point Versions*
+* *Toilet Versions*
 
 == Service Point Directory
 
@@ -302,3 +303,31 @@ include::{snippets}/prm-batch-controller-api-v1-integration-test/should-get-cont
 === Download Contact Point Gzip Json - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-contact-point-gzip-json-successfully/auto-section.adoc[]
+
+=== Toilet Versions
+
+Toilet Versions data is available via the PRM-Directory Toilet API or as a File (CSV or JSON) via the Export Toilet
+API or through the Amazon S3 Bucket Client (CSV and JSON);
+
+The Export Toilet generates nightly the following zipped CSV and gzipped JSON files:
+
+* FULL
+* ACTUAL DATE
+* FUTURE TIMETABLE
+
+If you want to consume this files you have two options:
+
+* Via API: see **Export Toilet Directory API** section
+* Through the Amazon S3 Bucket Client: see **Atlas Amazon S3 Bucket Users onboarding**
+
+=== Trigger Export Toilet Json - Successfully
+
+include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-post-toilet-export-batch-successfully/auto-section.adoc[]
+
+=== Download Contact Point Json - Successfully
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-get-toilet-json-successfully/auto-section.adoc[]
+
+=== Download Contact Point Gzip Json - Successfully
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-toilet-gzip-json-successfully/auto-section.adoc[]
