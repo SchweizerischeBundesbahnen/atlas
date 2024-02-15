@@ -102,10 +102,10 @@ public class ExportServicePointBatchSchedulerService extends BaseSchedulerServic
   }
 
   @SpanTracing
-  @Retryable(label = "triggerExportContactPointBatch", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
+  @Retryable(label = "triggerExportParkingLotBatch", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
   @Backoff(delay = 65000))
   @Scheduled(cron = "${scheduler.export-service-point.parking-lot-trigger-batch.chron}", zone = "${scheduler.zone}")
-  @SchedulerLock(name = "triggerExportContactPointBatch", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
+  @SchedulerLock(name = "triggerExportParkingLotBatch", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
   public Response postTriggerExportParkingLotBatch() {
     return executeRequest(exportServicePointBatchClient::postTriggerExportParkingLotBatch,
         "Trigger Export ParkingLot Batch");
