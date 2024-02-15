@@ -29,15 +29,19 @@ public class AtlasWrapperFieldExtractor<T> extends BeanWrapperFieldExtractor<T> 
     return values.toArray();
   }
 
-  private static void pruneValue(List<Object> values, Object propertyValue) {
-    if(String.valueOf(propertyValue).contains(NEW_LINE)){
-      String prunedValue = StringUtils.removeNewLine(String.valueOf(propertyValue));
-      values.add(prunedValue);
-    }else if(String.valueOf(propertyValue).contains(SEMICOLON)){
-      String prunedValue = StringUtils.replaceSemiColonWithColon(String.valueOf(propertyValue));
-      values.add(prunedValue);
-    }else {
-      values.add(propertyValue);
+  static void pruneValue(List<Object> values, Object propertyValue) {
+    if(propertyValue != null){
+      String valueToPrune = String.valueOf(propertyValue);
+      if(valueToPrune.contains(NEW_LINE)){
+        valueToPrune = StringUtils.removeNewLine(valueToPrune);
+      }
+      if(valueToPrune.contains(SEMICOLON)){
+        valueToPrune = StringUtils.replaceSemiColonWithColon(valueToPrune);
+      }
+      values.add(valueToPrune.trim());
+    }
+    else {
+      values.add(null);
     }
   }
 
