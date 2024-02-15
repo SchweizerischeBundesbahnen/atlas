@@ -23,6 +23,8 @@ public class JobDescriptionConstants {
 
   public static final String EXPORT_CONTACT_POINT_CSV_JOB_NAME = "exportContactPointCsvJob";
   public static final String EXPORT_CONTACT_POINT_JSON_JOB_NAME = "exportContactPointJsonJob";
+  public static final String EXPORT_TOILET_CSV_JOB_NAME = "exportToiletCsvJob";
+  public static final String EXPORT_TOILET_JSON_JOB_NAME = "exportToiletJsonJob";
 
   public static final String EXPORT_TYPE_JOB_PARAMETER = "exportType";
   public static final String START_AT_JOB_PARAMETER = "startAt";

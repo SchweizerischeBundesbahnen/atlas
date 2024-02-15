@@ -1,5 +1,22 @@
 package ch.sbb.exportservice.recovery;
 
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_CONTACT_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_CONTACT_POINT_JSON_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LOADING_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LOADING_POINT_JSON_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PLATFORM_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PLATFORM_JSON_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_REFERENCE_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_REFERENCE_POINT_JSON_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_JSON_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POINT_JSON_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TOILET_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TOILET_JSON_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_JSON_JOB_NAME;
+
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.batch.exception.JobExecutionException;
 import ch.sbb.exportservice.service.BaseExportJobService;
@@ -9,8 +26,13 @@ import ch.sbb.exportservice.service.ExportPlatformJobService;
 import ch.sbb.exportservice.service.ExportReferencePointJobService;
 import ch.sbb.exportservice.service.ExportServicePointJobService;
 import ch.sbb.exportservice.service.ExportStopPointJobService;
+import ch.sbb.exportservice.service.ExportToiletJobService;
 import ch.sbb.exportservice.service.ExportTrafficPointElementJobService;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.BatchStatus;
@@ -24,26 +46,6 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_CONTACT_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_CONTACT_POINT_JSON_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LOADING_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LOADING_POINT_JSON_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PLATFORM_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PLATFORM_JSON_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_REFERENCE_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_REFERENCE_POINT_JSON_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_JSON_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_STOP_POINT_JSON_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_JSON_JOB_NAME;
 
 @Component
 @AllArgsConstructor
@@ -64,7 +66,9 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
       EXPORT_REFERENCE_POINT_JSON_JOB_NAME);
   private static final List<String> EXPORT_CONTACT_POINT_JOB_NAME = List.of(EXPORT_CONTACT_POINT_CSV_JOB_NAME,
       EXPORT_CONTACT_POINT_JSON_JOB_NAME);
-  static final int TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE = 14;
+  private static final List<String> EXPORT_TOILET_JOB_NAME = List.of(EXPORT_TOILET_CSV_JOB_NAME,
+      EXPORT_TOILET_JSON_JOB_NAME);
+  static final int TODAY_CSV_AND_JSON_EXPORTS_JOB_EXECUTION_SIZE = 16;
   public static final String ATLAS_BATCH_STATUS_RECOVERED = "RECOVERED";
 
   private final JobExplorer jobExplorer;
@@ -78,6 +82,7 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
   private final ExportPlatformJobService exportPlatformJobService;
   private final ExportReferencePointJobService exportReferencePointJobService;
   private final ExportContactPointJobService exportContactPointJobService;
+  private final ExportToiletJobService exportToiletJobService;
 
   @Override
   @Async
@@ -91,6 +96,7 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
     checkExportPlatformJobToRecover();
     checkExportReferencePointJobToRecover();
     checkExportContactPointJobToRecover();
+    checkExportToiletJobToRecover();
   }
 
   private boolean checkIfHasJobsToRecover(List<String> exportJobsName) {
@@ -172,6 +178,10 @@ public class RecoveryJobsRunner implements ApplicationListener<ApplicationReadyE
 
   private void checkExportContactPointJobToRecover() {
     checkJobToRecover(exportContactPointJobService, EXPORT_CONTACT_POINT_JOB_NAME);
+  }
+
+  private void checkExportToiletJobToRecover() {
+    checkJobToRecover(exportToiletJobService, EXPORT_TOILET_JOB_NAME);
   }
 
   private void checkJobToRecover(BaseExportJobService jobService, List<String> jobsName) {
