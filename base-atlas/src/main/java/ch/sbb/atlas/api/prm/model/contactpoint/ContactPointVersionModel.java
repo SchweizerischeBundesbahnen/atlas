@@ -36,11 +36,13 @@ public class ContactPointVersionModel extends BasePrmVersionModel implements Dat
   @Schema(description = "Additional Information")
   private String additionalInformation;
 
+  @Schema(description = "Induction Loop")
   private StandardAttributeType inductionLoop;
 
   @Schema(description = "Opening hours")
   private String openingHours;
 
+  @Schema(description = "Wheelchair Access")
   private StandardAttributeType wheelchairAccess;
 
   @NotNull

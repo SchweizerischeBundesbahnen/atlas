@@ -22,4 +22,5 @@ public interface ContactPointRepository extends JpaRepository<ContactPointVersio
   @Query("update contact_point_version v set v.version = (v.version + 1) where v.sloid = :sloid")
   void incrementVersion(@Param("sloid") String sloid);
 
+  boolean existsBySloid(String sloid);
 }
