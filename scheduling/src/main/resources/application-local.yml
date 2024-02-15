@@ -150,6 +150,8 @@ scheduler:
       chron: "0 45 5 * * ?" #At 05:45:00am every day
     toilet-trigger-batch:
       chron: "0 50 5 * * ?" #At 05:50:00am every day
+    parking-lot-trigger-batch:
+      chron: "0 55 5 * * ?" #At 05:55:00am every day
 
   location:
     sync:
