@@ -324,10 +324,38 @@ If you want to consume this files you have two options:
 
 include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-post-toilet-export-batch-successfully/auto-section.adoc[]
 
-=== Download Contact Point Json - Successfully
+=== Download Toilet Json - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-get-toilet-json-successfully/auto-section.adoc[]
 
-=== Download Contact Point Gzip Json - Successfully
+=== Download Toilet Gzip Json - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-toilet-gzip-json-successfully/auto-section.adoc[]
+
+=== Parking Lot Versions
+
+Parking Lot Versions data is available via the PRM-Directory Parking Lot API or as a File (CSV or JSON) via the Export Parking Lot
+API or through the Amazon S3 Bucket Client (CSV and JSON);
+
+The Export Parking Lot generates nightly the following zipped CSV and gzipped JSON files:
+
+* FULL
+* ACTUAL DATE
+* FUTURE TIMETABLE
+
+If you want to consume this files you have two options:
+
+* Via API: see **Export Parking Lot Directory API** section
+* Through the Amazon S3 Bucket Client: see **Atlas Amazon S3 Bucket Users onboarding**
+
+=== Trigger Export Parking Lot Json - Successfully
+
+include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-post-parking-lot-export-batch-successfully/auto-section.adoc[]
+
+=== Download Parking Lot Json - Successfully
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-get-parking-lot-json-successfully/auto-section.adoc[]
+
+=== Download Parking Lot Gzip Json - Successfully
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-parking-lot-gzip-json-successfully/auto-section.adoc[]
