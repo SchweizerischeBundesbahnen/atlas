@@ -1,6 +1,7 @@
 package ch.sbb.importservice.client;
 
 import ch.sbb.atlas.imports.ItemImportResult;
+import ch.sbb.atlas.imports.prm.contactpoint.ContactPointImportRequestModel;
 import ch.sbb.atlas.imports.prm.parkinglot.ParkingLotImportRequestModel;
 import ch.sbb.atlas.imports.prm.platform.PlatformImportRequestModel;
 import ch.sbb.atlas.imports.prm.platform.ToiletImportRequestModel;
@@ -30,4 +31,6 @@ public interface PrmClient {
   @PostMapping(value = "/prm-directory/v1/parking-lots/import")
   List<ItemImportResult> importParkingLots(@RequestBody ParkingLotImportRequestModel parkingLotImportRequestModel);
 
+  @PostMapping(value = "/prm-directory/v1/contact-points/import")
+  List<ItemImportResult> importContactPoints(@RequestBody ContactPointImportRequestModel contactPointImportRequestModel);
 }
