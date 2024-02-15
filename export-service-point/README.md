@@ -188,7 +188,7 @@ Job is responsible to:
     * full
     * future-timetable
 
-### Export PlatformVersion
+### Export ReferencePointVersion
 
 The
 export [ReferencePointVersionExportBatchConfig](src/main/java/ch/sbb/exportservice/config/ReferencePointVersionExportBatchConfig.java)
