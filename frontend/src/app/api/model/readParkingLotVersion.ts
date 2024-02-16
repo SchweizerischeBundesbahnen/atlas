@@ -57,13 +57,13 @@ export interface ReadParkingLotVersion {
     /**
      * Designation
      */
-    designation?: string;
+    designation: string;
     /**
      * Additional Information
      */
     additionalInformation?: string;
-    placesAvailable?: BooleanOptionalAttributeType;
-    prmPlacesAvailable?: BooleanOptionalAttributeType;
+    placesAvailable: BooleanOptionalAttributeType;
+    prmPlacesAvailable: BooleanOptionalAttributeType;
     number: ServicePointNumber;
 }
 

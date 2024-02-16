@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.api;
 
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotOverviewModel;
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotVersionModel;
 import ch.sbb.atlas.api.prm.model.parkinglot.ReadParkingLotVersionModel;
 import ch.sbb.atlas.configuration.Role;
@@ -39,7 +40,7 @@ public interface ParkingLotApiV1 {
 
   @GetMapping("overview/{parentServicePointSloid}")
   @PageableAsQueryParam
-  Container<ReadParkingLotVersionModel> getParkingLotsOverview(@Parameter(hidden = true) Pageable pageable,
+  Container<ParkingLotOverviewModel> getParkingLotsOverview(@Parameter(hidden = true) Pageable pageable,
       @PathVariable String parentServicePointSloid);
 
   @ResponseStatus(HttpStatus.CREATED)
