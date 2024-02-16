@@ -9,14 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ItemImportResponseStatus } from './itemImportResponseStatus';
+import { ContactPointCsvModelContainer } from './contactPointCsvModelContainer';
 
 
-export interface ItemImportResult { 
-    itemNumber?: string;
-    validFrom?: Date;
-    validTo?: Date;
-    status?: ItemImportResponseStatus;
-    message?: string;
+export interface ContactPointImportRequest { 
+    List_of_ContactPointCsvModelContainer_to_import: Array<ContactPointCsvModelContainer>;
 }
 
