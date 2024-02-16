@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.controller;
 
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotOverviewModel;
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotVersionModel;
 import ch.sbb.atlas.api.prm.model.parkinglot.ReadParkingLotVersionModel;
 import ch.sbb.atlas.imports.ItemImportResult;
@@ -45,7 +46,8 @@ public class ParkingLotsController implements ParkingLotApiV1 {
   }
 
   @Override
-  public Container<ReadParkingLotVersionModel> getParkingLotsOverview(Pageable pageable, String parentServicePointSloid) {
+  public Container<ParkingLotOverviewModel> getParkingLotsOverview(Pageable pageable,
+      String parentServicePointSloid) {
     return parkingLotService.buildOverview(parkingLotService.findByParentServicePointSloid(parentServicePointSloid),
         pageable);
   }

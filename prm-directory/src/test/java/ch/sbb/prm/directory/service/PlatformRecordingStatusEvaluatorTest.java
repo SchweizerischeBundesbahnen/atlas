@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
-import ch.sbb.atlas.api.prm.model.platform.RecordingStatus;
+import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import org.junit.jupiter.api.Test;
