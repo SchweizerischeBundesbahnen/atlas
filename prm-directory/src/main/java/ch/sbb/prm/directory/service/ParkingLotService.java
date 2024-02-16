@@ -5,7 +5,7 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
-import ch.sbb.atlas.api.prm.model.parkinglot.ReadParkingLotVersionModel;
+import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotOverviewModel;
 import ch.sbb.atlas.service.OverviewService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -105,11 +105,13 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
     return parkingLotRepository.findByParentServicePointSloid(parentServicePointSloid);
   }
 
-  public Container<ReadParkingLotVersionModel> buildOverview(List<ParkingLotVersion> parkingLotVersions,
+  public Container<ParkingLotOverviewModel> buildOverview(List<ParkingLotVersion> parkingLotVersions,
       Pageable pageable) {
     List<ParkingLotVersion> mergedVersions = OverviewService.mergeVersionsForDisplay(parkingLotVersions,
         (x, y) -> x.getSloid().equals(y.getSloid()));
-    return OverviewService.toPagedContainer(mergedVersions.stream().map(ParkingLotVersionMapper::toModel).toList(),
-        pageable);
+    List<ParkingLotOverviewModel> models = mergedVersions.stream()
+        .map(ParkingLotVersionMapper::toOverviewModel)
+        .toList();
+    return OverviewService.toPagedContainer(models, pageable);
   }
 }
