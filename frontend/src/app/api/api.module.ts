@@ -27,30 +27,27 @@ import { UserInformationService } from './api/userInformation.service';
 import { WorkflowService } from './api/workflow.service';
 
 @NgModule({
-  imports: [],
+  imports:      [],
   declarations: [],
-  exports: [],
-  providers: [],
+  exports:      [],
+  providers: []
 })
 export class AtlasApiModule {
-  public static forRoot(
-    configurationFactory: () => Configuration,
-  ): ModuleWithProviders<AtlasApiModule> {
-    return {
-      ngModule: AtlasApiModule,
-      providers: [{ provide: Configuration, useFactory: configurationFactory }],
-    };
-  }
+    public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders<AtlasApiModule> {
+        return {
+            ngModule: AtlasApiModule,
+            providers: [ { provide: Configuration, useFactory: configurationFactory } ]
+        };
+    }
 
-  constructor(@Optional() @SkipSelf() parentModule: AtlasApiModule, @Optional() http: HttpClient) {
-    if (parentModule) {
-      throw new Error('AtlasApiModule is already loaded. Import in your base AppModule only.');
+    constructor( @Optional() @SkipSelf() parentModule: AtlasApiModule,
+                 @Optional() http: HttpClient) {
+        if (parentModule) {
+            throw new Error('AtlasApiModule is already loaded. Import in your base AppModule only.');
+        }
+        if (!http) {
+            throw new Error('You need to import the HttpClientModule in your AppModule! \n' +
+            'See also https://github.com/angular/angular/issues/20575');
+        }
     }
-    if (!http) {
-      throw new Error(
-        'You need to import the HttpClientModule in your AppModule! \n' +
-          'See also https://github.com/angular/angular/issues/20575',
-      );
-    }
-  }
 }
