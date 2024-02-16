@@ -9,14 +9,32 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ItemImportResponseStatus } from './itemImportResponseStatus';
 
 
-export interface ItemImportResult { 
-    itemNumber?: string;
-    validFrom?: Date;
-    validTo?: Date;
-    status?: ItemImportResponseStatus;
-    message?: string;
+export interface ContactPointCsvModel { 
+    type?: ContactPointCsvModel.TypeEnum;
+    VALID_FROM?: Date;
+    VALID_TO?: Date;
+    ADD_DATE?: string;
+    ADDED_BY?: string;
+    MODIFIED_DATE?: string;
+    MODIFIED_BY?: string;
+    SLOID?: string;
+    DIDOK_CODE?: number;
+    DESCRIPTION?: string;
+    COMPL_INFOS?: string;
+    INDUCTION_LOOP?: number;
+    OPEN_HOURS?: string;
+    STATUS?: number;
+    WHEELCHAIR_ACCESS?: number;
+    DS_SLOID?: string;
 }
+export namespace ContactPointCsvModel {
+    export type TypeEnum = 'INFORMATION_DESK' | 'TICKET_COUNTER';
+    export const TypeEnum = {
+        InformationDesk: 'INFORMATION_DESK' as TypeEnum,
+        TicketCounter: 'TICKET_COUNTER' as TypeEnum
+    };
+}
+
 

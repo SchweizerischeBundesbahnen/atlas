@@ -44,6 +44,9 @@ model/client.ts
 model/clientCredential.ts
 model/clientCredentialPermissionCreate.ts
 model/company.ts
+model/contactPointCsvModel.ts
+model/contactPointCsvModelContainer.ts
+model/contactPointImportRequest.ts
 model/contactPointVersion.ts
 model/containerBusinessOrganisation.ts
 model/containerBusinessOrganisationVersion.ts
@@ -53,6 +56,7 @@ model/containerLine.ts
 model/containerLineVersionSnapshot.ts
 model/containerReadContactPointVersion.ts
 model/containerReadLoadingPointVersion.ts
+model/containerReadParkingLotVersion.ts
 model/containerReadPlatformVersion.ts
 model/containerReadReferencePointVersion.ts
 model/containerReadServicePointVersion.ts
