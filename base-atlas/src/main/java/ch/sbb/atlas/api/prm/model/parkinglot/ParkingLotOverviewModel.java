@@ -1,9 +1,9 @@
-package ch.sbb.atlas.api.prm.model.platform;
+package ch.sbb.atlas.api.prm.model.parkinglot;
 
 import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
+import ch.sbb.atlas.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,20 +14,11 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "PlatformOverview")
-public class PlatformOverviewModel {
-
-  @NotNull
-  private String sloid;
-
-  @NotNull
-  private LocalDate validFrom;
-
-  @NotNull
-  private LocalDate validTo;
+@Schema(name = "ParkingLotOverview")
+public class ParkingLotOverviewModel extends ParkingLotVersionModel implements DatesValidator {
 
   @NotNull
   private RecordingStatus recordingStatus;
