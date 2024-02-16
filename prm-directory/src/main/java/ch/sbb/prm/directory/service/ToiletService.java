@@ -10,8 +10,10 @@ import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
+import ch.sbb.prm.directory.search.ToiletSearchRestrictions;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,9 +61,8 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
     versionableService.applyVersioning(ToiletVersion.class, versionedObjects, this::save,
         new ApplyVersioningDeleteByIdLongConsumer(toiletRepository));
   }
-
-  public List<ToiletVersion> getAllToilets() {
-    return toiletRepository.findAll();
+  public Page<ToiletVersion> findAll(ToiletSearchRestrictions searchRestrictions) {
+    return toiletRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
 
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#version)")
