@@ -13,6 +13,7 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.ToiletTestData;
+import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
@@ -23,10 +24,13 @@ import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
+import ch.sbb.prm.directory.search.ToiletSearchRestrictions;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 class ToiletServiceTest extends BasePrmServiceTest {
 
@@ -63,6 +67,117 @@ class ToiletServiceTest extends BasePrmServiceTest {
   }
 
   @Test
+  void shouldFindByParentSloid() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+    ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
+    String parentServicePointSloid = stopPointVersion.getSloid();
+    toiletVersion.setParentServicePointSloid(parentServicePointSloid);
+    toiletService.save(toiletVersion);
+    //when
+    Page<ToiletVersion> result = toiletService.findAll(
+        ToiletSearchRestrictions.builder().pageable(Pageable.ofSize(1)).prmObjectRequestParams(
+            PrmObjectRequestParams.builder().parentServicePointSloids(List.of(parentServicePointSloid)).build()).build());
+    //then
+    assertThat(result.getTotalElements()).isOne();
+    assertThat(result.getContent()).isNotEmpty();
+  }
+
+  @Test
+  void shouldFindBySloid() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+    ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
+    String parentServicePointSloid = stopPointVersion.getSloid();
+    toiletVersion.setParentServicePointSloid(parentServicePointSloid);
+    toiletService.save(toiletVersion);
+    //when
+    Page<ToiletVersion> result = toiletService.findAll(
+        ToiletSearchRestrictions.builder().pageable(Pageable.ofSize(1)).prmObjectRequestParams(
+            PrmObjectRequestParams.builder().sloids(List.of(toiletVersion.getSloid())).build()).build());
+    //then
+    assertThat(result.getTotalElements()).isOne();
+    assertThat(result.getContent()).isNotEmpty();
+  }
+
+  @Test
+  void shouldNotFindByWrongParentSloid() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+    ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
+    String parentServicePointSloid = stopPointVersion.getSloid();
+    toiletVersion.setParentServicePointSloid(parentServicePointSloid);
+    toiletService.save(toiletVersion);
+    //when
+    Page<ToiletVersion> result = toiletService.findAll(
+        ToiletSearchRestrictions.builder().pageable(Pageable.ofSize(1)).prmObjectRequestParams(
+            PrmObjectRequestParams.builder().parentServicePointSloids(List.of("ch:1:sloid:metallica")).build()).build());
+    //then
+    assertThat(result.getTotalElements()).isZero();
+  }
+
+  @Test
+  void shouldNotFindWithWrongSloid() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+    ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
+    String parentServicePointSloid = stopPointVersion.getSloid();
+    toiletVersion.setParentServicePointSloid(parentServicePointSloid);
+    toiletService.save(toiletVersion);
+    //when
+    Page<ToiletVersion> result = toiletService.findAll(
+        ToiletSearchRestrictions.builder().pageable(Pageable.ofSize(1)).prmObjectRequestParams(
+            PrmObjectRequestParams.builder().sloids(List.of("ch:1:sloid:asd")).build()).build());
+    //then
+    assertThat(result.getTotalElements()).isZero();
+  }
+
+  @Test
+  void shouldNotFindByWrongServicePointNumber() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+    ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
+    String parentServicePointSloid = stopPointVersion.getSloid();
+    toiletVersion.setParentServicePointSloid(parentServicePointSloid);
+    toiletService.save(toiletVersion);
+    //when
+    Page<ToiletVersion> result = toiletService.findAll(
+        ToiletSearchRestrictions.builder().pageable(Pageable.ofSize(1)).prmObjectRequestParams(
+            PrmObjectRequestParams.builder().servicePointNumber(8500700).build()).build());
+    //then
+    assertThat(result.getTotalElements()).isZero();
+  }
+
+  @Test
+  void shouldNotFindWithWrongServicePointNumber() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+    ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
+    String parentServicePointSloid = stopPointVersion.getSloid();
+    toiletVersion.setParentServicePointSloid(parentServicePointSloid);
+    toiletService.save(toiletVersion);
+    //when
+    Page<ToiletVersion> result = toiletService.findAll(
+        ToiletSearchRestrictions.builder().pageable(Pageable.ofSize(1)).prmObjectRequestParams(
+            PrmObjectRequestParams.builder().servicePointNumbers(List.of(toiletVersion.getNumber().getNumber())).build()).build());
+    //then
+    assertThat(result.getTotalElements()).isOne();
+    assertThat(result.getContent()).isNotEmpty();
+  }
+
+  @Test
   void shouldNotCreateToiletRelationWhenStopPointIsReduced() {
     //given
     String parentServicePointSloid = "ch:1:sloid:70000";
@@ -88,7 +203,7 @@ class ToiletServiceTest extends BasePrmServiceTest {
     List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
         toiletVersion.getParentServicePointSloid());
     assertThat(relationVersions).isEmpty();
-    verify(prmLocationService, times(1)).allocateSloid(any(),eq(SloidType.TOILET));
+    verify(prmLocationService, times(1)).allocateSloid(any(), eq(SloidType.TOILET));
   }
 
   @Test
@@ -109,7 +224,7 @@ class ToiletServiceTest extends BasePrmServiceTest {
     List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
         toiletVersion.getParentServicePointSloid());
     assertThat(relationVersions).isEmpty();
-    verify(prmLocationService, times(1)).allocateSloid(any(),eq(SloidType.TOILET));
+    verify(prmLocationService, times(1)).allocateSloid(any(), eq(SloidType.TOILET));
   }
 
   @Test
@@ -136,7 +251,7 @@ class ToiletServiceTest extends BasePrmServiceTest {
     assertThat(relationVersions).hasSize(1);
     assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(ReferencePointElementType.TOILET);
-    verify(prmLocationService, times(1)).allocateSloid(any(),eq(SloidType.TOILET));
+    verify(prmLocationService, times(1)).allocateSloid(any(), eq(SloidType.TOILET));
   }
 
 }
