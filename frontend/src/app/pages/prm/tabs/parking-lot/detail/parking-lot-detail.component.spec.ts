@@ -80,7 +80,7 @@ describe('ParkingLotDetailComponent', () => {
     snapshot: {
       data: {
         servicePoint: [BERN_WYLEREGG],
-        referencePoint: [],
+        parkingLot: [],
       },
     },
   };
@@ -143,7 +143,7 @@ describe('ParkingLotDetailComponent', () => {
 
       component.save();
 
-      expect(personWithReducedMobilityService.createReferencePoint).toHaveBeenCalled();
+      expect(personWithReducedMobilityService.createParkingLot).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
   });
@@ -155,7 +155,7 @@ describe('ParkingLotDetailComponent', () => {
           snapshot: {
             data: {
               servicePoint: [BERN_WYLEREGG],
-              referencePoint: parkingLot,
+              parkingLot: parkingLot,
             },
           },
         },
@@ -201,7 +201,7 @@ describe('ParkingLotDetailComponent', () => {
       component.form.controls.designation.markAsDirty();
 
       component.save();
-      expect(personWithReducedMobilityService.updateReferencePoint).toHaveBeenCalled();
+      expect(personWithReducedMobilityService.updateParkingLot).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
   });
