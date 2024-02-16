@@ -90,7 +90,7 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
     //when & then
     mvc.perform(get("/v1/parking-lots"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(1)));
+        .andExpect(jsonPath("$.objects", hasSize(1)));
   }
 
   @Test
