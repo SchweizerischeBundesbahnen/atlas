@@ -23,7 +23,7 @@ export class ParkingLotFormGroupBuilder {
           Validators.maxLength(2000),
         ]),
         designation: new FormControl(version?.designation, [
-          Validators.maxLength(50),
+          Validators.maxLength(50), Validators.required, WhitespaceValidator.blankOrEmptySpaceSurrounding
         ]),
         placesAvailable:new FormControl(version?.placesAvailable ?? BooleanOptionalAttributeType.ToBeCompleted,[Validators.required]),
         prmPlacesAvailable:new FormControl(version?.prmPlacesAvailable ?? BooleanOptionalAttributeType.ToBeCompleted,[Validators.required]),

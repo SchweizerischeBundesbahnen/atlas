@@ -30,6 +30,7 @@ public class ParkingLotVersionModel extends BasePrmVersionModel implements Dates
   private String parentServicePointSloid;
 
   @Schema(description = "Designation")
+  @NotNull
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String designation;
 
