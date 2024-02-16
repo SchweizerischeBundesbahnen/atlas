@@ -33,11 +33,11 @@ public abstract class TrafficPointElementVersionModel extends BaseVersionModel i
   private Long id;
 
   @Schema(description = "Designation used in the customer information systems.", example = "Bezeichnung")
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_40)
+  @Size(max = AtlasFieldLengths.LENGTH_40)
   private String designation;
 
   @Schema(description = "Designation used in (operational) timetable planning.", example = "Bezeichnung")
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_20)
+  @Size(max = AtlasFieldLengths.LENGTH_20)
   private String designationOperational;
 
   @Schema(description = "Length of the TrafficPointElement", example = "18.000")

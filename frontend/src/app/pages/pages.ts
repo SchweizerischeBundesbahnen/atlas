@@ -205,6 +205,15 @@ export class Pages {
     description: 'PAGES.REFERENCE_POINTS.DESCRIPTION',
   };
 
+  public static PARKING_LOT: Page = {
+    title: 'PRM.PARKING_LOT.TITLE',
+    titleMenu: 'PAGES.PARKING_LOT.TITLE_HEADER',
+    headerTitle: 'PAGES.PARKING_LOT.TITLE_HEADER',
+    path: 'parking-lots',
+    pathText: 'PAGES.PARKING_LOT.TITLE_HEADER',
+    description: 'PAGES.PARKING_LOT.DESCRIPTION',
+  };
+
   public static PRM_STOP_POINT_TAB: Page = {
     title: 'PRM.TABS.STOP_POINT',
     path: 'stop-point',
