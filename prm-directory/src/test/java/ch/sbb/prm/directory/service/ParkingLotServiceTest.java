@@ -9,6 +9,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.api.location.SloidType;
+import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
+import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotOverviewModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
@@ -169,6 +172,27 @@ class ParkingLotServiceTest extends BasePrmServiceTest {
             PrmObjectRequestParams.builder().sloids(List.of(parkingLotVersion.getSloid())).build()).build();
     result = parkingLotService.findAll(correctSloidRequest);
     assertThat(result.getContent()).isNotEmpty();
+  }
+
+  @Test
+  void shouldCreateOverviewForParkingLotsByParentSloid() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+
+    ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLotVersion();
+    parkingLot.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    parkingLotService.createParkingLot(parkingLot);
+
+    //when
+    Container<ParkingLotOverviewModel> result = parkingLotService.buildOverview(
+        parkingLotService.findByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID),
+        Pageable.ofSize(5));
+
+    //then
+    assertThat(result.getObjects()).hasSize(1);
+    assertThat(result.getObjects().getFirst().getRecordingStatus()).isEqualTo(RecordingStatus.INCOMPLETE);
   }
 
 }

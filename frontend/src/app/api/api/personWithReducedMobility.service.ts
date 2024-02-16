@@ -19,6 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { ContactPointImportRequest } from '../model/models';
 import { ContactPointVersion } from '../model/models';
+import { ContainerParkingLotOverview } from '../model/models';
 import { ContainerReadContactPointVersion } from '../model/models';
 import { ContainerReadParkingLotVersion } from '../model/models';
 import { ContainerReadPlatformVersion } from '../model/models';
@@ -753,9 +754,9 @@ export class PersonWithReducedMobilityService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getParkingLotsOverview(parentServicePointSloid: string, page?: number, size?: number, sort?: Array<string>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ContainerReadParkingLotVersion>;
-    public getParkingLotsOverview(parentServicePointSloid: string, page?: number, size?: number, sort?: Array<string>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ContainerReadParkingLotVersion>>;
-    public getParkingLotsOverview(parentServicePointSloid: string, page?: number, size?: number, sort?: Array<string>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ContainerReadParkingLotVersion>>;
+    public getParkingLotsOverview(parentServicePointSloid: string, page?: number, size?: number, sort?: Array<string>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ContainerParkingLotOverview>;
+    public getParkingLotsOverview(parentServicePointSloid: string, page?: number, size?: number, sort?: Array<string>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ContainerParkingLotOverview>>;
+    public getParkingLotsOverview(parentServicePointSloid: string, page?: number, size?: number, sort?: Array<string>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ContainerParkingLotOverview>>;
     public getParkingLotsOverview(parentServicePointSloid: string, page?: number, size?: number, sort?: Array<string>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (parentServicePointSloid === null || parentServicePointSloid === undefined) {
             throw new Error('Required parameter parentServicePointSloid was null or undefined when calling getParkingLotsOverview.');
@@ -797,7 +798,7 @@ export class PersonWithReducedMobilityService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<ContainerReadParkingLotVersion>(`${this.configuration.basePath}/prm-directory/v1/parking-lots/overview/${encodeURIComponent(String(parentServicePointSloid))}`,
+        return this.httpClient.get<ContainerParkingLotOverview>(`${this.configuration.basePath}/prm-directory/v1/parking-lots/overview/${encodeURIComponent(String(parentServicePointSloid))}`,
             {
                 params: queryParameters,
                 responseType: <any>responseType_,
