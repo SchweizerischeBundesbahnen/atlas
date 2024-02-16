@@ -63,8 +63,9 @@ public class ServicePointStatusDecider {
             return setStatusForStopPoint(newServicePointVersion, null, "Deciding on ServicePoint.Status when creating new StopPoint={}");
         } else {
 
-            if (isPreviousVersionDraft(currentServicePointVersion.get())
-                || isGeolocationChangedFromNoGeoOrAbroadGeoToSwitzerlandGeo(newServicePointVersion, currentServicePointVersion.get())
+            if (
+//                isPreviousVersionDraft(currentServicePointVersion.get()) ||
+                isGeolocationChangedFromNoGeoOrAbroadGeoToSwitzerlandGeo(newServicePointVersion, currentServicePointVersion.get())
                 || isTimeslotChangeFromLessOrEqualThan60DaysToMoreThan60Days(newServicePointVersion, currentServicePointVersion.get())
                 || isChangeFromServicePointToStopPoint(newServicePointVersion, currentServicePointVersion.get())) {
                 return setStatusForStopPoint(newServicePointVersion, currentServicePointVersion.get(),
@@ -83,10 +84,6 @@ public class ServicePointStatusDecider {
             // Update Scenario: Scenario update when previous version is DRAFT (20). Scenario update from wrong Geolocation outside of Switzerland to geolocation inside of Switzerland (21)
             if (isNameChanged(newServicePointVersion, currentServicePointVersion.get()) && findPreviousVersionOnTheSameTimeslot(newServicePointVersion, servicePointVersions).isPresent()
                     || findIsolatedOrTouchingServicePointVersion(newServicePointVersion, servicePointVersions).isPresent()
-//                    || isPreviousVersionDraft(currentServicePointVersion.get())
-//                    || isGeolocationChangedFromAbroadToSwitzerland(newServicePointVersion, currentServicePointVersion.get())
-//                    || isTimeslotChangeFromLessThan60DaysToMoreThan60Days(newServicePointVersion, currentServicePointVersion.get())
-//                    || isChangeFromServicePointToStopPoint(newServicePointVersion, currentServicePointVersion.get())
                     || isVersionIsolated(newServicePointVersion, servicePointVersions)) {
                 return setStatusForStopPoint(newServicePointVersion, currentServicePointVersion.get(),
                         "Deciding on ServicePoint.Status when update scenario where newServicePointVersion={} and currentServicePointVersion={}.");
@@ -136,10 +133,6 @@ public class ServicePointStatusDecider {
         } else {
             return Optional.empty();
         }
-    }
-
-    private boolean isPreviousVersionDraft(ServicePointVersion currentServicePointVersion) {
-        return currentServicePointVersion.getStatus() == Status.DRAFT;
     }
 
     private boolean isTimeslotChangeFromLessOrEqualThan60DaysToMoreThan60Days(ServicePointVersion newServicePointVersion,
