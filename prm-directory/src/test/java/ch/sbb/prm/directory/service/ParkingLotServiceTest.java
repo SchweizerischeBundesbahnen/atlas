@@ -13,6 +13,7 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
+import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
@@ -23,10 +24,13 @@ import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
+import ch.sbb.prm.directory.search.ParkingLotSearchRestrictions;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 class ParkingLotServiceTest extends BasePrmServiceTest {
 
@@ -137,6 +141,34 @@ class ParkingLotServiceTest extends BasePrmServiceTest {
         parentServicePointSloid);
     assertThat(relationVersions).isEmpty();
     verify(prmLocationService, times(1)).allocateSloid(any(),eq(SloidType.PARKING_LOT));
+  }
+
+  @Test
+  void shouldFindBySloid() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+
+    ParkingLotVersion parkingLotVersion = ParkingLotTestData.getParkingLotVersion();
+    String parentServicePointSloid = stopPointVersion.getSloid();
+    parkingLotVersion.setParentServicePointSloid(parentServicePointSloid);
+    parkingLotService.save(parkingLotVersion);
+
+    //when
+    ParkingLotSearchRestrictions wrongSloidRequest = ParkingLotSearchRestrictions.builder().pageable(Pageable.ofSize(1))
+        .prmObjectRequestParams(
+            PrmObjectRequestParams.builder().sloids(List.of("ch:1:sloid:asd")).build()).build();
+    Page<ParkingLotVersion> result = parkingLotService.findAll(wrongSloidRequest);
+
+    //then
+    assertThat(result.getTotalElements()).isZero();
+
+    ParkingLotSearchRestrictions correctSloidRequest = ParkingLotSearchRestrictions.builder().pageable(Pageable.ofSize(1))
+        .prmObjectRequestParams(
+            PrmObjectRequestParams.builder().sloids(List.of(parkingLotVersion.getSloid())).build()).build();
+    result = parkingLotService.findAll(correctSloidRequest);
+    assertThat(result.getContent()).isNotEmpty();
   }
 
 }
