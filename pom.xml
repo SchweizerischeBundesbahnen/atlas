@@ -37,7 +37,7 @@
       <!-- Geo Data Libs -->
       <proj4j.version>1.3.0</proj4j.version>
       <jts.version>1.19.0</jts.version>
-      <protoc.version>3.25.2</protoc.version>
+      <protoc.version>3.25.3</protoc.version>
    </properties>
    <modules>
       <!-- Order is important here -->
@@ -124,7 +124,7 @@
          <dependency>
             <artifactId>aws-java-sdk-s3</artifactId>
             <groupId>com.amazonaws</groupId>
-            <version>1.12.658</version>
+            <version>1.12.660</version>
          </dependency>
 
          <dependency>
