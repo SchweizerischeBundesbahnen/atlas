@@ -5,7 +5,7 @@ import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
-import ch.sbb.atlas.api.prm.model.platform.RecordingStatus;
+import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import lombok.experimental.UtilityClass;
 
