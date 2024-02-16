@@ -10,7 +10,7 @@
       <artifactId>atlas</artifactId>
       <groupId>ch.sbb.atlas</groupId>
       <relativePath>../pom.xml</relativePath>
-      <version>1.629.0</version>
+      <version>1.630.0</version>
    </parent>
    <artifactId>mail</artifactId>
    <description>Atlas Mail Service</description>
@@ -44,12 +44,12 @@
       <dependency>
          <artifactId>kafka</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.629.0</version>
+         <version>1.630.0</version>
       </dependency>
       <dependency>
          <artifactId>base-atlas</artifactId>
          <groupId>ch.sbb.atlas</groupId>
-         <version>1.629.0</version>
+         <version>1.630.0</version>
          <exclusions>
             <exclusion>
                <groupId>org.hibernate.orm</groupId>
