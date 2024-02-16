@@ -1,21 +1,21 @@
 import {ActivatedRouteSnapshot, ResolveFn, Router} from '@angular/router';
 import {inject, Injectable} from '@angular/core';
 import {catchError, Observable, of} from 'rxjs';
-import {PersonWithReducedMobilityService, ReadReferencePointVersion,} from '../../../../../../api';
+import {PersonWithReducedMobilityService, ReadParkingLotVersion,} from '../../../../../../api';
 import {Pages} from '../../../../../pages';
 
 @Injectable({ providedIn: 'root' })
-export class PrmReferencePointResolver {
+export class PrmParkingLotResolver {
   constructor(
     private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
     private readonly router: Router,
   ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadReferencePointVersion>> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadParkingLotVersion>> {
     const sloidParameter = route.paramMap.get('sloid') || '';
     return sloidParameter === 'add'
       ? of([])
-      : this.personWithReducedMobilityService.getReferencePointVersions(sloidParameter).pipe(
+      : this.personWithReducedMobilityService.getParkingLotVersions(sloidParameter).pipe(
           catchError(() =>
             this.router
               .navigate([Pages.PRM.path], {
@@ -27,6 +27,6 @@ export class PrmReferencePointResolver {
   }
 }
 
-export const referencePointResolver: ResolveFn<Array<ReadReferencePointVersion>> = (
+export const parkingLotResolver: ResolveFn<Array<ReadParkingLotVersion>> = (
   route: ActivatedRouteSnapshot,
-) => inject(PrmReferencePointResolver).resolve(route);
+) => inject(PrmParkingLotResolver).resolve(route);
