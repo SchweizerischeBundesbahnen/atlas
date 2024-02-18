@@ -1,16 +1,15 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
 class ServicePointStatusDeciderTest {
@@ -34,7 +33,7 @@ class ServicePointStatusDeciderTest {
         newOne.setValidFrom(LocalDate.of(2015, 1, 1));
         newOne.setValidTo(LocalDate.of(2019, 8, 10));
 
-        assertThat(servicePointStatusDecider.isVersionIsolated(newOne, servicePointVersionList)).isFalse();
+        assertThat(servicePointStatusDecider.isNewlyIntroducedVersionIsolated(newOne, servicePointVersionList)).isFalse();
     }
 
     @Test
@@ -53,7 +52,7 @@ class ServicePointStatusDeciderTest {
         newOne.setValidFrom(LocalDate.of(2017, 1, 1));
         newOne.setValidTo(LocalDate.of(2019, 8, 1));
 
-        assertThat(servicePointStatusDecider.isVersionIsolated(newOne, servicePointVersionList)).isFalse();
+        assertThat(servicePointStatusDecider.isNewlyIntroducedVersionIsolated(newOne, servicePointVersionList)).isFalse();
     }
 
     @Test
@@ -72,7 +71,7 @@ class ServicePointStatusDeciderTest {
         newOne.setValidFrom(LocalDate.of(2015, 1, 1));
         newOne.setValidTo(LocalDate.of(2015, 8, 1));
 
-        assertThat(servicePointStatusDecider.isVersionIsolated(newOne, servicePointVersionList)).isFalse();
+        assertThat(servicePointStatusDecider.isNewlyIntroducedVersionIsolated(newOne, servicePointVersionList)).isFalse();
     }
 
     @Test
@@ -91,7 +90,7 @@ class ServicePointStatusDeciderTest {
         newOne.setValidFrom(LocalDate.of(2009, 8, 10));
         newOne.setValidTo(LocalDate.of(2010, 12, 11));
 
-        assertThat(servicePointStatusDecider.isVersionIsolated(newOne, servicePointVersionList)).isFalse();
+        assertThat(servicePointStatusDecider.isNewlyIntroducedVersionIsolated(newOne, servicePointVersionList)).isFalse();
     }
 
     @Test
@@ -110,7 +109,7 @@ class ServicePointStatusDeciderTest {
         newOne.setValidFrom(LocalDate.of(2009, 8, 10));
         newOne.setValidTo(LocalDate.of(2010, 12, 10));
 
-        assertThat(servicePointStatusDecider.isVersionIsolated(newOne, servicePointVersionList)).isTrue();
+        assertThat(servicePointStatusDecider.isNewlyIntroducedVersionIsolated(newOne, servicePointVersionList)).isTrue();
     }
 
     @Test
@@ -129,7 +128,7 @@ class ServicePointStatusDeciderTest {
         newOne.setValidFrom(LocalDate.of(2019, 8, 10));
         newOne.setValidTo(LocalDate.of(2019, 12, 1));
 
-        assertThat(servicePointStatusDecider.isVersionIsolated(newOne, servicePointVersionList)).isFalse();
+        assertThat(servicePointStatusDecider.isNewlyIntroducedVersionIsolated(newOne, servicePointVersionList)).isFalse();
     }
 
     @Test
@@ -148,7 +147,7 @@ class ServicePointStatusDeciderTest {
         newOne.setValidFrom(LocalDate.of(2019, 8, 11));
         newOne.setValidTo(LocalDate.of(2019, 12, 1));
 
-        assertThat(servicePointStatusDecider.isVersionIsolated(newOne, servicePointVersionList)).isTrue();
+        assertThat(servicePointStatusDecider.isNewlyIntroducedVersionIsolated(newOne, servicePointVersionList)).isTrue();
     }
 
     @Test
@@ -167,7 +166,7 @@ class ServicePointStatusDeciderTest {
         newOne.setValidFrom(LocalDate.of(2009, 1, 1));
         newOne.setValidTo(LocalDate.of(2009, 8, 1));
 
-        assertThat(servicePointStatusDecider.isVersionIsolated(newOne, servicePointVersionList)).isTrue();
+        assertThat(servicePointStatusDecider.isNewlyIntroducedVersionIsolated(newOne, servicePointVersionList)).isTrue();
     }
 
 
