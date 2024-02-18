@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,10 +130,11 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
   }
 
   private void setStatusToValidatedAndVerifyIt(Long id) {
-    Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
-    servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
-    servicePointVersion1.ifPresent(repository::save);
-    assertThat(servicePointVersion1.get().getStatus()).isEqualTo(Status.VALIDATED);
+    Optional<ServicePointVersion> servicePointVersion = repository.findById(id);
+    servicePointVersion.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
+    servicePointVersion.ifPresent(repository::save);
+    Assertions.assertTrue(servicePointVersion.isPresent());
+    assertThat(servicePointVersion.get().getStatus()).isEqualTo(Status.VALIDATED);
   }
 
   /**
