@@ -4,6 +4,7 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
@@ -65,16 +66,21 @@ public class ServicePointStatusDecider {
 
             if (
 //                isPreviousVersionDraft(currentServicePointVersion.get()) ||
-                isGeolocationChangedFromNoGeoOrAbroadGeoToSwitzerlandGeo(newServicePointVersion, currentServicePointVersion.get())
-                || isTimeslotChangeFromLessOrEqualThan60DaysToMoreThan60Days(newServicePointVersion, currentServicePointVersion.get())
-                || isChangeFromServicePointToStopPoint(newServicePointVersion, currentServicePointVersion.get())) {
+                isChangeFromServicePointToStopPoint(newServicePointVersion, currentServicePointVersion.get()) ||
+                    isTimeslotChangedFromNotValidEnoughToValidEnough(newServicePointVersion, currentServicePointVersion.get()) ||
+                isGeolocationChangedBackToSwitzerland(newServicePointVersion, currentServicePointVersion.get())
+                    || isNewlyIntroducedVersionIsolated(newServicePointVersion, servicePointVersions)
+                    || findIsolatedOrTouchingServicePointVersion(newServicePointVersion, servicePointVersions).isPresent()
+//                || isTimeslotChangedFromNotValidEnoughToValidEnough(newServicePointVersion, currentServicePointVersion.get())
+//                || isChangeFromServicePointToStopPoint(newServicePointVersion, currentServicePointVersion.get())
+            ) {
                 return setStatusForStopPoint(newServicePointVersion, currentServicePointVersion.get(),
                     "Deciding on ServicePoint.Status when update scenario where newServicePointVersion={} and currentServicePointVersion={}.");
             }
             // Update Scenario: extension of version with the same name (7, 14, 16, 17)
             if (isNameChanged(newServicePointVersion, currentServicePointVersion.get())
                     && isThereOverlappingVersionWithTheSameName(newServicePointVersion, servicePointVersions)) {
-                return setStatusAsItWasInPreviousVersionOrPerDefaultToValidated(newServicePointVersion, currentServicePointVersion,
+                return setStatusAsInPreviousVersionOrToValidated(newServicePointVersion, currentServicePointVersion,
                         "Deciding on ServicePoint.Status when updating where, newServicePointVersion={}, and currentServicePointVersion={}. " +
                                          "DesignationOfficial name is changed, but there are exisiting touching versions with the same name");
             }
@@ -83,14 +89,15 @@ public class ServicePointStatusDecider {
             // Update Scenario: Scenario update from servicePoint to stopPoint (2, 3). Or scenario update when new ServicePointVersion is isolated (19).
             // Update Scenario: Scenario update when previous version is DRAFT (20). Scenario update from wrong Geolocation outside of Switzerland to geolocation inside of Switzerland (21)
             if (isNameChanged(newServicePointVersion, currentServicePointVersion.get()) && findPreviousVersionOnTheSameTimeslot(newServicePointVersion, servicePointVersions).isPresent()
-                    || findIsolatedOrTouchingServicePointVersion(newServicePointVersion, servicePointVersions).isPresent()
-                    || isVersionIsolated(newServicePointVersion, servicePointVersions)) {
+//                    || findIsolatedOrTouchingServicePointVersion(newServicePointVersion, servicePointVersions).isPresent()
+//                    || isNewlyIntroducedVersionIsolated(newServicePointVersion, servicePointVersions)
+            ) {
                 return setStatusForStopPoint(newServicePointVersion, currentServicePointVersion.get(),
                         "Deciding on ServicePoint.Status when update scenario where newServicePointVersion={} and currentServicePointVersion={}.");
             }
         }
         // (15)
-        return setStatusAsItWasInPreviousVersionOrPerDefaultToValidated(newServicePointVersion, currentServicePointVersion,
+        return setStatusAsInPreviousVersionOrToValidated(newServicePointVersion, currentServicePointVersion,
                 "Deciding on ServicePoint.Status when updating where, newServicePointVersion={}, and currentServicePointVersion={}. Status will be set to Validated per default.");
     }
 
@@ -101,7 +108,7 @@ public class ServicePointStatusDecider {
         return calculateStatusAccordingToStatusDecisionAlgorithm(newServicePointVersion);
     }
 
-    private Status setStatusAsItWasInPreviousVersionOrPerDefaultToValidated(ServicePointVersion newServicePointVersion,
+    private Status setStatusAsInPreviousVersionOrToValidated(ServicePointVersion newServicePointVersion,
                                                   Optional<ServicePointVersion> currentServicePointVersion,
                                                   String logMessage) {
         log.info(logMessage, currentServicePointVersion, newServicePointVersion);
@@ -135,48 +142,33 @@ public class ServicePointStatusDecider {
         }
     }
 
-    private boolean isTimeslotChangeFromLessOrEqualThan60DaysToMoreThan60Days(ServicePointVersion newServicePointVersion,
+    private boolean isTimeslotChangedFromNotValidEnoughToValidEnough(ServicePointVersion newServicePointVersion,
                                                                 ServicePointVersion currentServicePointVersion) {
         long diffForCurrentVersion = ChronoUnit.DAYS.between(currentServicePointVersion.getValidFrom(), currentServicePointVersion.getValidTo());
         long diffForNewVersion = ChronoUnit.DAYS.between(newServicePointVersion.getValidFrom(), newServicePointVersion.getValidTo());
         return diffForCurrentVersion <= VALIDITY_IN_DAYS && diffForNewVersion > VALIDITY_IN_DAYS;
     }
 
-    private boolean isGeolocationChangedFromNoGeoOrAbroadGeoToSwitzerlandGeo(ServicePointVersion newServicePointVersion,
+    private boolean isGeolocationChangedBackToSwitzerland(ServicePointVersion newServicePointVersion,
                                                                 ServicePointVersion currentServicePointVersion) {
         if (isGeolocationOrCountryNull(newServicePointVersion)) {
             return false;
         }
-        return Objects.equals(newServicePointVersion.getServicePointGeolocation().getCountry().getUicCode(), Country.SWITZERLAND.getUicCode())
-                && (isGeolocationOrCountryNull(currentServicePointVersion) ||
-                !Objects.equals(currentServicePointVersion.getServicePointGeolocation().getCountry().getUicCode(), Country.SWITZERLAND.getUicCode()));
+        return isNewServicePointWithSwissGeolocation(newServicePointVersion)
+                && isExistingServicePointWithAbroadOrNoGeolocation(currentServicePointVersion);
     }
 
-    boolean isVersionIsolated(ServicePointVersion newServicePointVersion,
-                              List<ServicePointVersion> servicePointVersions) {
-        if (checkIfSomeVersionFromOrToDatesAreEqual(newServicePointVersion, servicePointVersions)) {
-            return false;
-        }
-        return !checkIfSomeVersionsOverlap(newServicePointVersion, servicePointVersions);
+    private static boolean isNewServicePointWithSwissGeolocation(ServicePointVersion newServicePointVersion) {
+        return Objects.equals(newServicePointVersion.getServicePointGeolocation().getCountry().getUicCode(),
+            Country.SWITZERLAND.getUicCode());
     }
 
-    private boolean checkIfSomeVersionsOverlap(ServicePointVersion newServicePointVersion,
-                                               List<ServicePointVersion> servicePointVersions) {
-        return servicePointVersions
-                .stream()
-                .anyMatch(servicePointVersion -> servicePointVersion.getValidFrom().isBefore(newServicePointVersion.getValidTo())
-                        && newServicePointVersion.getValidFrom().isBefore(servicePointVersion.getValidTo()));
+    private static boolean isExistingServicePointWithAbroadOrNoGeolocation(ServicePointVersion currentServicePointVersion) {
+        return isGeolocationOrCountryNull(currentServicePointVersion) ||
+            !isNewServicePointWithSwissGeolocation(currentServicePointVersion);
     }
 
-    private boolean checkIfSomeVersionFromOrToDatesAreEqual(ServicePointVersion newServicePointVersion,
-                                                            List<ServicePointVersion> servicePointVersionList) {
-        return servicePointVersionList
-                .stream()
-                .anyMatch(servicePointVersion -> servicePointVersion.getValidFrom().equals(newServicePointVersion.getValidFrom())
-                        || servicePointVersion.getValidFrom().equals(newServicePointVersion.getValidTo())
-                        || servicePointVersion.getValidTo().equals(newServicePointVersion.getValidFrom())
-                        || servicePointVersion.getValidTo().equals(newServicePointVersion.getValidTo()));
-    }
+
 
     private ServicePointVersion getLastOfExistingVersions(List<ServicePointVersion> currentServicePointVersions) {
         return currentServicePointVersions
@@ -204,6 +196,35 @@ public class ServicePointStatusDecider {
             return false;
         }
         return existing.getValidFrom().isBefore(newOne.getValidTo()) && existing.getValidTo().isAfter(newOne.getValidFrom());
+    }
+
+    boolean isNewlyIntroducedVersionIsolated(ServicePointVersion newServicePointVersion,
+        List<ServicePointVersion> servicePointVersions) {
+        return !hasBorderDateOverlap(newServicePointVersion, servicePointVersions) &&
+        !hasOverlapWithExistingVersions(newServicePointVersion, servicePointVersions);
+    }
+
+    private boolean hasOverlapWithExistingVersions(ServicePointVersion newServicePointVersion,
+        List<ServicePointVersion> servicePointVersions) {
+        return servicePointVersions
+            .stream()
+            .anyMatch(servicePointVersion -> servicePointVersion.getValidFrom().isBefore(newServicePointVersion.getValidTo())
+                && newServicePointVersion.getValidFrom().isBefore(servicePointVersion.getValidTo()));
+    }
+
+    private boolean hasBorderDateOverlap(ServicePointVersion newServicePointVersion,
+        List<ServicePointVersion> servicePointVersionList) {
+        return servicePointVersionList
+            .stream()
+            .anyMatch(servicePointVersion ->
+                datesAreEqual(servicePointVersion.getValidFrom(), newServicePointVersion.getValidFrom())
+                    || datesAreEqual(servicePointVersion.getValidFrom(), newServicePointVersion.getValidTo())
+                    || datesAreEqual(servicePointVersion.getValidTo(), newServicePointVersion.getValidFrom())
+                    || datesAreEqual(servicePointVersion.getValidTo(), newServicePointVersion.getValidTo()));
+    }
+
+    private boolean datesAreEqual(LocalDate date1, LocalDate date2) {
+        return date1.equals(date2);
     }
 
 }
