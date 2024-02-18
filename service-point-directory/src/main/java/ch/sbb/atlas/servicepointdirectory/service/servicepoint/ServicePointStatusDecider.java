@@ -112,7 +112,7 @@ public class ServicePointStatusDecider {
     /** Scenario where newServicePointVersion, has new name. And validity of newServicePointVersion is isolated or
     * is extending (touching, but not overlapping) one of Existing servicePointVersions
     **/
-    private boolean isIsolatedOrTouchingServicePointVersion(ServicePointVersion newServicePointVersion,
+    boolean isIsolatedOrTouchingServicePointVersion(ServicePointVersion newServicePointVersion,
         List<ServicePointVersion> servicePointVersions) {
         ServicePointVersion lastExistingServicePointVersion = servicePointVersions.isEmpty() ?
             null : servicePointVersions.get(servicePointVersions.size() - 1);
@@ -158,7 +158,7 @@ public class ServicePointStatusDecider {
     /** Scenario where newServicePointVersion, has the same name as previoius one.
      * And validity of newServicePointVersion is going over existing version with the different name.
      **/
-    private boolean isThereOverlappingVersionWithTheSameName(ServicePointVersion newServicePointVersion,
+    boolean isThereOverlappingVersionWithTheSameName(ServicePointVersion newServicePointVersion,
         List<ServicePointVersion> servicePointVersions) {
         return servicePointVersions.stream()
             .filter(existing -> !hasNameChanged(existing, newServicePointVersion))
