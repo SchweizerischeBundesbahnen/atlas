@@ -194,6 +194,11 @@ include::{snippets}/contact-point-version-controller-api-test/should-get-contact
 
 include::{snippets}/contact-point-version-controller-api-test/should-get-all-contact-point-versions/auto-section.adoc[]
 
+
+=== Get Contact Point Overview - Successfully
+
+include::{snippets}/contact-point-version-controller-api-test/should-get-contact-point-overview/auto-section.adoc[]
+
 === Create Contact Point - Successfully
 
 include::{snippets}/contact-point-version-controller-api-test/should-create-contact-point/auto-section.adoc[]

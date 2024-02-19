@@ -1,20 +1,23 @@
 package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.api.location.SloidType;
+import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointOverviewModel;
+import ch.sbb.atlas.service.OverviewService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.ContactPointVersion;
+import ch.sbb.prm.directory.mapper.ContactPointVersionMapper;
 import ch.sbb.prm.directory.repository.ContactPointRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
-
+import ch.sbb.prm.directory.search.ContactPointSearchRestrictions;
 import java.util.List;
 import java.util.Optional;
-
-import ch.sbb.prm.directory.search.ContactPointSearchRestrictions;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,5 +92,19 @@ public class ContactPointService extends PrmRelatableVersionableService<ContactP
     stopPointService.checkStopPointExists(version.getParentServicePointSloid());
     locationService.allocateSloid(version, SloidType.CONTACT_POINT);
     return contactPointRepository.saveAndFlush(version);
+  }
+
+  public List<ContactPointVersion> findByParentServicePointSloid(String parentServicePointSloid) {
+    return contactPointRepository.findByParentServicePointSloid(parentServicePointSloid);
+  }
+
+  public Container<ContactPointOverviewModel> buildOverview(List<ContactPointVersion> parkingLotVersions,
+      Pageable pageable) {
+    List<ContactPointVersion> mergedVersions = OverviewService.mergeVersionsForDisplay(parkingLotVersions,
+        (x, y) -> x.getSloid().equals(y.getSloid()));
+    List<ContactPointOverviewModel> models = mergedVersions.stream()
+        .map(ContactPointVersionMapper::toOverviewModel)
+        .toList();
+    return OverviewService.toPagedContainer(models, pageable);
   }
 }

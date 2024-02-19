@@ -1056,8 +1056,7 @@
       "STOP_POINT": "Basisinformationen Haltestelle",
       "REFERENCE_POINT": "Referenzpunkt",
       "PLATFORM": "Haltekante",
-      "TICKET_COUNTER": "Billettschalter",
-      "INFORMATION_DESK": "Informationsschalter",
+      "CONTACT_POINT": "Schalter",
       "TOILET": "Toilette",
       "PARKING_LOT": "Parkplatz",
       "CONNECTION": "Verbindungen"
@@ -1260,6 +1259,28 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Der Parkplatz wurde erfolgreich hinzugefügt.",
         "EDIT_SUCCESS": "Der Parkplatz wurde erfolgreich gespeichert."
+      }
+    },
+    "CONTACT_POINTS": {
+      "BUTTON_NEW": "Neuen Schalter erfassen",
+      "NEW": "Neuer Schalter",
+      "DESIGNATION": "Bezeichnung",
+      "TYPE": "Typ",
+      "WHEELCHAIR_ACCESS": "Rollstuhlzugänglichkeit",
+      "INDUCTION_LOOP": "Induktionsverstärker",
+      "INDUCTION_LOOP_INFO": "Schalter mit Induktionsverstärker für Hörbehinderte.",
+      "CONTACT_POINT": "Schalter",
+      "ADDITIONAL_INFORMATION": "Zusätzliche Informationen",
+      "DETAIL_INFORMATION": "Angaben zum Schalter",
+      "OPENING_HOURS": "Öffnungszeiten",
+      "OPENING_HOURS_INFO": "Der Verweis auf eine Webseite ist zulässig.",
+      "TYPES": {
+        "INFORMATION_DESK": "Informationsschalter",
+        "TICKET_COUNTER": "Billettschalter"
+      },
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Der Schalter wurde erfolgreich hinzugefügt.",
+        "EDIT_SUCCESS": "Der Schalter wurde erfolgreich gespeichert."
       }
     }
   }

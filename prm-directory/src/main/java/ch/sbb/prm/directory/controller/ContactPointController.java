@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.controller;
 
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointOverviewModel;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
 import ch.sbb.atlas.imports.ItemImportResult;
@@ -12,9 +13,8 @@ import ch.sbb.prm.directory.entity.ContactPointVersion;
 import ch.sbb.prm.directory.mapper.ContactPointVersionMapper;
 import ch.sbb.prm.directory.search.ContactPointSearchRestrictions;
 import ch.sbb.prm.directory.service.ContactPointService;
-import java.util.List;
-
 import ch.sbb.prm.directory.service.dataimport.ContactPointImportService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -44,6 +44,12 @@ public class ContactPointController implements ContactPointApiV1 {
             .objects(contactPointVersions.stream().map(ContactPointVersionMapper::toModel).toList())
             .totalCount(contactPointVersions.getTotalElements())
             .build();
+  }
+
+  @Override
+  public Container<ContactPointOverviewModel> getContactPointOverview(Pageable pageable, String parentServicePointSloid) {
+    return contactPointService.buildOverview(contactPointService.findByParentServicePointSloid(parentServicePointSloid),
+        pageable);
   }
 
   @Override
