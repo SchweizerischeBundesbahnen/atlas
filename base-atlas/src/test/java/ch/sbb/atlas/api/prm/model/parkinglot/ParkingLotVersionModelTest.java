@@ -46,7 +46,7 @@ class ParkingLotVersionModelTest extends BaseValidatorTest {
     assertThat(result).hasSize(1);
   }
 
-  public static ParkingLotVersionModel getParkingLotVersionModel() {
+  private static ParkingLotVersionModel getParkingLotVersionModel() {
     return ParkingLotVersionModel.builder()
         .sloid("ch:1:sloid:12345:1")
         .validFrom(LocalDate.of(2000, 1, 1))
