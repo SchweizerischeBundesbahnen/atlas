@@ -8,7 +8,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.api.location.SloidType;
+import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointOverviewModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ContactPointTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
@@ -28,6 +31,7 @@ import java.util.Set;
 import org.assertj.core.api.AbstractComparableAssert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 
 class ContactPointServiceTest extends BasePrmServiceTest {
 
@@ -144,6 +148,27 @@ class ContactPointServiceTest extends BasePrmServiceTest {
         parentServicePointSloid);
     assertThat(relationVersions).isEmpty();
     verify(prmLocationService, times(1)).allocateSloid(any(), eq(SloidType.CONTACT_POINT));
+  }
+
+  @Test
+  void shouldCreateOverviewForContactPointByParentSloid() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+
+    ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
+    contactPointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    contactPointService.createContactPoint(contactPointVersion);
+
+    //when
+    Container<ContactPointOverviewModel> result = contactPointService.buildOverview(
+        contactPointService.findByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID),
+        Pageable.ofSize(5));
+
+    //then
+    assertThat(result.getObjects()).hasSize(1);
+    assertThat(result.getObjects().getFirst().getRecordingStatus()).isEqualTo(RecordingStatus.COMPLETE);
   }
 
 }
