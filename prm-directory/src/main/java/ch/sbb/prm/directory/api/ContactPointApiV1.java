@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.api;
 
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointOverviewModel;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
 import ch.sbb.atlas.configuration.Role;
@@ -11,6 +12,7 @@ import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
@@ -25,8 +27,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.List;
-
 @Tag(name = "Person with Reduced Mobility")
 @RequestMapping("v1/contact-points")
 public interface ContactPointApiV1 {
@@ -37,6 +37,11 @@ public interface ContactPointApiV1 {
           @Parameter(hidden = true) @PageableDefault(sort = {BasePrmEntityVersion.Fields.number,
                   BasePrmEntityVersion.Fields.validFrom}) Pageable pageable,
           @Valid @ParameterObject ContactPointObjectRequestParams contactPointObjectRequestParams);
+
+  @GetMapping("overview/{parentServicePointSloid}")
+  @PageableAsQueryParam
+  Container<ContactPointOverviewModel> getContactPointOverview(@Parameter(hidden = true) Pageable pageable,
+      @PathVariable String parentServicePointSloid);
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
