@@ -1,5 +1,6 @@
 package ch.sbb.atlas.api.prm.model.platform;
 
+import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;

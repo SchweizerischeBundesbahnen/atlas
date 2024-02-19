@@ -1,4 +1,4 @@
-package ch.sbb.atlas.api.prm.model.platform;
+package ch.sbb.atlas.api.prm.enumeration;
 
 public enum RecordingStatus {
   COMPLETE,

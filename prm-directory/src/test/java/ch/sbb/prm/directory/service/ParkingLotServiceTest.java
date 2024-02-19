@@ -9,10 +9,14 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.api.location.SloidType;
+import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
+import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotOverviewModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
+import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
@@ -23,10 +27,13 @@ import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
+import ch.sbb.prm.directory.search.ParkingLotSearchRestrictions;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 class ParkingLotServiceTest extends BasePrmServiceTest {
 
@@ -81,7 +88,7 @@ class ParkingLotServiceTest extends BasePrmServiceTest {
     List<RelationVersion> relationVersions = relationRepository
         .findAllByParentServicePointSloid(parkingLot.getParentServicePointSloid());
     assertThat(relationVersions).isEmpty();
-    verify(prmLocationService, times(1)).allocateSloid(any(),eq(SloidType.PARKING_LOT));
+    verify(prmLocationService, times(1)).allocateSloid(any(), eq(SloidType.PARKING_LOT));
   }
 
   @Test
@@ -108,7 +115,7 @@ class ParkingLotServiceTest extends BasePrmServiceTest {
     assertThat(relationVersions).hasSize(1);
     assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(PARKING_LOT);
-    verify(prmLocationService, times(1)).allocateSloid(any(),eq(SloidType.PARKING_LOT));
+    verify(prmLocationService, times(1)).allocateSloid(any(), eq(SloidType.PARKING_LOT));
   }
 
   @Test
@@ -136,7 +143,128 @@ class ParkingLotServiceTest extends BasePrmServiceTest {
     List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(
         parentServicePointSloid);
     assertThat(relationVersions).isEmpty();
-    verify(prmLocationService, times(1)).allocateSloid(any(),eq(SloidType.PARKING_LOT));
+    verify(prmLocationService, times(1)).allocateSloid(any(), eq(SloidType.PARKING_LOT));
+  }
+
+  @Test
+  void shouldFindBySloid() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+
+    ParkingLotVersion parkingLotVersion = ParkingLotTestData.getParkingLotVersion();
+    String parentServicePointSloid = stopPointVersion.getSloid();
+    parkingLotVersion.setParentServicePointSloid(parentServicePointSloid);
+    parkingLotService.save(parkingLotVersion);
+
+    //when
+    ParkingLotSearchRestrictions wrongSloidRequest = ParkingLotSearchRestrictions.builder().pageable(Pageable.ofSize(1))
+        .prmObjectRequestParams(
+            PrmObjectRequestParams.builder().sloids(List.of("ch:1:sloid:asd")).build()).build();
+    Page<ParkingLotVersion> result = parkingLotService.findAll(wrongSloidRequest);
+
+    //then
+    assertThat(result.getTotalElements()).isZero();
+
+    ParkingLotSearchRestrictions correctSloidRequest = ParkingLotSearchRestrictions.builder().pageable(Pageable.ofSize(1))
+        .prmObjectRequestParams(
+            PrmObjectRequestParams.builder().sloids(List.of(parkingLotVersion.getSloid())).build()).build();
+    result = parkingLotService.findAll(correctSloidRequest);
+    assertThat(result.getContent()).isNotEmpty();
+  }
+
+  @Test
+  void shouldCreateOverviewForParkingLotsByParentSloid() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+
+    ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLotVersion();
+    parkingLot.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    parkingLotService.createParkingLot(parkingLot);
+
+    //when
+    Container<ParkingLotOverviewModel> result = parkingLotService.buildOverview(
+        parkingLotService.findByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID),
+        Pageable.ofSize(5));
+
+    //then
+    assertThat(result.getObjects()).hasSize(1);
+    assertThat(result.getObjects().getFirst().getRecordingStatus()).isEqualTo(RecordingStatus.INCOMPLETE);
+  }
+
+  @Test
+  void shouldFindParkingLotByValidOn() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+
+    ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLotVersion();
+    parkingLot.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    parkingLot = parkingLotService.createParkingLot(parkingLot);
+
+    //when
+    Page<ParkingLotVersion> result =
+        parkingLotService.findAll(ParkingLotSearchRestrictions.builder()
+            .pageable(Pageable.ofSize(10))
+            .prmObjectRequestParams(PrmObjectRequestParams.builder()
+                .validOn(parkingLot.getValidFrom())
+                .build()).build());
+
+    //then
+    assertThat(result.getContent()).hasSize(1);
+    assertThat(result.getContent().getFirst().getId()).isEqualTo(parkingLot.getId());
+  }
+
+  @Test
+  void shouldFindParkingLotBySloid() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+
+    ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLotVersion();
+    parkingLot.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    parkingLot = parkingLotService.createParkingLot(parkingLot);
+
+    //when
+    Page<ParkingLotVersion> result =
+        parkingLotService.findAll(ParkingLotSearchRestrictions.builder()
+            .pageable(Pageable.ofSize(10))
+            .prmObjectRequestParams(PrmObjectRequestParams.builder()
+                .sloid(parkingLot.getSloid())
+                .build()).build());
+
+    //then
+    assertThat(result.getContent()).hasSize(1);
+    assertThat(result.getContent().getFirst().getId()).isEqualTo(parkingLot.getId());
+  }
+
+  @Test
+  void shouldFindParkingLotByParentSloid() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+
+    ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLotVersion();
+    parkingLot.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    parkingLot = parkingLotService.createParkingLot(parkingLot);
+
+    //when
+    Page<ParkingLotVersion> result =
+        parkingLotService.findAll(ParkingLotSearchRestrictions.builder()
+            .pageable(Pageable.ofSize(10))
+            .prmObjectRequestParams(PrmObjectRequestParams.builder()
+                .parentServicePointSloid(parkingLot.getParentServicePointSloid())
+                .build()).build());
+
+    //then
+    assertThat(result.getContent()).hasSize(1);
+    assertThat(result.getContent().getFirst().getId()).isEqualTo(parkingLot.getId());
   }
 
 }
