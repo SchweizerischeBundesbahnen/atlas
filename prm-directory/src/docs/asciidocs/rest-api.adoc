@@ -212,6 +212,14 @@ include::{snippets}/contact-point-version-controller-api-test/should-not-create-
 
 include::{snippets}/parking-lot-version-controller-api-test/should-get-parking-lot-version/auto-section.adoc[]
 
+=== Get Parking Lot Versionss - Successfully
+
+include::{snippets}/parking-lot-version-controller-api-test/should-get-parking-lot-versions/auto-section.adoc[]
+
+=== Get Parking Lot Overview - Successfully
+
+include::{snippets}/parking-lot-version-controller-api-test/should-get-parking-lot-overview/auto-section.adoc[]
+
 === Create Parking Lots - Successfully
 
 include::{snippets}/parking-lot-version-controller-api-test/should-create-parking-lot/auto-section.adoc[]
