@@ -1,0 +1,93 @@
+<div class="parking-lot">
+  <div class="ps-3 pt-3 pe-3 position-relative">
+    <div class="font-bold-4xl detail-title mb-3">
+      {{ servicePoint.designationOfficial }} -
+      {{ 'PRM.PARKING_LOTS.PARKING_LOT' | translate }}
+      {{ isNew ? '' : selectedVersion.designation }}
+    </div>
+    <div *ngIf="!isNew" class="font-xl mb-2">
+      <span data-cy="total-range">
+        <date-range-text [dateRange]="maxValidity"></date-range-text>
+      </span>
+    </div>
+    <div *ngIf="!isNew" class="d-flex flex-row mb-3">
+      <div class="d-flex flex-column me-5" data-cy="selected-version-sloid">
+        <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.SLOID' | translate }}</div>
+        <div>{{ selectedVersion.sloid }}</div>
+      </div>
+    </div>
+
+    <div class="parking-lot-detail mt-5">
+      <div class="font-bold-3xl mb-3" *ngIf="isNew">
+        {{ 'PRM.PARKING_LOTS.NEW' | translate }}
+      </div>
+      <div class="new-sloid d-flex flex-column" *ngIf="isNew">
+        <atlas-sloid
+          [formGroup]="form"
+          [givenPrefix]="servicePoint.sloid + ':'"
+          [numberColons]="0"
+        ></atlas-sloid>
+      </div>
+      <div class="col-12 d-flex mt-3 mb-5" *ngIf="showVersionSwitch">
+        <div class="d-flex flex-column pe-3">
+          <app-switch-version
+            (switchVersion)="switchVersion($event)"
+            [currentRecord]="selectedVersion"
+            [records]="parkingLot"
+            [showStatus]="false"
+          ></app-switch-version>
+        </div>
+      </div>
+
+      <h2 class="font-bold-2xl color-gray-900" *ngIf="!isNew">
+        {{ 'PRM.PARKING_LOTS.DETAIL_INFORMATION' | translate }} -
+        {{ 'COMMON.VERSION' | translate }}
+        {{ selectedVersionIndex + 1 }}
+      </h2>
+
+      <app-parking-lot-form [form]="form"></app-parking-lot-form>
+      <div *ngIf="!isNew">
+        <mat-divider class="mt-4 mb-4"></mat-divider>
+        <app-user-detail-info [record]="selectedVersion"></app-user-detail-info>
+      </div>
+    </div>
+    <div class="footer-box">
+      <footer class="d-flex justify-content-center align-items-center">
+        <atlas-button
+          (buttonClicked)="back()"
+          [disabled]="false"
+          [footerEdit]="form.enabled"
+          buttonDataCy="back"
+          buttonText="COMMON.BACK"
+          buttonType="whiteFooterNonEdit"
+        ></atlas-button>
+        <atlas-button
+          *ngIf="form.disabled"
+          (buttonClicked)="toggleEdit()"
+          applicationType="PRM"
+          [businessOrganisations]="businessOrganisations"
+          buttonDataCy="edit"
+          buttonText="COMMON.EDIT"
+          buttonType="edit-service-point-dependent"
+          wrapperStyleClass="ms-3"
+        ></atlas-button>
+        <atlas-button
+          (buttonClicked)="toggleEdit()"
+          [footerEdit]="form.enabled"
+          buttonDataCy="cancel"
+          buttonText="COMMON.CANCEL"
+          buttonType="whiteFooterEdit"
+        ></atlas-button>
+        <atlas-button
+          (buttonClicked)="save()"
+          [footerEdit]="form.enabled"
+          [disabled]="!form.dirty"
+          buttonDataCy="save"
+          buttonText="COMMON.SAVE"
+          buttonType="whiteFooterEdit"
+          wrapperStyleClass="ms-3"
+        ></atlas-button>
+      </footer>
+    </div>
+  </div>
+</div>

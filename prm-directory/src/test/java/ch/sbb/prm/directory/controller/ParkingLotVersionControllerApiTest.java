@@ -90,7 +90,7 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
     //when & then
     mvc.perform(get("/v1/parking-lots"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(1)));
+        .andExpect(jsonPath("$.objects", hasSize(1)));
   }
 
   @Test
@@ -222,6 +222,28 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2000-12-31")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2001-01-01")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2001-12-31")));
+  }
+
+  @Test
+  void shouldGetParkingLotOverview() throws Exception {
+    //given
+    ParkingLotVersion parkingLotVersion = ParkingLotTestData.getParkingLotVersion();
+    parkingLotRepository.save(parkingLotVersion);
+    //when & then
+    mvc.perform(get("/v1/parking-lots/overview/" + parkingLotVersion.getParentServicePointSloid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
+  @Test
+  void shouldGetParkingLotVersions() throws Exception {
+    //given
+    ParkingLotVersion parkingLotVersion = ParkingLotTestData.getParkingLotVersion();
+    parkingLotRepository.save(parkingLotVersion);
+    //when & then
+    mvc.perform(get("/v1/parking-lots/" + parkingLotVersion.getSloid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)));
   }
 
 }
