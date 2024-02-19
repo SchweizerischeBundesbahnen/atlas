@@ -1,0 +1,35 @@
+<ng-container *ngIf="isStopPointExisting">
+  <div class="tab-detail-container">
+    <atlas-button
+      (buttonClicked)="new()"
+      applicationType="PRM"
+      buttonDataCy="new-contact-point"
+      buttonText="PRM.CONTACT_POINTS.BUTTON_NEW"
+      buttonType="createCheckingPermission"
+      wrapperStyleClass="mb-5"
+    ></atlas-button>
+    <app-table
+      data-cy="contact-points-overview-table"
+      [tableData]="contactPoints"
+      [totalCount]="totalCount"
+      [tableColumns]="tableColumns"
+      [canEdit]="true"
+      [tableFilterConfig]="tableFilterConfig"
+      (editElementEvent)="rowClicked($event)"
+      (tableChanged)="getOverview($event)"
+      (tableInitialized)="getOverview($event)"
+    ></app-table>
+  </div>
+  <div class="footer-box">
+    <footer class="d-flex align-items-center justify-content-center">
+      <atlas-button
+        buttonDataCy="close-detail"
+        buttonText="SEPODI.BACK_TO_MAP"
+        buttonType="whiteFooterNonEdit"
+        (buttonClicked)="closeSidePanel()"
+        [footerEdit]="false"
+      >
+      </atlas-button>
+    </footer>
+  </div>
+</ng-container>
