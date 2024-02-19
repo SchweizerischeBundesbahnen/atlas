@@ -3,6 +3,7 @@ package ch.sbb.prm.directory.mapper;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
+import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -37,5 +38,24 @@ class ContactPointVersionMapperTest {
         .build();
 
     assertThat(contactPointVersionModel).usingRecursiveComparison().isEqualTo(expected);
+  }
+
+  @Test
+  void shouldHaveRecordingStatusComplete() {
+    ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
+
+    RecordingStatus result = ContactPointVersionMapper.toOverviewModel(contactPointVersion).getRecordingStatus();
+
+    assertThat(result).isEqualTo(RecordingStatus.COMPLETE);
+  }
+
+  @Test
+  void shouldHaveRecordingStatusIncomplete() {
+    ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
+    contactPointVersion.setInductionLoop(StandardAttributeType.TO_BE_COMPLETED);
+
+    RecordingStatus result = ContactPointVersionMapper.toOverviewModel(contactPointVersion).getRecordingStatus();
+
+    assertThat(result).isEqualTo(RecordingStatus.INCOMPLETE);
   }
 }
