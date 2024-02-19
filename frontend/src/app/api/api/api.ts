@@ -44,28 +44,4 @@ export * from './userInformation.service';
 import { UserInformationService } from './userInformation.service';
 export * from './workflow.service';
 import { WorkflowService } from './workflow.service';
-export const APIS = [
-  BusinessOrganisationsService,
-  ClientCredentialAdministrationService,
-  CompaniesService,
-  ExportServicePointBatchService,
-  GeoDataService,
-  ImportPrmBatchService,
-  ImportServicePointBatchService,
-  LinesService,
-  LoadingPointsService,
-  PersonWithReducedMobilityService,
-  PersonWithReducedMobilityExportService,
-  ServicePointsService,
-  SublinesService,
-  TimetableFieldNumbersService,
-  TimetableHearingStatementsService,
-  TimetableHearingYearsService,
-  TimetableYearChangeService,
-  TrafficPointElementsService,
-  TransportCompaniesService,
-  TransportCompanyRelationsService,
-  UserAdministrationService,
-  UserInformationService,
-  WorkflowService,
-];
+export const APIS = [BusinessOrganisationsService, ClientCredentialAdministrationService, CompaniesService, ExportServicePointBatchService, GeoDataService, ImportPrmBatchService, ImportServicePointBatchService, LinesService, LoadingPointsService, PersonWithReducedMobilityService, PersonWithReducedMobilityExportService, ServicePointsService, SublinesService, TimetableFieldNumbersService, TimetableHearingStatementsService, TimetableHearingYearsService, TimetableYearChangeService, TrafficPointElementsService, TransportCompaniesService, TransportCompanyRelationsService, UserAdministrationService, UserInformationService, WorkflowService];

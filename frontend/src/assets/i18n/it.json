@@ -1245,6 +1245,22 @@
         "EDIT_SUCCESS": "Il punto di riferimento è stato salvato con successo."
       },
       "CONFLICT": "Il punto di riferimento principale da {{validFrom}} a {{validTo}} è già rivendicato da {{sloid}}."
+    },
+    "PARKING_LOTS": {
+      "PARKING_LOT": "Parcheggio",
+      "BUTTON_NEW": "Nuovo parcheggio",
+      "NEW": "Nuovo parcheggio",
+      "DETAIL_INFORMATION": "Informazioni sul parcheggio",
+      "DESIGNATION": "Denominazione",
+      "ADDITIONAL_INFORMATION": "Informazioni aggiuntive",
+      "PLACES_AVAILABLE": "Parcheggi disponibili",
+      "PLACES_AVAILABLE_INFO": "Indicare se sono disponibili parcheggi per il pubblico.",
+      "PRM_PLACES_AVAILABLE": "Parcheggi per invalidi disponibili",
+      "PRM_PLACES_AVAILABLE_INFO": "Sono disponibili posti di parcheggio per invalidi secondo l’art. 65 cpv. 5 dell’ordinanza sulla segnaletica stradale (RS 741.21)?",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Il parcheggio è stato aggiunto con successo.",
+        "EDIT_SUCCESS": "Il parcheggio è stato salvato con successo."
+      }
     }
   }
 }
