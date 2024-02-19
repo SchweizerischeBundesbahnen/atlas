@@ -40,6 +40,24 @@ class CreateTrafficPointElementVersionModelTest extends BaseValidatorTest {
     assertThat(result).isEmpty();
   }
 
+  @Test
+  void shouldAllowDesignationEmpty() {
+    CreateTrafficPointElementVersionModel model = getCreateTrafficPointVersionModel();
+    model.setDesignation("");
+
+    Set<ConstraintViolation<CreateTrafficPointElementVersionModel>> result = validator.validate(model);
+    assertThat(result).isEmpty();
+  }
+
+  @Test
+  void shouldNotAllowDesignationLongerThanFourthy() {
+    CreateTrafficPointElementVersionModel model = getCreateTrafficPointVersionModel();
+    model.setDesignation("01234567890123456789012345678901234567891");
+
+    Set<ConstraintViolation<CreateTrafficPointElementVersionModel>> result = validator.validate(model);
+    assertThat(result).hasSize(1);
+  }
+
   private static CreateTrafficPointElementVersionModel getCreateTrafficPointVersionModel() {
     GeolocationBaseCreateModel trafficPointElementGeolocation = GeolocationBaseCreateModel
         .builder()
