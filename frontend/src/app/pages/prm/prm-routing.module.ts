@@ -21,6 +21,8 @@ import {ParkingLotDetailComponent} from "./tabs/parking-lot/detail/parking-lot-d
 import {parkingLotResolver} from "./tabs/parking-lot/detail/resolvers/parking-lot.resolver";
 import {ParkingLotTableComponent} from "./tabs/parking-lot/parking-lot-table.component";
 import {ContactPointTableComponent} from "./tabs/contact-point/contact-point-table.component";
+import {ContactPointDetailComponent} from "./tabs/contact-point/detail/contact-point-detail.component";
+import {contactPointResolver} from "./tabs/contact-point/detail/resolvers/contact-point.resolver";
 
 const routes: Routes = [
   {
@@ -56,6 +58,16 @@ const routes: Routes = [
     canDeactivate: [canLeaveDirtyForm],
     resolve: {
       parkingLot: parkingLotResolver,
+      servicePoint: prmPanelResolver,
+    },
+  },
+  {
+    path: Pages.STOP_POINTS.path + '/:stopPointSloid/' + Pages.CONTACT_POINT.path + '/:sloid',
+    component: ContactPointDetailComponent,
+    runGuardsAndResolvers: 'always',
+    canDeactivate: [canLeaveDirtyForm],
+    resolve: {
+      contactPoint: contactPointResolver,
       servicePoint: prmPanelResolver,
     },
   },
