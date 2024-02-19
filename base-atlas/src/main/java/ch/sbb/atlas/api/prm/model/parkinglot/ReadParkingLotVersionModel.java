@@ -21,6 +21,7 @@ import lombok.experimental.SuperBuilder;
 @Schema(name = "ReadParkingLotVersion")
 public class ReadParkingLotVersionModel extends ParkingLotVersionModel implements DatesValidator {
 
+
   @NotNull
   @Valid
   private ServicePointNumber number;
