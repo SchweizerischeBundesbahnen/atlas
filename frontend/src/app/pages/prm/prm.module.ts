@@ -11,8 +11,6 @@ import { StopPointReducedFormComponent } from './tabs/stop-point/form/stop-point
 import { StopPointCompleteFormComponent } from './tabs/stop-point/form/stop-point-complete-form/stop-point-complete-form.component';
 import { ReferencePointTableComponent } from './tabs/reference-point/reference-point-table.component';
 import { PlatformTableComponent } from './tabs/platform/platform-table.component';
-import { TicketCounterComponent } from './tabs/ticket-counter/ticket-counter.component';
-import { InformationDeskComponent } from './tabs/information-desk/information-desk.component';
 import { ToiletComponent } from './tabs/toilet/toilet.component';
 import { ConnectionComponent } from './tabs/connection/connection.component';
 import { CreateStopPointComponent } from './tabs/stop-point/create-stop-point/create-stop-point.component';
@@ -22,9 +20,12 @@ import { PlatformReducedFormComponent } from './tabs/platform/detail/form/platfo
 import { PlatformDetailComponent } from './tabs/platform/detail/platform-detail.component';
 import { ReferencePointCompleteFormComponent } from './tabs/reference-point/detail/form/reference-point-complete-form/reference-point-complete-form.component';
 import { ReferencePointDetailComponent } from './tabs/reference-point/detail/reference-point-detail.component';
-import {ParkingLotTableComponent} from "./tabs/parking-lot/parking-lot-table.component";
-import {ParkingLotDetailComponent} from "./tabs/parking-lot/detail/parking-lot-detail.component";
-import {ParkingLotFormComponent} from "./tabs/parking-lot/detail/form/parking-lot-form/parking-lot-form.component";
+import { ParkingLotTableComponent } from './tabs/parking-lot/parking-lot-table.component';
+import { ParkingLotDetailComponent } from './tabs/parking-lot/detail/parking-lot-detail.component';
+import { ParkingLotFormComponent } from './tabs/parking-lot/detail/form/parking-lot-form/parking-lot-form.component';
+import { ContactPointTableComponent } from './tabs/contact-point/contact-point-table.component';
+import { ContactPointDetailComponent } from './tabs/contact-point/detail/contact-point-detail.component';
+import { ContactPointFormComponent } from './tabs/contact-point/detail/form/contact-point-form/contact-point-form.component';
 
 @NgModule({
   declarations: [
@@ -35,8 +36,6 @@ import {ParkingLotFormComponent} from "./tabs/parking-lot/detail/form/parking-lo
     CreateStopPointComponent,
     StopPointReducedFormComponent,
     StopPointCompleteFormComponent,
-    TicketCounterComponent,
-    InformationDeskComponent,
     ToiletComponent,
     ConnectionComponent,
     PlatformTableComponent,
@@ -49,6 +48,9 @@ import {ParkingLotFormComponent} from "./tabs/parking-lot/detail/form/parking-lo
     ParkingLotTableComponent,
     ParkingLotDetailComponent,
     ParkingLotFormComponent,
+    ContactPointTableComponent,
+    ContactPointDetailComponent,
+    ContactPointFormComponent,
   ],
   imports: [CommonModule, FormModule, FormsModule, PrmRoutingModule, CoreModule],
 })
