@@ -1,36 +1,44 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {ContactPointDetailComponent} from './contact-point-detail.component';
-import {AuthService} from '../../../../../core/auth/auth.service';
-import {of} from 'rxjs';
-import {DialogService} from '../../../../../core/components/dialog/dialog.service';
-import {BERN_WYLEREGG} from '../../../../../../test/data/service-point';
-import {MockAtlasButtonComponent, MockAtlasFieldErrorComponent,} from '../../../../../app.testing.mocks';
-import {DisplayDatePipe} from '../../../../../core/pipe/display-date.pipe';
-import {TextFieldComponent} from '../../../../../core/form-components/text-field/text-field.component';
-import {AtlasLabelFieldComponent} from '../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
-import {AtlasSpacerComponent} from '../../../../../core/components/spacer/atlas-spacer.component';
-import {InfoIconComponent} from '../../../../../core/form-components/info-icon/info-icon.component';
-import {SelectComponent} from '../../../../../core/form-components/select/select.component';
-import {CommentComponent} from '../../../../../core/form-components/comment/comment.component';
-import {DateRangeTextComponent} from '../../../../../core/versioning/date-range-text/date-range-text.component';
-import {SwitchVersionComponent} from '../../../../../core/components/switch-version/switch-version.component';
-import {DateRangeComponent} from '../../../../../core/form-components/date-range/date-range.component';
-import {DateIconComponent} from '../../../../../core/form-components/date-icon/date-icon.component';
-import {AppTestingModule} from '../../../../../app.testing.module';
-import {ActivatedRoute} from '@angular/router';
-import {NotificationService} from '../../../../../core/notification/notification.service';
-import {BooleanOptionalAttributeType, PersonWithReducedMobilityService, ReadParkingLotVersion,} from '../../../../../api';
-import {TranslatePipe} from '@ngx-translate/core';
-import {SplitServicePointNumberPipe} from '../../../../../core/search-service-point/split-service-point-number.pipe';
+import { ContactPointDetailComponent } from './contact-point-detail.component';
+import { AuthService } from '../../../../../core/auth/auth.service';
+import { of } from 'rxjs';
+import { DialogService } from '../../../../../core/components/dialog/dialog.service';
+import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
+import {
+  MockAtlasButtonComponent,
+  MockAtlasFieldErrorComponent,
+} from '../../../../../app.testing.mocks';
+import { DisplayDatePipe } from '../../../../../core/pipe/display-date.pipe';
+import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
+import { AtlasLabelFieldComponent } from '../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
+import { InfoIconComponent } from '../../../../../core/form-components/info-icon/info-icon.component';
+import { SelectComponent } from '../../../../../core/form-components/select/select.component';
+import { CommentComponent } from '../../../../../core/form-components/comment/comment.component';
+import { DateRangeTextComponent } from '../../../../../core/versioning/date-range-text/date-range-text.component';
+import { SwitchVersionComponent } from '../../../../../core/components/switch-version/switch-version.component';
+import { DateRangeComponent } from '../../../../../core/form-components/date-range/date-range.component';
+import { DateIconComponent } from '../../../../../core/form-components/date-icon/date-icon.component';
+import { AppTestingModule } from '../../../../../app.testing.module';
+import { ActivatedRoute } from '@angular/router';
+import { NotificationService } from '../../../../../core/notification/notification.service';
+import {
+  ContactPointType,
+  PersonWithReducedMobilityService,
+  ReadContactPointVersion,
+  StandardAttributeType,
+} from '../../../../../api';
+import { TranslatePipe } from '@ngx-translate/core';
+import { SplitServicePointNumberPipe } from '../../../../../core/search-service-point/split-service-point-number.pipe';
 import moment from 'moment';
-import {UserDetailInfoComponent} from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
-import {SloidComponent} from '../../../../../core/form-components/sloid/sloid.component';
-import {AtlasSlideToggleComponent} from '../../../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
-import {ContactPointFormComponent} from "./form/parking-lot-form/contact-point-form.component";
+import { UserDetailInfoComponent } from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import { SloidComponent } from '../../../../../core/form-components/sloid/sloid.component';
+import { AtlasSlideToggleComponent } from '../../../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
+import { ContactPointFormComponent } from './form/contact-point-form/contact-point-form.component';
 import SpyObj = jasmine.SpyObj;
 
-const parkingLot: ReadParkingLotVersion[] = [
+const contactPoint: ReadContactPointVersion[] = [
   {
     creationDate: '2024-01-22T13:52:30.598026',
     creator: 'e524381',
@@ -44,8 +52,10 @@ const parkingLot: ReadParkingLotVersion[] = [
     parentServicePointSloid: 'ch:1:sloid:7000',
     designation: 'designation',
     additionalInformation: 'additional',
-    placesAvailable: BooleanOptionalAttributeType.ToBeCompleted,
-    prmPlacesAvailable: BooleanOptionalAttributeType.ToBeCompleted,
+    inductionLoop: StandardAttributeType.ToBeCompleted,
+    openingHours: 'openingHours',
+    wheelchairAccess: StandardAttributeType.ToBeCompleted,
+    type: ContactPointType.InformationDesk,
     number: {
       number: 8507000,
       numberShort: 7000,
@@ -67,10 +77,10 @@ describe('ContactPointDetailComponent', () => {
 
   const personWithReducedMobilityService = jasmine.createSpyObj(
     'personWithReducedMobilityService',
-    ['createParkingLot', 'updateParkingLot'],
+    ['createContactPoint', 'updateContactPoint'],
   );
-  personWithReducedMobilityService.createParkingLot.and.returnValue(of(parkingLot[0]));
-  personWithReducedMobilityService.updateParkingLot.and.returnValue(of(parkingLot));
+  personWithReducedMobilityService.createContactPoint.and.returnValue(of(contactPoint[0]));
+  personWithReducedMobilityService.updateContactPoint.and.returnValue(of(contactPoint));
 
   const notificationService = jasmine.createSpyObj('notificationService', ['success']);
   const dialogService: SpyObj<DialogService> = jasmine.createSpyObj('dialogService', ['confirm']);
@@ -80,7 +90,7 @@ describe('ContactPointDetailComponent', () => {
     snapshot: {
       data: {
         servicePoint: [BERN_WYLEREGG],
-        parkingLot: [],
+        contactPoint: [],
       },
     },
   };
@@ -120,7 +130,7 @@ describe('ContactPointDetailComponent', () => {
     });
   });
 
-  describe('new parking lot', () => {
+  describe('new contact point', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(ContactPointDetailComponent);
       component = fixture.componentInstance;
@@ -138,24 +148,25 @@ describe('ContactPointDetailComponent', () => {
 
     it('should create on save', () => {
       component.form.controls.designation.setValue('Haupteingang A');
+      component.form.controls.type.setValue(ContactPointType.InformationDesk);
       component.form.controls.validFrom.setValue(moment('31.10.2000', 'dd.MM.yyyy'));
       component.form.controls.validTo.setValue(moment('31.10.2099', 'dd.MM.yyyy'));
 
       component.save();
 
-      expect(personWithReducedMobilityService.createParkingLot).toHaveBeenCalled();
+      expect(personWithReducedMobilityService.createContactPoint).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
   });
 
-  describe('edit parking lot', () => {
+  describe('edit contact point', () => {
     beforeEach(() => {
       TestBed.overrideProvider(ActivatedRoute, {
         useValue: {
           snapshot: {
             data: {
               servicePoint: [BERN_WYLEREGG],
-              parkingLot: parkingLot,
+              contactPoint: contactPoint,
             },
           },
         },
@@ -201,7 +212,7 @@ describe('ContactPointDetailComponent', () => {
       component.form.controls.designation.markAsDirty();
 
       component.save();
-      expect(personWithReducedMobilityService.updateParkingLot).toHaveBeenCalled();
+      expect(personWithReducedMobilityService.updateContactPoint).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
   });

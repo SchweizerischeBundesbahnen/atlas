@@ -1,12 +1,17 @@
-import {TestBed} from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
-import {Observable, of} from 'rxjs';
-import {ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot} from '@angular/router';
-import {contactPointResolver} from './contact-point.resolver';
-import {BooleanOptionalAttributeType, PersonWithReducedMobilityService, ReadParkingLotVersion} from '../../../../../../api';
-import {AppTestingModule} from '../../../../../../app.testing.module';
+import { Observable, of } from 'rxjs';
+import { ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot } from '@angular/router';
+import { contactPointResolver } from './contact-point.resolver';
+import {
+  ContactPointType,
+  PersonWithReducedMobilityService,
+  ReadContactPointVersion,
+  StandardAttributeType,
+} from '../../../../../../api';
+import { AppTestingModule } from '../../../../../../app.testing.module';
 
-const parkingLot: ReadParkingLotVersion[] = [
+const contactPoint: ReadContactPointVersion[] = [
   {
     creationDate: '2024-01-22T13:52:30.598026',
     creator: 'e524381',
@@ -20,8 +25,10 @@ const parkingLot: ReadParkingLotVersion[] = [
     parentServicePointSloid: 'ch:1:sloid:7000',
     designation: 'designation',
     additionalInformation: 'additional',
-    placesAvailable: BooleanOptionalAttributeType.ToBeCompleted,
-    prmPlacesAvailable: BooleanOptionalAttributeType.ToBeCompleted,
+    inductionLoop: StandardAttributeType.ToBeCompleted,
+    openingHours: 'openingHours',
+    wheelchairAccess: StandardAttributeType.ToBeCompleted,
+    type: ContactPointType.InformationDesk,
     number: {
       number: 8507000,
       numberShort: 7000,
@@ -34,9 +41,9 @@ const parkingLot: ReadParkingLotVersion[] = [
 describe('PrmContactPointResolver', () => {
   const personWithReducedMobilityServiceSpy = jasmine.createSpyObj(
     'personWithReducedMobilityService',
-    ['getParkingLotVersions'],
+    ['getContactPointVersions'],
   );
-  personWithReducedMobilityServiceSpy.getParkingLotVersions.and.returnValue(of(parkingLot));
+  personWithReducedMobilityServiceSpy.getContactPointVersions.and.returnValue(of(contactPoint));
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -50,14 +57,14 @@ describe('PrmContactPointResolver', () => {
     });
   });
 
-  it('should get parkingLot from prm-directory', () => {
+  it('should get contactPoint from prm-directory', () => {
     const mockRoute = {
       paramMap: convertToParamMap({ sloid: 'ch:1:sloid:12345:1' }),
     } as ActivatedRouteSnapshot;
 
     const result = TestBed.runInInjectionContext(() =>
       contactPointResolver(mockRoute, {} as RouterStateSnapshot),
-    ) as Observable<ReadParkingLotVersion[]>;
+    ) as Observable<ReadContactPointVersion[]>;
 
     result.subscribe((versions) => {
       expect(versions.length).toBe(1);
