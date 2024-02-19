@@ -1245,6 +1245,22 @@
         "EDIT_SUCCESS": "Le point de référence a été enregistré avec succès."
       },
       "CONFLICT": "Le point de référence principal est déjà occupé par {{sloid}} de {{validFrom}} à {{validTo}}."
+    },
+    "PARKING_LOTS": {
+      "PARKING_LOT": "Place de stationnement",
+      "BUTTON_NEW": "Ajouter une nouvelle place de stationnement",
+      "NEW": "Nouvelle place de stationnement",
+      "DETAIL_INFORMATION": "Informations sur le place de stationnement",
+      "DESIGNATION": "Désignation",
+      "ADDITIONAL_INFORMATION": "Informations complémentaires",
+      "PLACES_AVAILABLE": "Existence de places de stationnement",
+      "PLACES_AVAILABLE_INFO": "Indication si des places de stationnement existent pour le grand public.",
+      "PRM_PLACES_AVAILABLE": "Existence de places de stationnement pour personnes à mobilité réduite",
+      "PRM_PLACES_AVAILABLE_INFO": "Existe-t-il des cases de stationnement pour personnes à mobilité réduite selon l’art. 65, al. 5 de l’ordonnance sur la signalisation routière (RS 741.21)?",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Le place de stationnement a été ajouté avec succès.",
+        "EDIT_SUCCESS": "Le place de stationnement a été enregistré avec succès."
+      }
     }
   }
 }

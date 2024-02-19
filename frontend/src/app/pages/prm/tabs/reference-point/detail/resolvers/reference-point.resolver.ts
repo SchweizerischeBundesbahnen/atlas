@@ -1,12 +1,8 @@
-import { ActivatedRouteSnapshot, ResolveFn, Router } from '@angular/router';
-import { inject, Injectable } from '@angular/core';
-import { catchError, Observable, of } from 'rxjs';
-import {
-  PersonWithReducedMobilityService,
-  ReadPlatformVersion,
-  ReadReferencePointVersion,
-} from '../../../../../../api';
-import { Pages } from '../../../../../pages';
+import {ActivatedRouteSnapshot, ResolveFn, Router} from '@angular/router';
+import {inject, Injectable} from '@angular/core';
+import {catchError, Observable, of} from 'rxjs';
+import {PersonWithReducedMobilityService, ReadReferencePointVersion,} from '../../../../../../api';
+import {Pages} from '../../../../../pages';
 
 @Injectable({ providedIn: 'root' })
 export class PrmReferencePointResolver {
@@ -31,6 +27,6 @@ export class PrmReferencePointResolver {
   }
 }
 
-export const referencePointResolver: ResolveFn<Array<ReadPlatformVersion>> = (
+export const referencePointResolver: ResolveFn<Array<ReadReferencePointVersion>> = (
   route: ActivatedRouteSnapshot,
 ) => inject(PrmReferencePointResolver).resolve(route);

@@ -75,8 +75,8 @@ public class ReferencePointController implements ReferencePointApiV1 {
     return referencePointService.getAllVersions(sloid).stream().map(ReferencePointVersionMapper::toModel).toList();
   }
 
-    @Override
-    public List<ItemImportResult> importReferencePoints(ReferencePointImportRequestModel importRequestModel) {
-        return referencePointImportService.importReferencePoints(importRequestModel.getReferencePointCsvModelContainers());
-    }
+  @Override
+  public List<ItemImportResult> importReferencePoints(ReferencePointImportRequestModel importRequestModel) {
+    return referencePointImportService.importReferencePoints(importRequestModel.getReferencePointCsvModelContainers());
+  }
 }
