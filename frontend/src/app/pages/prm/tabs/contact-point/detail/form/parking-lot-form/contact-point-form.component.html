@@ -1,5 +1,21 @@
 <div class="col-12 d-flex mt-4">
   <div class="d-flex flex-column col-6">
+    <atlas-select
+      [formGroup]="form"
+      [required]="true"
+      controlName="type"
+      dataCy="type"
+      label="PRM.CONTACT_POINTS.TYPE"
+      optionTranslateLabelPrefix="PRM.CONTACT_POINTS.TYPES."
+      [options]="types"
+      [additionalLabelspace]="0"
+    >
+    </atlas-select>
+  </div>
+</div>
+
+<div class="col-12 d-flex mt-4">
+  <div class="d-flex flex-column col-6">
     <atlas-text-field
       [fieldExamples]="[
         { label: 'FORM.MAX_CHARS', translate: true, arg: { key: 'numberOfChars', value: '50' } }
@@ -7,7 +23,7 @@
       [required]="true"
       [formGroup]="form"
       controlName="designation"
-      fieldLabel="PRM.PARKING_LOTS.DESIGNATION"
+      fieldLabel="PRM.CONTACT_POINTS.DESIGNATION"
     >
     </atlas-text-field>
   </div>
@@ -28,12 +44,11 @@
   <div class="d-flex flex-column col-6">
     <atlas-select
       [formGroup]="form"
-      controlName="placesAvailable"
-      dataCy="placesAvailable"
-      label="PRM.PARKING_LOTS.PLACES_AVAILABLE"
-      infoIconTitle="PRM.PARKING_LOTS.PLACES_AVAILABLE_INFO"
+      controlName="wheelchairAccess"
+      dataCy="wheelchairAccess"
+      label="PRM.CONTACT_POINTS.WHEELCHAIR_ACCESS"
       optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
-      [options]="booleanOptionalAttributeTypes"
+      [options]="standardAttributeType"
       [additionalLabelspace]="0"
     >
     </atlas-select>
@@ -41,12 +56,12 @@
   <div class="d-flex flex-column col-6 ps-3">
     <atlas-select
       [formGroup]="form"
-      controlName="prmPlacesAvailable"
-      dataCy="prmPlacesAvailable"
-      label="PRM.PARKING_LOTS.PRM_PLACES_AVAILABLE"
-      infoIconTitle="PRM.PARKING_LOTS.PRM_PLACES_AVAILABLE_INFO"
+      controlName="inductionLoop"
+      dataCy="inductionLoop"
+      label="PRM.CONTACT_POINTS.INDUCTION_LOOP"
+      infoIconTitle="PRM.CONTACT_POINTS.INDUCTION_LOOP_INFO"
       optionTranslateLabelPrefix="PRM.ENUMS.STANDARD_ATTRIBUTE_TYPES."
-      [options]="booleanOptionalAttributeTypes"
+      [options]="standardAttributeType"
       [additionalLabelspace]="0"
     >
     </atlas-select>
@@ -57,7 +72,19 @@
   <div class="d-flex flex-column col-6">
     <form-comment
       [formGroup]="form"
-      label="PRM.PARKING_LOTS.ADDITIONAL_INFORMATION"
+      label="PRM.CONTACT_POINTS.OPENING_HOURS"
+      info="PRM.CONTACT_POINTS.OPENING_HOURS_INFO"
+      controlName="openingHours"
+      maxChars="2000"
+    ></form-comment>
+  </div>
+</div>
+
+<div class="col-12 d-flex mt-4">
+  <div class="d-flex flex-column col-6">
+    <form-comment
+      [formGroup]="form"
+      label="PRM.CONTACT_POINTS.ADDITIONAL_INFORMATION"
       controlName="additionalInformation"
       maxChars="2000"
     ></form-comment>

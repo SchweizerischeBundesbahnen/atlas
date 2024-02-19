@@ -1266,8 +1266,14 @@
       "NEW": "Neuer Schalter",
       "DESIGNATION": "Bezeichnung",
       "TYPE": "Typ",
+      "WHEELCHAIR_ACCESS": "Rollstuhlzugänglichkeit",
+      "INDUCTION_LOOP": "Induktionsverstärker",
+      "INDUCTION_LOOP_INFO": "Schalter mit Induktionsverstärker für Hörbehinderte.",
       "CONTACT_POINT": "Schalter",
+      "ADDITIONAL_INFORMATION": "Zusätzliche Informationen",
       "DETAIL_INFORMATION": "Angaben zum Schalter",
+      "OPENING_HOURS": "Öffnungszeiten",
+      "OPENING_HOURS_INFO": "Der Verweis auf eine Webseite ist zulässig.",
       "TYPES": {
         "INFORMATION_DESK": "Informationsschalter",
         "TICKET_COUNTER": "Billettschalter"
