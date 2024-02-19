@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.module.ts
 api/api.ts
@@ -48,11 +47,13 @@ model/company.ts
 model/contactPointCsvModel.ts
 model/contactPointCsvModelContainer.ts
 model/contactPointImportRequest.ts
+model/contactPointOverview.ts
 model/contactPointVersion.ts
 model/containerBusinessOrganisation.ts
 model/containerBusinessOrganisationVersion.ts
 model/containerClientCredential.ts
 model/containerCompany.ts
+model/containerContactPointOverview.ts
 model/containerLine.ts
 model/containerLineVersionSnapshot.ts
 model/containerParkingLotOverview.ts
