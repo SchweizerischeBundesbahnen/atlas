@@ -20,12 +20,12 @@ import { PlatformReducedFormComponent } from './tabs/platform/detail/form/platfo
 import { PlatformDetailComponent } from './tabs/platform/detail/platform-detail.component';
 import { ReferencePointCompleteFormComponent } from './tabs/reference-point/detail/form/reference-point-complete-form/reference-point-complete-form.component';
 import { ReferencePointDetailComponent } from './tabs/reference-point/detail/reference-point-detail.component';
-import {ParkingLotTableComponent} from "./tabs/parking-lot/parking-lot-table.component";
-import {ParkingLotDetailComponent} from "./tabs/parking-lot/detail/parking-lot-detail.component";
-import {ParkingLotFormComponent} from "./tabs/parking-lot/detail/form/parking-lot-form/parking-lot-form.component";
-import {ContactPointTableComponent} from "./tabs/contact-point/contact-point-table.component";
-import {ContactPointDetailComponent} from "./tabs/contact-point/detail/contact-point-detail.component";
-import {ContactPointFormComponent} from "./tabs/contact-point/detail/form/parking-lot-form/contact-point-form.component";
+import { ParkingLotTableComponent } from './tabs/parking-lot/parking-lot-table.component';
+import { ParkingLotDetailComponent } from './tabs/parking-lot/detail/parking-lot-detail.component';
+import { ParkingLotFormComponent } from './tabs/parking-lot/detail/form/parking-lot-form/parking-lot-form.component';
+import { ContactPointTableComponent } from './tabs/contact-point/contact-point-table.component';
+import { ContactPointDetailComponent } from './tabs/contact-point/detail/contact-point-detail.component';
+import { ContactPointFormComponent } from './tabs/contact-point/detail/form/contact-point-form/contact-point-form.component';
 
 @NgModule({
   declarations: [
