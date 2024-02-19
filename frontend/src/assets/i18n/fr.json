@@ -1261,6 +1261,28 @@
         "ADD_SUCCESS": "Le place de stationnement a été ajouté avec succès.",
         "EDIT_SUCCESS": "Le place de stationnement a été enregistré avec succès."
       }
+    },
+    "CONTACT_POINTS": {
+      "BUTTON_NEW": "Ajouter un nouveau guichet des billets",
+      "NEW": "Ajouter un nouveau guichet des billets",
+      "DESIGNATION": "Désignation",
+      "TYPE": "Genre",
+      "WHEELCHAIR_ACCESS": "Accessibilité en chaise roulante",
+      "INDUCTION_LOOP": "Amplificateur inductif",
+      "INDUCTION_LOOP_INFO": "Guichet des billets avec amplificateur inductif pour les malentendants.",
+      "CONTACT_POINT": "Guichet",
+      "ADDITIONAL_INFORMATION": "Informations complémentaires",
+      "DETAIL_INFORMATION": "Informations sur le guichet",
+      "OPENING_HOURS": "Heures d’ouverture",
+      "OPENING_HOURS_INFO": "Le renvoi vers un site web est permis.",
+      "TYPES": {
+        "INFORMATION_DESK": "Guichets d’information",
+        "TICKET_COUNTER": "Guichet"
+      },
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Le guichet a été ajouté avec succès.",
+        "EDIT_SUCCESS": "Le guichet a été enregistré avec succès."
+      }
     }
   }
 }
