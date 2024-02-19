@@ -1245,6 +1245,22 @@
         "EDIT_SUCCESS": "Der Referenzpunkt wurde erfolgreich gespeichert."
       },
       "CONFLICT": "Hauptreferenzpunkt wird von {{validFrom}} bis {{validTo}} bereits von {{sloid}} beansprucht."
+    },
+    "PARKING_LOTS": {
+      "PARKING_LOT": "Parkplatz",
+      "BUTTON_NEW": "Neuen Parkplatz erfassen",
+      "NEW": "Neuer Parkplatz",
+      "DETAIL_INFORMATION": "Angaben zum Parkplatz",
+      "DESIGNATION": "Bezeichnung",
+      "ADDITIONAL_INFORMATION": "Zusätzliche Informationen",
+      "PLACES_AVAILABLE": "Parkplätze",
+      "PLACES_AVAILABLE_INFO": "Angabe ob Parkplätze für die Allgemeinheit vorhanden sind",
+      "PRM_PLACES_AVAILABLE": "Parkplätze für Gehbehinderte",
+      "PRM_PLACES_AVAILABLE_INFO": "Sind Parkfelder für Gehbehinderte nach Art. 65 Abs. 5 Signalisationsverordnung (SR 741.21) vorhanden?",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Der Parkplatz wurde erfolgreich hinzugefügt.",
+        "EDIT_SUCCESS": "Der Parkplatz wurde erfolgreich gespeichert."
+      }
     }
   }
 }
