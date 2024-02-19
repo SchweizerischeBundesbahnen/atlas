@@ -1,7 +1,7 @@
-import {Component, Input} from '@angular/core';
-import {ControlContainer, FormGroup, NgForm} from '@angular/forms';
-import {ContactPointFormGroup} from '../contact-point-form-group';
-import {BooleanOptionalAttributeType} from '../../../../../../../api';
+import { Component, Input } from '@angular/core';
+import { ControlContainer, FormGroup, NgForm } from '@angular/forms';
+import { ContactPointFormGroup } from '../contact-point-form-group';
+import { ContactPointType, StandardAttributeType } from '../../../../../../../api';
 
 @Component({
   selector: 'app-contact-point-form',
@@ -12,5 +12,6 @@ export class ContactPointFormComponent {
   @Input() form!: FormGroup<ContactPointFormGroup>;
   @Input() isNew = false;
 
-  booleanOptionalAttributeTypes = Object.values(BooleanOptionalAttributeType);
+  standardAttributeType = Object.values(StandardAttributeType);
+  types = Object.values(ContactPointType);
 }
