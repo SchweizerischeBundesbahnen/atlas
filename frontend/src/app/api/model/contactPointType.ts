@@ -10,13 +10,9 @@
  * Do not edit the class manually.
  */
 
-export interface UserDisplayName {
-  /**
-   * SBB User Id
-   */
-  sbbUserId?: string;
-  /**
-   * User display name (azure)
-   */
-  displayName?: string;
-}
+export type ContactPointType = 'INFORMATION_DESK' | 'TICKET_COUNTER';
+
+export const ContactPointType = {
+  InformationDesk: 'INFORMATION_DESK' as ContactPointType,
+  TicketCounter: 'TICKET_COUNTER' as ContactPointType,
+};
