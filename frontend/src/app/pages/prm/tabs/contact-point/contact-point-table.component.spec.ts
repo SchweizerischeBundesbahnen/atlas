@@ -1,26 +1,26 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InformationDeskComponent } from './information-desk.component';
-import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
+import { ContactPointTableComponent } from './contact-point-table.component';
+import { STOP_POINT } from '../../util/stop-point-test-data.spec';
+import { MockAtlasButtonComponent, MockTableComponent } from '../../../../app.testing.mocks';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { ActivatedRoute } from '@angular/router';
-import { STOP_POINT } from '../../util/stop-point-test-data.spec';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 
-describe('InformationDeskComponent', () => {
-  let component: InformationDeskComponent;
-  let fixture: ComponentFixture<InformationDeskComponent>;
+describe('ContactPointTableComponent', () => {
+  let component: ContactPointTableComponent;
+  let fixture: ComponentFixture<ContactPointTableComponent>;
   const activatedRouteMock = {
     parent: { snapshot: { data: { stopPoints: [STOP_POINT], servicePoints: [BERN_WYLEREGG] } } },
   };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [InformationDeskComponent, MockAtlasButtonComponent],
+      declarations: [ContactPointTableComponent, MockAtlasButtonComponent, MockTableComponent],
       imports: [AppTestingModule],
       providers: [{ provide: ActivatedRoute, useValue: activatedRouteMock }],
     });
-    fixture = TestBed.createComponent(InformationDeskComponent);
+    fixture = TestBed.createComponent(ContactPointTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
