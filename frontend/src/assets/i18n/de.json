@@ -1266,9 +1266,15 @@
       "NEW": "Neuer Schalter",
       "DESIGNATION": "Bezeichnung",
       "TYPE": "Typ",
+      "CONTACT_POINT": "Schalter",
+      "DETAIL_INFORMATION": "Angaben zum Schalter",
       "TYPES": {
         "INFORMATION_DESK": "Informationsschalter",
         "TICKET_COUNTER": "Billettschalter"
+      },
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Der Schalter wurde erfolgreich hinzugefügt.",
+        "EDIT_SUCCESS": "Der Schalter wurde erfolgreich gespeichert."
       }
     }
   }

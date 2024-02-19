@@ -24,6 +24,8 @@ import {ParkingLotTableComponent} from "./tabs/parking-lot/parking-lot-table.com
 import {ParkingLotDetailComponent} from "./tabs/parking-lot/detail/parking-lot-detail.component";
 import {ParkingLotFormComponent} from "./tabs/parking-lot/detail/form/parking-lot-form/parking-lot-form.component";
 import {ContactPointTableComponent} from "./tabs/contact-point/contact-point-table.component";
+import {ContactPointDetailComponent} from "./tabs/contact-point/detail/contact-point-detail.component";
+import {ContactPointFormComponent} from "./tabs/contact-point/detail/form/parking-lot-form/contact-point-form.component";
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import {ContactPointTableComponent} from "./tabs/contact-point/contact-point-tab
     ParkingLotDetailComponent,
     ParkingLotFormComponent,
     ContactPointTableComponent,
+    ContactPointDetailComponent,
+    ContactPointFormComponent,
   ],
   imports: [CommonModule, FormModule, FormsModule, PrmRoutingModule, CoreModule],
 })
