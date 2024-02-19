@@ -14,14 +14,9 @@ export const PrmTabs = {
     title: 'PRM.TABS.PLATFORM',
   },
 
-  TICKET_COUNTER: {
-    link: 'ticket-counters',
-    title: 'PRM.TABS.TICKET_COUNTER',
-  },
-
-  INFORMATION_DESK: {
-    link: 'information-desks',
-    title: 'PRM.TABS.INFORMATION_DESK',
+  CONTACT_POINT: {
+    link: 'contact-points',
+    title: 'PRM.TABS.CONTACT_POINT',
   },
 
   TOILET: {
@@ -41,8 +36,7 @@ export const PRM_TABS = [
   PrmTabs.STOP_POINT,
   PrmTabs.REFERENCE_POINT,
   PrmTabs.PLATFORM,
-  PrmTabs.TICKET_COUNTER,
-  PrmTabs.INFORMATION_DESK,
+  PrmTabs.CONTACT_POINT,
   PrmTabs.TOILET,
   PrmTabs.PARKING_LOT,
   PrmTabs.CONNECTION,
@@ -51,8 +45,7 @@ export const PRM_TABS = [
 export const PRM_REDUCED_TABS = [
   PrmTabs.STOP_POINT,
   PrmTabs.PLATFORM,
-  PrmTabs.TICKET_COUNTER,
-  PrmTabs.INFORMATION_DESK,
+  PrmTabs.CONTACT_POINT,
   PrmTabs.TOILET,
   PrmTabs.PARKING_LOT,
 ];

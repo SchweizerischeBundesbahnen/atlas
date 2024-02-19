@@ -9,24 +9,78 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { StandardAttributeType } from './standardAttributeType';
 
 
-export interface ServicePointNumber { 
+export interface ContactPointOverview { 
     /**
-     * DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort. Size: 7
+     * Object creation date
      */
-    number: number;
+    readonly creationDate?: string;
     /**
-     * Calculated value formed from the numberShort. Range: 0-9
+     * User creator
      */
-    checkDigit: number;
+    readonly creator?: string;
     /**
-     * UicCountryCode, Indicates which country allocated the service point number and is to be interpreted organisationally, not territorially.
+     * Last edition date
      */
-    uicCountryCode: number;
+    readonly editionDate?: string;
     /**
-     * NumberShort - 5 chars identifying number. Range: 1-99.999
+     * User editor
      */
-    numberShort: number;
+    readonly editor?: string;
+    /**
+     * Technical identifier
+     */
+    readonly id?: number;
+    /**
+     * Unique code for locations that is used in customer information. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here: https://transportdatamanagement.ch/standards/
+     */
+    sloid?: string;
+    /**
+     * Valid from
+     */
+    validFrom: Date;
+    /**
+     * Valid to
+     */
+    validTo: Date;
+    /**
+     * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
+     */
+    etagVersion?: number;
+    /**
+     * Parent Service Point Sloid: Unique code for locations that is used in customer information. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here: https://transportdatamanagement.ch/standards/
+     */
+    parentServicePointSloid: string;
+    /**
+     * Designation
+     */
+    designation?: string;
+    /**
+     * Additional Information
+     */
+    additionalInformation?: string;
+    inductionLoop?: StandardAttributeType;
+    /**
+     * Opening hours
+     */
+    openingHours?: string;
+    wheelchairAccess?: StandardAttributeType;
+    type: ContactPointOverview.TypeEnum;
+    recordingStatus: ContactPointOverview.RecordingStatusEnum;
 }
+export namespace ContactPointOverview {
+    export type TypeEnum = 'INFORMATION_DESK' | 'TICKET_COUNTER';
+    export const TypeEnum = {
+        InformationDesk: 'INFORMATION_DESK' as TypeEnum,
+        TicketCounter: 'TICKET_COUNTER' as TypeEnum
+    };
+    export type RecordingStatusEnum = 'COMPLETE' | 'INCOMPLETE';
+    export const RecordingStatusEnum = {
+        Complete: 'COMPLETE' as RecordingStatusEnum,
+        Incomplete: 'INCOMPLETE' as RecordingStatusEnum
+    };
+}
+
 

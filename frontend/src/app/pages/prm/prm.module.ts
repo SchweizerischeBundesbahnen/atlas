@@ -11,8 +11,6 @@ import { StopPointReducedFormComponent } from './tabs/stop-point/form/stop-point
 import { StopPointCompleteFormComponent } from './tabs/stop-point/form/stop-point-complete-form/stop-point-complete-form.component';
 import { ReferencePointTableComponent } from './tabs/reference-point/reference-point-table.component';
 import { PlatformTableComponent } from './tabs/platform/platform-table.component';
-import { TicketCounterComponent } from './tabs/ticket-counter/ticket-counter.component';
-import { InformationDeskComponent } from './tabs/information-desk/information-desk.component';
 import { ToiletComponent } from './tabs/toilet/toilet.component';
 import { ConnectionComponent } from './tabs/connection/connection.component';
 import { CreateStopPointComponent } from './tabs/stop-point/create-stop-point/create-stop-point.component';
@@ -25,6 +23,7 @@ import { ReferencePointDetailComponent } from './tabs/reference-point/detail/ref
 import {ParkingLotTableComponent} from "./tabs/parking-lot/parking-lot-table.component";
 import {ParkingLotDetailComponent} from "./tabs/parking-lot/detail/parking-lot-detail.component";
 import {ParkingLotFormComponent} from "./tabs/parking-lot/detail/form/parking-lot-form/parking-lot-form.component";
+import {ContactPointTableComponent} from "./tabs/contact-point/contact-point-table.component";
 
 @NgModule({
   declarations: [
@@ -35,8 +34,6 @@ import {ParkingLotFormComponent} from "./tabs/parking-lot/detail/form/parking-lo
     CreateStopPointComponent,
     StopPointReducedFormComponent,
     StopPointCompleteFormComponent,
-    TicketCounterComponent,
-    InformationDeskComponent,
     ToiletComponent,
     ConnectionComponent,
     PlatformTableComponent,
@@ -49,6 +46,7 @@ import {ParkingLotFormComponent} from "./tabs/parking-lot/detail/form/parking-lo
     ParkingLotTableComponent,
     ParkingLotDetailComponent,
     ParkingLotFormComponent,
+    ContactPointTableComponent,
   ],
   imports: [CommonModule, FormModule, FormsModule, PrmRoutingModule, CoreModule],
 })

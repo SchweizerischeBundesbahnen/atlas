@@ -1056,8 +1056,7 @@
       "STOP_POINT": "Basisinformationen Haltestelle",
       "REFERENCE_POINT": "Referenzpunkt",
       "PLATFORM": "Haltekante",
-      "TICKET_COUNTER": "Billettschalter",
-      "INFORMATION_DESK": "Informationsschalter",
+      "CONTACT_POINT": "Schalter",
       "TOILET": "Toilette",
       "PARKING_LOT": "Parkplatz",
       "CONNECTION": "Verbindungen"
@@ -1260,6 +1259,16 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Der Parkplatz wurde erfolgreich hinzugefügt.",
         "EDIT_SUCCESS": "Der Parkplatz wurde erfolgreich gespeichert."
+      }
+    },
+    "CONTACT_POINTS": {
+      "BUTTON_NEW": "Neuen Schalter erfassen",
+      "NEW": "Neuer Schalter",
+      "DESIGNATION": "Bezeichnung",
+      "TYPE": "Typ",
+      "TYPES": {
+        "INFORMATION_DESK": "Informationsschalter",
+        "TICKET_COUNTER": "Billettschalter"
       }
     }
   }

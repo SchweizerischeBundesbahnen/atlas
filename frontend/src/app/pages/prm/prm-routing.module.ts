@@ -6,8 +6,6 @@ import {PrmPanelComponent} from './prm-panel/prm-panel.component';
 import {StopPointDetailComponent} from './tabs/stop-point/detail/stop-point-detail.component';
 import {ReferencePointTableComponent} from './tabs/reference-point/reference-point-table.component';
 import {PlatformTableComponent} from './tabs/platform/platform-table.component';
-import {TicketCounterComponent} from './tabs/ticket-counter/ticket-counter.component';
-import {InformationDeskComponent} from './tabs/information-desk/information-desk.component';
 import {ToiletComponent} from './tabs/toilet/toilet.component';
 import {ConnectionComponent} from './tabs/connection/connection.component';
 import {canLeaveDirtyForm} from '../../core/leave-guard/leave-dirty-form-guard.service';
@@ -22,6 +20,7 @@ import {referencePointResolver} from './tabs/reference-point/detail/resolvers/re
 import {ParkingLotDetailComponent} from "./tabs/parking-lot/detail/parking-lot-detail.component";
 import {parkingLotResolver} from "./tabs/parking-lot/detail/resolvers/parking-lot.resolver";
 import {ParkingLotTableComponent} from "./tabs/parking-lot/parking-lot-table.component";
+import {ContactPointTableComponent} from "./tabs/contact-point/contact-point-table.component";
 
 const routes: Routes = [
   {
@@ -83,13 +82,8 @@ const routes: Routes = [
         runGuardsAndResolvers: 'always',
       },
       {
-        path: PrmTabs.TICKET_COUNTER.link,
-        component: TicketCounterComponent,
-        runGuardsAndResolvers: 'always',
-      },
-      {
-        path: PrmTabs.INFORMATION_DESK.link,
-        component: InformationDeskComponent,
+        path: PrmTabs.CONTACT_POINT.link,
+        component: ContactPointTableComponent,
         runGuardsAndResolvers: 'always',
       },
       {
