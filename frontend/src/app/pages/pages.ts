@@ -214,6 +214,15 @@ export class Pages {
     description: 'PAGES.PARKING_LOT.DESCRIPTION',
   };
 
+  public static CONTACT_POINT: Page = {
+    title: 'PRM.CONTACT_POINT.TITLE',
+    titleMenu: 'PAGES.CONTACT_POINT.TITLE_HEADER',
+    headerTitle: 'PAGES.CONTACT_POINT.TITLE_HEADER',
+    path: 'contact-points',
+    pathText: 'PAGES.CONTACT_POINT.TITLE_HEADER',
+    description: 'PAGES.CONTACT_POINT.DESCRIPTION',
+  };
+
   public static PRM_STOP_POINT_TAB: Page = {
     title: 'PRM.TABS.STOP_POINT',
     path: 'stop-point',
