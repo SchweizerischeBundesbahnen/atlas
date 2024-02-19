@@ -1056,8 +1056,7 @@
       "STOP_POINT": "Informazioni di base Fermata",
       "REFERENCE_POINT": "Punto di riferimento",
       "PLATFORM": "Bordo di fermata",
-      "TICKET_COUNTER": "Bigletteria",
-      "INFORMATION_DESK": "Sportello informazioni",
+      "CONTACT_POINT": "Sportello",
       "TOILET": "Servizi igienici",
       "PARKING_LOT": "Parcheggio",
       "CONNECTION": "Collegamenti"
@@ -1260,6 +1259,28 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Il parcheggio è stato aggiunto con successo.",
         "EDIT_SUCCESS": "Il parcheggio è stato salvato con successo."
+      }
+    },
+    "CONTACT_POINTS": {
+      "BUTTON_NEW": "Creare un nuovo sportello",
+      "NEW": "Nuovo sportello",
+      "DESIGNATION": "Denominazione",
+      "TYPE": "Tipo",
+      "WHEELCHAIR_ACCESS": "Accessibilità in sedia a rotelle",
+      "INDUCTION_LOOP": "Amplificatore induttivo",
+      "INDUCTION_LOOP_INFO": "Sportello con amplificatore induttivo per audiolesi",
+      "CONTACT_POINT": "Sportello",
+      "ADDITIONAL_INFORMATION": "Informazioni aggiuntive",
+      "DETAIL_INFORMATION": "Dettagli dello sportello",
+      "OPENING_HOURS": "Orari di apertura",
+      "OPENING_HOURS_INFO": "Il rimando a un sito web è consentito.",
+      "TYPES": {
+        "INFORMATION_DESK": "Sportello informazioni",
+        "TICKET_COUNTER": "Sportello biglietti"
+      },
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Lo sportello è stato aggiunto con successo.",
+        "EDIT_SUCCESS": "Lo sportello è stato salvato con successo."
       }
     }
   }

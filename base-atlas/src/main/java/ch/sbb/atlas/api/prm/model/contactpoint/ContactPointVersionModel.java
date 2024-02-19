@@ -31,18 +31,24 @@ public class ContactPointVersionModel extends BasePrmVersionModel implements Dat
   private String parentServicePointSloid;
 
   @Schema(description = "Designation")
+  @NotNull
+  @Size(max = AtlasFieldLengths.LENGTH_50)
   private String designation;
 
   @Schema(description = "Additional Information")
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   private String additionalInformation;
 
   @Schema(description = "Induction Loop")
+  @NotNull
   private StandardAttributeType inductionLoop;
 
   @Schema(description = "Opening hours")
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   private String openingHours;
 
   @Schema(description = "Wheelchair Access")
+  @NotNull
   private StandardAttributeType wheelchairAccess;
 
   @NotNull
