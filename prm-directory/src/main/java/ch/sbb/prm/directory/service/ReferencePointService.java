@@ -165,7 +165,7 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
 
   public List<ReadReferencePointVersionModel> buildOverview(List<ReferencePointVersion> referencePointVersions) {
     List<ReferencePointVersion> mergedVersions = OverviewService.mergeVersionsForDisplay(referencePointVersions,
-        (x, y) -> x.getSloid().equals(y.getSloid()));
+        ReferencePointVersion::getSloid);
     return mergedVersions.stream().map(ReferencePointVersionMapper::toModel).toList();
   }
 
