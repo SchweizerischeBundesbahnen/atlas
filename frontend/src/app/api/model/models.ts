@@ -23,10 +23,8 @@ export * from './containerBusinessOrganisation';
 export * from './containerBusinessOrganisationVersion';
 export * from './containerClientCredential';
 export * from './containerCompany';
-export * from './containerContactPointOverview';
 export * from './containerLine';
 export * from './containerLineVersionSnapshot';
-export * from './containerParkingLotOverview';
 export * from './containerReadContactPointVersion';
 export * from './containerReadLoadingPointVersion';
 export * from './containerReadParkingLotVersion';
@@ -62,8 +60,11 @@ export * from './infoOpportunityAttributeType';
 export * from './inlineObject';
 export * from './inlineObject1';
 export * from './inlineObject10';
+<<<<<<< HEAD
 export * from './inlineObject11';
 export * from './inlineObject12';
+=======
+>>>>>>> 67cec111d (Fix sorting and paging in frontend)
 export * from './inlineObject2';
 export * from './inlineObject3';
 export * from './inlineObject4';
