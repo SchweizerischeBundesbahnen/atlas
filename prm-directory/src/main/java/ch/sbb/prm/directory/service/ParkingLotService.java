@@ -105,7 +105,7 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
 
   public List<ParkingLotOverviewModel> buildOverview(List<ParkingLotVersion> parkingLotVersions) {
     List<ParkingLotVersion> mergedVersions = OverviewService.mergeVersionsForDisplay(parkingLotVersions,
-        (x, y) -> x.getSloid().equals(y.getSloid()));
+        ParkingLotVersion::getSloid);
     return mergedVersions.stream()
         .map(ParkingLotVersionMapper::toOverviewModel)
         .toList();
