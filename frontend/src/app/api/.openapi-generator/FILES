@@ -54,10 +54,8 @@ model/containerBusinessOrganisation.ts
 model/containerBusinessOrganisationVersion.ts
 model/containerClientCredential.ts
 model/containerCompany.ts
-model/containerContactPointOverview.ts
 model/containerLine.ts
 model/containerLineVersionSnapshot.ts
-model/containerParkingLotOverview.ts
 model/containerReadContactPointVersion.ts
 model/containerReadLoadingPointVersion.ts
 model/containerReadParkingLotVersion.ts
@@ -93,8 +91,11 @@ model/infoOpportunityAttributeType.ts
 model/inlineObject.ts
 model/inlineObject1.ts
 model/inlineObject10.ts
+<<<<<<< HEAD
 model/inlineObject11.ts
 model/inlineObject12.ts
+=======
+>>>>>>> 67cec111d (Fix sorting and paging in frontend)
 model/inlineObject2.ts
 model/inlineObject3.ts
 model/inlineObject4.ts
