@@ -8,7 +8,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.api.location.SloidType;
-import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointOverviewModel;
@@ -31,7 +30,6 @@ import java.util.Set;
 import org.assertj.core.api.AbstractComparableAssert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 
 class ContactPointServiceTest extends BasePrmServiceTest {
 
@@ -162,13 +160,12 @@ class ContactPointServiceTest extends BasePrmServiceTest {
     contactPointService.createContactPoint(contactPointVersion);
 
     //when
-    Container<ContactPointOverviewModel> result = contactPointService.buildOverview(
-        contactPointService.findByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID),
-        Pageable.ofSize(5));
+    List<ContactPointOverviewModel> result =
+        contactPointService.buildOverview(contactPointService.findByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID));
 
     //then
-    assertThat(result.getObjects()).hasSize(1);
-    assertThat(result.getObjects().getFirst().getRecordingStatus()).isEqualTo(RecordingStatus.COMPLETE);
+    assertThat(result).hasSize(1);
+    assertThat(result.getFirst().getRecordingStatus()).isEqualTo(RecordingStatus.COMPLETE);
   }
 
 }

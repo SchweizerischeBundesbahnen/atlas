@@ -38,9 +38,7 @@ public interface ReferencePointApiV1 {
       @Valid @ParameterObject PrmObjectRequestParams prmObjectRequestParams);
 
   @GetMapping("overview/{parentServicePointSloid}")
-  @PageableAsQueryParam
-  Container<ReadReferencePointVersionModel> getReferencePointsOverview(@Parameter(hidden = true) Pageable pageable,
-      @PathVariable String parentServicePointSloid);
+  List<ReadReferencePointVersionModel> getReferencePointsOverview(@PathVariable String parentServicePointSloid);
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
