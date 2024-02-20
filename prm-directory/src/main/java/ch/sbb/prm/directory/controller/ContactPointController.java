@@ -47,9 +47,8 @@ public class ContactPointController implements ContactPointApiV1 {
   }
 
   @Override
-  public Container<ContactPointOverviewModel> getContactPointOverview(Pageable pageable, String parentServicePointSloid) {
-    return contactPointService.buildOverview(contactPointService.findByParentServicePointSloid(parentServicePointSloid),
-        pageable);
+  public List<ContactPointOverviewModel> getContactPointOverview(String parentServicePointSloid) {
+    return contactPointService.buildOverview(contactPointService.findByParentServicePointSloid(parentServicePointSloid));
   }
 
   @Override
