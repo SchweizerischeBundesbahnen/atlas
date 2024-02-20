@@ -3,8 +3,10 @@ package ch.sbb.prm.directory.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ContactPointTestData;
 import ch.sbb.prm.directory.ParkingLotTestData;
@@ -24,10 +26,12 @@ import ch.sbb.prm.directory.exception.ReducedVariantException;
 import ch.sbb.prm.directory.repository.ContactPointRepository;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.PlatformRepository;
+import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.search.ReferencePointSearchRestrictions;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Assertions;
@@ -39,6 +43,7 @@ import org.springframework.data.domain.Pageable;
 class ReferencePointServiceTest extends BasePrmServiceTest {
 
   private final ReferencePointService referencePointService;
+  private final ReferencePointRepository referencePointRepository;
   private final RelationService relationService;
   private final ToiletRepository toiletRepository;
   private final PlatformRepository platformRepository;
@@ -47,7 +52,8 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
   private final ContactPointRepository contactPointRepository;
 
   @Autowired
-  ReferencePointServiceTest(ReferencePointService referencePointService, RelationService relationService,
+  ReferencePointServiceTest(ReferencePointService referencePointService, ReferencePointRepository referencePointRepository,
+      RelationService relationService,
       ToiletRepository toiletRepository, PlatformRepository platformRepository,
       StopPointRepository stopPointRepository, ParkingLotRepository parkingLotRepository,
       ContactPointRepository contactPointRepository,
@@ -55,6 +61,7 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
       PrmLocationService prmLocationService) {
     super(sharedServicePointRepository, prmLocationService);
     this.referencePointService = referencePointService;
+    this.referencePointRepository = referencePointRepository;
     this.relationService = relationService;
     this.toiletRepository = toiletRepository;
     this.platformRepository = platformRepository;
@@ -198,6 +205,72 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
         referencePointService.buildOverview(referencePointService.findByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID));
 
     assertThat(result).hasSize(1);
+  }
+
+  @Test
+  void shouldCreateOverviewForReferencePointWithMultipleReferencePoints() {
+    String sloid = "ch:1:sloid:76332:103";
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(8576332);
+
+    // Version 1
+    referencePointRepository.save(ReferencePointVersion.builder()
+        .sloid(sloid)
+        .number(servicePointNumber)
+        .validFrom(LocalDate.of(2024, 2, 19))
+        .validTo(LocalDate.of(2024, 2, 2))
+        .designation("Hermione")
+        .additionalInformation(null)
+        .mainReferencePoint(false)
+        .parentServicePointSloid(PARENT_SERVICE_POINT_SLOID)
+        .referencePointType(ReferencePointAttributeType.ASSISTANCE_POINT)
+        .build());
+
+    // Mad Eye Moodi - Version 1
+    String sloidMoodi = "ch:1:sloid:76332:100";
+    referencePointRepository.save(ReferencePointVersion.builder()
+        .sloid(sloidMoodi)
+        .number(servicePointNumber)
+        .validFrom(LocalDate.of(2024, 2, 19))
+        .validTo(LocalDate.of(2025, 2, 18))
+        .designation("Mad Eye Moodi")
+        .additionalInformation(null)
+        .mainReferencePoint(false)
+        .parentServicePointSloid(PARENT_SERVICE_POINT_SLOID)
+        .referencePointType(ReferencePointAttributeType.PLATFORM)
+        .build());
+
+    // Version 4
+    referencePointRepository.save(ReferencePointVersion.builder()
+        .sloid(sloid)
+        .number(servicePointNumber)
+        .validFrom(LocalDate.of(2027, 3, 5))
+        .validTo(LocalDate.of(2029, 3, 4))
+        .designation("Hermione")
+        .additionalInformation("jup")
+        .mainReferencePoint(false)
+        .parentServicePointSloid(PARENT_SERVICE_POINT_SLOID)
+        .referencePointType(ReferencePointAttributeType.MAIN_STATION_ENTRANCE)
+        .build());
+
+    // Mad Eye Moodi - Version 2
+    referencePointRepository.save(ReferencePointVersion.builder()
+        .sloid(sloidMoodi)
+        .number(servicePointNumber)
+        .validFrom(LocalDate.of(2025, 2, 19))
+        .validTo(LocalDate.of(2029, 2, 18))
+        .designation("Mad Eye Moodi")
+        .additionalInformation("Viola")
+        .mainReferencePoint(false)
+        .parentServicePointSloid(PARENT_SERVICE_POINT_SLOID)
+        .referencePointType(ReferencePointAttributeType.PLATFORM)
+        .build());
+
+    //then
+    List<ReferencePointVersion> versionsByParent = referencePointService.findByParentServicePointSloid(
+        PARENT_SERVICE_POINT_SLOID);
+    List<ReadReferencePointVersionModel> result = referencePointService.buildOverview(versionsByParent);
+
+    assertThat(result).hasSize(2);
   }
 
 }
