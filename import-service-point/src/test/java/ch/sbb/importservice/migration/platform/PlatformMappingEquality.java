@@ -34,7 +34,6 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
           BoardingDeviceAttributeType.of(didokCsvLine.getBoardingDevice()).toString());
     }
     else {
-      assertThat(didokCsvLine.getBoardingDevice()).isNull();
       assertThat(atlasCsvLine.getBoardingDevice()).isNull();
     }
     if(atlasCsvLine.getAdditionalInformation() != null && didokCsvLine.getInfos() != null){
@@ -49,7 +48,6 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
       assertThat(atlasCsvLine.getAdviceAccessInfo()).isEqualTo(didokCsvLine.getAccessInfo());
     }
     else {
-      assertThat(didokCsvLine.getAccessInfo()).isNull();
       assertThat(atlasCsvLine.getAdviceAccessInfo()).isNull();
     }
     if (atlasCsvLine.getContrastingAreas() != null && didokCsvLine.getContrastingAreas() != null) {
@@ -57,7 +55,6 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
           StandardAttributeType.from(didokCsvLine.getContrastingAreas()).toString());
     }
     else {
-      assertThat(didokCsvLine.getContrastingAreas()).isNull();
       assertThat(atlasCsvLine.getContrastingAreas()).isNull();
     }
     if (atlasCsvLine.getDynamicAudio() != null && didokCsvLine.getDynamicAudio() != null) {
@@ -65,7 +62,6 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
           StandardAttributeType.from(didokCsvLine.getDynamicAudio()).toString());
     }
     else {
-      assertThat(didokCsvLine.getDynamicAudio()).isNull();
       assertThat(atlasCsvLine.getDynamicAudio()).isNull();
     }
     if (atlasCsvLine.getDynamicVisual() != null && didokCsvLine.getDynamicVisual() != null) {
@@ -73,18 +69,19 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
           StandardAttributeType.from(didokCsvLine.getDynamicVisual()).toString());
     }
     else {
-      assertThat(didokCsvLine.getDynamicVisual()).isNull();
       assertThat(atlasCsvLine.getDynamicVisual()).isNull();
     }
     if (atlasCsvLine.getHeight() != null && didokCsvLine.getHeight() != null) {
       assertThat(atlasCsvLine.getHeight()).isEqualTo(didokCsvLine.getHeight());
+    }
+    else {
+      assertThat(atlasCsvLine.getHeight()).isNull();
     }
     if (atlasCsvLine.getInclination() != null && didokCsvLine.getInclination() != null) {
       assertThat(atlasCsvLine.getInclination()).isEqualTo(
           didokCsvLine.getInclination());
     }
     else {
-      assertThat(didokCsvLine.getInclination() == 0.0);
       assertThat(atlasCsvLine.getInclination()).isNull();
     }
     if (atlasCsvLine.getInclinationLongitudinal() != null && didokCsvLine.getInclinationLong() != null) {
@@ -92,7 +89,6 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
           didokCsvLine.getInclinationLong());
     }
     else {
-      assertThat(didokCsvLine.getInclinationLong() == 0.0);
       assertThat(atlasCsvLine.getInclinationLongitudinal()).isNull();
     }
     if (atlasCsvLine.getInclinationWidth() != null && didokCsvLine.getInclinationWidth() != null) {
@@ -100,7 +96,6 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
           didokCsvLine.getInclinationWidth());
     }
     else {
-      assertThat(didokCsvLine.getInclinationWidth() == 0.0);
       assertThat(atlasCsvLine.getInclinationWidth()).isNull();
     }
     if (atlasCsvLine.getLevelAccessWheelchair() != null && didokCsvLine.getLevelAccessWheelchair() != null) {
@@ -108,7 +103,6 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
           StandardAttributeType.from(didokCsvLine.getLevelAccessWheelchair()).toString());
     }
     else {
-      assertThat(didokCsvLine.getLevelAccessWheelchair()).isNull();
       assertThat(atlasCsvLine.getLevelAccessWheelchair()).isNull();
     }
     if (atlasCsvLine.getPartialElevation() != null && didokCsvLine.getPartialElev() != null) {
@@ -116,7 +110,6 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
               BooleanIntegerAttributeType.of(didokCsvLine.getPartialElev()));
     }
     else {
-      assertThat(didokCsvLine.getPartialElev()).isNull();
       assertThat(atlasCsvLine.getPartialElevation()).isNull();
     }
     if (atlasCsvLine.getSuperElevation() != null && didokCsvLine.getSuperelevation() != null) {
@@ -124,7 +117,6 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
               didokCsvLine.getSuperelevation());
     }
     else {
-      assertThat(didokCsvLine.getSuperelevation() == 0.0);
       assertThat(atlasCsvLine.getSuperElevation()).isNull();
     }
     if (atlasCsvLine.getTactileSystems() != null && didokCsvLine.getTactileSystems() != null) {
@@ -132,7 +124,6 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
               StandardAttributeType.from(didokCsvLine.getTactileSystems()).toString());
     }
     else {
-      assertThat(didokCsvLine.getTactileSystems()).isNull();
       assertThat(atlasCsvLine.getTactileSystems()).isNull();
     }
     if (atlasCsvLine.getVehicleAccess() != null && didokCsvLine.getVehicleAccess() != null) {
@@ -140,22 +131,26 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
               VehicleAccessAttributeType.of(didokCsvLine.getVehicleAccess()).toString());
     }
     else {
-      assertThat(didokCsvLine.getVehicleAccess()).isNull();
       assertThat(atlasCsvLine.getVehicleAccess()).isNull();
     }
     if (atlasCsvLine.getWheelChairAreaLength() != null && didokCsvLine.getWheelchairAreaLength() != null) {
       assertThat(atlasCsvLine.getWheelChairAreaLength()).isEqualTo(
               didokCsvLine.getWheelchairAreaLength());
     }
+    else {
+      assertThat(atlasCsvLine.getWheelChairAreaLength()).isNull();
+    }
     if (atlasCsvLine.getWheelChairAreaWidth() != null && didokCsvLine.getWheelchairAreaWidth() != null) {
       assertThat(atlasCsvLine.getWheelChairAreaWidth()).isEqualTo(
               didokCsvLine.getWheelchairAreaWidth());
+    }
+    else {
+      assertThat(atlasCsvLine.getWheelChairAreaWidth()).isNull();
     }
     if(atlasCsvLine.getInfoOpportunities() != null && didokCsvLine.getInfoBlinds() != null){
       assertThat(mapPipedInfoOpportunities(atlasCsvLine.getInfoOpportunities())).containsAll(InfoOpportunityAttributeType.fromCode(didokCsvLine.getInfoBlinds()));
     }
     else {
-      assertThat(didokCsvLine.getInfoBlinds()).isNull();
       assertThat(atlasCsvLine.getInfoOpportunities()).isNull();
     }
 
