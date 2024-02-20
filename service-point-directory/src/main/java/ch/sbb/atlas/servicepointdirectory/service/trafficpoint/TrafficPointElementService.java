@@ -138,7 +138,7 @@ public class TrafficPointElementService {
         .map(TrafficPointElementVersionMapper::toModel).toList();
 
     List<ReadTrafficPointElementVersionModel> displayableVersions = OverviewService.mergeVersionsForDisplay(trafficPointElements,
-        (previous, current) -> previous.getSloid().equals(current.getSloid()));
+        ReadTrafficPointElementVersionModel::getSloid);
     return OverviewService.toPagedContainer(displayableVersions, pageable);
   }
 
