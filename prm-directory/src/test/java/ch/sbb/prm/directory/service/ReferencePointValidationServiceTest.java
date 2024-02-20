@@ -91,4 +91,22 @@ class ReferencePointValidationServiceTest {
         () -> referencePointValidationService.validatePreconditionBusinessRule(referencePointVersion2));
   }
 
+  @Test
+  void shouldAllowMainReferencePointOnDifferentParentSloid() {
+    // Given
+    ReferencePointVersion referencePointVersion1 = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion1.setMainReferencePoint(true);
+    referencePointVersion1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    referencePointRepository.save(referencePointVersion1);
+
+    ReferencePointVersion referencePointVersion2 = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion2.setSloid("ch:1:sloid:12345:12");
+    referencePointVersion2.setMainReferencePoint(true);
+    referencePointVersion2.setParentServicePointSloid("ch:1:sloid:70001");
+
+    // When
+    assertThatNoException().isThrownBy(
+        () -> referencePointValidationService.validatePreconditionBusinessRule(referencePointVersion2));
+  }
+
 }
