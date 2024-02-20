@@ -2,7 +2,6 @@ package ch.sbb.prm.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
@@ -195,11 +194,10 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
     referencePointService.createReferencePoint(referencePointVersion);
 
     //then
-    Container<ReadReferencePointVersionModel> result = referencePointService.buildOverview(
-        referencePointService.findByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID),
-        Pageable.ofSize(4));
+    List<ReadReferencePointVersionModel> result =
+        referencePointService.buildOverview(referencePointService.findByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID));
 
-    assertThat(result.getObjects()).hasSize(1);
+    assertThat(result).hasSize(1);
   }
 
 }
