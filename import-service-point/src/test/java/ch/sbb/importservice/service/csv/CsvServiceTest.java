@@ -3,6 +3,8 @@ package ch.sbb.importservice.service.csv;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -65,7 +67,8 @@ class CsvServiceTest {
   void shouldGetActualCsvModelsFromS3() {
     //given
     LocalDate date = LocalDate.of(2022, 2, 21);
-    File csvFile = new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource("DIENSTSTELLEN_V3_IMPORT.csv")).getFile());
+    File csvFile = new File(
+        Objects.requireNonNull(this.getClass().getClassLoader().getResource("DIENSTSTELLEN_V3_IMPORT.csv")).getFile());
     when(fileHelperService.downloadImportFileFromS3(any())).thenReturn(csvFile);
     doCallRealMethod().when(jobHelperService).isDateMatchedBetweenTodayAndMatchingDate(any(), any());
     when(jobHelperService.getDateForImportFileToDownload("TEST_IMPORT_CSV_JOB")).thenReturn(date);
@@ -78,7 +81,8 @@ class CsvServiceTest {
   @Test
   void shouldGetActualCsvModels() {
     //given
-    File csvFile = new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource("DIENSTSTELLEN_V3_IMPORT.csv")).getFile());
+    File csvFile = new File(
+        Objects.requireNonNull(this.getClass().getClassLoader().getResource("DIENSTSTELLEN_V3_IMPORT.csv")).getFile());
     //when
     List<ServicePointCsvModel> result = csvService.getActualCsvModels(csvFile);
     //then
@@ -110,6 +114,22 @@ class CsvServiceTest {
     assertThat(csvModelsToUpdate).hasSize(1);
     ServicePointCsvModel csvModel = csvModelsToUpdate.get(0);
     assertThat(csvModel.getNummer()).isEqualTo(1542);
+  }
+
+  @Test
+  void test_getCsvModelsToUpdate_shouldReturnOneMismatchedCsvModelWithReplacedNewLineAndUpdatedEditionDate() {
+    //given
+    LocalDate localDate = LocalDate.of(2020, 6, 9);
+    File csv = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("DIENSTSTELLEN_V3_IMPORT.csv")).getFile());
+    doCallRealMethod().when(jobHelperService).isDateMatchedBetweenTodayAndMatchingDate(localDate, localDate);
+    //when
+    List<ServicePointCsvModel> csvModelsToUpdate = csvService.getCsvModelsToUpdate(csv, localDate);
+    //then
+    assertThat(csvModelsToUpdate).hasSize(1);
+    ServicePointCsvModel csvModel = csvModelsToUpdate.get(0);
+    assertThat(csvModel.getNummer()).isEqualTo(1542);
+    assertThat(csvModel.getComment()).isEqualTo("Test Bemerkung\r\nmit\r\nNewlines.");
+    assertThat(ChronoUnit.MINUTES.between(csvModel.getEditedAt(), LocalDateTime.now())).isEqualTo(0);
   }
 
 }

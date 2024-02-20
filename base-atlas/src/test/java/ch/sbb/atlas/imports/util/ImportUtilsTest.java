@@ -2,14 +2,17 @@ package ch.sbb.atlas.imports.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.imports.EditionDateModifier;
 import ch.sbb.atlas.versioning.model.Versionable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
 
 class ImportUtilsTest {
+
   @Test
   void shouldFindVersionsExactlyIncludedBetweenEditedValidFromAndEditedValidTo() {
     //given
@@ -56,9 +59,50 @@ class ImportUtilsTest {
     assertThat(result).isEmpty();
   }
 
+  @Test
+  void shouldReplaceNewLinesCorrectlyOnlyWhen$newline$ExistsAndUpdateModifiedDateOnlyWhenReplacementTookPlace()
+      throws IllegalAccessException {
+    // given
+    List<CsvModel> csvModels = List.of(
+        CsvModel.builder().description("Desc $newline$ of $newline$ this model.").comment("Comment$newline$ with one newline.")
+            .editionDate(LocalDateTime.of(2020, 12, 15, 10, 15)).build(),
+        CsvModel.builder().description("Desc without newlines.").comment("Comment without newlines.")
+            .editionDate(LocalDateTime.of(2020, 12, 15, 10, 15)).build()
+    );
+
+    // when
+    ImportUtils.replaceNewLines(csvModels);
+
+    // then
+    assertThat(csvModels).hasSize(2);
+
+    assertThat(csvModels.get(0).comment).isEqualTo("Comment\r\n with one newline.");
+    assertThat(csvModels.get(0).description).isEqualTo("Desc \r\n of \r\n this model.");
+    assertThat(csvModels.get(0).editionDate).isEqualToIgnoringSeconds(LocalDateTime.now());
+
+    assertThat(csvModels.get(1).comment).isEqualTo("Comment without newlines.");
+    assertThat(csvModels.get(1).description).isEqualTo("Desc without newlines.");
+    assertThat(csvModels.get(1).editionDate).isEqualTo(LocalDateTime.of(2020, 12, 15, 10, 15));
+  }
+
+  @Builder
+  private static class CsvModel implements EditionDateModifier {
+
+    private LocalDateTime editionDate;
+    private String description;
+    private String comment;
+
+    @Override
+    public void setLastModifiedToNow() {
+      editionDate = LocalDateTime.now();
+    }
+
+  }
+
   @Data
   @Builder
   static class ObjVersions implements Versionable {
+
     private Long id;
     private LocalDate validFrom;
     private LocalDate validTo;
