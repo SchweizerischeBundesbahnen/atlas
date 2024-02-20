@@ -46,10 +46,8 @@ public class ParkingLotsController implements ParkingLotApiV1 {
   }
 
   @Override
-  public Container<ParkingLotOverviewModel> getParkingLotsOverview(Pageable pageable,
-      String parentServicePointSloid) {
-    return parkingLotService.buildOverview(parkingLotService.findByParentServicePointSloid(parentServicePointSloid),
-        pageable);
+  public List<ParkingLotOverviewModel> getParkingLotsOverview( String parentServicePointSloid) {
+    return parkingLotService.buildOverview(parkingLotService.findByParentServicePointSloid(parentServicePointSloid));
   }
 
   @Override
