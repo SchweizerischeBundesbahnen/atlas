@@ -103,7 +103,7 @@ import org.springframework.transaction.annotation.Transactional;
     assertThat(result).isNotNull();
     assertThat(result.getContent()).isNotNull();
     assertThat(result.getTotalElements()).isEqualTo(1);
-    assertThat(result.getContent().get(0).getNumber()).isEqualTo(loadingPointNumber);
+    assertThat(result.getContent().getFirst().getNumber()).isEqualTo(loadingPointNumber);
 
   }
 
@@ -1281,7 +1281,7 @@ import org.springframework.transaction.annotation.Transactional;
   // then
   assertThat(result.getObjects()).hasSize(1);
 
-  ReadLoadingPointVersionModel first = result.getObjects().get(0);
+  ReadLoadingPointVersionModel first = result.getObjects().getFirst();
   assertThat(first.getDesignation()).isEqualTo("design 2");
   assertThat(first.getValidFrom()).isEqualTo(LocalDate.of(2014, 12, 14));
   assertThat(first.getValidTo()).isEqualTo(LocalDate.of(2099, 3, 31));
