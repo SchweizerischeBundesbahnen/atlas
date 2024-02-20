@@ -1,15 +1,19 @@
 package ch.sbb.atlas.imports.util;
 
+import ch.sbb.atlas.imports.EditionDateModifier;
 import ch.sbb.atlas.imports.Importable;
 import ch.sbb.atlas.versioning.model.Property;
 import ch.sbb.atlas.versioning.model.Versionable;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.model.VersioningAction;
+import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -17,6 +21,23 @@ public class ImportUtils {
 
   private static final String EDITION_DATE_FIELD_NAME = "editionDate";
   private static final String EDITOR_FIELD_NAME = "editor";
+
+  public static <T extends EditionDateModifier> void replaceNewLines(List<T> csvModels) throws IllegalAccessException {
+    Pattern pattern = Pattern.compile("\\$newline\\$");
+    for (T csvModel : csvModels) {
+      for (Field field : csvModel.getClass().getDeclaredFields()) {
+        field.setAccessible(true);
+        Object value = field.get(csvModel);
+        if (value instanceof String) {
+          Matcher matcher = pattern.matcher((String) value);
+          if (matcher.find()) {
+            field.set(csvModel, matcher.replaceAll("\r\n"));
+            csvModel.setLastModifiedToNow();
+          }
+        }
+      }
+    }
+  }
 
   public <T extends Versionable> T getCurrentPointVersion(List<T> dbVersions, T edited) {
     dbVersions.sort(Comparator.comparing(Versionable::getValidFrom));
