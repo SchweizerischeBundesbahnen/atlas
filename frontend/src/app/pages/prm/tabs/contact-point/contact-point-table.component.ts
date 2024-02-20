@@ -5,10 +5,11 @@ import {PrmTabs} from '../../prm-panel/prm-tabs';
 import {Tab} from '../../../tab';
 import {TableColumn} from "../../../../core/components/table/table-column";
 import {TableFilter} from "../../../../core/components/table-filter/config/table-filter";
-import {ContactPointOverview, ContainerContactPointOverview, PersonWithReducedMobilityService} from "../../../../api";
+import {ContactPointOverview, PersonWithReducedMobilityService} from "../../../../api";
 import {TableService} from "../../../../core/components/table/table.service";
 import {Pages} from "../../../pages";
 import {TablePagination} from "../../../../core/components/table/table-pagination";
+import {TableContentPaginationAndSorting} from "../../../../core/components/table/table-content-pagination-and-sorting";
 
 @Component({
   selector: 'app-contact-point-table',
@@ -55,12 +56,14 @@ export class ContactPointTableComponent extends BasePrmTabComponentService imple
     const parentServicePointSloid = this.route.parent!.snapshot.params.stopPointSloid!;
 
     this.personWithReducedMobilityService
-      .getContactPointOverview(parentServicePointSloid, pagination.page, pagination.size, [
-        pagination.sort ?? 'designation,asc',
-      ])
-      .subscribe((overviewRows:ContainerContactPointOverview) => {
-        this.contactPoints = overviewRows.objects!;
-        this.totalCount = overviewRows.totalCount!;
+      .getContactPointOverview(parentServicePointSloid)
+      .subscribe((overviewRows) => {
+        this.contactPoints = TableContentPaginationAndSorting.pageAndSort(
+          overviewRows,
+          pagination,
+          'designation,asc',
+        );
+        this.totalCount = overviewRows.length;
       });
   }
 
