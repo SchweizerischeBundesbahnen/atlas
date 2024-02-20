@@ -98,7 +98,7 @@ public class ContactPointService extends PrmRelatableVersionableService<ContactP
 
   public List<ContactPointOverviewModel> buildOverview(List<ContactPointVersion> parkingLotVersions) {
     List<ContactPointVersion> mergedVersions = OverviewService.mergeVersionsForDisplay(parkingLotVersions,
-        (x, y) -> x.getSloid().equals(y.getSloid()));
+        ContactPointVersion::getSloid);
     return mergedVersions.stream()
         .map(ContactPointVersionMapper::toOverviewModel)
         .toList();
