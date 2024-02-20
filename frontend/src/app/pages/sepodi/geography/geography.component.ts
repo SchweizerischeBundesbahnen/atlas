@@ -36,11 +36,11 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     if (form) {
       this._geographyActive = true;
       this.updateMapInteractionMode();
-      this.onChangeCoordinatesManually(this.currentCoordinates!);
+      this.onChangeCoordinatesManually(this.currentCoordinates!, false);
       merge(form.controls.east.valueChanges, form.controls.north.valueChanges)
         .pipe(debounceTime(500), takeUntil(this.formDestroy$))
         .subscribe(() => {
-          this.onChangeCoordinatesManually(this.currentCoordinates!);
+          this.onChangeCoordinatesManually(this.currentCoordinates!, true);
           this.coordinatesChanged.emit(this.currentCoordinates);
         });
     } else {
@@ -127,7 +127,6 @@ export class GeographyComponent implements OnDestroy, OnChanges {
       this.currentCoordinates,
       this.transformedSpatialReference,
     );
-    this.setHeightFromGeoData(this.transformedCoordinatePair!);
     this.changeDetector.detectChanges();
   }
 
@@ -166,7 +165,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     this.initTransformedCoordinatePair();
   }
 
-  onChangeCoordinatesManually(coordinates: CoordinatePair) {
+  onChangeCoordinatesManually(coordinates: CoordinatePair, updateHeight: boolean) {
     if (this.currentSpatialReference === SpatialReference.Lv95) {
       coordinates = this.coordinateTransformationService.transform(
         coordinates,
@@ -174,6 +173,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
       )!;
     }
     if (coordinates && coordinates.north && coordinates.east) {
+      this.setHeightFromGeoData(coordinates, updateHeight)
       this.mapService.placeMarkerAndFlyTo({ lat: coordinates.north, lng: coordinates.east });
       this.initTransformedCoordinatePair();
     }
@@ -186,7 +186,7 @@ export class GeographyComponent implements OnDestroy, OnChanges {
         SpatialReference.Lv95,
       )!;
     }
-
+    this.setHeightFromGeoData(coordinatesWgs84, true);
     this.setFormGroupValue(coordinatesWgs84);
     this.initTransformedCoordinatePair();
   }
@@ -200,8 +200,8 @@ export class GeographyComponent implements OnDestroy, OnChanges {
     }
   }
 
-  public setHeightFromGeoData(coordinatePair: CoordinatePair) {
-    if (coordinatePair) {
+  public setHeightFromGeoData(coordinatePair: CoordinatePair, updateHeight: boolean) {
+    if (coordinatePair && updateHeight) {
       this.geoDataService.getLocationInformation(coordinatePair).subscribe((value) => {
         this._form?.patchValue({
           height: value.height,
