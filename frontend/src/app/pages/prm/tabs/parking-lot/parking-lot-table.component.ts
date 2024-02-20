@@ -8,7 +8,8 @@ import {Pages} from '../../../pages';
 import {TableFilter} from '../../../../core/components/table-filter/config/table-filter';
 import {TablePagination} from '../../../../core/components/table/table-pagination';
 import {TableColumn} from '../../../../core/components/table/table-column';
-import {ContainerParkingLotOverview, ParkingLotOverview, PersonWithReducedMobilityService} from "../../../../api";
+import {ParkingLotOverview, PersonWithReducedMobilityService} from "../../../../api";
+import {TableContentPaginationAndSorting} from "../../../../core/components/table/table-content-pagination-and-sorting";
 
 @Component({
   selector: 'app-parking-lot-table',
@@ -53,12 +54,14 @@ export class ParkingLotTableComponent extends BasePrmTabComponentService impleme
     const parentServicePointSloid = this.route.parent!.snapshot.params.stopPointSloid!;
 
     this.personWithReducedMobilityService
-      .getParkingLotsOverview(parentServicePointSloid, pagination.page, pagination.size, [
-        pagination.sort ?? 'designation,asc',
-      ])
-      .subscribe((overviewRows:ContainerParkingLotOverview) => {
-        this.parkingLots = overviewRows.objects!;
-        this.totalCount = overviewRows.totalCount!;
+      .getParkingLotsOverview(parentServicePointSloid)
+      .subscribe((overviewRows) => {
+        this.parkingLots = TableContentPaginationAndSorting.pageAndSort(
+          overviewRows,
+          pagination,
+          'designation,asc',
+        );
+        this.totalCount = overviewRows.length;
       });
   }
 
