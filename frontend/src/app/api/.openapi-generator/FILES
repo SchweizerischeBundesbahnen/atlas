@@ -92,8 +92,11 @@ model/infoOpportunityAttributeType.ts
 model/inlineObject.ts
 model/inlineObject1.ts
 model/inlineObject10.ts
+<<<<<<< HEAD
 model/inlineObject11.ts
 model/inlineObject12.ts
+=======
+>>>>>>> 67cec111d (Fix sorting and paging in frontend)
 model/inlineObject2.ts
 model/inlineObject3.ts
 model/inlineObject4.ts
