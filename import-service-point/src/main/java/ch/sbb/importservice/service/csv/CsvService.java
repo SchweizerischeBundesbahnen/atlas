@@ -1,5 +1,6 @@
 package ch.sbb.importservice.service.csv;
 
+import static ch.sbb.atlas.imports.util.ImportUtils.replaceNewLines;
 import static ch.sbb.importservice.service.JobHelperService.MIN_LOCAL_DATE;
 
 import ch.sbb.atlas.amazon.service.AmazonBucket;
@@ -14,7 +15,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -91,23 +89,6 @@ public abstract class CsvService<T extends EditionDateModifier> {
       return mappedCsvModels;
     } catch (IOException | IllegalAccessException e) {
       throw new CsvException(e);
-    }
-  }
-
-  private static <T extends EditionDateModifier> void replaceNewLines(List<T> csvModels) throws IllegalAccessException {
-    Pattern pattern = Pattern.compile("\\$newline\\$");
-    for (T csvModel : csvModels) {
-      for (Field field : csvModel.getClass().getDeclaredFields()) {
-        field.setAccessible(true);
-        Object value = field.get(csvModel);
-        if (value instanceof String) {
-          Matcher matcher = pattern.matcher((String) value);
-          if (matcher.find()) {
-            field.set(csvModel, matcher.replaceAll("\r\n"));
-            csvModel.setLastModifiedToNow();
-          }
-        }
-      }
     }
   }
 
