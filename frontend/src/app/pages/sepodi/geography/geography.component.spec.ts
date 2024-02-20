@@ -84,7 +84,7 @@ describe('GeographyComponent', () => {
       spatialReference: SpatialReference.Wgs84,
     });
 
-    component.onChangeCoordinatesManually(coordinates);
+    component.onChangeCoordinatesManually(coordinates, false);
 
     expect(coordinateTransformationServiceSpy.transform).toHaveBeenCalledWith(
       { north: 20000, east: 10000, spatialReference: SpatialReference.Lv95 },
@@ -101,15 +101,20 @@ describe('GeographyComponent', () => {
     };
     spyOn(component, 'setHeightFromGeoData');
 
-    component.setHeightFromGeoData(coordinates)
+    component.setHeightFromGeoData(coordinates, true)
 
-    expect(component.setHeightFromGeoData).toHaveBeenCalledWith(coordinates)
+    expect(component.setHeightFromGeoData).toHaveBeenCalledWith(coordinates, true)
   });
 
-  it('should call setHeightFromGeoData if initTransformedCoordinatePair is called', () => {
+  it('should call setHeightFromGeoData if onChangeCoordinatesManually is called', () => {
+    const coordinates: CoordinatePair = {
+      north: 1207935,
+      east: 2600464,
+      spatialReference: SpatialReference.Lv95,
+    };
     spyOn(component, 'setHeightFromGeoData');
 
-    component.initTransformedCoordinatePair()
+    component.onChangeCoordinatesManually(coordinates, true)
 
     expect(component.setHeightFromGeoData).toHaveBeenCalled()
   });
