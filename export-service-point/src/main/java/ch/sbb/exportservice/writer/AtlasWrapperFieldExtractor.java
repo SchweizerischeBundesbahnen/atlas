@@ -30,17 +30,16 @@ public class AtlasWrapperFieldExtractor<T> extends BeanWrapperFieldExtractor<T> 
   }
 
   static void pruneValue(List<Object> values, Object propertyValue) {
-    if(propertyValue != null){
+    if (propertyValue != null) {
       String valueToPrune = String.valueOf(propertyValue);
-      if(valueToPrune.contains(NEW_LINE)){
+      if (valueToPrune.contains(NEW_LINE)) {
         valueToPrune = StringUtils.removeNewLine(valueToPrune);
       }
-      if(valueToPrune.contains(SEMICOLON)){
+      if (valueToPrune.contains(SEMICOLON)) {
         valueToPrune = StringUtils.replaceSemiColonWithColon(valueToPrune);
       }
       values.add(valueToPrune.trim());
-    }
-    else {
+    } else {
       values.add(null);
     }
   }
