@@ -37,7 +37,7 @@ describe('stopPointResolver', () => {
 
   it('should get version from service to display', () => {
     const mockRoute = {
-      paramMap: convertToParamMap({ sloid: 'ch:1:sloid:89008' }),
+      paramMap: convertToParamMap({ stopPointSloid: 'ch:1:sloid:89008' }),
     } as ActivatedRouteSnapshot;
 
     const result = TestBed.runInInjectionContext(() =>
@@ -47,6 +47,20 @@ describe('stopPointResolver', () => {
     result.subscribe((versions) => {
       expect(versions.length).toBe(1);
       expect(versions[0].sloid).toBe('ch:1:sloid:89008');
+    });
+  });
+
+  it('should empty array on add', () => {
+    const mockRoute = {
+      paramMap: convertToParamMap({ stopPointSloid: 'add' }),
+    } as ActivatedRouteSnapshot;
+
+    const result = TestBed.runInInjectionContext(() =>
+      stopPointResolver(mockRoute, {} as RouterStateSnapshot),
+    ) as Observable<ReadStopPointVersion[]>;
+
+    result.subscribe((versions) => {
+      expect(versions.length).toBe(0);
     });
   });
 });

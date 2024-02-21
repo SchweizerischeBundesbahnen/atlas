@@ -9,6 +9,7 @@ import { Pages } from '../../../pages';
 import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
 import { TablePagination } from '../../../../core/components/table/table-pagination';
 import { TableColumn } from '../../../../core/components/table/table-column';
+import {TableContentPaginationAndSorting} from "../../../../core/components/table/table-content-pagination-and-sorting";
 
 @Component({
   selector: 'app-reference-point-table',
@@ -48,12 +49,14 @@ export class ReferencePointTableComponent extends BasePrmTabComponentService imp
     const parentServicePointSloid = this.route.parent!.snapshot.params.stopPointSloid!;
 
     this.personWithReducedMobilityService
-      .getReferencePointsOverview(parentServicePointSloid, pagination.page, pagination.size, [
-        pagination.sort ?? 'designation,asc',
-      ])
+      .getReferencePointsOverview(parentServicePointSloid)
       .subscribe((overviewRows) => {
-        this.referencePoints = overviewRows.objects!;
-        this.totalCount = overviewRows.totalCount!;
+        this.referencePoints = TableContentPaginationAndSorting.pageAndSort(
+          overviewRows,
+          pagination,
+          'designation,asc',
+        );
+        this.totalCount = overviewRows.length;
       });
   }
 
