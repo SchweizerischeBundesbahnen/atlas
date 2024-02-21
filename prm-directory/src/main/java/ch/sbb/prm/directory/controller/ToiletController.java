@@ -65,6 +65,11 @@ public class ToiletController implements ToiletApiV1 {
   }
 
   @Override
+  public List<ReadToiletVersionModel> getToiletVersions(String sloid) {
+    return toiletService.getAllVersions(sloid).stream().map(ToiletVersionMapper::toModel).toList();
+  }
+
+  @Override
   public List<ItemImportResult> importToilets(ToiletImportRequestModel importRequestModel) {
     return toiletImportService.importToiletPoints(importRequestModel.getToiletCsvModelContainers());
   }

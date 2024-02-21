@@ -268,4 +268,15 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
     verify(prmLocationService, never()).allocateSloid(any(), any());
   }
 
+  @Test
+  void shouldGetToiletVersions() throws Exception {
+    //given
+    ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
+    toiletRepository.save(toiletVersion);
+    //when & then
+    mvc.perform(get("/v1/toilets/" + toiletVersion.getSloid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)));
+  }
+
 }
