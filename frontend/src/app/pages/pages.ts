@@ -227,7 +227,7 @@ export class Pages {
     title: 'PRM.TOILET.TITLE',
     titleMenu: 'PAGES.TOILET.TITLE_HEADER',
     headerTitle: 'PAGES.TOILET.TITLE_HEADER',
-    path: 'toiletss',
+    path: 'toilets',
     pathText: 'PAGES.TOILET.TITLE_HEADER',
     description: 'PAGES.TOILET.DESCRIPTION',
   };
