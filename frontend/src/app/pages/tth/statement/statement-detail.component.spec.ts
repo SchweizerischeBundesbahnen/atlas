@@ -30,6 +30,7 @@ import { FileUploadComponent } from '../../../core/components/file-upload/file-u
 import { FileSizePipe } from '../../../core/components/file-upload/file-size/file-size.pipe';
 import { FileComponent } from '../../../core/components/file-upload/file/file.component';
 import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
+import {DetailPageContentComponent} from "../../../core/components/detail-page-content/detail-page-content.component";
 
 const existingStatement: TimetableHearingStatement = {
   id: 1,
@@ -232,8 +233,9 @@ function setupTestBed(activatedRoute: {
       StatementDetailComponent,
       ErrorNotificationComponent,
       AtlasSpacerComponent,
-      DetailFooterComponent,
       DetailPageContainerComponent,
+      DetailPageContentComponent,
+      DetailFooterComponent,
       InfoIconComponent,
       CommentComponent,
       LinkIconComponent,

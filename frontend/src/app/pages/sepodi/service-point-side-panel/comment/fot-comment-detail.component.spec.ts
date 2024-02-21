@@ -8,6 +8,9 @@ import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
 import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
 import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
 import { ServicePointsService } from '../../../../api';
+import {DetailPageContainerComponent} from "../../../../core/components/detail-page-container/detail-page-container.component";
+import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
+import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
 
 describe('FotCommentDetailComponent', () => {
   let component: FotCommentDetailComponent;
@@ -32,6 +35,9 @@ describe('FotCommentDetailComponent', () => {
         MockAtlasButtonComponent,
         CommentComponent,
         AtlasFieldErrorComponent,
+        DetailPageContainerComponent,
+        DetailPageContentComponent,
+        DetailFooterComponent,
       ],
       imports: [AppTestingModule],
       providers: [
