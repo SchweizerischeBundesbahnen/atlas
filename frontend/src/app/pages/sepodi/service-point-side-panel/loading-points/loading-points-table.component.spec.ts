@@ -7,6 +7,9 @@ import { of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingPointsService } from '../../../../api';
 import { LOADING_POINT } from '../../../../../test/data/loading-point';
+import {DetailPageContainerComponent} from "../../../../core/components/detail-page-container/detail-page-container.component";
+import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
+import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
 
 describe('LoadingPointsTableComponent', () => {
   let component: LoadingPointsTableComponent;
@@ -21,7 +24,14 @@ describe('LoadingPointsTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LoadingPointsTableComponent, MockTableComponent, MockAtlasButtonComponent],
+      declarations: [
+        LoadingPointsTableComponent,
+        MockTableComponent,
+        MockAtlasButtonComponent,
+        DetailPageContainerComponent,
+        DetailPageContentComponent,
+        DetailFooterComponent,
+      ],
       imports: [AppTestingModule],
       providers: [
         { provide: ActivatedRoute, useValue: route },

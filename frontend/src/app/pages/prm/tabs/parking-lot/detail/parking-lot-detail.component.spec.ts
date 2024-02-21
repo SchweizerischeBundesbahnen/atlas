@@ -29,6 +29,9 @@ import {SloidComponent} from '../../../../../core/form-components/sloid/sloid.co
 import {AtlasSlideToggleComponent} from '../../../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
 import {ParkingLotFormComponent} from "./form/parking-lot-form/parking-lot-form.component";
 import SpyObj = jasmine.SpyObj;
+import {DetailPageContainerComponent} from "../../../../../core/components/detail-page-container/detail-page-container.component";
+import {DetailPageContentComponent} from "../../../../../core/components/detail-page-content/detail-page-content.component";
+import {DetailFooterComponent} from "../../../../../core/components/detail-footer/detail-footer.component";
 
 const parkingLot: ReadParkingLotVersion[] = [
   {
@@ -106,6 +109,9 @@ describe('ParkingLotDetailComponent', () => {
         DateRangeComponent,
         DateIconComponent,
         UserDetailInfoComponent,
+        DetailPageContainerComponent,
+        DetailPageContentComponent,
+        DetailFooterComponent,
       ],
       imports: [AppTestingModule],
       providers: [
