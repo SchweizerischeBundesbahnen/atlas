@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {BERN_WYLEREGG} from '../../../../../test/data/service-point';
 import {of} from "rxjs";
 import {ContactPointOverview, ContactPointType, PersonWithReducedMobilityService, StandardAttributeType} from "../../../../api";
+import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
 
 const contactPointOverview: ContactPointOverview[] = [{
   creationDate: '2024-01-22T13:52:30.598026',
@@ -48,7 +49,7 @@ describe('ContactPointTableComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ContactPointTableComponent, MockAtlasButtonComponent, MockTableComponent],
+      declarations: [ContactPointTableComponent, MockAtlasButtonComponent, MockTableComponent, DetailFooterComponent],
       imports: [AppTestingModule],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },

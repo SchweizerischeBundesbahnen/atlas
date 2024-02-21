@@ -38,46 +38,44 @@
     </div>
   </ng-container>
 </div>
-<div class="footer-box">
-  <footer class="d-flex align-items-center justify-content-center">
+<atlas-detail-footer>
+  <atlas-button
+    buttonDataCy="close-detail"
+    buttonText="SEPODI.BACK_TO_MAP"
+    buttonType="whiteFooterNonEdit"
+    (buttonClicked)="backToSearchPrm()"
+    [footerEdit]="(isFormEnabled$ | async) ?? false"
+  >
+  </atlas-button>
+  <ng-container *ngIf="!isNew">
     <atlas-button
-      buttonDataCy="close-detail"
-      buttonText="SEPODI.BACK_TO_MAP"
-      buttonType="whiteFooterNonEdit"
-      (buttonClicked)="backToSearchPrm()"
+      *ngIf="(isFormEnabled$ | async) === false"
+      (buttonClicked)="toggleEdit()"
+      applicationType="PRM"
+      [businessOrganisations]="businessOrganisations"
+      buttonDataCy="edit"
+      buttonText="COMMON.EDIT"
+      buttonType="edit-service-point-dependent"
+      wrapperStyleClass="ms-3"
+    ></atlas-button>
+    <atlas-button
       [footerEdit]="(isFormEnabled$ | async) ?? false"
-    >
-    </atlas-button>
-    <ng-container *ngIf="!isNew">
-      <atlas-button
-        *ngIf="(isFormEnabled$ | async) === false"
-        (buttonClicked)="toggleEdit()"
-        applicationType="PRM"
-        [businessOrganisations]="businessOrganisations"
-        buttonDataCy="edit"
-        buttonText="COMMON.EDIT"
-        buttonType="edit-service-point-dependent"
-        wrapperStyleClass="ms-3"
-      ></atlas-button>
-      <atlas-button
-        [footerEdit]="(isFormEnabled$ | async) ?? false"
-        (buttonClicked)="toggleEdit()"
-        buttonDataCy="cancel"
-        buttonText="COMMON.CANCEL"
-        buttonType="whiteFooterEdit"
-        wrapperStyleClass="ms-3"
-      ></atlas-button>
-    </ng-container>
-    <atlas-button
-      (click)="save()"
-      [footerEdit]="isNew || ((isFormEnabled$ | async) ?? false)"
-      [disabled]="!form.dirty"
-      [submitButton]="true"
-      buttonDataCy="save-item"
-      buttonText="COMMON.SAVE"
+      (buttonClicked)="toggleEdit()"
+      buttonDataCy="cancel"
+      buttonText="COMMON.CANCEL"
       buttonType="whiteFooterEdit"
       wrapperStyleClass="ms-3"
-    >
-    </atlas-button>
-  </footer>
-</div>
+    ></atlas-button>
+  </ng-container>
+  <atlas-button
+    (click)="save()"
+    [footerEdit]="isNew || ((isFormEnabled$ | async) ?? false)"
+    [disabled]="!form.dirty"
+    [submitButton]="true"
+    buttonDataCy="save-item"
+    buttonText="COMMON.SAVE"
+    buttonType="whiteFooterEdit"
+    wrapperStyleClass="ms-3"
+  >
+  </atlas-button>
+</atlas-detail-footer>
