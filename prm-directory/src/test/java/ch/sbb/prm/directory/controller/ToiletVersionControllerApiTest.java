@@ -36,6 +36,7 @@ import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.service.PrmLocationService;
 import ch.sbb.prm.directory.service.RelationService;
 import java.util.Set;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -115,6 +116,32 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(status().isCreated());
     verify(relationService, times(1)).save(any(RelationVersion.class));
     verify(prmLocationService, times(1)).allocateSloid(any(ToiletVersion.class), eq(SloidType.TOILET));
+  }
+
+  @Test
+  void shouldNotCreateToiletWithViolation() throws Exception {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    referencePointRepository.save(referencePointVersion);
+
+    ToiletVersionModel model = ToiletTestData.getToiletVersionModel();
+    model.setWheelchairToilet(null);
+    model.setDesignation(RandomStringUtils.randomAlphabetic(51));
+    model.setAdditionalInformation(RandomStringUtils.randomAlphabetic(20001));
+    model.setParentServicePointSloid(null);
+
+    //when && then
+    mvc.perform(post("/v1/toilets").contentType(contentType)
+            .content(mapper.writeValueAsString(model)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+        .andExpect(jsonPath("$.details", hasSize(4)));
+    verify(relationService, times(0)).save(any(RelationVersion.class));
+    verify(prmLocationService, times(0)).allocateSloid(any(ToiletVersion.class), eq(SloidType.TOILET));
   }
 
   @Test
