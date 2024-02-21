@@ -2,9 +2,9 @@ import {TestBed} from '@angular/core/testing';
 import {ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot} from '@angular/router';
 
 import {toiletResolver} from './toilet.resolver';
-import {PersonWithReducedMobilityService, ReadToiletVersion, StandardAttributeType, ToiletVersion} from "../../../../../api";
+import {PersonWithReducedMobilityService, ReadToiletVersion, StandardAttributeType, ToiletVersion} from "../../../../../../api";
 import {Observable, of} from "rxjs";
-import {AppTestingModule} from "../../../../../app.testing.module";
+import {AppTestingModule} from "../../../../../../app.testing.module";
 
 const toiletVersions: ReadToiletVersion[] = [{
   creationDate: '2024-01-22T13:52:30.598026',
