@@ -92,6 +92,9 @@ model/hearingStatus.ts
 model/infoOpportunityAttributeType.ts
 model/inlineObject.ts
 model/inlineObject1.ts
+model/inlineObject10.ts
+model/inlineObject11.ts
+model/inlineObject12.ts
 model/inlineObject2.ts
 model/inlineObject3.ts
 model/inlineObject4.ts
@@ -99,6 +102,7 @@ model/inlineObject5.ts
 model/inlineObject6.ts
 model/inlineObject7.ts
 model/inlineObject8.ts
+model/inlineObject9.ts
 model/itemImportResponseStatus.ts
 model/itemImportResult.ts
 model/line.ts

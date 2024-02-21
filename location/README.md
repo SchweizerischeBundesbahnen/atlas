@@ -3,13 +3,14 @@
 <!-- toc -->
 
 - [ATLAS](#atlas)
+- [Architecture](#architecture)
 - [ADR Architecture Decision Record](#adr-architecture-decision-record)
 - [Project Versioning](#project-versioning)
 - [Links](#links)
-    * [Development](#development)
-    * [Test](#test)
-    * [Integration](#integration)
-    * [Production](#production)
+  * [Development](#development)
+  * [Test](#test)
+  * [Integration](#integration)
+  * [Production](#production)
 
 <!-- tocstop -->
 
@@ -17,6 +18,9 @@
 
 This application is part of ATLAS. General documentation is
 available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas/browse/README.md).
+
+## Architecture
+![Architecture](documentation/location-service.svg)
 
 ## ADR Architecture Decision Record
 
