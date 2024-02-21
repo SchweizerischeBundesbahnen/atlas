@@ -60,11 +60,8 @@ export * from './infoOpportunityAttributeType';
 export * from './inlineObject';
 export * from './inlineObject1';
 export * from './inlineObject10';
-<<<<<<< HEAD
 export * from './inlineObject11';
 export * from './inlineObject12';
-=======
->>>>>>> 67cec111d (Fix sorting and paging in frontend)
 export * from './inlineObject2';
 export * from './inlineObject3';
 export * from './inlineObject4';
@@ -116,6 +113,7 @@ export * from './readServicePointVersion';
 export * from './readStopPointVersion';
 export * from './readToiletVersion';
 export * from './readTrafficPointElementVersion';
+export * from './recordingStatus';
 export * from './referencePointAttributeType';
 export * from './referencePointCsvModel';
 export * from './referencePointCsvModelContainer';
