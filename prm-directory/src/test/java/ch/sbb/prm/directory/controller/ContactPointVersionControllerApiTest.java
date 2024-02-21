@@ -307,7 +307,7 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
     //when & then
     mvc.perform(get("/v1/contact-points/overview/" + contactPointVersion.getParentServicePointSloid()))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects", hasSize(1)));
+        .andExpect(jsonPath("$", hasSize(1)));
   }
 
 }

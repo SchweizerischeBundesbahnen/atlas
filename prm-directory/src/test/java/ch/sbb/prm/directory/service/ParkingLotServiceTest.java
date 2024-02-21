@@ -9,7 +9,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.api.location.SloidType;
-import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotOverviewModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -186,13 +185,12 @@ class ParkingLotServiceTest extends BasePrmServiceTest {
     parkingLotService.createParkingLot(parkingLot);
 
     //when
-    Container<ParkingLotOverviewModel> result = parkingLotService.buildOverview(
-        parkingLotService.findByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID),
-        Pageable.ofSize(5));
+    List<ParkingLotOverviewModel> result =
+        parkingLotService.buildOverview(parkingLotService.findByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID));
 
     //then
-    assertThat(result.getObjects()).hasSize(1);
-    assertThat(result.getObjects().getFirst().getRecordingStatus()).isEqualTo(RecordingStatus.INCOMPLETE);
+    assertThat(result).hasSize(1);
+    assertThat(result.getFirst().getRecordingStatus()).isEqualTo(RecordingStatus.INCOMPLETE);
   }
 
   @Test

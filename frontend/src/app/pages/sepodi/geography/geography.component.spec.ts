@@ -30,6 +30,12 @@ mapService.clickedGeographyCoordinates = new Subject<CoordinatePairWGS84>();
 const coordinateTransformationServiceSpy = jasmine.createSpyObj<CoordinateTransformationService>([
   'transform',
 ]);
+coordinateTransformationServiceSpy.transform.and.returnValue({
+  north: 12,
+  east: 12,
+  spatialReference: SpatialReference.Wgs84,
+});
+
 describe('GeographyComponent', () => {
   let component: GeographyComponent;
   let fixture: ComponentFixture<GeographyComponent>;
@@ -78,11 +84,6 @@ describe('GeographyComponent', () => {
       east: 10000,
       spatialReference: SpatialReference.Lv95,
     };
-    coordinateTransformationServiceSpy.transform.and.returnValue({
-      north: 12,
-      east: 12,
-      spatialReference: SpatialReference.Wgs84,
-    });
 
     component.onChangeCoordinatesManually(coordinates, false);
 
@@ -101,9 +102,9 @@ describe('GeographyComponent', () => {
     };
     spyOn(component, 'setHeightFromGeoData');
 
-    component.setHeightFromGeoData(coordinates, true)
+    component.setHeightFromGeoData(coordinates, true);
 
-    expect(component.setHeightFromGeoData).toHaveBeenCalledWith(coordinates, true)
+    expect(component.setHeightFromGeoData).toHaveBeenCalledWith(coordinates, true);
   });
 
   it('should call setHeightFromGeoData if onChangeCoordinatesManually is called', () => {
@@ -114,8 +115,8 @@ describe('GeographyComponent', () => {
     };
     spyOn(component, 'setHeightFromGeoData');
 
-    component.onChangeCoordinatesManually(coordinates, true)
+    component.onChangeCoordinatesManually(coordinates, true);
 
-    expect(component.setHeightFromGeoData).toHaveBeenCalled()
+    expect(component.setHeightFromGeoData).toHaveBeenCalled();
   });
 });
