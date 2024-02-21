@@ -8,6 +8,9 @@ import { TrafficPointElementsService } from '../../../../api';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER } from '../../../../../test/data/traffic-point-element';
+import {DetailPageContainerComponent} from "../../../../core/components/detail-page-container/detail-page-container.component";
+import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
+import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
 
 describe('TrafficPointElementsTableComponent', () => {
   let component: TrafficPointElementsTableComponent;
@@ -31,6 +34,9 @@ describe('TrafficPointElementsTableComponent', () => {
         TrafficPointElementsTableComponent,
         MockAtlasButtonComponent,
         MockTableComponent,
+        DetailPageContainerComponent,
+        DetailPageContentComponent,
+        DetailFooterComponent,
       ],
       imports: [AppTestingModule],
       providers: [
