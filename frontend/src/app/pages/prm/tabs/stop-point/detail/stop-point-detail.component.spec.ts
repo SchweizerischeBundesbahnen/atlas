@@ -27,6 +27,7 @@ import { STOP_POINT } from '../../../util/stop-point-test-data.spec';
 import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
 import { InfoIconComponent } from '../../../../../core/form-components/info-icon/info-icon.component';
 import SpyObj = jasmine.SpyObj;
+import {DetailFooterComponent} from "../../../../../core/components/detail-footer/detail-footer.component";
 
 const authService: Partial<AuthService> = {};
 describe('StopPointDetailComponent', () => {
@@ -66,6 +67,7 @@ describe('StopPointDetailComponent', () => {
         MockAtlasFieldErrorComponent,
         MeansOfTransportPickerComponent,
         AtlasSpacerComponent,
+        DetailFooterComponent,
       ],
       imports: [AppTestingModule],
       providers: [
