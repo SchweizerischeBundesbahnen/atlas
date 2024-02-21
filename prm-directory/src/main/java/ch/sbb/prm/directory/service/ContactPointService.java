@@ -1,7 +1,6 @@
 package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.api.location.SloidType;
-import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointOverviewModel;
 import ch.sbb.atlas.service.OverviewService;
@@ -17,7 +16,6 @@ import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -98,13 +96,11 @@ public class ContactPointService extends PrmRelatableVersionableService<ContactP
     return contactPointRepository.findByParentServicePointSloid(parentServicePointSloid);
   }
 
-  public Container<ContactPointOverviewModel> buildOverview(List<ContactPointVersion> parkingLotVersions,
-      Pageable pageable) {
+  public List<ContactPointOverviewModel> buildOverview(List<ContactPointVersion> parkingLotVersions) {
     List<ContactPointVersion> mergedVersions = OverviewService.mergeVersionsForDisplay(parkingLotVersions,
-        (x, y) -> x.getSloid().equals(y.getSloid()));
-    List<ContactPointOverviewModel> models = mergedVersions.stream()
+        ContactPointVersion::getSloid);
+    return mergedVersions.stream()
         .map(ContactPointVersionMapper::toOverviewModel)
         .toList();
-    return OverviewService.toPagedContainer(models, pageable);
   }
 }
