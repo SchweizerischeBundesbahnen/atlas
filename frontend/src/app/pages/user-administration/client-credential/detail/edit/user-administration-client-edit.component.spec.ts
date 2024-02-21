@@ -22,6 +22,7 @@ import { ReadOnlyData } from '../../../components/read-only-data/read-only-data'
 import SpyObj = jasmine.SpyObj;
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
+import {DetailPageContentComponent} from "../../../../../core/components/detail-page-content/detail-page-content.component";
 
 @Component({
   selector: 'app-user-administration-read-only-data',
@@ -76,7 +77,7 @@ describe('UserAdministrationClientEditComponent', () => {
     ]);
     dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirmLeave']);
     dialogMock.closeCalled = false;
-    await TestBed.overrideComponent(UserAdministrationClientEditComponent, {
+    TestBed.overrideComponent(UserAdministrationClientEditComponent, {
       set: {
         viewProviders: [
           {
@@ -95,8 +96,9 @@ describe('UserAdministrationClientEditComponent', () => {
         UserAdministrationClientEditComponent,
         MockUserDetailInfoComponent,
         MockUserAdministrationReadOnlyDataComponent,
-        DetailFooterComponent,
         DetailPageContainerComponent,
+        DetailPageContentComponent,
+        DetailFooterComponent,
       ],
       imports: [
         TranslateModule.forRoot({
