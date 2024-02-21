@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.api;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.toilet.ReadToiletVersionModel;
+import ch.sbb.atlas.api.prm.model.toilet.ToiletOverviewModel;
 import ch.sbb.atlas.api.prm.model.toilet.ToiletVersionModel;
 import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.imports.ItemImportResult;
@@ -38,6 +39,9 @@ public interface ToiletApiV1 {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
   ReadToiletVersionModel createToiletVersion(@RequestBody @Valid ToiletVersionModel toiletVersionModel);
+
+  @GetMapping("overview/{parentServicePointSloid}")
+  List<ToiletOverviewModel> getToiletOverview(@PathVariable String parentServicePointSloid);
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}")
