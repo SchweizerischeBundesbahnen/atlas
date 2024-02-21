@@ -3,7 +3,6 @@ package ch.sbb.prm.directory.service;
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
 
 import ch.sbb.atlas.api.location.SloidType;
-import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotOverviewModel;
 import ch.sbb.atlas.service.OverviewService;
@@ -18,7 +17,6 @@ import ch.sbb.prm.directory.search.ParkingLotSearchRestrictions;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -105,13 +103,11 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
     return parkingLotRepository.findByParentServicePointSloid(parentServicePointSloid);
   }
 
-  public Container<ParkingLotOverviewModel> buildOverview(List<ParkingLotVersion> parkingLotVersions,
-      Pageable pageable) {
+  public List<ParkingLotOverviewModel> buildOverview(List<ParkingLotVersion> parkingLotVersions) {
     List<ParkingLotVersion> mergedVersions = OverviewService.mergeVersionsForDisplay(parkingLotVersions,
-        (x, y) -> x.getSloid().equals(y.getSloid()));
-    List<ParkingLotOverviewModel> models = mergedVersions.stream()
+        ParkingLotVersion::getSloid);
+    return mergedVersions.stream()
         .map(ParkingLotVersionMapper::toOverviewModel)
         .toList();
-    return OverviewService.toPagedContainer(models, pageable);
   }
 }

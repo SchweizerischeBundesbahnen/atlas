@@ -99,8 +99,7 @@ public class LoadingPointService {
         .toList();
 
     List<ReadLoadingPointVersionModel> displayableVersions = OverviewService.mergeVersionsForDisplay(loadingPointVersions,
-        (previous, current) -> previous.getServicePointNumber().equals(current.getServicePointNumber())
-            && previous.getNumber().equals(current.getNumber()));
+        version -> String.valueOf(version.getNumber()));
 
     return OverviewService.toPagedContainer(displayableVersions, pageable);
   }
