@@ -1,6 +1,6 @@
 package ch.sbb.atlas.imports.servicepoint;
 
-import ch.sbb.atlas.imports.EditionDateModifier;
+import ch.sbb.atlas.imports.ImportDataModifier;
 import ch.sbb.atlas.imports.servicepoint.deserializer.LocalDateTimeDeserializer;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -23,7 +23,7 @@ import org.apache.commons.lang3.ObjectUtils;
 @SuperBuilder
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BaseDidokCsvModel implements EditionDateModifier {
+public class BaseDidokCsvModel implements ImportDataModifier {
 
   private static final int WGS84_EAST_MAX = 180;
   private static final int WGS84_NORTH_MAX = 90;
