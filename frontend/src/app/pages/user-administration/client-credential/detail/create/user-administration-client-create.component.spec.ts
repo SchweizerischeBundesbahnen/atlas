@@ -19,6 +19,7 @@ import { UserPermissionManager } from '../../../service/user-permission-manager'
 import SpyObj = jasmine.SpyObj;
 import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
+import {DetailPageContentComponent} from "../../../../../core/components/detail-page-content/detail-page-content.component";
 
 describe('UserAdministrationClientCreateComponent', () => {
   let component: UserAdministrationClientCreateComponent;
@@ -46,7 +47,7 @@ describe('UserAdministrationClientCreateComponent', () => {
       'BusinessOrganisationsService',
       ['getAllBusinessOrganisations'],
     );
-    await TestBed.overrideComponent(UserAdministrationClientCreateComponent, {
+    TestBed.overrideComponent(UserAdministrationClientCreateComponent, {
       set: {
         viewProviders: [
           {
@@ -60,6 +61,7 @@ describe('UserAdministrationClientCreateComponent', () => {
       declarations: [
         UserAdministrationClientCreateComponent,
         DetailPageContainerComponent,
+        DetailPageContentComponent,
         DetailFooterComponent,
       ],
       imports: [
