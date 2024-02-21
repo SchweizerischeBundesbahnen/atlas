@@ -9,20 +9,60 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { RecordingStatus } from './recordingStatus';
+import { StandardAttributeType } from './standardAttributeType';
 
 
-export interface ServicePointSearchResult { 
+export interface ToiletOverview { 
     /**
-     * DiDok-Number formerly known as UIC-Code, combination of uicCountryCode and numberShort.
+     * Object creation date
      */
-    number?: number;
+    readonly creationDate?: string;
     /**
-     * Official designation of a location that must be used by all recipients
+     * User creator
      */
-    designationOfficial?: string;
+    readonly creator?: string;
     /**
-     * Unique key for service points which is used in the customer information.
+     * Last edition date
+     */
+    readonly editionDate?: string;
+    /**
+     * User editor
+     */
+    readonly editor?: string;
+    /**
+     * Technical identifier
+     */
+    readonly id?: number;
+    /**
+     * Unique code for locations that is used in customer information. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here: https://transportdatamanagement.ch/standards/
      */
     sloid?: string;
+    /**
+     * Valid from
+     */
+    validFrom: Date;
+    /**
+     * Valid to
+     */
+    validTo: Date;
+    /**
+     * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
+     */
+    etagVersion?: number;
+    /**
+     * Parent Service Point Sloid: Unique code for locations that is used in customer information. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here: https://transportdatamanagement.ch/standards/
+     */
+    parentServicePointSloid: string;
+    /**
+     * Long designation of a location. Used primarily in customer information. Not all systems can process names of this length.
+     */
+    designation: string;
+    /**
+     * Additional Information
+     */
+    additionalInformation?: string;
+    wheelchairToilet: StandardAttributeType;
+    recordingStatus: RecordingStatus;
 }
 
