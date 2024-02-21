@@ -8,6 +8,7 @@ import { STOP_POINT } from '../../util/stop-point-test-data.spec';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 import {of} from "rxjs";
 import {BooleanOptionalAttributeType, ParkingLotOverview, PersonWithReducedMobilityService} from "../../../../api";
+import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
 
 const parkingLotOverview: ParkingLotOverview[] = [{
   creationDate: '2024-01-22T13:52:30.598026',
@@ -46,7 +47,7 @@ describe('ParkingLotTableComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ParkingLotTableComponent, MockAtlasButtonComponent, MockTableComponent],
+      declarations: [ParkingLotTableComponent, MockAtlasButtonComponent, MockTableComponent, DetailFooterComponent],
       imports: [AppTestingModule],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
