@@ -17,6 +17,7 @@ import { DetailFooterComponent } from '../detail-footer/detail-footer.component'
 import { DateRangeTextComponent } from '../../versioning/date-range-text/date-range-text.component';
 import { Record } from './record';
 import { Page } from '../../model/page';
+import {DetailPageContentComponent} from "../detail-page-content/detail-page-content.component";
 
 @Component({
   selector: 'app-coverage',
@@ -78,6 +79,7 @@ describe('BaseDetailComponent', () => {
         AtlasButtonComponent,
         MockUserDetailInfoComponent,
         DetailPageContainerComponent,
+        DetailPageContentComponent,
         DetailFooterComponent,
         DateRangeTextComponent,
       ],
