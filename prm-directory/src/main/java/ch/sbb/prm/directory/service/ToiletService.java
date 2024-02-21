@@ -4,10 +4,13 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TOILET;
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.api.prm.model.toilet.ToiletOverviewModel;
+import ch.sbb.atlas.service.OverviewService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.ToiletVersion;
+import ch.sbb.prm.directory.mapper.ToiletVersionMapper;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.search.ToiletSearchRestrictions;
@@ -90,4 +93,16 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
     locationService.allocateSloid(version, SloidType.TOILET);
     return toiletRepository.saveAndFlush(version);
   }
+  public List<ToiletVersion> findByParentServicePointSloid(String parentServicePointSloid) {
+    return toiletRepository.findByParentServicePointSloid(parentServicePointSloid);
+  }
+
+  public List<ToiletOverviewModel> buildOverview(List<ToiletVersion> toiletVersions) {
+    List<ToiletVersion> mergedVersions = OverviewService.mergeVersionsForDisplay(toiletVersions,
+        ToiletVersion::getSloid);
+    return mergedVersions.stream()
+        .map(ToiletVersionMapper::toOverviewModel)
+        .toList();
+  }
+
 }
