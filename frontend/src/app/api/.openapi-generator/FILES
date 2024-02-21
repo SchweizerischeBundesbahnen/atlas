@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.module.ts
 api/api.ts
@@ -191,6 +190,7 @@ model/timetableHearingYear.ts
 model/toiletCsvModel.ts
 model/toiletCsvModelContainer.ts
 model/toiletImportRequest.ts
+model/toiletOverview.ts
 model/toiletVersion.ts
 model/trafficPointCsvModelContainer.ts
 model/trafficPointElementCsvModel.ts
