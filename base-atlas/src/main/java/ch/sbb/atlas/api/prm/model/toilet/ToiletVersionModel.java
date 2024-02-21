@@ -29,12 +29,17 @@ public class ToiletVersionModel extends BasePrmVersionModel implements DatesVali
   @NotNull
   private String parentServicePointSloid;
 
-  @Schema(description = "Designation")
+  @Schema(description = "Long designation of a location. Used primarily in customer information. "
+      + "Not all systems can process names of this length.", example = "Biel/Bienne Bözingenfeld/Champs-de-Boujean")
+  @NotNull
+  @Size(max = AtlasFieldLengths.LENGTH_50)
   private String designation;
 
   @Schema(description = "Additional Information")
+  @Size(max = AtlasFieldLengths.LENGTH_2000)
   private String additionalInformation;
 
+  @NotNull
   private StandardAttributeType wheelchairToilet;
 
 }
