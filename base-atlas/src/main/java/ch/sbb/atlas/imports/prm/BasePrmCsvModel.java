@@ -1,6 +1,6 @@
 package ch.sbb.atlas.imports.prm;
 
-import ch.sbb.atlas.imports.EditionDateModifier;
+import ch.sbb.atlas.imports.ImportDataModifier;
 import ch.sbb.atlas.imports.servicepoint.deserializer.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,7 +21,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public abstract class BasePrmCsvModel implements EditionDateModifier {
+public abstract class BasePrmCsvModel implements ImportDataModifier {
 
   public abstract String getSloid();
 
