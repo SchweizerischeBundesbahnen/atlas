@@ -18,7 +18,6 @@ import {
 @Component({
   selector: 'app-parking-lot',
   templateUrl: './parking-lot-detail.component.html',
-  styleUrls: ['./parking-lot-detail.component.scss'],
 })
 export class ParkingLotDetailComponent implements OnInit, DetailFormComponent {
   isNew = false;

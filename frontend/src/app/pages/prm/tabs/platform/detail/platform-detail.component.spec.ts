@@ -37,6 +37,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { SplitServicePointNumberPipe } from '../../../../../core/search-service-point/split-service-point-number.pipe';
 import moment from 'moment';
 import { UserDetailInfoComponent } from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import {DetailPageContainerComponent} from "../../../../../core/components/detail-page-container/detail-page-container.component";
+import {DetailPageContentComponent} from "../../../../../core/components/detail-page-content/detail-page-content.component";
+import {DetailFooterComponent} from "../../../../../core/components/detail-footer/detail-footer.component";
 
 const reducedPlatform: ReadPlatformVersion[] = [
   {
@@ -165,6 +168,9 @@ describe('PlatformDetailComponent', () => {
         DateRangeComponent,
         DateIconComponent,
         UserDetailInfoComponent,
+        DetailPageContainerComponent,
+        DetailPageContentComponent,
+        DetailFooterComponent,
       ],
       imports: [AppTestingModule],
       providers: [

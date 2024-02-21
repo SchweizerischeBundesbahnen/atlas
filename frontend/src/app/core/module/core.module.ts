@@ -53,6 +53,7 @@ import { SearchServicePointComponent } from '../search-service-point/search-serv
 import { SearchResultHighlightPipe } from '../search-service-point/search-result-highlight.pipe';
 import { SplitServicePointNumberPipe } from '../search-service-point/split-service-point-number.pipe';
 import { MeansOfTransportPickerComponent } from '../../pages/sepodi/means-of-transport-picker/means-of-transport-picker.component';
+import {DetailPageContentComponent} from "../components/detail-page-content/detail-page-content.component";
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -61,6 +62,7 @@ const coreComponents = [
   WorkflowDialogComponent,
   BaseDetailComponent,
   DetailPageContainerComponent,
+  DetailPageContentComponent,
   DetailFooterComponent,
   UserDetailInfoComponent,
   AtlasButtonComponent,
