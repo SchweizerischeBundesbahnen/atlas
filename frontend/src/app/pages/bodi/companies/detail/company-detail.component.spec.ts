@@ -16,6 +16,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
+import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
 
 const company: Company = {
   uicCode: 1234,
@@ -88,6 +89,7 @@ function setupTestBed(data: { companyDetail: string | Company }) {
       AtlasFieldErrorComponent,
       MockAtlasTextFieldComponent,
       DetailPageContainerComponent,
+      DetailPageContentComponent,
       DetailFooterComponent,
       MockAtlasButtonComponent,
     ],
