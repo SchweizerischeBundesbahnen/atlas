@@ -8,6 +8,7 @@ import { STOP_POINT } from '../../util/stop-point-test-data.spec';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 import {PersonWithReducedMobilityService, ReadReferencePointVersion} from "../../../../api";
 import {of} from "rxjs";
+import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
 
 const referencePointOverview: ReadReferencePointVersion[] = [
   {
@@ -53,7 +54,7 @@ describe('ReferencePointTableComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ReferencePointTableComponent, MockAtlasButtonComponent, MockTableComponent],
+      declarations: [ReferencePointTableComponent, MockAtlasButtonComponent, MockTableComponent, DetailFooterComponent],
       imports: [AppTestingModule],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },

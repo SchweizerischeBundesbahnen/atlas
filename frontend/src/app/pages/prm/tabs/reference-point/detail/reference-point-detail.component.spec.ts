@@ -36,6 +36,9 @@ import { ReferencePointCompleteFormComponent } from './form/reference-point-comp
 import SpyObj = jasmine.SpyObj;
 import { SloidComponent } from '../../../../../core/form-components/sloid/sloid.component';
 import { AtlasSlideToggleComponent } from '../../../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
+import {DetailPageContainerComponent} from "../../../../../core/components/detail-page-container/detail-page-container.component";
+import {DetailPageContentComponent} from "../../../../../core/components/detail-page-content/detail-page-content.component";
+import {DetailFooterComponent} from "../../../../../core/components/detail-footer/detail-footer.component";
 
 const referencePoint: ReadReferencePointVersion[] = [
   {
@@ -113,6 +116,9 @@ describe('ReferencePointDetailComponent', () => {
         DateRangeComponent,
         DateIconComponent,
         UserDetailInfoComponent,
+        DetailPageContainerComponent,
+        DetailPageContentComponent,
+        DetailFooterComponent,
       ],
       imports: [AppTestingModule],
       providers: [
