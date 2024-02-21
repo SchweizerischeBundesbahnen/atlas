@@ -145,6 +145,17 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldGetToiletOverview() throws Exception {
+    //given
+    ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
+    toiletRepository.save(toiletVersion);
+    //when & then
+    mvc.perform(get("/v1/toilets/overview/" + toiletVersion.getParentServicePointSloid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)));
+  }
+
+  @Test
   void shouldCreateToiletWhenStopPointIsReduced() throws Exception {
     //given
     String parentServicePointSloid = "ch:1:sloid:7000";
