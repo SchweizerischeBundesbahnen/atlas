@@ -1,9 +1,9 @@
-<div class="pt-3 ps-3 pe-3">
+<atlas-detail-page-container>
   <div class="font-bold-4xl mb-3">
     {{ 'SEPODI.SERVICE_POINTS.NEW_SERVICE_POINT' | translate }}
   </div>
 
-  <div class="form-box p-3">
+  <atlas-detail-page-content>
     <div class="d-flex">
       <atlas-select
         class="col-6 pe-3"
@@ -63,10 +63,9 @@
         (geographyChanged)="$event ? onGeographyEnabled() : onGeographyDisabled()"
       ></sepodi-geography>
     </service-point-form>
-  </div>
+  </atlas-detail-page-content>
 
-  <div class="footer-box">
-    <footer class="d-flex justify-content-center align-items-center">
+  <atlas-detail-footer>
       <atlas-button
         (buttonClicked)="onCancel()"
         [footerEdit]="true"
@@ -86,6 +85,5 @@
         wrapperStyleClass="ms-3"
       >
       </atlas-button>
-    </footer>
-  </div>
-</div>
+  </atlas-detail-footer>
+</atlas-detail-page-container>

@@ -1,4 +1,4 @@
-<div class="p-3 position-relative">
+<atlas-detail-page-container>
   <div class="font-bold-4xl detail-title mb-3">
     {{ 'SEPODI.LOADING_POINTS.LOADING_POINT' | translate }}
     {{ isNew ? '' : selectedVersion.designation }}
@@ -8,7 +8,7 @@
       <date-range-text [dateRange]="maxValidity"></date-range-text>
     </span>
   </div>
-  <div class="d-flex flex-row mb-3">
+  <div class="d-flex flex-row mb-5">
     <div class="d-flex flex-column me-5" *ngIf="!isNew">
       <div class="font-bold-base">{{ 'SEPODI.LOADING_POINTS.NUMBER' | translate }}</div>
       <div>{{ selectedVersion.number }}</div>
@@ -20,10 +20,8 @@
       <div>{{ servicePointName }}</div>
     </div>
   </div>
-</div>
 
-<div class="p-3">
-  <div class="detail-content position-relative">
+  <atlas-detail-page-content>
     <div class="new-sloid d-flex flex-column col-4 pe-3" *ngIf="isNew">
       <atlas-text-field
         [fieldExamples]="[
@@ -98,8 +96,9 @@
 
       <div class="col-4 d-flex flex-column" [formGroup]="form">
         <mat-label class="font-bold-lg">{{
-          'SEPODI.LOADING_POINTS.CONNECTION_POINT' | translate
-        }}</mat-label>
+            'SEPODI.LOADING_POINTS.CONNECTION_POINT' | translate
+          }}
+        </mat-label>
         <atlas-spacer height="20px"></atlas-spacer>
         <mat-radio-group formControlName="connectionPoint">
           <mat-radio-button *ngFor="let option of [true, false]" [value]="option">
@@ -119,47 +118,45 @@
       <mat-divider class="mt-4 mb-4"></mat-divider>
       <app-user-detail-info [record]="selectedVersion"></app-user-detail-info>
     </div>
-  </div>
+  </atlas-detail-page-content>
 
-  <div class="page-footer">
-    <div class="page-footer-actions align-items-center justify-content-center d-flex">
-      <atlas-button
-        buttonDataCy="close-detail"
-        buttonType="whiteFooterNonEdit"
-        buttonText="COMMON.BACK"
-        (buttonClicked)="backToServicePoint()"
-        [footerEdit]="form.enabled"
-      >
-      </atlas-button>
-      <atlas-button
-        *ngIf="form.disabled"
-        (buttonClicked)="toggleEdit()"
-        buttonDataCy="edit"
-        applicationType="SEPODI"
-        buttonText="COMMON.EDIT"
-        buttonType="edit-service-point-dependent"
-        [businessOrganisations]="servicePointBusinessOrganisations"
-        wrapperStyleClass="ms-3"
-      ></atlas-button>
-      <atlas-button
-        [footerEdit]="form.enabled"
-        (buttonClicked)="toggleEdit()"
-        buttonDataCy="cancel"
-        buttonText="COMMON.CANCEL"
-        buttonType="whiteFooterEdit"
-        wrapperStyleClass="ms-3"
-      ></atlas-button>
-      <atlas-button
-        (click)="save()"
-        [disabled]="!this.form.dirty"
-        [footerEdit]="form.enabled"
-        [submitButton]="true"
-        buttonText="COMMON.SAVE"
-        buttonDataCy="save-item"
-        buttonType="whiteFooterEdit"
-        wrapperStyleClass="ms-3"
-      >
-      </atlas-button>
-    </div>
-  </div>
-</div>
+  <atlas-detail-footer>
+    <atlas-button
+      buttonDataCy="close-detail"
+      buttonType="whiteFooterNonEdit"
+      buttonText="COMMON.BACK"
+      (buttonClicked)="backToServicePoint()"
+      [footerEdit]="form.enabled"
+    >
+    </atlas-button>
+    <atlas-button
+      *ngIf="form.disabled"
+      (buttonClicked)="toggleEdit()"
+      buttonDataCy="edit"
+      applicationType="SEPODI"
+      buttonText="COMMON.EDIT"
+      buttonType="edit-service-point-dependent"
+      [businessOrganisations]="servicePointBusinessOrganisations"
+      wrapperStyleClass="ms-3"
+    ></atlas-button>
+    <atlas-button
+      [footerEdit]="form.enabled"
+      (buttonClicked)="toggleEdit()"
+      buttonDataCy="cancel"
+      buttonText="COMMON.CANCEL"
+      buttonType="whiteFooterEdit"
+      wrapperStyleClass="ms-3"
+    ></atlas-button>
+    <atlas-button
+      (click)="save()"
+      [disabled]="!this.form.dirty"
+      [footerEdit]="form.enabled"
+      [submitButton]="true"
+      buttonText="COMMON.SAVE"
+      buttonDataCy="save-item"
+      buttonType="whiteFooterEdit"
+      wrapperStyleClass="ms-3"
+    >
+    </atlas-button>
+  </atlas-detail-footer>
+</atlas-detail-page-container>
