@@ -1,54 +1,56 @@
 <div scrollToTop>
   <atlas-detail-page-container>
-    <h1 class="font-bold-4xl mb-5">{{ client.clientCredentialId }}</h1>
+    <atlas-detail-page-content>
+      <h1 class="font-bold-4xl mb-5">{{ client.clientCredentialId }}</h1>
 
-    <h2 class="font-bold-xl mb-2">{{ 'USER_ADMIN.CLIENT_CREDENTIAL.INFORMATION' | translate }}</h2>
-    <app-user-administration-read-only-data
-      [data]="client"
-      [userModelConfig]="readOnlyConfig"
-    ></app-user-administration-read-only-data>
-    <h1 class="font-bold-4xl mt-5">{{ 'USER_ADMIN.APPLICATIONS' | translate }}</h1>
+      <h2 class="font-bold-xl mb-2">{{ 'USER_ADMIN.CLIENT_CREDENTIAL.INFORMATION' | translate }}</h2>
+      <app-user-administration-read-only-data
+        [data]="client"
+        [userModelConfig]="readOnlyConfig"
+      ></app-user-administration-read-only-data>
+      <h1 class="font-bold-4xl mt-5">{{ 'USER_ADMIN.APPLICATIONS' | translate }}</h1>
 
-    <div *ngFor="let permission of userPermissionManager.userPermission.permissions">
-      <app-user-administration-application-config
-        [application]="permission.application"
-        [readOnly]="!editMode"
-        [role]="permission.role"
-      ></app-user-administration-application-config>
-    </div>
-    <div class="mt-5">
-      <app-user-detail-info [record]="record"></app-user-detail-info>
-    </div>
+      <div *ngFor="let permission of userPermissionManager.userPermission.permissions">
+        <app-user-administration-application-config
+          [application]="permission.application"
+          [readOnly]="!editMode"
+          [role]="permission.role"
+        ></app-user-administration-application-config>
+      </div>
+      <div class="mt-5">
+        <app-user-detail-info [record]="record"></app-user-detail-info>
+      </div>
+    </atlas-detail-page-content>
+
+    <atlas-detail-footer>
+      <ng-container *ngIf="editMode; else readMode">
+        <button (click)="cancelEdit()" class="atlas-primary-btn" data-cy="cancel">
+          {{ 'COMMON.CANCEL' | translate }}
+        </button>
+        <button
+          (click)="saveEdits()"
+          [disabled]="!saveEnabled"
+          class="atlas-primary-btn ms-3"
+          data-cy="save"
+          type="submit"
+        >
+          {{ 'COMMON.SAVE' | translate }}
+        </button>
+      </ng-container>
+
+      <ng-template #readMode>
+        <button (click)="back()" class="atlas-primary-btn" data-cy="backToOverview">
+          {{ 'COMMON.BACK_TO_OVERVIEW' | translate }}
+        </button>
+        <button
+          (click)="editMode = true; saveEnabled = true"
+          [disabled]="!client"
+          class="atlas-primary-btn ms-3"
+          data-cy="edit"
+        >
+          {{ 'COMMON.EDIT' | translate }}
+        </button>
+      </ng-template>
+    </atlas-detail-footer>
   </atlas-detail-page-container>
-
-  <atlas-detail-footer>
-    <ng-container *ngIf="editMode; else readMode">
-      <button (click)="cancelEdit()" class="atlas-primary-btn" data-cy="cancel">
-        {{ 'COMMON.CANCEL' | translate }}
-      </button>
-      <button
-        (click)="saveEdits()"
-        [disabled]="!saveEnabled"
-        class="atlas-primary-btn ms-3"
-        data-cy="save"
-        type="submit"
-      >
-        {{ 'COMMON.SAVE' | translate }}
-      </button>
-    </ng-container>
-
-    <ng-template #readMode>
-      <button (click)="back()" class="atlas-primary-btn" data-cy="backToOverview">
-        {{ 'COMMON.BACK_TO_OVERVIEW' | translate }}
-      </button>
-      <button
-        (click)="editMode = true; saveEnabled = true"
-        [disabled]="!client"
-        class="atlas-primary-btn ms-3"
-        data-cy="edit"
-      >
-        {{ 'COMMON.EDIT' | translate }}
-      </button>
-    </ng-template>
-  </atlas-detail-footer>
 </div>
