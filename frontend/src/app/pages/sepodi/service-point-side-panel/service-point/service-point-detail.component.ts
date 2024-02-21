@@ -31,7 +31,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-service-point',
   templateUrl: './service-point-detail.component.html',
-  styleUrls: ['./service-point-detail.component.scss'],
 })
 export class ServicePointDetailComponent implements OnDestroy, DetailFormComponent {
   servicePointVersions!: ReadServicePointVersion[];

@@ -30,6 +30,9 @@ import { MapService } from '../../map/map.service';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BERN } from '../../../../../test/data/service-point';
 import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import {DetailPageContainerComponent} from "../../../../core/components/detail-page-container/detail-page-container.component";
+import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
+import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
 
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
 const servicePointsServiceSpy = jasmine.createSpyObj('ServicePointService', [
@@ -102,6 +105,9 @@ describe('ServicePointDetailComponent', () => {
         ServicePointFormMockComponent,
         ServicePointGeographyMockComponent,
         UserDetailInfoComponent,
+        DetailPageContainerComponent,
+        DetailPageContentComponent,
+        DetailFooterComponent,
       ],
       imports: [AppTestingModule, FormsModule],
       providers: [

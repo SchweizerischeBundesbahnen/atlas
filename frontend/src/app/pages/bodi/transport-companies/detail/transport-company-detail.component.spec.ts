@@ -24,6 +24,7 @@ import { SearchSelectComponent } from '../../../../core/form-components/search-s
 import { ActivatedRoute } from '@angular/router';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
 
 const transportCompany: TransportCompany = {
   id: 1234,
@@ -240,6 +241,7 @@ function setupTestBed(data: (TransportCompany | TransportCompanyBoRelation[])[])
       AtlasLabelFieldComponent,
       AtlasFieldErrorComponent,
       DetailPageContainerComponent,
+      DetailPageContentComponent,
       DetailFooterComponent,
     ],
     imports: [AppTestingModule],
