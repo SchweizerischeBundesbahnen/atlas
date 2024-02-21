@@ -1,0 +1,9 @@
+@use 'src/styles/variables' as variables;
+
+.detail-content {
+  background-color: white;
+  border-top-right-radius: variables.$border-radius;
+  border-top-left-radius: variables.$border-radius;
+
+  padding: 30px;
+}

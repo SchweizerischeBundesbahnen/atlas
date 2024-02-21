@@ -18,7 +18,6 @@ import {
 @Component({
   selector: 'app-contact-point',
   templateUrl: './contact-point-detail.component.html',
-  styleUrls: ['./contact-point-detail.component.scss'],
 })
 export class ContactPointDetailComponent implements OnInit, DetailFormComponent {
   isNew = false;
