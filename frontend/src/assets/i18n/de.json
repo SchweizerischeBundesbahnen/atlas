@@ -1261,6 +1261,17 @@
         "EDIT_SUCCESS": "Der Parkplatz wurde erfolgreich gespeichert."
       }
     },
+    "TOILETS": {
+      "BUTTON_NEW": "Neuen Toilet erfassen",
+      "NEW": "Neuer Toilet",
+      "DETAIL_INFORMATION": "Angaben zum Toilet",
+      "DESIGNATION": "Bezeichnung",
+      "ADDITIONAL_INFORMATION": "Zusätzliche Informationen",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Der Parkplatz wurde erfolgreich hinzugefügt.",
+        "EDIT_SUCCESS": "Der Parkplatz wurde erfolgreich gespeichert."
+      }
+    },
     "CONTACT_POINTS": {
       "BUTTON_NEW": "Neuen Schalter erfassen",
       "NEW": "Neuer Schalter",
