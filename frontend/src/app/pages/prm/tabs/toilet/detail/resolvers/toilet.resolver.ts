@@ -1,8 +1,8 @@
 import {ActivatedRouteSnapshot, ResolveFn, Router} from '@angular/router';
-import {PersonWithReducedMobilityService, ToiletVersion} from "../../../../../api";
+import {PersonWithReducedMobilityService, ToiletVersion} from "../../../../../../api";
 import {inject, Injectable} from "@angular/core";
 import {catchError, Observable, of} from "rxjs";
-import {Pages} from "../../../../pages";
+import {Pages} from "../../../../../pages";
 
 
 @Injectable({ providedIn: 'root' })
