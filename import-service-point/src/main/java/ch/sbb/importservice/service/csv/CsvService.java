@@ -1,12 +1,12 @@
 package ch.sbb.importservice.service.csv;
 
-import static ch.sbb.atlas.imports.util.ImportUtils.replaceNewLines;
+import static ch.sbb.atlas.imports.util.ImportUtils.replaceData;
 import static ch.sbb.importservice.service.JobHelperService.MIN_LOCAL_DATE;
 
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.DidokCsvMapper;
-import ch.sbb.atlas.imports.EditionDateModifier;
+import ch.sbb.atlas.imports.ImportDataModifier;
 import ch.sbb.importservice.exception.CsvException;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
@@ -26,7 +26,7 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public abstract class CsvService<T extends EditionDateModifier> {
+public abstract class CsvService<T extends ImportDataModifier> {
 
   private static final String HASHTAG = "#";
   private static final String CSV_DELIMITER = ";";
@@ -85,7 +85,7 @@ public abstract class CsvService<T extends EditionDateModifier> {
           .with(DidokCsvMapper.CSV_SCHEMA)
           .readValues(String.join("\n", csvLinesToProcess));
       List<T> mappedCsvModels = mapObjects(mappingIterator);
-      replaceNewLines(mappedCsvModels);
+      replaceData(mappedCsvModels);
       return mappedCsvModels;
     } catch (IOException | IllegalAccessException e) {
       throw new CsvException(e);
