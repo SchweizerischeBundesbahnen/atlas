@@ -9,6 +9,7 @@ import {BERN_WYLEREGG} from '../../../../../test/data/service-point';
 import {PersonWithReducedMobilityService, TrafficPointElementsService} from "../../../../api";
 import {of} from "rxjs";
 import {BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER} from "../../../../../test/data/traffic-point-element";
+import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
 
 describe('PlatformTableComponent', () => {
   let component: PlatformTableComponent;
@@ -32,7 +33,7 @@ describe('PlatformTableComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [PlatformTableComponent, MockAtlasButtonComponent, MockTableComponent],
+      declarations: [PlatformTableComponent, MockAtlasButtonComponent, MockTableComponent, DetailFooterComponent],
       imports: [AppTestingModule],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },

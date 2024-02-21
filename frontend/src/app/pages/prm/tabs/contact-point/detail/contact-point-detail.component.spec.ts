@@ -37,6 +37,9 @@ import { SloidComponent } from '../../../../../core/form-components/sloid/sloid.
 import { AtlasSlideToggleComponent } from '../../../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
 import { ContactPointFormComponent } from './form/contact-point-form/contact-point-form.component';
 import SpyObj = jasmine.SpyObj;
+import {DetailPageContainerComponent} from "../../../../../core/components/detail-page-container/detail-page-container.component";
+import {DetailPageContentComponent} from "../../../../../core/components/detail-page-content/detail-page-content.component";
+import {DetailFooterComponent} from "../../../../../core/components/detail-footer/detail-footer.component";
 
 const contactPoint: ReadContactPointVersion[] = [
   {
@@ -116,6 +119,9 @@ describe('ContactPointDetailComponent', () => {
         DateRangeComponent,
         DateIconComponent,
         UserDetailInfoComponent,
+        DetailPageContainerComponent,
+        DetailPageContentComponent,
+        DetailFooterComponent,
       ],
       imports: [AppTestingModule],
       providers: [
