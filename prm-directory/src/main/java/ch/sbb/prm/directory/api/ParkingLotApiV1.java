@@ -39,9 +39,7 @@ public interface ParkingLotApiV1 {
       @Valid @ParameterObject PrmObjectRequestParams prmObjectRequestParams);
 
   @GetMapping("overview/{parentServicePointSloid}")
-  @PageableAsQueryParam
-  Container<ParkingLotOverviewModel> getParkingLotsOverview(@Parameter(hidden = true) Pageable pageable,
-      @PathVariable String parentServicePointSloid);
+  List<ParkingLotOverviewModel> getParkingLotsOverview(@PathVariable String parentServicePointSloid);
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
