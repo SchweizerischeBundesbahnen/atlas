@@ -19,14 +19,15 @@ public interface ReferencePointRepository extends JpaRepository<ReferencePointVe
   List<ReferencePointVersion> findAllBySloidOrderByValidFrom(String sloid);
 
   default List<ReferencePointVersion> findMainReferencePointOverlaps(ReferencePointVersion referencePointVersion) {
-    return findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndMainReferencePointIsTrue(
-        referencePointVersion.getValidFrom(), referencePointVersion.getValidTo()).stream()
+    return findAllByParentServicePointSloidAndValidToGreaterThanEqualAndValidFromLessThanEqualAndMainReferencePointIsTrue(
+        referencePointVersion.getParentServicePointSloid(), referencePointVersion.getValidFrom(),
+        referencePointVersion.getValidTo()).stream()
         .filter(i -> !i.getSloid().equals(referencePointVersion.getSloid()))
         .toList();
   }
 
-  List<ReferencePointVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndMainReferencePointIsTrue(
-      LocalDate validFrom, LocalDate validTo);
+  List<ReferencePointVersion> findAllByParentServicePointSloidAndValidToGreaterThanEqualAndValidFromLessThanEqualAndMainReferencePointIsTrue(
+      String parentServicePointSloid, LocalDate validFrom, LocalDate validTo);
 
   @Modifying(clearAutomatically = true)
   @Query("update reference_point_version v set v.version = (v.version + 1) where v.sloid = :sloid")
