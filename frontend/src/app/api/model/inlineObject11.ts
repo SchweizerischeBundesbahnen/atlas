@@ -11,19 +11,7 @@
  */
 
 
-export interface ToiletCsvModel { 
-    VALID_FROM?: Date;
-    VALID_TO?: Date;
-    ADD_DATE?: string;
-    ADDED_BY?: string;
-    MODIFIED_DATE?: string;
-    MODIFIED_BY?: string;
-    SLOID?: string;
-    DIDOK_CODE?: number;
-    DESCRIPTION?: string;
-    INFOS?: string;
-    WHEELCHAIR_TOILET?: number;
-    STATUS?: number;
-    DS_SLOID?: string;
+export interface InlineObject11 { 
+    file: Blob;
 }
 
