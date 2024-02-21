@@ -164,6 +164,10 @@ include::{snippets}/toilet-version-controller-api-test/should-get-toilet/auto-se
 
 include::{snippets}/toilet-version-controller-api-test/should-create-toilet/auto-section.adoc[]
 
+=== Create Toilets - Unsuccessfully
+
+include::{snippets}/toilet-version-controller-api-test/should-not-create-toilet-with-violation/auto-section.adoc[]
+
 === Create Toilets without Stop Point - Unsuccessfully
 
 include::{snippets}/toilet-version-controller-api-test/should-not-create-toilet-when-stop-point-does-not-exist/auto-section.adoc[]
