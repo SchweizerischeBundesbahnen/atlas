@@ -2,7 +2,7 @@ package ch.sbb.atlas.imports.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.imports.EditionDateModifier;
+import ch.sbb.atlas.imports.ImportDataModifier;
 import ch.sbb.atlas.versioning.model.Versionable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -85,12 +85,49 @@ class ImportUtilsTest {
     assertThat(csvModels.get(1).editionDate).isEqualTo(LocalDateTime.of(2020, 12, 15, 10, 15));
   }
 
+  @Test
+  void shouldReplaceDidokHighestDateWithAtlas() {
+    // given
+    List<CsvModel> csvModels = List.of(
+        CsvModel.builder()
+            .editionDate(LocalDateTime.of(2020, 12, 15, 10, 15))
+            .validTo(LocalDate.of(2099,12,31))
+            .build(),
+        CsvModel.builder()
+            .editionDate(LocalDateTime.of(2020, 12, 15, 10, 15))
+            .validTo(LocalDate.of(2024,12,31))
+            .build()
+    );
+
+    // when
+    ImportUtils.replaceToDateWithHighestDate(csvModels);
+
+    // then
+    assertThat(csvModels).hasSize(2);
+
+    assertThat(csvModels.get(0).validTo).isEqualTo(ImportUtils.ATLAS_HIGHEST_DATE);
+    assertThat(csvModels.get(0).editionDate).isEqualToIgnoringSeconds(LocalDateTime.now());
+    assertThat(csvModels.get(1).validTo).isEqualTo(LocalDate.of(2024,12,31));
+    assertThat(csvModels.get(1).editionDate).isEqualTo(LocalDateTime.of(2020, 12, 15, 10, 15));
+  }
+
   @Builder
-  private static class CsvModel implements EditionDateModifier {
+  private static class CsvModel implements ImportDataModifier {
 
     private LocalDateTime editionDate;
     private String description;
     private String comment;
+    private LocalDate validTo;
+
+    @Override
+    public LocalDate getValidTo() {
+      return this.validTo;
+    }
+
+    @Override
+    public void setValidTo(LocalDate validTo) {
+      this.validTo = validTo;
+    }
 
     @Override
     public void setLastModifiedToNow() {
