@@ -4,7 +4,11 @@ import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
 import ch.sbb.atlas.imports.prm.BasePrmCsvModel;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @Data
@@ -44,4 +48,5 @@ public class ContactPointCsvModel extends BasePrmCsvModel {
     private String dsSloid;
 
     private ContactPointType type;
+
 }
