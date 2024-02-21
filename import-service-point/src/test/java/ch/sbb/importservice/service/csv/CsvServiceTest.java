@@ -1,19 +1,5 @@
 package ch.sbb.importservice.service.csv;
 
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
-import ch.sbb.importservice.service.FileHelperService;
-import ch.sbb.importservice.service.JobHelperService;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-
-import java.io.File;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doCallRealMethod;
@@ -21,6 +7,20 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
+
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
+import ch.sbb.atlas.imports.util.ImportUtils;
+import ch.sbb.importservice.service.FileHelperService;
+import ch.sbb.importservice.service.JobHelperService;
+import java.io.File;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Objects;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 class CsvServiceTest {
 
@@ -113,6 +113,7 @@ class CsvServiceTest {
     //then
     assertThat(csvModelsToUpdate).hasSize(1);
     ServicePointCsvModel csvModel = csvModelsToUpdate.get(0);
+    assertThat(csvModel.getValidTo()).isEqualTo(ImportUtils.ATLAS_HIGHEST_DATE);
     assertThat(csvModel.getNummer()).isEqualTo(1542);
   }
 
@@ -129,6 +130,7 @@ class CsvServiceTest {
     ServicePointCsvModel csvModel = csvModelsToUpdate.get(0);
     assertThat(csvModel.getNummer()).isEqualTo(1542);
     assertThat(csvModel.getComment()).isEqualTo("Test Bemerkung\r\nmit\r\nNewlines.");
+    assertThat(csvModel.getValidTo()).isEqualTo(ImportUtils.ATLAS_HIGHEST_DATE);
     assertThat(ChronoUnit.MINUTES.between(csvModel.getEditedAt(), LocalDateTime.now())).isEqualTo(0);
   }
 

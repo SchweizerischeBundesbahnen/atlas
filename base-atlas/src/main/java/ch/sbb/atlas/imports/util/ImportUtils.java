@@ -1,6 +1,6 @@
 package ch.sbb.atlas.imports.util;
 
-import ch.sbb.atlas.imports.EditionDateModifier;
+import ch.sbb.atlas.imports.ImportDataModifier;
 import ch.sbb.atlas.imports.Importable;
 import ch.sbb.atlas.versioning.model.Property;
 import ch.sbb.atlas.versioning.model.Versionable;
@@ -21,8 +21,14 @@ public class ImportUtils {
 
   private static final String EDITION_DATE_FIELD_NAME = "editionDate";
   private static final String EDITOR_FIELD_NAME = "editor";
+  public static final LocalDate DIDOK_HIGEST_DATE = LocalDate.of(2099, 12, 31);
+  public static final LocalDate ATLAS_HIGHEST_DATE = LocalDate.of(9999, 12, 31);
 
-  public static <T extends EditionDateModifier> void replaceNewLines(List<T> csvModels) throws IllegalAccessException {
+  public static <T extends ImportDataModifier> void replaceData(List<T> csvModels) throws IllegalAccessException {
+    replaceNewLines(csvModels);
+    replaceToDateWithHighestDate(csvModels);
+  }
+  static <T extends ImportDataModifier> void replaceNewLines(List<T> csvModels) throws IllegalAccessException {
     Pattern pattern = Pattern.compile("\\$newline\\$");
     for (T csvModel : csvModels) {
       for (Field field : csvModel.getClass().getDeclaredFields()) {
@@ -38,6 +44,16 @@ public class ImportUtils {
       }
     }
   }
+
+  static <T extends ImportDataModifier> void replaceToDateWithHighestDate(List<T> csvModels) {
+    for (T csvModel : csvModels) {
+      if(DIDOK_HIGEST_DATE.isEqual(csvModel.getValidTo())){
+        csvModel.setValidTo(ATLAS_HIGHEST_DATE);
+        csvModel.setLastModifiedToNow();
+      }
+    }
+  }
+
 
   public <T extends Versionable> T getCurrentPointVersion(List<T> dbVersions, T edited) {
     dbVersions.sort(Comparator.comparing(Versionable::getValidFrom));
@@ -125,5 +141,6 @@ public class ImportUtils {
         .filter(property -> property.getKey().equals(fieldName))
         .findFirst().orElseThrow();
   }
+
 
 }
