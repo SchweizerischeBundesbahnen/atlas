@@ -130,7 +130,7 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
       versions.sort(Comparator.comparing(PlatformVersion::getValidFrom));
 
       PlatformVersion platformVersion = OverviewService.mergeVersionsForDisplay(versions,
-          (previous, current) -> previous.getSloid().equals(current.getSloid())).iterator().next();
+          PlatformVersion::getSloid).getFirst();
 
       overviewModels.add(PlatformOverviewModel.builder()
           .sloid(sloid)

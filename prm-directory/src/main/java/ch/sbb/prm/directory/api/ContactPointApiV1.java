@@ -39,9 +39,7 @@ public interface ContactPointApiV1 {
           @Valid @ParameterObject ContactPointObjectRequestParams contactPointObjectRequestParams);
 
   @GetMapping("overview/{parentServicePointSloid}")
-  @PageableAsQueryParam
-  Container<ContactPointOverviewModel> getContactPointOverview(@Parameter(hidden = true) Pageable pageable,
-      @PathVariable String parentServicePointSloid);
+  List<ContactPointOverviewModel> getContactPointOverview(@PathVariable String parentServicePointSloid);
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping
