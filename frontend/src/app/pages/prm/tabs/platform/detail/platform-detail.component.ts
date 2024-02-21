@@ -26,7 +26,6 @@ import {
 @Component({
   selector: 'app-platforms',
   templateUrl: './platform-detail.component.html',
-  styleUrls: ['./platform-detail.component.scss'],
 })
 export class PlatformDetailComponent implements OnInit, DetailFormComponent {
   isNew = false;
