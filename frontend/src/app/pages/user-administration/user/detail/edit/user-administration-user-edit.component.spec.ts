@@ -28,6 +28,7 @@ import { ReadOnlyData } from '../../../components/read-only-data/read-only-data'
 import SpyObj = jasmine.SpyObj;
 import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
+import {DetailPageContentComponent} from "../../../../../core/components/detail-page-content/detail-page-content.component";
 
 @Component({
   selector: 'app-user-administration-read-only-data',
@@ -73,7 +74,7 @@ describe('UserAdministrationUserEditComponent', () => {
       'getAllBusinessOrganisations',
     ]);
     dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirmLeave']);
-    await TestBed.overrideComponent(UserAdministrationUserEditComponent, {
+    TestBed.overrideComponent(UserAdministrationUserEditComponent, {
       set: {
         viewProviders: [
           {
@@ -94,6 +95,7 @@ describe('UserAdministrationUserEditComponent', () => {
         EditTitlePipe,
         MockUserDetailInfoComponent,
         DetailPageContainerComponent,
+        DetailPageContentComponent,
         DetailFooterComponent,
       ],
       imports: [
