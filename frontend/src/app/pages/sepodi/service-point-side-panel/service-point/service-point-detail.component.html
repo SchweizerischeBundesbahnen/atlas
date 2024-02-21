@@ -1,4 +1,4 @@
-<div class="service-point-detail">
+<atlas-detail-page-container>
   <div class="col-12 d-flex mt-3">
     <div class="d-flex flex-column pe-3">
       <app-switch-version
@@ -20,8 +20,8 @@
       <div>
         <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
         <span class="color-gray-900">{{
-          'COMMON.STATUS_TYPES.' + selectedVersion!.status | translate
-        }}</span>
+            'COMMON.STATUS_TYPES.' + selectedVersion!.status | translate
+          }}</span>
       </div>
     </div>
   </div>
@@ -65,70 +65,68 @@
     <mat-divider class="mt-4 mb-4"></mat-divider>
     <app-user-detail-info [record]="selectedVersion"></app-user-detail-info>
   </div>
-</div>
 
-<div class="footer-box">
-  <footer class="d-flex align-items-center justify-content-center">
-    <atlas-button
-      buttonDataCy="close-detail"
-      buttonText="SEPODI.BACK_TO_MAP"
-      buttonType="whiteFooterNonEdit"
-      (buttonClicked)="closeSidePanel()"
-      [footerEdit]="(isFormEnabled$ | async) ?? false"
-    >
-    </atlas-button>
-    <atlas-button
-      *ngIf="(isFormEnabled$ | async) === false && form"
-      (buttonClicked)="toggleEdit()"
-      applicationType="SEPODI"
-      [businessOrganisation]="form.controls.businessOrganisation.value!"
-      [uicCountryCode]="selectedVersion?.number?.uicCountryCode"
-      [disabled]="selectedVersion?.status === 'REVOKED'"
-      buttonDataCy="edit"
-      buttonText="COMMON.EDIT"
-      buttonType="edit"
-      wrapperStyleClass="ms-3"
-    ></atlas-button>
-    <atlas-button
-      [footerEdit]="(isFormEnabled$ | async) ?? false"
-      (buttonClicked)="toggleEdit()"
-      buttonDataCy="cancel"
-      buttonText="COMMON.CANCEL"
-      buttonType="whiteFooterEdit"
-      wrapperStyleClass="ms-3"
-    ></atlas-button>
-    <atlas-button
-      (click)="save()"
-      [footerEdit]="(isFormEnabled$ | async) ?? false"
-      [disabled]="!form?.dirty"
-      [submitButton]="true"
-      buttonDataCy="save-item"
-      buttonText="COMMON.SAVE"
-      buttonType="whiteFooterEdit"
-      wrapperStyleClass="ms-3"
-    >
-    </atlas-button>
-    <atlas-button
-      (buttonClicked)="revoke()"
-      [applicationType]="'SEPODI'"
-      [hidden]="selectedVersion?.status === 'REVOKED'"
-      [disabled]="isSwitchVersionDisabled"
-      buttonDataCy="revoke-item"
-      buttonText="COMMON.REVOKE"
-      buttonType="revoke"
-      wrapperStyleClass="ms-3"
-    >
-    </atlas-button>
-    <atlas-button
-      (buttonClicked)="validate()"
-      [applicationType]="'SEPODI'"
-      [hidden]="selectedVersion?.status !== 'DRAFT'"
-      [disabled]="isSwitchVersionDisabled"
-      buttonDataCy="revoke-item"
-      buttonText="WORKFLOW.BUTTON.SKIP"
-      buttonType="skipworkflow"
-      wrapperStyleClass="ms-3"
-    >
-    </atlas-button>
-  </footer>
-</div>
+</atlas-detail-page-container>
+<atlas-detail-footer>
+  <atlas-button
+    buttonDataCy="close-detail"
+    buttonText="SEPODI.BACK_TO_MAP"
+    buttonType="whiteFooterNonEdit"
+    (buttonClicked)="closeSidePanel()"
+    [footerEdit]="(isFormEnabled$ | async) ?? false"
+  >
+  </atlas-button>
+  <atlas-button
+    *ngIf="(isFormEnabled$ | async) === false && form"
+    (buttonClicked)="toggleEdit()"
+    applicationType="SEPODI"
+    [businessOrganisation]="form.controls.businessOrganisation.value!"
+    [uicCountryCode]="selectedVersion?.number?.uicCountryCode"
+    [disabled]="selectedVersion?.status === 'REVOKED'"
+    buttonDataCy="edit"
+    buttonText="COMMON.EDIT"
+    buttonType="edit"
+    wrapperStyleClass="ms-3"
+  ></atlas-button>
+  <atlas-button
+    [footerEdit]="(isFormEnabled$ | async) ?? false"
+    (buttonClicked)="toggleEdit()"
+    buttonDataCy="cancel"
+    buttonText="COMMON.CANCEL"
+    buttonType="whiteFooterEdit"
+    wrapperStyleClass="ms-3"
+  ></atlas-button>
+  <atlas-button
+    (click)="save()"
+    [footerEdit]="(isFormEnabled$ | async) ?? false"
+    [disabled]="!form?.dirty"
+    [submitButton]="true"
+    buttonDataCy="save-item"
+    buttonText="COMMON.SAVE"
+    buttonType="whiteFooterEdit"
+    wrapperStyleClass="ms-3"
+  >
+  </atlas-button>
+  <atlas-button
+    (buttonClicked)="revoke()"
+    [applicationType]="'SEPODI'"
+    [hidden]="selectedVersion?.status === 'REVOKED'"
+    [disabled]="isSwitchVersionDisabled"
+    buttonDataCy="revoke-item"
+    buttonText="COMMON.REVOKE"
+    buttonType="revoke"
+    wrapperStyleClass="ms-3"
+  >
+  </atlas-button>
+  <atlas-button
+    (buttonClicked)="validate()"
+    [applicationType]="'SEPODI'"
+    [hidden]="selectedVersion?.status !== 'DRAFT'"
+    [disabled]="isSwitchVersionDisabled"
+    buttonDataCy="revoke-item"
+    buttonText="WORKFLOW.BUTTON.SKIP"
+    buttonType="skipworkflow"
+    wrapperStyleClass="ms-3"
+  >
+  </atlas-button>
+</atlas-detail-footer>
