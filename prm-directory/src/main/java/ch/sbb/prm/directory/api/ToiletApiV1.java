@@ -48,6 +48,9 @@ public interface ToiletApiV1 {
   List<ReadToiletVersionModel> updateToiletVersion(@PathVariable Long id,
       @RequestBody @Valid ToiletVersionModel model);
 
+  @GetMapping("{sloid}")
+  List<ReadToiletVersionModel> getToiletVersions(@PathVariable String sloid);
+
   @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping("import")
   List<ItemImportResult> importToilets(@RequestBody @Valid ToiletImportRequestModel importRequestModel);
