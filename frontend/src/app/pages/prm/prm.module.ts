@@ -29,6 +29,7 @@ import {ContactPointTableComponent} from './tabs/contact-point/contact-point-tab
 import {ContactPointDetailComponent} from './tabs/contact-point/detail/contact-point-detail.component';
 import {ContactPointFormComponent} from './tabs/contact-point/detail/form/contact-point-form/contact-point-form.component';
 import {ToiletDetailComponent} from "./tabs/toilet/detail/toilet-detail.component";
+import {ToiletFormComponent} from "./tabs/toilet/detail/form/toilet-form/toilet-form.component";
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import {ToiletDetailComponent} from "./tabs/toilet/detail/toilet-detail.componen
     StopPointCompleteFormComponent,
     ToiletComponent,
     ToiletDetailComponent,
+    ToiletFormComponent,
     ConnectionComponent,
     PlatformTableComponent,
     PlatformDetailComponent,
