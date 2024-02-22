@@ -11,6 +11,7 @@ This is the repository for business relevant services for ATLAS.
 - [Stages and their purpose](#stages-and-their-purpose)
 - [Monitoring and Logging](#monitoring-and-logging)
   * [Correlation-Id](#correlation-id)
+- [Timeouts](#timeouts)
 - [Development](#development)
   * [Run locally](#run-locally)
   * [Monorepo](#monorepo)
@@ -118,6 +119,14 @@ The Atlas services use [Micrometer](https://micrometer.io/) to add to the log a
 **Correlation-Id** which spreads between the services up to the snack bar in the fronted.
 
 We can use the **Correlation-Id** to search it in [Splunk](documentation/Logging.md) or [Instana](documentation/Monitoring.md).
+
+## Timeouts
+
+At the moment there are no timeouts for requests to the atlas platform. 
+
+However, the used apim-gateway currently has a limited request time of one minute. The responsible property could be found here: https://code.sbb.ch/projects/KI_ATLAS/repos/atlas-argocd/browse/applications/apim-gateway/values.yaml#106
+
+API users experiencing timeouts when downloading a bigger json file should switch to the compressed (gzipped) version of the endpoint.
 
 ## Development
 
