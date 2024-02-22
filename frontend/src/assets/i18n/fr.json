@@ -1261,6 +1261,19 @@
         "EDIT_SUCCESS": "Le place de stationnement a été enregistré avec succès."
       }
     },
+    "TOILETS": {
+      "TOILET": "Toilette",
+      "BUTTON_NEW": "Saisir les nouvelles toilettes",
+      "NEW": "Nouvelles toilettes",
+      "DETAIL_INFORMATION": "Informations sur les toilettes",
+      "DESIGNATION": "Désignation",
+      "ADDITIONAL_INFORMATION": "Informations complémentaires",
+      "WHEELCHAIR_TOILET": "Toilettes accessibles en chaise roulante disponibles",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Les toilettes ont été ajoutées avec succès.",
+        "EDIT_SUCCESS": "Les toilettes ont été enregistrées avec succès."
+      }
+    },
     "CONTACT_POINTS": {
       "BUTTON_NEW": "Ajouter un nouveau guichet des billets",
       "NEW": "Ajouter un nouveau guichet des billets",
