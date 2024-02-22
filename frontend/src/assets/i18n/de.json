@@ -1262,14 +1262,16 @@
       }
     },
     "TOILETS": {
-      "BUTTON_NEW": "Neuen Toilet erfassen",
-      "NEW": "Neuer Toilet",
-      "DETAIL_INFORMATION": "Angaben zum Toilet",
+      "TOILET": "Toilette",
+      "BUTTON_NEW": "Neue Toilette erfassen",
+      "NEW": "Neue Toilette",
+      "DETAIL_INFORMATION": "Angaben zur Toilette",
       "DESIGNATION": "Bezeichnung",
       "ADDITIONAL_INFORMATION": "Zusätzliche Informationen",
+      "WHEELCHAIR_TOILET": "Rollstuhlgängige Toilette vorhanden",
       "NOTIFICATION": {
-        "ADD_SUCCESS": "Der Parkplatz wurde erfolgreich hinzugefügt.",
-        "EDIT_SUCCESS": "Der Parkplatz wurde erfolgreich gespeichert."
+        "ADD_SUCCESS": "Die Toilette wurde erfolgreich hinzugefügt.",
+        "EDIT_SUCCESS": "Die Toilette wurde erfolgreich gespeichert."
       }
     },
     "CONTACT_POINTS": {
