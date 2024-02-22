@@ -32,7 +32,7 @@ const toiletOverview: ToiletOverview[] = [
   }
 ];
 
-describe('ToiletteComponent', () => {
+describe('Toilet Component', () => {
   let component: ToiletComponent;
   let fixture: ComponentFixture<ToiletComponent>;
   const activatedRouteMock = {

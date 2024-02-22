@@ -155,7 +155,7 @@ describe('ToiletDetailComponent', () => {
     });
   });
 
-  describe('edit parking lot', () => {
+  describe('edit toilet', () => {
     beforeEach(() => {
       TestBed.overrideProvider(ActivatedRoute, {
         useValue: {
