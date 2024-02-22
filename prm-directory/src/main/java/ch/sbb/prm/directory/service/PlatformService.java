@@ -11,6 +11,7 @@ import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.PlatformVersion;
+import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.search.PlatformSearchRestrictions;
@@ -138,5 +139,12 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
     });
     return overviewModels;
   }
+
+  public void checkPlatformExists(String sloid, String type) {
+    if (!platformRepository.existsBySloid(sloid)) {
+      throw new ElementTypeDoesNotExistException(sloid, type);
+    }
+  }
+
 
 }
