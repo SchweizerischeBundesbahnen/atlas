@@ -10,6 +10,7 @@ import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
+import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
 import ch.sbb.prm.directory.mapper.ParkingLotVersionMapper;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
@@ -110,5 +111,11 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
     return mergedVersions.stream()
         .map(ParkingLotVersionMapper::toOverviewModel)
         .toList();
+  }
+
+  public void checkParkingLotExists(String sloid, String type) {
+    if (!parkingLotRepository.existsBySloid(sloid)) {
+      throw new ElementTypeDoesNotExistException(sloid, type);
+    }
   }
 }

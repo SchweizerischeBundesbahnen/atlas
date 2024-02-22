@@ -5,6 +5,7 @@ import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.RelationVersion;
+import ch.sbb.prm.directory.exception.ReducedVariantException;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.search.RelationSearchRestrictions;
 import java.util.List;
@@ -20,12 +21,23 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
 
   private final StopPointService stopPointService;
   private final RelationRepository relationRepository;
+  private final ReferencePointService referencePointService;
+  private final ToiletService toiletService;
+  private final ParkingLotService parkingLotService;
+  private final ContactPointService contactPointService;
+  private final PlatformService platformService;
 
   public RelationService(RelationRepository relationRepository, VersionableService versionableService,
-      StopPointService stopPointService) {
+      StopPointService stopPointService, ReferencePointService referencePointService, ToiletService toiletService,
+                         ParkingLotService parkingLotService,  ContactPointService contactPointService, PlatformService platformService) {
     super(versionableService);
     this.relationRepository = relationRepository;
+    this.referencePointService = referencePointService;
     this.stopPointService = stopPointService;
+    this.toiletService = toiletService;
+    this.parkingLotService = parkingLotService;
+    this.contactPointService = contactPointService;
+    this.platformService = platformService;
   }
 
   public List<RelationVersion> getRelationsBySloid(String sloid) {
@@ -83,5 +95,34 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
 
   public Page<RelationVersion> findAll(RelationSearchRestrictions searchRestrictions) {
     return relationRepository.findAll(searchRestrictions.getSpecification(),searchRestrictions.getPageable());
+  }
+
+  public RelationVersion createRelationThroughImport(RelationVersion version) {
+    stopPointService.checkStopPointExists(version.getParentServicePointSloid());
+
+    if(stopPointService.isReduced(version.getParentServicePointSloid())){
+      throw new ReducedVariantException();
+    }
+
+    referencePointService.checkReferencePointExists(version.getReferencePointSloid(), "REFERENCE_POINT");
+
+    isElementExisiting(version.getReferencePointElementType(), version.getSloid());
+
+    return relationRepository.saveAndFlush(version);
+  }
+
+  private void isElementExisiting(ReferencePointElementType type, String sloid) {
+    if(type == ReferencePointElementType.PLATFORM){
+      platformService.checkPlatformExists(sloid, ReferencePointElementType.PLATFORM.name());
+    }
+    if(type == ReferencePointElementType.PARKING_LOT){
+      parkingLotService.checkParkingLotExists(sloid, ReferencePointElementType.PARKING_LOT.name());
+    }
+    if(type == ReferencePointElementType.CONTACT_POINT){
+      contactPointService.checkContactPointExists(sloid, ReferencePointElementType.CONTACT_POINT.name());
+    }
+    if(type == ReferencePointElementType.TOILET){
+      toiletService.checkToiletExists(sloid, ReferencePointElementType.TOILET.name());
+    }
   }
 }
