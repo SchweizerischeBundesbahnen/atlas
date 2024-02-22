@@ -160,6 +160,10 @@ include::{snippets}/platform-version-controller-api-test/should-not-create-platf
 
 include::{snippets}/toilet-version-controller-api-test/should-get-toilet/auto-section.adoc[]
 
+=== Get Toilet Versions - Successfully
+
+include::{snippets}/toilet-version-controller-api-test/should-get-toilet-versions/auto-section.adoc[]
+
 === Create Toilets - Successfully
 
 include::{snippets}/toilet-version-controller-api-test/should-create-toilet/auto-section.adoc[]
