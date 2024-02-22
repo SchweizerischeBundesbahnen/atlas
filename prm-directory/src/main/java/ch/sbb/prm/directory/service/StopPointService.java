@@ -9,6 +9,7 @@ import ch.sbb.prm.directory.exception.ReducedVariantException;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
+import ch.sbb.prm.directory.validation.PrmMeansOfTransportHelper;
 import ch.sbb.prm.directory.validation.StopPointValidationService;
 import java.util.List;
 import java.util.Optional;
@@ -98,6 +99,7 @@ public class StopPointService extends PrmVersionableService<StopPointVersion> {
       throw new StopPointDoesNotExistException(sloid);
     }
   }
+
 
   public boolean isStopPointExisting(String sloid) {
     return stopPointRepository.existsBySloid(sloid);

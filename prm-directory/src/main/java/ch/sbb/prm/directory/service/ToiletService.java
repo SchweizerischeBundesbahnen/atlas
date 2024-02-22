@@ -11,6 +11,7 @@ import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.mapper.ToiletVersionMapper;
+import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.search.ToiletSearchRestrictions;
@@ -106,4 +107,10 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
         .toList();
   }
 
+
+  public void checkToiletExists(String sloid, String type) {
+    if (!toiletRepository.existsBySloid(sloid)) {
+      throw new ElementTypeDoesNotExistException(sloid, type);
+    }
+  }
 }

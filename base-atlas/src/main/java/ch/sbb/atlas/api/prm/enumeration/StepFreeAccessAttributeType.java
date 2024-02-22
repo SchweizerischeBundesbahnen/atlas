@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.stream.Stream;
+
 @Schema(enumAsRef = true, example = "YES_WITH_LIFT")
 @Getter
 @RequiredArgsConstructor
@@ -19,4 +21,10 @@ public enum StepFreeAccessAttributeType {
 
   private final Integer rank;
 
+  public static StepFreeAccessAttributeType of(Integer value) {
+    if (value == null) {
+      return null;
+    }
+    return Stream.of(values()).filter(i -> i.getRank().equals(value)).findFirst().orElseThrow();
+  }
 }
