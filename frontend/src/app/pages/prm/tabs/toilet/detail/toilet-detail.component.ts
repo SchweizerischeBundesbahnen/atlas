@@ -95,21 +95,21 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent {
   save() {
     this.form.markAllAsTouched();
     if (this.form.valid) {
-      const toiletLotVersion = ToiletFormGroupBuilder.getWritableForm(
+      const toiletVersion = ToiletFormGroupBuilder.getWritableForm(
         this.form,
         this.servicePoint.sloid!,
       );
       if (this.isNew) {
-        this.create(toiletLotVersion);
+        this.create(toiletVersion);
       } else {
-        this.update(toiletLotVersion);
+        this.update(toiletVersion);
       }
     }
   }
 
-  private create(toiletLotVersion: ToiletVersion) {
+  private create(toiletVersion: ToiletVersion) {
     this.personWithReducedMobilityService
-      .createToiletVersion(toiletLotVersion)
+      .createToiletVersion(toiletVersion)
       .subscribe((createdVersion) => {
         this.notificationService.success('PRM.TOILETS.NOTIFICATION.ADD_SUCCESS');
         this.router
