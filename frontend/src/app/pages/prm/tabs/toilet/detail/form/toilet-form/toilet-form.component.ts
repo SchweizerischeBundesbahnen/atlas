@@ -10,7 +10,6 @@ import {ToiletFormGroup} from "../toilet-form-group";
 export class ToiletFormComponent {
 
   @Input() form!: FormGroup<ToiletFormGroup>;
-  @Input() isNew = false;
 
   standardAttributeTypes = Object.values(StandardAttributeType);
 
