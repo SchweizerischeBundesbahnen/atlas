@@ -16,6 +16,7 @@ public enum PrmBatchExportFileName implements ExportFileName {
   CONTACT_POINT_VERSION("contact_point", "contact_point"),
   TOILET_VERSION("toilet", "toilet"),
   PARKING_LOT_VERSION("parking_lot", "parking_lot"),
+  RELATION_VERSION("relation", "relation"),
 
   ;
 
