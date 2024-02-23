@@ -9,6 +9,7 @@ import ch.sbb.exportservice.service.ExportContactPointJobService;
 import ch.sbb.exportservice.service.ExportParkingLotJobService;
 import ch.sbb.exportservice.service.ExportPlatformJobService;
 import ch.sbb.exportservice.service.ExportReferencePointJobService;
+import ch.sbb.exportservice.service.ExportRelationJobService;
 import ch.sbb.exportservice.service.ExportStopPointJobService;
 import ch.sbb.exportservice.service.ExportToiletJobService;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,9 @@ class ExportPrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTest
 
   @MockBean
   private ExportParkingLotJobService exportParkingLotJobService;
+
+  @MockBean
+  private ExportRelationJobService exportRelationJobService;
 
   @Test
   void shouldPostStopPointExportBatchSuccessfully() throws Exception {
@@ -95,6 +99,17 @@ class ExportPrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTest
 
     //when & then
     mvc.perform(post("/v1/export/prm/parking-lot-batch")
+            .contentType(contentType))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void shouldPostRelationExportBatchSuccessfully() throws Exception {
+    //given
+    doNothing().when(exportRelationJobService).startExportJobs();
+
+    //when & then
+    mvc.perform(post("/v1/export/prm/relation-batch")
             .contentType(contentType))
         .andExpect(status().isOk());
   }
