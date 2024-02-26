@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RelationCsvToModelMapperTest {
+class ReferencePointCsvToModelMapperTest {
 
     @Test
     void shouldMapCsvToCreateModelCorrectly() {
