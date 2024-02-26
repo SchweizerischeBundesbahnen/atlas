@@ -25,6 +25,7 @@ import { ContainerReadContactPointVersion } from '../model/models';
 import { ContainerReadParkingLotVersion } from '../model/models';
 import { ContainerReadPlatformVersion } from '../model/models';
 import { ContainerReadReferencePointVersion } from '../model/models';
+import { ContainerReadRelationVersion } from '../model/models';
 import { ContainerReadStopPointVersion } from '../model/models';
 import { ContainerReadToiletVersion } from '../model/models';
 import { ErrorResponse } from '../model/models';
@@ -1236,6 +1237,109 @@ export class PersonWithReducedMobilityService {
 
         return this.httpClient.get<Array<ReadReferencePointVersion>>(`${this.configuration.basePath}/prm-directory/v1/reference-points/overview/${encodeURIComponent(String(parentServicePointSloid))}`,
             {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param referencePointElementTypes ReferencePointElementType
+     * @param referencePointSloids ReferencePoint Sloid
+     * @param sloids Unique key for platforms which is used in the customer information.
+     * @param parentServicePointSloids Unique key for the associated Service Point.
+     * @param servicePointNumbers Service Point Numbers
+     * @param validOn ValidOn. Date format: yyyy-MM-dd
+     * @param fromDate [fromDate] &lt;&#x3D; validFrom. Filters for all versions where validFrom is bigger or equal than fromDate. Date format: yyyy-MM-dd
+     * @param toDate [toDate] &gt;&#x3D; validTo. Filters for all versions where validTo is smaller or equal than toDate. Date format: yyyy-MM-dd
+     * @param createdAfter creationDate &gt;&#x3D; [createdAfter]. DateTime format: yyyy-MM-dd HH:mm:ss, yyyy-MM-dd\&#39;T\&#39;HH:mm:ss, yyyy-MM-dd\&#39;T\&#39;HH:mm:ss.SSS\&#39;Z\&#39;
+     * @param modifiedAfter editionDate &gt;&#x3D; [modifiedAfter]. DateTime format: yyyy-MM-dd HH:mm:ss, yyyy-MM-dd\&#39;T\&#39;HH:mm:ss, yyyy-MM-dd\&#39;T\&#39;HH:mm:ss.SSS\&#39;Z\&#39;
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getRelations(referencePointElementTypes?: Array<ReferencePointElementType>, referencePointSloids?: Array<string>, sloids?: Array<string>, parentServicePointSloids?: Array<string>, servicePointNumbers?: Array<number>, validOn?: Date, fromDate?: Date, toDate?: Date, createdAfter?: string, modifiedAfter?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ContainerReadRelationVersion>;
+    public getRelations(referencePointElementTypes?: Array<ReferencePointElementType>, referencePointSloids?: Array<string>, sloids?: Array<string>, parentServicePointSloids?: Array<string>, servicePointNumbers?: Array<number>, validOn?: Date, fromDate?: Date, toDate?: Date, createdAfter?: string, modifiedAfter?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ContainerReadRelationVersion>>;
+    public getRelations(referencePointElementTypes?: Array<ReferencePointElementType>, referencePointSloids?: Array<string>, sloids?: Array<string>, parentServicePointSloids?: Array<string>, servicePointNumbers?: Array<number>, validOn?: Date, fromDate?: Date, toDate?: Date, createdAfter?: string, modifiedAfter?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ContainerReadRelationVersion>>;
+    public getRelations(referencePointElementTypes?: Array<ReferencePointElementType>, referencePointSloids?: Array<string>, sloids?: Array<string>, parentServicePointSloids?: Array<string>, servicePointNumbers?: Array<number>, validOn?: Date, fromDate?: Date, toDate?: Date, createdAfter?: string, modifiedAfter?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (referencePointElementTypes) {
+            referencePointElementTypes.forEach((element) => {
+                queryParameters = this.addToHttpParams(queryParameters,
+                  <any>element, 'referencePointElementTypes');
+            })
+        }
+        if (referencePointSloids) {
+            referencePointSloids.forEach((element) => {
+                queryParameters = this.addToHttpParams(queryParameters,
+                  <any>element, 'referencePointSloids');
+            })
+        }
+        if (sloids) {
+            sloids.forEach((element) => {
+                queryParameters = this.addToHttpParams(queryParameters,
+                  <any>element, 'sloids');
+            })
+        }
+        if (parentServicePointSloids) {
+            parentServicePointSloids.forEach((element) => {
+                queryParameters = this.addToHttpParams(queryParameters,
+                  <any>element, 'parentServicePointSloids');
+            })
+        }
+        if (servicePointNumbers) {
+            servicePointNumbers.forEach((element) => {
+                queryParameters = this.addToHttpParams(queryParameters,
+                  <any>element, 'servicePointNumbers');
+            })
+        }
+        if (validOn !== undefined && validOn !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>validOn, 'validOn');
+        }
+        if (fromDate !== undefined && fromDate !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>fromDate, 'fromDate');
+        }
+        if (toDate !== undefined && toDate !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>toDate, 'toDate');
+        }
+        if (createdAfter !== undefined && createdAfter !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>createdAfter, 'createdAfter');
+        }
+        if (modifiedAfter !== undefined && modifiedAfter !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>modifiedAfter, 'modifiedAfter');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.get<ContainerReadRelationVersion>(`${this.configuration.basePath}/prm-directory/v1/relations`,
+            {
+                params: queryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

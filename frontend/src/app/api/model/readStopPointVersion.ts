@@ -37,10 +37,6 @@ export interface ReadStopPointVersion {
      */
     readonly id?: number;
     /**
-     * Unique code for locations that is used in customer information. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here: https://transportdatamanagement.ch/standards/
-     */
-    sloid?: string;
-    /**
      * Valid from
      */
     validFrom: Date;
@@ -52,6 +48,10 @@ export interface ReadStopPointVersion {
      * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
      */
     etagVersion?: number;
+    /**
+     * Unique code for locations that is used in customer information. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here: https://transportdatamanagement.ch/standards/
+     */
+    sloid?: string;
     /**
      * Means of transport. Indicates for which means of transport a stop is intended/equipped. Mandatory for StopPoints
      */
