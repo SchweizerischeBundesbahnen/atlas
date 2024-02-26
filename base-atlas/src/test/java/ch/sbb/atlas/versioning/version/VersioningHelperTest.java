@@ -2283,4 +2283,76 @@ public class VersioningHelperTest {
     //then
     assertThat(result).isTrue();
   }
+
+  @Test
+  void shouldReturnEditedProperties() {
+    //given
+    VersionableObject version = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+
+    VersionableObject edited = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2023, 12, 31))
+        .build();
+
+    Entity entity = Entity.builder().id(1L).properties(List.of(Property.builder()
+        .key("property")
+        .value("value")
+        .ignoreDiff(false)
+        .build())).build();
+    ToVersioning toVersioning = ToVersioning.builder()
+        .versionable(version)
+        .entity(entity)
+        .build();
+    VersioningData versioningData = new VersioningData(edited, version, entity,
+        new ArrayList<>(List.of(toVersioning)));
+
+    //when
+    boolean result = VersioningHelper.arePropertiesEdited(versioningData);
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  void shouldIgnoreEditedPropertiesWithIgnoreDiff() {
+    //given
+    VersionableObject version = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2021, 1, 1))
+        .validTo(LocalDate.of(2022, 12, 31))
+        .build();
+
+    VersionableObject edited = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2023, 12, 31))
+        .build();
+
+    Entity entity = Entity.builder().id(1L).properties(List.of(Property.builder()
+        .key("property")
+        .value("value")
+        .ignoreDiff(true)
+        .build())).build();
+    ToVersioning toVersioning = ToVersioning.builder()
+        .versionable(version)
+        .entity(entity)
+        .build();
+    VersioningData versioningData = new VersioningData(edited, version, entity,
+        new ArrayList<>(List.of(toVersioning)));
+
+    //when
+    boolean result = VersioningHelper.arePropertiesEdited(versioningData);
+
+    //then
+    assertThat(result).isFalse();
+  }
 }
