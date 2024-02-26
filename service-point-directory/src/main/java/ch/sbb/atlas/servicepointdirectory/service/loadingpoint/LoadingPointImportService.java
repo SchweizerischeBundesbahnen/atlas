@@ -34,7 +34,7 @@ public class LoadingPointImportService extends BaseImportServicePointDirectorySe
 
   @Override
   protected void save(LoadingPointVersion loadingPointVersion) {
-    loadingPointService.save(loadingPointVersion);
+    loadingPointService.saveForImport(loadingPointVersion);
   }
 
   @Override
@@ -109,7 +109,7 @@ public class LoadingPointImportService extends BaseImportServicePointDirectorySe
     final List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(current,
         loadingPointVersionEdited, dbVersions);
     ImportUtils.overrideEditionDateAndEditorOnVersionedObjects(loadingPointVersionEdited, versionedObjects);
-    versionableService.applyVersioning(LoadingPointVersion.class, versionedObjects, loadingPointService::save,
+    versionableService.applyVersioning(LoadingPointVersion.class, versionedObjects, this::save,
         new ApplyVersioningDeleteByIdLongConsumer(loadingPointService.getLoadingPointVersionRepository()));
   }
 

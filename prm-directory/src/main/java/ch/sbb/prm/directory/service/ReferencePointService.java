@@ -9,7 +9,6 @@ import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
 import ch.sbb.atlas.service.OverviewService;
-import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -26,7 +25,6 @@ import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.search.ReferencePointSearchRestrictions;
 import ch.sbb.prm.directory.util.RelationUtil;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -72,10 +70,10 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
 
   @Override
   public ReferencePointVersion save(ReferencePointVersion version) {
-    version.setEditionDate(LocalDateTime.now());
-    version.setEditor(UserService.getUserIdentifier());
     referencePointValidationService.validatePreconditionBusinessRule(version);
     stopPointService.validateIsNotReduced(version.getParentServicePointSloid());
+
+    setEditionDateAndEditor(version);
     return referencePointRepository.saveAndFlush(version);
   }
 
