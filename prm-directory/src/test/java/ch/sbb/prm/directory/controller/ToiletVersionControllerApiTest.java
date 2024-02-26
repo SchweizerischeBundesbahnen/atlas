@@ -145,6 +145,17 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldGetToiletOverview() throws Exception {
+    //given
+    ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
+    toiletRepository.save(toiletVersion);
+    //when & then
+    mvc.perform(get("/v1/toilets/overview/" + toiletVersion.getParentServicePointSloid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)));
+  }
+
+  @Test
   void shouldCreateToiletWhenStopPointIsReduced() throws Exception {
     //given
     String parentServicePointSloid = "ch:1:sloid:7000";
@@ -255,6 +266,17 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2001-01-01")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2001-12-31")));
     verify(prmLocationService, never()).allocateSloid(any(), any());
+  }
+
+  @Test
+  void shouldGetToiletVersions() throws Exception {
+    //given
+    ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
+    toiletRepository.save(toiletVersion);
+    //when & then
+    mvc.perform(get("/v1/toilets/" + toiletVersion.getSloid()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)));
   }
 
 }

@@ -1,5 +1,5 @@
-import { Page } from '../core/model/page';
-import { environment } from '../../environments/environment';
+import {Page} from '../core/model/page';
+import {environment} from '../../environments/environment';
 
 export class Pages {
   public static HOME: Page = {
@@ -221,6 +221,15 @@ export class Pages {
     path: 'contact-points',
     pathText: 'PAGES.CONTACT_POINT.TITLE_HEADER',
     description: 'PAGES.CONTACT_POINT.DESCRIPTION',
+  };
+
+   public static TOILET: Page = {
+    title: 'PRM.TOILET.TITLE',
+    titleMenu: 'PAGES.TOILET.TITLE_HEADER',
+    headerTitle: 'PAGES.TOILET.TITLE_HEADER',
+    path: 'toilets',
+    pathText: 'PAGES.TOILET.TITLE_HEADER',
+    description: 'PAGES.TOILET.DESCRIPTION',
   };
 
   public static PRM_STOP_POINT_TAB: Page = {
