@@ -181,8 +181,13 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
     if (servicePointVersion.getSloid() == null && isUicCode11or12or13or14(servicePointVersion)) {
       String missingSloid = createServicePointSloidFromDidokNumber(servicePointVersion);
       servicePointVersion.setSloid(missingSloid);
+      log.info("During the service point import, a service point with the number {} and country uic code {} was identified with "
+          + "SLOID null and SLOID is set to {}", servicePointVersion.getNumber().getValue(),
+          servicePointVersion.getCountry().getUicCode(), servicePointVersion.getSloid());
       if (isInitialCreate) {
          servicePointVersion.setEditionDate(LocalDateTime.now());
+        log.info("During the service point import, a service point SLOID is set and editionDate is modified to {}.",
+            servicePointVersion.getEditionDate());
       }
     }
   }
