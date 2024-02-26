@@ -17,7 +17,7 @@ public enum StepFreeAccessAttributeType {
   NO(2),
   NOT_APPLICABLE(3),
   YES_WITH_LIFT(5),
-  YES_WITH_RAMP(5);
+  YES_WITH_RAMP(6);
 
   private final Integer rank;
 
