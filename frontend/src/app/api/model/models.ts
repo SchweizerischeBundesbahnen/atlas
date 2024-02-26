@@ -158,6 +158,7 @@ export * from './timetableHearingYear';
 export * from './toiletCsvModel';
 export * from './toiletCsvModelContainer';
 export * from './toiletImportRequest';
+export * from './toiletOverview';
 export * from './toiletVersion';
 export * from './trafficPointCsvModelContainer';
 export * from './trafficPointElementCsvModel';
