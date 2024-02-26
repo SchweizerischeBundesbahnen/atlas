@@ -34,10 +34,6 @@ export interface ReferencePointVersion {
      */
     readonly id?: number;
     /**
-     * Unique code for locations that is used in customer information. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here: https://transportdatamanagement.ch/standards/
-     */
-    sloid?: string;
-    /**
      * Valid from
      */
     validFrom: Date;
@@ -49,6 +45,10 @@ export interface ReferencePointVersion {
      * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
      */
     etagVersion?: number;
+    /**
+     * Unique code for locations that is used in customer information. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here: https://transportdatamanagement.ch/standards/
+     */
+    sloid?: string;
     /**
      * Parent Service Point Sloid: Unique code for locations that is used in customer information. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here: https://transportdatamanagement.ch/standards/
      */
