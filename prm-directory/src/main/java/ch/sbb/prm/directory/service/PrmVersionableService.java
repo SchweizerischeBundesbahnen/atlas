@@ -1,8 +1,10 @@
 package ch.sbb.prm.directory.service;
 
+import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.RelationVersion;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +29,7 @@ public abstract class PrmVersionableService<T extends PrmVersionable> {
     editedVersion.setSloid(currentVersion.getSloid());
     editedVersion.setNumber(currentVersion.getNumber());
     List<T> existingDbVersions = getAllVersions(currentVersion.getSloid());
+
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, existingDbVersions);
     applyVersioning(versionedObjects);
@@ -38,5 +41,10 @@ public abstract class PrmVersionableService<T extends PrmVersionable> {
     if (!currentVersion.getVersion().equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(RelationVersion.class.getSimpleName(), "version");
     }
+  }
+
+  protected void setEditionDateAndEditor(T editedVersion) {
+    editedVersion.setEditionDate(LocalDateTime.now());
+    editedVersion.setEditor(UserService.getUserIdentifier());
   }
 }
