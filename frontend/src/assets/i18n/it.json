@@ -1261,6 +1261,19 @@
         "EDIT_SUCCESS": "Il parcheggio è stato salvato con successo."
       }
     },
+    "TOILETS": {
+      "TOILET": "Servizio igienico",
+      "BUTTON_NEW": "Nuovo servizio igienico",
+      "NEW": "Nuovo servizio igienico",
+      "DETAIL_INFORMATION": "Informazioni sul servizio igienico",
+      "DESIGNATION": "Denomimazione",
+      "ADDITIONAL_INFORMATION": "Informazioni aggiuntive",
+      "WHEELCHAIR_TOILET": "Disponibili servizi igienici accessibili in sedia a rotelle",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "Il servizio igienico è stato aggiunto con succeso.",
+        "EDIT_SUCCESS": "Il servizio igienico è stato salvato con succeso."
+      }
+    },
     "CONTACT_POINTS": {
       "BUTTON_NEW": "Creare un nuovo sportello",
       "NEW": "Nuovo sportello",
