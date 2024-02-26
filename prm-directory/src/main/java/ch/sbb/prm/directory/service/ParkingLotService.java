@@ -51,6 +51,7 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
 
   @Override
   protected ParkingLotVersion save(ParkingLotVersion version) {
+    setEditionDateAndEditor(version);
     return parkingLotRepository.saveAndFlush(version);
   }
 

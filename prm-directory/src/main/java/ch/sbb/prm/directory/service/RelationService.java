@@ -52,6 +52,8 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
   @Override
   public RelationVersion save(RelationVersion relationVersion) {
     stopPointService.validateIsNotReduced(relationVersion.getParentServicePointSloid());
+
+    setEditionDateAndEditor(relationVersion);
     return relationRepository.saveAndFlush(relationVersion);
   }
 

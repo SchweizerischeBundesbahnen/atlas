@@ -93,6 +93,9 @@ public class TrafficPointElementService {
   public TrafficPointElementVersion save(TrafficPointElementVersion trafficPointElementVersion) {
     trafficPointElementValidationService.validatePreconditionBusinessRules(trafficPointElementVersion);
 
+    trafficPointElementVersion.setEditionDate(LocalDateTime.now());
+    trafficPointElementVersion.setEditor(UserService.getUserIdentifier());
+
     return trafficPointElementVersionRepository.saveAndFlush(trafficPointElementVersion);
   }
 
@@ -114,9 +117,6 @@ public class TrafficPointElementService {
     editedVersion.setServicePointNumber(currentVersion.getServicePointNumber());
     editedVersion.setSloid(currentVersion.getSloid());
     editedVersion.setTrafficPointElementType(currentVersion.getTrafficPointElementType());
-
-    editedVersion.setEditionDate(LocalDateTime.now());
-    editedVersion.setEditor(UserService.getUserIdentifier());
 
     List<TrafficPointElementVersion> dbVersions = findBySloidOrderByValidFrom(currentVersion.getSloid());
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
