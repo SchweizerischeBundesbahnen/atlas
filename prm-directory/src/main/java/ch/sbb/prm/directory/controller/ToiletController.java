@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.controller;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.toilet.ReadToiletVersionModel;
+import ch.sbb.atlas.api.prm.model.toilet.ToiletOverviewModel;
 import ch.sbb.atlas.api.prm.model.toilet.ToiletVersionModel;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.platform.ToiletImportRequestModel;
@@ -48,6 +49,11 @@ public class ToiletController implements ToiletApiV1 {
   }
 
   @Override
+  public List<ToiletOverviewModel> getToiletOverview(String parentServicePointSloid) {
+    return toiletService.buildOverview(toiletService.findByParentServicePointSloid(parentServicePointSloid));
+  }
+
+  @Override
   public List<ReadToiletVersionModel> updateToiletVersion(Long id, ToiletVersionModel model) {
     ToiletVersion toiletVersion =
         toiletService.getToiletVersionById(id).orElseThrow(() -> new IdNotFoundException(id));
@@ -56,6 +62,11 @@ public class ToiletController implements ToiletApiV1 {
 
     return toiletService.getAllVersions(toiletVersion.getSloid()).stream()
         .map(ToiletVersionMapper::toModel).toList();
+  }
+
+  @Override
+  public List<ReadToiletVersionModel> getToiletVersions(String sloid) {
+    return toiletService.getAllVersions(sloid).stream().map(ToiletVersionMapper::toModel).toList();
   }
 
   @Override

@@ -23,6 +23,8 @@ import {ParkingLotTableComponent} from "./tabs/parking-lot/parking-lot-table.com
 import {ContactPointTableComponent} from "./tabs/contact-point/contact-point-table.component";
 import {ContactPointDetailComponent} from "./tabs/contact-point/detail/contact-point-detail.component";
 import {contactPointResolver} from "./tabs/contact-point/detail/resolvers/contact-point.resolver";
+import {ToiletDetailComponent} from "./tabs/toilet/detail/toilet-detail.component";
+import {toiletResolver} from "./tabs/toilet/detail/resolvers/toilet.resolver";
 
 const routes: Routes = [
   {
@@ -68,6 +70,16 @@ const routes: Routes = [
     canDeactivate: [canLeaveDirtyForm],
     resolve: {
       contactPoint: contactPointResolver,
+      servicePoint: prmPanelResolver,
+    },
+  },
+  {
+    path: Pages.STOP_POINTS.path + '/:stopPointSloid/' + Pages.TOILET.path + '/:sloid',
+    component: ToiletDetailComponent,
+    runGuardsAndResolvers: 'always',
+    canDeactivate: [canLeaveDirtyForm],
+    resolve: {
+      toilet: toiletResolver,
       servicePoint: prmPanelResolver,
     },
   },
