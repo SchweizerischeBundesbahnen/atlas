@@ -38,7 +38,7 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
 
   @Override
   protected void save(TrafficPointElementVersion trafficPointElementVersion) {
-    trafficPointElementService.save(trafficPointElementVersion);
+    trafficPointElementService.saveForImport(trafficPointElementVersion);
   }
 
   @Override
@@ -122,7 +122,7 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
     ImportUtils.overrideEditionDateAndEditorOnVersionedObjects(edited, versionedObjects);
     BasePointUtility.addCreateAndEditDetailsToGeolocationPropertyFromVersionedObjects(versionedObjects,
         TrafficPointElementVersion.Fields.trafficPointElementGeolocation);
-    versionableService.applyVersioning(TrafficPointElementVersion.class, versionedObjects, trafficPointElementService::save,
+    versionableService.applyVersioning(TrafficPointElementVersion.class, versionedObjects, this::save,
         new ApplyVersioningDeleteByIdLongConsumer(trafficPointElementService.getTrafficPointElementVersionRepository()));
   }
 

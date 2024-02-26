@@ -51,6 +51,7 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
 
   @Override
   protected ToiletVersion save(ToiletVersion version) {
+    setEditionDateAndEditor(version);
     return toiletRepository.saveAndFlush(version);
   }
 
