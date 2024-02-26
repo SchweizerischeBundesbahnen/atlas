@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.mapper;
 
 import ch.sbb.atlas.api.prm.model.relation.ReadRelationVersionModel;
 import ch.sbb.atlas.api.prm.model.relation.RelationVersionModel;
+import ch.sbb.atlas.location.SloidHelper;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import lombok.experimental.UtilityClass;
 
@@ -13,6 +14,7 @@ public class RelationVersionMapper {
         .id(version.getId())
         .elementSloid(version.getSloid())
         .referencePointSloid(version.getReferencePointSloid())
+        .referencePointElementType(version.getReferencePointElementType())
         .parentServicePointSloid(version.getParentServicePointSloid())
         .number(version.getNumber())
         .validFrom(version.getValidFrom())
@@ -33,7 +35,9 @@ public class RelationVersionMapper {
     return RelationVersion.builder()
         .id(model.getId())
         .sloid(model.getElementSloid())
+        .number(SloidHelper.getServicePointNumber(model.getParentServicePointSloid()))
         .referencePointSloid(model.getReferencePointSloid())
+        .referencePointElementType(model.getReferencePointElementType())
         .parentServicePointSloid(model.getParentServicePointSloid())
         .validFrom(model.getValidFrom())
         .validTo(model.getValidTo())

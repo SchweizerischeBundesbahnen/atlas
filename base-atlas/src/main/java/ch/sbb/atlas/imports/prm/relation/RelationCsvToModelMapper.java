@@ -1,7 +1,6 @@
 package ch.sbb.atlas.imports.prm.relation;
 
 import ch.sbb.atlas.api.prm.enumeration.*;
-import ch.sbb.atlas.api.prm.model.referencepoint.ReferencePointVersionModel;
 import ch.sbb.atlas.api.prm.model.relation.RelationVersionModel;
 import lombok.experimental.UtilityClass;
 
@@ -13,7 +12,7 @@ public class RelationCsvToModelMapper {
                 .parentServicePointSloid(relationCsvModel.getDsSloid())
                 .sloid(relationCsvModel.getSloid())
                 .referencePointSloid(relationCsvModel.getRpSloid())
-                .referencePointElementType(ReferencePointElementType.valueOf(relationCsvModel.getElType()))
+                .referencePointElementType(ReferencePointElementType.valueOf(relationCsvModel.getElType().toUpperCase()))
                 .tactileVisualMarks(TactileVisualAttributeType.of(relationCsvModel.getTactVisualMarks()))
                 .contrastingAreas(StandardAttributeType.from(relationCsvModel.getContrastingAreas()))
                 .stepFreeAccess(StepFreeAccessAttributeType.of(relationCsvModel.getStepFreeAccess()))
@@ -25,5 +24,4 @@ public class RelationCsvToModelMapper {
                 .editor(relationCsvModel.getModifiedBy())
                 .build();
     }
-
 }
