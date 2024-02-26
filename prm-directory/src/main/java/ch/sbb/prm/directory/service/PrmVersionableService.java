@@ -29,12 +29,9 @@ public abstract class PrmVersionableService<T extends PrmVersionable> {
     editedVersion.setSloid(currentVersion.getSloid());
     editedVersion.setNumber(currentVersion.getNumber());
     List<T> existingDbVersions = getAllVersions(currentVersion.getSloid());
+
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, existingDbVersions);
-
-    editedVersion.setEditionDate(LocalDateTime.now());
-    editedVersion.setEditor(UserService.getUserIdentifier());
-
     applyVersioning(versionedObjects);
     return currentVersion;
   }
@@ -44,5 +41,10 @@ public abstract class PrmVersionableService<T extends PrmVersionable> {
     if (!currentVersion.getVersion().equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(RelationVersion.class.getSimpleName(), "version");
     }
+  }
+
+  protected void setEditionDateAndEditor(T editedVersion) {
+    editedVersion.setEditionDate(LocalDateTime.now());
+    editedVersion.setEditor(UserService.getUserIdentifier());
   }
 }
