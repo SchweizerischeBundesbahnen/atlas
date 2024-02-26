@@ -192,4 +192,87 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2001-12-31")));
   }
 
+  @Test
+  void shouldNotUpdateRelationWithConstraintViolation() throws Exception {
+    //given
+    String parentServicePointSloid = "ch:1:sloid:7000";
+    stopPointRepository.save(StopPointTestData.builderVersion1().sloid(parentServicePointSloid).build());
+    String referencePointSloid = "ch:1:sloid:7000:1";
+    RelationVersion version1 = RelationTestData.builderVersion1().build();
+    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setReferencePointSloid(referencePointSloid);
+    relationRepository.saveAndFlush(version1);
+    RelationVersion version2 = RelationTestData.builderVersion2().build();
+    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setReferencePointSloid(referencePointSloid);
+    relationRepository.saveAndFlush(version2);
+
+    RelationVersionModel editedVersionModel = new RelationVersionModel();
+    editedVersionModel.setParentServicePointSloid(parentServicePointSloid);
+    editedVersionModel.setSloid(version2.getSloid());
+    editedVersionModel.setReferencePointSloid(version2.getReferencePointSloid());
+    editedVersionModel.setValidFrom(version2.getValidFrom());
+    editedVersionModel.setValidTo(version2.getValidTo().minusYears(1));
+    editedVersionModel.setContrastingAreas(null);
+    editedVersionModel.setTactileVisualMarks(null);
+    editedVersionModel.setStepFreeAccess(null);
+    editedVersionModel.setCreationDate(version2.getCreationDate());
+    editedVersionModel.setEditionDate(version2.getEditionDate());
+    editedVersionModel.setCreator(version2.getCreator());
+    editedVersionModel.setEditor(version2.getEditor());
+    editedVersionModel.setEtagVersion(version2.getVersion());
+
+    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:7000", Set.of("ch:1:sboid:100602"),
+        Collections.emptySet());
+    sharedServicePointRepository.saveAndFlush(servicePoint);
+
+    //when & then
+    mvc.perform(put("/v1/relations/" + version2.getId()).contentType(contentType)
+            .content(mapper.writeValueAsString(editedVersionModel)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+        .andExpect(jsonPath("$.details", hasSize(3)));
+  }
+
+  @Test
+  void shouldNotUpdateRelationWhenIdNotFound() throws Exception {
+    //given
+    String parentServicePointSloid = "ch:1:sloid:7000";
+    stopPointRepository.save(StopPointTestData.builderVersion1().sloid(parentServicePointSloid).build());
+    String referencePointSloid = "ch:1:sloid:7000:1";
+    RelationVersion version1 = RelationTestData.builderVersion1().build();
+    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setReferencePointSloid(referencePointSloid);
+    relationRepository.saveAndFlush(version1);
+    RelationVersion version2 = RelationTestData.builderVersion2().build();
+    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setReferencePointSloid(referencePointSloid);
+    relationRepository.saveAndFlush(version2);
+
+    RelationVersionModel editedVersionModel = new RelationVersionModel();
+    editedVersionModel.setParentServicePointSloid(parentServicePointSloid);
+    editedVersionModel.setSloid(version2.getSloid());
+    editedVersionModel.setReferencePointSloid(version2.getReferencePointSloid());
+    editedVersionModel.setValidFrom(version2.getValidFrom());
+    editedVersionModel.setValidTo(version2.getValidTo().minusYears(1));
+    editedVersionModel.setContrastingAreas(version2.getContrastingAreas());
+    editedVersionModel.setTactileVisualMarks(version2.getTactileVisualMarks());
+    editedVersionModel.setStepFreeAccess(version2.getStepFreeAccess());
+    editedVersionModel.setCreationDate(version2.getCreationDate());
+    editedVersionModel.setEditionDate(version2.getEditionDate());
+    editedVersionModel.setCreator(version2.getCreator());
+    editedVersionModel.setEditor(version2.getEditor());
+    editedVersionModel.setEtagVersion(version2.getVersion());
+
+    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:7000", Set.of("ch:1:sboid:100602"),
+        Collections.emptySet());
+    sharedServicePointRepository.saveAndFlush(servicePoint);
+
+    //when & then
+    mvc.perform(put("/v1/relations/" + 12345678).contentType(contentType)
+            .content(mapper.writeValueAsString(editedVersionModel)))
+        .andExpect(status().isNotFound())
+        .andExpect(jsonPath("$.message", is("Entity not found")));
+  }
+
 }

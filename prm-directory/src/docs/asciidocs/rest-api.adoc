@@ -255,6 +255,14 @@ include::{snippets}/relation-version-controller-api-test/should-get-relation-by-
 
 include::{snippets}/relation-version-controller-api-test/should-update-relation/auto-section.adoc[]
 
+=== Update Relation with constraints violation- Unsuccessfully
+
+include::{snippets}/relation-version-controller-api-test/should-not-update-relation-with-constraint-violation/auto-section.adoc[]
+
+=== Update Relation when id not exists- Unsuccessfully
+
+include::{snippets}/relation-version-controller-api-test/should-not-update-relation-when-id-not-found/auto-section.adoc[]
+
 === Get Relations by Sloid and Reference Type - Successfully
 
 include::{snippets}/relation-version-controller-api-test/should-get-relations-by-sloid-and-reference-type/auto-section.adoc[]
