@@ -4,7 +4,7 @@ import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
-import ch.sbb.atlas.api.prm.model.BasePrmVersionModel;
+import ch.sbb.atlas.api.prm.model.BaseBasicPrmVersionModel;
 import ch.sbb.atlas.api.prm.model.PrmApiConstants;
 import ch.sbb.atlas.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,7 +24,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "RelationVersion")
-public class RelationVersionModel extends BasePrmVersionModel implements DatesValidator {
+public class RelationVersionModel extends BaseBasicPrmVersionModel implements DatesValidator {
 
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
   @Schema(description = PrmApiConstants.PARENT_SLOID_DESCRIPTION, example = "ch:1:sloid:18771")
@@ -36,6 +36,13 @@ public class RelationVersionModel extends BasePrmVersionModel implements DatesVa
       The structure is described in the “Swiss Location ID” specification, chapter 4.2.
       The document is available here: https://transportdatamanagement.ch/standards/""", example = "ch:1:sloid:18771")
   private String referencePointSloid;
+
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_500)
+  @Schema(description = """
+      Element Sloid: Unique code for locations that is used in customer information.
+      The structure is described in the “Swiss Location ID” specification, chapter 4.2.
+      The document is available here: https://transportdatamanagement.ch/standards/""", example = "ch:1:sloid:18771")
+  private String elementSloid;
 
   @NotNull
   private TactileVisualAttributeType tactileVisualMarks;
