@@ -164,7 +164,7 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
     List<Exception> warnings = new ArrayList<>();
     getHeightForServicePointImport(servicePointVersion, warnings);
     try {
-      setSePoSloidIfNullForCountryUicCode11Or12Or13Or14(servicePointVersion);
+      setServicePointSloidIfNullForUicCode11or12or13or14(servicePointVersion, true);
       locationService.claimServicePointSloid(servicePointVersion.getSloid());
       if (servicePointVersion.getStatus() != Status.VALIDATED) {
         servicePointVersion.setEditionDate(LocalDateTime.now());
@@ -177,16 +177,17 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
     return buildSuccessMessageBasedOnWarnings(servicePointVersion, warnings);
   }
 
-  private void setSePoSloidIfNullForCountryUicCode11Or12Or13Or14(ServicePointVersion servicePointVersion) {
-    if (servicePointVersion.getSloid() == null && isContryUicCode11Or12Or13Or14(servicePointVersion)) {
+  private void setServicePointSloidIfNullForUicCode11or12or13or14(ServicePointVersion servicePointVersion, boolean isInitialCreate) {
+    if (servicePointVersion.getSloid() == null && isUicCode11or12or13or14(servicePointVersion)) {
       String missingSloid = createServicePointSloidFromDidokNumber(servicePointVersion);
       servicePointVersion.setSloid(missingSloid);
-      // TODO: Check if needed and if needed for save and update case
-      // servicePointVersion.setEditionDate(LocalDateTime.now());
+      if (isInitialCreate) {
+         servicePointVersion.setEditionDate(LocalDateTime.now());
+      }
     }
   }
 
-  private boolean isContryUicCode11Or12Or13Or14(ServicePointVersion servicePointVersion) {
+  private boolean isUicCode11or12or13or14(ServicePointVersion servicePointVersion) {
     return servicePointVersion.getCountry().getUicCode() == 11
         || servicePointVersion.getCountry().getUicCode() == 12
         || servicePointVersion.getCountry().getUicCode() == 13
@@ -203,7 +204,7 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
 
     List<ServicePointVersion> dbVersions = servicePointService.findAllByNumberOrderByValidFrom(servicePointVersion.getNumber());
     try {
-      setSePoSloidIfNullForCountryUicCode11Or12Or13Or14(servicePointVersion);
+      setServicePointSloidIfNullForUicCode11or12or13or14(servicePointVersion, false);
       updateServicePointVersionForImportService(servicePointVersion, dbVersions);
     } catch (VersioningNoChangesException exception) {
       ServicePointVersion current = ImportUtils.getCurrentPointVersion(dbVersions, servicePointVersion);
