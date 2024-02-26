@@ -167,14 +167,13 @@ public final class VersioningHelper {
   }
 
   public static boolean arePropertiesEdited(VersioningData vd) {
-    return !vd.getEditedEntity().getProperties().isEmpty();
+    return !vd.getEditedEntity().getProperties().stream().filter(i -> !i.isIgnoreDiff()).toList().isEmpty();
   }
 
-  public static boolean isEditedVersionInTheMiddleOfToVersioningAndNoPropertiesAreEdited(
-      ToVersioning toVersioning, VersioningData vd) {
-    return vd.getEditedValidFrom().isAfter(toVersioning.getValidFrom()) && vd.getEditedValidTo()
-                                                                             .isBefore(
-                                                                                 toVersioning.getValidTo())
+  public static boolean isEditedVersionInTheMiddleOfToVersioningAndNoPropertiesAreEdited(ToVersioning toVersioning,
+      VersioningData vd) {
+    return vd.getEditedValidFrom().isAfter(toVersioning.getValidFrom())
+        && vd.getEditedValidTo().isBefore(toVersioning.getValidTo())
         && !arePropertiesEdited(vd);
   }
 
