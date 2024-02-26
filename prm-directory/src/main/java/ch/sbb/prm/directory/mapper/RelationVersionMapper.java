@@ -11,7 +11,7 @@ public class RelationVersionMapper {
   public static ReadRelationVersionModel toModel(RelationVersion version){
     return ReadRelationVersionModel.builder()
         .id(version.getId())
-        .sloid(version.getSloid())
+        .elementSloid(version.getSloid())
         .referencePointSloid(version.getReferencePointSloid())
         .parentServicePointSloid(version.getParentServicePointSloid())
         .number(version.getNumber())
@@ -32,7 +32,7 @@ public class RelationVersionMapper {
   public static RelationVersion toEntity(RelationVersionModel model){
     return RelationVersion.builder()
         .id(model.getId())
-        .sloid(model.getSloid())
+        .sloid(model.getElementSloid())
         .referencePointSloid(model.getReferencePointSloid())
         .parentServicePointSloid(model.getParentServicePointSloid())
         .validFrom(model.getValidFrom())
