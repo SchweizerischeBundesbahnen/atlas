@@ -9,6 +9,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.relation.RelationVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
@@ -22,6 +24,7 @@ import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
@@ -37,8 +40,7 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
   private final SharedServicePointRepository sharedServicePointRepository;
 
   @Autowired
-  RelationVersionControllerApiTest(RelationRepository relationRepository,
-                                   StopPointRepository stopPointRepository,
+  RelationVersionControllerApiTest(RelationRepository relationRepository,StopPointRepository stopPointRepository,
                                    SharedServicePointRepository sharedServicePointRepository) {
     this.relationRepository = relationRepository;
     this.stopPointRepository = stopPointRepository;
@@ -273,6 +275,120 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(editedVersionModel)))
         .andExpect(status().isNotFound())
         .andExpect(jsonPath("$.message", is("Entity not found")));
+  }
+
+  @Test
+  void shouldGetRelationVersionWithoutFilter() throws Exception {
+    //given
+    String parentServicePointSloid = "ch:1:sloid:7000";
+    stopPointRepository.save(StopPointTestData.builderVersion1().sloid(parentServicePointSloid).build());
+    String referencePointSloid = "ch:1:sloid:7000:1";
+    RelationVersion version = RelationTestData.builderVersion1().build();
+    version.setParentServicePointSloid(parentServicePointSloid);
+    version.setReferencePointSloid(referencePointSloid);
+    relationRepository.saveAndFlush(version);
+    //when & then
+    mvc.perform(get("/v1/relations"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(1)))
+        .andExpect(jsonPath("$.objects[0].id", is(version.getId().intValue())))
+        .andExpect(jsonPath("$.objects[0].number.number", is(version.getNumber().getNumber())));
+  }
+
+  @Test
+  void shouldGetRelationVersionsWithFilter() throws Exception {
+    //given
+    String parentServicePointSloid = "ch:1:sloid:7000";
+    stopPointRepository.save(StopPointTestData.builderVersion1().sloid(parentServicePointSloid).build());
+    String referencePointSloid = "ch:1:sloid:7000:1";
+    RelationVersion version = RelationTestData.builderVersion1().build();
+    version.setParentServicePointSloid(parentServicePointSloid);
+    version.setSloid("ch:1:sloid:7000:11");
+    version.setReferencePointSloid(referencePointSloid);
+    relationRepository.saveAndFlush(version);
+    //when & then
+    mvc.perform(get("/v1/relations" +
+            "?servicePointNumbers=1234567" +
+            "&referencePointsloids=ch:1:sloid:7000:1" +
+            "&sloids=ch:1:sloid:7000:11" +
+            "&fromDate=" + version.getValidFrom() +
+            "&toDate=" + version.getValidTo()+
+            "&validOn=" + LocalDate.of(2000, 6, 28) +
+            "&createdAfter=" + version.getCreationDate().minusSeconds(1).format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)) +
+            "&modifiedAfter=" + version.getEditionDate().format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN))
+        ))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(1)))
+        .andExpect(jsonPath("$.objects[0].id" , is(version.getId().intValue())));
+  }
+
+  @Test
+  void shouldGetRelationVersionsWithArrayInFilter() throws Exception {
+    //given
+    String parentServicePointSloid = "ch:1:sloid:7000";
+    stopPointRepository.save(StopPointTestData.builderVersion1().sloid(parentServicePointSloid).build());
+    String referencePointSloid = "ch:1:sloid:7000:1";
+    RelationVersion version = RelationTestData.builderVersion1().build();
+    version.setParentServicePointSloid(parentServicePointSloid);
+    version.setSloid("ch:1:sloid:7000:11");
+    version.setReferencePointSloid(referencePointSloid);
+    relationRepository.saveAndFlush(version);
+    //when & then
+    mvc.perform(get("/v1/relations" +
+            "?servicePointNumbers=1234567&servicePointNumbers=1000000" +
+            "&referencePointSloid=ch:1:sloid:7000:1&sloids=ch:1:sloid:54321" +
+            "&sloids=ch:1:sloid:7000:11&ch:1:sloid:7000:111" +
+            "&fromDate=" + version.getValidFrom() +
+            "&toDate=" + version.getValidTo()+
+            "&validOn=" + LocalDate.of(2000, 6, 28) +
+            "&createdAfter=" + version.getCreationDate().minusSeconds(1).format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)) +
+            "&modifiedAfter=" + version.getEditionDate().format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN))
+        ))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(1)))
+        .andExpect(jsonPath("$.objects[0].id" , is(version.getId().intValue())));
+  }
+
+  @Test
+  void shouldGetRelationVersionsFromReferencePointType() throws Exception {
+    //given
+    String parentServicePointSloid = "ch:1:sloid:7000";
+    stopPointRepository.save(StopPointTestData.builderVersion1().sloid(parentServicePointSloid).build());
+    String referencePointSloid = "ch:1:sloid:7000:1";
+    RelationVersion version1 = RelationTestData.builderVersion1().build();
+    version1.setParentServicePointSloid(parentServicePointSloid);
+    version1.setSloid("ch:1:sloid:7000:11");
+    version1.setReferencePointSloid(referencePointSloid);
+    version1.setReferencePointElementType(ReferencePointElementType.TOILET);
+    relationRepository.saveAndFlush(version1);
+    RelationVersion version2 = RelationTestData.builderVersion2().sloid("ch:1:sloid:7000:2").build();
+    version2.setParentServicePointSloid(parentServicePointSloid);
+    version2.setSloid("ch:1:sloid:7000:22");
+    version2.setReferencePointSloid(referencePointSloid);
+    version2.setReferencePointElementType(PARKING_LOT);
+    relationRepository.saveAndFlush(version2);
+    //when & then
+    mvc.perform(get("/v1/relations?&referencePointElementTypes=TOILET"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(1)))
+        .andExpect(jsonPath("$.objects[0].id" , is(version1.getId().intValue())));
+  }
+
+  @Test
+  void shouldNotGetRelationVersions() throws Exception {
+    //given
+    String parentServicePointSloid = "ch:1:sloid:7000";
+    stopPointRepository.save(StopPointTestData.builderVersion1().sloid(parentServicePointSloid).build());
+    String referencePointSloid = "ch:1:sloid:7000:1";
+    RelationVersion version = RelationTestData.builderVersion1().build();
+    version.setParentServicePointSloid(parentServicePointSloid);
+    version.setSloid("ch:1:sloid:7000:11");
+    version.setReferencePointSloid(referencePointSloid);
+    relationRepository.saveAndFlush(version);
+    //when & then
+    mvc.perform(get("/v1/relations?servicePointNumbers=1000000"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(0)));
   }
 
 }
