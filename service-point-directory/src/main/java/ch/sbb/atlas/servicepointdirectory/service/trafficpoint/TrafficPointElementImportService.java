@@ -88,7 +88,6 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
   ) {
     List<ItemImportResult> importResults = new ArrayList<>();
     for (TrafficPointCsvModelContainer container : trafficPointCsvModelContainers) {
-      // TODO: Here needs to be adjusted parentSloid, because it is null in Didok file
       List<TrafficPointElementVersion> trafficPointElementVersions = container.getCsvModelList()
           .stream()
           .map(new TrafficPointElementCsvToEntityMapper())
@@ -102,10 +101,10 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
         boolean trafficPointElementExisting = trafficPointElementService.isTrafficPointElementExisting(
             trafficPointElementVersion.getSloid());
         if (trafficPointElementExisting) {
-          ItemImportResult updateResult = updateTrafficPointVersion(trafficPointElementVersion); // TODO: here claim oder generate will not be called
+          ItemImportResult updateResult = updateTrafficPointVersion(trafficPointElementVersion);
           importResults.add(updateResult);
         } else {
-          ItemImportResult saveResult = saveTrafficPointVersion(trafficPointElementVersion); // TODO: here claim oder generate will be called
+          ItemImportResult saveResult = saveTrafficPointVersion(trafficPointElementVersion);
           importResults.add(saveResult);
         }
       }
