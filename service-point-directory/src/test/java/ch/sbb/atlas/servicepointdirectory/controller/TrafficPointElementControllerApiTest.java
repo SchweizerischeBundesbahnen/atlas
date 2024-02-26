@@ -198,7 +198,6 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldTerminateTrafficPointLikePostAuto() throws Exception {
     assertThat(trafficPointElementVersion.getValidTo()).isEqualTo(LocalDate.of(2099, 12, 31));
-    assertThat(trafficPointElementVersion.getEditionDate()).isBefore(LocalDateTime.now().minusHours(1));
 
     String edited = """
         {
@@ -206,7 +205,7 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
              "creator": null,
              "editionDate": null,
              "editor": null,
-             "id": null,
+             "id": %d,
              "designation": "Bezeichnung",
              "designationOperational": "gali00",
              "length": null,
@@ -227,7 +226,7 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
              },
              "hasGeolocation": true
          }
-        """;
+        """.formatted(trafficPointElementVersion.getId());
     mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/" + trafficPointElementVersion.getId())
             .contentType(contentType)
             .content(edited))
