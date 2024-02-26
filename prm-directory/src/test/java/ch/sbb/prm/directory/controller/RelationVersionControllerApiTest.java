@@ -67,7 +67,7 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/relations/" +relation1Sloid))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)))
-        .andExpect(jsonPath("$[0].sloid", is(relation1Sloid)))
+        .andExpect(jsonPath("$[0].elementSloid", is(relation1Sloid)))
         .andExpect(jsonPath("$[0].referencePointElementType", is(PLATFORM.name())));
   }
 
@@ -86,7 +86,7 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/relations/" +relation1Sloid + "/" + PLATFORM.name()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)))
-        .andExpect(jsonPath("$[0].sloid", is(relation1Sloid)))
+        .andExpect(jsonPath("$[0].elementSloid", is(relation1Sloid)))
         .andExpect(jsonPath("$[0].referencePointElementType", is(PLATFORM.name())));
   }
 
@@ -110,10 +110,10 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/relations/parent-service-point-sloid/" + parentServicePointSloid + "/" + PLATFORM.name()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(2)))
-        .andExpect(jsonPath("$[0].sloid", is(relation1Sloid)))
+        .andExpect(jsonPath("$[0].elementSloid", is(relation1Sloid)))
         .andExpect(jsonPath("$[0].parentServicePointSloid", is(parentServicePointSloid)))
         .andExpect(jsonPath("$[0].referencePointElementType", is(PLATFORM.name())))
-        .andExpect(jsonPath("$[1].sloid", is(relation1Sloid)))
+        .andExpect(jsonPath("$[1].elementSloid", is(relation1Sloid)))
         .andExpect(jsonPath("$[1].parentServicePointSloid", is(parentServicePointSloid)))
         .andExpect(jsonPath("$[1].referencePointElementType", is(PLATFORM.name())));
   }
@@ -166,7 +166,7 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
 
     RelationVersionModel editedVersionModel = new RelationVersionModel();
     editedVersionModel.setParentServicePointSloid(parentServicePointSloid);
-    editedVersionModel.setSloid(version2.getSloid());
+    editedVersionModel.setElementSloid(version2.getSloid());
     editedVersionModel.setReferencePointSloid(version2.getReferencePointSloid());
     editedVersionModel.setValidFrom(version2.getValidFrom());
     editedVersionModel.setValidTo(version2.getValidTo().minusYears(1));
@@ -211,7 +211,7 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
 
     RelationVersionModel editedVersionModel = new RelationVersionModel();
     editedVersionModel.setParentServicePointSloid(parentServicePointSloid);
-    editedVersionModel.setSloid(version2.getSloid());
+    editedVersionModel.setElementSloid(version2.getSloid());
     editedVersionModel.setReferencePointSloid(version2.getReferencePointSloid());
     editedVersionModel.setValidFrom(version2.getValidFrom());
     editedVersionModel.setValidTo(version2.getValidTo().minusYears(1));
@@ -253,7 +253,7 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
 
     RelationVersionModel editedVersionModel = new RelationVersionModel();
     editedVersionModel.setParentServicePointSloid(parentServicePointSloid);
-    editedVersionModel.setSloid(version2.getSloid());
+    editedVersionModel.setElementSloid(version2.getSloid());
     editedVersionModel.setReferencePointSloid(version2.getReferencePointSloid());
     editedVersionModel.setValidFrom(version2.getValidFrom());
     editedVersionModel.setValidTo(version2.getValidTo().minusYears(1));
