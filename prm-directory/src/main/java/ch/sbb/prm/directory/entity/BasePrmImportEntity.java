@@ -32,7 +32,7 @@ import lombok.experimental.SuperBuilder;
 @MappedSuperclass
 @FieldNameConstants
 @AtlasVersionable
-@Deprecated
+@Deprecated(since = "2.0.0")
 public abstract class BasePrmImportEntity implements Importable {
 
   @Column(columnDefinition = "TIMESTAMP", updatable = false)
