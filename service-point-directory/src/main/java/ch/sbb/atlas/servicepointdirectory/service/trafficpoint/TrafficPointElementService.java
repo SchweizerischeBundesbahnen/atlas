@@ -99,6 +99,11 @@ public class TrafficPointElementService {
     return trafficPointElementVersionRepository.saveAndFlush(trafficPointElementVersion);
   }
 
+  public TrafficPointElementVersion saveForImport(TrafficPointElementVersion trafficPointElementVersion) {
+    trafficPointElementValidationService.validatePreconditionBusinessRules(trafficPointElementVersion);
+    return trafficPointElementVersionRepository.saveAndFlush(trafficPointElementVersion);
+  }
+
   @PreAuthorize("""
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
       (#currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
