@@ -6,6 +6,7 @@ import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.imports.util.DidokCsvMapper;
 import ch.sbb.atlas.imports.util.ImportUtils;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -15,7 +16,6 @@ import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoloca
 import ch.sbb.atlas.servicepointdirectory.exception.HeightNotCalculatableException;
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportServicePointDirectoryService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
-import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoAdminHeightResponse;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
@@ -164,6 +164,7 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
     List<Exception> warnings = new ArrayList<>();
     getHeightForServicePointImport(servicePointVersion, warnings);
     try {
+      setSePoSloidIfNullForCountryUicCode11Or12Or13Or14(servicePointVersion);
       locationService.claimServicePointSloid(servicePointVersion.getSloid());
       if (servicePointVersion.getStatus() != Status.VALIDATED) {
         servicePointVersion.setEditionDate(LocalDateTime.now());
@@ -176,12 +177,33 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
     return buildSuccessMessageBasedOnWarnings(servicePointVersion, warnings);
   }
 
+  private void setSePoSloidIfNullForCountryUicCode11Or12Or13Or14(ServicePointVersion servicePointVersion) {
+    if (servicePointVersion.getSloid() == null && isContryUicCode11Or12Or13Or14(servicePointVersion)) {
+      String missingSloid = createServicePointSloidFromDidokNumber(servicePointVersion);
+      servicePointVersion.setSloid(missingSloid);
+      // TODO: Check if needed and if needed for save and update case
+      // servicePointVersion.setEditionDate(LocalDateTime.now());
+    }
+  }
+
+  private boolean isContryUicCode11Or12Or13Or14(ServicePointVersion servicePointVersion) {
+    return servicePointVersion.getCountry().getUicCode() == 11
+        || servicePointVersion.getCountry().getUicCode() == 12
+        || servicePointVersion.getCountry().getUicCode() == 13
+        || servicePointVersion.getCountry().getUicCode() == 14;
+  }
+
+  private String createServicePointSloidFromDidokNumber(ServicePointVersion servicePointVersion) {
+    return "ch:1:sloid:" + servicePointVersion.getNumber().getNumber();
+  }
+
   private ItemImportResult updateServicePointVersion(ServicePointVersion servicePointVersion) {
     List<Exception> warnings = new ArrayList<>();
     getHeightForServicePointImport(servicePointVersion, warnings);
 
     List<ServicePointVersion> dbVersions = servicePointService.findAllByNumberOrderByValidFrom(servicePointVersion.getNumber());
     try {
+      setSePoSloidIfNullForCountryUicCode11Or12Or13Or14(servicePointVersion);
       updateServicePointVersionForImportService(servicePointVersion, dbVersions);
     } catch (VersioningNoChangesException exception) {
       ServicePointVersion current = ImportUtils.getCurrentPointVersion(dbVersions, servicePointVersion);
