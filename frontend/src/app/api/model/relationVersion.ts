@@ -59,8 +59,8 @@ export interface RelationVersion {
      * Reference Point Sloid: Unique code for locations that is used in customer information. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here: https://transportdatamanagement.ch/standards/
      */
     referencePointSloid?: string;
-    tactileVisualMarks?: TactileVisualAttributeType;
-    contrastingAreas?: StandardAttributeType;
-    stepFreeAccess?: StepFreeAccessAttributeType;
+    tactileVisualMarks: TactileVisualAttributeType;
+    contrastingAreas: StandardAttributeType;
+    stepFreeAccess: StepFreeAccessAttributeType;
 }
 
