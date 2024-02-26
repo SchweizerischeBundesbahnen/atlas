@@ -66,6 +66,9 @@ public class LoadingPointService {
 
   public LoadingPointVersion save(LoadingPointVersion loadingPointVersion) {
     crossValidationService.validateServicePointNumberExists(loadingPointVersion.getServicePointNumber());
+
+    loadingPointVersion.setEditionDate(LocalDateTime.now());
+    loadingPointVersion.setEditor(UserService.getUserIdentifier());
     return loadingPointVersionRepository.saveAndFlush(loadingPointVersion);
   }
 
@@ -82,9 +85,6 @@ public class LoadingPointService {
 
     editedVersion.setNumber(currentVersion.getNumber());
     editedVersion.setServicePointNumber(currentVersion.getServicePointNumber());
-
-    editedVersion.setEditionDate(LocalDateTime.now());
-    editedVersion.setEditor(UserService.getUserIdentifier());
 
     List<LoadingPointVersion> currentVersions = findLoadingPoint(currentVersion.getServicePointNumber(),
         currentVersion.getNumber());
