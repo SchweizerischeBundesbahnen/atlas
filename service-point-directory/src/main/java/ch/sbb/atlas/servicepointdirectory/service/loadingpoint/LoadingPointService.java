@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.service.loadingpoint;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
+import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.LoadingPointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -13,6 +14,7 @@ import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import ch.sbb.atlas.service.OverviewService;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.Getter;
@@ -80,6 +82,9 @@ public class LoadingPointService {
 
     editedVersion.setNumber(currentVersion.getNumber());
     editedVersion.setServicePointNumber(currentVersion.getServicePointNumber());
+
+    editedVersion.setEditionDate(LocalDateTime.now());
+    editedVersion.setEditor(UserService.getUserIdentifier());
 
     List<LoadingPointVersion> currentVersions = findLoadingPoint(currentVersion.getServicePointNumber(),
         currentVersion.getNumber());

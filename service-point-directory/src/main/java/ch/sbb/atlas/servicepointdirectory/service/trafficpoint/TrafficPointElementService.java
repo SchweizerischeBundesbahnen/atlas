@@ -115,9 +115,6 @@ public class TrafficPointElementService {
     editedVersion.setSloid(currentVersion.getSloid());
     editedVersion.setTrafficPointElementType(currentVersion.getTrafficPointElementType());
 
-    editedVersion.setCreationDate(currentVersion.getCreationDate());
-    editedVersion.setCreator(currentVersion.getCreator());
-
     editedVersion.setEditionDate(LocalDateTime.now());
     editedVersion.setEditor(UserService.getUserIdentifier());
 
