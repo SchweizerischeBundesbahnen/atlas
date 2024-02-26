@@ -74,7 +74,7 @@ public class RelationCsvService extends PrmCsvService<RelationCsvModel>{
     }
 
     private void mergeSequentialEqualsVersions(List<RelationCsvModelContainer> csvModelContainers) {
-        log.info("Starting checking sequential equals ReferencePoint versions...");
+        log.info("Starting checking sequential equals Relation versions...");
         List<String> mergedSloids = new ArrayList<>();
         csvModelContainers.forEach(
                 container -> {
@@ -83,8 +83,8 @@ public class RelationCsvService extends PrmCsvService<RelationCsvModel>{
                     container.setCsvModels(prmCsvMergeResult.getVersions());
                     mergedSloids.addAll(prmCsvMergeResult.getMergedSloids());
                 });
-        log.info("Total merged sequential ReferencePoint versions {}", mergedSloids.size());
-        log.info("Merged ReferencePoint Sloids {}", mergedSloids);
+        log.info("Total merged sequential Relation versions {}", mergedSloids.size());
+        log.info("Merged Relation Sloids {}", mergedSloids);
     }
 
     private void mergeEqualsVersions(List<RelationCsvModelContainer> csvModelContainers) {
@@ -98,8 +98,8 @@ public class RelationCsvService extends PrmCsvService<RelationCsvModel>{
                     mergedSloids.addAll(prmCsvMergeResult.getMergedSloids());
                 });
 
-        log.info("Total Merged equals ReferencePoint versions {}", mergedSloids.size());
-        log.info("Merged equals ReferencePoint Sloids {}", mergedSloids);
+        log.info("Total Merged equals Relation versions {}", mergedSloids.size());
+        log.info("Merged equals Relation Sloids {}", mergedSloids);
     }
 
 }
