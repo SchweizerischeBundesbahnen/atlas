@@ -38,10 +38,6 @@ export interface ReadRelationVersion {
      */
     readonly id?: number;
     /**
-     * Unique code for locations that is used in customer information. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here: https://transportdatamanagement.ch/standards/
-     */
-    sloid?: string;
-    /**
      * Valid from
      */
     validFrom: Date;
@@ -61,6 +57,10 @@ export interface ReadRelationVersion {
      * Reference Point Sloid: Unique code for locations that is used in customer information. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here: https://transportdatamanagement.ch/standards/
      */
     referencePointSloid?: string;
+    /**
+     * Element Sloid: Unique code for locations that is used in customer information. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here: https://transportdatamanagement.ch/standards/
+     */
+    elementSloid?: string;
     tactileVisualMarks: TactileVisualAttributeType;
     contrastingAreas: StandardAttributeType;
     stepFreeAccess: StepFreeAccessAttributeType;
