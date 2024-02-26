@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.service.OverviewService;
+import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
@@ -17,6 +18,7 @@ import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.Getter;
@@ -112,6 +114,12 @@ public class TrafficPointElementService {
     editedVersion.setServicePointNumber(currentVersion.getServicePointNumber());
     editedVersion.setSloid(currentVersion.getSloid());
     editedVersion.setTrafficPointElementType(currentVersion.getTrafficPointElementType());
+
+    editedVersion.setCreationDate(currentVersion.getCreationDate());
+    editedVersion.setCreator(currentVersion.getCreator());
+
+    editedVersion.setEditionDate(LocalDateTime.now());
+    editedVersion.setEditor(UserService.getUserIdentifier());
 
     List<TrafficPointElementVersion> dbVersions = findBySloidOrderByValidFrom(currentVersion.getSloid());
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
