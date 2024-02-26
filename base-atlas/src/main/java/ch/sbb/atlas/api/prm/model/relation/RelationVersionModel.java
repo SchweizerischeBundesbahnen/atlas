@@ -8,6 +8,7 @@ import ch.sbb.atlas.api.prm.model.BasePrmVersionModel;
 import ch.sbb.atlas.api.prm.model.PrmApiConstants;
 import ch.sbb.atlas.validation.DatesValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,10 +37,13 @@ public class RelationVersionModel extends BasePrmVersionModel implements DatesVa
       The document is available here: https://transportdatamanagement.ch/standards/""", example = "ch:1:sloid:18771")
   private String referencePointSloid;
 
+  @NotNull
   private TactileVisualAttributeType tactileVisualMarks;
 
+  @NotNull
   private StandardAttributeType contrastingAreas;
 
+  @NotNull
   private StepFreeAccessAttributeType stepFreeAccess;
 
 
