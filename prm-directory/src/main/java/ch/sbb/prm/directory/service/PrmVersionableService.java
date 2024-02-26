@@ -1,8 +1,10 @@
 package ch.sbb.prm.directory.service;
 
+import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.RelationVersion;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,10 @@ public abstract class PrmVersionableService<T extends PrmVersionable> {
     List<T> existingDbVersions = getAllVersions(currentVersion.getSloid());
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, existingDbVersions);
+
+    editedVersion.setEditionDate(LocalDateTime.now());
+    editedVersion.setEditor(UserService.getUserIdentifier());
+
     applyVersioning(versionedObjects);
     return currentVersion;
   }
