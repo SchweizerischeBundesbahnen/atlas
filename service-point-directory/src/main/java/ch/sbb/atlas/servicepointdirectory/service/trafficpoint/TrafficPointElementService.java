@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.service.OverviewService;
+import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
@@ -17,6 +18,7 @@ import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.Getter;
@@ -91,6 +93,14 @@ public class TrafficPointElementService {
   public TrafficPointElementVersion save(TrafficPointElementVersion trafficPointElementVersion) {
     trafficPointElementValidationService.validatePreconditionBusinessRules(trafficPointElementVersion);
 
+    trafficPointElementVersion.setEditionDate(LocalDateTime.now());
+    trafficPointElementVersion.setEditor(UserService.getUserIdentifier());
+
+    return trafficPointElementVersionRepository.saveAndFlush(trafficPointElementVersion);
+  }
+
+  public TrafficPointElementVersion saveForImport(TrafficPointElementVersion trafficPointElementVersion) {
+    trafficPointElementValidationService.validatePreconditionBusinessRules(trafficPointElementVersion);
     return trafficPointElementVersionRepository.saveAndFlush(trafficPointElementVersion);
   }
 

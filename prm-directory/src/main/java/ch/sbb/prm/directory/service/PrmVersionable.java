@@ -4,7 +4,7 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.versioning.model.Versionable;
 import java.time.LocalDate;
 
-public interface PrmVersionable extends Versionable {
+public interface PrmVersionable extends Versionable, EditionDateModifiable {
 
   String getSloid();
 
