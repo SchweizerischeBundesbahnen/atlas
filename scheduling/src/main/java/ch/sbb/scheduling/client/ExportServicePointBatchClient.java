@@ -35,4 +35,7 @@ public interface ExportServicePointBatchClient {
 
   @PostMapping(value = "/export-service-point/v1/export/prm/parking-lot-batch", produces = MediaType.APPLICATION_JSON_VALUE)
   Response postTriggerExportParkingLotBatch();
+
+  @PostMapping(value = "/export-service-point/v1/export/prm/relation-batch", produces = MediaType.APPLICATION_JSON_VALUE)
+  Response postTriggerExportRelationBatch();
 }
