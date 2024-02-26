@@ -8,6 +8,7 @@ import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -44,6 +45,8 @@ class ServicePointImportServiceTest {
   // required for test functionality
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
+  @MockBean
+  private LocationService locationService;
 
   private final ServicePointImportService servicePointImportService;
   private final ServicePointVersionRepository servicePointVersionRepository;
@@ -646,6 +649,261 @@ class ServicePointImportServiceTest {
       container.setDidokCode(didokCode);
     }
     return container;
+  }
+
+
+  @Test
+  void shouldImportServicePointsWithCountries11Until14() {
+    //given
+    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = getServicePointCsvModelContainersForCountries11Until14();
+    Integer didokCode = 1118771;
+    ServicePointNumber servicePointNumber = ServicePointNumber.ofNumberWithoutCheckDigit(didokCode);
+    Integer didokCode1 = 1118772;
+    ServicePointNumber servicePointNumber1 = ServicePointNumber.ofNumberWithoutCheckDigit(didokCode1);
+    Integer didokCode2 = 1218771;
+    ServicePointNumber servicePointNumber2 = ServicePointNumber.ofNumberWithoutCheckDigit(didokCode2);
+    Integer didokCode3 = 1218772;
+    ServicePointNumber servicePointNumber3 = ServicePointNumber.ofNumberWithoutCheckDigit(didokCode3);
+    Integer didokCode4 = 1318771;
+    ServicePointNumber servicePointNumber4 = ServicePointNumber.ofNumberWithoutCheckDigit(didokCode4);
+    Integer didokCode5 = 1318772;
+    ServicePointNumber servicePointNumber5 = ServicePointNumber.ofNumberWithoutCheckDigit(didokCode5);
+    Integer didokCode6 = 1418771;
+    ServicePointNumber servicePointNumber6 = ServicePointNumber.ofNumberWithoutCheckDigit(didokCode6);
+    Integer didokCode7 = 1418772;
+    ServicePointNumber servicePointNumber7 = ServicePointNumber.ofNumberWithoutCheckDigit(didokCode7);
+    //when
+    List<ItemImportResult> itemImportResults = servicePointImportService.importServicePoints(
+        servicePointCsvModelContainers);
+
+    //then
+    assertThat(itemImportResults).hasSize(8);
+    List<ServicePointVersion> result = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber);
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0).getSloid()).isEqualTo("ch:1:sloid:1118771");
+    List<ServicePointVersion> result1 = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber1);
+    assertThat(result1).hasSize(1);
+    assertThat(result1.get(0).getSloid()).isEqualTo("ch:1:sloid:1118772");
+    List<ServicePointVersion> result2 = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber2);
+    assertThat(result2).hasSize(1);
+    assertThat(result2.get(0).getSloid()).isEqualTo("ch:1:sloid:1218771");
+    List<ServicePointVersion> result3 = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber3);
+    assertThat(result3).hasSize(1);
+    assertThat(result3.get(0).getSloid()).isEqualTo("ch:1:sloid:1218772");
+    List<ServicePointVersion> result4 = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber4);
+    assertThat(result4).hasSize(1);
+    assertThat(result4.get(0).getSloid()).isEqualTo("ch:1:sloid:1318771");
+    List<ServicePointVersion> result5 = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber5);
+    assertThat(result5).hasSize(1);
+    assertThat(result5.get(0).getSloid()).isEqualTo("ch:1:sloid:1318772");
+    List<ServicePointVersion> result6 = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber6);
+    assertThat(result6).hasSize(1);
+    assertThat(result6.get(0).getSloid()).isEqualTo("ch:1:sloid:1418771");
+    List<ServicePointVersion> result7 = servicePointVersionRepository.findAllByNumberOrderByValidFrom(servicePointNumber7);
+    assertThat(result7).hasSize(1);
+    assertThat(result7.get(0).getSloid()).isEqualTo("ch:1:sloid:1418772");
+
+  }
+
+
+
+  private List<ServicePointCsvModelContainer> getServicePointCsvModelContainersForCountries11Until14() {
+    int didokCode11NoSloid = 1118771;
+    int didokCode11WithSloid = 1118772;
+    ServicePointCsvModel withCode11GeolocationAndSloidNull = ServicePointCsvModel.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .spatialReference(SpatialReference.LV95)
+        .bezeichnungLang("Bern11NoSloid, Wyleregg")
+        .bezeichnungOffiziell("Bern11NoSloid, Wyleregg")
+        .isBedienpunkt(true)
+        .isBetriebspunkt(true)
+        .isFahrplan(true)
+        .nummer(didokCode11NoSloid)
+        .laendercode(11)
+        .status(0)
+        .abkuerzung("TEST1")
+        .didokCode(didokCode11NoSloid)
+        .sloid(null)
+        .comment("BAV-Kommentar")
+        .build();
+    ServicePointCsvModel withCode11GeolocationAndSloid = ServicePointCsvModel.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .spatialReference(SpatialReference.LV95)
+        .bezeichnungLang("Bern11Sloid, Wyleregg")
+        .bezeichnungOffiziell("Bern11Sloid, Wyleregg")
+        .isBedienpunkt(true)
+        .isBetriebspunkt(true)
+        .isFahrplan(true)
+        .nummer(didokCode11WithSloid)
+        .laendercode(11)
+        .status(0)
+        .abkuerzung("TEST2")
+        .didokCode(didokCode11WithSloid)
+        .sloid("ch:1:sloid:1118772")
+        .comment("BAV-Kommentar")
+        .build();
+    int didokCode12NoSloid = 1218771;
+    int didokCode12WithSloid = 1218772;
+    ServicePointCsvModel withCode12GeolocationAndSloidNull = ServicePointCsvModel.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .spatialReference(SpatialReference.LV95)
+        .bezeichnungLang("Bern12NoSloid, Wyleregg")
+        .bezeichnungOffiziell("Bern12NoSloid, Wyleregg")
+        .isBedienpunkt(true)
+        .isBetriebspunkt(true)
+        .isFahrplan(true)
+        .nummer(didokCode12NoSloid)
+        .laendercode(12)
+        .status(0)
+        .abkuerzung("TEST3")
+        .didokCode(didokCode12NoSloid)
+        .sloid(null)
+        .comment("BAV-Kommentar")
+        .build();
+    ServicePointCsvModel withCode12GeolocationAndSloid = ServicePointCsvModel.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .spatialReference(SpatialReference.LV95)
+        .bezeichnungLang("Bern12Sloid, Wyleregg")
+        .bezeichnungOffiziell("Bern12Sloid, Wyleregg")
+        .isBedienpunkt(true)
+        .isBetriebspunkt(true)
+        .isFahrplan(true)
+        .nummer(didokCode12WithSloid)
+        .laendercode(12)
+        .status(0)
+        .abkuerzung("TEST4")
+        .didokCode(didokCode12WithSloid)
+        .sloid("ch:1:sloid:1218772")
+        .comment("BAV-Kommentar")
+        .build();
+    int didokCode13NoSloid = 1318771;
+    int didokCode13WithSloid = 1318772;
+    ServicePointCsvModel withCode13GeolocationAndSloidNull = ServicePointCsvModel.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .spatialReference(SpatialReference.LV95)
+        .bezeichnungLang("Bern13NoSloid, Wyleregg")
+        .bezeichnungOffiziell("Bern13NoSloid, Wyleregg")
+        .isBedienpunkt(true)
+        .isBetriebspunkt(true)
+        .isFahrplan(true)
+        .nummer(didokCode13NoSloid)
+        .laendercode(13)
+        .status(0)
+        .abkuerzung("TEST5")
+        .didokCode(didokCode13NoSloid)
+        .sloid(null)
+        .comment("BAV-Kommentar")
+        .build();
+    ServicePointCsvModel withCode13GeolocationAndSloid = ServicePointCsvModel.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .spatialReference(SpatialReference.LV95)
+        .bezeichnungLang("Bern13Sloid, Wyleregg")
+        .bezeichnungOffiziell("Bern13Sloid, Wyleregg")
+        .isBedienpunkt(true)
+        .isBetriebspunkt(true)
+        .isFahrplan(true)
+        .nummer(didokCode13WithSloid)
+        .laendercode(13)
+        .status(0)
+        .abkuerzung("TEST6")
+        .didokCode(didokCode13WithSloid)
+        .sloid("ch:1:sloid:1318772")
+        .comment("BAV-Kommentar")
+        .build();
+    int didokCode14NoSloid = 1418771;
+    int didokCode14WithSloid = 1418772;
+    ServicePointCsvModel withCode14GeolocationAndSloidNull = ServicePointCsvModel.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .spatialReference(SpatialReference.LV95)
+        .bezeichnungLang("Bern14NoSloid, Wyleregg")
+        .bezeichnungOffiziell("Bern14NoSloid, Wyleregg")
+        .isBedienpunkt(true)
+        .isBetriebspunkt(true)
+        .isFahrplan(true)
+        .nummer(didokCode14NoSloid)
+        .laendercode(14)
+        .status(0)
+        .abkuerzung("TEST7")
+        .didokCode(didokCode14NoSloid)
+        .sloid(null)
+        .comment("BAV-Kommentar")
+        .build();
+    ServicePointCsvModel withCode14GeolocationAndSloid = ServicePointCsvModel.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .spatialReference(SpatialReference.LV95)
+        .bezeichnungLang("Bern14Sloid, Wyleregg")
+        .bezeichnungOffiziell("Bern14Sloid, Wyleregg")
+        .isBedienpunkt(true)
+        .isBetriebspunkt(true)
+        .isFahrplan(true)
+        .nummer(didokCode14WithSloid)
+        .laendercode(14)
+        .status(0)
+        .abkuerzung("TEST8")
+        .didokCode(didokCode14WithSloid)
+        .sloid("ch:1:sloid:1418772")
+        .comment("BAV-Kommentar")
+        .build();
+    List<ServicePointCsvModel> modelList11 = new ArrayList<>();
+    modelList11.add(withCode11GeolocationAndSloidNull);
+    List<ServicePointCsvModel> modelList11Sloid = new ArrayList<>();
+    modelList11Sloid.add(withCode11GeolocationAndSloid);
+    List<ServicePointCsvModel> modelList12 = new ArrayList<>();
+    modelList12.add(withCode12GeolocationAndSloidNull);
+    List<ServicePointCsvModel> modelList12Sloid = new ArrayList<>();
+    modelList12Sloid.add(withCode12GeolocationAndSloid);
+    List<ServicePointCsvModel> modelList13 = new ArrayList<>();
+    modelList13.add(withCode13GeolocationAndSloidNull);
+    List<ServicePointCsvModel> modelList13Sloid = new ArrayList<>();
+    modelList13Sloid.add(withCode13GeolocationAndSloid);
+    List<ServicePointCsvModel> modelList14 = new ArrayList<>();
+    modelList14.add(withCode14GeolocationAndSloidNull);
+    List<ServicePointCsvModel> modelList14Sloid = new ArrayList<>();
+    modelList14Sloid.add(withCode14GeolocationAndSloid);
+
+    ServicePointCsvModelContainer container = new ServicePointCsvModelContainer();
+    container.setServicePointCsvModelList(modelList11);
+    container.setDidokCode(didokCode11NoSloid);
+    ServicePointCsvModelContainer container1 = new ServicePointCsvModelContainer();
+    container1.setServicePointCsvModelList(modelList11Sloid);
+    container1.setDidokCode(didokCode11WithSloid);
+    ServicePointCsvModelContainer container2 = new ServicePointCsvModelContainer();
+    container2.setServicePointCsvModelList(modelList12);
+    container2.setDidokCode(didokCode12NoSloid);
+    ServicePointCsvModelContainer container3 = new ServicePointCsvModelContainer();
+    container3.setServicePointCsvModelList(modelList12Sloid);
+    container3.setDidokCode(didokCode12WithSloid);
+    ServicePointCsvModelContainer container4 = new ServicePointCsvModelContainer();
+    container4.setServicePointCsvModelList(modelList13);
+    container4.setDidokCode(didokCode13NoSloid);
+    ServicePointCsvModelContainer container5 = new ServicePointCsvModelContainer();
+    container5.setServicePointCsvModelList(modelList13Sloid);
+    container5.setDidokCode(didokCode13WithSloid);
+    ServicePointCsvModelContainer container6 = new ServicePointCsvModelContainer();
+    container6.setServicePointCsvModelList(modelList14);
+    container6.setDidokCode(didokCode14NoSloid);
+    ServicePointCsvModelContainer container7 = new ServicePointCsvModelContainer();
+    container7.setServicePointCsvModelList(modelList14Sloid);
+    container7.setDidokCode(didokCode14WithSloid);
+
+    List<ServicePointCsvModelContainer> servicePointCsvModelContainers = new ArrayList<>();
+    servicePointCsvModelContainers.add(container);
+    servicePointCsvModelContainers.add(container1);
+    servicePointCsvModelContainers.add(container2);
+    servicePointCsvModelContainers.add(container3);
+    servicePointCsvModelContainers.add(container4);
+    servicePointCsvModelContainers.add(container5);
+    servicePointCsvModelContainers.add(container6);
+    servicePointCsvModelContainers.add(container7);
+    return servicePointCsvModelContainers;
   }
 
 }
