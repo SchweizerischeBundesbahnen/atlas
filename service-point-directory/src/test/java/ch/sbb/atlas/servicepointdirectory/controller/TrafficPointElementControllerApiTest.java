@@ -196,6 +196,47 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldTerminateTrafficPointLikePostAuto() throws Exception {
+    assertThat(trafficPointElementVersion.getValidTo()).isEqualTo(LocalDate.of(2099, 12, 31));
+    assertThat(trafficPointElementVersion.getEditionDate()).isBefore(LocalDateTime.now().minusHours(1));
+
+    String edited = """
+        {
+             "creationDate": null,
+             "creator": null,
+             "editionDate": null,
+             "editor": null,
+             "id": null,
+             "designation": "Bezeichnung",
+             "designationOperational": "gali00",
+             "length": null,
+             "boardingAreaHeight": null,
+             "compassDirection": 277.0,
+             "trafficPointElementType": "BOARDING_PLATFORM",
+             "sloid": "ch:1:sloid:1400015:0:310240",
+             "parentSloid": "ch:1:sloid:1400015:310240",
+             "validFrom": "2020-01-06",
+             "validTo": "2024-03-03",
+             "etagVersion": 0,
+             "numberWithoutCheckDigit": 1400015,
+             "trafficPointElementGeolocation": {
+                 "spatialReference": "LV95",
+                 "north": 1116323.213,
+                 "east": 2505236.389,
+                 "height": -9999.0
+             },
+             "hasGeolocation": true
+         }
+        """;
+    mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/" + trafficPointElementVersion.getId())
+            .contentType(contentType)
+            .content(edited))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0].validTo", is("2024-03-03")));
+  }
+
+  @Test
   void shouldImportTrafficPointsSuccessfully() throws Exception {
     try (InputStream csvStream = this.getClass().getResourceAsStream("/VERKEHRSPUNKTELEMENTE_VERSIONING.csv")) {
       // given
