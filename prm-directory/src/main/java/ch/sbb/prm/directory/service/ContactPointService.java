@@ -52,6 +52,7 @@ public class ContactPointService extends PrmRelatableVersionableService<ContactP
 
   @Override
   protected ContactPointVersion save(ContactPointVersion version) {
+    setEditionDateAndEditor(version);
     return contactPointRepository.saveAndFlush(version);
   }
 
