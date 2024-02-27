@@ -29,7 +29,7 @@
     <div class="new-sloid d-flex flex-column" *ngIf="isNew">
       <atlas-sloid
         [formGroup]="form"
-        [givenParts]="[this.servicePointNumberPartForSloid]"
+        [givenPrefix]="servicePointSloid + ':'"
         [numberColons]="numberColons"
       ></atlas-sloid>
     </div>
