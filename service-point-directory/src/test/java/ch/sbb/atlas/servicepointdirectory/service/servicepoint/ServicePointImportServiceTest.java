@@ -651,7 +651,7 @@ class ServicePointImportServiceTest {
     return container;
   }
 
-//  @Test
+  @Test
   void shouldImportServicePointsWithUicCodes11To14WithAndWithoutSloidAndVerifySloidExistsByAll() {
     //given
     List<ServicePointCsvModelContainer> servicePointCsvModelContainers = getContainersForUicCodes11To14WithAndWithoutSloid();
