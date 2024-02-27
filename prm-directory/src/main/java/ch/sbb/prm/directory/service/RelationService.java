@@ -6,8 +6,10 @@ import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.repository.RelationRepository;
+import ch.sbb.prm.directory.search.RelationSearchRestrictions;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,4 +81,7 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
     return relationRepository.findById(id);
   }
 
+  public Page<RelationVersion> findAll(RelationSearchRestrictions searchRestrictions) {
+    return relationRepository.findAll(searchRestrictions.getSpecification(),searchRestrictions.getPageable());
+  }
 }

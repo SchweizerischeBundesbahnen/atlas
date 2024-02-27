@@ -9,58 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { StepFreeAccessAttributeType } from './stepFreeAccessAttributeType';
-import { TactileVisualAttributeType } from './tactileVisualAttributeType';
-import { StandardAttributeType } from './standardAttributeType';
+import { ReadRelationVersion } from './readRelationVersion';
 
 
-export interface RelationVersion { 
-    /**
-     * Object creation date
-     */
-    readonly creationDate?: string;
-    /**
-     * User creator
-     */
-    readonly creator?: string;
-    /**
-     * Last edition date
-     */
-    readonly editionDate?: string;
-    /**
-     * User editor
-     */
-    readonly editor?: string;
-    /**
-     * Technical identifier
-     */
-    readonly id?: number;
-    /**
-     * Valid from
-     */
-    validFrom: Date;
-    /**
-     * Valid to
-     */
-    validTo: Date;
-    /**
-     * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
-     */
-    etagVersion?: number;
-    /**
-     * Parent Service Point Sloid: Unique code for locations that is used in customer information. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here: https://transportdatamanagement.ch/standards/
-     */
-    parentServicePointSloid?: string;
-    /**
-     * Reference Point Sloid: Unique code for locations that is used in customer information. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here: https://transportdatamanagement.ch/standards/
-     */
-    referencePointSloid?: string;
-    /**
-     * Element Sloid: Unique code for locations that is used in customer information. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here: https://transportdatamanagement.ch/standards/
-     */
-    elementSloid?: string;
-    tactileVisualMarks: TactileVisualAttributeType;
-    contrastingAreas: StandardAttributeType;
-    stepFreeAccess: StepFreeAccessAttributeType;
+export interface ContainerReadRelationVersion { 
+    objects?: Array<ReadRelationVersion>;
+    totalCount?: number;
 }
 
