@@ -6,7 +6,6 @@ import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.mapper.GeolocationMapper;
-
 import java.util.function.Function;
 
 public class TrafficPointElementCsvToEntityMapper implements
@@ -26,7 +25,7 @@ public class TrafficPointElementCsvToEntityMapper implements
         .servicePointNumber(
             ServicePointNumber.ofNumberWithoutCheckDigit(trafficPointElementCsvModel.getServicePointNumber()))
         .sloid(trafficPointElementCsvModel.getSloid())
-        .parentSloid(trafficPointElementCsvModel.getParentSloid())
+        .parentSloid(calculateParentSloid(trafficPointElementCsvModel))
         .validFrom(trafficPointElementCsvModel.getValidFrom())
         .validTo(trafficPointElementCsvModel.getValidTo())
         .creator(trafficPointElementCsvModel.getCreatedBy())
@@ -54,6 +53,18 @@ public class TrafficPointElementCsvToEntityMapper implements
     }
 
     return trafficPointElementVersion;
+  }
+
+  private String calculateParentSloid(TrafficPointElementCsvModel trafficPointElementCsvModel) {
+    if ((trafficPointElementCsvModel.getCountry() == 11
+    || trafficPointElementCsvModel.getCountry() == 12
+    || trafficPointElementCsvModel.getCountry() == 13
+    || trafficPointElementCsvModel.getCountry() == 14)
+        && trafficPointElementCsvModel.getParentSloid() == null) {
+      return "ch:1:sloid:" + trafficPointElementCsvModel.getServicePointNumber();
+    } else {
+      return trafficPointElementCsvModel.getParentSloid();
+    }
   }
 
 }
