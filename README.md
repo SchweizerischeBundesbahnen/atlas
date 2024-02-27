@@ -6,7 +6,7 @@ This is the repository for business relevant services for ATLAS.
 
 - [Big Picture](#big-picture)
 - [Links](#links)
-- [ATLAS CI/CD](#atlas-cicd)
+- [ATLAS CI/CD with Tekton](#atlas-cicd-with-tekton)
   * [E2E Videos Results](#e2e-videos-results)
 - [Stages and their purpose](#stages-and-their-purpose)
 - [Monitoring and Logging](#monitoring-and-logging)
@@ -83,7 +83,7 @@ Application MEGAID: `ADB3AE9A60E510ED`
     - **PROD**: https://api-management.prod.sbb-cloud.net
 - **Vulnerability Management (VMC)**: https://vmc.sbb.ch/de/reporting/mg/ADB3AE9A60E510ED/vulnerabilitylist
 
-## ATLAS CI/CD
+## ATLAS CI/CD with Tekton
 
 ![ATLAS CI/CD](documentation/image/ATLAS-CI-CD.svg)
 
