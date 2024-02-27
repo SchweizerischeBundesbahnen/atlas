@@ -19,6 +19,7 @@ import ch.sbb.atlas.versioning.service.VersionableService;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -128,6 +129,7 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
 
   private ItemImportResult updateTrafficPointVersion(TrafficPointElementVersion trafficPointElementVersion) {
     List<Exception> warnings = new ArrayList<>();
+    setTraPoParentSloidIfNullForUicCode11or12or13or14(trafficPointElementVersion, false);
     getHeightForTrafficPoint(trafficPointElementVersion, warnings);
     try {
       updateTrafficPointElementVersionImport(trafficPointElementVersion);
@@ -147,6 +149,7 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
 
   private ItemImportResult saveTrafficPointVersion(TrafficPointElementVersion trafficPointElementVersion) {
     List<Exception> warnings = new ArrayList<>();
+    setTraPoParentSloidIfNullForUicCode11or12or13or14(trafficPointElementVersion, true);
     getHeightForTrafficPoint(trafficPointElementVersion, warnings);
     try {
       trafficPointElementService.createThroughImport(trafficPointElementVersion);
@@ -156,6 +159,32 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
     }
 
     return buildWarningMessage(trafficPointElementVersion, warnings);
+  }
+
+  private void setTraPoParentSloidIfNullForUicCode11or12or13or14(TrafficPointElementVersion trafficPointElementVersion, boolean isInitialCreate) {
+    if (trafficPointElementVersion.getParentSloid() == null && isUicCode11or12or13or14(trafficPointElementVersion)) {
+      String missingParentSloid = createTrafficPointParentSloidFromDidokNumber(trafficPointElementVersion);
+      trafficPointElementVersion.setParentSloid(missingParentSloid);
+      log.info("During the traffic point import, a traffic point with the number {} and country uic code {} was identified with "
+              + "parent SLOID null and parent SLOID is set to {}", trafficPointElementVersion.getServicePointNumber().getValue(),
+          trafficPointElementVersion.getServicePointNumber().getCountry().getUicCode(), trafficPointElementVersion.getParentSloid());
+      if (isInitialCreate) {
+        trafficPointElementVersion.setEditionDate(LocalDateTime.now());
+        log.info("During the traffic point import, a traffic point parent SLOID is set and editionDate is modified to {}.",
+            trafficPointElementVersion.getEditionDate());
+      }
+    }
+  }
+
+  private boolean isUicCode11or12or13or14(TrafficPointElementVersion trafficPointElementVersion) {
+    return trafficPointElementVersion.getServicePointNumber().getCountry().getUicCode() == 11
+        || trafficPointElementVersion.getServicePointNumber().getCountry().getUicCode() == 12
+        || trafficPointElementVersion.getServicePointNumber().getCountry().getUicCode() == 13
+        || trafficPointElementVersion.getServicePointNumber().getCountry().getUicCode() == 14;
+  }
+
+  private String createTrafficPointParentSloidFromDidokNumber(TrafficPointElementVersion trafficPointElementVersion) {
+    return "ch:1:sloid:" + trafficPointElementVersion.getServicePointNumber().getNumber();
   }
 
   private void getHeightForTrafficPoint(TrafficPointElementVersion trafficPointElementVersion, List<Exception> warnings) {
