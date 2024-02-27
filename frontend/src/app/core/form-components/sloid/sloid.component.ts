@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets-validator';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AtlasCharsetsValidator} from '../../validation/charsets/atlas-charsets-validator';
 
 @Component({
   selector: 'atlas-sloid',
@@ -9,8 +9,7 @@ import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets
 })
 export class SloidComponent implements OnInit {
   @Input() formGroup!: FormGroup;
-  @Input() givenParts: string[] = [];
-  @Input() givenPrefix?: string;
+  @Input() givenPrefix!: string;
   @Input() numberColons!: number;
 
   form!: FormGroup;
@@ -23,30 +22,50 @@ export class SloidComponent implements OnInit {
   set automaticSloid(value: boolean) {
     this._automaticSloid = value;
     if (this.automaticSloid) {
+      this.automaticValue();
       this.patchSloidValue();
+    } else {
+      this.requireValue();
     }
   }
 
-  fixedSloidPart!: string;
-
   ngOnInit() {
-    this.fixedSloidPart = this.givenPrefix ?? 'ch:1:sloid:' + this.givenParts.join(':') + ':';
-
     this.initFormgroup();
-    this.form.controls.sloid.valueChanges.subscribe((value) => {
-      this.patchSloidValue(this.fixedSloidPart + value);
+    this.sloidControl.valueChanges.subscribe((value) => {
+      if (value) {
+        this.patchSloidValue(this.givenPrefix + value);
+      }
     });
   }
 
   private patchSloidValue(sloid?: string) {
-    this.formGroup.patchValue({ sloid: sloid ? sloid : undefined });
+    this.formGroup.patchValue({sloid: sloid ? sloid : undefined});
   }
 
   private initFormgroup() {
     this.form = new FormGroup({
-      sloid: new FormControl(null, [
-        AtlasCharsetsValidator.colonSeperatedSid4pt(this.numberColons),
-      ]),
+      sloid: new FormControl(null),
     });
+  }
+
+  get sloidControl() {
+    return this.form.controls.sloid;
+  }
+
+  private requireValue() {
+    this.formGroup.controls.sloid.setValidators([Validators.required]);
+    this.formGroup.controls.sloid.updateValueAndValidity();
+
+    this.sloidControl.setValidators([Validators.required, AtlasCharsetsValidator.colonSeperatedSid4pt(this.numberColons)]);
+    this.sloidControl.markAsTouched();
+    this.sloidControl.updateValueAndValidity();
+  }
+
+  private automaticValue() {
+    this.formGroup.controls.sloid.clearValidators();
+    this.formGroup.controls.sloid.updateValueAndValidity();
+
+    this.sloidControl.clearValidators();
+    this.sloidControl.updateValueAndValidity();
   }
 }
