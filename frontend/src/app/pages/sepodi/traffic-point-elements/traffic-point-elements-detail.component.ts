@@ -58,6 +58,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
   isSwitchVersionDisabled = false;
   areaOptions: AreaOption[] = [];
   servicePointNumber!: number;
+  servicePointSloid = "";
   servicePoint: ReadServicePointVersion[] = [];
   servicePointBusinessOrganisations: string[] = [];
   isTrafficPointArea = false;
@@ -127,10 +128,9 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
         .getServicePointVersions(this.servicePointNumber)
         .subscribe((servicePoint) => {
           this.servicePoint = servicePoint;
-          this.servicePointName =
-            VersionsHandlingService.determineDefaultVersionByValidity(
-              servicePoint,
-            ).designationOfficial;
+          const versionToDisplay = VersionsHandlingService.determineDefaultVersionByValidity(servicePoint);
+          this.servicePointName = versionToDisplay.designationOfficial;
+          this.servicePointSloid = versionToDisplay.sloid!;
           this.servicePointBusinessOrganisations = this.servicePoint.map((i) => {
             return i.businessOrganisation;
           });
@@ -148,14 +148,6 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
           this.areaOptions = options;
         });
     }
-  }
-
-  get servicePointNumberPartForSloid() {
-    const numberAsString = String(this.servicePointNumber);
-    if (numberAsString.startsWith(String(Countries.fromCountry(Country.Switzerland)!.uicCode!))) {
-      return String(this.servicePointNumber % 100000);
-    }
-    return numberAsString;
   }
 
   backToTrafficPointElements(destination: string) {
