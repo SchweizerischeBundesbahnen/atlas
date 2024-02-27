@@ -23,6 +23,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,11 +72,11 @@ class TrafficPointElementImportServiceTest {
     List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = List.of(
         TrafficPointCsvModelContainer.builder()
             .sloid("ch:1:sloid:70001:123:123")
-            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:70001:123:123", 2020, 1, 2, 1))
+            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:70001:123:123", null, 2020, 1, 2, 1, 8570001))
             .build(),
         TrafficPointCsvModelContainer.builder()
             .sloid("ch:1:sloid:70001:432:422")
-            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:70001:432:422", 2020, 1, 2, 1))
+            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:70001:432:422", null, 2020, 1, 2, 1, 8570001))
             .build()
     );
     //when
@@ -107,18 +109,18 @@ class TrafficPointElementImportServiceTest {
     List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = List.of(
         TrafficPointCsvModelContainer.builder()
             .sloid("ch:1:sloid:70001:123:123")
-            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:70001:123:123", 2020, 1, 6, 1))
+            .csvModelList(getTrafficPointCsvModelVersions("ch:1:sloid:70001:123:123", null, 2020, 1, 6, 1, 8570001))
             .build()
     );
     trafficPointElementImportService.importTrafficPoints(trafficPointCsvModelContainers);
 
     List<TrafficPointElementCsvModel> trafficPointCsvModelVersionsMerged =
-        getTrafficPointCsvModelVersions("ch:1:sloid:70001:123:123", 2020, 2, 1, 1);
+        getTrafficPointCsvModelVersions("ch:1:sloid:70001:123:123", null, 2020, 2, 1, 1, 8570001);
     trafficPointCsvModelVersionsMerged.addAll(
-        getTrafficPointCsvModelVersions("ch:1:sloid:70001:123:123", 2022, 1, 2, 2)
+        getTrafficPointCsvModelVersions("ch:1:sloid:70001:123:123", null, 2022, 1, 2, 2, 8570001)
     );
     trafficPointCsvModelVersionsMerged.addAll(
-        getTrafficPointCsvModelVersions("ch:1:sloid:70001:123:123", 2024, 2, 1, 4)
+        getTrafficPointCsvModelVersions("ch:1:sloid:70001:123:123", null, 2024, 2, 1, 4, 8570001)
     );
 
     List<TrafficPointCsvModelContainer> trafficPointCsvModelContainersMerged = List.of(
@@ -275,18 +277,67 @@ class TrafficPointElementImportServiceTest {
     assertThat(dbVersions.get(0).getValidTo()).isEqualTo("2021-06-15");
   }
 
-  private List<TrafficPointElementCsvModel> getTrafficPointCsvModelVersions(String sloid,
-      int startingYear, int yearsPerVersion, int numberOfVersions, double startingHeight) {
+  @ParameterizedTest
+  @ValueSource(strings = {"1107001", "1207001", "1307001", "1407001"})
+  void shouldImportTrafficPointsForContryUicCodes11To14(String input) {
+    int servicePointNumber = Integer.parseInt(input);
+    String parentSloid = "ch:1:sloid:" + servicePointNumber;
+    String trafficPointSloid1 = parentSloid + ":123:123";
+    String trafficPointSloid2 = parentSloid + ":432:422";
+    //given
+    List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = List.of(
+        TrafficPointCsvModelContainer.builder()
+            .sloid(trafficPointSloid1)
+            .csvModelList(getTrafficPointCsvModelVersions(trafficPointSloid1, null, 2020, 1,
+                2, 1, servicePointNumber))
+            .build(),
+        TrafficPointCsvModelContainer.builder()
+            .sloid(trafficPointSloid2)
+            .csvModelList(getTrafficPointCsvModelVersions(trafficPointSloid2, parentSloid, 2020, 1,
+                2, 1, servicePointNumber))
+            .build()
+    );
+    //when
+    List<ItemImportResult> trafficPointItemImportResults = trafficPointElementImportService.importTrafficPoints(
+        trafficPointCsvModelContainers);
+
+    //then
+    verify(locationService, times(1)).claimSloid(SloidType.PLATFORM,
+        trafficPointSloid1);
+    verify(locationService, times(1)).claimSloid(SloidType.PLATFORM,
+        trafficPointSloid2);
+
+    assertThat(trafficPointItemImportResults).hasSize(4);
+    List<TrafficPointElementVersion> resultFirstContainer = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
+        trafficPointSloid1);
+    assertThat(resultFirstContainer).hasSize(2);
+    assertThat(resultFirstContainer.get(0).getId()).isNotNull();
+    assertThat(resultFirstContainer.get(0).getParentSloid()).isEqualTo(parentSloid);
+    assertThat(resultFirstContainer.get(1).getId()).isNotNull();
+    assertThat(resultFirstContainer.get(1).getParentSloid()).isEqualTo(parentSloid);
+
+    List<TrafficPointElementVersion> resultSecondContainer = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
+        trafficPointSloid2);
+    assertThat(resultSecondContainer).hasSize(2);
+    assertThat(resultSecondContainer.get(0).getId()).isNotNull();
+    assertThat(resultSecondContainer.get(0).getParentSloid()).isEqualTo(parentSloid);
+    assertThat(resultSecondContainer.get(1).getId()).isNotNull();
+    assertThat(resultSecondContainer.get(1).getParentSloid()).isEqualTo(parentSloid);
+  }
+
+  private List<TrafficPointElementCsvModel> getTrafficPointCsvModelVersions(String sloid, String parentSloid,
+      int startingYear, int yearsPerVersion, int numberOfVersions, double startingHeight, int servicePointNumber) {
     final ArrayList<TrafficPointElementCsvModel> list = new ArrayList<>();
     for (int i = 0; i < numberOfVersions; i++, startingYear += yearsPerVersion, startingHeight += 1) {
       list.add(
           TrafficPointElementCsvModel.builder()
               .sloid(sloid)
+              .parentSloid(parentSloid)
               .nWgs84(47.5961061)
               .eWgs84(7.536484397)
               .height(startingHeight)
               .spatialReference(SpatialReference.WGS84)
-              .servicePointNumber(8570001)
+              .servicePointNumber(servicePointNumber)
               .validFrom(LocalDate.of(startingYear, 1, 1))
               .validTo(LocalDate.of(startingYear + yearsPerVersion - 1, 12, 31))
               .createdAt(LocalDateTime.of(LocalDate.of(2020, 1, 1), LocalTime.of(5, 5)))
