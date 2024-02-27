@@ -1,7 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {
-  Country,
   CreateTrafficPointElementVersion,
   ReadServicePointVersion,
   ReadTrafficPointElementVersion,
@@ -9,23 +8,19 @@ import {
   TrafficPointElementsService,
   TrafficPointElementType,
 } from '../../../api';
-import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
-import { DateRange } from '../../../core/versioning/date-range';
-import { catchError, EMPTY, Observable, of } from 'rxjs';
-import { Pages } from '../../pages';
-import { FormGroup } from '@angular/forms';
-import {
-  TrafficPointElementDetailFormGroup,
-  TrafficPointElementFormGroupBuilder,
-} from './traffic-point-detail-form-group';
-import { DialogService } from '../../../core/components/dialog/dialog.service';
-import { ValidationService } from '../../../core/validation/validation.service';
-import { NotificationService } from '../../../core/notification/notification.service';
-import { TrafficPointMapService } from '../map/traffic-point-map.service';
-import { ValidityConfirmationService } from '../validity/validity-confirmation.service';
-import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
-import { Countries } from '../../../core/country/Countries';
-import { GeographyFormGroup, GeographyFormGroupBuilder } from '../geography/geography-form-group';
+import {VersionsHandlingService} from '../../../core/versioning/versions-handling.service';
+import {DateRange} from '../../../core/versioning/date-range';
+import {catchError, EMPTY, Observable, of} from 'rxjs';
+import {Pages} from '../../pages';
+import {FormGroup} from '@angular/forms';
+import {TrafficPointElementDetailFormGroup, TrafficPointElementFormGroupBuilder,} from './traffic-point-detail-form-group';
+import {DialogService} from '../../../core/components/dialog/dialog.service';
+import {ValidationService} from '../../../core/validation/validation.service';
+import {NotificationService} from '../../../core/notification/notification.service';
+import {TrafficPointMapService} from '../map/traffic-point-map.service';
+import {ValidityConfirmationService} from '../validity/validity-confirmation.service';
+import {DetailFormComponent} from '../../../core/leave-guard/leave-dirty-form-guard.service';
+import {GeographyFormGroup, GeographyFormGroupBuilder} from '../geography/geography-form-group';
 
 interface AreaOption {
   sloid: string | undefined;
