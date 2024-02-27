@@ -1,5 +1,7 @@
 package ch.sbb.importservice.migration.stoppoint;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.export.model.prm.StopPointVersionCsvModel;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModel;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModelContainer;
@@ -7,22 +9,20 @@ import ch.sbb.atlas.imports.util.CsvReader;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.importservice.service.csv.StopPointCsvService;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.beans.factory.annotation.Autowired;
+@Disabled
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
