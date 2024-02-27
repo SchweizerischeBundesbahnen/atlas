@@ -67,4 +67,17 @@ describe('SloidComponent', () => {
 
     expect(component.formGroup.controls.sloid.value).toBe('ch:1:sloid:851:123');
   });
+
+  it('should switch back to automatic correctly', () => {
+    component.automaticSloid = false;
+    component.form.controls.sloid.setValue('123');
+
+    // switch back
+    component.automaticSloid = true;
+
+    expect(component.formGroup.valid).toBeTrue();
+    expect(component.form.valid).toBeTrue();
+
+    expect(component.formGroup.controls.sloid.value).toBeUndefined();
+  });
 });
