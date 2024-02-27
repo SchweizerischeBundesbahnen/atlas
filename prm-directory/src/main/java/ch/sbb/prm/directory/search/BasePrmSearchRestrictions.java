@@ -17,8 +17,8 @@ import org.springframework.data.jpa.domain.Specification;
 @Data
 public abstract class BasePrmSearchRestrictions<T extends BasePrmEntityVersion> {
 
-  private final Pageable pageable;
-  private final PrmObjectRequestParams prmObjectRequestParams;
+  private Pageable pageable;
+  private PrmObjectRequestParams prmObjectRequestParams;
 
   public Specification<T> getSpecification() {
     return specBuilder().searchCriteriaSpecification(Collections.emptyList())
