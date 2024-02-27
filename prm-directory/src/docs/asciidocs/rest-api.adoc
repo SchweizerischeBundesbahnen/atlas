@@ -96,6 +96,10 @@ include::{snippets}/reference-point-version-controller-api-test/should-get-refer
 
 include::{snippets}/reference-point-version-controller-api-test/should-get-reference-point-by-sloid/auto-section.adoc[]
 
+=== Get Reference Point with filters - Successfully
+
+include::{snippets}/reference-point-version-controller-api-test/should-get-reference-point-versions-with-filter/auto-section.adoc[]
+
 === Get Reference Point Overview by Parent Sloid - Successfully
 
 include::{snippets}/reference-point-version-controller-api-test/should-get-reference-point-overview/auto-section.adoc[]
@@ -125,6 +129,10 @@ include::{snippets}/platform-version-controller-api-test/should-get-platforms-ve
 === Get Platforms by Sloid - Successfully
 
 include::{snippets}/platform-version-controller-api-test/should-get-platform-by-sloid/auto-section.adoc[]
+
+=== Get Platforms with filter - Successfully
+
+include::{snippets}/platform-version-controller-api-test/should-get-platform-versions-with-filter/auto-section.adoc[]
 
 === Get Platform Overview - Successfully
 
@@ -164,6 +172,23 @@ include::{snippets}/toilet-version-controller-api-test/should-get-toilet/auto-se
 
 include::{snippets}/toilet-version-controller-api-test/should-get-toilet-versions/auto-section.adoc[]
 
+
+=== Get Toilet Versions with filter - Successfully
+
+include::{snippets}/toilet-version-controller-api-test/should-get-toilet-versions-with-filter/auto-section.adoc[]
+
+=== Get Toilet Versions by sloid filter - Successfully
+
+include::{snippets}/toilet-version-controller-api-test/should-get-toilet-versions-by-sloid-filter/auto-section.adoc[]
+
+=== Get Toilet Versions by parentSloid filter - Successfully
+
+include::{snippets}/toilet-version-controller-api-test/should-get-toilet-versions-by-parent-sloid-filter/auto-section.adoc[]
+
+=== Get Toilet Versions by parentServicePointNumber filter - Successfully
+
+include::{snippets}/toilet-version-controller-api-test/should-get-toilet-versions-by-number-filter/auto-section.adoc[]
+
 === Create Toilets - Successfully
 
 include::{snippets}/toilet-version-controller-api-test/should-create-toilet/auto-section.adoc[]
@@ -193,6 +218,10 @@ include::{snippets}/contact-point-version-controller-api-test/should-get-contact
 === Get Contact Points by servicePointNumbers - Successfully
 
 include::{snippets}/contact-point-version-controller-api-test/should-get-contact-points-by-service-point-numbers/auto-section.adoc[]
+
+=== Get Contact Points with filter - Successfully
+
+include::{snippets}/contact-point-version-controller-api-test/should-get-contact-point-versions-with-filter/auto-section.adoc[]
 
 === Get Contact Points by Contact Point types - Successfully
 
@@ -225,9 +254,29 @@ include::{snippets}/contact-point-version-controller-api-test/should-not-create-
 
 include::{snippets}/parking-lot-version-controller-api-test/should-get-parking-lot-version/auto-section.adoc[]
 
-=== Get Parking Lot Versionss - Successfully
+=== Get Parking Lot Versions - Successfully
 
 include::{snippets}/parking-lot-version-controller-api-test/should-get-parking-lot-versions/auto-section.adoc[]
+
+=== Get Parking Lot Versions with filter - Successfully
+
+include::{snippets}/parking-lot-version-controller-api-test/should-get-parking-lot-versions-with-filter/auto-section.adoc[]
+
+=== Get Parking Lot Versions with sloid array filter - Successfully
+
+include::{snippets}/parking-lot-version-controller-api-test/should-get-parking-lot-versions-with-array-sloids-filter/auto-section.adoc[]
+
+=== Get Parking Lot Versions with sloid filter - Successfully
+
+include::{snippets}/parking-lot-version-controller-api-test/should-get-parking-lot-versions-by-sloid-filter/auto-section.adoc[]
+
+=== Get Parking Lot Versions with number filter - Successfully
+
+include::{snippets}/parking-lot-version-controller-api-test/should-get-parking-lot-versions-by-number-filter/auto-section.adoc[]
+
+=== Get Parking Lot Versions with parentSloid filter - Successfully
+
+include::{snippets}/parking-lot-version-controller-api-test/should-get-parking-lot-versions-by-parent-sloid-filter/auto-section.adoc[]
 
 === Get Parking Lot Overview - Successfully
 
