@@ -2,10 +2,10 @@ package ch.sbb.atlas.servicepointdirectory.migration.trafficpoints;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.model.DoubleAssertion;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
-import ch.sbb.atlas.model.DoubleAssertion;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -35,6 +35,7 @@ public record TrafficPointMappingEquality(
     assertThat(atlasCsvLine.getLength()).isEqualTo(didokCsvLine.getLength());
     assertThat(atlasCsvLine.getBoardingAreaHeight()).isEqualTo(didokCsvLine.getBoardingAreaHeight());
     assertThat(atlasCsvLine.getCompassDirection()).isEqualTo(didokCsvLine.getCompassDirection());
+    // TODO: Adjust MigrationsTests once full import is done
     assertThat(atlasCsvLine.getParentSloid()).isEqualTo(didokCsvLine.getParentSloid());
     assertThat(atlasCsvLine.getTrafficPointElementType()).isEqualTo(
         TrafficPointElementType.fromValue(didokCsvLine.getTrafficPointElementType()).toString());
