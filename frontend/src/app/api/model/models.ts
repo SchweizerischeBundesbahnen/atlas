@@ -30,6 +30,7 @@ export * from './containerReadLoadingPointVersion';
 export * from './containerReadParkingLotVersion';
 export * from './containerReadPlatformVersion';
 export * from './containerReadReferencePointVersion';
+export * from './containerReadRelationVersion';
 export * from './containerReadServicePointVersion';
 export * from './containerReadStopPointVersion';
 export * from './containerReadToiletVersion';

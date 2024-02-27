@@ -61,6 +61,7 @@ model/containerReadLoadingPointVersion.ts
 model/containerReadParkingLotVersion.ts
 model/containerReadPlatformVersion.ts
 model/containerReadReferencePointVersion.ts
+model/containerReadRelationVersion.ts
 model/containerReadServicePointVersion.ts
 model/containerReadStopPointVersion.ts
 model/containerReadToiletVersion.ts
