@@ -126,6 +126,9 @@ public class RelationImportService extends BasePrmImportService<RelationVersion>
     }
 
     private void checkElementExists(ReferencePointElementType type, String sloid) {
+        if(type == ReferencePointElementType.INFO_DESK || type == ReferencePointElementType.TICKET_COUNTER){
+            contactPointService.checkContactPointExists(sloid, ReferencePointElementType.CONTACT_POINT.name());
+        }
         if(type == ReferencePointElementType.PLATFORM){
             platformService.checkPlatformExists(sloid, ReferencePointElementType.PLATFORM.name());
         }
@@ -133,7 +136,7 @@ public class RelationImportService extends BasePrmImportService<RelationVersion>
             parkingLotService.checkParkingLotExists(sloid, ReferencePointElementType.PARKING_LOT.name());
         }
         if(type == ReferencePointElementType.CONTACT_POINT){
-            contactPointService.checkContactPointExists(sloid, ReferencePointElementType.CONTACT_POINT.name());
+           throw new IllegalArgumentException("Contact point type not allowed");
         }
         if(type == ReferencePointElementType.TOILET){
             toiletService.checkToiletExists(sloid, ReferencePointElementType.TOILET.name());
