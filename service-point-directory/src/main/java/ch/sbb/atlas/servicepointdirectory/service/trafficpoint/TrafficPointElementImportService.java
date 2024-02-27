@@ -6,6 +6,8 @@ import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContai
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
 import ch.sbb.atlas.imports.util.DidokCsvMapper;
 import ch.sbb.atlas.imports.util.ImportUtils;
+import ch.sbb.atlas.servicepoint.Country;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.exception.HeightNotCalculatableException;
@@ -162,9 +164,9 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
   }
 
   private void setTraPoParentSloidIfNullForUicCode11or12or13or14(TrafficPointElementVersion trafficPointElementVersion, boolean isInitialCreate) {
-    if (trafficPointElementVersion.getParentSloid() == null && isUicCode11or12or13or14(trafficPointElementVersion)) {
-      String missingParentSloid = createTrafficPointParentSloidFromDidokNumber(trafficPointElementVersion);
-      trafficPointElementVersion.setParentSloid(missingParentSloid);
+    if (trafficPointElementVersion.getParentSloid() == null
+        && Country.SLOID_COMPATIBLE_COUNTRY_CODES.contains(trafficPointElementVersion.getServicePointNumber().getCountry().getUicCode())) {
+      trafficPointElementVersion.setParentSloid(ServicePointNumber.calculateSloid(trafficPointElementVersion.getServicePointNumber()));
       log.info("During the traffic point import, a traffic point with the number {} and country uic code {} was identified with "
               + "parent SLOID null and parent SLOID is set to {}", trafficPointElementVersion.getServicePointNumber().getValue(),
           trafficPointElementVersion.getServicePointNumber().getCountry().getUicCode(), trafficPointElementVersion.getParentSloid());
@@ -174,17 +176,6 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
             trafficPointElementVersion.getEditionDate());
       }
     }
-  }
-
-  private boolean isUicCode11or12or13or14(TrafficPointElementVersion trafficPointElementVersion) {
-    return trafficPointElementVersion.getServicePointNumber().getCountry().getUicCode() == 11
-        || trafficPointElementVersion.getServicePointNumber().getCountry().getUicCode() == 12
-        || trafficPointElementVersion.getServicePointNumber().getCountry().getUicCode() == 13
-        || trafficPointElementVersion.getServicePointNumber().getCountry().getUicCode() == 14;
-  }
-
-  private String createTrafficPointParentSloidFromDidokNumber(TrafficPointElementVersion trafficPointElementVersion) {
-    return "ch:1:sloid:" + trafficPointElementVersion.getServicePointNumber().getNumber();
   }
 
   private void getHeightForTrafficPoint(TrafficPointElementVersion trafficPointElementVersion, List<Exception> warnings) {

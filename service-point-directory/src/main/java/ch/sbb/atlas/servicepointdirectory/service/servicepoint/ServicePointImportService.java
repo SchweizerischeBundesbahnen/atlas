@@ -9,6 +9,7 @@ import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException;
+import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -178,9 +179,9 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
   }
 
   private void setServicePointSloidIfNullForUicCode11or12or13or14(ServicePointVersion servicePointVersion, boolean isInitialCreate) {
-    if (servicePointVersion.getSloid() == null && isUicCode11or12or13or14(servicePointVersion)) {
-      String missingSloid = createServicePointSloidFromDidokNumber(servicePointVersion);
-      servicePointVersion.setSloid(missingSloid);
+    if (servicePointVersion.getSloid() == null
+        && Country.SLOID_COMPATIBLE_COUNTRY_CODES.contains(servicePointVersion.getCountry().getUicCode())) {
+      servicePointVersion.setSloid(ServicePointNumber.calculateSloid(servicePointVersion.getNumber()));
       log.info("During the service point import, a service point with the number {} and country uic code {} was identified with "
           + "SLOID null and SLOID is set to {}", servicePointVersion.getNumber().getValue(),
           servicePointVersion.getCountry().getUicCode(), servicePointVersion.getSloid());
@@ -190,17 +191,6 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
             servicePointVersion.getEditionDate());
       }
     }
-  }
-
-  private boolean isUicCode11or12or13or14(ServicePointVersion servicePointVersion) {
-    return servicePointVersion.getCountry().getUicCode() == 11
-        || servicePointVersion.getCountry().getUicCode() == 12
-        || servicePointVersion.getCountry().getUicCode() == 13
-        || servicePointVersion.getCountry().getUicCode() == 14;
-  }
-
-  private String createServicePointSloidFromDidokNumber(ServicePointVersion servicePointVersion) {
-    return "ch:1:sloid:" + servicePointVersion.getNumber().getNumber();
   }
 
   private ItemImportResult updateServicePointVersion(ServicePointVersion servicePointVersion) {

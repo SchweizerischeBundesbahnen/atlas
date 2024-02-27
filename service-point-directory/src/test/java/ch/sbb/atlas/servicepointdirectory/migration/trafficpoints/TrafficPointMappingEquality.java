@@ -35,7 +35,6 @@ public record TrafficPointMappingEquality(
     assertThat(atlasCsvLine.getLength()).isEqualTo(didokCsvLine.getLength());
     assertThat(atlasCsvLine.getBoardingAreaHeight()).isEqualTo(didokCsvLine.getBoardingAreaHeight());
     assertThat(atlasCsvLine.getCompassDirection()).isEqualTo(didokCsvLine.getCompassDirection());
-    // TODO: Adjust MigrationsTests once full import is done
     assertThat(atlasCsvLine.getParentSloid()).isEqualTo(didokCsvLine.getParentSloid());
     assertThat(atlasCsvLine.getTrafficPointElementType()).isEqualTo(
         TrafficPointElementType.fromValue(didokCsvLine.getTrafficPointElementType()).toString());
