@@ -46,7 +46,6 @@ public record ServicePointMappingEquality(ServicePointDidokCsvModel didokCsvLine
     assertThat(atlasCsvLine.getNumberShort()).isEqualTo(didokCsvLine.getNummer());
     assertThat(atlasCsvLine.getUicCountryCode()).isEqualTo(didokCsvLine.getLaendercode());
 
-    // TODO: Adjust MigrationsTests once full import is done
     if (isFullExport) {
       assertThat(atlasCsvLine.getSloid()).isEqualTo(didokCsvLine.getSloid());
     }
