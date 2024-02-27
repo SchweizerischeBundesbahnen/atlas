@@ -280,6 +280,7 @@ class TrafficPointElementImportServiceTest {
   @ParameterizedTest
   @ValueSource(strings = {"1107001", "1207001", "1307001", "1407001"})
   void shouldImportTrafficPointsForContryUicCodes11To14(String input) {
+    LocalDateTime now = LocalDateTime.now();
     int servicePointNumber = Integer.parseInt(input);
     String parentSloid = "ch:1:sloid:" + servicePointNumber;
     String trafficPointSloid1 = parentSloid + ":123:123";
@@ -313,16 +314,20 @@ class TrafficPointElementImportServiceTest {
     assertThat(resultFirstContainer).hasSize(2);
     assertThat(resultFirstContainer.get(0).getId()).isNotNull();
     assertThat(resultFirstContainer.get(0).getParentSloid()).isEqualTo(parentSloid);
+    assertThat(resultFirstContainer.get(0).getEditionDate().toLocalDate()).isEqualTo(now.toLocalDate());
     assertThat(resultFirstContainer.get(1).getId()).isNotNull();
     assertThat(resultFirstContainer.get(1).getParentSloid()).isEqualTo(parentSloid);
+    assertThat(resultFirstContainer.get(1).getEditionDate().toLocalDate()).isNotEqualTo(now.toLocalDate());
 
     List<TrafficPointElementVersion> resultSecondContainer = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
         trafficPointSloid2);
     assertThat(resultSecondContainer).hasSize(2);
     assertThat(resultSecondContainer.get(0).getId()).isNotNull();
     assertThat(resultSecondContainer.get(0).getParentSloid()).isEqualTo(parentSloid);
+    assertThat(resultSecondContainer.get(0).getEditionDate().toLocalDate()).isNotEqualTo(now.toLocalDate());
     assertThat(resultSecondContainer.get(1).getId()).isNotNull();
     assertThat(resultSecondContainer.get(1).getParentSloid()).isEqualTo(parentSloid);
+    assertThat(resultSecondContainer.get(1).getEditionDate().toLocalDate()).isNotEqualTo(now.toLocalDate());
   }
 
   private List<TrafficPointElementCsvModel> getTrafficPointCsvModelVersions(String sloid, String parentSloid,
