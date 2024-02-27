@@ -25,7 +25,7 @@ public class TrafficPointElementCsvToEntityMapper implements
         .servicePointNumber(
             ServicePointNumber.ofNumberWithoutCheckDigit(trafficPointElementCsvModel.getServicePointNumber()))
         .sloid(trafficPointElementCsvModel.getSloid())
-        .parentSloid(calculateParentSloid(trafficPointElementCsvModel))
+        .parentSloid(trafficPointElementCsvModel.getParentSloid())
         .validFrom(trafficPointElementCsvModel.getValidFrom())
         .validTo(trafficPointElementCsvModel.getValidTo())
         .creator(trafficPointElementCsvModel.getCreatedBy())
@@ -53,18 +53,6 @@ public class TrafficPointElementCsvToEntityMapper implements
     }
 
     return trafficPointElementVersion;
-  }
-
-  private String calculateParentSloid(TrafficPointElementCsvModel trafficPointElementCsvModel) {
-    if ((trafficPointElementCsvModel.getCountry() == 11
-    || trafficPointElementCsvModel.getCountry() == 12
-    || trafficPointElementCsvModel.getCountry() == 13
-    || trafficPointElementCsvModel.getCountry() == 14)
-        && trafficPointElementCsvModel.getParentSloid() == null) {
-      return "ch:1:sloid:" + trafficPointElementCsvModel.getServicePointNumber();
-    } else {
-      return trafficPointElementCsvModel.getParentSloid();
-    }
   }
 
 }
