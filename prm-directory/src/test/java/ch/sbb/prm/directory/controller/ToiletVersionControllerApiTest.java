@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.api.prm.model.toilet.ToiletVersionModel;
@@ -35,6 +36,8 @@ import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.service.PrmLocationService;
 import ch.sbb.prm.directory.service.RelationService;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -277,6 +280,72 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/toilets/" + toiletVersion.getSloid()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
+  }
+
+  @Test
+  void shouldGetToiletVersionsWithFilter() throws Exception {
+    //given
+    ToiletVersion version = toiletRepository.save(ToiletTestData.getToiletVersion());
+
+    //when & then
+    mvc.perform(get("/v1/toilets" +
+            "?numbers=12345" +
+            "&sloids=ch:1:sloid:12345:1" +
+            "&fromDate=" + version.getValidFrom() +
+            "&toDate=" + version.getValidTo() +
+            "&validOn=" + LocalDate.of(2000, 6, 28) +
+            "&createdAfter=" + version.getCreationDate().minusSeconds(1)
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)) +
+            "&modifiedAfter=" + version.getEditionDate()
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN))
+        ))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
+  @Test
+  void shouldGetToiletVersionsBySloidFilter() throws Exception {
+    //given
+    toiletRepository.save(ToiletTestData.getToiletVersion());
+
+    //when & then
+    mvc.perform(get("/v1/toilets?sloids=ch:1:sloid:12345:1"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+
+    mvc.perform(get("/v1/toilets?sloids=ch:1:sloid:12345:3"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(0)));
+  }
+
+  @Test
+  void shouldGetToiletVersionsByNumberFilter() throws Exception {
+    //given
+    toiletRepository.save(ToiletTestData.getToiletVersion());
+
+    //when & then
+    mvc.perform(get("/v1/toilets?servicePointNumbers=1234567"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+
+    mvc.perform(get("/v1/toilets?servicePointNumbers=1334567"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(0)));
+  }
+
+  @Test
+  void shouldGetToiletVersionsByParentSloidFilter() throws Exception {
+    //given
+    toiletRepository.save(ToiletTestData.getToiletVersion());
+
+    //when & then
+    mvc.perform(get("/v1/toilets?parentServicePointSloids=ch:1:sloid:12345"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+
+    mvc.perform(get("/v1/toilets?parentServicePointSloids=ch:1:sloid:1234"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(0)));
   }
 
 }
