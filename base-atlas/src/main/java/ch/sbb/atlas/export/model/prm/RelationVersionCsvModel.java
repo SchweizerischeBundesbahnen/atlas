@@ -17,7 +17,7 @@ import lombok.experimental.FieldNameConstants;
 @EqualsAndHashCode
 public class RelationVersionCsvModel {
 
-  private String sloid;
+  private String elementSloid;
 
   private String parentSloidServicePoint;
 

@@ -12,7 +12,7 @@ public class RelationVersionCsvProcessor implements
   @Override
   public RelationVersionCsvModel process(RelationVersion version) {
     return RelationVersionCsvModel.builder()
-        .sloid(version.getSloid())
+        .elementSloid(version.getSloid())
         .parentSloidServicePoint(version.getParentServicePointSloid())
         .parentNumberServicePoint(version.getParentServicePointNumber().getNumber())
         .referencePointSloid(version.getReferencePointSloid())
