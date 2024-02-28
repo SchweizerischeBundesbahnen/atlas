@@ -1063,7 +1063,7 @@
       "CONTACT_POINT": "Sportello",
       "TOILET": "Servizi igienici",
       "PARKING_LOT": "Parcheggio",
-      "CONNECTION": "Collegamenti"
+      "RELATION": "Collegamenti"
     },
     "STOP_POINTS": {
       "FORM": {
@@ -1152,6 +1152,22 @@
         "ACOUSTIC_INFORMATION": "Lautsprecher (in der Regel nur Störungsinformation)",
         "TEXT_TO_SPEECH_DEPARTURES": "Text-to-Speech, nur mit Abfahrten",
         "TEXT_TO_SPEECH_COMPLETE": "Text-to-Speech, mit Abfahrten und Störungsinformationen"
+      },
+      "STEP_FREE_ACCESS_TYPES": {
+        "TO_BE_COMPLETED": "Da completare",
+        "YES": "Si",
+        "NO": "No",
+        "NOT_APPLICABLE": "Non applicabile",
+        "YES_WITH_LIFT": "Sì con ascensore",
+        "YES_WITH_RAMP": "Sì con rampa"
+      },
+      "TACTILE_VISUAL_MARK_TYPES": {
+        "TO_BE_COMPLETED": "Da completare",
+        "YES": "Si",
+        "NO": "No",
+        "NOT_APPLICABLE": "Non applicabile",
+        "PARTIALLY": "Parziale",
+        "WITH_REMOTE_CONTROL": "Con controllo a distanza"
       }
     },
     "INFO_BOX": {
@@ -1298,6 +1314,15 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Lo sportello è stato aggiunto con successo.",
         "EDIT_SUCCESS": "Lo sportello è stato salvato con successo."
+      }
+    },
+    "RELATIONS": {
+      "RELATION": "Collegamento",
+      "STEP_FREE_ACCESS": "Accesso senza gradini",
+      "TACTIL_VISUAL_MARKS": "Segnalazioni tattili e visive",
+      "CONTRASTING_AREAS": "Segnalazioni ad alto contrasto",
+      "NOTIFICATION": {
+        "EDIT_SUCCESS": "Il collegamento è stato salvato con successo."
       }
     }
   }

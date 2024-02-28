@@ -27,10 +27,6 @@ export const PrmTabs = {
     link: 'parking-lots',
     title: 'PRM.TABS.PARKING_LOT',
   },
-  CONNECTION: {
-    link: 'connections',
-    title: 'PRM.TABS.CONNECTION',
-  },
 };
 export const PRM_TABS = [
   PrmTabs.STOP_POINT,
@@ -39,7 +35,6 @@ export const PRM_TABS = [
   PrmTabs.CONTACT_POINT,
   PrmTabs.TOILET,
   PrmTabs.PARKING_LOT,
-  PrmTabs.CONNECTION,
 ];
 
 export const PRM_REDUCED_TABS = [
@@ -50,4 +45,4 @@ export const PRM_REDUCED_TABS = [
   PrmTabs.PARKING_LOT,
 ];
 
-export const PRM_COMPLETE_TABS = [PrmTabs.REFERENCE_POINT, PrmTabs.CONNECTION];
+export const PRM_COMPLETE_TABS = [PrmTabs.REFERENCE_POINT];
