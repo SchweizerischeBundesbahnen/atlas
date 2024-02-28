@@ -3,6 +3,7 @@ package ch.sbb.importservice.service.csv;
 import ch.sbb.atlas.imports.prm.relation.RelationCsvModel;
 import ch.sbb.atlas.imports.prm.relation.RelationCsvModelContainer;
 import ch.sbb.atlas.versioning.date.DateHelper;
+import ch.sbb.importservice.entity.RelationKeyId;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
 import ch.sbb.importservice.utils.JobDescriptionConstants;
@@ -53,8 +54,10 @@ public class RelationCsvService extends PrmCsvService<RelationCsvModel>{
     }
 
     public List<RelationCsvModelContainer> mapToRelationCsvModelContainers(List<RelationCsvModel> relationCsvModels) {
-        Map<String, List<RelationCsvModel>> groupedRelations = filterForActive(relationCsvModels).stream()
-                .collect(Collectors.groupingBy(RelationCsvModel::getSloid));
+
+        Map<RelationKeyId, List<RelationCsvModel>> groupedRelations = filterForActive(relationCsvModels).stream()
+                .collect(Collectors.groupingBy(model -> new RelationKeyId(model.getRpSloid(), model.getSloid())));
+
         List<RelationCsvModelContainer> result = new ArrayList<>(
                 groupedRelations.entrySet().stream().map(toContainer()).toList());
         mergeRelations(result);
@@ -66,9 +69,9 @@ public class RelationCsvService extends PrmCsvService<RelationCsvModel>{
         mergeEqualsVersions(relationCsvModelContainers);
     }
 
-    private static Function<Map.Entry<String, List<RelationCsvModel>>, RelationCsvModelContainer> toContainer() {
+    private static Function<Map.Entry<RelationKeyId, List<RelationCsvModel>>, RelationCsvModelContainer> toContainer() {
         return entry -> RelationCsvModelContainer.builder()
-                .sloid(entry.getKey())
+                .sloid(entry.getKey().getSloid())
                 .csvModels(entry.getValue())
                 .build();
     }
@@ -90,7 +93,7 @@ public class RelationCsvService extends PrmCsvService<RelationCsvModel>{
                 container -> container.setCsvModels(mergeEqualsRelationVersions(container.getCsvModels(),
                         mergedSloids)));
         log.info("Total Merged equals Relation versions {}", mergedSloids.size());
-        log.info("Merged equals Relation Didok numbers {}", mergedSloids);
+        log.info("Merged equals Relation sloids {}", mergedSloids);
     }
 
     private List<RelationCsvModel> mergeSequentialEqualsRelationVersions(List<RelationCsvModel> relationCsvModels,
