@@ -10,7 +10,7 @@ public class CsvRelationVersionWriter extends BaseCsvWriter<RelationVersionCsvMo
   @Override
   String[] getCsvHeader() {
     return new String[]{
-        Fields.sloid, Fields.parentSloidServicePoint, Fields.parentNumberServicePoint, Fields.referencePointSloid,
+        Fields.elementSloid, Fields.parentSloidServicePoint, Fields.parentNumberServicePoint, Fields.referencePointSloid,
         Fields.tactileVisualMarks, Fields.contrastingAreas, Fields.stepFreeAccess, Fields.referencePointElementType,
         Fields.validFrom, Fields.validTo, Fields.creationDate, Fields.editionDate
     };
