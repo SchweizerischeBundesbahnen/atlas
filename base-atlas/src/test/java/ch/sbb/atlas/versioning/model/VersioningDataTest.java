@@ -112,4 +112,44 @@ public class VersioningDataTest {
           "ValidFrom cannot be before 1.1.1700.");
   }
 
+  @Test
+   void shouldGetTargetVersion() {
+    //given
+    currentVersion.setValidFrom(LocalDate.of(2001, 1, 1));
+    currentVersion.setValidTo(LocalDate.of(2001, 12, 31));
+    ToVersioning toVersioningCurrent = ToVersioning.builder()
+        .versionable(currentVersion)
+        .build();
+    List<ToVersioning> toVersioningList = new ArrayList<>(List.of(toVersioningCurrent));
+    editedVersion.setValidFrom(LocalDate.of(2001, 1, 1));
+    editedVersion.setValidTo(LocalDate.of(2001, 12, 31));
+
+    //when
+    ToVersioning result = new VersioningData(editedVersion, currentVersion, editedEntity,
+        toVersioningList).getTargetVersion();
+    //then
+    assertThat(result).isNotNull();
+  }
+
+  @Test
+   void shouldThroeExceptionWhenNoTargetVersionFound() {
+    //given
+    currentVersion.setValidFrom(LocalDate.of(2001, 1, 1));
+    currentVersion.setValidTo(LocalDate.of(2001, 12, 31));
+    editedVersion.setValidFrom(LocalDate.of(2000, 1, 1));
+    editedVersion.setValidTo(LocalDate.of(2000, 12, 31));
+    ToVersioning toVersioningCurrent = ToVersioning.builder()
+        .versionable(editedVersion)
+        .build();
+    List<ToVersioning> toVersioningList1 = new ArrayList<>(List.of(toVersioningCurrent));
+
+    assertThatThrownBy(() -> {
+      new VersioningData(editedVersion, currentVersion, editedEntity,
+          toVersioningList1).getTargetVersion();
+      //then
+    }).isInstanceOf(VersioningException.class)
+        .hasMessageContaining(
+            "Something went wrong. I'm not able to apply versioning.");
+  }
+
 }
