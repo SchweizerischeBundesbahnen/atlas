@@ -12,12 +12,11 @@ import {StopPointCompleteFormComponent} from './tabs/stop-point/form/stop-point-
 import {ReferencePointTableComponent} from './tabs/reference-point/reference-point-table.component';
 import {PlatformTableComponent} from './tabs/platform/platform-table.component';
 import {ToiletComponent} from './tabs/toilet/toilet.component';
-import {ConnectionComponent} from './tabs/connection/connection.component';
 import {CreateStopPointComponent} from './tabs/stop-point/create-stop-point/create-stop-point.component';
 import {PrmInfoBoxComponent} from './prm-home-search/prm-info-box/prm-info-box.component';
 import {PlatformCompleteFormComponent} from './tabs/platform/detail/form/platform-complete-form/platform-complete-form.component';
 import {PlatformReducedFormComponent} from './tabs/platform/detail/form/platform-reduced-form/platform-reduced-form.component';
-import {PlatformDetailComponent} from './tabs/platform/detail/platform-detail.component';
+import {PlatformDetailPanelComponent} from './tabs/platform/detail/platform-detail-panel.component';
 import {
   ReferencePointCompleteFormComponent
 } from './tabs/reference-point/detail/form/reference-point-complete-form/reference-point-complete-form.component';
@@ -30,6 +29,10 @@ import {ContactPointDetailComponent} from './tabs/contact-point/detail/contact-p
 import {ContactPointFormComponent} from './tabs/contact-point/detail/form/contact-point-form/contact-point-form.component';
 import {ToiletDetailComponent} from "./tabs/toilet/detail/toilet-detail.component";
 import {ToiletFormComponent} from "./tabs/toilet/detail/form/toilet-form/toilet-form.component";
+import {RelationTabDetailComponent} from "./tabs/relation/tab-detail/relation-tab-detail.component";
+import {RelationDetailComponent} from "./tabs/relation/detail/relation-detail.component";
+import {DetailWithRelationTabComponent} from "./tabs/relation/tab/detail-with-relation-tab.component";
+import {PlatformDetailComponent} from "./tabs/platform/detail/detail/platform-detail.component";
 
 @NgModule({
   declarations: [
@@ -43,8 +46,8 @@ import {ToiletFormComponent} from "./tabs/toilet/detail/form/toilet-form/toilet-
     ToiletComponent,
     ToiletDetailComponent,
     ToiletFormComponent,
-    ConnectionComponent,
     PlatformTableComponent,
+    PlatformDetailPanelComponent,
     PlatformDetailComponent,
     PlatformCompleteFormComponent,
     PlatformReducedFormComponent,
@@ -57,6 +60,9 @@ import {ToiletFormComponent} from "./tabs/toilet/detail/form/toilet-form/toilet-
     ContactPointTableComponent,
     ContactPointDetailComponent,
     ContactPointFormComponent,
+    DetailWithRelationTabComponent,
+    RelationTabDetailComponent,
+    RelationDetailComponent,
   ],
   imports: [CommonModule, FormModule, FormsModule, PrmRoutingModule, CoreModule],
 })

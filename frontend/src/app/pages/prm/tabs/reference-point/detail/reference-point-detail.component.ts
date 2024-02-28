@@ -21,7 +21,6 @@ import {
 @Component({
   selector: 'app-reference-point',
   templateUrl: './reference-point-detail.component.html',
-  styleUrls: ['./reference-point-detail.component.scss'],
 })
 export class ReferencePointDetailComponent implements OnInit, DetailFormComponent {
   isNew = false;
