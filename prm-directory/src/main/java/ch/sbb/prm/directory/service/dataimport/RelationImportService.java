@@ -59,15 +59,15 @@ public class RelationImportService extends BasePrmImportService<RelationVersion>
             List<RelationVersion> relationVersions = container.getCreateModels().stream()
                     .map(RelationVersionMapper::toEntity).toList();
 
-            List<RelationVersion> dbVersions = relationService.getAllVersions(
-                    relationVersions.iterator().next().getSloid());
+            List<RelationVersion> dbVersions = relationService.getAllVersions2(
+                    relationVersions.iterator().next().getSloid(), relationVersions.iterator().next().getReferencePointSloid());
             replaceCsvMergedVersions(dbVersions, relationVersions);
 
             for (RelationVersion  relationVersion : relationVersions) {
-                boolean contactPointExists = relationRepository.existsBySloid(relationVersion.getSloid());
+                boolean relationExists = relationRepository.existsBySloidAndReferencePointSloid(relationVersion.getSloid(), relationVersion.getReferencePointSloid());
                 ItemImportResult itemImportResult;
 
-                if (contactPointExists) {
+                if (relationExists) {
                     itemImportResult = updateRelation(relationVersion);
                 } else {
                     itemImportResult = createVersion(relationVersion);
@@ -92,7 +92,7 @@ public class RelationImportService extends BasePrmImportService<RelationVersion>
     }
 
     private void updateVersionForImportService(RelationVersion edited) {
-        List<RelationVersion> dbVersions = relationService.getAllVersions(edited.getSloid());
+        List<RelationVersion> dbVersions = relationService.getAllVersions2(edited.getSloid(), edited.getReferencePointSloid());
         RelationVersion current = ImportUtils.getCurrentPointVersion(dbVersions, edited);
         List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(current, edited,
                 dbVersions);

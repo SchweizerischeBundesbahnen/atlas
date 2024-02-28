@@ -15,6 +15,7 @@ public interface RelationRepository extends JpaRepository<RelationVersion, Long>
     JpaSpecificationExecutor<RelationVersion> {
 
   List<RelationVersion> findAllBySloid(String sloid);
+  List<RelationVersion> findBySloidAndReferencePointSloid(String sloid, String referencePointSloid);
   List<RelationVersion> findAllBySloidAndReferencePointElementType(String sloid, ReferencePointElementType referencePointType) ;
   List<RelationVersion> findAllByParentServicePointSloid(String parentServicePointSloid) ;
   List<RelationVersion> findAllByParentServicePointSloidAndReferencePointElementType(String parentServicePointSloid, ReferencePointElementType referencePointType) ;
@@ -24,6 +25,8 @@ public interface RelationRepository extends JpaRepository<RelationVersion, Long>
   @Modifying(clearAutomatically = true)
   @Query("update relation_version v set v.version = (v.version + 1) where v.sloid = :sloid")
   void incrementVersion(@Param("sloid") String sloid);
+
+  boolean existsBySloidAndReferencePointSloid(String sloid, String referencePointSloid);
 
   boolean existsBySloid(String sloid);
 }
