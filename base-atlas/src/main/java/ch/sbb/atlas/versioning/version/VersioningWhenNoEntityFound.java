@@ -20,18 +20,14 @@ public class VersioningWhenNoEntityFound implements Versioning {
 
   @Override
   public List<VersionedObject> applyVersioning(VersioningData vd) {
-    log.info("Apply versioning wenn no entity found.");
-
-    ToVersioning rightBorderVersion = vd.getObjectsToVersioning()
-                                        .get(vd.getObjectsToVersioning().size() - 1);
-    if (isVersionOverTheRightBorder(rightBorderVersion, vd.getEditedValidFrom())) {
+    log.info("Apply versioning when no entity found.");
+    if (isVersionOverTheRightBorder(vd)) {
       log.info("Match over the right border.");
-      return applyVersioningOverTheBorder(vd, rightBorderVersion);
+      return applyVersioningOverTheBorder(vd, vd.getTargetVersion());
     }
-    ToVersioning leftBorderVersion = vd.getObjectsToVersioning().get(0);
-    if (isVersionOverTheLeftBorder(leftBorderVersion, vd.getEditedValidTo())) {
+    if (isVersionOverTheLeftBorder(vd)) {
       log.info("Match over the left border.");
-      return applyVersioningOverTheBorder(vd, leftBorderVersion);
+      return applyVersioningOverTheBorder(vd, vd.getTargetVersion());
     }
     if (isThereGapBetweenVersions(vd.getObjectsToVersioning())) {
       log.info("Match a gap between two objects.");
