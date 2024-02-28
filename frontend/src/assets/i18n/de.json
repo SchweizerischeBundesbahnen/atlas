@@ -1063,7 +1063,7 @@
       "CONTACT_POINT": "Schalter",
       "TOILET": "Toilette",
       "PARKING_LOT": "Parkplatz",
-      "CONNECTION": "Verbindungen"
+      "RELATION": "Verbindungen"
     },
     "STOP_POINTS": {
       "FORM": {
@@ -1152,6 +1152,22 @@
         "ACOUSTIC_INFORMATION": "Lautsprecher (in der Regel nur Störungsinformation)",
         "TEXT_TO_SPEECH_DEPARTURES": "Text-to-Speech, nur mit Abfahrten",
         "TEXT_TO_SPEECH_COMPLETE": "Text-to-Speech, mit Abfahrten und Störungsinformationen"
+      },
+      "STEP_FREE_ACCESS_TYPES": {
+        "TO_BE_COMPLETED": "Zu vervollständigen",
+        "YES": "Ja",
+        "NO": "Nein",
+        "NOT_APPLICABLE": "Nicht anwendbar",
+        "YES_WITH_LIFT": "Ja mit Lift",
+        "YES_WITH_RAMP": "Ja mit Rampe"
+      },
+      "TACTILE_VISUAL_MARK_TYPES": {
+        "TO_BE_COMPLETED": "Zu vervollständigen",
+        "YES": "Ja",
+        "NO": "Nein",
+        "NOT_APPLICABLE": "Nicht anwendbar",
+        "PARTIALLY": "Teilweise",
+        "WITH_REMOTE_CONTROL": "Mit Fernbedienung"
       }
     },
     "INFO_BOX": {
@@ -1298,6 +1314,15 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Der Schalter wurde erfolgreich hinzugefügt.",
         "EDIT_SUCCESS": "Der Schalter wurde erfolgreich gespeichert."
+      }
+    },
+    "RELATIONS": {
+      "RELATION": "Verbindung",
+      "STEP_FREE_ACCESS": "Stufenfreier Zugang",
+      "TACTIL_VISUAL_MARKS": "Taktil-visuelle Markierungen",
+      "CONTRASTING_AREAS": "Kontrastreiche Markierungen",
+      "NOTIFICATION": {
+        "EDIT_SUCCESS": "Die Verbindung wurde erfolgreich gespeichert."
       }
     }
   }
