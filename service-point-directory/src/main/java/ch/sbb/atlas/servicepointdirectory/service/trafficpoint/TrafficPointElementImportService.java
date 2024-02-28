@@ -6,8 +6,6 @@ import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointCsvModelContai
 import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointElementCsvModel;
 import ch.sbb.atlas.imports.util.DidokCsvMapper;
 import ch.sbb.atlas.imports.util.ImportUtils;
-import ch.sbb.atlas.servicepoint.Country;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.atlas.servicepointdirectory.exception.HeightNotCalculatableException;
@@ -21,7 +19,6 @@ import ch.sbb.atlas.versioning.service.VersionableService;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -131,7 +128,6 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
 
   private ItemImportResult updateTrafficPointVersion(TrafficPointElementVersion trafficPointElementVersion) {
     List<Exception> warnings = new ArrayList<>();
-    setTraPoParentSloidIfNullForUicCode11or12or13or14(trafficPointElementVersion, false);
     getHeightForTrafficPoint(trafficPointElementVersion, warnings);
     try {
       updateTrafficPointElementVersionImport(trafficPointElementVersion);
@@ -151,7 +147,6 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
 
   private ItemImportResult saveTrafficPointVersion(TrafficPointElementVersion trafficPointElementVersion) {
     List<Exception> warnings = new ArrayList<>();
-    setTraPoParentSloidIfNullForUicCode11or12or13or14(trafficPointElementVersion, true);
     getHeightForTrafficPoint(trafficPointElementVersion, warnings);
     try {
       trafficPointElementService.createThroughImport(trafficPointElementVersion);
@@ -161,21 +156,6 @@ public class TrafficPointElementImportService extends BaseImportServicePointDire
     }
 
     return buildWarningMessage(trafficPointElementVersion, warnings);
-  }
-
-  private void setTraPoParentSloidIfNullForUicCode11or12or13or14(TrafficPointElementVersion trafficPointElementVersion, boolean isInitialCreate) {
-    if (trafficPointElementVersion.getParentSloid() == null
-        && Country.SLOID_COMPATIBLE_COUNTRY_CODES.contains(trafficPointElementVersion.getServicePointNumber().getCountry().getUicCode())) {
-      trafficPointElementVersion.setParentSloid(ServicePointNumber.calculateSloid(trafficPointElementVersion.getServicePointNumber()));
-      log.info("During the traffic point import, a traffic point with the number {} and country uic code {} was identified with "
-              + "parent SLOID null and parent SLOID is set to {}", trafficPointElementVersion.getServicePointNumber().getValue(),
-          trafficPointElementVersion.getServicePointNumber().getCountry().getUicCode(), trafficPointElementVersion.getParentSloid());
-      if (isInitialCreate) {
-        trafficPointElementVersion.setEditionDate(LocalDateTime.now());
-        log.info("During the traffic point import, a traffic point parent SLOID is set and editionDate is modified to {}.",
-            trafficPointElementVersion.getEditionDate());
-      }
-    }
   }
 
   private void getHeightForTrafficPoint(TrafficPointElementVersion trafficPointElementVersion, List<Exception> warnings) {
