@@ -34,10 +34,17 @@ public class ServicePointNumberAlreadyExistsException extends AtlasException {
         .message("Service Point with number {0} is already existing.")
         .displayInfo(DisplayInfo.builder()
             .code("SEPODI.NUMBER_ALREADY_USED")
-            .with("number", servicePointNumber.getNumber().toString())
+            .with("number", getDisplayNumber())
             .build())
         .build());
     return errorDetails;
+  }
+
+  private String getDisplayNumber() {
+    String numberString = servicePointNumber.getNumber().toString();
+    String country = numberString.substring(0, 2);
+    String id = numberString.substring(2);
+    return String.join(" ", country, id);
   }
 
 }
