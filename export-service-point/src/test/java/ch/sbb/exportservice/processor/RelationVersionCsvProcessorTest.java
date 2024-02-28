@@ -38,7 +38,7 @@ class RelationVersionCsvProcessorTest {
         .build();
 
     RelationVersionCsvModel expected = RelationVersionCsvModel.builder()
-        .sloid("ch:1:sloid:112:23")
+        .elementSloid("ch:1:sloid:112:23")
         .parentSloidServicePoint("ch:1:sloid:112")
         .parentNumberServicePoint(8500112)
         .tactileVisualMarks("TO_BE_COMPLETED")

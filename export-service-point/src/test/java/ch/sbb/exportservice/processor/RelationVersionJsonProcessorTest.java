@@ -37,7 +37,7 @@ public class RelationVersionJsonProcessorTest {
 
     ReadRelationVersionModel expected = ReadRelationVersionModel.builder()
         .id(1L)
-        .sloid("ch:1:sloid:112:23")
+        .elementSloid("ch:1:sloid:112:23")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .parentServicePointSloid("ch:1:sloid:112")
         .tactileVisualMarks(TactileVisualAttributeType.TO_BE_COMPLETED)

@@ -13,7 +13,7 @@ public class RelationVersionJsonProcessor extends BaseServicePointProcessor impl
   public ReadRelationVersionModel process(RelationVersion version) {
     return ReadRelationVersionModel.builder()
         .id(version.getId())
-        .sloid(version.getSloid())
+        .elementSloid(version.getSloid())
         .number(version.getParentServicePointNumber())
         .parentServicePointSloid(version.getParentServicePointSloid())
         .referencePointSloid(version.getReferencePointSloid())
