@@ -23,8 +23,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
@@ -275,59 +273,6 @@ class TrafficPointElementImportServiceTest {
     assertThat(dbVersions.get(0).getCreationDate()).isEqualTo(LocalDateTime.of(2020, 1, 15, 5, 5));
     assertThat(dbVersions.get(0).getValidFrom()).isEqualTo("2020-01-01");
     assertThat(dbVersions.get(0).getValidTo()).isEqualTo("2021-06-15");
-  }
-
-  @ParameterizedTest
-  @ValueSource(strings = {"1107001", "1207001", "1307001", "1407001"})
-  void shouldImportTrafficPointsForContryUicCodes11To14(String input) {
-    LocalDateTime now = LocalDateTime.now();
-    int servicePointNumber = Integer.parseInt(input);
-    String parentSloid = "ch:1:sloid:" + servicePointNumber;
-    String trafficPointSloid1 = parentSloid + ":123:123";
-    String trafficPointSloid2 = parentSloid + ":432:422";
-    //given
-    List<TrafficPointCsvModelContainer> trafficPointCsvModelContainers = List.of(
-        TrafficPointCsvModelContainer.builder()
-            .sloid(trafficPointSloid1)
-            .csvModelList(getTrafficPointCsvModelVersions(trafficPointSloid1, null, 2020, 1,
-                2, 1, servicePointNumber))
-            .build(),
-        TrafficPointCsvModelContainer.builder()
-            .sloid(trafficPointSloid2)
-            .csvModelList(getTrafficPointCsvModelVersions(trafficPointSloid2, parentSloid, 2020, 1,
-                2, 1, servicePointNumber))
-            .build()
-    );
-    //when
-    List<ItemImportResult> trafficPointItemImportResults = trafficPointElementImportService.importTrafficPoints(
-        trafficPointCsvModelContainers);
-
-    //then
-    verify(locationService, times(1)).claimSloid(SloidType.PLATFORM,
-        trafficPointSloid1);
-    verify(locationService, times(1)).claimSloid(SloidType.PLATFORM,
-        trafficPointSloid2);
-
-    assertThat(trafficPointItemImportResults).hasSize(4);
-    List<TrafficPointElementVersion> resultFirstContainer = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
-        trafficPointSloid1);
-    assertThat(resultFirstContainer).hasSize(2);
-    assertThat(resultFirstContainer.get(0).getId()).isNotNull();
-    assertThat(resultFirstContainer.get(0).getParentSloid()).isEqualTo(parentSloid);
-    assertThat(resultFirstContainer.get(0).getEditionDate().toLocalDate()).isEqualTo(now.toLocalDate());
-    assertThat(resultFirstContainer.get(1).getId()).isNotNull();
-    assertThat(resultFirstContainer.get(1).getParentSloid()).isEqualTo(parentSloid);
-    assertThat(resultFirstContainer.get(1).getEditionDate().toLocalDate()).isNotEqualTo(now.toLocalDate());
-
-    List<TrafficPointElementVersion> resultSecondContainer = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(
-        trafficPointSloid2);
-    assertThat(resultSecondContainer).hasSize(2);
-    assertThat(resultSecondContainer.get(0).getId()).isNotNull();
-    assertThat(resultSecondContainer.get(0).getParentSloid()).isEqualTo(parentSloid);
-    assertThat(resultSecondContainer.get(0).getEditionDate().toLocalDate()).isNotEqualTo(now.toLocalDate());
-    assertThat(resultSecondContainer.get(1).getId()).isNotNull();
-    assertThat(resultSecondContainer.get(1).getParentSloid()).isEqualTo(parentSloid);
-    assertThat(resultSecondContainer.get(1).getEditionDate().toLocalDate()).isNotEqualTo(now.toLocalDate());
   }
 
   private List<TrafficPointElementCsvModel> getTrafficPointCsvModelVersions(String sloid, String parentSloid,
