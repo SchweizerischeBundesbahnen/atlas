@@ -27,6 +27,7 @@ public abstract class BasePrmCsvModel implements ImportDataModifier {
 
   public abstract Integer getStatus();
 
+  @Override
   public void setLastModifiedToNow() {
     modifiedAt = LocalDateTime.now();
   }

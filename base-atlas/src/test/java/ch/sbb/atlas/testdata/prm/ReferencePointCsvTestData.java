@@ -2,11 +2,10 @@ package ch.sbb.atlas.testdata.prm;
 
 import ch.sbb.atlas.imports.prm.referencepoint.ReferencePointCsvModel;
 import ch.sbb.atlas.imports.prm.referencepoint.ReferencePointCsvModelContainer;
-import lombok.experimental.UtilityClass;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ReferencePointCsvTestData {
@@ -32,6 +31,23 @@ public class ReferencePointCsvTestData {
                 .validTo(LocalDate.of(2025, 12, 31))
                 .createdAt(LocalDateTime.now())
                 .modifiedAt(LocalDateTime.now())
+                .build();
+    }
+
+    public static ReferencePointCsvModel getCsvModel1() {
+        return ReferencePointCsvModel.builder()
+                .sloid("ch:1:sloid:5467:270449")
+                .dsSloid("ch:1:sloid:5467")
+                .didokCode(85054676)
+                .status(1)
+                .description("")
+                .export(1)
+                .infos("")
+                .rpType(0)
+                .validFrom(LocalDate.of(2023, 8, 4))
+                .validTo(LocalDate.of(2023, 9, 14))
+                .createdAt(LocalDateTime.of(2023, 8, 4, 9, 27))
+                .modifiedAt(LocalDateTime.of(2023, 9, 18, 12, 48))
                 .build();
     }
 
