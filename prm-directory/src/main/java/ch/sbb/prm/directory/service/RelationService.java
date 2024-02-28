@@ -65,6 +65,10 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
     return relationRepository.findAllBySloid(sloid);
   }
 
+  public List<RelationVersion> getAllVersions2(String sloid, String referencePointSloid) {
+    return relationRepository.findBySloidAndReferencePointSloid(sloid, referencePointSloid);
+  }
+
   @Override
   protected void applyVersioning(List<VersionedObject> versionedObjects) {
     versionableService.applyVersioning(RelationVersion.class, versionedObjects, this::save,
