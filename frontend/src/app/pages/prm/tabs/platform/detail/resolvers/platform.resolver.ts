@@ -12,7 +12,7 @@ export class PrmPlatformResolver {
   ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadPlatformVersion>> {
-    const sloidParameter = route.paramMap.get('platformSloid') || '';
+    const sloidParameter = route.paramMap.get('sloid') || '';
     return this.personWithReducedMobilityService.getPlatformVersions(sloidParameter).pipe(
       catchError(() =>
         this.router
