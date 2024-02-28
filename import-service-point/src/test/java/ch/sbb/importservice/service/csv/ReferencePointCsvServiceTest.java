@@ -1,19 +1,19 @@
 package ch.sbb.importservice.service.csv;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.MockitoAnnotations.openMocks;
+
 import ch.sbb.atlas.imports.prm.referencepoint.ReferencePointCsvModel;
 import ch.sbb.atlas.imports.prm.referencepoint.ReferencePointCsvModelContainer;
 import ch.sbb.atlas.testdata.prm.ReferencePointCsvTestData;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.MockitoAnnotations.openMocks;
 
 class ReferencePointCsvServiceTest {
 
@@ -93,6 +93,30 @@ class ReferencePointCsvServiceTest {
         assertThat(result).hasSize(1);
         assertThat(result.get(0).getCsvModels()).hasSize(1);
         assertThat(result.get(0).getCsvModels().get(0).getStatus()).isEqualTo(1);
+    }
+
+    @Test
+    void shouldSetReplaceDataForReferencePoints() {
+        // given
+        ReferencePointCsvModel referencePointCsvModel1 = ReferencePointCsvTestData.getCsvModel1();
+        ReferencePointCsvModel referencePointCsvModel2 = ReferencePointCsvTestData.getCsvModel1();
+        referencePointCsvModel2.setValidFrom(LocalDate.of(2023, 9, 15));
+        referencePointCsvModel2.setValidTo(LocalDate.of(9999, 12, 31));
+//        referencePointCsvModel2.setValidTo(LocalDate.of(2099, 12, 31));
+        referencePointCsvModel2.setCreatedAt(LocalDateTime.of(2023, 9, 18, 12, 48));
+        referencePointCsvModel2.setModifiedAt(LocalDateTime.of(2023, 9, 18, 12, 48));
+        List<ReferencePointCsvModel> csvModels = List.of(referencePointCsvModel1, referencePointCsvModel2);
+        LocalDate now = LocalDate.now();
+
+        // when
+        List<ReferencePointCsvModelContainer> result = referencePointCsvService.mapToReferencePointCsvModelContainers(csvModels);
+
+        //then
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCsvModels()).hasSize(1);
+        assertThat(result.get(0).getCsvModels().get(0).getValidFrom()).isEqualTo(referencePointCsvModel1.getValidFrom());
+        assertThat(result.get(0).getCsvModels().get(0).getValidTo()).isEqualTo(LocalDate.of(9999, 12, 31));
+        assertThat(result.get(0).getCsvModels().get(0).getModifiedAt().toLocalDate()).isEqualTo(now);
     }
 
 }
