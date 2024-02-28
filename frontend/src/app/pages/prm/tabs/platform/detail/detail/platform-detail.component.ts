@@ -1,27 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
+import {DetailFormComponent} from "../../../../../../core/leave-guard/leave-dirty-form-guard.service";
 import {
-  CompletePlatformFormGroup,
-  PlatformFormGroupBuilder,
-  ReducedPlatformFormGroup,
-} from './form/platform-form-group';
-import { Observable, of, take } from 'rxjs';
-import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
-import { DateRange } from '../../../../../core/versioning/date-range';
-import { FormGroup } from '@angular/forms';
-import { NotificationService } from '../../../../../core/notification/notification.service';
-import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import { AuthService } from '../../../../../core/auth/auth.service';
-import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-helper';
-import {
-  PersonWithReducedMobilityService,
-  PlatformVersion,
+  PersonWithReducedMobilityService, PlatformVersion,
   ReadPlatformVersion,
   ReadServicePointVersion,
   ReadStopPointVersion,
-  ReadTrafficPointElementVersion,
-} from '../../../../../api';
+  ReadTrafficPointElementVersion
+} from "../../../../../../api";
+import {FormGroup} from "@angular/forms";
+import {NotificationService} from "../../../../../../core/notification/notification.service";
+import {DialogService} from "../../../../../../core/components/dialog/dialog.service";
+import {AuthService} from "../../../../../../core/auth/auth.service";
+import {PrmMeanOfTransportHelper} from "../../../../util/prm-mean-of-transport-helper";
+import {VersionsHandlingService} from "../../../../../../core/versioning/versions-handling.service";
+import {CompletePlatformFormGroup, PlatformFormGroupBuilder, ReducedPlatformFormGroup} from "../form/platform-form-group";
+import {Observable, of, take} from "rxjs";
+import {DateRange} from "../../../../../../core/versioning/date-range";
+import {Pages} from "../../../../../pages";
+import {PRM_DETAIL_TAB_LINK} from "../../../relation/tab/detail-with-relation-tab.component";
 
 @Component({
   selector: 'app-platforms',
@@ -63,9 +60,9 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent {
 
   ngOnInit(): void {
     this.initSePoDiData();
-    this.stopPoint = this.route.snapshot.data.stopPoint;
+    this.stopPoint = this.route.snapshot.parent!.data.stopPoint;
 
-    this.platform = this.route.snapshot.data.platform;
+    this.platform = this.route.snapshot.parent!.data.platform;
     this.reduced = PrmMeanOfTransportHelper.isReduced(this.stopPoint[0].meansOfTransport);
 
     this.isNew = this.platform.length === 0;
@@ -99,14 +96,14 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent {
   }
 
   private initSePoDiData() {
-    const servicePointVersions: ReadServicePointVersion[] = this.route.snapshot.data.servicePoint;
+    const servicePointVersions: ReadServicePointVersion[] = this.route.snapshot.parent!.data.servicePoint;
     this.servicePoint =
       VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
     this.businessOrganisations = [
       ...new Set(servicePointVersions.map((value) => value.businessOrganisation)),
     ];
     this.trafficPoint = VersionsHandlingService.determineDefaultVersionByValidity(
-      this.route.snapshot.data.trafficPoint,
+      this.route.snapshot.parent!.data.trafficPoint,
     );
   }
 
@@ -124,7 +121,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent {
   }
 
   back() {
-    this.router.navigate(['..'], { relativeTo: this.route }).then();
+    this.router.navigate([Pages.PRM.path, Pages.STOP_POINTS.path, this.stopPoint[0].sloid, Pages.PLATFORMS.path]).then();
   }
 
   toggleEdit() {
@@ -169,9 +166,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent {
 
   reloadPage() {
     this.router
-      .navigate(['..', this.trafficPoint.sloid], {
-        relativeTo: this.route,
-      })
+      .navigate([Pages.PRM.path, Pages.STOP_POINTS.path, this.stopPoint[0].sloid,Pages.PLATFORMS.path, this.trafficPoint.sloid, PRM_DETAIL_TAB_LINK])
       .then(() => this.ngOnInit());
   }
 
@@ -182,7 +177,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent {
         if (confirmed) {
           if (this.isNew) {
             this.form.reset();
-            this.router.navigate(['..'], { relativeTo: this.route }).then();
+            this.back();
           } else {
             this.form.disable();
           }
