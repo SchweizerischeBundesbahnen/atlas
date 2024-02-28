@@ -181,14 +181,12 @@ public final class VersioningHelper {
     return vd.getObjectsToVersioning().size() == 1 && !arePropertiesEdited(vd);
   }
 
-  public static boolean isVersionOverTheRightBorder(ToVersioning rightBorderVersion,
-      LocalDate editedValidFrom) {
-    return editedValidFrom.isAfter(rightBorderVersion.getValidTo());
+  public static boolean isVersionOverTheRightBorder(VersioningData vd) {
+    return vd.getEditedValidFrom().isAfter(vd.getTargetVersion().getValidTo());
   }
 
-  public static boolean isVersionOverTheLeftBorder(ToVersioning leftBorderVersion,
-      LocalDate editedValidTo) {
-    return editedValidTo.isBefore(leftBorderVersion.getValidFrom());
+  public static boolean isVersionOverTheLeftBorder(VersioningData vd) {
+    return vd.getEditedValidTo().isBefore(vd.getTargetVersion().getValidFrom());
   }
 
   public static boolean isVersionOverTheLeftAndTheRightBorder(VersioningData vd) {
