@@ -55,6 +55,14 @@ public class VersioningData {
     throw new VersioningException("Found more or less than one object to versioning.");
   }
 
+  public ToVersioning getTargetVersion() {
+    return this.getObjectsToVersioning().stream().filter(
+            toVersioning -> toVersioning.getValidTo().equals(this.getCurrentVersion().getValidTo())
+                && toVersioning.getValidFrom().equals(this.getCurrentVersion().getValidFrom()))
+        .findFirst()
+        .orElseThrow(VersioningException::new);
+  };
+
   private void populateValidFromAndValidTo(Versionable editedVersion) {
     this.editedValidFrom = editedVersion.getValidFrom();
     if (this.editedValidFrom == null) {
