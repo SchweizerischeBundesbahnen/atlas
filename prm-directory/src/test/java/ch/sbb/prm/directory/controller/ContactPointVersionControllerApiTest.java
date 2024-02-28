@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
@@ -34,6 +35,8 @@ import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.PrmLocationService;
 import ch.sbb.prm.directory.service.RelationService;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
@@ -90,6 +93,27 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
     contactPointRepository.save(ContactPointTestData.getContactPointVersion());
     //when & then
     mvc.perform(get("/v1/contact-points"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
+  @Test
+  void shouldGetContactPointVersionsWithFilter() throws Exception {
+    //given
+    ContactPointVersion version = contactPointRepository.save(ContactPointTestData.getContactPointVersion());
+
+    //when & then
+    mvc.perform(get("/v1/contact-points" +
+            "?numbers=12345" +
+            "&sloids=ch:1:sloid:12345:1" +
+            "&fromDate=" + version.getValidFrom() +
+            "&toDate=" + version.getValidTo() +
+            "&validOn=" + LocalDate.of(2000, 6, 28) +
+            "&createdAfter=" + version.getCreationDate().minusSeconds(1)
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)) +
+            "&modifiedAfter=" + version.getEditionDate()
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN))
+        ))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.objects", hasSize(1)));
   }

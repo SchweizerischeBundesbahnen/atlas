@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
@@ -33,6 +34,8 @@ import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.service.PrmLocationService;
 import ch.sbb.prm.directory.service.RelationService;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
@@ -91,6 +94,93 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/parking-lots"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
+  @Test
+  void shouldGetParkingLotVersionsWithFilter() throws Exception {
+    //given
+    ParkingLotVersion version = parkingLotRepository.save(ParkingLotTestData.getParkingLotVersion());
+
+    //when & then
+    mvc.perform(get("/v1/parking-lots" +
+            "?numbers=12345" +
+            "&sloids=ch:1:sloid:12345:1" +
+            "&fromDate=" + version.getValidFrom() +
+            "&toDate=" + version.getValidTo() +
+            "&validOn=" + LocalDate.of(2000, 6, 28) +
+            "&createdAfter=" + version.getCreationDate().minusSeconds(1)
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)) +
+            "&modifiedAfter=" + version.getEditionDate()
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN))
+        ))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
+  @Test
+  void shouldGetParkingLotVersionsWithArraySloidsFilter() throws Exception {
+    //given
+    ParkingLotVersion version = parkingLotRepository.save(ParkingLotTestData.getParkingLotVersion());
+
+    //when & then
+    mvc.perform(get("/v1/parking-lots" +
+            "?numbers=12345" +
+            "&sloids=ch:1:sloid:12345:1&sloids=ch:1:sloid:54321" +
+            "&fromDate=" + version.getValidFrom() +
+            "&toDate=" + version.getValidTo() +
+            "&validOn=" + LocalDate.of(2000, 6, 28) +
+            "&createdAfter=" + version.getCreationDate().minusSeconds(1)
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)) +
+            "&modifiedAfter=" + version.getEditionDate()
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN))
+        ))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
+  @Test
+  void shouldGetParkingLotVersionsBySloidFilter() throws Exception {
+    //given
+    parkingLotRepository.save(ParkingLotTestData.getParkingLotVersion());
+
+    //when & then
+    mvc.perform(get("/v1/parking-lots?sloids=ch:1:sloid:12345:1"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+
+    mvc.perform(get("/v1/parking-lots?sloids=ch:1:sloid:12345:3"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(0)));
+  }
+
+  @Test
+  void shouldGetParkingLotVersionsByNumberFilter() throws Exception {
+    //given
+    parkingLotRepository.save(ParkingLotTestData.getParkingLotVersion());
+
+    //when & then
+    mvc.perform(get("/v1/parking-lots?servicePointNumbers=1234567"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+
+    mvc.perform(get("/v1/parking-lots?servicePointNumbers=1334567"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(0)));
+  }
+
+  @Test
+  void shouldGetParkingLotVersionsByParentSloidFilter() throws Exception {
+    //given
+    parkingLotRepository.save(ParkingLotTestData.getParkingLotVersion());
+
+    //when & then
+    mvc.perform(get("/v1/parking-lots?parentServicePointSloids=ch:1:sloid:12345"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+
+    mvc.perform(get("/v1/parking-lots?parentServicePointSloids=ch:1:sloid:1234"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(0)));
   }
 
   @Test
