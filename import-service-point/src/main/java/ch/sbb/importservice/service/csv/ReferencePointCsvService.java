@@ -53,8 +53,16 @@ public class ReferencePointCsvService extends PrmCsvService<ReferencePointCsvMod
         Map<String, List<ReferencePointCsvModel>> groupedReferencePoints = filterForActive(referencePointCsvModels).stream()
                 .collect(Collectors.groupingBy(ReferencePointCsvModel::getSloid));
         List<ReferencePointCsvModelContainer> result = new ArrayList<>(
-                groupedReferencePoints.entrySet().stream().map(toContainer()).toList());
+                groupedReferencePoints.entrySet().stream().map(toContainer()).toList()); // here is result ok and after merge
+        // not any more
         mergeReferencePoints(result);
+//        result.forEach(res -> {
+//            try {
+//                replaceData(res.getCsvModels());
+//            } catch (IllegalAccessException e) {
+//                throw new CsvException(e);
+//            }
+//        });
         return result;
     }
 
