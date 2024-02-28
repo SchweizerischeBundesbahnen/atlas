@@ -87,7 +87,10 @@ public abstract class CsvService<T extends ImportDataModifier> {
       List<T> mappedCsvModels = mapObjects(mappingIterator);
       replaceData(mappedCsvModels);
       return mappedCsvModels;
-    } catch (IOException | IllegalAccessException e) {
+    } catch (IOException
+             | IllegalAccessException
+                   e
+    ) {
       throw new CsvException(e);
     }
   }
