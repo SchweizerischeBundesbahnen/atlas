@@ -1,5 +1,6 @@
 package ch.sbb.importservice.service.csv;
 
+import static ch.sbb.atlas.imports.util.ImportUtils.replaceNewLinesAndReplaceToDateWithHighestDate;
 import static ch.sbb.importservice.service.csv.CsvFileNameModel.SERVICEPOINT_DIDOK_DIR_NAME;
 
 import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
@@ -72,6 +73,8 @@ public class LoadingPointCsvService extends CsvService<LoadingPointCsvModel> {
         loadingPointCsvModelContainers.add(loadingPointCsvModelContainer);
       });
     });
+    loadingPointCsvModelContainers.forEach(container ->
+        replaceNewLinesAndReplaceToDateWithHighestDate(container.getCsvModelList()));
     logInfo(loadingPointCsvModelContainers, loadingPointCsvModels);
     return loadingPointCsvModelContainers;
   }
