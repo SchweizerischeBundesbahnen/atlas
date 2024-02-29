@@ -57,11 +57,10 @@ public class VersioningData {
 
   public ToVersioning getTargetVersion() {
     return this.getObjectsToVersioning().stream().filter(
-            toVersioning -> toVersioning.getValidTo().equals(this.getCurrentVersion().getValidTo())
-                && toVersioning.getValidFrom().equals(this.getCurrentVersion().getValidFrom()))
-        .findFirst()
-        .orElseThrow(VersioningException::new);
-  };
+        toVersioning -> toVersioning.getValidTo().equals(this.getCurrentVersion().getValidTo())
+            && toVersioning.getValidFrom().equals(this.getCurrentVersion().getValidFrom())).findFirst()
+        .orElse(null);
+  }
 
   private void populateValidFromAndValidTo(Versionable editedVersion) {
     this.editedValidFrom = editedVersion.getValidFrom();
