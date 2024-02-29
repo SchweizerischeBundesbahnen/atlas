@@ -1049,7 +1049,7 @@
     "BACK_TO_MAP": "Fermer",
     "AUTOMATIC_SLOID": "Elle est indiquée automatiquement.",
     "SLOID_ALREADY_USED": "{{sloid}} est déjà pris.",
-    "NUMBER_ALREADY_USED": "Le numéro de service {{number}} est déjà pris."
+    "NUMBER_ALREADY_USED": "Le code DiDok {{number}} est déjà pris."
   },
   "PRM": {
     "TABS": {
