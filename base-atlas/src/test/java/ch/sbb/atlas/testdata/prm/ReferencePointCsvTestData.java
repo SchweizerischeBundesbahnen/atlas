@@ -51,4 +51,38 @@ public class ReferencePointCsvTestData {
                 .build();
     }
 
+    public static ReferencePointCsvModel getCsvModel2() {
+        return ReferencePointCsvModel.builder()
+                .sloid("ch:1:sloid:5468:270449")
+                .dsSloid("ch:1:sloid:5468")
+                .didokCode(85054686)
+                .status(1)
+                .description("")
+                .export(1)
+                .infos("")
+                .rpType(0)
+                .validFrom(LocalDate.of(2023, 8, 4))
+                .validTo(LocalDate.of(2099, 12, 31))
+                .createdAt(LocalDateTime.of(2023, 8, 4, 9, 27))
+                .modifiedAt(LocalDateTime.of(2023, 9, 18, 12, 48))
+                .build();
+    }
+
+    public static ReferencePointCsvModel getCsvModel3() {
+        return ReferencePointCsvModel.builder()
+                .sloid("ch:1:sloid:5469:270449")
+                .dsSloid("ch:1:sloid:5469")
+                .didokCode(85054696)
+                .status(1)
+                .description("")
+                .export(1)
+                .infos("")
+                .rpType(0)
+                .validFrom(LocalDate.of(2023, 8, 4))
+                .validTo(LocalDate.of(2099, 12, 31))
+                .createdAt(LocalDateTime.of(2023, 8, 4, 9, 27))
+                .modifiedAt(LocalDateTime.of(2023, 9, 18, 12, 48))
+                .build();
+    }
+
 }
