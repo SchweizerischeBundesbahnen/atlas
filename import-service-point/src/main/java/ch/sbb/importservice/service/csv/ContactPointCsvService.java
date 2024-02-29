@@ -94,7 +94,7 @@ public class ContactPointCsvService extends PrmCsvService<ContactPointCsvModel>{
         List<String> mergedSloids = new ArrayList<>();
         csvModelContainers.forEach(
                 container -> {
-                    PrmCsvMergeResult<ContactPointCsvModel> prmCsvMergeResult = mergeEqualVersionsAndReplaceDataAfterMerge(container.getCsvModels());
+                    PrmCsvMergeResult<ContactPointCsvModel> prmCsvMergeResult = mergeEqualVersions(container.getCsvModels());
                     container.setCsvModels(prmCsvMergeResult.getVersions());
                     mergedSloids.addAll(prmCsvMergeResult.getMergedSloids());
                 });
