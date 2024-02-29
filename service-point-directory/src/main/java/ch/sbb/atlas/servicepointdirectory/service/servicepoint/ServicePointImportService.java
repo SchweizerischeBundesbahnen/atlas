@@ -6,8 +6,10 @@ import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.imports.util.DidokCsvMapper;
 import ch.sbb.atlas.imports.util.ImportUtils;
+import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException;
+import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -15,7 +17,6 @@ import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoloca
 import ch.sbb.atlas.servicepointdirectory.exception.HeightNotCalculatableException;
 import ch.sbb.atlas.servicepointdirectory.service.BaseImportServicePointDirectoryService;
 import ch.sbb.atlas.servicepointdirectory.service.BasePointUtility;
-import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoAdminHeightResponse;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
@@ -164,6 +165,7 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
     List<Exception> warnings = new ArrayList<>();
     getHeightForServicePointImport(servicePointVersion, warnings);
     try {
+      setServicePointSloidIfNullForUicCode11or12or13or14(servicePointVersion, true);
       locationService.claimServicePointSloid(servicePointVersion.getSloid());
       if (servicePointVersion.getStatus() != Status.VALIDATED) {
         servicePointVersion.setEditionDate(LocalDateTime.now());
@@ -176,12 +178,28 @@ public class ServicePointImportService extends BaseImportServicePointDirectorySe
     return buildSuccessMessageBasedOnWarnings(servicePointVersion, warnings);
   }
 
+  private void setServicePointSloidIfNullForUicCode11or12or13or14(ServicePointVersion servicePointVersion, boolean isInitialCreate) {
+    if (servicePointVersion.getSloid() == null
+        && Country.SLOID_COMPATIBLE_COUNTRY_CODES.contains(servicePointVersion.getCountry().getUicCode())) {
+      servicePointVersion.setSloid(ServicePointNumber.calculateSloid(servicePointVersion.getNumber()));
+      log.info("During the service point import, a service point with the number {} and country uic code {} was identified with "
+          + "SLOID null and SLOID is set to {}", servicePointVersion.getNumber().getValue(),
+          servicePointVersion.getCountry().getUicCode(), servicePointVersion.getSloid());
+      if (isInitialCreate) {
+         servicePointVersion.setEditionDate(LocalDateTime.now());
+        log.info("During the service point import, a service point SLOID is set and editionDate is modified to {}.",
+            servicePointVersion.getEditionDate());
+      }
+    }
+  }
+
   private ItemImportResult updateServicePointVersion(ServicePointVersion servicePointVersion) {
     List<Exception> warnings = new ArrayList<>();
     getHeightForServicePointImport(servicePointVersion, warnings);
 
     List<ServicePointVersion> dbVersions = servicePointService.findAllByNumberOrderByValidFrom(servicePointVersion.getNumber());
     try {
+      setServicePointSloidIfNullForUicCode11or12or13or14(servicePointVersion, false);
       updateServicePointVersionForImportService(servicePointVersion, dbVersions);
     } catch (VersioningNoChangesException exception) {
       ServicePointVersion current = ImportUtils.getCurrentPointVersion(dbVersions, servicePointVersion);

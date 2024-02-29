@@ -4,7 +4,11 @@ import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @Data
@@ -49,6 +53,5 @@ public class TrafficPointElementCsvModel extends BaseDidokCsvModel {
   public int getServicePointNumber(){
     return ServicePointNumber.removeCheckDigit(servicePointNumber);
   }
-
 
 }
