@@ -90,7 +90,7 @@ public class ParkingLotCsvService extends PrmCsvService<ParkingLotCsvModel> {
         List<String> mergedSloids = new ArrayList<>();
         csvModelContainers.forEach(
                 container -> {
-                    PrmCsvMergeResult<ParkingLotCsvModel> prmCsvMergeResult = mergeEqualVersions(container.getCsvModels());
+                    PrmCsvMergeResult<ParkingLotCsvModel> prmCsvMergeResult = mergeEqualVersionsAndReplaceDataAfterMerge(container.getCsvModels());
                     container.setCsvModels(prmCsvMergeResult.getVersions());
                     mergedSloids.addAll(prmCsvMergeResult.getMergedSloids());
                 });
