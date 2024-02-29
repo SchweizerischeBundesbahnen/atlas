@@ -1,20 +1,19 @@
 package ch.sbb.atlas.servicepointdirectory.migration.servicepoints;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.model.DoubleAssertion;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.model.ServicePointStatus;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointCsvToEntityMapper;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-
 import java.math.BigDecimal;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @param isFullExport ActualDate and FutureTimetable does not export SLOID in Didok
