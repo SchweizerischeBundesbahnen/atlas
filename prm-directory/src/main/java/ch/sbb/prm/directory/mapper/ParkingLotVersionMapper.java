@@ -15,6 +15,7 @@ public class ParkingLotVersionMapper {
   public static ReadParkingLotVersionModel toModel(ParkingLotVersion version) {
     return ReadParkingLotVersionModel.builder()
         .id(version.getId())
+        .status(version.getStatus())
         .sloid(version.getSloid())
         .parentServicePointSloid(version.getParentServicePointSloid())
         .number(version.getNumber())
