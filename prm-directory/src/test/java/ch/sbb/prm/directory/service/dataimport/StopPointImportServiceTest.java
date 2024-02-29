@@ -6,6 +6,7 @@ import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModel;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.enumeration.ItemImportResponseStatus;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -137,6 +138,7 @@ class StopPointImportServiceTest {
 
     StopPointVersion dbVersion1 = StopPointVersion.builder()
         .sloid("ch:1:sloid:4761")
+        .status(Status.VALIDATED)
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(8504761))
         .freeText("[Shuttle][Shuttle]")
         .validFrom(LocalDate.of(1900,1,1))
@@ -149,6 +151,7 @@ class StopPointImportServiceTest {
         .build();
     StopPointVersion dbVersion2 = StopPointVersion.builder()
         .sloid("ch:1:sloid:4761")
+        .status(Status.VALIDATED)
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(8504761))
         .freeText("[Shuttle]")
         .validFrom(LocalDate.of(2023,8,24))

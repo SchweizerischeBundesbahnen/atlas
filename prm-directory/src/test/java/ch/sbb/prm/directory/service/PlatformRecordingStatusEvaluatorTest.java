@@ -8,6 +8,7 @@ import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.entity.PlatformVersion;
+import ch.sbb.prm.directory.util.PlatformRecordingStatusEvaluator;
 import org.junit.jupiter.api.Test;
 
 class PlatformRecordingStatusEvaluatorTest {
