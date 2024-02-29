@@ -5,6 +5,7 @@ import static org.mockito.MockitoAnnotations.openMocks;
 
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
 import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModelContainer;
+import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
 import java.time.LocalDate;
@@ -90,7 +91,7 @@ class LoadingPointCsvServiceTest {
             .build(),
         LoadingPointCsvModel.builder()
             .validFrom(LocalDate.of(2022, 1, 1))
-            .validTo(LocalDate.of(2099, 12, 31))
+            .validTo(ImportUtils.DIDOK_HIGEST_DATE)
             .height(500.88)
             .servicePointNumber(8507000)
             .editedAt(LocalDateTime.of(2020, 1, 1, 15, 15))
@@ -118,7 +119,7 @@ class LoadingPointCsvServiceTest {
     assertThat(result.get(0).getCsvModelList().get(0).getEditedAt()).isEqualTo(LocalDateTime.of(2020, 1, 1, 15, 15));
     assertThat(result.get(1).getCsvModelList()).hasSize(1);
     assertThat(result.get(1).getCsvModelList().get(0).getValidFrom()).isEqualTo(LocalDate.of(2021, 1, 1));
-    assertThat(result.get(1).getCsvModelList().get(0).getValidTo()).isEqualTo(LocalDate.of(9999, 12, 31));
+    assertThat(result.get(1).getCsvModelList().get(0).getValidTo()).isEqualTo(ImportUtils.ATLAS_HIGHEST_DATE);
     assertThat(result.get(1).getCsvModelList().get(0).getEditedAt().toLocalDate()).isEqualTo(now);
   }
 

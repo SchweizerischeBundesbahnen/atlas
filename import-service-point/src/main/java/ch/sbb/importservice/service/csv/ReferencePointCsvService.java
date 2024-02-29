@@ -64,10 +64,6 @@ public class ReferencePointCsvService extends PrmCsvService<ReferencePointCsvMod
     private void mergeReferencePoints(List<ReferencePointCsvModelContainer> referencePointCsvModelContainers) {
         mergeSequentialEqualsVersions(referencePointCsvModelContainers);
         mergeEqualsVersions(referencePointCsvModelContainers);
-//        referencePointCsvModelContainers.forEach(
-//            container -> {
-//                replaceDataBo(container.getCsvModels());
-//            });
     }
 
     private static Function<Map.Entry<String, List<ReferencePointCsvModel>>, ReferencePointCsvModelContainer> toContainer() {
@@ -97,7 +93,7 @@ public class ReferencePointCsvService extends PrmCsvService<ReferencePointCsvMod
         List<String> mergedSloids = new ArrayList<>();
         csvModelContainers.forEach(
                 container -> {
-                    PrmCsvMergeResult<ReferencePointCsvModel> prmCsvMergeResult = mergeEqualVersionsAndReplaceDataAfterMerge(container.getCsvModels());
+                    PrmCsvMergeResult<ReferencePointCsvModel> prmCsvMergeResult = mergeEqualVersions(container.getCsvModels());
                     container.setCsvModels(prmCsvMergeResult.getVersions());
                     mergedSloids.addAll(prmCsvMergeResult.getMergedSloids());
                 });

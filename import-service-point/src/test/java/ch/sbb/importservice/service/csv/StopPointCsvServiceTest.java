@@ -5,6 +5,7 @@ import static org.mockito.MockitoAnnotations.openMocks;
 
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModel;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModelContainer;
+import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.testdata.prm.StopPointCsvTestData;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
@@ -113,7 +114,7 @@ class StopPointCsvServiceTest {
     StopPointCsvModel stopPointCsvModel1 = StopPointCsvTestData.getStopPointCsvModel();
     StopPointCsvModel stopPointCsvModel2 = StopPointCsvTestData.getStopPointCsvModel();
     stopPointCsvModel2.setValidFrom(stopPointCsvModel1.getValidTo().plusDays(1));
-    stopPointCsvModel2.setValidTo(LocalDate.of(2099, 12, 31));
+    stopPointCsvModel2.setValidTo(ImportUtils.DIDOK_HIGEST_DATE);
     List<StopPointCsvModel> csvModels = List.of(stopPointCsvModel1, stopPointCsvModel2);
     LocalDate now = LocalDate.now();
 
@@ -125,7 +126,7 @@ class StopPointCsvServiceTest {
     assertThat(result).hasSize(1);
     assertThat(result.get(0).getStopPointCsvModels()).hasSize(1);
     assertThat(result.get(0).getStopPointCsvModels().get(0).getValidFrom()).isEqualTo(stopPointCsvModel1.getValidFrom());
-    assertThat(result.get(0).getStopPointCsvModels().get(0).getValidTo()).isEqualTo(LocalDate.of(9999, 12, 31));
+    assertThat(result.get(0).getStopPointCsvModels().get(0).getValidTo()).isEqualTo(ImportUtils.ATLAS_HIGHEST_DATE);
     assertThat(result.get(0).getStopPointCsvModels().get(0).getModifiedAt().toLocalDate()).isEqualTo(now);
   }
 
