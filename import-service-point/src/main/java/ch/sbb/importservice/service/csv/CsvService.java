@@ -1,6 +1,5 @@
 package ch.sbb.importservice.service.csv;
 
-import static ch.sbb.atlas.imports.util.ImportUtils.replaceData;
 import static ch.sbb.importservice.service.JobHelperService.MIN_LOCAL_DATE;
 
 import ch.sbb.atlas.amazon.service.AmazonBucket;
@@ -85,10 +84,10 @@ public abstract class CsvService<T extends ImportDataModifier> {
           .with(DidokCsvMapper.CSV_SCHEMA)
           .readValues(String.join("\n", csvLinesToProcess));
       List<T> mappedCsvModels = mapObjects(mappingIterator);
-      replaceData(mappedCsvModels);
+//      replaceData(mappedCsvModels);
       return mappedCsvModels;
     } catch (IOException
-             | IllegalAccessException
+//             | IllegalAccessException
                    e
     ) {
       throw new CsvException(e);

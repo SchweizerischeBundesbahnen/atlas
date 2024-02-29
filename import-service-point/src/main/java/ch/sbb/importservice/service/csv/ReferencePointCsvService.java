@@ -56,6 +56,7 @@ public class ReferencePointCsvService extends PrmCsvService<ReferencePointCsvMod
                 groupedReferencePoints.entrySet().stream().map(toContainer()).toList()); // here is result ok and after merge
         // not any more
         mergeReferencePoints(result);
+        // commented out
 //        result.forEach(res -> {
 //            try {
 //                replaceData(res.getCsvModels());
@@ -69,6 +70,10 @@ public class ReferencePointCsvService extends PrmCsvService<ReferencePointCsvMod
     private void mergeReferencePoints(List<ReferencePointCsvModelContainer> referencePointCsvModelContainers) {
         mergeSequentialEqualsVersions(referencePointCsvModelContainers);
         mergeEqualsVersions(referencePointCsvModelContainers);
+//        referencePointCsvModelContainers.forEach(
+//            container -> {
+//                replaceDataBo(container.getCsvModels());
+//            });
     }
 
     private static Function<Map.Entry<String, List<ReferencePointCsvModel>>, ReferencePointCsvModelContainer> toContainer() {
@@ -98,13 +103,20 @@ public class ReferencePointCsvService extends PrmCsvService<ReferencePointCsvMod
         List<String> mergedSloids = new ArrayList<>();
         csvModelContainers.forEach(
                 container -> {
-                    PrmCsvMergeResult<ReferencePointCsvModel> prmCsvMergeResult = mergeEqualVersions(container.getCsvModels());
+                    PrmCsvMergeResult<ReferencePointCsvModel> prmCsvMergeResult = mergeEqualVersionsAndReplaceDataAfterMerge(container.getCsvModels());
                     container.setCsvModels(prmCsvMergeResult.getVersions());
                     mergedSloids.addAll(prmCsvMergeResult.getMergedSloids());
                 });
 
         log.info("Total Merged equals ReferencePoint versions {}", mergedSloids.size());
         log.info("Merged equals ReferencePoint Sloids {}", mergedSloids);
+    }
+
+    private void replaceDataAnotherTry(List<ReferencePointCsvModelContainer> csvModelContainers) {
+        csvModelContainers.forEach(
+                container -> {
+                    replaceDataBo(container.getCsvModels());
+                });
     }
 
 }
