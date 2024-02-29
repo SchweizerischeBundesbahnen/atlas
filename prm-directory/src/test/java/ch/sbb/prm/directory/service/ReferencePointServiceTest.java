@@ -91,7 +91,7 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
         .getRelationsByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     assertThat(relations).hasSize(4);
     assertThat(relations.stream().map(RelationVersion::getReferencePointElementType))
-        .containsExactlyInAnyOrder(ReferencePointElementType.values());
+        .containsExactlyInAnyOrder(ReferencePointElementType.PLATFORM, ReferencePointElementType.CONTACT_POINT, ReferencePointElementType.TOILET, ReferencePointElementType.PARKING_LOT);
   }
 
   @Test
