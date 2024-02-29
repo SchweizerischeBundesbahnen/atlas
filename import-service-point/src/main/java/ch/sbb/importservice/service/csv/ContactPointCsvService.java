@@ -1,21 +1,20 @@
 package ch.sbb.importservice.service.csv;
 
+import static ch.sbb.importservice.service.csv.CsvFileNameModel.SERVICEPOINT_DIDOK_DIR_NAME;
+
 import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
 import ch.sbb.atlas.imports.prm.contactpoint.ContactPointCsvModel;
 import ch.sbb.atlas.imports.prm.contactpoint.ContactPointCsvModelContainer;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static ch.sbb.importservice.service.csv.CsvFileNameModel.SERVICEPOINT_DIDOK_DIR_NAME;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
@@ -92,7 +91,7 @@ public class ContactPointCsvService extends PrmCsvService<ContactPointCsvModel>{
         List<String> mergedSloids = new ArrayList<>();
         csvModelContainers.forEach(
                 container -> {
-                    PrmCsvMergeResult<ContactPointCsvModel> prmCsvMergeResult = mergeEqualVersions(container.getCsvModels());
+                    PrmCsvMergeResult<ContactPointCsvModel> prmCsvMergeResult = mergeEqualVersionsAndReplaceDataAfterMerge(container.getCsvModels());
                     container.setCsvModels(prmCsvMergeResult.getVersions());
                     mergedSloids.addAll(prmCsvMergeResult.getMergedSloids());
                 });

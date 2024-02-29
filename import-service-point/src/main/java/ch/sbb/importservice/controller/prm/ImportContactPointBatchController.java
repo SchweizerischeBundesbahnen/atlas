@@ -1,10 +1,13 @@
 package ch.sbb.importservice.controller.prm;
 
-import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_INFO_DESK_CSV_JOB_NAME;
+import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_TICKET_COUNTER_CSV_JOB_NAME;
+
 import ch.sbb.importservice.service.FileHelperService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -12,12 +15,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-
-import static ch.sbb.importservice.utils.JobDescriptionConstants.*;
 
 
 @Tag(name = "Import Prm Batch")
