@@ -34,10 +34,6 @@ public class ImportUtils {
     replaceToDateWithHighestDate(csvModels);
   }
 
-//  public static <T extends ImportDataModifier> void replaceData(List<T> csvModels) throws IllegalAccessException {
-//    replaceNewLines(csvModels);
-//    replaceToDateWithHighestDate(csvModels);
-//  }
   static <T extends ImportDataModifier> void replaceNewLines(List<T> csvModels) throws IllegalAccessException {
     Pattern pattern = Pattern.compile("\\$newline\\$");
     for (T csvModel : csvModels) {
