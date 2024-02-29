@@ -2,6 +2,7 @@ package ch.sbb.atlas.testdata.prm;
 
 import ch.sbb.atlas.imports.prm.referencepoint.ReferencePointCsvModel;
 import ch.sbb.atlas.imports.prm.referencepoint.ReferencePointCsvModelContainer;
+import ch.sbb.atlas.imports.util.ImportUtils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -62,7 +63,7 @@ public class ReferencePointCsvTestData {
                 .infos("")
                 .rpType(0)
                 .validFrom(LocalDate.of(2023, 8, 4))
-                .validTo(LocalDate.of(2099, 12, 31))
+                .validTo(ImportUtils.DIDOK_HIGEST_DATE)
                 .createdAt(LocalDateTime.of(2023, 8, 4, 9, 27))
                 .modifiedAt(LocalDateTime.of(2023, 9, 18, 12, 48))
                 .build();
@@ -79,7 +80,7 @@ public class ReferencePointCsvTestData {
                 .infos("")
                 .rpType(0)
                 .validFrom(LocalDate.of(2023, 8, 4))
-                .validTo(LocalDate.of(2099, 12, 31))
+                .validTo(ImportUtils.DIDOK_HIGEST_DATE)
                 .createdAt(LocalDateTime.of(2023, 8, 4, 9, 27))
                 .modifiedAt(LocalDateTime.of(2023, 9, 18, 12, 48))
                 .build();
