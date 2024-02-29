@@ -5,6 +5,7 @@ import static org.mockito.MockitoAnnotations.openMocks;
 
 import ch.sbb.atlas.imports.prm.referencepoint.ReferencePointCsvModel;
 import ch.sbb.atlas.imports.prm.referencepoint.ReferencePointCsvModelContainer;
+import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.testdata.prm.ReferencePointCsvTestData;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
@@ -101,7 +102,7 @@ class ReferencePointCsvServiceTest {
         ReferencePointCsvModel referencePointCsvModel1 = ReferencePointCsvTestData.getCsvModel1();
         ReferencePointCsvModel referencePointCsvModel2 = ReferencePointCsvTestData.getCsvModel1();
         referencePointCsvModel2.setValidFrom(LocalDate.of(2023, 9, 15));
-        referencePointCsvModel2.setValidTo(LocalDate.of(2099, 12, 31));
+        referencePointCsvModel2.setValidTo(ImportUtils.DIDOK_HIGEST_DATE);
         referencePointCsvModel2.setCreatedAt(LocalDateTime.of(2023, 9, 18, 12, 48));
         referencePointCsvModel2.setModifiedAt(LocalDateTime.of(2023, 9, 18, 12, 48));
         List<ReferencePointCsvModel> csvModels = List.of(referencePointCsvModel1, referencePointCsvModel2);
@@ -114,7 +115,7 @@ class ReferencePointCsvServiceTest {
         assertThat(result).hasSize(1);
         assertThat(result.get(0).getCsvModels()).hasSize(1);
         assertThat(result.get(0).getCsvModels().get(0).getValidFrom()).isEqualTo(referencePointCsvModel1.getValidFrom());
-        assertThat(result.get(0).getCsvModels().get(0).getValidTo()).isEqualTo(LocalDate.of(9999, 12, 31));
+        assertThat(result.get(0).getCsvModels().get(0).getValidTo()).isEqualTo(ImportUtils.ATLAS_HIGHEST_DATE);
         assertThat(result.get(0).getCsvModels().get(0).getModifiedAt().toLocalDate()).isEqualTo(now);
     }
 
@@ -131,7 +132,7 @@ class ReferencePointCsvServiceTest {
 
         ReferencePointCsvModel referencePointCsvModel3 = ReferencePointCsvTestData.getCsvModel1();
         referencePointCsvModel3.setValidFrom(LocalDate.of(2026, 1, 1));
-        referencePointCsvModel3.setValidTo(LocalDate.of(2099, 12, 31));
+        referencePointCsvModel3.setValidTo(ImportUtils.DIDOK_HIGEST_DATE);
         referencePointCsvModel3.setCreatedAt(LocalDateTime.of(2023, 9, 18, 12, 48));
         referencePointCsvModel3.setModifiedAt(LocalDateTime.of(2023, 9, 18, 12, 48));
         List<ReferencePointCsvModel> csvModels = List.of(referencePointCsvModel1, referencePointCsvModel2, referencePointCsvModel3);
@@ -147,7 +148,7 @@ class ReferencePointCsvServiceTest {
         assertThat(result.get(0).getCsvModels().get(0).getValidTo()).isEqualTo(referencePointCsvModel1.getValidTo());
         assertThat(result.get(0).getCsvModels().get(0).getModifiedAt()).isEqualTo(referencePointCsvModel1.getModifiedAt());
         assertThat(result.get(0).getCsvModels().get(1).getValidFrom()).isEqualTo(LocalDate.of(2023, 9, 16));
-        assertThat(result.get(0).getCsvModels().get(1).getValidTo()).isEqualTo(LocalDate.of(9999, 12, 31));
+        assertThat(result.get(0).getCsvModels().get(1).getValidTo()).isEqualTo(ImportUtils.ATLAS_HIGHEST_DATE);
         assertThat(result.get(0).getCsvModels().get(1).getModifiedAt().toLocalDate()).isEqualTo(now);
     }
 
@@ -169,10 +170,10 @@ class ReferencePointCsvServiceTest {
         assertThat(result.get(0).getCsvModels().get(0).getValidTo()).isEqualTo(LocalDate.of(2023, 9, 14));
         assertThat(result.get(0).getCsvModels().get(0).getModifiedAt()).isEqualTo(LocalDateTime.of(2023, 9, 18, 12, 48));
         assertThat(result.get(1).getCsvModels()).hasSize(1);
-        assertThat(result.get(1).getCsvModels().get(0).getValidTo()).isEqualTo(LocalDate.of(9999, 12, 31));
+        assertThat(result.get(1).getCsvModels().get(0).getValidTo()).isEqualTo(ImportUtils.ATLAS_HIGHEST_DATE);
         assertThat(result.get(1).getCsvModels().get(0).getModifiedAt().toLocalDate()).isEqualTo(now);
         assertThat(result.get(2).getCsvModels()).hasSize(1);
-        assertThat(result.get(2).getCsvModels().get(0).getValidTo()).isEqualTo(LocalDate.of(9999, 12, 31));
+        assertThat(result.get(2).getCsvModels().get(0).getValidTo()).isEqualTo(ImportUtils.ATLAS_HIGHEST_DATE);
         assertThat(result.get(2).getCsvModels().get(0).getModifiedAt().toLocalDate()).isEqualTo(now);
     }
 
@@ -182,7 +183,7 @@ class ReferencePointCsvServiceTest {
         ReferencePointCsvModel referencePointCsvModel1 = ReferencePointCsvTestData.getCsvModel1();
         ReferencePointCsvModel referencePointCsvModel2 = ReferencePointCsvTestData.getCsvModel1();
         referencePointCsvModel2.setValidFrom(LocalDate.of(2023, 9, 15));
-        referencePointCsvModel2.setValidTo(LocalDate.of(2099, 12, 31));
+        referencePointCsvModel2.setValidTo(ImportUtils.DIDOK_HIGEST_DATE);
         referencePointCsvModel2.setCreatedAt(LocalDateTime.of(2023, 9, 18, 12, 48));
         referencePointCsvModel2.setModifiedAt(LocalDateTime.of(2023, 9, 18, 12, 48));
 
@@ -219,7 +220,7 @@ class ReferencePointCsvServiceTest {
         assertThat(result).hasSize(3);
         assertThat(result.get(0).getCsvModels()).hasSize(1);
         assertThat(result.get(0).getCsvModels().get(0).getDidokCode()).isEqualTo(85054676);
-        assertThat(result.get(0).getCsvModels().get(0).getValidTo()).isEqualTo(LocalDate.of(9999, 12, 31));
+        assertThat(result.get(0).getCsvModels().get(0).getValidTo()).isEqualTo(ImportUtils.ATLAS_HIGHEST_DATE);
         assertThat(result.get(0).getCsvModels().get(0).getModifiedAt().toLocalDate()).isEqualTo(now);
 
         assertThat(result.get(1).getCsvModels()).hasSize(2);
@@ -227,7 +228,7 @@ class ReferencePointCsvServiceTest {
         assertThat(result.get(1).getCsvModels().get(0).getValidTo()).isEqualTo(LocalDate.of(2023, 7, 31));
         assertThat(result.get(1).getCsvModels().get(0).getModifiedAt()).isEqualTo(LocalDateTime.of(2023, 9, 18, 12, 48));
         assertThat(result.get(1).getCsvModels().get(1).getDidokCode()).isEqualTo(85054696);
-        assertThat(result.get(1).getCsvModels().get(1).getValidTo()).isEqualTo(LocalDate.of(9999, 12, 31));
+        assertThat(result.get(1).getCsvModels().get(1).getValidTo()).isEqualTo(ImportUtils.ATLAS_HIGHEST_DATE);
         assertThat(result.get(1).getCsvModels().get(1).getModifiedAt().toLocalDate()).isEqualTo(now);
 
         assertThat(result.get(2).getCsvModels()).hasSize(2);
@@ -235,7 +236,7 @@ class ReferencePointCsvServiceTest {
         assertThat(result.get(2).getCsvModels().get(0).getValidTo()).isEqualTo(LocalDate.of(2023, 7, 31));
         assertThat(result.get(2).getCsvModels().get(0).getModifiedAt()).isEqualTo(LocalDateTime.of(2023, 9, 18, 12, 48));
         assertThat(result.get(2).getCsvModels().get(1).getDidokCode()).isEqualTo(85054686);
-        assertThat(result.get(2).getCsvModels().get(1).getValidTo()).isEqualTo(LocalDate.of(9999, 12, 31));
+        assertThat(result.get(2).getCsvModels().get(1).getValidTo()).isEqualTo(ImportUtils.ATLAS_HIGHEST_DATE);
         assertThat(result.get(2).getCsvModels().get(1).getModifiedAt().toLocalDate()).isEqualTo(now);
     }
 

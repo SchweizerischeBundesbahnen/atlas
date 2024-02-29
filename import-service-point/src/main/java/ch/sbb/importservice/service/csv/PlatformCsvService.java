@@ -96,7 +96,7 @@ public class PlatformCsvService extends PrmCsvService<PlatformCsvModel> {
     List<String> mergedSloids = new ArrayList<>();
     csvModelContainers.forEach(
         container -> {
-          PrmCsvMergeResult<PlatformCsvModel> prmCsvMergeResult = mergeEqualVersionsAndReplaceDataAfterMerge(container.getCsvModels());
+          PrmCsvMergeResult<PlatformCsvModel> prmCsvMergeResult = mergeEqualVersions(container.getCsvModels());
           container.setCsvModels(prmCsvMergeResult.getVersions());
           mergedSloids.addAll(prmCsvMergeResult.getMergedSloids());
         });

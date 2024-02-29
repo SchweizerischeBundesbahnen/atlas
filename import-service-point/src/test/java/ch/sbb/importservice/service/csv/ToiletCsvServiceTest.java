@@ -5,6 +5,7 @@ import static org.mockito.MockitoAnnotations.openMocks;
 
 import ch.sbb.atlas.imports.prm.toilet.ToiletCsvModel;
 import ch.sbb.atlas.imports.prm.toilet.ToiletCsvModelContainer;
+import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.testdata.prm.ToiletCsvTestData;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
@@ -98,7 +99,7 @@ class ToiletCsvServiceTest {
     ToiletCsvModel toiletCsvModel1 = ToiletCsvTestData.getCsvModel();
     ToiletCsvModel toiletCsvModel2 = ToiletCsvTestData.getCsvModel();
     toiletCsvModel2.setValidFrom(toiletCsvModel1.getValidTo().plusDays(1));
-    toiletCsvModel2.setValidTo(LocalDate.of(2099, 12, 31));
+    toiletCsvModel2.setValidTo(ImportUtils.DIDOK_HIGEST_DATE);
     List<ToiletCsvModel> csvModels = List.of(toiletCsvModel1, toiletCsvModel2);
     LocalDate now = LocalDate.now();
 
@@ -109,7 +110,7 @@ class ToiletCsvServiceTest {
     assertThat(result).hasSize(1);
     assertThat(result.get(0).getCsvModels()).hasSize(1);
     assertThat(result.get(0).getCsvModels().get(0).getValidFrom()).isEqualTo(toiletCsvModel1.getValidFrom());
-    assertThat(result.get(0).getCsvModels().get(0).getValidTo()).isEqualTo(LocalDate.of(9999, 12, 31));
+    assertThat(result.get(0).getCsvModels().get(0).getValidTo()).isEqualTo(ImportUtils.ATLAS_HIGHEST_DATE);
     assertThat(result.get(0).getCsvModels().get(0).getModifiedAt().toLocalDate()).isEqualTo(now);
   }
 
