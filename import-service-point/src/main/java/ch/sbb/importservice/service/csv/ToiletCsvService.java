@@ -93,7 +93,7 @@ public class ToiletCsvService extends PrmCsvService<ToiletCsvModel> {
     List<String> mergedSloids = new ArrayList<>();
     csvModelContainers.forEach(
         container -> {
-          PrmCsvMergeResult<ToiletCsvModel> prmCsvMergeResult = mergeEqualVersions(container.getCsvModels());
+          PrmCsvMergeResult<ToiletCsvModel> prmCsvMergeResult = mergeEqualVersionsAndReplaceDataAfterMerge(container.getCsvModels());
           container.setCsvModels(prmCsvMergeResult.getVersions());
           mergedSloids.addAll(prmCsvMergeResult.getMergedSloids());
         });
