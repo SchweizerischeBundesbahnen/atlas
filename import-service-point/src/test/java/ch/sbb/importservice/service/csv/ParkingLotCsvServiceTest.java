@@ -94,4 +94,51 @@ class ParkingLotCsvServiceTest {
         assertThat(result.get(0).getCsvModels().get(0).getStatus()).isEqualTo(1);
     }
 
+    @Test
+    void shouldSetReplaceHighDateDataForParkingLots() {
+        // given
+        ParkingLotCsvModel parkingLotCsvModel1 = ParkingLotCsvTestData.getCsvModel();
+        ParkingLotCsvModel parkingLotCsvModel2 = ParkingLotCsvTestData.getCsvModel();
+        parkingLotCsvModel2.setValidFrom(LocalDate.of(2026, 1, 1));
+        parkingLotCsvModel2.setValidTo(LocalDate.of(2099, 12, 31));
+        List<ParkingLotCsvModel> csvModels = List.of(parkingLotCsvModel1, parkingLotCsvModel2);
+        LocalDate now = LocalDate.now();
+
+        // when
+        List<ParkingLotCsvModelContainer> result = parkingLotCsvService.mapToParkingLotCsvModelContainers(
+            csvModels);
+
+        //then
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCsvModels()).hasSize(1);
+        assertThat(result.get(0).getCsvModels().get(0).getValidFrom()).isEqualTo(parkingLotCsvModel1.getValidFrom());
+        assertThat(result.get(0).getCsvModels().get(0).getValidTo()).isEqualTo(LocalDate.of(9999, 12, 31));
+        assertThat(result.get(0).getCsvModels().get(0).getModifiedAt().toLocalDate()).isEqualTo(now);
+    }
+
+    @Test
+    void shouldSetReplaceNewLineForParkingLots() {
+        // given
+        ParkingLotCsvModel parkingLotCsvModel1 = ParkingLotCsvTestData.getCsvModel();
+        parkingLotCsvModel1.setDescription("Desc $newline$ of $newline$ this model.");
+        ParkingLotCsvModel parkingLotCsvModel2 = ParkingLotCsvTestData.getCsvModel();
+        parkingLotCsvModel2.setDescription("Desc $newline$ of $newline$ this model.");
+        parkingLotCsvModel2.setValidFrom(LocalDate.of(2026, 1, 1));
+        parkingLotCsvModel2.setValidTo(LocalDate.of(2026, 12, 31));
+        List<ParkingLotCsvModel> csvModels = List.of(parkingLotCsvModel1, parkingLotCsvModel2);
+        LocalDate now = LocalDate.now();
+
+        // when
+        List<ParkingLotCsvModelContainer> result = parkingLotCsvService.mapToParkingLotCsvModelContainers(
+            csvModels);
+
+        //then
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCsvModels()).hasSize(1);
+        assertThat(result.get(0).getCsvModels().get(0).getValidFrom()).isEqualTo(parkingLotCsvModel1.getValidFrom());
+        assertThat(result.get(0).getCsvModels().get(0).getValidTo()).isEqualTo(LocalDate.of(2026, 12, 31));
+        assertThat(result.get(0).getCsvModels().get(0).getDescription()).isEqualTo("Desc \r\n of \r\n this model.");
+        assertThat(result.get(0).getCsvModels().get(0).getModifiedAt().toLocalDate()).isEqualTo(now);
+    }
+
 }
