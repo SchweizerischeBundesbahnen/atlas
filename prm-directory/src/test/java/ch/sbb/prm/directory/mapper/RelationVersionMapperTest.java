@@ -23,7 +23,7 @@ public class RelationVersionMapperTest {
 
         ReadRelationVersionModel expected = ReadRelationVersionModel
                 .builder()
-                .sloid("ch:1:sloid:12345:1")
+                .elementSloid("ch:1:sloid:12345:1")
                 .contrastingAreas(StandardAttributeType.YES)
                 .tactileVisualMarks(TactileVisualAttributeType.YES)
                 .stepFreeAccess(StepFreeAccessAttributeType.NO)
