@@ -19,6 +19,7 @@ public class StopPointVersionMapper {
   public static ReadStopPointVersionModel toModel(StopPointVersion version){
     return ReadStopPointVersionModel.builder()
         .id(version.getId())
+        .status(version.getStatus())
         .sloid(version.getSloid())
         .number(version.getNumber())
         .validFrom(version.getValidFrom())
