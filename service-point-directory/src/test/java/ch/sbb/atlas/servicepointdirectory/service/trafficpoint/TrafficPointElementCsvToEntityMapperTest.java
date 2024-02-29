@@ -66,6 +66,7 @@ class TrafficPointElementCsvToEntityMapperTest {
     trafficPointElementGeolocation.setTrafficPointElementVersion(expected);
 
     assertThat(trafficPointElementVersions).isNotEmpty();
-    assertThat(trafficPointElementVersions).first().usingRecursiveComparison().isEqualTo(expected);
+    assertThat(trafficPointElementVersions.get(0)).usingRecursiveComparison().isEqualTo(expected);
   }
+
 }
