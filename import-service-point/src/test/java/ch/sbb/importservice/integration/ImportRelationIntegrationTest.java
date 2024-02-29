@@ -1,17 +1,11 @@
 package ch.sbb.importservice.integration;
 
-import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
-import ch.sbb.atlas.imports.prm.contactpoint.ContactPointCsvModel;
-import ch.sbb.atlas.imports.prm.platform.PlatformCsvModel;
 import ch.sbb.atlas.imports.prm.relation.RelationCsvModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.testdata.prm.ContactPointCsvTestData;
-import ch.sbb.atlas.testdata.prm.PlatformCsvTestData;
 import ch.sbb.atlas.testdata.prm.RelationCsvTestData;
 import ch.sbb.importservice.client.PrmClient;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.MailProducerService;
-import ch.sbb.importservice.service.csv.ContactPointCsvService;
 import ch.sbb.importservice.service.csv.RelationCsvService;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.*;
@@ -73,7 +67,7 @@ public class ImportRelationIntegrationTest {
         ExitStatus actualJobExitStatus = jobExecution.getExitStatus();
 
         // then
-        assertThat(actualJobInstance.getJobName()).isEqualTo(IMPORT_PLATFORM_CSV_JOB_NAME);
+        assertThat(actualJobInstance.getJobName()).isEqualTo(IMPORT_RELATION_CSV_JOB_NAME);
         assertThat(actualJobExitStatus.getExitCode()).isEqualTo(ExitStatus.COMPLETED.getExitCode());
 
         verify(mailProducerService, times(1)).produceMailNotification(any());
@@ -81,9 +75,9 @@ public class ImportRelationIntegrationTest {
     }
 
     @Test
-    void shouldExecuteImportPlatformJobFromGivenFile() throws Exception {
+    void shouldExecuteImportRelationJobFromGivenFile() throws Exception {
         // given
-        File file = new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource("PRM_PLATFORMS.csv")).getFile());
+        File file = new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource("PRM_CONNECTIONS.csv")).getFile());
         when(fileHelperService.downloadImportFileFromS3(any())).thenReturn(file);
 
         doCallRealMethod().when(relationCsvService).getActualCsvModels(file);
@@ -102,7 +96,7 @@ public class ImportRelationIntegrationTest {
         ExitStatus actualJobExitStatus = jobExecution.getExitStatus();
 
         // then
-        assertThat(actualJobInstance.getJobName()).isEqualTo(IMPORT_PLATFORM_CSV_JOB_NAME);
+        assertThat(actualJobInstance.getJobName()).isEqualTo(IMPORT_RELATION_CSV_JOB_NAME);
         assertThat(actualJobExitStatus.getExitCode()).isEqualTo(ExitStatus.COMPLETED.getExitCode());
     }
 }

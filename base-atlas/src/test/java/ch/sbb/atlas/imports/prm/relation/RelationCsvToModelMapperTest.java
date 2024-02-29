@@ -19,6 +19,7 @@ class RelationCsvToModelMapperTest {
         RelationVersionModel expected = RelationVersionModel.builder()
                 .sloid("ch:1:sloid:294:787306")
                 .referencePointElementType(ReferencePointElementType.PLATFORM)
+                .parentServicePointSloid("ch:1:sloid:294")
                 .referencePointSloid("ch:1:sloid:294:1")
                 .contrastingAreas(StandardAttributeType.YES)
                 .stepFreeAccess(StepFreeAccessAttributeType.YES)
