@@ -1,11 +1,10 @@
 package ch.sbb.importservice.service.csv;
 
-import static ch.sbb.atlas.imports.util.ImportUtils.replaceData;
+import static ch.sbb.atlas.imports.util.ImportUtils.replaceNewLinesAndReplaceToDateWithHighestDate;
 import static java.util.Comparator.comparing;
 
 import ch.sbb.atlas.imports.prm.BasePrmCsvModel;
 import ch.sbb.atlas.versioning.date.DateHelper;
-import ch.sbb.importservice.exception.CsvException;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
 import java.util.ArrayList;
@@ -70,7 +69,7 @@ public abstract class PrmCsvService<T extends BasePrmCsvModel> extends CsvServic
   public PrmCsvMergeResult<T> mergeEqualVersionsAndReplaceDataAfterMerge(List<T> csvModels) {
     List<T> csvModelListMerged = new ArrayList<>();
     if (csvModels.size() == 1) {
-      replaceDataBo(csvModels);
+//      replaceNewLineAndHighestDateData(csvModels);
       return new PrmCsvMergeResult<>(csvModels);
     }
     List<String> mergedSloids = new ArrayList<>();
@@ -93,17 +92,20 @@ public abstract class PrmCsvService<T extends BasePrmCsvModel> extends CsvServic
         }
       }
     }
-    replaceDataBo(csvModelListMerged);
+//    replaceNewLineAndHighestDateData(csvModelListMerged);
     return new PrmCsvMergeResult<>(csvModelListMerged, mergedSloids);
   }
 
-  void replaceDataBo(List<T> csvModels){
-    try {
-      replaceData(csvModels);
-    } catch (IllegalAccessException e) {
-      throw new CsvException(e);
-    }
+  void replaceNewLineAndHighestDateData(List<T> csvModels){
+      replaceNewLinesAndReplaceToDateWithHighestDate(csvModels);
   }
+//  void replaceNewLineAndHighestDateData(List<T> csvModels){
+//    try {
+//      replaceData(csvModels);
+//    } catch (IllegalAccessException e) {
+//      throw new CsvException(e);
+//    }
+//  }
 
   @Data
   @RequiredArgsConstructor
