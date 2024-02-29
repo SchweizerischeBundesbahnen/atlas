@@ -65,7 +65,7 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
     return relationRepository.findAllBySloid(sloid);
   }
 
-  public List<RelationVersion> getAllVersions2(String sloid, String referencePointSloid) {
+  public List<RelationVersion> getAllVersionsBySloidAndReferencePoint(String sloid, String referencePointSloid) {
     return relationRepository.findBySloidAndReferencePointSloid(sloid, referencePointSloid);
   }
 

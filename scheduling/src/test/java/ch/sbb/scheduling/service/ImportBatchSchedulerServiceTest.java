@@ -244,4 +244,24 @@ import org.springframework.http.HttpStatus;
    assertThat(result.status()).isEqualTo(200);
   }
 
+  @Test
+  void shouldTriggerImportRelationBatchSuccessfully() {
+   //given
+   Response response = Response.builder()
+           .status(200)
+           .reason("OK")
+           .request(
+                   Request.create(HttpMethod.POST, "/api", Collections.emptyMap(),
+                           null, Util.UTF_8, null))
+           .build();
+   when(client.triggerImportRelationBatch()).thenReturn(response);
+
+   //when
+   Response result = importBatchSchedulerService.triggerImportRelationBatch();
+
+   //then
+   assertThat(result).isNotNull();
+   assertThat(result.status()).isEqualTo(200);
+  }
+
 }

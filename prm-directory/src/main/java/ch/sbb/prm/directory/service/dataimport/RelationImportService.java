@@ -59,7 +59,7 @@ public class RelationImportService extends BasePrmImportService<RelationVersion>
             List<RelationVersion> relationVersions = container.getCreateModels().stream()
                     .map(RelationVersionMapper::toEntity).toList();
 
-            List<RelationVersion> dbVersions = relationService.getAllVersions2(
+            List<RelationVersion> dbVersions = relationService.getAllVersionsBySloidAndReferencePoint(
                     relationVersions.iterator().next().getSloid(), relationVersions.iterator().next().getReferencePointSloid());
             replaceCsvMergedVersions(dbVersions, relationVersions);
 
@@ -92,7 +92,7 @@ public class RelationImportService extends BasePrmImportService<RelationVersion>
     }
 
     private void updateVersionForImportService(RelationVersion edited) {
-        List<RelationVersion> dbVersions = relationService.getAllVersions2(edited.getSloid(), edited.getReferencePointSloid());
+        List<RelationVersion> dbVersions = relationService.getAllVersionsBySloidAndReferencePoint(edited.getSloid(), edited.getReferencePointSloid());
         RelationVersion current = ImportUtils.getCurrentPointVersion(dbVersions, edited);
         List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(current, edited,
                 dbVersions);
@@ -135,11 +135,11 @@ public class RelationImportService extends BasePrmImportService<RelationVersion>
         if(type == ReferencePointElementType.PARKING_LOT){
             parkingLotService.checkParkingLotExists(sloid, ReferencePointElementType.PARKING_LOT.name());
         }
-        if(type == ReferencePointElementType.CONTACT_POINT){
-           throw new IllegalArgumentException("Contact point type not allowed");
-        }
         if(type == ReferencePointElementType.TOILET){
             toiletService.checkToiletExists(sloid, ReferencePointElementType.TOILET.name());
+        }
+        if(type == ReferencePointElementType.CONTACT_POINT){
+            throw new IllegalArgumentException("Contact point type not allowed");
         }
     }
 }
