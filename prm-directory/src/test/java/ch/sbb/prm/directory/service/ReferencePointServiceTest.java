@@ -7,6 +7,7 @@ import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ContactPointTestData;
@@ -217,6 +218,7 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
     // Version 1
     referencePointRepository.save(ReferencePointVersion.builder()
         .sloid(sloid)
+        .status(Status.VALIDATED)
         .number(servicePointNumber)
         .validFrom(LocalDate.of(2024, 2, 19))
         .validTo(LocalDate.of(2024, 2, 2))
@@ -231,6 +233,7 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
     String sloidMoodi = "ch:1:sloid:76332:100";
     referencePointRepository.save(ReferencePointVersion.builder()
         .sloid(sloidMoodi)
+        .status(Status.VALIDATED)
         .number(servicePointNumber)
         .validFrom(LocalDate.of(2024, 2, 19))
         .validTo(LocalDate.of(2025, 2, 18))
@@ -244,6 +247,7 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
     // Version 4
     referencePointRepository.save(ReferencePointVersion.builder()
         .sloid(sloid)
+        .status(Status.VALIDATED)
         .number(servicePointNumber)
         .validFrom(LocalDate.of(2027, 3, 5))
         .validTo(LocalDate.of(2029, 3, 4))
@@ -257,6 +261,7 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
     // Mad Eye Moodi - Version 2
     referencePointRepository.save(ReferencePointVersion.builder()
         .sloid(sloidMoodi)
+        .status(Status.VALIDATED)
         .number(servicePointNumber)
         .validFrom(LocalDate.of(2025, 2, 19))
         .validTo(LocalDate.of(2029, 2, 18))

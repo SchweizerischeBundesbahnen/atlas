@@ -6,6 +6,7 @@ import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
 import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.ContactPointTestData;
 import ch.sbb.prm.directory.entity.ContactPointVersion;
@@ -35,6 +36,7 @@ class ContactPointVersionMapperTest {
         .openingHours("10:00-22:00")
         .wheelchairAccess(StandardAttributeType.YES)
         .type(ContactPointType.INFORMATION_DESK)
+        .status(Status.VALIDATED)
         .build();
 
     assertThat(contactPointVersionModel).usingRecursiveComparison().isEqualTo(expected);
