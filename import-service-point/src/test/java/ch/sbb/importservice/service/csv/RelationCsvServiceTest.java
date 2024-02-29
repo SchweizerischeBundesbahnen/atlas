@@ -36,7 +36,7 @@ public class RelationCsvServiceTest {
     @Test
     void shouldHaveCorrectFileNameRelation() {
         CsvFileNameModel csvFileName = relationCsvService.csvFileNameModel();
-        assertThat(csvFileName.getFileName()).startsWith("PRM_INFO_DESKS");
+        assertThat(csvFileName.getFileName()).startsWith("PRM_CONNECTIONS");
     }
 
 
@@ -64,20 +64,22 @@ public class RelationCsvServiceTest {
     void shouldGroupByWithouMerge() {
         // given
         RelationCsvModel relationCsvModel1 = RelationCsvTestData.getCsvModel();
-        relationCsvModel1.setRpSloid("ch:1:ref:7000:1");
-        relationCsvModel1.setSloid("ch:1:el:7000:2");
+        relationCsvModel1.setRpSloid("ch:1:sloid:294:787306");
+        relationCsvModel1.setSloid("ch:1:sloid:294:1");
+
         RelationCsvModel relationCsvModel2 = RelationCsvTestData.getCsvModel();
-        relationCsvModel2.setRpSloid("ch:1:ref:7000:1");
-        relationCsvModel2.setSloid("ch:1:el:7000:2");
+        relationCsvModel2.setRpSloid("ch:1:sloid:294:787306");
+        relationCsvModel2.setSloid("ch:1:sloid:294:1");
         relationCsvModel2.setValidFrom(LocalDate.of(2026, 1, 1));
         relationCsvModel2.setValidTo(LocalDate.of(2026, 12, 31));
 
         RelationCsvModel relationCsvModel3 = RelationCsvTestData.getCsvModel();
-        relationCsvModel3.setRpSloid("ch:1:ref:7000:1");
-        relationCsvModel3.setSloid("ch:1:el:7000:3");
+        relationCsvModel3.setRpSloid("ch:1:sloid:294:787306");
+        relationCsvModel3.setSloid("ch:1:sloid:300:1");
+
         RelationCsvModel relationCsvModel4 = RelationCsvTestData.getCsvModel();
-        relationCsvModel4.setRpSloid("ch:1:ref:7000:1");
-        relationCsvModel4.setSloid("ch:1:el:7000:3");
+        relationCsvModel4.setRpSloid("ch:1:sloid:294:787306");
+        relationCsvModel4.setSloid("ch:1:sloid:300:1");
         relationCsvModel4.setValidFrom(LocalDate.of(2026, 1, 1));
         relationCsvModel4.setValidTo(LocalDate.of(2026, 12, 31));
 
@@ -88,7 +90,7 @@ public class RelationCsvServiceTest {
         List<RelationCsvModelContainer> result = relationCsvService.mapToRelationCsvModelContainers(csvModels);
 
         //then
-        assertThat(result).hasSize(1);
+        assertThat(result).hasSize(2);
         assertThat(result.get(0).getCsvModels()).hasSize(1);
         assertThat(result.get(0).getCsvModels().get(0).getValidFrom()).isEqualTo(relationCsvModel1.getValidFrom());
         assertThat(result.get(0).getCsvModels().get(0).getValidTo()).isEqualTo(relationCsvModel2.getValidTo());
@@ -98,21 +100,26 @@ public class RelationCsvServiceTest {
     void shouldGroupByWithMerge() {
         // given
         RelationCsvModel relationCsvModel1 = RelationCsvTestData.getCsvModel();
-        relationCsvModel1.setRpSloid("ch:1:ref:7000:1");
-        relationCsvModel1.setSloid("ch:1:el:7000:2");
+        relationCsvModel1.setRpSloid("ch:1:sloid:294:787306");
+        relationCsvModel1.setSloid("ch:1:sloid:294:1");
+        relationCsvModel1.setValidFrom(LocalDate.of(2026, 1, 2));
+        relationCsvModel1.setValidTo(LocalDate.of(2026, 12, 31));
 
         RelationCsvModel relationCsvModel2 = RelationCsvTestData.getCsvModel();
-        relationCsvModel2.setRpSloid("ch:1:ref:7000:1");
-        relationCsvModel2.setSloid("ch:1:el:7000:2");
+        relationCsvModel2.setRpSloid("ch:1:sloid:294:787306");
+        relationCsvModel2.setSloid("ch:1:sloid:294:1");
         relationCsvModel2.setValidFrom(LocalDate.of(2026, 1, 2));
         relationCsvModel2.setValidTo(LocalDate.of(2026, 12, 31));
 
         RelationCsvModel relationCsvModel3 = RelationCsvTestData.getCsvModel();
-        relationCsvModel3.setRpSloid("ch:1:ref:7000:1");
-        relationCsvModel3.setSloid("ch:1:el:7000:3");
+        relationCsvModel3.setRpSloid("ch:1:sloid:294:787306");
+        relationCsvModel3.setSloid("ch:1:sloid:300:1");
+        relationCsvModel3.setValidFrom(LocalDate.of(2026, 1, 2));
+        relationCsvModel3.setValidTo(LocalDate.of(2026, 12, 31));
+
         RelationCsvModel relationCsvModel4 = RelationCsvTestData.getCsvModel();
-        relationCsvModel4.setRpSloid("ch:1:ref:7000:1");
-        relationCsvModel4.setSloid("ch:1:el:7000:3");
+        relationCsvModel4.setRpSloid("ch:1:sloid:294:787306");
+        relationCsvModel4.setSloid("ch:1:sloid:300:1");
         relationCsvModel4.setValidFrom(LocalDate.of(2026, 1, 2));
         relationCsvModel4.setValidTo(LocalDate.of(2026, 12, 31));
 
@@ -123,46 +130,7 @@ public class RelationCsvServiceTest {
         List<RelationCsvModelContainer> result = relationCsvService.mapToRelationCsvModelContainers(csvModels);
 
         //then
-        assertThat(result).hasSize(1);
-        assertThat(result.get(0).getCsvModels()).hasSize(1);
-        assertThat(result.get(0).getCsvModels().get(0).getValidFrom()).isEqualTo(relationCsvModel1.getValidFrom());
-        assertThat(result.get(0).getCsvModels().get(0).getValidTo()).isEqualTo(relationCsvModel2.getValidTo());
-    }
-
-    @Test
-    void shouldGroupByWithMerge2() {
-        // given
-        RelationCsvModel relationCsvModel1 = RelationCsvTestData.getCsvModel();
-        relationCsvModel1.setRpSloid("ch:1:ref:5000:1");
-        relationCsvModel1.setSloid("ch:1:el:7000:2");
-        relationCsvModel1.setValidFrom(LocalDate.of(2023, 12, 07));
-        relationCsvModel1.setValidTo(LocalDate.of(2099, 12, 31));
-
-
-        RelationCsvModel relationCsvModel2 = RelationCsvTestData.getCsvModel();
-        relationCsvModel2.setRpSloid("ch:1:ref:7000:1");
-        relationCsvModel2.setSloid("ch:1:el:7000:2");
-
-        relationCsvModel2.setValidFrom(LocalDate.of(2023, 12, 07));
-        relationCsvModel2.setValidTo(LocalDate.of(2099, 12, 31));
-
-//        RelationCsvModel relationCsvModel3 = RelationCsvTestData.getCsvModel();
-//        relationCsvModel3.setRpSloid("ch:1:ref:7000:1");
-//        relationCsvModel3.setSloid("ch:1:el:7000:3");
-//        RelationCsvModel relationCsvModel4 = RelationCsvTestData.getCsvModel();
-//        relationCsvModel4.setRpSloid("ch:1:ref:7000:1");
-//        relationCsvModel4.setSloid("ch:1:el:7000:3");
-//        relationCsvModel4.setValidFrom(LocalDate.of(2026, 1, 1));
-//        relationCsvModel4.setValidTo(LocalDate.of(2026, 12, 31));
-
-
-        List<RelationCsvModel> csvModels = List.of(relationCsvModel1, relationCsvModel2);
-
-        // when
-        List<RelationCsvModelContainer> result = relationCsvService.mapToRelationCsvModelContainers(csvModels);
-
-        //then
-        assertThat(result).hasSize(1);
+        assertThat(result).hasSize(2);
         assertThat(result.get(0).getCsvModels()).hasSize(1);
         assertThat(result.get(0).getCsvModels().get(0).getValidFrom()).isEqualTo(relationCsvModel1.getValidFrom());
         assertThat(result.get(0).getCsvModels().get(0).getValidTo()).isEqualTo(relationCsvModel2.getValidTo());
