@@ -21,8 +21,10 @@ import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.repository.PlatformRepository;
+import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
+import ch.sbb.prm.directory.service.ReferencePointService;
 import ch.sbb.prm.directory.service.StopPointService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,13 +51,17 @@ class RelationImportServiceTest {
   private final RelationRepository relationRepository;
   private final RelationImportService relationImportService;
   private final SharedServicePointRepository sharedServicePointRepository;
+  private final ReferencePointRepository referencePointRepository;
+  private final PlatformRepository platformRepository;
 
 
   @Autowired
-  RelationImportServiceTest(RelationRepository relationRepository, RelationImportService relationImportService, SharedServicePointRepository sharedServicePointRepository) {
+  RelationImportServiceTest(RelationRepository relationRepository, RelationImportService relationImportService, SharedServicePointRepository sharedServicePointRepository, ReferencePointRepository referencePointRepository, PlatformRepository platformRepository) {
     this.relationRepository = relationRepository;
     this.relationImportService = relationImportService;
     this.sharedServicePointRepository = sharedServicePointRepository;
+      this.referencePointRepository = referencePointRepository;
+      this.platformRepository = platformRepository;
   }
 
   @BeforeEach
@@ -63,6 +69,14 @@ class RelationImportServiceTest {
     SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:76646",
         Set.of("ch:1:sboid:100602"), Set.of("ch:1:sloid:76646:0:17"));
     sharedServicePointRepository.saveAndFlush(servicePoint);
+
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setSloid("ch:1:sloid:294:1");
+    referencePointRepository.saveAndFlush(referencePointVersion);
+
+    PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
+    platformVersion.setSloid("ch:1:sloid:294:787306");
+    platformRepository.saveAndFlush(platformVersion);
 
     when(stopPointService.isReduced(any())).thenReturn(false);
   }
@@ -73,7 +87,8 @@ class RelationImportServiceTest {
   }
 
   @Test
-  void shouldImportWhenReferencePointDoesNotExists() {
+  void shouldImportWhenReferencePointAndElementExists() {
+
     //when
     List<ItemImportResult> result = relationImportService.importRelations(
             List.of(RelationCsvTestData.getContainer()));
