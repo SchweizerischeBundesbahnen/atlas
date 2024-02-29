@@ -12,6 +12,7 @@ import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.toilet.ToiletCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.enumeration.ItemImportResponseStatus;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.testdata.prm.ToiletCsvTestData;
@@ -72,6 +73,7 @@ class ToiletImportServiceTest {
     toiletVersion.setSloid(toiletCsvModelContainer.getSloid());
     toiletVersion.setParentServicePointSloid(SLOID);
     toiletVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8576646));
+    toiletVersion.setStatus(Status.VALIDATED);
     toiletRepository.saveAndFlush(toiletVersion);
     doNothing().when(stopPointService).checkStopPointExists(any());
     //when

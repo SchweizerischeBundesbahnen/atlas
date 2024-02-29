@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.RelationVersion.RelationVersionBuilder;
@@ -17,6 +18,7 @@ public class RelationTestData {
       ReferencePointElementType referencePointElementType) {
     return RelationVersion.builder()
         .sloid(sloid)
+        .status(Status.VALIDATED)
         .referencePointSloid("ch:1:sloid:123456")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -32,6 +34,7 @@ public class RelationTestData {
   public static RelationVersionBuilder<?, ?> builderVersion1(){
     return RelationVersion.builder()
         .sloid("ch:1:sloid:123456:1")
+        .status(Status.VALIDATED)
         .referencePointSloid("ch:1:sloid:123456")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
@@ -46,6 +49,7 @@ public class RelationTestData {
   public static RelationVersionBuilder<?, ?> builderVersion2(){
     return RelationVersion.builder()
         .sloid("ch:1:sloid:123456:1")
+        .status(Status.VALIDATED)
         .referencePointSloid("ch:1:sloid:123456")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2001, 1, 1))
@@ -60,6 +64,7 @@ public class RelationTestData {
   public static RelationVersionBuilder<?, ?> builderVersion3(){
     return RelationVersion.builder()
         .sloid("ch:1:sloid:123456:1")
+        .status(Status.VALIDATED)
         .referencePointSloid("ch:1:sloid:123456")
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2003, 1, 1))

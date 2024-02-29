@@ -1,9 +1,18 @@
 package ch.sbb.prm.directory.service.dataimport;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.contactpoint.ContactPointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.enumeration.ItemImportResponseStatus;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.testdata.prm.ContactPointCsvTestData;
@@ -13,20 +22,11 @@ import ch.sbb.prm.directory.repository.ContactPointRepository;
 import ch.sbb.prm.directory.service.PrmLocationService;
 import ch.sbb.prm.directory.service.StopPointService;
 import jakarta.transaction.Transactional;
+import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 @IntegrationTest
 @Transactional
 class ContactPointImportServiceTest {
@@ -71,6 +71,7 @@ class ContactPointImportServiceTest {
         contactPointVersion.setSloid(contactPointCsvModelContainer.getSloid());
         contactPointVersion.setParentServicePointSloid(SLOID);
         contactPointVersion.setNumber(ServicePointNumber.ofNumberWithoutCheckDigit(8576646));
+        contactPointVersion.setStatus(Status.VALIDATED);
         contactPointRepository.saveAndFlush(contactPointVersion);
         doNothing().when(stopPointService).checkStopPointExists(any());
         //when
