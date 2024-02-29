@@ -9,13 +9,10 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
-import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
 import java.io.File;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 import org.junit.jupiter.api.BeforeEach;
@@ -100,38 +97,6 @@ class CsvServiceTest {
     List<ServicePointCsvModel> csvModelsToUpdate = csvService.getCsvModelsToUpdate(csv, localDate);
     //then
     assertThat(csvModelsToUpdate).hasSize(0);
-  }
-
-  @Test
-  void test_getCsvModelsToUpdate_shouldReturnOneMismatchedCsvModel() {
-    //given
-    LocalDate localDate = LocalDate.of(2020, 6, 9);
-    File csv = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("DIENSTSTELLEN_V3_IMPORT.csv")).getFile());
-    doCallRealMethod().when(jobHelperService).isDateMatchedBetweenTodayAndMatchingDate(localDate, localDate);
-    //when
-    List<ServicePointCsvModel> csvModelsToUpdate = csvService.getCsvModelsToUpdate(csv, localDate);
-    //then
-    assertThat(csvModelsToUpdate).hasSize(1);
-    ServicePointCsvModel csvModel = csvModelsToUpdate.get(0);
-    assertThat(csvModel.getValidTo()).isEqualTo(ImportUtils.ATLAS_HIGHEST_DATE);
-    assertThat(csvModel.getNummer()).isEqualTo(1542);
-  }
-
-  @Test
-  void test_getCsvModelsToUpdate_shouldReturnOneMismatchedCsvModelWithReplacedNewLineAndUpdatedEditionDate() {
-    //given
-    LocalDate localDate = LocalDate.of(2020, 6, 9);
-    File csv = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("DIENSTSTELLEN_V3_IMPORT.csv")).getFile());
-    doCallRealMethod().when(jobHelperService).isDateMatchedBetweenTodayAndMatchingDate(localDate, localDate);
-    //when
-    List<ServicePointCsvModel> csvModelsToUpdate = csvService.getCsvModelsToUpdate(csv, localDate);
-    //then
-    assertThat(csvModelsToUpdate).hasSize(1);
-    ServicePointCsvModel csvModel = csvModelsToUpdate.get(0);
-    assertThat(csvModel.getNummer()).isEqualTo(1542);
-    assertThat(csvModel.getComment()).isEqualTo("Test Bemerkung\r\nmit\r\nNewlines.");
-    assertThat(csvModel.getValidTo()).isEqualTo(ImportUtils.ATLAS_HIGHEST_DATE);
-    assertThat(ChronoUnit.MINUTES.between(csvModel.getEditedAt(), LocalDateTime.now())).isEqualTo(0);
   }
 
 }

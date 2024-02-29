@@ -5,6 +5,7 @@ import static org.mockito.MockitoAnnotations.openMocks;
 
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModel;
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModelContainer;
+import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.testdata.prm.PlatformCsvTestData;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
@@ -100,7 +101,7 @@ class PlatformCsvServiceTest {
     PlatformCsvModel platformCsvModel1 = PlatformCsvTestData.getCsvModel();
     PlatformCsvModel platformCsvModel2 = PlatformCsvTestData.getCsvModel();
     platformCsvModel2.setValidFrom(LocalDate.of(2021, 1, 1));
-    platformCsvModel2.setValidTo(LocalDate.of(2099, 12, 31));
+    platformCsvModel2.setValidTo(ImportUtils.DIDOK_HIGEST_DATE);
     platformCsvModel2.setHeight(15.0);
     List<PlatformCsvModel> csvModels = List.of(platformCsvModel1, platformCsvModel2);
 
@@ -114,7 +115,7 @@ class PlatformCsvServiceTest {
     assertThat(result.get(0).getCsvModels().get(0).getValidFrom()).isEqualTo(platformCsvModel1.getValidFrom());
     assertThat(result.get(0).getCsvModels().get(0).getValidTo()).isEqualTo(platformCsvModel1.getValidTo());
     assertThat(result.get(0).getCsvModels().get(1).getValidFrom()).isEqualTo(platformCsvModel2.getValidFrom());
-    assertThat(result.get(0).getCsvModels().get(1).getValidTo()).isEqualTo(LocalDate.of(9999, 12, 31));
+    assertThat(result.get(0).getCsvModels().get(1).getValidTo()).isEqualTo(ImportUtils.ATLAS_HIGHEST_DATE);
   }
 
   @Test
