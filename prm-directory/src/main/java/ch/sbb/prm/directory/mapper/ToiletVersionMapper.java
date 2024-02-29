@@ -15,6 +15,7 @@ public class ToiletVersionMapper {
   public static ReadToiletVersionModel toModel(ToiletVersion version){
     return ReadToiletVersionModel.builder()
         .id(version.getId())
+        .status(version.getStatus())
         .sloid(version.getSloid())
         .parentServicePointSloid(version.getParentServicePointSloid())
         .number(version.getNumber())
