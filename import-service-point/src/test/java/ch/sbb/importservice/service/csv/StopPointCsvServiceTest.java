@@ -67,7 +67,6 @@ class StopPointCsvServiceTest {
     assertThat(result.get(0).getStopPointCsvModels()).hasSize(1);
     assertThat(result.get(0).getStopPointCsvModels().get(0).getValidFrom()).isEqualTo(stopPointCsvModel1.getValidFrom());
     assertThat(result.get(0).getStopPointCsvModels().get(0).getValidTo()).isEqualTo(stopPointCsvModel2.getValidTo());
-
   }
 
   @Test
@@ -85,7 +84,6 @@ class StopPointCsvServiceTest {
     assertThat(result).hasSize(1);
     assertThat(result.get(0).getStopPointCsvModels()).hasSize(1);
     assertThat(result.get(0).getStopPointCsvModels().get(0).getTransportationMeans()).isEqualTo("~U~");
-
   }
 
   @Test
@@ -107,7 +105,53 @@ class StopPointCsvServiceTest {
     assertThat(result).hasSize(1);
     assertThat(result.get(0).getStopPointCsvModels()).hasSize(1);
     assertThat(result.get(0).getStopPointCsvModels().get(0).getStatus()).isEqualTo(1);
+  }
 
+  @Test
+  void shouldSetReplaceHighDateDataForStopPoints() {
+    // given
+    StopPointCsvModel stopPointCsvModel1 = StopPointCsvTestData.getStopPointCsvModel();
+    StopPointCsvModel stopPointCsvModel2 = StopPointCsvTestData.getStopPointCsvModel();
+    stopPointCsvModel2.setValidFrom(stopPointCsvModel1.getValidTo().plusDays(1));
+    stopPointCsvModel2.setValidTo(LocalDate.of(2099, 12, 31));
+    List<StopPointCsvModel> csvModels = List.of(stopPointCsvModel1, stopPointCsvModel2);
+    LocalDate now = LocalDate.now();
+
+    // when
+    List<StopPointCsvModelContainer> result = stopPointCsvService.mapToStopPointCsvModelContainers(
+        csvModels);
+
+    //then
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0).getStopPointCsvModels()).hasSize(1);
+    assertThat(result.get(0).getStopPointCsvModels().get(0).getValidFrom()).isEqualTo(stopPointCsvModel1.getValidFrom());
+    assertThat(result.get(0).getStopPointCsvModels().get(0).getValidTo()).isEqualTo(LocalDate.of(9999, 12, 31));
+    assertThat(result.get(0).getStopPointCsvModels().get(0).getModifiedAt().toLocalDate()).isEqualTo(now);
+  }
+
+  @Test
+  void shouldSetReplaceNewLineForStopPoints() {
+    // given
+    StopPointCsvModel stopPointCsvModel1 = StopPointCsvTestData.getStopPointCsvModel();
+    stopPointCsvModel1.setCompInfos("Desc $newline$ of $newline$ this model.");
+    StopPointCsvModel stopPointCsvModel2 = StopPointCsvTestData.getStopPointCsvModel();
+    stopPointCsvModel2.setCompInfos("Desc $newline$ of $newline$ this model.");
+    stopPointCsvModel2.setValidFrom(stopPointCsvModel1.getValidTo().plusDays(1));
+    stopPointCsvModel2.setValidTo(LocalDate.of(2021, 12, 31));
+    List<StopPointCsvModel> csvModels = List.of(stopPointCsvModel1, stopPointCsvModel2);
+    LocalDate now = LocalDate.now();
+
+    // when
+    List<StopPointCsvModelContainer> result = stopPointCsvService.mapToStopPointCsvModelContainers(
+        csvModels);
+
+    //then
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0).getStopPointCsvModels()).hasSize(1);
+    assertThat(result.get(0).getStopPointCsvModels().get(0).getValidFrom()).isEqualTo(stopPointCsvModel1.getValidFrom());
+    assertThat(result.get(0).getStopPointCsvModels().get(0).getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
+    assertThat(result.get(0).getStopPointCsvModels().get(0).getCompInfos()).isEqualTo("Desc \r\n of \r\n this model.");
+    assertThat(result.get(0).getStopPointCsvModels().get(0).getModifiedAt().toLocalDate()).isEqualTo(now);
   }
 
 }
