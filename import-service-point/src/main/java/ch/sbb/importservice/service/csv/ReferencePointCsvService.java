@@ -1,5 +1,6 @@
 package ch.sbb.importservice.service.csv;
 
+import static ch.sbb.atlas.imports.util.ImportUtils.replaceNewLinesAndReplaceToDateWithHighestDate;
 import static ch.sbb.importservice.service.csv.CsvFileNameModel.SERVICEPOINT_DIDOK_DIR_NAME;
 
 import ch.sbb.atlas.imports.prm.referencepoint.ReferencePointCsvModel;
@@ -53,17 +54,10 @@ public class ReferencePointCsvService extends PrmCsvService<ReferencePointCsvMod
         Map<String, List<ReferencePointCsvModel>> groupedReferencePoints = filterForActive(referencePointCsvModels).stream()
                 .collect(Collectors.groupingBy(ReferencePointCsvModel::getSloid));
         List<ReferencePointCsvModelContainer> result = new ArrayList<>(
-                groupedReferencePoints.entrySet().stream().map(toContainer()).toList()); // here is result ok and after merge
-        // not any more
+                groupedReferencePoints.entrySet().stream().map(toContainer()).toList());
         mergeReferencePoints(result);
-        // commented out
-//        result.forEach(res -> {
-//            try {
-//                replaceData(res.getCsvModels());
-//            } catch (IllegalAccessException e) {
-//                throw new CsvException(e);
-//            }
-//        });
+        result.forEach(container ->
+            replaceNewLinesAndReplaceToDateWithHighestDate(container.getCsvModels()));
         return result;
     }
 
@@ -110,13 +104,6 @@ public class ReferencePointCsvService extends PrmCsvService<ReferencePointCsvMod
 
         log.info("Total Merged equals ReferencePoint versions {}", mergedSloids.size());
         log.info("Merged equals ReferencePoint Sloids {}", mergedSloids);
-    }
-
-    private void replaceDataAnotherTry(List<ReferencePointCsvModelContainer> csvModelContainers) {
-        csvModelContainers.forEach(
-                container -> {
-                    replaceDataBo(container.getCsvModels());
-                });
     }
 
 }

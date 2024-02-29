@@ -1,5 +1,6 @@
 package ch.sbb.importservice.service.csv;
 
+import static ch.sbb.atlas.imports.util.ImportUtils.replaceNewLinesAndReplaceToDateWithHighestDate;
 import static ch.sbb.importservice.service.csv.CsvFileNameModel.SERVICEPOINT_DIDOK_DIR_NAME;
 
 import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
@@ -63,6 +64,8 @@ public class ContactPointCsvService extends PrmCsvService<ContactPointCsvModel>{
         List<ContactPointCsvModelContainer> result = new ArrayList<>(
                 groupedContactPoints.entrySet().stream().map(toContainer()).toList());
         mergeContactPoints(result);
+        result.forEach(container ->
+            replaceNewLinesAndReplaceToDateWithHighestDate(container.getCsvModels()));
         return result;
     }
 
