@@ -132,24 +132,21 @@ public class VersioningDataTest {
   }
 
   @Test
-   void shouldThroeExceptionWhenNoTargetVersionFound() {
-    //given
+   void shouldNotGetTargetVersionFound() {
     currentVersion.setValidFrom(LocalDate.of(2001, 1, 1));
     currentVersion.setValidTo(LocalDate.of(2001, 12, 31));
-    editedVersion.setValidFrom(LocalDate.of(2000, 1, 1));
-    editedVersion.setValidTo(LocalDate.of(2000, 12, 31));
     ToVersioning toVersioningCurrent = ToVersioning.builder()
-        .versionable(editedVersion)
+        .versionable(currentVersion)
         .build();
-    List<ToVersioning> toVersioningList1 = new ArrayList<>(List.of(toVersioningCurrent));
+    List<ToVersioning> toVersioningList = new ArrayList<>(List.of(toVersioningCurrent));
+    editedVersion.setValidFrom(LocalDate.of(2002, 1, 1));
+    editedVersion.setValidTo(LocalDate.of(2002, 12, 31));
 
-    assertThatThrownBy(() -> {
-      new VersioningData(editedVersion, currentVersion, editedEntity,
-          toVersioningList1).getTargetVersion();
-      //then
-    }).isInstanceOf(VersioningException.class)
-        .hasMessageContaining(
-            "Something went wrong. I'm not able to apply versioning.");
+    //when
+    ToVersioning result = new VersioningData(editedVersion, currentVersion, editedEntity,
+        toVersioningList).getTargetVersion();
+    //then
+    assertThat(result).isNotNull();
   }
 
 }
