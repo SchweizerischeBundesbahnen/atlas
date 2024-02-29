@@ -73,19 +73,20 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   public ReferencePointVersion save(ReferencePointVersion version) {
     referencePointValidationService.validatePreconditionBusinessRule(version);
     stopPointService.validateIsNotReduced(version.getParentServicePointSloid());
-
-    setEditionDateAndEditor(version);
+    initDefaultData(version);
     return referencePointRepository.saveAndFlush(version);
   }
 
   public ReferencePointVersion saveForImport(ReferencePointVersion version) {
     stopPointService.validateIsNotReduced(version.getParentServicePointSloid());
+    setStatusToValidate(version);
     return referencePointRepository.saveAndFlush(version);
   }
 
   public ReferencePointVersion createReferencePointThroughImport(ReferencePointVersion version) {
     stopPointService.validateIsNotReduced(version.getParentServicePointSloid());
     locationService.allocateSloid(version, SloidType.REFERENCE_POINT);
+    setStatusToValidate(version);
     return referencePointRepository.saveAndFlush(version);
   }
 
@@ -106,7 +107,7 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
     stopPointService.validateIsNotReduced(referencePointVersion.getParentServicePointSloid());
     referencePointValidationService.validatePreconditionBusinessRule(referencePointVersion);
     locationService.allocateSloid(referencePointVersion, SloidType.REFERENCE_POINT);
-
+    setStatusToValidate(referencePointVersion);
     searchAndUpdatePlatformRelation(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
     searchAndUpdateToiletRelation(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
     searchAndUpdateContactPoint(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());

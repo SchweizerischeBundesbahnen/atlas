@@ -13,6 +13,7 @@ public class PlatformVersionMapper {
   public static ReadPlatformVersionModel toModel(PlatformVersion version){
     return ReadPlatformVersionModel.builder()
         .id(version.getId())
+        .status(version.getStatus())
         .sloid(version.getSloid())
         .parentServicePointSloid(version.getParentServicePointSloid())
         .number(version.getNumber())

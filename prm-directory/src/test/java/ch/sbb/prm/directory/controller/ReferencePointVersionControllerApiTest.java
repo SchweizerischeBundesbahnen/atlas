@@ -18,6 +18,7 @@ import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReferencePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ContactPointTestData;
@@ -27,6 +28,7 @@ import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.SharedServicePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.ToiletTestData;
+import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.ContactPointVersion;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.PlatformVersion;
@@ -113,7 +115,8 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
     //when & then
     mvc.perform(get("/v1/reference-points"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects", hasSize(1)));
+        .andExpect(jsonPath("$.objects", hasSize(1)))
+        .andExpect(jsonPath("$.objects[0]." + Fields.status, is(Status.VALIDATED.name())));
   }
 
   @Test

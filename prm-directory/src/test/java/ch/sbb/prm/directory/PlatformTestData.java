@@ -10,6 +10,7 @@ import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.PlatformVersion.PlatformVersionBuilder;
@@ -25,6 +26,7 @@ public class PlatformTestData {
   public static PlatformVersion getPlatformVersion() {
     return PlatformVersion.builder()
         .sloid("ch:1:sloid:12345:1")
+        .status(Status.VALIDATED)
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
@@ -57,6 +59,7 @@ public class PlatformTestData {
   public static PlatformVersion getCompletePlatformVersion() {
     return PlatformVersion.builder()
         .sloid("ch:1:sloid:12345:1")
+        .status(Status.VALIDATED)
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
@@ -77,6 +80,7 @@ public class PlatformTestData {
   public static PlatformVersion getReducedPlatformVersion() {
     return PlatformVersion.builder()
         .sloid("ch:1:sloid:12345:1")
+        .status(Status.VALIDATED)
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
@@ -95,6 +99,7 @@ public class PlatformTestData {
   public static PlatformVersionModel getPlatformVersionModel() {
     return PlatformVersionModel.builder()
         .sloid("ch:1:sloid:12345:1")
+        .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .parentServicePointSloid("ch:1:sloid:12345")
@@ -123,6 +128,7 @@ public class PlatformTestData {
   public static PlatformVersionModel getCreateCompletePlatformVersionModel() {
     return PlatformVersionModel.builder()
         .sloid("ch:1:sloid:12345:1")
+        .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .parentServicePointSloid("ch:1:sloid:12345")
@@ -143,6 +149,7 @@ public class PlatformTestData {
   public static PlatformVersionModel getCreateReducedPlatformVersionModel() {
     return PlatformVersionModel.builder()
         .sloid("ch:1:sloid:12345:1")
+        .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2003, 1, 1))
         .validTo(LocalDate.of(2003, 12, 31))
         .parentServicePointSloid("ch:1:sloid:12345")
@@ -160,6 +167,7 @@ public class PlatformTestData {
   public static PlatformVersionBuilder<?, ?> builderVersion1() {
     return PlatformVersion.builder()
         .sloid("ch:1:sloid:12345:1")
+        .status(Status.VALIDATED)
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
@@ -187,6 +195,7 @@ public class PlatformTestData {
   public static PlatformVersionBuilder<?, ?> builderCompleteVersion1() {
     return PlatformVersion.builder()
         .sloid("ch:1:sloid:12345:1")
+        .status(Status.VALIDATED)
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
@@ -206,6 +215,7 @@ public class PlatformTestData {
   public static PlatformVersionBuilder<?, ?> builderCompleteVersion2() {
     return PlatformVersion.builder()
         .sloid("ch:1:sloid:12345:1")
+        .status(Status.VALIDATED)
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2002, 12, 31))
@@ -225,6 +235,7 @@ public class PlatformTestData {
   public static PlatformVersionBuilder<?, ?> builderCompleteVersion3() {
     return PlatformVersion.builder()
         .sloid("ch:1:sloid:12345:1")
+        .status(Status.VALIDATED)
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2003, 1, 1))
         .validTo(LocalDate.of(2003, 12, 31))
@@ -244,6 +255,7 @@ public class PlatformTestData {
   public static PlatformVersionBuilder<?, ?> builderVersion2() {
     return PlatformVersion.builder()
         .sloid("ch:1:sloid:12345:1")
+        .status(Status.VALIDATED)
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2002, 12, 31))
@@ -271,6 +283,7 @@ public class PlatformTestData {
   public static PlatformVersionBuilder<?, ?> builderVersion3() {
     return PlatformVersion.builder()
         .sloid("ch:1:sloid:12345:1")
+        .status(Status.VALIDATED)
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2003, 1, 1))
         .validTo(LocalDate.of(2003, 12, 31))
@@ -298,6 +311,7 @@ public class PlatformTestData {
   public static PlatformVersionBuilder<?, ?> builderReducedVersion1() {
     return PlatformVersion.builder()
         .sloid("ch:1:sloid:12345:1")
+        .status(Status.VALIDATED)
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
@@ -315,6 +329,7 @@ public class PlatformTestData {
   public static PlatformVersionBuilder<?, ?> builderReducedVersion2() {
     return PlatformVersion.builder()
         .sloid("ch:1:sloid:12345:1")
+        .status(Status.VALIDATED)
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2002, 12, 31))
@@ -331,6 +346,7 @@ public class PlatformTestData {
   public static PlatformVersionBuilder<?, ?> builderReducedVersion3() {
     return PlatformVersion.builder()
         .sloid("ch:1:sloid:12345:1")
+        .status(Status.VALIDATED)
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2003, 1, 1))
         .validTo(LocalDate.of(2003, 12, 31))

@@ -11,9 +11,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.SharedServicePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
+import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
@@ -48,7 +50,8 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount", is(1)))
         .andExpect(jsonPath("$.objects[0].id", is(version.getId().intValue())))
-        .andExpect(jsonPath("$.objects[0].number.number", is(version.getNumber().getNumber())));
+        .andExpect(jsonPath("$.objects[0].number.number", is(version.getNumber().getNumber())))
+        .andExpect(jsonPath("$.objects[0]." + Fields.status, is(Status.VALIDATED.name())));
   }
 
   @Test
@@ -206,7 +209,6 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
    * NEU:      |______________________|
    * IST:      |-------------------------------------------------------
    * Version:                            1
-   *
    * RESULTAT: |----------------------| Version wird per xx aufgehoben
    * Version:         1
    */
@@ -260,8 +262,10 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$", hasSize(2)))
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2000-01-01")))
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2000-12-31")))
+        .andExpect(jsonPath("$[0]." + Fields.status, is(Status.VALIDATED.name())))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2001-01-01")))
-        .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2001-12-31")));
+        .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2001-12-31")))
+        .andExpect(jsonPath("$[1]." + Fields.status, is(Status.VALIDATED.name())));
   }
 
   @Test

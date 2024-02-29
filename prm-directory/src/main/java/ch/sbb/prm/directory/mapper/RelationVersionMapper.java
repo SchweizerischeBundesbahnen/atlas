@@ -12,6 +12,7 @@ public class RelationVersionMapper {
   public static ReadRelationVersionModel toModel(RelationVersion version){
     return ReadRelationVersionModel.builder()
         .id(version.getId())
+        .status(version.getStatus())
         .elementSloid(version.getSloid())
         .referencePointSloid(version.getReferencePointSloid())
         .referencePointElementType(version.getReferencePointElementType())

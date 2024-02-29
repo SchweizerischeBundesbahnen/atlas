@@ -1,5 +1,6 @@
 package ch.sbb.atlas.api.model;
 
+import ch.sbb.atlas.model.Status;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import java.time.LocalDateTime;
@@ -25,5 +26,8 @@ public abstract class BaseVersionModel {
 
   @Schema(description = "User editor", example = "u123456", accessMode = AccessMode.READ_ONLY)
   private String editor;
+
+  @Schema(description = "Status", accessMode = AccessMode.READ_ONLY)
+  private Status status;
 
 }
