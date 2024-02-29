@@ -10,7 +10,7 @@ public class RelationCsvToModelMapper {
     public RelationVersionModel toModel(RelationCsvModel relationCsvModel) {
         return RelationVersionModel.builder()
                 .parentServicePointSloid(relationCsvModel.getDsSloid())
-                .sloid(relationCsvModel.getSloid())
+                .elementSloid(relationCsvModel.getSloid())
                 .referencePointSloid(relationCsvModel.getRpSloid())
                 .referencePointElementType(ReferencePointElementType.valueOf(relationCsvModel.getElType().toUpperCase()))
                 .tactileVisualMarks(TactileVisualAttributeType.of(relationCsvModel.getTactVisualMarks()))
