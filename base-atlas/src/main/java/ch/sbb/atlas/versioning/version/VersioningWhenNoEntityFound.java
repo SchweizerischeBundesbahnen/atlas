@@ -21,35 +21,41 @@ public class VersioningWhenNoEntityFound implements Versioning {
   @Override
   public List<VersionedObject> applyVersioning(VersioningData vd) {
     log.info("Apply versioning when no entity found.");
-    if (isVersionOverTheRightBorder(vd)) {
+    ToVersioning rightBorderVersion = getRightBorderVersion(vd);
+    if (isVersionOverTheRightBorder(rightBorderVersion, vd.getEditedValidFrom())) {
       log.info("Match over the right border.");
-      return applyVersioningOverTheBorder(vd, vd.getTargetVersion());
+      return applyVersioningOverTheBorder(vd, rightBorderVersion);
     }
-    if (isVersionOverTheLeftBorder(vd)) {
+    ToVersioning leftBorderVersion = getLeftBorderVersion(vd);
+    if (isVersionOverTheLeftBorder(leftBorderVersion, vd.getEditedValidTo())) {
       log.info("Match over the left border.");
-      return applyVersioningOverTheBorder(vd, vd.getTargetVersion());
+      return applyVersioningOverTheBorder(vd, leftBorderVersion);
     }
     if (isThereGapBetweenVersions(vd.getObjectsToVersioning())) {
       log.info("Match a gap between two objects.");
       return applyVersioningOnTheGap(vd);
     }
-    throw new VersioningException(
-        "Something went wrong. I'm not able to apply versioning on this scenario.");
+    throw new VersioningException("Something went wrong. I'm not able to apply versioning on this scenario.");
   }
 
-  private List<VersionedObject> applyVersioningOverTheBorder(VersioningData vd,
-      ToVersioning borderVersion) {
-    Entity entityToAdd = replaceEditedPropertiesWithCurrentProperties(
-        vd.getEditedEntity(),
-        borderVersion.getEntity());
-    VersionedObject versionedObject = buildVersionedObjectToCreate(vd.getEditedValidFrom(),
-        vd.getEditedValidTo(), entityToAdd);
+  private ToVersioning getLeftBorderVersion(VersioningData vd) {
+    return vd.getTargetVersion() != null ? vd.getTargetVersion() : vd.getObjectsToVersioning().get(0);
+  }
+
+  private static ToVersioning getRightBorderVersion(VersioningData vd) {
+    return vd.getTargetVersion() != null ? vd.getTargetVersion()
+        : vd.getObjectsToVersioning().get(vd.getObjectsToVersioning().size() - 1);
+  }
+
+  private List<VersionedObject> applyVersioningOverTheBorder(VersioningData vd, ToVersioning borderVersion) {
+    Entity entityToAdd = replaceEditedPropertiesWithCurrentProperties(vd.getEditedEntity(), borderVersion.getEntity());
+    VersionedObject versionedObject = buildVersionedObjectToCreate(vd.getEditedValidFrom(), vd.getEditedValidTo(), entityToAdd);
     return List.of(versionedObject);
   }
 
   private List<VersionedObject> applyVersioningOnTheGap(VersioningData vd) {
-    ToVersioning toVersioningBeforeGap = getPreviouslyToVersioningObjectMatchedOnGapBetweenTwoVersions(
-        vd.getEditedValidFrom(), vd.getEditedValidTo(), vd.getObjectsToVersioning());
+    ToVersioning toVersioningBeforeGap = getPreviouslyToVersioningObjectMatchedOnGapBetweenTwoVersions(vd.getEditedValidFrom(),
+        vd.getEditedValidTo(), vd.getObjectsToVersioning());
     if (toVersioningBeforeGap == null) {
       throw new VersioningException();
     }
