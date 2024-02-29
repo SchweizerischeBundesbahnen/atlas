@@ -22,12 +22,12 @@ public class RelationCsvTestData {
 
     public static RelationCsvModel getCsvModel() {
         return RelationCsvModel.builder()
-                .sloid("ch:1:el:7000:2")
+                .sloid("ch:1:sloid:294:787306")
                 .dsSloid("ch:1:sloid:294")
                 .didokCode(85002949)
                 .status(1)
                 .elType("platform")
-                .rpSloid("ch:1:ref:5000:1")
+                .rpSloid("ch:1:sloid:294:1")
                 .contrastingAreas(1)
                 .stepFreeAccess(1)
                 .tactVisualMarks(1)
