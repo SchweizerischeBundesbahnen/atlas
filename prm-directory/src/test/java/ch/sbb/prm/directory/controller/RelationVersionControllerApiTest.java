@@ -4,7 +4,6 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -15,7 +14,6 @@ import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.relation.RelationVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
-import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.relation.RelationCsvModel;
 import ch.sbb.atlas.imports.prm.relation.RelationCsvModelContainer;
 import ch.sbb.atlas.imports.prm.relation.RelationImportRequestModel;
@@ -35,15 +33,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import ch.sbb.prm.directory.service.*;
 import ch.sbb.prm.directory.service.dataimport.RelationImportService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -52,9 +46,6 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
   private final RelationRepository relationRepository;
   private final StopPointRepository stopPointRepository;
   private final SharedServicePointRepository sharedServicePointRepository;
-
-  @MockBean
-  private StopPointService stopPointService;
 
   @MockBean
   private final RelationImportService relationImportService;
