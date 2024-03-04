@@ -1,4 +1,4 @@
-package ch.sbb.importservice.exception;
+package ch.sbb.atlas.exception;
 
 public class CsvException extends RuntimeException {
 
