@@ -21,5 +21,7 @@ public interface PlatformRepository extends JpaRepository<PlatformVersion, Long>
 
   List<PlatformVersion> findAllBySloidOrderByValidFrom(String sloid);
 
+  List<PlatformVersion> findAllByParentServicePointSloid(String parentServicePointSloid) ;
+
   boolean existsBySloid(String sloid);
 }
