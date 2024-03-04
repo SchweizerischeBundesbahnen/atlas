@@ -36,7 +36,7 @@ public class RelationImportService extends BasePrmImportService<RelationVersion>
     private final PlatformService platformService;
     private final StopPointService stopPointService;
 
-    private final static String REFERENCE_POINT = "REFERENCE_POINT";
+    private static final String REFERENCE_POINT = "REFERENCE_POINT";
 
     @Override
     protected void save(RelationVersion version) {
