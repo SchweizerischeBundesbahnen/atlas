@@ -1,0 +1,116 @@
+package ch.sbb.prm.directory.service;
+
+import static ch.sbb.prm.directory.util.PrmVariantUtil.isChangingFromCompleteToReduced;
+import static ch.sbb.prm.directory.util.PrmVariantUtil.isChangingFromReducedToComplete;
+
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.prm.directory.entity.PlatformVersion;
+import ch.sbb.prm.directory.entity.ReferencePointVersion;
+import ch.sbb.prm.directory.entity.RelationVersion;
+import ch.sbb.prm.directory.entity.StopPointVersion;
+import ch.sbb.prm.directory.mapper.PlatformVersionMapper;
+import ch.sbb.prm.directory.mapper.StopPointVersionMapper;
+import ch.sbb.prm.directory.repository.PlatformRepository;
+import ch.sbb.prm.directory.repository.ReferencePointRepository;
+import ch.sbb.prm.directory.repository.RelationRepository;
+import ch.sbb.prm.directory.repository.StopPointRepository;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Slf4j
+@Service
+@Transactional
+public class PrmChangeRecordingVariantService {
+
+  private final StopPointRepository stopPointRepository;
+  private final PlatformRepository platformRepository;
+  private final ReferencePointRepository referencePointRepository;
+  private final RelationRepository relationRepository;
+
+  public PrmChangeRecordingVariantService(StopPointRepository stopPointRepository, PlatformRepository platformRepository,
+      ReferencePointRepository referencePointRepository, RelationRepository relationRepository) {
+    this.stopPointRepository = stopPointRepository;
+    this.platformRepository = platformRepository;
+    this.referencePointRepository = referencePointRepository;
+    this.relationRepository = relationRepository;
+  }
+
+  @PreAuthorize("@prmUserAdministrationService.isAtLeastPrmSupervisor()")
+  @Transactional
+  public StopPointVersion stopPointChangeRecordingVariant(StopPointVersion stopPointVersionToUpdate,
+      StopPointVersion editedVersion) {
+    if (isChangingFromCompleteToReduced(stopPointVersionToUpdate, editedVersion)) {
+      return stopPointChangeFromCompleteToReduced(stopPointVersionToUpdate, editedVersion);
+    }
+    if (isChangingFromReducedToComplete(stopPointVersionToUpdate, editedVersion)) {
+      return changeFromReduceToComplete(stopPointVersionToUpdate, editedVersion);
+    }
+    throw new IllegalStateException("Record variant must be different!");
+  }
+
+
+  private StopPointVersion stopPointChangeFromCompleteToReduced (StopPointVersion stopPointVersionToUpdate,
+      StopPointVersion editedVersion) {
+    StopPointVersion stopPointVersion = stopPointChangeRecordingVariant(stopPointVersionToUpdate,
+        editedVersion.getMeansOfTransport());
+    platformChangeRecordingVariant(stopPointVersionToUpdate.getParentServicePointSloid());
+    setStatusRevokedToReferencePoints(stopPointVersionToUpdate.getParentServicePointSloid());
+    deleteRelations(stopPointVersionToUpdate.getParentServicePointSloid());
+    return stopPointVersion;
+  }
+
+  private StopPointVersion changeFromReduceToComplete(StopPointVersion stopPointVersionToUpdate,
+      StopPointVersion editedVersion) {
+    StopPointVersion stopPointVersion = stopPointChangeRecordingVariant(stopPointVersionToUpdate,
+        editedVersion.getMeansOfTransport());
+    platformChangeRecordingVariant(stopPointVersionToUpdate.getParentServicePointSloid());
+    return stopPointVersion;
+  }
+
+  StopPointVersion stopPointChangeRecordingVariant(StopPointVersion stopPointVersion, Set<MeanOfTransport> meanOfTransports) {
+    List<StopPointVersion> stopPointVersions = stopPointRepository.findAllBySloidOrderByValidFrom(stopPointVersion.getSloid());
+    LocalDate validFrom = stopPointVersions.get(0).getValidFrom();
+    LocalDate validTo = stopPointVersions.get(stopPointVersions.size() - 1).getValidTo();
+    StopPointVersion changedRecordingVariantStopPointVersion = StopPointVersionMapper.resetToDefaultValue(stopPointVersion,
+        validFrom, validTo,
+        meanOfTransports);
+    stopPointRepository.deleteAllById(stopPointVersions.stream().map(StopPointVersion::getId).collect(Collectors.toSet()));
+    stopPointRepository.flush();
+    return stopPointRepository.saveAndFlush(changedRecordingVariantStopPointVersion);
+  }
+
+  void platformChangeRecordingVariant(String sloid) {
+    List<PlatformVersion> platformVersions = platformRepository.findAllByParentServicePointSloid(sloid);
+    if (!platformVersions.isEmpty()) {
+      LocalDate validFrom = platformVersions.get(0).getValidFrom();
+      LocalDate validTo = platformVersions.get(platformVersions.size() - 1).getValidTo();
+      PlatformVersion changedRecordingVariantStopPointVersion = PlatformVersionMapper.resetToDefaultValue(platformVersions.get(0),
+          validFrom, validTo);
+      platformRepository.deleteAllById(platformVersions.stream().map(PlatformVersion::getId).collect(Collectors.toSet()));
+      platformRepository.flush();
+      platformRepository.saveAndFlush(changedRecordingVariantStopPointVersion);
+    }
+  }
+
+  List<ReferencePointVersion> setStatusRevokedToReferencePoints(String sloid) {
+    List<ReferencePointVersion> referencePoints = referencePointRepository.findByParentServicePointSloid(sloid);
+    referencePoints.forEach(referencePointVersion -> {
+      referencePointVersion.setStatus(Status.REVOKED);
+      referencePointRepository.saveAndFlush(referencePointVersion);
+    });
+    return referencePoints;
+  }
+
+  private void deleteRelations(String parentServicePointSloid) {
+    List<RelationVersion> relations = relationRepository.findAllByParentServicePointSloid(parentServicePointSloid);
+    relationRepository.deleteAll(relations);
+  }
+
+}

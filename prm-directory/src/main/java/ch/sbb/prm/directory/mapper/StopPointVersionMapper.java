@@ -2,13 +2,19 @@ package ch.sbb.prm.directory.mapper;
 
 import static ch.sbb.atlas.servicepoint.Country.SWITZERLAND;
 
+import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
 import ch.sbb.atlas.location.SloidHelper;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.ServicePointNonSwissCountryNotAllowedException;
+import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Set;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @UtilityClass
 public class StopPointVersionMapper {
 
-  public static ReadStopPointVersionModel toModel(StopPointVersion version){
+  public static ReadStopPointVersionModel toModel(StopPointVersion version) {
     return ReadStopPointVersionModel.builder()
         .id(version.getId())
         .status(version.getStatus())
@@ -53,7 +59,8 @@ public class StopPointVersionMapper {
         .isReduced(version.isReduced())
         .build();
   }
-  public static StopPointVersion toEntity(StopPointVersionModel model){
+
+  public static StopPointVersion toEntity(StopPointVersionModel model) {
     return StopPointVersion.builder()
         .id(model.getId())
         .sloid(model.getSloid())
@@ -95,6 +102,32 @@ public class StopPointVersionMapper {
       throw new ServicePointNonSwissCountryNotAllowedException(servicePointNumber);
     }
     return servicePointNumber;
+  }
+
+  public static StopPointVersion resetToDefaultValue(StopPointVersion version,
+      LocalDate validFrom, LocalDate validTo, Set<MeanOfTransport> meanOfTransports) {
+    return StopPointVersion.builder()
+        .sloid(version.getSloid())
+        .status(Status.VALIDATED)
+        .number(version.getNumber())
+        .validFrom(validFrom)
+        .validTo(validTo)
+        .meansOfTransport(meanOfTransports)
+        .alternativeTransport(StandardAttributeType.TO_BE_COMPLETED)
+        .assistanceAvailability(StandardAttributeType.TO_BE_COMPLETED)
+        .assistanceService(StandardAttributeType.TO_BE_COMPLETED)
+        .audioTicketMachine(StandardAttributeType.TO_BE_COMPLETED)
+        .dynamicAudioSystem(StandardAttributeType.TO_BE_COMPLETED)
+        .dynamicOpticSystem(StandardAttributeType.TO_BE_COMPLETED)
+        .visualInfo(StandardAttributeType.TO_BE_COMPLETED)
+        .wheelchairTicketMachine(StandardAttributeType.TO_BE_COMPLETED)
+        .assistanceRequestFulfilled(BooleanOptionalAttributeType.TO_BE_COMPLETED)
+        .ticketMachine(BooleanOptionalAttributeType.TO_BE_COMPLETED)
+        .creator(version.getCreator())
+        .creationDate(version.getCreationDate())
+        .editor(version.getEditor())
+        .editionDate(version.getEditionDate())
+        .build();
   }
 
 }
