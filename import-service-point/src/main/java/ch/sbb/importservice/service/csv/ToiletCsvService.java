@@ -1,5 +1,6 @@
 package ch.sbb.importservice.service.csv;
 
+import static ch.sbb.atlas.imports.util.ImportUtils.replaceNewLinesAndReplaceToDateWithHighestDate;
 import static ch.sbb.importservice.service.csv.CsvFileNameModel.SERVICEPOINT_DIDOK_DIR_NAME;
 
 import ch.sbb.atlas.imports.prm.toilet.ToiletCsvModel;
@@ -58,6 +59,8 @@ public class ToiletCsvService extends PrmCsvService<ToiletCsvModel> {
     List<ToiletCsvModelContainer> result = new ArrayList<>(groupedToilets.entrySet().stream().map(toContainer()).toList());
 
     mergeToilets(result);
+    result.forEach(container ->
+        replaceNewLinesAndReplaceToDateWithHighestDate(container.getCsvModels()));
     return result;
   }
 
