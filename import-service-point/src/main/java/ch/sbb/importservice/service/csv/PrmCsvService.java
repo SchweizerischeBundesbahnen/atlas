@@ -34,27 +34,27 @@ public abstract class PrmCsvService<T extends BasePrmCsvModel> extends CsvServic
   }
 
   public PrmCsvMergeResult<T> mergeSequentialEqualVersions(List<T> csvModels) {
-    List<T> stopPointCsvModelListMerged = new ArrayList<>();
+    List<T> csvModelListMerged = new ArrayList<>();
     if (csvModels.size() == 1) {
       return new PrmCsvMergeResult<>(csvModels);
     }
     List<String> mergedSloids = new ArrayList<>();
     if (csvModels.size() > 1) {
       csvModels.sort(comparing(T::getValidFrom));
-      stopPointCsvModelListMerged = new ArrayList<>(List.of(csvModels.get(0)));
+      csvModelListMerged = new ArrayList<>(List.of(csvModels.get(0)));
       for (int currentIndex = 1; currentIndex < csvModels.size(); currentIndex++) {
-        T previous = stopPointCsvModelListMerged.get(stopPointCsvModelListMerged.size() - 1);
+        T previous = csvModelListMerged.get(csvModelListMerged.size() - 1);
         T current = csvModels.get(currentIndex);
         if (DateHelper.areDatesSequential(previous.getValidTo(), current.getValidFrom())
             && current.equals(previous)) {
           removeCurrentVersionIncreaseNextValidTo(previous, current);
           mergedSloids.add(current.getSloid());
         } else {
-          stopPointCsvModelListMerged.add(current);
+          csvModelListMerged.add(current);
         }
       }
     }
-    return new PrmCsvMergeResult<>(stopPointCsvModelListMerged, mergedSloids);
+    return new PrmCsvMergeResult<>(csvModelListMerged, mergedSloids);
   }
 
   private void removeCurrentVersionIncreaseNextValidTo(BasePrmCsvModel previous, BasePrmCsvModel current) {
@@ -65,20 +65,20 @@ public abstract class PrmCsvService<T extends BasePrmCsvModel> extends CsvServic
     log.info("Version merged [{}]-[{}]", previous.getValidFrom(), current.getValidTo());
   }
 
-  public PrmCsvMergeResult<T> mergeEqualVersions(List<T> stopPointCsvModels) {
+  public PrmCsvMergeResult<T> mergeEqualVersions(List<T> csvModels) {
     List<T> csvModelListMerged = new ArrayList<>();
-    if (stopPointCsvModels.size() == 1) {
-      return new PrmCsvMergeResult<>(stopPointCsvModels);
+    if (csvModels.size() == 1) {
+      return new PrmCsvMergeResult<>(csvModels);
     }
     List<String> mergedSloids = new ArrayList<>();
-    if (stopPointCsvModels.size() > 1) {
-      stopPointCsvModels.sort(comparing(T::getValidFrom));
+    if (csvModels.size() > 1) {
+      csvModels.sort(comparing(T::getValidFrom));
       csvModelListMerged = new ArrayList<>(
-          List.of(stopPointCsvModels.get(0))
+          List.of(csvModels.get(0))
       );
-      for (int currentIndex = 1; currentIndex < stopPointCsvModels.size(); currentIndex++) {
+      for (int currentIndex = 1; currentIndex < csvModels.size(); currentIndex++) {
         T previous = csvModelListMerged.get(csvModelListMerged.size() - 1);
-        T current = stopPointCsvModels.get(currentIndex);
+        T current = csvModels.get(currentIndex);
         if (current.getValidFrom().isEqual(previous.getValidFrom()) && current.getValidTo().isEqual(previous.getValidTo())
             && current.equals(previous)) {
           log.info("Found duplicated version with number {}", previous.getSloid());

@@ -1,5 +1,6 @@
 package ch.sbb.importservice.service.csv;
 
+import static ch.sbb.atlas.imports.util.ImportUtils.replaceNewLinesAndReplaceToDateWithHighestDate;
 import static ch.sbb.importservice.service.csv.CsvFileNameModel.SERVICEPOINT_DIDOK_DIR_NAME;
 import static java.util.Comparator.comparing;
 
@@ -72,6 +73,8 @@ public class StopPointCsvService extends CsvService<StopPointCsvModel> {
     });
 
     mergeStopPoints(stopPointCsvModelContainers);
+    stopPointCsvModelContainers.forEach(container ->
+        replaceNewLinesAndReplaceToDateWithHighestDate(container.getStopPointCsvModels()));
     return stopPointCsvModelContainers;
   }
 
