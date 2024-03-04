@@ -1,19 +1,19 @@
 package ch.sbb.importservice.service.csv;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.MockitoAnnotations.openMocks;
+
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModel;
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModelContainer;
+import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.testdata.prm.PlatformCsvTestData;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
+import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.MockitoAnnotations.openMocks;
 
 class PlatformCsvServiceTest {
 
@@ -93,6 +93,56 @@ class PlatformCsvServiceTest {
     assertThat(result).hasSize(1);
     assertThat(result.get(0).getCsvModels()).hasSize(1);
     assertThat(result.get(0).getCsvModels().get(0).getStatus()).isEqualTo(1);
+  }
+
+  @Test
+  void shouldSetReplaceHighDateDataForPlatform() {
+    // given
+    PlatformCsvModel platformCsvModel1 = PlatformCsvTestData.getCsvModel();
+    PlatformCsvModel platformCsvModel2 = PlatformCsvTestData.getCsvModel();
+    platformCsvModel2.setValidFrom(LocalDate.of(2021, 1, 1));
+    platformCsvModel2.setValidTo(ImportUtils.DIDOK_HIGEST_DATE);
+    platformCsvModel2.setHeight(15.0);
+    List<PlatformCsvModel> csvModels = List.of(platformCsvModel1, platformCsvModel2);
+
+    // when
+    List<PlatformCsvModelContainer> result = platformCsvService.mapToPlatformCsvModelContainers(
+        csvModels);
+
+    //then
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0).getCsvModels()).hasSize(2);
+    assertThat(result.get(0).getCsvModels().get(0).getValidFrom()).isEqualTo(platformCsvModel1.getValidFrom());
+    assertThat(result.get(0).getCsvModels().get(0).getValidTo()).isEqualTo(platformCsvModel1.getValidTo());
+    assertThat(result.get(0).getCsvModels().get(1).getValidFrom()).isEqualTo(platformCsvModel2.getValidFrom());
+    assertThat(result.get(0).getCsvModels().get(1).getValidTo()).isEqualTo(ImportUtils.ATLAS_HIGHEST_DATE);
+  }
+
+  @Test
+  void shouldSetReplaceNewLineForPlatform() {
+    // given
+    PlatformCsvModel platformCsvModel1 = PlatformCsvTestData.getCsvModel();
+    platformCsvModel1.setAccessInfo("Desc $newline$ of $newline$ this model.");
+    PlatformCsvModel platformCsvModel2 = PlatformCsvTestData.getCsvModel();
+    platformCsvModel2.setAccessInfo("Desc $newline$ of $newline$ this model.");
+    platformCsvModel2.setValidFrom(LocalDate.of(2021, 1, 1));
+    platformCsvModel2.setValidTo(LocalDate.of(2021, 12, 31));
+    platformCsvModel2.setHeight(15.0);
+    List<PlatformCsvModel> csvModels = List.of(platformCsvModel1, platformCsvModel2);
+
+    // when
+    List<PlatformCsvModelContainer> result = platformCsvService.mapToPlatformCsvModelContainers(
+        csvModels);
+
+    //then
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0).getCsvModels()).hasSize(2);
+    assertThat(result.get(0).getCsvModels().get(0).getValidFrom()).isEqualTo(platformCsvModel1.getValidFrom());
+    assertThat(result.get(0).getCsvModels().get(0).getValidTo()).isEqualTo(platformCsvModel1.getValidTo());
+    assertThat(result.get(0).getCsvModels().get(0).getAccessInfo()).isEqualTo("Desc \r\n of \r\n this model.");
+    assertThat(result.get(0).getCsvModels().get(1).getValidFrom()).isEqualTo(platformCsvModel2.getValidFrom());
+    assertThat(result.get(0).getCsvModels().get(1).getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
+    assertThat(result.get(0).getCsvModels().get(1).getAccessInfo()).isEqualTo("Desc \r\n of \r\n this model.");
   }
 
 }
