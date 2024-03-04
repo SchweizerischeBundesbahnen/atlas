@@ -5,9 +5,8 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFOR
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -17,6 +16,7 @@ import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.relation.RelationVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.imports.ItemImportResult;
+import ch.sbb.atlas.imports.prm.relation.RelationCsvModel;
 import ch.sbb.atlas.imports.prm.relation.RelationCsvModelContainer;
 import ch.sbb.atlas.imports.prm.relation.RelationImportRequestModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -35,11 +35,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import ch.sbb.prm.directory.service.*;
 import ch.sbb.prm.directory.service.dataimport.RelationImportService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -49,20 +53,19 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
   private final StopPointRepository stopPointRepository;
   private final SharedServicePointRepository sharedServicePointRepository;
 
-  @Mock
-  private final RelationImportService relationImportService;
+  @MockBean
+  private StopPointService stopPointService;
 
-  @Mock
-  private final RelationController relationController;
+  @MockBean
+  private final RelationImportService relationImportService;
 
   @Autowired
   RelationVersionControllerApiTest(RelationRepository relationRepository, RelationImportService relationImportService, StopPointRepository stopPointRepository,
-                                   SharedServicePointRepository sharedServicePointRepository, RelationController relationController) {
+                                   SharedServicePointRepository sharedServicePointRepository) {
     this.relationRepository = relationRepository;
       this.relationImportService = relationImportService;
       this.stopPointRepository = stopPointRepository;
     this.sharedServicePointRepository = sharedServicePointRepository;
-      this.relationController = relationController;
   }
 
   @AfterEach
@@ -410,19 +413,36 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void testImportRelations() {
-    RelationImportRequestModel requestModel = createTestRequestModel();
-    List<ItemImportResult> expectedResults = new ArrayList<>();
-    when(relationImportService.importRelations(requestModel.getRelationCsvModelContainers()))
-            .thenReturn(expectedResults);
+  public void shouldCallImportRelationsService() throws Exception {
+    RelationCsvModel relationCsvModel1 = RelationCsvModel.builder()
+            .sloid("ch:1:sloid:7000:1")
+            .rpSloid("ch:1:sloid:5000:1")
+            .didokCode(123)
+            .tactVisualMarks(1)
+            .contrastingAreas(1)
+            .stepFreeAccess(1)
+            .status(1)
+            .elType("platform")
+            .dsSloid("ch:1:sloid:7000")
+            .build();
 
-    List<ItemImportResult> actualResults = relationController.importRelations(requestModel);
+    List<RelationCsvModel> csvModels = new ArrayList<>();
+    csvModels.add(relationCsvModel1);
 
-    assertEquals(expectedResults, actualResults);
-  }
+    RelationCsvModelContainer relationCsvModelContainer = RelationCsvModelContainer.builder()
+            .csvModels(csvModels)
+            .build();
 
-  private RelationImportRequestModel createTestRequestModel() {
     List<RelationCsvModelContainer> containers = new ArrayList<>();
-    return new RelationImportRequestModel(containers);
+    containers.add(relationCsvModelContainer);
+
+    RelationImportRequestModel requestModel = new RelationImportRequestModel(containers);
+
+    mvc.perform(post("/v1/relations/import")
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(requestModel)))
+            .andExpect(status().isOk());
+
+    verify(relationImportService, times(1)).importRelations(any());
   }
 }
