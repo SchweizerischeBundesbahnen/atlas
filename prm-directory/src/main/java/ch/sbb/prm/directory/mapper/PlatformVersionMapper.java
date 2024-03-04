@@ -1,9 +1,15 @@
 package ch.sbb.prm.directory.mapper;
 
+import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
 import ch.sbb.atlas.location.SloidHelper;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.prm.directory.entity.PlatformVersion;
+import java.time.LocalDate;
 import java.util.HashSet;
 import lombok.experimental.UtilityClass;
 
@@ -78,4 +84,25 @@ public class PlatformVersionMapper {
         .build();
   }
 
+  public static PlatformVersion resetToDefaultValue(PlatformVersion platformVersion, LocalDate validFrom, LocalDate validTo) {
+    return PlatformVersion.builder()
+        .sloid(platformVersion.getSloid())
+        .status(Status.VALIDATED)
+        .parentServicePointSloid(platformVersion.getParentServicePointSloid())
+        .number(SloidHelper.getServicePointNumber(platformVersion.getParentServicePointSloid()))
+        .validFrom(validFrom)
+        .validTo(validTo)
+        .contrastingAreas(BooleanOptionalAttributeType.TO_BE_COMPLETED)
+        .boardingDevice(BoardingDeviceAttributeType.TO_BE_COMPLETED)
+        .dynamicAudio(BasicAttributeType.TO_BE_COMPLETED)
+        .dynamicVisual(BasicAttributeType.TO_BE_COMPLETED)
+        .levelAccessWheelchair(BasicAttributeType.TO_BE_COMPLETED)
+        .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
+        .vehicleAccess(VehicleAccessAttributeType.TO_BE_COMPLETED)
+        .creator(platformVersion.getCreator())
+        .creationDate(platformVersion.getCreationDate())
+        .editor(platformVersion.getEditor())
+        .editionDate(platformVersion.getEditionDate())
+        .build();
+  }
 }
