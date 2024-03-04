@@ -1,5 +1,6 @@
 package ch.sbb.atlas.imports.util;
 
+import ch.sbb.atlas.exception.CsvException;
 import ch.sbb.atlas.imports.ImportDataModifier;
 import ch.sbb.atlas.imports.Importable;
 import ch.sbb.atlas.versioning.model.Property;
@@ -24,10 +25,15 @@ public class ImportUtils {
   public static final LocalDate DIDOK_HIGEST_DATE = LocalDate.of(2099, 12, 31);
   public static final LocalDate ATLAS_HIGHEST_DATE = LocalDate.of(9999, 12, 31);
 
-  public static <T extends ImportDataModifier> void replaceData(List<T> csvModels) throws IllegalAccessException {
-    replaceNewLines(csvModels);
+  public static <T extends ImportDataModifier> void replaceNewLinesAndReplaceToDateWithHighestDate(List<T> csvModels) {
+    try {
+      replaceNewLines(csvModels);
+    } catch (IllegalAccessException e) {
+      throw new CsvException(e);
+    }
     replaceToDateWithHighestDate(csvModels);
   }
+
   static <T extends ImportDataModifier> void replaceNewLines(List<T> csvModels) throws IllegalAccessException {
     Pattern pattern = Pattern.compile("\\$newline\\$");
     for (T csvModel : csvModels) {

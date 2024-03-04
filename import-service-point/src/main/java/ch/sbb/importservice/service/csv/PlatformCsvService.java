@@ -1,21 +1,21 @@
 package ch.sbb.importservice.service.csv;
 
+import static ch.sbb.atlas.imports.util.ImportUtils.replaceNewLinesAndReplaceToDateWithHighestDate;
+import static ch.sbb.importservice.service.csv.CsvFileNameModel.SERVICEPOINT_DIDOK_DIR_NAME;
+
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModel;
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModelContainer;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
 import ch.sbb.importservice.utils.JobDescriptionConstants;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static ch.sbb.importservice.service.csv.CsvFileNameModel.SERVICEPOINT_DIDOK_DIR_NAME;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
@@ -59,6 +59,8 @@ public class PlatformCsvService extends PrmCsvService<PlatformCsvModel> {
     List<PlatformCsvModelContainer> result = new ArrayList<>(groupedPlatforms.entrySet().stream().map(toContainer()).toList());
 
     mergePlatforms(result);
+    result.forEach(container ->
+        replaceNewLinesAndReplaceToDateWithHighestDate(container.getCsvModels()));
     return result;
   }
 
