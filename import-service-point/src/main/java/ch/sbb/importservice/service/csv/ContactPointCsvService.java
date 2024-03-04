@@ -1,21 +1,21 @@
 package ch.sbb.importservice.service.csv;
 
+import static ch.sbb.atlas.imports.util.ImportUtils.replaceNewLinesAndReplaceToDateWithHighestDate;
+import static ch.sbb.importservice.service.csv.CsvFileNameModel.SERVICEPOINT_DIDOK_DIR_NAME;
+
 import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
 import ch.sbb.atlas.imports.prm.contactpoint.ContactPointCsvModel;
 import ch.sbb.atlas.imports.prm.contactpoint.ContactPointCsvModelContainer;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static ch.sbb.importservice.service.csv.CsvFileNameModel.SERVICEPOINT_DIDOK_DIR_NAME;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
@@ -64,6 +64,8 @@ public class ContactPointCsvService extends PrmCsvService<ContactPointCsvModel>{
         List<ContactPointCsvModelContainer> result = new ArrayList<>(
                 groupedContactPoints.entrySet().stream().map(toContainer()).toList());
         mergeContactPoints(result);
+        result.forEach(container ->
+            replaceNewLinesAndReplaceToDateWithHighestDate(container.getCsvModels()));
         return result;
     }
 
