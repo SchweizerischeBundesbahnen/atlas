@@ -4,6 +4,8 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -14,6 +16,9 @@ import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.relation.RelationVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
+import ch.sbb.atlas.imports.ItemImportResult;
+import ch.sbb.atlas.imports.prm.relation.RelationCsvModelContainer;
+import ch.sbb.atlas.imports.prm.relation.RelationImportRequestModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.RelationTestData;
 import ch.sbb.prm.directory.SharedServicePointTestData;
@@ -25,10 +30,15 @@ import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
+
+import ch.sbb.prm.directory.service.dataimport.RelationImportService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,12 +49,20 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
   private final StopPointRepository stopPointRepository;
   private final SharedServicePointRepository sharedServicePointRepository;
 
+  @Mock
+  private final RelationImportService relationImportService;
+
+  @Mock
+  private final RelationController relationController;
+
   @Autowired
-  RelationVersionControllerApiTest(RelationRepository relationRepository,StopPointRepository stopPointRepository,
-                                   SharedServicePointRepository sharedServicePointRepository) {
+  RelationVersionControllerApiTest(RelationRepository relationRepository, RelationImportService relationImportService, StopPointRepository stopPointRepository,
+                                   SharedServicePointRepository sharedServicePointRepository, RelationController relationController) {
     this.relationRepository = relationRepository;
-    this.stopPointRepository = stopPointRepository;
+      this.relationImportService = relationImportService;
+      this.stopPointRepository = stopPointRepository;
     this.sharedServicePointRepository = sharedServicePointRepository;
+      this.relationController = relationController;
   }
 
   @AfterEach
@@ -391,4 +409,20 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.totalCount", is(0)));
   }
 
+  @Test
+  void testImportRelations() {
+    RelationImportRequestModel requestModel = createTestRequestModel();
+    List<ItemImportResult> expectedResults = new ArrayList<>();
+    when(relationImportService.importRelations(requestModel.getRelationCsvModelContainers()))
+            .thenReturn(expectedResults);
+
+    List<ItemImportResult> actualResults = relationController.importRelations(requestModel);
+
+    assertEquals(expectedResults, actualResults);
+  }
+
+  private RelationImportRequestModel createTestRequestModel() {
+    List<RelationCsvModelContainer> containers = new ArrayList<>();
+    return new RelationImportRequestModel(containers);
+  }
 }
