@@ -1,5 +1,6 @@
 package ch.sbb.atlas.imports.prm.stoppoint;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class StopPointImportRequestModel {
 
   @Schema(name = "List of StopPointCsvModelContainer to import")
+  @Parameter(description = "test")
   @NotNull
   @NotEmpty
   private List<StopPointCsvModelContainer> stopPointCsvModelContainers;
