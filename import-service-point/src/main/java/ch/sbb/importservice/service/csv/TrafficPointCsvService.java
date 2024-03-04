@@ -1,5 +1,6 @@
 package ch.sbb.importservice.service.csv;
 
+import static ch.sbb.atlas.imports.util.ImportUtils.replaceNewLinesAndReplaceToDateWithHighestDate;
 import static ch.sbb.importservice.service.csv.CsvFileNameModel.SERVICEPOINT_DIDOK_DIR_NAME;
 
 import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
@@ -69,7 +70,8 @@ public class TrafficPointCsvService extends CsvService<TrafficPointElementCsvMod
           trafficPointCsvModelContainer.mergeWhenDatesAreSequentialAndModelsAreEqual();
           return trafficPointCsvModelContainer;
         }).collect(Collectors.toList());
-
+    trafficPointCsvModelContainers.forEach(container ->
+        replaceNewLinesAndReplaceToDateWithHighestDate(container.getCsvModelList()));
     logInfo(trafficPointCsvModelContainers, trafficPointElementCsvModels);
     return trafficPointCsvModelContainers;
   }
