@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.service;
 
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -10,16 +11,15 @@ import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotOverviewModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
-import ch.sbb.prm.directory.entity.ParkingLotVersion;
-import ch.sbb.prm.directory.entity.ReferencePointVersion;
-import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.StopPointVersion;
+import ch.sbb.prm.directory.entity.*;
+import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
@@ -263,6 +263,20 @@ class ParkingLotServiceTest extends BasePrmServiceTest {
     //then
     assertThat(result.getContent()).hasSize(1);
     assertThat(result.getContent().getFirst().getId()).isEqualTo(parkingLot.getId());
+  }
+
+  @Test
+  public void testCheckParkingLotExists_Exists() {
+    ParkingLotVersion parkingLotVersion = ParkingLotTestData.getParkingLotVersion();
+    parkingLotVersion.setSloid("ch:1:sloid:12345:1");
+    parkingLotRepository.saveAndFlush(parkingLotVersion);
+
+    assertDoesNotThrow(() -> parkingLotService.checkParkingLotExists("ch:1:sloid:12345:1", PARKING_LOT.name()));
+  }
+
+  @Test
+  public void testCheckContactPointExists_DoesNotExist() {
+    assertThrows(ElementTypeDoesNotExistException.class, () -> parkingLotService.checkParkingLotExists("ch:1:sloid:12345:1", ReferencePointElementType.PARKING_LOT.name()));
   }
 
 }
