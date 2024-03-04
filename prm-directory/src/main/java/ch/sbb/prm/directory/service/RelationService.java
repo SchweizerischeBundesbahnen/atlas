@@ -26,7 +26,6 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
     super(versionableService);
     this.relationRepository = relationRepository;
     this.stopPointService = stopPointService;
-
   }
 
   public List<RelationVersion> getRelationsBySloid(String sloid) {

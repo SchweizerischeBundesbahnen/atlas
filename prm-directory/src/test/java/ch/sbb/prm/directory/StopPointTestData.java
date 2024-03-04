@@ -238,4 +238,35 @@ public class StopPointTestData {
         .ticketMachine(BooleanOptionalAttributeType.TO_BE_COMPLETED);
   }
 
+
+  public StopPointVersionBuilder<?, ?> builderVersionCompleteFull() {
+    return StopPointVersion.builder()
+        .sloid("ch:1:sloid:12345")
+        .status(Status.VALIDATED)
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8512345))
+        .validFrom(LocalDate.of(2003, 1, 1))
+        .validTo(LocalDate.of(2003, 12, 31))
+        .meansOfTransport(Set.of(MeanOfTransport.TRAIN))
+        .freeText("I am a free man!!!")
+        .address("Wylerstrasse 666")
+        .zipCode("3014")
+        .city("Bern")
+        .alternativeTransport(StandardAttributeType.YES)
+        .alternativeTransportCondition("No way dude!!")
+        .assistanceAvailability(StandardAttributeType.YES)
+        .assistanceCondition("No alternative Bro!")
+        .assistanceService(StandardAttributeType.NO)
+        .audioTicketMachine(StandardAttributeType.PARTIALLY)
+        .dynamicAudioSystem(StandardAttributeType.YES)
+        .dynamicOpticSystem(StandardAttributeType.YES)
+        .infoTicketMachine("tick")
+        .additionalInformation("additional")
+        .interoperable(true)
+        .url("https://www.prm.sbb")
+        .visualInfo(StandardAttributeType.NO)
+        .wheelchairTicketMachine(StandardAttributeType.PARTIALLY)
+        .assistanceRequestFulfilled(BooleanOptionalAttributeType.NO)
+        .ticketMachine(BooleanOptionalAttributeType.YES);
+  }
+
 }
