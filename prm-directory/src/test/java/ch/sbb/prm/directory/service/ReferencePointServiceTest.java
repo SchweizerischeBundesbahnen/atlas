@@ -113,7 +113,7 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
     referencePointVersion.setParentServicePointSloid(parentServicePointSloid);
 
     //when
-    ReducedVariantException result = Assertions.assertThrows(
+    ReducedVariantException result = assertThrows(
         ReducedVariantException.class,
         () -> referencePointService.createReferencePoint(referencePointVersion));
 
@@ -125,34 +125,6 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
         parentServicePointSloid);
     assertThat(relations).isEmpty();
-  }
-
-  private void createAndSaveParkingLotVersion(String parentServicePointSloid) {
-    ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLotVersion();
-    parkingLot.setParentServicePointSloid(parentServicePointSloid);
-    parkingLot.setSloid("ch:1:sloid:70000:5");
-    parkingLotRepository.save(parkingLot);
-  }
-
-  private void createAndSaveContactPointVersion(String parentServicePointSloid) {
-    ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
-    contactPointVersion.setParentServicePointSloid(parentServicePointSloid);
-    contactPointVersion.setSloid("ch:1:sloid:70000:4");
-    contactPointRepository.save(contactPointVersion);
-  }
-
-  private void createAndSaveToiletVersion(String parentServicePointSloid) {
-    ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
-    toiletVersion.setParentServicePointSloid(parentServicePointSloid);
-    toiletVersion.setSloid("ch:1:sloid:70000:3");
-    toiletRepository.save(toiletVersion);
-  }
-
-  private void createAndSavePlatformVersion(String parentServicePointSloid) {
-    PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
-    platformVersion.setParentServicePointSloid(parentServicePointSloid);
-    platformVersion.setSloid("ch:1:sloid:70000:1");
-    platformRepository.saveAndFlush(platformVersion);
   }
 
   @Test
@@ -287,6 +259,34 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
     assertThrows(ElementTypeDoesNotExistException.class, () -> {
       referencePointService.checkReferencePointExists(sloid, "REFERENCE_POINT");
     });
+  }
+
+  private void createAndSaveParkingLotVersion(String parentServicePointSloid) {
+    ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLotVersion();
+    parkingLot.setParentServicePointSloid(parentServicePointSloid);
+    parkingLot.setSloid("ch:1:sloid:70000:5");
+    parkingLotRepository.save(parkingLot);
+  }
+
+  private void createAndSaveContactPointVersion(String parentServicePointSloid) {
+    ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
+    contactPointVersion.setParentServicePointSloid(parentServicePointSloid);
+    contactPointVersion.setSloid("ch:1:sloid:70000:4");
+    contactPointRepository.save(contactPointVersion);
+  }
+
+  private void createAndSaveToiletVersion(String parentServicePointSloid) {
+    ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
+    toiletVersion.setParentServicePointSloid(parentServicePointSloid);
+    toiletVersion.setSloid("ch:1:sloid:70000:3");
+    toiletRepository.save(toiletVersion);
+  }
+
+  private void createAndSavePlatformVersion(String parentServicePointSloid) {
+    PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
+    platformVersion.setParentServicePointSloid(parentServicePointSloid);
+    platformVersion.setSloid("ch:1:sloid:70000:1");
+    platformRepository.saveAndFlush(platformVersion);
   }
 
 }
