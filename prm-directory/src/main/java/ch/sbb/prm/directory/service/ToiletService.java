@@ -3,7 +3,9 @@ package ch.sbb.prm.directory.service;
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TOILET;
 
 import ch.sbb.atlas.api.location.SloidType;
+import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.toilet.ToiletOverviewModel;
 import ch.sbb.atlas.service.OverviewService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
@@ -105,14 +107,22 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
     List<ToiletVersion> mergedVersions = OverviewService.mergeVersionsForDisplay(toiletVersions,
         ToiletVersion::getSloid);
     return mergedVersions.stream()
-        .map(ToiletVersionMapper::toOverviewModel)
+        .map(toilet -> ToiletVersionMapper.toOverviewModel(toilet, getRecordingStatusIncludingRelation(toilet.getSloid(),
+            getToiletRecordingStatus(toilet))))
         .toList();
   }
-
 
   public void checkToiletExists(String sloid, String type) {
     if (!toiletRepository.existsBySloid(sloid)) {
       throw new ElementTypeDoesNotExistException(sloid, type);
     }
   }
+
+  static RecordingStatus getToiletRecordingStatus(ToiletVersion version) {
+    if (version.getWheelchairToilet() == StandardAttributeType.TO_BE_COMPLETED) {
+      return RecordingStatus.INCOMPLETE;
+    }
+    return RecordingStatus.COMPLETE;
+  }
+
 }
