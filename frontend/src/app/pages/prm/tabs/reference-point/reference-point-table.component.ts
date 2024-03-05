@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BasePrmTabComponentService } from '../base-prm-tab-component.service';
-import { PrmTabs } from '../../prm-panel/prm-tabs';
-import { Tab } from '../../../tab';
-import { PersonWithReducedMobilityService, ReadReferencePointVersion } from '../../../../api';
-import { TableService } from '../../../../core/components/table/table.service';
-import { Pages } from '../../../pages';
-import { TableFilter } from '../../../../core/components/table-filter/config/table-filter';
-import { TablePagination } from '../../../../core/components/table/table-pagination';
-import { TableColumn } from '../../../../core/components/table/table-column';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {BasePrmTabComponentService} from '../base-prm-tab-component.service';
+import {PrmTabs} from '../../prm-panel/prm-tabs';
+import {Tab} from '../../../tab';
+import {PersonWithReducedMobilityService, ReadReferencePointVersion} from '../../../../api';
+import {TableService} from '../../../../core/components/table/table.service';
+import {Pages} from '../../../pages';
+import {TableFilter} from '../../../../core/components/table-filter/config/table-filter';
+import {TablePagination} from '../../../../core/components/table/table-pagination';
+import {TableColumn} from '../../../../core/components/table/table-column';
 import {TableContentPaginationAndSorting} from "../../../../core/components/table/table-content-pagination-and-sorting";
 
 @Component({
