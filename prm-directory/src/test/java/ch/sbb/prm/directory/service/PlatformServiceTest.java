@@ -279,7 +279,7 @@ class PlatformServiceTest extends BasePrmServiceTest {
 
 
   @Test
-  public void testCheckPlatformExists_Exists() {
+  void testCheckPlatformExists_Exists() {
     PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
     platformVersion.setSloid("ch:1:sloid:12345:1");
     platformRepository.saveAndFlush(platformVersion);
@@ -288,7 +288,7 @@ class PlatformServiceTest extends BasePrmServiceTest {
   }
 
   @Test
-  public void testCheckContactPointExists_DoesNotExist() {
+  void testCheckPlatformExists_DoesNotExist() {
     assertThrows(ElementTypeDoesNotExistException.class, () -> platformService.checkPlatformExists("ch:1:sloid:12345:1", PLATFORM.name()));
   }
 

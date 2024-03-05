@@ -170,7 +170,7 @@ class ContactPointServiceTest extends BasePrmServiceTest {
   }
 
   @Test
-  public void testCheckContactPointExists_Exists() {
+  void testCheckContactPointExists_Exists() {
     ContactPointVersion contactPoint = ContactPointTestData.getContactPointVersion();
     contactPoint.setSloid("ch:1:sloid:12345:1");
     contactPointRepository.saveAndFlush(contactPoint);
@@ -179,7 +179,7 @@ class ContactPointServiceTest extends BasePrmServiceTest {
   }
 
   @Test
-  public void testCheckContactPointExists_DoesNotExist() {
+  void testCheckContactPointExists_DoesNotExist() {
     assertThrows(ElementTypeDoesNotExistException.class, () -> contactPointService.checkContactPointExists("ch:1:sloid:12345:1", ReferencePointElementType.CONTACT_POINT.name()));
   }
 
