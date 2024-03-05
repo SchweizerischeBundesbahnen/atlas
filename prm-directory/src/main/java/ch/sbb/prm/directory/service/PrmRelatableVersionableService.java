@@ -1,7 +1,11 @@
 package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.api.location.SloidType;
+import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
@@ -57,6 +61,25 @@ public abstract class PrmRelatableVersionableService<T extends Relatable & PrmVe
         relationService.save(relationVersion);
       });
     }
+  }
+
+  protected RecordingStatus getRecordingStatusIncludingRelation(String elementSloid, RecordingStatus elementRecordingStatus) {
+    List<RelationVersion> relations = relationService.getRelationsBySloid(elementSloid);
+
+    if (relations.isEmpty()) {
+      return elementRecordingStatus;
+    }
+
+    boolean relationsIncomplete = relations.stream()
+        .anyMatch(relation ->
+            relation.getContrastingAreas() == StandardAttributeType.TO_BE_COMPLETED
+                || relation.getStepFreeAccess() == StepFreeAccessAttributeType.TO_BE_COMPLETED
+                || relation.getTactileVisualMarks() == TactileVisualAttributeType.TO_BE_COMPLETED);
+
+    if (relationsIncomplete) {
+      return RecordingStatus.INCOMPLETE;
+    }
+    return elementRecordingStatus;
   }
 
 }
