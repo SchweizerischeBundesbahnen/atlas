@@ -3,6 +3,7 @@ package ch.sbb.prm.directory.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
@@ -111,6 +112,22 @@ class StopPointServiceTest {
 
     //then
     assertDoesNotThrow(executable);
+  }
+
+  @Test
+  void testCheckStopPointExists_Exists() {
+    String sloid = "ch:1:sloid:12345";
+    when(stopPointRepository.existsBySloid(sloid)).thenReturn(true);
+
+    stopPointService.checkStopPointExists(sloid);
+  }
+
+  @Test
+  void testCheckStopPointExists_DoesNotExist() {
+    String sloid = "ch:1:sloid:12345";
+    when(stopPointRepository.existsBySloid(sloid)).thenReturn(false);
+
+    assertThrows(StopPointDoesNotExistException.class, () -> stopPointService.checkStopPointExists(sloid));
   }
 
 }
