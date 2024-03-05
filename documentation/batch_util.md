@@ -40,6 +40,11 @@ DELETE from batch_job_execution where job_instance_id in (
 DELETE FROM batch_job_instance where job_name = '{{jobname}}';
 ```
 
+Job names ServicePoint: importServicePointCsvJob, importLoadingPointCsvJob, importTrafficPointCsvJob
+
+Job names PRM: importStopPointCsvJob, importPlatformCsvJob, importReferencePointCsvJob, importParkingLotCsvJob, 
+importInfoDeskCsvJob, importTicketCounterCsvJob, importToiletCsvJob
+
 ## Reset all batch db
 
 :warning: **If you use this script the all jobs are run from scratch!** Please consider to use the above script if you want to 
