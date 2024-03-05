@@ -108,4 +108,13 @@ public class ImportBatchSchedulerService extends BaseSchedulerService {
     return executeRequest(importServicePointBatchClient::triggerImportContactPointBatch, "Trigger Import Contact Point Batch");
   }
 
+  @SpanTracing
+  @Retryable(label = "triggerImportRelationBatch", retryFor = SchedulingExecutionException.class, maxAttempts = 4, backoff =
+  @Backoff(delay = 65000))
+  @Scheduled(cron = "${scheduler.import-service-point.relation-trigger-batch.chron}", zone = "${scheduler.zone}")
+  @SchedulerLock(name = "triggerImportRelationBatch", lockAtMostFor = "PT1M", lockAtLeastFor = "PT1M")
+  public Response triggerImportRelationBatch() {
+    return executeRequest(importServicePointBatchClient::triggerImportRelationBatch, "Trigger Import Relation Batch");
+  }
+
 }
