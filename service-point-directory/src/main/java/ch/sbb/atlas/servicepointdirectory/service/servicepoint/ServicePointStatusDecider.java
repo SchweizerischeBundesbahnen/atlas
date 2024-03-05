@@ -11,6 +11,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 @Slf4j
 @Service
@@ -37,23 +38,23 @@ public class ServicePointStatusDecider {
             || hasGeolocationChangedBackToSwitzerland(newServicePointVersion, currentVersion)
             || isIsolatedOrTouchingServicePointVersion(newServicePointVersion, servicePointVersions)) {
             logMessage(currentVersion, newServicePointVersion,"Deciding on ServicePoint.Status when update where "
-                + "currentServicePoinVersion={}, existing versions servicePointVersions={} and newServicePointVersion={}.");
+                + "currentServicePointVersion={}, existing versions servicePointVersions={} and newServicePointVersion={}.");
             return calculateStatusAccordingToStatusDecisionAlgorithm(newServicePointVersion);
         }
         if (hasNameChanged(newServicePointVersion, currentVersion)
             && isThereOverlappingVersionWithTheSameName(newServicePointVersion, servicePointVersions)) {
             logMessage(currentVersion, newServicePointVersion, "Deciding on ServicePoint.Status "
-                + "newServicePointVersion={}, and currentServicePoinVersion={}. DesignationOfficial name is changed.");
+                + "newServicePointVersion={}, and currentServicePointVersion={}. DesignationOfficial name is changed.");
             return setStatusAsInPreviousVersionOrToValidated(currentVersion);
         }
         if (hasNameChanged(newServicePointVersion, currentVersion)
             && hasVersionOnTheSameTimeslotWithDifferentName(newServicePointVersion, servicePointVersions)) {
             logMessage(currentVersion, newServicePointVersion, "Deciding on ServicePoint.Status "
-                + "when update scenario where currentServicePoinVersion={}, and newServicePointVersion={}.");
+                + "when update scenario where currentServicePointVersion={}, and newServicePointVersion={}.");
             return calculateStatusAccordingToStatusDecisionAlgorithm(newServicePointVersion);
         }
         logMessage(currentVersion, newServicePointVersion,
-            "Deciding on ServicePoint.Status when updating where currentServicePoinVersion={}, and "
+            "Deciding on ServicePoint.Status when updating where currentServicePointVersion={}, and "
                 + "newServicePointVersion={}. Status will be set as in previous Version or to Validated per default.");
         return setStatusAsInPreviousVersionOrToValidated(currentVersion);
     }
@@ -114,6 +115,9 @@ public class ServicePointStatusDecider {
 
     private boolean hasVersionOnTheSameTimeslotWithDifferentName(ServicePointVersion newServicePointVersion,
         List<ServicePointVersion> servicePointVersions) {
+        if (CollectionUtils.isEmpty(servicePointVersions)) {
+            return false;
+        }
         return servicePointVersions.stream()
             .anyMatch(existing -> isOverlapping(existing, newServicePointVersion)
                     && hasNameChanged(newServicePointVersion, existing));
