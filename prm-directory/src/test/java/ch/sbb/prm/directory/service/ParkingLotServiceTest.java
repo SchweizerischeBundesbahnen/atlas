@@ -266,7 +266,7 @@ class ParkingLotServiceTest extends BasePrmServiceTest {
   }
 
   @Test
-  public void testCheckParkingLotExists_Exists() {
+  void testCheckParkingLotExists_Exists() {
     ParkingLotVersion parkingLotVersion = ParkingLotTestData.getParkingLotVersion();
     parkingLotVersion.setSloid("ch:1:sloid:12345:1");
     parkingLotRepository.saveAndFlush(parkingLotVersion);
@@ -275,7 +275,7 @@ class ParkingLotServiceTest extends BasePrmServiceTest {
   }
 
   @Test
-  public void testCheckContactPointExists_DoesNotExist() {
+  void testCheckParkingLotExists_DoesNotExist() {
     assertThrows(ElementTypeDoesNotExistException.class, () -> parkingLotService.checkParkingLotExists("ch:1:sloid:12345:1", ReferencePointElementType.PARKING_LOT.name()));
   }
 

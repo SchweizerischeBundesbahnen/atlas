@@ -404,7 +404,7 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  public void shouldCallImportRelationsService() throws Exception {
+  void shouldCallImportRelationsService() throws Exception {
     RelationCsvModel relationCsvModel1 = RelationCsvModel.builder()
             .sloid("ch:1:sloid:7000:1")
             .rpSloid("ch:1:sloid:5000:1")
