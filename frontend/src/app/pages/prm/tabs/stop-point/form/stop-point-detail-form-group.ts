@@ -1,10 +1,10 @@
-import { BaseDetailFormGroup } from '../../../../../core/components/base-detail/base-detail-form-group';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {BaseDetailFormGroup} from '../../../../../core/components/base-detail/base-detail-form-group';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import moment from 'moment';
-import { WhitespaceValidator } from '../../../../../core/validation/whitespace/whitespace-validator';
-import { DateRangeValidator } from '../../../../../core/validation/date-range/date-range-validator';
-import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-helper';
-import { PrmMeanOfTransportValidator } from '../create-stop-point/prm-mean-of-transport-validator';
+import {WhitespaceValidator} from '../../../../../core/validation/whitespace/whitespace-validator';
+import {DateRangeValidator} from '../../../../../core/validation/date-range/date-range-validator';
+import {PrmMeanOfTransportHelper} from '../../../util/prm-mean-of-transport-helper';
+import {PrmMeanOfTransportValidator} from '../create-stop-point/prm-mean-of-transport-validator';
 import {
   BooleanOptionalAttributeType,
   MeanOfTransport,
@@ -63,7 +63,8 @@ export class StopPointFormGroupBuilder {
       {
         number: new FormControl(version.number.number),
         sloid: new FormControl(version.sloid),
-        meansOfTransport: new FormControl(version.meansOfTransport),
+        meansOfTransport: new FormControl(version.meansOfTransport,
+          [Validators.required, PrmMeanOfTransportValidator.isReducedOrComplete]),
         freeText: new FormControl(version.freeText, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(2000),
@@ -139,7 +140,8 @@ export class StopPointFormGroupBuilder {
       {
         number: new FormControl(version.number.number),
         sloid: new FormControl(version.sloid),
-        meansOfTransport: new FormControl(version.meansOfTransport, [Validators.required]),
+        meansOfTransport: new FormControl(version.meansOfTransport,
+          [Validators.required, PrmMeanOfTransportValidator.isReducedOrComplete]),
         freeText: new FormControl(version.freeText, [
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(2000),
@@ -339,7 +341,11 @@ export class StopPointFormGroupBuilder {
       form.controls.assistanceRequestFulfilled,
       form.controls.ticketMachine,
     ];
-    completeRecordingValidation.forEach((control) => control.clearValidators());
+    completeRecordingValidation.forEach((control) => {
+      if (control){
+        control.clearValidators()
+      }
+    });
   }
 
   static populateDropdownsForCompleteWithDefaultValue(form: FormGroup<StopPointDetailFormGroup>) {
