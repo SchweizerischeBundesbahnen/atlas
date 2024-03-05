@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Status } from './status';
 import { BooleanOptionalAttributeType } from './booleanOptionalAttributeType';
 import { MeanOfTransport } from './meanOfTransport';
 import { StandardAttributeType } from './standardAttributeType';
@@ -31,6 +32,7 @@ export interface StopPointVersion {
      * User editor
      */
     readonly editor?: string;
+    status?: Status;
     /**
      * Technical identifier
      */
