@@ -87,6 +87,9 @@ public class RecoveryJobsRunner implements ApplicationRunner {
   @Qualifier(IMPORT_TICKET_COUNTER_CSV_JOB_NAME)
   private final Job importTicketCounterCsvJob;
 
+  @Qualifier(IMPORT_RELATION_CSV_JOB_NAME)
+  private final Job importRelationCsvJob;
+
   private final FileService fileService;
 
   @Override
@@ -103,6 +106,7 @@ public class RecoveryJobsRunner implements ApplicationRunner {
     recoverJob(IMPORT_PARKING_LOT_CSV_JOB_NAME);
     recoverJob(IMPORT_INFO_DESK_CSV_JOB_NAME);
     recoverJob(IMPORT_TICKET_COUNTER_CSV_JOB_NAME);
+    recoverJob(IMPORT_RELATION_CSV_JOB_NAME);
   }
 
   void recoverJob(String jobName)
@@ -193,6 +197,9 @@ public class RecoveryJobsRunner implements ApplicationRunner {
     }
     if (IMPORT_TICKET_COUNTER_CSV_JOB_NAME.equals(jobName)) {
       return importTicketCounterCsvJob;
+    }
+    if (IMPORT_RELATION_CSV_JOB_NAME.equals(jobName)) {
+      return importRelationCsvJob;
     }
     throw new IllegalStateException("No job found with name: " + jobName);
   }

@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
@@ -22,6 +23,7 @@ import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.entity.ToiletVersion;
+import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
 import ch.sbb.prm.directory.exception.ReducedVariantException;
 import ch.sbb.prm.directory.repository.ContactPointRepository;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
@@ -91,7 +93,7 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
         .getRelationsByParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     assertThat(relations).hasSize(4);
     assertThat(relations.stream().map(RelationVersion::getReferencePointElementType))
-        .containsExactlyInAnyOrder(ReferencePointElementType.values());
+        .containsExactlyInAnyOrder(ReferencePointElementType.PLATFORM, ReferencePointElementType.CONTACT_POINT, ReferencePointElementType.TOILET, ReferencePointElementType.PARKING_LOT);
   }
 
   @Test
@@ -271,6 +273,15 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
     List<ReadReferencePointVersionModel> result = referencePointService.buildOverview(versionsByParent);
 
     assertThat(result).hasSize(2);
+  }
+
+
+  @Test
+  void testCheckExistsForReferencePoint_DoesNotExist() {
+    String sloid = "ch:1:sloid:76646:1";
+    assertThrows(ElementTypeDoesNotExistException.class, () -> {
+      referencePointService.checkReferencePointExists(sloid, "REFERENCE_POINT");
+    });
   }
 
 }
