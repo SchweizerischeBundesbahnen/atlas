@@ -1,4 +1,4 @@
-import { ReadStopPointVersion } from '../../../api';
+import {ReadStopPointVersion} from '../../../api';
 
 export const STOP_POINT: ReadStopPointVersion = {
   validFrom: new Date('2014-12-14'),
@@ -19,6 +19,7 @@ export const STOP_POINT: ReadStopPointVersion = {
   wheelchairTicketMachine: 'TO_BE_COMPLETED',
   creationDate: '2020-01-01',
   creator: 'Cianni',
+  reduced: true,
   editionDate: '2020-01-05',
   editor: 'Nicola',
 };
@@ -41,6 +42,7 @@ export const STOP_POINT_COMPLETE: ReadStopPointVersion = {
   wheelchairTicketMachine: 'TO_BE_COMPLETED',
   creationDate: '2020-01-01',
   creator: 'Cianni',
+  reduced: false,
   editionDate: '2020-01-05',
   editor: 'Nicola',
 };
