@@ -17,6 +17,7 @@ import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.ToiletVersion;
+import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
 import ch.sbb.prm.directory.mapper.ReferencePointVersionMapper;
 import ch.sbb.prm.directory.repository.ContactPointRepository;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
@@ -166,5 +167,12 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
         ReferencePointVersion::getSloid);
     return mergedVersions.stream().map(ReferencePointVersionMapper::toModel).toList();
   }
+
+  public void checkReferencePointExists(String sloid, String type) {
+    if (!referencePointRepository.existsBySloid(sloid)) {
+      throw new ElementTypeDoesNotExistException(sloid, type);
+    }
+  }
+
 
 }

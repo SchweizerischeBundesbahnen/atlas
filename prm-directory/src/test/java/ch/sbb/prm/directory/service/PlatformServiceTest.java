@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.service;
 
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
@@ -15,6 +16,7 @@ import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
+import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.exception.TrafficPointElementDoesNotExistsException;
 import ch.sbb.prm.directory.repository.PlatformRepository;
@@ -273,6 +275,21 @@ class PlatformServiceTest extends BasePrmServiceTest {
 
     //then
     assertThat(platformVersions).hasSize(1);
+  }
+
+
+  @Test
+  void testCheckPlatformExists_Exists() {
+    PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
+    platformVersion.setSloid("ch:1:sloid:12345:1");
+    platformRepository.saveAndFlush(platformVersion);
+
+    assertDoesNotThrow(() -> platformService.checkPlatformExists("ch:1:sloid:12345:1", PLATFORM.name()));
+  }
+
+  @Test
+  void testCheckPlatformExists_DoesNotExist() {
+    assertThrows(ElementTypeDoesNotExistException.class, () -> platformService.checkPlatformExists("ch:1:sloid:12345:1", PLATFORM.name()));
   }
 
 }
