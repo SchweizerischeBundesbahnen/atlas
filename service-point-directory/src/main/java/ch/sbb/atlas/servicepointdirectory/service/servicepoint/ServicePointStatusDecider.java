@@ -23,6 +23,7 @@ public class ServicePointStatusDecider {
      * Documentation at ServicePointStatusScenarios.md
      */
     public Status getStatusForServicePoint(ServicePointVersion newServicePointVersion,
+        ServicePointVersion editedVersion,
         Optional<ServicePointVersion> currentServicePointVersion,
         List<ServicePointVersion> servicePointVersions) {
         if (currentServicePointVersion.isEmpty()) {
@@ -43,7 +44,7 @@ public class ServicePointStatusDecider {
             && isThereOverlappingVersionWithTheSameName(newServicePointVersion, servicePointVersions)) {
             logMessage(currentVersion, newServicePointVersion, "Deciding on ServicePoint.Status "
                 + "newServicePointVersion={}, and currentServicePointVersion={}. DesignationOfficial name is changed.");
-            return setStatusAsInPreviousVersionOrToValidated(currentServicePointVersion);
+            return setStatusAsInPreviousVersionOrToValidated(null, null, currentServicePointVersion, null);
         }
         if (hasNameChanged(newServicePointVersion, currentVersion)
             && hasVersionOnTheSameTimeslotWithDifferentName(newServicePointVersion, servicePointVersions)) {
@@ -54,7 +55,7 @@ public class ServicePointStatusDecider {
         logMessage(currentVersion, newServicePointVersion,
             "Deciding on ServicePoint.Status when updating where currentServicePointVersion={}, and "
                 + "newServicePointVersion={}. Status will be set as in previous Version or to Validated per default.");
-        return setStatusAsInPreviousVersionOrToValidated(currentServicePointVersion);
+        return setStatusAsInPreviousVersionOrToValidated(newServicePointVersion, editedVersion, currentServicePointVersion, servicePointVersions);
     }
 
     /**
@@ -103,7 +104,21 @@ public class ServicePointStatusDecider {
         return newServicePointVersion.isStopPoint() && !currentServicePointVersion.isStopPoint();
     }
 
-    private Status setStatusAsInPreviousVersionOrToValidated(Optional<ServicePointVersion> currentServicePointVersion) {
+    private Status setStatusAsInPreviousVersionOrToValidated(ServicePointVersion newServicePointVersion,
+        ServicePointVersion editedVersion,
+        Optional<ServicePointVersion> currentServicePointVersion,
+        List<ServicePointVersion> servicePointVersions) {
+        if (servicePointVersions != null && !servicePointVersions.isEmpty()) {
+            List<ServicePointVersion> servicePointVersionList = servicePointVersions.stream()
+                .filter(existing ->
+                    !existing.getValidTo().isBefore(newServicePointVersion.getValidFrom())
+                        && !existing.getValidFrom().isAfter(newServicePointVersion.getValidFrom()))
+                .toList();
+
+            if(servicePointVersionList.size() == 1) {
+                return servicePointVersionList.get(0).getStatus();
+            }
+        }
         return currentServicePointVersion.map(ServicePointVersion::getStatus).orElse(Status.VALIDATED);
     }
 
