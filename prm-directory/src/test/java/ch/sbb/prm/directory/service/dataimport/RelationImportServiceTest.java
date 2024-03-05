@@ -26,7 +26,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,8 +53,6 @@ class RelationImportServiceTest {
   private final SharedServicePointRepository sharedServicePointRepository;
   private final ReferencePointRepository referencePointRepository;
   private final PlatformRepository platformRepository;
-  @Mock
-  private final PlatformService platformService;
 
 
   @Autowired
