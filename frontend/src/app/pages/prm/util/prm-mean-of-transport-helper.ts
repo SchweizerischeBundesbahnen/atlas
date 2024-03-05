@@ -1,6 +1,6 @@
-import { MeanOfTransport } from '../../../api';
+import {MeanOfTransport} from '../../../api';
 
-const reducedMeansOfTransport: MeanOfTransport[] = [
+export const reducedMeansOfTransport: MeanOfTransport[] = [
   MeanOfTransport.Elevator,
   MeanOfTransport.Bus,
   MeanOfTransport.Chairlift,
@@ -10,7 +10,7 @@ const reducedMeansOfTransport: MeanOfTransport[] = [
   MeanOfTransport.CableRailway,
 ];
 
-const completeMeansOfTransport: MeanOfTransport[] = [
+export const completeMeansOfTransport: MeanOfTransport[] = [
   MeanOfTransport.Train,
   MeanOfTransport.Metro,
   MeanOfTransport.RackRailway,

@@ -1,21 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
-import {
-  StopPointDetailFormGroup,
-  StopPointFormGroupBuilder,
-} from '../stop-point-detail-form-group';
-import {
-  BooleanOptionalAttributeType,
-  MeanOfTransport,
-  StandardAttributeType,
-} from '../../../../../../api';
-import { TranslationSortingService } from '../../../../../../core/translation/translation-sorting.service';
-import { ControlContainer, FormGroup, NgForm } from '@angular/forms';
-import { MatSelectChange } from '@angular/material/select';
+import {Component, Input, OnInit} from '@angular/core';
+import {StopPointDetailFormGroup, StopPointFormGroupBuilder,} from '../stop-point-detail-form-group';
+import {BooleanOptionalAttributeType, MeanOfTransport, StandardAttributeType,} from '../../../../../../api';
+import {TranslationSortingService} from '../../../../../../core/translation/translation-sorting.service';
+import {ControlContainer, FormGroup, NgForm} from '@angular/forms';
+import {MatSelectChange} from '@angular/material/select';
+import {PrmVariantInfoServiceService} from "../../prm-variant-info-service.service";
 
 @Component({
   selector: 'app-stop-point-complete-form',
   templateUrl: './stop-point-complete-form.component.html',
-  viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
+  viewProviders: [{provide: ControlContainer, useExisting: NgForm}],
 })
 export class StopPointCompleteFormComponent implements OnInit {
   @Input() form!: FormGroup<StopPointDetailFormGroup>;
@@ -23,13 +17,16 @@ export class StopPointCompleteFormComponent implements OnInit {
   booleanOptionalAttributeTypes = Object.values(BooleanOptionalAttributeType);
   @Input() selectedMeansOfTransport!: MeanOfTransport[];
   @Input() isNew = false;
-
-  constructor(private readonly translationSortingService: TranslationSortingService) {}
+  meansOfTransportToShows: MeanOfTransport[] | undefined;
+  constructor(private readonly translationSortingService: TranslationSortingService,
+              private readonly prmVariantInfoServiceService: PrmVariantInfoServiceService) {
+  }
 
   ngOnInit(): void {
     if (this.isNew) {
       this.initForm();
     }
+    this.meansOfTransportToShows = this.prmVariantInfoServiceService.getPrmMeansOfTransportToShow(this.form.controls.meansOfTransport.value!)
     this.setSortedOperatingPointTypes();
   }
 
