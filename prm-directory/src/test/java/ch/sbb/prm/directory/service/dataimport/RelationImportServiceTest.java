@@ -127,9 +127,7 @@ class RelationImportServiceTest {
   @Test
   void testCheckElementExistsForPlatform() {
     String sloid = "ch:1:sloid:294:787306";
-
     relationImportService.checkElementExists(ReferencePointElementType.PLATFORM, sloid);
-
     assertDoesNotThrow(() -> relationImportService.checkElementExists(ReferencePointElementType.PLATFORM, sloid));
   }
 
@@ -138,6 +136,46 @@ class RelationImportServiceTest {
     String sloid = "ch:1:sloid:76646:1";
     assertThrows(ElementTypeDoesNotExistException.class, () -> {
       relationImportService.checkElementExists(ReferencePointElementType.PLATFORM, sloid);
+    });
+  }
+
+  @Test
+  void testCheckElementExistsForInfoDesk_DoesNotExist() {
+    String sloid = "ch:1:sloid:76646:1";
+    assertThrows(ElementTypeDoesNotExistException.class, () -> {
+      relationImportService.checkElementExists(ReferencePointElementType.INFO_DESK, sloid);
+    });
+  }
+
+  @Test
+  void testCheckElementExistsForTicketCounter_DoesNotExist() {
+    String sloid = "ch:1:sloid:76646:1";
+    assertThrows(ElementTypeDoesNotExistException.class, () -> {
+      relationImportService.checkElementExists(ReferencePointElementType.TICKET_COUNTER, sloid);
+    });
+  }
+
+  @Test
+  void testCheckElementExistsForParkingLot_DoesNotExist() {
+    String sloid = "ch:1:sloid:76646:1";
+    assertThrows(ElementTypeDoesNotExistException.class, () -> {
+      relationImportService.checkElementExists(ReferencePointElementType.PARKING_LOT, sloid);
+    });
+  }
+
+  @Test
+  void testCheckElementExistsForToilet_DoesNotExist() {
+    String sloid = "ch:1:sloid:76646:1";
+    assertThrows(ElementTypeDoesNotExistException.class, () -> {
+      relationImportService.checkElementExists(ReferencePointElementType.TOILET, sloid);
+    });
+  }
+
+  @Test
+  void testCheckElementExistsForContactPoint_DoesNotExist() {
+    String sloid = "ch:1:sloid:76646:1";
+    assertThrows(IllegalArgumentException.class, () -> {
+      relationImportService.checkElementExists(ReferencePointElementType.CONTACT_POINT, sloid);
     });
   }
 }
