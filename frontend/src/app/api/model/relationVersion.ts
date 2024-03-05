@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Status } from './status';
 import { StepFreeAccessAttributeType } from './stepFreeAccessAttributeType';
 import { TactileVisualAttributeType } from './tactileVisualAttributeType';
 import { StandardAttributeType } from './standardAttributeType';
@@ -31,6 +32,7 @@ export interface RelationVersion {
      * User editor
      */
     readonly editor?: string;
+    status?: Status;
     /**
      * Technical identifier
      */

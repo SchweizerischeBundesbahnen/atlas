@@ -38,6 +38,7 @@ export interface ReadServicePointVersion {
      * User editor
      */
     readonly editor?: string;
+    status: Status;
     /**
      * Technical identifier
      */
@@ -94,7 +95,6 @@ export interface ReadServicePointVersion {
      */
     sloid?: string;
     operatingPointKilometerMaster?: ServicePointNumber;
-    status: Status;
     /**
      * Indicates if this a operatingPoint.
      */
@@ -110,6 +110,18 @@ export interface ReadServicePointVersion {
      */
     stopPoint?: boolean;
     /**
+     * ServicePoint is TrafficPoint
+     */
+    trafficPoint?: boolean;
+    /**
+     * ServicePoint has a Geolocation
+     */
+    hasGeolocation?: boolean;
+    /**
+     * ServicePoint is BorderPoint
+     */
+    borderPoint?: boolean;
+    /**
      * ServicePoint is OperatingPointKilometer
      */
     operatingPointKilometer?: boolean;
@@ -117,17 +129,5 @@ export interface ReadServicePointVersion {
      * ServicePoint is FareStop
      */
     fareStop?: boolean;
-    /**
-     * ServicePoint is TrafficPoint
-     */
-    trafficPoint?: boolean;
-    /**
-     * ServicePoint is BorderPoint
-     */
-    borderPoint?: boolean;
-    /**
-     * ServicePoint has a Geolocation
-     */
-    hasGeolocation?: boolean;
 }
 
