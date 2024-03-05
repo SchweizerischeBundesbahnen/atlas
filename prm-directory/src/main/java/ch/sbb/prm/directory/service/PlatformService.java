@@ -135,7 +135,8 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
           .sloid(sloid)
           .validFrom(platformVersion.getValidFrom())
           .validTo(platformVersion.getValidTo())
-          .recordingStatus(PlatformRecordingStatusEvaluator.getStatusForPlatform(platformVersion, reduced))
+          .recordingStatus(getRecordingStatusIncludingRelation(sloid,
+              PlatformRecordingStatusEvaluator.getStatusForPlatform(platformVersion, reduced)))
           .build());
     });
     return overviewModels;
