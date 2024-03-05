@@ -115,7 +115,7 @@ class StopPointServiceTest {
   }
 
   @Test
-  public void testCheckStopPointExists_Exists() {
+  void testCheckStopPointExists_Exists() {
     String sloid = "ch:1:sloid:12345";
     when(stopPointRepository.existsBySloid(sloid)).thenReturn(true);
 
@@ -123,7 +123,7 @@ class StopPointServiceTest {
   }
 
   @Test
-  public void testCheckStopPointExists_DoesNotExist() {
+  void testCheckStopPointExists_DoesNotExist() {
     String sloid = "ch:1:sloid:12345";
     when(stopPointRepository.existsBySloid(sloid)).thenReturn(false);
 

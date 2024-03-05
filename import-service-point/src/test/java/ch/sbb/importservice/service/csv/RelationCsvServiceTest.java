@@ -18,7 +18,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-public class RelationCsvServiceTest {
+class RelationCsvServiceTest {
     private RelationCsvService relationCsvService;
 
     @Mock
