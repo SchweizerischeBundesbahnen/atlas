@@ -26,6 +26,7 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
     super(versionableService);
     this.relationRepository = relationRepository;
     this.stopPointService = stopPointService;
+
   }
 
   public List<RelationVersion> getRelationsBySloid(String sloid) {
@@ -64,6 +65,10 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
     return relationRepository.findAllBySloid(sloid);
   }
 
+  public List<RelationVersion> getAllVersionsBySloidAndReferencePoint(String sloid, String referencePointSloid) {
+    return relationRepository.findBySloidAndReferencePointSloid(sloid, referencePointSloid);
+  }
+
   @Override
   protected void applyVersioning(List<VersionedObject> versionedObjects) {
     versionableService.applyVersioning(RelationVersion.class, versionedObjects, this::save,
@@ -83,5 +88,9 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
 
   public Page<RelationVersion> findAll(RelationSearchRestrictions searchRestrictions) {
     return relationRepository.findAll(searchRestrictions.getSpecification(),searchRestrictions.getPageable());
+  }
+
+  public RelationVersion createRelationThroughImport(RelationVersion version) {
+    return relationRepository.saveAndFlush(version);
   }
 }
