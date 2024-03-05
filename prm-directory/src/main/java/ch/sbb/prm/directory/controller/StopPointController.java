@@ -31,7 +31,7 @@ public class StopPointController implements StopPointApiV1 {
 
   private final StopPointService stopPointService;
   private final StopPointImportService stopPointImportService;
-  private final PrmChangeRecordingVariantService changeRecordingVariant;
+  private final PrmChangeRecordingVariantService prmChangeRecordingVariantService;
 
   @Override
   public Container<ReadStopPointVersionModel> getStopPoints(Pageable pageable,
@@ -72,7 +72,7 @@ public class StopPointController implements StopPointApiV1 {
         stopPointService.getStopPointById(id).orElseThrow(() -> new IdNotFoundException(id));
     StopPointVersion editedVersion = StopPointVersionMapper.toEntity(model);
     if(isPrmVariantChanging(stopPointVersionToUpdate, editedVersion)){
-      changeRecordingVariant.stopPointChangeRecordingVariant(stopPointVersionToUpdate, editedVersion);
+      prmChangeRecordingVariantService.stopPointChangeRecordingVariant(stopPointVersionToUpdate, editedVersion);
     }else {
       stopPointService.updateStopPointVersion(stopPointVersionToUpdate, editedVersion);
     }
