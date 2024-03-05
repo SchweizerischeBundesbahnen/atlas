@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Status } from './status';
 import { ReferencePointAttributeType } from './referencePointAttributeType';
 
 
@@ -29,6 +30,7 @@ export interface ReferencePointVersion {
      * User editor
      */
     readonly editor?: string;
+    status?: Status;
     /**
      * Technical identifier
      */
