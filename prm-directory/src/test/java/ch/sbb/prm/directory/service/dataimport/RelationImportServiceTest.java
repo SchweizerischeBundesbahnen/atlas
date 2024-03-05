@@ -56,13 +56,12 @@ class RelationImportServiceTest {
 
 
   @Autowired
-  RelationImportServiceTest(RelationRepository relationRepository, RelationImportService relationImportService, SharedServicePointRepository sharedServicePointRepository, ReferencePointRepository referencePointRepository, PlatformRepository platformRepository, PlatformService platformService) {
+  RelationImportServiceTest(RelationRepository relationRepository, RelationImportService relationImportService, SharedServicePointRepository sharedServicePointRepository, ReferencePointRepository referencePointRepository, PlatformRepository platformRepository) {
     this.relationRepository = relationRepository;
     this.relationImportService = relationImportService;
     this.sharedServicePointRepository = sharedServicePointRepository;
       this.referencePointRepository = referencePointRepository;
       this.platformRepository = platformRepository;
-      this.platformService = platformService;
   }
 
   @BeforeEach
