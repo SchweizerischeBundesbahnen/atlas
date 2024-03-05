@@ -1,16 +1,11 @@
 package ch.sbb.prm.directory.service.dataimport;
 
-import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.imports.ItemImportResult;
-import ch.sbb.atlas.imports.prm.platform.PlatformCsvModelContainer;
-import ch.sbb.atlas.imports.prm.referencepoint.ReferencePointCsvModelContainer;
 import ch.sbb.atlas.imports.prm.relation.RelationCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.enumeration.ItemImportResponseStatus;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.atlas.testdata.prm.PlatformCsvTestData;
-import ch.sbb.atlas.testdata.prm.ReferencePointCsvTestData;
 import ch.sbb.atlas.testdata.prm.RelationCsvTestData;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
@@ -20,15 +15,18 @@ import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.SharedServicePoint;
+import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
-import ch.sbb.prm.directory.service.ReferencePointService;
+import ch.sbb.prm.directory.service.PlatformService;
 import ch.sbb.prm.directory.service.StopPointService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +36,8 @@ import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -49,19 +49,23 @@ class RelationImportServiceTest {
   private StopPointService stopPointService;
 
   private final RelationRepository relationRepository;
+  @InjectMocks
   private final RelationImportService relationImportService;
   private final SharedServicePointRepository sharedServicePointRepository;
   private final ReferencePointRepository referencePointRepository;
   private final PlatformRepository platformRepository;
+  @Mock
+  private final PlatformService platformService;
 
 
   @Autowired
-  RelationImportServiceTest(RelationRepository relationRepository, RelationImportService relationImportService, SharedServicePointRepository sharedServicePointRepository, ReferencePointRepository referencePointRepository, PlatformRepository platformRepository) {
+  RelationImportServiceTest(RelationRepository relationRepository, RelationImportService relationImportService, SharedServicePointRepository sharedServicePointRepository, ReferencePointRepository referencePointRepository, PlatformRepository platformRepository, PlatformService platformService) {
     this.relationRepository = relationRepository;
     this.relationImportService = relationImportService;
     this.sharedServicePointRepository = sharedServicePointRepository;
       this.referencePointRepository = referencePointRepository;
       this.platformRepository = platformRepository;
+      this.platformService = platformService;
   }
 
   @BeforeEach
@@ -124,4 +128,20 @@ class RelationImportServiceTest {
     assertThat(result.get(0).getStatus()).isEqualTo(ItemImportResponseStatus.SUCCESS);
   }
 
+  @Test
+  void testCheckElementExistsForPlatform() {
+    String sloid = "ch:1:sloid:294:787306";
+
+    relationImportService.checkElementExists(ReferencePointElementType.PLATFORM, sloid);
+
+    assertDoesNotThrow(() -> relationImportService.checkElementExists(ReferencePointElementType.PLATFORM, sloid));
+  }
+
+  @Test
+  void testCheckElementExistsForPlatform_DoesNotExist() {
+    String sloid = "ch:1:sloid:76646:1";
+    assertThrows(ElementTypeDoesNotExistException.class, () -> {
+      relationImportService.checkElementExists(ReferencePointElementType.PLATFORM, sloid);
+    });
+  }
 }

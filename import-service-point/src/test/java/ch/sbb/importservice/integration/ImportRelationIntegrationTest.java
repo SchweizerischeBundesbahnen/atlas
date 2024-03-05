@@ -28,7 +28,7 @@ import static org.mockito.Mockito.*;
 
 @IntegrationTest
 @AutoConfigureMockMvc(addFilters = false)
-public class ImportRelationIntegrationTest {
+class ImportRelationIntegrationTest {
 
     @Autowired
     private JobLauncher jobLauncher;
