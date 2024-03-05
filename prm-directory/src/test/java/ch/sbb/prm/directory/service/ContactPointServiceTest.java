@@ -1,11 +1,11 @@
 package ch.sbb.prm.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
@@ -19,6 +19,7 @@ import ch.sbb.prm.directory.entity.ContactPointVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
+import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.repository.ContactPointRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
@@ -166,6 +167,20 @@ class ContactPointServiceTest extends BasePrmServiceTest {
     //then
     assertThat(result).hasSize(1);
     assertThat(result.getFirst().getRecordingStatus()).isEqualTo(RecordingStatus.COMPLETE);
+  }
+
+  @Test
+  void testCheckContactPointExists_Exists() {
+    ContactPointVersion contactPoint = ContactPointTestData.getContactPointVersion();
+    contactPoint.setSloid("ch:1:sloid:12345:1");
+    contactPointRepository.saveAndFlush(contactPoint);
+
+    assertDoesNotThrow(() -> contactPointService.checkContactPointExists("ch:1:sloid:12345:1", ReferencePointElementType.CONTACT_POINT.name()));
+  }
+
+  @Test
+  void testCheckContactPointExists_DoesNotExist() {
+    assertThrows(ElementTypeDoesNotExistException.class, () -> contactPointService.checkContactPointExists("ch:1:sloid:12345:1", ReferencePointElementType.CONTACT_POINT.name()));
   }
 
 }

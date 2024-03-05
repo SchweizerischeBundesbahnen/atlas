@@ -148,7 +148,7 @@ model/readToiletVersion.ts
 model/readTrafficPointElementVersion.ts
 model/recordingStatus.ts
 model/referencePointAttributeType.ts
-model/referencePointCsvModel.ts
+model/relationCsvModel.ts
 model/referencePointCsvModelContainer.ts
 model/referencePointElementType.ts
 model/referencePointImportRequest.ts

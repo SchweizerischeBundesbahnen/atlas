@@ -6,6 +6,7 @@ import ch.sbb.atlas.imports.prm.parkinglot.ParkingLotImportRequestModel;
 import ch.sbb.atlas.imports.prm.platform.PlatformImportRequestModel;
 import ch.sbb.atlas.imports.prm.platform.ToiletImportRequestModel;
 import ch.sbb.atlas.imports.prm.referencepoint.ReferencePointImportRequestModel;
+import ch.sbb.atlas.imports.prm.relation.RelationImportRequestModel;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointImportRequestModel;
 import ch.sbb.importservice.config.OAuthFeignConfig;
 import java.util.List;
@@ -33,4 +34,7 @@ public interface PrmClient {
 
   @PostMapping(value = "/prm-directory/v1/contact-points/import")
   List<ItemImportResult> importContactPoints(@RequestBody ContactPointImportRequestModel contactPointImportRequestModel);
+
+  @PostMapping(value = "/prm-directory/v1/relations/import")
+  List<ItemImportResult> importRelations(@RequestBody RelationImportRequestModel relationImportRequestModel);
 }
