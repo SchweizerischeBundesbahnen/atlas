@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
@@ -164,6 +165,17 @@ class PrmChangeRecordingVariantServiceTest extends BasePrmServiceTest {
     List<ContactPointVersion> contactPointVersions = contactPointRepository.findByParentServicePointSloid(
         parentServicePointSloid);
     assertThat(contactPointVersions).hasSize(1).containsExactly(contactPointVersion);
+  }
+  @Test
+  void shouldThrowExceptionWhenVariantIsNotChanging() {
+    //given
+    StopPointVersion stopPointVersionToUpdate = StopPointTestData.builderVersionCompleteFull().build();
+
+    //when
+    assertThrows(IllegalStateException.class,
+        () -> prmChangeRecordingVariantService.stopPointChangeRecordingVariant(stopPointVersionToUpdate,
+            stopPointVersionToUpdate)).getLocalizedMessage();
+
   }
 
   @Test

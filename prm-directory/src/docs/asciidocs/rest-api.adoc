@@ -86,6 +86,10 @@ include::{snippets}/stop-point-version-controller-api-test/should-not-create-sto
 
 include::{snippets}/stop-point-version-controller-api-test/should-update-stop-point/auto-section.adoc[]
 
+=== Change Recording Variant Stop Points - Successfully
+
+include::{snippets}/stop-point-version-controller-api-test/should-change-stop-point-variant/auto-section.adoc[]
+
 == Reference Point
 
 === Get Reference Points - Successfully
