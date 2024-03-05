@@ -43,7 +43,7 @@ class PrmStatusSubSetValidatorTest extends BaseValidatorTest {
     //when
     Set<ConstraintViolation<MyStatusObj>> violations = validator.validate(myStatusObj);
     //then
-    assertThat(violations).hasSize(0);
+    assertThat(violations).isEmpty();
   }
 
   @Test
