@@ -142,6 +142,7 @@ class PrmChangeRecordingVariantServiceTest extends BasePrmServiceTest {
     assertThat(result).isNotNull();
     assertThat(result.isReduced()).isTrue();
     assertStopPointContent(stopPointVersionToUpdate, result);
+    assertThat(result.getMeansOfTransport()).containsOnly(MeanOfTransport.BUS);
     //assert Platform
     List<PlatformVersion> results = platformRepository.findByParentServicePointSloid(parentServicePointSloid);
     assertPlatformContents(platformVersion1, results);
@@ -155,17 +156,102 @@ class PrmChangeRecordingVariantServiceTest extends BasePrmServiceTest {
     assertThat(relationVersions).isEmpty();
     //assert Toilet
     List<ToiletVersion> toiletVersions = toiletRepository.findByParentServicePointSloid(parentServicePointSloid);
-    assertThat(toiletVersions).hasSize(1);
-    assertThat(toiletVersions).containsExactly(toiletVersion);
+    assertThat(toiletVersions).hasSize(1).containsExactly(toiletVersion);
     //assert parkingLot
     List<ParkingLotVersion> parkingLotVersions = parkingLotRepository.findByParentServicePointSloid(parentServicePointSloid);
-    assertThat(parkingLotVersions).hasSize(1);
-    assertThat(parkingLotVersions).containsExactly(parkingLot);
+    assertThat(parkingLotVersions).hasSize(1).containsExactly(parkingLot);
     //assert contactPoint
     List<ContactPointVersion> contactPointVersions = contactPointRepository.findByParentServicePointSloid(
         parentServicePointSloid);
-    assertThat(contactPointVersions).hasSize(1);
-    assertThat(contactPointVersions).containsExactly(contactPointVersion);
+    assertThat(contactPointVersions).hasSize(1).containsExactly(contactPointVersion);
+  }
+
+  @Test
+  void shouldChangeRecordVariantFromReducedToComplete() {
+    //given
+    StopPointVersion stopPointVersionToUpdate = StopPointTestData.builderVersionReduced().build();
+    stopPointRepository.saveAndFlush(stopPointVersionToUpdate);
+    StopPointVersion stopPointVersionToUpdate1 = StopPointTestData.builderVersionReduced()
+        .validFrom(LocalDate.of(2004, 1, 1))
+        .validTo(LocalDate.of(2004, 12, 31))
+        .address("napoli")
+        .build();
+    stopPointRepository.saveAndFlush(stopPointVersionToUpdate1);
+
+    StopPointVersion stopPointVersionToUpdate2 = StopPointTestData.builderVersionReduced()
+        .validFrom(LocalDate.of(2005, 1, 1))
+        .validTo(LocalDate.of(2005, 12, 31))
+        .address("roma")
+        .build();
+    stopPointRepository.saveAndFlush(stopPointVersionToUpdate2);
+    String parentServicePointSloid = stopPointVersionToUpdate.getSloid();
+
+    //Create Platforms
+    PlatformVersion platformVersion1 = PlatformTestData.getCompletePlatformVersion();
+    platformVersion1.setParentServicePointSloid(parentServicePointSloid);
+    platformRepository.saveAndFlush(platformVersion1);
+
+    PlatformVersion platformVersion2 = PlatformTestData.getCompletePlatformVersion();
+    platformVersion2.setValidFrom(LocalDate.of(2001, 1, 1));
+    platformVersion2.setValidTo(LocalDate.of(2001, 12, 31));
+    platformVersion2.setInclination(777.77);
+    platformVersion2.setParentServicePointSloid(parentServicePointSloid);
+    platformRepository.saveAndFlush(platformVersion2);
+
+    PlatformVersion platformVersion3 = PlatformTestData.getCompletePlatformVersion();
+    platformVersion3.setValidFrom(LocalDate.of(2002, 1, 1));
+    platformVersion3.setValidTo(LocalDate.of(2002, 12, 31));
+    platformVersion3.setInclination(666.77);
+    platformVersion3.setParentServicePointSloid(parentServicePointSloid);
+    platformRepository.saveAndFlush(platformVersion3);
+
+    //create Toilets
+    ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
+    toiletVersion.setParentServicePointSloid(parentServicePointSloid);
+    toiletRepository.saveAndFlush(toiletVersion);
+
+    //create parkingLot
+    ParkingLotVersion parkingLot = ParkingLotTestData.getParkingLotVersion();
+    parkingLot.setParentServicePointSloid(parentServicePointSloid);
+    parkingLotRepository.saveAndFlush(parkingLot);
+
+    // Create ContactPoint
+    ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
+    contactPointVersion.setParentServicePointSloid(parentServicePointSloid);
+    contactPointRepository.saveAndFlush(contactPointVersion);
+
+    StopPointVersion stopPointVersionEdited = StopPointTestData.builderVersionReduced()
+        .meansOfTransport(Set.of(MeanOfTransport.TRAIN))
+        .build();
+    //when
+    StopPointVersion result = prmChangeRecordingVariantService.stopPointChangeRecordingVariant(stopPointVersionToUpdate,
+        stopPointVersionEdited);
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.isReduced()).isFalse();
+    assertStopPointContent(stopPointVersionToUpdate, result);
+    assertThat(result.getMeansOfTransport()).containsOnly(MeanOfTransport.TRAIN);
+    //assert Platform
+    List<PlatformVersion> results = platformRepository.findByParentServicePointSloid(parentServicePointSloid);
+    assertPlatformContents(platformVersion1, results);
+    //assert ReferencePoint
+    List<ReferencePointVersion> referencePointVersions = referencePointRepository.findByParentServicePointSloid(
+        parentServicePointSloid);
+    assertThat(referencePointVersions).isEmpty();
+    //assert Relations
+    List<RelationVersion> relationVersions = relationRepository.findAllByParentServicePointSloid(parentServicePointSloid);
+    assertThat(relationVersions).isEmpty();
+    //assert Toilet
+    List<ToiletVersion> toiletVersions = toiletRepository.findByParentServicePointSloid(parentServicePointSloid);
+    assertThat(toiletVersions).hasSize(1).containsExactly(toiletVersion);
+    //assert parkingLot
+    List<ParkingLotVersion> parkingLotVersions = parkingLotRepository.findByParentServicePointSloid(parentServicePointSloid);
+    assertThat(parkingLotVersions).hasSize(1).containsExactly(parkingLot);
+    //assert contactPoint
+    List<ContactPointVersion> contactPointVersions = contactPointRepository.findByParentServicePointSloid(
+        parentServicePointSloid);
+    assertThat(contactPointVersions).hasSize(1).containsExactly(contactPointVersion);
   }
 
   @Test
@@ -195,6 +281,7 @@ class PrmChangeRecordingVariantServiceTest extends BasePrmServiceTest {
     assertThat(result).isNotNull();
     assertThat(result.isReduced()).isTrue();
     assertStopPointContent(stopPointVersionToUpdate, result);
+    assertThat(result.getMeansOfTransport()).containsOnly(MeanOfTransport.BUS);
 
   }
 
@@ -213,7 +300,6 @@ class PrmChangeRecordingVariantServiceTest extends BasePrmServiceTest {
     assertThat(result.getAssistanceCondition()).isNull();
     assertThat(result.getInfoTicketMachine()).isNull();
     assertThat(result.getUrl()).isNull();
-    assertThat(result.getMeansOfTransport()).containsOnly(MeanOfTransport.BUS);
     assertThat(result.getAlternativeTransport()).isEqualTo(StandardAttributeType.TO_BE_COMPLETED);
     assertThat(result.getAssistanceAvailability()).isEqualTo(StandardAttributeType.TO_BE_COMPLETED);
     assertThat(result.getAssistanceService()).isEqualTo(StandardAttributeType.TO_BE_COMPLETED);
