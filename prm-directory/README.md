@@ -120,16 +120,24 @@ from platform_version;
 delete
 from reference_point_version;
 
+-- Contact Points
+delete
+from contact_point_version;
+
 -- Parking Lots
 delete
 from parking_lot_version;
+
+-- Toilets
+delete
+from toilet_version;
 ```
 
 Further we need to clear the import-service-point db: see * [Reset Batch](../documentation/batch_util.md)
 
 And the Location DB:
 
-For the sloid-types REFERENCE_POINT, TOILET, PARKING_LOT, CONTACT_POINT:
+For the sloid-types PLATFORM, REFERENCE_POINT, TOILET, PARKING_LOT, CONTACT_POINT:
 
 ```sql
 delete
