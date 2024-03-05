@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ElementTypeDoesNotExistExceptionTest {
+class ElementTypeDoesNotExistExceptionTest {
 
     @Test
     void shouldPrintErrorMessage(){
