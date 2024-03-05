@@ -1,6 +1,8 @@
 package ch.sbb.prm.directory.service;
 
+import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TOILET;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -14,10 +16,8 @@ import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.ToiletTestData;
 import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
-import ch.sbb.prm.directory.entity.ReferencePointVersion;
-import ch.sbb.prm.directory.entity.RelationVersion;
-import ch.sbb.prm.directory.entity.StopPointVersion;
-import ch.sbb.prm.directory.entity.ToiletVersion;
+import ch.sbb.prm.directory.entity.*;
+import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
@@ -252,6 +252,20 @@ class ToiletServiceTest extends BasePrmServiceTest {
     assertThat(relationVersions.get(0).getParentServicePointSloid()).isEqualTo(PARENT_SERVICE_POINT_SLOID);
     assertThat(relationVersions.get(0).getReferencePointElementType()).isEqualTo(ReferencePointElementType.TOILET);
     verify(prmLocationService, times(1)).allocateSloid(any(), eq(SloidType.TOILET));
+  }
+
+  @Test
+  void testCheckToiletExists_Exists() {
+    ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
+    toiletVersion.setSloid("ch:1:sloid:12345:1");
+    toiletRepository.saveAndFlush(toiletVersion);
+
+    assertDoesNotThrow(() -> toiletService.checkToiletExists("ch:1:sloid:12345:1", TOILET.name()));
+  }
+
+  @Test
+  void testCheckToiletExists_DoesNotExist() {
+    assertThrows(ElementTypeDoesNotExistException.class, () -> toiletService.checkToiletExists("ch:1:sloid:12345:1", TOILET.name()));
   }
 
 }

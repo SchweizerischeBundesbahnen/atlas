@@ -34,10 +34,10 @@ public class ImportContactPointBatchController extends ImportPrmBatchBaseControl
 
     public ImportContactPointBatchController(JobLauncher jobLauncher, FileHelperService fileHelperService,
                                         @Qualifier(IMPORT_INFO_DESK_CSV_JOB_NAME) Job importInfoDeskCsvJob,
-                                        @Qualifier(IMPORT_TICKET_COUNTER_CSV_JOB_NAME) Job importTicketCiunterCsvJob) {
+                                        @Qualifier(IMPORT_TICKET_COUNTER_CSV_JOB_NAME) Job importTicketCounterCsvJob) {
         super(jobLauncher, fileHelperService);
         this.importInfoDeskCsvJob = importInfoDeskCsvJob;
-        this.importTicketCounterCsvJob = importTicketCiunterCsvJob;
+        this.importTicketCounterCsvJob = importTicketCounterCsvJob;
     }
 
     @PostMapping("contact-point-batch")

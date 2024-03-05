@@ -8,6 +8,7 @@ import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.ContactPointVersion;
+import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
 import ch.sbb.prm.directory.mapper.ContactPointVersionMapper;
 import ch.sbb.prm.directory.repository.ContactPointRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
@@ -103,5 +104,11 @@ public class ContactPointService extends PrmRelatableVersionableService<ContactP
     return mergedVersions.stream()
         .map(ContactPointVersionMapper::toOverviewModel)
         .toList();
+  }
+
+  public void checkContactPointExists(String sloid, String type) {
+    if (!contactPointRepository.existsBySloid(sloid)) {
+      throw new ElementTypeDoesNotExistException(sloid, type);
+    }
   }
 }
