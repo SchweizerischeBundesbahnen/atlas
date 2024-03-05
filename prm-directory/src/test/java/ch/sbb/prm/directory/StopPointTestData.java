@@ -238,7 +238,6 @@ public class StopPointTestData {
         .ticketMachine(BooleanOptionalAttributeType.TO_BE_COMPLETED);
   }
 
-
   public StopPointVersionBuilder<?, ?> builderVersionCompleteFull() {
     return StopPointVersion.builder()
         .sloid("ch:1:sloid:12345")
@@ -267,6 +266,16 @@ public class StopPointTestData {
         .wheelchairTicketMachine(StandardAttributeType.PARTIALLY)
         .assistanceRequestFulfilled(BooleanOptionalAttributeType.NO)
         .ticketMachine(BooleanOptionalAttributeType.YES);
+  }
+
+  public StopPointVersionBuilder<?, ?> builderVersionReduced() {
+    return StopPointVersion.builder()
+        .sloid("ch:1:sloid:12345")
+        .status(Status.VALIDATED)
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8512345))
+        .validFrom(LocalDate.of(2003, 1, 1))
+        .validTo(LocalDate.of(2003, 12, 31))
+        .meansOfTransport(Set.of(MeanOfTransport.BUS));
   }
 
 }
