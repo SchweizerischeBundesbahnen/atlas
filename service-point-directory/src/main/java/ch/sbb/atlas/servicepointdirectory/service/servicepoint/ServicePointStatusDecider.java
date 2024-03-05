@@ -66,7 +66,14 @@ public class ServicePointStatusDecider {
         boolean isSwissLocation = isSPLocatedInSwitzerland(newServicePointVersion);
         boolean isValidityLongEnough = calculateDiffBetweenTwoDatesAndAddOne(newServicePointVersion) > VALIDITY_IN_DAYS;
 
-        return isSwissCountryCode && isStopPoint && isSwissLocation && isValidityLongEnough ? Status.DRAFT : Status.VALIDATED;
+//        return isSwissCountryCode && isStopPoint && isSwissLocation && isValidityLongEnough ? Status.DRAFT : Status.VALIDATED;
+        if (isSwissCountryCode && isStopPoint && isSwissLocation && isValidityLongEnough) {
+            return Status.DRAFT;
+        } else if (newServicePointVersion.getStatus() != null) {
+            return newServicePointVersion.getStatus();
+        } else {
+            return Status.VALIDATED;
+        }
     }
 
     private void logMessage(ServicePointVersion currentServicePointVersion, ServicePointVersion newServicePointVersion,
@@ -161,6 +168,7 @@ public class ServicePointStatusDecider {
     boolean isThereOverlappingVersionWithTheSameName(ServicePointVersion newServicePointVersion,
         List<ServicePointVersion> servicePointVersions) {
         return servicePointVersions.stream()
+            .filter(existing -> existing.getStatus().equals(Status.VALIDATED))
             .filter(existing -> !hasNameChanged(existing, newServicePointVersion))
             .anyMatch(existing -> hasOverlap(existing, newServicePointVersion));
     }
