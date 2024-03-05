@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Status } from './status';
 import { TimetableHearingStatementDocument } from './timetableHearingStatementDocument';
 import { TimetableHearingStatementSender } from './timetableHearingStatementSender';
 import { SwissCanton } from './swissCanton';
@@ -33,6 +34,7 @@ export interface TimetableHearingStatement {
      * User editor
      */
     readonly editor?: string;
+    status?: Status;
     /**
      * Technical identifier
      */

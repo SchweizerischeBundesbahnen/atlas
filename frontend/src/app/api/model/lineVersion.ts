@@ -32,6 +32,7 @@ export interface LineVersion {
      * User editor
      */
     readonly editor?: string;
+    status?: Status;
     /**
      * Technical identifier
      */
@@ -40,7 +41,6 @@ export interface LineVersion {
      * SwissLineNumber
      */
     swissLineNumber: string;
-    status?: Status;
     lineType: LineType;
     /**
      * SLNID

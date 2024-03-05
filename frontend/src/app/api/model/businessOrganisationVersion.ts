@@ -30,6 +30,7 @@ export interface BusinessOrganisationVersion {
      * User editor
      */
     readonly editor?: string;
+    status?: Status;
     /**
      * Technical identifier
      */
@@ -82,7 +83,6 @@ export interface BusinessOrganisationVersion {
      * Enterprise E-Mail address
      */
     contactEnterpriseEmail?: string;
-    status?: Status;
     /**
      * Business Types
      */

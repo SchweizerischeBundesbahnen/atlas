@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Status } from './status';
 import { BooleanOptionalAttributeType } from './booleanOptionalAttributeType';
 import { VehicleAccessAttributeType } from './vehicleAccessAttributeType';
 import { BasicAttributeType } from './basicAttributeType';
@@ -33,6 +34,7 @@ export interface PlatformVersion {
      * User editor
      */
     readonly editor?: string;
+    status?: Status;
     /**
      * Technical identifier
      */
