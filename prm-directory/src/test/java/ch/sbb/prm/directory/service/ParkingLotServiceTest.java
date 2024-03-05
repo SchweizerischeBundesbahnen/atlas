@@ -10,6 +10,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.api.location.SloidType;
+import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotOverviewModel;
@@ -276,7 +277,26 @@ class ParkingLotServiceTest extends BasePrmServiceTest {
 
   @Test
   void testCheckParkingLotExists_DoesNotExist() {
-    assertThrows(ElementTypeDoesNotExistException.class, () -> parkingLotService.checkParkingLotExists("ch:1:sloid:12345:1", ReferencePointElementType.PARKING_LOT.name()));
+    assertThrows(ElementTypeDoesNotExistException.class,
+        () -> parkingLotService.checkParkingLotExists("ch:1:sloid:12345:1", ReferencePointElementType.PARKING_LOT.name()));
+  }
+
+  @Test
+  void shouldReturnIncompleteStatus() {
+    ParkingLotVersion parkingLotVersion = ParkingLotTestData.getParkingLotVersion();
+
+    RecordingStatus result = ParkingLotService.getParkingLotRecordingStatus(parkingLotVersion);
+    assertThat(result).isEqualTo(RecordingStatus.INCOMPLETE);
+  }
+
+  @Test
+  void shouldReturnCompleteStatus() {
+    ParkingLotVersion parkingLotVersion = ParkingLotTestData.getParkingLotVersion();
+    parkingLotVersion.setPlacesAvailable(BooleanOptionalAttributeType.YES);
+    parkingLotVersion.setPrmPlacesAvailable(BooleanOptionalAttributeType.YES);
+
+    RecordingStatus result = ParkingLotService.getParkingLotRecordingStatus(parkingLotVersion);
+    assertThat(result).isEqualTo(RecordingStatus.COMPLETE);
   }
 
 }
