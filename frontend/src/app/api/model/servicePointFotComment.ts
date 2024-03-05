@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Status } from './status';
 
 
 export interface ServicePointFotComment { 
@@ -28,6 +29,7 @@ export interface ServicePointFotComment {
      * User editor
      */
     readonly editor?: string;
+    status?: Status;
     /**
      * FotComment
      */
