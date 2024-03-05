@@ -29,6 +29,7 @@ export interface TimetableFieldNumberVersion {
      * User editor
      */
     readonly editor?: string;
+    status?: Status;
     /**
      * Technical identifier
      */
@@ -49,7 +50,6 @@ export interface TimetableFieldNumberVersion {
      * Timetable field number
      */
     swissTimetableFieldNumber: string;
-    status?: Status;
     /**
      * Date - valid from
      */
