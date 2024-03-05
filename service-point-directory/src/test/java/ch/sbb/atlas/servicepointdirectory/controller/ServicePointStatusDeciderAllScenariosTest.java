@@ -1701,11 +1701,19 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[3].designationLong", is("designation long 4")));
   }
 
-
-
-
+  /**
+   * Szenario:
+   * <p>
+   * NEU:                                                           |__Haltestelle B Hausen__|
+   * <p>
+   * IST:       |___Haltestelle A Hausen___|__Haltestelle A Hausen__|_______Haltestelle C Hausen____________________|
+   * Status:            VALIDATED                  VALIDATED                   DRAFT
+   * <p>
+   * RESULTAT:  |___Haltestelle A Hausen___|__Haltestelle A Hausen__|_Haltestelle B Hausen___|_Haltestelle C Hausen_|
+   * Status:                VALIDATED               VALIDATED                DRAFT                    DRAFT
+   */
   @Test
-  void nikoTest() throws Exception {
+  void whenMultipleStopPointsWithDifferentStatusesAndUpdateThenKeepExistingDraftVersionsAndAddNewOnes() throws Exception {
     ServicePointGeolocationCreateModel servicePointGeolocationCreateModel =
         ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation());
     CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
@@ -1739,9 +1747,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint3.setDesignationLong("designation long 1");
     stopPoint3.setStopPointType(StopPointType.ORDERLY);
     stopPoint3.setServicePointGeolocation(servicePointGeolocationCreateModel);
-    List<ReadServicePointVersionModel> servicePointVersionModel3 = servicePointController.updateServicePoint(id,
-        stopPoint3);
-    Long id3 = servicePointVersionModel3.get(2).getId();
+    servicePointController.updateServicePoint(id, stopPoint3);
 
     UpdateServicePointVersionModel stopPointx = ServicePointTestData.getAargauServicePointVersionModel();
     stopPointx.setServicePointGeolocation(servicePointGeolocationCreateModel);
@@ -1761,7 +1767,6 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
         .andExpect(jsonPath("$[0].designationOfficial", is("A Hausen")))
         .andExpect(jsonPath("$[0].designationLong", is("designation long 1")))
-//        .andExpect(jsonPath("$[0].stopPointType", is(null)))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2021-04-01")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2022-03-31")))
         .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString())))
@@ -1782,9 +1787,19 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[3].stopPointType", is(StopPointType.ORDERLY.toString())));
   }
 
-
+  /**
+   * Szenario:
+   * <p>
+   * NEU:                                                        |__Haltestelle B Hausen__|
+   * <p>
+   * IST:       |___Haltestelle A Hausen___|__Haltestelle A Hausen__|_______Haltestelle C Hausen____________________|
+   * Status:            VALIDATED                  VALIDATED                   DRAFT
+   * <p>
+   * RESULTAT:  |___Haltestelle A Hausen___|_Haltestelle A Hausen|_Haltestelle B Hausen___|_Haltestelle C Hausen_|
+   * Status:                VALIDATED               VALIDATED                DRAFT                    DRAFT
+   */
   @Test
-  void nikoTestModified() throws Exception {
+  void whenMultipleStopPointsWithDifferentStatusesAndUpdateInBetweenThenKeepExistingDraftVersionsAndAddNewOnes() throws Exception {
     ServicePointGeolocationCreateModel servicePointGeolocationCreateModel =
         ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation());
     CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
@@ -1818,9 +1833,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint3.setDesignationLong("designation long 1");
     stopPoint3.setStopPointType(StopPointType.ORDERLY);
     stopPoint3.setServicePointGeolocation(servicePointGeolocationCreateModel);
-    List<ReadServicePointVersionModel> servicePointVersionModel3 = servicePointController.updateServicePoint(id,
-        stopPoint3);
-    Long id3 = servicePointVersionModel3.get(2).getId();
+    servicePointController.updateServicePoint(id, stopPoint3);
 
     UpdateServicePointVersionModel stopPointx = ServicePointTestData.getAargauServicePointVersionModel();
     stopPointx.setServicePointGeolocation(servicePointGeolocationCreateModel);
@@ -1840,7 +1853,6 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
         .andExpect(jsonPath("$[0].designationOfficial", is("A Hausen")))
         .andExpect(jsonPath("$[0].designationLong", is("designation long 1")))
-        //        .andExpect(jsonPath("$[0].stopPointType", is(null)))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2021-04-01")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2021-12-31")))
         .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString())))

@@ -99,15 +99,15 @@ public class ServicePointService {
   public ServicePointVersion create(ServicePointVersion servicePointVersion,
       Optional<ServicePointVersion> currentVersion,
       List<ServicePointVersion> currentVersions) {
-    preSaveChecks(servicePointVersion, null, currentVersion, currentVersions);
+    preSaveChecks(servicePointVersion, currentVersion, currentVersions);
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
   private void preSaveChecks(ServicePointVersion servicePointVersion,
-      ServicePointVersion editedVerion, Optional<ServicePointVersion> currentVersion,
+      Optional<ServicePointVersion> currentVersion,
       List<ServicePointVersion> currentVersions) {
     servicePointVersion.setStatus(servicePointStatusDecider
-        .getStatusForServicePoint(servicePointVersion, editedVerion, currentVersion, currentVersions));
+        .getStatusForServicePoint(servicePointVersion, currentVersion, currentVersions));
     servicePointVersion.setEditionDate(LocalDateTime.now());
     servicePointVersion.setEditor(UserService.getUserIdentifier());
     servicePointValidationService.validateAndSetAbbreviation(servicePointVersion);
@@ -143,7 +143,7 @@ public class ServicePointService {
         editedVersion, existingDbVersions);
 
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
-        version -> save(version, editedVersion, Optional.of(currentVersion), currentVersions),
+        version -> save(version, Optional.of(currentVersion), currentVersions),
         new ApplyVersioningDeleteByIdLongConsumer(servicePointVersionRepository));
 
     List<ServicePointVersion> afterUpdateServicePoint = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
@@ -152,10 +152,9 @@ public class ServicePointService {
   }
 
   private void save(ServicePointVersion servicePointVersion,
-      ServicePointVersion editedVersion,
       Optional<ServicePointVersion> currentVersion,
       List<ServicePointVersion> currentVersions) {
-    preSaveChecks(servicePointVersion, editedVersion, currentVersion, currentVersions);
+    preSaveChecks(servicePointVersion, currentVersion, currentVersions);
     servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
