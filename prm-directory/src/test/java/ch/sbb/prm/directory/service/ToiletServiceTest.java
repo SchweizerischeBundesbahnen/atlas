@@ -255,7 +255,7 @@ class ToiletServiceTest extends BasePrmServiceTest {
   }
 
   @Test
-  public void testCheckToiletExists_Exists() {
+  void testCheckToiletExists_Exists() {
     ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
     toiletVersion.setSloid("ch:1:sloid:12345:1");
     toiletRepository.saveAndFlush(toiletVersion);
@@ -264,7 +264,7 @@ class ToiletServiceTest extends BasePrmServiceTest {
   }
 
   @Test
-  public void testCheckContactPointExists_DoesNotExist() {
+  void testCheckToiletExists_DoesNotExist() {
     assertThrows(ElementTypeDoesNotExistException.class, () -> toiletService.checkToiletExists("ch:1:sloid:12345:1", TOILET.name()));
   }
 

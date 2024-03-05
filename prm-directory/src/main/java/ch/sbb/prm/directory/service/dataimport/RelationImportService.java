@@ -125,7 +125,7 @@ public class RelationImportService extends BasePrmImportService<RelationVersion>
         }
     }
 
-    private void checkElementExists(ReferencePointElementType type, String sloid) {
+    public void checkElementExists(ReferencePointElementType type, String sloid) {
         if(type == ReferencePointElementType.INFO_DESK || type == ReferencePointElementType.TICKET_COUNTER){
             contactPointService.checkContactPointExists(sloid, ReferencePointElementType.CONTACT_POINT.name());
         }
