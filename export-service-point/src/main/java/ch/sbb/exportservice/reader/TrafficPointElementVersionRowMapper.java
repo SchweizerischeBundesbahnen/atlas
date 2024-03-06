@@ -3,14 +3,13 @@ package ch.sbb.exportservice.reader;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
-import ch.sbb.exportservice.entity.TrafficPointElementVersion;
-import ch.sbb.exportservice.entity.geolocation.TrafficPointElementGeolocation;
-import org.springframework.jdbc.core.RowMapper;
-
+import ch.sbb.exportservice.entity.sepodi.TrafficPointElementVersion;
+import ch.sbb.exportservice.entity.sepodi.geolocation.TrafficPointElementGeolocation;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import org.springframework.jdbc.core.RowMapper;
 
 public class TrafficPointElementVersionRowMapper extends BaseRowMapper implements RowMapper<TrafficPointElementVersion> {
 

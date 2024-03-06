@@ -1,15 +1,14 @@
 package ch.sbb.exportservice.processor;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
 import ch.sbb.atlas.export.model.prm.ReferencePointVersionCsvModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.exportservice.entity.ReferencePointVersion;
-import org.junit.jupiter.api.Test;
-
+import ch.sbb.exportservice.entity.prm.ReferencePointVersion;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class ReferencePointVersionCsvProcessorTest {
 

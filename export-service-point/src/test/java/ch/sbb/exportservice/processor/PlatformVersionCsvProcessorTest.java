@@ -9,11 +9,10 @@ import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.export.model.prm.PlatformVersionCsvModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.exportservice.entity.PlatformVersion;
+import ch.sbb.exportservice.entity.prm.PlatformVersion;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
-
 import org.junit.jupiter.api.Test;
 
 public class PlatformVersionCsvProcessorTest {

@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
-import ch.sbb.exportservice.entity.ServicePointVersion;
+import ch.sbb.exportservice.entity.sepodi.ServicePointVersion;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
