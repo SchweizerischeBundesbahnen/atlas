@@ -1,13 +1,11 @@
-import { Component, Input, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { MatStepper } from '@angular/material/stepper';
-import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-helper';
-import { MeanOfTransport } from '../../../../../api';
-import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import {
-  StopPointDetailFormGroup,
-  StopPointFormGroupBuilder,
-} from '../form/stop-point-detail-form-group';
+import {Component, Input, ViewChild} from '@angular/core';
+import {FormGroup} from '@angular/forms';
+import {MatStepper} from '@angular/material/stepper';
+import {PrmMeanOfTransportHelper} from '../../../util/prm-mean-of-transport-helper';
+import {MeanOfTransport} from '../../../../../api';
+import {DialogService} from '../../../../../core/components/dialog/dialog.service';
+import {StopPointDetailFormGroup, StopPointFormGroupBuilder,} from '../form/stop-point-detail-form-group';
+import {prmMeansOfTransport} from "../prm-variant-info-service.service";
 
 @Component({
   selector: 'app-create-stop-point',
@@ -25,6 +23,7 @@ export class CreateStopPointComponent {
   isPreviousSelectionReduced?: boolean;
   isMeanOfTransportSelected?: boolean;
   formMeanOfTransport = StopPointFormGroupBuilder.buildMeansOfTransportForm();
+  meansOfTransportToShow = prmMeansOfTransport;
 
   constructor(private dialogService: DialogService) {}
 
