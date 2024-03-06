@@ -4,7 +4,7 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_JSON_JOB_NAME;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
-import ch.sbb.exportservice.entity.ServicePointVersion;
+import ch.sbb.exportservice.entity.sepodi.ServicePointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.model.SePoDiBatchExportFileName;

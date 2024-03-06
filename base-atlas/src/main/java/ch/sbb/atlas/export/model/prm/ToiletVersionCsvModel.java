@@ -1,21 +1,21 @@
 package ch.sbb.atlas.export.model.prm;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Builder
+@SuperBuilder
 @FieldNameConstants
-@EqualsAndHashCode
-public class ToiletVersionCsvModel {
+@EqualsAndHashCode(callSuper = true)
+public class ToiletVersionCsvModel extends BasePrmCsvModel {
 
   private String sloid;
 

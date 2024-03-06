@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.export.model.prm.ParkingLotVersionCsvModel;
-import ch.sbb.exportservice.entity.ParkingLotVersion;
+import ch.sbb.exportservice.entity.prm.ParkingLotVersion;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
@@ -23,6 +23,7 @@ public class ParkingLotVersionCsvProcessor implements
         .validTo(BaseServicePointProcessor.DATE_FORMATTER.format(version.getValidTo()))
         .creationDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(version.getCreationDate()))
         .editionDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(version.getEditionDate()))
+        .status(version.getStatus())
         .build();
   }
 

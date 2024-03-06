@@ -1,8 +1,9 @@
-package ch.sbb.exportservice.entity;
+package ch.sbb.exportservice.entity.prm;
 
 import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,8 +12,6 @@ import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDate;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -20,7 +19,7 @@ import java.time.LocalDate;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-public class ContactPointVersion extends BaseEntity {
+public class ContactPointVersion extends BasePrmEntity {
 
     private Long id;
 

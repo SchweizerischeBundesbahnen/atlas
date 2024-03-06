@@ -2,18 +2,18 @@ package ch.sbb.exportservice.reader;
 
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.exportservice.entity.StopPointVersion;
-import ch.sbb.exportservice.entity.StopPointVersion.StopPointVersionBuilder;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.jdbc.core.RowMapper;
-
+import ch.sbb.exportservice.entity.prm.StopPointVersion;
+import ch.sbb.exportservice.entity.prm.StopPointVersion.StopPointVersionBuilder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.jdbc.core.RowMapper;
 
 public class StopPointVersionRowMapper extends BaseRowMapper implements RowMapper<StopPointVersion> {
 
@@ -70,6 +70,7 @@ public class StopPointVersionRowMapper extends BaseRowMapper implements RowMappe
     builder.creator(rs.getString("creator"));
     builder.editor(rs.getString("editor"));
     builder.version(rs.getInt("version"));
+    builder.status(Status.valueOf(rs.getString("status")));
     return builder.build();
   }
 
