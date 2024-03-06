@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.entity.geolocation;
+package ch.sbb.exportservice.entity.sepodi.geolocation;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepoint.CoordinatePair;

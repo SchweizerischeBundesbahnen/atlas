@@ -2,7 +2,7 @@ package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.api.servicepoint.GeolocationBaseReadModel;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
-import ch.sbb.exportservice.entity.TrafficPointElementVersion;
+import ch.sbb.exportservice.entity.sepodi.TrafficPointElementVersion;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 

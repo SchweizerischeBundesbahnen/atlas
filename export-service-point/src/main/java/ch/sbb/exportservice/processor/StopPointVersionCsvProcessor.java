@@ -2,7 +2,7 @@ package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.export.model.prm.StopPointVersionCsvModel;
-import ch.sbb.exportservice.entity.StopPointVersion;
+import ch.sbb.exportservice.entity.prm.StopPointVersion;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
@@ -41,6 +41,7 @@ public class StopPointVersionCsvProcessor extends BaseServicePointProcessor impl
         .validTo(DATE_FORMATTER.format(version.getValidTo()))
         .creationDate(LOCAL_DATE_FORMATTER.format(version.getCreationDate()))
         .editionDate(LOCAL_DATE_FORMATTER.format(version.getEditionDate()))
+        .status(version.getStatus())
         .build();
 
   }

@@ -1,9 +1,9 @@
 package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.api.servicepoint.GeolocationBaseReadModel;
-import ch.sbb.exportservice.entity.BusinessOrganisation;
-import ch.sbb.exportservice.entity.TrafficPointElementVersion;
-import ch.sbb.exportservice.entity.geolocation.TrafficPointElementGeolocation;
+import ch.sbb.exportservice.entity.bodi.BusinessOrganisation;
+import ch.sbb.exportservice.entity.sepodi.TrafficPointElementVersion;
+import ch.sbb.exportservice.entity.sepodi.geolocation.TrafficPointElementGeolocation;
 import ch.sbb.exportservice.model.TrafficPointVersionCsvModel;
 import ch.sbb.exportservice.model.TrafficPointVersionCsvModel.TrafficPointVersionCsvModelBuilder;
 import lombok.extern.slf4j.Slf4j;

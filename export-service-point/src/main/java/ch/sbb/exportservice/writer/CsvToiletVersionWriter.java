@@ -1,5 +1,6 @@
 package ch.sbb.exportservice.writer;
 
+import ch.sbb.atlas.export.model.prm.BasePrmCsvModel;
 import ch.sbb.atlas.export.model.prm.ToiletVersionCsvModel;
 import ch.sbb.atlas.export.model.prm.ToiletVersionCsvModel.Fields;
 import org.springframework.stereotype.Component;
@@ -12,7 +13,8 @@ public class CsvToiletVersionWriter extends BaseCsvWriter<ToiletVersionCsvModel>
     return new String[]{
         Fields.sloid, Fields.parentSloidServicePoint, Fields.parentNumberServicePoint, Fields.designation,
         Fields.additionalInformation, Fields.wheelchairToilet,
-        Fields.validFrom, Fields.validTo, Fields.creationDate, Fields.editionDate
+        BasePrmCsvModel.Fields.validFrom, BasePrmCsvModel.Fields.validTo, BasePrmCsvModel.Fields.creationDate,
+        BasePrmCsvModel.Fields.editionDate, BasePrmCsvModel.Fields.status
     };
   }
 
