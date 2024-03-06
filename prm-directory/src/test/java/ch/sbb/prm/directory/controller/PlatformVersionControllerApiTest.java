@@ -131,6 +131,7 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
             "?numbers=12345" +
             "&sloids=ch:1:sloid:12345:1" +
             "&fromDate=" + version.getValidFrom() +
+            "&statusRestrictions=VALIDATED" +
             "&toDate=" + version.getValidTo() +
             "&validOn=" + LocalDate.of(2000, 6, 28) +
             "&createdAfter=" + version.getCreationDate().minusSeconds(1)

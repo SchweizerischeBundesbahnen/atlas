@@ -294,6 +294,7 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/toilets" +
             "?numbers=12345" +
             "&sloids=ch:1:sloid:12345:1" +
+            "&statusRestrictions=VALIDATED" +
             "&fromDate=" + version.getValidFrom() +
             "&toDate=" + version.getValidTo() +
             "&validOn=" + LocalDate.of(2000, 6, 28) +
