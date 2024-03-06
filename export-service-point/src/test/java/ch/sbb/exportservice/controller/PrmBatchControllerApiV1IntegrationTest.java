@@ -350,4 +350,41 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
         }
     }
 
+    @Test
+    void shouldGetRelationJsonSuccessfully() throws Exception {
+        //given
+        try (InputStream inputStream = this.getClass().getResourceAsStream("/relation-data.json")) {
+            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+            doReturn(inputStreamResource).when(fileExportService)
+                .streamJsonFile(PrmExportType.FULL, PrmBatchExportFileName.RELATION_VERSION);
+            //when & then
+            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/RELATION_VERSION/FULL")
+                    .contentType(contentType))
+                .andExpect(request().asyncStarted())
+                .andReturn();
+            mvc.perform(asyncDispatch(mvcResult))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(10)));
+        }
+    }
+
+    @Test
+    void shouldDownloadRelationGzipJsonSuccessfully() throws Exception {
+        //given
+        try (InputStream inputStream = this.getClass().getResourceAsStream("/relation-data.json.gz")) {
+            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+            doReturn(inputStreamResource).when(fileExportService)
+                .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.RELATION_VERSION);
+            doReturn("relation").when(fileExportService)
+                .getBaseFileName(PrmExportType.FULL, PrmBatchExportFileName.RELATION_VERSION);
+            //when & then
+            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/RELATION_VERSION/FULL")
+                    .contentType(contentType)).andExpect(request().asyncStarted())
+                .andReturn();
+            mvc.perform(asyncDispatch(mvcResult))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/gzip"));
+        }
+    }
+
 }
