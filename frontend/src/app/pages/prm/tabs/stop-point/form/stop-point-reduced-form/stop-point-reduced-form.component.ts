@@ -16,6 +16,7 @@ export class StopPointReducedFormComponent implements OnInit {
   meansOfTransportToShow: MeanOfTransport[] | undefined;
   constructor(private readonly prmVariantInfoServiceService: PrmVariantInfoServiceService) {
   }
+
   ngOnInit(): void {
     if (this.isNew) {
       this.initForm();
