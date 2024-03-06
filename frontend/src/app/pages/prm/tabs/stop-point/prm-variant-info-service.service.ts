@@ -15,10 +15,10 @@ export class PrmVariantInfoServiceService {
   constructor(private authService: AuthService) {
   }
 
-  getPrmMeansOfTransportToShow(meansOfTransport: MeanOfTransport[]) : MeanOfTransport[] | undefined{
+  getPrmMeansOfTransportToShow(meansOfTransport: MeanOfTransport[]): MeanOfTransport[] | undefined {
     const isAtLeastSupervisor = this.authService.isAtLeastSupervisor(ApplicationType.Prm);
-    if(isAtLeastSupervisor){
-      return undefined;
+    if (isAtLeastSupervisor) {
+      return Object.values(MeanOfTransport).filter((value) => value !== MeanOfTransport.Unknown);
     }
     const isReduced = PrmMeanOfTransportHelper.isReduced(meansOfTransport);
     return isReduced ? reducedMeansOfTransport : completeMeansOfTransport

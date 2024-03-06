@@ -3,6 +3,7 @@ import {TestBed} from '@angular/core/testing';
 import {PrmVariantInfoServiceService} from './prm-variant-info-service.service';
 import {AuthService} from "../../../../core/auth/auth.service";
 import {completeMeansOfTransport, reducedMeansOfTransport} from "../../util/prm-mean-of-transport-helper";
+import {MeanOfTransport} from "../../../../api";
 
 describe('PrmVariantInfoServiceService', () => {
   let service: PrmVariantInfoServiceService;
@@ -36,7 +37,7 @@ describe('PrmVariantInfoServiceService', () => {
       //when
       const res = service.getPrmMeansOfTransportToShow(['BUS']);
       //then
-      expect(res).toBeUndefined();
+      expect(res).toEqual(Object.values(MeanOfTransport).filter((value) => value !== MeanOfTransport.Unknown));
 
     });
 
@@ -44,7 +45,7 @@ describe('PrmVariantInfoServiceService', () => {
       //when
       const res = service.getPrmMeansOfTransportToShow(['TRAIN']);
       //then
-      expect(res).toBeUndefined();
+      expect(res).toEqual(Object.values(MeanOfTransport).filter((value) => value !== MeanOfTransport.Unknown));
 
     });
   });

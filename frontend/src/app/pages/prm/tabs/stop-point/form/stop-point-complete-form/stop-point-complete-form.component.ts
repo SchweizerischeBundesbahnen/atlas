@@ -17,7 +17,7 @@ export class StopPointCompleteFormComponent implements OnInit {
   booleanOptionalAttributeTypes = Object.values(BooleanOptionalAttributeType);
   @Input() selectedMeansOfTransport!: MeanOfTransport[];
   @Input() isNew = false;
-  meansOfTransportToShows: MeanOfTransport[] | undefined;
+  meansOfTransportToShow: MeanOfTransport[] | undefined;
   constructor(private readonly translationSortingService: TranslationSortingService,
               private readonly prmVariantInfoServiceService: PrmVariantInfoServiceService) {
   }
@@ -26,7 +26,7 @@ export class StopPointCompleteFormComponent implements OnInit {
     if (this.isNew) {
       this.initForm();
     }
-    this.meansOfTransportToShows = this.prmVariantInfoServiceService.getPrmMeansOfTransportToShow(this.form.controls.meansOfTransport.value!)
+    this.meansOfTransportToShow = this.prmVariantInfoServiceService.getPrmMeansOfTransportToShow(this.form.controls.meansOfTransport.value!)
     this.setSortedOperatingPointTypes();
   }
 
