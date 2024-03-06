@@ -1,5 +1,8 @@
 package ch.sbb.importservice.service.csv;
 
+import static ch.sbb.importservice.service.csv.CsvFileNameModel.SERVICEPOINT_DIDOK_DIR_NAME;
+import static java.util.Comparator.comparing;
+
 import ch.sbb.atlas.imports.prm.relation.RelationCsvModel;
 import ch.sbb.atlas.imports.prm.relation.RelationCsvModelContainer;
 import ch.sbb.atlas.versioning.date.DateHelper;
@@ -7,17 +10,13 @@ import ch.sbb.importservice.entity.RelationKeyId;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
 import ch.sbb.importservice.utils.JobDescriptionConstants;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static ch.sbb.importservice.service.csv.CsvFileNameModel.SERVICEPOINT_DIDOK_DIR_NAME;
-import static java.util.Comparator.comparing;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
@@ -45,7 +44,7 @@ public class RelationCsvService extends PrmCsvService<RelationCsvModel>{
 
     @Override
     protected String getImportCsvJobName() {
-        return JobDescriptionConstants.IMPORT_REFERENCE_POINT_CSV_JOB_NAME;
+        return JobDescriptionConstants.IMPORT_RELATION_CSV_JOB_NAME;
     }
 
     @Override
