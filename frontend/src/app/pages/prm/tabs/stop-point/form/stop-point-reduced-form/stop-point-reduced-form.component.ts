@@ -13,14 +13,14 @@ export class StopPointReducedFormComponent implements OnInit {
   @Input() form!: FormGroup<StopPointDetailFormGroup>;
   @Input() selectedMeansOfTransport!: MeanOfTransport[];
   @Input() isNew = false;
-  meansOfTransportToShows: MeanOfTransport[] | undefined;
+  meansOfTransportToShow: MeanOfTransport[] | undefined;
   constructor(private readonly prmVariantInfoServiceService: PrmVariantInfoServiceService) {
   }
   ngOnInit(): void {
     if (this.isNew) {
       this.initForm();
     }
-    this.meansOfTransportToShows = this.prmVariantInfoServiceService.getPrmMeansOfTransportToShow(this.form.controls.meansOfTransport.value!)
+    this.meansOfTransportToShow = this.prmVariantInfoServiceService.getPrmMeansOfTransportToShow(this.form.controls.meansOfTransport.value!)
   }
 
   private initForm() {
