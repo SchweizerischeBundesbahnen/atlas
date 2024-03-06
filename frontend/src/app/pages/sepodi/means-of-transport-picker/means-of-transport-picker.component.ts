@@ -22,11 +22,7 @@ export class MeansOfTransportPickerComponent implements OnInit {
   }
 
   private getMeansOfTransportToShow() {
-    let meansToShow = Object.values(MeanOfTransport)
-    if (this.meansOfTransportToShow) {
-      meansToShow = this.meansOfTransportToShow;
-    }
-    this.means = meansToShow;
+    this.means = this.meansOfTransportToShow ? this.meansOfTransportToShow : Object.values(MeanOfTransport);
   }
 
   get currentlySelectedMeans() {
