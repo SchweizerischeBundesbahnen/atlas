@@ -4,8 +4,12 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -28,14 +32,13 @@ import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
+import ch.sbb.prm.directory.service.dataimport.RelationImportService;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
-import ch.sbb.prm.directory.service.dataimport.RelationImportService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -326,6 +329,7 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/relations" +
             "?servicePointNumbers=1234567" +
             "&referencePointsloids=ch:1:sloid:7000:1" +
+            "&statusRestrictions=VALIDATED" +
             "&sloids=ch:1:sloid:7000:11" +
             "&fromDate=" + version.getValidFrom() +
             "&toDate=" + version.getValidTo() +
