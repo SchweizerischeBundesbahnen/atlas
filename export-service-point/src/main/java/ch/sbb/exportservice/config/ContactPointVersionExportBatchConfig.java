@@ -1,8 +1,12 @@
 package ch.sbb.exportservice.config;
 
+import static ch.sbb.exportservice.model.PrmBatchExportFileName.CONTACT_POINT_VERSION;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_CONTACT_POINT_CSV_JOB_NAME;
+import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_CONTACT_POINT_JSON_JOB_NAME;
+
 import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
 import ch.sbb.atlas.export.model.prm.ContactPointVersionCsvModel;
-import ch.sbb.exportservice.entity.ContactPointVersion;
+import ch.sbb.exportservice.entity.prm.ContactPointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.model.PrmExportType;
@@ -17,6 +21,7 @@ import ch.sbb.exportservice.tasklet.UploadJsonFileTasklet;
 import ch.sbb.exportservice.utils.StepUtils;
 import ch.sbb.exportservice.writer.CsvContactPointVersionWriter;
 import ch.sbb.exportservice.writer.JsonContactPointVersionWriter;
+import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -35,12 +40,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
-
-import javax.sql.DataSource;
-
-import static ch.sbb.exportservice.model.PrmBatchExportFileName.CONTACT_POINT_VERSION;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_CONTACT_POINT_CSV_JOB_NAME;
-import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_CONTACT_POINT_JSON_JOB_NAME;
 
 @Configuration
 @RequiredArgsConstructor

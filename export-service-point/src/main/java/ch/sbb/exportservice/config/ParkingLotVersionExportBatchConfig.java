@@ -6,7 +6,7 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PARKING_
 
 import ch.sbb.atlas.api.prm.model.parkinglot.ReadParkingLotVersionModel;
 import ch.sbb.atlas.export.model.prm.ParkingLotVersionCsvModel;
-import ch.sbb.exportservice.entity.ParkingLotVersion;
+import ch.sbb.exportservice.entity.prm.ParkingLotVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.model.PrmExportType;
