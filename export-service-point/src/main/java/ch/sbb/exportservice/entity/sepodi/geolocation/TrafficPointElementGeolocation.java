@@ -1,6 +1,6 @@
-package ch.sbb.exportservice.entity.geolocation;
+package ch.sbb.exportservice.entity.sepodi.geolocation;
 
-import ch.sbb.exportservice.entity.TrafficPointElementVersion;
+import ch.sbb.exportservice.entity.sepodi.TrafficPointElementVersion;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
