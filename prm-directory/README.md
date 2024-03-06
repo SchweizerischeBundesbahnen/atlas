@@ -63,27 +63,30 @@ This project uses [Semantic Versioning](https://semver.org/).
 * DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=prm-directory-test
 * Openshift
   Project: https://console-openshift-console.apps.aws01t.sbb-aws-test.net/k8s/cluster/projects/atlas-test
-* Project deploy: https://line-directory.test.sbb-cloud.net
+* Project deploy: https://prm-directory.test.sbb-cloud.net
 * Swagger
   UI: https://prm-directory.test.sbb-cloud.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+* Rest Doc: https://prm-directory.test.sbb-cloud.net/static/rest-api.html
 
 ### Integration
 
 * DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=prm-directory-int
 * Openshift
   Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-int
-* Project deploy: https://line-directory.int.sbb-cloud.net
+* Project deploy: https://prm-directory.int.sbb-cloud.net
 * Swagger
   UI: https://prm-directory.int.sbb-cloud.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+* Rest Doc: https://prm-directory.int.sbb-cloud.net/static/rest-api.html
 
 ### Production
 
 * DB AWS PostgreSQL: https://ssp.dbms.sbb.ch/manageinstanceaws?i=prm-directory-prod
 * Openshift
   Project: https://console-openshift-console.apps.maggie.sbb-aws.net/k8s/cluster/projects/atlas-prod
-* Project deploy: https://line-directory.prod.sbb-cloud.net
+* Project deploy: https://prm-directory.prod.sbb-cloud.net
 * Swagger
-  UI:  https://prm-directory.sbb-cloud.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+  UI:  https://prm-directory.prod.sbb-cloud.net/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+* Rest Doc: https://prm-directory.prod.sbb-cloud.net/static/rest-api.html
 
 ### Project Infrastructure
 

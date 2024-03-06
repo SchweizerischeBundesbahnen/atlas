@@ -128,6 +128,20 @@ abstract class BasePrmSqlIntegrationTest {
     execute(insertSql);
   }
 
+  protected void insertRelation(int id, String sloid, ServicePointNumber parentServicePointNumber, String referencePointSloid,
+      LocalDate validFrom, LocalDate validTo) throws SQLException {
+    final String insertSql = """
+        INSERT INTO relation_version (id, sloid, number, parent_service_point_sloid, tactile_visual_marks, contrasting_areas, step_free_access, reference_point_sloid, reference_point_element_type, valid_from, valid_to, creation_date, creator, edition_date, editor, version)
+        VALUES (%d, '%s', %d, '%s', 'TO_BE_COMPLETED', 'TO_BE_COMPLETED', 'TO_BE_COMPLETED', '%s', 'TOILET', '%s', '%s', '2022-02-19 09:54:38.000000', 'u123456',
+        '2022-02-19 09:54:38.000000', 'u123456', 0);
+        """
+        .formatted(id, sloid, parentServicePointNumber.getNumber(), ServicePointNumber.calculateSloid(parentServicePointNumber),
+            referencePointSloid,
+            formatDate(validFrom),
+            formatDate(validTo));
+    execute(insertSql);
+  }
+
   private void execute(String insertSql) throws SQLException {
     final Connection connection = prmDataSource.getConnection();
     try (final PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {

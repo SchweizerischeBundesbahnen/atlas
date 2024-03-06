@@ -154,6 +154,8 @@ scheduler:
       chron: "0 50 5 * * ?" #At 05:50:00am every day
     parking-lot-trigger-batch:
       chron: "0 55 5 * * ?" #At 05:55:00am every day
+    relation-trigger-batch:
+      chron: "0 00 6 * * ?" #At 06:00:00am every day
 
   location:
     sync:
