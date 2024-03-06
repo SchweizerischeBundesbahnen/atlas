@@ -7,6 +7,9 @@ import {
   reducedMeansOfTransport
 } from "../../util/prm-mean-of-transport-helper";
 
+export const prmMeansOfTransport: MeanOfTransport[] = Object.values(MeanOfTransport)
+  .filter((value) => value !== MeanOfTransport.Unknown);
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +21,7 @@ export class PrmVariantInfoServiceService {
   getPrmMeansOfTransportToShow(meansOfTransport: MeanOfTransport[]): MeanOfTransport[] | undefined {
     const isAtLeastSupervisor = this.authService.isAtLeastSupervisor(ApplicationType.Prm);
     if (isAtLeastSupervisor) {
-      return Object.values(MeanOfTransport).filter((value) => value !== MeanOfTransport.Unknown);
+      return prmMeansOfTransport;
     }
     const isReduced = PrmMeanOfTransportHelper.isReduced(meansOfTransport);
     return isReduced ? reducedMeansOfTransport : completeMeansOfTransport
