@@ -1,13 +1,18 @@
-package ch.sbb.exportservice.entity;
+package ch.sbb.exportservice.entity.sepodi;
 
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
-import ch.sbb.exportservice.entity.geolocation.TrafficPointElementGeolocation;
-import lombok.*;
+import ch.sbb.exportservice.entity.BaseEntity;
+import ch.sbb.exportservice.entity.bodi.BusinessOrganisation;
+import ch.sbb.exportservice.entity.sepodi.geolocation.TrafficPointElementGeolocation;
+import java.time.LocalDate;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
-
-import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor

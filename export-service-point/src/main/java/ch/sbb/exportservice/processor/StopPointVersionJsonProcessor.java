@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
-import ch.sbb.exportservice.entity.StopPointVersion;
+import ch.sbb.exportservice.entity.prm.StopPointVersion;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
@@ -44,6 +44,7 @@ public class StopPointVersionJsonProcessor extends BaseServicePointProcessor imp
         .editionDate(version.getEditionDate())
         .editor(version.getEditor())
         .etagVersion(version.getVersion())
+        .status(version.getStatus())
         .build();
   }
 

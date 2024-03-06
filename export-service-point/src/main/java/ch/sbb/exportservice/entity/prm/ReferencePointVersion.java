@@ -1,6 +1,6 @@
-package ch.sbb.exportservice.entity;
+package ch.sbb.exportservice.entity.prm;
 
-import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-public class ParkingLotVersion extends BaseEntity {
+public class ReferencePointVersion extends BasePrmEntity {
 
   private Long id;
 
@@ -32,9 +32,9 @@ public class ParkingLotVersion extends BaseEntity {
 
   private String additionalInformation;
 
-  private BooleanOptionalAttributeType placesAvailable;
+  private boolean mainReferencePoint;
 
-  private BooleanOptionalAttributeType prmPlacesAvailable;
+  private ReferencePointAttributeType referencePointType;
 
   private LocalDate validFrom;
 
