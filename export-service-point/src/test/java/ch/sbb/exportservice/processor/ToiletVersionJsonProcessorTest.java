@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.toilet.ReadToiletVersionModel;
 import ch.sbb.atlas.api.prm.model.toilet.ToiletVersionModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.exportservice.entity.prm.ToiletVersion;
 import java.time.LocalDate;
@@ -27,6 +28,7 @@ public class ToiletVersionJsonProcessorTest {
         .validTo(LocalDate.of(2020, 12, 31))
         .creationDate(LocalDateTime.of(2024, 2, 7, 20, 0))
         .editionDate(LocalDateTime.of(2024, 2, 7, 20, 0))
+        .status(Status.VALIDATED)
         .build();
 
     ToiletVersionJsonProcessor processor = new ToiletVersionJsonProcessor();
@@ -43,6 +45,7 @@ public class ToiletVersionJsonProcessorTest {
         .validTo(LocalDate.of(2020, 12, 31))
         .creationDate(LocalDateTime.of(2024, 2, 7, 20, 0))
         .editionDate(LocalDateTime.of(2024, 2, 7, 20, 0))
+        .status(Status.VALIDATED)
         .build();
 
     ReadToiletVersionModel result = processor.process(entity);
