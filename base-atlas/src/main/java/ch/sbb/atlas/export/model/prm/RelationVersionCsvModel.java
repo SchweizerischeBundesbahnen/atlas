@@ -1,5 +1,9 @@
 package ch.sbb.atlas.export.model.prm;
 
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,13 +29,13 @@ public class RelationVersionCsvModel {
 
   private String referencePointSloid;
 
-  private String tactileVisualMarks;
+  private TactileVisualAttributeType tactileVisualMarks;
 
-  private String contrastingAreas;
+  private StandardAttributeType contrastingAreas;
 
-  private String stepFreeAccess;
+  private StepFreeAccessAttributeType stepFreeAccess;
 
-  private String referencePointElementType;
+  private ReferencePointElementType referencePointElementType;
 
   private String validFrom;
 
