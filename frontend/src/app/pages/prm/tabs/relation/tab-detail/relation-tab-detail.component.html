@@ -25,7 +25,10 @@
           [records]="relationInfo.relations"
           [currentRecord]="relationInfo.currentRelation"
           [switchDisabled]="editing"
-          (switchVersion)="versionChanged($event)"
+          [showStatus]="false"
+          (switchVersion)="
+            versionChanged(relationInfo.relations[$event]); selectedRelationVersion = $event + 1
+          "
         ></app-switch-version>
       </div>
     </ng-container>
