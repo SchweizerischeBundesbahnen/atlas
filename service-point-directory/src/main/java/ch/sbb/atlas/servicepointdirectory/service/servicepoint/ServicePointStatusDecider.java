@@ -11,7 +11,6 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 @Slf4j
 @Service
@@ -45,7 +44,7 @@ public class ServicePointStatusDecider {
             && isThereOverlappingVersionWithTheSameName(newServicePointVersion, servicePointVersions)) {
             logMessage(currentVersion, newServicePointVersion, "Deciding on ServicePoint.Status "
                 + "newServicePointVersion={}, and currentServicePointVersion={}. DesignationOfficial name is changed.");
-            return setStatusAsInPreviousVersionOrToValidated(currentVersion);
+            return getStatusFromCurrentVersion(currentVersion);
         }
         if (hasNameChanged(newServicePointVersion, currentVersion)
             && hasVersionOnTheSameTimeslotWithDifferentName(newServicePointVersion, servicePointVersions)) {
@@ -56,7 +55,7 @@ public class ServicePointStatusDecider {
         logMessage(currentVersion, newServicePointVersion,
             "Deciding on ServicePoint.Status when updating where currentServicePointVersion={}, and "
                 + "newServicePointVersion={}. Status will be set as in previous Version or to Validated per default.");
-        return setStatusAsInPreviousVersionOrToValidated(currentVersion);
+        return getStatusFromCurrentVersion(currentVersion);
     }
 
     /**
@@ -100,24 +99,18 @@ public class ServicePointStatusDecider {
 
     private ServicePointVersion calculateCurrentVersion(List<ServicePointVersion> servicePointVersions,
         ServicePointVersion newVersion, ServicePointVersion currentVersion) {
-        if (!CollectionUtils.isEmpty(servicePointVersions)) {
             Optional<ServicePointVersion> overlappingVersion = servicePointVersions.stream()
                 .filter(existing -> isOverlapping(existing, newVersion))
                 .findFirst();
             return overlappingVersion.orElse(currentVersion);
-        }
-        return currentVersion;
     }
 
-    private Status setStatusAsInPreviousVersionOrToValidated(ServicePointVersion currentVersion) {
+    private Status getStatusFromCurrentVersion(ServicePointVersion currentVersion) {
         return currentVersion.getStatus();
     }
 
     private boolean hasVersionOnTheSameTimeslotWithDifferentName(ServicePointVersion newServicePointVersion,
         List<ServicePointVersion> servicePointVersions) {
-        if (CollectionUtils.isEmpty(servicePointVersions)) {
-            return false;
-        }
         return servicePointVersions.stream()
             .anyMatch(existing -> isOverlapping(existing, newServicePointVersion)
                     && hasNameChanged(newServicePointVersion, existing));
