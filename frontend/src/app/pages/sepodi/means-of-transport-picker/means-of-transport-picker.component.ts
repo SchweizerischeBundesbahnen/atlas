@@ -12,9 +12,8 @@ export class MeansOfTransportPickerComponent implements OnInit {
   @Input() disabled = false;
   @Input() formGroup!: FormGroup;
   @Input() label!: string;
-  @Input() showUnknown = true;
   @Input() showInfo = false;
-  @Input() meansOfTransportToShows: MeanOfTransport[] | undefined;
+  @Input() meansOfTransportToShow: MeanOfTransport[] | undefined;
 
   means!: MeanOfTransport[];
 
@@ -24,12 +23,10 @@ export class MeansOfTransportPickerComponent implements OnInit {
 
   private getMeansOfTransportToShow() {
     let meansToShow = Object.values(MeanOfTransport)
-    if (this.meansOfTransportToShows) {
-      meansToShow = this.meansOfTransportToShows;
+    if (this.meansOfTransportToShow) {
+      meansToShow = this.meansOfTransportToShow;
     }
-    this.means = this.showUnknown
-      ? meansToShow
-      : meansToShow.filter((value) => value !== MeanOfTransport.Unknown);
+    this.means = meansToShow;
   }
 
   get currentlySelectedMeans() {
