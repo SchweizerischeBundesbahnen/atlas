@@ -2,22 +2,22 @@ package ch.sbb.atlas.export.model.prm;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Builder
+@SuperBuilder
 @FieldNameConstants
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PlatformVersionCsvModel {
+public class PlatformVersionCsvModel extends BasePrmCsvModel {
 
     private String sloid;
 
@@ -61,11 +61,4 @@ public class PlatformVersionCsvModel {
 
     private Double wheelChairAreaWidth;
 
-    private String validFrom;
-
-    private String validTo;
-
-    private String creationDate;
-
-    private String editionDate;
 }

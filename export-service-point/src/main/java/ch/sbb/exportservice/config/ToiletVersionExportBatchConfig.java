@@ -6,7 +6,7 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TOILET_J
 
 import ch.sbb.atlas.api.prm.model.toilet.ReadToiletVersionModel;
 import ch.sbb.atlas.export.model.prm.ToiletVersionCsvModel;
-import ch.sbb.exportservice.entity.ToiletVersion;
+import ch.sbb.exportservice.entity.prm.ToiletVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.model.PrmExportType;
