@@ -12,6 +12,18 @@ import { BaseDetailController } from './core/components/base-detail/base-detail-
 import { Record } from './core/components/base-detail/record';
 
 @Component({
+  selector: 'app-switch-version',
+  template: '<h1>version switch mock</h1>',
+})
+export class MockSwitchVersionComponent {
+  @Input() records!: Array<Record>;
+  @Input() currentRecord!: Record;
+  @Input() switchDisabled = false;
+  @Input() showStatus = true;
+  @Output() switchVersion = new EventEmitter<number>();
+}
+
+@Component({
   selector: 'app-detail-wrapper [controller][headingNew]',
   template: '<p>Mock Product Editor Component</p>',
 })
@@ -137,12 +149,14 @@ export type ActivatedRouteMockType = { data: any };
     MockUserDetailInfoComponent,
     MockAtlasFieldErrorComponent,
     MockInfoIconComponent,
+    MockSwitchVersionComponent,
   ],
   exports: [
     MockBoSelectComponent,
     MockAtlasButtonComponent,
     MockTableComponent,
     MockSelectComponent,
+    MockSwitchVersionComponent,
   ],
 })
 export class AppMockComponents {}
