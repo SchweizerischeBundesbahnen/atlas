@@ -152,6 +152,51 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldNotGetReferencePointVersionsWithFilterOnStatusRevoked() throws Exception {
+    //given
+    ReferencePointVersion version = referencePointRepository.save(ReferencePointTestData.getReferencePointVersion());
+
+    //when & then
+    mvc.perform(get("/v1/reference-points" +
+            "?numbers=12345" +
+            "&statusRestrictions=REVOKED" +
+            "&sloids=ch:1:sloid:12345:1" +
+            "&fromDate=" + version.getValidFrom() +
+            "&toDate=" + version.getValidTo() +
+            "&validOn=" + LocalDate.of(2000, 6, 28) +
+            "&createdAfter=" + version.getCreationDate().minusSeconds(1)
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)) +
+            "&modifiedAfter=" + version.getEditionDate()
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN))
+        ))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(0)));
+  }
+  @Test
+  void shouldGetReferencePointVersionsWithFilterOnStatusRevoked() throws Exception {
+    //given
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setStatus(Status.REVOKED);
+    ReferencePointVersion version = referencePointRepository.save(referencePointVersion);
+
+    //when & then
+    mvc.perform(get("/v1/reference-points" +
+            "?numbers=12345" +
+            "&statusRestrictions=REVOKED" +
+            "&sloids=ch:1:sloid:12345:1" +
+            "&fromDate=" + version.getValidFrom() +
+            "&toDate=" + version.getValidTo() +
+            "&validOn=" + LocalDate.of(2000, 6, 28) +
+            "&createdAfter=" + version.getCreationDate().minusSeconds(1)
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)) +
+            "&modifiedAfter=" + version.getEditionDate()
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN))
+        ))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
+  }
+
+  @Test
   void shouldGetReferencePointOverview() throws Exception {
     //given
     ReferencePointVersion referencePointVersion = referencePointRepository.save(
