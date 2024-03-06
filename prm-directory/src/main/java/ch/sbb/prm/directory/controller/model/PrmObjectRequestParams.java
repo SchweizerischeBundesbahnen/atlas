@@ -1,7 +1,6 @@
 package ch.sbb.prm.directory.controller.model;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.api.model.VersionedObjectDateRequestParams;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.constraints.Max;
@@ -22,11 +21,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder
 @ToString
-public class PrmObjectRequestParams extends VersionedObjectDateRequestParams {
-
-  @Parameter(description = "Unique key for platforms which is used in the customer information.")
-  @Singular(ignoreNullCollections = true)
-  private List<String> sloids = new ArrayList<>();
+public class PrmObjectRequestParams extends BasePrmObjectRequestParams {
 
   @Parameter(description = "Unique key for the associated Service Point.")
   @Singular(ignoreNullCollections = true)
