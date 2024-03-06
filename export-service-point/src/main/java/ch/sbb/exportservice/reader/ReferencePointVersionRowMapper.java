@@ -1,15 +1,15 @@
 package ch.sbb.exportservice.reader;
 
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.exportservice.entity.ReferencePointVersion;
-import ch.sbb.exportservice.entity.ReferencePointVersion.ReferencePointVersionBuilder;
-import org.springframework.jdbc.core.RowMapper;
-
+import ch.sbb.exportservice.entity.prm.ReferencePointVersion;
+import ch.sbb.exportservice.entity.prm.ReferencePointVersion.ReferencePointVersionBuilder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import org.springframework.jdbc.core.RowMapper;
 
 public class ReferencePointVersionRowMapper extends BaseRowMapper implements RowMapper<ReferencePointVersion> {
 
@@ -31,6 +31,7 @@ public class ReferencePointVersionRowMapper extends BaseRowMapper implements Row
     builder.creator(rs.getString("creator"));
     builder.editor(rs.getString("editor"));
     builder.version(rs.getInt("version"));
+    builder.status(Status.valueOf(rs.getString("status")));
     return builder.build();
   }
 

@@ -1,21 +1,21 @@
 package ch.sbb.atlas.export.model.prm;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Builder
+@SuperBuilder
 @FieldNameConstants
-@EqualsAndHashCode
-public class ContactPointVersionCsvModel {
+@EqualsAndHashCode(callSuper = true)
+public class ContactPointVersionCsvModel extends BasePrmCsvModel {
 
     private String sloid;
 
@@ -34,13 +34,5 @@ public class ContactPointVersionCsvModel {
     private String openingHours;
 
     private String wheelchairAccess;
-
-    private String validFrom;
-
-    private String validTo;
-
-    private String creationDate;
-
-    private String editionDate;
 
 }
