@@ -56,7 +56,8 @@ module.exports = function (config) {
     customLaunchers: {
       ChromeHeadlessNoSandbox: {
         base: "ChromeHeadless",
-        flags: ["--no-sandbox"]
+        flags: ["--no-sandbox"],
+        pingTimeout: 10000
       }
     },
     reporters: ['progress', 'kjhtml'],
