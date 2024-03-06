@@ -39,6 +39,7 @@ This is the repository for business relevant services for ATLAS.
 Tekton CI/CD
 Status: [![Build Status](https://esta-tekton-controller-atlas-tekton.sbb-cloud.net/api/status/icon/KI_ATLAS/atlas/build)](https://tekton-control-panel-atlas-tekton.sbb-cloud.net/projects/KI_ATLAS/repositories/atlas)
 
+
 SonarQube:
 [![Quality Gate Status](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=alert_status&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
 [![Maintainability Rating](https://codequality.sbb.ch/api/project_badges/measure?project=ch.sbb.atlas%3Aatlas&metric=sqale_rating&token=sqb_ec605dab116926bc9d32354da827978de8b35214)](https://codequality.sbb.ch/dashboard?id=ch.sbb.atlas%3Aatlas)
