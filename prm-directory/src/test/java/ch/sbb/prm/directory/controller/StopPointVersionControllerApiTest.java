@@ -73,6 +73,7 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/stop-points" +
             "?numbers=1234567" +
             "&sloids=ch:1:sloid:12345" +
+            "&statusRestrictions=VALIDATED" +
             "&fromDate=" + version.getValidFrom() +
             "&toDate=" + version.getValidTo()+
             "&validOn=" + LocalDate.of(2000, 6, 28) +

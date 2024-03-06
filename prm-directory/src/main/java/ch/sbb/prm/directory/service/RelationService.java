@@ -89,6 +89,7 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
   }
 
   public RelationVersion createRelationThroughImport(RelationVersion version) {
+    setStatusToValidate(version);
     return relationRepository.saveAndFlush(version);
   }
 }
