@@ -100,7 +100,7 @@ public class ServicePointStatusDecider {
 
     private ServicePointVersion calculateCurrentVersion(List<ServicePointVersion> servicePointVersions,
         ServicePointVersion newVersion, ServicePointVersion currentVersion) {
-        if (servicePointVersions != null && !servicePointVersions.isEmpty()) {
+        if (!CollectionUtils.isEmpty(servicePointVersions)) {
             Optional<ServicePointVersion> overlappingVersion = servicePointVersions.stream()
                 .filter(existing -> isOverlapping(existing, newVersion))
                 .findFirst();
