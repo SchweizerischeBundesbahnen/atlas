@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
-import ch.sbb.exportservice.entity.ReferencePointVersion;
+import ch.sbb.exportservice.entity.prm.ReferencePointVersion;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
@@ -27,6 +27,7 @@ public class ReferencePointVersionJsonProcessor extends BaseServicePointProcesso
         .editionDate(version.getEditionDate())
         .editor(version.getEditor())
         .etagVersion(version.getVersion())
+        .status(version.getStatus())
         .build();
   }
 

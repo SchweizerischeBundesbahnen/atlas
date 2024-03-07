@@ -2,6 +2,8 @@ package ch.sbb.prm.directory.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -11,19 +13,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.SharedServicePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
+import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
+import ch.sbb.prm.directory.service.PrmChangeRecordingVariantService;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -32,11 +40,16 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
   private final SharedServicePointRepository sharedServicePointRepository;
   private final StopPointRepository stopPointRepository;
 
+  @MockBean
+  private final PrmChangeRecordingVariantService prmChangeRecordingVariantService;
+
   @Autowired
   StopPointVersionControllerApiTest(SharedServicePointRepository sharedServicePointRepository,
-                                    StopPointRepository stopPointRepository) {
+                                    StopPointRepository stopPointRepository,
+      PrmChangeRecordingVariantService prmChangeRecordingVariantService) {
     this.sharedServicePointRepository = sharedServicePointRepository;
     this.stopPointRepository = stopPointRepository;
+    this.prmChangeRecordingVariantService = prmChangeRecordingVariantService;
   }
 
   @Test
@@ -48,7 +61,8 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount", is(1)))
         .andExpect(jsonPath("$.objects[0].id", is(version.getId().intValue())))
-        .andExpect(jsonPath("$.objects[0].number.number", is(version.getNumber().getNumber())));
+        .andExpect(jsonPath("$.objects[0].number.number", is(version.getNumber().getNumber())))
+        .andExpect(jsonPath("$.objects[0]." + Fields.status, is(Status.VALIDATED.name())));
   }
 
   @Test
@@ -59,6 +73,7 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/stop-points" +
             "?numbers=1234567" +
             "&sloids=ch:1:sloid:12345" +
+            "&statusRestrictions=VALIDATED" +
             "&fromDate=" + version.getValidFrom() +
             "&toDate=" + version.getValidTo()+
             "&validOn=" + LocalDate.of(2000, 6, 28) +
@@ -206,7 +221,6 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
    * NEU:      |______________________|
    * IST:      |-------------------------------------------------------
    * Version:                            1
-   *
    * RESULTAT: |----------------------| Version wird per xx aufgehoben
    * Version:         1
    */
@@ -260,8 +274,60 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$", hasSize(2)))
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2000-01-01")))
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2000-12-31")))
+        .andExpect(jsonPath("$[0]." + Fields.status, is(Status.VALIDATED.name())))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2001-01-01")))
-        .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2001-12-31")));
+        .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2001-12-31")))
+        .andExpect(jsonPath("$[1]." + Fields.status, is(Status.VALIDATED.name())));
+  }
+
+  @Test
+  void shouldChangeStopPointVariant() throws Exception {
+    //given
+    StopPointVersion version1 = stopPointRepository.saveAndFlush(StopPointTestData.builderVersion2()
+        .meansOfTransport(Set.of(MeanOfTransport.TRAIN, MeanOfTransport.METRO))
+        .build());
+
+    StopPointVersionModel editedVersionModel = new StopPointVersionModel();
+    editedVersionModel.setValidFrom(version1.getValidFrom());
+    editedVersionModel.setValidTo(version1.getValidTo().minusYears(1));
+    editedVersionModel.setFreeText(version1.getFreeText());
+    editedVersionModel.setMeansOfTransport(List.of(MeanOfTransport.BUS));
+    editedVersionModel.setAddress(version1.getAddress());
+    editedVersionModel.setZipCode(version1.getZipCode());
+    editedVersionModel.setCity(version1.getCity());
+    editedVersionModel.setAlternativeTransport(version1.getAlternativeTransport());
+    editedVersionModel.setAlternativeTransportCondition(version1.getAlternativeTransportCondition());
+    editedVersionModel.setAssistanceAvailability(version1.getAssistanceAvailability());
+    editedVersionModel.setAssistanceCondition(version1.getAssistanceCondition());
+    editedVersionModel.setAssistanceService(version1.getAssistanceService());
+    editedVersionModel.setAudioTicketMachine(version1.getAudioTicketMachine());
+    editedVersionModel.setAdditionalInformation(version1.getAdditionalInformation());
+    editedVersionModel.setDynamicAudioSystem(version1.getDynamicAudioSystem());
+    editedVersionModel.setDynamicOpticSystem(version1.getDynamicOpticSystem());
+    editedVersionModel.setInfoTicketMachine(version1.getInfoTicketMachine());
+    editedVersionModel.setAdditionalInformation(version1.getAdditionalInformation());
+    editedVersionModel.setInteroperable(version1.getInteroperable());
+    editedVersionModel.setUrl(version1.getUrl());
+    editedVersionModel.setVisualInfo(version1.getVisualInfo());
+    editedVersionModel.setWheelchairTicketMachine(version1.getWheelchairTicketMachine());
+    editedVersionModel.setAssistanceRequestFulfilled(version1.getAssistanceRequestFulfilled());
+    editedVersionModel.setTicketMachine(version1.getTicketMachine());
+    editedVersionModel.setCreationDate(version1.getCreationDate());
+    editedVersionModel.setEditionDate(version1.getEditionDate());
+    editedVersionModel.setCreator(version1.getCreator());
+    editedVersionModel.setEditor(version1.getEditor());
+    editedVersionModel.setEtagVersion(version1.getVersion());
+    editedVersionModel.setSloid("ch:1:sloid:12345");
+
+    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:12345", Set.of("ch:1:sboid"
+        + ":100602"),Collections.emptySet());
+    sharedServicePointRepository.saveAndFlush(servicePoint);
+
+    //when && then
+    mvc.perform(put("/v1/stop-points/" + version1.getId()).contentType(contentType)
+            .content(mapper.writeValueAsString(editedVersionModel)))
+        .andExpect(status().isOk());
+    verify(prmChangeRecordingVariantService).stopPointChangeRecordingVariant(any(),any());
   }
 
   @Test

@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.api.prm.model.parkinglot.ReadParkingLotVersionModel;
-import ch.sbb.exportservice.entity.ParkingLotVersion;
+import ch.sbb.exportservice.entity.prm.ParkingLotVersion;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
@@ -27,6 +27,7 @@ public class ParkingLotVersionJsonProcessor extends BaseServicePointProcessor im
         .editionDate(version.getEditionDate())
         .editor(version.getEditor())
         .etagVersion(version.getVersion())
+        .status(version.getStatus())
         .build();
   }
 

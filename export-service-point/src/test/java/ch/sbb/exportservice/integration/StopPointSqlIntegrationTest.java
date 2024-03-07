@@ -1,12 +1,12 @@
 package ch.sbb.exportservice.integration;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.model.FutureTimetableHelper;
-import ch.sbb.exportservice.entity.StopPointVersion;
+import ch.sbb.exportservice.entity.prm.StopPointVersion;
 import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.reader.StopPointVersionRowMapper;
 import ch.sbb.exportservice.reader.StopPointVersionSqlQueryUtil;
-import org.junit.jupiter.api.Test;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,8 +14,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class StopPointSqlIntegrationTest extends BasePrmSqlIntegrationTest {
 

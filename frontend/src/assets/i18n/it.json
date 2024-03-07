@@ -1052,6 +1052,10 @@
     "NUMBER_ALREADY_USED": "Il codice DiDok {{number}} è già stato preso."
   },
   "PRM": {
+    "DIALOG": {
+      "PRM_VARIANT_CHANGES_TITLE": "Modifica della variante di registrazione",
+      "PRM_VARIANT_CHANGES_MSG": "Con questa funzione tutti i dati BehiG inseriti per la fermata verranno cancellati."
+    },
     "TABS": {
       "STOP_POINT": "Informazioni di base Fermata",
       "REFERENCE_POINT": "Punto di riferimento",

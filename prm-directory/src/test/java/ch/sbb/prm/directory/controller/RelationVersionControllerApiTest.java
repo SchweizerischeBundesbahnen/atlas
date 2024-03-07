@@ -4,8 +4,12 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -17,23 +21,24 @@ import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.imports.prm.relation.RelationCsvModel;
 import ch.sbb.atlas.imports.prm.relation.RelationCsvModelContainer;
 import ch.sbb.atlas.imports.prm.relation.RelationImportRequestModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.RelationTestData;
 import ch.sbb.prm.directory.SharedServicePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
+import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
+import ch.sbb.prm.directory.service.dataimport.RelationImportService;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
-import ch.sbb.prm.directory.service.dataimport.RelationImportService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,11 +56,12 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
   private final RelationImportService relationImportService;
 
   @Autowired
-  RelationVersionControllerApiTest(RelationRepository relationRepository, RelationImportService relationImportService, StopPointRepository stopPointRepository,
-                                   SharedServicePointRepository sharedServicePointRepository) {
+  RelationVersionControllerApiTest(RelationRepository relationRepository, RelationImportService relationImportService,
+      StopPointRepository stopPointRepository,
+      SharedServicePointRepository sharedServicePointRepository) {
     this.relationRepository = relationRepository;
-      this.relationImportService = relationImportService;
-      this.stopPointRepository = stopPointRepository;
+    this.relationImportService = relationImportService;
+    this.stopPointRepository = stopPointRepository;
     this.sharedServicePointRepository = sharedServicePointRepository;
   }
 
@@ -76,11 +82,12 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
     relationRepository.saveAndFlush(relation2);
 
     //when & then
-    mvc.perform(get("/v1/relations/" +relation1Sloid))
+    mvc.perform(get("/v1/relations/" + relation1Sloid))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)))
         .andExpect(jsonPath("$[0].elementSloid", is(relation1Sloid)))
-        .andExpect(jsonPath("$[0].referencePointElementType", is(PLATFORM.name())));
+        .andExpect(jsonPath("$[0].referencePointElementType", is(PLATFORM.name())))
+        .andExpect(jsonPath("$[0]." + Fields.status, is(Status.VALIDATED.name())));
   }
 
   @Test
@@ -95,7 +102,7 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
     relationRepository.saveAndFlush(relation2);
 
     //when & then
-    mvc.perform(get("/v1/relations/" +relation1Sloid + "/" + PLATFORM.name()))
+    mvc.perform(get("/v1/relations/" + relation1Sloid + "/" + PLATFORM.name()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)))
         .andExpect(jsonPath("$[0].elementSloid", is(relation1Sloid)))
@@ -153,13 +160,10 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   /**
-   * Szenario 8a: Letzte Version terminieren wenn nur validTo ist updated
-   * NEU:      |______________________|
-   * IST:      |-------------------------------------------------------
-   * Version:                            1
-   *
-   * RESULTAT: |----------------------| Version wird per xx aufgehoben
-   * Version:         1
+   * Szenario 8a: Letzte Version terminieren wenn nur validTo ist updated NEU:      |______________________| IST:
+   * |------------------------------------------------------- Version:                            1
+   * <p>
+   * RESULTAT: |----------------------| Version wird per xx aufgehoben Version:         1
    */
   @Test
   void shouldUpdateRelation() throws Exception {
@@ -191,7 +195,8 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setEditor(version2.getEditor());
     editedVersionModel.setEtagVersion(version2.getVersion());
 
-    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:7000", Set.of("ch:1:sboid:100602"),
+    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:7000",
+        Set.of("ch:1:sboid:100602"),
         Collections.emptySet());
     sharedServicePointRepository.saveAndFlush(servicePoint);
 
@@ -236,7 +241,8 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setEditor(version2.getEditor());
     editedVersionModel.setEtagVersion(version2.getVersion());
 
-    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:7000", Set.of("ch:1:sboid:100602"),
+    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:7000",
+        Set.of("ch:1:sboid:100602"),
         Collections.emptySet());
     sharedServicePointRepository.saveAndFlush(servicePoint);
 
@@ -278,7 +284,8 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setEditor(version2.getEditor());
     editedVersionModel.setEtagVersion(version2.getVersion());
 
-    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:7000", Set.of("ch:1:sboid:100602"),
+    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:7000",
+        Set.of("ch:1:sboid:100602"),
         Collections.emptySet());
     sharedServicePointRepository.saveAndFlush(servicePoint);
 
@@ -322,16 +329,19 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/relations" +
             "?servicePointNumbers=1234567" +
             "&referencePointsloids=ch:1:sloid:7000:1" +
+            "&statusRestrictions=VALIDATED" +
             "&sloids=ch:1:sloid:7000:11" +
             "&fromDate=" + version.getValidFrom() +
-            "&toDate=" + version.getValidTo()+
+            "&toDate=" + version.getValidTo() +
             "&validOn=" + LocalDate.of(2000, 6, 28) +
-            "&createdAfter=" + version.getCreationDate().minusSeconds(1).format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)) +
-            "&modifiedAfter=" + version.getEditionDate().format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN))
+            "&createdAfter=" + version.getCreationDate().minusSeconds(1)
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)) +
+            "&modifiedAfter=" + version.getEditionDate()
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN))
         ))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount", is(1)))
-        .andExpect(jsonPath("$.objects[0].id" , is(version.getId().intValue())));
+        .andExpect(jsonPath("$.objects[0].id", is(version.getId().intValue())));
   }
 
   @Test
@@ -351,14 +361,16 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
             "&referencePointSloid=ch:1:sloid:7000:1&sloids=ch:1:sloid:54321" +
             "&sloids=ch:1:sloid:7000:11&ch:1:sloid:7000:111" +
             "&fromDate=" + version.getValidFrom() +
-            "&toDate=" + version.getValidTo()+
+            "&toDate=" + version.getValidTo() +
             "&validOn=" + LocalDate.of(2000, 6, 28) +
-            "&createdAfter=" + version.getCreationDate().minusSeconds(1).format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)) +
-            "&modifiedAfter=" + version.getEditionDate().format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN))
+            "&createdAfter=" + version.getCreationDate().minusSeconds(1)
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)) +
+            "&modifiedAfter=" + version.getEditionDate()
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN))
         ))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount", is(1)))
-        .andExpect(jsonPath("$.objects[0].id" , is(version.getId().intValue())));
+        .andExpect(jsonPath("$.objects[0].id", is(version.getId().intValue())));
   }
 
   @Test
@@ -383,7 +395,7 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/relations?&referencePointElementTypes=TOILET"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount", is(1)))
-        .andExpect(jsonPath("$.objects[0].id" , is(version1.getId().intValue())));
+        .andExpect(jsonPath("$.objects[0].id", is(version1.getId().intValue())));
   }
 
   @Test

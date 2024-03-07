@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.entity.geolocation;
+package ch.sbb.exportservice.entity.sepodi.geolocation;
 
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.servicepoint.Country;

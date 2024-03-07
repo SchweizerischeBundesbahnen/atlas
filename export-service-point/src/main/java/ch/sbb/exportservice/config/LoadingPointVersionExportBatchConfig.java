@@ -4,7 +4,7 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LOADING_
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_LOADING_POINT_JSON_JOB_NAME;
 
 import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
-import ch.sbb.exportservice.entity.LoadingPointVersion;
+import ch.sbb.exportservice.entity.prm.LoadingPointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.model.LoadingPointVersionCsvModel;

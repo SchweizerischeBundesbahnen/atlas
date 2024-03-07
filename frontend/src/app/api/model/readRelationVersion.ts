@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Status } from './status';
 import { ServicePointNumber } from './servicePointNumber';
 import { StepFreeAccessAttributeType } from './stepFreeAccessAttributeType';
 import { ReferencePointElementType } from './referencePointElementType';
@@ -33,6 +34,7 @@ export interface ReadRelationVersion {
      * User editor
      */
     readonly editor?: string;
+    status?: Status;
     /**
      * Technical identifier
      */

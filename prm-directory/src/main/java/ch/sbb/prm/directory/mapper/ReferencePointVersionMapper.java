@@ -12,6 +12,7 @@ public class ReferencePointVersionMapper {
   public static ReadReferencePointVersionModel toModel(ReferencePointVersion version){
     return ReadReferencePointVersionModel.builder()
         .id(version.getId())
+        .status(version.getStatus())
         .sloid(version.getSloid())
         .parentServicePointSloid(version.getParentServicePointSloid())
         .number(version.getNumber())

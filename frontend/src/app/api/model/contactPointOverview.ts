@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Status } from './status';
 import { RecordingStatus } from './recordingStatus';
 import { StandardAttributeType } from './standardAttributeType';
 import { ContactPointType } from './contactPointType';
@@ -31,6 +32,7 @@ export interface ContactPointOverview {
      * User editor
      */
     readonly editor?: string;
+    status?: Status;
     /**
      * Technical identifier
      */

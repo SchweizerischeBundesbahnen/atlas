@@ -2,9 +2,10 @@ package ch.sbb.prm.directory.controller;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
+import ch.sbb.atlas.api.prm.model.referencepoint.ReferencePointVersionModel;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.referencepoint.ReferencePointImportRequestModel;
-import ch.sbb.atlas.api.prm.model.referencepoint.ReferencePointVersionModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.ReferencePointApiV1;
 import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
@@ -46,7 +47,11 @@ public class ReferencePointController implements ReferencePointApiV1 {
 
   @Override
   public List<ReadReferencePointVersionModel> getReferencePointsOverview(String parentServicePointSloid) {
-    return referencePointService.buildOverview(referencePointService.findByParentServicePointSloid(parentServicePointSloid));
+    List<ReferencePointVersion> referencePointVersions = referencePointService.findByParentServicePointSloid(
+        parentServicePointSloid);
+    List<ReferencePointVersion> referencePointsNotRevoked = referencePointVersions.stream()
+        .filter(referencePointVersion -> referencePointVersion.getStatus() != Status.REVOKED).toList();
+    return referencePointService.buildOverview(referencePointsNotRevoked);
   }
 
   @Override

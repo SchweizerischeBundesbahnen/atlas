@@ -1,5 +1,7 @@
 package ch.sbb.prm.directory.controller;
 
+import static ch.sbb.prm.directory.util.PrmVariantUtil.isPrmVariantChanging;
+
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
@@ -12,6 +14,7 @@ import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.StopPointAlreadyExistsException;
 import ch.sbb.prm.directory.mapper.StopPointVersionMapper;
 import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
+import ch.sbb.prm.directory.service.PrmChangeRecordingVariantService;
 import ch.sbb.prm.directory.service.StopPointService;
 import ch.sbb.prm.directory.service.dataimport.StopPointImportService;
 import java.util.List;
@@ -28,6 +31,7 @@ public class StopPointController implements StopPointApiV1 {
 
   private final StopPointService stopPointService;
   private final StopPointImportService stopPointImportService;
+  private final PrmChangeRecordingVariantService prmChangeRecordingVariantService;
 
   @Override
   public Container<ReadStopPointVersionModel> getStopPoints(Pageable pageable,
@@ -67,8 +71,11 @@ public class StopPointController implements StopPointApiV1 {
     StopPointVersion stopPointVersionToUpdate =
         stopPointService.getStopPointById(id).orElseThrow(() -> new IdNotFoundException(id));
     StopPointVersion editedVersion = StopPointVersionMapper.toEntity(model);
-    stopPointService.updateStopPointVersion(stopPointVersionToUpdate, editedVersion);
-
+    if(isPrmVariantChanging(stopPointVersionToUpdate, editedVersion)){
+      prmChangeRecordingVariantService.stopPointChangeRecordingVariant(stopPointVersionToUpdate, editedVersion);
+    }else {
+      stopPointService.updateStopPointVersion(stopPointVersionToUpdate, editedVersion);
+    }
     return stopPointService.findAllByNumberOrderByValidFrom(stopPointVersionToUpdate.getNumber()).stream()
         .map(StopPointVersionMapper::toModel).toList();
   }

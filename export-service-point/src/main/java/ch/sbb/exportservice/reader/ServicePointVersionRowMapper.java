@@ -11,10 +11,10 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableTyp
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
-import ch.sbb.exportservice.entity.ServicePointVersion;
-import ch.sbb.exportservice.entity.ServicePointVersion.ServicePointVersionBuilder;
-import ch.sbb.exportservice.entity.geolocation.ServicePointGeolocation;
-import ch.sbb.exportservice.entity.geolocation.ServicePointGeolocation.ServicePointGeolocationBuilder;
+import ch.sbb.exportservice.entity.sepodi.ServicePointVersion;
+import ch.sbb.exportservice.entity.sepodi.ServicePointVersion.ServicePointVersionBuilder;
+import ch.sbb.exportservice.entity.sepodi.geolocation.ServicePointGeolocation;
+import ch.sbb.exportservice.entity.sepodi.geolocation.ServicePointGeolocation.ServicePointGeolocationBuilder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
