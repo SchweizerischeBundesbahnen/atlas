@@ -24,6 +24,7 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
+import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
@@ -1698,6 +1699,178 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[3].status", is(Status.DRAFT.toString())))
         .andExpect(jsonPath("$[3].designationOfficial", is("B Hausen")))
         .andExpect(jsonPath("$[3].designationLong", is("designation long 4")));
+  }
+
+  /**
+   * Szenario:
+   * <p>
+   * NEU:                                                           |__Haltestelle B Hausen__|
+   * <p>
+   * IST:       |___Haltestelle A Hausen___|__Haltestelle A Hausen__|_______Haltestelle C Hausen____________________|
+   * Status:            VALIDATED                  VALIDATED                   DRAFT
+   * <p>
+   * RESULTAT:  |___Haltestelle A Hausen___|__Haltestelle A Hausen__|_Haltestelle B Hausen___|_Haltestelle C Hausen_|
+   * Status:                VALIDATED               VALIDATED                DRAFT                    DRAFT
+   */
+  @Test
+  void whenMultipleStopPointsWithDifferentStatusesAndUpdateThenKeepExistingDraftVersionsAndAddNewOnes() throws Exception {
+    ServicePointGeolocationCreateModel servicePointGeolocationCreateModel =
+        ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation());
+    CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPoint1.setValidFrom(LocalDate.of(2008, 4, 29));
+    stopPoint1.setValidTo(LocalDate.of(2021, 3, 31));
+    stopPoint1.setDesignationOfficial("A Hausen");
+    stopPoint1.setDesignationLong("designation long 1");
+    stopPoint1.setStopPointType(null);
+    stopPoint1.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+        stopPoint1);
+    Long id = servicePointVersionModel.getId();
+    setStatusToValidatedAndVerifyIt(id);
+
+    UpdateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPoint2.setValidFrom(LocalDate.of(2021, 4, 1));
+    stopPoint2.setValidTo(LocalDate.of(2022, 3, 31));
+    stopPoint2.setDesignationOfficial("A Hausen");
+    stopPoint2.setDesignationLong("designation long 1");
+    stopPoint2.setStopPointType(StopPointType.ORDERLY);
+    stopPoint2.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    List<ReadServicePointVersionModel> servicePointVersionModel2 = servicePointController.updateServicePoint(id,
+        stopPoint2);
+    Long id2 = servicePointVersionModel2.get(1).getId();
+    setStatusToValidatedAndVerifyIt(id2);
+
+    UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPoint3.setValidFrom(LocalDate.of(2022, 4, 1));
+    stopPoint3.setValidTo(LocalDate.of(2099, 3, 31));
+    stopPoint3.setDesignationOfficial("C Hausen");
+    stopPoint3.setDesignationLong("designation long 1");
+    stopPoint3.setStopPointType(StopPointType.ORDERLY);
+    stopPoint3.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    servicePointController.updateServicePoint(id, stopPoint3);
+
+    UpdateServicePointVersionModel stopPointx = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPointx.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    stopPointx.setDesignationOfficial("B Hausen");
+    stopPointx.setDesignationLong("designation long 1");
+    stopPointx.setStopPointType(StopPointType.ORDERLY);
+    stopPointx.setValidFrom(LocalDate.of(2022, 4, 1));
+    stopPointx.setValidTo(LocalDate.of(2023, 3, 31));
+
+    mvc.perform(put("/v1/service-points/" + id)
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(stopPointx)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(4)))
+        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2008-04-29")))
+        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2021-03-31")))
+        .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
+        .andExpect(jsonPath("$[0].designationOfficial", is("A Hausen")))
+        .andExpect(jsonPath("$[0].designationLong", is("designation long 1")))
+        .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2021-04-01")))
+        .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2022-03-31")))
+        .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString())))
+        .andExpect(jsonPath("$[1].designationOfficial", is("A Hausen")))
+        .andExpect(jsonPath("$[1].designationLong", is("designation long 1")))
+        .andExpect(jsonPath("$[1].stopPointType", is(StopPointType.ORDERLY.toString())))
+        .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validFrom, is("2022-04-01")))
+        .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validTo, is("2023-03-31")))
+        .andExpect(jsonPath("$[2].status", is(Status.DRAFT.toString())))
+        .andExpect(jsonPath("$[2].designationOfficial", is("B Hausen")))
+        .andExpect(jsonPath("$[2].designationLong", is("designation long 1")))
+        .andExpect(jsonPath("$[2].stopPointType", is(StopPointType.ORDERLY.toString())))
+        .andExpect(jsonPath("$[3]." + ServicePointVersionModel.Fields.validFrom, is("2023-04-01")))
+        .andExpect(jsonPath("$[3]." + ServicePointVersionModel.Fields.validTo, is("2099-03-31")))
+        .andExpect(jsonPath("$[3].status", is(Status.DRAFT.toString())))
+        .andExpect(jsonPath("$[3].designationOfficial", is("C Hausen")))
+        .andExpect(jsonPath("$[3].designationLong", is("designation long 1")))
+        .andExpect(jsonPath("$[3].stopPointType", is(StopPointType.ORDERLY.toString())));
+  }
+
+  /**
+   * Szenario:
+   * <p>
+   * NEU:                                                        |__Haltestelle B Hausen__|
+   * <p>
+   * IST:       |___Haltestelle A Hausen___|__Haltestelle A Hausen__|_______Haltestelle C Hausen____________________|
+   * Status:            VALIDATED                  VALIDATED                   DRAFT
+   * <p>
+   * RESULTAT:  |___Haltestelle A Hausen___|_Haltestelle A Hausen|_Haltestelle B Hausen___|_Haltestelle C Hausen_|
+   * Status:                VALIDATED               VALIDATED                DRAFT                    DRAFT
+   */
+  @Test
+  void whenMultipleStopPointsWithDifferentStatusesAndUpdateInBetweenThenKeepExistingDraftVersionsAndAddNewOnes() throws Exception {
+    ServicePointGeolocationCreateModel servicePointGeolocationCreateModel =
+        ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation());
+    CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPoint1.setValidFrom(LocalDate.of(2008, 4, 29));
+    stopPoint1.setValidTo(LocalDate.of(2021, 3, 31));
+    stopPoint1.setDesignationOfficial("A Hausen");
+    stopPoint1.setDesignationLong("designation long 1");
+    stopPoint1.setStopPointType(null);
+    stopPoint1.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+        stopPoint1);
+    Long id = servicePointVersionModel.getId();
+    setStatusToValidatedAndVerifyIt(id);
+
+    UpdateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPoint2.setValidFrom(LocalDate.of(2021, 4, 1));
+    stopPoint2.setValidTo(LocalDate.of(2022, 3, 31));
+    stopPoint2.setDesignationOfficial("A Hausen");
+    stopPoint2.setDesignationLong("designation long 1");
+    stopPoint2.setStopPointType(StopPointType.ORDERLY);
+    stopPoint2.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    List<ReadServicePointVersionModel> servicePointVersionModel2 = servicePointController.updateServicePoint(id,
+        stopPoint2);
+    Long id2 = servicePointVersionModel2.get(1).getId();
+    setStatusToValidatedAndVerifyIt(id2);
+
+    UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPoint3.setValidFrom(LocalDate.of(2022, 4, 1));
+    stopPoint3.setValidTo(LocalDate.of(2099, 3, 31));
+    stopPoint3.setDesignationOfficial("C Hausen");
+    stopPoint3.setDesignationLong("designation long 1");
+    stopPoint3.setStopPointType(StopPointType.ORDERLY);
+    stopPoint3.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    servicePointController.updateServicePoint(id, stopPoint3);
+
+    UpdateServicePointVersionModel stopPointx = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPointx.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    stopPointx.setDesignationOfficial("B Hausen");
+    stopPointx.setDesignationLong("designation long 1");
+    stopPointx.setStopPointType(StopPointType.ORDERLY);
+    stopPointx.setValidFrom(LocalDate.of(2022, 1, 1));
+    stopPointx.setValidTo(LocalDate.of(2023, 3, 31));
+
+    mvc.perform(put("/v1/service-points/" + id)
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(stopPointx)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(4)))
+        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2008-04-29")))
+        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2021-03-31")))
+        .andExpect(jsonPath("$[0].status", is(Status.VALIDATED.toString())))
+        .andExpect(jsonPath("$[0].designationOfficial", is("A Hausen")))
+        .andExpect(jsonPath("$[0].designationLong", is("designation long 1")))
+        .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2021-04-01")))
+        .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2021-12-31")))
+        .andExpect(jsonPath("$[1].status", is(Status.VALIDATED.toString())))
+        .andExpect(jsonPath("$[1].designationOfficial", is("A Hausen")))
+        .andExpect(jsonPath("$[1].designationLong", is("designation long 1")))
+        .andExpect(jsonPath("$[1].stopPointType", is(StopPointType.ORDERLY.toString())))
+        .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validFrom, is("2022-01-01")))
+        .andExpect(jsonPath("$[2]." + ServicePointVersionModel.Fields.validTo, is("2023-03-31")))
+        .andExpect(jsonPath("$[2].status", is(Status.DRAFT.toString())))
+        .andExpect(jsonPath("$[2].designationOfficial", is("B Hausen")))
+        .andExpect(jsonPath("$[2].designationLong", is("designation long 1")))
+        .andExpect(jsonPath("$[2].stopPointType", is(StopPointType.ORDERLY.toString())))
+        .andExpect(jsonPath("$[3]." + ServicePointVersionModel.Fields.validFrom, is("2023-04-01")))
+        .andExpect(jsonPath("$[3]." + ServicePointVersionModel.Fields.validTo, is("2099-03-31")))
+        .andExpect(jsonPath("$[3].status", is(Status.DRAFT.toString())))
+        .andExpect(jsonPath("$[3].designationOfficial", is("C Hausen")))
+        .andExpect(jsonPath("$[3].designationLong", is("designation long 1")))
+        .andExpect(jsonPath("$[3].stopPointType", is(StopPointType.ORDERLY.toString())));
   }
 
 }

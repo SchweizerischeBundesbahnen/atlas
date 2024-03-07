@@ -30,7 +30,8 @@ public class ServicePointStatusDecider {
                 "Deciding on ServicePoint.Status when creating new StopPoint={}.");
             return calculateStatusAccordingToStatusDecisionAlgorithm(newServicePointVersion);
         }
-        ServicePointVersion currentVersion = currentServicePointVersion.get();
+        ServicePointVersion currentVersion = calculateCurrentVersion(servicePointVersions, newServicePointVersion,
+            currentServicePointVersion.get());
         if (isChangeFromServicePointToStopPoint(newServicePointVersion, currentVersion)
             || isTimeslotChangedFromNotValidEnoughToValidEnough(newServicePointVersion, currentVersion)
             || hasGeolocationChangedBackToSwitzerland(newServicePointVersion, currentVersion)
@@ -43,7 +44,7 @@ public class ServicePointStatusDecider {
             && isThereOverlappingVersionWithTheSameName(newServicePointVersion, servicePointVersions)) {
             logMessage(currentVersion, newServicePointVersion, "Deciding on ServicePoint.Status "
                 + "newServicePointVersion={}, and currentServicePointVersion={}. DesignationOfficial name is changed.");
-            return setStatusAsInPreviousVersionOrToValidated(currentServicePointVersion);
+            return getStatusFromCurrentVersion(currentVersion);
         }
         if (hasNameChanged(newServicePointVersion, currentVersion)
             && hasVersionOnTheSameTimeslotWithDifferentName(newServicePointVersion, servicePointVersions)) {
@@ -54,7 +55,7 @@ public class ServicePointStatusDecider {
         logMessage(currentVersion, newServicePointVersion,
             "Deciding on ServicePoint.Status when updating where currentServicePointVersion={}, and "
                 + "newServicePointVersion={}. Status will be set as in previous Version or to Validated per default.");
-        return setStatusAsInPreviousVersionOrToValidated(currentServicePointVersion);
+        return getStatusFromCurrentVersion(currentVersion);
     }
 
     /**
@@ -69,9 +70,9 @@ public class ServicePointStatusDecider {
         return isSwissCountryCode && isStopPoint && isSwissLocation && isValidityLongEnough ? Status.DRAFT : Status.VALIDATED;
     }
 
-    private void logMessage(ServicePointVersion currentServicePointVersion, ServicePointVersion newServicePointVersion,
+    private void logMessage(ServicePointVersion currentVersion, ServicePointVersion newServicePointVersion,
         String logMessage) {
-        log.info(logMessage, currentServicePointVersion, newServicePointVersion);
+        log.info(logMessage, currentVersion, newServicePointVersion);
     }
 
     private boolean isSPLocatedInSwitzerland(ServicePointVersion newServicePointVersion) {
@@ -87,25 +88,31 @@ public class ServicePointStatusDecider {
             || newServicePointVersion.getServicePointGeolocation().getCountry() == null;
     }
 
-    private boolean hasNameChanged(ServicePointVersion newServicePointVersion, ServicePointVersion currentServicePointVersion) {
-        return !newServicePointVersion.getDesignationOfficial().equals(currentServicePointVersion.getDesignationOfficial());
+    private boolean hasNameChanged(ServicePointVersion newServicePointVersion, ServicePointVersion currentVersion) {
+        return !newServicePointVersion.getDesignationOfficial().equals(currentVersion.getDesignationOfficial());
     }
 
     private boolean isChangeFromServicePointToStopPoint(ServicePointVersion newServicePointVersion,
-        ServicePointVersion currentServicePointVersion) {
-        return newServicePointVersion.isStopPoint() && !currentServicePointVersion.isStopPoint();
+        ServicePointVersion currentVersion) {
+        return newServicePointVersion.isStopPoint() && !currentVersion.isStopPoint();
     }
 
-    private Status setStatusAsInPreviousVersionOrToValidated(Optional<ServicePointVersion> currentServicePointVersion) {
-        return currentServicePointVersion.map(ServicePointVersion::getStatus).orElse(Status.VALIDATED);
+    private ServicePointVersion calculateCurrentVersion(List<ServicePointVersion> servicePointVersions,
+        ServicePointVersion newVersion, ServicePointVersion currentVersion) {
+            Optional<ServicePointVersion> overlappingVersion = servicePointVersions.stream()
+                .filter(existing -> isOverlapping(existing, newVersion))
+                .findFirst();
+            return overlappingVersion.orElse(currentVersion);
+    }
+
+    private Status getStatusFromCurrentVersion(ServicePointVersion currentVersion) {
+        return currentVersion.getStatus();
     }
 
     private boolean hasVersionOnTheSameTimeslotWithDifferentName(ServicePointVersion newServicePointVersion,
         List<ServicePointVersion> servicePointVersions) {
         return servicePointVersions.stream()
-            .anyMatch(existing ->
-                !existing.getValidTo().isBefore(newServicePointVersion.getValidFrom())
-                    && !existing.getValidFrom().isAfter(newServicePointVersion.getValidFrom())
+            .anyMatch(existing -> isOverlapping(existing, newServicePointVersion)
                     && hasNameChanged(newServicePointVersion, existing));
     }
 
@@ -126,8 +133,8 @@ public class ServicePointStatusDecider {
     }
 
     private boolean isTimeslotChangedFromNotValidEnoughToValidEnough(ServicePointVersion newServicePointVersion,
-        ServicePointVersion currentServicePointVersion) {
-        long diffForCurrentVersion = calculateDiffBetweenTwoDatesAndAddOne(currentServicePointVersion);
+        ServicePointVersion currentVersion) {
+        long diffForCurrentVersion = calculateDiffBetweenTwoDatesAndAddOne(currentVersion);
         long diffForNewVersion = calculateDiffBetweenTwoDatesAndAddOne(newServicePointVersion);
         return diffForCurrentVersion <= VALIDITY_IN_DAYS && diffForNewVersion > VALIDITY_IN_DAYS;
     }
@@ -137,17 +144,17 @@ public class ServicePointStatusDecider {
     }
 
     private boolean hasGeolocationChangedBackToSwitzerland(ServicePointVersion newServicePointVersion,
-        ServicePointVersion currentServicePointVersion) {
+        ServicePointVersion currentVersion) {
         if (isGeolocationOrCountryNull(newServicePointVersion)) {
             return false;
         }
         return isNewServicePointWithSwissGeolocation(newServicePointVersion)
-            && isExistingServicePointWithAbroadOrNoGeolocation(currentServicePointVersion);
+            && isExistingServicePointWithAbroadOrNoGeolocation(currentVersion);
     }
 
-    private static boolean isExistingServicePointWithAbroadOrNoGeolocation(ServicePointVersion currentServicePointVersion) {
-        return isGeolocationOrCountryNull(currentServicePointVersion)
-            || !isNewServicePointWithSwissGeolocation(currentServicePointVersion);
+    private static boolean isExistingServicePointWithAbroadOrNoGeolocation(ServicePointVersion currentVersion) {
+        return isGeolocationOrCountryNull(currentVersion)
+            || !isNewServicePointWithSwissGeolocation(currentVersion);
     }
 
     private static boolean isNewServicePointWithSwissGeolocation(ServicePointVersion newServicePointVersion) {
@@ -161,11 +168,12 @@ public class ServicePointStatusDecider {
     boolean isThereOverlappingVersionWithTheSameName(ServicePointVersion newServicePointVersion,
         List<ServicePointVersion> servicePointVersions) {
         return servicePointVersions.stream()
+            .filter(existing -> existing.getStatus().equals(Status.VALIDATED))
             .filter(existing -> !hasNameChanged(existing, newServicePointVersion))
-            .anyMatch(existing -> hasOverlap(existing, newServicePointVersion));
+            .anyMatch(existing -> isOverlapping(existing, newServicePointVersion));
     }
 
-    private boolean hasOverlap(ServicePointVersion version1, ServicePointVersion version2) {
+    private boolean isOverlapping(ServicePointVersion version1, ServicePointVersion version2) {
         return version1 != null && version2 != null &&
             version1.getValidFrom().isBefore(version2.getValidTo()) &&
             version1.getValidTo().isAfter(version2.getValidFrom());
