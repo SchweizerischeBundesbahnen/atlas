@@ -16,7 +16,7 @@ import { trafficPointElementResolver } from './tabs/platform/detail/resolvers/tr
 import { PlatformDetailPanelComponent } from './tabs/platform/detail/platform-detail-panel.component';
 import { ReferencePointDetailComponent } from './tabs/reference-point/detail/reference-point-detail.component';
 import { referencePointResolver } from './tabs/reference-point/detail/resolvers/reference-point.resolver';
-import { ParkingLotDetailComponent } from './tabs/parking-lot/detail/parking-lot-detail.component';
+import { ParkingLotDetailPanelComponent } from './tabs/parking-lot/detail/parking-lot-detail-panel.component';
 import { parkingLotResolver } from './tabs/parking-lot/detail/resolvers/parking-lot.resolver';
 import { ParkingLotTableComponent } from './tabs/parking-lot/parking-lot-table.component';
 import { ContactPointTableComponent } from './tabs/contact-point/contact-point-table.component';
@@ -30,6 +30,7 @@ import {
   PRM_DETAIL_TAB_LINK,
   PRM_RELATIONS_TAB_LINK,
 } from './tabs/relation/tab/detail-with-relation-tab.component';
+import {ParkingLotDetailComponent} from "./tabs/parking-lot/detail/detail/parking-lot-detail.component";
 
 export const PRM_ROUTES: Routes = [
   {
@@ -74,13 +75,28 @@ export const PRM_ROUTES: Routes = [
   },
   {
     path: Pages.STOP_POINTS.path + '/:stopPointSloid/' + Pages.PARKING_LOT.path + '/:sloid',
-    component: ParkingLotDetailComponent,
+    component: ParkingLotDetailPanelComponent,
     runGuardsAndResolvers: 'always',
-    canDeactivate: [canLeaveDirtyForm],
     resolve: {
       parkingLot: parkingLotResolver,
       servicePoint: prmPanelResolver,
+      stopPoint: stopPointResolver,
     },
+    children: [
+      {
+        path: PRM_DETAIL_TAB_LINK,
+        component: ParkingLotDetailComponent,
+        runGuardsAndResolvers: 'always',
+        canDeactivate: [canLeaveDirtyForm],
+      },
+      {
+        path: PRM_RELATIONS_TAB_LINK,
+        component: RelationTabDetailComponent,
+        runGuardsAndResolvers: 'always',
+        canDeactivate: [canLeaveDirtyForm],
+      },
+      { path: '**', redirectTo: PRM_DETAIL_TAB_LINK },
+    ],
   },
   {
     path: Pages.STOP_POINTS.path + '/:stopPointSloid/' + Pages.CONTACT_POINT.path + '/:sloid',
