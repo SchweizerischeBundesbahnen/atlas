@@ -29,7 +29,7 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
   }
 
   public List<RelationVersion> getRelationsBySloid(String sloid) {
-    return relationRepository.findAllBySloid(sloid);
+    return relationRepository.findAllBySloidOrderByValidFrom(sloid);
   }
 
   public List<RelationVersion> getRelationsBySloidAndReferenceType(String sloid, ReferencePointElementType referencePointType) {
@@ -85,7 +85,7 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
   }
 
   public Page<RelationVersion> findAll(RelationSearchRestrictions searchRestrictions) {
-    return relationRepository.findAll(searchRestrictions.getSpecification(),searchRestrictions.getPageable());
+    return relationRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
 
   public RelationVersion createRelationThroughImport(RelationVersion version) {
