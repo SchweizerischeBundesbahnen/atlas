@@ -4,7 +4,7 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TRAFFIC_POINT_ELEMENT_JSON_JOB_NAME;
 
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
-import ch.sbb.exportservice.entity.TrafficPointElementVersion;
+import ch.sbb.exportservice.entity.sepodi.TrafficPointElementVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.model.SePoDiBatchExportFileName;

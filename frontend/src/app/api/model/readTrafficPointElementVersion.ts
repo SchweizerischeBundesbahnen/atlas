@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Status } from './status';
 import { ServicePointNumber } from './servicePointNumber';
 import { Geolocation } from './geolocation';
 import { TrafficPointElementType } from './trafficPointElementType';
@@ -31,6 +32,7 @@ export interface ReadTrafficPointElementVersion {
      * User editor
      */
     readonly editor?: string;
+    status?: Status;
     /**
      * Technical identifier
      */

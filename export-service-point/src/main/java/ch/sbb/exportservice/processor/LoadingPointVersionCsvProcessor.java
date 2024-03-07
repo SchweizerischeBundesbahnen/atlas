@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.processor;
 
-import ch.sbb.exportservice.entity.BusinessOrganisation;
-import ch.sbb.exportservice.entity.LoadingPointVersion;
+import ch.sbb.exportservice.entity.bodi.BusinessOrganisation;
+import ch.sbb.exportservice.entity.prm.LoadingPointVersion;
 import ch.sbb.exportservice.model.LoadingPointVersionCsvModel;
 import org.springframework.batch.item.ItemProcessor;
 

@@ -1,17 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { CreateStopPointComponent } from './create-stop-point.component';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { MeanOfTransport } from '../../../../../api';
-import { MatStepper, MatStepperModule } from '@angular/material/stepper';
-import { FormControl, FormGroup } from '@angular/forms';
-import {
-  MeanOfTransportFormGroup,
-  StopPointFormGroupBuilder,
-} from '../form/stop-point-detail-form-group';
-import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import { of } from 'rxjs';
-import { STOP_POINT, STOP_POINT_COMPLETE } from '../../../util/stop-point-test-data.spec';
+import {CreateStopPointComponent} from './create-stop-point.component';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {MeanOfTransport} from '../../../../../api';
+import {MatStepper, MatStepperModule} from '@angular/material/stepper';
+import {FormControl, FormGroup} from '@angular/forms';
+import {MeanOfTransportFormGroup, StopPointFormGroupBuilder,} from '../form/stop-point-detail-form-group';
+import {DialogService} from '../../../../../core/components/dialog/dialog.service';
+import {of} from 'rxjs';
+import {STOP_POINT, STOP_POINT_COMPLETE} from '../../../util/stop-point-test-data.spec';
 import SpyObj = jasmine.SpyObj;
 
 describe('CreateStopPointComponent', () => {

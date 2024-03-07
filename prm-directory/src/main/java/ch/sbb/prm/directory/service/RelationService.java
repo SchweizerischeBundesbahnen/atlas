@@ -26,7 +26,6 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
     super(versionableService);
     this.relationRepository = relationRepository;
     this.stopPointService = stopPointService;
-
   }
 
   public List<RelationVersion> getRelationsBySloid(String sloid) {
@@ -53,11 +52,10 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
   }
 
   @Override
-  public RelationVersion save(RelationVersion relationVersion) {
-    stopPointService.validateIsNotReduced(relationVersion.getParentServicePointSloid());
-
-    setEditionDateAndEditor(relationVersion);
-    return relationRepository.saveAndFlush(relationVersion);
+  public RelationVersion save(RelationVersion version) {
+    stopPointService.validateIsNotReduced(version.getParentServicePointSloid());
+    initDefaultData(version);
+    return relationRepository.saveAndFlush(version);
   }
 
   @Override
@@ -91,6 +89,7 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
   }
 
   public RelationVersion createRelationThroughImport(RelationVersion version) {
+    setStatusToValidate(version);
     return relationRepository.saveAndFlush(version);
   }
 }
