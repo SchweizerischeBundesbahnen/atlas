@@ -103,7 +103,8 @@ public class ServicePointService {
     return servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
-  private void preSaveChecks(ServicePointVersion servicePointVersion, Optional<ServicePointVersion> currentVersion,
+  private void preSaveChecks(ServicePointVersion servicePointVersion,
+      Optional<ServicePointVersion> currentVersion,
       List<ServicePointVersion> currentVersions) {
     servicePointVersion.setStatus(servicePointStatusDecider
         .getStatusForServicePoint(servicePointVersion, currentVersion, currentVersions));
