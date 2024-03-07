@@ -12,7 +12,7 @@ import {
 } from '../../../../../api';
 import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-helper';
 import { Pages } from '../../../../pages';
-import { lastValueFrom, Observable, of, take } from 'rxjs';
+import { Observable, of, take } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { NotificationService } from '../../../../../core/notification/notification.service';
@@ -33,7 +33,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
   parentServicePointSloid?: string;
 
   relations$: Observable<ReadRelationVersion[]> = of();
-  currentRelation$: Observable<ReadRelationVersion> = of();
+  currentRelation?: ReadRelationVersion;
 
   form?: FormGroup<RelationFormGroup>;
   currentRelationId = -1;
@@ -85,10 +85,11 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
     this.loadRelations(this.selectedReferencePointSloid!);
   }
 
-  versionChanged(currentVersion: ReadRelationVersion) {
+  versionChanged(currentVersion: ReadRelationVersion, currentVersionIdx: number) {
     this.form = RelationFormGroupBuilder.buildFormGroup(currentVersion);
     this.currentRelationId = currentVersion.id!;
-    this.currentRelation$ = of(currentVersion);
+    this.currentRelation = currentVersion;
+    this.selectedRelationVersion = currentVersionIdx + 1;
   }
 
   save() {
@@ -134,26 +135,21 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
 
   private loadRelations(referencePointSloid: string) {
     this.relations$ = this.personWithReducedMobilityService
-      .getRelationsBySloid(this.elementSloid!) // todo: backend endpoint sort validFrom
+      .getRelationsBySloid(this.elementSloid!)
       .pipe(
         map((relationVersions) => {
           const relationsOfSelectedRP = relationVersions.filter(
             (relationVersion) => relationVersion.referencePointSloid === referencePointSloid,
           );
           VersionsHandlingService.addVersionNumbers(relationsOfSelectedRP);
+          this.currentRelation =
+            VersionsHandlingService.determineDefaultVersionByValidity(relationsOfSelectedRP);
+          this.form = RelationFormGroupBuilder.buildFormGroup(this.currentRelation);
+          this.currentRelationId = this.currentRelation.id!;
+          this.selectedRelationVersion = relationsOfSelectedRP.indexOf(this.currentRelation) + 1;
           return relationsOfSelectedRP;
         }),
       );
-    this.currentRelation$ = this.relations$.pipe(
-      map((relations) => {
-        const currentRelationVersion =
-          VersionsHandlingService.determineDefaultVersionByValidity(relations);
-        this.form = RelationFormGroupBuilder.buildFormGroup(currentRelationVersion);
-        this.currentRelationId = currentRelationVersion.id!;
-        this.selectedRelationVersion = relations.indexOf(currentRelationVersion) + 1;
-        return currentRelationVersion;
-      }),
-    );
   }
 
   private showCancelEditDialog() {
@@ -161,9 +157,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
       .pipe(take(1))
       .subscribe(async (confirmed) => {
         if (confirmed) {
-          this.form = RelationFormGroupBuilder.buildFormGroup(
-            await lastValueFrom(this.currentRelation$),
-          );
+          this.form = RelationFormGroupBuilder.buildFormGroup(this.currentRelation);
           this.editing = false;
         }
       });
@@ -184,4 +178,3 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
     return this.form?.dirty ?? false;
   }
 }
-// todo: on error (flag on loadRelations for @if conditions)
