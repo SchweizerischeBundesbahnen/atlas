@@ -41,6 +41,8 @@ public class PlatformCsvToModelMapper {
         .validTo(csvModel.getValidTo())
         .creationDate(csvModel.getCreatedAt())
         .editionDate(csvModel.getModifiedAt())
+        .creator(csvModel.getAddedBy())
+        .editor(csvModel.getModifiedBy())
         .build();
   }
 
