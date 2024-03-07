@@ -97,7 +97,11 @@ describe('RelationTabDetailComponent', () => {
   let component: RelationTabDetailComponent;
   let fixture: ComponentFixture<RelationTabDetailComponent>;
 
-  let personWithReducedMobilityService: any;
+  let personWithReducedMobilityService = jasmine.createSpyObj('personWithReducedMobilityService', [
+    'getReferencePointsOverview',
+    'getRelationsBySloid',
+    'updateRelation',
+  ]);
 
   const activatedRouteMock = {
     parent: {
@@ -194,7 +198,7 @@ describe('RelationTabDetailComponent', () => {
     personWithReducedMobilityService.getRelationsBySloid.and.returnValue(of(relations));
     fixture.detectChanges();
 
-    component.versionChanged(0);
+    component.versionChanged(relations[0], 0);
 
     expect(component.selectedRelationVersion).toBe(1);
     expect(component.currentRelationId).toBe(1000);
