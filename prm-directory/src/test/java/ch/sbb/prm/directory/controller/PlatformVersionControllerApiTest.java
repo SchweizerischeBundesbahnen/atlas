@@ -15,12 +15,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.SharedServicePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
+import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
@@ -92,7 +94,8 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     //when & then
     mvc.perform(get("/v1/platforms"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects", hasSize(1)));
+        .andExpect(jsonPath("$.objects", hasSize(1)))
+        .andExpect(jsonPath("$.objects[0]." + Fields.status, is(Status.VALIDATED.name())));
   }
 
   @Test
@@ -128,6 +131,7 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
             "?numbers=12345" +
             "&sloids=ch:1:sloid:12345:1" +
             "&fromDate=" + version.getValidFrom() +
+            "&statusRestrictions=VALIDATED" +
             "&toDate=" + version.getValidTo() +
             "&validOn=" + LocalDate.of(2000, 6, 28) +
             "&createdAfter=" + version.getCreationDate().minusSeconds(1)

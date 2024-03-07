@@ -4,8 +4,8 @@ import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification;
 import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
-import ch.sbb.prm.directory.entity.BasePrmEntityVersion.Fields;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion_;
+import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import java.util.Collections;
 import java.util.Optional;
 import lombok.Data;
@@ -23,9 +23,11 @@ public abstract class BasePrmSearchRestrictions<T extends BasePrmEntityVersion> 
   public Specification<T> getSpecification() {
     return specBuilder().searchCriteriaSpecification(Collections.emptyList())
         .and(specBuilder().validOnSpecification(Optional.ofNullable(prmObjectRequestParams.getValidOn())))
-        .and(specBuilder().inSpecification(prmObjectRequestParams.getNumbers(), Fields.number))
-        .and(specBuilder().inSpecification(prmObjectRequestParams.getSloids(), Fields.sloid))
-        .and(specBuilder().inSpecification(prmObjectRequestParams.getParentServicePointSloids(), Fields.parentServicePointSloid))
+        .and(specBuilder().inSpecification(prmObjectRequestParams.getNumbers(), BasePrmEntityVersion.Fields.number))
+        .and(specBuilder().inSpecification(prmObjectRequestParams.getSloids(), BasePrmEntityVersion.Fields.sloid))
+        .and(specBuilder().inSpecification(prmObjectRequestParams.getParentServicePointSloids(),
+            BasePrmEntityVersion.Fields.parentServicePointSloid))
+        .and(specBuilder().inSpecification(prmObjectRequestParams.getStatusRestrictions(), Fields.status))
         .and(new ValidOrEditionTimerangeSpecification<>(
             prmObjectRequestParams.getFromDate(),
             prmObjectRequestParams.getToDate(),

@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { StopPointDetailFormGroup } from '../stop-point-detail-form-group';
-import { MeanOfTransport } from '../../../../../../api';
-import { ControlContainer, FormGroup, NgForm } from '@angular/forms';
+import {Component, Input, OnInit} from '@angular/core';
+import {StopPointDetailFormGroup} from '../stop-point-detail-form-group';
+import {MeanOfTransport} from '../../../../../../api';
+import {ControlContainer, FormGroup, NgForm} from '@angular/forms';
+import {PrmVariantInfoServiceService} from "../../prm-variant-info-service.service";
 
 @Component({
   selector: 'app-stop-point-reduced-form',
@@ -12,10 +13,15 @@ export class StopPointReducedFormComponent implements OnInit {
   @Input() form!: FormGroup<StopPointDetailFormGroup>;
   @Input() selectedMeansOfTransport!: MeanOfTransport[];
   @Input() isNew = false;
+  meansOfTransportToShow: MeanOfTransport[] | undefined;
+  constructor(private readonly prmVariantInfoServiceService: PrmVariantInfoServiceService) {
+  }
+
   ngOnInit(): void {
     if (this.isNew) {
       this.initForm();
     }
+    this.meansOfTransportToShow = this.prmVariantInfoServiceService.getPrmMeansOfTransportToShow(this.form.controls.meansOfTransport.value!)
   }
 
   private initForm() {
