@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 class StopPointVersionJsonProcessorTest {
 
   @Test
-  public void shouldMapToReadModel() {
+  void shouldMapToReadModel() {
     StopPointVersion entity = StopPointVersion.builder()
         .id(1L)
         .sloid("ch:1:sloid:112:23")

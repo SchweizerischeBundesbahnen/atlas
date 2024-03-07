@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 class ContactPointVersionJsonProcessorTest {
 
   @Test
-  public void shouldMapToReadModel() {
+  void shouldMapToReadModel() {
     ContactPointVersion entity = ContactPointVersion.builder()
         .id(1L)
         .sloid("ch:1:sloid:112:23")
