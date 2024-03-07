@@ -14,9 +14,8 @@ import org.junit.jupiter.api.Test;
 
 class ReferencePointVersionJsonProcessorTest {
 
-
   @Test
-  public void shouldMapToReadModel() {
+   void shouldMapToReadModel() {
     ReferencePointVersion entity = ReferencePointVersion.builder()
         .id(1L)
         .sloid("ch:1:sloid:112:23")
