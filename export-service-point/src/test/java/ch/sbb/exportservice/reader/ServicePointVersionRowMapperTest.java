@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
-import ch.sbb.exportservice.entity.ServicePointVersion;
-import ch.sbb.exportservice.entity.ServicePointVersion.ServicePointVersionBuilder;
+import ch.sbb.exportservice.entity.sepodi.ServicePointVersion;
+import ch.sbb.exportservice.entity.sepodi.ServicePointVersion.ServicePointVersionBuilder;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 

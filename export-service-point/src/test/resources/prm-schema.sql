@@ -64,6 +64,7 @@ create table stop_point_version
     edition_date                    timestamp        not null,
     editor                          varchar(50)      not null,
     version                         bigint default 0 not null,
+    status                          varchar(50)      not null,
     constraint stop_point_sloid_unique
         unique (sloid, valid_from)
 );
@@ -91,6 +92,7 @@ create table reference_point_version
     editor                     varchar(50)      not null,
     version                    bigint default 0 not null,
     additional_information     varchar(2000),
+    status                     varchar(50)      not null,
     constraint reference_point_sloid_unique
         unique (sloid, valid_from)
 );
@@ -125,6 +127,7 @@ create table platform_version
     edition_date               timestamp        not null,
     editor                     varchar(50)      not null,
     version                    bigint default 0 not null,
+    status                     varchar(50)      not null,
     constraint platform_sloid_unique
         unique (sloid, valid_from)
 );
@@ -151,6 +154,7 @@ create table toilet_version
     edition_date               timestamp        not null,
     editor                     varchar(50)      not null,
     version                    bigint default 0 not null,
+    status                     varchar(50)      not null,
     constraint toilet_sloid_unique
         unique (sloid, valid_from)
 );
@@ -174,6 +178,7 @@ create table contact_point_version
     edition_date               timestamp        not null,
     editor                     varchar(50)      not null,
     version                    bigint default 0 not null,
+    status                     varchar(50)      not null,
     constraint contact_point_sloid_unique
         unique (sloid, valid_from)
 );
@@ -195,6 +200,7 @@ create table parking_lot_version
     edition_date               timestamp        not null,
     editor                     varchar(50)      not null,
     version                    bigint default 0 not null,
+    status                     varchar(50)      not null,
     constraint parking_lot_sloid_unique
         unique (sloid, valid_from)
 );
@@ -217,6 +223,7 @@ create table relation_version
     editor                       varchar(50)      not null,
     version                      bigint default 0 not null,
     reference_point_sloid        varchar(500)     not null,
+    status                       varchar(50)      not null,
     constraint relation_sloids_unique
         unique (sloid, reference_point_sloid, valid_from)
 );

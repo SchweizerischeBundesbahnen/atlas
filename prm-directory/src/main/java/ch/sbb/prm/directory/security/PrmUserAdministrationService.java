@@ -35,4 +35,8 @@ public class PrmUserAdministrationService extends BusinessOrganisationBasedUserA
                 .anyMatch(sboid -> hasUserPermissionsForBusinessOrganisation(sboid, ApplicationType.PRM));
     }
 
+    public boolean isAtLeastPrmSupervisor(){
+        return isAtLeastSupervisor(ApplicationType.PRM);
+    }
+
 }

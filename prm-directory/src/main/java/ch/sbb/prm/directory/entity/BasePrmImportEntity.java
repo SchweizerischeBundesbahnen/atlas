@@ -2,10 +2,14 @@ package ch.sbb.prm.directory.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.imports.Importable;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
+import ch.sbb.prm.directory.validation.status.PrmStatusSubSet;
 import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -56,6 +60,10 @@ public abstract class BasePrmImportEntity implements Importable {
   @NotNull
   @AtlasVersionableProperty(ignoreDiff = true, doNotOverride = true)
   private Integer version;
+
+  @Enumerated(EnumType.STRING)
+  @PrmStatusSubSet(anyOf = {Status.VALIDATED,Status.REVOKED})
+  private Status status;
 
   @PrePersist
   public void onPrePersist() {
