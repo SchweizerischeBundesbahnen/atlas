@@ -3,10 +3,10 @@
     <means-of-transport-picker
       [formGroup]="form"
       controlName="meansOfTransport"
-      [disabled]="form.disabled"
+      [disabled]="isNew || !form.enabled"
       label="PRM.STOP_POINTS.MEANS_OF_TRANSPORT_SUB_LABEL"
-      [showUnknown]="false"
       [showInfo]="true"
+      [meansOfTransportToShow]="meansOfTransportToShow"
     ></means-of-transport-picker>
   </div>
 </div>

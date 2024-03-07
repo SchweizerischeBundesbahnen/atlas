@@ -8,7 +8,6 @@ import ch.sbb.atlas.api.model.ErrorResponse.ValidFromDetail;
 import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
-import ch.sbb.prm.directory.entity.ReferencePointVersion.Fields;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -43,7 +42,7 @@ public class MainReferencePointConflictException extends AtlasException {
 
   private Function<ReferencePointVersion, Detail> toErrorDetail() {
     return referencePointVersion -> ValidFromDetail.builder()
-        .field(Fields.mainReferencePoint)
+        .field(ReferencePointVersion.Fields.mainReferencePoint)
         .message("Main ReferencePoint already taken from {0} to {1} by {2}")
         .displayInfo(builder()
             .code(CODE)

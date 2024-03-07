@@ -15,6 +15,7 @@ public class ContactPointVersionMapper {
   public static ReadContactPointVersionModel toModel(ContactPointVersion version) {
     return ReadContactPointVersionModel.builder()
         .id(version.getId())
+        .status(version.getStatus())
         .sloid(version.getSloid())
         .parentServicePointSloid(version.getParentServicePointSloid())
         .number(version.getNumber())

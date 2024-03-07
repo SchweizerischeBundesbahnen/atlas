@@ -2,13 +2,12 @@ package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationReadModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
-import ch.sbb.exportservice.entity.ServicePointVersion;
+import ch.sbb.exportservice.entity.sepodi.ServicePointVersion;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel.ServicePointVersionCsvModelBuilder;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
-
-import java.util.Optional;
 
 @Slf4j
 public class ServicePointVersionCsvServicePointProcessor extends BaseServicePointProcessor implements

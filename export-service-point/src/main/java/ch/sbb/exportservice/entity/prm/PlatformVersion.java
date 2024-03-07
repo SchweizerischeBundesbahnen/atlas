@@ -1,14 +1,13 @@
-package ch.sbb.exportservice.entity;
+package ch.sbb.exportservice.entity.prm;
 
 import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
+import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import java.time.LocalDate;
 import java.util.Set;
-
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +23,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-public class PlatformVersion extends BaseEntity {
+public class PlatformVersion extends BasePrmEntity {
 
     private Long id;
 

@@ -6,6 +6,7 @@ import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.entity.StopPointVersion;
@@ -26,6 +27,7 @@ public class StopPointTestData {
 
     return StopPointVersion.builder()
         .sloid("ch:1:sloid:12345")
+        .status(Status.VALIDATED)
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(1234567))
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
@@ -57,6 +59,7 @@ public class StopPointTestData {
   public static StopPointVersionModel getStopPointCreateVersionModel() {
     return StopPointVersionModel.builder()
         .sloid("ch:1:sloid:7000")
+        .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .meansOfTransport(of(MeanOfTransport.TRAIN, MeanOfTransport.METRO))
@@ -87,6 +90,7 @@ public class StopPointTestData {
   public static StopPointVersionModel getWrongStopPointReducedCreateVersionModel() {
     return StopPointVersionModel.builder()
         .sloid("ch:1:sloid:7000")
+        .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .meansOfTransport(of(MeanOfTransport.TRAM))
@@ -117,6 +121,7 @@ public class StopPointTestData {
   public static StopPointVersionModel getCompleteNotValidatableStopPointReducedCreateVersionModel() {
     return StopPointVersionModel.builder()
         .sloid("ch:1:sloid:7000")
+        .status(Status.VALIDATED)
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
         .meansOfTransport(of(MeanOfTransport.TRAIN))
@@ -146,6 +151,7 @@ public class StopPointTestData {
   public StopPointVersionBuilder<?, ?> builderVersion1() {
     return StopPointVersion.builder()
         .sloid("ch:1:sloid:12345")
+        .status(Status.VALIDATED)
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(8512345))
         .validFrom(LocalDate.of(2000, 1, 1))
         .validTo(LocalDate.of(2000, 12, 31))
@@ -175,6 +181,7 @@ public class StopPointTestData {
   public StopPointVersionBuilder<?, ?> builderVersion2() {
     return StopPointVersion.builder()
         .sloid("ch:1:sloid:12345")
+        .status(Status.VALIDATED)
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(8512345))
         .validFrom(LocalDate.of(2001, 1, 1))
         .validTo(LocalDate.of(2002, 12, 31))
@@ -204,6 +211,7 @@ public class StopPointTestData {
   public StopPointVersionBuilder<?, ?> builderVersion3() {
     return StopPointVersion.builder()
         .sloid("ch:1:sloid:12345")
+        .status(Status.VALIDATED)
         .number(ServicePointNumber.ofNumberWithoutCheckDigit(8512345))
         .validFrom(LocalDate.of(2003, 1, 1))
         .validTo(LocalDate.of(2003, 12, 31))
@@ -228,6 +236,46 @@ public class StopPointTestData {
         .wheelchairTicketMachine(StandardAttributeType.TO_BE_COMPLETED)
         .assistanceRequestFulfilled(BooleanOptionalAttributeType.TO_BE_COMPLETED)
         .ticketMachine(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+  }
+
+  public StopPointVersionBuilder<?, ?> builderVersionCompleteFull() {
+    return StopPointVersion.builder()
+        .sloid("ch:1:sloid:12345")
+        .status(Status.VALIDATED)
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8512345))
+        .validFrom(LocalDate.of(2003, 1, 1))
+        .validTo(LocalDate.of(2003, 12, 31))
+        .meansOfTransport(Set.of(MeanOfTransport.TRAIN))
+        .freeText("I am a free man!!!")
+        .address("Wylerstrasse 666")
+        .zipCode("3014")
+        .city("Bern")
+        .alternativeTransport(StandardAttributeType.YES)
+        .alternativeTransportCondition("No way dude!!")
+        .assistanceAvailability(StandardAttributeType.YES)
+        .assistanceCondition("No alternative Bro!")
+        .assistanceService(StandardAttributeType.NO)
+        .audioTicketMachine(StandardAttributeType.PARTIALLY)
+        .dynamicAudioSystem(StandardAttributeType.YES)
+        .dynamicOpticSystem(StandardAttributeType.YES)
+        .infoTicketMachine("tick")
+        .additionalInformation("additional")
+        .interoperable(true)
+        .url("https://www.prm.sbb")
+        .visualInfo(StandardAttributeType.NO)
+        .wheelchairTicketMachine(StandardAttributeType.PARTIALLY)
+        .assistanceRequestFulfilled(BooleanOptionalAttributeType.NO)
+        .ticketMachine(BooleanOptionalAttributeType.YES);
+  }
+
+  public StopPointVersionBuilder<?, ?> builderVersionReduced() {
+    return StopPointVersion.builder()
+        .sloid("ch:1:sloid:12345")
+        .status(Status.VALIDATED)
+        .number(ServicePointNumber.ofNumberWithoutCheckDigit(8512345))
+        .validFrom(LocalDate.of(2003, 1, 1))
+        .validTo(LocalDate.of(2003, 12, 31))
+        .meansOfTransport(Set.of(MeanOfTransport.BUS));
   }
 
 }

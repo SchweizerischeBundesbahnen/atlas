@@ -1,7 +1,7 @@
 package ch.sbb.exportservice.processor;
 
 import ch.sbb.atlas.api.prm.model.toilet.ReadToiletVersionModel;
-import ch.sbb.exportservice.entity.ToiletVersion;
+import ch.sbb.exportservice.entity.prm.ToiletVersion;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
@@ -26,6 +26,7 @@ public class ToiletVersionJsonProcessor extends BaseServicePointProcessor implem
         .editionDate(version.getEditionDate())
         .editor(version.getEditor())
         .etagVersion(version.getVersion())
+        .status(version.getStatus())
         .build();
   }
 

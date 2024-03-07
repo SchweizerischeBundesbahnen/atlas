@@ -1,7 +1,8 @@
-package ch.sbb.exportservice.entity;
+package ch.sbb.exportservice.entity.prm;
 
-import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.exportservice.entity.BaseEntity;
+import ch.sbb.exportservice.entity.bodi.BusinessOrganisation;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,25 +19,26 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-public class ToiletVersion extends BaseEntity {
+public class LoadingPointVersion extends BaseEntity {
 
   private Long id;
 
-  private String sloid;
-
-  private String parentServicePointSloid;
-
-  private ServicePointNumber parentServicePointNumber;
+  private Integer number;
 
   private String designation;
 
-  private String additionalInformation;
+  private String designationLong;
 
-  private StandardAttributeType wheelchairToilet;
+  private boolean connectionPoint;
+
+  private ServicePointNumber servicePointNumber;
+
+  private BusinessOrganisation servicePointBusinessOrganisation;
+
+  private String parentSloidServicePoint;
 
   private LocalDate validFrom;
 
   private LocalDate validTo;
-
 
 }

@@ -1,7 +1,6 @@
 package ch.sbb.exportservice.reader;
 
-import ch.sbb.exportservice.entity.BusinessOrganisation;
-
+import ch.sbb.exportservice.entity.bodi.BusinessOrganisation;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 

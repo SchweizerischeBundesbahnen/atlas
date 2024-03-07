@@ -1052,6 +1052,10 @@
     "NUMBER_ALREADY_USED": "Le code DiDok {{number}} est déjà pris."
   },
   "PRM": {
+    "DIALOG": {
+      "PRM_VARIANT_CHANGES_TITLE": "Changement de variante de saisie",
+      "PRM_VARIANT_CHANGES_MSG": "Cette fonction permet d'effacer toutes les données LHand saisies pour l'arrêt."
+    },
     "TABS": {
       "STOP_POINT": "Informations de base sur l’arrêt",
       "REFERENCE_POINT": "Point de référence",

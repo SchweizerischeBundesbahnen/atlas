@@ -1,9 +1,12 @@
-package ch.sbb.exportservice.entity;
+package ch.sbb.exportservice.entity.prm;
 
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,10 +15,6 @@ import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -23,7 +22,7 @@ import java.util.Set;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-public class StopPointVersion extends BaseEntity {
+public class StopPointVersion extends BasePrmEntity {
 
   private Long id;
 
