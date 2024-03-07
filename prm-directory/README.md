@@ -136,11 +136,19 @@ delete
 from toilet_version;
 ```
 
+REMARK: If you do full import from scratch, importing first ServicePoint data and then PRM data, then you need to clean
+up `shared_service_point` Table
+```sql
+delete from shared_service_point;
+```
+And after importing `service_point_version` data and `traffic_point_version` data, you need to trigger sync API call on 
+ServicePointApi (`/sync-service-points`) in order to avoid possible issues with PlatformImport.
+
 Further we need to clear the import-service-point db: see * [Reset Batch](../documentation/batch_util.md)
 
 And the Location DB:
 
-For the sloid-types PLATFORM, REFERENCE_POINT, TOILET, PARKING_LOT, CONTACT_POINT:
+For the sloid-types `PLATFORM`, `REFERENCE_POINT`, `TOILET`, `PARKING_LOT`, `CONTACT_POINT`:
 
 ```sql
 delete
