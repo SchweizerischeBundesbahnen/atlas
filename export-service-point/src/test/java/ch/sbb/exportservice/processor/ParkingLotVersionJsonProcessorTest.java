@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 class ParkingLotVersionJsonProcessorTest {
 
   @Test
-  public void shouldMapToReadModel() {
+  void shouldMapToReadModel() {
     ParkingLotVersion entity = ParkingLotVersion.builder()
         .id(1L)
         .sloid("ch:1:sloid:112:23")
