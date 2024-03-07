@@ -148,7 +148,7 @@ Further we need to clear the import-service-point db: see * [Reset Batch](../doc
 
 And the Location DB:
 
-For the sloid-types `PLATFORM` or `AREA`, `REFERENCE_POINT`, `TOILET`, `PARKING_LOT`, `CONTACT_POINT`:
+For the sloid-types `PLATFORM`, `REFERENCE_POINT`, `TOILET`, `PARKING_LOT`, `CONTACT_POINT`:
 
 ```sql
 delete
