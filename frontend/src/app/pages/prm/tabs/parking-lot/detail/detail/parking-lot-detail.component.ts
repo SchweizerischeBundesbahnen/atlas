@@ -1,22 +1,22 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {VersionsHandlingService} from '../../../../../core/versioning/versions-handling.service';
-import {ParkingLotFormGroup, ParkingLotFormGroupBuilder,} from './form/parking-lot-form-group';
-import {Observable, of, take} from 'rxjs';
-import {DetailFormComponent} from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
-import {DateRange} from '../../../../../core/versioning/date-range';
-import {FormGroup} from '@angular/forms';
-import {NotificationService} from '../../../../../core/notification/notification.service';
-import {DialogService} from '../../../../../core/components/dialog/dialog.service';
+import {DetailFormComponent} from "../../../../../../core/leave-guard/leave-dirty-form-guard.service";
 import {
   ParkingLotVersion,
   PersonWithReducedMobilityService,
   ReadParkingLotVersion,
-  ReadServicePointVersion,
-} from '../../../../../api';
+  ReadServicePointVersion
+} from "../../../../../../api";
+import {FormGroup} from "@angular/forms";
+import {NotificationService} from "../../../../../../core/notification/notification.service";
+import {DialogService} from "../../../../../../core/components/dialog/dialog.service";
+import {VersionsHandlingService} from "../../../../../../core/versioning/versions-handling.service";
+import {ParkingLotFormGroup, ParkingLotFormGroupBuilder} from "../form/parking-lot-form-group";
+import {Observable, of, take} from "rxjs";
+import {DateRange} from "../../../../../../core/versioning/date-range";
 
 @Component({
-  selector: 'app-parking-lot',
+  selector: 'app-parking-lot-detail',
   templateUrl: './parking-lot-detail.component.html',
 })
 export class ParkingLotDetailComponent implements OnInit, DetailFormComponent {
@@ -44,7 +44,7 @@ export class ParkingLotDetailComponent implements OnInit, DetailFormComponent {
   ngOnInit(): void {
     this.initSePoDiData();
 
-    this.parkingLot = this.route.snapshot.data.parkingLot;
+    this.parkingLot = this.route.snapshot.parent!.data.parkingLot;
 
     this.isNew = this.parkingLot.length === 0;
 
@@ -70,7 +70,7 @@ export class ParkingLotDetailComponent implements OnInit, DetailFormComponent {
   }
 
   private initSePoDiData() {
-    const servicePointVersions: ReadServicePointVersion[] = this.route.snapshot.data.servicePoint;
+    const servicePointVersions: ReadServicePointVersion[] = this.route.snapshot.parent!.data.servicePoint;
     this.servicePoint =
       VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
     this.businessOrganisations = [
@@ -85,7 +85,7 @@ export class ParkingLotDetailComponent implements OnInit, DetailFormComponent {
   }
 
   back() {
-    this.router.navigate(['..'], { relativeTo: this.route }).then();
+    this.router.navigate(['..'], { relativeTo: this.route.parent }).then();
   }
 
   toggleEdit() {
@@ -118,7 +118,7 @@ export class ParkingLotDetailComponent implements OnInit, DetailFormComponent {
         this.notificationService.success('PRM.PARKING_LOTS.NOTIFICATION.ADD_SUCCESS');
         this.router
           .navigate(['..', createdVersion.sloid], {
-            relativeTo: this.route,
+            relativeTo: this.route.parent,
           })
           .then(() => this.ngOnInit());
       });
@@ -131,7 +131,7 @@ export class ParkingLotDetailComponent implements OnInit, DetailFormComponent {
         this.notificationService.success('PRM.PARKING_LOTS.NOTIFICATION.EDIT_SUCCESS');
         this.router
           .navigate(['..', this.selectedVersion.sloid], {
-            relativeTo: this.route,
+            relativeTo: this.route.parent,
           })
           .then(() => this.ngOnInit());
       });
@@ -144,7 +144,7 @@ export class ParkingLotDetailComponent implements OnInit, DetailFormComponent {
         if (confirmed) {
           if (this.isNew) {
             this.form.reset();
-            this.router.navigate(['..'], { relativeTo: this.route }).then();
+            this.router.navigate(['..'], { relativeTo: this.route.parent }).then();
           } else {
             this.form.disable();
           }
