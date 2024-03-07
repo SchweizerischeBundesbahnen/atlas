@@ -1,9 +1,10 @@
 package ch.sbb.exportservice.reader;
 
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.exportservice.entity.ToiletVersion;
-import ch.sbb.exportservice.entity.ToiletVersion.ToiletVersionBuilder;
+import ch.sbb.exportservice.entity.prm.ToiletVersion;
+import ch.sbb.exportservice.entity.prm.ToiletVersion.ToiletVersionBuilder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -31,6 +32,7 @@ public class ToiletVersionRowMapper extends BaseRowMapper implements RowMapper<T
     builder.creator(rs.getString("creator"));
     builder.editor(rs.getString("editor"));
     builder.version(rs.getInt("version"));
+    builder.status(Status.valueOf(rs.getString("status")));
     return builder.build();
   }
 

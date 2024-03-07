@@ -6,7 +6,7 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_PLATFORM
 
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
 import ch.sbb.atlas.export.model.prm.PlatformVersionCsvModel;
-import ch.sbb.exportservice.entity.PlatformVersion;
+import ch.sbb.exportservice.entity.prm.PlatformVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.model.PrmExportType;

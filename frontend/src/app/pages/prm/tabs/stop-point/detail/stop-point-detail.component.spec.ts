@@ -1,33 +1,30 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { StopPointDetailComponent } from './stop-point-detail.component';
-import { of } from 'rxjs';
-import { AppTestingModule } from '../../../../../app.testing.module';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../../../../core/auth/auth.service';
-import {
-  MockAtlasButtonComponent,
-  MockAtlasFieldErrorComponent,
-  MockSelectComponent,
-} from '../../../../../app.testing.mocks';
-import { SwitchVersionComponent } from '../../../../../core/components/switch-version/switch-version.component';
-import { TranslatePipe } from '@ngx-translate/core';
-import { UserDetailInfoComponent } from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
-import { StopPointCompleteFormComponent } from '../form/stop-point-complete-form/stop-point-complete-form.component';
-import { StopPointReducedFormComponent } from '../form/stop-point-reduced-form/stop-point-reduced-form.component';
-import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
-import { AtlasLabelFieldComponent } from '../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
-import { MeansOfTransportPickerComponent } from '../../../../sepodi/means-of-transport-picker/means-of-transport-picker.component';
-import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
-import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import { StopPointFormGroupBuilder } from '../form/stop-point-detail-form-group';
-import { PersonWithReducedMobilityService } from '../../../../../api';
-import { NotificationService } from '../../../../../core/notification/notification.service';
-import { STOP_POINT } from '../../../util/stop-point-test-data.spec';
-import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
-import { InfoIconComponent } from '../../../../../core/form-components/info-icon/info-icon.component';
-import SpyObj = jasmine.SpyObj;
+import {StopPointDetailComponent} from './stop-point-detail.component';
+import {of} from 'rxjs';
+import {AppTestingModule} from '../../../../../app.testing.module';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AuthService} from '../../../../../core/auth/auth.service';
+import {MockAtlasButtonComponent, MockAtlasFieldErrorComponent, MockSelectComponent,} from '../../../../../app.testing.mocks';
+import {SwitchVersionComponent} from '../../../../../core/components/switch-version/switch-version.component';
+import {TranslatePipe} from '@ngx-translate/core';
+import {UserDetailInfoComponent} from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import {StopPointCompleteFormComponent} from '../form/stop-point-complete-form/stop-point-complete-form.component';
+import {StopPointReducedFormComponent} from '../form/stop-point-reduced-form/stop-point-reduced-form.component';
+import {TextFieldComponent} from '../../../../../core/form-components/text-field/text-field.component';
+import {AtlasLabelFieldComponent} from '../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import {MeansOfTransportPickerComponent} from '../../../../sepodi/means-of-transport-picker/means-of-transport-picker.component';
+import {AtlasSpacerComponent} from '../../../../../core/components/spacer/atlas-spacer.component';
+import {DialogService} from '../../../../../core/components/dialog/dialog.service';
+import {StopPointFormGroupBuilder} from '../form/stop-point-detail-form-group';
+import {MeanOfTransport, PersonWithReducedMobilityService} from '../../../../../api';
+import {NotificationService} from '../../../../../core/notification/notification.service';
+import {STOP_POINT, STOP_POINT_COMPLETE} from '../../../util/stop-point-test-data.spec';
+import {BERN_WYLEREGG} from '../../../../../../test/data/service-point';
+import {InfoIconComponent} from '../../../../../core/form-components/info-icon/info-icon.component';
 import {DetailFooterComponent} from "../../../../../core/components/detail-footer/detail-footer.component";
+import {PrmVariantInfoServiceService} from "../prm-variant-info-service.service";
+import SpyObj = jasmine.SpyObj;
 
 const authService: Partial<AuthService> = {};
 describe('StopPointDetailComponent', () => {
@@ -40,6 +37,15 @@ describe('StopPointDetailComponent', () => {
     'personWithReducedMobilityService',
     ['createStopPoint', 'updateStopPoint'],
   );
+  personWithReducedMobilityService.createStopPoint.and.returnValue(of(STOP_POINT));
+  personWithReducedMobilityService.updateStopPoint.and.returnValue(of([STOP_POINT]));
+
+  const prmVariantInfoServiceService = jasmine.createSpyObj(
+    'prmVariantInfoServiceService',
+    ['getPrmMeansOfTransportToShow'],
+  );
+  prmVariantInfoServiceService.getPrmMeansOfTransportToShow.and.returnValue(Object.values(MeanOfTransport))
+
   personWithReducedMobilityService.createStopPoint.and.returnValue(of(STOP_POINT));
   personWithReducedMobilityService.updateStopPoint.and.returnValue(of([STOP_POINT]));
 
@@ -74,6 +80,7 @@ describe('StopPointDetailComponent', () => {
         { provide: AuthService, useValue: authService },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService },
+        { provide: PrmVariantInfoServiceService, useValue: prmVariantInfoServiceService },
         { provide: NotificationService, useValue: notificationService },
         TranslatePipe,
       ],
@@ -172,6 +179,7 @@ describe('StopPointDetailComponent', () => {
     spyOn(component, 'navigateToPrmHomeSearch');
     spyOn(component, 'initSelectedVersion');
     spyOn(component, 'disableForm');
+    spyOn(component.form, 'reset');
 
     //when
     component.showConfirmationDialog();
@@ -196,7 +204,21 @@ describe('StopPointDetailComponent', () => {
     expect(component.reloadPage).toHaveBeenCalled();
   });
 
-  it('should save when stopPoint update', () => {
+  it('should save without prm variant change when stopPoint update ', () => {
+    //given
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    spyOn(component, 'reloadPage');
+    spyOn(component, 'updateStopPoint');
+
+    component.form = StopPointFormGroupBuilder.buildFormGroup(STOP_POINT);
+    component.isNew = false;
+    //when
+    component.save();
+    //then
+    expect(component.updateStopPoint).toHaveBeenCalled();
+  });
+
+  it('should update stopPoint', () => {
     //given
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     spyOn(component, 'reloadPage');
@@ -204,11 +226,41 @@ describe('StopPointDetailComponent', () => {
     component.form = StopPointFormGroupBuilder.buildFormGroup(STOP_POINT);
     component.isNew = false;
     //when
-    component.save();
+    component.doUpdateStopPoint(STOP_POINT);
     //then
     expect(personWithReducedMobilityService.updateStopPoint).toHaveBeenCalled();
     expect(notificationService.success).toHaveBeenCalled();
     expect(component.reloadPage).toHaveBeenCalled();
+  });
+
+  it('should update without prm variant change', () => {
+    //given
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    spyOn(component, 'reloadPage');
+    spyOn(component, 'doUpdateStopPoint');
+
+    component.form = StopPointFormGroupBuilder.buildFormGroup(STOP_POINT);
+    component.selectedVersion =  STOP_POINT;
+    component.isNew = false;
+    //when
+    component.updateStopPoint(STOP_POINT);
+    //then
+    expect(component.doUpdateStopPoint).toHaveBeenCalled();
+  });
+
+  it('should update with prm variant change', () => {
+    //given
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    spyOn(component, 'reloadPage');
+    spyOn(component, 'showPrmChangeVariantConfirmationDialog');
+
+    component.form = StopPointFormGroupBuilder.buildFormGroup(STOP_POINT);
+    component.selectedVersion =  STOP_POINT;
+    component.isNew = false;
+    //when
+    component.updateStopPoint(STOP_POINT_COMPLETE);
+    //then
+    expect(component.showPrmChangeVariantConfirmationDialog).toHaveBeenCalled();
   });
 
   it('should initNotExistingStopPoint when user is authorized', () => {

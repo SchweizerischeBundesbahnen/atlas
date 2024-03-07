@@ -15,6 +15,7 @@ import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.search.PlatformSearchRestrictions;
+import ch.sbb.prm.directory.util.PlatformRecordingStatusEvaluator;
 import ch.sbb.prm.directory.validation.PlatformValidationService;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -64,14 +65,14 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
   public PlatformVersion save(PlatformVersion version) {
     boolean reduced = stopPointService.isReduced(version.getParentServicePointSloid());
     platformValidationService.validateRecordingVariants(version, reduced);
-
-    setEditionDateAndEditor(version);
+    initDefaultData(version);
     return platformRepository.saveAndFlush(version);
   }
 
   public PlatformVersion saveForImport(PlatformVersion version) {
     boolean reduced = stopPointService.isReduced(version.getParentServicePointSloid());
     platformValidationService.validateRecordingVariants(version, reduced);
+    setStatusToValidate(version);
     return platformRepository.saveAndFlush(version);
   }
 

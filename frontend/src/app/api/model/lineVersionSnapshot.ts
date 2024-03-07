@@ -32,6 +32,7 @@ export interface LineVersionSnapshot {
      * User editor
      */
     readonly editor?: string;
+    status?: Status;
     /**
      * Technical identifier
      */
@@ -45,7 +46,6 @@ export interface LineVersionSnapshot {
      * Parent Object identifier
      */
     readonly parentObjectId: number;
-    status?: Status;
     lineType: LineType;
     /**
      * SLNID

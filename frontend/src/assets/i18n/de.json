@@ -1052,6 +1052,10 @@
     "NUMBER_ALREADY_USED": "Der DiDok-Code {{number}} ist bereits vergeben."
   },
   "PRM": {
+    "DIALOG": {
+      "PRM_VARIANT_CHANGES_TITLE": "Wechsel Erfassungsvariante",
+      "PRM_VARIANT_CHANGES_MSG": "Mit dieser Funktion werden sämtliche eingegeben BehiG-Daten der Haltestelle gelöscht."
+    },
     "TABS": {
       "STOP_POINT": "Basisinformationen Haltestelle",
       "REFERENCE_POINT": "Referenzpunkt",

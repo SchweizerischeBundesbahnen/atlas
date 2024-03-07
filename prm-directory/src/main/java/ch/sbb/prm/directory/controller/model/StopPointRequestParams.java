@@ -1,7 +1,6 @@
 package ch.sbb.prm.directory.controller.model;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.api.model.VersionedObjectDateRequestParams;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.constraints.Max;
@@ -22,11 +21,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder
 @ToString
-public class StopPointRequestParams extends VersionedObjectDateRequestParams {
-
-  @Parameter(description = "Unique key for stop points which is used in the customer information.")
-  @Singular(ignoreNullCollections = true)
-  private List<String> sloids = new ArrayList<>();
+public class StopPointRequestParams extends BasePrmObjectRequestParams {
 
   @Parameter(description = "Number")
   @Singular(ignoreNullCollections = true)
