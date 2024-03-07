@@ -20,7 +20,7 @@ public interface RelationRepository extends JpaRepository<RelationVersion, Long>
   List<RelationVersion> findAllByParentServicePointSloid(String parentServicePointSloid) ;
   List<RelationVersion> findAllByParentServicePointSloidAndReferencePointElementType(String parentServicePointSloid, ReferencePointElementType referencePointType) ;
 
-  List<RelationVersion> findAllBySloidOrderByValidFrom(String number);
+  List<RelationVersion> findAllBySloidOrderByValidFrom(String sloid);
 
   @Modifying(clearAutomatically = true)
   @Query("update relation_version v set v.version = (v.version + 1) where v.sloid = :sloid")
