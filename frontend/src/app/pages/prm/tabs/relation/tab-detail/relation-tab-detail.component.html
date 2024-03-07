@@ -13,25 +13,16 @@
     >
     </atlas-select>
   </div>
-  @if (selectedReferencePointSloid) {
-    <ng-container
-      *ngIf="{
-        relations: relations$ | async,
-        currentRelation: currentRelation$ | async
-      } as relationInfo"
-    >
-      <div *ngIf="relationInfo.relations && relationInfo.currentRelation" class="mt-3 mb-3">
-        <app-switch-version
-          [records]="relationInfo.relations"
-          [currentRecord]="relationInfo.currentRelation"
-          [switchDisabled]="editing"
-          [showStatus]="false"
-          (switchVersion)="
-            versionChanged(relationInfo.relations[$event]); selectedRelationVersion = $event + 1
-          "
-        ></app-switch-version>
-      </div>
-    </ng-container>
+  <ng-container *ngIf="relations$ | async as relations">
+    <div *ngIf="relations && currentRelation" class="mt-3 mb-3">
+      <app-switch-version
+        [records]="relations"
+        [currentRecord]="currentRelation"
+        [switchDisabled]="editing"
+        [showStatus]="false"
+        (switchVersion)="versionChanged(relations[$event], $event)"
+      ></app-switch-version>
+    </div>
 
     <h2 class="font-bold-2xl color-gray-900">
       {{ 'PRM.RELATIONS.RELATION' | translate }} -
@@ -91,9 +82,9 @@
         </atlas-select>
       </div>
     </div>
-  }
+  </ng-container>
 </atlas-detail-page-content>
-@if (selectedReferencePointSloid) {
+@if (currentRelation) {
   <atlas-detail-footer>
     <atlas-button
       *ngIf="!editing"
