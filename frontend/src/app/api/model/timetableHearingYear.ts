@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Status } from './status';
 import { HearingStatus } from './hearingStatus';
 
 
@@ -29,6 +30,7 @@ export interface TimetableHearingYear {
      * User editor
      */
     readonly editor?: string;
+    status?: Status;
     /**
      * TimetableYear
      */

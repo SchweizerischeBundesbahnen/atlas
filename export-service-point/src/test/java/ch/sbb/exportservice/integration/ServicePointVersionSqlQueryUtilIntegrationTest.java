@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.atlas.servicepoint.Country;
-import ch.sbb.exportservice.entity.ServicePointVersion;
+import ch.sbb.exportservice.entity.sepodi.ServicePointVersion;
 import ch.sbb.exportservice.model.SePoDiExportType;
 import ch.sbb.exportservice.reader.ServicePointVersionRowMapper;
 import ch.sbb.exportservice.reader.ServicePointVersionSqlQueryUtil;

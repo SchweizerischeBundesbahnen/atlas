@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Status } from './status';
 import { RecordingStatus } from './recordingStatus';
 import { StandardAttributeType } from './standardAttributeType';
 
@@ -30,6 +31,7 @@ export interface ToiletOverview {
      * User editor
      */
     readonly editor?: string;
+    status?: Status;
     /**
      * Technical identifier
      */

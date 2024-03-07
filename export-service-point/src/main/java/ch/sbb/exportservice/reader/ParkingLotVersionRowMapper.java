@@ -1,9 +1,10 @@
 package ch.sbb.exportservice.reader;
 
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.exportservice.entity.ParkingLotVersion;
-import ch.sbb.exportservice.entity.ParkingLotVersion.ParkingLotVersionBuilder;
+import ch.sbb.exportservice.entity.prm.ParkingLotVersion;
+import ch.sbb.exportservice.entity.prm.ParkingLotVersion.ParkingLotVersionBuilder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -30,6 +31,7 @@ public class ParkingLotVersionRowMapper extends BaseRowMapper implements RowMapp
     builder.creator(rs.getString("creator"));
     builder.editor(rs.getString("editor"));
     builder.version(rs.getInt("version"));
+    builder.status(Status.valueOf(rs.getString("status")));
     return builder.build();
   }
 

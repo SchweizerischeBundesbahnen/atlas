@@ -13,8 +13,8 @@ import { SpatialReference } from './spatialReference';
 
 
 export interface LoadingPointCsvModel { 
-    originalEast?: number;
     originalNorth?: number;
+    originalEast?: number;
     SOURCE_SPATIAL_REF?: SpatialReference;
     E_LV95?: number;
     N_LV95?: number;

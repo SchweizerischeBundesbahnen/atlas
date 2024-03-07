@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { MeanOfTransport } from '../../../api';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormGroup} from '@angular/forms';
+import {MeanOfTransport} from '../../../api';
 
 @Component({
   selector: 'means-of-transport-picker',
@@ -12,15 +12,17 @@ export class MeansOfTransportPickerComponent implements OnInit {
   @Input() disabled = false;
   @Input() formGroup!: FormGroup;
   @Input() label!: string;
-  @Input() showUnknown = true;
   @Input() showInfo = false;
+  @Input() meansOfTransportToShow: MeanOfTransport[] | undefined;
 
   means!: MeanOfTransport[];
 
   ngOnInit(): void {
-    this.means = this.showUnknown
-      ? Object.values(MeanOfTransport)
-      : Object.values(MeanOfTransport).filter((value) => value !== MeanOfTransport.Unknown);
+    this.getMeansOfTransportToShow();
+  }
+
+  private getMeansOfTransportToShow() {
+    this.means = this.meansOfTransportToShow ? this.meansOfTransportToShow : Object.values(MeanOfTransport);
   }
 
   get currentlySelectedMeans() {

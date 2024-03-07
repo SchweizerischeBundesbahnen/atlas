@@ -4,8 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.export.model.prm.ToiletVersionCsvModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.exportservice.entity.ToiletVersion;
+import ch.sbb.exportservice.entity.prm.ToiletVersion;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,7 @@ class ToiletVersionCsvProcessorTest {
         .validTo(LocalDate.of(2020, 12, 31))
         .creationDate(creationDate)
         .editionDate(editionDate)
+        .status(Status.REVOKED)
         .build();
 
     ToiletVersionCsvModel expected = ToiletVersionCsvModel.builder()
@@ -43,6 +45,7 @@ class ToiletVersionCsvProcessorTest {
         .validTo(BaseServicePointProcessor.DATE_FORMATTER.format(LocalDate.of(2020, 12, 31)))
         .creationDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(creationDate))
         .editionDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(editionDate))
+        .status(Status.REVOKED)
         .build();
 
     ToiletVersionCsvModel result = processor.process(entity);

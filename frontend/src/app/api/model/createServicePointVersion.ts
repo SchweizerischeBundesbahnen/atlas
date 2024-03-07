@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { OperatingPointTrafficPointType } from './operatingPointTrafficPointType';
+import { Status } from './status';
 import { StopPointType } from './stopPointType';
 import { Category } from './category';
 import { GeolocationCreate } from './geolocationCreate';
@@ -36,6 +37,7 @@ export interface CreateServicePointVersion {
      * User editor
      */
     readonly editor?: string;
+    status?: Status;
     /**
      * Technical identifier
      */

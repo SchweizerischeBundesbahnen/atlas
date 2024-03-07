@@ -5,6 +5,7 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotOverviewModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.service.OverviewService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -52,7 +53,7 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
 
   @Override
   protected ParkingLotVersion save(ParkingLotVersion version) {
-    setEditionDateAndEditor(version);
+    initDefaultData(version);
     return parkingLotRepository.saveAndFlush(version);
   }
 
@@ -65,10 +66,6 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
   protected void applyVersioning(List<VersionedObject> versionedObjects) {
     versionableService.applyVersioning(ParkingLotVersion.class, versionedObjects, this::save,
         new ApplyVersioningDeleteByIdLongConsumer(parkingLotRepository));
-  }
-
-  public List<ParkingLotVersion> getAllParkingLots() {
-    return parkingLotRepository.findAll();
   }
 
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#version)")
@@ -88,12 +85,14 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
 
   public void saveForImport(ParkingLotVersion version) {
     stopPointService.checkStopPointExists(version.getParentServicePointSloid());
+    setStatusToValidate(version);
     parkingLotRepository.saveAndFlush(version);
   }
 
   public ParkingLotVersion createParkingLotThroughImport(ParkingLotVersion version) {
     stopPointService.checkStopPointExists(version.getParentServicePointSloid());
     locationService.allocateSloid(version, SloidType.PARKING_LOT);
+    version.setStatus(Status.VALIDATED);
     return parkingLotRepository.saveAndFlush(version);
   }
 

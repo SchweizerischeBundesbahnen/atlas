@@ -53,8 +53,14 @@ public class ContactPointService extends PrmRelatableVersionableService<ContactP
 
   @Override
   protected ContactPointVersion save(ContactPointVersion version) {
-    setEditionDateAndEditor(version);
+    initDefaultData(version);
     return contactPointRepository.saveAndFlush(version);
+  }
+
+  public void saveForImport(ContactPointVersion version) {
+    stopPointService.checkStopPointExists(version.getParentServicePointSloid());
+    setStatusToValidate(version);
+    contactPointRepository.saveAndFlush(version);
   }
 
   public Page<ContactPointVersion> findAll(ContactPointSearchRestrictions searchRestrictions) {
@@ -91,6 +97,7 @@ public class ContactPointService extends PrmRelatableVersionableService<ContactP
   public ContactPointVersion createContactPointThroughImport(ContactPointVersion version) {
     stopPointService.checkStopPointExists(version.getParentServicePointSloid());
     locationService.allocateSloid(version, SloidType.CONTACT_POINT);
+    setStatusToValidate(version);
     return contactPointRepository.saveAndFlush(version);
   }
 

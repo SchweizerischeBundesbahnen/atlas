@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.entity;
+package ch.sbb.exportservice.entity.sepodi;
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
@@ -9,7 +9,9 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableTyp
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
-import ch.sbb.exportservice.entity.geolocation.ServicePointGeolocation;
+import ch.sbb.exportservice.entity.BaseEntity;
+import ch.sbb.exportservice.entity.bodi.BusinessOrganisation;
+import ch.sbb.exportservice.entity.sepodi.geolocation.ServicePointGeolocation;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;

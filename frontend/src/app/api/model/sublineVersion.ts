@@ -31,6 +31,7 @@ export interface SublineVersion {
      * User editor
      */
     readonly editor?: string;
+    status?: Status;
     /**
      * Technical identifier
      */
@@ -43,7 +44,6 @@ export interface SublineVersion {
      * SLNID of main line
      */
     mainlineSlnid: string;
-    status?: Status;
     sublineType: SublineType;
     /**
      * SLNID
