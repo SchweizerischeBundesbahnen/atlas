@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.relation.RelationCsvModelContainer;
 import ch.sbb.atlas.imports.util.ImportUtils;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.exception.VersioningNoChangesException;
@@ -13,13 +14,18 @@ import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.exception.ReducedVariantException;
 import ch.sbb.prm.directory.mapper.RelationVersionMapper;
 import ch.sbb.prm.directory.repository.RelationRepository;
-import ch.sbb.prm.directory.service.*;
+import ch.sbb.prm.directory.service.ContactPointService;
+import ch.sbb.prm.directory.service.ParkingLotService;
+import ch.sbb.prm.directory.service.PlatformService;
+import ch.sbb.prm.directory.service.ReferencePointService;
+import ch.sbb.prm.directory.service.RelationService;
+import ch.sbb.prm.directory.service.StopPointService;
+import ch.sbb.prm.directory.service.ToiletService;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -40,6 +46,7 @@ public class RelationImportService extends BasePrmImportService<RelationVersion>
 
     @Override
     protected void save(RelationVersion version) {
+        version.setStatus(Status.VALIDATED);
         relationRepository.saveAndFlush(version);
     }
 
