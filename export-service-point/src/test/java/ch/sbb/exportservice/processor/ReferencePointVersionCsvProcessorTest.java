@@ -1,15 +1,15 @@
 package ch.sbb.exportservice.processor;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
 import ch.sbb.atlas.export.model.prm.ReferencePointVersionCsvModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.exportservice.entity.ReferencePointVersion;
-import org.junit.jupiter.api.Test;
-
+import ch.sbb.exportservice.entity.prm.ReferencePointVersion;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class ReferencePointVersionCsvProcessorTest {
 
@@ -32,6 +32,7 @@ class ReferencePointVersionCsvProcessorTest {
         .validTo(LocalDate.of(2020, 12, 31))
         .creationDate(creationDate)
         .editionDate(editionDate)
+        .status(Status.VALIDATED)
         .build();
 
     ReferencePointVersionCsvModel expected = ReferencePointVersionCsvModel.builder()
@@ -46,6 +47,7 @@ class ReferencePointVersionCsvProcessorTest {
         .validTo(BaseServicePointProcessor.DATE_FORMATTER.format(LocalDate.of(2020, 12, 31)))
         .creationDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(creationDate))
         .editionDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(editionDate))
+        .status(Status.VALIDATED)
         .build();
 
     ReferencePointVersionCsvModel result = processor.process(entity);

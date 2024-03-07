@@ -5,9 +5,10 @@ import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
-import ch.sbb.exportservice.entity.PlatformVersion;
-import ch.sbb.exportservice.entity.PlatformVersion.PlatformVersionBuilder;
+import ch.sbb.exportservice.entity.prm.PlatformVersion;
+import ch.sbb.exportservice.entity.prm.PlatformVersion.PlatformVersionBuilder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -56,6 +57,7 @@ public class PlatformVersionRowMapper extends BaseRowMapper implements RowMapper
         builder.creator(rs.getString("creator"));
         builder.editionDate(rs.getObject("edition_date", LocalDateTime.class));
         builder.editor(rs.getString("editor"));
+        builder.status(Status.valueOf(rs.getString("status")));
         return builder.build();
     }
 

@@ -1,5 +1,6 @@
 package ch.sbb.prm.directory.repository;
 
+import ch.sbb.atlas.model.Status;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import java.time.LocalDate;
 import java.util.List;
@@ -23,6 +24,7 @@ public interface ReferencePointRepository extends JpaRepository<ReferencePointVe
         referencePointVersion.getParentServicePointSloid(), referencePointVersion.getValidFrom(),
         referencePointVersion.getValidTo()).stream()
         .filter(i -> !i.getSloid().equals(referencePointVersion.getSloid()))
+        .filter(i -> i.getStatus() != Status.REVOKED)
         .toList();
   }
 

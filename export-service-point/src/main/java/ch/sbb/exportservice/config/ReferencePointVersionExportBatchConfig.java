@@ -6,7 +6,7 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_REFERENC
 
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
 import ch.sbb.atlas.export.model.prm.ReferencePointVersionCsvModel;
-import ch.sbb.exportservice.entity.ReferencePointVersion;
+import ch.sbb.exportservice.entity.prm.ReferencePointVersion;
 import ch.sbb.exportservice.listener.JobCompletionListener;
 import ch.sbb.exportservice.listener.StepTracerListener;
 import ch.sbb.exportservice.model.PrmExportType;

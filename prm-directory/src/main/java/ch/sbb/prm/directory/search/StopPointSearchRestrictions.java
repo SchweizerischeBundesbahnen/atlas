@@ -3,6 +3,7 @@ package ch.sbb.prm.directory.search;
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification;
 import ch.sbb.prm.directory.controller.model.StopPointRequestParams;
+import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion_;
 import java.util.List;
@@ -30,6 +31,7 @@ public class StopPointSearchRestrictions {
         .and(specBuilder().validOnSpecification(Optional.ofNullable(stopPointRequestParams.getValidOn())))
         .and(specBuilder().inSpecification(stopPointRequestParams.getServicePointNumbers(), StopPointVersion.Fields.number))
         .and(specBuilder().inSpecification(stopPointRequestParams.getSloids(), StopPointVersion.Fields.sloid))
+        .and(specBuilder().inSpecification(stopPointRequestParams.getStatusRestrictions(), Fields.status))
         .and(new ValidOrEditionTimerangeSpecification<>(
             stopPointRequestParams.getFromDate(),
             stopPointRequestParams.getToDate(),

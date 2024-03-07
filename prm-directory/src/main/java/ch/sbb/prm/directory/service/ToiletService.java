@@ -52,7 +52,7 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
 
   @Override
   protected ToiletVersion save(ToiletVersion version) {
-    setEditionDateAndEditor(version);
+    initDefaultData(version);
     return toiletRepository.saveAndFlush(version);
   }
 
@@ -86,6 +86,7 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
   }
 
   public void saveForImport(ToiletVersion version) {
+    setStatusToValidate(version);
     stopPointService.checkStopPointExists(version.getParentServicePointSloid());
     toiletRepository.saveAndFlush(version);
   }
@@ -93,6 +94,7 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
   public ToiletVersion createToiletPointThroughImport(ToiletVersion version) {
     stopPointService.checkStopPointExists(version.getParentServicePointSloid());
     locationService.allocateSloid(version, SloidType.TOILET);
+    setStatusToValidate(version);
     return toiletRepository.saveAndFlush(version);
   }
   public List<ToiletVersion> findByParentServicePointSloid(String parentServicePointSloid) {

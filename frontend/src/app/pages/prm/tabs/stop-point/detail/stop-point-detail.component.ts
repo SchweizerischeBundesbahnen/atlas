@@ -1,24 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Data, Router } from '@angular/router';
-import { BehaviorSubject, Observable, of, take } from 'rxjs';
-import { FormGroup } from '@angular/forms';
-import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
-import { Pages } from '../../../../pages';
-import { NotificationService } from '../../../../../core/notification/notification.service';
-import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
-import { AuthService } from '../../../../../core/auth/auth.service';
-import {
-  StopPointDetailFormGroup,
-  StopPointFormGroupBuilder,
-} from '../form/stop-point-detail-form-group';
-import { PrmTabsService } from '../../../prm-panel/prm-tabs.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Data, Router} from '@angular/router';
+import {BehaviorSubject, Observable, of, take} from 'rxjs';
+import {FormGroup} from '@angular/forms';
+import {VersionsHandlingService} from '../../../../../core/versioning/versions-handling.service';
+import {Pages} from '../../../../pages';
+import {NotificationService} from '../../../../../core/notification/notification.service';
+import {DialogService} from '../../../../../core/components/dialog/dialog.service';
+import {DetailFormComponent} from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
+import {AuthService} from '../../../../../core/auth/auth.service';
+import {StopPointDetailFormGroup, StopPointFormGroupBuilder,} from '../form/stop-point-detail-form-group';
+import {PrmTabsService} from '../../../prm-panel/prm-tabs.service';
 import {
   PersonWithReducedMobilityService,
   ReadServicePointVersion,
   ReadStopPointVersion,
   StopPointVersion,
 } from '../../../../../api';
+import {PrmMeanOfTransportHelper} from "../../../util/prm-mean-of-transport-helper";
 
 @Component({
   selector: 'app-stop-point-detail',
@@ -47,7 +45,8 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     private dialogService: DialogService,
     private authService: AuthService,
     private prmTabsService: PrmTabsService,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.route.parent?.data.subscribe((data) => {
@@ -137,7 +136,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   }
 
   disableForm(): void {
-    this.form.disable({ emitEvent: false });
+    this.form.disable({emitEvent: false});
     this.isFormEnabled$.next(false);
   }
 
@@ -162,11 +161,31 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   }
 
   enableForm() {
-    this.form.enable({ emitEvent: false });
+    this.form.enable({emitEvent: false});
     this.isFormEnabled$.next(true);
   }
 
-  private updateStopPoint(writableStopPoint: StopPointVersion) {
+  updateStopPoint(writableStopPoint: StopPointVersion) {
+    const isEditedReduced = PrmMeanOfTransportHelper.isReduced(writableStopPoint.meansOfTransport);
+    const isCurrentReduced = this.selectedVersion.reduced
+    if (isEditedReduced !== isCurrentReduced) {
+      this.showPrmChangeVariantConfirmationDialog(writableStopPoint);
+    } else {
+      this.doUpdateStopPoint(writableStopPoint);
+    }
+  }
+
+  showPrmChangeVariantConfirmationDialog(writableStopPoint: StopPointVersion) {
+    this.confirmPrmVariantChange()
+      .pipe(take(1))
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.doUpdateStopPoint(writableStopPoint);
+        }
+      });
+  }
+
+  doUpdateStopPoint(writableStopPoint: StopPointVersion) {
     this.personWithReducedMobilityService
       .updateStopPoint(this.selectedVersion.id!, writableStopPoint)
       .subscribe(() => {
@@ -221,6 +240,13 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
       });
     }
     return of(true);
+  }
+
+  private confirmPrmVariantChange(): Observable<boolean> {
+    return this.dialogService.confirm({
+      title: 'PRM.DIALOG.PRM_VARIANT_CHANGES_TITLE',
+      message: 'PRM.DIALOG.PRM_VARIANT_CHANGES_MSG',
+    });
   }
 
   //used in combination with canLeaveDirtyForm
