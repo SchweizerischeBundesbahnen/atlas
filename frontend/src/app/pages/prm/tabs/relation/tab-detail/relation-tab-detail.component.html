@@ -1,5 +1,5 @@
 <atlas-detail-page-content>
-  <div class="d-flex flex-column col-4">
+  <div class="d-flex flex-column col-6">
     <atlas-select
       dataCy="referencePoint"
       label="PRM.REFERENCE_POINTS.REFERENCE_POINT"
@@ -13,6 +13,7 @@
     >
     </atlas-select>
   </div>
+  <atlas-spacer height="30px"></atlas-spacer>
   <ng-container *ngIf="relations$ | async as relations">
     <div *ngIf="relations && currentRelation" class="mt-3 mb-3">
       <app-switch-version

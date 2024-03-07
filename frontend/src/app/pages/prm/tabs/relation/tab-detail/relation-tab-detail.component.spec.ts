@@ -18,6 +18,7 @@ import {
 } from '../../../../../api';
 import { of } from 'rxjs';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
+import {AtlasSpacerComponent} from "../../../../../core/components/spacer/atlas-spacer.component";
 
 const referencePointOverview: ReadReferencePointVersion[] = [
   {
@@ -127,6 +128,7 @@ describe('RelationTabDetailComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         RelationTabDetailComponent,
+        AtlasSpacerComponent,
         MockAtlasButtonComponent,
         MockSelectComponent,
         MockSwitchVersionComponent,

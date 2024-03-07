@@ -1,6 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {ParkingLotDetailComponent} from './parking-lot-detail.component';
+import {ParkingLotDetailPanelComponent} from './parking-lot-detail-panel.component';
 import {AuthService} from '../../../../../core/auth/auth.service';
 import {of} from 'rxjs';
 import {DialogService} from '../../../../../core/components/dialog/dialog.service';
@@ -23,15 +23,16 @@ import {NotificationService} from '../../../../../core/notification/notification
 import {BooleanOptionalAttributeType, PersonWithReducedMobilityService, ReadParkingLotVersion,} from '../../../../../api';
 import {TranslatePipe} from '@ngx-translate/core';
 import {SplitServicePointNumberPipe} from '../../../../../core/search-service-point/split-service-point-number.pipe';
-import moment from 'moment';
 import {UserDetailInfoComponent} from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
 import {SloidComponent} from '../../../../../core/form-components/sloid/sloid.component';
 import {AtlasSlideToggleComponent} from '../../../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
 import {ParkingLotFormComponent} from "./form/parking-lot-form/parking-lot-form.component";
-import SpyObj = jasmine.SpyObj;
 import {DetailPageContainerComponent} from "../../../../../core/components/detail-page-container/detail-page-container.component";
 import {DetailPageContentComponent} from "../../../../../core/components/detail-page-content/detail-page-content.component";
 import {DetailFooterComponent} from "../../../../../core/components/detail-footer/detail-footer.component";
+import SpyObj = jasmine.SpyObj;
+import {STOP_POINT} from "../../../util/stop-point-test-data.spec";
+import {DetailWithRelationTabComponent} from "../../relation/tab/detail-with-relation-tab.component";
 
 const parkingLot: ReadParkingLotVersion[] = [
   {
@@ -64,9 +65,9 @@ const authService: Partial<AuthService> = {
   },
 };
 
-describe('ParkingLotDetailComponent', () => {
-  let component: ParkingLotDetailComponent;
-  let fixture: ComponentFixture<ParkingLotDetailComponent>;
+describe('ParkingLotDetailPanelComponent', () => {
+  let component: ParkingLotDetailPanelComponent;
+  let fixture: ComponentFixture<ParkingLotDetailPanelComponent>;
 
   const personWithReducedMobilityService = jasmine.createSpyObj(
     'personWithReducedMobilityService',
@@ -84,6 +85,7 @@ describe('ParkingLotDetailComponent', () => {
       data: {
         servicePoint: [BERN_WYLEREGG],
         parkingLot: [],
+        stopPoint: [STOP_POINT],
       },
     },
   };
@@ -91,7 +93,8 @@ describe('ParkingLotDetailComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
-        ParkingLotDetailComponent,
+        ParkingLotDetailPanelComponent,
+        DetailWithRelationTabComponent,
         SloidComponent,
         AtlasSlideToggleComponent,
         MockAtlasButtonComponent,
@@ -128,7 +131,7 @@ describe('ParkingLotDetailComponent', () => {
 
   describe('new parking lot', () => {
     beforeEach(() => {
-      fixture = TestBed.createComponent(ParkingLotDetailComponent);
+      fixture = TestBed.createComponent(ParkingLotDetailPanelComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
     });
@@ -138,77 +141,8 @@ describe('ParkingLotDetailComponent', () => {
 
       expect(component.isNew).toBeTrue();
       expect(component.selectedVersion).toBeUndefined();
-
-      expect(component.form.enabled).toBeTrue();
     });
 
-    it('should create on save', () => {
-      component.form.controls.designation.setValue('Haupteingang A');
-      component.form.controls.validFrom.setValue(moment('31.10.2000', 'dd.MM.yyyy'));
-      component.form.controls.validTo.setValue(moment('31.10.2099', 'dd.MM.yyyy'));
-
-      component.save();
-
-      expect(personWithReducedMobilityService.createParkingLot).toHaveBeenCalled();
-      expect(notificationService.success).toHaveBeenCalled();
-    });
   });
 
-  describe('edit parking lot', () => {
-    beforeEach(() => {
-      TestBed.overrideProvider(ActivatedRoute, {
-        useValue: {
-          snapshot: {
-            data: {
-              servicePoint: [BERN_WYLEREGG],
-              parkingLot: parkingLot,
-            },
-          },
-        },
-      });
-      fixture = TestBed.createComponent(ParkingLotDetailComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-    });
-
-    it('should init', () => {
-      expect(component).toBeTruthy();
-
-      expect(component.isNew).toBeFalse();
-      expect(component.selectedVersion).toBeDefined();
-
-      expect(component.form.enabled).toBeFalse();
-      expect(component.showVersionSwitch).toBeTrue();
-
-      component.switchVersion(0);
-      expect(component.selectedVersionIndex).toBe(0);
-    });
-
-    it('should toggle form', () => {
-      expect(component.form.enabled).toBeFalse();
-
-      component.toggleEdit();
-      expect(component.form.enabled).toBeTrue();
-      expect(component.form.dirty).toBeFalse();
-
-      component.form.controls.designation.markAsDirty();
-
-      expect(component.form.dirty).toBeTrue();
-      expect(component.isFormDirty()).toBeTrue();
-
-      component.toggleEdit();
-      expect(component.form.enabled).toBeFalse();
-    });
-
-    it('should update', () => {
-      component.toggleEdit();
-
-      component.form.controls.designation.setValue('new designation');
-      component.form.controls.designation.markAsDirty();
-
-      component.save();
-      expect(personWithReducedMobilityService.updateParkingLot).toHaveBeenCalled();
-      expect(notificationService.success).toHaveBeenCalled();
-    });
-  });
 });

@@ -20,7 +20,7 @@ import { PlatformDetailPanelComponent } from './tabs/platform/detail/platform-de
 import { ReferencePointCompleteFormComponent } from './tabs/reference-point/detail/form/reference-point-complete-form/reference-point-complete-form.component';
 import { ReferencePointDetailComponent } from './tabs/reference-point/detail/reference-point-detail.component';
 import { ParkingLotTableComponent } from './tabs/parking-lot/parking-lot-table.component';
-import { ParkingLotDetailComponent } from './tabs/parking-lot/detail/parking-lot-detail.component';
+import { ParkingLotDetailPanelComponent } from './tabs/parking-lot/detail/parking-lot-detail-panel.component';
 import { ParkingLotFormComponent } from './tabs/parking-lot/detail/form/parking-lot-form/parking-lot-form.component';
 import { ContactPointTableComponent } from './tabs/contact-point/contact-point-table.component';
 import { ContactPointDetailComponent } from './tabs/contact-point/detail/contact-point-detail.component';
@@ -30,6 +30,7 @@ import { ToiletFormComponent } from './tabs/toilet/detail/form/toilet-form/toile
 import { RelationTabDetailComponent } from './tabs/relation/tab-detail/relation-tab-detail.component';
 import { DetailWithRelationTabComponent } from './tabs/relation/tab/detail-with-relation-tab.component';
 import { PlatformDetailComponent } from './tabs/platform/detail/detail/platform-detail.component';
+import {ParkingLotDetailComponent} from "./tabs/parking-lot/detail/detail/parking-lot-detail.component";
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { PlatformDetailComponent } from './tabs/platform/detail/detail/platform-
     ReferencePointDetailComponent,
     ReferencePointCompleteFormComponent,
     ParkingLotTableComponent,
+    ParkingLotDetailPanelComponent,
     ParkingLotDetailComponent,
     ParkingLotFormComponent,
     ContactPointTableComponent,
