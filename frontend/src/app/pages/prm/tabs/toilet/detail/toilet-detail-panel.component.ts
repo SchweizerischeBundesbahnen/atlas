@@ -21,24 +21,24 @@ export class ToiletDetailPanelComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
-    this.toiletVersions = this.route.snapshot.data.toilet;
-    this.reduced = PrmMeanOfTransportHelper.isReduced(this.route.snapshot.data.stopPoint[0].meansOfTransport);
+    this.route.data.subscribe(data => {
+      this.toiletVersions = data.toilet;
+      this.reduced = PrmMeanOfTransportHelper.isReduced(data.stopPoint[0].meansOfTransport);
 
-    const servicePointVersions: ReadServicePointVersion[] = this.route.snapshot.data.servicePoint;
-    this.servicePoint =
-      VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
+      const servicePointVersions: ReadServicePointVersion[] = data.servicePoint;
+      this.servicePoint = VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
 
-    this.isNew = this.toiletVersions.length === 0;
+      this.isNew = this.toiletVersions.length === 0;
 
-    if (!this.isNew) {
-      this.maxValidity = VersionsHandlingService.getMaxValidity(this.toiletVersions);
-      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
-        this.toiletVersions,
-      );
-    }
+      if (!this.isNew) {
+        this.maxValidity = VersionsHandlingService.getMaxValidity(this.toiletVersions);
+        this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.toiletVersions);
+      }
+    });
   }
 
 }
