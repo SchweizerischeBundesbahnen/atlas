@@ -21,24 +21,22 @@ export class ContactPointDetailPanelComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-  ) {}
-
-  ngOnInit(): void {
-    this.contactPoint = this.route.snapshot.data.contactPoint;
-    this.reduced = PrmMeanOfTransportHelper.isReduced(this.route.snapshot.data.stopPoint[0].meansOfTransport);
-
-    const servicePointVersions: ReadServicePointVersion[] = this.route.snapshot.data.servicePoint;
-    this.servicePoint =
-      VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
-
-    this.isNew = this.contactPoint.length === 0;
-
-    if (!this.isNew) {
-      this.maxValidity = VersionsHandlingService.getMaxValidity(this.contactPoint);
-      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
-        this.contactPoint,
-      );
-    }
+  ) {
   }
 
+  ngOnInit(): void {
+    this.route.data.subscribe(data => {
+      this.contactPoint = data.contactPoint;
+      this.reduced = PrmMeanOfTransportHelper.isReduced(data.stopPoint[0].meansOfTransport);
+
+      this.servicePoint = VersionsHandlingService.determineDefaultVersionByValidity(data.servicePoint);
+
+      this.isNew = this.contactPoint.length === 0;
+
+      if (!this.isNew) {
+        this.maxValidity = VersionsHandlingService.getMaxValidity(this.contactPoint);
+        this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.contactPoint);
+      }
+    });
+  }
 }
