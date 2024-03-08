@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {DetailFormComponent} from "../../../../../../core/leave-guard/leave-dirty-form-guard.service";
 import {
-  PersonWithReducedMobilityService, PlatformVersion,
+  PersonWithReducedMobilityService,
+  PlatformVersion,
   ReadPlatformVersion,
   ReadServicePointVersion,
   ReadStopPointVersion,
@@ -17,8 +18,6 @@ import {VersionsHandlingService} from "../../../../../../core/versioning/version
 import {CompletePlatformFormGroup, PlatformFormGroupBuilder, ReducedPlatformFormGroup} from "../form/platform-form-group";
 import {Observable, of, take} from "rxjs";
 import {DateRange} from "../../../../../../core/versioning/date-range";
-import {Pages} from "../../../../../pages";
-import {PRM_DETAIL_TAB_LINK} from "../../../relation/tab/detail-with-relation-tab.component";
 
 @Component({
   selector: 'app-platforms',
