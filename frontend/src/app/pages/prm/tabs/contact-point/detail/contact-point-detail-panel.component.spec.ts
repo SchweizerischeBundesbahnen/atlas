@@ -9,19 +9,18 @@ import {SplitServicePointNumberPipe} from '../../../../../core/search-service-po
 import {DetailPageContainerComponent} from "../../../../../core/components/detail-page-container/detail-page-container.component";
 import {STOP_POINT} from "../../../util/stop-point-test-data.spec";
 import {DetailWithRelationTabComponent} from "../../relation/tab/detail-with-relation-tab.component";
+import {of} from "rxjs";
 
 describe('ContactPointDetailPanelComponent', () => {
   let component: ContactPointDetailPanelComponent;
   let fixture: ComponentFixture<ContactPointDetailPanelComponent>;
 
   const activatedRouteMock = {
-    snapshot: {
-      data: {
-        servicePoint: [BERN_WYLEREGG],
-        contactPoint: [],
-        stopPoint: [STOP_POINT],
-      },
-    },
+    data: of({
+      servicePoint: [BERN_WYLEREGG],
+      contactPoint: [],
+      stopPoint: [STOP_POINT],
+    })
   };
 
   beforeEach(() => {
