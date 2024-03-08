@@ -83,10 +83,22 @@
         </atlas-select>
       </div>
     </div>
+
+    @if (currentRelation) {
+      <mat-divider class="mt-4 mb-4"></mat-divider>
+      <app-user-detail-info [record]="currentRelation"></app-user-detail-info>
+    }
   </ng-container>
 </atlas-detail-page-content>
-@if (currentRelation) {
-  <atlas-detail-footer>
+<atlas-detail-footer>
+  <atlas-button
+    buttonDataCy="back"
+    buttonText="COMMON.BACK"
+    buttonType="whiteFooterNonEdit"
+    [footerEdit]="editing"
+    (buttonClicked)="back()"
+  ></atlas-button>
+  @if (currentRelation) {
     <atlas-button
       *ngIf="!editing"
       (buttonClicked)="toggleEdit()"
@@ -97,21 +109,21 @@
       buttonType="edit-service-point-dependent"
       wrapperStyleClass="ms-3"
     ></atlas-button>
-    <atlas-button
-      (buttonClicked)="toggleEdit()"
-      [footerEdit]="editing"
-      buttonDataCy="cancel"
-      buttonText="COMMON.CANCEL"
-      buttonType="whiteFooterEdit"
-    ></atlas-button>
-    <atlas-button
-      (buttonClicked)="save()"
-      [footerEdit]="editing"
-      [disabled]="!form?.dirty"
-      buttonDataCy="save"
-      buttonText="COMMON.SAVE"
-      buttonType="whiteFooterEdit"
-      wrapperStyleClass="ms-3"
-    ></atlas-button>
-  </atlas-detail-footer>
-}
+  }
+  <atlas-button
+    (buttonClicked)="toggleEdit()"
+    [footerEdit]="editing"
+    buttonDataCy="cancel"
+    buttonText="COMMON.CANCEL"
+    buttonType="whiteFooterEdit"
+  ></atlas-button>
+  <atlas-button
+    (buttonClicked)="save()"
+    [footerEdit]="editing"
+    [disabled]="!form?.dirty"
+    buttonDataCy="save"
+    buttonText="COMMON.SAVE"
+    buttonType="whiteFooterEdit"
+    wrapperStyleClass="ms-3"
+  ></atlas-button>
+</atlas-detail-footer>
