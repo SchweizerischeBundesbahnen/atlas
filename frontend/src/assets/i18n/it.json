@@ -1318,6 +1318,7 @@
     },
     "RELATIONS": {
       "RELATION": "Collegamento",
+      "NO_REFERENCE_POINT": "Inserire almeno un punto di riferimento.",
       "STEP_FREE_ACCESS": "Accesso senza gradini",
       "TACTIL_VISUAL_MARKS": "Segnalazioni tattili e visive",
       "CONTRASTING_AREAS": "Segnalazioni ad alto contrasto",
