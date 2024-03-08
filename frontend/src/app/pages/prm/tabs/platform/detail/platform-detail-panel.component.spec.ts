@@ -1,9 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {PlatformDetailPanelComponent} from './platform-detail-panel.component';
-import {AuthService} from '../../../../../core/auth/auth.service';
-import {of} from 'rxjs';
-import {DialogService} from '../../../../../core/components/dialog/dialog.service';
 import {STOP_POINT} from '../../../util/stop-point-test-data.spec';
 import {BERN_WYLEREGG} from '../../../../../../test/data/service-point';
 import {BERN_WYLEREGG_TRAFFIC_POINTS} from '../../../../../../test/data/traffic-point-element';
@@ -23,112 +20,17 @@ import {DateRangeComponent} from '../../../../../core/form-components/date-range
 import {DateIconComponent} from '../../../../../core/form-components/date-icon/date-icon.component';
 import {AppTestingModule} from '../../../../../app.testing.module';
 import {ActivatedRoute} from '@angular/router';
-import {NotificationService} from '../../../../../core/notification/notification.service';
-import {PersonWithReducedMobilityService, ReadPlatformVersion,} from '../../../../../api';
 import {TranslatePipe} from '@ngx-translate/core';
 import {SplitServicePointNumberPipe} from '../../../../../core/search-service-point/split-service-point-number.pipe';
 import {UserDetailInfoComponent} from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
 import {DetailPageContainerComponent} from "../../../../../core/components/detail-page-container/detail-page-container.component";
 import {DetailPageContentComponent} from "../../../../../core/components/detail-page-content/detail-page-content.component";
 import {DetailFooterComponent} from "../../../../../core/components/detail-footer/detail-footer.component";
-import SpyObj = jasmine.SpyObj;
 import {DetailWithRelationTabComponent} from "../../relation/tab/detail-with-relation-tab.component";
-
-const reducedPlatform: ReadPlatformVersion[] = [
-  {
-    creationDate: '2024-01-11T10:08:28.446803',
-    creator: 'e524381',
-    editionDate: '2024-01-11T10:08:28.446803',
-    editor: 'e524381',
-    id: 1002,
-    sloid: 'ch:1:sloid:7000:0:100000',
-    validFrom: new Date('2024-01-01'),
-    validTo: new Date('2024-01-03'),
-    etagVersion: 8,
-    parentServicePointSloid: 'ch:1:sloid:7000',
-    boardingDevice: 'TO_BE_COMPLETED',
-    adviceAccessInfo: undefined,
-    additionalInformation: undefined,
-    contrastingAreas: 'YES',
-    dynamicAudio: 'TO_BE_COMPLETED',
-    dynamicVisual: 'TO_BE_COMPLETED',
-    height: undefined,
-    inclination: undefined,
-    inclinationLongitudinal: undefined,
-    inclinationWidth: undefined,
-    infoOpportunities: [],
-    levelAccessWheelchair: 'TO_BE_COMPLETED',
-    partialElevation: undefined,
-    superelevation: undefined,
-    tactileSystem: undefined,
-    vehicleAccess: undefined,
-    wheelchairAreaLength: undefined,
-    wheelchairAreaWidth: undefined,
-    number: {
-      number: 8507000,
-      checkDigit: 3,
-      numberShort: 7000,
-      uicCountryCode: 85,
-    },
-  },
-  {
-    creationDate: '2024-01-11T10:08:28.446803',
-    creator: 'e524381',
-    editionDate: '2024-01-11T10:08:28.446803',
-    editor: 'e524381',
-    id: 1003,
-    sloid: 'ch:1:sloid:7000:0:100000',
-    validFrom: new Date('2024-01-04'),
-    validTo: new Date('2024-01-10'),
-    etagVersion: 8,
-    parentServicePointSloid: 'ch:1:sloid:7000',
-    boardingDevice: 'LIFTS',
-    adviceAccessInfo: undefined,
-    additionalInformation: undefined,
-    contrastingAreas: 'YES',
-    dynamicAudio: 'TO_BE_COMPLETED',
-    dynamicVisual: 'TO_BE_COMPLETED',
-    height: undefined,
-    inclination: undefined,
-    inclinationLongitudinal: undefined,
-    inclinationWidth: undefined,
-    infoOpportunities: [],
-    levelAccessWheelchair: 'TO_BE_COMPLETED',
-    partialElevation: undefined,
-    superelevation: undefined,
-    tactileSystem: undefined,
-    vehicleAccess: undefined,
-    wheelchairAreaLength: undefined,
-    wheelchairAreaWidth: undefined,
-    number: {
-      number: 8507000,
-      checkDigit: 3,
-      numberShort: 7000,
-      uicCountryCode: 85,
-    },
-  },
-];
-
-const authService: Partial<AuthService> = {
-  hasPermissionsToWrite(): boolean {
-    return true;
-  },
-};
 
 describe('PlatformDetailPanelComponent', () => {
   let component: PlatformDetailPanelComponent;
   let fixture: ComponentFixture<PlatformDetailPanelComponent>;
-
-  const personWithReducedMobilityService = jasmine.createSpyObj(
-    'personWithReducedMobilityService',
-    ['createPlatform', 'updatePlatform'],
-  );
-  personWithReducedMobilityService.createPlatform.and.returnValue(of(reducedPlatform[0]));
-  personWithReducedMobilityService.updatePlatform.and.returnValue(of(reducedPlatform));
-
-  const notificationService = jasmine.createSpyObj('notificationService', ['success']);
-  const dialogService: SpyObj<DialogService> = jasmine.createSpyObj('dialogService', ['confirm']);
-  dialogService.confirm.and.returnValue(of(true));
 
   const activatedRouteMock = {
     snapshot: {
@@ -168,31 +70,21 @@ describe('PlatformDetailPanelComponent', () => {
       ],
       imports: [AppTestingModule],
       providers: [
-        { provide: AuthService, useValue: authService },
-        { provide: ActivatedRoute, useValue: activatedRouteMock },
-        { provide: NotificationService, useValue: notificationService },
-        { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService },
-        { provide: DialogService, useValue: dialogService },
+        {provide: ActivatedRoute, useValue: activatedRouteMock},
         TranslatePipe,
         SplitServicePointNumberPipe,
       ],
     });
+    fixture = TestBed.createComponent(PlatformDetailPanelComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  describe('new reduced platform', () => {
-    beforeEach(() => {
-      fixture = TestBed.createComponent(PlatformDetailPanelComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-    });
+  it('should init', () => {
+    expect(component).toBeTruthy();
 
-    it('should init', () => {
-      expect(component).toBeTruthy();
-
-      expect(component.isNew).toBeTrue();
-      expect(component.reduced).toBeTrue();
-      expect(component.selectedVersion).toBeUndefined();
-    });
+    expect(component.isNew).toBeTrue();
+    expect(component.reduced).toBeTrue();
+    expect(component.selectedVersion).toBeUndefined();
   });
-
 });
