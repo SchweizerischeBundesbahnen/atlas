@@ -92,6 +92,10 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
     this.selectedRelationVersion = currentVersionIdx + 1;
   }
 
+  back() {
+    this.router.navigate(['../..'], { relativeTo: this.route });
+  }
+
   save() {
     this.form?.markAllAsTouched();
     if (this.form?.valid) {

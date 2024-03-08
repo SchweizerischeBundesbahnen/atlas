@@ -6,6 +6,7 @@ import {
   MockAtlasButtonComponent,
   MockSelectComponent,
   MockSwitchVersionComponent,
+  MockUserDetailInfoComponent,
 } from '../../../../../app.testing.mocks';
 import { STOP_POINT } from '../../../util/stop-point-test-data.spec';
 import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
@@ -18,7 +19,7 @@ import {
 } from '../../../../../api';
 import { of } from 'rxjs';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
-import {AtlasSpacerComponent} from "../../../../../core/components/spacer/atlas-spacer.component";
+import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
 
 const referencePointOverview: ReadReferencePointVersion[] = [
   {
@@ -134,6 +135,7 @@ describe('RelationTabDetailComponent', () => {
         MockSwitchVersionComponent,
         DetailPageContentComponent,
         DetailFooterComponent,
+        MockUserDetailInfoComponent,
       ],
       imports: [AppTestingModule],
       providers: [
