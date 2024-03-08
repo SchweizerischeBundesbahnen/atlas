@@ -1318,6 +1318,7 @@
     },
     "RELATIONS": {
       "RELATION": "Verbindung",
+      "NO_REFERENCE_POINT": "Bitte erfassen Sie mindestens einen Referenzpunkt.",
       "STEP_FREE_ACCESS": "Stufenfreier Zugang",
       "TACTIL_VISUAL_MARKS": "Taktil-visuelle Markierungen",
       "CONTRASTING_AREAS": "Kontrastreiche Markierungen",

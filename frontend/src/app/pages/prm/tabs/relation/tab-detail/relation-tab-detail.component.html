@@ -1,17 +1,21 @@
 <atlas-detail-page-content>
   <div class="d-flex flex-column col-6">
-    <atlas-select
-      dataCy="referencePoint"
-      label="PRM.REFERENCE_POINTS.REFERENCE_POINT"
-      [options]="referencePoints"
-      [value]="selectedReferencePointSloid"
-      [valueExtractor]="extractSloid"
-      [displayExtractor]="displayExtractor"
-      [additionalLabelspace]="10"
-      [disabled]="editing"
-      (selectChanged)="referencePointChanged($event)"
-    >
-    </atlas-select>
+    @if (referencePoints.length > 0) {
+      <atlas-select
+        dataCy="referencePoint"
+        label="PRM.REFERENCE_POINTS.REFERENCE_POINT"
+        [options]="referencePoints"
+        [value]="selectedReferencePointSloid"
+        [valueExtractor]="extractSloid"
+        [displayExtractor]="displayExtractor"
+        [additionalLabelspace]="10"
+        [disabled]="editing"
+        (selectChanged)="referencePointChanged($event)"
+      >
+      </atlas-select>
+    } @else {
+      {{ 'PRM.RELATIONS.NO_REFERENCE_POINT' | translate }}
+    }
   </div>
   <atlas-spacer height="30px"></atlas-spacer>
   <ng-container *ngIf="relations$ | async as relations">
