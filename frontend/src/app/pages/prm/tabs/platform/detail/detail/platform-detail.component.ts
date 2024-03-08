@@ -121,7 +121,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent {
   }
 
   back() {
-    this.router.navigate([Pages.PRM.path, Pages.STOP_POINTS.path, this.stopPoint[0].sloid, Pages.PLATFORMS.path]).then();
+    this.router.navigate(['..'], {relativeTo: this.route.parent}).then();
   }
 
   toggleEdit() {
@@ -166,7 +166,9 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent {
 
   reloadPage() {
     this.router
-      .navigate([Pages.PRM.path, Pages.STOP_POINTS.path, this.stopPoint[0].sloid,Pages.PLATFORMS.path, this.trafficPoint.sloid, PRM_DETAIL_TAB_LINK])
+      .navigate(['..', this.trafficPoint.sloid], {
+        relativeTo: this.route.parent,
+      })
       .then(() => this.ngOnInit());
   }
 
