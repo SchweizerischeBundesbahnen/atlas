@@ -34,6 +34,7 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {SplitServicePointNumberPipe} from "../../../../../../core/search-service-point/split-service-point-number.pipe";
 import moment from "moment";
 import SpyObj = jasmine.SpyObj;
+import {RouterTestingModule} from "@angular/router/testing";
 
 const parkingLot: ReadParkingLotVersion[] = [
   {
@@ -117,7 +118,12 @@ describe('ParkingLotDetailComponent', () => {
         DetailPageContentComponent,
         DetailFooterComponent,
       ],
-      imports: [AppTestingModule],
+      imports: [
+        AppTestingModule,
+        RouterTestingModule.withRoutes([{
+          path: ':sloid', redirectTo: ''
+        }]),
+      ],
       providers: [
         {provide: AuthService, useValue: authService},
         {provide: ActivatedRoute, useValue: activatedRouteMock},

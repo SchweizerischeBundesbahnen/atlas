@@ -20,9 +20,9 @@ import { ParkingLotDetailPanelComponent } from './tabs/parking-lot/detail/parkin
 import { parkingLotResolver } from './tabs/parking-lot/detail/resolvers/parking-lot.resolver';
 import { ParkingLotTableComponent } from './tabs/parking-lot/parking-lot-table.component';
 import { ContactPointTableComponent } from './tabs/contact-point/contact-point-table.component';
-import { ContactPointDetailComponent } from './tabs/contact-point/detail/contact-point-detail.component';
+import { ContactPointDetailPanelComponent } from './tabs/contact-point/detail/contact-point-detail-panel.component';
 import { contactPointResolver } from './tabs/contact-point/detail/resolvers/contact-point.resolver';
-import { ToiletDetailComponent } from './tabs/toilet/detail/toilet-detail.component';
+import { ToiletDetailPanelComponent } from './tabs/toilet/detail/toilet-detail-panel.component';
 import { toiletResolver } from './tabs/toilet/detail/resolvers/toilet.resolver';
 import { RelationTabDetailComponent } from './tabs/relation/tab-detail/relation-tab-detail.component';
 import { PlatformDetailComponent } from './tabs/platform/detail/detail/platform-detail.component';
@@ -31,8 +31,10 @@ import {
   PRM_RELATIONS_TAB_LINK,
 } from './tabs/relation/tab/detail-with-relation-tab.component';
 import {ParkingLotDetailComponent} from "./tabs/parking-lot/detail/detail/parking-lot-detail.component";
+import {ContactPointDetailComponent} from "./tabs/contact-point/detail/detail/contact-point-detail.component";
+import {ToiletDetailComponent} from "./tabs/toilet/detail/detail/toilet-detail.component";
 
-export const PRM_ROUTES: Routes = [
+const routes: Routes = [
   {
     path: '',
     component: PrmHomeSearchComponent,
@@ -100,23 +102,53 @@ export const PRM_ROUTES: Routes = [
   },
   {
     path: Pages.STOP_POINTS.path + '/:stopPointSloid/' + Pages.CONTACT_POINT.path + '/:sloid',
-    component: ContactPointDetailComponent,
+    component: ContactPointDetailPanelComponent,
     runGuardsAndResolvers: 'always',
-    canDeactivate: [canLeaveDirtyForm],
     resolve: {
       contactPoint: contactPointResolver,
       servicePoint: prmPanelResolver,
+      stopPoint: stopPointResolver,
     },
+    children: [
+      {
+        path: PRM_DETAIL_TAB_LINK,
+        component: ContactPointDetailComponent,
+        runGuardsAndResolvers: 'always',
+        canDeactivate: [canLeaveDirtyForm],
+      },
+      {
+        path: PRM_RELATIONS_TAB_LINK,
+        component: RelationTabDetailComponent,
+        runGuardsAndResolvers: 'always',
+        canDeactivate: [canLeaveDirtyForm],
+      },
+      { path: '**', redirectTo: PRM_DETAIL_TAB_LINK },
+    ],
   },
   {
     path: Pages.STOP_POINTS.path + '/:stopPointSloid/' + Pages.TOILET.path + '/:sloid',
-    component: ToiletDetailComponent,
+    component: ToiletDetailPanelComponent,
     runGuardsAndResolvers: 'always',
-    canDeactivate: [canLeaveDirtyForm],
     resolve: {
       toilet: toiletResolver,
       servicePoint: prmPanelResolver,
+      stopPoint: stopPointResolver,
     },
+    children: [
+      {
+        path: PRM_DETAIL_TAB_LINK,
+        component: ToiletDetailComponent,
+        runGuardsAndResolvers: 'always',
+        canDeactivate: [canLeaveDirtyForm],
+      },
+      {
+        path: PRM_RELATIONS_TAB_LINK,
+        component: RelationTabDetailComponent,
+        runGuardsAndResolvers: 'always',
+        canDeactivate: [canLeaveDirtyForm],
+      },
+      { path: '**', redirectTo: PRM_DETAIL_TAB_LINK },
+    ],
   },
   {
     path: Pages.STOP_POINTS.path + '/:stopPointSloid',
@@ -162,7 +194,7 @@ export const PRM_ROUTES: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(PRM_ROUTES)],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
 export class PrmRoutingModule {}
