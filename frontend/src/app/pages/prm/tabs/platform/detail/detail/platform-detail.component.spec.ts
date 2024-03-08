@@ -35,7 +35,6 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {SplitServicePointNumberPipe} from "../../../../../../core/search-service-point/split-service-point-number.pipe";
 import moment from "moment";
 import {RouterTestingModule} from "@angular/router/testing";
-import {PRM_ROUTES} from "../../../../prm-routing.module";
 import SpyObj = jasmine.SpyObj;
 
 const reducedPlatform: ReadPlatformVersion[] = [
@@ -171,8 +170,12 @@ describe('PlatformDetailComponent', () => {
         DetailPageContentComponent,
         DetailFooterComponent,
       ],
-      imports: [AppTestingModule,
-      RouterTestingModule.withRoutes(PRM_ROUTES)],
+      imports: [
+        AppTestingModule,
+        RouterTestingModule.withRoutes([{
+         path: ':sloid', redirectTo: ''
+        }]),
+      ],
       providers: [
         {provide: AuthService, useValue: authService},
         {provide: ActivatedRoute, useValue: activatedRouteMock},

@@ -23,14 +23,16 @@ import { ParkingLotTableComponent } from './tabs/parking-lot/parking-lot-table.c
 import { ParkingLotDetailPanelComponent } from './tabs/parking-lot/detail/parking-lot-detail-panel.component';
 import { ParkingLotFormComponent } from './tabs/parking-lot/detail/form/parking-lot-form/parking-lot-form.component';
 import { ContactPointTableComponent } from './tabs/contact-point/contact-point-table.component';
-import { ContactPointDetailComponent } from './tabs/contact-point/detail/contact-point-detail.component';
+import { ContactPointDetailPanelComponent } from './tabs/contact-point/detail/contact-point-detail-panel.component';
 import { ContactPointFormComponent } from './tabs/contact-point/detail/form/contact-point-form/contact-point-form.component';
-import { ToiletDetailComponent } from './tabs/toilet/detail/toilet-detail.component';
+import { ToiletDetailPanelComponent } from './tabs/toilet/detail/toilet-detail-panel.component';
 import { ToiletFormComponent } from './tabs/toilet/detail/form/toilet-form/toilet-form.component';
 import { RelationTabDetailComponent } from './tabs/relation/tab-detail/relation-tab-detail.component';
 import { DetailWithRelationTabComponent } from './tabs/relation/tab/detail-with-relation-tab.component';
 import { PlatformDetailComponent } from './tabs/platform/detail/detail/platform-detail.component';
 import {ParkingLotDetailComponent} from "./tabs/parking-lot/detail/detail/parking-lot-detail.component";
+import {ContactPointDetailComponent} from "./tabs/contact-point/detail/detail/contact-point-detail.component";
+import {ToiletDetailComponent} from "./tabs/toilet/detail/detail/toilet-detail.component";
 
 @NgModule({
   declarations: [
@@ -42,6 +44,7 @@ import {ParkingLotDetailComponent} from "./tabs/parking-lot/detail/detail/parkin
     StopPointReducedFormComponent,
     StopPointCompleteFormComponent,
     ToiletComponent,
+    ToiletDetailPanelComponent,
     ToiletDetailComponent,
     ToiletFormComponent,
     PlatformTableComponent,
@@ -57,6 +60,7 @@ import {ParkingLotDetailComponent} from "./tabs/parking-lot/detail/detail/parkin
     ParkingLotDetailComponent,
     ParkingLotFormComponent,
     ContactPointTableComponent,
+    ContactPointDetailPanelComponent,
     ContactPointDetailComponent,
     ContactPointFormComponent,
     DetailWithRelationTabComponent,
