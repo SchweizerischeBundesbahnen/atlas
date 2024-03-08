@@ -21,24 +21,24 @@ export class ParkingLotDetailPanelComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
-    this.parkingLot = this.route.snapshot.data.parkingLot;
-    this.reduced = PrmMeanOfTransportHelper.isReduced(this.route.snapshot.data.stopPoint[0].meansOfTransport);
+    this.route.data.subscribe(data => {
+      this.parkingLot = data.parkingLot;
+      this.reduced = PrmMeanOfTransportHelper.isReduced(data.stopPoint[0].meansOfTransport);
 
-    const servicePointVersions: ReadServicePointVersion[] = this.route.snapshot.data.servicePoint;
-    this.servicePoint =
-      VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
+      const servicePointVersions: ReadServicePointVersion[] = data.servicePoint;
+      this.servicePoint = VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
 
-    this.isNew = this.parkingLot.length === 0;
+      this.isNew = this.parkingLot.length === 0;
 
-    if (!this.isNew) {
-      this.maxValidity = VersionsHandlingService.getMaxValidity(this.parkingLot);
-      this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(
-        this.parkingLot,
-      );
-    }
+      if (!this.isNew) {
+        this.maxValidity = VersionsHandlingService.getMaxValidity(this.parkingLot);
+        this.selectedVersion = VersionsHandlingService.determineDefaultVersionByValidity(this.parkingLot);
+      }
+    });
   }
 
 }

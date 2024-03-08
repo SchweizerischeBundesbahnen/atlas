@@ -9,23 +9,22 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {SplitServicePointNumberPipe} from "../../../../../core/search-service-point/split-service-point-number.pipe";
 import {STOP_POINT} from "../../../util/stop-point-test-data.spec";
 import {DetailWithRelationTabComponent} from "../../relation/tab/detail-with-relation-tab.component";
+import {of} from "rxjs";
 
 describe('ToiletDetailPanelComponent', () => {
   let component: ToiletDetailPanelComponent;
   let fixture: ComponentFixture<ToiletDetailPanelComponent>;
 
   const activatedRouteMock = {
-    snapshot: {
-      data: {
-        servicePoint: [BERN_WYLEREGG],
-        toilet: [],
-        stopPoint: [STOP_POINT],
-      },
-    },
+    data: of({
+      servicePoint: [BERN_WYLEREGG],
+      toilet: [],
+      stopPoint: [STOP_POINT],
+    })
   };
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       declarations: [
         ToiletDetailPanelComponent,
         DetailWithRelationTabComponent,
