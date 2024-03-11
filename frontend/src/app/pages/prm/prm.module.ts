@@ -33,12 +33,14 @@ import { PlatformDetailComponent } from './tabs/platform/detail/detail/platform-
 import {ParkingLotDetailComponent} from "./tabs/parking-lot/detail/detail/parking-lot-detail.component";
 import {ContactPointDetailComponent} from "./tabs/contact-point/detail/detail/contact-point-detail.component";
 import {ToiletDetailComponent} from "./tabs/toilet/detail/detail/toilet-detail.component";
+import {PrmDetailPanelComponent} from "./tabs/detail-panel/prm-detail-panel.component";
 
 @NgModule({
   declarations: [
     PrmHomeSearchComponent,
     PrmInfoBoxComponent,
     PrmPanelComponent,
+    PrmDetailPanelComponent,
     StopPointDetailComponent,
     CreateStopPointComponent,
     StopPointReducedFormComponent,
