@@ -1,10 +1,8 @@
 package ch.sbb.importservice.service.csv;
 
-import ch.sbb.atlas.imports.prm.contactpoint.ContactPointCsvModel;
-import ch.sbb.atlas.imports.prm.contactpoint.ContactPointCsvModelContainer;
 import ch.sbb.atlas.imports.prm.relation.RelationCsvModel;
 import ch.sbb.atlas.imports.prm.relation.RelationCsvModelContainer;
-import ch.sbb.atlas.testdata.prm.ContactPointCsvTestData;
+import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.testdata.prm.RelationCsvTestData;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
@@ -171,5 +169,28 @@ class RelationCsvServiceTest {
         assertThat(result).hasSize(1);
         assertThat(result.get(0).getCsvModels()).hasSize(1);
         assertThat(result.get(0).getCsvModels().get(0).getStatus()).isEqualTo(1);
+    }
+
+    @Test
+    void shouldSetReplaceHighDateDataForRelations() {
+        // given
+        RelationCsvModel relationCsvModel = RelationCsvTestData.getCsvModel();
+        relationCsvModel.setStatus(1);
+        RelationCsvModel relationCsvModel2 = RelationCsvTestData.getCsvModel();
+        relationCsvModel2.setValidFrom(relationCsvModel.getValidTo().plusDays(1));
+        relationCsvModel2.setValidTo(ImportUtils.DIDOK_HIGEST_DATE);
+        relationCsvModel2.setStatus(1);
+        List<RelationCsvModel> csvModels = List.of(relationCsvModel,relationCsvModel2);
+        LocalDate now = LocalDate.now();
+
+        // when
+        List<RelationCsvModelContainer> result = relationCsvService.mapToRelationCsvModelContainers(csvModels);
+
+        //then
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getCsvModels()).hasSize(1);
+        assertThat(result.get(0).getCsvModels().get(0).getValidFrom()).isEqualTo(relationCsvModel.getValidFrom());
+        assertThat(result.get(0).getCsvModels().get(0).getValidTo()).isEqualTo(ImportUtils.ATLAS_HIGHEST_DATE);
+        assertThat(result.get(0).getCsvModels().get(0).getModifiedAt().toLocalDate()).isEqualTo(now);
     }
 }
