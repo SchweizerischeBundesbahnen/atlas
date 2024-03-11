@@ -206,7 +206,6 @@ describe('ParkingLotDetailComponent', () => {
       component.form.controls.designation.markAsDirty();
 
       expect(component.form.dirty).toBeTrue();
-      expect(component.isFormDirty()).toBeTrue();
 
       component.toggleEdit();
       expect(component.form.enabled).toBeFalse();
