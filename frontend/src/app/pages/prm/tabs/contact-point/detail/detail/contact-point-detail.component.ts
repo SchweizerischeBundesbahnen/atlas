@@ -9,11 +9,10 @@ import {
 } from "../../../../../../api";
 import {FormGroup} from "@angular/forms";
 import {NotificationService} from "../../../../../../core/notification/notification.service";
-import {DialogService} from "../../../../../../core/components/dialog/dialog.service";
 import {VersionsHandlingService} from "../../../../../../core/versioning/versions-handling.service";
 import {ContactPointFormGroup, ContactPointFormGroupBuilder} from "../form/contact-point-form-group";
-import {Observable, of, take} from "rxjs";
 import {DateRange} from "../../../../../../core/versioning/date-range";
+import {DetailHelperService} from "../../../../../../core/detail/detail-helper.service";
 
 @Component({
   selector: 'app-contact-point-detail',
@@ -38,7 +37,7 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent 
     private router: Router,
     private personWithReducedMobilityService: PersonWithReducedMobilityService,
     private notificationService: NotificationService,
-    private dialogService: DialogService,
+    private detailHelperService: DetailHelperService,
   ) {}
 
   ngOnInit(): void {
@@ -90,7 +89,7 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent 
 
   toggleEdit() {
     if (this.form.enabled) {
-      this.showCancelEditDialog();
+      this.detailHelperService.showCancelEditDialog(this);
     } else {
       this.form.enable();
     }
@@ -137,33 +136,4 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent 
       });
   }
 
-  private showCancelEditDialog() {
-    this.confirmLeave()
-      .pipe(take(1))
-      .subscribe((confirmed) => {
-        if (confirmed) {
-          if (this.isNew) {
-            this.form.reset();
-            this.router.navigate(['..'], { relativeTo: this.route.parent }).then();
-          } else {
-            this.form.disable();
-          }
-        }
-      });
-  }
-
-  private confirmLeave(): Observable<boolean> {
-    if (this.form.dirty) {
-      return this.dialogService.confirm({
-        title: 'DIALOG.DISCARD_CHANGES_TITLE',
-        message: 'DIALOG.LEAVE_SITE',
-      });
-    }
-    return of(true);
-  }
-
-  //used in combination with canLeaveDirtyForm
-  isFormDirty(): boolean {
-    return this.form && this.form.dirty;
-  }
 }
