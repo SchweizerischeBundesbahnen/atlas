@@ -2,6 +2,7 @@ package ch.sbb.importservice.writer;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.ItemImportResponseStatus;
 import ch.sbb.importservice.client.PrmClient;
+import ch.sbb.importservice.client.UserClient;
 import ch.sbb.importservice.entity.ImportProcessItem;
 import ch.sbb.importservice.repository.ImportProcessedItemRepository;
 import ch.sbb.importservice.service.SePoDiClientService;
@@ -18,6 +19,9 @@ public abstract class BaseApiWriter {
 
   @Autowired
   protected PrmClient prmClient;
+
+  @Autowired
+  protected UserClient userClient;
 
   @Autowired
   private ImportProcessedItemRepository importProcessedItemRepository;
