@@ -1,11 +1,8 @@
 package ch.sbb.importservice.service.csv;
 
-import ch.sbb.atlas.imports.prm.contactpoint.ContactPointCsvModel;
-import ch.sbb.atlas.imports.prm.contactpoint.ContactPointCsvModelContainer;
 import ch.sbb.atlas.imports.prm.relation.RelationCsvModel;
 import ch.sbb.atlas.imports.prm.relation.RelationCsvModelContainer;
 import ch.sbb.atlas.imports.util.ImportUtils;
-import ch.sbb.atlas.testdata.prm.ContactPointCsvTestData;
 import ch.sbb.atlas.testdata.prm.RelationCsvTestData;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
