@@ -29,9 +29,12 @@ import org.springframework.util.FileSystemUtils;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
  class ServicePointMigrationIntegrationTest {
 
-  private static final String ZIPPED_DIDOK_CSV_FILE = "src/test/resources/migration/DIDOK3_DIENSTSTELLEN_ALL_V_3_20240213015645.zip";
-  private static final String DECOMPRESSED_FILE_PATH = "src/test/resources/migration/DIDOK3_DIENSTSTELLEN_ALL_V_3_20240213015645";
-  private static final String ATLAS_CSV_FILE = "full-world-service_point-2024-02-13.csv";
+//  private static final String ZIPPED_DIDOK_CSV_FILE = "src/test/resources/migration/DIDOK3_DIENSTSTELLEN_ALL_V_3_20240213015645.zip";
+  private static final String ZIPPED_DIDOK_CSV_FILE = "src/test/resources/migration/DIDOK3_DIENSTSTELLEN_ALL_V_3_20240307011014.zip";
+//  private static final String DECOMPRESSED_FILE_PATH = "src/test/resources/migration/DIDOK3_DIENSTSTELLEN_ALL_V_3_20240213015645";
+  private static final String DECOMPRESSED_FILE_PATH = "src/test/resources/migration/DIDOK3_DIENSTSTELLEN_ALL_V_3_20240307011014";
+//  private static final String ATLAS_CSV_FILE = "full-world-service_point-2024-02-13.csv";
+  private static final String ATLAS_CSV_FILE = "full-world-service_point-2024-03-07.csv";
 
   private static final List<ServicePointAtlasCsvModel> atlasCsvLines = new ArrayList<>();
   private static final List<ServicePointDidokCsvModel> didokCsvLines = new ArrayList<>();
