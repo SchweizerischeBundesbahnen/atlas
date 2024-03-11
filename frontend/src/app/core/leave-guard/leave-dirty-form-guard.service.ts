@@ -1,9 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanDeactivateFn, RouterStateSnapshot } from '@angular/router';
 import { DialogService } from '../components/dialog/dialog.service';
+import {FormGroup} from "@angular/forms";
 
 export interface DetailFormComponent {
-  isFormDirty: () => boolean;
+  form?: FormGroup,
 }
 
 @Injectable({
@@ -22,7 +23,7 @@ export class LeaveDirtyFormGuard {
       return true;
     }
 
-    if (component.isFormDirty()) {
+    if (component.form && component.form.dirty) {
       return this.dialogService.confirm({
         title: 'DIALOG.DISCARD_CHANGES_TITLE',
         message: 'DIALOG.LEAVE_SITE',

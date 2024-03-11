@@ -299,7 +299,4 @@ export abstract class BaseDetailController<TYPE extends Record>
     return of(true);
   }
 
-  isFormDirty() {
-    return this.form.dirty;
-  }
 }

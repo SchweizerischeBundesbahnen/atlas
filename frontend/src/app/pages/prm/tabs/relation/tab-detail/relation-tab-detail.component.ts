@@ -177,8 +177,4 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
     return of(true);
   }
 
-  // used in combination with canLeaveDirtyForm
-  isFormDirty(): boolean {
-    return this.form?.dirty ?? false;
-  }
 }
