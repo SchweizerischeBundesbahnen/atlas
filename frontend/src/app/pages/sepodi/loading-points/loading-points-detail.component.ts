@@ -219,7 +219,4 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
     };
   }
 
-  isFormDirty(): boolean {
-    return this.form.dirty;
-  }
 }
