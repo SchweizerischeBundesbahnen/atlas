@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   ApplicationType,
   BusinessOrganisation,
@@ -7,19 +7,21 @@ import {
   TransportCompanyBoRelation,
   TransportCompanyRelationsService,
 } from '../../../../api';
-import { Observable, of } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
-import { AuthService } from '../../../../core/auth/auth.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
-import moment, { Moment } from 'moment';
-import { TableColumn } from '../../../../core/components/table/table-column';
-import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { NotificationService } from '../../../../core/notification/notification.service';
-import { BusinessOrganisationLanguageService } from '../../../../core/form-components/bo-select/business-organisation-language.service';
-import { TransportCompanyFormGroup } from './transport-company-form-group';
-import { ActivatedRoute } from '@angular/router';
-import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
+import {Observable, of} from 'rxjs';
+import {map, switchMap, tap} from 'rxjs/operators';
+import {AuthService} from '../../../../core/auth/auth.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {DateRangeValidator} from '../../../../core/validation/date-range/date-range-validator';
+import moment, {Moment} from 'moment';
+import {TableColumn} from '../../../../core/components/table/table-column';
+import {DialogService} from '../../../../core/components/dialog/dialog.service';
+import {NotificationService} from '../../../../core/notification/notification.service';
+import {
+  BusinessOrganisationLanguageService
+} from '../../../../core/form-components/bo-select/business-organisation-language.service';
+import {TransportCompanyFormGroup} from './transport-company-form-group';
+import {ActivatedRoute} from '@angular/router';
+import {DetailFormComponent} from '../../../../core/leave-guard/leave-dirty-form-guard.service';
 
 @Component({
   templateUrl: './transport-company-detail.component.html',
@@ -260,7 +262,4 @@ export class TransportCompanyDetailComponent implements OnInit, DetailFormCompon
     return this.businessOrganisationLanguageService.getCurrentLanguageDescription();
   }
 
-  isFormDirty() {
-    return this.form.dirty;
-  }
 }
