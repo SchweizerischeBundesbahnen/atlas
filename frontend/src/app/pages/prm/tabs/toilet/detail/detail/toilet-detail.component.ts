@@ -2,13 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {VersionsHandlingService} from "../../../../../../core/versioning/versions-handling.service";
 import {ToiletFormGroup, ToiletFormGroupBuilder} from "../form/toilet-form-group";
 import {PersonWithReducedMobilityService, ReadServicePointVersion, ReadToiletVersion, ToiletVersion} from "../../../../../../api";
-import {Observable, of, take} from "rxjs";
 import {DetailFormComponent} from "../../../../../../core/leave-guard/leave-dirty-form-guard.service";
 import {DateRange} from "../../../../../../core/versioning/date-range";
 import {FormGroup} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NotificationService} from "../../../../../../core/notification/notification.service";
-import {DialogService} from "../../../../../../core/components/dialog/dialog.service";
+import {DetailHelperService} from "../../../../../../core/detail/detail-helper.service";
 
 @Component({
   selector: 'app-toilet-detail',
@@ -34,7 +33,7 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent {
     private router: Router,
     private personWithReducedMobilityService: PersonWithReducedMobilityService,
     private notificationService: NotificationService,
-    private dialogService: DialogService,
+    private detailHelperService: DetailHelperService,
   ) {}
 
   ngOnInit(): void {
@@ -86,7 +85,7 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent {
 
   toggleEdit() {
     if (this.form.enabled) {
-      this.showCancelEditDialog();
+      this.detailHelperService.showCancelEditDialog(this);
     } else {
       this.form.enable();
     }
@@ -131,36 +130,6 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent {
           })
           .then(() => this.ngOnInit());
       });
-  }
-
-  private showCancelEditDialog() {
-    this.confirmLeave()
-      .pipe(take(1))
-      .subscribe((confirmed) => {
-        if (confirmed) {
-          if (this.isNew) {
-            this.form.reset();
-            this.router.navigate(['..'], { relativeTo: this.route.parent }).then();
-          } else {
-            this.form.disable();
-          }
-        }
-      });
-  }
-
-  private confirmLeave(): Observable<boolean> {
-    if (this.form.dirty) {
-      return this.dialogService.confirm({
-        title: 'DIALOG.DISCARD_CHANGES_TITLE',
-        message: 'DIALOG.LEAVE_SITE',
-      });
-    }
-    return of(true);
-  }
-
-  //used in combination with canLeaveDirtyForm
-  isFormDirty(): boolean {
-    return this.form && this.form.dirty;
   }
 
 }

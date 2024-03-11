@@ -249,8 +249,4 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     });
   }
 
-  //used in combination with canLeaveDirtyForm
-  isFormDirty(): boolean {
-    return this.form && this.form.dirty;
-  }
 }
