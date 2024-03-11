@@ -45,10 +45,6 @@ export class FotCommentDetailComponent implements DetailFormComponent, OnInit {
     return this.route.parent!.snapshot.params['id'];
   }
 
-  isFormDirty(): boolean {
-    return this.form.dirty;
-  }
-
   initFormGroup(fotComment?: ServicePointFotComment) {
     this.form = new FormGroup<FotCommentFormGroup>({
       fotComment: new FormControl(fotComment?.fotComment, [Validators.maxLength(2000)]),

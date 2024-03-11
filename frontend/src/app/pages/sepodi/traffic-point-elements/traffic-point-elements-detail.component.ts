@@ -280,10 +280,6 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
     };
   }
 
-  isFormDirty(): boolean {
-    return this.form.dirty;
-  }
-
   geographyEnabled() {
     if (this.form && !this.form.controls.trafficPointElementGeolocation) {
       const groupToAdd = this._savedGeographyForm ?? GeographyFormGroupBuilder.buildFormGroup();

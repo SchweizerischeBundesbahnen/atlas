@@ -10,7 +10,6 @@ describe('PrmDetailPanelComponent', () => {
   let component: PrmDetailPanelComponent;
   let fixture: ComponentFixture<PrmDetailPanelComponent>;
 
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
