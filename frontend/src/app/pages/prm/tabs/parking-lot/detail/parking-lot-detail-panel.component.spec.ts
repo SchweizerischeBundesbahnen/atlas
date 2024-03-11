@@ -10,6 +10,7 @@ import {DetailPageContainerComponent} from "../../../../../core/components/detai
 import {STOP_POINT} from "../../../util/stop-point-test-data.spec";
 import {DetailWithRelationTabComponent} from "../../relation/tab/detail-with-relation-tab.component";
 import {of} from "rxjs";
+import {PrmDetailPanelComponent} from "../../detail-panel/prm-detail-panel.component";
 
 describe('ParkingLotDetailPanelComponent', () => {
   let component: ParkingLotDetailPanelComponent;
@@ -27,6 +28,7 @@ describe('ParkingLotDetailPanelComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         ParkingLotDetailPanelComponent,
+        PrmDetailPanelComponent,
         DetailWithRelationTabComponent,
         DetailPageContainerComponent,
       ],
