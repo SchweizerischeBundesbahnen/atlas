@@ -10,6 +10,7 @@ import {SplitServicePointNumberPipe} from "../../../../../core/search-service-po
 import {STOP_POINT} from "../../../util/stop-point-test-data.spec";
 import {DetailWithRelationTabComponent} from "../../relation/tab/detail-with-relation-tab.component";
 import {of} from "rxjs";
+import {PrmDetailPanelComponent} from "../../detail-panel/prm-detail-panel.component";
 
 describe('ToiletDetailPanelComponent', () => {
   let component: ToiletDetailPanelComponent;
@@ -27,6 +28,7 @@ describe('ToiletDetailPanelComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         ToiletDetailPanelComponent,
+        PrmDetailPanelComponent,
         DetailWithRelationTabComponent,
         DetailPageContainerComponent,
       ],
