@@ -4,6 +4,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { LeaveDirtyFormGuard } from './leave-dirty-form-guard.service';
 import { DialogService } from '../components/dialog/dialog.service';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import {FormGroup} from "@angular/forms";
 
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
 const route = {} as ActivatedRouteSnapshot;
@@ -28,9 +29,11 @@ describe('LeaveDirtyFormGuard', () => {
     const currentState = { url: '/line-directory/lines/add' } as RouterStateSnapshot;
     const nextState = { url: '/line-directory/sublines' } as RouterStateSnapshot;
 
+    const form = new FormGroup({});
+
     expect(
       leaveDirtyFormGuard.canDeactivate(
-        { isFormDirty: () => false },
+        { form: form },
         route,
         currentState,
         nextState,
@@ -46,9 +49,12 @@ describe('LeaveDirtyFormGuard', () => {
       url: '/prm-directory/stop-points/ch:1:sloid:319/stop-point',
     } as RouterStateSnapshot;
 
+    const form = new FormGroup({});
+    form.markAsDirty();
+
     expect(
       leaveDirtyFormGuard.canDeactivate(
-        { isFormDirty: () => false },
+        { form: form },
         route,
         currentState,
         nextState,
@@ -60,7 +66,10 @@ describe('LeaveDirtyFormGuard', () => {
     const currentState = { url: '/line-directory/lines/add' } as RouterStateSnapshot;
     const nextState = { url: '/line-directory/sublines' } as RouterStateSnapshot;
 
-    leaveDirtyFormGuard.canDeactivate({ isFormDirty: () => true }, route, currentState, nextState);
+    const form = new FormGroup({});
+    form.markAsDirty();
+
+    leaveDirtyFormGuard.canDeactivate({ form: form }, route, currentState, nextState);
     expect(dialogServiceSpy.confirm).toHaveBeenCalled();
   });
 });
