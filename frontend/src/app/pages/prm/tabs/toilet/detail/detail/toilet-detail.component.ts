@@ -7,13 +7,13 @@ import {DateRange} from "../../../../../../core/versioning/date-range";
 import {FormGroup} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NotificationService} from "../../../../../../core/notification/notification.service";
-import {DetailHelperService} from "../../../../../../core/detail/detail-helper.service";
+import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
 
 @Component({
   selector: 'app-toilet-detail',
   templateUrl: './toilet-detail.component.html',
 })
-export class ToiletDetailComponent implements OnInit, DetailFormComponent {
+export class ToiletDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
 
   isNew = false;
   toiletVersions: ReadToiletVersion[] = [];

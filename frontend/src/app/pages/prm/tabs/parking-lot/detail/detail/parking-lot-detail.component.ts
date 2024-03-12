@@ -12,13 +12,13 @@ import {NotificationService} from "../../../../../../core/notification/notificat
 import {VersionsHandlingService} from "../../../../../../core/versioning/versions-handling.service";
 import {ParkingLotFormGroup, ParkingLotFormGroupBuilder} from "../form/parking-lot-form-group";
 import {DateRange} from "../../../../../../core/versioning/date-range";
-import {DetailHelperService} from "../../../../../../core/detail/detail-helper.service";
+import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
 
 @Component({
   selector: 'app-parking-lot-detail',
   templateUrl: './parking-lot-detail.component.html',
 })
-export class ParkingLotDetailComponent implements OnInit, DetailFormComponent {
+export class ParkingLotDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
   isNew = false;
   parkingLot: ReadParkingLotVersion[] = [];
   selectedVersion!: ReadParkingLotVersion;

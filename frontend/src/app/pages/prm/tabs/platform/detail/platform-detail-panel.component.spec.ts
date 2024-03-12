@@ -48,7 +48,7 @@ describe('PlatformDetailPanelComponent', () => {
     expect(component).toBeTruthy();
 
     expect(component.isNew).toBeTrue();
-    expect(component.reduced).toBeTrue();
+    expect(component.isReduced).toBeTrue();
     expect(component.selectedVersion).toBeUndefined();
   });
 });

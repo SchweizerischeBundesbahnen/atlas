@@ -3,17 +3,15 @@ package ch.sbb.prm.directory.service;
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TOILET;
 
 import ch.sbb.atlas.api.location.SloidType;
-import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
-import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.toilet.ToiletOverviewModel;
 import ch.sbb.atlas.service.OverviewService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.ToiletVersion;
-import ch.sbb.prm.directory.mapper.ToiletVersionMapper;
 import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
+import ch.sbb.prm.directory.mapper.ToiletVersionMapper;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.search.ToiletSearchRestrictions;
@@ -108,7 +106,7 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
         ToiletVersion::getSloid);
     return mergedVersions.stream()
         .map(toilet -> ToiletVersionMapper.toOverviewModel(toilet, getRecordingStatusIncludingRelation(toilet.getSloid(),
-            getToiletRecordingStatus(toilet))))
+            toilet.getRecordingStatus())))
         .toList();
   }
 
@@ -117,12 +115,4 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
       throw new ElementTypeDoesNotExistException(sloid, type);
     }
   }
-
-  static RecordingStatus getToiletRecordingStatus(ToiletVersion version) {
-    if (version.getWheelchairToilet() == StandardAttributeType.TO_BE_COMPLETED) {
-      return RecordingStatus.INCOMPLETE;
-    }
-    return RecordingStatus.COMPLETE;
-  }
-
 }

@@ -12,13 +12,13 @@ import {
   ReadServicePointVersion,
   ReferencePointVersion,
 } from '../../../../../api';
-import {DetailHelperService} from "../../../../../core/detail/detail-helper.service";
+import {DetailHelperService, DetailWithCancelEdit} from "../../../../../core/detail/detail-helper.service";
 
 @Component({
   selector: 'app-reference-point',
   templateUrl: './reference-point-detail.component.html',
 })
-export class ReferencePointDetailComponent implements OnInit, DetailFormComponent {
+export class ReferencePointDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
   isNew = false;
   referencePoint: ReadReferencePointVersion[] = [];
   selectedVersion!: ReadReferencePointVersion;
