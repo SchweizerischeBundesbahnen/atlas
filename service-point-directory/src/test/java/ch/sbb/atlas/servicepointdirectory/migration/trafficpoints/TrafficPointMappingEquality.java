@@ -49,8 +49,17 @@ public record TrafficPointMappingEquality(
     // and hence these dates/times are not comparable
 
     if (atlasCsvLine.getParentSloidServicePoint() != null) {
-      assertThat(getParentServicePointNumberFromParentSLOID()).isEqualTo(
-          ServicePointNumber.ofNumberWithoutCheckDigit(didokCsvLine.getServicePointNumber()).getNumberShort());
+      if (atlasCsvLine.getUicCountryCode().equals(11)
+          || atlasCsvLine.getUicCountryCode().equals(12)
+          || atlasCsvLine.getUicCountryCode().equals(13)
+          || atlasCsvLine.getUicCountryCode().equals(14)
+      ) {
+        assertThat(getParentServicePointNumberFromParentSLOID()).isEqualTo(
+            ServicePointNumber.ofNumberWithoutCheckDigit(didokCsvLine.getServicePointNumber()).getNumber());
+      } else {
+        assertThat(getParentServicePointNumberFromParentSLOID()).isEqualTo(
+            ServicePointNumber.ofNumberWithoutCheckDigit(didokCsvLine.getServicePointNumber()).getNumberShort());
+      }
     }
 
     if (!isFutureTimetable) {
