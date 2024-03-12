@@ -25,8 +25,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class LoadingPointMigrationIntegrationTest {
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_LADESTELLEN_20230906011320.csv";
-  private static final String ATLAS_CSV_FILE = "full-world-loading_point-2023-09-06.csv";
+  private static final String DIDOK_CSV_FILE = "DIDOK3_LADESTELLEN_20240312011855.csv";
+  private static final String ATLAS_CSV_FILE = "full-world-loading_point-2024-03-12.csv";
 
   private static final List<LoadingPointAtlasCsvModel> atlasCsvLines = new ArrayList<>();
   private static final List<LoadingPointDidokCsvModel> didokCsvLines = new ArrayList<>();
