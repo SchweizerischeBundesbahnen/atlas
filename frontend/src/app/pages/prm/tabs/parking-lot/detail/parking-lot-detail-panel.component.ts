@@ -11,7 +11,7 @@ import {PrmMeanOfTransportHelper} from "../../../util/prm-mean-of-transport-help
 })
 export class ParkingLotDetailPanelComponent implements OnInit {
   isNew = false;
-  reduced = false;
+  isReduced = false;
 
   selectedVersion!: ReadParkingLotVersion;
   parkingLot: ReadParkingLotVersion[] = [];
@@ -27,7 +27,7 @@ export class ParkingLotDetailPanelComponent implements OnInit {
   ngOnInit(): void {
     this.route.data.subscribe(data => {
       this.parkingLot = data.parkingLot;
-      this.reduced = PrmMeanOfTransportHelper.isReduced(data.stopPoint[0].meansOfTransport);
+      this.isReduced = PrmMeanOfTransportHelper.isReduced(data.stopPoint[0].meansOfTransport);
 
       const servicePointVersions: ReadServicePointVersion[] = data.servicePoint;
       this.servicePoint = VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);

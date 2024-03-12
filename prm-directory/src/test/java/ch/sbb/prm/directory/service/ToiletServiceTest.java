@@ -280,7 +280,7 @@ class ToiletServiceTest extends BasePrmServiceTest {
     ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
     toiletVersion.setWheelchairToilet(TO_BE_COMPLETED);
 
-    RecordingStatus result = ToiletService.getToiletRecordingStatus(toiletVersion);
+    RecordingStatus result = toiletVersion.getRecordingStatus();
     assertThat(result).isEqualTo(RecordingStatus.INCOMPLETE);
   }
 
@@ -289,7 +289,7 @@ class ToiletServiceTest extends BasePrmServiceTest {
     ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
     toiletVersion.setWheelchairToilet(StandardAttributeType.YES);
 
-    RecordingStatus result = ToiletService.getToiletRecordingStatus(toiletVersion);
+    RecordingStatus result = toiletVersion.getRecordingStatus();
     assertThat(result).isEqualTo(RecordingStatus.COMPLETE);
   }
 
