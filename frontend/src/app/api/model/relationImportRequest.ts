@@ -9,13 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { RelationCsvModelContainer } from './relationCsvModelContainer';
 
 
-export type HearingStatus = 'PLANNED' | 'ACTIVE' | 'ARCHIVED';
-
-export const HearingStatus = {
-    Planned: 'PLANNED' as HearingStatus,
-    Active: 'ACTIVE' as HearingStatus,
-    Archived: 'ARCHIVED' as HearingStatus
-};
+export interface RelationImportRequest { 
+    List_of_RelationCsvModelContainer_to_import: Array<RelationCsvModelContainer>;
+}
 
