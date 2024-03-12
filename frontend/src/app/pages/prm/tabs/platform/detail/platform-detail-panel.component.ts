@@ -24,7 +24,7 @@ export class PlatformDetailPanelComponent implements OnInit {
   maxValidity!: DateRange;
   stopPoint!: ReadStopPointVersion[];
 
-  reduced = false;
+  isReduced = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -43,7 +43,7 @@ export class PlatformDetailPanelComponent implements OnInit {
         this.maxValidity = VersionsHandlingService.getMaxValidity(this.platform);
       }
       this.stopPoint = data.stopPoint;
-      this.reduced = PrmMeanOfTransportHelper.isReduced(this.stopPoint[0].meansOfTransport);
+      this.isReduced = PrmMeanOfTransportHelper.isReduced(this.stopPoint[0].meansOfTransport);
     });
   }
 

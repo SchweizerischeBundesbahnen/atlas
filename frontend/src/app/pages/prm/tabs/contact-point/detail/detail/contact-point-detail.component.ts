@@ -12,13 +12,13 @@ import {NotificationService} from "../../../../../../core/notification/notificat
 import {VersionsHandlingService} from "../../../../../../core/versioning/versions-handling.service";
 import {ContactPointFormGroup, ContactPointFormGroupBuilder} from "../form/contact-point-form-group";
 import {DateRange} from "../../../../../../core/versioning/date-range";
-import {DetailHelperService} from "../../../../../../core/detail/detail-helper.service";
+import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
 
 @Component({
   selector: 'app-contact-point-detail',
   templateUrl: './contact-point-detail.component.html',
 })
-export class ContactPointDetailComponent implements OnInit, DetailFormComponent {
+export class ContactPointDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
   isNew = false;
   contactPoint: ReadContactPointVersion[] = [];
   selectedVersion!: ReadContactPointVersion;
