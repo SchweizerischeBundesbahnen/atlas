@@ -9,7 +9,7 @@ import ch.sbb.importservice.listener.StepTracerListener;
 import ch.sbb.importservice.reader.ThreadSafeListItemReader;
 import ch.sbb.importservice.service.csv.DidokUserCsvService;
 import ch.sbb.importservice.utils.StepUtils;
-import ch.sbb.importservice.writer.prm.UserApiWriter;
+import ch.sbb.importservice.writer.user.UserApiWriter;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;

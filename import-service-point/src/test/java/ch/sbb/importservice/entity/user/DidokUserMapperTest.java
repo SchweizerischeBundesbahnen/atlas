@@ -47,7 +47,7 @@ class DidokUserMapperTest {
     assertThat(result.getSbbUserId()).isEqualTo("e123456");
     assertThat(result.getPermissions()).hasSize(1);
     assertThat(result.getPermissions().get(0)).isNotNull();
-    assertThat(result.getPermissions().get(0).getPermissionRestrictions()).hasSize(0);
+    assertThat(result.getPermissions().get(0).getPermissionRestrictions()).isEmpty();
   }
 
 }
