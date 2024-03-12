@@ -189,7 +189,7 @@ class ContactPointServiceTest extends BasePrmServiceTest {
   void shouldHaveRecordingStatusComplete() {
     ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
 
-    RecordingStatus result = ContactPointService.getContactPointRecordingStatus(contactPointVersion);
+    RecordingStatus result = contactPointVersion.getRecordingStatus();
 
     assertThat(result).isEqualTo(RecordingStatus.COMPLETE);
   }
@@ -199,7 +199,7 @@ class ContactPointServiceTest extends BasePrmServiceTest {
     ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
     contactPointVersion.setInductionLoop(StandardAttributeType.TO_BE_COMPLETED);
 
-    RecordingStatus result = ContactPointService.getContactPointRecordingStatus(contactPointVersion);
+    RecordingStatus result = contactPointVersion.getRecordingStatus();
 
     assertThat(result).isEqualTo(RecordingStatus.INCOMPLETE);
   }
