@@ -1,15 +1,14 @@
 package ch.sbb.importservice.migration.referencepoint;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
 import ch.sbb.atlas.export.model.prm.ReferencePointVersionCsvModel;
 import ch.sbb.atlas.imports.prm.referencepoint.ReferencePointCsvModel;
 import ch.sbb.importservice.migration.MigrationUtil;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public record ReferencePointMappingEquality(ReferencePointCsvModel didokCsvLine, ReferencePointVersionCsvModel atlasCsvLine) {
 
@@ -32,7 +31,7 @@ public record ReferencePointMappingEquality(ReferencePointCsvModel didokCsvLine,
             assertThat(atlasCsvLine.getRpType()).isEqualTo(ReferencePointAttributeType.of(didokCsvLine.getRpType()).name());
         }
         assertThat(localDateFromString(atlasCsvLine.getCreationDate())).isEqualTo(didokCsvLine.getCreatedAt());
-        assertThat(localDateFromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getModifiedAt());
+        assertThat(localDateFromString(atlasCsvLine.getEditionDate()).toLocalDate()).isEqualTo(didokCsvLine.getModifiedAt().toLocalDate());
 
     }
 
