@@ -16,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.location.SloidType;
+import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReferencePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.model.Status;
@@ -139,6 +140,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/reference-points" +
             "?numbers=12345" +
             "&sloids=ch:1:sloid:12345:1" +
+            "&referencePointAttributeTypes=" + ReferencePointAttributeType.PLATFORM.name()+
             "&fromDate=" + version.getValidFrom() +
             "&toDate=" + version.getValidTo() +
             "&validOn=" + LocalDate.of(2000, 6, 28) +
