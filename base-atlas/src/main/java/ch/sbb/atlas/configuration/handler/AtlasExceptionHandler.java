@@ -217,7 +217,8 @@ public class AtlasExceptionHandler {
     return ResponseEntity.badRequest()
         .body(ErrorResponse.builder()
             .status(HttpStatus.BAD_REQUEST.value())
-            .error("Param argument not valid error")
+            .error(
+                "Param argument not valid on: " + constraintViolations.stream().findFirst().map(ConstraintViolation::getLeafBean))
             .message("Constraint for Path parameter was violated: " + messages)
             .build());
   }

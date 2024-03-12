@@ -1,6 +1,5 @@
 package ch.sbb.prm.directory.mapper;
 
-import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotOverviewModel;
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotVersionModel;
@@ -33,9 +32,9 @@ public class ParkingLotVersionMapper {
         .build();
   }
 
-  public static ParkingLotOverviewModel toOverviewModel(ParkingLotVersion version) {
+  public static ParkingLotOverviewModel toOverviewModel(ParkingLotVersion version, RecordingStatus recordingStatus) {
     return ParkingLotOverviewModel.builder()
-        .recordingStatus(getRecordingStatus(version))
+        .recordingStatus(recordingStatus)
         .id(version.getId())
         .sloid(version.getSloid())
         .parentServicePointSloid(version.getParentServicePointSloid())
@@ -51,14 +50,6 @@ public class ParkingLotVersionMapper {
         .editionDate(version.getEditionDate())
         .etagVersion(version.getVersion())
         .build();
-  }
-
-  static RecordingStatus getRecordingStatus(ParkingLotVersion version) {
-    if (version.getPlacesAvailable() == BooleanOptionalAttributeType.TO_BE_COMPLETED
-        || version.getPrmPlacesAvailable() == BooleanOptionalAttributeType.TO_BE_COMPLETED) {
-      return RecordingStatus.INCOMPLETE;
-    }
-    return RecordingStatus.COMPLETE;
   }
 
   public static ParkingLotVersion toEntity(ParkingLotVersionModel model) {
