@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "Import Didok User Batch")
-@RequestMapping("v1/import")
+@RequestMapping("v1/import/maintenance")
 @RestController
 @AllArgsConstructor
 @Slf4j
