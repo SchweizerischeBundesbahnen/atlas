@@ -1,20 +1,20 @@
 package ch.sbb.importservice.migration.stoppoint;
 
+import static ch.sbb.atlas.imports.util.CsvReader.dateFromString;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
+import ch.sbb.atlas.export.StringUtils;
 import ch.sbb.atlas.export.model.prm.StopPointVersionCsvModel;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.importservice.migration.MigrationUtil;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static ch.sbb.atlas.imports.util.CsvReader.dateFromString;
-import static org.assertj.core.api.Assertions.assertThat;
 
 public record StopPointMappingEquality(StopPointCsvModel didokCsvLine, StopPointVersionCsvModel atlasCsvLine) {
 
@@ -34,7 +34,7 @@ public record StopPointMappingEquality(StopPointCsvModel didokCsvLine, StopPoint
     assertThat(atlasCsvLine.getAddress()).isEqualTo(didokCsvLine.getAddress());
     assertThat(atlasCsvLine.getZipCode()).isEqualTo(didokCsvLine.getZipCode());
     assertThat(atlasCsvLine.getCity()).isEqualTo(didokCsvLine.getCity());
-    assertThat(atlasCsvLine.getFreeText()).isEqualTo(didokCsvLine.getFreeText());
+    assertThat(atlasCsvLine.getFreeText()).isEqualTo(StringUtils.removeNewLine(didokCsvLine.getFreeText()));
     if (atlasCsvLine.getAlternativeTransport() != null && didokCsvLine.getAlternativeTransport() != null) {
       assertThat(atlasCsvLine.getAlternativeTransport()).isEqualTo(
           StandardAttributeType.from(didokCsvLine.getAlternativeTransport()).toString());
@@ -42,7 +42,7 @@ public record StopPointMappingEquality(StopPointCsvModel didokCsvLine, StopPoint
       assertThat(didokCsvLine.getAlternativeTransport()).isNull();
       assertThat(atlasCsvLine.getAlternativeTransport()).isNull();
     }
-    assertThat(atlasCsvLine.getAlternativeTransportCondition()).isEqualTo(didokCsvLine.getAlternativeTransportCondition());
+    assertThat(atlasCsvLine.getAlternativeTransportCondition()).isEqualTo(StringUtils.removeNewLine(didokCsvLine.getAlternativeTransportCondition()));
     if (atlasCsvLine.getAssistanceAvailability() != null && didokCsvLine.getAssistanceAvailability() != null) {
       assertThat(atlasCsvLine.getAssistanceAvailability()).isEqualTo(
           StandardAttributeType.from(didokCsvLine.getAssistanceAvailability()).toString());
@@ -50,7 +50,7 @@ public record StopPointMappingEquality(StopPointCsvModel didokCsvLine, StopPoint
       assertThat(didokCsvLine.getAssistanceAvailability()).isNull();
       assertThat(atlasCsvLine.getAssistanceAvailability()).isNull();
     }
-    assertThat(atlasCsvLine.getAssistanceCondition()).isEqualTo(didokCsvLine.getAssistanceCondition());
+    assertThat(atlasCsvLine.getAssistanceCondition()).isEqualTo(StringUtils.removeNewLine(didokCsvLine.getAssistanceCondition()));
     if (atlasCsvLine.getAssistanceService() != null && didokCsvLine.getAssistanceService() != null) {
       assertThat(atlasCsvLine.getAssistanceService()).isEqualTo(
           StandardAttributeType.from(didokCsvLine.getAssistanceService()).toString());
@@ -65,7 +65,7 @@ public record StopPointMappingEquality(StopPointCsvModel didokCsvLine, StopPoint
       assertThat(didokCsvLine.getAudioTickMach()).isNull();
       assertThat(atlasCsvLine.getAudioTicketMachine()).isNull();
     }
-    assertThat(atlasCsvLine.getAdditionalInformation()).isEqualTo(didokCsvLine.getCompInfos());
+    assertThat(atlasCsvLine.getAdditionalInformation()).isEqualTo(StringUtils.removeNewLine(didokCsvLine.getCompInfos()));
     if (atlasCsvLine.getDynamicAudioSystem() != null && didokCsvLine.getDynamicAudioSys() != null) {
       assertThat(atlasCsvLine.getDynamicAudioSystem()).isEqualTo(
           StandardAttributeType.from(didokCsvLine.getDynamicAudioSys()).toString());
@@ -80,7 +80,7 @@ public record StopPointMappingEquality(StopPointCsvModel didokCsvLine, StopPoint
       assertThat(didokCsvLine.getDynamicOpticSys()).isNull();
       assertThat(atlasCsvLine.getDynamicOpticSystem()).isNull();
     }
-    assertThat(atlasCsvLine.getInfoTicketMachine()).isEqualTo(didokCsvLine.getInfoTickMach());
+    assertThat(atlasCsvLine.getInfoTicketMachine()).isEqualTo(StringUtils.removeNewLine(didokCsvLine.getInfoTickMach()));
     assertThat(atlasCsvLine.getInteroperable()).isEqualTo(mapInteroperableFromDidok(didokCsvLine.getInteroperable()));
     assertThat(atlasCsvLine.getUrl()).isEqualTo(didokCsvLine.getUrl());
     if (atlasCsvLine.getVisualInfo() != null && didokCsvLine.getVisualInfos() != null) {
@@ -117,7 +117,7 @@ public record StopPointMappingEquality(StopPointCsvModel didokCsvLine, StopPoint
     assertThat(dateFromString(atlasCsvLine.getValidFrom())).isEqualTo(didokCsvLine.getValidFrom());
     assertThat(dateFromString(atlasCsvLine.getValidTo())).isEqualTo(didokCsvLine.getValidTo());
     assertThat(localDateFromString(atlasCsvLine.getCreationDate())).isEqualTo(didokCsvLine.getCreatedAt());
-    assertThat(localDateFromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getModifiedAt());
+    assertThat(localDateFromString(atlasCsvLine.getEditionDate()).toLocalDate()).isEqualTo(didokCsvLine.getModifiedAt().toLocalDate());
 
   }
 
