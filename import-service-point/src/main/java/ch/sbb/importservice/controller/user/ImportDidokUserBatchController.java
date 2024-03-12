@@ -5,7 +5,6 @@ import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_DIDOK_US
 import static ch.sbb.importservice.utils.JobDescriptionConstants.START_AT_JOB_PARAMETER;
 
 import ch.sbb.atlas.batch.exception.JobExecutionException;
-import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.importservice.service.FileHelperService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,7 +27,6 @@ import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,7 +47,6 @@ public class ImportDidokUserBatchController {
   @Qualifier(IMPORT_DIDOK_USER_CSV_JOB_NAME)
   private final Job importDidokUserCsvJob;
 
-  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping("didok-sepodi-user")
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
@@ -59,7 +56,6 @@ public class ImportDidokUserBatchController {
     return execImport(multipartFile, ApplicationType.SEPODI);
   }
 
-  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
   @PostMapping("didok-prm-user")
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
