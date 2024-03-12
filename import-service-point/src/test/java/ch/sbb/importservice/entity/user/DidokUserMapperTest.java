@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 class DidokUserMapperTest {
 
   @Test
-  void shouldMapWriterToUserPermissionCreateModel(){
+  void shouldMapSePoDiWriterToUserPermissionCreateModel(){
     //given
     UserCsvModel e123456 = UserCsvModel.builder()
         .applicationType(ApplicationType.SEPODI)
@@ -27,6 +27,46 @@ class DidokUserMapperTest {
     assertThat(result.getPermissions()).hasSize(1);
     assertThat(result.getPermissions().get(0)).isNotNull();
     assertThat(result.getPermissions().get(0).getPermissionRestrictions()).hasSize(9);
+  }
+
+  @Test
+  void shouldMapPrmWriterToUserPermissionCreateModel(){
+    //given
+    UserCsvModel e123456 = UserCsvModel.builder()
+        .applicationType(ApplicationType.PRM)
+        .role("WRITER")
+        .userid("e123456")
+        .sboids("ch:1:sboid:100001,ch:1:sboid:100029,ch:1:sboid:100070,ch:1:sboid:100095,ch:1:sboid:100544,ch:1:sboid:100650")
+        .build();
+    //when
+    UserPermissionCreateModel result = DidokUserMapper.mapToUserPermissionCreateModel(e123456);
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getSbbUserId()).isEqualTo("e123456");
+    assertThat(result.getPermissions()).hasSize(1);
+    assertThat(result.getPermissions().get(0)).isNotNull();
+    assertThat(result.getPermissions().get(0).getPermissionRestrictions()).hasSize(6);
+  }
+
+  @Test
+  void shouldMapCountriesWithWildCardWriterToUserPermissionCreateModel(){
+    //given
+    UserCsvModel e123456 = UserCsvModel.builder()
+        .applicationType(ApplicationType.SEPODI)
+        .role("WRITER")
+        .userid("e123456")
+        .countries("*")
+        .build();
+    //when
+    UserPermissionCreateModel result = DidokUserMapper.mapToUserPermissionCreateModel(e123456);
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getSbbUserId()).isEqualTo("e123456");
+    assertThat(result.getPermissions()).hasSize(1);
+    assertThat(result.getPermissions().get(0)).isNotNull();
+    assertThat(result.getPermissions().get(0).getPermissionRestrictions()).hasSize(84);
   }
 
   @Test
