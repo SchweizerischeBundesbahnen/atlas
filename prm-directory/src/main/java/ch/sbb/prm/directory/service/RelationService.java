@@ -1,6 +1,5 @@
 package ch.sbb.prm.directory.service;
 
-import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -30,16 +29,6 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
 
   public List<RelationVersion> getRelationsBySloid(String sloid) {
     return relationRepository.findAllBySloidOrderByValidFrom(sloid);
-  }
-
-  public List<RelationVersion> getRelationsBySloidAndReferenceType(String sloid, ReferencePointElementType referencePointType) {
-    return relationRepository.findAllBySloidAndReferencePointElementType(sloid, referencePointType);
-  }
-
-  public List<RelationVersion> getRelationsByParentServicePointSloidAndReferenceType(String parentServicePointSloid,
-      ReferencePointElementType referencePointType) {
-    return relationRepository.findAllByParentServicePointSloidAndReferencePointElementType(parentServicePointSloid,
-        referencePointType);
   }
 
   public List<RelationVersion> getRelationsByParentServicePointSloid(String parentServicePointSloid) {

@@ -1,5 +1,6 @@
 package ch.sbb.prm.directory.entity;
 
+import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
@@ -47,5 +48,12 @@ public class ToiletVersion extends BasePrmEntityVersion implements Relatable, Pr
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private StandardAttributeType wheelchairToilet;
+
+  public RecordingStatus getRecordingStatus() {
+    if (getWheelchairToilet() == StandardAttributeType.TO_BE_COMPLETED) {
+      return RecordingStatus.INCOMPLETE;
+    }
+    return RecordingStatus.COMPLETE;
+  }
 
 }
