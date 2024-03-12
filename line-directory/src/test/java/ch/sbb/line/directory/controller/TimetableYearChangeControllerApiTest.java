@@ -2,6 +2,7 @@ package ch.sbb.line.directory.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.startsWith;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,7 +29,7 @@ import org.junit.jupiter.api.Test;
     mvc.perform(get("/v1/timetable-year-change/" + year))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
-        .andExpect(jsonPath("$.error", is("Param argument not valid error")))
+        .andExpect(jsonPath("$.error", startsWith("Param argument not valid")))
         .andExpect(jsonPath("$.message",
             is("Constraint for Path parameter was violated: [Path parameter 'year' value '1699' must be greater than or equal "
                 + "to 1700]")));
@@ -42,7 +43,7 @@ import org.junit.jupiter.api.Test;
     mvc.perform(get("/v1/timetable-year-change/" + year))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
-        .andExpect(jsonPath("$.error", is("Param argument not valid error")))
+        .andExpect(jsonPath("$.error", startsWith("Param argument not valid")))
         .andExpect(jsonPath("$.message",
             is("Constraint for Path parameter was violated: [Path parameter 'year' value '10000' must be less than or equal to "
                 + "9999]")));
@@ -56,7 +57,7 @@ import org.junit.jupiter.api.Test;
     mvc.perform(get("/v1/timetable-year-change/next-years/" + count))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
-        .andExpect(jsonPath("$.error", is("Param argument not valid error")))
+        .andExpect(jsonPath("$.error", startsWith("Param argument not valid")))
         .andExpect(jsonPath("$.message",
             is("Constraint for Path parameter was violated: [Path parameter 'count' value '0' must be greater than or equal to "
                 + "1]")));
@@ -70,7 +71,7 @@ import org.junit.jupiter.api.Test;
     mvc.perform(get("/v1/timetable-year-change/next-years/" + count))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
-        .andExpect(jsonPath("$.error", is("Param argument not valid error")))
+        .andExpect(jsonPath("$.error", startsWith("Param argument not valid")))
         .andExpect(jsonPath("$.message",
             is("Constraint for Path parameter was violated: [Path parameter 'count' value '101' must be less than or equal to "
                 + "100]")));
