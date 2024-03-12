@@ -285,7 +285,7 @@ class ParkingLotServiceTest extends BasePrmServiceTest {
   void shouldReturnIncompleteStatus() {
     ParkingLotVersion parkingLotVersion = ParkingLotTestData.getParkingLotVersion();
 
-    RecordingStatus result = ParkingLotService.getParkingLotRecordingStatus(parkingLotVersion);
+    RecordingStatus result = parkingLotVersion.getRecordingStatus();
     assertThat(result).isEqualTo(RecordingStatus.INCOMPLETE);
   }
 
@@ -295,7 +295,7 @@ class ParkingLotServiceTest extends BasePrmServiceTest {
     parkingLotVersion.setPlacesAvailable(BooleanOptionalAttributeType.YES);
     parkingLotVersion.setPrmPlacesAvailable(BooleanOptionalAttributeType.YES);
 
-    RecordingStatus result = ParkingLotService.getParkingLotRecordingStatus(parkingLotVersion);
+    RecordingStatus result = parkingLotVersion.getRecordingStatus();
     assertThat(result).isEqualTo(RecordingStatus.COMPLETE);
   }
 

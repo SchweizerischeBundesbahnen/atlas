@@ -11,7 +11,7 @@ import {PrmMeanOfTransportHelper} from "../../../util/prm-mean-of-transport-help
 })
 export class ContactPointDetailPanelComponent implements OnInit {
   isNew = false;
-  reduced = false;
+  isReduced = false;
 
   contactPoint: ReadContactPointVersion[] = [];
   selectedVersion!: ReadContactPointVersion;
@@ -27,7 +27,7 @@ export class ContactPointDetailPanelComponent implements OnInit {
   ngOnInit(): void {
     this.route.data.subscribe(data => {
       this.contactPoint = data.contactPoint;
-      this.reduced = PrmMeanOfTransportHelper.isReduced(data.stopPoint[0].meansOfTransport);
+      this.isReduced = PrmMeanOfTransportHelper.isReduced(data.stopPoint[0].meansOfTransport);
 
       this.servicePoint = VersionsHandlingService.determineDefaultVersionByValidity(data.servicePoint);
 

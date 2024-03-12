@@ -16,13 +16,13 @@ import {PrmMeanOfTransportHelper} from "../../../../util/prm-mean-of-transport-h
 import {VersionsHandlingService} from "../../../../../../core/versioning/versions-handling.service";
 import {CompletePlatformFormGroup, PlatformFormGroupBuilder, ReducedPlatformFormGroup} from "../form/platform-form-group";
 import {DateRange} from "../../../../../../core/versioning/date-range";
-import {DetailHelperService} from "../../../../../../core/detail/detail-helper.service";
+import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
 
 @Component({
   selector: 'app-platforms',
   templateUrl: './platform-detail.component.html',
 })
-export class PlatformDetailComponent implements OnInit, DetailFormComponent {
+export class PlatformDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
   isNew = false;
   platform: ReadPlatformVersion[] = [];
   selectedVersion!: ReadPlatformVersion;

@@ -3,11 +3,11 @@ import {Observable, of, take} from "rxjs";
 import {FormGroup} from "@angular/forms";
 import {DialogService} from "../components/dialog/dialog.service";
 
-export type DetailWithForm = {
+export interface DetailWithCancelEdit {
   isNew: boolean,
   back: () => void,
   form: FormGroup,
-};
+}
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +17,7 @@ export class DetailHelperService {
   constructor(private dialogService: DialogService) {
   }
 
-  public showCancelEditDialog(detail: DetailWithForm) {
+  public showCancelEditDialog(detail: DetailWithCancelEdit) {
     this.confirmLeave(detail)
       .pipe(take(1))
       .subscribe((confirmed) => {
@@ -32,7 +32,7 @@ export class DetailHelperService {
       });
   }
 
-  public confirmLeave(detail: DetailWithForm): Observable<boolean> {
+  public confirmLeave(detail: DetailWithCancelEdit): Observable<boolean> {
     if (detail.form.dirty) {
       return this.dialogService.confirm({
         title: 'DIALOG.DISCARD_CHANGES_TITLE',
