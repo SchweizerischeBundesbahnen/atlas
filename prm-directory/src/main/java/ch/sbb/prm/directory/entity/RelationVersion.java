@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
@@ -64,5 +65,14 @@ public class RelationVersion extends BasePrmEntityVersion implements Relatable, 
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private ReferencePointElementType referencePointElementType;
+
+  public RecordingStatus getRecordingStatus() {
+    if (getContrastingAreas() == StandardAttributeType.TO_BE_COMPLETED
+        || getStepFreeAccess() == StepFreeAccessAttributeType.TO_BE_COMPLETED
+        || getTactileVisualMarks() == TactileVisualAttributeType.TO_BE_COMPLETED) {
+      return RecordingStatus.INCOMPLETE;
+    }
+    return RecordingStatus.COMPLETE;
+  }
 
 }

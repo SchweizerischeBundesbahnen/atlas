@@ -1,4 +1,5 @@
 .gitignore
+.openapi-generator-ignore
 README.md
 api.module.ts
 api/api.ts
@@ -94,6 +95,7 @@ model/inlineObject1.ts
 model/inlineObject10.ts
 model/inlineObject11.ts
 model/inlineObject12.ts
+model/inlineObject13.ts
 model/inlineObject2.ts
 model/inlineObject3.ts
 model/inlineObject4.ts
@@ -148,11 +150,14 @@ model/readToiletVersion.ts
 model/readTrafficPointElementVersion.ts
 model/recordingStatus.ts
 model/referencePointAttributeType.ts
-model/relationCsvModel.ts
+model/referencePointCsvModel.ts
 model/referencePointCsvModelContainer.ts
 model/referencePointElementType.ts
 model/referencePointImportRequest.ts
 model/referencePointVersion.ts
+model/relationCsvModel.ts
+model/relationCsvModelContainer.ts
+model/relationImportRequest.ts
 model/relationVersion.ts
 model/sboidPermissionRestrictionModel.ts
 model/sePoDiBatchExportFileName.ts
