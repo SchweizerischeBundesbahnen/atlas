@@ -26,6 +26,10 @@ public class UserApiWriter extends BaseApiWriter implements ItemWriter<UserCsvMo
         .toList();
     Long stepExecutionId = stepExecution.getId();
 
+    writeToApi(userPermissionCreateModels, stepExecutionId);
+  }
+
+  void writeToApi(List<UserPermissionCreateModel> userPermissionCreateModels, Long stepExecutionId) {
     userPermissionCreateModels.forEach(model -> {
       UserModel userAlreadyExists = userClient.userAlreadyExists(model.getSbbUserId());
       if (userAlreadyExists == null) {
@@ -39,6 +43,5 @@ public class UserApiWriter extends BaseApiWriter implements ItemWriter<UserCsvMo
       }
     });
   }
-
 
 }
