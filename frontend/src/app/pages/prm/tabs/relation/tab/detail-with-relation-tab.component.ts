@@ -12,7 +12,7 @@ export const PRM_RELATIONS_TAB_LINK = 'relations';
 export class DetailWithRelationTabComponent implements OnInit, OnChanges {
 
   @Input() isNew = false;
-  @Input() reduced = false;
+  @Input() isReduced = false;
   @Input() detailTitle!: string;
 
   showTabs = false;
@@ -41,7 +41,7 @@ export class DetailWithRelationTabComponent implements OnInit, OnChanges {
   }
 
   private calculateShowTabs() {
-    this.showTabs = !this.reduced && !this.isNew;
+    this.showTabs = !this.isReduced && !this.isNew;
   }
 
 }
