@@ -11,11 +11,7 @@
  */
 
 
-export type HearingStatus = 'PLANNED' | 'ACTIVE' | 'ARCHIVED';
-
-export const HearingStatus = {
-    Planned: 'PLANNED' as HearingStatus,
-    Active: 'ACTIVE' as HearingStatus,
-    Archived: 'ARCHIVED' as HearingStatus
-};
+export interface InlineObject13 { 
+    file: Blob;
+}
 
