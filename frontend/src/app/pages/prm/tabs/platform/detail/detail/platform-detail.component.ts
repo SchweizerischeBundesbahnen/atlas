@@ -1,33 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
-import {
-  CompletePlatformFormGroup,
-  PlatformFormGroupBuilder,
-  ReducedPlatformFormGroup,
-} from './form/platform-form-group';
-import { Observable, of, take } from 'rxjs';
-import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
-import { DateRange } from '../../../../../core/versioning/date-range';
-import { FormGroup } from '@angular/forms';
-import { NotificationService } from '../../../../../core/notification/notification.service';
-import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import { AuthService } from '../../../../../core/auth/auth.service';
-import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-helper';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {DetailFormComponent} from "../../../../../../core/leave-guard/leave-dirty-form-guard.service";
 import {
   PersonWithReducedMobilityService,
   PlatformVersion,
   ReadPlatformVersion,
   ReadServicePointVersion,
   ReadStopPointVersion,
-  ReadTrafficPointElementVersion,
-} from '../../../../../api';
+  ReadTrafficPointElementVersion
+} from "../../../../../../api";
+import {FormGroup} from "@angular/forms";
+import {NotificationService} from "../../../../../../core/notification/notification.service";
+import {AuthService} from "../../../../../../core/auth/auth.service";
+import {PrmMeanOfTransportHelper} from "../../../../util/prm-mean-of-transport-helper";
+import {VersionsHandlingService} from "../../../../../../core/versioning/versions-handling.service";
+import {CompletePlatformFormGroup, PlatformFormGroupBuilder, ReducedPlatformFormGroup} from "../form/platform-form-group";
+import {DateRange} from "../../../../../../core/versioning/date-range";
+import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
 
 @Component({
   selector: 'app-platforms',
   templateUrl: './platform-detail.component.html',
 })
-export class PlatformDetailComponent implements OnInit, DetailFormComponent {
+export class PlatformDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
   isNew = false;
   platform: ReadPlatformVersion[] = [];
   selectedVersion!: ReadPlatformVersion;
@@ -57,15 +52,15 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent {
     private router: Router,
     private personWithReducedMobilityService: PersonWithReducedMobilityService,
     private notificationService: NotificationService,
-    private dialogService: DialogService,
+    private detailHelperService: DetailHelperService,
     private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
     this.initSePoDiData();
-    this.stopPoint = this.route.snapshot.data.stopPoint;
+    this.stopPoint = this.route.snapshot.parent!.data.stopPoint;
 
-    this.platform = this.route.snapshot.data.platform;
+    this.platform = this.route.snapshot.parent!.data.platform;
     this.reduced = PrmMeanOfTransportHelper.isReduced(this.stopPoint[0].meansOfTransport);
 
     this.isNew = this.platform.length === 0;
@@ -99,14 +94,14 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent {
   }
 
   private initSePoDiData() {
-    const servicePointVersions: ReadServicePointVersion[] = this.route.snapshot.data.servicePoint;
+    const servicePointVersions: ReadServicePointVersion[] = this.route.snapshot.parent!.data.servicePoint;
     this.servicePoint =
       VersionsHandlingService.determineDefaultVersionByValidity(servicePointVersions);
     this.businessOrganisations = [
       ...new Set(servicePointVersions.map((value) => value.businessOrganisation)),
     ];
     this.trafficPoint = VersionsHandlingService.determineDefaultVersionByValidity(
-      this.route.snapshot.data.trafficPoint,
+      this.route.snapshot.parent!.data.trafficPoint,
     );
   }
 
@@ -124,12 +119,12 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent {
   }
 
   back() {
-    this.router.navigate(['..'], { relativeTo: this.route }).then();
+    this.router.navigate(['..'], {relativeTo: this.route.parent}).then();
   }
 
   toggleEdit() {
     if (this.form.enabled) {
-      this.showCancelEditDialog();
+      this.detailHelperService.showCancelEditDialog(this);
     } else {
       this.form.enable();
     }
@@ -170,38 +165,9 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent {
   reloadPage() {
     this.router
       .navigate(['..', this.trafficPoint.sloid], {
-        relativeTo: this.route,
+        relativeTo: this.route.parent,
       })
       .then(() => this.ngOnInit());
   }
 
-  private showCancelEditDialog() {
-    this.confirmLeave()
-      .pipe(take(1))
-      .subscribe((confirmed) => {
-        if (confirmed) {
-          if (this.isNew) {
-            this.form.reset();
-            this.router.navigate(['..'], { relativeTo: this.route }).then();
-          } else {
-            this.form.disable();
-          }
-        }
-      });
-  }
-
-  private confirmLeave(): Observable<boolean> {
-    if (this.form.dirty) {
-      return this.dialogService.confirm({
-        title: 'DIALOG.DISCARD_CHANGES_TITLE',
-        message: 'DIALOG.LEAVE_SITE',
-      });
-    }
-    return of(true);
-  }
-
-  //used in combination with canLeaveDirtyForm
-  isFormDirty(): boolean {
-    return this.form && this.form.dirty;
-  }
 }

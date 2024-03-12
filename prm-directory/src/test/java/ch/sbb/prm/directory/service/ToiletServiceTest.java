@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.service;
 
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TOILET;
+import static ch.sbb.atlas.api.prm.enumeration.StandardAttributeType.TO_BE_COMPLETED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -10,13 +11,18 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.api.location.SloidType;
+import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.ToiletTestData;
 import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
-import ch.sbb.prm.directory.entity.*;
+import ch.sbb.prm.directory.entity.ReferencePointVersion;
+import ch.sbb.prm.directory.entity.RelationVersion;
+import ch.sbb.prm.directory.entity.StopPointVersion;
+import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
@@ -265,7 +271,26 @@ class ToiletServiceTest extends BasePrmServiceTest {
 
   @Test
   void testCheckToiletExists_DoesNotExist() {
-    assertThrows(ElementTypeDoesNotExistException.class, () -> toiletService.checkToiletExists("ch:1:sloid:12345:1", TOILET.name()));
+    assertThrows(ElementTypeDoesNotExistException.class,
+        () -> toiletService.checkToiletExists("ch:1:sloid:12345:1", TOILET.name()));
+  }
+
+  @Test
+  void shouldReturnIncompleteStatus() {
+    ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
+    toiletVersion.setWheelchairToilet(TO_BE_COMPLETED);
+
+    RecordingStatus result = toiletVersion.getRecordingStatus();
+    assertThat(result).isEqualTo(RecordingStatus.INCOMPLETE);
+  }
+
+  @Test
+  void shouldReturnCompleteStatus() {
+    ToiletVersion toiletVersion = ToiletTestData.getToiletVersion();
+    toiletVersion.setWheelchairToilet(StandardAttributeType.YES);
+
+    RecordingStatus result = toiletVersion.getRecordingStatus();
+    assertThat(result).isEqualTo(RecordingStatus.COMPLETE);
   }
 
 }

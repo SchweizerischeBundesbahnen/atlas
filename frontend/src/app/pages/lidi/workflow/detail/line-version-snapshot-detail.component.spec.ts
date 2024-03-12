@@ -34,6 +34,7 @@ import { DetailFooterComponent } from '../../../../core/components/detail-footer
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DateRangeTextComponent } from '../../../../core/versioning/date-range-text/date-range-text.component';
 import { DisplayDatePipe } from '../../../../core/pipe/display-date.pipe';
+import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
 
 const lineVersionSnapsot: LineVersionSnapshot = {
   id: 1234,
@@ -128,6 +129,7 @@ function setupTestBed(
       MockAtlasButtonComponent,
       DetailFooterComponent,
       DetailPageContainerComponent,
+      DetailPageContentComponent,
       DateRangeTextComponent,
       DisplayDatePipe,
     ],

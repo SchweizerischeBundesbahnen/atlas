@@ -10,6 +10,7 @@ import static org.mockito.Mockito.*;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointOverviewModel;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.ContactPointTestData;
@@ -180,7 +181,27 @@ class ContactPointServiceTest extends BasePrmServiceTest {
 
   @Test
   void testCheckContactPointExists_DoesNotExist() {
-    assertThrows(ElementTypeDoesNotExistException.class, () -> contactPointService.checkContactPointExists("ch:1:sloid:12345:1", ReferencePointElementType.CONTACT_POINT.name()));
+    assertThrows(ElementTypeDoesNotExistException.class,
+        () -> contactPointService.checkContactPointExists("ch:1:sloid:12345:1", ReferencePointElementType.CONTACT_POINT.name()));
+  }
+
+  @Test
+  void shouldHaveRecordingStatusComplete() {
+    ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
+
+    RecordingStatus result = contactPointVersion.getRecordingStatus();
+
+    assertThat(result).isEqualTo(RecordingStatus.COMPLETE);
+  }
+
+  @Test
+  void shouldHaveRecordingStatusIncomplete() {
+    ContactPointVersion contactPointVersion = ContactPointTestData.getContactPointVersion();
+    contactPointVersion.setInductionLoop(StandardAttributeType.TO_BE_COMPLETED);
+
+    RecordingStatus result = contactPointVersion.getRecordingStatus();
+
+    assertThat(result).isEqualTo(RecordingStatus.INCOMPLETE);
   }
 
 }
