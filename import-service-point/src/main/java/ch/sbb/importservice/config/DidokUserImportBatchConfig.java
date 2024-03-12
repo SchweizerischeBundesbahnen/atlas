@@ -37,7 +37,7 @@ public class DidokUserImportBatchConfig extends BaseImportBatchJob {
   protected DidokUserImportBatchConfig(JobRepository jobRepository, PlatformTransactionManager transactionManager,
       JobCompletionListener jobCompletionListener, StepTracerListener stepTracerListener,
       UserApiWriter userApiWriter, DidokUserCsvService didokUserCsvService) {
-    super(jobRepository, transactionManager,jobCompletionListener,stepTracerListener);
+    super(jobRepository, transactionManager, jobCompletionListener, stepTracerListener);
     this.userApiWriter = userApiWriter;
     this.didokUserCsvService = didokUserCsvService;
   }
@@ -48,13 +48,14 @@ public class DidokUserImportBatchConfig extends BaseImportBatchJob {
       @Value("#{jobParameters[fullPathFileName]}") String pathToFile,
       @Value("#{jobParameters[applicationType]}") ApplicationType applicationType) {
     final List<UserCsvModel> userCsvModels;
-    if (pathToFile != null) {
-      File file = new File(pathToFile);
-
-      userCsvModels = didokUserCsvService.getUserCsvModels(file,applicationType);
-    } else {
+    if (applicationType == null) {
+      throw new IllegalStateException("ApplicationType must be provided");
+    }
+    if (pathToFile == null) {
       throw new IllegalStateException("File must be provided!");
     }
+    File file = new File(pathToFile);
+    userCsvModels = didokUserCsvService.getUserCsvModels(file, applicationType);
     log.info("Found " + userCsvModels + " user to import...");
     log.info("Start sending requests to user-service with chunkSize: {}...", PRM_CHUNK_SIZE);
     return new ThreadSafeListItemReader<>(Collections.synchronizedList(userCsvModels));
