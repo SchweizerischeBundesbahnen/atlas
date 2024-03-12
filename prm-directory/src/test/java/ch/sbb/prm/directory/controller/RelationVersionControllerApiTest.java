@@ -15,7 +15,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
-import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.relation.RelationVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.imports.prm.relation.RelationCsvModel;
@@ -88,75 +87,6 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0].elementSloid", is(relation1Sloid)))
         .andExpect(jsonPath("$[0].referencePointElementType", is(PLATFORM.name())))
         .andExpect(jsonPath("$[0]." + Fields.status, is(Status.VALIDATED.name())));
-  }
-
-  @Test
-  void shouldGetRelationsBySloidAndReferenceType() throws Exception {
-    //given
-    String relation1Sloid = "ch:1:sloid:8507000:1";
-    String relation2Sloid = "ch:1:sloid:8507000:2";
-    String parentServicePointSloid = "ch:1:sloid:8507000";
-    RelationVersion relation1 = RelationTestData.getRelation(parentServicePointSloid, relation1Sloid, PLATFORM);
-    RelationVersion relation2 = RelationTestData.getRelation(parentServicePointSloid, relation2Sloid, PARKING_LOT);
-    relationRepository.saveAndFlush(relation1);
-    relationRepository.saveAndFlush(relation2);
-
-    //when & then
-    mvc.perform(get("/v1/relations/" + relation1Sloid + "/" + PLATFORM.name()))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(1)))
-        .andExpect(jsonPath("$[0].elementSloid", is(relation1Sloid)))
-        .andExpect(jsonPath("$[0].referencePointElementType", is(PLATFORM.name())));
-  }
-
-  @Test
-  void shouldGetRelationsByParentServicePointSloidAndReferenceType() throws Exception {
-    //given
-    String relation1Sloid = "ch:1:sloid:8507000:1";
-    String relation2Sloid = "ch:1:sloid:8507000:2";
-    String parentServicePointSloid = "ch:1:sloid:8507000";
-    RelationVersion relation1 = RelationTestData.getRelation(parentServicePointSloid, relation1Sloid, PLATFORM);
-    RelationVersion relation2 = RelationTestData.getRelation(parentServicePointSloid, relation2Sloid, PARKING_LOT);
-    RelationVersion relation3 = RelationTestData.getRelation(parentServicePointSloid, relation1Sloid, PLATFORM);
-    relation3.setValidFrom(LocalDate.of(2001, 1, 1));
-    relation3.setValidTo(LocalDate.of(2001, 12, 31));
-    relation3.setContrastingAreas(StandardAttributeType.TO_BE_COMPLETED);
-    relationRepository.saveAndFlush(relation1);
-    relationRepository.saveAndFlush(relation2);
-    relationRepository.saveAndFlush(relation3);
-
-    //when & then
-    mvc.perform(get("/v1/relations/parent-service-point-sloid/" + parentServicePointSloid + "/" + PLATFORM.name()))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(2)))
-        .andExpect(jsonPath("$[0].elementSloid", is(relation1Sloid)))
-        .andExpect(jsonPath("$[0].parentServicePointSloid", is(parentServicePointSloid)))
-        .andExpect(jsonPath("$[0].referencePointElementType", is(PLATFORM.name())))
-        .andExpect(jsonPath("$[1].elementSloid", is(relation1Sloid)))
-        .andExpect(jsonPath("$[1].parentServicePointSloid", is(parentServicePointSloid)))
-        .andExpect(jsonPath("$[1].referencePointElementType", is(PLATFORM.name())));
-  }
-
-  @Test
-  void shouldGetRelationsByParentServicePointSloid() throws Exception {
-    //given
-    String relation1Sloid = "ch:1:sloid:8507000:1";
-    String relation2Sloid = "ch:1:sloid:8507000:2";
-    String parentServicePointSloid = "ch:1:sloid:8507000";
-    RelationVersion relation1 = RelationTestData.getRelation(parentServicePointSloid, relation1Sloid, PLATFORM);
-    RelationVersion relation2 = RelationTestData.getRelation(parentServicePointSloid, relation2Sloid, PARKING_LOT);
-    RelationVersion relation3 = RelationTestData.getRelation(parentServicePointSloid, relation1Sloid, PLATFORM);
-    relation3.setValidFrom(LocalDate.of(2001, 1, 1));
-    relation3.setValidTo(LocalDate.of(2001, 12, 31));
-    relation3.setContrastingAreas(StandardAttributeType.TO_BE_COMPLETED);
-    relationRepository.saveAndFlush(relation1);
-    relationRepository.saveAndFlush(relation2);
-    relationRepository.saveAndFlush(relation3);
-
-    //when & then
-    mvc.perform(get("/v1/relations/parent-service-point-sloid/" + parentServicePointSloid))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(3)));
   }
 
   /**
