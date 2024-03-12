@@ -3,8 +3,6 @@ package ch.sbb.prm.directory.service;
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING_LOT;
 
 import ch.sbb.atlas.api.location.SloidType;
-import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
-import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.parkinglot.ParkingLotOverviewModel;
 import ch.sbb.atlas.model.Status;
@@ -111,7 +109,7 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
         ParkingLotVersion::getSloid);
     return mergedVersions.stream()
         .map(parkingLot -> ParkingLotVersionMapper.toOverviewModel(parkingLot,
-            getRecordingStatusIncludingRelation(parkingLot.getSloid(), getParkingLotRecordingStatus(parkingLot))))
+            getRecordingStatusIncludingRelation(parkingLot.getSloid(), parkingLot.getRecordingStatus())))
         .toList();
   }
 
@@ -121,11 +119,4 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
     }
   }
 
-  static RecordingStatus getParkingLotRecordingStatus(ParkingLotVersion version) {
-    if (version.getPlacesAvailable() == BooleanOptionalAttributeType.TO_BE_COMPLETED
-        || version.getPrmPlacesAvailable() == BooleanOptionalAttributeType.TO_BE_COMPLETED) {
-      return RecordingStatus.INCOMPLETE;
-    }
-    return RecordingStatus.COMPLETE;
-  }
 }

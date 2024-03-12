@@ -148,5 +148,4 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
     }
   }
 
-
 }

@@ -14,9 +14,4 @@ public enum ReferencePointElementType {
   TOILET,
   PARKING_LOT,
 
-  @Deprecated(since = "01.01.2024")
-  TICKET_COUNTER,
-
-  @Deprecated(since = "01.01.2024")
-  INFO_DESK,
 }

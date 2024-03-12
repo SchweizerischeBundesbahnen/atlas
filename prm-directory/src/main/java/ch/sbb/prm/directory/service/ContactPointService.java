@@ -1,9 +1,7 @@
 package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.api.location.SloidType;
-import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
-import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointOverviewModel;
 import ch.sbb.atlas.service.OverviewService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
@@ -112,7 +110,7 @@ public class ContactPointService extends PrmRelatableVersionableService<ContactP
         ContactPointVersion::getSloid);
     return mergedVersions.stream()
         .map(contactPoint -> ContactPointVersionMapper.toOverviewModel(contactPoint,
-            getRecordingStatusIncludingRelation(contactPoint.getSloid(), getContactPointRecordingStatus(contactPoint))))
+            getRecordingStatusIncludingRelation(contactPoint.getSloid(), contactPoint.getRecordingStatus())))
         .toList();
   }
 
@@ -122,11 +120,4 @@ public class ContactPointService extends PrmRelatableVersionableService<ContactP
     }
   }
 
-  static RecordingStatus getContactPointRecordingStatus(ContactPointVersion version) {
-    if (version.getWheelchairAccess() == StandardAttributeType.TO_BE_COMPLETED
-        || version.getInductionLoop() == StandardAttributeType.TO_BE_COMPLETED) {
-      return RecordingStatus.INCOMPLETE;
-    }
-    return RecordingStatus.COMPLETE;
-  }
 }
