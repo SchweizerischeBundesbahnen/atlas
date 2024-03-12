@@ -1,4 +1,4 @@
-package ch.sbb.importservice.writer.prm;
+package ch.sbb.importservice.writer.user;
 
 import ch.sbb.atlas.api.user.administration.UserModel;
 import ch.sbb.atlas.api.user.administration.UserPermissionCreateModel;
