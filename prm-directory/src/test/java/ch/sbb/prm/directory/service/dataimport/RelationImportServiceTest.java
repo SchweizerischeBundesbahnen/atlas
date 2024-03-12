@@ -1,5 +1,11 @@
 package ch.sbb.prm.directory.service.dataimport;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.relation.RelationCsvModelContainer;
@@ -20,8 +26,10 @@ import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
-import ch.sbb.prm.directory.service.PlatformService;
 import ch.sbb.prm.directory.service.StopPointService;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,16 +37,6 @@ import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 @IntegrationTest
 @Transactional
@@ -140,18 +138,10 @@ class RelationImportServiceTest {
   }
 
   @Test
-  void testCheckElementExistsForInfoDesk_DoesNotExist() {
+  void testCheckElementExistsForContactPoint_DoesNotExist() {
     String sloid = "ch:1:sloid:76646:1";
     assertThrows(ElementTypeDoesNotExistException.class, () -> {
-      relationImportService.checkElementExists(ReferencePointElementType.INFO_DESK, sloid);
-    });
-  }
-
-  @Test
-  void testCheckElementExistsForTicketCounter_DoesNotExist() {
-    String sloid = "ch:1:sloid:76646:1";
-    assertThrows(ElementTypeDoesNotExistException.class, () -> {
-      relationImportService.checkElementExists(ReferencePointElementType.TICKET_COUNTER, sloid);
+      relationImportService.checkElementExists(ReferencePointElementType.CONTACT_POINT, sloid);
     });
   }
 
@@ -171,11 +161,4 @@ class RelationImportServiceTest {
     });
   }
 
-  @Test
-  void testCheckElementExistsForContactPoint_DoesNotExist() {
-    String sloid = "ch:1:sloid:76646:1";
-    assertThrows(IllegalArgumentException.class, () -> {
-      relationImportService.checkElementExists(ReferencePointElementType.CONTACT_POINT, sloid);
-    });
-  }
 }

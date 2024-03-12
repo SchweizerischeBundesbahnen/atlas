@@ -1,9 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanDeactivateFn, RouterStateSnapshot } from '@angular/router';
 import { DialogService } from '../components/dialog/dialog.service';
+import {FormGroup} from "@angular/forms";
 
 export interface DetailFormComponent {
-  isFormDirty: () => boolean;
+  form?: FormGroup,
 }
 
 @Injectable({
@@ -22,7 +23,7 @@ export class LeaveDirtyFormGuard {
       return true;
     }
 
-    if (component.isFormDirty()) {
+    if (component.form && component.form.dirty) {
       return this.dialogService.confirm({
         title: 'DIALOG.DISCARD_CHANGES_TITLE',
         message: 'DIALOG.LEAVE_SITE',
@@ -34,25 +35,13 @@ export class LeaveDirtyFormGuard {
 
   staysOnSameDetailPage(currentState: RouterStateSnapshot, nextState: RouterStateSnapshot) {
     //if from new to created url
-    const substringAfterLastSlash = this.getSubstringAfterLastSlash(currentState.url);
-    if (substringAfterLastSlash === 'add') {
-      if (
-        this.getSubstringBeforeLastSlash(currentState.url) ===
-        this.getSubstringBeforeLastSlash(nextState.url)
-      ) {
-        return true;
-      }
+    const urlBeforeAdd = currentState.url.substring(0, currentState.url.indexOf('/add'));
+    if (nextState.url.startsWith(urlBeforeAdd)) {
+      return true;
     }
     return currentState.url === nextState.url;
   }
 
-  private getSubstringAfterLastSlash(value: string) {
-    return value.substring(value.lastIndexOf('/') + 1, value.length);
-  }
-
-  private getSubstringBeforeLastSlash(value: string) {
-    return value.substring(0, value.lastIndexOf('/'));
-  }
 }
 
 export const canLeaveDirtyForm: CanDeactivateFn<DetailFormComponent> = (

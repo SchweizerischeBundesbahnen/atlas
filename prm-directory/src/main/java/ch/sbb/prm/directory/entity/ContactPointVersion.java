@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.entity;
 
 import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
+import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
@@ -59,5 +60,13 @@ public class ContactPointVersion extends BasePrmEntityVersion implements Relatab
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private ContactPointType type;
+
+  public RecordingStatus getRecordingStatus() {
+    if (getWheelchairAccess() == StandardAttributeType.TO_BE_COMPLETED
+        || getInductionLoop() == StandardAttributeType.TO_BE_COMPLETED) {
+      return RecordingStatus.INCOMPLETE;
+    }
+    return RecordingStatus.COMPLETE;
+  }
 
 }

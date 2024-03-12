@@ -1,29 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { VersionsHandlingService } from '../../../../../core/versioning/versions-handling.service';
-import {
-  CompleteReferencePointFormGroup,
-  ReferencePointFormGroupBuilder,
-} from './form/reference-point-form-group';
-import { Observable, of, take } from 'rxjs';
-import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
-import { DateRange } from '../../../../../core/versioning/date-range';
-import { FormGroup } from '@angular/forms';
-import { NotificationService } from '../../../../../core/notification/notification.service';
-import { DialogService } from '../../../../../core/components/dialog/dialog.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {VersionsHandlingService} from '../../../../../core/versioning/versions-handling.service';
+import {CompleteReferencePointFormGroup, ReferencePointFormGroupBuilder,} from './form/reference-point-form-group';
+import {DetailFormComponent} from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
+import {DateRange} from '../../../../../core/versioning/date-range';
+import {FormGroup} from '@angular/forms';
+import {NotificationService} from '../../../../../core/notification/notification.service';
 import {
   PersonWithReducedMobilityService,
   ReadReferencePointVersion,
   ReadServicePointVersion,
   ReferencePointVersion,
 } from '../../../../../api';
+import {DetailHelperService, DetailWithCancelEdit} from "../../../../../core/detail/detail-helper.service";
 
 @Component({
   selector: 'app-reference-point',
   templateUrl: './reference-point-detail.component.html',
-  styleUrls: ['./reference-point-detail.component.scss'],
 })
-export class ReferencePointDetailComponent implements OnInit, DetailFormComponent {
+export class ReferencePointDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
   isNew = false;
   referencePoint: ReadReferencePointVersion[] = [];
   selectedVersion!: ReadReferencePointVersion;
@@ -42,7 +37,7 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
     private router: Router,
     private personWithReducedMobilityService: PersonWithReducedMobilityService,
     private notificationService: NotificationService,
-    private dialogService: DialogService,
+    private detailHelperService: DetailHelperService,
   ) {}
 
   ngOnInit(): void {
@@ -94,7 +89,7 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
 
   toggleEdit() {
     if (this.form.enabled) {
-      this.showCancelEditDialog();
+      this.detailHelperService.showCancelEditDialog(this);
     } else {
       this.form.enable();
     }
@@ -141,33 +136,4 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
       });
   }
 
-  private showCancelEditDialog() {
-    this.confirmLeave()
-      .pipe(take(1))
-      .subscribe((confirmed) => {
-        if (confirmed) {
-          if (this.isNew) {
-            this.form.reset();
-            this.router.navigate(['..'], { relativeTo: this.route }).then();
-          } else {
-            this.form.disable();
-          }
-        }
-      });
-  }
-
-  private confirmLeave(): Observable<boolean> {
-    if (this.form.dirty) {
-      return this.dialogService.confirm({
-        title: 'DIALOG.DISCARD_CHANGES_TITLE',
-        message: 'DIALOG.LEAVE_SITE',
-      });
-    }
-    return of(true);
-  }
-
-  //used in combination with canLeaveDirtyForm
-  isFormDirty(): boolean {
-    return this.form && this.form.dirty;
-  }
 }
