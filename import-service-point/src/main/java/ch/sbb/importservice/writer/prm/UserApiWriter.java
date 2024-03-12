@@ -78,9 +78,7 @@ public class UserApiWriter extends BaseApiWriter implements ItemWriter<UserCsvMo
     }
     List<SboidPermissionRestrictionModel> sboidPermissionRestrictionModels = getSboidPermissionRestrictionModels(
         userCsvModel);
-    if (sboidPermissionRestrictionModels != null) {
-      permissionRestrictionModels.addAll(sboidPermissionRestrictionModels);
-    }
+    permissionRestrictionModels.addAll(sboidPermissionRestrictionModels);
   }
 
   private static UserPermissionCreateModel mapForSuperVisor(UserCsvModel userCsvModel, ApplicationType applicationType) {
@@ -113,8 +111,8 @@ public class UserApiWriter extends BaseApiWriter implements ItemWriter<UserCsvMo
 
   private static List<SboidPermissionRestrictionModel> getSboidPermissionRestrictionModels(UserCsvModel userCsvModel) {
 
+    List<SboidPermissionRestrictionModel> sboidPermissionRestrictionModels = new ArrayList<>();
     if (userCsvModel.getSboids() != null) {
-      List<SboidPermissionRestrictionModel> sboidPermissionRestrictionModels = new ArrayList<>();
       String sboidsAsString = userCsvModel.getSboids();
       List<String> sboids = Arrays.stream(sboidsAsString.split(COMMA_SEPARATOR)).toList();
       sboids.forEach(sboid -> sboidPermissionRestrictionModels.add(SboidPermissionRestrictionModel.builder()
@@ -123,7 +121,7 @@ public class UserApiWriter extends BaseApiWriter implements ItemWriter<UserCsvMo
           .build()));
       return sboidPermissionRestrictionModels;
     }
-    return null;
+    return sboidPermissionRestrictionModels;
   }
 
 }
