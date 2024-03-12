@@ -240,10 +240,6 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
     return EMPTY;
   };
 
-  isFormDirty(): boolean {
-    return !!this.form?.dirty;
-  }
-
   checkIfAbbreviationIsAllowed() {
     this.isAbbreviationAllowed = ServicePointAbbreviationAllowList.SBOIDS.some((element) =>
       element.includes(this.selectedVersion!.businessOrganisation),

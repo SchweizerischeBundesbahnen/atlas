@@ -1063,7 +1063,7 @@
       "CONTACT_POINT": "Guichet",
       "TOILET": "Toilettes",
       "PARKING_LOT": "Place de stationnement",
-      "CONNECTION": "Relations "
+      "RELATION": "Relations"
     },
     "STOP_POINTS": {
       "FORM": {
@@ -1152,6 +1152,22 @@
         "ACOUSTIC_INFORMATION": "Haut-parleur (en général, uniquement information sur les perturbations)",
         "TEXT_TO_SPEECH_DEPARTURES": "Système texte-voix, avec les départs uniquement",
         "TEXT_TO_SPEECH_COMPLETE": "Système texte-voix, avec les départs et les informations sur les perturbations"
+      },
+      "STEP_FREE_ACCESS_TYPES": {
+        "TO_BE_COMPLETED": "À compléter",
+        "YES": "Oui",
+        "NO": "Non",
+        "NOT_APPLICABLE": "Non applicable",
+        "YES_WITH_LIFT": "Oui, avec ascenseur",
+        "YES_WITH_RAMP": "Oui, avec rampe"
+      },
+      "TACTILE_VISUAL_MARK_TYPES": {
+        "TO_BE_COMPLETED": "À compléter",
+        "YES": "Oui",
+        "NO": "Non",
+        "NOT_APPLICABLE": "Non applicable",
+        "PARTIALLY": "Partiellement",
+        "WITH_REMOTE_CONTROL": "Avec télécommande"
       }
     },
     "INFO_BOX": {
@@ -1298,6 +1314,16 @@
       "NOTIFICATION": {
         "ADD_SUCCESS": "Le guichet a été ajouté avec succès.",
         "EDIT_SUCCESS": "Le guichet a été enregistré avec succès."
+      }
+    },
+    "RELATIONS": {
+      "RELATION": "Relation",
+      "NO_REFERENCE_POINT": "Veuillez saisir au moins un point de référence.",
+      "STEP_FREE_ACCESS": "Accès sans marche",
+      "TACTIL_VISUAL_MARKS": "Marquages tactilo-visuels",
+      "CONTRASTING_AREAS": "Marquages à fort contraste",
+      "NOTIFICATION": {
+        "EDIT_SUCCESS": "Le relation a été enregistré avec succès."
       }
     }
   }

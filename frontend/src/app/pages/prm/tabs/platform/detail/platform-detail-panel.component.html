@@ -1,0 +1,36 @@
+<atlas-detail-page-container>
+  <div class="font-bold-4xl detail-title mb-3">
+    {{ servicePoint.designationOfficial }} - {{ 'PRM.PLATFORMS.TITLE' | translate }}
+    {{ trafficPoint.designation }}
+  </div>
+  <div *ngIf="!isNew" class="font-xl mb-2">
+      <span data-cy="total-range">
+        <date-range-text [dateRange]="maxValidity"></date-range-text>
+      </span>
+  </div>
+  <div class="d-flex flex-row mb-5">
+    <div class="d-flex flex-column me-5" data-cy="selected-version-sloid">
+      <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.SLOID' | translate }}</div>
+      <div>{{ trafficPoint.sloid }}</div>
+    </div>
+    <div class="d-flex flex-column me-5" data-cy="selected-version-sloid">
+      <div class="font-bold-base">
+        {{ 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION' | translate }}
+      </div>
+      <div>{{ trafficPoint.designation }}</div>
+    </div>
+    <div class="d-flex flex-column" data-cy="stop-point-name">
+      <div class="font-bold-base">
+        {{ 'SEPODI.TRAFFIC_POINT_ELEMENTS.DESIGNATION_OPERATIONAL' | translate }}
+      </div>
+      <div>{{ trafficPoint.designationOperational }}</div>
+    </div>
+  </div>
+
+  <prm-detail-with-relation-tab
+    [isNew]="isNew"
+    [isReduced]="isReduced"
+    detailTitle="PRM.TABS.PLATFORM"
+  ></prm-detail-with-relation-tab>
+
+</atlas-detail-page-container>

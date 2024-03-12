@@ -10,8 +10,8 @@ import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.ToiletVersion;
-import ch.sbb.prm.directory.mapper.ToiletVersionMapper;
 import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
+import ch.sbb.prm.directory.mapper.ToiletVersionMapper;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.repository.ToiletRepository;
 import ch.sbb.prm.directory.search.ToiletSearchRestrictions;
@@ -105,10 +105,10 @@ public class ToiletService extends PrmRelatableVersionableService<ToiletVersion>
     List<ToiletVersion> mergedVersions = OverviewService.mergeVersionsForDisplay(toiletVersions,
         ToiletVersion::getSloid);
     return mergedVersions.stream()
-        .map(ToiletVersionMapper::toOverviewModel)
+        .map(toilet -> ToiletVersionMapper.toOverviewModel(toilet, getRecordingStatusIncludingRelation(toilet.getSloid(),
+            toilet.getRecordingStatus())))
         .toList();
   }
-
 
   public void checkToiletExists(String sloid, String type) {
     if (!toiletRepository.existsBySloid(sloid)) {

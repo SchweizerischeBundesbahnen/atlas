@@ -12,7 +12,7 @@ export class TrafficPointElementResolver {
   ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<Array<ReadTrafficPointElementVersion>> {
-    const sloidParameter = route.paramMap.get('platformSloid') || '';
+    const sloidParameter = route.paramMap.get('sloid') || '';
     return this.trafficPointElementsService.getTrafficPointElement(sloidParameter).pipe(
       catchError(() =>
         this.router

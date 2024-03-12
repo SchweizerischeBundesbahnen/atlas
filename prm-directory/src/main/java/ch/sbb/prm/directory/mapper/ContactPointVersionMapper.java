@@ -1,7 +1,6 @@
 package ch.sbb.prm.directory.mapper;
 
 import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
-import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointOverviewModel;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
@@ -35,7 +34,7 @@ public class ContactPointVersionMapper {
         .build();
   }
 
-  public static ContactPointOverviewModel toOverviewModel(ContactPointVersion version) {
+  public static ContactPointOverviewModel toOverviewModel(ContactPointVersion version, RecordingStatus recordingStatus) {
     return ContactPointOverviewModel.builder()
         .id(version.getId())
         .sloid(version.getSloid())
@@ -53,16 +52,8 @@ public class ContactPointVersionMapper {
         .editor(version.getEditor())
         .editionDate(version.getEditionDate())
         .etagVersion(version.getVersion())
-        .recordingStatus(getRecordingStatus(version))
+        .recordingStatus(recordingStatus)
         .build();
-  }
-
-  private static RecordingStatus getRecordingStatus(ContactPointVersion version) {
-    if (version.getWheelchairAccess() == StandardAttributeType.TO_BE_COMPLETED
-        || version.getInductionLoop() == StandardAttributeType.TO_BE_COMPLETED) {
-      return RecordingStatus.INCOMPLETE;
-    }
-    return RecordingStatus.COMPLETE;
   }
 
   public static ContactPointVersion toEntity(ContactPointVersionModel model) {
