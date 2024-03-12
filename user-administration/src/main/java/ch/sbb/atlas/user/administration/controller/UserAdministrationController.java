@@ -87,7 +87,7 @@ public class UserAdministrationController implements UserAdministrationApiV1 {
     }
     List<UserDisplayNameModel> result = new ArrayList<>();
 
-    // Add all ClientCredential Display Informations
+    // Add all ClientCredential Display Information
     userIds.forEach(userId -> getClientCredentialAlias(userId).ifPresent(result::add));
 
     // Add all User Information
