@@ -5,21 +5,26 @@
 - [ATLAS](#atlas)
 - [Project Versioning](#project-versioning)
 - [Links](#links)
-    * [Localhost](#localhost)
-    * [Development](#development)
-    * [Test](#test)
-    * [Integration](#integration)
-    * [Production](#production)
-    * [Project Infrastructure](#project-infrastructure)
+  * [Localhost](#localhost)
+  * [Development](#development)
+  * [Test](#test)
+  * [Integration](#integration)
+  * [Production](#production)
+  * [Project Infrastructure](#project-infrastructure)
 - [Big Picture Architecture](#big-picture-architecture)
 - [Development](#development-1)
-    * [Spring Batch](#spring-batch)
+  * [Spring Batch](#spring-batch)
 - [Jobs](#jobs)
-    * [Import ServicePoint](#import-servicepoint)
-    * [Import TrafficPoint](#import-trafficpoint)
-    * [Import LoadingPoint](#import-loadingpoint)
-    * [Import Service API calls](#import-service-api-calls)
-    * [Tech Stack](#tech-stack)
+  * [Import ServicePoint](#import-servicepoint)
+  * [Import TrafficPoint](#import-trafficpoint)
+  * [Import LoadingPoint](#import-loadingpoint)
+  * [Import Didok User](#import-didok-user)
+    + [How to](#how-to)
+      - [Import SePoDi Users](#import-sepodi-users)
+      - [Import PRM Users](#import-prm-users)
+  * [Import Service API calls](#import-service-api-calls)
+  * [Tech Stack](#tech-stack)
+  * [Reset Batch](#reset-batch)
 
 <!-- tocstop -->
 
@@ -134,6 +139,48 @@ The import LoadingPoint Job is responsible to:
   there are jobs not completed. When an uncompleted job is found, it will be restarted
 * After a job has been completed (successfully or unsuccessfully) an email notification is sent to TechSupport-ATLAS@sbb.ch
 
+### Import Didok User
+
+The ImportDidokUser Job is responsible for migrating the users defined in Didok to ATLAS.
+This maintenance Job will be executed on time and does not require any scheduling, recovery, etc.. configuration. 
+When the Didok Migration is finished this job will be deleted.
+
+#### How to 
+
+To import the Didok users we need 2 files, one for SePoDi and one for PRM (see the examples 
+[SePoDi_Test.csv](src/main/resources/didok-user/SePoDi_Test.csv),  
+[PRM_Test.csv](src/main/resources/didok-user/PRM_Test.csv)).
+
+:warning: **These 2 files must be regenerated before Production migration**  :warning:
+
+##### Import SePoDi Users
+
+Use the end point **{host}/v1/import/maintenance/didok-sepodi-user** and add to the **form-data** 
+the file [SePoDi_Test.csv](src/main/resources/didok-user/SePoDi_Test.csv) with key **file**
+
+:warning: **Make sure that file and end point are correct: API -> didok-sepodi-user and file contains SePoDi Users**  :warning:
+
+````shell
+curl --location '{host}/import-service-point/v1/import/maintenance/didok-sepodi-user' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer {your-bearer}' \
+--form 'file=@"{filepath}"'
+````
+
+##### Import PRM Users
+
+Use the end point **{host}/v1/import/maintenance/didok-sepodi-user** and add to the **form-data** 
+the file [PRM_Test.csv](src/main/resources/didok-user/PRM_Test.csv) with key **file**
+
+:warning: **Make sure that file and end point are correct: API -> didok-prm-user and file contains PRM Users**  :warning:
+
+````shell
+curl --location '{host}/import-service-point/v1/import/maintenance/didok-prm-user' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer {your-bearer}' \
+--form 'file=@"{filepath}"'
+````
+
 ### Import Service API calls
 
 See [ImportServicePointBatchControllerApiV1.java](src/main/java/ch/sbb/importservice/controller/ImportServicePointBatchController.java)
@@ -145,4 +192,3 @@ See [Tech Stack Documentation](../documentation/tech-stack-service.md)
 ### Reset Batch
 
 See [Batch Reset](../documentation/batch_util.md)
-
