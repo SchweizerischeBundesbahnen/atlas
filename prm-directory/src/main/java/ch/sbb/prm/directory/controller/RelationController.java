@@ -1,7 +1,6 @@
 package ch.sbb.prm.directory.controller;
 
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.relation.ReadRelationVersionModel;
 import ch.sbb.atlas.api.prm.model.relation.RelationVersionModel;
 import ch.sbb.atlas.imports.ItemImportResult;
@@ -13,9 +12,8 @@ import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.mapper.RelationVersionMapper;
 import ch.sbb.prm.directory.search.RelationSearchRestrictions;
 import ch.sbb.prm.directory.service.RelationService;
-import java.util.List;
-
 import ch.sbb.prm.directory.service.dataimport.RelationImportService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -45,24 +43,6 @@ public class RelationController implements RelationApiV1 {
   @Override
   public List<ReadRelationVersionModel> getRelationsBySloid(String sloid) {
     return relationService.getRelationsBySloid(sloid).stream().map(RelationVersionMapper::toModel).toList();
-  }
-
-  @Override
-  public List<ReadRelationVersionModel> getRelationsBySloidAndReferenceType(String sloid, ReferencePointElementType referenceType) {
-    return relationService.getRelationsBySloidAndReferenceType(sloid, referenceType).stream()
-        .map(RelationVersionMapper::toModel).toList();
-  }
-
-  @Override
-  public List<ReadRelationVersionModel> getRelationsByParentServicePointSloid(String parentServicePointSloid) {
-    return relationService.getRelationsByParentServicePointSloid(parentServicePointSloid).stream()
-        .map(RelationVersionMapper::toModel).toList();
-  }
-
-  @Override
-  public List<ReadRelationVersionModel> getRelationsByParentServicePointSloidAndReferenceType(String parentServicePointSloid, ReferencePointElementType referenceType) {
-    return relationService.getRelationsByParentServicePointSloidAndReferenceType(parentServicePointSloid, referenceType).stream()
-        .map(RelationVersionMapper::toModel).toList();
   }
 
   @Override

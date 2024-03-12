@@ -70,10 +70,6 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     private readonly statementShareService: StatementShareService,
   ) {}
 
-  isFormDirty() {
-    return this.form.dirty;
-  }
-
   get isHearingStatusArchived() {
     return TthUtils.isHearingStatusArchived(this.hearingStatus);
   }

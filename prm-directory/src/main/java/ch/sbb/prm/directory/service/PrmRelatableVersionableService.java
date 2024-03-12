@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.api.location.SloidType;
+import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
@@ -57,6 +58,22 @@ public abstract class PrmRelatableVersionableService<T extends Relatable & PrmVe
         relationService.save(relationVersion);
       });
     }
+  }
+
+  protected RecordingStatus getRecordingStatusIncludingRelation(String elementSloid, RecordingStatus elementRecordingStatus) {
+    List<RelationVersion> relations = relationService.getRelationsBySloid(elementSloid);
+
+    if (relations.isEmpty()) {
+      return elementRecordingStatus;
+    }
+
+    boolean relationsIncomplete = relations.stream()
+        .anyMatch(relation -> relation.getRecordingStatus() == RecordingStatus.INCOMPLETE);
+
+    if (relationsIncomplete) {
+      return RecordingStatus.INCOMPLETE;
+    }
+    return elementRecordingStatus;
   }
 
 }

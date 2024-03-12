@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.entity;
 
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
+import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.prm.directory.service.PrmVersionable;
@@ -51,5 +52,13 @@ public class ParkingLotVersion extends BasePrmEntityVersion implements Relatable
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private BooleanOptionalAttributeType prmPlacesAvailable;
+
+  public RecordingStatus getRecordingStatus() {
+    if (getPlacesAvailable() == BooleanOptionalAttributeType.TO_BE_COMPLETED
+        || getPrmPlacesAvailable() == BooleanOptionalAttributeType.TO_BE_COMPLETED) {
+      return RecordingStatus.INCOMPLETE;
+    }
+    return RecordingStatus.COMPLETE;
+  }
 
 }
