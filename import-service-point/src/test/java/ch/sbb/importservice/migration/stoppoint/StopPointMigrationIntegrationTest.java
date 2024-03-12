@@ -20,20 +20,19 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
-@Disabled
+//@Disabled
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StopPointMigrationIntegrationTest {
 
-  private static final String DIDOK_STOP_PLACE_CSV_FILE = "PRM_STOP_PLACES_20240205013123.csv";
-  private static final String ATLAS_STOP_POINT_CSV_FILE = "full-stop-point-2024-02-05.csv";
+  private static final String DIDOK_STOP_PLACE_CSV_FILE = "PRM_STOP_PLACES_20240312011244.csv";
+  private static final String ATLAS_STOP_POINT_CSV_FILE = "full-stop_point-2024-03-12.csv";
   private static final List<StopPointCsvModel> didokStopPointCsvLines = new ArrayList<>();
   private static final List<StopPointVersionCsvModel> atlasStopPointCsvLines = new ArrayList<>();
 
