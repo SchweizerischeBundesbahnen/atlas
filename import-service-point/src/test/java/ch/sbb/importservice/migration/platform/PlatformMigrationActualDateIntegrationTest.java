@@ -16,21 +16,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
-@Disabled
+//@Disabled
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PlatformMigrationActualDateIntegrationTest {
 
-  private static final String DIDOK_PLATFORM_CSV_FILE = "PRM_PLATFORMS_20240215013406.csv";
-  private static final String ATLAS_PLATFORM_CSV_FILE = "actual-date-platform-2024-02-15.csv";
-  private static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 2, 15);
+  private static final String DIDOK_PLATFORM_CSV_FILE = "PRM_PLATFORMS_20240312011422.csv";
+  private static final String ATLAS_PLATFORM_CSV_FILE = "actual-date-platform-2024-03-12.csv";
+  private static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 3, 12);
 
   private static final List<PlatformCsvModel> didokPlatformCsvLines = new ArrayList<>();
   private static final List<PlatformVersionCsvModel> atlasPlatformCsvLines = new ArrayList<>();
