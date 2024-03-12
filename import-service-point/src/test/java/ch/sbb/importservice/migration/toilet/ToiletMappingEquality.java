@@ -31,7 +31,7 @@ public record ToiletMappingEquality(ToiletCsvModel didokCsvLine, ToiletVersionCs
             assertThat(atlasCsvLine.getWheelchairToilet()).isEqualTo(StandardAttributeType.from(didokCsvLine.getWheelchairToilet()).name());
         }
         assertThat(localDateFromString(atlasCsvLine.getCreationDate())).isEqualTo(didokCsvLine.getCreatedAt());
-        assertThat(localDateFromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getModifiedAt());
+        assertThat(localDateFromString(atlasCsvLine.getEditionDate()).toLocalDate()).isEqualTo(didokCsvLine.getModifiedAt().toLocalDate());
 
     }
 

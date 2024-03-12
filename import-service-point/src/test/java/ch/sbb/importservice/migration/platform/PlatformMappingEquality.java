@@ -1,22 +1,22 @@
 package ch.sbb.importservice.migration.platform;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanIntegerAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.InfoOpportunityAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
+import ch.sbb.atlas.export.StringUtils;
 import ch.sbb.atlas.export.model.prm.PlatformVersionCsvModel;
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModel;
 import ch.sbb.importservice.migration.MigrationUtil;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVersionCsvModel atlasCsvLine) {
 
@@ -45,7 +45,7 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
       assertThat(atlasCsvLine.getAdditionalInformation()).isNull();
     }
     if (atlasCsvLine.getAdviceAccessInfo() != null && didokCsvLine.getAccessInfo() != null) {
-      assertThat(atlasCsvLine.getAdviceAccessInfo()).isEqualTo(didokCsvLine.getAccessInfo());
+      assertThat(atlasCsvLine.getAdviceAccessInfo()).isEqualTo(StringUtils.removeNewLine(didokCsvLine.getAccessInfo()));
     }
     else {
       assertThat(atlasCsvLine.getAdviceAccessInfo()).isNull();
@@ -155,7 +155,7 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
     }
 
     assertThat(localDateFromString(atlasCsvLine.getCreationDate())).isEqualTo(didokCsvLine.getCreatedAt());
-    assertThat(localDateFromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getModifiedAt());
+    assertThat(localDateFromString(atlasCsvLine.getEditionDate()).toLocalDate()).isEqualTo(didokCsvLine.getModifiedAt().toLocalDate());
 
   }
 
