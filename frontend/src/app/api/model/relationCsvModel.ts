@@ -11,11 +11,21 @@
  */
 
 
-export type HearingStatus = 'PLANNED' | 'ACTIVE' | 'ARCHIVED';
-
-export const HearingStatus = {
-    Planned: 'PLANNED' as HearingStatus,
-    Active: 'ACTIVE' as HearingStatus,
-    Archived: 'ARCHIVED' as HearingStatus
-};
+export interface RelationCsvModel { 
+    VALID_FROM?: Date;
+    VALID_TO?: Date;
+    ADD_DATE?: string;
+    ADDED_BY?: string;
+    MODIFIED_DATE?: string;
+    MODIFIED_BY?: string;
+    EL_SLOID?: string;
+    RP_SLOID?: string;
+    DIDOK_CODE?: number;
+    TACT_VISUAL_MARKS?: number;
+    CONTRASTING_AREAS?: number;
+    STEP_FREE_ACCESS?: number;
+    EL_STATUS?: number;
+    EL_TYPE?: string;
+    DS_SLOID?: string;
+}
 
