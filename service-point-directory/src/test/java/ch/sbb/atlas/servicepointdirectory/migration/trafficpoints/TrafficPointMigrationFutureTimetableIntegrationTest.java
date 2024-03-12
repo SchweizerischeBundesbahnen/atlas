@@ -14,12 +14,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-@Disabled
+//@Disabled
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -27,7 +26,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 
   private static final String DIDOK_CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_FUTURE_TIMETABLE_V_1_20240312012248.csv";
   private static final String ATLAS_CSV_FILE = "future_timetable-world-traffic_point-2024-03-12.csv";
-  private static final LocalDate FUTURE_TIMETABLE_DATE = LocalDate.of(2023, 12, 10);
+  private static final LocalDate FUTURE_TIMETABLE_DATE = LocalDate.of(2024, 12, 15);
 
   private static final List<TrafficPointAtlasCsvModel> trafficPointElementCsvModels = new ArrayList<>();
   private static final List<TrafficPointDidokCsvModel> didokCsvLines = new ArrayList<>();
