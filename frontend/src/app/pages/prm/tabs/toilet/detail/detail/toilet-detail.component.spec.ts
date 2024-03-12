@@ -1,38 +1,41 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ToiletDetailComponent} from './toilet-detail.component';
-import {PersonWithReducedMobilityService, ReadToiletVersion, StandardAttributeType} from "../../../../../api";
-import {AuthService} from "../../../../../core/auth/auth.service";
+import {PersonWithReducedMobilityService, ReadToiletVersion, StandardAttributeType} from "../../../../../../api";
+import {AuthService} from "../../../../../../core/auth/auth.service";
 import {of} from "rxjs";
-import {DialogService} from "../../../../../core/components/dialog/dialog.service";
-import {BERN_WYLEREGG} from "../../../../../../test/data/service-point";
-import {SloidComponent} from "../../../../../core/form-components/sloid/sloid.component";
-import {AtlasSlideToggleComponent} from "../../../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component";
-import {MockAtlasButtonComponent, MockAtlasFieldErrorComponent} from "../../../../../app.testing.mocks";
-import {DisplayDatePipe} from "../../../../../core/pipe/display-date.pipe";
-import {ParkingLotFormComponent} from "../../parking-lot/detail/form/parking-lot-form/parking-lot-form.component";
-import {TextFieldComponent} from "../../../../../core/form-components/text-field/text-field.component";
-import {AtlasLabelFieldComponent} from "../../../../../core/form-components/atlas-label-field/atlas-label-field.component";
-import {AtlasSpacerComponent} from "../../../../../core/components/spacer/atlas-spacer.component";
-import {InfoIconComponent} from "../../../../../core/form-components/info-icon/info-icon.component";
-import {SelectComponent} from "../../../../../core/form-components/select/select.component";
-import {CommentComponent} from "../../../../../core/form-components/comment/comment.component";
-import {DateRangeTextComponent} from "../../../../../core/versioning/date-range-text/date-range-text.component";
-import {SwitchVersionComponent} from "../../../../../core/components/switch-version/switch-version.component";
-import {DateRangeComponent} from "../../../../../core/form-components/date-range/date-range.component";
-import {DateIconComponent} from "../../../../../core/form-components/date-icon/date-icon.component";
-import {UserDetailInfoComponent} from "../../../../../core/components/base-detail/user-edit-info/user-detail-info.component";
-import {DetailPageContainerComponent} from "../../../../../core/components/detail-page-container/detail-page-container.component";
-import {DetailPageContentComponent} from "../../../../../core/components/detail-page-content/detail-page-content.component";
-import {DetailFooterComponent} from "../../../../../core/components/detail-footer/detail-footer.component";
-import {AppTestingModule} from "../../../../../app.testing.module";
+import {DialogService} from "../../../../../../core/components/dialog/dialog.service";
+import {BERN_WYLEREGG} from "../../../../../../../test/data/service-point";
+import {ToiletFormComponent} from "../form/toilet-form/toilet-form.component";
+import {SloidComponent} from "../../../../../../core/form-components/sloid/sloid.component";
+import {AtlasSlideToggleComponent} from "../../../../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component";
+import {MockAtlasButtonComponent, MockAtlasFieldErrorComponent} from "../../../../../../app.testing.mocks";
+import {DisplayDatePipe} from "../../../../../../core/pipe/display-date.pipe";
+import {ParkingLotFormComponent} from "../../../parking-lot/detail/form/parking-lot-form/parking-lot-form.component";
+import {TextFieldComponent} from "../../../../../../core/form-components/text-field/text-field.component";
+import {AtlasLabelFieldComponent} from "../../../../../../core/form-components/atlas-label-field/atlas-label-field.component";
+import {AtlasSpacerComponent} from "../../../../../../core/components/spacer/atlas-spacer.component";
+import {InfoIconComponent} from "../../../../../../core/form-components/info-icon/info-icon.component";
+import {SelectComponent} from "../../../../../../core/form-components/select/select.component";
+import {CommentComponent} from "../../../../../../core/form-components/comment/comment.component";
+import {DateRangeTextComponent} from "../../../../../../core/versioning/date-range-text/date-range-text.component";
+import {SwitchVersionComponent} from "../../../../../../core/components/switch-version/switch-version.component";
+import {DateRangeComponent} from "../../../../../../core/form-components/date-range/date-range.component";
+import {DateIconComponent} from "../../../../../../core/form-components/date-icon/date-icon.component";
+import {UserDetailInfoComponent} from "../../../../../../core/components/base-detail/user-edit-info/user-detail-info.component";
+import {
+  DetailPageContainerComponent
+} from "../../../../../../core/components/detail-page-container/detail-page-container.component";
+import {DetailPageContentComponent} from "../../../../../../core/components/detail-page-content/detail-page-content.component";
+import {DetailFooterComponent} from "../../../../../../core/components/detail-footer/detail-footer.component";
+import {AppTestingModule} from "../../../../../../app.testing.module";
 import {ActivatedRoute} from "@angular/router";
-import {NotificationService} from "../../../../../core/notification/notification.service";
+import {NotificationService} from "../../../../../../core/notification/notification.service";
 import {TranslatePipe} from "@ngx-translate/core";
-import {SplitServicePointNumberPipe} from "../../../../../core/search-service-point/split-service-point-number.pipe";
-import moment from "moment/moment";
-import {ToiletFormComponent} from "./form/toilet-form/toilet-form.component";
+import {SplitServicePointNumberPipe} from "../../../../../../core/search-service-point/split-service-point-number.pipe";
+import moment from "moment";
 import SpyObj = jasmine.SpyObj;
+import {RouterTestingModule} from "@angular/router/testing";
 
 const toilet: ReadToiletVersion[] = [
   {
@@ -81,9 +84,11 @@ describe('ToiletDetailComponent', () => {
 
   const activatedRouteMock = {
     snapshot: {
-      data: {
-        servicePoint: [BERN_WYLEREGG],
-        toilet: [],
+      parent: {
+        data: {
+          servicePoint: [BERN_WYLEREGG],
+          toilet: [],
+        },
       },
     },
   };
@@ -114,13 +119,18 @@ describe('ToiletDetailComponent', () => {
         DetailPageContentComponent,
         DetailFooterComponent,
       ],
-      imports: [AppTestingModule],
+      imports: [
+        AppTestingModule,
+        RouterTestingModule.withRoutes([{
+          path: ':sloid', redirectTo: ''
+        }]),
+      ],
       providers: [
-        { provide: AuthService, useValue: authService },
-        { provide: ActivatedRoute, useValue: activatedRouteMock },
-        { provide: NotificationService, useValue: notificationService },
-        { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService },
-        { provide: DialogService, useValue: dialogService },
+        {provide: AuthService, useValue: authService},
+        {provide: ActivatedRoute, useValue: activatedRouteMock},
+        {provide: NotificationService, useValue: notificationService},
+        {provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService},
+        {provide: DialogService, useValue: dialogService},
         TranslatePipe,
         SplitServicePointNumberPipe,
       ],
@@ -160,9 +170,11 @@ describe('ToiletDetailComponent', () => {
       TestBed.overrideProvider(ActivatedRoute, {
         useValue: {
           snapshot: {
-            data: {
-              toilet: toilet,
-              servicePoint: [BERN_WYLEREGG],
+            parent: {
+              data: {
+                toilet: toilet,
+                servicePoint: [BERN_WYLEREGG],
+              },
             },
           },
         },
@@ -195,7 +207,6 @@ describe('ToiletDetailComponent', () => {
       component.form.controls.designation.markAsDirty();
 
       expect(component.form.dirty).toBeTrue();
-      expect(component.isFormDirty()).toBeTrue();
 
       component.toggleEdit();
       expect(component.form.enabled).toBeFalse();

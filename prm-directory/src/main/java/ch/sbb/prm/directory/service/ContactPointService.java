@@ -109,7 +109,8 @@ public class ContactPointService extends PrmRelatableVersionableService<ContactP
     List<ContactPointVersion> mergedVersions = OverviewService.mergeVersionsForDisplay(parkingLotVersions,
         ContactPointVersion::getSloid);
     return mergedVersions.stream()
-        .map(ContactPointVersionMapper::toOverviewModel)
+        .map(contactPoint -> ContactPointVersionMapper.toOverviewModel(contactPoint,
+            getRecordingStatusIncludingRelation(contactPoint.getSloid(), contactPoint.getRecordingStatus())))
         .toList();
   }
 
@@ -118,4 +119,5 @@ public class ContactPointService extends PrmRelatableVersionableService<ContactP
       throw new ElementTypeDoesNotExistException(sloid, type);
     }
   }
+
 }

@@ -108,7 +108,8 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
     List<ParkingLotVersion> mergedVersions = OverviewService.mergeVersionsForDisplay(parkingLotVersions,
         ParkingLotVersion::getSloid);
     return mergedVersions.stream()
-        .map(ParkingLotVersionMapper::toOverviewModel)
+        .map(parkingLot -> ParkingLotVersionMapper.toOverviewModel(parkingLot,
+            getRecordingStatusIncludingRelation(parkingLot.getSloid(), parkingLot.getRecordingStatus())))
         .toList();
   }
 
@@ -117,4 +118,5 @@ public class ParkingLotService extends PrmRelatableVersionableService<ParkingLot
       throw new ElementTypeDoesNotExistException(sloid, type);
     }
   }
+
 }
