@@ -2,8 +2,8 @@ package ch.sbb.importservice.service.csv;
 
 import ch.sbb.atlas.exception.CsvException;
 import ch.sbb.atlas.imports.DidokCsvMapper;
-import ch.sbb.atlas.imports.user.UserCsvModel;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.importservice.entity.user.UserCsvModel;
 import com.fasterxml.jackson.databind.MappingIterator;
 import java.io.BufferedReader;
 import java.io.File;
@@ -28,7 +28,7 @@ public class DidokUserCsvService {
     return csvModelsToUpdate;
   }
 
-  public List<UserCsvModel> getCsvModelsToUpdate(File importFile) {
+  private List<UserCsvModel> getCsvModelsToUpdate(File importFile) {
     try (BufferedReader bufferedReader = new BufferedReader(new FileReader(importFile, StandardCharsets.UTF_8))) {
 
       List<String> csvLinesToProcess = new ArrayList<>(getLines(bufferedReader));

@@ -1,4 +1,4 @@
-package ch.sbb.atlas.imports.user;
+package ch.sbb.importservice.entity.user;
 
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

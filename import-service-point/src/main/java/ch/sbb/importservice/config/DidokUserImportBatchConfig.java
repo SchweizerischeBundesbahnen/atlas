@@ -2,8 +2,8 @@ package ch.sbb.importservice.config;
 
 import static ch.sbb.importservice.utils.JobDescriptionConstants.IMPORT_DIDOK_USER_CSV_JOB_NAME;
 
-import ch.sbb.atlas.imports.user.UserCsvModel;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.importservice.entity.user.UserCsvModel;
 import ch.sbb.importservice.listener.JobCompletionListener;
 import ch.sbb.importservice.listener.StepTracerListener;
 import ch.sbb.importservice.reader.ThreadSafeListItemReader;
