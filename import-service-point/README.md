@@ -147,16 +147,16 @@ When the Didok Migration is finished this job will be deleted.
 
 #### How to 
 
-To import the Didok users we need 2 files, one for SePoDi and one for PRM (see the examples 
-[SePoDi_Test.csv](src/main/resources/didok-user/SePoDi_Test.csv),  
-[PRM_Test.csv](src/main/resources/didok-user/PRM_Test.csv)).
+To import the Didok users we need 2 files, one for SePoDi and one for PRM (see the examples
+[SePoDi_Test.csv](src/test/resources/SePoDi_Test.csv) ,  
+[PRM_Test.csv](src/test/resources/PRM_Test.csv)).
 
 :warning: **These 2 files must be regenerated before Production migration**  :warning:
 
 ##### Import SePoDi Users
 
 Use the end point **{host}/v1/import/maintenance/didok-sepodi-user** and add to the **form-data** 
-the file [SePoDi_Test.csv](src/main/resources/didok-user/SePoDi_Test.csv) with key **file**
+the file [SePoDi_Test.csv](src/test/resources/SePoDi_Test.csv) with key **file**
 
 :warning: **Make sure that file and end point are correct: API -> didok-sepodi-user and file contains SePoDi Users**  :warning:
 
@@ -169,8 +169,8 @@ curl --location '{host}/import-service-point/v1/import/maintenance/didok-sepodi-
 
 ##### Import PRM Users
 
-Use the end point **{host}/v1/import/maintenance/didok-sepodi-user** and add to the **form-data** 
-the file [PRM_Test.csv](src/main/resources/didok-user/PRM_Test.csv) with key **file**
+Use the end point **{host}/v1/import/maintenance/didok-pmr-user** and add to the **form-data** 
+the file [PRM_Test.csv](src/test/resources/PRM_Test.csv) with key **file**
 
 :warning: **Make sure that file and end point are correct: API -> didok-prm-user and file contains PRM Users**  :warning:
 
