@@ -8,7 +8,7 @@ import ch.sbb.atlas.imports.prm.referencepoint.ReferencePointImportRequestModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.ReferencePointApiV1;
-import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
+import ch.sbb.prm.directory.controller.model.ReferencePointRequestParams;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.mapper.ReferencePointVersionMapper;
 import ch.sbb.prm.directory.search.ReferencePointSearchRestrictions;
@@ -31,10 +31,10 @@ public class ReferencePointController implements ReferencePointApiV1 {
 
   @Override
   public Container<ReadReferencePointVersionModel> getReferencePoints(Pageable pageable,
-      PrmObjectRequestParams prmObjectRequestParams) {
+      ReferencePointRequestParams referencePointRequestParams) {
     ReferencePointSearchRestrictions searchRestrictions = ReferencePointSearchRestrictions.builder()
         .pageable(pageable)
-        .prmObjectRequestParams(prmObjectRequestParams)
+        .referencePointRequestParams(referencePointRequestParams)
         .build();
 
     Page<ReferencePointVersion> platformVersions = referencePointService.findAll(searchRestrictions);
