@@ -159,6 +159,48 @@ import org.springframework.data.domain.Sort;
   }
 
   @Test
+  void shouldFindByParentServicePointSloids() {
+    // given
+    servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
+    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
+    trafficPointElementService.save(trafficPointElementVersion);
+
+    // when
+    TrafficPointElementSearchRestrictions searchRestrictions =
+        TrafficPointElementSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
+                .parentServicePointSloids(List.of("ch:1:sloid:1400015"))
+                .build())
+            .build();
+    Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
+
+    // then
+    assertThat(result.getContent()).hasSize(1);
+  }
+
+  @Test
+  void shouldNotFindByParentServicePointSloids() {
+    // given
+    servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
+    TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getTrafficPoint();
+    trafficPointElementService.save(trafficPointElementVersion);
+
+    // when
+    TrafficPointElementSearchRestrictions searchRestrictions =
+        TrafficPointElementSearchRestrictions.builder()
+            .pageable(Pageable.unpaged())
+            .trafficPointElementRequestParams(TrafficPointElementRequestParams.builder()
+                .parentServicePointSloids(List.of("ch:1:sloid:1400018"))
+                .build())
+            .build();
+    Page<TrafficPointElementVersion> result = trafficPointElementService.findAll(searchRestrictions);
+
+    // then
+    assertThat(result.getContent()).isEmpty();
+  }
+
+  @Test
   void shouldFindByServicePointNumberUicCountryCodes() {
     // given
     servicePointVersionRepository.save(TrafficPointTestData.testServicePointForTrafficPoint());
