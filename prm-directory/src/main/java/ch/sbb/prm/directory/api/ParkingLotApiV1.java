@@ -9,6 +9,7 @@ import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.parkinglot.ParkingLotImportRequestModel;
 import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
+import ch.sbb.prm.directory.entity.BasePrmEntityVersion.Fields;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -34,7 +35,7 @@ public interface ParkingLotApiV1 {
   @GetMapping
   @PageableAsQueryParam
   Container<ReadParkingLotVersionModel> getParkingLots(
-      @Parameter(hidden = true) @PageableDefault(sort = {BasePrmEntityVersion.Fields.number,
+      @Parameter(hidden = true) @PageableDefault(sort = {Fields.sloid,
           BasePrmEntityVersion.Fields.validFrom}) Pageable pageable,
       @Valid @ParameterObject PrmObjectRequestParams prmObjectRequestParams);
 
