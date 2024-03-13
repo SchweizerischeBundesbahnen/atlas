@@ -391,40 +391,68 @@ class PrmChangeRecordingVariantServiceTest extends BasePrmServiceTest {
     referencePointVersion.setParentServicePointSloid(stopPointVersion.getParentServicePointSloid());
     referencePointRepository.save(referencePointVersion);
 
-    PlatformVersion platformVersion1 = PlatformTestData.getCompletePlatformVersion();
-    platformVersion1.setParentServicePointSloid(stopPointVersion.getParentServicePointSloid());
-    platformRepository.saveAndFlush(platformVersion1);
+    PlatformVersion platformVersionA1 = PlatformTestData.getCompletePlatformVersion();
+    platformVersionA1.setParentServicePointSloid(stopPointVersion.getParentServicePointSloid());
+    platformRepository.saveAndFlush(platformVersionA1);
 
-    PlatformVersion platformVersion2 = PlatformTestData.getCompletePlatformVersion();
-    platformVersion2.setValidFrom(LocalDate.of(2001, 1, 1));
-    platformVersion2.setValidTo(LocalDate.of(2001, 12, 31));
-    platformVersion2.setInclination(777.77);
-    platformVersion2.setParentServicePointSloid(stopPointVersion.getParentServicePointSloid());
-    platformRepository.saveAndFlush(platformVersion2);
+    PlatformVersion platformVersionA2 = PlatformTestData.getCompletePlatformVersion();
+    platformVersionA2.setValidFrom(LocalDate.of(2001, 1, 1));
+    platformVersionA2.setValidTo(LocalDate.of(2001, 12, 31));
+    platformVersionA2.setInclination(777.77);
+    platformVersionA2.setParentServicePointSloid(stopPointVersion.getParentServicePointSloid());
+    platformRepository.saveAndFlush(platformVersionA2);
 
-    PlatformVersion platformVersion3 = PlatformTestData.getCompletePlatformVersion();
-    platformVersion3.setValidFrom(LocalDate.of(2002, 1, 1));
-    platformVersion3.setValidTo(LocalDate.of(2002, 12, 31));
-    platformVersion3.setInclination(666.77);
-    platformVersion3.setParentServicePointSloid(stopPointVersion.getParentServicePointSloid());
-    platformRepository.saveAndFlush(platformVersion3);
+    PlatformVersion platformVersionA3 = PlatformTestData.getCompletePlatformVersion();
+    platformVersionA3.setValidFrom(LocalDate.of(2002, 1, 1));
+    platformVersionA3.setValidTo(LocalDate.of(2002, 12, 31));
+    platformVersionA3.setInclination(666.77);
+    platformVersionA3.setParentServicePointSloid(stopPointVersion.getParentServicePointSloid());
+    platformRepository.saveAndFlush(platformVersionA3);
+
+    PlatformVersion platformVersionB1 = PlatformTestData.getCompletePlatformVersion();
+    platformVersionB1.setParentServicePointSloid(stopPointVersion.getParentServicePointSloid());
+    String sloidVersionB = "ch:1:slioid:321";
+    platformVersionB1.setSloid(sloidVersionB);
+    platformRepository.saveAndFlush(platformVersionB1);
+
+    PlatformVersion platformVersionB2 = PlatformTestData.getCompletePlatformVersion();
+    platformVersionB2.setValidFrom(LocalDate.of(2001, 1, 1));
+    platformVersionB2.setValidTo(LocalDate.of(2001, 12, 31));
+    platformVersionB2.setInclination(777.77);
+    platformVersionB2.setSloid(sloidVersionB);
+    platformVersionB2.setParentServicePointSloid(stopPointVersion.getParentServicePointSloid());
+    platformRepository.saveAndFlush(platformVersionB2);
+
+    PlatformVersion platformVersionB3 = PlatformTestData.getCompletePlatformVersion();
+    platformVersionB3.setValidFrom(LocalDate.of(2002, 1, 1));
+    platformVersionB3.setValidTo(LocalDate.of(2002, 12, 31));
+    platformVersionB3.setInclination(666.77);
+    platformVersionB3.setSloid(sloidVersionB);
+    platformVersionB3.setParentServicePointSloid(stopPointVersion.getParentServicePointSloid());
+    platformRepository.saveAndFlush(platformVersionB3);
 
     //when
-    prmChangeRecordingVariantService.platformChangeRecordingVariant(platformVersion1.getParentServicePointSloid());
+    prmChangeRecordingVariantService.platformChangeRecordingVariant(platformVersionB1.getParentServicePointSloid());
 
     //then
     List<PlatformVersion> results = platformRepository.findByParentServicePointSloid(
         stopPointVersion.getParentServicePointSloid());
 
-    assertPlatformContents(platformVersion1, results);
+    assertThat(results).hasSize(2);
+    assertPlatform(results.get(0));
+    assertPlatform(results.get(1));
   }
 
   private static void assertPlatformContents(PlatformVersion platformVersion1, List<PlatformVersion> results) {
     assertThat(results).hasSize(1);
     PlatformVersion result = results.get(0);
-    assertThat(result).isNotNull();
     assertThat(result.getSloid()).isEqualTo(platformVersion1.getSloid());
     assertThat(result.getParentServicePointSloid()).isEqualTo(platformVersion1.getParentServicePointSloid());
+    assertPlatform(result);
+  }
+
+  private static void assertPlatform(PlatformVersion result) {
+    assertThat(result).isNotNull();
     assertThat(result.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(result.getValidFrom()).isEqualTo(LocalDate.of(2000, 1, 1));
     assertThat(result.getValidTo()).isEqualTo(LocalDate.of(2002, 12, 31));
