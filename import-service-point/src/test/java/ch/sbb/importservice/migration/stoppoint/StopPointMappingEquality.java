@@ -117,8 +117,12 @@ public record StopPointMappingEquality(StopPointCsvModel didokCsvLine, StopPoint
     assertThat(dateFromString(atlasCsvLine.getValidFrom())).isEqualTo(didokCsvLine.getValidFrom());
     assertThat(dateFromString(atlasCsvLine.getValidTo())).isEqualTo(didokCsvLine.getValidTo());
     assertThat(localDateFromString(atlasCsvLine.getCreationDate())).isEqualTo(didokCsvLine.getCreatedAt());
-    assertThat(localDateFromString(atlasCsvLine.getEditionDate()).toLocalDate()).isEqualTo(didokCsvLine.getModifiedAt().toLocalDate());
-
+    if (didokCsvLine.getModifiedAt().toLocalDate().equals(LocalDateTime.now().toLocalDate())) {
+      assertThat(localDateFromString(atlasCsvLine.getEditionDate()).toLocalDate())
+          .isEqualTo(StopPointMigrationActualDateIntegrationTest.ACTUAL_DATE);
+    } else {
+      assertThat(localDateFromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getModifiedAt());
+    }
   }
 
   String mapInteroperableFromDidok(Integer integer) {
