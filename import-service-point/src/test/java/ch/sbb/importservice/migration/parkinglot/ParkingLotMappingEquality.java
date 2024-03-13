@@ -26,8 +26,12 @@ public record ParkingLotMappingEquality(ParkingLotCsvModel didokCsvLine, Parking
         assertThat(atlasCsvLine.getPrmPlacesAvailable().getRank()).isEqualTo(didokCsvLine.getPrmPlacesAvailable());
 
         assertThat(localDateFromString(atlasCsvLine.getCreationDate())).isEqualTo(didokCsvLine.getCreatedAt());
-        assertThat(localDateFromString(atlasCsvLine.getEditionDate()).toLocalDate()).isEqualTo(didokCsvLine.getModifiedAt().toLocalDate());
-
+        if (didokCsvLine.getModifiedAt().toLocalDate().equals(LocalDateTime.now().toLocalDate())) {
+            assertThat(localDateFromString(atlasCsvLine.getEditionDate()).toLocalDate())
+                .isEqualTo(ParkingLotMigrationActualDateIntegrationTest.ACTUAL_DATE);
+        } else {
+            assertThat(localDateFromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getModifiedAt());
+        }
     }
 
     public LocalDateTime localDateFromString(String string) {
