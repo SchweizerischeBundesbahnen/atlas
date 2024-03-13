@@ -31,8 +31,12 @@ public record ReferencePointMappingEquality(ReferencePointCsvModel didokCsvLine,
             assertThat(atlasCsvLine.getRpType()).isEqualTo(ReferencePointAttributeType.of(didokCsvLine.getRpType()).name());
         }
         assertThat(localDateFromString(atlasCsvLine.getCreationDate())).isEqualTo(didokCsvLine.getCreatedAt());
-        assertThat(localDateFromString(atlasCsvLine.getEditionDate()).toLocalDate()).isEqualTo(didokCsvLine.getModifiedAt().toLocalDate());
-
+        if (didokCsvLine.getModifiedAt().toLocalDate().equals(LocalDateTime.now().toLocalDate())) {
+            assertThat(localDateFromString(atlasCsvLine.getEditionDate()).toLocalDate())
+                .isEqualTo(ReferencePointMigrationActualDateIntegrationTest.ACTUAL_DATE);
+        } else {
+            assertThat(localDateFromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getModifiedAt());
+        }
     }
 
     public LocalDateTime localDateFromString(String string) {

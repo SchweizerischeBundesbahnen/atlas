@@ -31,8 +31,12 @@ public record ToiletMappingEquality(ToiletCsvModel didokCsvLine, ToiletVersionCs
             assertThat(atlasCsvLine.getWheelchairToilet()).isEqualTo(StandardAttributeType.from(didokCsvLine.getWheelchairToilet()).name());
         }
         assertThat(localDateFromString(atlasCsvLine.getCreationDate())).isEqualTo(didokCsvLine.getCreatedAt());
-        assertThat(localDateFromString(atlasCsvLine.getEditionDate()).toLocalDate()).isEqualTo(didokCsvLine.getModifiedAt().toLocalDate());
-
+        if (didokCsvLine.getModifiedAt().toLocalDate().equals(LocalDateTime.now().toLocalDate())) {
+            assertThat(localDateFromString(atlasCsvLine.getEditionDate()).toLocalDate())
+                .isEqualTo(ToiletMigrationActualDateIntegrationTest.ACTUAL_DATE);
+        } else {
+            assertThat(localDateFromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getModifiedAt());
+        }
     }
 
     public LocalDateTime localDateFromString(String string) {
