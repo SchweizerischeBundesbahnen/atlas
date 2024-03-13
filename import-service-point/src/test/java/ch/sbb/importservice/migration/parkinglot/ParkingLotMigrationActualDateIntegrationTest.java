@@ -30,7 +30,7 @@ public class ParkingLotMigrationActualDateIntegrationTest {
 
     private static final String DIDOK_PARKING_LOT_CSV_FILE = "PRM_PARKING_LOTS_20240312011813.csv";
     private static final String ATLAS_PARKING_LOT_CSV_FILE = "actual-date-parking_lot-2024-03-12.csv";
-    private static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 2, 15);
+    static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 3, 12);
 
     private static final List<ParkingLotCsvModel> didokParkingLotCsvLines = new ArrayList<>();
     private static final List<ParkingLotVersionCsvModel> atlasParkingLotCsvLines = new ArrayList<>();

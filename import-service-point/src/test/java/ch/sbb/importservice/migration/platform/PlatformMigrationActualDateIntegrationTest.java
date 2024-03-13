@@ -29,7 +29,7 @@ class PlatformMigrationActualDateIntegrationTest {
 
   private static final String DIDOK_PLATFORM_CSV_FILE = "PRM_PLATFORMS_20240312011422.csv";
   private static final String ATLAS_PLATFORM_CSV_FILE = "actual-date-platform-2024-03-12.csv";
-  private static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 3, 12);
+  static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 3, 12);
 
   private static final List<PlatformCsvModel> didokPlatformCsvLines = new ArrayList<>();
   private static final List<PlatformVersionCsvModel> atlasPlatformCsvLines = new ArrayList<>();
