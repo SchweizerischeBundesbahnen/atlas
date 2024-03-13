@@ -68,7 +68,7 @@ public class RelationMigrationIntegrationTest {
   }
 
   @Test
-  @Order(3)
+  @Order(2)
   void shouldHaveSameValidityOnEachSloidCombination() {
     Map<RelationKeyId, Validity> groupedSloidsDidok = didokCsvLines.stream().collect(
         Collectors.groupingBy(i -> new RelationKeyId(i.getSloid(), i.getRpSloid()),
@@ -99,7 +99,7 @@ public class RelationMigrationIntegrationTest {
   }
 
   @Test
-  @Order(4)
+  @Order(3)
   void shouldHaveMappedFieldsToAtlasCorrectly() {
     assertThat(atlasCsvLines).isNotEmpty();
     Map<RelationKeyId, List<RelationVersionCsvModel>> groupedAtlasLines = atlasCsvLines.stream()
