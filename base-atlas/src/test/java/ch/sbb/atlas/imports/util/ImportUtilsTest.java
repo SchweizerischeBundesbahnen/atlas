@@ -85,6 +85,34 @@ class ImportUtilsTest {
     assertThat(csvModels.get(1).editionDate).isEqualTo(LocalDateTime.of(2020, 12, 15, 10, 15));
   }
 
+
+  @Test
+  void shouldReplaceNewLinesCorrectlyOnlyWhen$newline$ExistsAndUpdateModifiedDateOnlyWhenReplacementTookPlace1()
+      throws IllegalAccessException {
+    // given
+    List<CsvModel> csvModels = List.of(
+        CsvModel.builder().description("SBA.71.012.1$newline$$newline$Anlagen sind seit mehreren Jahren ausser Betrieb aber nicht zurückgebaut.").comment("Comment$newline$ with one newline.")
+            .editionDate(LocalDateTime.of(2020, 12, 15, 10, 15)).build(),
+        CsvModel.builder().description("Desc without newlines.").comment("Comment without newlines.")
+            .editionDate(LocalDateTime.of(2020, 12, 15, 10, 15)).build()
+    );
+
+    // when
+    ImportUtils.replaceNewLines(csvModels);
+
+    // then
+    assertThat(csvModels).hasSize(2);
+
+    assertThat(csvModels.get(0).comment).isEqualTo("Comment\r\n with one newline.");
+    assertThat(csvModels.get(0).description).isEqualTo("SBA.71.012.1\r\n\r\nAnlagen sind seit mehreren Jahren ausser Betrieb "
+        + "aber nicht zurückgebaut.");
+    assertThat(csvModels.get(0).editionDate).isEqualToIgnoringSeconds(LocalDateTime.now());
+
+    assertThat(csvModels.get(1).comment).isEqualTo("Comment without newlines.");
+    assertThat(csvModels.get(1).description).isEqualTo("Desc without newlines.");
+    assertThat(csvModels.get(1).editionDate).isEqualTo(LocalDateTime.of(2020, 12, 15, 10, 15));
+  }
+
   @Test
   void shouldReplaceDidokHighestDateWithAtlas() {
     // given
