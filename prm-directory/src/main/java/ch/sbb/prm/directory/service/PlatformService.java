@@ -148,4 +148,8 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
     }
   }
 
+  public boolean isPlatformExisting(String sloid) {
+    return platformRepository.existsBySloid(sloid);
+  }
+
 }
