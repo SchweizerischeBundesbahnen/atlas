@@ -31,8 +31,7 @@ public record ServicePointMappingEquality(ServicePointDidokCsvModel didokCsvLine
     performBusinessOrganisationCheck();
     performMeansOfTransportCheck();
     performCategoryCheck();
-
-    assertThat(atlasCsvLine.getFotComment()).isEqualTo(didokCsvLine.getComment());
+    assertThat(atlasCsvLine.getFotComment()).isEqualTo(ch.sbb.atlas.export.StringUtils.removeNewLine(didokCsvLine.getComment()));
 
     // Since didok sometimes has locations but virtual, we should perform this check only if atlas has a geolocation ?
     if (atlasCsvLine.isHasGeolocation()) {
@@ -47,7 +46,14 @@ public record ServicePointMappingEquality(ServicePointDidokCsvModel didokCsvLine
     assertThat(atlasCsvLine.getUicCountryCode()).isEqualTo(didokCsvLine.getLaendercode());
 
     if (isFullExport) {
-      assertThat(atlasCsvLine.getSloid()).isEqualTo(didokCsvLine.getSloid());
+      if ((didokCsvLine.getLaendercode().equals(11)
+      || didokCsvLine.getLaendercode().equals(12)
+      || didokCsvLine.getLaendercode().equals(13)
+      || didokCsvLine.getLaendercode().equals(14)) && didokCsvLine.getSloid() == null) {
+        assertThat(atlasCsvLine.getSloid()).isEqualTo("ch:1:sloid:" + didokCsvLine.getDidokCode());
+      } else {
+        assertThat(atlasCsvLine.getSloid()).isEqualTo(didokCsvLine.getSloid());
+      }
     }
 
     assertThat(atlasCsvLine.getDesignationOfficial()).isEqualTo(
