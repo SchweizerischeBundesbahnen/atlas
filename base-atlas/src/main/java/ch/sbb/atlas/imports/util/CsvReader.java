@@ -22,6 +22,7 @@ public class CsvReader {
         .readValues(inputStream);
     final List<T> csvModels = new ArrayList<>();
     while (mappingIterator.hasNext()) {
+      System.out.println(mappingIterator.next());
       csvModels.add(mappingIterator.next());
     }
     return csvModels;
