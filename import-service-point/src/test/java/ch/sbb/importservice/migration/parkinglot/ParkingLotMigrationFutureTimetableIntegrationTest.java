@@ -29,7 +29,7 @@ public class ParkingLotMigrationFutureTimetableIntegrationTest {
 
     private static final String DIDOK_CSV_FILE = "PRM_PARKING_LOTS_20240312011813.csv";
     private static final String ATLAS_CSV_FILE = "future-timetable-parking_lot-2024-03-12.csv";
-    private static final LocalDate FUTURE_TIMETABLE_DATE = LocalDate.of(2024, 3, 12);
+    private static final LocalDate FUTURE_TIMETABLE_DATE = LocalDate.of(2024, 12, 15);
 
     private static final List<ParkingLotCsvModel> didokParkingLotCsvLines = new ArrayList<>();
     private static final List<ParkingLotVersionCsvModel> atlasParkingLotCsvLines = new ArrayList<>();
