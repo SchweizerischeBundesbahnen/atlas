@@ -17,6 +17,7 @@ import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -55,8 +56,7 @@ public class PrmChangeRecordingVariantService {
     throw new IllegalStateException("Record variant must be different!");
   }
 
-
-  private StopPointVersion stopPointChangeFromCompleteToReduced (StopPointVersion stopPointVersionToUpdate,
+  private StopPointVersion stopPointChangeFromCompleteToReduced(StopPointVersion stopPointVersionToUpdate,
       StopPointVersion editedVersion) {
     StopPointVersion stopPointVersion = stopPointChangeRecordingVariant(stopPointVersionToUpdate,
         editedVersion.getMeansOfTransport());
@@ -87,16 +87,24 @@ public class PrmChangeRecordingVariantService {
   }
 
   void platformChangeRecordingVariant(String sloid) {
-    List<PlatformVersion> platformVersions = platformRepository.findAllByParentServicePointSloid(sloid);
-    if (!platformVersions.isEmpty()) {
-      LocalDate validFrom = platformVersions.get(0).getValidFrom();
-      LocalDate validTo = platformVersions.get(platformVersions.size() - 1).getValidTo();
-      PlatformVersion changedRecordingVariantStopPointVersion = PlatformVersionMapper.resetToDefaultValue(platformVersions.get(0),
-          validFrom, validTo);
-      platformRepository.deleteAllById(platformVersions.stream().map(PlatformVersion::getId).collect(Collectors.toSet()));
-      platformRepository.flush();
-      platformRepository.saveAndFlush(changedRecordingVariantStopPointVersion);
+    List<PlatformVersion> platformVersionsByParentSloid
+        = platformRepository.findAllByParentServicePointSloid(sloid);
+    Map<String, List<PlatformVersion>> platforms = platformVersionsByParentSloid.stream()
+        .collect(Collectors.groupingBy(PlatformVersion::getSloid));
+    for (String platformSloid : platforms.keySet()) {
+      List<PlatformVersion> platformVersionsGroup = platforms.get(platformSloid);
+      if (!platformVersionsGroup.isEmpty()) {
+        LocalDate validFrom = platformVersionsGroup.getFirst().getValidFrom();
+        LocalDate validTo = platformVersionsGroup.getLast().getValidTo();
+        PlatformVersion changedRecordingVariantStopPointVersion = PlatformVersionMapper.resetToDefaultValue(
+            platformVersionsGroup.getFirst(),
+            validFrom, validTo);
+        platformRepository.deleteAllById(platformVersionsGroup.stream().map(PlatformVersion::getId).collect(Collectors.toSet()));
+        platformRepository.flush();
+        platformRepository.saveAndFlush(changedRecordingVariantStopPointVersion);
+      }
     }
+
   }
 
   List<ReferencePointVersion> setStatusRevokedToReferencePoints(String sloid) {
