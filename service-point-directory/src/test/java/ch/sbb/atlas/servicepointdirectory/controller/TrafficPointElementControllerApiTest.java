@@ -153,6 +153,13 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldGetTrafficPointElementVersionsByParentServicePointSloid() throws Exception {
+    mvc.perform(get("/v1/traffic-point-elements?parentServicePointSloids=ch:1:sloid:1400015")).andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
+        .andExpect(jsonPath("$.totalCount", is(1)));
+  }
+
+  @Test
   void shouldGetTrafficPointElementVersionsByCreatedAfter() throws Exception {
     LocalDateTime creationTime = trafficPointElementVersion.getCreationDate().minusSeconds(1);
     mvc.perform(get("/v1/traffic-point-elements?createdAfter=" + creationTime)).andExpect(status().isOk())
