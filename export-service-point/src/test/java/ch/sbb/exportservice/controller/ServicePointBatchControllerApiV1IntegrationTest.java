@@ -75,7 +75,7 @@ class ServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiT
       doReturn(inputStreamResource).when(fileExportService)
           .streamGzipFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
       doReturn("service-point").when(fileExportService)
-          .getBaseFileName(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
+          .actualDateFileName(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/download-gzip-json/service-point-version/world-full")
               .contentType(contentType))
@@ -171,16 +171,16 @@ class ServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiT
     try (InputStream inputStream = this.getClass().getResourceAsStream("/traffic-point-data.json")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(fileExportService)
-              .streamJsonFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
+          .streamJsonFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/json/traffic-point-element-version/world-full")
-                      .contentType(contentType)
-                      .accept(MediaType.APPLICATION_JSON))
-              .andExpect(request().asyncStarted())
-              .andReturn();
+              .contentType(contentType)
+              .accept(MediaType.APPLICATION_JSON))
+          .andExpect(request().asyncStarted())
+          .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
-              .andExpect(status().isOk())
-              .andExpect(jsonPath("$", hasSize(1)));
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$", hasSize(1)));
     }
   }
 
@@ -190,17 +190,17 @@ class ServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiT
     try (InputStream inputStream = this.getClass().getResourceAsStream("/traffic-point-data.json.gz")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(fileExportService)
-              .streamGzipFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
+          .streamGzipFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
       doReturn("traffic-point").when(fileExportService)
-              .getBaseFileName(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
+          .actualDateFileName(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.TRAFFIC_POINT_ELEMENT_VERSION);
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/download-gzip-json/traffic-point-element-version/world-full")
-                      .contentType(contentType))
-              .andExpect(request().asyncStarted())
-              .andReturn();
+              .contentType(contentType))
+          .andExpect(request().asyncStarted())
+          .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
-              .andExpect(status().isOk())
-              .andExpect(content().contentType("application/gzip"));
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/gzip"));
     }
   }
 
@@ -210,16 +210,16 @@ class ServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiT
     try (InputStream inputStream = this.getClass().getResourceAsStream("/loading-point-data.json")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(fileExportService)
-              .streamJsonFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.LOADING_POINT_VERSION);
+          .streamJsonFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.LOADING_POINT_VERSION);
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/json/loading-point-version/world-full")
-                      .contentType(contentType)
-                      .accept(MediaType.APPLICATION_JSON))
-              .andExpect(request().asyncStarted())
-              .andReturn();
+              .contentType(contentType)
+              .accept(MediaType.APPLICATION_JSON))
+          .andExpect(request().asyncStarted())
+          .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
-              .andExpect(status().isOk())
-              .andExpect(jsonPath("$", hasSize(1)));
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$", hasSize(1)));
     }
   }
 
@@ -229,17 +229,17 @@ class ServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiT
     try (InputStream inputStream = this.getClass().getResourceAsStream("/loading-point-data.json.gz")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(fileExportService)
-              .streamGzipFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.LOADING_POINT_VERSION);
+          .streamGzipFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.LOADING_POINT_VERSION);
       doReturn("loading-point").when(fileExportService)
-              .getBaseFileName(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.LOADING_POINT_VERSION);
+          .actualDateFileName(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.LOADING_POINT_VERSION);
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/download-gzip-json/loading-point-version/world-full")
-                      .contentType(contentType))
-              .andExpect(request().asyncStarted())
-              .andReturn();
+              .contentType(contentType))
+          .andExpect(request().asyncStarted())
+          .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
-              .andExpect(status().isOk())
-              .andExpect(content().contentType("application/gzip"));
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/gzip"));
     }
   }
 
