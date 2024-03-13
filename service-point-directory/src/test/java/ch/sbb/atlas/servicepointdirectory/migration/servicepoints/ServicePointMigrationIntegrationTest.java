@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.migration.servicepoints;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.imports.util.CsvReader;
+import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Validity;
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -10,6 +11,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +36,7 @@ import org.springframework.util.FileSystemUtils;
 
   private static final List<ServicePointAtlasCsvModel> atlasCsvLines = new ArrayList<>();
   private static final List<ServicePointDidokCsvModel> didokCsvLines = new ArrayList<>();
+  private static List<ServicePointDidokCsvModel> didokCsvLinesAfterModification = new ArrayList<>();
 
   @Test
   @Order(1)
@@ -42,8 +45,15 @@ import org.springframework.util.FileSystemUtils;
     File unzippedFile = MigrationTestsUtilityClass.unzipFile(zippedFile, DECOMPRESSED_FILE_PATH);
     try (InputStream csvStream = new FileInputStream(unzippedFile)) {
       didokCsvLines.addAll(CsvReader.parseCsv(csvStream, ServicePointDidokCsvModel.class));
+      didokCsvLinesAfterModification = didokCsvLines.stream().peek(object ->
+      {
+        if (object.getValidTo().equals(ImportUtils.DIDOK_HIGEST_DATE)) {
+          object.setValidTo(ImportUtils.ATLAS_HIGHEST_DATE);
+          object.setEditedAt(ServicePointMigrationActualDateIntegrationTest.ACTUAL_DATE.atTime(LocalTime.MIDNIGHT));
+        }
+      }).toList();
     }
-    assertThat(didokCsvLines).isNotEmpty();
+    assertThat(didokCsvLinesAfterModification).isNotEmpty();
 
     try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + ATLAS_CSV_FILE)) {
       atlasCsvLines.addAll(CsvReader.parseCsv(csvStream, ServicePointAtlasCsvModel.class));
@@ -54,7 +64,7 @@ import org.springframework.util.FileSystemUtils;
   @Test
   @Order(2)
   void shouldHaveSameDidokCodesInBothCsvs() {
-    Set<Integer> didokCodes = didokCsvLines.stream().map(ServicePointDidokCsvModel::getDidokCode).collect(Collectors.toSet());
+    Set<Integer> didokCodes = didokCsvLinesAfterModification.stream().map(ServicePointDidokCsvModel::getDidokCode).collect(Collectors.toSet());
     Set<Integer> atlasNumbers = atlasCsvLines.stream().map(ServicePointAtlasCsvModel::getNumber).collect(Collectors.toSet());
 
     Set<Integer> difference = atlasNumbers.stream().filter(e -> !didokCodes.contains(e)).collect(Collectors.toSet());
@@ -72,7 +82,7 @@ import org.springframework.util.FileSystemUtils;
   @Test
   @Order(3)
   void shouldHaveSameValidityOnEachDidokCode() {
-    Map<Integer, Validity> groupedDidokCodes = didokCsvLines.stream().collect(
+    Map<Integer, Validity> groupedDidokCodes = didokCsvLinesAfterModification.stream().collect(
         Collectors.groupingBy(ServicePointDidokCsvModel::getDidokCode, Collectors.collectingAndThen(Collectors.toList(),
             list -> new Validity(
                 list.stream().map(i -> DateRange.builder().from(i.getValidFrom()).to(i.getValidTo()).build())
@@ -110,7 +120,7 @@ import org.springframework.util.FileSystemUtils;
     Map<Integer, List<ServicePointAtlasCsvModel>> groupedAtlasNumbers = atlasCsvLines.stream()
         .collect(Collectors.groupingBy(ServicePointAtlasCsvModel::getNumber));
 
-    didokCsvLines.forEach(didokCsvLine -> {
+    didokCsvLinesAfterModification.forEach(didokCsvLine -> {
       ServicePointAtlasCsvModel atlasCsvLine = findCorrespondingAtlasServicePointVersion(didokCsvLine,
           groupedAtlasNumbers.get(didokCsvLine.getDidokCode()));
       new ServicePointMappingEquality(didokCsvLine, atlasCsvLine, true).performCheck();

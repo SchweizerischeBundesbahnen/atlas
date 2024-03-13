@@ -30,7 +30,7 @@ public class ServicePointMigrationActualDateIntegrationTest {
 
   private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ACTUALDATE_V_2_20240312013105.csv";
   private static final String ATLAS_CSV_FILE = "actual_date-world-service_point-2024-03-12.csv";
-  private static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 2, 13);
+  static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 3, 12);
 
   private static final List<ServicePointAtlasCsvModel> atlasCsvLines = new ArrayList<>();
   private static final Map<Integer, ServicePointAtlasCsvModel> atlasCsvLinesAsMap = new HashMap<>();
