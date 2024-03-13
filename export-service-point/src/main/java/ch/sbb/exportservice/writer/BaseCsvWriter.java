@@ -20,12 +20,11 @@ public abstract class BaseCsvWriter<T> {
   private static final String DELIMITER = ";";
 
   @Autowired
-  private FileExportService<ExportTypeBase> fileExportService;
+  private FileExportService fileExportService;
 
   public FlatFileItemWriter<T> csvWriter(ExportTypeBase exportType, ExportFileName exportFileName) {
     WritableResource outputResource = new FileSystemResource(
-        fileExportService.createFileNamePath(ExportExtensionFileType.CSV_EXTENSION,
-            exportType, exportFileName));
+        fileExportService.createFilePath(exportType, exportFileName, ExportExtensionFileType.CSV_EXTENSION).actualDateFilePath());
     FlatFileItemWriter<T> writer = new FlatFileItemWriter<>();
     writer.setResource(outputResource);
     writer.setAppendAllowed(true);
