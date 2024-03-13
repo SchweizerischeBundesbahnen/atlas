@@ -29,7 +29,7 @@ public class ToiletMigrationActualDateIntegrationTest {
 
     private static final String DIDOK_TOILET_CSV_FILE = "PRM_TOILETS_20240312011740.csv";
     private static final String ATLAS_TOILET_CSV_FILE = "actual-date-toilet-2024-03-12.csv";
-    private static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 3, 12);
+    static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 3, 12);
 
     private static final List<ToiletCsvModel> didokToiletCsvLines = new ArrayList<>();
     private static final List<ToiletVersionCsvModel> atlasToiletCsvLines = new ArrayList<>();

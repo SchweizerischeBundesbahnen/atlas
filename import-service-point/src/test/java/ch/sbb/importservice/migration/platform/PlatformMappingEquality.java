@@ -155,8 +155,12 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
     }
 
     assertThat(localDateFromString(atlasCsvLine.getCreationDate())).isEqualTo(didokCsvLine.getCreatedAt());
-    assertThat(localDateFromString(atlasCsvLine.getEditionDate()).toLocalDate()).isEqualTo(didokCsvLine.getModifiedAt().toLocalDate());
-
+    if (didokCsvLine.getModifiedAt().toLocalDate().equals(LocalDateTime.now().toLocalDate())) {
+      assertThat(localDateFromString(atlasCsvLine.getEditionDate()).toLocalDate())
+          .isEqualTo(PlatformMigrationActualDateIntegrationTest.ACTUAL_DATE);
+    } else {
+      assertThat(localDateFromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getModifiedAt());
+    }
   }
 
   private List<InfoOpportunityAttributeType> mapPipedInfoOpportunities(String infoOpportunities){
