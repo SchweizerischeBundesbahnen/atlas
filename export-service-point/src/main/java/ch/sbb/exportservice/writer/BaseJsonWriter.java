@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 public abstract class BaseJsonWriter<T> {
 
   @Autowired
-  private FileExportService<ExportTypeBase> fileExportService;
+  private FileExportService fileExportService;
 
   public JsonFileItemWriter<T> getWriter(ExportTypeBase exportType, ExportFileName exportFileName) {
     JacksonJsonObjectMarshaller<T> jacksonJsonObjectMarshaller = new JacksonJsonObjectMarshaller<>();
@@ -27,8 +27,8 @@ public abstract class BaseJsonWriter<T> {
     objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     jacksonJsonObjectMarshaller.setObjectMapper(objectMapper);
     FileSystemResource fileSystemResource =
-        new FileSystemResource(fileExportService.createFileNamePath(ExportExtensionFileType.JSON_EXTENSION,
-            exportType, exportFileName));
+        new FileSystemResource(fileExportService.createFilePath(exportType, exportFileName,
+            ExportExtensionFileType.JSON_EXTENSION).actualDateFilePath());
     JsonFileItemWriter<T> writer = new JsonFileItemWriter<>(
         fileSystemResource,
         jacksonJsonObjectMarshaller);
