@@ -6,8 +6,9 @@ import ch.sbb.atlas.api.prm.model.referencepoint.ReferencePointVersionModel;
 import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.prm.referencepoint.ReferencePointImportRequestModel;
-import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
+import ch.sbb.prm.directory.controller.model.ReferencePointRequestParams;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
+import ch.sbb.prm.directory.entity.BasePrmEntityVersion.Fields;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -33,9 +34,9 @@ public interface ReferencePointApiV1 {
   @GetMapping
   @PageableAsQueryParam
   Container<ReadReferencePointVersionModel> getReferencePoints(
-      @Parameter(hidden = true) @PageableDefault(sort = {BasePrmEntityVersion.Fields.number,
+      @Parameter(hidden = true) @PageableDefault(sort = {Fields.sloid,
           BasePrmEntityVersion.Fields.validFrom}) Pageable pageable,
-      @Valid @ParameterObject PrmObjectRequestParams prmObjectRequestParams);
+      @Valid @ParameterObject ReferencePointRequestParams referencePointRequestParams);
 
   @GetMapping("overview/{parentServicePointSloid}")
   List<ReadReferencePointVersionModel> getReferencePointsOverview(@PathVariable String parentServicePointSloid);

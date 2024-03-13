@@ -16,7 +16,7 @@ import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.ToiletTestData;
-import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
+import ch.sbb.prm.directory.controller.model.ReferencePointRequestParams;
 import ch.sbb.prm.directory.entity.ContactPointVersion;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.PlatformVersion;
@@ -37,7 +37,6 @@ import ch.sbb.prm.directory.search.ReferencePointSearchRestrictions;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -146,14 +145,15 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
 
     //then
     Page<ReferencePointVersion> result = referencePointService.findAll(
-        ReferencePointSearchRestrictions.builder().pageable(Pageable.ofSize(1)).prmObjectRequestParams(
-            PrmObjectRequestParams.builder().parentServicePointSloids(List.of("ch:1:unknownsloid")).build()).build());
+        ReferencePointSearchRestrictions.builder()
+            .pageable(Pageable.ofSize(1))
+            .referencePointRequestParams(ReferencePointRequestParams.builder().parentServicePointSloids(List.of("ch:1:unknownsloid")).build()).build());
     assertThat(result.getTotalElements()).isZero();
     assertThat(result.getContent()).isEmpty();
 
     result = referencePointService.findAll(
-        ReferencePointSearchRestrictions.builder().pageable(Pageable.ofSize(1)).prmObjectRequestParams(
-            PrmObjectRequestParams.builder().parentServicePointSloids(List.of(PARENT_SERVICE_POINT_SLOID)).build()).build());
+        ReferencePointSearchRestrictions.builder().pageable(Pageable.ofSize(1)).referencePointRequestParams(
+            ReferencePointRequestParams.builder().parentServicePointSloids(List.of(PARENT_SERVICE_POINT_SLOID)).build()).build());
     assertThat(result.getTotalElements()).isOne();
     assertThat(result.getContent()).isNotEmpty();
   }
