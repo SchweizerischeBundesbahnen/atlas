@@ -13,6 +13,7 @@ import ch.sbb.importservice.entity.RelationKeyId;
 import ch.sbb.importservice.service.csv.RelationCsvService;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -33,18 +34,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class RelationMigrationIntegrationTest {
 
-//  private static final String DIDOK_CSV_FILE = "PRM_CONNECTIONS_20240312011830.csv";
-//  private static final String ATLAS_CSV_FILE = "full-relation-2024-03-12.csv";
-
-  private static final String DIDOK_CSV_FILE = "PRM_CONNECTIONS_20240306013727.csv";
-  private static final String ATLAS_CSV_FILE = "full-relation-2024-03-06.csv";
-//  private static final String DIDOK_CSV_FILE = "PRM_CONNECTIONS_20240312011830.csv";
-//  private static final String ATLAS_CSV_FILE = "full-relation-2024-03-12.csv";
+  private static final String DIDOK_CSV_FILE = "PRM_CONNECTIONS_20240314013817.csv";
+  private static final String ATLAS_CSV_FILE = "full-relation-2024-03-14.csv";
 
   private static final List<RelationCsvModel> didokCsvLines = new ArrayList<>();
   private static final List<RelationVersionCsvModel> atlasCsvLines = new ArrayList<>();
 
   private final RelationCsvService relationCsvService;
+  static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 3, 14);
 
   @Autowired
   public RelationMigrationIntegrationTest(RelationCsvService relationCsvService) {
