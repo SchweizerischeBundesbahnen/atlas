@@ -132,7 +132,7 @@ public class LoadingPointImportService extends BaseImportServicePointDirectorySe
 
   private ItemImportResult saveLoadingPointVersion(LoadingPointVersion loadingPointVersion) {
     try {
-      final LoadingPointVersion savedLoadingPointVersion = loadingPointService.save(loadingPointVersion);
+      final LoadingPointVersion savedLoadingPointVersion = loadingPointService.saveForImport(loadingPointVersion);
       return buildSuccessImportResult(savedLoadingPointVersion);
     } catch (Exception exception) {
       log.error("[Loading-Point Import]: Error during save with version: " + getIdentifyingLoadingPointVersionString(
