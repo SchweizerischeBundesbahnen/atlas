@@ -35,9 +35,12 @@ export class LeaveDirtyFormGuard {
 
   staysOnSameDetailPage(currentState: RouterStateSnapshot, nextState: RouterStateSnapshot) {
     //if from new to created url
-    const urlBeforeAdd = currentState.url.substring(0, currentState.url.indexOf('/add'));
-    if (nextState.url.startsWith(urlBeforeAdd)) {
-      return true;
+    const indexOfAdd = currentState.url.indexOf('/add');
+    if (indexOfAdd !== -1) {
+      const urlBeforeAdd = currentState.url.substring(0, indexOfAdd);
+      if (nextState.url.startsWith(urlBeforeAdd)) {
+        return true;
+      }
     }
     return currentState.url === nextState.url;
   }
