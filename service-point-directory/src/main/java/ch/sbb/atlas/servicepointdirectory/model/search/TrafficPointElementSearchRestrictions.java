@@ -35,7 +35,7 @@ public class TrafficPointElementSearchRestrictions {
             TrafficPointElementVersion.Fields.sloid))
         .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getParentsloids(),
             TrafficPointElementVersion.Fields.parentSloid))
-        .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getServicePointNumbersWithoutCheckDigit(),
+        .and(specificationBuilder().inSpecification(trafficPointElementRequestParams.getServicePointNumbersToFilter(),
             TrafficPointElementVersion.Fields.servicePointNumber))
         .and(specificationBuilder().enumSpecification(
             trafficPointElementRequestParams.getTrafficPointElementType() == null ? Collections.emptyList()
