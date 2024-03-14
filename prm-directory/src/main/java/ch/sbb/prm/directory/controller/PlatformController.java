@@ -10,7 +10,6 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.PlatformApiV1;
 import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.PlatformVersion;
-import ch.sbb.prm.directory.exception.PlatformAlreadyExistsException;
 import ch.sbb.prm.directory.mapper.PlatformVersionMapper;
 import ch.sbb.prm.directory.search.PlatformSearchRestrictions;
 import ch.sbb.prm.directory.service.PlatformService;
@@ -46,10 +45,6 @@ public class PlatformController implements PlatformApiV1 {
 
   @Override
   public ReadPlatformVersionModel createPlatform(PlatformVersionModel model) {
-    boolean isPlatformExisting = platformService.isPlatformExisting(model.getSloid());
-    if (isPlatformExisting) {
-      throw new PlatformAlreadyExistsException(model.getSloid());
-    }
     PlatformVersion platformVersion = PlatformVersionMapper.toEntity(model);
     PlatformVersion savedVersion = platformService.createPlatformVersion(platformVersion);
     return PlatformVersionMapper.toModel(savedVersion);
