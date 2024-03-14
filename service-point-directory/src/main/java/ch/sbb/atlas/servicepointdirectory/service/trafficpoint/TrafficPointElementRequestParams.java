@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.service.trafficpoint;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.VersionedObjectDateRequestParams;
+import ch.sbb.atlas.location.SloidHelper;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -37,13 +38,17 @@ public class TrafficPointElementRequestParams extends VersionedObjectDateRequest
       @Min(AtlasFieldLengths.MIN_SEVEN_DIGITS_NUMBER)
       @Max(AtlasFieldLengths.MAX_SEVEN_DIGITS_NUMBER) String> servicePointNumbers = new ArrayList<>();
 
-  @Parameter(description = "")
+  @Parameter(description = "Sloid of the parent traffic point, usually an area")
   @Singular(ignoreNullCollections = true)
   private List<String> parentsloids = new ArrayList<>();
 
   @Parameter(description = "sboid")
   @Singular(ignoreNullCollections = true)
   private List<String> sboids = new ArrayList<>();
+
+  @Parameter(description = "Unique key for the associated Service Point.")
+  @Singular(ignoreNullCollections = true)
+  private List<String> parentServicePointSloids = new ArrayList<>();
 
   @Parameter(description = "List of UIC Country codes. The UIC Country code applies to the country of the service point number")
   @Singular(ignoreNullCollections = true)
@@ -55,6 +60,9 @@ public class TrafficPointElementRequestParams extends VersionedObjectDateRequest
   @Singular(value = "numberShort", ignoreNullCollections = true)
   private List<String> servicePointNumbersShort = new ArrayList<>();
 
+  @Parameter(description = "Type of the TrafficPoint")
+  private TrafficPointElementType trafficPointElementType;
+
   @JsonIgnore
   public List<ServicePointNumber> getServicePointNumbersWithoutCheckDigit() {
     return servicePointNumbers.stream()
@@ -65,7 +73,15 @@ public class TrafficPointElementRequestParams extends VersionedObjectDateRequest
         .toList();
   }
 
-  @Parameter(description = "Type of the TrafficPoint")
-  private TrafficPointElementType trafficPointElementType;
+  @JsonIgnore
+  public List<ServicePointNumber> getServicePointNumbersToFilter() {
+    List<ServicePointNumber> numbers = new ArrayList<>(getServicePointNumbersWithoutCheckDigit());
+    List<ServicePointNumber> sloidNumbers = getParentServicePointSloids()
+        .stream()
+        .map(SloidHelper::getServicePointNumber)
+        .toList();
+    numbers.addAll(sloidNumbers);
+    return numbers.stream().distinct().toList();
+  }
 
 }
