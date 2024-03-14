@@ -41,6 +41,7 @@ const routes: Routes = [
         path: Pages.SERVICE_POINTS.path,
         component: ServicePointCreationComponent,
         canActivate: [() => inject(CanActivateServicePointCreationGuard).canActivate()],
+        canDeactivate: [canLeaveDirtyForm],
       },
       {
         path: Pages.SERVICE_POINTS.path + '/:id',
