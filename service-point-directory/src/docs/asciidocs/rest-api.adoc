@@ -135,6 +135,10 @@ include::{snippets}/traffic-point-element-controller-api-test/should-fail-on-inv
 
 include::{snippets}/traffic-point-element-controller-api-test/should-fail-on-invalid-traffic-point-element-number/auto-section.adoc[]
 
+== Read TrafficPointElement by ParentServicePointSloids - Successfully
+
+include::{snippets}/traffic-point-element-controller-api-test/should-get-traffic-point-element-versions-by-parent-service-point-sloid/auto-section.adoc[]
+
 == Create TrafficPointElement with automatic SLOID generation - Successfully
 
 include::{snippets}/traffic-point-element-controller-api-test/should-create-traffic-point-element-platform-with-automatic-sloid/auto-section.adoc[]
