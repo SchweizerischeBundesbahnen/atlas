@@ -17,6 +17,7 @@ import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
+import ch.sbb.prm.directory.exception.PlatformAlreadyExistsException;
 import ch.sbb.prm.directory.exception.StopPointDoesNotExistException;
 import ch.sbb.prm.directory.exception.TrafficPointElementDoesNotExistsException;
 import ch.sbb.prm.directory.repository.PlatformRepository;
@@ -292,4 +293,14 @@ class PlatformServiceTest extends BasePrmServiceTest {
     assertThrows(ElementTypeDoesNotExistException.class, () -> platformService.checkPlatformExists("ch:1:sloid:12345:1", PLATFORM.name()));
   }
 
+  @Test
+  void shouldNotCreatePlatformWhenSloidAlreadyExists(){
+    PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
+    platformVersion.setSloid("ch:1:sloid:12345:1");
+    platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    platformRepository.saveAndFlush(platformVersion);
+
+
+    assertThrows(PlatformAlreadyExistsException.class, () -> platformService.createPlatformVersion(platformVersion));
+  }
 }
