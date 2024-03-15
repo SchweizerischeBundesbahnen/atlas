@@ -24,7 +24,8 @@ public abstract class BaseCsvWriter<T> {
 
   public FlatFileItemWriter<T> csvWriter(ExportTypeBase exportType, ExportFileName exportFileName) {
     WritableResource outputResource = new FileSystemResource(
-        fileExportService.createFilePath(exportType, exportFileName, ExportExtensionFileType.CSV_EXTENSION).actualDateFilePath());
+        fileExportService.createExportFilePath(exportType, exportFileName, ExportExtensionFileType.CSV_EXTENSION)
+            .actualDateFilePath());
     FlatFileItemWriter<T> writer = new FlatFileItemWriter<>();
     writer.setResource(outputResource);
     writer.setAppendAllowed(true);
