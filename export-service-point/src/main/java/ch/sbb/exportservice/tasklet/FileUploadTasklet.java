@@ -7,7 +7,7 @@ import ch.sbb.atlas.export.enumeration.ExportFileName;
 import ch.sbb.atlas.export.enumeration.ExportTypeBase;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
 import ch.sbb.exportservice.service.FileExportService;
-import ch.sbb.exportservice.service.FileExportService.FilePath;
+import ch.sbb.exportservice.model.ExportFilePath;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -29,7 +29,7 @@ public abstract class FileUploadTasklet implements Tasklet {
   private final ExportTypeBase exportType;
   private final ExportFileName exportFileName;
 
-  protected FilePath filePath;
+  protected ExportFilePath exportFilePath;
 
   protected FileUploadTasklet(ExportTypeBase exportType, ExportFileName exportFileName) {
     this.exportType = exportType;
@@ -42,10 +42,10 @@ public abstract class FileUploadTasklet implements Tasklet {
 
   @Override
   public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
-    filePath = fileExportService.createFilePath(exportType, exportFileName, getExportExtensionFileType());
-    log.info("File {} uploading...", filePath.actualDateFilePath());
+    exportFilePath = fileExportService.createExportFilePath(exportType, exportFileName, getExportExtensionFileType());
+    log.info("File {} uploading...", exportFilePath.actualDateFilePath());
     exportFile();
-    log.info("File {} uploaded!", filePath.actualDateFilePath());
+    log.info("File {} uploaded!", exportFilePath.actualDateFilePath());
     return RepeatStatus.FINISHED;
   }
 
@@ -58,6 +58,6 @@ public abstract class FileUploadTasklet implements Tasklet {
   }
 
   protected File file() {
-    return Paths.get(filePath.actualDateFilePath()).toFile();
+    return Paths.get(exportFilePath.actualDateFilePath()).toFile();
   }
 }
