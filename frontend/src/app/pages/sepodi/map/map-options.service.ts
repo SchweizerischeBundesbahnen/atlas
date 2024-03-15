@@ -10,9 +10,10 @@ const SWISS_BOUNDING_BOX: LngLatBoundsLike = [
 
 export const MAP_STYLES: MapStyle[] = [
   { id: 'swisstopofarbe', label: 'SEPODI.MAP_STYLES.SWISSTOPO' },
+  { id: 'swisstopograu', label: 'SEPODI.MAP_STYLES.SWISSTOPO_GRAY' },
+  { id: 'satellite_swiss', label: 'SEPODI.MAP_STYLES.SATELLITE_SWISS' },
   { id: 'osm', label: 'SEPODI.MAP_STYLES.OPEN_STREET_MAP' },
   { id: 'satellite', label: 'SEPODI.MAP_STYLES.SATELLITE' },
-  { id: 'satellite_swiss', label: 'SEPODI.MAP_STYLES.SATELLITE_SWISS' },
 ];
 
 export interface MapStyle {
