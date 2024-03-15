@@ -8,7 +8,7 @@ import ch.sbb.exportservice.exception.NotAllowedExportFileException;
 import ch.sbb.exportservice.model.PrmBatchExportFileName;
 import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.service.FileExportService;
-import ch.sbb.exportservice.service.FileExportService.FilePath;
+import ch.sbb.exportservice.model.ExportFilePath;
 import io.micrometer.tracing.annotation.NewSpan;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -52,7 +52,7 @@ public class PrmBatchControllerApiV1 {
       @PathVariable PrmBatchExportFileName exportFileName,
       @PathVariable PrmExportType prmExportType) {
     InputStreamResource body =
-        fileExportService.streamJsonFile(fileExportService.createFilePath(prmExportType, exportFileName).getFileToStream());
+        fileExportService.streamJsonFile(fileExportService.createExportFilePath(prmExportType, exportFileName).getFileToStream());
     return CompletableFuture.supplyAsync(() ->
         ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body));
   }
@@ -69,7 +69,7 @@ public class PrmBatchControllerApiV1 {
       @PathVariable PrmBatchExportFileName exportFileName,
       @PathVariable PrmExportType prmExportType) {
     String latestUploadedFileName = fileExportService.getLatestUploadedFileName(
-        fileExportService.createFilePath(prmExportType, exportFileName));
+        fileExportService.createExportFilePath(prmExportType, exportFileName));
     InputStreamResource body = fileExportService.streamJsonFile(latestUploadedFileName);
     return CompletableFuture.supplyAsync(() ->
         ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body));
@@ -86,9 +86,9 @@ public class PrmBatchControllerApiV1 {
   public CompletableFuture<ResponseEntity<InputStreamResource>> streamExportGzFile(
       @PathVariable PrmBatchExportFileName exportFileName,
       @PathVariable PrmExportType prmExportType) throws NotAllowedExportFileException {
-    FilePath filePath = fileExportService.createFilePath(prmExportType, exportFileName);
-    HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(filePath.actualDateFileName());
-    InputStreamResource body = fileExportService.streamGzipFile(filePath.getFileToStream());
+    ExportFilePath exportFilePath = fileExportService.createExportFilePath(prmExportType, exportFileName);
+    HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(exportFilePath.actualDateFileName());
+    InputStreamResource body = fileExportService.streamGzipFile(exportFilePath.getFileToStream());
     return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));
   }
 
@@ -101,8 +101,8 @@ public class PrmBatchControllerApiV1 {
   public CompletableFuture<ResponseEntity<InputStreamResource>> streamLatestExportGzFile(
       @PathVariable PrmBatchExportFileName exportFileName,
       @PathVariable PrmExportType prmExportType) throws NotAllowedExportFileException {
-    FilePath filePath = fileExportService.createFilePath(prmExportType, exportFileName);
-    String latestUploadedFileName = fileExportService.getLatestUploadedFileName(filePath);
+    String latestUploadedFileName = fileExportService.getLatestUploadedFileName(
+        fileExportService.createExportFilePath(prmExportType, exportFileName));
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(extractFileNameFromS3ObjectName(latestUploadedFileName));
     InputStreamResource body = fileExportService.streamGzipFile(latestUploadedFileName);
     return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));
