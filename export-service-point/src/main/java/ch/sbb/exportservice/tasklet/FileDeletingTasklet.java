@@ -33,7 +33,7 @@ public abstract class FileDeletingTasklet implements Tasklet {
 
   @Override
   public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
-    String filePath = fileExportService.createFilePath(exportType, exportFileName, getExportExtensionFileType())
+    String filePath = fileExportService.createExportFilePath(exportType, exportFileName, getExportExtensionFileType())
         .actualDateFilePath();
     log.info("File {} deleting...", filePath);
     try {

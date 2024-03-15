@@ -19,6 +19,6 @@ public class UploadJsonFileTasklet extends FileUploadTasklet {
 
   @Override
   protected void putFile() throws IOException {
-    amazonService.putGzipFile(AmazonBucket.EXPORT, file(), filePath.s3BucketDirPath());
+    amazonService.putGzipFile(AmazonBucket.EXPORT, file(), exportFilePath.s3BucketDirPath());
   }
 }
