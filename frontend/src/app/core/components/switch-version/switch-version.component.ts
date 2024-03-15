@@ -1,21 +1,35 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { Record } from '../base-detail/record';
-import { DateService } from '../../date/date.service';
-import { TableColumn } from '../table/table-column';
-import { Status } from '../../../api';
-import { TranslatePipe } from '@ngx-translate/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChildren
+} from '@angular/core';
+import {Record} from '../base-detail/record';
+import {DateService} from '../../date/date.service';
+import {TableColumn} from '../table/table-column';
+import {Status} from '../../../api';
+import {TranslatePipe} from '@ngx-translate/core';
+import {MatRow} from "@angular/material/table";
 
 @Component({
   selector: 'app-switch-version',
   templateUrl: './switch-version.component.html',
   styleUrls: ['./switch-version.component.scss'],
 })
-export class SwitchVersionComponent implements OnInit, OnChanges {
+export class SwitchVersionComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() records!: Array<Record>;
   @Input() currentRecord!: Record;
   @Input() switchDisabled = false;
   @Input() showStatus = true;
   @Output() switchVersion = new EventEmitter<number>();
+
+  @ViewChildren(MatRow, {read: ElementRef}) versionRows!: QueryList<ElementRef<HTMLTableRowElement>>;
 
   currentIndex: number;
   tableColumns: TableColumn<Record>[] = [];
@@ -50,6 +64,10 @@ export class SwitchVersionComponent implements OnInit, OnChanges {
     this.getCurrentIndex();
   }
 
+  ngAfterViewInit() {
+    this.scrollToCurrentRow();
+  }
+
   get columnValues() {
     return this.tableColumns.map((item) => item.value);
   }
@@ -72,9 +90,19 @@ export class SwitchVersionComponent implements OnInit, OnChanges {
   }
 
   setCurrentRecord(clickedRecord: Record) {
-    if (this.switchDisabled) return;
+    if (this.switchDisabled) {
+      return;
+    }
     this.currentIndex = this.getIndexOfRecord(clickedRecord);
     this.switchVersion.emit(this.currentIndex);
+  }
+
+  scrollToCurrentRow() {
+    this.versionRows?.get(this.currentIndex)?.nativeElement.scrollIntoView({
+      behavior: "instant",
+      block: "nearest",
+      inline: "center"
+    });
   }
 
   isCurrentRecord(record: Record): boolean {
@@ -97,6 +125,7 @@ export class SwitchVersionComponent implements OnInit, OnChanges {
     this.records.forEach((record, index) => {
       if (record.id === this.currentRecord.id) {
         this.currentIndex = index;
+        this.scrollToCurrentRow();
       }
     });
   }
