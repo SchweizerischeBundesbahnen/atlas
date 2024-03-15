@@ -18,6 +18,16 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       maxzoom: 19,
       bounds: [5.140242, 45.3981812, 11.47757, 48.230651],
     },
+    swisstopograu: {
+      type: 'raster',
+      tiles: [
+        'https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-grau/default/current/3857/{z}/{x}/{y}.jpeg',
+      ],
+      tileSize: 256,
+      attribution: '&copy; OpenStreetMap Contributors',
+      maxzoom: 19,
+      bounds: [5.140242, 45.3981812, 11.47757, 48.230651],
+    },
     osm: {
       type: 'raster',
       tiles: [
@@ -96,6 +106,14 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       id: 'swisstopofarbe',
       type: 'raster',
       source: 'swisstopofarbe',
+      paint: {
+        'raster-opacity': 0.5,
+      },
+    },
+    {
+      id: 'swisstopograu',
+      type: 'raster',
+      source: 'swisstopograu',
       paint: {
         'raster-opacity': 0.5,
       },

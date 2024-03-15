@@ -1034,7 +1034,8 @@
       "GEOGRAPHY_INFORMATION": "Se attivata, la posizione geografica deve essere registrata in uno dei due sistemi di coordinate."
     },
     "MAP_STYLES": {
-      "SWISSTOPO": "Swisstopo (Svizzera)",
+      "SWISSTOPO": "Swisstopo colorato (Svizzera)",
+      "SWISSTOPO_GRAY": "Swisstopo BN (Svizzera)",
       "OPEN_STREET_MAP": "Openstreetmap (globale)",
       "SATELLITE": "Satellite (globale)",
       "SATELLITE_SWISS": "Satellite (Svizzera)"
