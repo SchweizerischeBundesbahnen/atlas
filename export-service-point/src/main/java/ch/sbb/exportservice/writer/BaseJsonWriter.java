@@ -27,7 +27,7 @@ public abstract class BaseJsonWriter<T> {
     objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     jacksonJsonObjectMarshaller.setObjectMapper(objectMapper);
     FileSystemResource fileSystemResource =
-        new FileSystemResource(fileExportService.createFilePath(exportType, exportFileName,
+        new FileSystemResource(fileExportService.createExportFilePath(exportType, exportFileName,
             ExportExtensionFileType.JSON_EXTENSION).actualDateFilePath());
     JsonFileItemWriter<T> writer = new JsonFileItemWriter<>(
         fileSystemResource,
