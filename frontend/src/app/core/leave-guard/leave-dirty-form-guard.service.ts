@@ -36,13 +36,18 @@ export class LeaveDirtyFormGuard {
   staysOnSameDetailPage(currentState: RouterStateSnapshot, nextState: RouterStateSnapshot) {
     //if from new to created url
     const indexOfAdd = currentState.url.indexOf('/add');
-    if (indexOfAdd !== -1) {
+    const addPresentInUrl = indexOfAdd !== -1;
+    if (addPresentInUrl) {
       const urlBeforeAdd = currentState.url.substring(0, indexOfAdd);
       if (nextState.url.startsWith(urlBeforeAdd)) {
         return true;
       }
     }
-    return currentState.url === nextState.url;
+    return this.getSubstringBeforeLastSlash(currentState.url) === this.getSubstringBeforeLastSlash(nextState.url);
+  }
+
+  private getSubstringBeforeLastSlash(value: string) {
+    return value.substring(0, value.lastIndexOf('/'));
   }
 
 }
