@@ -12,6 +12,7 @@ import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
+import ch.sbb.prm.directory.exception.PlatformAlreadyExistsException;
 import ch.sbb.prm.directory.repository.PlatformRepository;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.search.PlatformSearchRestrictions;
@@ -89,6 +90,10 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
 
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#version)")
   public PlatformVersion createPlatformVersion(PlatformVersion version) {
+    boolean isPlatformExisting = isPlatformExisting(version.getSloid());
+    if (isPlatformExisting) {
+      throw new PlatformAlreadyExistsException(version.getSloid());
+    }
     sharedServicePointService.validateTrafficPointElementExists(version.getParentServicePointSloid(), version.getSloid());
     PlatformVersion savedVersion = save(version);
     createRelation(savedVersion);
@@ -146,6 +151,10 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
     if (!platformRepository.existsBySloid(sloid)) {
       throw new ElementTypeDoesNotExistException(sloid, type);
     }
+  }
+
+  public boolean isPlatformExisting(String sloid) {
+    return platformRepository.existsBySloid(sloid);
   }
 
 }
