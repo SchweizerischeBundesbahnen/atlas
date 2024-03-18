@@ -96,7 +96,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
             .sbbUserId("e678574").build()
     ));
 
-    mvc.perform(get("/v1/users/U236171"))
+    mvc.perform(get("/v1/users/u236171"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.sbbUserId").value("u236171"))
         .andExpect(jsonPath("$.lastName").value("Ammann"))
@@ -121,7 +121,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
         .build();
     UserPermissionCreateModel model = UserPermissionCreateModel
         .builder()
-        .sbbUserId("U236171")
+        .sbbUserId("u236171")
         .permissions(List.of(
             permissionModelWriter, permissionModelReader
         ))
