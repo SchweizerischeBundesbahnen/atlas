@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class UserInformationApiController implements UserInformationApiV1 {
+
   private final GraphApiService graphApiService;
 
   @Override
