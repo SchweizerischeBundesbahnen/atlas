@@ -23,7 +23,13 @@
           <form-date-icon [enabled]="controlFrom.enabled"></form-date-icon>
         </mat-icon>
       </mat-datepicker-toggle>
-      <mat-datepicker #validFromPicker></mat-datepicker>
+      <mat-datepicker #validFromPicker>
+        <mat-date-range-picker-actions>
+          <button mat-button class="me-auto" (click)="selectToday()">{{ 'COMMON.TODAY'|translate }}</button>
+          <button mat-button (click)="selectFutureTimetable()">{{ 'COMMON.TIMETABLE_YEAR_CHANGE'|translate }}
+          </button>
+        </mat-date-range-picker-actions>
+      </mat-datepicker>
     </div>
     <app-atlas-field-error
       [form]="formGroup"
@@ -48,7 +54,11 @@
         [attr.data-cy]="controlNameTo"
         [formControlName]="controlNameTo"
         required
+        list="validToSuggestions"
       />
+      <datalist id="validToSuggestions">
+        <option value="31.12.9999"></option>
+      </datalist>
       <mat-datepicker-toggle [for]="validToPicker">
         <mat-icon matDatepickerToggleIcon>
           <form-date-icon [enabled]="controlTo.enabled"></form-date-icon>
