@@ -49,6 +49,8 @@
     "FILLED_AUTOMATICALLY": "Automatisch befüllt",
     "VALID_FROM": "Gültig von",
     "VALID_TO": "Gültig bis",
+    "TODAY": "Heute",
+    "TIMETABLE_YEAR_CHANGE": "Fahrplanwechsel",
     "EDIT_ON": "Geändert",
     "EDIT_BY": "Durch",
     "STATUS": "Status",
@@ -1032,7 +1034,8 @@
       "GEOGRAPHY_INFORMATION": "Wenn aktiviert, muss die geografische Lage in einem der beiden Koordinatensysteme erfasst werden."
     },
     "MAP_STYLES": {
-      "SWISSTOPO": "Swisstopo (Schweiz)",
+      "SWISSTOPO": "Swisstopo farbig (Schweiz)",
+      "SWISSTOPO_GRAY": "Swisstopo SW (Schweiz)",
       "OPEN_STREET_MAP": "Openstreetmap (weltweit)",
       "SATELLITE": "Satellit (weltweit)",
       "SATELLITE_SWISS": "Satellit (Schweiz)"

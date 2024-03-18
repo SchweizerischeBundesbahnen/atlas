@@ -87,7 +87,7 @@ describe('MapService', () => {
     const mapSpy = jasmine.createSpyObj<Map>(['setLayoutProperty']);
     service.map = mapSpy;
 
-    service.switchToStyle(MAP_STYLES[1]);
+    service.switchToStyle(MAP_STYLES[3]);
 
     expect(mapSpy.setLayoutProperty).toHaveBeenCalledWith('osm', 'visibility', 'visible');
   });
