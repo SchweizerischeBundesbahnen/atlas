@@ -1,13 +1,19 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DateRangeComponent } from './date-range.component';
-import { AppTestingModule } from '../../../app.testing.module';
-import { FormControl, FormGroup } from '@angular/forms';
-import { DateIconComponent } from '../date-icon/date-icon.component';
-import { AtlasFieldErrorComponent } from '../atlas-field-error/atlas-field-error.component';
-import { AtlasLabelFieldComponent } from '../atlas-label-field/atlas-label-field.component';
-import { TranslatePipe } from '@ngx-translate/core';
-import { InfoIconComponent } from '../info-icon/info-icon.component';
+import {DateRangeComponent} from './date-range.component';
+import {AppTestingModule} from '../../../app.testing.module';
+import {FormControl, FormGroup} from '@angular/forms';
+import {DateIconComponent} from '../date-icon/date-icon.component';
+import {AtlasFieldErrorComponent} from '../atlas-field-error/atlas-field-error.component';
+import {AtlasLabelFieldComponent} from '../atlas-label-field/atlas-label-field.component';
+import {TranslatePipe} from '@ngx-translate/core';
+import {InfoIconComponent} from '../info-icon/info-icon.component';
+import {TimetableYearChangeService} from "../../../api";
+import {of} from "rxjs";
+
+const nextTimetableYearChange = new Date('2024-12-15');
+const timetableYearChangeService = jasmine.createSpyObj('TimetableYearChangeService', ['getNextTimetablesYearChange']);
+timetableYearChangeService.getNextTimetablesYearChange.and.returnValue(of([nextTimetableYearChange]))
 
 describe('DateRangeComponent', () => {
   let component: DateRangeComponent;
@@ -23,7 +29,9 @@ describe('DateRangeComponent', () => {
         AtlasLabelFieldComponent,
       ],
       imports: [AppTestingModule],
-      providers: [{ provide: TranslatePipe }],
+      providers: [
+        { provide: TranslatePipe },
+        { provide: TimetableYearChangeService, useValue: timetableYearChangeService }],
     }).compileComponents();
   });
 
@@ -44,5 +52,17 @@ describe('DateRangeComponent', () => {
   it('MIN_DATE and MAX_DATE should be defined', () => {
     expect(component.MIN_DATE).toBeDefined();
     expect(component.MAX_DATE).toBeDefined();
+  });
+
+  it('validFrom should select today', () => {
+    component.selectToday();
+
+    expect(component.formGroup.controls.validFrom.value.toISOString()).toEqual(new Date().toISOString());
+  });
+
+  it('validFrom should select future timetable year change', () => {
+    component.selectFutureTimetable();
+
+    expect(component.formGroup.controls.validFrom.value.toISOString()).toEqual(nextTimetableYearChange.toISOString());
   });
 });
