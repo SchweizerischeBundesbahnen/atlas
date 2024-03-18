@@ -11,9 +11,9 @@ describe('BoSelectionDisplayPipe', () => {
     expect(pipe).toBeTruthy();
     expect(
       pipe.transform({
-        said: 'said',
+        sboid: 'sboid',
         organisationNumber: 123,
       } as BusinessOrganisation)
-    ).toBe('123 - 123 - 123 - said');
+    ).toBe('123 - 123 - 123 - sboid');
   });
 });

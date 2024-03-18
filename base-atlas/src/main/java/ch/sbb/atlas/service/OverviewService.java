@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -35,7 +36,9 @@ public class OverviewService {
     }
     List<T> result = new ArrayList<>();
 
-    Map<String, List<T>> groupedVersions = versionsToMerge.stream().collect(Collectors.groupingBy(swissIdExtractor));
+    Map<String, List<T>> groupedVersions = versionsToMerge.stream().collect(Collectors.groupingBy(
+        swissIdExtractor,
+        LinkedHashMap::new, Collectors.toList()));
     groupedVersions.values().forEach(versions -> result.add(getDisplayModel(versions)));
 
     return result;
