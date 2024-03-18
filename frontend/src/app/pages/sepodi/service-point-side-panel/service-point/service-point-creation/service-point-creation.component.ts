@@ -23,6 +23,7 @@ import { NotificationService } from '../../../../../core/notification/notificati
 import { GeographyFormGroupBuilder } from '../../../geography/geography-form-group';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MapService } from '../../../map/map.service';
+import {DetailFormComponent} from "../../../../../core/leave-guard/leave-dirty-form-guard.service";
 
 @Component({
   selector: 'app-service-point-creation',
@@ -30,7 +31,7 @@ import { MapService } from '../../../map/map.service';
   styleUrls: ['./service-point-creation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ServicePointCreationComponent implements OnInit {
+export class ServicePointCreationComponent implements OnInit, DetailFormComponent {
   public form: FormGroup<ServicePointDetailFormGroup> =
     ServicePointFormGroupBuilder.buildEmptyFormGroup();
   public countryOptions$: Observable<Country[]> = EMPTY;
