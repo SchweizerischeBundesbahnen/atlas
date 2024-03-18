@@ -47,9 +47,9 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
       value: 'organisationNumber',
     },
     {
-      headerTitle: 'BODI.BUSINESS_ORGANISATION.SAID',
-      columnDef: 'said',
-      value: 'said',
+      headerTitle: 'BODI.BUSINESS_ORGANISATION.SBOID',
+      columnDef: 'sboid',
+      value: 'sboid',
     },
     {
       headerTitle: 'BODI.BUSINESS_ORGANISATION.ABBREVIATION',
