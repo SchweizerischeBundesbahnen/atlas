@@ -7,20 +7,18 @@ import java.util.Collections;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class UserMapper {
+public class GraphApiUserMapper {
 
   public static UserModel userToModel(User user) {
     return UserModel.builder()
-        .sbbUserId(user.onPremisesSamAccountName)
-        .lastName(user.surname)
-        .firstName(user.givenName)
-        .mail(user.mail)
-        .accountStatus(
-            UserAccountStatus.getUserAccountStatusFromBoolean(user.accountEnabled))
-        .displayName(user.displayName)
+        .sbbUserId(user.getOnPremisesSamAccountName())
+        .lastName(user.getSurname())
+        .firstName(user.getGivenName())
+        .mail(user.getMail())
+        .accountStatus(UserAccountStatus.getUserAccountStatusFromBoolean(user.getAccountEnabled()))
+        .displayName(user.getDisplayName())
         .permissions(Collections.emptySet())
         .build();
   }
-
 
 }
