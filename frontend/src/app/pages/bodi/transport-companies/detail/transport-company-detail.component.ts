@@ -40,9 +40,9 @@ export class TransportCompanyDetailComponent implements OnInit, DetailFormCompon
   readonly pageSizeForBusinessOrganisationSearch = 100;
   readonly transportCompanyRelationTableColumns: TableColumn<TransportCompanyBoRelation>[] = [
     {
-      headerTitle: 'BODI.BUSINESS_ORGANISATION.SAID',
-      valuePath: 'businessOrganisation.said',
-      columnDef: 'said',
+      headerTitle: 'BODI.BUSINESS_ORGANISATION.SBOID',
+      valuePath: 'businessOrganisation.sboid',
+      columnDef: 'sboid',
     },
     {
       headerTitle: 'BODI.BUSINESS_ORGANISATION.ORGANISATION_NUMBER',

@@ -49,6 +49,8 @@
     "FILLED_AUTOMATICALLY": "Compilato automaticamente",
     "VALID_FROM": "Valido dal",
     "VALID_TO": "Valido fino al",
+    "TODAY": "Oggi",
+    "TIMETABLE_YEAR_CHANGE": "Cambiamento d'orario",
     "EDIT_ON": "Modificato",
     "EDIT_BY": "Da",
     "STATUS": "Stato",
@@ -1032,7 +1034,8 @@
       "GEOGRAPHY_INFORMATION": "Se attivata, la posizione geografica deve essere registrata in uno dei due sistemi di coordinate."
     },
     "MAP_STYLES": {
-      "SWISSTOPO": "Swisstopo (Svizzera)",
+      "SWISSTOPO": "Swisstopo colorato (Svizzera)",
+      "SWISSTOPO_GRAY": "Swisstopo BN (Svizzera)",
       "OPEN_STREET_MAP": "Openstreetmap (globale)",
       "SATELLITE": "Satellite (globale)",
       "SATELLITE_SWISS": "Satellite (Svizzera)"
