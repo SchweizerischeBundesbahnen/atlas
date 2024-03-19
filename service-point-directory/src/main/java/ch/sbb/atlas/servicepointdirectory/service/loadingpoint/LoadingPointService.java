@@ -83,8 +83,7 @@ public class LoadingPointService {
   public void updateVersion(LoadingPointVersion currentVersion, LoadingPointVersion editedVersion,
       List<ServicePointVersion> associatedServicePoint) {
     loadingPointVersionRepository.incrementVersion(currentVersion.getServicePointNumber(), currentVersion.getNumber());
-    if (editedVersion.getVersion() != null && !currentVersion.getVersion()
-        .equals(editedVersion.getVersion())) {
+    if (!currentVersion.getVersion().equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(LoadingPointVersion.class.getSimpleName(), "version");
     }
 
