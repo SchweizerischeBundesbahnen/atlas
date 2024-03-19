@@ -32,7 +32,7 @@ public record ServicePointMappingEquality(ServicePointCsvModel didokCsvLine,
     performBusinessOrganisationCheck();
     performMeansOfTransportCheck();
     performCategoryCheck();
-    assertThat(atlasCsvLine.getFotComment()).isEqualTo(ch.sbb.atlas.export.StringUtils.removeNewLine(didokCsvLine.getComment()));
+    assertThat(atlasCsvLine.getFotComment()).isEqualTo(ch.sbb.atlas.export.utils.StringUtils.removeNewLine(didokCsvLine.getComment()));
 
     // Since didok sometimes has locations but virtual, we should perform this check only if atlas has a geolocation ?
     if (atlasCsvLine.isHasGeolocation()) {
