@@ -45,6 +45,8 @@ import org.springframework.beans.factory.annotation.Autowired;
     editedVersion.setDescription("FPFN Description <CHANGED>");
     editedVersion.getLineRelations()
                  .add(TimetableFieldLineRelation.builder().slnid("ch:1:slnid:111111").timetableFieldNumberVersion(version2).build());
+    editedVersion.setVersion(version2.getVersion());
+
     //when
     timetableFieldNumberService.updateVersion(version2, editedVersion);
     List<TimetableFieldNumberVersion> result = versionRepository.getAllVersionsVersioned(version2.getTtfnid());
@@ -104,6 +106,8 @@ import org.springframework.beans.factory.annotation.Autowired;
     editedVersion.setValidTo(version2.getValidTo());
     editedVersion.getLineRelations()
                  .add(TimetableFieldLineRelation.builder().slnid("ch:1:slnid:111111").timetableFieldNumberVersion(version2).build());
+    editedVersion.setVersion(version2.getVersion());
+
     //when
     timetableFieldNumberService.updateVersion(version2, editedVersion);
     List<TimetableFieldNumberVersion> result = versionRepository.getAllVersionsVersioned(version2.getTtfnid());
@@ -157,6 +161,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
     TimetableFieldNumberVersion editedVersion = version2Builder().build();
     editedVersion.setDescription("FPFN Description <changed>");
+    editedVersion.setVersion(version2.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version2, editedVersion);
@@ -218,6 +223,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     TimetableFieldNumberVersion editedVersion = version1Builder().build();
     editedVersion.setDescription("FPFN Description <changed>");
     editedVersion.setComment("A comment");
+    editedVersion.setVersion(version1.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version1, editedVersion);
@@ -286,6 +292,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     editedVersion.setDescription("SBB1");
     editedVersion.setValidFrom(version2.getValidFrom());
     editedVersion.setValidTo(version3.getValidTo());
+    editedVersion.setVersion(version2.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version2, editedVersion);

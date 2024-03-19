@@ -1,5 +1,22 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
+import static ch.sbb.atlas.api.AtlasApiConstants.ZURICH_ZONE_ID;
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
+import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.WGS84;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.ErrorResponse;
@@ -32,15 +49,6 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import ch.sbb.atlas.servicepointdirectory.service.georeference.JourneyPoiClient;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.servlet.MvcResult;
-
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -53,23 +61,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-
-import static ch.sbb.atlas.api.AtlasApiConstants.ZURICH_ZONE_ID;
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.WGS84;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.endsWith;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MvcResult;
 
 class ServicePointControllerApiTest extends BaseControllerApiTest {
 
@@ -439,6 +438,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
         aargauServicePointVersionModel);
     Long id = servicePointVersionModel.getId();
+    createServicePointVersionModel1.setEtagVersion(servicePointVersionModel.getEtagVersion());
     List<ReadServicePointVersionModel> servicePointVersionModels = servicePointController.updateServicePoint(id,
         createServicePointVersionModel1);
     servicePointVersionModels.forEach(v -> v.setStatus(Status.IN_REVIEW));
@@ -467,6 +467,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
         aargauServicePointVersionModel);
     Long id = servicePointVersionModel.getId();
+    createServicePointVersionModel1.setEtagVersion(servicePointVersionModel.getEtagVersion());
     List<ReadServicePointVersionModel> servicePointVersionModels = servicePointController.updateServicePoint(id,
         createServicePointVersionModel1);
     servicePointVersionModels.forEach(v -> v.setStatus(Status.IN_REVIEW));
@@ -524,9 +525,11 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     createServicePointVersionModel1.setMeansOfTransport(List.of(MeanOfTransport.BUS));
     createServicePointVersionModel1.setValidFrom(LocalDate.of(2019, 8, 11));
     createServicePointVersionModel1.setValidTo(LocalDate.of(2020, 8, 10));
+
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
         aargauServicePointVersionModel);
     Long id = servicePointVersionModel.getId();
+    createServicePointVersionModel1.setEtagVersion(servicePointVersionModel.getEtagVersion());
     List<ReadServicePointVersionModel> servicePointVersionModels = servicePointController.updateServicePoint(id,
         createServicePointVersionModel1);
     servicePointVersionModels.forEach(v -> v.setStatus(Status.IN_REVIEW));
@@ -564,8 +567,10 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     createServicePointVersionModel1.setMeansOfTransport(List.of(MeanOfTransport.BUS));
     createServicePointVersionModel1.setValidFrom(LocalDate.of(2019, 8, 11));
     createServicePointVersionModel1.setValidTo(LocalDate.of(2020, 8, 10));
+
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
         aargauServicePointVersionModel);
+    createServicePointVersionModel1.setEtagVersion(servicePointVersionModel.getEtagVersion());
     Long id = servicePointVersionModel.getId();
     List<ReadServicePointVersionModel> servicePointVersionModels = servicePointController.updateServicePoint(id,
         createServicePointVersionModel1);
@@ -927,6 +932,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
     newServicePointVersionModel.setValidFrom(LocalDate.of(2011, 12, 11));
     newServicePointVersionModel.setValidTo(LocalDate.of(2012, 12, 11));
+    newServicePointVersionModel.setEtagVersion(servicePointVersionModel.getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
@@ -994,6 +1000,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     newServicePointVersionModel.setServicePointGeolocation(
         ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
     newServicePointVersionModel.setNumberShort(numberShort);
+    newServicePointVersionModel.setEtagVersion(servicePointVersionModel.getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
@@ -1013,6 +1020,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     newServicePointVersionModel.setServicePointGeolocation(
         ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
     newServicePointVersionModel.setOperatingPointRouteNetwork(true);
+    newServicePointVersionModel.setEtagVersion(servicePointVersionModel.getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
@@ -1245,6 +1253,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     aargauServicePoint.setId(id);
 
     aargauServicePoint.setAbbreviation("BUCH");
+    aargauServicePoint.setEtagVersion(servicePointVersionModel.getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + aargauServicePoint.getId())
             .contentType(contentType)
@@ -1264,6 +1273,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
 
     CreateServicePointVersionModel buchsiServicePoint = ServicePointTestData.getBuchsiServicePoint();
     buchsiServicePoint.setId(id);
+    buchsiServicePoint.setEtagVersion(servicePointVersionModel.getEtagVersion());
 
     buchsiServicePoint.setAbbreviation("NEU");
 
