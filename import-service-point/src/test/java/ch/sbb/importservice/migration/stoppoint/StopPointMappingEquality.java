@@ -8,6 +8,7 @@ import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.export.StringUtils;
 import ch.sbb.atlas.export.model.prm.StopPointVersionCsvModel;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.importservice.migration.MigrationUtil;
 import java.time.LocalDateTime;
@@ -123,6 +124,7 @@ public record StopPointMappingEquality(StopPointCsvModel didokCsvLine, StopPoint
     } else {
       assertThat(localDateFromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getModifiedAt());
     }
+    assertThat(atlasCsvLine.getStatus()).isEqualTo(Status.VALIDATED);
   }
 
   String mapInteroperableFromDidok(Integer integer) {

@@ -11,6 +11,7 @@ import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
 import ch.sbb.atlas.export.StringUtils;
 import ch.sbb.atlas.export.model.prm.PlatformVersionCsvModel;
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.importservice.migration.MigrationUtil;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -37,8 +38,7 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
       assertThat(atlasCsvLine.getBoardingDevice()).isNull();
     }
     if(atlasCsvLine.getAdditionalInformation() != null && didokCsvLine.getInfos() != null){
-      String didokInfos = didokCsvLine.getInfos().replaceAll("\r\n|\r|\n", " ");
-      assertThat(atlasCsvLine.getAdditionalInformation()).isEqualTo(didokInfos);
+      assertThat(atlasCsvLine.getAdditionalInformation()).isEqualTo(StringUtils.removeNewLine(didokCsvLine.getInfos()));
     }
     else {
       assertThat(didokCsvLine.getInfos()).isNull();
@@ -161,6 +161,7 @@ public record PlatformMappingEquality(PlatformCsvModel didokCsvLine, PlatformVer
     } else {
       assertThat(localDateFromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getModifiedAt());
     }
+    assertThat(atlasCsvLine.getStatus()).isEqualTo(Status.VALIDATED);
   }
 
   private List<InfoOpportunityAttributeType> mapPipedInfoOpportunities(String infoOpportunities){
