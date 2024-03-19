@@ -1,7 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.migration.servicepoints;
 
+import static ch.sbb.atlas.imports.util.ImportUtils.replaceNewLinesAndReplaceToDateWithHighestDate;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.util.CsvReader;
 import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.model.DateRange;
@@ -35,8 +37,8 @@ import org.springframework.util.FileSystemUtils;
   private static final String ATLAS_CSV_FILE = "full-world-service_point-2024-03-12.csv";
 
   private static final List<ServicePointAtlasCsvModel> atlasCsvLines = new ArrayList<>();
-  private static final List<ServicePointDidokCsvModel> didokCsvLines = new ArrayList<>();
-  private static List<ServicePointDidokCsvModel> didokCsvLinesAfterModification = new ArrayList<>();
+  private static final List<ServicePointCsvModel> didokCsvLines = new ArrayList<>();
+  private static List<ServicePointCsvModel> didokCsvLinesAfterModification = new ArrayList<>();
 
   @Test
   @Order(1)
@@ -44,7 +46,16 @@ import org.springframework.util.FileSystemUtils;
     File zippedFile = new File(ZIPPED_DIDOK_CSV_FILE);
     File unzippedFile = MigrationTestsUtilityClass.unzipFile(zippedFile, DECOMPRESSED_FILE_PATH);
     try (InputStream csvStream = new FileInputStream(unzippedFile)) {
-      didokCsvLines.addAll(CsvReader.parseCsv(csvStream, ServicePointDidokCsvModel.class));
+      didokCsvLines.addAll(CsvReader.parseCsv(csvStream, ServicePointCsvModel.class));
+      replaceNewLinesAndReplaceToDateWithHighestDate(didokCsvLines);
+
+//      List<ServicePointCsvModelContainer> servicePointCsvModelContainers =
+//          MigrationTestsUtilityClass.mapToServicePointCsvModelContainers(
+//              CsvReader.parseCsv(csvStream, ServicePointCsvModel.class));
+//      didokCsvLines.addAll(servicePointCsvModelContainers.stream()
+//          .map(ServicePointCsvModelContainer::getServicePointCsvModelList)
+//          .flatMap(Collection::stream)
+//          .toList());
       didokCsvLinesAfterModification = didokCsvLines.stream().peek(object ->
       {
         if (object.getValidTo().equals(ImportUtils.DIDOK_HIGEST_DATE)) {
@@ -64,7 +75,7 @@ import org.springframework.util.FileSystemUtils;
   @Test
   @Order(2)
   void shouldHaveSameDidokCodesInBothCsvs() {
-    Set<Integer> didokCodes = didokCsvLinesAfterModification.stream().map(ServicePointDidokCsvModel::getDidokCode).collect(Collectors.toSet());
+    Set<Integer> didokCodes = didokCsvLinesAfterModification.stream().map(ServicePointCsvModel::getDidokCode).collect(Collectors.toSet());
     Set<Integer> atlasNumbers = atlasCsvLines.stream().map(ServicePointAtlasCsvModel::getNumber).collect(Collectors.toSet());
 
     Set<Integer> difference = atlasNumbers.stream().filter(e -> !didokCodes.contains(e)).collect(Collectors.toSet());
@@ -83,7 +94,7 @@ import org.springframework.util.FileSystemUtils;
   @Order(3)
   void shouldHaveSameValidityOnEachDidokCode() {
     Map<Integer, Validity> groupedDidokCodes = didokCsvLinesAfterModification.stream().collect(
-        Collectors.groupingBy(ServicePointDidokCsvModel::getDidokCode, Collectors.collectingAndThen(Collectors.toList(),
+        Collectors.groupingBy(ServicePointCsvModel::getDidokCode, Collectors.collectingAndThen(Collectors.toList(),
             list -> new Validity(
                 list.stream().map(i -> DateRange.builder().from(i.getValidFrom()).to(i.getValidTo()).build())
                     .collect(Collectors.toList())).minify())));
@@ -128,7 +139,7 @@ import org.springframework.util.FileSystemUtils;
     FileSystemUtils.deleteRecursively(new File(DECOMPRESSED_FILE_PATH));
   }
 
-  private ServicePointAtlasCsvModel findCorrespondingAtlasServicePointVersion(ServicePointDidokCsvModel didokCsvLine,
+  private ServicePointAtlasCsvModel findCorrespondingAtlasServicePointVersion(ServicePointCsvModel didokCsvLine,
       List<ServicePointAtlasCsvModel> atlasCsvLines) {
     List<ServicePointAtlasCsvModel> matchedVersions = atlasCsvLines.stream().filter(
             atlasCsvLine -> DateRange.builder()
