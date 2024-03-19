@@ -44,14 +44,6 @@ import org.junit.jupiter.api.TestMethodOrder;
         this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE)) {
       didokCsvLines.addAll(CsvReader.parseCsv(csvStream, ServicePointCsvModel.class));
       replaceNewLinesAndReplaceToDateWithHighestDate(didokCsvLines);
-
-//      List<ServicePointCsvModelContainer> servicePointCsvModelContainers =
-//          MigrationTestsUtilityClass.mapToServicePointCsvModelContainers(
-//              CsvReader.parseCsv(csvStream, ServicePointCsvModel.class));
-//      didokCsvLines.addAll(servicePointCsvModelContainers.stream()
-//          .map(ServicePointCsvModelContainer::getServicePointCsvModelList)
-//          .flatMap(Collection::stream)
-//          .toList());
     }
     assertThat(didokCsvLines).isNotEmpty();
 
