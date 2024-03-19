@@ -41,4 +41,12 @@ public class Entity {
                     .findFirst().orElse(-1);
   }
 
+  public boolean equalsExcludingIgnoreDiffProperties(Entity other) {
+    return getId().equals(other.getId()) && getPropertiesWithoutIgnore().equals(other.getPropertiesWithoutIgnore());
+  }
+
+  public List<Property> getPropertiesWithoutIgnore() {
+    return getProperties().stream().filter(i -> !i.isIgnoreDiff()).toList();
+  }
+
 }
