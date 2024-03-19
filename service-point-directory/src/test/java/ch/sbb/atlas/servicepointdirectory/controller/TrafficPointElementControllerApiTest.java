@@ -384,6 +384,7 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
         GeolocationMapper.toCreateModel(TrafficPointTestData.getTrafficPointGeolocationBernMittelland()));
     newTrafficPointVersionModel.setValidFrom(LocalDate.of(2021, 1, 1));
     newTrafficPointVersionModel.setValidTo(LocalDate.of(2021, 12, 31));
+    newTrafficPointVersionModel.setEtagVersion(trafficPointElementVersionModel.getEtagVersion());
 
     mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/" + id)
             .contentType(contentType)
@@ -475,6 +476,8 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
     CreateTrafficPointElementVersionModel newTrafficPointVersionModel = TrafficPointTestData.getCreateTrafficPointVersionModel();
     newTrafficPointVersionModel.setTrafficPointElementGeolocation(
         GeolocationMapper.toCreateModel(TrafficPointTestData.getTrafficPointGeolocationBernMittelland()));
+    newTrafficPointVersionModel.setEtagVersion(trafficPointElementVersionModel.getEtagVersion());
+
     mvc.perform(MockMvcRequestBuilders.put("/v1/traffic-point-elements/" + id)
             .contentType(contentType)
             .content(mapper.writeValueAsString(newTrafficPointVersionModel)))

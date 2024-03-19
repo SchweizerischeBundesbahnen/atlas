@@ -106,6 +106,7 @@ import org.springframework.transaction.annotation.Transactional;
     editedVersion.setDescription("Description <changed>");
     editedVersion.setValidFrom(LocalDate.of(2022, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2023, 6, 1));
+    editedVersion.setVersion(version2.getVersion());
 
     //when
     sublineService.updateVersion(version2, editedVersion);
@@ -173,6 +174,7 @@ import org.springframework.transaction.annotation.Transactional;
     version3 = sublineVersionRepository.save(version3);
     SublineVersion editedVersion = version2Builder().build();
     editedVersion.setSwissSublineNumber("2");
+    editedVersion.setVersion(version2.getVersion());
 
     //when
     sublineService.updateVersion(version2, editedVersion);
