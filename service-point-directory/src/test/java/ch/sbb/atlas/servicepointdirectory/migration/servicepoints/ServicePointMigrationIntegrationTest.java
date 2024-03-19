@@ -49,13 +49,6 @@ import org.springframework.util.FileSystemUtils;
       didokCsvLines.addAll(CsvReader.parseCsv(csvStream, ServicePointCsvModel.class));
       replaceNewLinesAndReplaceToDateWithHighestDate(didokCsvLines);
 
-//      List<ServicePointCsvModelContainer> servicePointCsvModelContainers =
-//          MigrationTestsUtilityClass.mapToServicePointCsvModelContainers(
-//              CsvReader.parseCsv(csvStream, ServicePointCsvModel.class));
-//      didokCsvLines.addAll(servicePointCsvModelContainers.stream()
-//          .map(ServicePointCsvModelContainer::getServicePointCsvModelList)
-//          .flatMap(Collection::stream)
-//          .toList());
       didokCsvLinesAfterModification = didokCsvLines.stream().peek(object ->
       {
         if (object.getValidTo().equals(ImportUtils.DIDOK_HIGEST_DATE)) {
