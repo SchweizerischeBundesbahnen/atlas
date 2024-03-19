@@ -18,7 +18,7 @@ public class ReferencePointVersionCsvProcessor implements
         .designation(version.getDesignation())
         .mainReferencePoint(version.isMainReferencePoint())
         .additionalInformation(version.getAdditionalInformation())
-        .rpType(version.getReferencePointType().toString())
+        .referencePointType(version.getReferencePointType().toString())
         .validFrom(BaseServicePointProcessor.DATE_FORMATTER.format(version.getValidFrom()))
         .validTo(BaseServicePointProcessor.DATE_FORMATTER.format(version.getValidTo()))
         .creationDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(version.getCreationDate()))
