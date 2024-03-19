@@ -33,7 +33,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 
   private static final List<TrafficPointAtlasCsvModel> trafficPointElementCsvModels = new ArrayList<>();
   private static final List<TrafficPointDidokCsvModel> didokCsvLines = new ArrayList<>();
-  private static List<TrafficPointDidokCsvModel> didokCsvLinesAfterModification = new ArrayList<>();
+  private List<TrafficPointDidokCsvModel> didokCsvLinesAfterModification = new ArrayList<>();
 
   @Test
   @Order(1)

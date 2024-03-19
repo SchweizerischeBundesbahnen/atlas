@@ -1,4 +1,4 @@
-package ch.sbb.atlas.export;
+package ch.sbb.atlas.export.utils;
 
 import lombok.experimental.UtilityClass;
 
