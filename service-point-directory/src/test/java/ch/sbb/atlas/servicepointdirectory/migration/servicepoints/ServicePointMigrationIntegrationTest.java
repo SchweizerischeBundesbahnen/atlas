@@ -39,7 +39,7 @@ import org.springframework.util.FileSystemUtils;
 
   private static final List<ServicePointAtlasCsvModel> atlasCsvLines = new ArrayList<>();
   private static final List<ServicePointCsvModel> didokCsvLines = new ArrayList<>();
-  private static List<ServicePointCsvModel> didokCsvLinesAfterModification = new ArrayList<>();
+  private List<ServicePointCsvModel> didokCsvLinesAfterModification = new ArrayList<>();
 
   @Test
   @Order(1)
