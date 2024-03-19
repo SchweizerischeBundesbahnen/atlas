@@ -16,8 +16,6 @@ public record LoadingPointMappingEquality(LoadingPointDidokCsvModel didokCsvLine
     assertThat(dateFromString(atlasCsvLine.getValidFrom())).isEqualTo(didokCsvLine.getValidFrom());
     assertThat(dateFromString(atlasCsvLine.getValidTo())).isEqualTo(didokCsvLine.getValidTo());
     assertThat(atlasCsvLine.getCreationDate()).isEqualTo(didokCsvLine.getCreatedAt());
-    System.out.println(atlasCsvLine);
-    System.out.println(didokCsvLine);
     if (didokCsvLine.getEditedAt().toLocalDate().equals(LoadingPointMigrationActualDateIntegrationTest.ACTUAL_DATE)) {
       assertThat(atlasCsvLine.getEditionDate().toLocalDate()).isEqualTo(didokCsvLine.getEditedAt().toLocalDate());
     } else {
