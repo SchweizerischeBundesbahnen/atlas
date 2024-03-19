@@ -2188,6 +2188,82 @@ public class VersioningHelperTest {
   }
 
   @Test
+  void shouldReturnFalseWhenThereIsOnlyAnIgnoredPropertyChange() {
+    //given
+    Entity entity1 = Entity.builder()
+        .id(2L)
+        .properties(List.of(
+            Property.builder()
+                .key("property")
+                .value("Ciao1")
+                .ignoreDiff(true)
+                .build()))
+        .build();
+    VersionedObject versionedObject1 =
+        VersionedObject.builder()
+            .validFrom(LocalDate.of(2022, 1, 1))
+            .validTo(LocalDate.of(2023, 12, 31))
+            .entity(entity1)
+            .build();
+
+    Entity entity2 = Entity.builder()
+        .id(3L)
+        .properties(List.of(
+            Property.builder()
+                .key("property")
+                .value("Ciao12")
+                .ignoreDiff(true)
+                .build()))
+        .build();
+    VersionedObject versionedObject2 =
+        VersionedObject.builder()
+            .validFrom(LocalDate.of(2024, 1, 1))
+            .validTo(LocalDate.of(2025, 12, 31))
+            .entity(entity2)
+            .build();
+    VersionableObject versionableObject1 = VersionableObject.builder()
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2023, 12, 31))
+        .id(2L)
+        .build();
+
+    VersionableObject versionableObject2 = VersionableObject.builder()
+        .validFrom(LocalDate.of(2024, 1, 1))
+        .validTo(LocalDate.of(2025, 12, 31))
+        .id(3L)
+        .build();
+
+    ToVersioning toVersioning1 = ToVersioning.builder()
+        .versionable(versionableObject1)
+        .entity(entity1)
+        .build();
+    Entity entityEdited = Entity.builder().id(3L).properties(
+            List.of(
+                Property.builder()
+                    .key("property")
+                    .value("Ciao12-edited")
+                    .ignoreDiff(true)
+                    .build()))
+        .build();
+    ToVersioning toVersioning2 = ToVersioning.builder()
+        .versionable(versionableObject2)
+        .entity(entityEdited)
+        .build();
+
+    VersioningData versioningData = VersioningData.builder()
+        .objectsToVersioning(
+            List.of(toVersioning1, toVersioning2))
+        .build();
+
+    //when
+    boolean result = VersioningHelper.checkChangesAfterVersioning(versioningData,
+        List.of(versionedObject1, versionedObject2));
+
+    //then
+    assertThat(result).isFalse();
+  }
+
+  @Test
    void shouldReturnFalseWhenNoPropertyChange() {
     //given
     Entity entity1 = Entity.builder()

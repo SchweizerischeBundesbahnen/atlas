@@ -167,7 +167,7 @@ public final class VersioningHelper {
   }
 
   public static boolean arePropertiesEdited(VersioningData vd) {
-    return !vd.getEditedEntity().getProperties().stream().filter(i -> !i.isIgnoreDiff()).toList().isEmpty();
+    return !vd.getEditedEntity().getPropertiesWithoutIgnore().isEmpty();
   }
 
   public static boolean isEditedVersionInTheMiddleOfToVersioningAndNoPropertiesAreEdited(ToVersioning toVersioning,
@@ -362,7 +362,7 @@ public final class VersioningHelper {
 
   private static boolean areEquals(VersionedObject versionedObject,
       ToVersioning toVersioningToCompare) {
-    return toVersioningToCompare.getEntity().equals(versionedObject.getEntity())
+    return toVersioningToCompare.getEntity().equalsExcludingIgnoreDiffProperties(versionedObject.getEntity())
         && toVersioningToCompare.getValidFrom().equals(versionedObject.getValidFrom())
         && toVersioningToCompare.getValidTo().equals(versionedObject.getValidTo());
   }
