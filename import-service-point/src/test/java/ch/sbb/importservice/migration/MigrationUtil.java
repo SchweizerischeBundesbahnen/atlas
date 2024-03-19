@@ -1,5 +1,6 @@
 package ch.sbb.importservice.migration;
 
+import ch.sbb.atlas.imports.prm.contactpoint.ContactPointCsvModel;
 import ch.sbb.atlas.imports.prm.parkinglot.ParkingLotCsvModel;
 import ch.sbb.atlas.imports.prm.platform.PlatformCsvModel;
 import ch.sbb.atlas.imports.prm.referencepoint.ReferencePointCsvModel;
@@ -28,5 +29,9 @@ public class MigrationUtil {
 
   public static int removeCheckDigit(ParkingLotCsvModel parkingLotCsvModel) {
     return removeCheckDigit(parkingLotCsvModel.getDidokCode());
+  }
+
+  public static int removeCheckDigit(ContactPointCsvModel contactPointCsvModel) {
+    return removeCheckDigit(contactPointCsvModel.getDidokCode());
   }
 }
