@@ -1,8 +1,10 @@
 package ch.sbb.atlas.servicepointdirectory.migration.servicepoints;
 
+import static ch.sbb.atlas.imports.util.ImportUtils.replaceNewLinesAndReplaceToDateWithHighestDate;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.util.CsvReader;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -34,14 +36,24 @@ public class ServicePointMigrationActualDateIntegrationTest {
 
   private static final List<ServicePointAtlasCsvModel> atlasCsvLines = new ArrayList<>();
   private static final Map<Integer, ServicePointAtlasCsvModel> atlasCsvLinesAsMap = new HashMap<>();
-  private static final List<ServicePointDidokCsvModel> didokCsvLines = new ArrayList<>();
+  private static final List<ServicePointCsvModel> didokCsvLines = new ArrayList<>();
 
   @Test
   @Order(1)
   void shouldParseCsvsCorrectly() throws IOException {
     try (InputStream csvStream = this.getClass()
         .getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE)) {
-      didokCsvLines.addAll(CsvReader.parseCsv(csvStream, ServicePointDidokCsvModel.class));
+
+      didokCsvLines.addAll(CsvReader.parseCsv(csvStream, ServicePointCsvModel.class));
+      replaceNewLinesAndReplaceToDateWithHighestDate(didokCsvLines);
+
+//      List<ServicePointCsvModelContainer> servicePointCsvModelContainers =
+//          MigrationTestsUtilityClass.mapToServicePointCsvModelContainers(
+//          CsvReader.parseCsv(csvStream, ServicePointCsvModel.class));
+//      didokCsvLines.addAll(servicePointCsvModelContainers.stream()
+//          .map(ServicePointCsvModelContainer::getServicePointCsvModelList)
+//          .flatMap(Collection::stream)
+//          .toList());
     }
     assertThat(didokCsvLines).isNotEmpty();
 
@@ -57,7 +69,7 @@ public class ServicePointMigrationActualDateIntegrationTest {
   @Test
   @Order(2)
   void shouldHaveSameDidokCodesInBothCsvs() {
-    Set<Integer> didokCodes = didokCsvLines.stream().map(ServicePointDidokCsvModel::getDidokCode).collect(Collectors.toSet());
+    Set<Integer> didokCodes = didokCsvLines.stream().map(ServicePointCsvModel::getDidokCode).collect(Collectors.toSet());
     Set<Integer> atlasNumbers = atlasCsvLines.stream()
         // Remove this check as soon a new export with servicePointNumber without checkDigit is generated
         .map(servicePointVersionCsvModel -> ServicePointNumber.removeCheckDigit(servicePointVersionCsvModel.getNumber()))
