@@ -19,6 +19,7 @@ describe('LeaveDirtyFormGuard', () => {
     });
 
     leaveDirtyFormGuard = TestBed.inject(LeaveDirtyFormGuard);
+    dialogServiceSpy.confirm.calls.reset();
   });
 
   it('should be created', () => {
