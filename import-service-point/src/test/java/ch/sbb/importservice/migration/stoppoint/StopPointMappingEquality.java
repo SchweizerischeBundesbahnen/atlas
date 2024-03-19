@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
-import ch.sbb.atlas.export.StringUtils;
 import ch.sbb.atlas.export.model.prm.StopPointVersionCsvModel;
+import ch.sbb.atlas.export.utils.StringUtils;
 import ch.sbb.atlas.imports.prm.stoppoint.StopPointCsvModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
