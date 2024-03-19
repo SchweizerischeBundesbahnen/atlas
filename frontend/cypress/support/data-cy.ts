@@ -6,7 +6,12 @@ export class DataCy {
   static TOTAL_RANGE = '[data-cy=total-range]';
   static SAVE_ITEM = '[data-cy=save-item]';
   static EDIT_ITEM = '[data-cy=edit-item]';
+  static EDIT = '[data-cy=edit]';
   static DELETE_ITEM = '[data-cy=delete-item]';
+  static DELETE = '[data-cy=delete]';
+  static CLOSE_DETAIL = '[data-cy=close-detail]';
+  static REVOKE_ITEM = '[data-cy=revoke-item]';
+  static SKIP_WORKFLOW = '[data-cy=skip-workflow]';
   static DIALOG = '[data-cy=dialog]';
   static DIALOG_CONFIRM_BUTTON = '[data-cy=dialog-confirm-button]';
   static DIALOG_CANCEL_BUTTON = '[data-cy=dialog-cancel-button]';
@@ -101,6 +106,8 @@ export class DataCy {
   static SEPODI_GEOLOCATION_NORTH = '[data-cy=north]';
   static SEPODI_GEOLOCATION_HEIGHT = '[data-cy=height]';
   static SEPODI_CATEGORIES = '[data-cy=categories]';
+  static SEPODI_STOP_POINT_TYPE_SELECTION = '[data-cy=stopPointType]';
+  static SEPODI_SEARCH_SERVICE_POINT_SELECT = '[data-cy=search-service-point-select]';
   static MEANS_OF_TRANSPORT_TRAIN = '[data-cy=TRAIN]';
 
   static TABLE_FILTER_MULTI_SELECT = (rowIndex: number, columnIndex: number) =>

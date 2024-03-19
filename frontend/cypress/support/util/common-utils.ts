@@ -1,4 +1,4 @@
-import { DataCy } from '../data-cy';
+import {DataCy} from '../data-cy';
 
 export default class CommonUtils {
   static fromDetailBackToTtfnOverview() {
@@ -126,6 +126,11 @@ export default class CommonUtils {
     const versionDataSelector = this.getVersionRowSelector(versionNumber) + ' > .cdk-column-';
     cy.get(versionDataSelector + 'validFrom').should('contain.text', validFrom);
     cy.get(versionDataSelector + 'validTo').should('contain.text', validTo);
+  }
+
+  static assertVersionStatus(versionNumber: number, status: string) {
+    const versionDataSelector = this.getVersionRowSelector(versionNumber) + ' > .cdk-column-';
+    cy.get(versionDataSelector + 'status').should('contain.text', status);
   }
 
   static getVersionRowSelector(versionNumber: number) {

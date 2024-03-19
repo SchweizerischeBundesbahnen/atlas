@@ -13,9 +13,9 @@ export default class SepodiUtils {
       designationOfficial: 'Bern, Wyleregg',
       businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,validFrom: '01.01.2000',
       validTo: '31.12.9999',
-      north: '1201099.0',
-      east: '2600783.0',
-      height: '555.0'
+      north: '1201099.1',
+      east: '2600783.1',
+      height: '555.1'
     }
   }
 
