@@ -133,6 +133,7 @@ import org.springframework.transaction.annotation.Transactional;
     editedVersion.setDescription("Description <changed>");
     editedVersion.setValidFrom(LocalDate.of(2022, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2022, 12, 31));
+    editedVersion.setVersion(version1.getVersion());
 
     //when
     lineService.updateVersion(version1, editedVersion);
@@ -160,6 +161,7 @@ import org.springframework.transaction.annotation.Transactional;
     editedVersion.setColorBackRgb(LineTestData.RBG_RED);
     editedVersion.setValidFrom(LocalDate.of(2022, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2022, 12, 31));
+    editedVersion.setVersion(version1.getVersion());
 
     // when DRAFT Version gets updated again
     lineService.updateVersion(version1, editedVersion);
@@ -190,6 +192,7 @@ import org.springframework.transaction.annotation.Transactional;
     editedVersion.setDescription("Description <changed>");
     editedVersion.setValidFrom(LocalDate.of(2022, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2022, 12, 31));
+    editedVersion.setVersion(version1.getVersion());
 
     //when
     lineService.updateVersion(version1, editedVersion);
@@ -235,6 +238,7 @@ import org.springframework.transaction.annotation.Transactional;
     editedVersion.setComment("Scenario 1");
     editedVersion.setValidFrom(LocalDate.of(2021, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2021, 12, 31));
+    editedVersion.setVersion(version1.getVersion());
 
     //when
     lineService.updateVersion(version1, editedVersion);
@@ -280,6 +284,7 @@ import org.springframework.transaction.annotation.Transactional;
     editedVersion.setComment("Scenario 1");
     editedVersion.setValidFrom(LocalDate.of(2020, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2020, 1, 1));
+    editedVersion.setVersion(version1.getVersion());
 
     //when
     lineService.updateVersion(version1, editedVersion);
@@ -323,6 +328,7 @@ import org.springframework.transaction.annotation.Transactional;
     editedVersion.setDescription("Description <changed>");
     editedVersion.setValidFrom(LocalDate.of(2021, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2022, 12, 31));
+    editedVersion.setVersion(version1.getVersion());
 
     //when
     lineService.updateVersion(version1, editedVersion);
@@ -371,6 +377,7 @@ import org.springframework.transaction.annotation.Transactional;
 
     editedVersion.setValidFrom(LocalDate.of(2021, 12, 31));
     editedVersion.setValidTo(LocalDate.of(2024, 1, 1));
+    editedVersion.setVersion(version3.getVersion());
 
     //when
     lineService.updateVersion(version3, editedVersion);
@@ -462,6 +469,7 @@ import org.springframework.transaction.annotation.Transactional;
     editedVersion.setNumber("4");
     editedVersion.setValidFrom(version2.getValidFrom());
     editedVersion.setValidTo(version2.getValidTo());
+    editedVersion.setVersion(version2.getVersion());
 
     //when
     lineService.updateVersion(version2, editedVersion);
@@ -516,6 +524,7 @@ import org.springframework.transaction.annotation.Transactional;
     editedVersion.setValidFrom(LocalDate.of(2020, 7, 1));
     editedVersion.setValidTo(LocalDate.of(2024, 7, 31));
     editedVersion.setNumber("2");
+    editedVersion.setVersion(version3.getVersion());
 
     //when
     lineService.updateVersion(version3, editedVersion);

@@ -57,7 +57,7 @@ import org.springframework.data.domain.Sort;
     doNothing().when(crossValidationService).validateServicePointNumberExists(any());
 
     TrafficPointElementVersion trafficPointElementVersion = TrafficPointTestData.getBasicTrafficPoint();
-    trafficPointElementService.save(trafficPointElementVersion);
+    trafficPointElementVersion = trafficPointElementService.save(trafficPointElementVersion);
 
     TrafficPointElementVersion edited = TrafficPointTestData.getBasicTrafficPoint();
     edited.setValidFrom(LocalDate.of(2024, 1, 2));
@@ -66,6 +66,7 @@ import org.springframework.data.domain.Sort;
     edited.getTrafficPointElementGeolocation().setCreator(null);
     edited.getTrafficPointElementGeolocation().setEditionDate(null);
     edited.getTrafficPointElementGeolocation().setEditor(null);
+    edited.setVersion(trafficPointElementVersion.getVersion());
 
     // when
     trafficPointElementService.updateTrafficPointElementVersion(trafficPointElementVersion, edited);

@@ -116,6 +116,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     editedVersion.setValidTo(LocalDate.of(2024, 6, 1));
     editedVersion.setValidFrom(version3.getValidFrom());
     editedVersion.setDescription("FPFN Description <changed>");
+    editedVersion.setVersion(version3.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version3, editedVersion);
@@ -198,6 +199,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     TimetableFieldNumberVersion editedVersion = version3Builder().build();
     editedVersion.setValidTo(LocalDate.of(2025, 2, 1));
     editedVersion.setValidFrom(version3.getValidFrom());
+    editedVersion.setVersion(version3.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version3, editedVersion);
@@ -281,6 +283,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     editedVersion.setValidTo(LocalDate.of(2025, 2, 1));
     editedVersion.setValidFrom(version3.getValidFrom());
     editedVersion.setDescription("FPFN Description <changed>");
+    editedVersion.setVersion(version3.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version3, editedVersion);
@@ -364,6 +367,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     editedVersion.setValidTo(LocalDate.of(2025, 8, 1));
     editedVersion.setValidFrom(version3.getValidFrom());
     editedVersion.setDescription("FPFN Description <changed>");
+    editedVersion.setVersion(version3.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version3, editedVersion);
@@ -460,6 +464,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     editedVersion.setValidTo(LocalDate.of(2025, 6, 1));
     editedVersion.setValidFrom(version1.getValidFrom());
     editedVersion.setDescription("FPFN Description <changed>");
+    editedVersion.setVersion(version1.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version1, editedVersion);
@@ -556,6 +561,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     editedVersion.setValidTo(LocalDate.of(2024, 6, 1));
     editedVersion.setValidFrom(version1.getValidFrom());
     editedVersion.setDescription("FPFN Description <changed>");
+    editedVersion.setVersion(version1.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version1, editedVersion);
