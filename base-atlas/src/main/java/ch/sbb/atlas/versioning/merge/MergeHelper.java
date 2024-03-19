@@ -7,7 +7,6 @@ import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.model.VersioningAction;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -54,12 +53,7 @@ public final class MergeHelper {
   }
 
   private static List<Property> getNotIgnoredCurrentProperties(VersionedObject versionedObject) {
-    return versionedObject.getEntity()
-                          .getProperties()
-                          .stream()
-                          .filter(property -> !property.isIgnoreDiff())
-                          .collect(
-                              Collectors.toList());
+    return versionedObject.getEntity().getPropertiesWithoutIgnore();
   }
 
 
