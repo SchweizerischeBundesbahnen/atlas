@@ -84,6 +84,17 @@ describe('LeaveDirtyFormGuard', () => {
     expect(dialogServiceSpy.confirm).toHaveBeenCalled();
   });
 
+  it('should not display confirmation dialog when creating service point', () => {
+    const currentState = { url: '/service-point-directory/service-points' } as RouterStateSnapshot;
+    const nextState = { url: '/service-point-directory/service-points/8510159/service-point' } as RouterStateSnapshot;
+
+    const form = new FormGroup({});
+    form.markAsDirty();
+
+    leaveDirtyFormGuard.canDeactivate({ form: form }, route, currentState, nextState);
+    expect(dialogServiceSpy.confirm).not.toHaveBeenCalled();
+  });
+
   it('should display confirmation dialog when leaving dirty contact point creation with detail subtab', () => {
     const currentState = { url: '/prm-directory/stop-points/ch:1:sloid:7000/contact-points/add/detail' } as RouterStateSnapshot;
     const nextState = { url: '/prm-directory' } as RouterStateSnapshot;

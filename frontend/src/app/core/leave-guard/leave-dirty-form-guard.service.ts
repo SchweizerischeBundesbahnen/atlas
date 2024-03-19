@@ -43,11 +43,7 @@ export class LeaveDirtyFormGuard {
         return true;
       }
     }
-    return this.getSubstringBeforeLastSlash(currentState.url) === this.getSubstringBeforeLastSlash(nextState.url);
-  }
-
-  private getSubstringBeforeLastSlash(value: string) {
-    return value.substring(0, value.lastIndexOf('/'));
+    return nextState.url.startsWith(currentState.url);
   }
 
 }
