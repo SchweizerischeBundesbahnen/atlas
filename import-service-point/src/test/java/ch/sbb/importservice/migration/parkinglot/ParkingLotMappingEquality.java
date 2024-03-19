@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.export.model.prm.ParkingLotVersionCsvModel;
 import ch.sbb.atlas.imports.prm.parkinglot.ParkingLotCsvModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.importservice.migration.MigrationUtil;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -32,6 +33,7 @@ public record ParkingLotMappingEquality(ParkingLotCsvModel didokCsvLine, Parking
         } else {
             assertThat(localDateFromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getModifiedAt());
         }
+        assertThat(atlasCsvLine.getStatus()).isEqualTo(Status.VALIDATED);
     }
 
     public LocalDateTime localDateFromString(String string) {
