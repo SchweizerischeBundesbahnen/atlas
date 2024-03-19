@@ -87,10 +87,8 @@ public class TimetableFieldNumberService {
   public void updateVersion(TimetableFieldNumberVersion currentVersion,
       TimetableFieldNumberVersion editedVersion) {
     versionRepository.incrementVersion(currentVersion.getTtfnid());
-    if (editedVersion.getVersion() != null && !currentVersion.getVersion()
-        .equals(editedVersion.getVersion())) {
-      throw new StaleObjectStateException(TimetableFieldNumberVersion.class.getSimpleName(),
-          "version");
+    if (!currentVersion.getVersion().equals(editedVersion.getVersion())) {
+      throw new StaleObjectStateException(TimetableFieldNumberVersion.class.getSimpleName(), "version");
     }
 
     List<TimetableFieldNumberVersion> currentVersions = getAllVersionsVersioned(

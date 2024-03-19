@@ -46,6 +46,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     editedVersion.setValidTo(LocalDate.of(2024, 12, 31));
     editedVersion.getLineRelations()
                  .add(TimetableFieldLineRelation.builder().slnid("ch:1:ttfnid:111111").timetableFieldNumberVersion(version3).build());
+    editedVersion.setVersion(version3.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version3, editedVersion);
@@ -133,6 +134,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     editedVersion.setValidTo(LocalDate.of(2021, 12, 31));
     editedVersion.getLineRelations()
                  .add(TimetableFieldLineRelation.builder().slnid("ch:1:ttfnid:111111").timetableFieldNumberVersion(version1).build());
+    editedVersion.setVersion(version1.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version1, editedVersion);
@@ -195,6 +197,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     editedVersion.setValidTo(LocalDate.of(2022, 12, 31));
     editedVersion.getLineRelations()
                  .add(TimetableFieldLineRelation.builder().slnid("ch:1:ttfnid:111111").timetableFieldNumberVersion(version1).build());
+    editedVersion.setVersion(version1.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version1, editedVersion);
@@ -257,6 +260,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     editedVersion.setValidTo(version1.getValidTo());
     editedVersion.getLineRelations()
                  .add(TimetableFieldLineRelation.builder().slnid("ch:1:ttfnid:111111").timetableFieldNumberVersion(version1).build());
+    editedVersion.setVersion(version1.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version1, editedVersion);

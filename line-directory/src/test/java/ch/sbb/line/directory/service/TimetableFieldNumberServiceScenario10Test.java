@@ -38,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     editedVersion.setValidFrom(LocalDate.of(2022, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2023, 12, 31));
     editedVersion.setDescription("FPFN Description <changed>");
+    editedVersion.setVersion(version1.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version1, editedVersion);
@@ -102,6 +103,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     TimetableFieldNumberVersion editedVersion = version1Builder().build();
     editedVersion.setValidFrom(LocalDate.of(2022, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2023, 12, 31));
+    editedVersion.setVersion(version1.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version1, editedVersion);
@@ -156,6 +158,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     editedVersion.setValidFrom(LocalDate.of(2020, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2024, 6, 1));
     editedVersion.setDescription("FPFN Description <changed>");
+    editedVersion.setVersion(version1.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version1, editedVersion);

@@ -45,6 +45,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     editedVersion.setValidTo(LocalDate.of(2024, 6, 1));
     editedVersion.getLineRelations()
         .add(TimetableFieldLineRelation.builder().slnid("ch:1:ttfnid:111111").timetableFieldNumberVersion(version3).build());
+    editedVersion.setVersion(version3.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version3, editedVersion);

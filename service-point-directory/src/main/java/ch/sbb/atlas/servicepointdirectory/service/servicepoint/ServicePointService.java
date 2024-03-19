@@ -130,7 +130,7 @@ public class ServicePointService {
   public ServicePointVersion updateServicePointVersion(ServicePointVersion currentVersion, ServicePointVersion editedVersion,
       List<ServicePointVersion> currentVersions) {
     servicePointVersionRepository.incrementVersion(currentVersion.getNumber());
-    if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
+    if (!currentVersion.getVersion().equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(ServicePointVersion.class.getSimpleName(), "version");
     }
     editedVersion.setNumber(currentVersion.getNumber());
