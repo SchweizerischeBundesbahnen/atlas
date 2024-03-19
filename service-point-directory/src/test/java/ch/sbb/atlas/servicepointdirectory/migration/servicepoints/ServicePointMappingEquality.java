@@ -2,6 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.migration.servicepoints;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.model.DoubleAssertion;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
@@ -19,7 +20,7 @@ import org.apache.commons.lang3.StringUtils;
  * @param isFullExport ActualDate and FutureTimetable does not export SLOID in Didok
  */
 @Slf4j
-public record ServicePointMappingEquality(ServicePointDidokCsvModel didokCsvLine,
+public record ServicePointMappingEquality(ServicePointCsvModel didokCsvLine,
                                           ServicePointAtlasCsvModel atlasCsvLine,
                                           boolean isFullExport) {
 
@@ -211,7 +212,7 @@ public record ServicePointMappingEquality(ServicePointDidokCsvModel didokCsvLine
     return difference.compareTo(BigDecimal.valueOf(0.001)) > 0;
   }
 
-  private String generalErrorMessage(ServicePointDidokCsvModel didokCsvLine) {
+  private String generalErrorMessage(ServicePointCsvModel didokCsvLine) {
     return didokCsvLine.getDidokCode() + " from:" + didokCsvLine.getValidFrom() + " to:"
         + didokCsvLine.getValidTo() + "\t";
   }
