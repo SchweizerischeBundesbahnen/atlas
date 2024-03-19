@@ -1,16 +1,32 @@
 package ch.sbb.atlas.servicepointdirectory.migration.servicepoints;
 
-import lombok.experimental.UtilityClass;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class MigrationTestsUtilityClass {
+//
+//    public List<ServicePointCsvModelContainer> mapToServicePointCsvModelContainers(
+//        List<ServicePointCsvModel> servicePointCsvModels) {
+//        Map<Integer, List<ServicePointCsvModel>> servicePointGroupedByDidokCode = servicePointCsvModels.stream()
+//            .collect(Collectors.groupingBy(ServicePointCsvModel::getDidokCode));
+//        List<ServicePointCsvModelContainer> servicePointCsvModelContainers = new ArrayList<>();
+//        servicePointGroupedByDidokCode.forEach((key, value) -> {
+//            ServicePointCsvModelContainer servicePointCsvModelContainer = ServicePointCsvModelContainer.builder()
+//                .didokCode(key)
+//                .servicePointCsvModelList(value)
+//                .build();
+//            servicePointCsvModelContainers.add(servicePointCsvModelContainer);
+//        });
+//        servicePointCsvModelContainers.forEach(container ->
+//            replaceNewLinesAndReplaceToDateWithHighestDate(container.getServicePointCsvModelList()));
+//        return servicePointCsvModelContainers;
+//    }
 
     private final int BUFFER_SIZE = 8192; // 8 KB
 
