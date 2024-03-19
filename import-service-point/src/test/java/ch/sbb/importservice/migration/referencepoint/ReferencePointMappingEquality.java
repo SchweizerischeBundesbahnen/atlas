@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
-import ch.sbb.atlas.export.StringUtils;
 import ch.sbb.atlas.export.model.prm.ReferencePointVersionCsvModel;
+import ch.sbb.atlas.export.utils.StringUtils;
 import ch.sbb.atlas.imports.prm.referencepoint.ReferencePointCsvModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.importservice.migration.MigrationUtil;
