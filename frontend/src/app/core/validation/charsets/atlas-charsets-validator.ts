@@ -45,15 +45,14 @@ export class AtlasCharsetsValidator {
 
   static decimalWithDigits(decimalDigits: number, fractionDigit: number): ValidatorFn {
     return (control) => {
-      const patternErrors = Validators.pattern(
-        '^\\d{1,' +
-          decimalDigits +
-          '}(\\.\\d{0,' +
-          fractionDigit +
-          '})?$|^\\.\\d{0,' +
-          fractionDigit +
-          '}$',
-      )(control);
+      const pattern = '^-?\\d{1,' +
+        decimalDigits +
+        '}(\\.\\d{0,' +
+        fractionDigit +
+        '})?$|^\\.\\d{0,' +
+        fractionDigit +
+        '}$';
+      const patternErrors = Validators.pattern(pattern)(control);
       if (patternErrors) {
         const error: ValidationErrors = {
           integer_with_fraction: {
