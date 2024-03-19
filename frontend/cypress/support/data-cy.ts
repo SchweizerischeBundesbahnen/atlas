@@ -90,7 +90,18 @@ export class DataCy {
   static COLLECT_STATUS_CHANGE_ACTION_TYPE = '[data-cy=collect-status-change-action-type]';
   static TTH_SELECT_YEAR = '[data-cy=selectTthYear]';
   static TTH_DETAIL_SELECT_YEAR = '[data-cy=detailSelectTthYear]';
-  static STATEMENT_STATUS_DROPDOWN = '[data-cy=statementStatus]';
+  static SEPODI_NEW_SERVICE_POINT_BUTTON = '[data-cy=new-service-point-button]';
+  static SEPODI_NEW_SERVICE_POINT_LABEL = '[data-cy=new-service-point-label]';
+  static SEPODI_SELECT_COUNTRY = '[data-cy=select-country]';
+  static SEPODI_DESIGNATION_OFFICIAL = '[data-cy=designationOfficial]';
+  static SEPODI_DESIGNATION_LONG = '[data-cy=designationLong]';
+  static SEPODI_ABBREVIATION = '[data-cy=abbreviation]';
+  static SEPODI_CHECKBOX_STOP_POINT = '[data-cy=checkboxStopPoint] input';
+  static SEPODI_GEOLOCATION_EAST = '[data-cy=east]';
+  static SEPODI_GEOLOCATION_NORTH = '[data-cy=north]';
+  static SEPODI_GEOLOCATION_HEIGHT = '[data-cy=height]';
+  static SEPODI_CATEGORIES = '[data-cy=categories]';
+  static MEANS_OF_TRANSPORT_TRAIN = '[data-cy=TRAIN]';
 
   static TABLE_FILTER_MULTI_SELECT = (rowIndex: number, columnIndex: number) =>
     `[data-cy=table-filter-multi-select-${rowIndex}-${columnIndex}]`;
