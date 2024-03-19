@@ -29,6 +29,6 @@ public class ReferencePointVersionCsvModel extends BasePrmCsvModel {
 
   private String additionalInformation;
 
-  private String rpType;
+  private String referencePointType;
 
 }
