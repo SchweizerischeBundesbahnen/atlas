@@ -40,14 +40,16 @@ public class CreateServicePointVersionModel extends UpdateServicePointVersionMod
   @JsonIgnore
   @AssertTrue(message = "ServicePointNumber must be present only if country not in (85,11,12,13,14)")
   public boolean isValidServicePointNumber() {
+    if (getCountry() == null) {
+      return true;
+    }
+
     if (getNumberShort() == null) {
+      // NumberShort should not be given if it is generated
       return shouldGenerateServicePointNumber();
     } else {
-      try {
-        return !ServicePointConstants.AUTOMATIC_SERVICE_POINT_ID.contains(getCountry());
-      } catch (NullPointerException exception) {
-        return false;
-      }
+      // NumberShort has to be given on foreign countries
+      return !shouldGenerateServicePointNumber();
     }
   }
 
