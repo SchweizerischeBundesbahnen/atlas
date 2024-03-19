@@ -4,8 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
+import ch.sbb.atlas.export.StringUtils;
 import ch.sbb.atlas.export.model.prm.ToiletVersionCsvModel;
 import ch.sbb.atlas.imports.prm.toilet.ToiletCsvModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.importservice.migration.MigrationUtil;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -24,8 +26,7 @@ public record ToiletMappingEquality(ToiletCsvModel didokCsvLine, ToiletVersionCs
             assertThat(atlasCsvLine.getDesignation()).isEqualTo((didokCsvLine.getDescription()));
         }
         if(atlasCsvLine.getAdditionalInformation() != null && didokCsvLine.getInfo() != null){
-            String didokInfos = didokCsvLine.getInfo().replaceAll("\r\n|\r|\n", " ");
-            assertThat(atlasCsvLine.getAdditionalInformation()).isEqualTo(didokInfos);
+            assertThat(atlasCsvLine.getAdditionalInformation()).isEqualTo(StringUtils.removeNewLine(didokCsvLine.getInfo()));
         }
         if (atlasCsvLine.getWheelchairToilet() != null && didokCsvLine.getWheelchairToilet() != null) {
             assertThat(atlasCsvLine.getWheelchairToilet()).isEqualTo(StandardAttributeType.from(didokCsvLine.getWheelchairToilet()).name());
@@ -37,6 +38,7 @@ public record ToiletMappingEquality(ToiletCsvModel didokCsvLine, ToiletVersionCs
         } else {
             assertThat(localDateFromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getModifiedAt());
         }
+        assertThat(atlasCsvLine.getStatus()).isEqualTo(Status.VALIDATED);
     }
 
     public LocalDateTime localDateFromString(String string) {
