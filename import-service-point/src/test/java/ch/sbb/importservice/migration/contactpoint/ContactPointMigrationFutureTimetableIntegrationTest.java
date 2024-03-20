@@ -108,18 +108,23 @@ public class ContactPointMigrationFutureTimetableIntegrationTest {
     @Test
     @Order(1)
     void shouldParseCsvCorrectly() throws IOException {
-        try (InputStream csvStream =
-            ContactPointUtil.getInputStream(this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE),
-            this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE_INFO_DESK))) {
-//        try (InputStream csvStream = getInputStream()) {
-//        try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE_INFO_DESK)) {
-            List<ContactPointCsvModelContainer> referencePointCsvModelContainers =
+        try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE)) {
+            List<ContactPointCsvModelContainer> contactPointCsvModelContainers =
                 contactPointCsvService.mapToContactPointCsvModelContainers(
                     CsvReader.parseCsv(csvStream, ContactPointCsvModel.class));
-            didokCsvLines.addAll(referencePointCsvModelContainers.stream()
-                    .map(ContactPointCsvModelContainer::getCsvModels)
-                    .flatMap(Collection::stream)
-                    .toList());
+            didokCsvLines.addAll(contactPointCsvModelContainers.stream()
+                .map(ContactPointCsvModelContainer::getCsvModels)
+                .flatMap(Collection::stream)
+                .toList());
+        }
+        try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE_INFO_DESK)) {
+            List<ContactPointCsvModelContainer> contactPointCsvModelContainers =
+                contactPointCsvService.mapToContactPointCsvModelContainers(
+                    CsvReader.parseCsv(csvStream, ContactPointCsvModel.class));
+            didokCsvLines.addAll(contactPointCsvModelContainers.stream()
+                .map(ContactPointCsvModelContainer::getCsvModels)
+                .flatMap(Collection::stream)
+                .toList());
         }
         assertThat(didokCsvLines).isNotEmpty();
         try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + ATLAS_CSV_FILE)) {
