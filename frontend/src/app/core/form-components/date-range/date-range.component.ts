@@ -1,9 +1,9 @@
-import {Component, Input, ViewChild} from '@angular/core';
-import { MAX_DATE, MIN_DATE } from '../../date/date.service';
-import { FormGroup } from '@angular/forms';
-import {MatDatepicker} from "@angular/material/datepicker";
-import moment, { Moment } from "moment/moment";
-import {TimetableYearChangeService} from "../../../api";
+import {Component, Input} from '@angular/core';
+import {MAX_DATE, MIN_DATE} from '../../date/date.service';
+import {FormGroup} from '@angular/forms';
+import {
+  TodayAndFutureTimetableHeaderComponent
+} from "./today-and-future-timetable-header/today-and-future-timetable-header.component";
 
 @Component({
   selector: 'form-date-range',
@@ -11,6 +11,9 @@ import {TimetableYearChangeService} from "../../../api";
   styleUrls: ['../text-field/text-field.component.scss'],
 })
 export class DateRangeComponent {
+
+  validFromHeader = TodayAndFutureTimetableHeaderComponent;
+
   @Input() formGroup!: FormGroup;
   @Input() labelFrom = 'COMMON.VALID_FROM';
   @Input() labelFromExample = '';
@@ -24,13 +27,9 @@ export class DateRangeComponent {
   @Input() controlNameFrom = 'validFrom';
   @Input() controlNameTo = 'validTo';
 
-  @ViewChild('validFromPicker') validFromPicker!: MatDatepicker<Moment>;
-
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
 
-  constructor(private timetableYearChangeService: TimetableYearChangeService) {
-  }
 
   readonly EXAMPLE_DATE_FROM = '21.01.2021';
   readonly EXAMPLE_DATE_TO = '31.12.9999';
@@ -43,15 +42,4 @@ export class DateRangeComponent {
     return this.formGroup.get(this.controlNameTo)!;
   }
 
-  selectToday() {
-    this.validFromPicker.select(moment());
-    this.validFromPicker.close();
-  }
-
-  selectFutureTimetable() {
-    this.timetableYearChangeService.getNextTimetablesYearChange(1).subscribe(dates => {
-      this.validFromPicker.select(moment(dates[0]));
-      this.validFromPicker.close();
-    })
-  }
 }
