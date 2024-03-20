@@ -40,7 +40,7 @@ include::../release-notes.adoc[]
 
 This service exports the following data:
 
-*Service Point directory*:
+*Service Point Directory*:
 
 * *Service Point Versions*
 * *Traffic Point Element Versions*
@@ -53,12 +53,24 @@ This service exports the following data:
 * *Reference Point Versions*
 * *Contact Point Versions*
 * *Toilet Versions*
+* *Parking Lot Versions*
+* *Relation Versions*
+
+include::../../../../base-atlas/documentation/servicepoint/when_to_use_files_or_API.adoc[]
+
+include::../../../../base-atlas/documentation/amazon/Amazon_S3_Buckets_Users_Onboarding.adoc[]
 
 == Service Point Directory
 
+=== Unsuccessfully Examples
+
+include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-get-json-unsuccessfully/auto-section.adoc[]
+
+include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-gzip-json-unsuccessfully/auto-section.adoc[]
+
 === Service Point Versions
 
-Service Point Versions data is available via the ServicePoint API or as a File (CSV or JSON) via the Export Service Point API or through the Amazon S3 Bucket Client (CSV and JSON);
+Service Point Versions data is available via the ServicePoint API or as a File (CSV or JSON) via the Export Service Point API or through the Amazon S3 Bucket Client (CSV and JSON).
 
 The Export Service Point generates nightly the following zipped CSV and gzipped JSON files:
 
@@ -71,16 +83,36 @@ The Export Service Point generates nightly the following zipped CSV and gzipped 
 
 If you want to consume this files you have two options:
 
-* Via API: see **Export Service Point Directory API** section
+* Via API: see following section
 * Through the Amazon S3 Bucket Client: see **Atlas Amazon S3 Bucket Users onboarding**
 
 ==== Data Mapping Migration from DiDok to ATLAS
 
 See https://confluence.sbb.ch/x/GI3aj to get additional information about the data mapping migration from DiDok to ATLAS.
 
+=== Trigger export Service Point Versions
+
+include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-post-service-point-export-batch-successfully/auto-section.adoc[]
+
+=== Get Service Point Json - Successfully
+
+include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-get-service-point-json-successfully/auto-section.adoc[]
+
+=== Download Service Point Gzip (Json) - Successfully
+
+include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-service-point-gzip-json-successfully/curl-request.adoc[]
+
+=== Download Latest Service Point Json - Successfully
+
+include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-latest-service-point-json-successfully/auto-section.adoc[]
+
+=== Download Latest Service Point Gzip (Json) - Successfully
+
+include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-latest-service-point-gzip-json-successfully/curl-request.adoc[]
+
 === Traffic Point Element Versions
 
-Traffic Point Element Versions data is available via the ServicePoint API or as a File (CSV or JSON) via the Export Service Point API or through the Amazon S3 Bucket Client (CSV and JSON);
+Traffic Point Element Versions data is available via the ServicePoint API or as a File (CSV or JSON) via the Export Service Point API or through the Amazon S3 Bucket Client (CSV and JSON).
 
 The Export Service Point Directory generates nightly the following zipped CSV and gzipped JSON files:
 
@@ -90,16 +122,36 @@ The Export Service Point Directory generates nightly the following zipped CSV an
 
 If you want to consume this files you have two options:
 
-* Via API: see **Export Service Point Directory API** section
+* Via API: see following section
 * Through the Amazon S3 Bucket Client: see **Atlas Amazon S3 Bucket Users onboarding**
 
 ==== Data Mapping Migration from DiDok to ATLAS
 
 See https://confluence.sbb.ch/x/PB1Xl to get additional information about the data mapping migration from DiDok to ATLAS.
 
+=== Trigger export Traffic Point Element Versions
+
+include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-post-traffic-point-export-batch-successfully/auto-section.adoc[]
+
+=== Get Traffic Point Json - Successfully
+
+include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-get-traffic-point-json-successfully/auto-section.adoc[]
+
+=== Download Traffic Point Gzip (Json) - Successfully
+
+include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-traffic-point-gzip-json-successfully/curl-request.adoc[]
+
+=== Download Latest Traffic Point Json - Successfully
+
+include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-latest-traffic-point-json-successfully/auto-section.adoc[]
+
+=== Download Latest Traffic Point Gzip (Json) - Successfully
+
+include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-latest-traffic-point-gzip-json-successfully/curl-request.adoc[]
+
 === Loading Point Versions
 
-Loading Point Versions data is available via the ServicePoint API or as a File (CSV or JSON) via the Export Service Point API or through the Amazon S3 Bucket Client (CSV and JSON);
+Loading Point Versions data is available via the ServicePoint API or as a File (CSV or JSON) via the Export Service Point API or through the Amazon S3 Bucket Client (CSV and JSON).
 
 The Export Service Point Directory generates nightly the following zipped CSV and gzipped JSON files:
 
@@ -109,78 +161,38 @@ The Export Service Point Directory generates nightly the following zipped CSV an
 
 If you want to consume this files you have two options:
 
-* Via API: see **Export Service Point Directory API** section
+* Via API: see following section
 * Through the Amazon S3 Bucket Client: see **Atlas Amazon S3 Bucket Users onboarding**
 
 ==== Data Mapping Migration from DiDok to ATLAS
 
 See https://confluence.sbb.ch/x/6R_uj to get additional information about the data mapping migration from DiDok to ATLAS.
 
-include::../../../../base-atlas/documentation/servicepoint/when_to_use_files_or_API.adoc[]
-
-include::../../../../base-atlas/documentation/amazon/Amazon_S3_Buckets_Users_Onboarding.adoc[]
-
-== Export Service Point Directory API
-
-=== Trigger export Service Point Versions - Successfully
-
-include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-post-service-point-export-batch-successfully/auto-section.adoc[]
-
-=== Trigger export Traffic Point Element Versions - Successfully
-
-include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-post-traffic-point-export-batch-successfully/auto-section.adoc[]
-
-=== Trigger export Loading Point Versions - Successfully
+=== Trigger export Loading Point Versions
 
 include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-post-loading-point-export-batch-successfully/auto-section.adoc[]
-
-=== Get Service Point Json - Successfully
-
-include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-get-json-successfully/auto-section.adoc[]
-
-=== Get Service Point Json - Unsuccessfully
-
-include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-get-json-unsuccessfully/auto-section.adoc[]
-
-=== Get download Service Point Gzip Json - Successfully
-
-include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-gzip-json-successfully/auto-section.adoc[]
-
-=== Get download Latest Service Point Gzip Json - Successfully
-
-include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-latest-gzip-json-successfully/auto-section.adoc[]
-
-=== Get download Service Point Gzip Json - Unsuccessfully
-
-include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-gzip-json-unsuccessfully/auto-section.adoc[]
-
-=== Get download Traffic Point/Loading Point Gzip Json - Unsuccessfully
-
-include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-not-download-json-when-export-type-is-not-allowed-for-the-export-file/auto-section.adoc[]
-
-=== Get Traffic Point Json - Successfully
-
-include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-get-traffic-point-json-successfully/auto-section.adoc[]
-
-=== Get download Traffic Point Gzip Json - Successfully
-
-include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-traffic-point-gzip-json-successfully/auto-section.adoc[]
 
 === Get Loading Point Json - Successfully
 
 include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-get-loading-point-json-successfully/auto-section.adoc[]
 
-=== Get download Loading Point Gzip Json - Successfully
+=== Download Loading Point Gzip (Json) - Successfully
 
-include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-loading-point-gzip-json-successfully/auto-section.adoc[]
+include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-loading-point-gzip-json-successfully/curl-request.adoc[]
+
+=== Download Latest Loading Point Json - Successfully
+
+include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-latest-loading-point-json-successfully/auto-section.adoc[]
+
+=== Download Latest Loading Point Gzip (Json) - Successfully
+
+include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-latest-loading-point-gzip-json-successfully/curl-request.adoc[]
 
 == PRM (Person with Reduced Mobility) Directory
 
-=== Stop Point Versions
+PRM data is available via the PRM-Directory API or as a File (CSV or JSON) via the Export PRM API or through the Amazon S3 Bucket Client (CSV and JSON).
 
-Stop Point Versions data is available via the PRM-Directory StopPoint API or as a File (CSV or JSON) via the Export Stop Point API or through the Amazon S3 Bucket Client (CSV and JSON);
-
-The Export Stop Point generates nightly the following zipped CSV and gzipped JSON files:
+The Export PRM Service generates nightly the following zipped CSV and gzipped JSON files for all PRM-Objects:
 
 * FULL
 * ACTUAL DATE
@@ -188,174 +200,169 @@ The Export Stop Point generates nightly the following zipped CSV and gzipped JSO
 
 If you want to consume this files you have two options:
 
-* Via API: see **Export Stop Point Directory API** section
+* Via API: see following sections
 * Through the Amazon S3 Bucket Client: see **Atlas Amazon S3 Bucket Users onboarding**
+
+=== Unsuccessfully Examples
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-get-json-unsuccessfully/auto-section.adoc[]
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-gzip-json-unsuccessfully/auto-section.adoc[]
+
+=== Stop Point Versions
 
 ==== Data Mapping Migration from DiDok to ATLAS-PRM
 
 See https://confluence.sbb.ch/x/GI3aj to get additional information about the data mapping migration from DiDok to ATLAS.
 
-=== Trigger Export Stop Point Json - Successfully
+=== Trigger export Stop Point Versions
 
 include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-post-stop-point-export-batch-successfully/auto-section.adoc[]
 
 === Get Stop Point Json - Successfully
 
-include::{snippets}/prm-batch-controller-api-v1-integration-test/should-get-json-successfully/auto-section.adoc[]
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-get-stop-point-json-successfully/auto-section.adoc[]
 
-=== Get Stop Point Json - Unsuccessfully
+=== Download Stop Point Gzip (Json) - Successfully
 
-include::{snippets}/prm-batch-controller-api-v1-integration-test/should-get-json-unsuccessfully/auto-section.adoc[]
-
-=== Download Stop Point Gzip Json - Successfully
-
-include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-gzip-json-successfully/auto-section.adoc[]
-
-=== Download Stop Point Gzip Json - Unsuccessfully
-
-include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-gzip-json-unsuccessfully/auto-section.adoc[]
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-stop-point-gzip-json-successfully/curl-request.adoc[]
 
 === Download Latest Stop Point Json - Successfully
 
-include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-json-successfully/auto-section.adoc[]
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-stop-point-json-successfully/auto-section.adoc[]
 
-=== Download Latest Stop Point Gzip Json - Successfully
+=== Download Latest Stop Point Gzip (Json) - Successfully
 
-include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-gzip-json-successfully/auto-section.adoc[]
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-stop-point-gzip-json-successfully/curl-request.adoc[]
 
 === Platform Versions
 
-Platform Versions data is available via the PRM-Directory Platform API or as a File (CSV or JSON) via the Export Platform API or through the Amazon S3 Bucket Client (CSV and JSON);
-
-The Export Platform generates nightly the following zipped CSV and gzipped JSON files:
-
-* FULL
-* ACTUAL DATE
-* FUTURE TIMETABLE
-
-If you want to consume this files you have two options:
-
-* Via API: see **Export Platform Directory API** section
-* Through the Amazon S3 Bucket Client: see **Atlas Amazon S3 Bucket Users onboarding**
-
-=== Trigger Export Platform Json - Successfully
+=== Trigger Export Platform Versions
 
 include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-post-platform-export-batch-successfully/auto-section.adoc[]
 
-=== Download Platform Json - Successfully
+=== Get Platform Json - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-get-platform-json-successfully/auto-section.adoc[]
 
-=== Download Platform Gzip Json - Successfully
+=== Download Platform Gzip (Json) - Successfully
 
-include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-platform-gzip-json-successfully/auto-section.adoc[]
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-platform-gzip-json-successfully/curl-request.adoc[]
+
+=== Download Latest Platform Json - Successfully
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-platform-json-successfully/auto-section.adoc[]
+
+=== Download Latest Platform Gzip (Json) - Successfully
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-platform-gzip-json-successfully/curl-request.adoc[]
 
 === Reference Point Versions
 
-Reference Point Versions data is available via the PRM-Directory Reference Point API or as a File (CSV or JSON) via the Export Reference Point API or through the Amazon S3 Bucket Client (CSV and JSON);
-
-The Export Reference Point generates nightly the following zipped CSV and gzipped JSON files:
-
-* FULL
-* ACTUAL DATE
-* FUTURE TIMETABLE
-
-If you want to consume this files you have two options:
-
-* Via API: see **Export Reference Point Directory API** section
-* Through the Amazon S3 Bucket Client: see **Atlas Amazon S3 Bucket Users onboarding**
-
-=== Trigger Export Reference Point Json - Successfully
+=== Trigger Export Reference Point Versions
 
 include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-post-reference-point-export-batch-successfully/auto-section.adoc[]
 
-=== Download Reference Point Json - Successfully
+=== Get Reference Point Json - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-get-reference-point-json-successfully/auto-section.adoc[]
 
-=== Download Reference Point Gzip Json - Successfully
+=== Download Reference Point Gzip (Json) - Successfully
 
-include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-reference-point-gzip-json-successfully/auto-section.adoc[]
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-reference-point-gzip-json-successfully/curl-request.adoc[]
+
+=== Download Latest Reference Point Json - Successfully
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-reference-point-json-successfully/auto-section.adoc[]
+
+=== Download Latest Reference Point Gzip (Json) - Successfully
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-reference-point-gzip-json-successfully/curl-request.adoc[]
 
 === Contact Point Versions
 
-Contact Point Versions data is available via the PRM-Directory Contact Point API or as a File (CSV or JSON) via the Export Contact Point API or through the Amazon S3 Bucket Client (CSV and JSON);
-
-The Export Contact Point generates nightly the following zipped CSV and gzipped JSON files:
-
-* FULL
-* ACTUAL DATE
-* FUTURE TIMETABLE
-
-If you want to consume this files you have two options:
-
-* Via API: see **Export Contact Point Directory API** section
-* Through the Amazon S3 Bucket Client: see **Atlas Amazon S3 Bucket Users onboarding**
-
-=== Trigger Export Contact Point Json - Successfully
+=== Trigger Export Contact Point Versions
 
 include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-post-contact-point-export-batch-successfully/auto-section.adoc[]
 
-=== Download Contact Point Json - Successfully
+=== Get Contact Point Json - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-get-contact-point-json-successfully/auto-section.adoc[]
 
-=== Download Contact Point Gzip Json - Successfully
+=== Download Contact Point Gzip (Json) - Successfully
 
-include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-contact-point-gzip-json-successfully/auto-section.adoc[]
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-contact-point-gzip-json-successfully/curl-request.adoc[]
+
+=== Download Latest Contact Point Json - Successfully
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-contact-point-json-successfully/auto-section.adoc[]
+
+=== Download Latest Contact Point Gzip (Json) - Successfully
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-contact-point-gzip-json-successfully/curl-request.adoc[]
 
 === Toilet Versions
 
-Toilet Versions data is available via the PRM-Directory Toilet API or as a File (CSV or JSON) via the Export Toilet
-API or through the Amazon S3 Bucket Client (CSV and JSON);
-
-The Export Toilet generates nightly the following zipped CSV and gzipped JSON files:
-
-* FULL
-* ACTUAL DATE
-* FUTURE TIMETABLE
-
-If you want to consume this files you have two options:
-
-* Via API: see **Export Toilet Directory API** section
-* Through the Amazon S3 Bucket Client: see **Atlas Amazon S3 Bucket Users onboarding**
-
-=== Trigger Export Toilet Json - Successfully
+=== Trigger Export Toilet Versions
 
 include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-post-toilet-export-batch-successfully/auto-section.adoc[]
 
-=== Download Toilet Json - Successfully
+=== Get Toilet Json - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-get-toilet-json-successfully/auto-section.adoc[]
 
-=== Download Toilet Gzip Json - Successfully
+=== Download Toilet Gzip (Json) - Successfully
 
-include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-toilet-gzip-json-successfully/auto-section.adoc[]
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-toilet-gzip-json-successfully/curl-request.adoc[]
+
+=== Download Latest Toilet Json - Successfully
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-toilet-json-successfully/auto-section.adoc[]
+
+=== Download Latest Toilet Gzip (Json) - Successfully
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-toilet-gzip-json-successfully/curl-request.adoc[]
 
 === Parking Lot Versions
 
-Parking Lot Versions data is available via the PRM-Directory Parking Lot API or as a File (CSV or JSON) via the Export Parking Lot
-API or through the Amazon S3 Bucket Client (CSV and JSON);
-
-The Export Parking Lot generates nightly the following zipped CSV and gzipped JSON files:
-
-* FULL
-* ACTUAL DATE
-* FUTURE TIMETABLE
-
-If you want to consume this files you have two options:
-
-* Via API: see **Export Parking Lot Directory API** section
-* Through the Amazon S3 Bucket Client: see **Atlas Amazon S3 Bucket Users onboarding**
-
-=== Trigger Export Parking Lot Json - Successfully
+=== Trigger Export Parking Lot Versions
 
 include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-post-parking-lot-export-batch-successfully/auto-section.adoc[]
 
-=== Download Parking Lot Json - Successfully
+=== Get Parking Lot Json - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-get-parking-lot-json-successfully/auto-section.adoc[]
 
-=== Download Parking Lot Gzip Json - Successfully
+=== Download Parking Lot Gzip (Json) - Successfully
 
-include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-parking-lot-gzip-json-successfully/auto-section.adoc[]
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-parking-lot-gzip-json-successfully/curl-request.adoc[]
+
+=== Download Latest Parking Lot Json - Successfully
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-parking-lot-json-successfully/auto-section.adoc[]
+
+=== Download Latest Parking Lot Gzip (Json) - Successfully
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-parking-lot-gzip-json-successfully/curl-request.adoc[]
+
+=== Relation Versions
+
+=== Trigger Export Relation Versions
+
+include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-post-relation-export-batch-successfully/auto-section.adoc[]
+
+=== Get Relation Json - Successfully
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-get-relation-json-successfully/auto-section.adoc[]
+
+=== Download Relation Gzip (Json) - Successfully
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-relation-gzip-json-successfully/curl-request.adoc[]
+
+=== Download Latest Relation Json - Successfully
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-relation-json-successfully/auto-section.adoc[]
+
+=== Download Latest Relation Gzip (Json) - Successfully
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-relation-gzip-json-successfully/curl-request.adoc[]
