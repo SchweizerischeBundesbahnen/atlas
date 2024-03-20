@@ -16,22 +16,21 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Disabled
+//@Disabled
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ContactPointMigrationActualDateIntegrationTest {
 
-    private static final String DIDOK_CSV_FILE = "PRM_TICKET_COUNTERS_20240319021046.csv";
-    private static final String DIDOK_CSV_FILE_INFO_DESK = "PRM_INFO_DESKS_20240319021037.csv";
-    private static final String ATLAS_CSV_FILE = "actual-date-contact_point-2024-03-19.csv";
+    private static final String DIDOK_CSV_FILE = "PRM_TICKET_COUNTERS_20240320013805.csv";
+    private static final String DIDOK_CSV_FILE_INFO_DESK = "PRM_INFO_DESKS_20240320013756.csv";
+    private static final String ATLAS_CSV_FILE = "actual-date-contact_point-2024-03-20.csv";
     private static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 3, 19);
 
     private static final List<ContactPointCsvModel> didokCsvLines = new ArrayList<>();
@@ -47,7 +46,9 @@ public class ContactPointMigrationActualDateIntegrationTest {
     @Test
     @Order(1)
     void shouldParseCsvCorrectly() throws IOException {
-        try(InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE)) {
+//        try(InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE)) {
+        try(InputStream csvStream = ContactPointUtil.getInputStream(this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE),
+            this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE_INFO_DESK))) {
             List<ContactPointCsvModelContainer> contactPointCsvModelContainers =
                 contactPointCsvService.mapToContactPointCsvModelContainers(
                     CsvReader.parseCsv(csvStream, ContactPointCsvModel.class));
