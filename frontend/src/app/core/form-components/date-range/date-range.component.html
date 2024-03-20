@@ -23,12 +23,7 @@
           <form-date-icon [enabled]="controlFrom.enabled"></form-date-icon>
         </mat-icon>
       </mat-datepicker-toggle>
-      <mat-datepicker #validFromPicker>
-        <mat-date-range-picker-actions>
-          <button mat-button class="me-auto" (click)="selectToday()">{{ 'COMMON.TODAY'|translate }}</button>
-          <button mat-button (click)="selectFutureTimetable()">{{ 'COMMON.TIMETABLE_YEAR_CHANGE'|translate }}
-          </button>
-        </mat-date-range-picker-actions>
+      <mat-datepicker #validFromPicker [calendarHeaderComponent]="validFromHeader">
       </mat-datepicker>
     </div>
     <app-atlas-field-error
