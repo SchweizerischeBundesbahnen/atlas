@@ -60,18 +60,26 @@ public class PrmChangeRecordingVariantService {
       StopPointVersion editedVersion) {
     StopPointVersion stopPointVersion = stopPointChangeRecordingVariant(stopPointVersionToUpdate,
         editedVersion.getMeansOfTransport());
-    platformChangeRecordingVariant(stopPointVersionToUpdate.getParentServicePointSloid());
+    changePlatformToReduced(stopPointVersionToUpdate);
     setStatusRevokedToReferencePoints(stopPointVersionToUpdate.getParentServicePointSloid());
     deleteRelations(stopPointVersionToUpdate.getParentServicePointSloid());
     return stopPointVersion;
+  }
+
+  private void changePlatformToReduced(StopPointVersion stopPointVersionToUpdate) {
+    platformChangeRecordingVariant(stopPointVersionToUpdate.getParentServicePointSloid(), true);
   }
 
   private StopPointVersion changeFromReduceToComplete(StopPointVersion stopPointVersionToUpdate,
       StopPointVersion editedVersion) {
     StopPointVersion stopPointVersion = stopPointChangeRecordingVariant(stopPointVersionToUpdate,
         editedVersion.getMeansOfTransport());
-    platformChangeRecordingVariant(stopPointVersionToUpdate.getParentServicePointSloid());
+    changePlatformToComplete(stopPointVersionToUpdate);
     return stopPointVersion;
+  }
+
+  private void changePlatformToComplete(StopPointVersion stopPointVersionToUpdate) {
+    platformChangeRecordingVariant(stopPointVersionToUpdate.getParentServicePointSloid(), false);
   }
 
   StopPointVersion stopPointChangeRecordingVariant(StopPointVersion stopPointVersion, Set<MeanOfTransport> meanOfTransports) {
@@ -86,7 +94,7 @@ public class PrmChangeRecordingVariantService {
     return stopPointRepository.saveAndFlush(changedRecordingVariantStopPointVersion);
   }
 
-  void platformChangeRecordingVariant(String sloid) {
+  void platformChangeRecordingVariant(String sloid, boolean reduced) {
     List<PlatformVersion> platformVersionsByParentSloid
         = platformRepository.findAllByParentServicePointSloid(sloid);
     Map<String, List<PlatformVersion>> platforms = platformVersionsByParentSloid.stream()
@@ -98,7 +106,7 @@ public class PrmChangeRecordingVariantService {
         LocalDate validTo = platformVersionsGroup.getLast().getValidTo();
         PlatformVersion changedRecordingVariantStopPointVersion = PlatformVersionMapper.resetToDefaultValue(
             platformVersionsGroup.getFirst(),
-            validFrom, validTo);
+            validFrom, validTo, reduced);
         platformRepository.deleteAllById(platformVersionsGroup.stream().map(PlatformVersion::getId).collect(Collectors.toSet()));
         platformRepository.flush();
         platformRepository.saveAndFlush(changedRecordingVariantStopPointVersion);

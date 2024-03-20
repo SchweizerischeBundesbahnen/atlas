@@ -139,26 +139,27 @@ import org.springframework.transaction.annotation.Transactional;
     version2 = repository.save(version2);
     version3 = repository.save(version3);
     version4 = repository.save(version4);
-    BusinessOrganisationVersion editedVersion =
-        BusinessOrganisationVersion.builder()
-        .sboid(SBOID)
-        .abbreviationDe("de3")
-        .abbreviationFr("fr1")
-        .abbreviationIt("it1")
-        .abbreviationEn("en1")
-        .descriptionDe("Description <changed>")
-        .descriptionFr("desc-fr1")
-        .descriptionIt("desc-it1")
-        .descriptionEn("desc-en1")
-        .businessTypes(new HashSet<>(
-            Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR,
-                BusinessType.SHIP,BusinessType.STREET)))
-        .contactEnterpriseEmail("mail1@mail.ch")
-        .organisationNumber(1234)
-        .status(Status.VALIDATED)
-        .validFrom(LocalDate.of(2020, 6, 1))
-        .validTo(LocalDate.of(2025, 6, 1))
-        .build();
+   BusinessOrganisationVersion editedVersion =
+       BusinessOrganisationVersion.builder()
+           .sboid(SBOID)
+           .abbreviationDe("de3")
+           .abbreviationFr("fr1")
+           .abbreviationIt("it1")
+           .abbreviationEn("en1")
+           .descriptionDe("Description <changed>")
+           .descriptionFr("desc-fr1")
+           .descriptionIt("desc-it1")
+           .descriptionEn("desc-en1")
+           .businessTypes(new HashSet<>(
+               Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR,
+                   BusinessType.SHIP, BusinessType.STREET)))
+           .contactEnterpriseEmail("mail1@mail.ch")
+           .organisationNumber(1234)
+           .status(Status.VALIDATED)
+           .validFrom(LocalDate.of(2020, 6, 1))
+           .validTo(LocalDate.of(2025, 6, 1))
+           .version(version3.getVersion())
+           .build();
 
     //when
     service.updateBusinessOrganisationVersion(version3, editedVersion);

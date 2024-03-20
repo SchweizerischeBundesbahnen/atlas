@@ -30,6 +30,7 @@ public class TrafficPointElementsServiceIntegrationTests extends BaseTrafficPoin
         editedVersion.setTrafficPointElementGeolocation(TrafficPointTestData.getTrafficPointGeolocationBernMittelland());
         editedVersion.setValidFrom(LocalDate.of(2023, 6, 1));
         editedVersion.setValidTo(LocalDate.of(2024, 6, 1));
+        editedVersion.setVersion(version2.getVersion());
         // when
         trafficPointElementService.updateTrafficPointElementVersion(version2, editedVersion);
         List<TrafficPointElementVersion> result = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(SLOID);
@@ -118,6 +119,7 @@ public class TrafficPointElementsServiceIntegrationTests extends BaseTrafficPoin
         editedVersion.setTrafficPointElementGeolocation(updatedTpeg);
         editedVersion.setValidFrom(LocalDate.of(2023, 6, 1));
         editedVersion.setValidTo(LocalDate.of(2024, 6, 1));
+        editedVersion.setVersion(version3.getVersion());
         // when
         trafficPointElementService.updateTrafficPointElementVersion(version3, editedVersion);
         List<TrafficPointElementVersion> result = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(SLOID);
@@ -164,7 +166,7 @@ public class TrafficPointElementsServiceIntegrationTests extends BaseTrafficPoin
     @Test
     public void updateTrafficPointElementGeolocationCreatorOnExistingVersion() {
         // given
-        version1 = trafficPointElementVersionRepository.save(version1);
+        version1 = trafficPointElementVersionRepository.saveAndFlush(version1);
         TrafficPointElementGeolocation tpeg = TrafficPointTestData.getTrafficPointGeolocationBernMittelland();
         String initialCreator = "initialCreator";
         String initialEditor = "initialEditor";
@@ -179,6 +181,8 @@ public class TrafficPointElementsServiceIntegrationTests extends BaseTrafficPoin
         editedVersion.setTrafficPointElementGeolocation(updatedTpeg);
         editedVersion.setValidFrom(LocalDate.of(2022, 1, 1));
         editedVersion.setValidTo(LocalDate.of(2022, 1, 2));
+        editedVersion.setVersion(1);
+
         // when
         trafficPointElementService.updateTrafficPointElementVersion(version1, editedVersion);
         List<TrafficPointElementVersion> result = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(SLOID);
