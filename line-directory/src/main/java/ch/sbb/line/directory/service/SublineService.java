@@ -100,8 +100,7 @@ public class SublineService {
 
   public void updateVersion(SublineVersion currentVersion, SublineVersion editedVersion) {
     sublineVersionRepository.incrementVersion(currentVersion.getSlnid());
-    if (editedVersion.getVersion() != null && !currentVersion.getVersion()
-        .equals(editedVersion.getVersion())) {
+    if (!currentVersion.getVersion().equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(SublineVersion.class.getSimpleName(), "version");
     }
     List<SublineVersion> currentVersions = sublineVersionRepository.findAllBySlnidOrderByValidFrom(
