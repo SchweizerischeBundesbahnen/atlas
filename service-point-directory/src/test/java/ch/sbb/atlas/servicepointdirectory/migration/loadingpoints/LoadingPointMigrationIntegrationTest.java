@@ -3,11 +3,13 @@ package ch.sbb.atlas.servicepointdirectory.migration.loadingpoints;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.imports.util.CsvReader;
+import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Validity;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,25 +21,34 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+
 @Disabled
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class LoadingPointMigrationIntegrationTest {
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_LADESTELLEN_20230906011320.csv";
-  private static final String ATLAS_CSV_FILE = "full-world-loading_point-2023-09-06.csv";
+  private static final String DIDOK_CSV_FILE = "DIDOK3_LADESTELLEN_20240318013859.csv";
+  private static final String ATLAS_CSV_FILE = "full-world-loading_point-2024-03-18.csv";
 
   private static final List<LoadingPointAtlasCsvModel> atlasCsvLines = new ArrayList<>();
   private static final List<LoadingPointDidokCsvModel> didokCsvLines = new ArrayList<>();
+  private static List<LoadingPointDidokCsvModel> didokCsvLinesAfterModification = new ArrayList<>();
 
   @Test
   @Order(1)
   void shouldParseCsvsCorrectly() throws IOException {
     try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE)) {
       didokCsvLines.addAll(CsvReader.parseCsv(csvStream, LoadingPointDidokCsvModel.class));
+      didokCsvLinesAfterModification = didokCsvLines.stream().peek(object ->
+      {
+        if (object.getValidTo().equals(ImportUtils.DIDOK_HIGEST_DATE)) {
+          object.setValidTo(ImportUtils.ATLAS_HIGHEST_DATE);
+          object.setEditedAt(LoadingPointMigrationActualDateIntegrationTest.ACTUAL_DATE.atTime(LocalTime.MIDNIGHT));
+        }
+      }).toList();
     }
-    assertThat(didokCsvLines).isNotEmpty();
+    assertThat(didokCsvLinesAfterModification).isNotEmpty();
 
     try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + ATLAS_CSV_FILE)) {
       atlasCsvLines.addAll(CsvReader.parseCsv(csvStream, LoadingPointAtlasCsvModel.class));
@@ -48,7 +59,7 @@ class LoadingPointMigrationIntegrationTest {
   @Test
   @Order(2)
   void shouldHaveSameLoadingPointNumbersInBothCsvs() {
-    Set<Integer> didokNumbers = didokCsvLines.stream().map(LoadingPointDidokCsvModel::getNumber).collect(Collectors.toSet());
+    Set<Integer> didokNumbers = didokCsvLinesAfterModification.stream().map(LoadingPointDidokCsvModel::getNumber).collect(Collectors.toSet());
     Set<Integer> atlasNumbers = atlasCsvLines.stream().map(LoadingPointAtlasCsvModel::getNumber).collect(Collectors.toSet());
 
     Set<Integer> difference = atlasNumbers.stream().filter(e -> !didokNumbers.contains(e)).collect(Collectors.toSet());
@@ -66,7 +77,7 @@ class LoadingPointMigrationIntegrationTest {
   @Test
   @Order(3)
   void shouldHaveSameServicePointNumbersInBothCsvs() {
-    Set<Integer> didokNumbers = didokCsvLines.stream().map(LoadingPointDidokCsvModel::getServicePointNumber)
+    Set<Integer> didokNumbers = didokCsvLinesAfterModification.stream().map(LoadingPointDidokCsvModel::getServicePointNumber)
         .collect(Collectors.toSet());
     Set<Integer> atlasNumbers = atlasCsvLines.stream().map(LoadingPointAtlasCsvModel::getServicePointNumber)
         .collect(Collectors.toSet());
@@ -86,7 +97,8 @@ class LoadingPointMigrationIntegrationTest {
   @Test
   @Order(4)
   void shouldHaveSameValidityOnEachLoadingPoint() {
-    Map<String, Validity> groupedDidokLoadingPoints = didokCsvLines.stream().collect(
+    Map<String, Validity> groupedDidokLoadingPoints = didokCsvLinesAfterModification.stream()
+        .collect(
         Collectors.groupingBy(LoadingPointDidokCsvModel::getServicePointNumberAndLoadingPointNumberKey,
             Collectors.collectingAndThen(
                 Collectors.toList(),
@@ -140,7 +152,7 @@ class LoadingPointMigrationIntegrationTest {
     Map<String, List<LoadingPointAtlasCsvModel>> groupedAtlasLoadingPoints = atlasCsvLines.stream()
         .collect(Collectors.groupingBy(LoadingPointAtlasCsvModel::getServicePointNumberAndLoadingPointNumberKey));
 
-    didokCsvLines.forEach(didokCsvLine -> {
+    didokCsvLinesAfterModification.forEach(didokCsvLine -> {
       LoadingPointAtlasCsvModel atlasCsvLine = findCorrespondingAtlasLoadingPointVersion(didokCsvLine,
           groupedAtlasLoadingPoints.get(didokCsvLine.getServicePointNumberAndLoadingPointNumberKey()));
       new LoadingPointMappingEquality(didokCsvLine, atlasCsvLine).performCheck();
