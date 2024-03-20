@@ -12,7 +12,7 @@ public class CsvReferencePointVersionWriter extends BaseCsvWriter<ReferencePoint
   String[] getCsvHeader() {
     return new String[]{
         Fields.sloid, Fields.parentSloidServicePoint, Fields.parentNumberServicePoint, Fields.designation,
-        Fields.mainReferencePoint, Fields.additionalInformation, Fields.rpType,
+        Fields.mainReferencePoint, Fields.additionalInformation, Fields.referencePointType,
         BasePrmCsvModel.Fields.validFrom, BasePrmCsvModel.Fields.validTo, BasePrmCsvModel.Fields.creationDate,
         BasePrmCsvModel.Fields.editionDate, BasePrmCsvModel.Fields.status
     };

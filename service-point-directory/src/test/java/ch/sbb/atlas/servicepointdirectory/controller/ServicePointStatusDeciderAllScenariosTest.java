@@ -116,6 +116,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     UpdateServicePointVersionModel stopPoint = ServicePointTestData.getAargauServicePointVersionModel();
     stopPoint.setValidFrom(LocalDate.of(2011, 12, 11));
     stopPoint.setValidTo(LocalDate.of(2019, 8, 10));
+    stopPoint.setEtagVersion(servicePointVersionModel.getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
@@ -167,6 +168,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     servicePoint2.setValidTo(LocalDate.of(2014, 12, 31));
     servicePoint2.setDesignationLong("ABC2");
     servicePoint2.setCategories(List.of(Category.MIGRATION_CENTRAL_SERVICE));
+    servicePoint2.setEtagVersion(0);
     servicePointController.updateServicePoint(servicePointVersionModel1.getId(),
         servicePoint2);
     UpdateServicePointVersionModel servicePoint3 = ServicePointTestData.getAargauServicePointVersionModel();
@@ -176,6 +178,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     servicePoint3.setValidTo(LocalDate.of(2019, 8, 10));
     servicePoint3.setDesignationLong("ABC3");
     servicePoint3.setCategories(List.of(Category.BORDER_POINT));
+    servicePoint3.setEtagVersion(1);
     List<ReadServicePointVersionModel> servicePointVersionModels = servicePointController.updateServicePoint(
         servicePointVersionModel1.getId(),
         servicePoint3);
@@ -187,6 +190,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
         "ABC2");
     stopPoint.setValidFrom(LocalDate.of(2013, 1, 1));
     stopPoint.setValidTo(LocalDate.of(2019, 8, 10));
+    stopPoint.setEtagVersion(servicePointVersionModels.get(1).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
@@ -231,6 +235,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint.setDesignationOfficial("B Hausen");
     stopPoint.setValidFrom(LocalDate.of(2015, 12, 11));
     stopPoint.setValidTo(LocalDate.of(2019, 8, 10));
+    stopPoint.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
@@ -270,6 +275,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint.setDesignationOfficial("B Hausen");
     stopPoint.setValidFrom(LocalDate.of(2010, 12, 11));
     stopPoint.setValidTo(LocalDate.of(2015, 12, 31));
+    stopPoint.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
@@ -308,6 +314,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     UpdateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
     stopPoint2.setDesignationOfficial("B Hausen");
     stopPoint2.setValidFrom(LocalDate.of(2016, 1, 1));
+    stopPoint2.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
     List<ReadServicePointVersionModel> servicePointVersionModel1 = servicePointController.updateServicePoint(id,
         stopPoint2);
     Long id1 = servicePointVersionModel1.get(1).getId();
@@ -316,6 +323,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
     stopPoint3.setDesignationOfficial("C Hausen");
     stopPoint3.setValidFrom(LocalDate.of(2017, 1, 1));
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id1).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id1)
             .contentType(contentType)
@@ -359,6 +367,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint2.setDesignationOfficial("B Hausen");
     stopPoint2.setValidFrom(LocalDate.of(2016, 1, 1));
     stopPoint2.setValidTo(LocalDate.of(2016, 12, 31));
+    stopPoint2.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
     List<ReadServicePointVersionModel> servicePointVersionModel1 = servicePointController.updateServicePoint(id,
         stopPoint2);
     Long id1 = servicePointVersionModel1.get(1).getId();
@@ -368,6 +377,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint3.setDesignationOfficial("C Hausen");
     stopPoint3.setValidFrom(LocalDate.of(2015, 6, 1));
     stopPoint3.setValidTo(LocalDate.of(2016, 6, 1));
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
@@ -409,6 +419,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint3.setDesignationOfficial("C Hausen");
     stopPoint3.setValidFrom(LocalDate.of(2014, 1, 1));
     stopPoint3.setValidTo(LocalDate.of(2016, 12, 31));
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
@@ -448,6 +459,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
 
     UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
     stopPoint3.setDesignationOfficial("C Hausen");
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
@@ -488,6 +500,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint2.setValidTo(LocalDate.of(2019, 8, 10));
     stopPoint2.setDesignationOfficial("A Hausen");
     stopPoint2.setCategories(List.of(Category.BORDER_POINT));
+    stopPoint2.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
     List<ReadServicePointVersionModel> servicePointVersionModel1 = servicePointController.updateServicePoint(id,
         stopPoint2);
     Long id1 = servicePointVersionModel1.get(1).getId();
@@ -504,6 +517,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint3.setValidTo(LocalDate.of(2019, 8, 10));
     stopPoint3.setServicePointGeolocation(
         ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getZurichServicePointGeolocation()));
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id1).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id1)
             .contentType(contentType)
@@ -550,6 +564,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint2.setDesignationOfficial("A Hausen");
     stopPoint2.setServicePointGeolocation(
         ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
+    stopPoint2.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
 
     List<ReadServicePointVersionModel> servicePointVersionModel1 = servicePointController.updateServicePoint(id,
         stopPoint2);
@@ -562,6 +577,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint3.setValidTo(LocalDate.of(2019, 8, 10));
     stopPoint3.setServicePointGeolocation(
         ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id1).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id1)
             .contentType(contentType)
@@ -605,6 +621,8 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint2.setDesignationOfficial("B Hausen");
     stopPoint2.setValidFrom(LocalDate.of(2016, 1, 1));
     stopPoint2.setValidTo(LocalDate.of(2019, 8, 10));
+    stopPoint2.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
+
     List<ReadServicePointVersionModel> servicePointVersionModel1 = servicePointController.updateServicePoint(id, stopPoint2);
     Long id1 = servicePointVersionModel1.get(1).getId();
     setStatusToValidatedAndVerifyIt(id1);
@@ -613,6 +631,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint3.setDesignationOfficial("C Hausen");
     stopPoint3.setValidFrom(LocalDate.of(2019, 8, 11));
     stopPoint3.setValidTo(LocalDate.of(2020, 12, 31));
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id1).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id1)
             .contentType(contentType)
@@ -656,6 +675,8 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint2.setDesignationOfficial("B Hausen");
     stopPoint2.setValidFrom(LocalDate.of(2016, 1, 1));
     stopPoint2.setValidTo(LocalDate.of(2019, 8, 10));
+    stopPoint2.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
+
     List<ReadServicePointVersionModel> servicePointVersionModel1 = servicePointController.updateServicePoint(id,
         stopPoint2);
     Long id1 = servicePointVersionModel1.get(1).getId();
@@ -665,6 +686,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint3.setDesignationOfficial("C Hausen");
     stopPoint3.setValidFrom(LocalDate.of(2005, 8, 11));
     stopPoint3.setValidTo(LocalDate.of(2010, 12, 10));
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
@@ -708,6 +730,8 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint2.setDesignationOfficial("B Hausen");
     stopPoint2.setValidFrom(LocalDate.of(2016, 1, 1));
     stopPoint2.setValidTo(LocalDate.of(2019, 8, 10));
+    stopPoint2.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
+
     List<ReadServicePointVersionModel> servicePointVersionModel1 = servicePointController.updateServicePoint(id,
         stopPoint2);
     Long id1 = servicePointVersionModel1.get(1).getId();
@@ -717,6 +741,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint3.setDesignationOfficial("B Hausen");
     stopPoint3.setValidFrom(LocalDate.of(2019, 8, 11));
     stopPoint3.setValidTo(LocalDate.of(2020, 12, 31));
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
@@ -757,6 +782,8 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint2.setDesignationOfficial("B Hausen");
     stopPoint2.setValidFrom(LocalDate.of(2016, 1, 1));
     stopPoint2.setValidTo(LocalDate.of(2019, 8, 10));
+    stopPoint2.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
+
     List<ReadServicePointVersionModel> servicePointVersionModel1 = servicePointController.updateServicePoint(id,
         stopPoint2);
     Long id1 = servicePointVersionModel1.get(1).getId();
@@ -766,6 +793,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint3.setDesignationOfficial("A Hausen");
     stopPoint3.setValidFrom(LocalDate.of(2005, 8, 1));
     stopPoint3.setValidTo(LocalDate.of(2010, 12, 10));
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
@@ -806,6 +834,8 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint2.setDesignationOfficial("B Hausen");
     stopPoint2.setValidFrom(LocalDate.of(2016, 1, 1));
     stopPoint2.setValidTo(LocalDate.of(2019, 8, 10));
+    stopPoint2.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
+
     List<ReadServicePointVersionModel> servicePointVersionModel1 = servicePointController.updateServicePoint(id,
         stopPoint2);
     Long id1 = servicePointVersionModel1.get(1).getId();
@@ -815,6 +845,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint3.setDesignationOfficial("B Hausen");
     stopPoint3.setValidFrom(LocalDate.of(2015, 1, 1));
     stopPoint3.setValidTo(LocalDate.of(2019, 8, 10));
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
@@ -855,6 +886,8 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint2.setDesignationOfficial("B Hausen");
     stopPoint2.setValidFrom(LocalDate.of(2016, 1, 1));
     stopPoint2.setValidTo(LocalDate.of(2019, 8, 10));
+    stopPoint2.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
+
     List<ReadServicePointVersionModel> servicePointVersionModel1 = servicePointController.updateServicePoint(id,
         stopPoint2);
     Long id1 = servicePointVersionModel1.get(1).getId();
@@ -864,6 +897,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint3.setDesignationOfficial("A Hausen");
     stopPoint3.setValidFrom(LocalDate.of(2010, 12, 11));
     stopPoint3.setValidTo(LocalDate.of(2017, 12, 10));
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id1).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id1)
             .contentType(contentType)
@@ -905,6 +939,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint3.setDesignationOfficial("B Hausen");
     stopPoint3.setValidFrom(LocalDate.of(2018, 1, 1));
     stopPoint3.setValidTo(LocalDate.of(2019, 8, 10));
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
@@ -944,6 +979,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint3.setValidFrom(LocalDate.of(2018, 1, 1));
     stopPoint3.setValidTo(LocalDate.of(2019, 8, 10));
     stopPoint3.setDesignationOfficial("A Hausen");
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
@@ -1056,6 +1092,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
         ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
     stopPoint3.setValidTo(LocalDate.of(2015, 12, 31));
     stopPoint3.setDesignationOfficial("A Hausen");
+    stopPoint3.setEtagVersion(servicePointVersionModel.getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
@@ -1100,6 +1137,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
         ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
     stopPoint3.setValidTo(LocalDate.of(2015, 12, 31));
     stopPoint3.setDesignationOfficial("A Hausen");
+    stopPoint3.setEtagVersion(servicePointVersionModel.getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
@@ -1138,6 +1176,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
       stopPoint3.setServicePointGeolocation(ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
       stopPoint3.setValidTo(LocalDate.of(2015, 12, 31));
       stopPoint3.setDesignationOfficial("A Hausen");
+      stopPoint3.setEtagVersion(servicePointVersionModel.getEtagVersion());
 
       mvc.perform(put("/v1/service-points/" + id)
                       .contentType(contentType)
@@ -1175,6 +1214,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
       stopPoint3.setServicePointGeolocation(ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
       stopPoint3.setValidTo(LocalDate.of(2015, 12, 31));
       stopPoint3.setDesignationOfficial("A Hausen");
+      stopPoint3.setEtagVersion(servicePointVersionModel.getEtagVersion());
 
       mvc.perform(put("/v1/service-points/" + id)
                       .contentType(contentType)
@@ -1206,6 +1246,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
           ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
       stopPoint3.setValidTo(LocalDate.of(2015, 12, 31));
       stopPoint3.setDesignationOfficial("B Hausen");
+      stopPoint3.setEtagVersion(servicePointVersionModel.getEtagVersion());
 
       mvc.perform(put("/v1/service-points/" + id)
               .contentType(contentType)
@@ -1232,6 +1273,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
         ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
     stopPoint3.setValidTo(LocalDate.of(2015, 12, 31));
     stopPoint3.setDesignationOfficial("A Hausen");
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
@@ -1295,6 +1337,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
       stopPoint3.setServicePointGeolocation(null);
       stopPoint3.setValidTo(LocalDate.of(2015, 12, 31));
       stopPoint3.setDesignationOfficial("A Hausen");
+      stopPoint3.setEtagVersion(servicePointVersionModel.getEtagVersion());
 
       mvc.perform(put("/v1/service-points/" + id)
                       .contentType(contentType)
@@ -1325,6 +1368,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
       stopPoint3.setServicePointGeolocation(ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
       stopPoint3.setValidTo(LocalDate.of(2015, 12, 31));
       stopPoint3.setDesignationOfficial("A Hausen");
+      stopPoint3.setEtagVersion(servicePointVersionModel.getEtagVersion());
 
       mvc.perform(put("/v1/service-points/" + id)
                       .contentType(contentType)
@@ -1352,6 +1396,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
       stopPoint3.setServicePointGeolocation(ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
       stopPoint3.setValidTo(LocalDate.of(2016, 12, 31));
       stopPoint3.setDesignationOfficial("A Hausen");
+      stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
 
       mvc.perform(put("/v1/service-points/" + id)
                       .contentType(contentType)
@@ -1380,6 +1425,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
       stopPoint3.setValidTo(LocalDate.of(2015, 12, 31));
       stopPoint3.setDesignationOfficial("A Hausen");
       stopPoint3.setDesignationLong("designation long modified");
+      stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
 
       mvc.perform(put("/v1/service-points/" + id)
                       .contentType(contentType)
@@ -1408,6 +1454,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint3.setValidTo(LocalDate.of(2015, 12, 31));
     stopPoint3.setDesignationOfficial("A Hausen");
     stopPoint3.setDesignationLong("designation long modified");
+    stopPoint3.setEtagVersion(servicePointVersionModel.getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
@@ -1439,6 +1486,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint2.setDesignationOfficial("B Hausen");
     stopPoint2.setDesignationLong("designation long 2");
     stopPoint2.setServicePointGeolocation(null);
+    stopPoint2.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
     List<ReadServicePointVersionModel> servicePointVersionModel2 = servicePointController.updateServicePoint(id,
         stopPoint2);
     Long id2 = servicePointVersionModel2.get(1).getId();
@@ -1451,6 +1499,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint3.setDesignationOfficial("C Hausen");
     stopPoint3.setDesignationLong("designation long 3");
     stopPoint3.setServicePointGeolocation(null);
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id2).getEtagVersion());
     List<ReadServicePointVersionModel> servicePointVersionModel3 = servicePointController.updateServicePoint(id2,
         stopPoint3);
     // Check that status for no geolocation is validated
@@ -1460,6 +1509,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint4.setServicePointGeolocation(ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
     stopPoint4.setValidFrom(LocalDate.of(2015, 1, 1));
     stopPoint4.setValidTo(LocalDate.of(2017, 12, 31));
+    stopPoint4.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
@@ -1499,6 +1549,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint2.setDesignationOfficial("B Hausen");
     stopPoint2.setDesignationLong("designation long 2");
     stopPoint2.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    stopPoint2.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
     List<ReadServicePointVersionModel> servicePointVersionModel2 = servicePointController.updateServicePoint(id,
         stopPoint2);
     Long id2 = servicePointVersionModel2.get(1).getId();
@@ -1511,6 +1562,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint3.setDesignationOfficial("C Hausen");
     stopPoint3.setDesignationLong("designation long 3");
     stopPoint3.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id2).getEtagVersion());
     List<ReadServicePointVersionModel> servicePointVersionModel3 = servicePointController.updateServicePoint(id2,
         stopPoint3);
     // Check that status for not long enough validity is validated
@@ -1520,6 +1572,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint4.setServicePointGeolocation(ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
     stopPoint4.setValidFrom(LocalDate.of(2015, 1, 1));
     stopPoint4.setValidTo(LocalDate.of(2018, 12, 31));
+    stopPoint4.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
@@ -1558,6 +1611,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint2.setDesignationOfficial("B Hausen");
     stopPoint2.setDesignationLong("designation long 2");
     stopPoint2.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    stopPoint2.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
     List<ReadServicePointVersionModel> servicePointVersionModel2 = servicePointController.updateServicePoint(id,
         stopPoint2);
     Long id2 = servicePointVersionModel2.get(1).getId();
@@ -1569,6 +1623,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint3.setDesignationOfficial("B Hausen");
     stopPoint3.setDesignationLong("designation long 3");
     stopPoint3.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id2).getEtagVersion());
     List<ReadServicePointVersionModel> servicePointVersionModel3 = servicePointController.updateServicePoint(id2,
         stopPoint3);
     Long id3 = servicePointVersionModel3.get(2).getId();
@@ -1580,6 +1635,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint4.setDesignationOfficial("C Hausen");
     stopPoint4.setDesignationLong("designation long 4");
     stopPoint4.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    stopPoint4.setEtagVersion(servicePointController.getServicePointVersion(id3).getEtagVersion());
     List<ReadServicePointVersionModel> servicePointVersionModel4 = servicePointController.updateServicePoint(id3,
         stopPoint4);
     Long id4 = servicePointVersionModel4.get(3).getId();
@@ -1591,6 +1647,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPointx.setDesignationLong("designation long 4");
     stopPointx.setValidFrom(LocalDate.of(2015, 1, 1));
     stopPointx.setValidTo(LocalDate.of(2018, 12, 31));
+    stopPointx.setEtagVersion(servicePointController.getServicePointVersion(id4).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id4)
             .contentType(contentType)
@@ -1640,6 +1697,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint2.setDesignationOfficial("B Hausen");
     stopPoint2.setDesignationLong("designation long 2");
     stopPoint2.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    stopPoint2.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
     List<ReadServicePointVersionModel> servicePointVersionModel2 = servicePointController.updateServicePoint(id,
         stopPoint2);
     Long id2 = servicePointVersionModel2.get(1).getId();
@@ -1651,6 +1709,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint3.setDesignationOfficial("F Hausen");
     stopPoint3.setDesignationLong("designation long 3");
     stopPoint3.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id2).getEtagVersion());
     List<ReadServicePointVersionModel> servicePointVersionModel3 = servicePointController.updateServicePoint(id2,
         stopPoint3);
     Long id3 = servicePointVersionModel3.get(2).getId();
@@ -1662,6 +1721,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint4.setDesignationOfficial("C Hausen");
     stopPoint4.setDesignationLong("designation long 4");
     stopPoint4.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    stopPoint4.setEtagVersion(servicePointController.getServicePointVersion(id3).getEtagVersion());
     List<ReadServicePointVersionModel> servicePointVersionModel4 = servicePointController.updateServicePoint(id3,
         stopPoint4);
     Long id4 = servicePointVersionModel4.get(3).getId();
@@ -1673,6 +1733,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPointx.setDesignationLong("designation long 4");
     stopPointx.setValidFrom(LocalDate.of(2015, 1, 1));
     stopPointx.setValidTo(LocalDate.of(2018, 12, 31));
+    stopPointx.setEtagVersion(servicePointController.getServicePointVersion(id4).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id4)
             .contentType(contentType)
@@ -1735,6 +1796,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint2.setDesignationLong("designation long 1");
     stopPoint2.setStopPointType(StopPointType.ORDERLY);
     stopPoint2.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    stopPoint2.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
     List<ReadServicePointVersionModel> servicePointVersionModel2 = servicePointController.updateServicePoint(id,
         stopPoint2);
     Long id2 = servicePointVersionModel2.get(1).getId();
@@ -1747,6 +1809,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint3.setDesignationLong("designation long 1");
     stopPoint3.setStopPointType(StopPointType.ORDERLY);
     stopPoint3.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
     servicePointController.updateServicePoint(id, stopPoint3);
 
     UpdateServicePointVersionModel stopPointx = ServicePointTestData.getAargauServicePointVersionModel();
@@ -1756,6 +1819,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPointx.setStopPointType(StopPointType.ORDERLY);
     stopPointx.setValidFrom(LocalDate.of(2022, 4, 1));
     stopPointx.setValidTo(LocalDate.of(2023, 3, 31));
+    stopPointx.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)
@@ -1821,6 +1885,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint2.setDesignationLong("designation long 1");
     stopPoint2.setStopPointType(StopPointType.ORDERLY);
     stopPoint2.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    stopPoint2.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
     List<ReadServicePointVersionModel> servicePointVersionModel2 = servicePointController.updateServicePoint(id,
         stopPoint2);
     Long id2 = servicePointVersionModel2.get(1).getId();
@@ -1833,6 +1898,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPoint3.setDesignationLong("designation long 1");
     stopPoint3.setStopPointType(StopPointType.ORDERLY);
     stopPoint3.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
     servicePointController.updateServicePoint(id, stopPoint3);
 
     UpdateServicePointVersionModel stopPointx = ServicePointTestData.getAargauServicePointVersionModel();
@@ -1842,6 +1908,7 @@ class ServicePointStatusDeciderAllScenariosTest extends BaseControllerApiTest {
     stopPointx.setStopPointType(StopPointType.ORDERLY);
     stopPointx.setValidFrom(LocalDate.of(2022, 1, 1));
     stopPointx.setValidTo(LocalDate.of(2023, 3, 31));
+    stopPointx.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
 
     mvc.perform(put("/v1/service-points/" + id)
             .contentType(contentType)

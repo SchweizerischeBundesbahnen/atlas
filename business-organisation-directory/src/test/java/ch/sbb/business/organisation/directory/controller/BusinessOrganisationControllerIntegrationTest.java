@@ -173,6 +173,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
     model.setDescriptionDe("desc-de1-changed");
     model.setValidFrom(LocalDate.of(2002, 1, 1));
     model.setValidTo(LocalDate.of(2002, 12, 31));
+    model.setEtagVersion(businessOrganisationVersion.getEtagVersion());
     controller.updateBusinessOrganisationVersion(businessOrganisationVersion.getId(), model);
 
     //when and then

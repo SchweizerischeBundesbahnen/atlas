@@ -28,8 +28,8 @@ public record ReferencePointMappingEquality(ReferencePointCsvModel didokCsvLine,
         if(atlasCsvLine.getAdditionalInformation() != null && didokCsvLine.getInfos() != null){
             assertThat(atlasCsvLine.getAdditionalInformation()).isEqualTo(StringUtils.removeNewLine(didokCsvLine.getInfos()));
         }
-        if (atlasCsvLine.getRpType() != null && didokCsvLine.getRpType() != null) {
-            assertThat(atlasCsvLine.getRpType()).isEqualTo(ReferencePointAttributeType.of(didokCsvLine.getRpType()).name());
+        if (atlasCsvLine.getReferencePointType() != null && didokCsvLine.getRpType() != null) {
+            assertThat(atlasCsvLine.getReferencePointType()).isEqualTo(ReferencePointAttributeType.of(didokCsvLine.getRpType()).name());
         }
         assertThat(localDateFromString(atlasCsvLine.getCreationDate())).isEqualTo(didokCsvLine.getCreatedAt());
         if (didokCsvLine.getModifiedAt().toLocalDate().equals(LocalDateTime.now().toLocalDate())) {

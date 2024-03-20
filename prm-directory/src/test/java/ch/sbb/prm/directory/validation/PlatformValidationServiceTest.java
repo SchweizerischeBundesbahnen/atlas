@@ -8,6 +8,7 @@ import ch.sbb.atlas.api.model.ErrorResponse.Detail;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.exception.RecordingVariantException;
+import ch.sbb.prm.directory.mapper.PlatformVersionMapper;
 import java.util.SortedSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -105,6 +106,34 @@ class PlatformValidationServiceTest {
 
     //when
     Executable executable = () -> platformValidationService.validateRecordingVariants(platformVersion, true);
+
+    //then
+    assertDoesNotThrow(executable);
+  }
+
+  @Test
+  void shouldValidateReducedPlatformAfterChangeReset() {
+    //given
+    PlatformVersion platformVersion = PlatformTestData.getReducedPlatformVersion();
+    PlatformVersion resettedVersion = PlatformVersionMapper.resetToDefaultValue(platformVersion, platformVersion.getValidFrom(),
+        platformVersion.getValidTo(), true);
+
+    //when
+    Executable executable = () -> platformValidationService.validateRecordingVariants(resettedVersion, true);
+
+    //then
+    assertDoesNotThrow(executable);
+  }
+
+  @Test
+  void shouldValidateCompletePlatformAfterChangeReset() {
+    //given
+    PlatformVersion platformVersion = PlatformTestData.getReducedPlatformVersion();
+    PlatformVersion resettedVersion = PlatformVersionMapper.resetToDefaultValue(platformVersion, platformVersion.getValidFrom(),
+        platformVersion.getValidTo(), false);
+
+    //when
+    Executable executable = () -> platformValidationService.validateRecordingVariants(resettedVersion, false);
 
     //then
     assertDoesNotThrow(executable);
