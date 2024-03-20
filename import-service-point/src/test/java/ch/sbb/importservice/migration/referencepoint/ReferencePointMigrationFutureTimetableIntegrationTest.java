@@ -22,14 +22,15 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+
 @Disabled
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ReferencePointMigrationFutureTimetableIntegrationTest {
 
-    private static final String DIDOK_STOP_PLACE_CSV_FILE = "PRM_REFERENCE_POINTS_20240205013249.csv";
-    private static final String ATLAS_STOP_POINT_CSV_FILE = "future-timetable-reference-point-2024-02-05.csv";
+    private static final String DIDOK_REFERENCE_POINT_CSV_FILE = "PRM_REFERENCE_POINTS_20240312011410.csv";
+    private static final String ATLAS_REFERENCE_POINT_CSV_FILE = "future-timetable-reference_point-2024-03-12.csv";
     private static final LocalDate FUTURE_TIMETABLE_DATE = LocalDate.of(2024, 12, 15);
 
     private static final List<ReferencePointCsvModel> didokReferencePointCsvLines = new ArrayList<>();
@@ -45,7 +46,7 @@ public class ReferencePointMigrationFutureTimetableIntegrationTest {
     @Test
     @Order(1)
     void shouldParseCsvCorrectly() throws IOException {
-        try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_STOP_PLACE_CSV_FILE)) {
+        try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_REFERENCE_POINT_CSV_FILE)) {
             List<ReferencePointCsvModelContainer> referencePointCsvModelContainers = referencePointCsvService.mapToReferencePointCsvModelContainers(
                     CsvReader.parseCsv(csvStream, ReferencePointCsvModel.class));
             didokReferencePointCsvLines.addAll(referencePointCsvModelContainers.stream()
@@ -54,7 +55,7 @@ public class ReferencePointMigrationFutureTimetableIntegrationTest {
                     .toList());
         }
         assertThat(didokReferencePointCsvLines).isNotEmpty();
-        try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + ATLAS_STOP_POINT_CSV_FILE)) {
+        try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + ATLAS_REFERENCE_POINT_CSV_FILE)) {
             atlasReferencePointCsvLines.addAll(CsvReader.parseCsv(csvStream, ReferencePointVersionCsvModel.class));
         }
         assertThat(atlasReferencePointCsvLines).isNotEmpty();

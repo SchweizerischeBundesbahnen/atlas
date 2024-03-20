@@ -24,8 +24,12 @@ public record RelationMappingEquality(RelationCsvModel didokCsvLine, RelationVer
 
 
         assertThat(localDateFromString(atlasCsvLine.getCreationDate())).isEqualTo(didokCsvLine.getCreatedAt());
-        assertThat(localDateFromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getModifiedAt());
-
+        if (didokCsvLine.getModifiedAt().toLocalDate().equals(LocalDateTime.now().toLocalDate())) {
+            assertThat(localDateFromString(atlasCsvLine.getEditionDate()).toLocalDate())
+                .isEqualTo(RelationMigrationIntegrationTest.ACTUAL_DATE);
+        } else {
+            assertThat(localDateFromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getModifiedAt());
+        }
     }
 
     public LocalDateTime localDateFromString(String string) {
