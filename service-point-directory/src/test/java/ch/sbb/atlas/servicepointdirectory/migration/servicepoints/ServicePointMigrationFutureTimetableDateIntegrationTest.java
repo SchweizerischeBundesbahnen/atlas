@@ -1,8 +1,10 @@
 package ch.sbb.atlas.servicepointdirectory.migration.servicepoints;
 
+import static ch.sbb.atlas.imports.util.ImportUtils.replaceNewLinesAndReplaceToDateWithHighestDate;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
+import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
 import ch.sbb.atlas.imports.util.CsvReader;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -28,20 +30,21 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
  class ServicePointMigrationFutureTimetableDateIntegrationTest {
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_FUTURE_TIMETABLE_V_2_20240213013909.csv";
-  private static final String ATLAS_CSV_FILE = "future_timetable-world-service_point-2024-02-13.csv";
+  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_FUTURE_TIMETABLE_V_2_20240312013726.csv";
+  private static final String ATLAS_CSV_FILE = "future_timetable-world-service_point-2024-03-12.csv";
   private static final LocalDate FUTURE_TIMETABLE_DATE = LocalDate.of(2024, 12, 15);
 
   private static final List<ServicePointAtlasCsvModel> atlasCsvLines = new ArrayList<>();
   private static final Map<Integer, ServicePointAtlasCsvModel> atlasCsvLinesAsMap = new HashMap<>();
-  private static final List<ServicePointDidokCsvModel> didokCsvLines = new ArrayList<>();
+  private static final List<ServicePointCsvModel> didokCsvLines = new ArrayList<>();
 
   @Test
   @Order(1)
   void shouldParseCsvsCorrectly() throws IOException {
     try (InputStream csvStream =
         this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE)) {
-      didokCsvLines.addAll(CsvReader.parseCsv(csvStream, ServicePointDidokCsvModel.class));
+      didokCsvLines.addAll(CsvReader.parseCsv(csvStream, ServicePointCsvModel.class));
+      replaceNewLinesAndReplaceToDateWithHighestDate(didokCsvLines);
     }
     assertThat(didokCsvLines).isNotEmpty();
 
@@ -57,7 +60,7 @@ import org.junit.jupiter.api.TestMethodOrder;
   @Test
   @Order(2)
   void shouldHaveSameDidokCodesInBothCsvs() {
-    Set<Integer> didokCodes = didokCsvLines.stream().map(ServicePointDidokCsvModel::getDidokCode).collect(Collectors.toSet());
+    Set<Integer> didokCodes = didokCsvLines.stream().map(ServicePointCsvModel::getDidokCode).collect(Collectors.toSet());
     Set<Integer> atlasNumbers = atlasCsvLines.stream().map(ServicePointAtlasCsvModel::getNumber).collect(Collectors.toSet());
 
     Set<Integer> difference = atlasNumbers.stream().filter(e -> !didokCodes.contains(e)).collect(Collectors.toSet());

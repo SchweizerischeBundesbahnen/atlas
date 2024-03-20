@@ -28,14 +28,15 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+
 @Disabled
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ToiletMigrationIntegrationTest {
 
-    private static final String DIDOK_TOILET_CSV_FILE = "PRM_TOILETS_20240214013754.csv";
-    private static final String ATLAS_TOILET_CSV_FILE = "full-toilet-2024-02-14.csv";
+    private static final String DIDOK_TOILET_CSV_FILE = "PRM_TOILETS_20240312011740.csv";
+    private static final String ATLAS_TOILET_CSV_FILE = "full-toilet-2024-03-12.csv";
     private static final List<ToiletCsvModel> didokToiletCsvLines = new ArrayList<>();
     private static final List<ToiletVersionCsvModel> atlasToiletCsvLines = new ArrayList<>();
 
