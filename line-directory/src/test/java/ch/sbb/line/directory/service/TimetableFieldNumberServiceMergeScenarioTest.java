@@ -54,6 +54,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     TimetableFieldNumberVersion editedVersion = version3Builder().build();
     editedVersion.setNumber("BEX");
     editedVersion.setDescription("SBB2");
+    editedVersion.setVersion(version3.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version3, editedVersion);
@@ -132,6 +133,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     editedVersion.setDescription("SBB2");
     editedVersion.setNumber("BEX");
     editedVersion.setDescription("SBB1");
+    editedVersion.setVersion(version2.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version2, editedVersion);
@@ -192,6 +194,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     editedVersion.setDescription("SBB1");
     editedVersion.setValidFrom(version2.getValidFrom());
     editedVersion.setValidTo(version3.getValidTo());
+    editedVersion.setVersion(version2.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version2, editedVersion);
@@ -264,6 +267,7 @@ import org.springframework.beans.factory.annotation.Autowired;
     editedVersion.setDescription("SBB1");
     editedVersion.setValidFrom(version2.getValidFrom());
     editedVersion.setValidTo(version3.getValidTo());
+    editedVersion.setVersion(version2.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version2, editedVersion);

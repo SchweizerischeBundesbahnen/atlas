@@ -115,7 +115,7 @@ public class TrafficPointElementService {
   public void updateTrafficPointElementVersion(TrafficPointElementVersion currentVersion,
       TrafficPointElementVersion editedVersion) {
     trafficPointElementVersionRepository.incrementVersion(currentVersion.getSloid());
-    if (editedVersion.getVersion() != null && !currentVersion.getVersion().equals(editedVersion.getVersion())) {
+    if (!currentVersion.getVersion().equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(ServicePointVersion.class.getSimpleName(), "version");
     }
 

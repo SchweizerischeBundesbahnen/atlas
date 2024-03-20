@@ -42,7 +42,7 @@ class ReferencePointVersionCsvProcessorTest {
         .designation("Haupteingang")
         .mainReferencePoint(true)
         .additionalInformation("Langer Text")
-        .rpType("MAIN_STATION_ENTRANCE")
+        .referencePointType("MAIN_STATION_ENTRANCE")
         .validFrom(BaseServicePointProcessor.DATE_FORMATTER.format(LocalDate.of(2020, 1, 1)))
         .validTo(BaseServicePointProcessor.DATE_FORMATTER.format(LocalDate.of(2020, 12, 31)))
         .creationDate(BaseServicePointProcessor.LOCAL_DATE_FORMATTER.format(creationDate))

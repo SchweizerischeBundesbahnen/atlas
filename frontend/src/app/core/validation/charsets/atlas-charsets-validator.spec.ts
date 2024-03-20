@@ -67,6 +67,7 @@ describe('Atlas Charsets Validator', () => {
     expect(decimalWithDigits(new FormControl('123'))).toBeNull();
     expect(decimalWithDigits(new FormControl('1.002'))).toBeNull();
     expect(decimalWithDigits(new FormControl('500.0'))).toBeNull();
+    expect(decimalWithDigits(new FormControl('-500.0'))).toBeNull();
 
     expect(decimalWithDigits(new FormControl('a'))).toBeDefined();
     expect(decimalWithDigits(new FormControl('1.0002'))).toBeDefined();
@@ -79,6 +80,7 @@ describe('Atlas Charsets Validator', () => {
     expect(integerWithFraction(new FormControl('1.002'))).toBeNull();
     expect(integerWithFraction(new FormControl('500.0'))).toBeNull();
     expect(integerWithFraction(new FormControl('500.000'))).toBeNull();
+    expect(integerWithFraction(new FormControl('-500.000'))).toBeNull();
     expect(integerWithFraction(new FormControl('1234567.123'))).toBeNull();
     expect(integerWithFraction(new FormControl('0.123'))).toBeNull();
     expect(integerWithFraction(new FormControl('1.123'))).toBeNull();

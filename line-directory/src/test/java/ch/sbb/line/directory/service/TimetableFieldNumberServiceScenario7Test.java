@@ -50,6 +50,7 @@ import org.springframework.beans.factory.annotation.Autowired;
                                                 .slnid("ch:1:ttfnid:111111")
                                                 .timetableFieldNumberVersion(version3)
                                                 .build());
+    editedVersion.setVersion(version3.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version3, editedVersion);
@@ -144,6 +145,7 @@ import org.springframework.beans.factory.annotation.Autowired;
                                                 .slnid("ch:1:ttfnid:111111")
                                                 .timetableFieldNumberVersion(version1)
                                                 .build());
+    editedVersion.setVersion(version1.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version1, editedVersion);
@@ -237,6 +239,7 @@ import org.springframework.beans.factory.annotation.Autowired;
                                                 .slnid("ch:1:ttfnid:111111")
                                                 .timetableFieldNumberVersion(version3)
                                                 .build());
+    editedVersion.setVersion(version3.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version3, editedVersion);
@@ -331,6 +334,7 @@ import org.springframework.beans.factory.annotation.Autowired;
                                                 .slnid("ch:1:ttfnid:111111")
                                                 .timetableFieldNumberVersion(version1)
                                                 .build());
+    editedVersion.setVersion(version1.getVersion());
 
     //when
     timetableFieldNumberService.updateVersion(version1, editedVersion);
@@ -417,6 +421,7 @@ import org.springframework.beans.factory.annotation.Autowired;
                                                 .slnid("ch:1:ttfnid:111111")
                                                 .timetableFieldNumberVersion(version1)
                                                 .build());
+    editedVersion.setVersion(version1.getVersion());
 
     //when
     assertThatThrownBy(() -> {
