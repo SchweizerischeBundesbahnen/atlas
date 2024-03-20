@@ -50,33 +50,19 @@ public class ContactPointMigrationIntegrationTest {
     @Test
     @Order(1)
     void shouldParseCsvCorrectly() throws IOException {
-        List<ContactPointCsvModel> infoDesks = new ArrayList<>();
-        List<ContactPointCsvModel> ticketCounters = new ArrayList<>();
         try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE)) {
-//        try (InputStream csvStream = ContactPointUtil.getInputStream(this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE),
-//            this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE_INFO_DESK))) {
             List<ContactPointCsvModelContainer> contactPointCsvModelContainers =
                 contactPointCsvService.mapToContactPointCsvModelContainers(
                     CsvReader.parseCsv(csvStream, ContactPointCsvModel.class));
-            infoDesks.addAll(contactPointCsvModelContainers.stream()
-                .map(ContactPointCsvModelContainer::getCsvModels)
-                .flatMap(Collection::stream)
-                .toList());
             didokCsvLines.addAll(contactPointCsvModelContainers.stream()
                     .map(ContactPointCsvModelContainer::getCsvModels)
                     .flatMap(Collection::stream)
                     .toList());
         }
         try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE_INFO_DESK)) {
-            //        try (InputStream csvStream = ContactPointUtil.getInputStream(this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE),
-            //            this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE_INFO_DESK))) {
             List<ContactPointCsvModelContainer> contactPointCsvModelContainers =
                 contactPointCsvService.mapToContactPointCsvModelContainers(
                     CsvReader.parseCsv(csvStream, ContactPointCsvModel.class));
-            ticketCounters.addAll(contactPointCsvModelContainers.stream()
-                .map(ContactPointCsvModelContainer::getCsvModels)
-                .flatMap(Collection::stream)
-                .toList());
             didokCsvLines.addAll(contactPointCsvModelContainers.stream()
                 .map(ContactPointCsvModelContainer::getCsvModels)
                 .flatMap(Collection::stream)
@@ -100,19 +86,13 @@ public class ContactPointMigrationIntegrationTest {
         Set<Integer> difference = atlasNumbers.stream().filter(e -> !didokContactPointNumbers.contains(e))
                 .collect(Collectors.toSet());
         if (!difference.isEmpty()) {
-            log.error("HERE ARE ATLAS CONTACT POINTS WHICH ARE NOT IN DIDOK");
             log.error("We have Atlas ContactPoint Numbers, which are not in Didok: {}", difference);
         }
         Set<Integer> differenceDidok = didokContactPointNumbers.stream().filter(e -> !atlasNumbers.contains(e))
                 .collect(Collectors.toSet());
         if (!differenceDidok.isEmpty()) {
-            log.error("HERE ARE DIDOK CONTACT POINTS WHICH ARE NOT IN ATLAS");
             log.error("We have Didok ContactPoint Numbers, which are not in Atlas: {}", differenceDidok);
         }
-        System.out.println("DIDOK CONTACT POINT NUMBERS");
-        didokContactPointNumbers.forEach(System.out::println);
-        System.out.println("ATLAS NUMBERS");
-        atlasNumbers.forEach(System.out::println);
         assertThat(didokContactPointNumbers).containsExactlyInAnyOrderElementsOf(atlasNumbers);
     }
 
