@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -40,6 +41,38 @@ public class RelationMigrationIntegrationTest {
 
   private static final List<RelationCsvModel> didokCsvLines = new ArrayList<>();
   private static final List<RelationVersionCsvModel> atlasCsvLines = new ArrayList<>();
+  private static final List<String> inactiveRelationsInDiDok = Arrays.asList(
+      "ch:1:sloid:123:282475",
+      "ch:1:sloid:123:282475",
+      "ch:1:sloid:1255:641108",
+      "ch:1:sloid:92086:71000",
+      "ch:1:sloid:92086:71000",
+      "ch:1:sloid:92086:71000",
+      "ch:1:sloid:1254:263247",
+      "ch:1:sloid:92086:71000",
+      "ch:1:sloid:1252:136909",
+      "ch:1:sloid:123:282475",
+      "ch:1:sloid:92068:819924",
+      "ch:1:sloid:92068:819924",
+      "ch:1:sloid:92618:543864",
+      "ch:1:sloid:123:282475",
+      "ch:1:sloid:1059:2",
+      "ch:1:sloid:1059:2",
+      "ch:1:sloid:1255:520823",
+      "ch:1:sloid:1253:791662",
+      "ch:1:sloid:1251:511279",
+      "ch:1:sloid:92618:489628",
+      "ch:1:sloid:3062:943380",
+      "ch:1:sloid:3062:943380",
+      "ch:1:sloid:92068:819924",
+      "ch:1:sloid:1252:149610",
+      "ch:1:sloid:30673:200435",
+      "ch:1:sloid:123:282475",
+      "ch:1:sloid:123:282475",
+      "ch:1:sloid:6359:0",
+      "ch:1:sloid:6359:0",
+      "ch:1:sloid:1250:933709",
+      "ch:1:sloid:1255:520823");
 
   private final RelationCsvService relationCsvService;
   static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 3, 14);
@@ -113,7 +146,9 @@ public class RelationMigrationIntegrationTest {
           List<RelationVersionCsvModel> versionsInAtlas = groupedAtlasLines.get(key);
 
           if (versionsInAtlas == null) {
-            log.warn("{} could not be found in atlas, reference point may be inactive", key);
+            assertThat(inactiveRelationsInDiDok.contains(key.getRpSloid()))
+                .withFailMessage(key.getRpSloid() + " is not one of the inactive reference-point relations from DiDok: "
+                    + inactiveRelationsInDiDok).isTrue();
           } else {
             RelationVersionCsvModel atlasCsvLine = findCorrespondingAtlasVersion(t, versionsInAtlas);
             new RelationMappingEquality(t, atlasCsvLine).performCheck();
