@@ -60,18 +60,26 @@ public class PrmChangeRecordingVariantService {
       StopPointVersion editedVersion) {
     StopPointVersion stopPointVersion = stopPointChangeRecordingVariant(stopPointVersionToUpdate,
         editedVersion.getMeansOfTransport());
-    platformChangeRecordingVariant(stopPointVersionToUpdate.getParentServicePointSloid(), true);
+    changePlatformToReduced(stopPointVersionToUpdate);
     setStatusRevokedToReferencePoints(stopPointVersionToUpdate.getParentServicePointSloid());
     deleteRelations(stopPointVersionToUpdate.getParentServicePointSloid());
     return stopPointVersion;
+  }
+
+  private void changePlatformToReduced(StopPointVersion stopPointVersionToUpdate) {
+    platformChangeRecordingVariant(stopPointVersionToUpdate.getParentServicePointSloid(), true);
   }
 
   private StopPointVersion changeFromReduceToComplete(StopPointVersion stopPointVersionToUpdate,
       StopPointVersion editedVersion) {
     StopPointVersion stopPointVersion = stopPointChangeRecordingVariant(stopPointVersionToUpdate,
         editedVersion.getMeansOfTransport());
-    platformChangeRecordingVariant(stopPointVersionToUpdate.getParentServicePointSloid(), false);
+    changePlatformToComplete(stopPointVersionToUpdate);
     return stopPointVersion;
+  }
+
+  private void changePlatformToComplete(StopPointVersion stopPointVersionToUpdate) {
+    platformChangeRecordingVariant(stopPointVersionToUpdate.getParentServicePointSloid(), false);
   }
 
   StopPointVersion stopPointChangeRecordingVariant(StopPointVersion stopPointVersion, Set<MeanOfTransport> meanOfTransports) {
