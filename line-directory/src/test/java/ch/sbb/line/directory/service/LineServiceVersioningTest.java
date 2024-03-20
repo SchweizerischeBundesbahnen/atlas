@@ -99,6 +99,7 @@ import org.springframework.transaction.annotation.Transactional;
     editedVersion.setComment("Scenario 2");
     editedVersion.setValidFrom(LocalDate.of(2022, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2023, 6, 1));
+    editedVersion.setVersion(version2.getVersion());
 
     //when
     lineService.updateVersion(version2, editedVersion);
@@ -173,6 +174,7 @@ import org.springframework.transaction.annotation.Transactional;
     editedVersion.setSwissLineNumber("2");
     editedVersion.setValidFrom(version2.getValidFrom());
     editedVersion.setValidTo(version2.getValidTo());
+    editedVersion.setVersion(version2.getVersion());
 
     //when
     lineService.updateVersion(version2, editedVersion);
@@ -220,6 +222,7 @@ import org.springframework.transaction.annotation.Transactional;
     editedVersion.setComment("Scenario 4");
     editedVersion.setValidFrom(LocalDate.of(2020, 6, 1));
     editedVersion.setValidTo(LocalDate.of(2024, 6, 1));
+    editedVersion.setVersion(version3.getVersion());
 
     //when
     lineService.updateVersion(version3, editedVersion);
