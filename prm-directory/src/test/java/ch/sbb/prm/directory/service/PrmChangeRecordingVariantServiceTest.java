@@ -146,7 +146,7 @@ class PrmChangeRecordingVariantServiceTest extends BasePrmServiceTest {
     assertThat(result.getMeansOfTransport()).containsOnly(MeanOfTransport.BUS);
     //assert Platform
     List<PlatformVersion> results = platformRepository.findByParentServicePointSloid(parentServicePointSloid);
-    assertPlatformContents(platformVersion1, results);
+    assertPlatformContents(platformVersion1, results, true);
     //assert ReferencePoint
     List<ReferencePointVersion> referencePointVersions = referencePointRepository.findByParentServicePointSloid(
         parentServicePointSloid);
@@ -246,7 +246,7 @@ class PrmChangeRecordingVariantServiceTest extends BasePrmServiceTest {
     assertThat(result.getMeansOfTransport()).containsOnly(MeanOfTransport.TRAIN);
     //assert Platform
     List<PlatformVersion> results = platformRepository.findByParentServicePointSloid(parentServicePointSloid);
-    assertPlatformContents(platformVersion1, results);
+    assertPlatformContents(platformVersion1, results, false);
     //assert ReferencePoint
     List<ReferencePointVersion> referencePointVersions = referencePointRepository.findByParentServicePointSloid(
         parentServicePointSloid);
@@ -432,38 +432,51 @@ class PrmChangeRecordingVariantServiceTest extends BasePrmServiceTest {
     platformRepository.saveAndFlush(platformVersionB3);
 
     //when
-    prmChangeRecordingVariantService.platformChangeRecordingVariant(platformVersionB1.getParentServicePointSloid());
+    prmChangeRecordingVariantService.platformChangeRecordingVariant(platformVersionB1.getParentServicePointSloid(), false);
 
     //then
     List<PlatformVersion> results = platformRepository.findByParentServicePointSloid(
         stopPointVersion.getParentServicePointSloid());
 
     assertThat(results).hasSize(2);
-    assertPlatform(results.get(0));
-    assertPlatform(results.get(1));
+    assertPlatform(results.get(0), false);
+    assertPlatform(results.get(1), false);
   }
 
-  private static void assertPlatformContents(PlatformVersion platformVersion1, List<PlatformVersion> results) {
+  private static void assertPlatformContents(PlatformVersion platformVersion1, List<PlatformVersion> results, boolean reduced) {
     assertThat(results).hasSize(1);
-    PlatformVersion result = results.get(0);
+    PlatformVersion result = results.getFirst();
     assertThat(result.getSloid()).isEqualTo(platformVersion1.getSloid());
     assertThat(result.getParentServicePointSloid()).isEqualTo(platformVersion1.getParentServicePointSloid());
-    assertPlatform(result);
+    assertPlatform(result, reduced);
   }
 
-  private static void assertPlatform(PlatformVersion result) {
+  private static void assertPlatform(PlatformVersion result, boolean reduced) {
     assertThat(result).isNotNull();
     assertThat(result.getStatus()).isEqualTo(Status.VALIDATED);
     assertThat(result.getValidFrom()).isEqualTo(LocalDate.of(2000, 1, 1));
     assertThat(result.getValidTo()).isEqualTo(LocalDate.of(2002, 12, 31));
     assertThat(result.getAdditionalInformation()).isNull();
-    assertThat(result.getContrastingAreas()).isEqualTo(BooleanOptionalAttributeType.TO_BE_COMPLETED);
-    assertThat(result.getBoardingDevice()).isEqualTo(BoardingDeviceAttributeType.TO_BE_COMPLETED);
-    assertThat(result.getDynamicAudio()).isEqualTo(BasicAttributeType.TO_BE_COMPLETED);
-    assertThat(result.getDynamicVisual()).isEqualTo(BasicAttributeType.TO_BE_COMPLETED);
-    assertThat(result.getLevelAccessWheelchair()).isEqualTo(BasicAttributeType.TO_BE_COMPLETED);
-    assertThat(result.getTactileSystem()).isEqualTo(BooleanOptionalAttributeType.TO_BE_COMPLETED);
-    assertThat(result.getVehicleAccess()).isEqualTo(VehicleAccessAttributeType.TO_BE_COMPLETED);
+
+    if (reduced) {
+      assertThat(result.getTactileSystem()).isEqualTo(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+      assertThat(result.getVehicleAccess()).isEqualTo(VehicleAccessAttributeType.TO_BE_COMPLETED);
+
+      assertThat(result.getContrastingAreas()).isNull();
+      assertThat(result.getBoardingDevice()).isNull();
+      assertThat(result.getDynamicAudio()).isNull();
+      assertThat(result.getDynamicVisual()).isNull();
+      assertThat(result.getLevelAccessWheelchair()).isNull();
+    } else {
+      assertThat(result.getContrastingAreas()).isEqualTo(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+      assertThat(result.getBoardingDevice()).isEqualTo(BoardingDeviceAttributeType.TO_BE_COMPLETED);
+      assertThat(result.getDynamicAudio()).isEqualTo(BasicAttributeType.TO_BE_COMPLETED);
+      assertThat(result.getDynamicVisual()).isEqualTo(BasicAttributeType.TO_BE_COMPLETED);
+      assertThat(result.getLevelAccessWheelchair()).isEqualTo(BasicAttributeType.TO_BE_COMPLETED);
+
+      assertThat(result.getTactileSystem()).isNull();
+      assertThat(result.getVehicleAccess()).isNull();
+    }
   }
 
   @Test
