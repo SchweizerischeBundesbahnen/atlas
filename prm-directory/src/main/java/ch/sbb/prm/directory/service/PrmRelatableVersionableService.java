@@ -9,6 +9,8 @@ import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.repository.ReferencePointRepository;
 import ch.sbb.prm.directory.util.RelationUtil;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -50,11 +52,11 @@ public abstract class PrmRelatableVersionableService<T extends Relatable & PrmVe
 
   private void createRelations(T version) {
     if (!stopPointService.isReduced(version.getParentServicePointSloid())) {
-      List<ReferencePointVersion> referencePointVersions = referencePointRepository.findByParentServicePointSloid(
-          version.getParentServicePointSloid());
-      referencePointVersions.forEach(referencePointVersion -> {
-        RelationVersion relationVersion = RelationUtil.buildRelationVersion(version,
-            referencePointVersion.getSloid(), getReferencePointElementType());
+      Map<String, List<ReferencePointVersion>> referencePoints = referencePointRepository.findByParentServicePointSloid(
+          version.getParentServicePointSloid()).stream().collect(Collectors.groupingBy(ReferencePointVersion::getSloid));
+      referencePoints.forEach((referencePointSloid, versions) -> {
+        RelationVersion relationVersion = RelationUtil.buildRelationVersion(version, referencePointSloid,
+            getReferencePointElementType());
         relationService.save(relationVersion);
       });
     }
