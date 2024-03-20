@@ -1,6 +1,9 @@
 package ch.sbb.exportservice.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
@@ -14,13 +17,8 @@ import ch.sbb.atlas.amazon.exception.FileException;
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonFileStreamingService;
 import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import java.io.InputStream;
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneId;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.InputStreamResource;
@@ -34,23 +32,11 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
   @MockBean
   private AmazonService amazonService;
 
-  @MockBean
-  private FileService fileService;
-
-  @MockBean
-  private Clock clock;
-
-  @BeforeEach
-  void setUp() {
-    doReturn(Instant.parse("2024-03-10T00:00:00Z")).when(clock).instant();
-    doReturn(ZoneId.of("UTC")).when(clock).getZone();
-  }
-
   @Test
   void shouldDownloadGzipJsonUnsuccessfully() throws Exception {
     //given
     doThrow(FileException.class).when(amazonFileStreamingService)
-        .streamFile(AmazonBucket.EXPORT, "stop_point/full/full-stop_point-2024-03-10.json.gz");
+        .streamFile(eq(AmazonBucket.EXPORT), anyString());
     //when & then
     MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/STOP_POINT_VERSION/FULL")
             .contentType(contentType)).andExpect(request().asyncStarted())
@@ -63,7 +49,7 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
   void shouldGetJsonUnsuccessfully() throws Exception {
     //given
     doThrow(FileException.class).when(amazonFileStreamingService)
-        .streamFileAndDecompress(AmazonBucket.EXPORT, "stop_point/full/full-stop_point-2024-03-10.json.gz");
+        .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
     //when & then
     MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/STOP_POINT_VERSION/FULL")
             .contentType(contentType)).andExpect(request().asyncStarted())
@@ -78,7 +64,7 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
     try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(amazonFileStreamingService)
-          .streamFileAndDecompress(AmazonBucket.EXPORT, "stop_point/actual-date/actual-date-stop_point-2024-03-10.json.gz");
+          .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/STOP_POINT_VERSION/ACTUAL")
               .contentType(contentType))
@@ -96,8 +82,7 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
     try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(amazonFileStreamingService)
-          .streamFileAndDecompress(AmazonBucket.EXPORT,
-              "stop_point/future-timetable/future-timetable-stop_point-2024-03-10.json.gz");
+          .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/STOP_POINT_VERSION/TIMETABLE_FUTURE")
               .contentType(contentType))
@@ -115,7 +100,7 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
     try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(amazonFileStreamingService)
-          .streamFileAndDecompress(AmazonBucket.EXPORT, "stop_point/full/full-stop_point-2024-03-10.json.gz");
+          .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/STOP_POINT_VERSION/FULL")
               .contentType(contentType))
@@ -133,14 +118,15 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
     try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json.gz")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(amazonFileStreamingService)
-          .streamFile(AmazonBucket.EXPORT, "stop_point/full/full-stop_point-2024-03-10.json.gz");
+          .streamFile(eq(AmazonBucket.EXPORT), anyString());
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/STOP_POINT_VERSION/FULL")
               .contentType(contentType)).andExpect(request().asyncStarted())
           .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/gzip"));
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
   }
 
@@ -159,7 +145,8 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
           .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/gzip"));
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
   }
 
@@ -189,7 +176,7 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
     try (InputStream inputStream = this.getClass().getResourceAsStream("/platform-data.json")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(amazonFileStreamingService)
-          .streamFileAndDecompress(AmazonBucket.EXPORT, "platform/full/full-platform-2024-03-10.json.gz");
+          .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/PLATFORM_VERSION/FULL")
               .contentType(contentType))
@@ -207,14 +194,15 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
     try (InputStream inputStream = this.getClass().getResourceAsStream("/platform-data.json.gz")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(amazonFileStreamingService)
-          .streamFile(AmazonBucket.EXPORT, "platform/full/full-platform-2024-03-10.json.gz");
+          .streamFile(eq(AmazonBucket.EXPORT), anyString());
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/PLATFORM_VERSION/FULL")
               .contentType(contentType)).andExpect(request().asyncStarted())
           .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/gzip"));
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
   }
 
@@ -233,7 +221,8 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
           .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/gzip"));
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
   }
 
@@ -263,7 +252,7 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
     try (InputStream inputStream = this.getClass().getResourceAsStream("/reference-point-data.json")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(amazonFileStreamingService)
-          .streamFileAndDecompress(AmazonBucket.EXPORT, "reference_point/full/full-reference_point-2024-03-10.json.gz");
+          .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/REFERENCE_POINT_VERSION/FULL")
               .contentType(contentType))
@@ -281,14 +270,15 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
     try (InputStream inputStream = this.getClass().getResourceAsStream("/reference-point-data.json.gz")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(amazonFileStreamingService)
-          .streamFile(AmazonBucket.EXPORT, "reference_point/full/full-reference_point-2024-03-10.json.gz");
+          .streamFile(eq(AmazonBucket.EXPORT), anyString());
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/REFERENCE_POINT_VERSION/FULL")
               .contentType(contentType)).andExpect(request().asyncStarted())
           .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/gzip"));
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
   }
 
@@ -307,7 +297,8 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
           .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/gzip"));
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
   }
 
@@ -337,7 +328,7 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
     try (InputStream inputStream = this.getClass().getResourceAsStream("/contact-point-data.json")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(amazonFileStreamingService)
-          .streamFileAndDecompress(AmazonBucket.EXPORT, "contact_point/full/full-contact_point-2024-03-10.json.gz");
+          .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/CONTACT_POINT_VERSION/FULL")
               .contentType(contentType))
@@ -355,14 +346,15 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
     try (InputStream inputStream = this.getClass().getResourceAsStream("/contact-point-data.json.gz")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(amazonFileStreamingService)
-          .streamFile(AmazonBucket.EXPORT, "contact_point/full/full-contact_point-2024-03-10.json.gz");
+          .streamFile(eq(AmazonBucket.EXPORT), anyString());
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/CONTACT_POINT_VERSION/FULL")
               .contentType(contentType)).andExpect(request().asyncStarted())
           .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/gzip"));
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
   }
 
@@ -381,7 +373,8 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
           .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/gzip"));
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
   }
 
@@ -411,7 +404,7 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
     try (InputStream inputStream = this.getClass().getResourceAsStream("/toilet-data.json")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(amazonFileStreamingService)
-          .streamFileAndDecompress(AmazonBucket.EXPORT, "toilet/full/full-toilet-2024-03-10.json.gz");
+          .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/TOILET_VERSION/FULL")
               .contentType(contentType))
@@ -429,14 +422,15 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
     try (InputStream inputStream = this.getClass().getResourceAsStream("/toilet-data.json.gz")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(amazonFileStreamingService)
-          .streamFile(AmazonBucket.EXPORT, "toilet/full/full-toilet-2024-03-10.json.gz");
+          .streamFile(eq(AmazonBucket.EXPORT), anyString());
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/TOILET_VERSION/FULL")
               .contentType(contentType)).andExpect(request().asyncStarted())
           .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/gzip"));
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
   }
 
@@ -455,7 +449,8 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
           .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/gzip"));
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
   }
 
@@ -485,7 +480,7 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
     try (InputStream inputStream = this.getClass().getResourceAsStream("/parking-lot-data.json")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(amazonFileStreamingService)
-          .streamFileAndDecompress(AmazonBucket.EXPORT, "parking_lot/full/full-parking_lot-2024-03-10.json.gz");
+          .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/PARKING_LOT_VERSION/FULL")
               .contentType(contentType))
@@ -503,14 +498,15 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
     try (InputStream inputStream = this.getClass().getResourceAsStream("/parking-lot-data.json.gz")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(amazonFileStreamingService)
-          .streamFile(AmazonBucket.EXPORT, "parking_lot/full/full-parking_lot-2024-03-10.json.gz");
+          .streamFile(eq(AmazonBucket.EXPORT), anyString());
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/PARKING_LOT_VERSION/FULL")
               .contentType(contentType)).andExpect(request().asyncStarted())
           .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/gzip"));
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
   }
 
@@ -529,7 +525,8 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
           .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/gzip"));
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
   }
 
@@ -559,7 +556,7 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
     try (InputStream inputStream = this.getClass().getResourceAsStream("/relation-data.json")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(amazonFileStreamingService)
-          .streamFileAndDecompress(AmazonBucket.EXPORT, "relation/full/full-relation-2024-03-10.json.gz");
+          .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/RELATION_VERSION/FULL")
               .contentType(contentType))
@@ -577,14 +574,15 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
     try (InputStream inputStream = this.getClass().getResourceAsStream("/relation-data.json.gz")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(amazonFileStreamingService)
-          .streamFile(AmazonBucket.EXPORT, "relation/full/full-relation-2024-03-10.json.gz");
+          .streamFile(eq(AmazonBucket.EXPORT), anyString());
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/RELATION_VERSION/FULL")
               .contentType(contentType)).andExpect(request().asyncStarted())
           .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/gzip"));
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
   }
 
@@ -603,7 +601,8 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
           .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/gzip"));
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
   }
 

@@ -1,7 +1,10 @@
 package ch.sbb.exportservice.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
@@ -15,13 +18,8 @@ import ch.sbb.atlas.amazon.exception.FileException;
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonFileStreamingService;
 import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import java.io.InputStream;
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneId;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.InputStreamResource;
@@ -36,23 +34,11 @@ class ServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiT
   @MockBean
   private AmazonService amazonService;
 
-  @MockBean
-  private FileService fileService;
-
-  @MockBean
-  private Clock clock;
-
-  @BeforeEach
-  void setUp() {
-    doReturn(Instant.parse("2024-03-10T00:00:00Z")).when(clock).instant();
-    doReturn(ZoneId.of("UTC")).when(clock).getZone();
-  }
-
   @Test
   void shouldGetJsonUnsuccessfully() throws Exception {
     //given
     doThrow(FileException.class).when(amazonFileStreamingService)
-        .streamFileAndDecompress(AmazonBucket.EXPORT, "service_point/full/full-world-service_point-2024-03-10.json.gz");
+        .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
 
     //when & then
     MvcResult mvcResult = mvc.perform(get("/v1/export/json/SERVICE_POINT_VERSION/WORLD_FULL")
@@ -68,7 +54,7 @@ class ServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiT
   void shouldDownloadGzipJsonUnsuccessfully() throws Exception {
     //given
     doThrow(FileException.class).when(amazonFileStreamingService)
-        .streamFile(AmazonBucket.EXPORT, "service_point/full/full-world-service_point-2024-03-10.json.gz");
+        .streamFile(eq(AmazonBucket.EXPORT), anyString());
 
     //when & then
     MvcResult mvcResult = mvc.perform(get("/v1/export/download-gzip-json/SERVICE_POINT_VERSION/WORLD_FULL")
@@ -105,7 +91,7 @@ class ServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiT
     try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point-data.json")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(amazonFileStreamingService)
-          .streamFileAndDecompress(AmazonBucket.EXPORT, "service_point/full/full-world-service_point-2024-03-10.json.gz");
+          .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/json/SERVICE_POINT_VERSION/WORLD_FULL")
               .contentType(contentType)
@@ -125,7 +111,7 @@ class ServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiT
     try (InputStream inputStream = this.getClass().getResourceAsStream("/service-point.json.gzip")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(amazonFileStreamingService)
-          .streamFile(AmazonBucket.EXPORT, "service_point/full/full-world-service_point-2024-03-10.json.gz");
+          .streamFile(eq(AmazonBucket.EXPORT), anyString());
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/download-gzip-json/SERVICE_POINT_VERSION/WORLD_FULL")
               .contentType(contentType))
@@ -134,7 +120,8 @@ class ServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiT
 
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/gzip"));
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
   }
 
@@ -155,7 +142,8 @@ class ServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiT
 
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/gzip"));
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
   }
 
@@ -187,7 +175,7 @@ class ServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiT
     try (InputStream inputStream = this.getClass().getResourceAsStream("/traffic-point-data.json")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(amazonFileStreamingService)
-          .streamFileAndDecompress(AmazonBucket.EXPORT, "traffic_point/full/full-world-traffic_point-2024-03-10.json.gz");
+          .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/json/TRAFFIC_POINT_ELEMENT_VERSION/WORLD_FULL")
               .contentType(contentType)
@@ -206,7 +194,7 @@ class ServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiT
     try (InputStream inputStream = this.getClass().getResourceAsStream("/traffic-point-data.json.gz")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(amazonFileStreamingService)
-          .streamFile(AmazonBucket.EXPORT, "traffic_point/full/full-world-traffic_point-2024-03-10.json.gz");
+          .streamFile(eq(AmazonBucket.EXPORT), anyString());
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/download-gzip-json/TRAFFIC_POINT_ELEMENT_VERSION/WORLD_FULL")
               .contentType(contentType))
@@ -214,7 +202,8 @@ class ServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiT
           .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/gzip"));
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
   }
 
@@ -235,7 +224,8 @@ class ServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiT
 
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/gzip"));
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
   }
 
@@ -267,7 +257,7 @@ class ServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiT
     try (InputStream inputStream = this.getClass().getResourceAsStream("/loading-point-data.json")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(amazonFileStreamingService)
-          .streamFileAndDecompress(AmazonBucket.EXPORT, "loading_point/full/full-world-loading_point-2024-03-10.json.gz");
+          .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/json/LOADING_POINT_VERSION/WORLD_FULL")
               .contentType(contentType)
@@ -286,7 +276,7 @@ class ServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiT
     try (InputStream inputStream = this.getClass().getResourceAsStream("/loading-point-data.json.gz")) {
       InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
       doReturn(inputStreamResource).when(amazonFileStreamingService)
-          .streamFile(AmazonBucket.EXPORT, "loading_point/full/full-world-loading_point-2024-03-10.json.gz");
+          .streamFile(eq(AmazonBucket.EXPORT), anyString());
       //when & then
       MvcResult mvcResult = mvc.perform(get("/v1/export/download-gzip-json/LOADING_POINT_VERSION/WORLD_FULL")
               .contentType(contentType))
@@ -294,7 +284,8 @@ class ServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiT
           .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/gzip"));
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
   }
 
@@ -315,7 +306,8 @@ class ServicePointBatchControllerApiV1IntegrationTest extends BaseControllerApiT
 
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/gzip"));
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
   }
 
