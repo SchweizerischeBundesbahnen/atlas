@@ -178,7 +178,8 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
           .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/json"));
+          .andExpect(content().contentType("application/json"))
+          .andExpect(jsonPath("$", hasSize(1)));
     }
   }
 
@@ -251,7 +252,8 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
           .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/json"));
+          .andExpect(content().contentType("application/json"))
+          .andExpect(jsonPath("$", hasSize(1)));
     }
   }
 
@@ -324,7 +326,8 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
           .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/json"));
+          .andExpect(content().contentType("application/json"))
+          .andExpect(jsonPath("$", hasSize(1)));
     }
   }
 
@@ -397,7 +400,8 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
           .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/json"));
+          .andExpect(content().contentType("application/json"))
+          .andExpect(jsonPath("$", hasSize(1)));
     }
   }
 
@@ -470,7 +474,8 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
           .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/json"));
+          .andExpect(content().contentType("application/json"))
+          .andExpect(jsonPath("$", hasSize(1)));
     }
   }
 
@@ -543,7 +548,8 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
           .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/json"));
+          .andExpect(content().contentType("application/json"))
+          .andExpect(jsonPath("$", hasSize(1043)));
     }
   }
 
@@ -616,7 +622,8 @@ public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTes
           .andReturn();
       mvc.perform(asyncDispatch(mvcResult))
           .andExpect(status().isOk())
-          .andExpect(content().contentType("application/json"));
+          .andExpect(content().contentType("application/json"))
+          .andExpect(jsonPath("$", hasSize(10)));
     }
   }
 
