@@ -5,7 +5,8 @@ import {DataCy} from "../data-cy";
 export default class SepodiUtils {
   static navigateToServicePoint() {
     CommonUtils.navigateToHomeViaHomeLogo();
-    cy.get('#service-point-directory').click();
+    cy.wait(1000);
+    cy.get('#service-point-directory').click({ force: true });
   }
 
   static saveServicePoint(){
@@ -20,6 +21,17 @@ export default class SepodiUtils {
     })
   }
 
+  static searchAddedServicePoint(designationOfficial: string){
+    CommonUtils.navigateToHomeViaHomeLogo();
+    this.navigateToServicePoint();
+    cy.get(DataCy.SEPODI_SEARCH_SERVICE_POINT_SELECT + ' input')
+      .type(designationOfficial)
+      .then(() => {
+        cy.intercept('POST', 'service-point-directory/v1/service-points/search').as('searchVersion');
+        cy.wait('@searchVersion').its('response.statusCode').should('eq', 200);
+        cy.get(DataCy.SEPODI_SEARCH_SERVICE_POINT_SELECT + ' .ng-option').click();
+      });
+  }
 
   static getServicePointVersion() {
     return {

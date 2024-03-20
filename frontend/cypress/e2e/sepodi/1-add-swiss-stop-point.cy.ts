@@ -1,7 +1,7 @@
 import SepodiUtils from "../../support/util/sepodi-utils";
-import CommonUtils from "../../support/util/common-utils";
 import {DataCy} from "../../support/data-cy";
 import BodiDependentUtils from "../../support/util/bodi-dependent-utils";
+import CommonUtils from "../../support/util/common-utils";
 
 describe('SePoDi use cases', {testIsolation: false}, () => {
 
@@ -22,7 +22,8 @@ describe('SePoDi use cases', {testIsolation: false}, () => {
     });
 
     it('Step-3: Click on Neue Dienststelle', () => {
-      cy.get(DataCy.SEPODI_NEW_SERVICE_POINT_BUTTON).click();
+      cy.get(DataCy.SEPODI_SEARCH_FORM).should('exist');
+      cy.get(DataCy.SEPODI_NEW_SERVICE_POINT_BUTTON).should('contain.text', 'Neue Dienststelle').click();
       cy.get(DataCy.SEPODI_NEW_SERVICE_POINT_LABEL).should('contain.text', 'Neue Dienststelle');
     });
 
@@ -40,25 +41,17 @@ describe('SePoDi use cases', {testIsolation: false}, () => {
       cy.get(DataCy.SEPODI_CHECKBOX_STOP_POINT).check();
       cy.get(DataCy.SEPODI_CHECKBOX_STOP_POINT).should('be.checked');
       cy.get(DataCy.MEANS_OF_TRANSPORT_TRAIN).click();
-      CommonUtils.getClearType(DataCy.SEPODI_GEOLOCATION_EAST, servicePoint.east);
-      CommonUtils.getClearType(DataCy.SEPODI_GEOLOCATION_NORTH, servicePoint.north);
       CommonUtils.selectItemFromDropDown(DataCy.SEPODI_STOP_POINT_TYPE_SELECTION, 'Ordentliche Haltestelle');
       cy.get(DataCy.SEPODI_STOP_POINT_TYPE_SELECTION).type('{esc}')
       CommonUtils.selectItemFromDropDown(DataCy.SEPODI_CATEGORIES, 'Billettautomat SBB');
-      cy.get(DataCy.SEPODI_CATEGORIES).type('{esc}')
+      cy.get(DataCy.SEPODI_CATEGORIES).type('{esc}');
+      CommonUtils.getClearType(DataCy.SEPODI_GEOLOCATION_EAST, servicePoint.east);
+      CommonUtils.getClearType(DataCy.SEPODI_GEOLOCATION_NORTH, servicePoint.north);
       SepodiUtils.saveServicePoint();
     });
 
     it('Step-5: Search added StopPoint', () => {
-      CommonUtils.navigateToHomeViaHomeLogo();
-      SepodiUtils.navigateToServicePoint();
-      cy.get(DataCy.SEPODI_SEARCH_SERVICE_POINT_SELECT + ' input')
-        .type(servicePoint.designationOfficial)
-        .then(() => {
-          cy.intercept('POST', 'service-point-directory/v1/service-points/search').as('searchVersion');
-          cy.wait('@searchVersion').its('response.statusCode').should('eq', 200);
-          cy.get(DataCy.SEPODI_SEARCH_SERVICE_POINT_SELECT + ' .ng-option').click();
-        })
+      SepodiUtils.searchAddedServicePoint(servicePoint.designationOfficial);
     });
 
     it('Step-6: Validate added StopPoint', () => {
@@ -81,7 +74,11 @@ describe('SePoDi use cases', {testIsolation: false}, () => {
 
   describe('Use case 2: change geografie', () => {
 
-    it('Step-1: update geografie', () => {
+    it('Step-1: Search added StopPoint', () => {
+      SepodiUtils.searchAddedServicePoint(servicePoint.designationOfficial);
+    });
+
+    it('Step-2: update geografie', () => {
       cy.get(DataCy.EDIT).click();
       CommonUtils.getClearType(DataCy.SEPODI_GEOLOCATION_EAST, '2600783');
       CommonUtils.getClearType(DataCy.SEPODI_GEOLOCATION_NORTH, '1201099');
@@ -96,7 +93,11 @@ describe('SePoDi use cases', {testIsolation: false}, () => {
 
   describe('Use case 3: StopPoint cancellation/termination', () => {
 
-    it('Step-1: update validTo', () => {
+    it('Step-1: Search added StopPoint', () => {
+      SepodiUtils.searchAddedServicePoint(servicePoint.designationOfficial);
+    });
+
+    it('Step-2: update validTo', () => {
       cy.get(DataCy.EDIT).click();
       const terminationDate = '31.12.2098';
       CommonUtils.getClearType(DataCy.VALID_TO, terminationDate, true);

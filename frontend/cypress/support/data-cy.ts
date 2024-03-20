@@ -108,6 +108,7 @@ export class DataCy {
   static SEPODI_CATEGORIES = '[data-cy=categories]';
   static SEPODI_STOP_POINT_TYPE_SELECTION = '[data-cy=stopPointType]';
   static SEPODI_SEARCH_SERVICE_POINT_SELECT = '[data-cy=search-service-point-select]';
+  static SEPODI_SEARCH_FORM = '[data-cy=search-sepodi-form]';
   static MEANS_OF_TRANSPORT_TRAIN = '[data-cy=TRAIN]';
 
   static TABLE_FILTER_MULTI_SELECT = (rowIndex: number, columnIndex: number) =>
