@@ -19,15 +19,16 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+
 @Disabled
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
  class TrafficPointMigrationActualDateIntegrationTest {
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_STICHTAG_V_1_20230906011803.csv";
-  private static final String ATLAS_CSV_FILE = "actual_date-world-traffic_point-2023-09-06.csv";
-  private static final LocalDate ACTUAL_DATE = LocalDate.of(2023, 9, 6);
+  private static final String DIDOK_CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_STICHTAG_V_1_20240312011959.csv";
+  private static final String ATLAS_CSV_FILE = "actual_date-world-traffic_point-2024-03-12.csv";
+  static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 3, 12);
 
   private static final List<TrafficPointAtlasCsvModel> trafficPointElementCsvModels = new ArrayList<>();
   private static final List<TrafficPointDidokCsvModel> didokCsvLines = new ArrayList<>();
