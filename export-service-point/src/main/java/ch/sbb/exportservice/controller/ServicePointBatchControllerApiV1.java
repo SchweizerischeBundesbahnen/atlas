@@ -52,8 +52,7 @@ public class ServicePointBatchControllerApiV1 {
       @PathVariable SePoDiBatchExportFileName exportFileName,
       @PathVariable SePoDiExportType sePoDiExportType) {
     checkInputPath(exportFileName, sePoDiExportType);
-    InputStreamResource body = fileExportService.streamJsonFile(
-        fileExportService.createExportFilePath(sePoDiExportType, exportFileName).getFileToStream());
+    InputStreamResource body = fileExportService.streamJsonFile(sePoDiExportType, exportFileName);
     return CompletableFuture.supplyAsync(() ->
         ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body));
   }
@@ -70,9 +69,7 @@ public class ServicePointBatchControllerApiV1 {
       @PathVariable SePoDiBatchExportFileName exportFileName,
       @PathVariable SePoDiExportType sePoDiExportType) {
     checkInputPath(exportFileName, sePoDiExportType);
-    String latestUploadedFileName = fileExportService.getLatestUploadedFileName(
-        fileExportService.createExportFilePath(sePoDiExportType, exportFileName));
-    InputStreamResource body = fileExportService.streamJsonFile(latestUploadedFileName);
+    InputStreamResource body = fileExportService.streamLatestJsonFile(sePoDiExportType, exportFileName);
     return CompletableFuture.supplyAsync(() ->
         ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body));
   }
@@ -89,7 +86,7 @@ public class ServicePointBatchControllerApiV1 {
       @PathVariable SePoDiBatchExportFileName exportFileName,
       @PathVariable SePoDiExportType sePoDiExportType) throws NotAllowedExportFileException {
     checkInputPath(exportFileName, sePoDiExportType);
-    ExportFilePath exportFilePath = fileExportService.createExportFilePath(sePoDiExportType, exportFileName);
+    ExportFilePath exportFilePath = new ExportFilePath(sePoDiExportType, exportFileName);
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(exportFilePath.actualDateFileName());
     InputStreamResource body = fileExportService.streamGzipFile(exportFilePath.getFileToStream());
     return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));
@@ -107,8 +104,7 @@ public class ServicePointBatchControllerApiV1 {
       @PathVariable SePoDiBatchExportFileName exportFileName,
       @PathVariable SePoDiExportType sePoDiExportType) throws NotAllowedExportFileException {
     checkInputPath(exportFileName, sePoDiExportType);
-    String latestUploadedFileName =
-        fileExportService.getLatestUploadedFileName(fileExportService.createExportFilePath(sePoDiExportType, exportFileName));
+    String latestUploadedFileName = fileExportService.getLatestUploadedFileName(sePoDiExportType, exportFileName);
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(extractFileNameFromS3ObjectName(latestUploadedFileName));
     InputStreamResource body = fileExportService.streamGzipFile(latestUploadedFileName);
     return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));

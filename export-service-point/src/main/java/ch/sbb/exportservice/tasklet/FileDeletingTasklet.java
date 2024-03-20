@@ -1,9 +1,10 @@
 package ch.sbb.exportservice.tasklet;
 
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.export.enumeration.ExportFileName;
 import ch.sbb.atlas.export.enumeration.ExportTypeBase;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
-import ch.sbb.exportservice.service.FileExportService;
+import ch.sbb.exportservice.model.ExportFilePath;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class FileDeletingTasklet implements Tasklet {
 
   @Autowired
-  private FileExportService fileExportService;
+  private FileService fileService;
 
   private final ExportTypeBase exportType;
   private final ExportFileName exportFileName;
@@ -33,8 +34,8 @@ public abstract class FileDeletingTasklet implements Tasklet {
 
   @Override
   public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
-    String filePath = fileExportService.createExportFilePath(exportType, exportFileName, getExportExtensionFileType())
-        .actualDateFilePath();
+    String filePath = new ExportFilePath(exportType, exportFileName, fileService.getDir(),
+        getExportExtensionFileType()).actualDateFilePath();
     log.info("File {} deleting...", filePath);
     try {
       Path path = Paths.get(filePath);

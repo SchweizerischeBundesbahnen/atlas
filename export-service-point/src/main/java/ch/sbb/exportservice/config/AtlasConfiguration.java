@@ -3,7 +3,6 @@ package ch.sbb.exportservice.config;
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.amazon.service.FileServiceImpl;
 import ch.sbb.atlas.configuration.handler.AtlasExceptionHandler;
-import java.time.Clock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,11 +17,6 @@ public class AtlasConfiguration {
   @Bean
   public FileService fileService() {
     return new FileServiceImpl();
-  }
-
-  @Bean
-  public Clock clock() {
-    return Clock.systemDefaultZone();
   }
 
 }
