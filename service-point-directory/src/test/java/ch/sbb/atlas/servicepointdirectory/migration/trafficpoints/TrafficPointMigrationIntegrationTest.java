@@ -3,11 +3,13 @@ package ch.sbb.atlas.servicepointdirectory.migration.trafficpoints;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.imports.util.CsvReader;
+import ch.sbb.atlas.imports.util.ImportUtils;
 import ch.sbb.atlas.model.DateRange;
 import ch.sbb.atlas.model.Validity;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,25 +21,34 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+
 @Disabled
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
  class TrafficPointMigrationIntegrationTest {
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_20230906011933.csv";
-  private static final String ATLAS_CSV_FILE = "full-world-traffic_point-2023-09-06.csv";
+  private static final String DIDOK_CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_20240312011007.csv";
+  private static final String ATLAS_CSV_FILE = "full-world-traffic_point-2024-03-12.csv";
 
   private static final List<TrafficPointAtlasCsvModel> trafficPointElementCsvModels = new ArrayList<>();
   private static final List<TrafficPointDidokCsvModel> didokCsvLines = new ArrayList<>();
+  private static List<TrafficPointDidokCsvModel> didokCsvLinesAfterModification = new ArrayList<>();
 
   @Test
   @Order(1)
   void shouldParseCsvsCorrectly() throws IOException {
     try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE)) {
       didokCsvLines.addAll(CsvReader.parseCsv(csvStream, TrafficPointDidokCsvModel.class));
+      didokCsvLinesAfterModification = didokCsvLines.stream().peek(object ->
+      {
+        if (object.getValidTo().equals(ImportUtils.DIDOK_HIGEST_DATE)) {
+          object.setValidTo(ImportUtils.ATLAS_HIGHEST_DATE);
+          object.setEditedAt(TrafficPointMigrationActualDateIntegrationTest.ACTUAL_DATE.atTime(LocalTime.MIDNIGHT));
+        }
+      }).toList();
     }
-    assertThat(didokCsvLines).isNotEmpty();
+    assertThat(didokCsvLinesAfterModification).isNotEmpty();
 
     try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + ATLAS_CSV_FILE)) {
       trafficPointElementCsvModels.addAll(CsvReader.parseCsv(csvStream, TrafficPointAtlasCsvModel.class));
@@ -48,7 +59,7 @@ import org.junit.jupiter.api.TestMethodOrder;
   @Test
   @Order(2)
   void shouldHaveSameSloidInBothCsvs() {
-    Set<String> didokSloids = didokCsvLines.stream().map(TrafficPointDidokCsvModel::getSloid).collect(Collectors.toSet());
+    Set<String> didokSloids = didokCsvLinesAfterModification.stream().map(TrafficPointDidokCsvModel::getSloid).collect(Collectors.toSet());
     Set<String> atlasSloids = trafficPointElementCsvModels.stream().map(TrafficPointAtlasCsvModel::getSloid)
         .collect(Collectors.toSet());
 
@@ -67,7 +78,7 @@ import org.junit.jupiter.api.TestMethodOrder;
   @Test
   @Order(3)
   void shouldHaveSameValidityOnEachDidokCode() {
-    Map<String, Validity> groupedDidokSloids = didokCsvLines.stream().collect(
+    Map<String, Validity> groupedDidokSloids = didokCsvLinesAfterModification.stream().collect(
         Collectors.groupingBy(TrafficPointDidokCsvModel::getSloid, Collectors.collectingAndThen(Collectors.toList(),
             list -> new Validity(
                 list.stream().map(i -> DateRange.builder()
@@ -118,7 +129,7 @@ import org.junit.jupiter.api.TestMethodOrder;
     Map<String, List<TrafficPointAtlasCsvModel>> groupedAtlasNumbers = trafficPointElementCsvModels.stream()
         .collect(Collectors.groupingBy(TrafficPointAtlasCsvModel::getSloid));
 
-    didokCsvLines.forEach(didokCsvLine -> {
+    didokCsvLinesAfterModification.forEach(didokCsvLine -> {
       TrafficPointAtlasCsvModel atlasCsvLine = findCorrespondingAtlasServicePointVersion(didokCsvLine,
           groupedAtlasNumbers.get(didokCsvLine.getSloid()));
       new TrafficPointMappingEquality(didokCsvLine, atlasCsvLine, false).performCheck();

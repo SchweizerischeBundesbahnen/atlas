@@ -1,4 +1,4 @@
-package ch.sbb.exportservice.utils;
+package ch.sbb.atlas.export.utils;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
