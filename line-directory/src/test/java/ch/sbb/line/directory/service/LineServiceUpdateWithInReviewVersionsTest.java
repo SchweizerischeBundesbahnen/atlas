@@ -110,6 +110,7 @@ import org.springframework.transaction.annotation.Transactional;
     editedVersion.setDescription("Description <changed>");
     editedVersion.setValidFrom(LocalDate.of(2022, 1, 1));
     editedVersion.setValidTo(LocalDate.of(2022, 12, 31));
+    editedVersion.setVersion(version1.getVersion());
 
     //when
     lineService.updateVersion(version1, editedVersion);
@@ -187,6 +188,7 @@ import org.springframework.transaction.annotation.Transactional;
 
     editedVersion.setValidFrom(LocalDate.of(2021, 12, 31));
     editedVersion.setValidTo(LocalDate.of(2024, 1, 1));
+    editedVersion.setVersion(version3.getVersion());
 
     //when
     assertThrows(MergeOrSplitInReviewVersionException.class, () -> lineService.updateVersion(version3, editedVersion));
@@ -292,6 +294,7 @@ import org.springframework.transaction.annotation.Transactional;
     editedVersion.setValidFrom(version2.getValidFrom().plusMonths(1));
     editedVersion.setValidTo(version2.getValidTo().minusMonths(1));
     editedVersion.setNumber("7");
+    editedVersion.setVersion(version3.getVersion());
 
     //when
     assertThrows(MergeOrSplitInReviewVersionException.class, () -> lineService.updateVersion(version3, editedVersion));
@@ -320,6 +323,7 @@ import org.springframework.transaction.annotation.Transactional;
     editedVersion.setValidFrom(version2.getValidFrom().plusMonths(1));
     editedVersion.setValidTo(version2.getValidTo().minusMonths(1));
     editedVersion.setNumber("7");
+    editedVersion.setVersion(version3.getVersion());
 
     //when
     assertDoesNotThrow(() -> lineService.updateVersion(version3, editedVersion));
@@ -347,6 +351,7 @@ import org.springframework.transaction.annotation.Transactional;
     editedVersion.setLineType(version1.getLineType());
     editedVersion.setValidFrom(version1.getValidFrom());
     editedVersion.setValidTo(version1.getValidTo());
+    editedVersion.setVersion(version1.getVersion());
 
     //when
     lineService.updateVersion(version1, editedVersion);

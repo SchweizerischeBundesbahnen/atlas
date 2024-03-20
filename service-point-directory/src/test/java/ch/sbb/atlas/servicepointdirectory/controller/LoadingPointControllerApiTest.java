@@ -302,6 +302,7 @@ class LoadingPointControllerApiTest extends BaseControllerApiTest {
         .connectionPoint(false)
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
+        .etagVersion(loadingPointVersion.getVersion())
         .build();
 
     mvc.perform(put("/v1/loading-points/" + loadingPointVersion.getId())

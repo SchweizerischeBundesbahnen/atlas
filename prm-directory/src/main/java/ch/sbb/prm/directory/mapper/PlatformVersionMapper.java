@@ -84,25 +84,30 @@ public class PlatformVersionMapper {
         .build();
   }
 
-  public static PlatformVersion resetToDefaultValue(PlatformVersion platformVersion, LocalDate validFrom, LocalDate validTo) {
-    return PlatformVersion.builder()
+  public static PlatformVersion resetToDefaultValue(PlatformVersion platformVersion, LocalDate validFrom, LocalDate validTo,
+      boolean reduced) {
+    PlatformVersion resettedVersion = PlatformVersion.builder()
         .sloid(platformVersion.getSloid())
         .status(Status.VALIDATED)
         .parentServicePointSloid(platformVersion.getParentServicePointSloid())
         .number(SloidHelper.getServicePointNumber(platformVersion.getParentServicePointSloid()))
         .validFrom(validFrom)
         .validTo(validTo)
-        .contrastingAreas(BooleanOptionalAttributeType.TO_BE_COMPLETED)
-        .boardingDevice(BoardingDeviceAttributeType.TO_BE_COMPLETED)
-        .dynamicAudio(BasicAttributeType.TO_BE_COMPLETED)
-        .dynamicVisual(BasicAttributeType.TO_BE_COMPLETED)
-        .levelAccessWheelchair(BasicAttributeType.TO_BE_COMPLETED)
-        .tactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED)
-        .vehicleAccess(VehicleAccessAttributeType.TO_BE_COMPLETED)
         .creator(platformVersion.getCreator())
         .creationDate(platformVersion.getCreationDate())
         .editor(platformVersion.getEditor())
         .editionDate(platformVersion.getEditionDate())
         .build();
+    if (reduced) {
+      resettedVersion.setTactileSystem(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+      resettedVersion.setVehicleAccess(VehicleAccessAttributeType.TO_BE_COMPLETED);
+    } else {
+      resettedVersion.setContrastingAreas(BooleanOptionalAttributeType.TO_BE_COMPLETED);
+      resettedVersion.setBoardingDevice(BoardingDeviceAttributeType.TO_BE_COMPLETED);
+      resettedVersion.setDynamicAudio(BasicAttributeType.TO_BE_COMPLETED);
+      resettedVersion.setDynamicVisual(BasicAttributeType.TO_BE_COMPLETED);
+      resettedVersion.setLevelAccessWheelchair(BasicAttributeType.TO_BE_COMPLETED);
+    }
+    return resettedVersion;
   }
 }

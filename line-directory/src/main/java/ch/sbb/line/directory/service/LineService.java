@@ -133,8 +133,7 @@ public class LineService {
 
   private void updateVersion(LineVersion currentVersion, LineVersion editedVersion,
       List<LineVersion> currentVersions) {
-    if (editedVersion.getVersion() != null && !currentVersion.getVersion()
-        .equals(editedVersion.getVersion())) {
+    if (!currentVersion.getVersion().equals(editedVersion.getVersion())) {
       throw new StaleObjectStateException(LineVersion.class.getSimpleName(), "version");
     }
 
