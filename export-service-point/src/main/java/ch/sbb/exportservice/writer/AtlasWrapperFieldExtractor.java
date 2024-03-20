@@ -1,9 +1,9 @@
 package ch.sbb.exportservice.writer;
 
-import static ch.sbb.exportservice.utils.StringUtils.NEW_LINE;
-import static ch.sbb.exportservice.utils.StringUtils.SEMICOLON;
+import static ch.sbb.atlas.export.utils.StringUtils.NEW_LINE;
+import static ch.sbb.atlas.export.utils.StringUtils.SEMICOLON;
 
-import ch.sbb.exportservice.utils.StringUtils;
+import ch.sbb.atlas.export.utils.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
