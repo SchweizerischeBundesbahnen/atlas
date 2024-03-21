@@ -5,6 +5,9 @@ import CommonUtils from "../../support/util/common-utils";
 
 describe('SePoDi use cases', {testIsolation: false}, () => {
 
+
+  const neueDienststelleText = 'Neue Dienststelle';
+
   const servicePoint = SepodiUtils.getServicePointVersion();
   const trafficPoint = SepodiUtils.getTrafficPointVersion();
 
@@ -24,8 +27,8 @@ describe('SePoDi use cases', {testIsolation: false}, () => {
 
     it('Step-3: Click on Neue Dienststelle', () => {
       cy.get(DataCy.SEPODI_SEARCH_FORM).should('exist');
-      cy.get(DataCy.SEPODI_NEW_SERVICE_POINT_BUTTON).should('contain.text', 'Neue Dienststelle').click();
-      cy.get(DataCy.SEPODI_NEW_SERVICE_POINT_LABEL).should('contain.text', 'Neue Dienststelle');
+      cy.get(DataCy.SEPODI_NEW_SERVICE_POINT_BUTTON).should('contain.text', neueDienststelleText).click();
+      cy.get(DataCy.SEPODI_NEW_SERVICE_POINT_LABEL).should('contain.text', neueDienststelleText);
     });
 
     it('Step-4: Fill form and save', () => {
@@ -80,14 +83,16 @@ describe('SePoDi use cases', {testIsolation: false}, () => {
     });
 
     it('Step-2: update geografie', () => {
+      const newNorthGeolocation = '1201099';
+      const newEastGeolocation = '2600783';
       cy.get(DataCy.EDIT).click();
-      CommonUtils.getClearType(DataCy.SEPODI_GEOLOCATION_NORTH, '1201099');
+      CommonUtils.getClearType(DataCy.SEPODI_GEOLOCATION_NORTH, newNorthGeolocation);
       cy.intercept('GET', 'service-point-directory/v1/geodata/reverse-geocode?east*').as('getGeodata');
-      CommonUtils.getClearType(DataCy.SEPODI_GEOLOCATION_EAST, '2600783');
+      CommonUtils.getClearType(DataCy.SEPODI_GEOLOCATION_EAST, newEastGeolocation);
       cy.wait('@getGeodata').its('response.statusCode').should('eq', 200);
       SepodiUtils.saveServicePoint();
-      CommonUtils.assertItemValue(DataCy.SEPODI_GEOLOCATION_EAST, '2600783');
-      CommonUtils.assertItemValue(DataCy.SEPODI_GEOLOCATION_NORTH, '1201099');
+      CommonUtils.assertItemValue(DataCy.SEPODI_GEOLOCATION_EAST, newEastGeolocation);
+      CommonUtils.assertItemValue(DataCy.SEPODI_GEOLOCATION_NORTH, newNorthGeolocation);
     });
 
   });
@@ -155,11 +160,7 @@ describe('SePoDi use cases', {testIsolation: false}, () => {
     it('Step-1: Search added TrafficPoint', () => {
       SepodiUtils.searchAddedServicePoint(servicePoint.designationOfficial);
       cy.get(DataCy.SEPODI_TRAFFIC_POINT_TAB).should('exist').click();
-      // table
-      cy.get(DataCy.SEPODI_TRAFFIC_POINT_ELEMENTS_TABLE + ' table tbody tr').should('have.length', 1);
-      // Click on the item
-      cy.contains('td', trafficPoint.designation).parents('tr').click({force: true});
-
+      SepodiUtils.searchAndClickAddedTrafficPointOnTheTable(trafficPoint.designation)
       cy.get(DataCy.SEPODI_TRAFFIC_POINT_HEADER_TITLE).should('contain.text', 'Haltestellenname Bern, Wyleregg');
       CommonUtils.assertItemValue(DataCy.SEPODI_TRAFFIC_POINT_DESIGNATION, trafficPoint.designation);
     });

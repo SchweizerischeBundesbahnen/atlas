@@ -3,9 +3,10 @@ import BodiDependentUtils from "./bodi-dependent-utils";
 import {DataCy} from "../data-cy";
 
 export default class SepodiUtils {
+
   static navigateToServicePoint() {
     CommonUtils.navigateToHomeViaHomeLogo();
-    cy.wait(1000);
+    cy.wait(1000);//I haven't found a better way to ensure that the DOM is actually rendered
     cy.get('#service-point-directory').click({ force: true });
   }
 
@@ -39,6 +40,13 @@ export default class SepodiUtils {
         cy.wait('@searchVersion').its('response.statusCode').should('eq', 200);
         cy.get(DataCy.SEPODI_SEARCH_SERVICE_POINT_SELECT + ' .ng-option').click();
       });
+  }
+
+  static searchAndClickAddedTrafficPointOnTheTable(designation: string){
+    // table
+    cy.get(DataCy.SEPODI_TRAFFIC_POINT_ELEMENTS_TABLE + ' table tbody tr').should('have.length', 1);
+    // Click on the item
+    cy.contains('td', designation).parents('tr').click({force: true});
   }
 
   static getServicePointVersion() {
