@@ -9,6 +9,9 @@ import lombok.Getter;
 
 public final class ExportFilePath {
 
+  private static final String PATH_DELIMITER = "/";
+  private static final String FILENAME_DELIMITER = "-";
+
   private final LocalDate actualDate;
   private final String systemDir;
   private final String baseDir;
@@ -19,7 +22,7 @@ public final class ExportFilePath {
   private final String extension;
 
   public ExportFilePath(ExportTypeBase exportTypeBase, ExportFileName exportFileName) {
-    this(exportTypeBase, exportFileName, "", ExportExtensionFileType.CSV_EXTENSION);
+    this(exportTypeBase, exportFileName, null, null);
   }
 
   public ExportFilePath(ExportTypeBase exportTypeBase, ExportFileName exportFileName, String systemDir,
@@ -35,19 +38,19 @@ public final class ExportFilePath {
     this.prefix = exportTypeBase.getFileTypePrefix();
 
     this.systemDir = systemDir;
-    this.extension = exportExtensionFileType.getExtension();
+    this.extension = exportExtensionFileType != null ? exportExtensionFileType.getExtension() : null;
     this.actualDate = actualDate;
   }
 
   public String actualDateFileName() {
     if (prefix == null || prefix.isEmpty()) {
-      return dir + "-" + fileName + "-" + actualDate();
+      return dir + FILENAME_DELIMITER + fileName + FILENAME_DELIMITER + actualDateString();
     }
-    return dir + "-" + prefix + "-" + fileName + "-" + actualDate();
+    return dir + FILENAME_DELIMITER + prefix + FILENAME_DELIMITER + fileName + FILENAME_DELIMITER + actualDateString();
   }
 
-  public String getFileToStream() {
-    return baseDir + "/" + dir + "/" + actualDateFileName() + ".json.gz";
+  public String fileToStream() {
+    return baseDir + PATH_DELIMITER + dir + PATH_DELIMITER + actualDateFileName() + ".json.gz";
   }
 
   public String actualDateFilePath() {
@@ -55,10 +58,10 @@ public final class ExportFilePath {
   }
 
   public String s3BucketDirPath() {
-    return baseDir + "/" + dir;
+    return baseDir + PATH_DELIMITER + dir;
   }
 
-  private String actualDate() {
+  private String actualDateString() {
     return actualDate.format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN));
   }
 }

@@ -88,7 +88,7 @@ public class ServicePointBatchControllerApiV1 {
     checkInputPath(exportFileName, sePoDiExportType);
     ExportFilePath exportFilePath = new ExportFilePath(sePoDiExportType, exportFileName);
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(exportFilePath.actualDateFileName());
-    InputStreamResource body = fileExportService.streamGzipFile(exportFilePath.getFileToStream());
+    InputStreamResource body = fileExportService.streamGzipFile(exportFilePath.fileToStream());
     return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));
   }
 
