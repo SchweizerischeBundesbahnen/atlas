@@ -8,6 +8,7 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.TOILET;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.referencepoint.ReadReferencePointVersionModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.service.OverviewService;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -18,6 +19,7 @@ import ch.sbb.prm.directory.entity.PlatformVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
+import ch.sbb.prm.directory.exception.ObjectRevokedException;
 import ch.sbb.prm.directory.mapper.ReferencePointVersionMapper;
 import ch.sbb.prm.directory.repository.ContactPointRepository;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
@@ -119,6 +121,9 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
   @PreAuthorize("@prmUserAdministrationService.hasUserRightsToCreateOrEditPrmObject(#editedVersion)")
   public ReferencePointVersion updateReferencePointVersion(ReferencePointVersion currentVersion,
       ReferencePointVersion editedVersion) {
+    if (currentVersion.getStatus() == Status.REVOKED) {
+      throw new ObjectRevokedException(ReferencePointVersion.class, currentVersion.getSloid());
+    }
     return updateVersion(currentVersion, editedVersion);
   }
 
