@@ -21,6 +21,14 @@ export default class SepodiUtils {
     })
   }
 
+  static saveTrafficPoint(){
+    cy.get(DataCy.SAVE_ITEM).click().then(() =>
+    {
+      cy.get(DataCy.EDIT).should('exist');
+      cy.get(DataCy.CLOSE_DETAIL).should('exist');
+    })
+  }
+
   static searchAddedServicePoint(designationOfficial: string){
     CommonUtils.navigateToHomeViaHomeLogo();
     this.navigateToServicePoint();
@@ -37,11 +45,26 @@ export default class SepodiUtils {
     return {
       designationLong: 'Bern, Wyleregg, the best place in Bern',
       designationOfficial: 'Bern, Wyleregg',
-      businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,validFrom: '01.01.2000',
+      businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
+      validFrom: '01.01.2000',
       validTo: '31.12.9999',
       north: '1201099.1',
       east: '2600783.1',
       height: '554.1'
+    }
+  }
+
+  static getTrafficPointVersion() {
+    return {
+      designation: 'A',
+      designationOperational: '51',
+      validFrom: '15.01.2024',
+      validTo: '31.12.2098',
+      north: '1201099',
+      east: '2600783',
+      length: '15',
+      boardingAreaHeight: '22',
+      compassDirection:'266'
     }
   }
 

@@ -110,6 +110,17 @@ export class DataCy {
   static SEPODI_SEARCH_SERVICE_POINT_SELECT = '[data-cy=search-service-point-select]';
   static SEPODI_SEARCH_FORM = '[data-cy=search-sepodi-form]';
   static MEANS_OF_TRANSPORT_TRAIN = '[data-cy=TRAIN]';
+  static SEPODI_TRAFFIC_POINT_TAB = '[data-cy=tab-traffic-point-elements]';
+  static SEPODI_NEW_TRAFFIC_POINT_BUTTON = '[data-cy=new-traffic-point-element]';
+  static SEPODI_TRAFFIC_POINT_HEADER = '[data-cy=traffic-point-header]';
+  static SEPODI_TRAFFIC_POINT_HEADER_TITLE = '[data-cy=traffic-point-header-title]';
+  static SEPODI_TRAFFIC_POINT_DESIGNATION = '[data-cy=designation]';
+  static SEPODI_TRAFFIC_POINT_DESIGNATION_OPERATIONAL = '[data-cy=designationOperational]';
+  static SEPODI_TRAFFIC_POINT_LENGTH = '[data-cy=length]';
+  static SEPODI_TRAFFIC_POINT_BOARDING_AREA_LENGTH = '[data-cy=boardingAreaHeight]';
+  static SEPODI_TRAFFIC_POINT_COMPASS_DIRECTION = '[data-cy=compassDirection]';
+  static SEPODI_TRAFFIC_POINT_ELEMENTS_TABLE = '[data-cy=traffic-point-elements-table]';
+  static SEPODI_MAP = '[data-cy=sepodi-map]';
 
   static TABLE_FILTER_MULTI_SELECT = (rowIndex: number, columnIndex: number) =>
     `[data-cy=table-filter-multi-select-${rowIndex}-${columnIndex}]`;
