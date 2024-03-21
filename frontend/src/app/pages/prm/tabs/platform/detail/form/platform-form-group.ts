@@ -1,9 +1,9 @@
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import moment from 'moment';
-import { BaseDetailFormGroup } from '../../../../../../core/components/base-detail/base-detail-form-group';
-import { WhitespaceValidator } from '../../../../../../core/validation/whitespace/whitespace-validator';
-import { AtlasCharsetsValidator } from '../../../../../../core/validation/charsets/atlas-charsets-validator';
-import { DateRangeValidator } from '../../../../../../core/validation/date-range/date-range-validator';
+import {BaseDetailFormGroup} from '../../../../../../core/components/base-detail/base-detail-form-group';
+import {WhitespaceValidator} from '../../../../../../core/validation/whitespace/whitespace-validator';
+import {AtlasCharsetsValidator} from '../../../../../../core/validation/charsets/atlas-charsets-validator';
+import {DateRangeValidator} from '../../../../../../core/validation/date-range/date-range-validator';
 import {
   BasicAttributeType,
   BoardingDeviceAttributeType,
@@ -108,7 +108,7 @@ export class PlatformFormGroupBuilder {
           WhitespaceValidator.blankOrEmptySpaceSurrounding,
           Validators.maxLength(2000),
         ]),
-        height: new FormControl(version?.height, [AtlasCharsetsValidator.decimalWithDigits(7, 3)]),
+        height: new FormControl(version?.height, [AtlasCharsetsValidator.decimalWithDigits(7, 3), Validators.min(0)]),
         inclinationLongitudinal: new FormControl(version?.inclinationLongitudinal, [
           AtlasCharsetsValidator.decimalWithDigits(7, 3),
         ]),
@@ -125,10 +125,10 @@ export class PlatformFormGroupBuilder {
           [Validators.required],
         ),
         wheelchairAreaLength: new FormControl(version?.wheelchairAreaLength, [
-          AtlasCharsetsValidator.decimalWithDigits(7, 3),
+          AtlasCharsetsValidator.decimalWithDigits(7, 3), Validators.min(0)
         ]),
         wheelchairAreaWidth: new FormControl(version?.wheelchairAreaWidth, [
-          AtlasCharsetsValidator.decimalWithDigits(7, 3),
+          AtlasCharsetsValidator.decimalWithDigits(7, 3), Validators.min(0)
         ]),
         validFrom: new FormControl(version?.validFrom ? moment(version.validFrom) : null, [
           Validators.required,
