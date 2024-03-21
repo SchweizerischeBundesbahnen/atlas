@@ -31,7 +31,7 @@ class ExportFilePathTest {
     ExportFilePath exportFilePath = new ExportFilePath(SePoDiExportType.SWISS_ONLY_ACTUAL,
         SePoDiBatchExportFileName.SERVICE_POINT_VERSION, "", ExportExtensionFileType.JSON_EXTENSION, LocalDate.of(2024, 3, 10));
     // then
-    assertThat(exportFilePath.getFileToStream()).isEqualTo(
+    assertThat(exportFilePath.fileToStream()).isEqualTo(
         "service_point/actual_date/actual_date-swiss-only-service_point-2024-03-10.json.gz");
   }
 
