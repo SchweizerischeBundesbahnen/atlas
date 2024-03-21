@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -92,5 +93,12 @@ public class PlatformVersionModel extends BasePrmVersionModel implements DatesVa
   @Schema(description = "Wheelchair Area Width [mm]")
   @Digits(integer = 10, fraction = 3)
   private Double wheelchairAreaWidth;
+
+  public List<InfoOpportunityAttributeType> getInfoOpportunities() {
+    if (infoOpportunities == null) {
+      return new ArrayList<>();
+    }
+    return infoOpportunities;
+  }
 
 }
