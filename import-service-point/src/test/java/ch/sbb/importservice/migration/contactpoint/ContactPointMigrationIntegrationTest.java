@@ -62,11 +62,8 @@ public class ContactPointMigrationIntegrationTest {
                     .map(ContactPointCsvModelContainer::getCsvModels)
                     .flatMap(Collection::stream)
                     .toList());
-            allDidokCsvLines.addAll(contactPointCsvModelContainers.stream()
-                    .map(ContactPointCsvModelContainer::getCsvModels)
-                    .flatMap(Collection::stream)
-                    .toList());
         }
+        allDidokCsvLines.addAll(didokCsvLinesTicketCounter);
         try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE_INFO_DESK)) {
             List<ContactPointCsvModelContainer> contactPointCsvModelContainers =
                 contactPointCsvService.mapToContactPointCsvModelContainers(
@@ -75,11 +72,8 @@ public class ContactPointMigrationIntegrationTest {
                 .map(ContactPointCsvModelContainer::getCsvModels)
                 .flatMap(Collection::stream)
                 .toList());
-            allDidokCsvLines.addAll(contactPointCsvModelContainers.stream()
-                .map(ContactPointCsvModelContainer::getCsvModels)
-                .flatMap(Collection::stream)
-                .toList());
         }
+        allDidokCsvLines.addAll(didokCsvLinesInfoDesk);
         assertThat(allDidokCsvLines).isNotEmpty();
         try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + ATLAS_CSV_FILE)) {
             atlasCsvLines.addAll(CsvReader.parseCsv(csvStream, ContactPointVersionCsvModel.class));

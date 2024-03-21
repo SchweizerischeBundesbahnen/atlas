@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ContactPointMigrationFutureTimetableIntegrationTest {
 
-    private static final String DIDOK_CSV_FILE = "PRM_TICKET_COUNTERS_20240320013805.csv";
+    private static final String DIDOK_CSV_FILE_TICKET_COUNTER = "PRM_TICKET_COUNTERS_20240320013805.csv";
     private static final String DIDOK_CSV_FILE_INFO_DESK = "PRM_INFO_DESKS_20240320013756.csv";
     private static final String ATLAS_CSV_FILE = "future-timetable-contact_point-2024-03-20.csv";
     private static final LocalDate FUTURE_TIMETABLE_DATE = LocalDate.of(2024, 12, 15);
@@ -47,7 +47,7 @@ public class ContactPointMigrationFutureTimetableIntegrationTest {
     @Test
     @Order(1)
     void shouldParseCsvCorrectly() throws IOException {
-        try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE)) {
+        try (InputStream csvStream = this.getClass().getResourceAsStream(CsvReader.BASE_PATH + DIDOK_CSV_FILE_TICKET_COUNTER)) {
             List<ContactPointCsvModelContainer> contactPointCsvModelContainers =
                 contactPointCsvService.mapToContactPointCsvModelContainers(
                     CsvReader.parseCsv(csvStream, ContactPointCsvModel.class));
