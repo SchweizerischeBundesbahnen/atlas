@@ -1,6 +1,9 @@
 package ch.sbb.exportservice.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
@@ -11,10 +14,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.amazon.exception.FileException;
+import ch.sbb.atlas.amazon.service.AmazonBucket;
+import ch.sbb.atlas.amazon.service.AmazonFileStreamingService;
+import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.exportservice.model.PrmBatchExportFileName;
-import ch.sbb.exportservice.model.PrmExportType;
-import ch.sbb.exportservice.service.FileExportService;
 import java.io.InputStream;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,368 +26,604 @@ import org.springframework.test.web.servlet.MvcResult;
 
 public class PrmBatchControllerApiV1IntegrationTest extends BaseControllerApiTest {
 
-    @MockBean
-    private FileExportService<PrmExportType> fileExportService;
+  @MockBean
+  private AmazonFileStreamingService amazonFileStreamingService;
 
-    @Test
-    void shouldGetJsonSuccessfully() throws Exception {
-        //given
-        try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json")) {
-            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-            doReturn(inputStreamResource).when(fileExportService)
-                    .streamJsonFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
-            //when & then
-            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/stop-point-version/full")
-                            .contentType(contentType))
-                    .andExpect(request().asyncStarted())
-                    .andReturn();
-            mvc.perform(asyncDispatch(mvcResult))
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("$", hasSize(1)));
-        }
-    }
+  @MockBean
+  private AmazonService amazonService;
 
-    @Test
-    void shouldGetJsonUnsuccessfully() throws Exception {
-        //given
-        doThrow(FileException.class).when(fileExportService)
-                .streamJsonFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
-        //when & then
-        MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/stop-point-version/full")
-                        .contentType(contentType)).andExpect(request().asyncStarted())
-                .andReturn();
-        mvc.perform(asyncDispatch(mvcResult))
-                .andExpect(status().isInternalServerError());
-    }
+  @Test
+  void shouldDownloadGzipJsonUnsuccessfully() throws Exception {
+    //given
+    doThrow(FileException.class).when(amazonFileStreamingService)
+        .streamFile(eq(AmazonBucket.EXPORT), anyString());
+    //when & then
+    MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/STOP_POINT_VERSION/FULL")
+            .contentType(contentType)).andExpect(request().asyncStarted())
+        .andReturn();
+    mvc.perform(asyncDispatch(mvcResult))
+        .andExpect(status().isInternalServerError());
+  }
 
-    @Test
-    void shouldDownloadGzipJsonSuccessfully() throws Exception {
-        //given
-        try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json.gz")) {
-            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-            doReturn(inputStreamResource).when(fileExportService)
-                    .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
-            doReturn("service-point").when(fileExportService)
-                    .getBaseFileName(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
-            //when & then
-            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/stop-point-version/full")
-                            .contentType(contentType)).andExpect(request().asyncStarted())
-                    .andReturn();
-            mvc.perform(asyncDispatch(mvcResult))
-                    .andExpect(status().isOk())
-                    .andExpect(content().contentType("application/gzip"));
-        }
-    }
+  @Test
+  void shouldGetJsonUnsuccessfully() throws Exception {
+    //given
+    doThrow(FileException.class).when(amazonFileStreamingService)
+        .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
+    //when & then
+    MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/STOP_POINT_VERSION/FULL")
+            .contentType(contentType)).andExpect(request().asyncStarted())
+        .andReturn();
+    mvc.perform(asyncDispatch(mvcResult))
+        .andExpect(status().isInternalServerError());
+  }
 
-    @Test
-    void shouldDownloadGzipJsonUnsuccessfully() throws Exception {
-        //given
-        doThrow(FileException.class).when(fileExportService)
-                .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
-        //when & then
-        MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/stop-point-version/full")
-                        .contentType(contentType)).andExpect(request().asyncStarted())
-                .andReturn();
-        mvc.perform(asyncDispatch(mvcResult))
-                .andExpect(status().isInternalServerError());
+  @Test
+  void shouldGetActualJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/STOP_POINT_VERSION/ACTUAL")
+              .contentType(contentType))
+          .andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$", hasSize(1)));
     }
+  }
 
-    @Test
-    void shouldDownloadLatestGzipJsonSuccessfully() throws Exception {
-        //given
-        try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json.gz")) {
-            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-            doReturn(inputStreamResource).when(fileExportService)
-                    .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
-            doReturn("prm/full/full_stop_point-2023-10-27.json.gz").when(fileExportService)
-                    .getLatestUploadedFileName(PrmBatchExportFileName.STOP_POINT_VERSION, PrmExportType.FULL);
-            //when & then
-            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/latest/stop-point-version/full")
-                            .contentType(contentType)).andExpect(request().asyncStarted())
-                    .andReturn();
-            mvc.perform(asyncDispatch(mvcResult))
-                    .andExpect(status().isOk())
-                    .andExpect(content().contentType("application/gzip"));
-        }
+  @Test
+  void shouldGetFutureTimetableJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/STOP_POINT_VERSION/TIMETABLE_FUTURE")
+              .contentType(contentType))
+          .andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$", hasSize(1)));
     }
+  }
 
-    @Test
-    void shouldDownloadLatestJsonSuccessfully() throws Exception {
-        //given
-        try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json.gz")) {
-            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-            doReturn(inputStreamResource).when(fileExportService)
-                    .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
-            doReturn("prm/full/full_stop_point-2023-10-27.json.gz").when(fileExportService)
-                    .getLatestUploadedFileName(PrmBatchExportFileName.STOP_POINT_VERSION, PrmExportType.FULL);
-            //when & then
-            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/latest/stop-point-version/full")
-                            .contentType(contentType)).andExpect(request().asyncStarted())
-                    .andReturn();
-            mvc.perform(asyncDispatch(mvcResult))
-                    .andExpect(status().isOk())
-                    .andExpect(content().contentType("application/json"));
-        }
+  @Test
+  void shouldGetStopPointJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/STOP_POINT_VERSION/FULL")
+              .contentType(contentType))
+          .andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$", hasSize(1)));
     }
+  }
 
-    @Test
-    void shouldGetPlatformJsonSuccessfully() throws Exception {
-        //given
-        try (InputStream inputStream = this.getClass().getResourceAsStream("/platform-data.json")) {
-            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-            doReturn(inputStreamResource).when(fileExportService)
-                    .streamJsonFile(PrmExportType.FULL, PrmBatchExportFileName.PLATFORM_VERSION);
-            //when & then
-            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/platform-version/full")
-                            .contentType(contentType))
-                    .andExpect(request().asyncStarted())
-                    .andReturn();
-            mvc.perform(asyncDispatch(mvcResult))
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("$", hasSize(1)));
-        }
+  @Test
+  void shouldDownloadStopPointGzipJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json.gz")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFile(eq(AmazonBucket.EXPORT), anyString());
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/STOP_POINT_VERSION/FULL")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
+  }
 
-    @Test
-    void shouldDownloadPlatformGzipJsonSuccessfully() throws Exception {
-        //given
-        try (InputStream inputStream = this.getClass().getResourceAsStream("/platform-data.json.gz")) {
-            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-            doReturn(inputStreamResource).when(fileExportService)
-                    .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.PLATFORM_VERSION);
-            doReturn("platform").when(fileExportService)
-                    .getBaseFileName(PrmExportType.FULL, PrmBatchExportFileName.PLATFORM_VERSION);
-            //when & then
-            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/platform-version/full")
-                            .contentType(contentType)).andExpect(request().asyncStarted())
-                    .andReturn();
-            mvc.perform(asyncDispatch(mvcResult))
-                    .andExpect(status().isOk())
-                    .andExpect(content().contentType("application/gzip"));
-        }
+  @Test
+  void shouldDownloadLatestStopPointGzipJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json.gz")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn("stop_point/full/full-stop_point-2023-10-27.json.gz").when(amazonService)
+          .getLatestJsonUploadedObject(AmazonBucket.EXPORT, "stop_point/full", "");
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFile(AmazonBucket.EXPORT, "stop_point/full/full-stop_point-2023-10-27.json.gz");
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/latest/STOP_POINT_VERSION/FULL")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
+  }
 
-    @Test
-    void shouldDownloadLatestPlatformGzipJsonSuccessfully() throws Exception {
-        //given
-        try (InputStream inputStream = this.getClass().getResourceAsStream("/platform-data.json.gz")) {
-            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-            doReturn(inputStreamResource).when(fileExportService)
-                    .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.PLATFORM_VERSION);
-            doReturn("prm/full/full_platform-2023-10-27.json.gz").when(fileExportService)
-                    .getLatestUploadedFileName(PrmBatchExportFileName.PLATFORM_VERSION, PrmExportType.FULL);
-            //when & then
-            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/latest/platform-version/full")
-                            .contentType(contentType)).andExpect(request().asyncStarted())
-                    .andReturn();
-            mvc.perform(asyncDispatch(mvcResult))
-                    .andExpect(status().isOk())
-                    .andExpect(content().contentType("application/gzip"));
-        }
+  @Test
+  void shouldDownloadLatestStopPointJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/stop-point-data.json")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn("stop_point/full/full-stop_point-2023-10-27.json.gz").when(amazonService)
+          .getLatestJsonUploadedObject(AmazonBucket.EXPORT, "stop_point/full", "");
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFileAndDecompress(AmazonBucket.EXPORT, "stop_point/full/full-stop_point-2023-10-27.json.gz");
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/latest/STOP_POINT_VERSION/FULL")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/json"))
+          .andExpect(jsonPath("$", hasSize(1)));
     }
+  }
 
-    @Test
-    void shouldDownloadLatestPlatformJsonSuccessfully() throws Exception {
-        //given
-        try (InputStream inputStream = this.getClass().getResourceAsStream("/platform-data.json.gz")) {
-            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-            doReturn(inputStreamResource).when(fileExportService)
-                    .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.PLATFORM_VERSION);
-            doReturn("prm/full/full_platform-2023-10-27.json.gz").when(fileExportService)
-                    .getLatestUploadedFileName(PrmBatchExportFileName.PLATFORM_VERSION, PrmExportType.FULL);
-            //when & then
-            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/latest/platform-version/full")
-                            .contentType(contentType)).andExpect(request().asyncStarted())
-                    .andReturn();
-            mvc.perform(asyncDispatch(mvcResult))
-                    .andExpect(status().isOk())
-                    .andExpect(content().contentType("application/json"));
-        }
+  @Test
+  void shouldGetPlatformJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/platform-data.json")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/PLATFORM_VERSION/FULL")
+              .contentType(contentType))
+          .andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$", hasSize(1)));
     }
+  }
 
-    @Test
-    void shouldGetReferencePointJsonSuccessfully() throws Exception {
-        //given
-        try (InputStream inputStream = this.getClass().getResourceAsStream("/reference-point-data.json")) {
-            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-            doReturn(inputStreamResource).when(fileExportService)
-                    .streamJsonFile(PrmExportType.FULL, PrmBatchExportFileName.REFERENCE_POINT_VERSION);
-            //when & then
-            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/reference-point-version/full")
-                            .contentType(contentType))
-                    .andExpect(request().asyncStarted())
-                    .andReturn();
-            mvc.perform(asyncDispatch(mvcResult))
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("$", hasSize(1)));
-        }
+  @Test
+  void shouldDownloadPlatformGzipJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/platform-data.json.gz")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFile(eq(AmazonBucket.EXPORT), anyString());
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/PLATFORM_VERSION/FULL")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
+  }
 
-    @Test
-    void shouldDownloadReferencePointGzipJsonSuccessfully() throws Exception {
-        //given
-        try (InputStream inputStream = this.getClass().getResourceAsStream("/reference-point-data.json.gz")) {
-            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-            doReturn(inputStreamResource).when(fileExportService)
-                    .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.REFERENCE_POINT_VERSION);
-            doReturn("reference-point").when(fileExportService)
-                    .getBaseFileName(PrmExportType.FULL, PrmBatchExportFileName.REFERENCE_POINT_VERSION);
-            //when & then
-            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/reference-point-version/full")
-                            .contentType(contentType)).andExpect(request().asyncStarted())
-                    .andReturn();
-            mvc.perform(asyncDispatch(mvcResult))
-                    .andExpect(status().isOk())
-                    .andExpect(content().contentType("application/gzip"));
-        }
+  @Test
+  void shouldDownloadLatestPlatformGzipJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/platform-data.json.gz")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn("platform/full/full-platform-2023-10-27.json.gz").when(amazonService)
+          .getLatestJsonUploadedObject(AmazonBucket.EXPORT, "platform/full", "");
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFile(AmazonBucket.EXPORT, "platform/full/full-platform-2023-10-27.json.gz");
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/latest/PLATFORM_VERSION/FULL")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
+  }
 
-    @Test
-    void shouldGetContactPointJsonSuccessfully() throws Exception {
-        //given
-        try (InputStream inputStream = this.getClass().getResourceAsStream("/contact-point-data.json")) {
-            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-            doReturn(inputStreamResource).when(fileExportService)
-                    .streamJsonFile(PrmExportType.FULL, PrmBatchExportFileName.CONTACT_POINT_VERSION);
-            //when & then
-            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/contact-point-version/full")
-                            .contentType(contentType))
-                    .andExpect(request().asyncStarted())
-                    .andReturn();
-            mvc.perform(asyncDispatch(mvcResult))
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("$", hasSize(1)));
-        }
+  @Test
+  void shouldDownloadLatestPlatformJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/platform-data.json")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn("platform/full/full-platform-2023-10-27.json.gz").when(amazonService)
+          .getLatestJsonUploadedObject(AmazonBucket.EXPORT, "platform/full", "");
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFileAndDecompress(AmazonBucket.EXPORT, "platform/full/full-platform-2023-10-27.json.gz");
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/latest/PLATFORM_VERSION/FULL")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/json"))
+          .andExpect(jsonPath("$", hasSize(1)));
     }
+  }
 
-    @Test
-    void shouldDownloadContactPointGzipJsonSuccessfully() throws Exception {
-        //given
-        try (InputStream inputStream = this.getClass().getResourceAsStream("/contact-point-data.json.gz")) {
-            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-            doReturn(inputStreamResource).when(fileExportService)
-                    .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.CONTACT_POINT_VERSION);
-            doReturn("contact-point").when(fileExportService)
-                    .getBaseFileName(PrmExportType.FULL, PrmBatchExportFileName.CONTACT_POINT_VERSION);
-            //when & then
-            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/contact-point-version/full")
-                            .contentType(contentType)).andExpect(request().asyncStarted())
-                    .andReturn();
-            mvc.perform(asyncDispatch(mvcResult))
-                    .andExpect(status().isOk())
-                    .andExpect(content().contentType("application/gzip"));
-        }
+  @Test
+  void shouldGetReferencePointJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/reference-point-data.json")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/REFERENCE_POINT_VERSION/FULL")
+              .contentType(contentType))
+          .andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$", hasSize(1)));
     }
+  }
 
-    @Test
-    void shouldGetToiletJsonSuccessfully() throws Exception {
-        //given
-        try (InputStream inputStream = this.getClass().getResourceAsStream("/toilet-data.json")) {
-            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-            doReturn(inputStreamResource).when(fileExportService)
-                    .streamJsonFile(PrmExportType.FULL, PrmBatchExportFileName.TOILET_VERSION);
-            //when & then
-            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/toilet-version/full")
-                            .contentType(contentType))
-                    .andExpect(request().asyncStarted())
-                    .andReturn();
-            mvc.perform(asyncDispatch(mvcResult))
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("$", hasSize(1)));
-        }
+  @Test
+  void shouldDownloadReferencePointGzipJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/reference-point-data.json.gz")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFile(eq(AmazonBucket.EXPORT), anyString());
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/REFERENCE_POINT_VERSION/FULL")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
+  }
 
-    @Test
-    void shouldDownloadToiletGzipJsonSuccessfully() throws Exception {
-        //given
-        try (InputStream inputStream = this.getClass().getResourceAsStream("/toilet-data.json.gz")) {
-            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-            doReturn(inputStreamResource).when(fileExportService)
-                    .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.TOILET_VERSION);
-            doReturn("toilet").when(fileExportService)
-                    .getBaseFileName(PrmExportType.FULL, PrmBatchExportFileName.TOILET_VERSION);
-            //when & then
-            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/toilet-version/full")
-                            .contentType(contentType)).andExpect(request().asyncStarted())
-                    .andReturn();
-            mvc.perform(asyncDispatch(mvcResult))
-                    .andExpect(status().isOk())
-                    .andExpect(content().contentType("application/gzip"));
-        }
+  @Test
+  void shouldDownloadLatestReferencePointGzipJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/reference-point-data.json.gz")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn("reference_point/full/full-reference_point-2023-10-27.json.gz").when(amazonService)
+          .getLatestJsonUploadedObject(AmazonBucket.EXPORT, "reference_point/full", "");
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFile(AmazonBucket.EXPORT, "reference_point/full/full-reference_point-2023-10-27.json.gz");
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/latest/REFERENCE_POINT_VERSION/FULL")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
+  }
 
-    @Test
-    void shouldGetParkingLotJsonSuccessfully() throws Exception {
-        //given
-        try (InputStream inputStream = this.getClass().getResourceAsStream("/toilet-data.json")) {
-            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-            doReturn(inputStreamResource).when(fileExportService)
-                .streamJsonFile(PrmExportType.FULL, PrmBatchExportFileName.PARKING_LOT_VERSION);
-            //when & then
-            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/PARKING_LOT_VERSION/FULL")
-                    .contentType(contentType))
-                .andExpect(request().asyncStarted())
-                .andReturn();
-            mvc.perform(asyncDispatch(mvcResult))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)));
-        }
+  @Test
+  void shouldDownloadLatestReferencePointJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/reference-point-data.json")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn("reference_point/full/full-reference_point-2023-10-27.json.gz").when(amazonService)
+          .getLatestJsonUploadedObject(AmazonBucket.EXPORT, "reference_point/full", "");
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFileAndDecompress(AmazonBucket.EXPORT, "reference_point/full/full-reference_point-2023-10-27.json.gz");
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/latest/REFERENCE_POINT_VERSION/FULL")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/json"))
+          .andExpect(jsonPath("$", hasSize(1)));
     }
+  }
 
-    @Test
-    void shouldDownloadParkingLotGzipJsonSuccessfully() throws Exception {
-        //given
-        try (InputStream inputStream = this.getClass().getResourceAsStream("/toilet-data.json.gz")) {
-            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-            doReturn(inputStreamResource).when(fileExportService)
-                .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.PARKING_LOT_VERSION);
-            doReturn("parking_lot").when(fileExportService)
-                .getBaseFileName(PrmExportType.FULL, PrmBatchExportFileName.PARKING_LOT_VERSION);
-            //when & then
-            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/PARKING_LOT_VERSION/FULL")
-                    .contentType(contentType)).andExpect(request().asyncStarted())
-                .andReturn();
-            mvc.perform(asyncDispatch(mvcResult))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/gzip"));
-        }
+  @Test
+  void shouldGetContactPointJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/contact-point-data.json")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/CONTACT_POINT_VERSION/FULL")
+              .contentType(contentType))
+          .andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$", hasSize(1)));
     }
+  }
 
-    @Test
-    void shouldGetRelationJsonSuccessfully() throws Exception {
-        //given
-        try (InputStream inputStream = this.getClass().getResourceAsStream("/relation-data.json")) {
-            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-            doReturn(inputStreamResource).when(fileExportService)
-                .streamJsonFile(PrmExportType.FULL, PrmBatchExportFileName.RELATION_VERSION);
-            //when & then
-            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/RELATION_VERSION/FULL")
-                    .contentType(contentType))
-                .andExpect(request().asyncStarted())
-                .andReturn();
-            mvc.perform(asyncDispatch(mvcResult))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(10)));
-        }
+  @Test
+  void shouldDownloadContactPointGzipJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/contact-point-data.json.gz")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFile(eq(AmazonBucket.EXPORT), anyString());
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/CONTACT_POINT_VERSION/FULL")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
+  }
 
-    @Test
-    void shouldDownloadRelationGzipJsonSuccessfully() throws Exception {
-        //given
-        try (InputStream inputStream = this.getClass().getResourceAsStream("/relation-data.json.gz")) {
-            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-            doReturn(inputStreamResource).when(fileExportService)
-                .streamGzipFile(PrmExportType.FULL, PrmBatchExportFileName.RELATION_VERSION);
-            doReturn("relation").when(fileExportService)
-                .getBaseFileName(PrmExportType.FULL, PrmBatchExportFileName.RELATION_VERSION);
-            //when & then
-            MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/RELATION_VERSION/FULL")
-                    .contentType(contentType)).andExpect(request().asyncStarted())
-                .andReturn();
-            mvc.perform(asyncDispatch(mvcResult))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/gzip"));
-        }
+  @Test
+  void shouldDownloadLatestContactPointGzipJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/contact-point-data.json.gz")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn("contact_point/full/full-contact_point-2023-10-27.json.gz").when(amazonService)
+          .getLatestJsonUploadedObject(AmazonBucket.EXPORT, "contact_point/full", "");
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFile(AmazonBucket.EXPORT, "contact_point/full/full-contact_point-2023-10-27.json.gz");
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/latest/CONTACT_POINT_VERSION/FULL")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
     }
+  }
+
+  @Test
+  void shouldDownloadLatestContactPointJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/contact-point-data.json")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn("contact_point/full/full-contact_point-2023-10-27.json.gz").when(amazonService)
+          .getLatestJsonUploadedObject(AmazonBucket.EXPORT, "contact_point/full", "");
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFileAndDecompress(AmazonBucket.EXPORT, "contact_point/full/full-contact_point-2023-10-27.json.gz");
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/latest/CONTACT_POINT_VERSION/FULL")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/json"))
+          .andExpect(jsonPath("$", hasSize(1)));
+    }
+  }
+
+  @Test
+  void shouldGetToiletJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/toilet-data.json")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/TOILET_VERSION/FULL")
+              .contentType(contentType))
+          .andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$", hasSize(1)));
+    }
+  }
+
+  @Test
+  void shouldDownloadToiletGzipJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/toilet-data.json.gz")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFile(eq(AmazonBucket.EXPORT), anyString());
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/TOILET_VERSION/FULL")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
+    }
+  }
+
+  @Test
+  void shouldDownloadLatestToiletGzipJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/toilet-data.json.gz")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn("toilet/full/full-toilet-2023-10-27.json.gz").when(amazonService)
+          .getLatestJsonUploadedObject(AmazonBucket.EXPORT, "toilet/full", "");
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFile(AmazonBucket.EXPORT, "toilet/full/full-toilet-2023-10-27.json.gz");
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/latest/TOILET_VERSION/FULL")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
+    }
+  }
+
+  @Test
+  void shouldDownloadLatestToiletJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/toilet-data.json")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn("toilet/full/full-toilet-2023-10-27.json.gz").when(amazonService)
+          .getLatestJsonUploadedObject(AmazonBucket.EXPORT, "toilet/full", "");
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFileAndDecompress(AmazonBucket.EXPORT, "toilet/full/full-toilet-2023-10-27.json.gz");
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/latest/TOILET_VERSION/FULL")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/json"))
+          .andExpect(jsonPath("$", hasSize(1)));
+    }
+  }
+
+  @Test
+  void shouldGetParkingLotJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/parking-lot-data.json")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/PARKING_LOT_VERSION/FULL")
+              .contentType(contentType))
+          .andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$", hasSize(1043)));
+    }
+  }
+
+  @Test
+  void shouldDownloadParkingLotGzipJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/parking-lot-data.json.gz")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFile(eq(AmazonBucket.EXPORT), anyString());
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/PARKING_LOT_VERSION/FULL")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
+    }
+  }
+
+  @Test
+  void shouldDownloadLatestParkingLotGzipJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/parking-lot-data.json.gz")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn("parking_lot/full/full-parking_lot-2023-10-27.json.gz").when(amazonService)
+          .getLatestJsonUploadedObject(AmazonBucket.EXPORT, "parking_lot/full", "");
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFile(AmazonBucket.EXPORT, "parking_lot/full/full-parking_lot-2023-10-27.json.gz");
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/latest/PARKING_LOT_VERSION/FULL")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
+    }
+  }
+
+  @Test
+  void shouldDownloadLatestParkingLotJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/parking-lot-data.json")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn("parking_lot/full/full-parking_lot-2023-10-27.json.gz").when(amazonService)
+          .getLatestJsonUploadedObject(AmazonBucket.EXPORT, "parking_lot/full", "");
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFileAndDecompress(AmazonBucket.EXPORT, "parking_lot/full/full-parking_lot-2023-10-27.json.gz");
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/latest/PARKING_LOT_VERSION/FULL")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/json"))
+          .andExpect(jsonPath("$", hasSize(1043)));
+    }
+  }
+
+  @Test
+  void shouldGetRelationJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/relation-data.json")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/RELATION_VERSION/FULL")
+              .contentType(contentType))
+          .andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$", hasSize(10)));
+    }
+  }
+
+  @Test
+  void shouldDownloadRelationGzipJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/relation-data.json.gz")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFile(eq(AmazonBucket.EXPORT), anyString());
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/RELATION_VERSION/FULL")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
+    }
+  }
+
+  @Test
+  void shouldDownloadLatestRelationGzipJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/relation-data.json.gz")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn("relation/full/full-relation-2023-10-27.json.gz").when(amazonService)
+          .getLatestJsonUploadedObject(AmazonBucket.EXPORT, "relation/full", "");
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFile(AmazonBucket.EXPORT, "relation/full/full-relation-2023-10-27.json.gz");
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/download-gzip-json/latest/RELATION_VERSION/FULL")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/gzip"))
+          .andExpect(result -> assertThat(result.getResponse().getContentAsByteArray()).isNotEmpty());
+    }
+  }
+
+  @Test
+  void shouldDownloadLatestRelationJsonSuccessfully() throws Exception {
+    //given
+    try (InputStream inputStream = this.getClass().getResourceAsStream("/relation-data.json")) {
+      InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+      doReturn("relation/full/full-relation-2023-10-27.json.gz").when(amazonService)
+          .getLatestJsonUploadedObject(AmazonBucket.EXPORT, "relation/full", "");
+      doReturn(inputStreamResource).when(amazonFileStreamingService)
+          .streamFileAndDecompress(AmazonBucket.EXPORT, "relation/full/full-relation-2023-10-27.json.gz");
+      //when & then
+      MvcResult mvcResult = mvc.perform(get("/v1/export/prm/json/latest/RELATION_VERSION/FULL")
+              .contentType(contentType)).andExpect(request().asyncStarted())
+          .andReturn();
+      mvc.perform(asyncDispatch(mvcResult))
+          .andExpect(status().isOk())
+          .andExpect(content().contentType("application/json"))
+          .andExpect(jsonPath("$", hasSize(10)));
+    }
+  }
 
 }
