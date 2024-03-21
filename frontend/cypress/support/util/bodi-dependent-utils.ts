@@ -12,7 +12,6 @@ export default class BodiDependentUtils {
         Authorization: `Bearer ${window.sessionStorage.getItem('access_token')}`
       },
     }).then((response) => {
-      console.log(response)
       if (response.status === 409) {
         const sboidParameters = response.body.details[0].displayInfo.parameters.filter((parameter: { key: string; }) => parameter.key == "sboid");
         const sboid = sboidParameters[0].value;

@@ -162,7 +162,6 @@ the file [SePoDi_Test.csv](src/test/resources/SePoDi_Test.csv) with key **file**
 
 ````shell
 curl --location '{host}/import-service-point/v1/import/maintenance/didok-sepodi-user' \
---header 'Content-Type: application/json' \
 --header 'Authorization: Bearer {your-bearer}' \
 --form 'file=@"{filepath}"'
 ````
@@ -176,7 +175,6 @@ the file [PRM_Test.csv](src/test/resources/PRM_Test.csv) with key **file**
 
 ````shell
 curl --location '{host}/import-service-point/v1/import/maintenance/didok-prm-user' \
---header 'Content-Type: application/json' \
 --header 'Authorization: Bearer {your-bearer}' \
 --form 'file=@"{filepath}"'
 ````
