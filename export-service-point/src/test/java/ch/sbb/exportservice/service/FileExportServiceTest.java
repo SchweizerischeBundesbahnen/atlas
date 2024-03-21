@@ -11,6 +11,8 @@ import ch.sbb.atlas.amazon.service.AmazonFileStreamingService;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.exportservice.model.PrmBatchExportFileName;
 import ch.sbb.exportservice.model.PrmExportType;
+import ch.sbb.exportservice.model.SePoDiBatchExportFileName;
+import ch.sbb.exportservice.model.SePoDiExportType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -31,9 +33,17 @@ class FileExportServiceTest {
   }
 
   @Test
-  void shouldStreamJsonFile() {
+  void shouldStreamJsonFilePRM() {
     // given & when
     fileExportService.streamJsonFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
+    // then
+    verify(amazonFileStreamingService).streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
+  }
+
+  @Test
+  void shouldStreamJsonFileSePoDi() {
+    // given & when
+    fileExportService.streamJsonFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
     // then
     verify(amazonFileStreamingService).streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
   }
