@@ -26,6 +26,7 @@ import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
 import ch.sbb.prm.directory.search.PlatformSearchRestrictions;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,6 +35,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 
 class PlatformServiceTest extends BasePrmServiceTest {
+
+  private static final String PLATFORM_SLOID = PARENT_SERVICE_POINT_SLOID + ":1";
 
   private final PlatformService platformService;
   private final PlatformRepository platformRepository;
@@ -66,7 +69,7 @@ class PlatformServiceTest extends BasePrmServiceTest {
     sharedServicePointConsumer.readServicePointFromKafka(SharedServicePointVersionModel.builder()
         .servicePointSloid(PARENT_SERVICE_POINT_SLOID)
         .sboids(Set.of("ch:1:sboid:100001"))
-        .trafficPointSloids(Set.of("ch:1:sloid:12345:1"))
+        .trafficPointSloids(Set.of("ch:1:sloid:12345:1", PLATFORM_SLOID))
         .stopPoint(true)
         .build());
   }
@@ -272,12 +275,12 @@ class PlatformServiceTest extends BasePrmServiceTest {
     platformService.createPlatformVersion(platformVersion);
 
     //when
-    List<PlatformOverviewModel> platformVersions = platformService.mergePlatformsForOverview(platformService.getPlatformsByStopPoint(PARENT_SERVICE_POINT_SLOID), PARENT_SERVICE_POINT_SLOID);
+    List<PlatformOverviewModel> platformVersions = platformService.mergePlatformsForOverview(
+        platformService.getPlatformsByStopPoint(PARENT_SERVICE_POINT_SLOID), PARENT_SERVICE_POINT_SLOID);
 
     //then
     assertThat(platformVersions).hasSize(1);
   }
-
 
   @Test
   void testCheckPlatformExists_Exists() {
@@ -290,17 +293,41 @@ class PlatformServiceTest extends BasePrmServiceTest {
 
   @Test
   void testCheckPlatformExists_DoesNotExist() {
-    assertThrows(ElementTypeDoesNotExistException.class, () -> platformService.checkPlatformExists("ch:1:sloid:12345:1", PLATFORM.name()));
+    assertThrows(ElementTypeDoesNotExistException.class,
+        () -> platformService.checkPlatformExists("ch:1:sloid:12345:1", PLATFORM.name()));
   }
 
   @Test
-  void shouldNotCreatePlatformWhenSloidAlreadyExists(){
+  void shouldNotCreatePlatformWhenSloidAlreadyExists() {
     PlatformVersion platformVersion = PlatformTestData.getPlatformVersion();
     platformVersion.setSloid("ch:1:sloid:12345:1");
     platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
     platformRepository.saveAndFlush(platformVersion);
 
-
     assertThrows(PlatformAlreadyExistsException.class, () -> platformService.createPlatformVersion(platformVersion));
+  }
+
+  @Test
+  void shouldUpdatePlatformWithOnlyValidFromUpdate() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+
+    PlatformVersion platformVersion = PlatformTestData.getCompletePlatformVersion();
+    platformVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    platformVersion.setSloid(PLATFORM_SLOID);
+    PlatformVersion currentVersion = platformService.createPlatformVersion(platformVersion);
+
+    PlatformVersion editedVersion = PlatformTestData.getCompletePlatformVersion();
+    editedVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    editedVersion.setSloid(PLATFORM_SLOID);
+    editedVersion.setValidFrom(LocalDate.of(2000, 4, 1));
+    editedVersion.setVersion(currentVersion.getVersion());
+
+    platformService.updatePlatformVersion(currentVersion, editedVersion);
+
+    List<PlatformVersion> platform = platformService.getAllVersions(platformVersion.getSloid());
+    assertThat(platform).hasSize(1);
   }
 }
