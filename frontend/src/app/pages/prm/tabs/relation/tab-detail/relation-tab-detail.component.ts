@@ -12,7 +12,7 @@ import {
 } from '../../../../../api';
 import { PrmMeanOfTransportHelper } from '../../../util/prm-mean-of-transport-helper';
 import { Pages } from '../../../../pages';
-import { Observable, of, take } from 'rxjs';
+import {catchError, EMPTY, Observable, of, take} from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { NotificationService } from '../../../../../core/notification/notification.service';
@@ -21,6 +21,7 @@ import { VersionsHandlingService } from '../../../../../core/versioning/versions
 import { DetailFormComponent } from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
 import { RelationFormGroup, RelationFormGroupBuilder } from './relation-form-group';
 import { MatSelectChange } from '@angular/material/select';
+import {DetailHelperService} from "../../../../../core/detail/detail-helper.service";
 
 @Component({
   selector: 'app-relation-tab-detail',
@@ -56,6 +57,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
     private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
     private readonly dialogService: DialogService,
     private readonly notificationService: NotificationService,
+    private readonly detailHelperService: DetailHelperService,
   ) {}
 
   ngOnInit(): void {
@@ -131,11 +133,17 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
   private update(relationVersion: RelationVersion) {
     this.personWithReducedMobilityService
       .updateRelation(this.currentRelationId, relationVersion)
+      .pipe(catchError(this.handleError))
       .subscribe(() => {
         this.notificationService.success('PRM.RELATIONS.NOTIFICATION.EDIT_SUCCESS');
         this.loadRelations(this.selectedReferencePointSloid!);
       });
   }
+
+  private handleError = () => {
+    this.loadRelations(this.selectedReferencePointSloid!);
+    return EMPTY;
+  };
 
   private loadRelations(referencePointSloid: string) {
     this.relations$ = this.personWithReducedMobilityService
