@@ -10,7 +10,7 @@ import ch.sbb.atlas.location.SloidHelper;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.prm.directory.entity.PlatformVersion;
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.Set;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -35,7 +35,7 @@ public class PlatformVersionMapper {
         .inclination(version.getInclination())
         .inclinationLongitudinal(version.getInclinationLongitudinal())
         .inclinationWidth(version.getInclinationWidth())
-        .infoOpportunities(version.getInfoOpportunities() != null ?  version.getInfoOpportunities().stream().toList() : null)
+        .infoOpportunities(version.getInfoOpportunities().stream().toList())
         .levelAccessWheelchair(version.getLevelAccessWheelchair())
         .partialElevation(version.getPartialElevation())
         .superelevation(version.getSuperelevation())
@@ -68,7 +68,7 @@ public class PlatformVersionMapper {
         .inclination(model.getInclination())
         .inclinationLongitudinal(model.getInclinationLongitudinal())
         .inclinationWidth(model.getInclinationWidth())
-        .infoOpportunities(model.getInfoOpportunities() != null ? new HashSet<>(model.getInfoOpportunities()) : null)
+        .infoOpportunities(Set.copyOf(model.getInfoOpportunities()))
         .levelAccessWheelchair(model.getLevelAccessWheelchair())
         .partialElevation(model.getPartialElevation())
         .superelevation(model.getSuperelevation())
