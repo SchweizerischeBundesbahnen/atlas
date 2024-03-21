@@ -3,6 +3,7 @@ package ch.sbb.importservice.migration.contactpoint;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
+import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
 import ch.sbb.atlas.export.model.prm.ContactPointVersionCsvModel;
 import ch.sbb.atlas.export.utils.StringUtils;
 import ch.sbb.atlas.imports.prm.contactpoint.ContactPointCsvModel;
@@ -12,7 +13,8 @@ import ch.sbb.importservice.migration.MigrationUtil;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public record ContactPointMappingEquality(ContactPointCsvModel didokCsvLine, ContactPointVersionCsvModel atlasCsvLine) {
+public record ContactPointMappingEquality(ContactPointCsvModel didokCsvLine, ContactPointVersionCsvModel atlasCsvLine,
+                                          ContactPointType contactPointType) {
 
     public void performCheck() {
         assertThat(atlasCsvLine.getParentNumberServicePoint()).isEqualTo(MigrationUtil
@@ -38,6 +40,11 @@ public record ContactPointMappingEquality(ContactPointCsvModel didokCsvLine, Con
                 .isEqualTo(ContactPointMigrationActualDateIntegrationTest.ACTUAL_DATE);
         } else {
             assertThat(localDateFromString(atlasCsvLine.getEditionDate())).isEqualTo(didokCsvLine.getModifiedAt());
+        }
+        if (contactPointType.equals(ContactPointType.TICKET_COUNTER)) {
+            assertThat(atlasCsvLine.getType()).isEqualTo(ContactPointType.TICKET_COUNTER.name());
+        } else {
+            assertThat(atlasCsvLine.getType()).isEqualTo(ContactPointType.INFORMATION_DESK.name());
         }
         assertThat(atlasCsvLine.getStatus()).isEqualTo(Status.VALIDATED);
     }
