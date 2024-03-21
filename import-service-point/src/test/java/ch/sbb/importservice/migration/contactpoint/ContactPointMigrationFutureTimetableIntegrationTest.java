@@ -81,7 +81,7 @@ public class ContactPointMigrationFutureTimetableIntegrationTest {
                     .to(CsvReader.dateFromString(atlasCsvLine.getValidTo()))
                     .build();
             if (!dateRange.contains(FUTURE_TIMETABLE_DATE)) {
-                System.out.println("Nicht im Datumsbereich: " + atlasCsvLine);
+                log.error("Nicht im Datumsbereich: " + atlasCsvLine);
             }
             assertThat(dateRange.contains(FUTURE_TIMETABLE_DATE)).isTrue();
         });
