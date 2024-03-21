@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
@@ -25,6 +26,7 @@ import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.entity.ToiletVersion;
 import ch.sbb.prm.directory.exception.ElementTypeDoesNotExistException;
+import ch.sbb.prm.directory.exception.ObjectRevokedException;
 import ch.sbb.prm.directory.exception.ReducedVariantException;
 import ch.sbb.prm.directory.repository.ContactPointRepository;
 import ch.sbb.prm.directory.repository.ParkingLotRepository;
@@ -259,6 +261,27 @@ class ReferencePointServiceTest extends BasePrmServiceTest {
     assertThrows(ElementTypeDoesNotExistException.class, () -> {
       referencePointService.checkReferencePointExists(sloid, "REFERENCE_POINT");
     });
+  }
+
+  @Test
+  void shouldThrowRevokedExceptionIfReferencePointIsRevoked() {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.save(stopPointVersion);
+
+    ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    referencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    referencePointVersion.setStatus(Status.REVOKED);
+    ReferencePointVersion currentVersion = referencePointRepository.saveAndFlush(referencePointVersion);
+
+    ReferencePointVersion editedReferencePointVersion = ReferencePointTestData.getReferencePointVersion();
+    editedReferencePointVersion.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    editedReferencePointVersion.setDesignation("Updated");
+
+    // when & then
+    assertThatExceptionOfType(ObjectRevokedException.class).isThrownBy(
+        () -> referencePointService.updateReferencePointVersion(currentVersion, editedReferencePointVersion));
   }
 
   private void createAndSaveParkingLotVersion(String parentServicePointSloid) {
