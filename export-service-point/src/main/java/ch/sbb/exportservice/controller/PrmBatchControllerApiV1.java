@@ -8,6 +8,7 @@ import ch.sbb.exportservice.exception.NotAllowedExportFileException;
 import ch.sbb.exportservice.model.PrmBatchExportFileName;
 import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.service.FileExportService;
+import ch.sbb.exportservice.model.ExportFilePath;
 import io.micrometer.tracing.annotation.NewSpan;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -35,9 +36,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class PrmBatchControllerApiV1 {
 
-  private static final String START_STREAMING_FILE_LOG_MSG = "Start streaming file ";
+  private static final String START_STREAMING_FILE_LOG_MSG = "Start streaming file";
 
-  private final FileExportService<PrmExportType> fileExportService;
+  private final FileExportService fileExportService;
 
   @GetMapping(value = "json/{exportFileName}/{prmExportType}", produces = MediaType.APPLICATION_JSON_VALUE)
   @ApiResponses(value = {
@@ -50,7 +51,6 @@ public class PrmBatchControllerApiV1 {
   public CompletableFuture<ResponseEntity<InputStreamResource>> streamExportJsonFile(
       @PathVariable PrmBatchExportFileName exportFileName,
       @PathVariable PrmExportType prmExportType) {
-    log.info(START_STREAMING_FILE_LOG_MSG);
     InputStreamResource body = fileExportService.streamJsonFile(prmExportType, exportFileName);
     return CompletableFuture.supplyAsync(() ->
         ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body));
@@ -67,9 +67,7 @@ public class PrmBatchControllerApiV1 {
   public CompletableFuture<ResponseEntity<InputStreamResource>> streamLatestExportJsonFile(
       @PathVariable PrmBatchExportFileName exportFileName,
       @PathVariable PrmExportType prmExportType) {
-    String fileName = fileExportService.getLatestUploadedFileName(exportFileName, prmExportType);
-    log.info(START_STREAMING_FILE_LOG_MSG + fileName + "...");
-    InputStreamResource body = fileExportService.streamLatestJsonFile(fileName);
+    InputStreamResource body = fileExportService.streamLatestJsonFile(prmExportType, exportFileName);
     return CompletableFuture.supplyAsync(() ->
         ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(body));
   }
@@ -85,10 +83,9 @@ public class PrmBatchControllerApiV1 {
   public CompletableFuture<ResponseEntity<InputStreamResource>> streamExportGzFile(
       @PathVariable PrmBatchExportFileName exportFileName,
       @PathVariable PrmExportType prmExportType) throws NotAllowedExportFileException {
-    String fileName = fileExportService.getBaseFileName(prmExportType, exportFileName);
-    log.info(START_STREAMING_FILE_LOG_MSG + fileName + "...");
-    HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(fileName);
-    InputStreamResource body = fileExportService.streamGzipFile(prmExportType, exportFileName);
+    ExportFilePath exportFilePath = new ExportFilePath(prmExportType, exportFileName);
+    HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(exportFilePath.actualDateFileName());
+    InputStreamResource body = fileExportService.streamGzipFile(exportFilePath.fileToStream());
     return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));
   }
 
@@ -101,9 +98,9 @@ public class PrmBatchControllerApiV1 {
   public CompletableFuture<ResponseEntity<InputStreamResource>> streamLatestExportGzFile(
       @PathVariable PrmBatchExportFileName exportFileName,
       @PathVariable PrmExportType prmExportType) throws NotAllowedExportFileException {
-    String fileName = fileExportService.getLatestUploadedFileName(exportFileName, prmExportType);
-    HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(extractFileNameFromS3ObjectName(fileName));
-    InputStreamResource body = fileExportService.streamGzipFile(prmExportType, exportFileName);
+    String latestUploadedFileName = fileExportService.getLatestUploadedFileName(prmExportType, exportFileName);
+    HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(extractFileNameFromS3ObjectName(latestUploadedFileName));
+    InputStreamResource body = fileExportService.streamGzipFile(latestUploadedFileName);
     return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));
   }
 }
