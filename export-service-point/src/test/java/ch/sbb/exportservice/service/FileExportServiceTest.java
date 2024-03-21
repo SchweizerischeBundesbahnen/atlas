@@ -1,74 +1,78 @@
 package ch.sbb.exportservice.service;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonFileStreamingService;
 import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.amazon.service.FileServiceImpl;
-import ch.sbb.atlas.export.enumeration.ExportTypeBase;
-import ch.sbb.exportservice.model.ExportExtensionFileType;
+import ch.sbb.exportservice.model.PrmBatchExportFileName;
+import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.model.SePoDiBatchExportFileName;
 import ch.sbb.exportservice.model.SePoDiExportType;
-import java.io.File;
-import java.io.IOException;
-import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 class FileExportServiceTest {
 
-  private FileExportService<ExportTypeBase> fileExportService;
+  private FileExportService fileExportService;
 
   @Mock
   private AmazonService amazonService;
   @Mock
   private AmazonFileStreamingService amazonFileStreamingService;
 
-  private final FileServiceImpl fileService = new FileServiceImpl();
-
   @BeforeEach
-   void init() {
+  void init() {
     openMocks(this);
-    fileExportService = new FileExportService<>(amazonFileStreamingService, amazonService, fileService);
+    fileExportService = new FileExportService(amazonFileStreamingService, amazonService);
   }
 
   @Test
-  void shouldPutGzipFile() throws IOException {
-    //given
-    File file = new File(this.getClass().getResource("/service-point.json.gzip").getFile());
-    //when
-    fileExportService.exportFile(file, SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION,
-        ExportExtensionFileType.JSON_EXTENSION);
-    //then
-    verify(amazonService).putGzipFile(AmazonBucket.EXPORT, file, "service_point/full");
+  void shouldStreamJsonFilePRM() {
+    // given & when
+    fileExportService.streamJsonFile(PrmExportType.FULL, PrmBatchExportFileName.STOP_POINT_VERSION);
+    // then
+    verify(amazonFileStreamingService).streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
   }
 
   @Test
-  void shouldPutZipFile() throws IOException {
-    //given
-    File file = new File(this.getClass().getResource("/service-point-data.json").getFile());
-    //when
-    fileExportService.exportFile(file, SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION,
-        ExportExtensionFileType.CSV_EXTENSION);
-    //then
-    verify(amazonService).putZipFile(AmazonBucket.EXPORT, file, "service_point/full");
-  }
-
-  @Test
-  void shouldStreamJsonFileWhileDecompressing() {
+  void shouldStreamJsonFileSePoDi() {
+    // given & when
     fileExportService.streamJsonFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
-    verify(amazonFileStreamingService).streamFileAndDecompress(AmazonBucket.EXPORT,
-        "service_point/full/full-world-service_point-" + LocalDate.now() + ".json.gz");
+    // then
+    verify(amazonFileStreamingService).streamFileAndDecompress(eq(AmazonBucket.EXPORT), anyString());
+  }
+
+  @Test
+  void shouldStreamLatestJsonFile() {
+    // given
+    when(amazonService.getLatestJsonUploadedObject(eq(AmazonBucket.EXPORT), anyString(), anyString()))
+        .thenReturn("filename.json.gz");
+    // when
+    fileExportService.streamLatestJsonFile(PrmExportType.ACTUAL, PrmBatchExportFileName.CONTACT_POINT_VERSION);
+    // then
+    verify(amazonFileStreamingService).streamFileAndDecompress(AmazonBucket.EXPORT, "filename.json.gz");
   }
 
   @Test
   void shouldStreamGzipFile() {
-    fileExportService.streamGzipFile(SePoDiExportType.WORLD_FULL, SePoDiBatchExportFileName.SERVICE_POINT_VERSION);
-    verify(amazonFileStreamingService).streamFile(AmazonBucket.EXPORT,
-        "service_point/full/full-world-service_point-" + LocalDate.now() + ".json.gz");
+    // given & when
+    fileExportService.streamGzipFile("filename.json.gz");
+    // then
+    verify(amazonFileStreamingService).streamFile(AmazonBucket.EXPORT, "filename.json.gz");
+  }
+
+  @Test
+  void shouldGetLatestUploadedFileName() {
+    // given & when
+    fileExportService.getLatestUploadedFileName(PrmExportType.ACTUAL, PrmBatchExportFileName.CONTACT_POINT_VERSION);
+    // then
+    verify(amazonService).getLatestJsonUploadedObject(AmazonBucket.EXPORT, "contact_point/actual-date", "");
   }
 
 }
