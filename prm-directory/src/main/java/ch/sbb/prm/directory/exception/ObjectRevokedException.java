@@ -2,6 +2,7 @@ package ch.sbb.prm.directory.exception;
 
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.model.exception.AtlasException;
+import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 public class ObjectRevokedException extends AtlasException {
 
-  private final Class<?> clazz;
+  private final Class<? extends BasePrmEntityVersion> clazz;
   private final String sloid;
 
   @Override
