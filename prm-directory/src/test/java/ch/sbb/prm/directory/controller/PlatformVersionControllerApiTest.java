@@ -36,6 +36,7 @@ import ch.sbb.prm.directory.service.PrmLocationService;
 import ch.sbb.prm.directory.service.RelationService;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -302,10 +303,12 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
     stopPointRepository.saveAndFlush(stopPointVersion);
     PlatformVersion version1 = PlatformTestData.builderCompleteVersion1().build();
     version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    version1.setInfoOpportunities(Collections.emptySet());
     platformRepository.saveAndFlush(version1);
     PlatformVersion version2 = PlatformTestData.builderCompleteVersion2().build();
     version2.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
-    platformRepository.saveAndFlush(version2);
+    version2.setInfoOpportunities(Collections.emptySet());
+    version2 = platformRepository.saveAndFlush(version2);
 
     PlatformVersionModel editedVersionModel = new PlatformVersionModel();
     editedVersionModel.setSloid(version2.getSloid());
@@ -346,6 +349,60 @@ class PlatformVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2000-12-31")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validFrom, is("2001-01-01")))
         .andExpect(jsonPath("$[1]." + ServicePointVersionModel.Fields.validTo, is("2001-12-31")));
+  }
+
+  /**
+   * Szenario ATLAS-1885
+   * Increasing validFrom should move version
+   */
+  @Test
+  void shouldUpdatePlatformMovingValidFromToFuture() throws Exception {
+    //given
+    StopPointVersion stopPointVersion = StopPointTestData.getStopPointVersion();
+    stopPointVersion.setSloid(PARENT_SERVICE_POINT_SLOID);
+    stopPointRepository.saveAndFlush(stopPointVersion);
+
+    PlatformVersion version1 = PlatformTestData.builderCompleteVersion1().build();
+    version1.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    version1.setInfoOpportunities(Collections.emptySet());
+    platformRepository.saveAndFlush(version1);
+
+    PlatformVersionModel editedVersionModel = new PlatformVersionModel();
+    editedVersionModel.setSloid(version1.getSloid());
+    editedVersionModel.setValidFrom(version1.getValidFrom().plusMonths(1));
+    editedVersionModel.setValidTo(version1.getValidTo());
+    editedVersionModel.setParentServicePointSloid(PARENT_SERVICE_POINT_SLOID);
+    editedVersionModel.setBoardingDevice(version1.getBoardingDevice());
+    editedVersionModel.setAdditionalInformation(version1.getAdditionalInformation());
+    editedVersionModel.setAdviceAccessInfo(version1.getAdviceAccessInfo());
+    editedVersionModel.setContrastingAreas(version1.getContrastingAreas());
+    editedVersionModel.setDynamicAudio(version1.getDynamicAudio());
+    editedVersionModel.setDynamicVisual(version1.getDynamicVisual());
+    editedVersionModel.setHeight(version1.getHeight());
+    editedVersionModel.setInclination(version1.getInclination());
+    editedVersionModel.setInclinationLongitudinal(version1.getInclinationLongitudinal());
+    editedVersionModel.setInclinationWidth(version1.getInclinationWidth());
+    editedVersionModel.setLevelAccessWheelchair(version1.getLevelAccessWheelchair());
+    editedVersionModel.setPartialElevation(version1.getPartialElevation());
+    editedVersionModel.setSuperelevation(version1.getSuperelevation());
+    editedVersionModel.setTactileSystem(version1.getTactileSystem());
+    editedVersionModel.setVehicleAccess(version1.getVehicleAccess());
+    editedVersionModel.setWheelchairAreaLength(version1.getWheelchairAreaLength());
+    editedVersionModel.setWheelchairAreaWidth(version1.getWheelchairAreaWidth());
+
+    editedVersionModel.setCreationDate(version1.getCreationDate());
+    editedVersionModel.setEditionDate(version1.getEditionDate());
+    editedVersionModel.setCreator(version1.getCreator());
+    editedVersionModel.setEditor(version1.getEditor());
+    editedVersionModel.setEtagVersion(version1.getVersion());
+
+    //when & then
+    mvc.perform(put("/v1/platforms/" + version1.getId()).contentType(contentType)
+            .content(mapper.writeValueAsString(editedVersionModel)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validFrom, is("2000-02-01")))
+        .andExpect(jsonPath("$[0]." + ServicePointVersionModel.Fields.validTo, is("2000-12-31")));
   }
 
 }
