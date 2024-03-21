@@ -21,8 +21,8 @@ public class FileExportService {
 
   public InputStreamResource streamJsonFile(ExportTypeBase exportTypeBase, ExportFileName exportFileName) {
     ExportFilePath exportFilePath = new ExportFilePath(exportTypeBase, exportFileName);
-    logStreamingStart(exportFilePath.getFileToStream());
-    return amazonFileStreamingService.streamFileAndDecompress(AmazonBucket.EXPORT, exportFilePath.getFileToStream());
+    logStreamingStart(exportFilePath.fileToStream());
+    return amazonFileStreamingService.streamFileAndDecompress(AmazonBucket.EXPORT, exportFilePath.fileToStream());
   }
 
   public InputStreamResource streamLatestJsonFile(ExportTypeBase exportTypeBase, ExportFileName exportFileName) {
