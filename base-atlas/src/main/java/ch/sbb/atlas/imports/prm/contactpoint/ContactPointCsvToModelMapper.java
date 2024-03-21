@@ -1,6 +1,5 @@
 package ch.sbb.atlas.imports.prm.contactpoint;
 
-import ch.sbb.atlas.api.prm.enumeration.ContactPointType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import lombok.experimental.UtilityClass;
@@ -27,7 +26,7 @@ public class ContactPointCsvToModelMapper {
                 .build();
     }
 
-    StandardAttributeType mapStandardAttributeType(Integer standardAttributeTypeCode) {
+    public StandardAttributeType mapStandardAttributeType(Integer standardAttributeTypeCode) {
         return standardAttributeTypeCode != null ? StandardAttributeType.from(standardAttributeTypeCode) : null;
     }
 }
