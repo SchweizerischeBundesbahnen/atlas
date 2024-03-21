@@ -12,8 +12,10 @@ import ch.sbb.atlas.validation.DatesValidator;
 import ch.sbb.atlas.versioning.model.Versionable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -56,6 +58,7 @@ public class PlatformVersionModel extends BasePrmVersionModel implements DatesVa
 
   @Schema(description = "Height [cm]")
   @Digits(integer = 10, fraction = 3)
+  @Min(0)
   private Double height;
 
   @Schema(description = "Cross-platform slope [%]")
@@ -87,10 +90,19 @@ public class PlatformVersionModel extends BasePrmVersionModel implements DatesVa
 
   @Schema(description = "Wheelchair Area Length [mm]")
   @Digits(integer = 10, fraction = 3)
+  @Min(0)
   private Double wheelchairAreaLength;
 
   @Schema(description = "Wheelchair Area Width [mm]")
   @Digits(integer = 10, fraction = 3)
+  @Min(0)
   private Double wheelchairAreaWidth;
+
+  public List<InfoOpportunityAttributeType> getInfoOpportunities() {
+    if (infoOpportunities == null) {
+      return new ArrayList<>();
+    }
+    return infoOpportunities;
+  }
 
 }
