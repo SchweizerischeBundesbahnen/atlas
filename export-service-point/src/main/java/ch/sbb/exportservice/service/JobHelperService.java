@@ -46,7 +46,6 @@ public class JobHelperService {
   }
 
   private JobExecution getLastSuccessfullyJobExecution(List<JobExecution> jobExecutions) {
-
     jobExecutions.sort(Comparator.comparing(JobExecution::getCreateTime).reversed());
     return jobExecutions.stream()
         .filter(jobExecution -> BatchStatus.COMPLETED == jobExecution.getStatus()).findFirst().orElse(null);
