@@ -85,7 +85,7 @@ public class PrmBatchControllerApiV1 {
       @PathVariable PrmExportType prmExportType) throws NotAllowedExportFileException {
     ExportFilePath exportFilePath = new ExportFilePath(prmExportType, exportFileName);
     HttpHeaders headers = GzipFileDownloadHttpHeader.getHeaders(exportFilePath.actualDateFileName());
-    InputStreamResource body = fileExportService.streamGzipFile(exportFilePath.getFileToStream());
+    InputStreamResource body = fileExportService.streamGzipFile(exportFilePath.fileToStream());
     return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().headers(headers).body(body));
   }
 
