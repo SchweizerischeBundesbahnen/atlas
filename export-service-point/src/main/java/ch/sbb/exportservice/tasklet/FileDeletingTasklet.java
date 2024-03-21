@@ -1,9 +1,10 @@
 package ch.sbb.exportservice.tasklet;
 
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.export.enumeration.ExportFileName;
 import ch.sbb.atlas.export.enumeration.ExportTypeBase;
 import ch.sbb.exportservice.model.ExportExtensionFileType;
-import ch.sbb.exportservice.service.FileExportService;
+import ch.sbb.exportservice.model.ExportFilePath;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,33 +17,35 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
-public abstract class FileDeletingTasklet<T extends ExportTypeBase> implements Tasklet {
+public abstract class FileDeletingTasklet implements Tasklet {
 
   @Autowired
-  private FileExportService<T> fileExportService;
-  private final T exportType;
+  private FileService fileService;
+
+  private final ExportTypeBase exportType;
   private final ExportFileName exportFileName;
 
-  protected FileDeletingTasklet(T exportType, ExportFileName exportFileName) {
+  protected FileDeletingTasklet(ExportTypeBase exportType, ExportFileName exportFileName) {
     this.exportType = exportType;
     this.exportFileName = exportFileName;
   }
 
-  protected abstract ExportExtensionFileType getExportFileType();
+  protected abstract ExportExtensionFileType getExportExtensionFileType();
 
   @Override
   public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
-    String fileNamePath = fileExportService.createFileNamePath(getExportFileType(), exportType, exportFileName);
-    log.info("File {} deleting...", fileNamePath);
+    String filePath = new ExportFilePath(exportType, exportFileName, fileService.getDir(),
+        getExportExtensionFileType()).actualDateFilePath();
+    log.info("File {} deleting...", filePath);
     try {
-      Path path = Paths.get(fileNamePath);
-      if(Files.exists(path)){
+      Path path = Paths.get(filePath);
+      if (Files.exists(path)) {
         Files.deleteIfExists(path);
       }
     } catch (IOException e) {
       log.info("File could not be deleted", e);
     }
-    log.info("File {} deleted!", fileNamePath);
+    log.info("File {} deleted!", filePath);
     return RepeatStatus.FINISHED;
   }
 }
