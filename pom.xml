@@ -134,12 +134,6 @@
             <scope>test</scope>
          </dependency>
          <dependency>
-            <groupId>capital.scalable</groupId>
-            <artifactId>spring-auto-restdocs-core</artifactId>
-            <version>${spring-auto-rest-docs-core.version}</version>
-            <scope>test</scope>
-         </dependency>
-         <dependency>
             <artifactId>mockito-inline</artifactId>
             <groupId>org.mockito</groupId>
             <scope>test</scope>
