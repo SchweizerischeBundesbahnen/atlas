@@ -106,11 +106,6 @@
          <groupId>org.springframework.restdocs</groupId>
          <scope>test</scope>
       </dependency>
-      <dependency>
-         <artifactId>spring-auto-restdocs-core</artifactId>
-         <groupId>capital.scalable</groupId>
-         <scope>test</scope>
-      </dependency>
    </dependencies>
    <build>
       <testResources>
