@@ -82,7 +82,7 @@ describe('SePoDi use cases', {testIsolation: false}, () => {
       SepodiUtils.searchAddedServicePoint(servicePoint.designationOfficial);
     });
 
-    it('Step-2: update geografie', () => {
+    it('Step-2: update geolocation', () => {
       const newNorthGeolocation = '1201099';
       const newEastGeolocation = '2600783';
       cy.get(DataCy.EDIT).click();
