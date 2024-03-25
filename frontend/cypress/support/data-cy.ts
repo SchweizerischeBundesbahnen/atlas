@@ -6,7 +6,12 @@ export class DataCy {
   static TOTAL_RANGE = '[data-cy=total-range]';
   static SAVE_ITEM = '[data-cy=save-item]';
   static EDIT_ITEM = '[data-cy=edit-item]';
+  static EDIT = '[data-cy=edit]';
   static DELETE_ITEM = '[data-cy=delete-item]';
+  static DELETE = '[data-cy=delete]';
+  static CLOSE_DETAIL = '[data-cy=close-detail]';
+  static REVOKE_ITEM = '[data-cy=revoke-item]';
+  static SKIP_WORKFLOW = '[data-cy=skip-workflow]';
   static DIALOG = '[data-cy=dialog]';
   static DIALOG_CONFIRM_BUTTON = '[data-cy=dialog-confirm-button]';
   static DIALOG_CANCEL_BUTTON = '[data-cy=dialog-cancel-button]';
@@ -90,7 +95,32 @@ export class DataCy {
   static COLLECT_STATUS_CHANGE_ACTION_TYPE = '[data-cy=collect-status-change-action-type]';
   static TTH_SELECT_YEAR = '[data-cy=selectTthYear]';
   static TTH_DETAIL_SELECT_YEAR = '[data-cy=detailSelectTthYear]';
-  static STATEMENT_STATUS_DROPDOWN = '[data-cy=statementStatus]';
+  static SEPODI_NEW_SERVICE_POINT_BUTTON = '[data-cy=new-service-point-button]';
+  static SEPODI_NEW_SERVICE_POINT_LABEL = '[data-cy=new-service-point-label]';
+  static SEPODI_SELECT_COUNTRY = '[data-cy=select-country]';
+  static SEPODI_DESIGNATION_OFFICIAL = '[data-cy=designationOfficial]';
+  static SEPODI_DESIGNATION_LONG = '[data-cy=designationLong]';
+  static SEPODI_ABBREVIATION = '[data-cy=abbreviation]';
+  static SEPODI_CHECKBOX_STOP_POINT = '[data-cy=checkboxStopPoint] input';
+  static SEPODI_GEOLOCATION_EAST = '[data-cy=east]';
+  static SEPODI_GEOLOCATION_NORTH = '[data-cy=north]';
+  static SEPODI_GEOLOCATION_HEIGHT = '[data-cy=height]';
+  static SEPODI_CATEGORIES = '[data-cy=categories]';
+  static SEPODI_STOP_POINT_TYPE_SELECTION = '[data-cy=stopPointType]';
+  static SEPODI_SEARCH_SERVICE_POINT_SELECT = '[data-cy=search-service-point-select]';
+  static SEPODI_SEARCH_FORM = '[data-cy=search-sepodi-form]';
+  static MEANS_OF_TRANSPORT_TRAIN = '[data-cy=TRAIN]';
+  static SEPODI_TRAFFIC_POINT_TAB = '[data-cy=tab-traffic-point-elements]';
+  static SEPODI_NEW_TRAFFIC_POINT_BUTTON = '[data-cy=new-traffic-point-element]';
+  static SEPODI_TRAFFIC_POINT_HEADER = '[data-cy=traffic-point-header]';
+  static SEPODI_TRAFFIC_POINT_HEADER_TITLE = '[data-cy=traffic-point-header-title]';
+  static SEPODI_TRAFFIC_POINT_DESIGNATION = '[data-cy=designation]';
+  static SEPODI_TRAFFIC_POINT_DESIGNATION_OPERATIONAL = '[data-cy=designationOperational]';
+  static SEPODI_TRAFFIC_POINT_LENGTH = '[data-cy=length]';
+  static SEPODI_TRAFFIC_POINT_BOARDING_AREA_LENGTH = '[data-cy=boardingAreaHeight]';
+  static SEPODI_TRAFFIC_POINT_COMPASS_DIRECTION = '[data-cy=compassDirection]';
+  static SEPODI_TRAFFIC_POINT_ELEMENTS_TABLE = '[data-cy=traffic-point-elements-table]';
+  static SEPODI_MAP = '[data-cy=sepodi-map]';
 
   static TABLE_FILTER_MULTI_SELECT = (rowIndex: number, columnIndex: number) =>
     `[data-cy=table-filter-multi-select-${rowIndex}-${columnIndex}]`;

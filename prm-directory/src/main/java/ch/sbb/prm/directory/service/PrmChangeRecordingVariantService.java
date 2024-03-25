@@ -99,8 +99,8 @@ public class PrmChangeRecordingVariantService {
         = platformRepository.findAllByParentServicePointSloid(sloid);
     Map<String, List<PlatformVersion>> platforms = platformVersionsByParentSloid.stream()
         .collect(Collectors.groupingBy(PlatformVersion::getSloid));
-    for (String platformSloid : platforms.keySet()) {
-      List<PlatformVersion> platformVersionsGroup = platforms.get(platformSloid);
+
+    platforms.forEach((key, platformVersionsGroup) -> {
       if (!platformVersionsGroup.isEmpty()) {
         LocalDate validFrom = platformVersionsGroup.getFirst().getValidFrom();
         LocalDate validTo = platformVersionsGroup.getLast().getValidTo();
@@ -111,7 +111,8 @@ public class PrmChangeRecordingVariantService {
         platformRepository.flush();
         platformRepository.saveAndFlush(changedRecordingVariantStopPointVersion);
       }
-    }
+
+    });
 
   }
 
