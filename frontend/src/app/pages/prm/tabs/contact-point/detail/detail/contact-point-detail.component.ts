@@ -13,6 +13,9 @@ import {VersionsHandlingService} from "../../../../../../core/versioning/version
 import {ContactPointFormGroup, ContactPointFormGroupBuilder} from "../form/contact-point-form-group";
 import {DateRange} from "../../../../../../core/versioning/date-range";
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
+import {Moment} from "moment";
+import {take} from "rxjs";
+import {ValidityConfirmationService} from "../../../../../sepodi/validity/validity-confirmation.service";
 
 @Component({
   selector: 'app-contact-point-detail',
@@ -31,6 +34,8 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent,
   selectedVersionIndex!: number;
 
   businessOrganisations: string[] = [];
+  initValidFrom!: Moment | null | undefined;
+  initValidTo!: Moment | null | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,6 +43,7 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent,
     private personWithReducedMobilityService: PersonWithReducedMobilityService,
     private notificationService: NotificationService,
     private detailHelperService: DetailHelperService,
+    private validityConfirmationService: ValidityConfirmationService,
   ) {}
 
   ngOnInit(): void {
@@ -91,6 +97,7 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent,
     if (this.form.enabled) {
       this.detailHelperService.showCancelEditDialog(this);
     } else {
+      this.initValidity()
       this.form.enable();
     }
   }
@@ -105,7 +112,7 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent,
       if (this.isNew) {
         this.create(contactPointVersion);
       } else {
-        this.update(contactPointVersion);
+        this.confirmValidity(contactPointVersion);
       }
     }
   }
@@ -135,5 +142,23 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent,
           .then(() => this.ngOnInit());
       });
   }
+  initValidity(){
+    this.initValidTo = this.form?.value.validTo;
+    this.initValidFrom = this.form?.value.validFrom;
+  }
 
+  confirmValidity(contactPointVersion:ContactPointVersion){
+    this.validityConfirmationService.confirmValidity(
+      this.form.controls.validTo.value,
+      this.form.controls.validFrom.value,
+      this.initValidTo,
+      this.initValidFrom
+    ).pipe(take(1))
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.update(contactPointVersion);
+          this.form.disable();
+        }
+      });
+  }
 }
