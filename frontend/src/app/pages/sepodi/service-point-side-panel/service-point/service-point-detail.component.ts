@@ -27,6 +27,8 @@ import {
   GeographyFormGroupBuilder,
 } from '../../geography/geography-form-group';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {Moment} from "moment";
+import {ValidityConfirmationService} from "../../validity/validity-confirmation.service";
 
 @Component({
   selector: 'app-service-point',
@@ -47,6 +49,10 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
 
   isSwitchVersionDisabled = false;
 
+  initValidFrom!: Moment | null | undefined;
+
+  initValidTo!: Moment | null | undefined;
+
   public isFormEnabled$ = new BehaviorSubject<boolean>(false);
   private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
   private _savedGeographyForm?: FormGroup<GeographyFormGroup>;
@@ -59,6 +65,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
     private notificationService: NotificationService,
     private mapService: MapService,
     private authService: AuthService,
+    private validityConfirmationService: ValidityConfirmationService,
   ) {
     this.route.parent?.data.pipe(takeUntilDestroyed()).subscribe((next) => {
       this.servicePointVersions = next.servicePoint;
@@ -172,6 +179,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   private enableForm(): void {
     this.form?.enable({ emitEvent: false });
     this.isFormEnabled$.next(true);
+    this.initValidity();
   }
 
   confirmLeave(): Observable<boolean> {
@@ -204,9 +212,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   save() {
     ValidationService.validateForm(this.form!);
     if (this.form?.valid) {
-      const servicePointVersion = ServicePointFormGroupBuilder.getWritableServicePoint(this.form);
-      this.disableForm();
-      this.update(this.selectedVersion!.id!, servicePointVersion);
+      this.confirmValidity();
     }
   }
 
@@ -303,5 +309,30 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
             });
         }
       });
+  }
+
+  initValidity(){
+    this.initValidTo = this.form?.value.validTo;
+    this.initValidFrom = this.form?.value.validFrom;
+  }
+
+  confirmValidity(){
+      this.validityConfirmationService.confirmValidity(
+        this.form!.controls.validTo.value,
+        this.form!.controls.validFrom.value,
+        this.initValidTo,
+        this.initValidFrom
+      ).pipe(take(1))
+        .subscribe((confirmed) => {
+          if (confirmed) {
+            this.updateVersion()
+          }
+        });
+    }
+
+  updateVersion(){
+    const servicePointVersion = ServicePointFormGroupBuilder.getWritableServicePoint(this.form!);
+    this.disableForm();
+    this.update(this.selectedVersion!.id!, servicePointVersion);
   }
 }
