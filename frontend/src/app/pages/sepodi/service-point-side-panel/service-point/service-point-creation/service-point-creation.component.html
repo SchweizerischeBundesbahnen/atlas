@@ -1,11 +1,12 @@
 <atlas-detail-page-container>
-  <div class="font-bold-4xl mb-3">
+  <div class="font-bold-4xl mb-3" data-cy="new-service-point-label">
     {{ 'SEPODI.SERVICE_POINTS.NEW_SERVICE_POINT' | translate }}
   </div>
 
   <atlas-detail-page-content>
     <div class="d-flex">
       <atlas-select
+        dataCy="select-country"
         class="col-6 pe-3"
         label="COMMON.COUNTRY"
         [additionalLabelspace]="25"

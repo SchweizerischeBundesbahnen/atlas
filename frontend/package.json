@@ -84,6 +84,7 @@
     "cypress": "^13.6.3",
     "cypress-failed-log": "^2.10",
     "cypress-high-resolution": "^1.0",
+    "cypress-mochawesome-reporter": "^3.8.2",
     "eslint": "^8.54.0",
     "eslint-config-prettier": "^9.0.0",
     "husky": "^9.0.0",
