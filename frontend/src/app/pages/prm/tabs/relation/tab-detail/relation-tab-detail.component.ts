@@ -7,7 +7,7 @@ import {
   ReadServicePointVersion,
   RelationVersion,
   StandardAttributeType,
-  StepFreeAccessAttributeType,
+  StepFreeAccessAttributeType, StopPointVersion,
   TactileVisualAttributeType,
 } from '../../../../../api';
 import {PrmMeanOfTransportHelper} from '../../../util/prm-mean-of-transport-helper';
@@ -21,6 +21,8 @@ import {VersionsHandlingService} from '../../../../../core/versioning/versions-h
 import {DetailFormComponent} from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
 import {RelationFormGroup, RelationFormGroupBuilder} from './relation-form-group';
 import {MatSelectChange} from '@angular/material/select';
+import {ValidityConfirmationService} from "../../../../sepodi/validity/validity-confirmation.service";
+import {Moment} from "moment/moment";
 
 @Component({
   selector: 'app-relation-tab-detail',
@@ -46,6 +48,9 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
   businessOrganisations: string[] = [];
   editing = false;
 
+  initValidFrom!: Moment | null | undefined;
+  initValidTo!: Moment | null | undefined;
+
   readonly extractSloid = (option: ReadReferencePointVersion) => option.sloid;
   readonly displayExtractor = (option: ReadReferencePointVersion) =>
     `${option.designation} - ${option.sloid}`;
@@ -56,6 +61,8 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
     private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
     private readonly dialogService: DialogService,
     private readonly notificationService: NotificationService,
+    private validityConfirmationService: ValidityConfirmationService
+
   ) {}
 
   ngOnInit(): void {
@@ -107,7 +114,8 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
         parentServicePointSloid: this.parentServicePointSloid,
         referencePointSloid: this.selectedReferencePointSloid,
       };
-      this.update(relationVersion);
+      console.log("test")
+      this.confirmValidity(relationVersion);
     }
   }
 
@@ -116,6 +124,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
       this.showCancelEditDialog();
     } else {
       this.form?.enable();
+      this.initValidity()
       this.editing = true;
     }
   }
@@ -183,4 +192,23 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
     return of(true);
   }
 
+  initValidity(){
+    this.initValidTo = this.form?.value.validTo;
+    this.initValidFrom = this.form?.value.validFrom;
+  }
+
+  confirmValidity(relationVersion: RelationVersion){
+    this.validityConfirmationService.confirmValidity(
+      this.form?.controls.validTo.value,
+      this.form?.controls.validFrom.value,
+      this.initValidTo,
+      this.initValidFrom
+    ).pipe(take(1))
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.update(relationVersion);
+          this.form?.disable();
+        }
+      });
+  }
 }

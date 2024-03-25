@@ -5,7 +5,7 @@ import {
   ParkingLotVersion,
   PersonWithReducedMobilityService,
   ReadParkingLotVersion,
-  ReadServicePointVersion
+  ReadServicePointVersion, StopPointVersion
 } from "../../../../../../api";
 import {FormGroup} from "@angular/forms";
 import {NotificationService} from "../../../../../../core/notification/notification.service";
@@ -13,6 +13,9 @@ import {VersionsHandlingService} from "../../../../../../core/versioning/version
 import {ParkingLotFormGroup, ParkingLotFormGroupBuilder} from "../form/parking-lot-form-group";
 import {DateRange} from "../../../../../../core/versioning/date-range";
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
+import {take} from "rxjs";
+import {Moment} from "moment/moment";
+import {ValidityConfirmationService} from "../../../../../sepodi/validity/validity-confirmation.service";
 
 @Component({
   selector: 'app-parking-lot-detail',
@@ -32,12 +35,16 @@ export class ParkingLotDetailComponent implements OnInit, DetailFormComponent, D
 
   businessOrganisations: string[] = [];
 
+  initValidFrom!: Moment | null | undefined;
+  initValidTo!: Moment | null | undefined;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private personWithReducedMobilityService: PersonWithReducedMobilityService,
     private notificationService: NotificationService,
     private detailHelperService: DetailHelperService,
+    private validityConfirmationService: ValidityConfirmationService
   ) {}
 
   ngOnInit(): void {
@@ -91,6 +98,7 @@ export class ParkingLotDetailComponent implements OnInit, DetailFormComponent, D
     if (this.form.enabled) {
       this.detailHelperService.showCancelEditDialog(this);
     } else {
+      this.initValidity();
       this.form.enable();
     }
   }
@@ -105,7 +113,7 @@ export class ParkingLotDetailComponent implements OnInit, DetailFormComponent, D
       if (this.isNew) {
         this.create(parkingLotVersion);
       } else {
-        this.update(parkingLotVersion);
+        this.confirmValidity(parkingLotVersion);
       }
     }
   }
@@ -136,4 +144,23 @@ export class ParkingLotDetailComponent implements OnInit, DetailFormComponent, D
       });
   }
 
+  initValidity(){
+    this.initValidTo = this.form?.value.validTo;
+    this.initValidFrom = this.form?.value.validFrom;
+  }
+
+  confirmValidity(parkingLotVersion: ParkingLotVersion){
+    this.validityConfirmationService.confirmValidity(
+      this.form.controls.validTo.value,
+      this.form.controls.validFrom.value,
+      this.initValidTo,
+      this.initValidFrom
+    ).pipe(take(1))
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.update(parkingLotVersion);
+          this.form.disable();
+        }
+      });
+  }
 }
