@@ -74,7 +74,8 @@ public class RestDocTest {
             .withDefaults(CliDocumentation.curlRequest(),
                 HttpDocumentation.httpRequest(),
                 HttpDocumentation.httpResponse(),
-            new MethodAndPathSnippet(),
+                new ResponseSnippet(),
+                new MethodAndPathSnippet(),
                 new AtlasAutoDocSnippet()))
         .build();
   }
