@@ -37,8 +37,8 @@ export default class SepodiUtils {
       .type(designationOfficial)
       .then(() => {
         cy.intercept('POST', 'service-point-directory/v1/service-points/search').as('searchVersion');
-        cy.wait('@searchVersion').its('response.statusCode').should('eq', 200);
         cy.get(DataCy.SEPODI_SEARCH_SERVICE_POINT_SELECT + ' .ng-option').click();
+        cy.wait('@searchVersion').its('response.statusCode').should('eq', 200);
       });
   }
 
