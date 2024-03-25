@@ -11,12 +11,15 @@ import {AuthService} from '../../../../../core/auth/auth.service';
 import {StopPointDetailFormGroup, StopPointFormGroupBuilder,} from '../form/stop-point-detail-form-group';
 import {PrmTabsService} from '../../../prm-panel/prm-tabs.service';
 import {
+  CreateTrafficPointElementVersion,
   PersonWithReducedMobilityService,
   ReadServicePointVersion,
   ReadStopPointVersion,
   StopPointVersion,
 } from '../../../../../api';
 import {PrmMeanOfTransportHelper} from "../../../util/prm-mean-of-transport-helper";
+import {Moment} from "moment";
+import {ValidityConfirmationService} from "../../../../sepodi/validity/validity-confirmation.service";
 import {ReferencePointCreationHintService} from "./reference-point-creation-hint/reference-point-creation-hint.service";
 
 @Component({
@@ -37,7 +40,8 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   preferredId?: number;
   public isFormEnabled$ = new BehaviorSubject<boolean>(false);
   isReduced!: boolean | undefined;
-
+  initValidFrom!: Moment | null | undefined;
+  initValidTo!: Moment | null | undefined;
   constructor(
     private readonly router: Router,
     private readonly route: ActivatedRoute,
@@ -47,6 +51,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     private authService: AuthService,
     private prmTabsService: PrmTabsService,
     private referencePointCreationHintService: ReferencePointCreationHintService,
+    private validityConfirmationService: ValidityConfirmationService
   ) {
   }
 
@@ -78,6 +83,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     if (this.form.enabled) {
       this.showConfirmationDialog();
     } else {
+      this.initValidity()
       this.enableForm();
     }
   }
@@ -94,7 +100,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
       const writableStopPoint = StopPointFormGroupBuilder.getWritableStopPoint(this.form);
       this.form.disable();
       if (!this.isNew) {
-        this.updateStopPoint(writableStopPoint);
+        this.confirmValidity(writableStopPoint)
       } else {
         this.createStopPoint(writableStopPoint);
       }
@@ -253,6 +259,26 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
       title: 'PRM.DIALOG.PRM_VARIANT_CHANGES_TITLE',
       message: 'PRM.DIALOG.PRM_VARIANT_CHANGES_MSG',
     });
+  }
+
+  initValidity(){
+    this.initValidTo = this.form?.value.validTo;
+    this.initValidFrom = this.form?.value.validFrom;
+  }
+
+  confirmValidity(stopPointVersion: StopPointVersion){
+    this.validityConfirmationService.confirmValidity(
+      this.form.controls.validTo.value,
+      this.form.controls.validFrom.value,
+      this.initValidTo,
+      this.initValidFrom
+    ).pipe(take(1))
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.updateStopPoint(stopPointVersion);
+          this.disableForm();
+        }
+      });
   }
 
 }
