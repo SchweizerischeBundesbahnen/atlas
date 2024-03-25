@@ -10,7 +10,7 @@ import {
   PersonWithReducedMobilityService,
   ReadReferencePointVersion,
   ReadServicePointVersion,
-  ReferencePointVersion,
+  ReferencePointVersion, StopPointVersion,
 } from '../../../../../api';
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../core/detail/detail-helper.service";
 import {take} from "rxjs";
