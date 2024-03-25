@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-  CreateLoadingPointVersion,
+  CreateLoadingPointVersion, CreateTrafficPointElementVersion,
   LoadingPointsService,
   ReadLoadingPointVersion,
   ReadServicePointVersion,
