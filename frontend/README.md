@@ -93,9 +93,10 @@ To start the Release-Tests locally:
 
 ##### Cypress Tests results for troubleshooting
 
-After each job execution a cypress video is captured and stored as **Build Artifacts**.
+After each job execution a cypress report (html file that includes screenshots e video) is the folder [cypress/test-results](cypress/test-results).
 
-In case of a failure under **Build Artifacts** are stored 2 directories, one with the logs and the second with the screenshots.
+In case of a failure on Tekton the directory [cypress/test-results](cypress/test-results) is uploaded to the S3 Bucket 
+**atlas-cypress-ci-dev**
 
 ### Set SBB Artifactory as npm registry
 
