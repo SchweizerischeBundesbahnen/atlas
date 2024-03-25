@@ -7,7 +7,7 @@ import {
   ReadPlatformVersion,
   ReadServicePointVersion,
   ReadStopPointVersion,
-  ReadTrafficPointElementVersion
+  ReadTrafficPointElementVersion, ReferencePointVersion
 } from "../../../../../../api";
 import {FormGroup} from "@angular/forms";
 import {NotificationService} from "../../../../../../core/notification/notification.service";
@@ -17,6 +17,9 @@ import {VersionsHandlingService} from "../../../../../../core/versioning/version
 import {CompletePlatformFormGroup, PlatformFormGroupBuilder, ReducedPlatformFormGroup} from "../form/platform-form-group";
 import {DateRange} from "../../../../../../core/versioning/date-range";
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
+import {take} from "rxjs";
+import {Moment} from "moment/moment";
+import {ValidityConfirmationService} from "../../../../../sepodi/validity/validity-confirmation.service";
 
 @Component({
   selector: 'app-platforms',
@@ -38,7 +41,8 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
   showVersionSwitch = false;
   selectedVersionIndex!: number;
   mayCreate = true;
-
+  initValidFrom!: Moment | null | undefined;
+  initValidTo!: Moment | null | undefined;
   get reducedForm(): FormGroup<ReducedPlatformFormGroup> {
     return this.form as FormGroup<ReducedPlatformFormGroup>;
   }
@@ -54,6 +58,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
     private notificationService: NotificationService,
     private detailHelperService: DetailHelperService,
     private authService: AuthService,
+    private validityConfirmationService: ValidityConfirmationService
   ) {}
 
   ngOnInit(): void {
@@ -126,6 +131,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
     if (this.form.enabled) {
       this.detailHelperService.showCancelEditDialog(this);
     } else {
+      this.initValidity()
       this.form.enable();
     }
   }
@@ -141,7 +147,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
       if (this.isNew) {
         this.create(platformVersion);
       } else {
-        this.update(platformVersion);
+        this.confirmValidity(platformVersion)
       }
     }
   }
@@ -170,4 +176,23 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
       .then(() => this.ngOnInit());
   }
 
+  initValidity(){
+    this.initValidTo = this.form?.value.validTo;
+    this.initValidFrom = this.form?.value.validFrom;
+  }
+
+  confirmValidity(platformVersion: PlatformVersion){
+    this.validityConfirmationService.confirmValidity(
+      this.form.controls.validTo.value,
+      this.form.controls.validFrom.value,
+      this.initValidTo,
+      this.initValidFrom
+    ).pipe(take(1))
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.update(platformVersion);
+          this.form.disable();
+        }
+      });
+  }
 }
