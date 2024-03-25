@@ -51,8 +51,8 @@ export default class SepodiUtils {
 
   static getServicePointVersion() {
     return {
-      designationLong: 'Bern, Wyleregg, the best place in Bern',
-      designationOfficial: 'Bern, Wyleregg',
+      designationLong: 'Bern, Atlas, the best place in Bern',
+      designationOfficial: 'Bern, Atlas',
       businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       validFrom: '01.01.2000',
       validTo: '31.12.9999',
