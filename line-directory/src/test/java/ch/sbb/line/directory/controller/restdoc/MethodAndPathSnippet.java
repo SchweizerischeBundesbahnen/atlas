@@ -9,6 +9,7 @@ import org.springframework.restdocs.snippet.TemplatedSnippet;
 
 public class MethodAndPathSnippet extends TemplatedSnippet {
 
+
     public MethodAndPathSnippet() {
         super("auto-method-path", null);
     }
@@ -20,5 +21,6 @@ public class MethodAndPathSnippet extends TemplatedSnippet {
         model.put("path", operation.getRequest().getUri().getPath());
         return model;
     }
+
 
 }
