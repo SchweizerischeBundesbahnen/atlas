@@ -1,13 +1,22 @@
 import {Component, OnInit} from '@angular/core';
 import {VersionsHandlingService} from "../../../../../../core/versioning/versions-handling.service";
 import {ToiletFormGroup, ToiletFormGroupBuilder} from "../form/toilet-form-group";
-import {PersonWithReducedMobilityService, ReadServicePointVersion, ReadToiletVersion, ToiletVersion} from "../../../../../../api";
+import {
+  PersonWithReducedMobilityService,
+  ReadServicePointVersion,
+  ReadToiletVersion,
+  StopPointVersion,
+  ToiletVersion
+} from "../../../../../../api";
 import {DetailFormComponent} from "../../../../../../core/leave-guard/leave-dirty-form-guard.service";
 import {DateRange} from "../../../../../../core/versioning/date-range";
 import {FormGroup} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NotificationService} from "../../../../../../core/notification/notification.service";
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
+import {take} from "rxjs";
+import {Moment} from "moment/moment";
+import {ValidityConfirmationService} from "../../../../../sepodi/validity/validity-confirmation.service";
 
 @Component({
   selector: 'app-toilet-detail',
@@ -27,6 +36,8 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent, Detai
   selectedVersionIndex!: number;
 
   businessOrganisations: string[] = [];
+  initValidFrom!: Moment | null | undefined;
+  initValidTo!: Moment | null | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -34,6 +45,7 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent, Detai
     private personWithReducedMobilityService: PersonWithReducedMobilityService,
     private notificationService: NotificationService,
     private detailHelperService: DetailHelperService,
+    private validityConfirmationService: ValidityConfirmationService
   ) {}
 
   ngOnInit(): void {
@@ -87,6 +99,7 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent, Detai
     if (this.form.enabled) {
       this.detailHelperService.showCancelEditDialog(this);
     } else {
+      this.initValidity()
       this.form.enable();
     }
   }
@@ -101,7 +114,7 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent, Detai
       if (this.isNew) {
         this.create(toiletVersion);
       } else {
-        this.update(toiletVersion);
+        this.confirmValidity(toiletVersion)
       }
     }
   }
@@ -132,4 +145,23 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent, Detai
       });
   }
 
+  initValidity(){
+    this.initValidTo = this.form?.value.validTo;
+    this.initValidFrom = this.form?.value.validFrom;
+  }
+
+  confirmValidity(toiletVersion: ToiletVersion){
+    this.validityConfirmationService.confirmValidity(
+      this.form.controls.validTo.value,
+      this.form.controls.validFrom.value,
+      this.initValidTo,
+      this.initValidFrom
+    ).pipe(take(1))
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.update(toiletVersion);
+          this.form.disable();
+        }
+      });
+  }
 }
