@@ -85,7 +85,7 @@
   <div *ngIf="form.value.selectedType === 'STOP_POINT'" class="d-flex mt-2 d-flex flex-column">
     <div class="font-bold-lg d-flex col-12">{{ 'PAGES.DETAILS' | translate }}</div>
     <div class="d-flex col-12 mt-2 flex-column" [formGroup]="form">
-      <mat-checkbox formControlName="stopPoint" data-cy="stopPoint">
+      <mat-checkbox formControlName="stopPoint" data-cy="checkboxStopPoint">
         {{ 'SEPODI.SERVICE_POINTS.STOP_POINT' | translate }}
       </mat-checkbox>
       <app-atlas-field-error [form]="form" controlName="stopPoint"></app-atlas-field-error>
