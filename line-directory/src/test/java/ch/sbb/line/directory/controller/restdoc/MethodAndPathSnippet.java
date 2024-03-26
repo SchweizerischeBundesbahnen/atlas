@@ -9,9 +9,8 @@ import org.springframework.restdocs.snippet.TemplatedSnippet;
 
 public class MethodAndPathSnippet extends TemplatedSnippet {
 
-
     public MethodAndPathSnippet() {
-        super("auto-method-path", null);
+        super("method-path", null);
     }
 
     @Override
