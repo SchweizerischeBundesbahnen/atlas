@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.controller.restdoc;
 
-import ch.sbb.line.directory.controller.restdoc.ClassDescriptor.FieldDescriptor;
+import ch.sbb.line.directory.controller.restdoc.FieldDescriptors.FieldDescriptor;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
