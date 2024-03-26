@@ -8,16 +8,16 @@ class ClassDescriptorTest {
 
   @Test
   void shouldDescibeType() {
-    ClassDescriptor classDescriptor = new ClassDescriptor(LineVersionModel.class);
-    System.out.println(classDescriptor);
+    FieldDescriptors fieldDescriptors = new FieldDescriptors(LineVersionModel.class);
+    System.out.println(fieldDescriptors);
 
   }
 
   @Test
   void shouldDescibeservicepointType() {
     // TODO: super/nested classes
-    ClassDescriptor classDescriptor = new ClassDescriptor(CreateServicePointVersionModel.class);
-    System.out.println(classDescriptor);
+    FieldDescriptors fieldDescriptors = new FieldDescriptors(CreateServicePointVersionModel.class);
+    System.out.println(fieldDescriptors);
 
   }
 }
