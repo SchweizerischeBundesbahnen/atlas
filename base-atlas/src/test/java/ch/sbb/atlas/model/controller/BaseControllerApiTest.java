@@ -56,7 +56,6 @@ public abstract class BaseControllerApiTest {
             .and().snippets()
             .withDefaults(CliDocumentation.curlRequest(),
                 HttpDocumentation.httpRequest(),
-                new MethodAndPathSnippet(),
                 HttpDocumentation.httpResponse()))
         .build();
   }
