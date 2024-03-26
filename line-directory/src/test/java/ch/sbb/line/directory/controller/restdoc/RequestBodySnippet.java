@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.controller.restdoc;
 
-import ch.sbb.line.directory.controller.restdoc.ClassDescriptor.FieldDescriptor;
+import ch.sbb.line.directory.controller.restdoc.FieldDescriptors.FieldDescriptor;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -29,8 +29,8 @@ public class RequestBodySnippet extends AtlasTableSnippet {
         .filter(parameter -> parameter.hasParameterAnnotation(RequestBody.class))
         .findFirst();
     if (requestBody.isPresent()) {
-      ClassDescriptor classDescriptor = new ClassDescriptor(requestBody.get().getParameterType());
-      return classDescriptor.getFields();
+      FieldDescriptors fieldDescriptors = new FieldDescriptors(requestBody.get().getParameterType());
+      return fieldDescriptors.getFields();
     }
     return Collections.emptyList();
   }
