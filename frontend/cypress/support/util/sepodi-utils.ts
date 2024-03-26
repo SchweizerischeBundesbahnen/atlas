@@ -7,12 +7,11 @@ export default class SepodiUtils {
   static navigateToServicePoint() {
     CommonUtils.navigateToHomeViaHomeLogo();
     cy.wait(1000);//I haven't found a better way to ensure that the DOM is actually rendered
-    cy.get('#service-point-directory').click({ force: true });
+    cy.get('#service-point-directory').click({force: true});
   }
 
-  static saveServicePoint(){
-    cy.get(DataCy.SAVE_ITEM).click().then(() =>
-    {
+  static saveServicePoint() {
+    cy.get(DataCy.SAVE_ITEM).click().then(() => {
       cy.intercept('GET', 'service-point-directory/v1/service-points/85*').as('saveAndGetVersion');
       cy.wait('@saveAndGetVersion').its('response.statusCode').should('eq', 200);
       cy.get(DataCy.EDIT).should('exist');
@@ -22,26 +21,25 @@ export default class SepodiUtils {
     })
   }
 
-  static saveTrafficPoint(){
-    cy.get(DataCy.SAVE_ITEM).click().then(() =>
-    {
+  static saveTrafficPoint() {
+    cy.get(DataCy.SAVE_ITEM).click().then(() => {
       cy.get(DataCy.EDIT).should('exist');
       cy.get(DataCy.CLOSE_DETAIL).should('exist');
     })
   }
 
-  static searchAddedServicePoint(designationOfficial: string){
+  static searchAddedServicePoint(designationOfficial: string) {
     CommonUtils.navigateToHomeViaHomeLogo();
     this.navigateToServicePoint();
     cy.get(DataCy.SEPODI_SEARCH_SERVICE_POINT_SELECT + ' input')
       .type(designationOfficial)
       .then(() => {
         cy.get(DataCy.SEPODI_SEARCH_SERVICE_POINT_SELECT + ' .ng-option')
-          .should('contain', designationOfficial).click();
+          .should('contain', designationOfficial).click({force: true});
       });
   }
 
-  static searchAndClickAddedTrafficPointOnTheTable(designation: string){
+  static searchAndClickAddedTrafficPointOnTheTable(designation: string) {
     // table
     cy.get(DataCy.SEPODI_TRAFFIC_POINT_ELEMENTS_TABLE + ' table tbody tr').should('have.length', 1);
     // Click on the item
@@ -71,7 +69,7 @@ export default class SepodiUtils {
       east: '2600783',
       length: '15',
       boardingAreaHeight: '22',
-      compassDirection:'266'
+      compassDirection: '266'
     }
   }
 

@@ -173,7 +173,6 @@ describe('SePoDi use cases', {testIsolation: false}, () => {
       cy.intercept('GET', 'service-point-directory/v1/traffic-point-elements/actual-date/*').as('getTrafficPoint');
       SepodiUtils.saveTrafficPoint();
       cy.wait('@getTrafficPoint').its('response.statusCode').should('eq', 200);
-      // cy.wait(1000);//.mat-mdc-simple-snack-bar > .mat-mdc-snack-bar-label
     });
 
   });
