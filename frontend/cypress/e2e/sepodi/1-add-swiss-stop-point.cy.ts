@@ -125,7 +125,7 @@ describe('SePoDi use cases', {testIsolation: false}, () => {
       cy.get(DataCy.SEPODI_TRAFFIC_POINT_TAB).should('exist').click();
       cy.get(DataCy.SEPODI_NEW_TRAFFIC_POINT_BUTTON).should('exist').click();
       cy.get(DataCy.SEPODI_TRAFFIC_POINT_HEADER).should('contain.text', 'Haltekante / Gleis');
-      cy.get(DataCy.SEPODI_TRAFFIC_POINT_HEADER_TITLE).should('contain.text', 'Haltestellenname Bern, Wyleregg');
+      cy.get(DataCy.SEPODI_TRAFFIC_POINT_HEADER_TITLE).should('contain.text', 'Haltestellenname ' + servicePoint.designationOfficial);
     });
 
     it('Step-3: fill TrafficPoint form and save ', () => {
@@ -161,7 +161,7 @@ describe('SePoDi use cases', {testIsolation: false}, () => {
       SepodiUtils.searchAddedServicePoint(servicePoint.designationOfficial);
       cy.get(DataCy.SEPODI_TRAFFIC_POINT_TAB).should('exist').click();
       SepodiUtils.searchAndClickAddedTrafficPointOnTheTable(trafficPoint.designation)
-      cy.get(DataCy.SEPODI_TRAFFIC_POINT_HEADER_TITLE).should('contain.text', 'Haltestellenname Bern, Wyleregg');
+      cy.get(DataCy.SEPODI_TRAFFIC_POINT_HEADER_TITLE).should('contain.text', 'Haltestellenname ' + servicePoint.designationOfficial);
       CommonUtils.assertItemValue(DataCy.SEPODI_TRAFFIC_POINT_DESIGNATION, trafficPoint.designation);
     });
 
@@ -170,23 +170,29 @@ describe('SePoDi use cases', {testIsolation: false}, () => {
       cy.intercept('GET', 'service-point-directory/v1/geodata/reverse-geocode?east*').as('getGeodata');
       cy.get(DataCy.SEPODI_MAP).should('exist').click(360,170);
       cy.wait('@getGeodata').its('response.statusCode').should('eq', 200);
+      cy.intercept('GET', 'service-point-directory/v1/traffic-point-elements/actual-date/*').as('getTrafficPoint');
       SepodiUtils.saveTrafficPoint();
+      cy.wait('@getTrafficPoint').its('response.statusCode').should('eq', 200);
+      // cy.wait(1000);//.mat-mdc-simple-snack-bar > .mat-mdc-snack-bar-label
     });
 
   });
 
   describe('Use case 6: TrafficPoint cancellation/termination', () => {
 
+    const terminationDate = '31.12.2050';
+
     it('Step-1: Terminate TrafficPoint', () => {
+      cy.get(DataCy.SEPODI_TRAFFIC_POINT_HEADER_TITLE).should('contain.text', 'Haltestellenname ' + servicePoint.designationOfficial);
+      CommonUtils.assertItemValue(DataCy.SEPODI_TRAFFIC_POINT_DESIGNATION, trafficPoint.designation);
       cy.get(DataCy.EDIT).click();
-      CommonUtils.getClearType(DataCy.VALID_FROM, trafficPoint.validFrom, true);
-      CommonUtils.getClearType(DataCy.VALID_TO, '31.12.2050', true);
+      CommonUtils.getClearType(DataCy.VALID_TO, terminationDate, true);
       SepodiUtils.saveTrafficPoint();
     });
 
     it('Step-2: Validate TrafficPoint termination', () => {
-      CommonUtils.getTotalRange().should('contain', trafficPoint.validFrom).should('contain', '31.12.2050');
-      CommonUtils.assertVersionRange(1, trafficPoint.validFrom, '31.12.2050');
+      CommonUtils.getTotalRange().should('contain', trafficPoint.validFrom).should('contain', terminationDate);
+      CommonUtils.assertVersionRange(1, trafficPoint.validFrom, terminationDate);
     });
 
   });
