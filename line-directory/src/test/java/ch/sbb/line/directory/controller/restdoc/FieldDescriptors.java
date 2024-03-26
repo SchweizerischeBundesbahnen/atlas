@@ -8,32 +8,42 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.MethodParameter;
 
 @Getter
 @Data
-public class ClassDescriptor {
+public class FieldDescriptors {
 
   public static final String LINE_SEPERATOR = "\n";
 
   private final List<FieldDescriptor> fields = new ArrayList<>();
 
-  public ClassDescriptor(Class<?> clazz) {
+  public FieldDescriptors(Class<?> clazz) {
     this.fields.addAll(
-        getAllFields(clazz).stream().filter(field -> !Modifier.isStatic(field.getModifiers()))
-            .map(ClassDescriptor::buildFieldDescriptions).flatMap(Collection::stream)
+        getAllFields(clazz).stream()
+            .filter(field -> !Modifier.isStatic(field.getModifiers()))
+            .map(ParameterWrapper::new)
+            .map(FieldDescriptors::buildFieldDescriptions)
+            .flatMap(Collection::stream)
             .toList());
+  }
+
+  public FieldDescriptors(List<MethodParameter> methodParameters) {
+    this.fields.addAll(methodParameters.stream()
+        .map(ParameterWrapper::new)
+        .map(FieldDescriptors::buildFieldDescriptions)
+        .flatMap(Collection::stream)
+        .toList());
   }
 
   private static List<Field> getAllFields(Class<?> clazz) {
@@ -46,7 +56,7 @@ public class ClassDescriptor {
     return fields;
   }
 
-  private static List<FieldDescriptor> buildFieldDescriptions(Field field) {
+  private static List<FieldDescriptor> buildFieldDescriptions(ParameterWrapper field) {
     List<FieldDescriptor> fieldDescriptions = new ArrayList<>();
     FieldDescriptor currentField = FieldDescriptor.builder()
         .fieldName(field.getName())
@@ -57,8 +67,8 @@ public class ClassDescriptor {
     fieldDescriptions.add(currentField);
 
     if (currentField.getType().equals("Array[Object]")) {
-      Class<?> collectionType = getCollectionClass(field);
-      ClassDescriptor collectionTypeDescription = new ClassDescriptor(collectionType);
+      Class<?> collectionType = field.getType();
+      FieldDescriptors collectionTypeDescription = new FieldDescriptors(collectionType);
       List<FieldDescriptor> collectionFields = collectionTypeDescription.getFields();
       collectionFields.forEach(
           collectionField -> collectionField.setFieldName(currentField.getFieldName() + "[]." + collectionField.getFieldName()));
@@ -66,7 +76,7 @@ public class ClassDescriptor {
     }
     if (currentField.getType().equals("Object")) {
       Class<?> subType = field.getType();
-      ClassDescriptor subTypeDescription = new ClassDescriptor(subType);
+      FieldDescriptors subTypeDescription = new FieldDescriptors(subType);
       List<FieldDescriptor> collectionFields = subTypeDescription.getFields();
       collectionFields.forEach(
           collectionField -> collectionField.setFieldName(currentField.getFieldName() + "." + collectionField.getFieldName()));
@@ -86,31 +96,17 @@ public class ClassDescriptor {
 
   }
 
-  private static String getType(Field field) {
-    if (field.getType().isEnum()) {
+  private static String getType(ParameterWrapper field) {
+    if (field.isCollection() && field.isEnum()) {
+      return "Array[String]";
+    }
+    if (field.isCollection()) {
+      return "Array[%s]".formatted(getSimpleName(field.getType().getName()));
+    }
+    if (field.isEnum()) {
       return "String";
     }
-    if (isCollection(field.getType())) {
-      Class<?> collectionType = getCollectionClass(field);
-      if (collectionType.isEnum()) {
-        return "Array[String]";
-      }
-      return "Array[%s]".formatted(getSimpleName(collectionType.getName()));
-    }
-    return getSimpleName(field.getGenericType().getTypeName());
-  }
-
-  private static boolean isCollection(Class<?> clazz) {
-    return Set.of(Set.class.getName(), List.class.getName()).contains(clazz.getName());
-  }
-
-  private static Class<?> getCollectionClass(Field field) {
-    String className = ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0].getTypeName();
-    try {
-      return Class.forName(className);
-    } catch (ClassNotFoundException e) {
-      throw new IllegalStateException(e);
-    }
+    return getSimpleName(field.getType().getName());
   }
 
   private static String getSimpleName(String canonicalName) {
@@ -124,26 +120,28 @@ public class ClassDescriptor {
     };
   }
 
-  private static boolean isMandatory(Field field) {
-    if (field.getType().isPrimitive()) {
+  private static boolean isMandatory(ParameterWrapper field) {
+    if (field.isPrimitive()) {
       return true;
     }
-    return Arrays.stream(field.getAnnotations()).anyMatch(i ->
+    if (field.isOptional()) {
+      return false;
+    }
+    return field.getAnnotations().stream().anyMatch(i ->
         i.annotationType().equals(NotNull.class) ||
             i.annotationType().equals(NotBlank.class) ||
             i.annotationType().equals(NotEmpty.class));
   }
 
-  private static List<String> buildDescriptionForField(Field field) {
+  private static List<String> buildDescriptionForField(ParameterWrapper field) {
     List<String> descriptionParts = new ArrayList<>();
     if (field.isAnnotationPresent(Schema.class)) {
       descriptionParts.add(buildDescriptionForSchema(field));
     }
-    if (field.getType().isEnum()) {
+    if (field.isCollection() && field.isEnum()) {
+      descriptionParts.add(buildDescriptionForEnumType((Class<Enum<?>>) field.getType()));
+    } else if (field.isEnum()) {
       descriptionParts.add(buildDescriptionForEnum(field));
-    }
-    if (isCollection(field.getType()) && getCollectionClass(field).isEnum()) {
-      descriptionParts.add(buildDescriptionForEnumType((Class<Enum<?>>) getCollectionClass(field)));
     }
     if (field.isAnnotationPresent(Pattern.class)) {
       descriptionParts.add(buildDescriptionForPattern(field));
@@ -154,7 +152,7 @@ public class ClassDescriptor {
     return descriptionParts;
   }
 
-  private static String buildDescriptionForSchema(Field field) {
+  private static String buildDescriptionForSchema(ParameterWrapper field) {
     Schema schemaAnnotation = field.getAnnotation(Schema.class);
     String exampleDescription =
         StringUtils.isNotBlank(schemaAnnotation.example()) ?
@@ -163,7 +161,7 @@ public class ClassDescriptor {
     return schemaAnnotation.description() + exampleDescription;
   }
 
-  private static String buildDescriptionForEnum(Field field) {
+  private static String buildDescriptionForEnum(ParameterWrapper field) {
     return buildDescriptionForEnumType((Class<Enum<?>>) field.getType());
   }
 
@@ -173,13 +171,13 @@ public class ClassDescriptor {
     return "Must be one of [" + enumValueDescription + "]";
   }
 
-  private static String buildDescriptionForPattern(Field field) {
+  private static String buildDescriptionForPattern(ParameterWrapper field) {
     Pattern patternAnnotation = field.getAnnotation(Pattern.class);
     String regexp = patternAnnotation.regexp();
     return "Must conform to regex " + regexp;
   }
 
-  private static String buildDescriptionForSize(Field field) {
+  private static String buildDescriptionForSize(ParameterWrapper field) {
     Size sizeAnnotation = field.getAnnotation(Size.class);
     return "Length must be between " + sizeAnnotation.min() + " and " + sizeAnnotation.max();
   }
