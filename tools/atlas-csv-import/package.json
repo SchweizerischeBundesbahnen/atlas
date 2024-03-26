@@ -11,6 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^1.6.8",
-    "convert-csv-to-json": "^2.33.0"
+    "convert-csv-to-json": "^2.37.0"
   }
 }
