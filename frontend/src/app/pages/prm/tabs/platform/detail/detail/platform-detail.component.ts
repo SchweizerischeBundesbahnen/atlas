@@ -7,7 +7,7 @@ import {
   ReadPlatformVersion,
   ReadServicePointVersion,
   ReadStopPointVersion,
-  ReadTrafficPointElementVersion, ReferencePointVersion
+  ReadTrafficPointElementVersion,
 } from "../../../../../../api";
 import {FormGroup} from "@angular/forms";
 import {NotificationService} from "../../../../../../core/notification/notification.service";

@@ -21,7 +21,6 @@ import {TrafficPointMapService} from '../map/traffic-point-map.service';
 import {ValidityConfirmationService} from '../validity/validity-confirmation.service';
 import {DetailFormComponent} from '../../../core/leave-guard/leave-dirty-form-guard.service';
 import {GeographyFormGroup, GeographyFormGroupBuilder} from '../geography/geography-form-group';
-import {ServicePointFormGroupBuilder} from "../service-point-side-panel/service-point/service-point-detail-form-group";
 import {Moment} from "moment/moment";
 
 interface AreaOption {
