@@ -2,7 +2,7 @@ import {Directive, OnInit} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {Record} from './record';
 import {DialogService} from '../dialog/dialog.service';
-import {EMPTY, Observable, of, Subject} from 'rxjs';
+import {EMPTY, Observable, of, Subject, take} from 'rxjs';
 import {Page} from '../../model/page';
 import {NotificationService} from '../../notification/notification.service';
 import {ApplicationRole, ApplicationType, Status} from '../../../api';
@@ -12,6 +12,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {DetailFormComponent} from '../../leave-guard/leave-dirty-form-guard.service';
 import {VersionsHandlingService} from '../../versioning/versions-handling.service';
 import {DateRange} from '../../versioning/date-range';
+import {ValidityConfirmationService} from "../../../pages/sepodi/validity/validity-confirmation.service";
+import {Moment} from "moment";
 
 @Directive()
 export abstract class BaseDetailController<TYPE extends Record>
@@ -25,6 +27,9 @@ export abstract class BaseDetailController<TYPE extends Record>
   showSwitch: boolean | undefined;
   switchVersionEvent = new Subject<Record>();
   maxValidity!: DateRange;
+  initValidFrom!: Moment | null | undefined;
+  initValidTo!: Moment | null | undefined;
+
 
   protected constructor(
     protected router: Router,
@@ -32,6 +37,8 @@ export abstract class BaseDetailController<TYPE extends Record>
     protected notificationService: NotificationService,
     protected authService: AuthService,
     protected activatedRoute: ActivatedRoute,
+    protected validityConfirmationService: ValidityConfirmationService,
+
   ) {}
 
   get versionNumberOfCurrentRecord(): number {
@@ -103,6 +110,7 @@ export abstract class BaseDetailController<TYPE extends Record>
       this.showConfirmationDialog();
     } else {
       this.form.enable();
+      this.initValidity()
       this.disableUneditableFormFields();
     }
   }
@@ -111,17 +119,17 @@ export abstract class BaseDetailController<TYPE extends Record>
     ValidationService.validateForm(this.form);
     this.switchedIndex = undefined;
     if (this.form.valid) {
-      this.form.disable();
       if (this.getId()) {
         this.confirmBoTransfer().subscribe((confirmed) => {
           if (confirmed) {
-            this.updateRecord();
+            this.confirmValidity()
           } else {
             this.form.enable();
           }
         });
       } else {
         this.createRecord();
+        this.form.disable();
       }
     }
   }
@@ -298,5 +306,22 @@ export abstract class BaseDetailController<TYPE extends Record>
     }
     return of(true);
   }
-
+  initValidity(){
+    this.initValidTo = this.form?.value.validTo;
+    this.initValidFrom = this.form?.value.validFrom;
+  }
+  confirmValidity(){
+    this.validityConfirmationService.confirmValidity(
+      this.form.controls.validTo.value,
+      this.form.controls.validFrom.value,
+      this.initValidTo,
+      this.initValidFrom
+    ).pipe(take(1))
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.updateRecord();
+          this.form.disable();
+        }
+      });
+  }
 }
