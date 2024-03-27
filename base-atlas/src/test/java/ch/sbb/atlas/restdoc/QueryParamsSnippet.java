@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,21 +23,30 @@ public class QueryParamsSnippet extends AtlasTableSnippet {
   protected List<FieldDescriptor> getFields(HandlerMethod handlerMethod) {
     List<MethodParameter> parameters = List.of(handlerMethod.getMethodParameters());
 
+    Optional<MethodParameter> parameterObject = parameters.stream()
+        .filter(parameter -> parameter.hasParameterAnnotation(ParameterObject.class)).findFirst();
+
     List<MethodParameter> queryParameters = parameters.stream()
         .filter(parameter -> !parameter.hasParameterAnnotation(RequestBody.class))
         .filter(parameter -> !parameter.hasParameterAnnotation(PathVariable.class))
+        .filter(parameter -> !parameter.hasParameterAnnotation(ParameterObject.class))
         .filter(parameter -> {
           Parameter parameterAnnotation = parameter.getParameterAnnotation(Parameter.class);
           return parameterAnnotation == null || !parameterAnnotation.hidden();
         })
         .toList();
-    if (!queryParameters.isEmpty()) {
+    if (!queryParameters.isEmpty() || parameterObject.isPresent()) {
       FieldDescriptors fieldDescriptors = new FieldDescriptors(queryParameters);
       List<FieldDescriptor> fields = fieldDescriptors.getFields();
+      parameterObject.ifPresent(i -> fields.addAll(getParameterObjectDescriptions(i)));
       fields.addAll(getPageableDescriptions(parameters));
       return fields;
     }
     return Collections.emptyList();
+  }
+
+  private List<FieldDescriptor> getParameterObjectDescriptions(MethodParameter parameterObject) {
+    return new ArrayList<>(new FieldDescriptors(parameterObject.getParameterType()).getFields());
   }
 
   private List<FieldDescriptor> getPageableDescriptions(List<MethodParameter> parameters) {
