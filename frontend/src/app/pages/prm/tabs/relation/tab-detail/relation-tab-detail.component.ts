@@ -7,7 +7,7 @@ import {
   ReadServicePointVersion,
   RelationVersion,
   StandardAttributeType,
-  StepFreeAccessAttributeType, StopPointVersion,
+  StepFreeAccessAttributeType,
   TactileVisualAttributeType,
 } from '../../../../../api';
 import {PrmMeanOfTransportHelper} from '../../../util/prm-mean-of-transport-helper';
