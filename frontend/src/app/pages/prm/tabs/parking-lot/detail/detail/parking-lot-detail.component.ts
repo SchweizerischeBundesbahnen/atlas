@@ -5,7 +5,7 @@ import {
   ParkingLotVersion,
   PersonWithReducedMobilityService,
   ReadParkingLotVersion,
-  ReadServicePointVersion, StopPointVersion
+  ReadServicePointVersion,
 } from "../../../../../../api";
 import {FormGroup} from "@angular/forms";
 import {NotificationService} from "../../../../../../core/notification/notification.service";
