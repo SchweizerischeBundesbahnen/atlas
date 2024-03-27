@@ -11,7 +11,6 @@ import {AuthService} from '../../../../../core/auth/auth.service';
 import {StopPointDetailFormGroup, StopPointFormGroupBuilder,} from '../form/stop-point-detail-form-group';
 import {PrmTabsService} from '../../../prm-panel/prm-tabs.service';
 import {
-  CreateTrafficPointElementVersion,
   PersonWithReducedMobilityService,
   ReadServicePointVersion,
   ReadStopPointVersion,
