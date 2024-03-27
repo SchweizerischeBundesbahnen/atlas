@@ -11,9 +11,19 @@ describe('ValidityConfirmationService', () => {
 
   let dialogService: SpyObj<DialogService>;
 
+  let momentMockFormValidTo: any;
+  let momentMockFormValidFrom: any;
+  let momentMockInitValidTo: any;
+  let momentMockInitValidFrom: any;
+
   beforeEach(() => {
     dialogService = jasmine.createSpyObj('dialogService', ['confirm']);
     dialogService.confirm.and.returnValue(of(true));
+
+    momentMockFormValidTo = jasmine.createSpyObj('moment', ['isSame']);
+    momentMockFormValidFrom = jasmine.createSpyObj('moment', ['isSame']);
+    momentMockInitValidTo = jasmine.createSpyObj('moment', ['isSame']);
+    momentMockInitValidFrom = jasmine.createSpyObj('moment', ['isSame']);
 
     TestBed.configureTestingModule({
       providers: [{ provide: DialogService, useValue: dialogService }],
@@ -34,4 +44,26 @@ describe('ValidityConfirmationService', () => {
     //then
     expect(dialogService.confirm).not.toHaveBeenCalled();
   });
+
+  it('should open popup when formValidTo and formValidFrom didnt change', () => {
+    //when
+    momentMockFormValidTo.isSame.and.returnValue(true);
+    momentMockFormValidFrom.isSame.and.returnValue(true);
+    service.confirmValidity(momentMockFormValidTo,momentMockFormValidFrom, momentMockInitValidTo, momentMockInitValidFrom)
+    //then
+    expect(dialogService.confirm).toHaveBeenCalled();
+  });
+
+  it('should not open popup, when formValidTo and formValidFrom did change', (done: DoneFn) => {
+    momentMockFormValidTo.isSame.and.returnValue(false);
+    momentMockFormValidFrom.isSame.and.returnValue(false);
+
+    service.confirmValidity(momentMockFormValidTo, momentMockFormValidFrom, momentMockInitValidTo, momentMockInitValidFrom).subscribe(result => {
+      expect(result).toBeTrue();
+      done();
+    });
+
+    expect(dialogService.confirm).not.toHaveBeenCalled();
+  });
+
 });
