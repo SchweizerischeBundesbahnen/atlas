@@ -36,8 +36,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.cli.CliDocumentation;
-import org.springframework.restdocs.http.HttpDocumentation;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.web.servlet.MockMvc;
@@ -82,13 +80,7 @@ public class RestDocTest {
             .withHost("localhost")
             .withPort(8080)
             .and().snippets()
-            .withDefaults(CliDocumentation.curlRequest(),
-                HttpDocumentation.httpRequest(),
-                HttpDocumentation.httpResponse(),
-                new RequestBodySnippet(),
-                new QueryParamsSnippet(),
-                new MethodAndPathSnippet(),
-                new AtlasAutoDocSnippet()))
+            .withDefaults(AtlasAutoDoc.configure()))
         .build();
   }
 
