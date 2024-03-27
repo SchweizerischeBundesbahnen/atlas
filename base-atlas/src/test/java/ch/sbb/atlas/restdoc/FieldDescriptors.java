@@ -113,11 +113,13 @@ public class FieldDescriptors {
 
   private static String getSimpleName(String canonicalName) {
     return switch (canonicalName) {
-      case "java.lang.Byte", "java.lang.Short", "java.lang.Long", "java.lang.Integer", "java.math.BigInteger" -> "Integer";
-      case "java.lang.Float", "java.lang.Double", "java.math.BigDecimal" -> "Decimal";
+      case "java.lang.Byte", "java.lang.Short", "java.lang.Long", "java.lang.Integer", "java.math.BigInteger", "int", "long" ->
+          "Integer";
+      case "java.lang.Float", "java.lang.Double", "java.math.BigDecimal", "double" -> "Decimal";
       case "java.lang.Character", "java.lang.String", "java.time.Instant", "java.util.Locale",
           "java.time.LocalDate", "java.time.LocalDateTime" -> "String";
       case "java.lang.Boolean" -> "Boolean";
+      case "org.springframework.web.multipart.MultipartFile" -> "File";
       default -> "Object";
     };
   }
