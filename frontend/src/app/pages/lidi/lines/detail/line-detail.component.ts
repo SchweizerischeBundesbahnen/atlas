@@ -22,6 +22,7 @@ import { WhitespaceValidator } from '../../../../core/validation/whitespace/whit
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { LineDetailFormGroup } from './line-detail-form-group';
 import { AuthService } from '../../../../core/auth/auth.service';
+import {ValidityConfirmationService} from "../../../sepodi/validity/validity-confirmation.service";
 
 @Component({
   templateUrl: './line-detail.component.html',
@@ -37,8 +38,9 @@ export class LineDetailComponent extends BaseDetailController<LineVersion> imple
     protected dialogService: DialogService,
     protected authService: AuthService,
     protected activatedRoute: ActivatedRoute,
+    protected validityConfirmationService: ValidityConfirmationService,
   ) {
-    super(router, dialogService, notificationService, authService, activatedRoute);
+    super(router, dialogService, notificationService, authService, activatedRoute, validityConfirmationService);
   }
 
   ngOnInit() {
