@@ -1,6 +1,6 @@
-package ch.sbb.line.directory.controller.restdoc;
+package ch.sbb.atlas.restdoc;
 
-import ch.sbb.line.directory.controller.restdoc.FieldDescriptors.FieldDescriptor;
+import ch.sbb.atlas.restdoc.FieldDescriptors.FieldDescriptor;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
