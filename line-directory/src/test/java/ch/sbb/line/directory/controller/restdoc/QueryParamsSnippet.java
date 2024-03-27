@@ -1,11 +1,12 @@
 package ch.sbb.line.directory.controller.restdoc;
 
 import ch.sbb.line.directory.controller.restdoc.FieldDescriptors.FieldDescriptor;
+import io.swagger.v3.oas.annotations.Parameter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.springframework.core.MethodParameter;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.restdocs.operation.Operation;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.method.HandlerMethod;
@@ -17,22 +18,33 @@ public class QueryParamsSnippet extends AtlasTableSnippet {
   }
 
   @Override
-  protected List<FieldDescriptor> getFields(Operation operation) {
-    MockHttpServletRequest request = (MockHttpServletRequest) operation.getAttributes()
-        .get("org.springframework.mock.web.MockHttpServletRequest");
-    HandlerMethod handlerMethod = (HandlerMethod) request.getAttribute("org.springframework.web.servlet.HandlerMapping"
-        + ".bestMatchingHandler");
-
+  protected List<FieldDescriptor> getFields(HandlerMethod handlerMethod) {
     List<MethodParameter> parameters = List.of(handlerMethod.getMethodParameters());
 
     List<MethodParameter> queryParameters = parameters.stream()
         .filter(parameter -> !parameter.hasParameterAnnotation(RequestBody.class))
         .filter(parameter -> !parameter.hasParameterAnnotation(PathVariable.class))
+        .filter(parameter -> {
+          Parameter parameterAnnotation = parameter.getParameterAnnotation(Parameter.class);
+          return parameterAnnotation == null || !parameterAnnotation.hidden();
+        })
         .toList();
     if (!queryParameters.isEmpty()) {
       FieldDescriptors fieldDescriptors = new FieldDescriptors(queryParameters);
-      return fieldDescriptors.getFields();
+      List<FieldDescriptor> fields = fieldDescriptors.getFields();
+      fields.addAll(getPageableDescriptions(parameters));
+      return fields;
     }
     return Collections.emptyList();
+  }
+
+  private List<FieldDescriptor> getPageableDescriptions(List<MethodParameter> parameters) {
+    List<FieldDescriptor> fields = new ArrayList<>();
+    if (parameters.stream().anyMatch(i -> i.getParameterType().equals(Pageable.class))) {
+      fields.add(FieldDescriptor.builder().fieldName("page").type("Integer").optional(true).build());
+      fields.add(FieldDescriptor.builder().fieldName("size").type("Integer").optional(true).build());
+      fields.add(FieldDescriptor.builder().fieldName("sort").type("Array[String]").optional(true).build());
+    }
+    return fields;
   }
 }
