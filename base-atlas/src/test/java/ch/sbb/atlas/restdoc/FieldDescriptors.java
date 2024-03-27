@@ -118,7 +118,7 @@ public class FieldDescriptors {
       case "java.lang.Float", "java.lang.Double", "java.math.BigDecimal", "double" -> "Decimal";
       case "java.lang.Character", "java.lang.String", "java.time.Instant", "java.util.Locale",
           "java.time.LocalDate", "java.time.LocalDateTime" -> "String";
-      case "java.lang.Boolean" -> "Boolean";
+      case "java.lang.Boolean", "boolean" -> "Boolean";
       case "org.springframework.web.multipart.MultipartFile" -> "File";
       default -> "Object";
     };
