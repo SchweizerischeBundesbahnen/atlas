@@ -140,6 +140,32 @@ describe('TrafficPointElementsDetailComponent', () => {
 
       expect(trafficPointService.updateTrafficPoint).toHaveBeenCalled();
     });
+
+    //TODO Test if validity is called on save
+    it('should call confirm on save', () => {
+      spyOn(component, 'confirmValidity');
+
+      component.toggleEdit();
+      component.form.markAsDirty();
+      component.save();
+
+      expect(component.confirmValidity).toHaveBeenCalled();
+    });
+
+    fit('should call initValidity on toggleEdit', () => {
+      spyOn(component, 'initValidity');
+
+      component.toggleEdit();
+
+      expect(component.initValidity).toHaveBeenCalled();
+    });
+
+
+    //TODO Test if initValidity is called on ToggleEdit
+
+    //TODO Test if update is called on True
+
+    //TODO Test if update is not called on False
   });
 
   describe('for new Version', () => {
@@ -209,4 +235,6 @@ describe('TrafficPointElementsDetailComponent', () => {
       ],
     }).compileComponents();
   }
+
+
 });

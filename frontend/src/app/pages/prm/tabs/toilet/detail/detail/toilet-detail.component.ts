@@ -5,7 +5,6 @@ import {
   PersonWithReducedMobilityService,
   ReadServicePointVersion,
   ReadToiletVersion,
-  StopPointVersion,
   ToiletVersion
 } from "../../../../../../api";
 import {DetailFormComponent} from "../../../../../../core/leave-guard/leave-dirty-form-guard.service";
