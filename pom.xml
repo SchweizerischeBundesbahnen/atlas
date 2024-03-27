@@ -32,7 +32,6 @@
       <!-- REST Doc -->
       <asciidoctor-plugin.version>3.0.0</asciidoctor-plugin.version>
       <spring-restdocs-mockmvc.version>3.0.1</spring-restdocs-mockmvc.version>
-      <spring-auto-rest-docs-core.version>2.0.11</spring-auto-rest-docs-core.version>
 
       <!-- Geo Data Libs -->
       <proj4j.version>1.3.0</proj4j.version>
