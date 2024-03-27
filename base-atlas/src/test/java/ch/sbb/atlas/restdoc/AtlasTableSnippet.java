@@ -1,6 +1,5 @@
 package ch.sbb.atlas.restdoc;
 
-import ch.sbb.atlas.restdoc.FieldDescriptors.FieldDescriptor;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +35,7 @@ public abstract class AtlasTableSnippet extends TemplatedSnippet {
 
   private static Map<String, Object> createModelForDescriptor(FieldDescriptor descriptor) {
     Map<String, Object> result = new HashMap<>();
-    result.put("path", descriptor.getFieldName());
+    result.put("path", descriptor.getName());
     result.put("type", descriptor.getType());
     result.put("optional", descriptor.isOptional());
     result.put("description", descriptor.getDescription().replaceAll("\\|", "\\\\|").replaceAll(" #", " \\\\#"));
