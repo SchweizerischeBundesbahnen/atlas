@@ -1,6 +1,5 @@
 package ch.sbb.atlas.restdoc;
 
-import ch.sbb.atlas.restdoc.FieldDescriptors.FieldDescriptor;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -22,8 +21,7 @@ public class RequestBodySnippet extends AtlasTableSnippet {
         .filter(parameter -> parameter.hasParameterAnnotation(RequestBody.class))
         .findFirst();
     if (requestBody.isPresent()) {
-      FieldDescriptors fieldDescriptors = new FieldDescriptors(requestBody.get().getParameterType());
-      return fieldDescriptors.getFields();
+      return new FieldDescriptors(requestBody.get().getParameterType()).getFields();
     }
     return Collections.emptyList();
   }

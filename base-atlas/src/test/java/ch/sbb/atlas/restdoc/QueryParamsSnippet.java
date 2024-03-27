@@ -1,6 +1,5 @@
 package ch.sbb.atlas.restdoc;
 
-import ch.sbb.atlas.restdoc.FieldDescriptors.FieldDescriptor;
 import io.swagger.v3.oas.annotations.Parameter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,9 +51,9 @@ public class QueryParamsSnippet extends AtlasTableSnippet {
   private List<FieldDescriptor> getPageableDescriptions(List<MethodParameter> parameters) {
     List<FieldDescriptor> fields = new ArrayList<>();
     if (parameters.stream().anyMatch(i -> i.getParameterType().equals(Pageable.class))) {
-      fields.add(FieldDescriptor.builder().fieldName("page").type("Integer").optional(true).build());
-      fields.add(FieldDescriptor.builder().fieldName("size").type("Integer").optional(true).build());
-      fields.add(FieldDescriptor.builder().fieldName("sort").type("Array[String]").optional(true).build());
+      fields.add(FieldDescriptor.builder().name("page").type("Integer").optional(true).build());
+      fields.add(FieldDescriptor.builder().name("size").type("Integer").optional(true).build());
+      fields.add(FieldDescriptor.builder().name("sort").type("Array[String]").optional(true).build());
     }
     return fields;
   }

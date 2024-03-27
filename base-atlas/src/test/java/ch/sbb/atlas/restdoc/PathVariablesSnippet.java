@@ -1,6 +1,5 @@
 package ch.sbb.atlas.restdoc;
 
-import ch.sbb.atlas.restdoc.FieldDescriptors.FieldDescriptor;
 import java.util.Collections;
 import java.util.List;
 import org.springframework.core.MethodParameter;

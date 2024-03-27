@@ -22,8 +22,9 @@ public class AtlasAutoDocSnippet extends TemplatedSnippet {
 
   private static String buildLink(Operation operation) {
     RestDocumentationContext documentationContext = AtlasAutoDoc.getDocumentationContext(operation);
-    return StringUtils.join(StringUtils.splitByCharacterTypeCamelCase(documentationContext.getTestMethodName()), '-')
-        .toLowerCase();
+    return StringUtils.join(
+        StringUtils.splitByCharacterTypeCamelCase(documentationContext.getTestMethodName()),
+        '-').toLowerCase();
   }
 
 }
