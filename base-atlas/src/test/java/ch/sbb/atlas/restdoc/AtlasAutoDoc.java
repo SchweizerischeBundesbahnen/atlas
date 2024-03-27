@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.controller.restdoc;
+package ch.sbb.atlas.restdoc;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.mock.web.MockHttpServletRequest;

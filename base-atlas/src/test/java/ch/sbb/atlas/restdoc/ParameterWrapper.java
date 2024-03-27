@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.controller.restdoc;
+package ch.sbb.atlas.restdoc;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.controller.restdoc;
+package ch.sbb.atlas.restdoc;
 
 import ch.sbb.atlas.api.lidi.LineVersionModel;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
