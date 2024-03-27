@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
-import {Observable, of, take} from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateService } from '../../../core/date/date.service';
 import { ReadServicePointVersion } from '../../../api';
 import { Moment } from 'moment';
-import {FormGroup} from "@angular/forms";
-import {ServicePointDetailFormGroup} from "../service-point-side-panel/service-point/service-point-detail-form-group";
 
 @Injectable({ providedIn: 'root' })
 export class ValidityConfirmationService {
