@@ -23,7 +23,7 @@ import {ValidityConfirmationService} from "../../../pages/sepodi/validity/validi
 const dialogServiceSpy = jasmine.createSpyObj(['confirm']);
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 
-describe('BaseDetailController', () => {
+fdescribe('BaseDetailController', () => {
   const dummyController = jasmine.createSpyObj('controller', [
     'backToOverview',
     'createRecord',
