@@ -88,7 +88,7 @@ public class ParameterWrapper {
     try {
       return Class.forName(className);
     } catch (ClassNotFoundException e) {
-      throw new IllegalStateException(e);
+      return Object.class;
     }
   }
 
