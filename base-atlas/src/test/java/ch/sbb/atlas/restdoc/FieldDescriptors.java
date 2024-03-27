@@ -1,4 +1,4 @@
-package ch.sbb.line.directory.controller.restdoc;
+package ch.sbb.atlas.restdoc;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

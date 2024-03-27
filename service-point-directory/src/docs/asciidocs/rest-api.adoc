@@ -43,160 +43,160 @@ include::../../../../base-atlas/documentation/servicepoint/when_to_use_files_or_
 
 == Read ServicePointVersions - Successfully
 
-include::{snippets}/service-point-controller-api-test/should-get-service-point-versions/auto-section.adoc[]
+include::{snippets}/service-point-controller-api-test/should-get-service-point-versions/atlas-doc.adoc[]
 
 == Read ServicePoint by ServicePointNumber - Successfully
 
-include::{snippets}/service-point-controller-api-test/should-get-service-point/auto-section.adoc[]
+include::{snippets}/service-point-controller-api-test/should-get-service-point/atlas-doc.adoc[]
 
 == Read ServicePoint by ServicePointNumber - Unsuccessfully
 
-include::{snippets}/service-point-controller-api-test/should-fail-on-find-with-invalid-service-point-number/auto-section.adoc[]
+include::{snippets}/service-point-controller-api-test/should-fail-on-find-with-invalid-service-point-number/atlas-doc.adoc[]
 
 == Read ServicePointVersion by ID - Successfully
 
-include::{snippets}/service-point-controller-api-test/should-get-service-point-version-by-id/auto-section.adoc[]
+include::{snippets}/service-point-controller-api-test/should-get-service-point-version-by-id/atlas-doc.adoc[]
 
 == Read ServicePoint by ServicePointNumber - NotFound
 
-include::{snippets}/service-point-controller-api-test/should-fail-on-invalid-service-point-number/auto-section.adoc[]
+include::{snippets}/service-point-controller-api-test/should-fail-on-invalid-service-point-number/atlas-doc.adoc[]
 
 == Search ServicePoint successfully
 
-include::{snippets}/service-point-controller-api-test/should-search-service-point-successfully/auto-section.adoc[]
+include::{snippets}/service-point-controller-api-test/should-search-service-point-successfully/atlas-doc.adoc[]
 
 == Search ServicePoint when no match
 
-include::{snippets}/service-point-controller-api-test/should-return-empty-list-when-no-match-found/auto-section.adoc[]
+include::{snippets}/service-point-controller-api-test/should-return-empty-list-when-no-match-found/atlas-doc.adoc[]
 
 == Search ServicePoint when try to search with less than 2 digits
 
-include::{snippets}/service-point-controller-api-test/should-return-bad-request-when-search-whit-less-than-two-digit/auto-section.adoc[]
+include::{snippets}/service-point-controller-api-test/should-return-bad-request-when-search-whit-less-than-two-digit/atlas-doc.adoc[]
 
 == Search ServicePoint with route network true successfully
 
-include::{snippets}/service-point-controller-api-test/when-search-request-for-search-se-po-with-network-true-valid-then-should-find-service-point-successfully/auto-section.adoc[]
+include::{snippets}/service-point-controller-api-test/when-search-request-for-search-se-po-with-network-true-valid-then-should-find-service-point-successfully/atlas-doc.adoc[]
 
 == Search ServicePoint when no match
 
-include::{snippets}/service-point-controller-api-test/should-return-empty-list-when-no-match-found/auto-section.adoc[]
+include::{snippets}/service-point-controller-api-test/should-return-empty-list-when-no-match-found/atlas-doc.adoc[]
 
 == Search ServicePoint when try to search with less than 2 digits
 
-include::{snippets}/service-point-controller-api-test/should-return-bad-request-when-search-whit-less-than-two-digit/auto-section.adoc[]
+include::{snippets}/service-point-controller-api-test/should-return-bad-request-when-search-whit-less-than-two-digit/atlas-doc.adoc[]
 
 == Search SwissOnly ServicePoint successfully
 
-include::{snippets}/service-point-controller-api-test/should-search-swiss-only-service-point-successfully/auto-section.adoc[]
+include::{snippets}/service-point-controller-api-test/should-search-swiss-only-service-point-successfully/atlas-doc.adoc[]
 
 == Create ServicePoint
 
-include::{snippets}/service-point-controller-api-test/should-create-service-point/auto-section.adoc[]
+include::{snippets}/service-point-controller-api-test/should-create-service-point/atlas-doc.adoc[]
 
 == Validate ServicePoint Status
 
-include::{snippets}/service-point-controller-api-test/should-set-status-to-validate-for-service-point/auto-section.adoc[]
+include::{snippets}/service-point-controller-api-test/should-set-status-to-validate-for-service-point/atlas-doc.adoc[]
 
 == Revoke ServicePoints Status
 
-include::{snippets}/service-point-controller-api-test/should-set-status-to-revoke-for-all-service-points/auto-section.adoc[]
+include::{snippets}/service-point-controller-api-test/should-set-status-to-revoke-for-all-service-points/atlas-doc.adoc[]
 
 == Update ServicePoint by ID
 
-include::{snippets}/service-point-controller-api-test/should-update-service-point-and-create-multiple-versions/auto-section.adoc[]
+include::{snippets}/service-point-controller-api-test/should-update-service-point-and-create-multiple-versions/atlas-doc.adoc[]
 
 == Get ServicePoint FotComment
 
-include::{snippets}/service-point-controller-api-test/should-get-service-point-fot-comment/auto-section.adoc[]
+include::{snippets}/service-point-controller-api-test/should-get-service-point-fot-comment/atlas-doc.adoc[]
 
 == Create ServicePoint FotComment
 
-include::{snippets}/service-point-controller-api-test/should-create-service-point-fot-comment/auto-section.adoc[]
+include::{snippets}/service-point-controller-api-test/should-create-service-point-fot-comment/atlas-doc.adoc[]
 
 = Traffic Point Elements
 
 == Read TrafficPointElements - Successfully
 
-include::{snippets}/traffic-point-element-controller-api-test/should-get-traffic-point-element-versions/auto-section.adoc[]
+include::{snippets}/traffic-point-element-controller-api-test/should-get-traffic-point-element-versions/atlas-doc.adoc[]
 
 == Read TrafficPointElement by SLOID - Successfully
 
-include::{snippets}/traffic-point-element-controller-api-test/should-get-traffic-point-element/auto-section.adoc[]
+include::{snippets}/traffic-point-element-controller-api-test/should-get-traffic-point-element/atlas-doc.adoc[]
 
 == Read TrafficPointElement by ID - Successfully
 
-include::{snippets}/traffic-point-element-controller-api-test/should-get-traffic-point-element-version-by-id/auto-section.adoc[]
+include::{snippets}/traffic-point-element-controller-api-test/should-get-traffic-point-element-version-by-id/atlas-doc.adoc[]
 
 == Read TrafficPointElement by ServicePointNumbers - Successfully
 
-include::{snippets}/traffic-point-element-controller-api-test/should-fail-on-invalid-traffic-point-element-number/auto-section.adoc[]
+include::{snippets}/traffic-point-element-controller-api-test/should-fail-on-invalid-traffic-point-element-number/atlas-doc.adoc[]
 
 == Read TrafficPointElement by SLOID - NotFound
 
-include::{snippets}/traffic-point-element-controller-api-test/should-fail-on-invalid-traffic-point-element-number/auto-section.adoc[]
+include::{snippets}/traffic-point-element-controller-api-test/should-fail-on-invalid-traffic-point-element-number/atlas-doc.adoc[]
 
 == Read TrafficPointElement by ParentServicePointSloids - Successfully
 
-include::{snippets}/traffic-point-element-controller-api-test/should-get-traffic-point-element-versions-by-parent-service-point-sloid/auto-section.adoc[]
+include::{snippets}/traffic-point-element-controller-api-test/should-get-traffic-point-element-versions-by-parent-service-point-sloid/atlas-doc.adoc[]
 
 == Create TrafficPointElement with automatic SLOID generation - Successfully
 
-include::{snippets}/traffic-point-element-controller-api-test/should-create-traffic-point-element-platform-with-automatic-sloid/auto-section.adoc[]
+include::{snippets}/traffic-point-element-controller-api-test/should-create-traffic-point-element-platform-with-automatic-sloid/atlas-doc.adoc[]
 
 == Create TrafficPointElement with given SLOID - Successfully
 
-include::{snippets}/traffic-point-element-controller-api-test/should-create-traffic-point-element-platform-with-given-sloid/auto-section.adoc[]
+include::{snippets}/traffic-point-element-controller-api-test/should-create-traffic-point-element-platform-with-given-sloid/atlas-doc.adoc[]
 
 == Update TrafficPointElement - Successfully
 
-include::{snippets}/traffic-point-element-controller-api-test/should-update-traffic-point-and-create-multiple-versions/auto-section.adoc[]
+include::{snippets}/traffic-point-element-controller-api-test/should-update-traffic-point-and-create-multiple-versions/atlas-doc.adoc[]
 
 == Update TrafficPointElement - Successfully
 
-include::{snippets}/traffic-point-element-controller-api-test/should-update-traffic-point-and-not-create-multiple-versions/auto-section.adoc[]
+include::{snippets}/traffic-point-element-controller-api-test/should-update-traffic-point-and-not-create-multiple-versions/atlas-doc.adoc[]
 
 == Update TrafficPointElement - NotEqualSloids
 
-include::{snippets}/traffic-point-element-controller-api-test/should-throw-sloids-not-equal-exception-when-update/auto-section.adoc[]
+include::{snippets}/traffic-point-element-controller-api-test/should-throw-sloids-not-equal-exception-when-update/atlas-doc.adoc[]
 
 == Update TrafficPointElement - OptimisticLocking
 
-include::{snippets}/traffic-point-element-controller-api-test/should-return-optimistic-locking-error-response/auto-section.adoc[]
+include::{snippets}/traffic-point-element-controller-api-test/should-return-optimistic-locking-error-response/atlas-doc.adoc[]
 
 = Loading Points
 
 == Read LoadingPoint by number - Successfully
 
-include::{snippets}/loading-point-controller-api-test/should-get-loading-point/auto-section.adoc[]
+include::{snippets}/loading-point-controller-api-test/should-get-loading-point/atlas-doc.adoc[]
 
 == Read LoadingPoint by ID - Successfully
 
-include::{snippets}/loading-point-controller-api-test/should-get-loading-point-version-by-id/auto-section.adoc[]
+include::{snippets}/loading-point-controller-api-test/should-get-loading-point-version-by-id/atlas-doc.adoc[]
 
 == Read LoadingPoint by number - NotFound
 
-include::{snippets}/loading-point-controller-api-test/should-fail-on-invalid-loading-point-number/auto-section.adoc[]
+include::{snippets}/loading-point-controller-api-test/should-fail-on-invalid-loading-point-number/atlas-doc.adoc[]
 
 == Read LoadingPoint by number - Unsuccessfully
 
-include::{snippets}/loading-point-controller-api-test/should-fail-on-invalid-loading-point-number/auto-section.adoc[]
+include::{snippets}/loading-point-controller-api-test/should-fail-on-invalid-loading-point-number/atlas-doc.adoc[]
 
 == Read LoadingPoint by servicePointNumber - Unsuccessfully
 
-include::{snippets}/loading-point-controller-api-test/should-fail-on-find-with-invalid-service-point-number/auto-section.adoc[]
+include::{snippets}/loading-point-controller-api-test/should-fail-on-find-with-invalid-service-point-number/atlas-doc.adoc[]
 
 == Read LoadingPoints without filter - Successfully
 
-include::{snippets}/loading-point-controller-api-test/should-get-loading-point-versions-without-filter/auto-section.adoc[]
+include::{snippets}/loading-point-controller-api-test/should-get-loading-point-versions-without-filter/atlas-doc.adoc[]
 
 == Read LoadingPoints with search filter - Successfully
 
-include::{snippets}/loading-point-controller-api-test/should-get-loading-point-versions-with-filter/auto-section.adoc[]
+include::{snippets}/loading-point-controller-api-test/should-get-loading-point-versions-with-filter/atlas-doc.adoc[]
 
 == Read LoadingPoints with search array in filter - Successfully
 
-include::{snippets}/loading-point-controller-api-test/should-get-loading-point-versions-with-array-in-filter/auto-section.adoc[]
+include::{snippets}/loading-point-controller-api-test/should-get-loading-point-versions-with-array-in-filter/atlas-doc.adoc[]
 
 == Read LoadingPoints with search filter - Unsuccessfully
 
-include::{snippets}/loading-point-controller-api-test/should-not-get-loading-point-versions-with-filter/auto-section.adoc[]
+include::{snippets}/loading-point-controller-api-test/should-not-get-loading-point-versions-with-filter/atlas-doc.adoc[]
