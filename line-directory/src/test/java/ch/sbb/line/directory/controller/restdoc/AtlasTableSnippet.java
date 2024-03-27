@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.restdocs.operation.Operation;
 import org.springframework.restdocs.snippet.TemplatedSnippet;
+import org.springframework.web.method.HandlerMethod;
 
 public abstract class AtlasTableSnippet extends TemplatedSnippet {
 
@@ -16,12 +17,12 @@ public abstract class AtlasTableSnippet extends TemplatedSnippet {
     this.tableTitle = tableTitle;
   }
 
-  protected abstract List<FieldDescriptor> getFields(Operation operation);
+  protected abstract List<FieldDescriptor> getFields(HandlerMethod handlerMethod);
 
   @Override
   protected Map<String, Object> createModel(Operation operation) {
     Map<String, Object> model = new HashMap<>();
-    List<Map<String, Object>> tableContent = createTableContent(getFields(operation));
+    List<Map<String, Object>> tableContent = createTableContent(getFields(AtlasAutoDoc.getHandlerMethod(operation)));
 
     model.put("title", tableTitle);
     model.put("content", tableContent);

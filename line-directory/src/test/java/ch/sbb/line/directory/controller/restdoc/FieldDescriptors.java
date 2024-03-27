@@ -19,6 +19,7 @@ import lombok.Data;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.MethodParameter;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Getter
 @Data
@@ -92,7 +93,8 @@ public class FieldDescriptors {
     private String fieldName;
     private String type;
     private boolean optional;
-    private String description;
+    @Builder.Default
+    private String description = "";
 
   }
 
@@ -125,6 +127,10 @@ public class FieldDescriptors {
       return true;
     }
     if (field.isOptional()) {
+      return false;
+    }
+    RequestParam requestParam = field.getAnnotation(RequestParam.class);
+    if (requestParam != null && !requestParam.required()) {
       return false;
     }
     return field.getAnnotations().stream().anyMatch(i ->
