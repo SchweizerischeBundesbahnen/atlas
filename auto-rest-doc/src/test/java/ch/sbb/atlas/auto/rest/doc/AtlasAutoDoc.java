@@ -1,5 +1,10 @@
-package ch.sbb.atlas.restdoc;
+package ch.sbb.atlas.auto.rest.doc;
 
+import ch.sbb.atlas.auto.rest.doc.snippets.AtlasAutoDocSnippet;
+import ch.sbb.atlas.auto.rest.doc.snippets.MethodAndPathSnippet;
+import ch.sbb.atlas.auto.rest.doc.snippets.PathVariablesSnippet;
+import ch.sbb.atlas.auto.rest.doc.snippets.QueryParamsSnippet;
+import ch.sbb.atlas.auto.rest.doc.snippets.RequestBodySnippet;
 import lombok.experimental.UtilityClass;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.restdocs.RestDocumentationContext;
@@ -25,11 +30,11 @@ public class AtlasAutoDoc {
     };
   }
 
-  static RestDocumentationContext getDocumentationContext(Operation operation) {
+  public static RestDocumentationContext getDocumentationContext(Operation operation) {
     return (RestDocumentationContext) operation.getAttributes().get(RestDocumentationContext.class.getName());
   }
 
-  static HandlerMethod getHandlerMethod(Operation operation) {
+  public static HandlerMethod getHandlerMethod(Operation operation) {
     MockHttpServletRequest request = (MockHttpServletRequest) operation.getAttributes()
         .get("org.springframework.mock.web.MockHttpServletRequest");
     return (HandlerMethod) request.getAttribute("org.springframework.web.servlet.HandlerMapping.bestMatchingHandler");

@@ -1,5 +1,6 @@
-package ch.sbb.atlas.restdoc;
+package ch.sbb.atlas.auto.rest.doc.snippets;
 
+import ch.sbb.atlas.auto.rest.doc.AtlasAutoDoc;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
