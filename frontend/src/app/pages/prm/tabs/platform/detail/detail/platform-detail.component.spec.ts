@@ -1,7 +1,12 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {PlatformDetailComponent} from './platform-detail.component';
-import {PersonWithReducedMobilityService, ReadPlatformVersion, VehicleAccessAttributeType} from "../../../../../../api";
+import {
+  PersonWithReducedMobilityService,
+  PlatformVersion,
+  ReadPlatformVersion,
+  VehicleAccessAttributeType
+} from "../../../../../../api";
 import {AuthService} from "../../../../../../core/auth/auth.service";
 import {of} from "rxjs";
 import {DialogService} from "../../../../../../core/components/dialog/dialog.service";
@@ -36,6 +41,7 @@ import {SplitServicePointNumberPipe} from "../../../../../../core/search-service
 import moment from "moment";
 import {RouterTestingModule} from "@angular/router/testing";
 import SpyObj = jasmine.SpyObj;
+import {ValidityConfirmationService} from "../../../../../sepodi/validity/validity-confirmation.service";
 
 const reducedPlatform: ReadPlatformVersion[] = [
   {
@@ -112,6 +118,37 @@ const reducedPlatform: ReadPlatformVersion[] = [
   },
 ];
 
+const platformVersion: PlatformVersion  = {
+    creationDate: '2024-01-11T10:08:28.446803',
+    creator: 'e524381',
+    editionDate: '2024-01-11T10:08:28.446803',
+    editor: 'e524381',
+    id: 1002,
+    sloid: 'ch:1:sloid:7000:0:100000',
+    validFrom: new Date('2024-01-01'),
+    validTo: new Date('2024-01-03'),
+    etagVersion: 8,
+    parentServicePointSloid: 'ch:1:sloid:7000',
+    boardingDevice: 'TO_BE_COMPLETED',
+    adviceAccessInfo: undefined,
+    additionalInformation: undefined,
+    contrastingAreas: 'YES',
+    dynamicAudio: 'TO_BE_COMPLETED',
+    dynamicVisual: 'TO_BE_COMPLETED',
+    height: undefined,
+    inclination: undefined,
+    inclinationLongitudinal: undefined,
+    inclinationWidth: undefined,
+    infoOpportunities: [],
+    levelAccessWheelchair: 'TO_BE_COMPLETED',
+    partialElevation: undefined,
+    superelevation: undefined,
+    tactileSystem: undefined,
+    vehicleAccess: undefined,
+    wheelchairAreaLength: undefined,
+    wheelchairAreaWidth: undefined,
+  };
+
 const authService: Partial<AuthService> = {
   hasPermissionsToWrite(): boolean {
     return true;
@@ -128,6 +165,10 @@ describe('PlatformDetailComponent', () => {
   );
   personWithReducedMobilityService.createPlatform.and.returnValue(of(reducedPlatform[0]));
   personWithReducedMobilityService.updatePlatform.and.returnValue(of(reducedPlatform));
+
+  const validityConfirmationService = jasmine.createSpyObj<ValidityConfirmationService>([
+    'confirmValidity','confirmValidityOverServicePoint'
+  ]);
 
   const notificationService = jasmine.createSpyObj('notificationService', ['success']);
   const dialogService: SpyObj<DialogService> = jasmine.createSpyObj('dialogService', ['confirm']);
@@ -181,6 +222,7 @@ describe('PlatformDetailComponent', () => {
         {provide: ActivatedRoute, useValue: activatedRouteMock},
         {provide: NotificationService, useValue: notificationService},
         {provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService},
+        { provide: ValidityConfirmationService, useValue: validityConfirmationService },
         {provide: DialogService, useValue: dialogService},
         TranslatePipe,
         SplitServicePointNumberPipe,
@@ -322,5 +364,70 @@ describe('PlatformDetailComponent', () => {
       expect(personWithReducedMobilityService.createPlatform).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
+  });
+
+  describe('edit platform', () => {
+    beforeEach(() => {
+      TestBed.overrideProvider(ActivatedRoute, {
+        useValue: {
+          snapshot: {
+            parent: {
+              data: {
+                stopPoint: [STOP_POINT_COMPLETE],
+                servicePoint: [BERN_WYLEREGG],
+                platform: [platformVersion],
+                trafficPoint: [BERN_WYLEREGG_TRAFFIC_POINTS[0]],
+              },
+            },
+          },
+        },
+      });
+      fixture = TestBed.createComponent(PlatformDetailComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+
+    it('should call confirm on save', () => {
+      validityConfirmationService.confirmValidityOverServicePoint.and.returnValue(of(true))
+
+      spyOn(component, 'confirmValidity');
+
+      component.toggleEdit();
+      component.form.markAsDirty();
+      component.save();
+
+      expect(component.confirmValidity).toHaveBeenCalled();
+    });
+
+    it('should call initValidity on toggleEdit', () => {
+      spyOn(component, 'initValidity');
+
+      component.toggleEdit();
+
+      expect(component.initValidity).toHaveBeenCalled();
+    });
+
+    it('should call update when confirmValidity returns true', () => {
+      validityConfirmationService.confirmValidity.and.returnValue(of(true))
+
+      spyOn(component, 'update');
+
+      component.confirmValidity(platformVersion);
+
+      expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
+      expect(component.update).toHaveBeenCalled();
+    });
+
+    it('should not call update when confirmValidity returns false', () => {
+      validityConfirmationService.confirmValidity.and.returnValue(of(false))
+
+      spyOn(component, 'update').and.callThrough();
+
+      component.confirmValidity(platformVersion);
+
+      expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
+      expect(component.update).not.toHaveBeenCalled();
+    });
+
   });
 });
