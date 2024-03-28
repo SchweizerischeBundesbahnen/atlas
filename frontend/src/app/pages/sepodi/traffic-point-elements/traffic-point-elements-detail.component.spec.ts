@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import { TrafficPointElementsDetailComponent } from './traffic-point-elements-detail.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -29,11 +29,15 @@ import { ServicePointsService, TrafficPointElementsService } from '../../../api'
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import moment from 'moment/moment';
 import { BERN_WYLEREGG } from '../../../../test/data/service-point';
-import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../test/data/traffic-point-element';
+import {
+  BERN_WYLEREGG_TRAFFIC_POINTS,
+  BERN_WYLEREGG_TRAFFIC_POINTS_CREATE
+} from '../../../../test/data/traffic-point-element';
 import { UserDetailInfoComponent } from '../../../core/components/base-detail/user-edit-info/user-detail-info.component';
 import {DetailPageContainerComponent} from "../../../core/components/detail-page-container/detail-page-container.component";
 import {DetailPageContentComponent} from "../../../core/components/detail-page-content/detail-page-content.component";
 import {DetailFooterComponent} from "../../../core/components/detail-footer/detail-footer.component";
+import {ValidityConfirmationService} from "../validity/validity-confirmation.service";
 
 const authService: Partial<AuthService> = {};
 const trafficPointMapService = jasmine.createSpyObj<TrafficPointMapService>([
@@ -58,6 +62,10 @@ describe('TrafficPointElementsDetailComponent', () => {
 
   const coordinateTransformationService = jasmine.createSpyObj<CoordinateTransformationService>([
     'transform',
+  ]);
+
+  const validityConfirmationService = jasmine.createSpyObj<ValidityConfirmationService>([
+    'confirmValidity','confirmValidityOverServicePoint'
   ]);
 
   const servicePointService = jasmine.createSpyObj(['getServicePointVersions']);
@@ -141,8 +149,9 @@ describe('TrafficPointElementsDetailComponent', () => {
       expect(trafficPointService.updateTrafficPoint).toHaveBeenCalled();
     });
 
-    //TODO Test if validity is called on save
     it('should call confirm on save', () => {
+      validityConfirmationService.confirmValidityOverServicePoint.and.returnValue(of(true))
+
       spyOn(component, 'confirmValidity');
 
       component.toggleEdit();
@@ -152,7 +161,7 @@ describe('TrafficPointElementsDetailComponent', () => {
       expect(component.confirmValidity).toHaveBeenCalled();
     });
 
-    fit('should call initValidity on toggleEdit', () => {
+    it('should call initValidity on toggleEdit', () => {
       spyOn(component, 'initValidity');
 
       component.toggleEdit();
@@ -160,12 +169,27 @@ describe('TrafficPointElementsDetailComponent', () => {
       expect(component.initValidity).toHaveBeenCalled();
     });
 
+    it('should call update when confirmValidity returns true', () => {
+      validityConfirmationService.confirmValidity.and.returnValue(of(true))
 
-    //TODO Test if initValidity is called on ToggleEdit
+      spyOn(component, 'update').and.callThrough();
 
-    //TODO Test if update is called on True
+      component.confirmValidity(BERN_WYLEREGG_TRAFFIC_POINTS_CREATE);
 
-    //TODO Test if update is not called on False
+      expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
+      expect(component.update).toHaveBeenCalled();
+    });
+
+    it('should not call update when confirmValidity returns false', () => {
+      validityConfirmationService.confirmValidity.and.returnValue(of(false))
+
+      spyOn(component, 'update').and.callThrough();
+
+      component.confirmValidity(BERN_WYLEREGG_TRAFFIC_POINTS_CREATE);
+
+      expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
+      expect(component.update).not.toHaveBeenCalled();
+    });
   });
 
   describe('for new Version', () => {
@@ -229,6 +253,7 @@ describe('TrafficPointElementsDetailComponent', () => {
         { provide: CoordinateTransformationService, useValue: coordinateTransformationService },
         { provide: ServicePointsService, useValue: servicePointService },
         { provide: TrafficPointElementsService, useValue: trafficPointService },
+        { provide: ValidityConfirmationService, useValue: validityConfirmationService },
         { provide: DialogService, useValue: dialogService },
         SplitServicePointNumberPipe,
         TranslatePipe,

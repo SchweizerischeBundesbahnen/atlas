@@ -200,7 +200,7 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
       });
   }
 
-  private update(id: number, loadingPointVersion: CreateLoadingPointVersion) {
+  update(id: number, loadingPointVersion: CreateLoadingPointVersion) {
     this.loadingPointsService
       .updateLoadingPoint(id, loadingPointVersion)
       .pipe(catchError(this.handleError()))
