@@ -68,6 +68,13 @@
          <version>1.702.0</version>
       </dependency>
       <dependency>
+         <artifactId>auto-rest-doc</artifactId>
+         <groupId>ch.sbb.atlas</groupId>
+         <version>1.702.0</version>
+         <scope>test</scope>
+         <type>test-jar</type>
+      </dependency>
+      <dependency>
          <artifactId>spring-restdocs-mockmvc</artifactId>
          <groupId>org.springframework.restdocs</groupId>
          <scope>test</scope>

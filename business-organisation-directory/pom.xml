@@ -116,6 +116,13 @@
          <version>1.702.0</version>
       </dependency>
       <dependency>
+         <artifactId>auto-rest-doc</artifactId>
+         <groupId>ch.sbb.atlas</groupId>
+         <version>1.702.0</version>
+         <scope>test</scope>
+         <type>test-jar</type>
+      </dependency>
+      <dependency>
          <artifactId>spring-boot-starter-test</artifactId>
          <groupId>org.springframework.boot</groupId>
          <scope>test</scope>

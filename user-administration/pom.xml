@@ -102,6 +102,13 @@
          <version>1.702.0</version>
       </dependency>
       <dependency>
+         <artifactId>auto-rest-doc</artifactId>
+         <groupId>ch.sbb.atlas</groupId>
+         <version>1.702.0</version>
+         <scope>test</scope>
+         <type>test-jar</type>
+      </dependency>
+      <dependency>
          <artifactId>spring-security-test</artifactId>
          <groupId>org.springframework.security</groupId>
          <scope>test</scope>
