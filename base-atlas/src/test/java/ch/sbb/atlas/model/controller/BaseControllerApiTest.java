@@ -4,7 +4,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 
-import ch.sbb.atlas.restdoc.AtlasAutoDoc;
+import ch.sbb.atlas.auto.rest.doc.AtlasAutoDoc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.BeforeEach;

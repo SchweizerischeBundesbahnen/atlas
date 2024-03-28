@@ -1,8 +1,8 @@
-package ch.sbb.atlas.restdoc;
+package ch.sbb.atlas.auto.rest.doc.descriptor;
 
-import ch.sbb.atlas.restdoc.FieldDescriptionBuilder.DescriptionBuilder;
-import ch.sbb.atlas.restdoc.FieldDescriptionBuilder.MandatoryBuilder;
-import ch.sbb.atlas.restdoc.FieldDescriptionBuilder.TypeDescriptionBuilder;
+import ch.sbb.atlas.auto.rest.doc.descriptor.FieldDescriptionBuilder.DescriptionBuilder;
+import ch.sbb.atlas.auto.rest.doc.descriptor.FieldDescriptionBuilder.MandatoryBuilder;
+import ch.sbb.atlas.auto.rest.doc.descriptor.FieldDescriptionBuilder.TypeDescriptionBuilder;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -15,13 +15,13 @@ import org.springframework.core.MethodParameter;
 
 @Getter
 @Data
-class FieldDescriptors {
+public class FieldDescriptors {
 
   static final String LINE_SEPARATOR = "\n";
 
   private final List<FieldDescriptor> fields = new ArrayList<>();
 
-  FieldDescriptors(Class<?> clazz) {
+  public FieldDescriptors(Class<?> clazz) {
     this.fields.addAll(
         getFieldsIncludingSuperclasses(clazz).stream()
             .filter(field -> !Modifier.isStatic(field.getModifiers()))
@@ -31,7 +31,7 @@ class FieldDescriptors {
             .toList());
   }
 
-  FieldDescriptors(List<MethodParameter> methodParameters) {
+  public FieldDescriptors(List<MethodParameter> methodParameters) {
     this.fields.addAll(methodParameters.stream()
         .map(ParameterWrapper::new)
         .map(FieldDescriptors::buildFieldDescriptions)
