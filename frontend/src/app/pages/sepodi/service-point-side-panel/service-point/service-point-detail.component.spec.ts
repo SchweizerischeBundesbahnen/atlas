@@ -33,6 +33,7 @@ import { UserDetailInfoComponent } from '../../../../core/components/base-detail
 import {DetailPageContainerComponent} from "../../../../core/components/detail-page-container/detail-page-container.component";
 import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
 import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
+import {ValidityConfirmationService} from "../../validity/validity-confirmation.service";
 
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
 const servicePointsServiceSpy = jasmine.createSpyObj('ServicePointService', [
@@ -47,6 +48,10 @@ const mapServiceSpy = jasmine.createSpyObj('MapService', [
   'refreshMap',
 ]);
 mapServiceSpy.mapInitialized = new BehaviorSubject<boolean>(false);
+
+const validityConfirmationService = jasmine.createSpyObj<ValidityConfirmationService>([
+  'confirmValidity','confirmValidityOverServicePoint'
+]);
 
 const authServiceMock: Partial<AuthService> = {
   claims: { name: 'Test', email: 'test@test.ch', sbbuid: 'e123456', roles: [] },
@@ -116,6 +121,7 @@ describe('ServicePointDetailComponent', () => {
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: ServicePointsService, useValue: servicePointsServiceSpy },
         { provide: NotificationService, useValue: notificationServiceSpy },
+        { provide: ValidityConfirmationService, useValue: validityConfirmationService },
         { provide: TranslatePipe },
         { provide: MapService, useValue: mapServiceSpy },
       ],
@@ -296,17 +302,6 @@ describe('ServicePointDetailComponent', () => {
     expect(component.isLatestVersionSelected).toBeFalse();
   });
 
-  it('should update service point on save', () => {
-    dialogServiceSpy.confirm.and.returnValue(of(true));
-    servicePointsServiceSpy.updateServicePoint.and.returnValue(of(BERN));
-
-    component.toggleEdit();
-    component.form?.controls.designationOfficial.setValue('New YB Station');
-    component.save();
-
-    expect(servicePointsServiceSpy.updateServicePoint).toHaveBeenCalled();
-  });
-
   it('should validate service point on validate', () => {
     dialogServiceSpy.confirm.and.returnValue(of(true));
     servicePointsServiceSpy.validateServicePoint.and.returnValue(of(BERN));
@@ -323,5 +318,47 @@ describe('ServicePointDetailComponent', () => {
     component.revoke();
 
     expect(servicePointsServiceSpy.revokeServicePoint).toHaveBeenCalled();
+  });
+
+  it('should call confirm on save', () => {
+    validityConfirmationService.confirmValidityOverServicePoint.and.returnValue(of(true))
+
+    spyOn(component, 'confirmValidity');
+
+    component.toggleEdit();
+    component.form!.markAsDirty();
+    component.save();
+
+    expect(component.confirmValidity).toHaveBeenCalled();
+  });
+
+  it('should call initValidity on toggleEdit', () => {
+    spyOn(component, 'initValidity');
+
+    component.toggleEdit();
+
+    expect(component.initValidity).toHaveBeenCalled();
+  });
+
+  it('should call update when confirmValidity returns true', () => {
+    validityConfirmationService.confirmValidity.and.returnValue(of(true))
+
+    spyOn(component, 'update');
+
+    component.confirmValidity();
+
+    expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
+    expect(component.update).toHaveBeenCalled();
+  });
+
+  it('should not call update when confirmValidity returns false', () => {
+    validityConfirmationService.confirmValidity.and.returnValue(of(false))
+
+    spyOn(component, 'update').and.callThrough();
+
+    component.confirmValidity();
+
+    expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
+    expect(component.update).not.toHaveBeenCalled();
   });
 });

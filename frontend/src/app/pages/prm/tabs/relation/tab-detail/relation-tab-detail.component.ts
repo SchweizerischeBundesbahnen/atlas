@@ -137,7 +137,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
     }
   }
 
-  private update(relationVersion: RelationVersion) {
+  update(relationVersion: RelationVersion) {
     this.personWithReducedMobilityService
       .updateRelation(this.currentRelationId, relationVersion)
       .pipe(catchError(this.handleError))

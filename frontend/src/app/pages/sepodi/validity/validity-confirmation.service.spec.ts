@@ -11,10 +11,10 @@ describe('ValidityConfirmationService', () => {
 
   let dialogService: SpyObj<DialogService>;
 
-  let momentMockFormValidTo: any;
-  let momentMockFormValidFrom: any;
-  let momentMockInitValidTo: any;
-  let momentMockInitValidFrom: any;
+  let momentMockFormValidTo = jasmine.createSpyObj('Moment', ['isSame']);
+  let momentMockFormValidFrom = jasmine.createSpyObj('Moment', ['isSame']);
+  let momentMockInitValidTo = jasmine.createSpyObj('Moment', ['isSame']);
+  let momentMockInitValidFrom = jasmine.createSpyObj('Moment', ['isSame']);
 
   beforeEach(() => {
     dialogService = jasmine.createSpyObj('dialogService', ['confirm']);
