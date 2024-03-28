@@ -1,9 +1,10 @@
-package ch.sbb.atlas.restdoc;
+package ch.sbb.atlas.auto.rest.doc.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.api.lidi.LineVersionModel;
-import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
+import ch.sbb.atlas.auto.rest.doc.descriptor.FieldDescriptor;
+import ch.sbb.atlas.auto.rest.doc.descriptor.FieldDescriptors;
+import ch.sbb.atlas.auto.rest.doc.test.dummy.model.DummyCreateServicePointVersionModel;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -12,15 +13,9 @@ import org.junit.jupiter.api.Test;
 class FieldDescriptorsTest {
 
   @Test
-  void shouldDescribeLineVersionModel() {
-    FieldDescriptors fieldDescriptors = new FieldDescriptors(LineVersionModel.class);
-    assertThat(fieldDescriptors.getFields()).hasSize(29);
-  }
-
-  @Test
   void shouldDescribeCreateServicePointVersionModel() {
-    FieldDescriptors fieldDescriptors = new FieldDescriptors(CreateServicePointVersionModel.class);
-    assertThat(fieldDescriptors.getFields()).hasSize(30);
+    FieldDescriptors fieldDescriptors = new FieldDescriptors(DummyCreateServicePointVersionModel.class);
+    assertThat(fieldDescriptors.getFields()).hasSize(10);
 
     Map<String, FieldDescriptor> fieldDescriptorMap = fieldDescriptors.getFields().stream()
         .collect(Collectors.toMap(FieldDescriptor::getName, Function.identity()));

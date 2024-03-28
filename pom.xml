@@ -41,6 +41,7 @@
    <modules>
       <!-- Order is important here -->
       <!-- Libs first -->
+      <module>auto-rest-doc</module>
       <module>kafka</module>
       <module>base-atlas</module>
       <module>user-administration-security</module>
