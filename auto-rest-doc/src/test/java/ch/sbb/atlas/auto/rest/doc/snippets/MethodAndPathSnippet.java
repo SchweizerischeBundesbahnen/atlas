@@ -1,4 +1,4 @@
-package ch.sbb.atlas.restdoc;
+package ch.sbb.atlas.auto.rest.doc.snippets;
 
 import java.util.HashMap;
 import java.util.Map;
