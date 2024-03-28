@@ -216,7 +216,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
     }
   }
 
-  private update(id: number, servicePointVersion: CreateServicePointVersion) {
+  update(id: number, servicePointVersion: CreateServicePointVersion) {
     this.confirmBoTransfer()
       .pipe(take(1))
       .subscribe((confirmed) => {

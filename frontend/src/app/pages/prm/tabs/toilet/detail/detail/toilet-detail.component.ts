@@ -131,7 +131,7 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent, Detai
       });
   }
 
-  private update(toiletVersion: ToiletVersion) {
+  update(toiletVersion: ToiletVersion) {
     this.personWithReducedMobilityService
       .updateToiletVersion(this.selectedVersion.id!, toiletVersion)
       .subscribe(() => {
