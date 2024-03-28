@@ -1,5 +1,7 @@
-package ch.sbb.atlas.restdoc;
+package ch.sbb.atlas.auto.rest.doc.snippets;
 
+import ch.sbb.atlas.auto.rest.doc.AtlasAutoDoc;
+import ch.sbb.atlas.auto.rest.doc.descriptor.FieldDescriptor;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

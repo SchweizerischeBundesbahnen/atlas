@@ -1,5 +1,7 @@
-package ch.sbb.atlas.restdoc;
+package ch.sbb.atlas.auto.rest.doc.snippets;
 
+import ch.sbb.atlas.auto.rest.doc.descriptor.FieldDescriptor;
+import ch.sbb.atlas.auto.rest.doc.descriptor.FieldDescriptors;
 import io.swagger.v3.oas.annotations.Parameter;
 import java.util.ArrayList;
 import java.util.Collections;
