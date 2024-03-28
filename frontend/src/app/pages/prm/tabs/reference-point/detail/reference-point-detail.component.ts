@@ -131,7 +131,7 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
       });
   }
 
-  private update(referencePointVersion: ReferencePointVersion) {
+  update(referencePointVersion: ReferencePointVersion) {
     this.personWithReducedMobilityService
       .updateReferencePoint(this.selectedVersion.id!, referencePointVersion)
       .subscribe(() => {
