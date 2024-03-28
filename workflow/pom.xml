@@ -97,6 +97,13 @@
          <version>1.702.0</version>
       </dependency>
       <dependency>
+         <artifactId>auto-rest-doc</artifactId>
+         <groupId>ch.sbb.atlas</groupId>
+         <version>1.702.0</version>
+         <scope>test</scope>
+         <type>test-jar</type>
+      </dependency>
+      <dependency>
          <artifactId>h2</artifactId>
          <groupId>com.h2database</groupId>
          <scope>test</scope>
