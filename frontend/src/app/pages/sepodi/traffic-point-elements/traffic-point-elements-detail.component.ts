@@ -269,7 +269,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
       });
   }
 
-  private update(id: number, trafficPointElementVersion: CreateTrafficPointElementVersion) {
+  update(id: number, trafficPointElementVersion: CreateTrafficPointElementVersion) {
     this.trafficPointElementsService
       .updateTrafficPoint(id, trafficPointElementVersion)
       .pipe(catchError(this.handleError()))

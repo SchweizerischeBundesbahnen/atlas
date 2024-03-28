@@ -130,7 +130,7 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent,
       });
   }
 
-  private update(contactPointVersion: ContactPointVersion) {
+  update(contactPointVersion: ContactPointVersion) {
     this.personWithReducedMobilityService
       .updateContactPoint(this.selectedVersion.id!, contactPointVersion)
       .subscribe(() => {

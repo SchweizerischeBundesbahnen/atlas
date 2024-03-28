@@ -10,16 +10,19 @@ import {
 } from '../../../../../app.testing.mocks';
 import { STOP_POINT } from '../../../util/stop-point-test-data.spec';
 import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
-import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../../../test/data/traffic-point-element';
+import {
+  BERN_WYLEREGG_TRAFFIC_POINTS,
+} from '../../../../../../test/data/traffic-point-element';
 import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
 import {
   PersonWithReducedMobilityService,
   ReadReferencePointVersion,
-  ReadRelationVersion,
+  ReadRelationVersion, RelationVersion,
 } from '../../../../../api';
 import { of } from 'rxjs';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
+import {ValidityConfirmationService} from "../../../../sepodi/validity/validity-confirmation.service";
 
 const referencePointOverview: ReadReferencePointVersion[] = [
   {
@@ -95,6 +98,24 @@ const relations: ReadRelationVersion[] = [
   },
 ];
 
+const relationVersion: RelationVersion = {
+    creationDate: '2024-01-22T13:52:30.598026',
+    creator: 'e524381',
+    editionDate: '2024-01-22T13:52:30.598026',
+    editor: 'e524381',
+    id: 1000,
+    validFrom: new Date('2000-01-01'),
+    validTo: new Date('2000-12-31'),
+    etagVersion: 0,
+    parentServicePointSloid: 'ch:1:sloid:7000',
+    referencePointSloid: 'ch:1:sloid:12345:1',
+    elementSloid: 'ch:1:sloid:89008:0:1',
+    tactileVisualMarks: 'TO_BE_COMPLETED',
+    contrastingAreas: 'TO_BE_COMPLETED',
+    stepFreeAccess: 'TO_BE_COMPLETED',
+    referencePointElementType: 'PLATFORM',
+};
+
 describe('RelationTabDetailComponent', () => {
   let component: RelationTabDetailComponent;
   let fixture: ComponentFixture<RelationTabDetailComponent>;
@@ -103,6 +124,10 @@ describe('RelationTabDetailComponent', () => {
     'getReferencePointsOverview',
     'getRelationsBySloid',
     'updateRelation',
+  ]);
+
+  const validityConfirmationService = jasmine.createSpyObj<ValidityConfirmationService>([
+    'confirmValidity','confirmValidityOverServicePoint'
   ]);
 
   const activatedRouteMock = {
@@ -141,6 +166,7 @@ describe('RelationTabDetailComponent', () => {
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService },
+        { provide: ValidityConfirmationService, useValue: validityConfirmationService },
       ],
     });
     fixture = TestBed.createComponent(RelationTabDetailComponent);
@@ -220,5 +246,35 @@ describe('RelationTabDetailComponent', () => {
 
     expect(component.editing).toBe(false);
     expect(personWithReducedMobilityService.updateRelation).toHaveBeenCalledTimes(1);
+  });
+
+  fit('should call initValidity on toggleEdit', () => {
+    spyOn(component, 'initValidity');
+
+    component.toggleEdit();
+
+    expect(component.initValidity).toHaveBeenCalled();
+  });
+
+  fit('should call update when confirmValidity returns true', () => {
+    validityConfirmationService.confirmValidity.and.returnValue(of(true))
+
+    spyOn(component, 'update').and.callThrough();
+
+    component.confirmValidity(relationVersion);
+
+    expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
+    expect(component.update).toHaveBeenCalled();
+  });
+
+  fit('should not call update when confirmValidity returns false', () => {
+    validityConfirmationService.confirmValidity.and.returnValue(of(false))
+
+    spyOn(component, 'update').and.callThrough();
+
+    component.confirmValidity(relationVersion);
+
+    expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
+    expect(component.update).not.toHaveBeenCalled();
   });
 });
