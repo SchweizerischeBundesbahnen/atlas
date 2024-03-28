@@ -1,4 +1,4 @@
-package ch.sbb.atlas.restdoc;
+package ch.sbb.atlas.auto.rest.doc.descriptor;
 
 import lombok.Builder;
 import lombok.Data;
