@@ -159,7 +159,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
     });
   }
 
-  private update(platformVersion: PlatformVersion) {
+  update(platformVersion: PlatformVersion) {
     this.personWithReducedMobilityService
       .updatePlatform(this.selectedVersion.id!, platformVersion)
       .subscribe(() => {

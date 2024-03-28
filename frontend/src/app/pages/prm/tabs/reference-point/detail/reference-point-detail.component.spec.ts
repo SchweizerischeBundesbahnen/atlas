@@ -26,7 +26,7 @@ import { NotificationService } from '../../../../../core/notification/notificati
 import {
   PersonWithReducedMobilityService,
   ReadReferencePointVersion,
-  ReferencePointAttributeType,
+  ReferencePointAttributeType, ReferencePointVersion,
 } from '../../../../../api';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SplitServicePointNumberPipe } from '../../../../../core/search-service-point/split-service-point-number.pipe';
@@ -39,6 +39,7 @@ import { AtlasSlideToggleComponent } from '../../../../../core/form-components/a
 import {DetailPageContainerComponent} from "../../../../../core/components/detail-page-container/detail-page-container.component";
 import {DetailPageContentComponent} from "../../../../../core/components/detail-page-content/detail-page-content.component";
 import {DetailFooterComponent} from "../../../../../core/components/detail-footer/detail-footer.component";
+import {ValidityConfirmationService} from "../../../../sepodi/validity/validity-confirmation.service";
 
 const referencePoint: ReadReferencePointVersion[] = [
   {
@@ -65,6 +66,23 @@ const referencePoint: ReadReferencePointVersion[] = [
   },
 ];
 
+const referencePointCreate: ReferencePointVersion = {
+    creationDate: '2024-01-22T13:52:30.598026',
+    creator: 'e524381',
+    editionDate: '2024-01-22T13:52:30.598026',
+    editor: 'e524381',
+    id: 1000,
+    sloid: 'ch:1:sloid:12345:1',
+    validFrom: new Date('2000-01-01'),
+    validTo: new Date('2000-12-31'),
+    etagVersion: 0,
+    parentServicePointSloid: 'ch:1:sloid:7000',
+    designation: 'designation',
+    additionalInformation: 'additional',
+    mainReferencePoint: true,
+    referencePointType: 'PLATFORM',
+};
+
 const authService: Partial<AuthService> = {
   hasPermissionsToWrite(): boolean {
     return true;
@@ -79,6 +97,11 @@ describe('ReferencePointDetailComponent', () => {
     'personWithReducedMobilityService',
     ['createReferencePoint', 'updateReferencePoint'],
   );
+
+  const validityConfirmationService = jasmine.createSpyObj<ValidityConfirmationService>([
+    'confirmValidity','confirmValidityOverServicePoint'
+  ]);
+
   personWithReducedMobilityService.createReferencePoint.and.returnValue(of(referencePoint[0]));
   personWithReducedMobilityService.updateReferencePoint.and.returnValue(of(referencePoint));
 
@@ -126,6 +149,7 @@ describe('ReferencePointDetailComponent', () => {
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: NotificationService, useValue: notificationService },
         { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService },
+        { provide: ValidityConfirmationService, useValue: validityConfirmationService },
         { provide: DialogService, useValue: dialogService },
         TranslatePipe,
         SplitServicePointNumberPipe,
@@ -218,6 +242,48 @@ describe('ReferencePointDetailComponent', () => {
       component.save();
       expect(personWithReducedMobilityService.updateReferencePoint).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
+    });
+
+    it('should call confirm on save', () => {
+      validityConfirmationService.confirmValidityOverServicePoint.and.returnValue(of(true))
+
+      spyOn(component, 'confirmValidity');
+
+      component.toggleEdit();
+      component.form.markAsDirty();
+      component.save();
+
+      expect(component.confirmValidity).toHaveBeenCalled();
+    });
+
+    it('should call initValidity on toggleEdit', () => {
+      spyOn(component, 'initValidity');
+
+      component.toggleEdit();
+
+      expect(component.initValidity).toHaveBeenCalled();
+    });
+
+    it('should call update when confirmValidity returns true', () => {
+      validityConfirmationService.confirmValidity.and.returnValue(of(true))
+
+      spyOn(component, 'update').and.callThrough();
+
+      component.confirmValidity(referencePointCreate);
+
+      expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
+      expect(component.update).toHaveBeenCalled();
+    });
+
+    it('should not call update when confirmValidity returns false', () => {
+      validityConfirmationService.confirmValidity.and.returnValue(of(false))
+
+      spyOn(component, 'update').and.callThrough();
+
+      component.confirmValidity(referencePointCreate);
+
+      expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
+      expect(component.update).not.toHaveBeenCalled();
     });
   });
 });

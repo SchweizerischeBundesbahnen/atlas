@@ -131,7 +131,7 @@ export class ParkingLotDetailComponent implements OnInit, DetailFormComponent, D
       });
   }
 
-  private update(parkingLotVersion: ParkingLotVersion) {
+  update(parkingLotVersion: ParkingLotVersion) {
     this.personWithReducedMobilityService
       .updateParkingLot(this.selectedVersion.id!, parkingLotVersion)
       .subscribe(() => {
