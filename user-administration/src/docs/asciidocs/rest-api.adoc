@@ -36,28 +36,28 @@ This API is available as a part of the ATLAS API on the SBB developer portal.
 
 == Get Users Permissions - Successfully
 
-include::{snippets}/user-administration-controller-api-test/should-get-users/auto-section.adoc[]
+include::{snippets}/user-administration-controller-api-test/should-get-users/atlas-doc.adoc[]
 
 == Get User Permissions - Successfully
 
-include::{snippets}/user-administration-controller-api-test/should-get-user/auto-section.adoc[]
+include::{snippets}/user-administration-controller-api-test/should-get-user/atlas-doc.adoc[]
 
 == Update User Permissions - Successfully
 
-include::{snippets}/user-administration-controller-api-test/should-update-user/auto-section.adoc[]
+include::{snippets}/user-administration-controller-api-test/should-update-user/atlas-doc.adoc[]
 
 == Create User Permissions - Successfully
 
-include::{snippets}/user-administration-controller-api-test/should-create-user-permission/auto-section.adoc[]
+include::{snippets}/user-administration-controller-api-test/should-create-user-permission/atlas-doc.adoc[]
 
 == Get Users filtered with applicationTypes and sboids
 
-include::{snippets}/user-administration-controller-api-test/get-users-with-sboids-and-application-types-found/auto-section.adoc[]
+include::{snippets}/user-administration-controller-api-test/get-users-with-sboids-and-application-types-found/atlas-doc.adoc[]
 
 == Get Clients
 
-include::{snippets}/client-credential-administration-controller-api-test/should-get-client/auto-section.adoc[]
+include::{snippets}/client-credential-administration-controller-api-test/should-get-client/atlas-doc.adoc[]
 
 == Get Client Overview
 
-include::{snippets}/client-credential-administration-controller-api-test/should-get-client-credential-overview/auto-section.adoc[]
+include::{snippets}/client-credential-administration-controller-api-test/should-get-client-credential-overview/atlas-doc.adoc[]

@@ -4,9 +4,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 
-import capital.scalable.restdocs.AutoDocumentation;
-import capital.scalable.restdocs.jackson.JacksonResultHandlers;
-import capital.scalable.restdocs.response.ResponseModifyingPreprocessors;
+import ch.sbb.atlas.auto.rest.doc.AtlasAutoDoc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,8 +15,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.cli.CliDocumentation;
-import org.springframework.restdocs.http.HttpDocumentation;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.web.servlet.MockMvc;
@@ -49,7 +45,6 @@ public abstract class BaseControllerApiTest {
       RestDocumentationContextProvider restDocumentation) {
     this.mvc = MockMvcBuilders
         .webAppContextSetup(context)
-        .alwaysDo(JacksonResultHandlers.prepareJackson(mapper))
         .alwaysDo(commonDocumentation())
         .apply(MockMvcRestDocumentation
             .documentationConfiguration(restDocumentation)
@@ -58,28 +53,14 @@ public abstract class BaseControllerApiTest {
             .withHost("localhost")
             .withPort(8080)
             .and().snippets()
-            .withDefaults(CliDocumentation.curlRequest(),
-                HttpDocumentation.httpRequest(),
-                HttpDocumentation.httpResponse(),
-                AutoDocumentation.requestFields(),
-                AutoDocumentation.responseFields(),
-                AutoDocumentation.pathParameters(),
-                AutoDocumentation.requestParameters(),
-                AutoDocumentation.description(),
-                AutoDocumentation.methodAndPath(),
-                AutoDocumentation.sectionBuilder()
-                                 .skipEmpty(true)
-                                 .build()))
+            .withDefaults(AtlasAutoDoc.configure()))
         .build();
   }
 
   protected RestDocumentationResultHandler commonDocumentation() {
     return MockMvcRestDocumentation.document("{class-name}/{method-name}",
         preprocessRequest(prettyPrint()),
-        preprocessResponse(
-            ResponseModifyingPreprocessors.replaceBinaryContent(),
-            ResponseModifyingPreprocessors.limitJsonArrayLength(mapper),
-            prettyPrint()));
+        preprocessResponse(prettyPrint()));
   }
 
 }

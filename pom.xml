@@ -32,7 +32,6 @@
       <!-- REST Doc -->
       <asciidoctor-plugin.version>3.0.0</asciidoctor-plugin.version>
       <spring-restdocs-mockmvc.version>3.0.1</spring-restdocs-mockmvc.version>
-      <spring-auto-rest-docs-core.version>2.0.11</spring-auto-rest-docs-core.version>
 
       <!-- Geo Data Libs -->
       <proj4j.version>1.3.0</proj4j.version>
@@ -42,6 +41,7 @@
    <modules>
       <!-- Order is important here -->
       <!-- Libs first -->
+      <module>auto-rest-doc</module>
       <module>kafka</module>
       <module>base-atlas</module>
       <module>user-administration-security</module>
@@ -131,12 +131,6 @@
             <artifactId>spring-restdocs-mockmvc</artifactId>
             <groupId>org.springframework.restdocs</groupId>
             <version>${spring-restdocs-mockmvc.version}</version>
-            <scope>test</scope>
-         </dependency>
-         <dependency>
-            <groupId>capital.scalable</groupId>
-            <artifactId>spring-auto-restdocs-core</artifactId>
-            <version>${spring-auto-rest-docs-core.version}</version>
             <scope>test</scope>
          </dependency>
          <dependency>
