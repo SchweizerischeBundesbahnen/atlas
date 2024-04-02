@@ -58,11 +58,11 @@
     "COUNTRIES": "Des pays",
     "COUNTRY": "Pays",
     "STATUS_TYPES": {
-      "DRAFT": "Projet",
-      "VALIDATED": "Validé",
-      "IN_REVIEW": "En cours d'examen",
-      "WITHDRAWN": "Retiré",
-      "REVOKED": "Saisie des erreurs"
+      "DRAFT": "projet",
+      "VALIDATED": "validé",
+      "IN_REVIEW": "en cours d'examen",
+      "WITHDRAWN": "retiré",
+      "REVOKED": "saisie des erreurs"
     },
     "OK": "OK",
     "EDIT_VERSION": "Modifier la version",
@@ -117,7 +117,7 @@
     "DROPDOWN_SEARCH_RESULT_INFO": "Les éléments affichés sont {{pageSize}} sur {{totalCount}}. (recherche plus précise nécessaire)"
   },
   "VERSION_TABLE": {
-    "TITLE": "Versions avec validité différente",
+    "TITLE": "Versions avec une validité différente",
     "GAP": "Interruption",
     "VERSION_DESCRIPTION": "Désignation de la version"
   },
@@ -411,8 +411,8 @@
       "DETAIL_LINE_SNAPSHOT": "Détails des lignes historiques",
       "NAVIGATE_TO_VERSION": "Accéder à la vue détaillée de la ligne",
       "NAVIGATE_TO_SNAPHOT": "Accéder à la liste de toutes les audiences de cette ligne",
-      "TAB_HEADER": "Lignes Auditions",
-      "TABLE_HEADER": "Lignes Auditions",
+      "TAB_HEADER": "Lignes auditions",
+      "TABLE_HEADER": "Lignes auditions",
       "TABLE": {
         "NUMBER": "Numéro de ligne",
         "DESCRIPTION": "Désignation de la ligne",
@@ -484,23 +484,23 @@
       "BASIC_DATA": "Informations sur l'entreprise de transport",
       "OFFICIAL_DATA": "Données officielles",
       "TRANSPORT_COMPANIES": "Entreprise de transport",
-      "NUMBER": "Numéro",
+      "NUMBER": "Numéro ET",
       "ABBREVIATION": "Initiales",
       "BUSINESS_REGISTER_NAME": "Nom du registre du commerce",
       "BUSINESS_REGISTER_NUMBER": "Numéro d'enregistrement au registre du commerce",
       "DESCRIPTION": "Nom officiel",
       "RICS_CODE": "RICS-Code",
       "GO_NUMBERS": "OC-Numéro",
-      "ENTERPRISE_ID": "UID",
+      "ENTERPRISE_ID": "IDE",
       "STATUS": "Statut",
       "TRANSPORT_COMPANY_STATUS": {
-        "OPERATOR": "Opérateur",
-        "CURRENT": "Actuel",
-        "SUPERVISION": "Supervision",
-        "OPERATING_PART": "Partie opérationnelle",
-        "FORMER_OPERATING_PART": "Ancienne partie de l'entreprise",
-        "LIQUIDATED": "Liquidé",
-        "INACTIVE": "Inactif"
+        "OPERATOR": "opérateur",
+        "CURRENT": "actuel",
+        "SUPERVISION": "supervision",
+        "OPERATING_PART": "partie opérationnelle",
+        "FORMER_OPERATING_PART": "ancienne partie de l'entreprise",
+        "LIQUIDATED": "liquidé",
+        "INACTIVE": "inactif"
       },
       "RELATION_CONFLICT": "L'organisation commerciale {{sboid}} est déjà liée de {{validFrom}} à {{validTo}} à TU {{number}} - {{abbreviation}} - {{businessRegisterName}}."
     },
@@ -551,12 +551,12 @@
     },
     "STATUS_DETAIL": "Statut d'audience",
     "STATUS": {
-      "ADDED": "Saisit",
+      "ADDED": "saisit/saisie",
       "STARTED": "Lancé",
       "REVISION": "En révision",
       "HEARING": "En audience",
-      "APPROVED": "Approuvé",
-      "REJECTED": "Refusé"
+      "APPROVED": "approuvé/approuvée",
+      "REJECTED": "refusé/refusée"
     },
     "NOTIFICATION": {
       "START": {
@@ -617,7 +617,7 @@
       "DOWNLOAD_CSV": "Télécharger [CSV]",
       "MANAGE_TIMETABLE_HEARING": "Contrôle de la consultation de l'horaire",
       "ADD_NEW_STATEMENT": "Saisir une nouvelle prise de position",
-      "ADD_NEW_TIMETABLE_HEARING": "Créer une nouvelle consultation sur les horaires",
+      "ADD_NEW_TIMETABLE_HEARING": "Créer une nouvelle consultation du horaires",
       "START_TIMETABLE_HEARING": "Lancer cette année d'horaire",
       "CANCEL_COLLECTING_ACTION": "Terminer la collecte",
       "CLOSE_TIMETABLE_HEARING": "Clôture de l'année horaire"
@@ -676,15 +676,15 @@
       "OVERVIEW_ARCHIVED_NOT_FOUND": "Aucune audition archivée n'est actuellement disponible."
     },
     "STATEMENT_STATUS": {
-      "RECEIVED": "Réceptionnée",
-      "IN_REVIEW": "En cours de traitement",
-      "ACCEPTED": "Acceptée",
-      "REJECTED": "Rejetée",
-      "NOTED": "Prise de connaissance",
-      "PARTLY_IMPLEMENTED": "Partiellement acceptée",
-      "MOVED": "Reportée",
-      "JUNK": "*Spam-Mail*",
-      "REVOKED": "Saisie des erreurs"
+      "RECEIVED": "réceptionnée",
+      "IN_REVIEW": "en cours de traitement",
+      "ACCEPTED": "acceptée",
+      "REJECTED": "rejetée",
+      "NOTED": "prise de connaissance",
+      "PARTLY_IMPLEMENTED": "partiellement acceptée",
+      "MOVED": "reportée",
+      "JUNK": "*spam-mail*",
+      "REVOKED": "saisie des erreurs"
     },
     "CANTON": {
       "CH": "Suisse entière",
@@ -893,7 +893,7 @@
         "ROUTE_SPEED_CHANGE": "Changement de vitesse de ligne"
       },
       "STOP_POINT": "Arrêt",
-      "STOP_POINT_TYPE": "Type de arrêt",
+      "STOP_POINT_TYPE": "Type d'arrêt",
       "STOP_POINT_TYPES": {
         "ORDERLY": "Arrêt ordinaire",
         "ON_REQUEST": "Arrêt sur demande",
@@ -966,10 +966,10 @@
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Bordures d’arrêts",
-      "NEW": "Saisir un nouveau bord d'arrêt",
-      "DESIGNATION": "Désignation Clients",
+      "NEW": "Saisir une nouvelle bordure d'arrêt",
+      "DESIGNATION": "Désignation clients",
       "DESIGNATION_OPERATIONAL": "Désignation opérationnelle",
-      "HEADER": "Bord d'arrêt / voie",
+      "HEADER": "Bord d'arrêt",
       "SERVICE_POINT_NAME": "Nom de l'arrêt",
       "DETAILS": "Données relatives à la",
       "PARENT_SLOID": "Appartient au domaine",
@@ -1026,7 +1026,7 @@
         "NORTH": "Latitude [°]"
       },
       "HEIGHT": "Altitude [Alt. en m.]",
-      "ADMINISTRATION": "Administrative Einheiten",
+      "ADMINISTRATION": "Unités administrative",
       "COUNTRY": "Campagne",
       "CANTON": "Canton",
       "MUNICIPALITY": "Commune",
@@ -1092,10 +1092,10 @@
         "ASSISTANCE_AVAILABILITY_INFO": "Si oui/en partie, informations à ajouter dans le champ de remarques.\nNon applicable = pas nécessaire, arrêt utilisable de manière autonome.",
         "ASSISTANCE_CONDITION": "Remarques sur l’assistance",
         "ASSISTANCE_CONDITION_INFO": "Informations sur l’assistance (par ex. délai pour l’annonce préalable, heures de fonctionnement, contact, page d’accueil)",
-        "ALTERNATIVE_TRANSPORT": "Service de navette ou offre de mode de transport public alternatif",
-        "ALTERNATIVE_TRANSPORT_INFO": "N’est légalement admissible comme solution de rechange selon l’art. 2, al. 3, LHand qu’avec l’accord écrit de l’OFT! \nLa solution de rechange standard est la fourniture d’une aide par le personnel sur place selon l’art. 3, al. 2, OTHand.",
+        "ALTERNATIVE_TRANSPORT": "Service de navette resp. offre de transport public alternative",
+        "ALTERNATIVE_TRANSPORT_INFO": "N’est légalement admissible comme solution de remplacement selon l’art. 2, al. 3, LHand qu’avec l’accord écrit de l’OFT! \nLa solution de remplacement standard est la fourniture d’une aide par le personnel sur place selon l’art. 3, al. 2, OTHand.",
         "ALTERNATIVE_TRANSPORT_CONDITION": "Renseignements sur le service navette ou l'offre de modes de transport public alternatifs",
-        "ALTERNATIVE_TRANSPORT_CONDITION_INFO": "N’est légalement admissible comme solution de rechange selon l’art. 12, al. 3, LHand qu’avec l’accord écrit de l’OFT! \nLa solution de rechange standard est la fourniture d’une aide par le personnel sur place selon l’art. 3, al. 2, OTHand.",
+        "ALTERNATIVE_TRANSPORT_CONDITION_INFO": "N’est légalement admissible comme solution de remplacement selon l’art. 12, al. 3, LHand qu’avec l’accord écrit de l’OFT! \nLa solution de remplacement standard est la fourniture d’une aide par le personnel sur place selon l’art. 3, al. 2, OTHand.",
         "ADDITIONAL_INFORMATION": "Informations complémentaires",
         "TICKET_MACHINE": "Présence d'un distributeur de billets",
         "WHEELCHAIR_TICKET_MACHINE": "Accessible",
@@ -1174,7 +1174,7 @@
       }
     },
     "INFO_BOX": {
-      "HEADER": "Document",
+      "HEADER": "Documents",
       "GUIDE_LINE_URL": "https://www.tp-info.ch/sites/default/files/2023-05/Guide_aux_crit%C3%A8res_sur_l%E2%80%99accessibilit%C3%A9_en_DiDok.pdf",
       "GUIDE_LINE_LABEL": "Guide LHand",
       "GUIDE_LINE_ATTACHMENT_URL": "https://www.tp-info.ch/sites/default/files/2023-06/Annexe_au_guide_sur_l%E2%80%99accessibilit%C3%A9_web.xlsx",
@@ -1190,7 +1190,7 @@
       "EXTERNAL_LINK_LABEL": "Guide LHand"
     },
     "PLATFORMS": {
-      "TITLE": "Bordure d'arrêt/voie",
+      "TITLE": "Bordure d'arrêt",
       "NEW": "Nouveau bordure d’arrêt",
       "NO_RECORD": "Cette bordure d’arrêt n'a pas encore été saisie.",
       "RECORDING_STATUS": "État de la saisie",
