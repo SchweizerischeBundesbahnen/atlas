@@ -1,6 +1,7 @@
 export class DataCy {
   static BACK_TO_OVERVIEW = '[data-cy=back-to-overview]';
   static CANCEL = '[data-cy=cancel]';
+  static BACK = '[data-cy=back]';
   static ATLAS_LOGO_HOME_LINK = '[data-cy=atlas-logo-home-link]';
   static HEADER_TITLE = '[data-cy=header-title]';
   static TOTAL_RANGE = '[data-cy=total-range]';
@@ -121,6 +122,41 @@ export class DataCy {
   static SEPODI_TRAFFIC_POINT_COMPASS_DIRECTION = '[data-cy=compassDirection]';
   static SEPODI_TRAFFIC_POINT_ELEMENTS_TABLE = '[data-cy=traffic-point-elements-table]';
   static SEPODI_MAP = '[data-cy=sepodi-map]';
+  static PRM_FREE_TEXT = '[data-cy=freeText]';
+  static PRM_ADDRESS = '[data-cy=address]';
+  static PRM_ZIP_CODE = '[data-cy=zipCode]';
+  static PRM_CITY = '[data-cy=city]';
+  static PRM_VISUAL_INFO = '[data-cy=visualInfo]';
+  static PRM_DYNAMIC_OPTIC_SYSTEM = '[data-cy=dynamicOpticSystem]';
+  static PRM_DYNAMIC_AUDIO_SYSTEM = '[data-cy=dynamicAudioSystem]';
+  static PRM_TICKET_MACHINE = '[data-cy=ticketMachine]';
+  static PRM_WHEELCHAIR_TICKET_MACHINE = '[data-cy=wheelchairTicketMachine]';
+  static PRM_AUDIO_TICKET_MACHINE = '[data-cy=audioTicketMachine]';
+  static PRM_ASSISTANCE_REQUEST_FULFILLED = '[data-cy=assistanceRequestFulfilled]';
+  static PRM_ASSISTANCE_SERVICE = '[data-cy=assistanceService]';
+  static PRM_ASSISTANCE_AVAILABILITY = '[data-cy=assistanceAvailability]';
+  static PRM_ALTERNATIVE_TRANSPORT = '[data-cy=alternativeTransport]';
+  static PRM_TAB_REFERENCE_POINTS = '[data-cy=tab-reference-points]';
+  static PRM_TAB_PLATFORMS = '[data-cy=tab-platforms]';
+  static PRM_TAB_CONTACT_POINTS = '[data-cy=tab-contact-points]';
+  static PRM_TAB_TOILETS = '[data-cy=tab-toilets]';
+  static PRM_TAB_PARKING_LOTS = '[data-cy=tab-parking-lots]';
+  static PRM_DESIGNATION = '[data-cy=designation]';
+  static PRM_REFERENCE_POINT_TYPE = '[data-cy=referencePointType]';
+  static PRM_MAIN_REFERENCE_POINT_CHECKBOX = '[data-cy="mainReferencePoint"] input';
+  static PRM_ADDITIONAL_INFORMATION = '[data-cy="additionalInformation"]';
+  static PRM_PLATFORM_TABLE = '[data-cy="platform-overview-table"]';
+  static PRM_SUPERELEVATION = '[data-cy="superelevation"]';
+  static PRM_INCLINATION_WIDTH = '[data-cy="inclinationWidth"]';
+  static PRM_INCLINATION = '[data-cy="inclination"]';
+  static PRM_CONTRASTING_AREAS = '[data-cy="contrastingAreas"]';
+  static PRM_DYNAMIC_VISUAL = '[data-cy="dynamicVisual"]';
+  static PRM_DYNAMIC_AUDIO = '[data-cy="dynamicAudio"]';
+  static PRM_LEVEL_ACCESS_WHEELCHAIR = '[data-cy="levelAccessWheelchair"]';
+  static PRM_BOARDING_DEVICE = '[data-cy="boardingDevice"]';
+  static PRM_TAB_RELATIONS = '[data-cy=tab-relations]';
+  static PRM_STEP_FREE_ACCESS = '[data-cy=stepFreeAccess]';
+  static PRM_TACTILE_VISUAL_MARKS = '[data-cy=tactileVisualMarks]';
 
   static TABLE_FILTER_MULTI_SELECT = (rowIndex: number, columnIndex: number) =>
     `[data-cy=table-filter-multi-select-${rowIndex}-${columnIndex}]`;
