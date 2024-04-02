@@ -162,42 +162,42 @@
     "TTFN": {
       "TITLE": "Gérer les numéros de tableaux-horaires",
       "TITLE_MENU": "Numéros de tableaux-horaires",
-      "DESCRIPTION": "Saisie et gestion des données des tableaux-horaires.",
+      "DESCRIPTION": "Saisier, modifier et consulter les numéros de tableaux-horaires.",
       "PATH_TEXT": "Vers tableaux-horaires"
     },
     "LIDI": {
-      "TITLE": "Liste des lignes",
+      "TITLE": "Gérer des lignes et lingnes partielles",
       "TITLE_MENU": "Lignes et lignes partielles",
-      "DESCRIPTION": "Saisie et gestion des données des lignes.",
+      "DESCRIPTION": "Saisier, modifier et consulter les lignes et lingnes partielles (SLNID).",
       "PATH_TEXT": "Vers liste des lignes"
     },
     "BODI": {
       "TITLE": "Liste des organisations commerciales",
       "TITLE_HEADER": "Organisations commerciales",
       "TITLE_MENU": "Organisations commerciales",
-      "DESCRIPTION": "Vers liste des organisations commerciales",
+      "DESCRIPTION": "Saisier, modifier et consulter les organisations commerciales (SBOID).",
       "PATH_TEXT": "Organisations commerciales"
     },
     "USER_ADMIN": {
       "TITLE": "Gérer les utilisateurs",
       "TITLE_HEADER": "Gestion des utilisateurs",
-      "DESCRIPTION": "Vous trouverez ici toutes les informations sur les utilisateurs autorisés et pourrez les gérer."
+      "DESCRIPTION": "Saisir, modifier et consulter les droits d'accès des utilisateurs d'atlas."
     },
     "SERVICE_POINTS": {
-      "TITLE": "Gérer les services",
-      "TITLE_HEADER": "Services",
-      "DESCRIPTION": "Vous trouverez ici toutes les informations nécessaires pour modifier et créer de nouveaux services."
+      "TITLE": "Gérer des points de services",
+      "TITLE_HEADER": "Points de services",
+      "DESCRIPTION": "Saisir, modifier et consulter les points d'exploitation et les arrêts des TP-Suisse (SLOID)."
     },
     "TTH": {
-      "TITLE": "Consultation sur le projet d'horaire en Suisse",
-      "TITLE_MENU": "Consultation sur le projet d'horaire",
-      "DESCRIPTION": "Vous trouverez ici toutes les informations relatives à la consultation sur le projet d'horaire en Suisse.",
+      "TITLE": "Consultation du projet d'horaire",
+      "TITLE_MENU": "Consultation du projet d'horaire",
+      "DESCRIPTION": "Consulter et modifier les commentaires du projet d'horaire.",
       "PATH_TEXT": "Consultation sur le projet d'horaire"
     },
     "PRM": {
-      "TITLE": "Gérer les données LHand",
-      "TITLE_HEADER": "Inventaire des actifs LHand",
-      "DESCRIPTION": "Saisir, modifier et consulter les données des services dans le cadre de I'inventaire LHand."
+      "TITLE": "Gérer les données d'accessibilité",
+      "TITLE_HEADER": "Accessibilité",
+      "DESCRIPTION": "Saisier, modifier et consulter les données d'accessibilité des arrêts de transports publics en Suisse."
     },
     "DETAILS": "Précisions"
   },
