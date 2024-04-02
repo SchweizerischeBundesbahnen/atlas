@@ -6,22 +6,22 @@ import {PrmDataCy} from "../../support/prm-data-cy";
 
 describe('PRM use case: reduced variant', {testIsolation: false}, () => {
 
-  const stopPoint = PrmUtils.getCompleteStopPoint();
-  let dependentInfo: SePoDependentInfo;
+  const stopPoint = PrmUtils.getReducedStopPoint();
+  let reducedSePoDependentInfo: SePoDependentInfo;
 
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
   });
 
   it('Dependent StopPoint Preparation Step', () => {
-    SePoDiDependentUtils.createDependentStopPointWithTrafficPoint('e2e-reduced-stop-point').then(info => dependentInfo = info);
+    SePoDiDependentUtils.createDependentStopPointWithTrafficPoint('e2e-reduced-stop-point').then(info => reducedSePoDependentInfo = info);
   });
 
-  describe('Use case 1: add base information', () => {
+  describe('Use case 1: add base information (reduced)', () => {
 
     it('Step-2: Navigate to Dependent StopPoint', () => {
       PrmUtils.navigateToPrm();
-      PrmUtils.searchAndSelect(dependentInfo.designationOfficial);
+      PrmUtils.searchAndSelect(reducedSePoDependentInfo.designationOfficial);
     });
 
     it('Step-3: Select Means of Transport: Cable Car', () => {
@@ -36,7 +36,7 @@ describe('PRM use case: reduced variant', {testIsolation: false}, () => {
       CommonUtils.getClearType(DataCy.VALID_TO, stopPoint.validTo, true);
     });
 
-    it('Step-5: Save and assert tabs', () => {
+    it('Step-5: Save and assert reduced tabs', () => {
       cy.get(DataCy.SAVE_ITEM).click().then(() => {
         cy.get(DataCy.EDIT).should('exist');
         cy.get(DataCy.CLOSE_DETAIL).should('exist');
@@ -49,7 +49,7 @@ describe('PRM use case: reduced variant', {testIsolation: false}, () => {
       });
     });
 
-    it('Step-6: Assert stop point', () => {
+    it('Step-6: Assert reduced stop point', () => {
       CommonUtils.assertVersionRange(1, stopPoint.validFrom, stopPoint.validTo);
       CommonUtils.assertItemValue(PrmDataCy.FREE_TEXT, stopPoint.freeText);
     });
@@ -59,7 +59,7 @@ describe('PRM use case: reduced variant', {testIsolation: false}, () => {
 
     it('Step-2: Navigate to Dependent StopPoint - Platform Tab', () => {
       PrmUtils.navigateToPrm();
-      PrmUtils.searchAndSelect(dependentInfo.designationOfficial);
+      PrmUtils.searchAndSelect(reducedSePoDependentInfo.designationOfficial);
       cy.get(PrmDataCy.TAB_PLATFORMS).should('exist').click();
     });
 
@@ -67,10 +67,10 @@ describe('PRM use case: reduced variant', {testIsolation: false}, () => {
       // Platform table has length 1
       cy.get(PrmDataCy.PLATFORM_TABLE + ' table tbody tr').should('have.length.greaterThan', 0);
       // Click on the item
-      cy.contains('td', dependentInfo.trafficPointSloids[0]).parents('tr').click({force: true});
+      cy.contains('td', reducedSePoDependentInfo.trafficPointSloids[0]).parents('tr').click({force: true});
     });
 
-    it('Step-4: Fill form', () => {
+    it('Step-4: Fill reduced form', () => {
       CommonUtils.getClearType(DataCy.VALID_FROM, "15.01.2024", true);
       CommonUtils.getClearType(DataCy.VALID_TO, "31.12.9999", true);
 
@@ -98,7 +98,7 @@ describe('PRM use case: reduced variant', {testIsolation: false}, () => {
       });
     });
 
-    it('Step-6: Assert platform', () => {
+    it('Step-6: Assert reduced platform', () => {
       CommonUtils.assertVersionRange(1, "15.01.2024", "31.12.9999");
       CommonUtils.assertItemValue(PrmDataCy.ADDITIONAL_INFORMATION, 'errare humanum est');
     });
