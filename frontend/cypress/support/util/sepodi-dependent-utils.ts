@@ -69,7 +69,7 @@ export default class SePoDiDependentUtils {
 
           return {
             designationOfficial: designationOfficial,
-            number: response.body.number,
+            number: response.body.number.number,
             sboid: sboid,
             trafficPointSloids: []
           };
