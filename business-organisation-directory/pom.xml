@@ -116,6 +116,13 @@
          <version>1.713.0</version>
       </dependency>
       <dependency>
+         <artifactId>auto-rest-doc</artifactId>
+         <groupId>ch.sbb.atlas</groupId>
+         <version>1.702.0</version>
+         <scope>test</scope>
+         <type>test-jar</type>
+      </dependency>
+      <dependency>
          <artifactId>spring-boot-starter-test</artifactId>
          <groupId>org.springframework.boot</groupId>
          <scope>test</scope>
@@ -138,11 +145,6 @@
       <dependency>
          <artifactId>spring-restdocs-mockmvc</artifactId>
          <groupId>org.springframework.restdocs</groupId>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <artifactId>spring-auto-restdocs-core</artifactId>
-         <groupId>capital.scalable</groupId>
          <scope>test</scope>
       </dependency>
    </dependencies>
