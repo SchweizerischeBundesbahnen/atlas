@@ -2,6 +2,7 @@ import PrmUtils from "../../support/util/prm-utils";
 import SePoDiDependentUtils from "../../support/util/sepodi-dependent-utils";
 import {DataCy} from "../../support/data-cy";
 import CommonUtils from "../../support/util/common-utils";
+import {PrmDataCy} from "../../support/prm-data-cy";
 
 describe('PRM use case: complete variant', {testIsolation: false}, () => {
 
@@ -15,7 +16,7 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
     SePoDiDependentUtils.createDependentStopPointWithTrafficPoint();
   });
 
-  describe.skip('Use case 1: add base information', () => {
+  describe('Use case 1: add base information', () => {
 
     it('Step-2: Navigate to Dependent StopPoint', () => {
       PrmUtils.navigateToPrm();
@@ -28,28 +29,28 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
     });
 
     it('Step-4: Fill complete form', () => {
-      CommonUtils.getClearType(DataCy.PRM_FREE_TEXT, stopPoint.freeText);
+      CommonUtils.getClearType(PrmDataCy.FREE_TEXT, stopPoint.freeText);
 
       CommonUtils.getClearType(DataCy.VALID_FROM, stopPoint.validFrom, true);
       CommonUtils.getClearType(DataCy.VALID_TO, stopPoint.validTo, true);
 
-      CommonUtils.getClearType(DataCy.PRM_ADDRESS, stopPoint.address);
-      CommonUtils.getClearType(DataCy.PRM_ZIP_CODE, stopPoint.zipCode);
-      CommonUtils.getClearType(DataCy.PRM_CITY, stopPoint.city);
+      CommonUtils.getClearType(PrmDataCy.ADDRESS, stopPoint.address);
+      CommonUtils.getClearType(PrmDataCy.ZIP_CODE, stopPoint.zipCode);
+      CommonUtils.getClearType(PrmDataCy.CITY, stopPoint.city);
 
-      CommonUtils.selectItemFromDropDown(DataCy.PRM_VISUAL_INFO, 'Ja');
-      CommonUtils.selectItemFromDropDown(DataCy.PRM_DYNAMIC_OPTIC_SYSTEM, 'Ja');
-      CommonUtils.selectItemFromDropDown(DataCy.PRM_DYNAMIC_AUDIO_SYSTEM, 'Ja');
+      CommonUtils.selectItemFromDropDown(PrmDataCy.VISUAL_INFO, 'Ja');
+      CommonUtils.selectItemFromDropDown(PrmDataCy.DYNAMIC_OPTIC_SYSTEM, 'Ja');
+      CommonUtils.selectItemFromDropDown(PrmDataCy.DYNAMIC_AUDIO_SYSTEM, 'Ja');
 
-      CommonUtils.selectItemFromDropDown(DataCy.PRM_TICKET_MACHINE, 'Ja');
-      CommonUtils.selectItemFromDropDown(DataCy.PRM_WHEELCHAIR_TICKET_MACHINE, 'Nein');
-      CommonUtils.selectItemFromDropDown(DataCy.PRM_AUDIO_TICKET_MACHINE, 'Nein');
+      CommonUtils.selectItemFromDropDown(PrmDataCy.TICKET_MACHINE, 'Ja');
+      CommonUtils.selectItemFromDropDown(PrmDataCy.WHEELCHAIR_TICKET_MACHINE, 'Nein');
+      CommonUtils.selectItemFromDropDown(PrmDataCy.AUDIO_TICKET_MACHINE, 'Nein');
 
-      CommonUtils.selectItemFromDropDown(DataCy.PRM_ASSISTANCE_REQUEST_FULFILLED, 'Ja');
-      CommonUtils.selectItemFromDropDown(DataCy.PRM_ASSISTANCE_SERVICE, 'Nicht anwendbar');
-      CommonUtils.selectItemFromDropDown(DataCy.PRM_ASSISTANCE_AVAILABILITY, 'Nicht anwendbar');
+      CommonUtils.selectItemFromDropDown(PrmDataCy.ASSISTANCE_REQUEST_FULFILLED, 'Ja');
+      CommonUtils.selectItemFromDropDown(PrmDataCy.ASSISTANCE_SERVICE, 'Nicht anwendbar');
+      CommonUtils.selectItemFromDropDown(PrmDataCy.ASSISTANCE_AVAILABILITY, 'Nicht anwendbar');
 
-      CommonUtils.selectItemFromDropDown(DataCy.PRM_ALTERNATIVE_TRANSPORT, 'Nein');
+      CommonUtils.selectItemFromDropDown(PrmDataCy.ALTERNATIVE_TRANSPORT, 'Nein');
     });
 
     it('Step-5: Save and assert tabs', () => {
@@ -57,21 +58,21 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
         cy.get(DataCy.EDIT).should('exist');
         cy.get(DataCy.CLOSE_DETAIL).should('exist');
 
-        cy.get(DataCy.PRM_TAB_REFERENCE_POINTS).should('exist');
-        cy.get(DataCy.PRM_TAB_PLATFORMS).should('exist');
-        cy.get(DataCy.PRM_TAB_CONTACT_POINTS).should('exist');
-        cy.get(DataCy.PRM_TAB_TOILETS).should('exist');
-        cy.get(DataCy.PRM_TAB_PARKING_LOTS).should('exist');
+        cy.get(PrmDataCy.TAB_REFERENCE_POINTS).should('exist');
+        cy.get(PrmDataCy.TAB_PLATFORMS).should('exist');
+        cy.get(PrmDataCy.TAB_CONTACT_POINTS).should('exist');
+        cy.get(PrmDataCy.TAB_TOILETS).should('exist');
+        cy.get(PrmDataCy.TAB_PARKING_LOTS).should('exist');
       });
     });
   });
 
-  describe.skip('Use case 2: add reference point', () => {
+  describe('Use case 2: add reference point', () => {
 
     it('Step-2: Navigate to Dependent StopPoint - ReferencePoint Tab', () => {
       PrmUtils.navigateToPrm();
       PrmUtils.searchAndSelect(SePoDiDependentUtils.DEPENDENT_STOP_POINT_DESIGNATION);
-      cy.get(DataCy.PRM_TAB_REFERENCE_POINTS).should('exist').click();
+      cy.get(PrmDataCy.TAB_REFERENCE_POINTS).should('exist').click();
     });
 
     it('Step-3: Click on new', () => {
@@ -79,21 +80,21 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
     });
 
     it('Step-4: Fill reference point form', () => {
-      CommonUtils.getClearType(DataCy.PRM_DESIGNATION, 'Seaside');
+      CommonUtils.getClearType(PrmDataCy.DESIGNATION, 'Seaside');
 
       CommonUtils.getClearType(DataCy.VALID_FROM, stopPoint.validFrom, true);
       CommonUtils.getClearType(DataCy.VALID_TO, stopPoint.validTo, true);
 
-      CommonUtils.selectItemFromDropDown(DataCy.PRM_REFERENCE_POINT_TYPE, 'Haupteingang');
-      cy.get(DataCy.PRM_MAIN_REFERENCE_POINT_CHECKBOX).click();
+      CommonUtils.selectItemFromDropDown(PrmDataCy.REFERENCE_POINT_TYPE, 'Haupteingang');
+      cy.get(PrmDataCy.MAIN_REFERENCE_POINT_CHECKBOX).click();
 
-      CommonUtils.getClearType(DataCy.PRM_ADDITIONAL_INFORMATION, 'The sun always shine over happy people.');
+      CommonUtils.getClearType(PrmDataCy.ADDITIONAL_INFORMATION, 'The sun always shine over happy people.');
     });
 
     it('Step-5: Save', () => {
       cy.get(DataCy.SAVE_ITEM).click().then(() => {
         cy.get(DataCy.EDIT).should('exist');
-        cy.get(DataCy.CLOSE_DETAIL).should('exist');
+        cy.get(DataCy.BACK).should('exist');
       });
     });
 
@@ -104,12 +105,12 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
     it('Step-2: Navigate to Dependent StopPoint - Platform Tab', () => {
       PrmUtils.navigateToPrm();
       PrmUtils.searchAndSelect(SePoDiDependentUtils.DEPENDENT_STOP_POINT_DESIGNATION);
-      cy.get(DataCy.PRM_TAB_PLATFORMS).should('exist').click();
+      cy.get(PrmDataCy.TAB_PLATFORMS).should('exist').click();
     });
 
     it('Step-3: Click on platform', () => {
       // Platform table has length 1
-      cy.get(DataCy.PRM_PLATFORM_TABLE + ' table tbody tr').should('have.length.greaterThan', 0);
+      cy.get(PrmDataCy.PLATFORM_TABLE + ' table tbody tr').should('have.length.greaterThan', 0);
       // Click on the item
       cy.contains('td', SePoDiDependentUtils.getDependentTrafficPointSloid()).parents('tr').click({force: true});
     });
@@ -118,19 +119,19 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
       CommonUtils.getClearType(DataCy.VALID_FROM, "15.01.2024", true);
       CommonUtils.getClearType(DataCy.VALID_TO, "31.12.9999", true);
 
-      CommonUtils.getClearType(DataCy.PRM_ADDITIONAL_INFORMATION, "errare humanum est", true);
+      CommonUtils.getClearType(PrmDataCy.ADDITIONAL_INFORMATION, "errare humanum est", true);
 
-      CommonUtils.getClearType(DataCy.PRM_SUPERELEVATION, "10", true);
-      CommonUtils.getClearType(DataCy.PRM_INCLINATION_WIDTH, "-10", true);
-      CommonUtils.getClearType(DataCy.PRM_INCLINATION, "2", true);
+      CommonUtils.getClearType(PrmDataCy.SUPERELEVATION, "10", true);
+      CommonUtils.getClearType(PrmDataCy.INCLINATION_WIDTH, "-10", true);
+      CommonUtils.getClearType(PrmDataCy.INCLINATION, "2", true);
 
-      CommonUtils.selectItemFromDropDown(DataCy.PRM_CONTRASTING_AREAS, "Ja");
+      CommonUtils.selectItemFromDropDown(PrmDataCy.CONTRASTING_AREAS, "Ja");
 
-      CommonUtils.selectItemFromDropDown(DataCy.PRM_DYNAMIC_VISUAL, "Ja");
-      CommonUtils.selectItemFromDropDown(DataCy.PRM_DYNAMIC_AUDIO, "Nein");
+      CommonUtils.selectItemFromDropDown(PrmDataCy.DYNAMIC_VISUAL, "Ja");
+      CommonUtils.selectItemFromDropDown(PrmDataCy.DYNAMIC_AUDIO, "Nein");
 
-      CommonUtils.selectItemFromDropDown(DataCy.PRM_LEVEL_ACCESS_WHEELCHAIR, "Nein");
-      CommonUtils.selectItemFromDropDown(DataCy.PRM_BOARDING_DEVICE, "Nein");
+      CommonUtils.selectItemFromDropDown(PrmDataCy.LEVEL_ACCESS_WHEELCHAIR, "Nein");
+      CommonUtils.selectItemFromDropDown(PrmDataCy.BOARDING_DEVICE, "Nein");
     });
 
     it('Step-5: Save', () => {
@@ -138,7 +139,7 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
         cy.get(DataCy.EDIT).should('exist');
         cy.get(DataCy.BACK).should('exist');
 
-        cy.get(DataCy.PRM_TAB_RELATIONS).should('exist');
+        cy.get(PrmDataCy.TAB_RELATIONS).should('exist');
       });
     });
   });
@@ -148,16 +149,16 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
     it('Step-2: Navigate to Dependent StopPoint - Platform Tab', () => {
       PrmUtils.navigateToPrm();
       PrmUtils.searchAndSelect(SePoDiDependentUtils.DEPENDENT_STOP_POINT_DESIGNATION);
-      cy.get(DataCy.PRM_TAB_PLATFORMS).should('exist').click();
+      cy.get(PrmDataCy.TAB_PLATFORMS).should('exist').click();
     });
 
     it('Step-3: Click on platform - relation', () => {
       // Platform table has length 1
-      cy.get(DataCy.PRM_PLATFORM_TABLE + ' table tbody tr').should('have.length.greaterThan', 0);
+      cy.get(PrmDataCy.PLATFORM_TABLE + ' table tbody tr').should('have.length.greaterThan', 0);
       // Click on the item
       cy.contains('td', SePoDiDependentUtils.getDependentTrafficPointSloid()).parents('tr').click({force: true});
 
-      cy.get(DataCy.PRM_TAB_RELATIONS).should('exist').click();
+      cy.get(PrmDataCy.TAB_RELATIONS).should('exist').click();
       cy.get(DataCy.EDIT).should('exist');
     });
 
@@ -165,9 +166,9 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
       cy.get(DataCy.EDIT).click();
       cy.get(DataCy.SAVE_ITEM).should('exist');
 
-      CommonUtils.selectItemFromDropDown(DataCy.PRM_STEP_FREE_ACCESS, "Ja mit Lift");
-      CommonUtils.selectItemFromDropDown(DataCy.PRM_TACTILE_VISUAL_MARKS, "Teilweise");
-      CommonUtils.selectItemFromDropDown(DataCy.PRM_CONTRASTING_AREAS, "Ja");
+      CommonUtils.selectItemFromDropDown(PrmDataCy.STEP_FREE_ACCESS, "Ja mit Lift");
+      CommonUtils.selectItemFromDropDown(PrmDataCy.TACTILE_VISUAL_MARKS, "Teilweise");
+      CommonUtils.selectItemFromDropDown(PrmDataCy.CONTRASTING_AREAS, "Ja");
     });
 
     it('Step-5: Save relation', () => {
