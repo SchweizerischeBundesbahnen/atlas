@@ -160,44 +160,44 @@
     "HOME_MENU": "Start",
     "HOME_BUSINESS_PLATFORM": "Die SKI Business Plattform",
     "TTFN": {
-      "TITLE": "Fahrplanfeld-Nummern verwalten",
-      "TITLE_MENU": "Fahrplanfeld-Nummern",
-      "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Fahrplanfeldern.",
+      "TITLE": "Fahrplanfeldnummern verwalten",
+      "TITLE_MENU": "Fahrplan-feldnummern",
+      "DESCRIPTION": "Erfassen, bearbeiten und einsehen der Fahrplanfeldnummern.",
       "PATH_TEXT": "Fahrplanfelder"
     },
     "LIDI": {
-      "TITLE": "Linien und Teillinien bearbeiten und erstellen",
+      "TITLE": "Linien und Teillinien verwalten",
       "TITLE_MENU": "Linien und Teillinien",
-      "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Linien und Teillinien.",
+      "DESCRIPTION": "Erfassen, bearbeiten und einsehen der Linien und Teillinien (SLNID).",
       "PATH_TEXT": "Linienverzeichnis"
     },
     "BODI": {
       "TITLE": "Geschäftsorganisationen verwalten",
       "TITLE_HEADER": "Geschäftsorganisationen",
       "TITLE_MENU": "Geschäfts-organisationen",
-      "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Geschäftsorganisationen.",
+      "DESCRIPTION": "Erfassen, bearbeiten und einsehen der Geschäftsorganisationen (SBOID).",
       "PATH_TEXT": "Geschäftsorganisationen"
     },
     "USER_ADMIN": {
       "TITLE": "Benutzer verwalten",
       "TITLE_HEADER": "Benutzerverwaltung",
-      "DESCRIPTION": "Hier finden Sie alle Informationen zu den berechtigten Benutzern und können diese verwalten."
+      "DESCRIPTION": "Erfassen, bearbeiten und einsehen der Benutzerberechtigungen von atlas."
     },
     "SERVICE_POINTS": {
       "TITLE": "Dienststellen verwalten",
       "TITLE_HEADER": "Dienststellen",
-      "DESCRIPTION": "Hier finden Sie alle Informationen zum Bearbeiten und neu Erstellen von Dienststellen."
+      "DESCRIPTION": "Erfassen, bearbeiten und einsehen von Betriebspunkten und Haltestellen des öv-Schweiz (SLOID)."
     },
     "TTH": {
       "TITLE": "Fahrplananhörung Schweiz",
       "TITLE_MENU": "Fahrplananhörung",
-      "DESCRIPTION": "Hier finden Sie alle Informationen zur Fahrplananhörung Schweiz.",
+      "DESCRIPTION": "Einsehen und bearbeiten der Rückmeldungen zum Fahrplanentwurf.",
       "PATH_TEXT": "Fahrplananhörung"
     },
     "PRM": {
-      "TITLE": "BehiG-Daten verwalten",
-      "TITLE_HEADER": "Bestandsaufnahme BehiG",
-      "DESCRIPTION": "Erfassen, bearbeiten und einsehen der Dienststellendaten im Rahmen der Bestandsaufnahme BehiG."
+      "TITLE": "Daten zur Barrierefreiheit verwalten",
+      "TITLE_HEADER": "Barrierefreiheit",
+      "DESCRIPTION": "Erfassen, bearbeiten und einsehen von Daten zur Barrierefreiheit von öV-Haltestellen in der Schweiz."
     },
     "DETAILS": "Details"
   },
