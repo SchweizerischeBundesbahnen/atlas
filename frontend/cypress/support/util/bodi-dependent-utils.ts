@@ -2,7 +2,7 @@ export default class BodiDependentUtils {
 
   static BO_DESCRIPTION = 'e2e-dependent-desc-de';
 
-  static createDependentBusinessOrganisation() {
+  static createDependentBusinessOrganisation(): Promise<string> {
     return cy.request({
       method: 'POST',
       failOnStatusCode: false,
@@ -18,15 +18,18 @@ export default class BodiDependentUtils {
         }) => parameter.key == "sboid");
         const sboid = sboidParameters[0].value;
         window.sessionStorage.setItem('sboid', sboid);
+        return sboid;
       } else {
         expect(response).property('status').to.equal(201);
-        window.sessionStorage.setItem('sboid', response.body.sboid);
+        const sboid = response.body.sboid;
+        window.sessionStorage.setItem('sboid', sboid);
+        return sboid;
       }
     });
   }
 
-  static getDependentBusinessOrganisationSboid() {
-    return window.sessionStorage.getItem('sboid');
+  static getDependentBusinessOrganisationSboid(): string {
+    return window.sessionStorage.getItem('sboid')!;
   }
 
   static deleteDependentBusinessOrganisation() {

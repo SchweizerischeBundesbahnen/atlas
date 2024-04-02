@@ -1,40 +1,54 @@
 import BodiDependentUtils from "./bodi-dependent-utils";
 
+export type SePoDependentInfo = {
+  designationOfficial: string,
+  number: number,
+  sboid: string,
+  trafficPointSloids: string[]
+}
+
 export default class SePoDiDependentUtils {
 
-  static DEPENDENT_STOP_POINT_DESIGNATION = 'e2e-dependent-stop-point';
-
-  static createDependentStopPointWithTrafficPoint() {
-    return SePoDiDependentUtils.createDependentStopPoint().then(() => {
-      cy.request({
-        method: 'POST',
+  static createDependentStopPointWithTrafficPoint(stopPointDesignationOfficial: string): Promise<SePoDependentInfo> {
+    return SePoDiDependentUtils.createDependentStopPoint(stopPointDesignationOfficial).then(stopPointInfo => {
+      return cy.request({
+        method: 'GET',
         failOnStatusCode: false,
-        url: Cypress.env('API_URL') + '/service-point-directory/v1/traffic-point-elements',
-        body: SePoDiDependentUtils.getDependentTrafficPointElement(),
+        url: Cypress.env('API_URL') + '/service-point-directory/v1/traffic-point-elements?servicePointNumbers=' + stopPointInfo.number,
         headers: {
           Authorization: `Bearer ${window.sessionStorage.getItem('access_token')}`
         },
       }).then((response) => {
-        if (response.status === 409) {
-          const number = response.body.details[0].displayInfo.parameters.filter((parameter: {
-            key: string;
-          }) => parameter.key == "trafficPointSloid")[0].value;
-          window.sessionStorage.setItem('trafficPointSloid', number);
+        const stopPointInfoWithTrafficPoint = stopPointInfo;
+        if (response.body.totalCount > 0) {
+          stopPointInfoWithTrafficPoint.trafficPointSloids.push(response.body.objects[0].sloid);
+          return stopPointInfoWithTrafficPoint;
         } else {
-          expect(response).property('status').to.equal(201);
-          window.sessionStorage.setItem('trafficPointSloid', response.body.sloid);
+          cy.request({
+            method: 'POST',
+            failOnStatusCode: false,
+            url: Cypress.env('API_URL') + '/service-point-directory/v1/traffic-point-elements',
+            body: SePoDiDependentUtils.getDependentTrafficPointElement(stopPointInfo.number),
+            headers: {
+              Authorization: `Bearer ${window.sessionStorage.getItem('access_token')}`
+            },
+          }).then((response) => {
+            expect(response).property('status').to.equal(201);
+            stopPointInfoWithTrafficPoint.trafficPointSloids.push(response.body.sloid);
+            return stopPointInfoWithTrafficPoint;
+          });
         }
       });
     });
   }
 
-  static createDependentStopPoint() {
-    return BodiDependentUtils.createDependentBusinessOrganisation().then(() => {
-      cy.request({
+  static createDependentStopPoint(designationOfficial: string): Promise<SePoDependentInfo> {
+    return BodiDependentUtils.createDependentBusinessOrganisation().then(sboid => {
+      return cy.request({
         method: 'POST',
         failOnStatusCode: false,
         url: Cypress.env('API_URL') + '/service-point-directory/v1/service-points',
-        body: SePoDiDependentUtils.getDependentStopPoint(),
+        body: SePoDiDependentUtils.getDependentStopPoint(designationOfficial),
         headers: {
           Authorization: `Bearer ${window.sessionStorage.getItem('access_token')}`
         },
@@ -43,19 +57,31 @@ export default class SePoDiDependentUtils {
           const number = response.body.details[0].displayInfo.parameters.filter((parameter: {
             key: string;
           }) => parameter.key == "number")[0].value;
-          window.sessionStorage.setItem('number', number);
+
+          return {
+            designationOfficial: designationOfficial,
+            number: number,
+            sboid: sboid,
+            trafficPointSloids: []
+          };
         } else {
           expect(response).property('status').to.equal(201);
-          window.sessionStorage.setItem('number', response.body.number);
+
+          return {
+            designationOfficial: designationOfficial,
+            number: response.body.number,
+            sboid: sboid,
+            trafficPointSloids: []
+          };
         }
       });
     });
   }
 
-  private static getDependentStopPoint() {
+  private static getDependentStopPoint(designationOfficial: string) {
     return {
       country: "SWITZERLAND",
-      designationOfficial: SePoDiDependentUtils.DEPENDENT_STOP_POINT_DESIGNATION,
+      designationOfficial: designationOfficial,
       businessOrganisation: BodiDependentUtils.getDependentBusinessOrganisationSboid(),
       meansOfTransport: ["TRAIN"],
       validFrom: "2000-04-01",
@@ -64,15 +90,7 @@ export default class SePoDiDependentUtils {
     };
   }
 
-  static getDependentServicePointNumber() {
-    return window.sessionStorage.getItem('number');
-  }
-
-  static getDependentTrafficPointSloid() {
-    return window.sessionStorage.getItem('trafficPointSloid');
-  }
-
-  private static getDependentTrafficPointElement() {
+  private static getDependentTrafficPointElement(numberWithoutCheckDigit: number) {
     return {
       designationOperational: "1",
       length: "10",
@@ -82,7 +100,7 @@ export default class SePoDiDependentUtils {
       validFrom: "2000-04-01",
       validTo: "9999-12-31",
       trafficPointElementType: "BOARDING_PLATFORM",
-      numberWithoutCheckDigit: SePoDiDependentUtils.getDependentServicePointNumber()
+      numberWithoutCheckDigit: numberWithoutCheckDigit
     };
   }
 }

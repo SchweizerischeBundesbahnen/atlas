@@ -111,6 +111,7 @@ export class DataCy {
   static SEPODI_SEARCH_SERVICE_POINT_SELECT = '[data-cy=search-service-point-select]';
   static SEPODI_SEARCH_FORM = '[data-cy=search-sepodi-form]';
   static MEANS_OF_TRANSPORT_TRAIN = '[data-cy=TRAIN]';
+  static MEANS_OF_TRANSPORT_CABLE_CAR = '[data-cy=CABLE_CAR]';
   static SEPODI_TRAFFIC_POINT_TAB = '[data-cy=tab-traffic-point-elements]';
   static SEPODI_NEW_TRAFFIC_POINT_BUTTON = '[data-cy=new-traffic-point-element]';
   static SEPODI_TRAFFIC_POINT_HEADER = '[data-cy=traffic-point-header]';

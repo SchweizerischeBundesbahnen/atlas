@@ -1,5 +1,4 @@
 import CommonUtils from "./common-utils";
-import BodiDependentUtils from "./bodi-dependent-utils";
 import {DataCy} from "../data-cy";
 
 export default class PrmUtils {
@@ -23,11 +22,20 @@ export default class PrmUtils {
     return {
       validFrom: "15.01.2024",
       validTo: "31.12.9999",
-      meansOfTransport: [        "TRAIN"      ],
+      meansOfTransport: ["TRAIN"],
       freeText: "Ich bin ein rollstuhlgängiger Test.",
       address: "Wylerstrasse 123",
       zipCode: "3000",
       city: "Bern",
+    }
+  }
+
+  static getReducedStopPoint() {
+    return {
+      validFrom: "15.01.2024",
+      validTo: "31.12.9999",
+      meansOfTransport: ["TRAIN"],
+      freeText: "Ich bin ein rollstuhlgängiger Test.",
     }
   }
 

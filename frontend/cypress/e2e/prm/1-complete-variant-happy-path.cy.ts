@@ -1,5 +1,5 @@
 import PrmUtils from "../../support/util/prm-utils";
-import SePoDiDependentUtils from "../../support/util/sepodi-dependent-utils";
+import SePoDiDependentUtils, {SePoDependentInfo} from "../../support/util/sepodi-dependent-utils";
 import {DataCy} from "../../support/data-cy";
 import CommonUtils from "../../support/util/common-utils";
 import {PrmDataCy} from "../../support/prm-data-cy";
@@ -7,20 +7,21 @@ import {PrmDataCy} from "../../support/prm-data-cy";
 describe('PRM use case: complete variant', {testIsolation: false}, () => {
 
   const stopPoint = PrmUtils.getCompleteStopPoint();
+  let dependentInfo: SePoDependentInfo;
 
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
   });
 
   it('Dependent StopPoint Preparation Step', () => {
-    SePoDiDependentUtils.createDependentStopPointWithTrafficPoint();
+    SePoDiDependentUtils.createDependentStopPointWithTrafficPoint('e2e-complete-stop-point').then(info => dependentInfo = info);
   });
 
   describe('Use case 1: add base information', () => {
 
     it('Step-2: Navigate to Dependent StopPoint', () => {
       PrmUtils.navigateToPrm();
-      PrmUtils.searchAndSelect(SePoDiDependentUtils.DEPENDENT_STOP_POINT_DESIGNATION);
+      PrmUtils.searchAndSelect(dependentInfo.designationOfficial);
     });
 
     it('Step-3: Select Means of Transport: Train', () => {
@@ -76,7 +77,7 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
 
     it('Step-2: Navigate to Dependent StopPoint - ReferencePoint Tab', () => {
       PrmUtils.navigateToPrm();
-      PrmUtils.searchAndSelect(SePoDiDependentUtils.DEPENDENT_STOP_POINT_DESIGNATION);
+      PrmUtils.searchAndSelect(dependentInfo.designationOfficial);
       cy.get(PrmDataCy.TAB_REFERENCE_POINTS).should('exist').click();
     });
 
@@ -114,7 +115,7 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
 
     it('Step-2: Navigate to Dependent StopPoint - Platform Tab', () => {
       PrmUtils.navigateToPrm();
-      PrmUtils.searchAndSelect(SePoDiDependentUtils.DEPENDENT_STOP_POINT_DESIGNATION);
+      PrmUtils.searchAndSelect(dependentInfo.designationOfficial);
       cy.get(PrmDataCy.TAB_PLATFORMS).should('exist').click();
     });
 
@@ -122,7 +123,7 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
       // Platform table has length 1
       cy.get(PrmDataCy.PLATFORM_TABLE + ' table tbody tr').should('have.length.greaterThan', 0);
       // Click on the item
-      cy.contains('td', SePoDiDependentUtils.getDependentTrafficPointSloid()).parents('tr').click({force: true});
+      cy.contains('td', dependentInfo.trafficPointSloids[0]).parents('tr').click({force: true});
     });
 
     it('Step-4: Fill form', () => {
@@ -163,7 +164,7 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
 
     it('Step-2: Navigate to Dependent StopPoint - Platform Tab', () => {
       PrmUtils.navigateToPrm();
-      PrmUtils.searchAndSelect(SePoDiDependentUtils.DEPENDENT_STOP_POINT_DESIGNATION);
+      PrmUtils.searchAndSelect(dependentInfo.designationOfficial);
       cy.get(PrmDataCy.TAB_PLATFORMS).should('exist').click();
     });
 
@@ -171,7 +172,7 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
       // Platform table has length 1
       cy.get(PrmDataCy.PLATFORM_TABLE + ' table tbody tr').should('have.length.greaterThan', 0);
       // Click on the item
-      cy.contains('td', SePoDiDependentUtils.getDependentTrafficPointSloid()).parents('tr').click({force: true});
+      cy.contains('td', dependentInfo.trafficPointSloids[0]).parents('tr').click({force: true});
 
       cy.get(PrmDataCy.TAB_RELATIONS).should('exist').click();
       cy.get(DataCy.EDIT).should('exist');

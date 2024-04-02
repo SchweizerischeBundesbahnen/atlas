@@ -35,5 +35,12 @@ export class PrmDataCy {
   static TAB_RELATIONS = '[data-cy=tab-relations]';
   static STEP_FREE_ACCESS = '[data-cy=stepFreeAccess]';
   static TACTILE_VISUAL_MARKS = '[data-cy=tactileVisualMarks]';
+  static VEHICLE_ACCESS = '[data-cy=vehicleAccess]';
+  static TACTILE_SYSTEM = '[data-cy=tactileSystem]';
+  static INCLINATION_LONGITUDINAL = '[data-cy=inclinationLongitudinal]';
+  static INFO_OPPORTUNITIES = '[data-cy=infoOpportunities]';
+  static HEIGHT = '[data-cy=height]';
+  static WHEELCHAIR_AREA_LENGTH = '[data-cy=wheelchairAreaLength]';
+  static WHEELCHAIR_AREA_WIDTH = '[data-cy=wheelchairAreaWidth]';
 
 }
