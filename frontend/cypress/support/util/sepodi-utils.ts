@@ -35,7 +35,7 @@ export default class SepodiUtils {
       .type(designationOfficial)
       .then(() => {
         cy.get(DataCy.SEPODI_SEARCH_SERVICE_POINT_SELECT + ' .ng-option')
-          .should('contain', designationOfficial).click({force: true});
+          .should('contain', designationOfficial).click({force: true, multiple: true});
       });
   }
 
