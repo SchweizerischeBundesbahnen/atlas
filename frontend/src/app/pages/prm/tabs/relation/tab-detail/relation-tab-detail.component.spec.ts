@@ -248,7 +248,7 @@ describe('RelationTabDetailComponent', () => {
     expect(personWithReducedMobilityService.updateRelation).toHaveBeenCalledTimes(1);
   });
 
-  fit('should call initValidity on toggleEdit', () => {
+  it('should call initValidity on toggleEdit', () => {
     spyOn(component, 'initValidity');
 
     component.toggleEdit();
@@ -256,7 +256,7 @@ describe('RelationTabDetailComponent', () => {
     expect(component.initValidity).toHaveBeenCalled();
   });
 
-  fit('should call update when confirmValidity returns true', () => {
+  it('should call update when confirmValidity returns true', () => {
     validityConfirmationService.confirmValidity.and.returnValue(of(true))
 
     spyOn(component, 'update').and.callThrough();
@@ -267,7 +267,7 @@ describe('RelationTabDetailComponent', () => {
     expect(component.update).toHaveBeenCalled();
   });
 
-  fit('should not call update when confirmValidity returns false', () => {
+  it('should not call update when confirmValidity returns false', () => {
     validityConfirmationService.confirmValidity.and.returnValue(of(false))
 
     spyOn(component, 'update').and.callThrough();
