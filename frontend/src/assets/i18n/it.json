@@ -160,44 +160,44 @@
     "HOME_MENU": "Inizio",
     "HOME_BUSINESS_PLATFORM": "La piattaforma commerciale SKI",
     "TTFN": {
-      "TITLE": "Cartella del quadro d’orario",
-      "TITLE_MENU": "Cartella del quadro d’orario",
-      "DESCRIPTION": "Registrazione e gestione dei dati del quadro d’orario.",
+      "TITLE": "Gestione dei Numeri del quadro d'orario",
+      "TITLE_MENU": "Numeri del quadro d'orario",
+      "DESCRIPTION": "Registrare, gestire e visualizzare i numeri del quadro d'orario.",
       "PATH_TEXT": "Dai quadri d’orario"
     },
     "LIDI": {
-      "TITLE": "Cartella delle linee",
+      "TITLE": "Gestione dei numeri delle cartella delle linee",
       "TITLE_MENU": "Cartella delle linee",
-      "DESCRIPTION": "Registrazione e gestione dei dati delle linee.",
+      "DESCRIPTION": "Registrare, gestire e visualizzare i numeri della cartella delle linee (SLNID).",
       "PATH_TEXT": "Dalla cartella delle linee"
     },
     "BODI": {
       "TITLE": "Cartella delle organizzazioni aziendale",
       "TITLE_HEADER": "Organizzazioni aziendali",
       "TITLE_MENU": "Organizzazioni aziendali",
-      "DESCRIPTION": "Registrazione e gestione dei dati delle rganizzazioni aziendali.",
+      "DESCRIPTION": "Registrare, gestire e visualizzare le organizzazioni aziendali (SBOID).",
       "PATH_TEXT": "Organizzazioni aziendali"
     },
     "USER_ADMIN": {
       "TITLE": "Gestire gli utenti",
       "TITLE_HEADER": "Amministrazione degli utenti",
-      "DESCRIPTION": "Qui troverete tutte le informazioni sugli utenti autorizzati e potrete gestirli."
+      "DESCRIPTION": "Registrare, gestire e visualizzare le autorizzazioni degli utenti per atlas."
     },
     "SERVICE_POINTS": {
-      "TITLE": "Gestire i servizi",
-      "TITLE_HEADER": "Servizi",
-      "DESCRIPTION": "Qui si trovano tutte le informazioni necessarie per modificare e creare nuovi reparti."
+      "TITLE": "Gestire i punti di servizio",
+      "TITLE_HEADER": "Punti di servizio",
+      "DESCRIPTION": "Registrare, gestire e visualizzare i punti di esercizio e le fermate del trasporto pubblico svizzero (SLOID)."
     },
     "TTH": {
-      "TITLE": "Orario Audizione Svizzera",
+      "TITLE": "Orario Audizione Svizerra",
       "TITLE_MENU": "Orario Audizione",
-      "DESCRIPTION": "Qui potete trovare tutte le informazioni sull'orario dell'udienza in Svizzera.",
+      "DESCRIPTION": "Visualizzazione ed elaborazione del feedback sul progetto di orario.",
       "PATH_TEXT": "Orario Audizione"
     },
     "PRM": {
-      "TITLE": "Gestire dei dati BehiG",
-      "TITLE_HEADER": "Inventario LDis",
-      "DESCRIPTION": "Registrare, gestire e visualizzare i dati del servizio nell'ambito dell'inventario BehiG."
+      "TITLE": "Gestione dei dati di accessibilità",
+      "TITLE_HEADER": "Accessibilità",
+      "DESCRIPTION": "Registrare, gestire e visualizzare i dati sull'accessibilità delle fermate dei trasporti pubblici in Svizzera."
     },
     "DETAILS": "Precisazioni"
   },
