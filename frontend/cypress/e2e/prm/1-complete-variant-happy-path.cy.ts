@@ -65,6 +65,11 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
         cy.get(PrmDataCy.TAB_PARKING_LOTS).should('exist');
       });
     });
+
+    it('Step-6: Assert stop point', () => {
+      CommonUtils.assertVersionRange(1, stopPoint.validFrom, stopPoint.validTo);
+      CommonUtils.assertItemValue(PrmDataCy.FREE_TEXT, stopPoint.freeText);
+    });
   });
 
   describe('Use case 2: add reference point', () => {
@@ -91,11 +96,16 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
       CommonUtils.getClearType(PrmDataCy.ADDITIONAL_INFORMATION, 'The sun always shine over happy people.');
     });
 
-    it('Step-5: Save', () => {
+    it('Step-5: Save reference point', () => {
       cy.get(DataCy.SAVE_ITEM).click().then(() => {
         cy.get(DataCy.EDIT).should('exist');
         cy.get(DataCy.BACK).should('exist');
       });
+    });
+
+    it('Step-6: Assert reference point', () => {
+      CommonUtils.assertVersionRange(1, stopPoint.validFrom, stopPoint.validTo);
+      CommonUtils.assertItemValue(PrmDataCy.DESIGNATION, 'Seaside');
     });
 
   });
@@ -134,13 +144,18 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
       CommonUtils.selectItemFromDropDown(PrmDataCy.BOARDING_DEVICE, "Nein");
     });
 
-    it('Step-5: Save', () => {
+    it('Step-5: Save platform', () => {
       cy.get(DataCy.SAVE_ITEM).click().then(() => {
         cy.get(DataCy.EDIT).should('exist');
         cy.get(DataCy.BACK).should('exist');
 
         cy.get(PrmDataCy.TAB_RELATIONS).should('exist');
       });
+    });
+
+    it('Step-6: Assert platform', () => {
+      CommonUtils.assertVersionRange(1, "15.01.2024", "31.12.9999");
+      CommonUtils.assertItemValue(PrmDataCy.ADDITIONAL_INFORMATION, 'errare humanum est');
     });
   });
 
@@ -175,6 +190,10 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
       cy.get(DataCy.SAVE_ITEM).click().then(() => {
         cy.get(DataCy.EDIT).should('exist');
       });
+    });
+
+    it('Step-6: Assert relation', () => {
+      CommonUtils.assertVersionRange(1, "15.01.2024", "31.12.9999");
     });
   });
 
