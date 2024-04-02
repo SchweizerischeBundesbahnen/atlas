@@ -969,7 +969,7 @@
       "NEW": "Neue Haltekante erfassen",
       "DESIGNATION": "Bezeichnung Kunden",
       "DESIGNATION_OPERATIONAL": "Bezeichnung betrieblich",
-      "HEADER": "Haltekante / Gleis",
+      "HEADER": "Haltekante",
       "SERVICE_POINT_NAME": "Haltestellenname",
       "DETAILS": "Angaben zur",
       "PARENT_SLOID": "Gehört zu Bereich",
@@ -1190,7 +1190,7 @@
       "EXTERNAL_LINK_LABEL": "Leitfaden BehiG"
     },
     "PLATFORMS": {
-      "TITLE": "Haltekante/Gleis",
+      "TITLE": "Haltekante",
       "NEW": "Neue Haltekante",
       "NO_RECORD": "Diese Haltekante wurde noch nicht erfasst.",
       "RECORDING_STATUS": "Erfassungsstatus",
