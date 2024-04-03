@@ -141,7 +141,7 @@
   },
   "SW_DIALOG": {
     "UPDATE_TITLE": "Nouvelle version disponible",
-    "UPDATE_MESSAGE": "Une nouvelle version d'ATLAS est disponible, veuillez recharger la page.",
+    "UPDATE_MESSAGE": "Une nouvelle version d'Atlas est disponible, veuillez recharger la page.",
     "UNRECOVERABLE_TITLE": "Une erreur s'est produite",
     "UNRECOVERABLE_MESSAGE": "Veuillez recharger la page."
   },
@@ -181,7 +181,7 @@
     "USER_ADMIN": {
       "TITLE": "Gérer les utilisateurs",
       "TITLE_HEADER": "Gestion des utilisateurs",
-      "DESCRIPTION": "Saisir, modifier et consulter les droits d'accès des utilisateurs d'atlas."
+      "DESCRIPTION": "Saisir, modifier et consulter les droits d'accès des utilisateurs d'Atlas."
     },
     "SERVICE_POINTS": {
       "TITLE": "Gérer des points de services",
@@ -839,8 +839,8 @@
     "MANAGE_TIMETABLE_HEARING": {
       "POPUP_TITLE": "Contrôle de la consultation de l'horaire",
       "CREATE_STATEMENT_EXTERNAL": "Saisie de l'avis via API",
-      "CREATE_STATEMENT_INTERNAL": "Saisie de l'avis dans atlas",
-      "EDIT_STATEMENT": "Traitement de l'avis dans atlas",
+      "CREATE_STATEMENT_INTERNAL": "Saisie de l'avis dans Atlas",
+      "EDIT_STATEMENT": "Traitement de l'avis dans Atlas",
       "SUCCESSFUL_SAVE_NOTIFICATION": "Paramètres enregistrés avec succès"
     }
   },

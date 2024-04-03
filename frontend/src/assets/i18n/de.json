@@ -161,7 +161,7 @@
     "HOME_BUSINESS_PLATFORM": "Die SKI Business Plattform",
     "TTFN": {
       "TITLE": "Fahrplanfeldnummern verwalten",
-      "TITLE_MENU": "Fahrplan-feldnummern",
+      "TITLE_MENU": "Fahrplanfeld-nummern",
       "DESCRIPTION": "Erfassen, bearbeiten und einsehen der Fahrplanfeldnummern.",
       "PATH_TEXT": "Fahrplanfelder"
     },
@@ -181,7 +181,7 @@
     "USER_ADMIN": {
       "TITLE": "Benutzer verwalten",
       "TITLE_HEADER": "Benutzerverwaltung",
-      "DESCRIPTION": "Erfassen, bearbeiten und einsehen der Benutzerberechtigungen von atlas."
+      "DESCRIPTION": "Erfassen, bearbeiten und einsehen der Benutzerberechtigungen von Atlas."
     },
     "SERVICE_POINTS": {
       "TITLE": "Dienststellen verwalten",
@@ -839,8 +839,8 @@
     "MANAGE_TIMETABLE_HEARING": {
       "POPUP_TITLE": "Steuerung Fahrplananhörung",
       "CREATE_STATEMENT_EXTERNAL": "Erfassung Stellungnahme via API",
-      "CREATE_STATEMENT_INTERNAL": "Erfassung Stellungnahme in atlas",
-      "EDIT_STATEMENT": "Bearbeitung Stellungnahme in atlas",
+      "CREATE_STATEMENT_INTERNAL": "Erfassung Stellungnahme in Atlas",
+      "EDIT_STATEMENT": "Bearbeitung Stellungnahme in Atlas",
       "SUCCESSFUL_SAVE_NOTIFICATION": "Einstellungen erfolgreich gespeichert"
     }
   },
