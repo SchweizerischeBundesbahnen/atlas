@@ -114,7 +114,6 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
         parentServicePointSloid: this.parentServicePointSloid,
         referencePointSloid: this.selectedReferencePointSloid,
       };
-      console.log("test")
       this.confirmValidity(relationVersion);
     }
   }
