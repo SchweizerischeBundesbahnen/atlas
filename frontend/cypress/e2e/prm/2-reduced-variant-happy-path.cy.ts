@@ -6,7 +6,7 @@ import {PrmDataCy} from "../../support/prm-data-cy";
 
 describe('PRM use case: reduced variant', {testIsolation: false}, () => {
 
-  const stopPoint = PrmUtils.getReducedStopPoint();
+  const reducedStopPoint = PrmUtils.getReducedStopPoint();
   let reducedSePoDependentInfo: SePoDependentInfo;
 
   it('Step-1: Login on ATLAS', () => {
@@ -30,28 +30,21 @@ describe('PRM use case: reduced variant', {testIsolation: false}, () => {
     });
 
     it('Step-4: Fill reduced form', () => {
-      CommonUtils.getClearType(PrmDataCy.FREE_TEXT, stopPoint.freeText);
+      CommonUtils.getClearType(PrmDataCy.FREE_TEXT, reducedStopPoint.freeText);
 
-      CommonUtils.getClearType(DataCy.VALID_FROM, stopPoint.validFrom, true);
-      CommonUtils.getClearType(DataCy.VALID_TO, stopPoint.validTo, true);
+      CommonUtils.getClearType(DataCy.VALID_FROM, reducedStopPoint.validFrom, true);
+      CommonUtils.getClearType(DataCy.VALID_TO, reducedStopPoint.validTo, true);
     });
 
     it('Step-5: Save and assert reduced tabs', () => {
-      cy.get(DataCy.SAVE_ITEM).click().then(() => {
-        cy.get(DataCy.EDIT).should('exist');
-        cy.get(DataCy.CLOSE_DETAIL).should('exist');
-
+      PrmUtils.saveItemAndAssertTabs().then(() => {
         cy.get(PrmDataCy.TAB_REFERENCE_POINTS).should('not.exist');
-        cy.get(PrmDataCy.TAB_PLATFORMS).should('exist');
-        cy.get(PrmDataCy.TAB_CONTACT_POINTS).should('exist');
-        cy.get(PrmDataCy.TAB_TOILETS).should('exist');
-        cy.get(PrmDataCy.TAB_PARKING_LOTS).should('exist');
       });
     });
 
     it('Step-6: Assert reduced stop point', () => {
-      CommonUtils.assertVersionRange(1, stopPoint.validFrom, stopPoint.validTo);
-      CommonUtils.assertItemValue(PrmDataCy.FREE_TEXT, stopPoint.freeText);
+      CommonUtils.assertVersionRange(1, reducedStopPoint.validFrom, reducedStopPoint.validTo);
+      CommonUtils.assertItemValue(PrmDataCy.FREE_TEXT, reducedStopPoint.freeText);
     });
   });
 
@@ -64,10 +57,7 @@ describe('PRM use case: reduced variant', {testIsolation: false}, () => {
     });
 
     it('Step-3: Click on platform', () => {
-      // Platform table has length 1
-      cy.get(PrmDataCy.PLATFORM_TABLE + ' table tbody tr').should('have.length.greaterThan', 0);
-      // Click on the item
-      cy.contains('td', reducedSePoDependentInfo.trafficPointSloids[0]).parents('tr').click({force: true});
+      PrmUtils.selectPlatformInTable(reducedSePoDependentInfo.trafficPointSloids[0]);
     });
 
     it('Step-4: Fill reduced form', () => {

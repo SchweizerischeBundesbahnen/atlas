@@ -1,5 +1,6 @@
 import CommonUtils from "./common-utils";
 import {DataCy} from "../data-cy";
+import {PrmDataCy} from "../prm-data-cy";
 
 export default class PrmUtils {
 
@@ -16,6 +17,25 @@ export default class PrmUtils {
         cy.get(DataCy.SEPODI_SEARCH_SERVICE_POINT_SELECT + ' .ng-option')
           .should('contain', searchString).click({force: true});
       });
+  }
+
+  static saveItemAndAssertTabs() {
+    return cy.get(DataCy.SAVE_ITEM).click().then(() => {
+      cy.get(DataCy.EDIT).should('exist');
+      cy.get(DataCy.CLOSE_DETAIL).should('exist');
+
+      cy.get(PrmDataCy.TAB_PLATFORMS).should('exist');
+      cy.get(PrmDataCy.TAB_CONTACT_POINTS).should('exist');
+      cy.get(PrmDataCy.TAB_TOILETS).should('exist');
+      cy.get(PrmDataCy.TAB_PARKING_LOTS).should('exist');
+    });
+  }
+
+  static selectPlatformInTable(sloid: string) {
+    // Platform table has length 1
+    cy.get(PrmDataCy.PLATFORM_TABLE + ' table tbody tr').should('have.length.greaterThan', 0);
+    // Click on the item
+    cy.contains('td', sloid).parents('tr').click({force: true});
   }
 
   static getCompleteStopPoint() {

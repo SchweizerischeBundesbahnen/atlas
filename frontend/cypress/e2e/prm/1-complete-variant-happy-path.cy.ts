@@ -6,7 +6,7 @@ import {PrmDataCy} from "../../support/prm-data-cy";
 
 describe('PRM use case: complete variant', {testIsolation: false}, () => {
 
-  const stopPoint = PrmUtils.getCompleteStopPoint();
+  const completeStopPoint = PrmUtils.getCompleteStopPoint();
   let completeSePoDependentInfo: SePoDependentInfo;
 
   it('Step-1: Login on ATLAS', () => {
@@ -30,14 +30,14 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
     });
 
     it('Step-4: Fill complete form', () => {
-      CommonUtils.getClearType(PrmDataCy.FREE_TEXT, stopPoint.freeText);
+      CommonUtils.getClearType(PrmDataCy.FREE_TEXT, completeStopPoint.freeText);
 
-      CommonUtils.getClearType(DataCy.VALID_FROM, stopPoint.validFrom, true);
-      CommonUtils.getClearType(DataCy.VALID_TO, stopPoint.validTo, true);
+      CommonUtils.getClearType(DataCy.VALID_FROM, completeStopPoint.validFrom, true);
+      CommonUtils.getClearType(DataCy.VALID_TO, completeStopPoint.validTo, true);
 
-      CommonUtils.getClearType(PrmDataCy.ADDRESS, stopPoint.address);
-      CommonUtils.getClearType(PrmDataCy.ZIP_CODE, stopPoint.zipCode);
-      CommonUtils.getClearType(PrmDataCy.CITY, stopPoint.city);
+      CommonUtils.getClearType(PrmDataCy.ADDRESS, completeStopPoint.address);
+      CommonUtils.getClearType(PrmDataCy.ZIP_CODE, completeStopPoint.zipCode);
+      CommonUtils.getClearType(PrmDataCy.CITY, completeStopPoint.city);
 
       CommonUtils.selectItemFromDropDown(PrmDataCy.VISUAL_INFO, 'Ja');
       CommonUtils.selectItemFromDropDown(PrmDataCy.DYNAMIC_OPTIC_SYSTEM, 'Ja');
@@ -55,21 +55,14 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
     });
 
     it('Step-5: Save and assert complete tabs', () => {
-      cy.get(DataCy.SAVE_ITEM).click().then(() => {
-        cy.get(DataCy.EDIT).should('exist');
-        cy.get(DataCy.CLOSE_DETAIL).should('exist');
-
+      PrmUtils.saveItemAndAssertTabs().then(() => {
         cy.get(PrmDataCy.TAB_REFERENCE_POINTS).should('exist');
-        cy.get(PrmDataCy.TAB_PLATFORMS).should('exist');
-        cy.get(PrmDataCy.TAB_CONTACT_POINTS).should('exist');
-        cy.get(PrmDataCy.TAB_TOILETS).should('exist');
-        cy.get(PrmDataCy.TAB_PARKING_LOTS).should('exist');
       });
     });
 
     it('Step-6: Assert complete stop point', () => {
-      CommonUtils.assertVersionRange(1, stopPoint.validFrom, stopPoint.validTo);
-      CommonUtils.assertItemValue(PrmDataCy.FREE_TEXT, stopPoint.freeText);
+      CommonUtils.assertVersionRange(1, completeStopPoint.validFrom, completeStopPoint.validTo);
+      CommonUtils.assertItemValue(PrmDataCy.FREE_TEXT, completeStopPoint.freeText);
     });
   });
 
@@ -88,8 +81,8 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
     it('Step-4: Fill reference point form', () => {
       CommonUtils.getClearType(PrmDataCy.DESIGNATION, 'Seaside');
 
-      CommonUtils.getClearType(DataCy.VALID_FROM, stopPoint.validFrom, true);
-      CommonUtils.getClearType(DataCy.VALID_TO, stopPoint.validTo, true);
+      CommonUtils.getClearType(DataCy.VALID_FROM, completeStopPoint.validFrom, true);
+      CommonUtils.getClearType(DataCy.VALID_TO, completeStopPoint.validTo, true);
 
       CommonUtils.selectItemFromDropDown(PrmDataCy.REFERENCE_POINT_TYPE, 'Haupteingang');
       cy.get(PrmDataCy.MAIN_REFERENCE_POINT_CHECKBOX).click();
@@ -105,7 +98,7 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
     });
 
     it('Step-6: Assert reference point', () => {
-      CommonUtils.assertVersionRange(1, stopPoint.validFrom, stopPoint.validTo);
+      CommonUtils.assertVersionRange(1, completeStopPoint.validFrom, completeStopPoint.validTo);
       CommonUtils.assertItemValue(PrmDataCy.DESIGNATION, 'Seaside');
     });
 
@@ -120,10 +113,7 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
     });
 
     it('Step-3: Click on platform', () => {
-      // Platform table has length 1
-      cy.get(PrmDataCy.PLATFORM_TABLE + ' table tbody tr').should('have.length.greaterThan', 0);
-      // Click on the item
-      cy.contains('td', completeSePoDependentInfo.trafficPointSloids[0]).parents('tr').click({force: true});
+      PrmUtils.selectPlatformInTable(completeSePoDependentInfo.trafficPointSloids[0]);
     });
 
     it('Step-4: Fill complete platform form', () => {
