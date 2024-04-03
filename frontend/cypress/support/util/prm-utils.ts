@@ -1,6 +1,7 @@
 import CommonUtils from "./common-utils";
 import {DataCy} from "../data-cy";
 import {PrmDataCy} from "../prm-data-cy";
+import SepodiUtils from "./sepodi-utils";
 
 export default class PrmUtils {
 
@@ -11,12 +12,7 @@ export default class PrmUtils {
   }
 
   static searchAndSelect(searchString: string) {
-    cy.get(DataCy.SEPODI_SEARCH_SERVICE_POINT_SELECT + ' input')
-      .type(searchString)
-      .then(() => {
-        cy.get(DataCy.SEPODI_SEARCH_SERVICE_POINT_SELECT + ' .ng-option')
-          .should('contain', searchString).click({force: true});
-      });
+    SepodiUtils.searchServicePoint(searchString);
   }
 
   static saveItemAndAssertTabs() {
