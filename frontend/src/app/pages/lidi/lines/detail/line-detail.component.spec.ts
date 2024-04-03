@@ -23,6 +23,7 @@ import { CommentComponent } from '../../../../core/form-components/comment/comme
 import { LinkIconComponent } from '../../../../core/form-components/link-icon/link-icon.component';
 import { FormModule } from '../../../../core/module/form.module';
 import { TranslatePipe } from '@ngx-translate/core';
+import {ValidityConfirmationService} from "../../../sepodi/validity/validity-confirmation.service";
 
 const lineVersion: LineVersion = {
   id: 1234,
@@ -80,6 +81,9 @@ const error = new HttpErrorResponse({
 let component: LineDetailComponent;
 let fixture: ComponentFixture<LineDetailComponent>;
 let router: Router;
+const validityConfirmationService = jasmine.createSpyObj<ValidityConfirmationService>([
+  'confirmValidity','confirmValidityOverServicePoint'
+]);
 
 describe('LineDetailComponent for existing lineVersion', () => {
   const mockLinesService = jasmine.createSpyObj('linesService', [
@@ -92,7 +96,8 @@ describe('LineDetailComponent for existing lineVersion', () => {
 
   beforeEach(() => {
     setupTestBed(mockLinesService, mockData);
-
+    validityConfirmationService.confirmValidityOverServicePoint.and.returnValue(of(true))
+    validityConfirmationService.confirmValidity.and.returnValue(of(true))
     fixture = TestBed.createComponent(LineDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -155,6 +160,44 @@ describe('LineDetailComponent for existing lineVersion', () => {
     expect(snackBarContainer.textContent.trim()).toBe('LIDI.LINE.NOTIFICATION.DELETE_SUCCESS');
     expect(snackBarContainer.classList).toContain('success');
     expect(router.navigate).toHaveBeenCalled();
+  });
+
+  it('should call confirm on save', () => {
+    spyOn(component, 'confirmValidity');
+
+    component.toggleEdit();
+    component.form.markAsDirty();
+    component.save();
+
+    expect(component.confirmValidity).toHaveBeenCalled();
+  });
+
+  it('should call initValidity on toggleEdit', () => {
+    spyOn(component, 'initValidity');
+
+    component.toggleEdit();
+
+    expect(component.initValidity).toHaveBeenCalled();
+  });
+
+  it('should call update when confirmValidity returns true', () => {
+    spyOn(component, 'updateRecord').and.callThrough();
+
+    component.confirmValidity();
+
+    expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
+    expect(component.updateRecord).toHaveBeenCalled();
+  });
+
+  it('should not call update when confirmValidity returns false', () => {
+    validityConfirmationService.confirmValidity.and.returnValue(of(false))
+
+    spyOn(component, 'updateRecord').and.callThrough();
+
+    component.confirmValidity();
+
+    expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
+    expect(component.updateRecord).not.toHaveBeenCalled();
   });
 });
 
@@ -286,6 +329,7 @@ function setupTestBed(linesService: LinesService, data: { lineDetail: string | L
     providers: [
       { provide: FormBuilder },
       { provide: LinesService, useValue: linesService },
+      {provide: ValidityConfirmationService, useValue: validityConfirmationService},
       { provide: AuthService, useValue: authServiceMock },
       { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
       { provide: TranslatePipe },
@@ -293,4 +337,5 @@ function setupTestBed(linesService: LinesService, data: { lineDetail: string | L
   })
     .compileComponents()
     .then();
+
 }
