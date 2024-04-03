@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public interface ToiletApiV1 {
 
   @GetMapping
+  @PageableAsQueryParam
   Container<ReadToiletVersionModel> getToilets(
       @Parameter(hidden = true) @PageableDefault(sort = {Fields.sloid,
           BasePrmEntityVersion.Fields.validFrom}) Pageable pageable,
