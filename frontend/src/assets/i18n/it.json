@@ -1,17 +1,17 @@
 {
   "ERROR": {
     "CLIENT": {
-      "GENERIC": "Si è verificato un errore nella pagina web, ricaricare la pagina premendo il tasto F5. Se il problema persiste, contattare il servizio specializzato Atlas."
+      "GENERIC": "Si è verificato un errore nella pagina web, ricaricare la pagina premendo il tasto F5. Se il problema persiste, contattare il servizio specializzato atlas."
     },
     "WARNING": {
       "VERSIONING_NO_CHANGES": "I dati inseriti sono stati verificati. Ne risulta che i dati inseriti non modificano i dati già memorizzati. Modificare i dati o terminare la modifica."
     },
-    "GENERIC": "Si è verificato un errore generale! Ricaricare la pagina premendo il tasto F5. Se il problema persiste, contattare il servizio specializzato Atlas.",
+    "GENERIC": "Si è verificato un errore generale! Ricaricare la pagina premendo il tasto F5. Se il problema persiste, contattare il servizio specializzato atlas.",
     "NOTALLOWED": "Non siete autorizzati a modificare i dati per tutta la durata della mutazione.",
     "CONSTRAINT": "La richiesta non è stata effettuata nel formato corretto. Il valore {{rejectedValue}} non è consentito a causa di {{cause}}.",
     "ENTITY_NOT_FOUND": "Impossibile trovare l’oggetto con {{field}} {{value}}.",
-    "VERSIONING": "Questa modifica nel controllo delle versioni non è supportata dal sistema. Contattare il servizio specializzato Atlas.",
-    "CORRELATION_ID": "Se i problemi persistono, contattare il reparto Atlas con il seguente numero di identificazione: {{correlationId}}"
+    "VERSIONING": "Questa modifica nel controllo delle versioni non è supportata dal sistema. Contattare il servizio specializzato atlas.",
+    "CORRELATION_ID": "Se i problemi persistono, contattare il reparto atlas con il seguente numero di identificazione: {{correlationId}}"
   },
   "COMMON": {
     "AUTOMATICALLY_ASSIGNED": "Assegnato automaticamente",
@@ -141,7 +141,7 @@
   },
   "SW_DIALOG": {
     "UPDATE_TITLE": "Nuova versione disponibile.",
-    "UPDATE_MESSAGE": "È disponibile una nuova versione di Atlas. Ricaricare la pagina.",
+    "UPDATE_MESSAGE": "È disponibile una nuova versione di atlas. Ricaricare la pagina.",
     "UNRECOVERABLE_TITLE": "Si è verificato un errore.",
     "UNRECOVERABLE_MESSAGE": "Ricaricare la pagina."
   },
@@ -181,7 +181,7 @@
     "USER_ADMIN": {
       "TITLE": "Gestire gli utenti",
       "TITLE_HEADER": "Amministrazione degli utenti",
-      "DESCRIPTION": "Registrare, gestire e visualizzare le autorizzazioni degli utenti per Atlas."
+      "DESCRIPTION": "Registrare, gestire e visualizzare le autorizzazioni degli utenti per atlas."
     },
     "SERVICE_POINTS": {
       "TITLE": "Gestire i punti di servizio",
@@ -347,7 +347,7 @@
       "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "La linea temporanea con validità dal {{validFrom}} al {{validTo}} supera la validità massima di 12 mesi.",
       "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "La versione dal {{validFrom}} al {{validTo}} è parte di versioni temporanee contigue. Insieme, esse superano la validità massima di 12 mesi.",
       "UPDATE_IN_REVIEW": "Nel corso dell'udienza non è possibile modificare il tipo o la validità della linea.",
-      "UPDATE_IN_REVIEW_MERGE_OR_SPLIT": "Questa modifica riguarda una versione in consultazione. Attendere il completamento della consultazione. Per qualsiasi domanda, contattare l'Unità Atlas.",
+      "UPDATE_IN_REVIEW_MERGE_OR_SPLIT": "Questa modifica riguarda una versione in consultazione. Attendere il completamento della consultazione. Per qualsiasi domanda, contattare l'Unità atlas.",
       "NUMBER": "Numero di linea",
       "NUMBER_INFO": "Si tratta dell’informazione (cifre, lettere o combinazione di cifre e lettere) con cui la linea viene comunicata al viaggiatore. L’informazione viene comunicata nella sua interezza e non comprende informazioni diverse.",
       "DESCRIPTION": "Denominazione linea",
@@ -839,8 +839,8 @@
     "MANAGE_TIMETABLE_HEARING": {
       "POPUP_TITLE": "Controllo dell'orario dell'udito",
       "CREATE_STATEMENT_EXTERNAL": "Acquisizione di dichiarazioni tramite API",
-      "CREATE_STATEMENT_INTERNAL": "Dichiarazione di registrazione in Atlas",
-      "EDIT_STATEMENT": "Modifica del parere in Atlas",
+      "CREATE_STATEMENT_INTERNAL": "Dichiarazione di registrazione in atlas",
+      "EDIT_STATEMENT": "Modifica del parere in atlas",
       "SUCCESSFUL_SAVE_NOTIFICATION": "Impostazioni salvate con successo"
     }
   },
@@ -962,7 +962,7 @@
       "TERMINATION_FORBIDDEN": "Non siete autorizzati a terminare la fermata. Utilizzate il modulo all'indirizzo https://www.tp-info.ch/it/soppressione-fermata.",
       "ABBREVIATION_UPDATE_NOT_ALLOWED": "L'organizzazione aziendale del servizio non è autorizzata ad aggiungere abbreviazioni, oppure il servizio ha già un'abbreviazione che non può essere modificata o cancellata.",
       "ABBREVIATION_NOT_UNIQUE": "La sigla è già in uso o la versione del servizio selezionata non è la più aggiornata.",
-      "HEIGHT_SERVICE_UNAVAILABLE": "Il servizio di altezza non è disponibile. Riprovare tra 30 minuti. Se il problema persiste, contattare il centro specializzato Atlas."
+      "HEIGHT_SERVICE_UNAVAILABLE": "Il servizio di altezza non è disponibile. Riprovare tra 30 minuti. Se il problema persiste, contattare il centro specializzato atlas."
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Bordi fermata",
