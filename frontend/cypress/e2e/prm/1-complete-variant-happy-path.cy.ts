@@ -159,13 +159,14 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
     });
 
     it('Step-3: Click on platform - relation', () => {
-      // Platform table has length 1
-      cy.get(PrmDataCy.PLATFORM_TABLE + ' table tbody tr').should('have.length.greaterThan', 0);
-      // Click on the item
-      cy.contains('td', completeSePoDependentInfo.trafficPointSloids[0]).parents('tr').click({force: true});
+      PrmUtils.selectPlatformInTable(completeSePoDependentInfo.trafficPointSloids[0]);
 
       cy.get(PrmDataCy.TAB_RELATIONS).should('exist').click();
       cy.get(DataCy.EDIT).should('exist');
+
+      cy.get(PrmDataCy.STEP_FREE_ACCESS).should('contain.text', 'Zu vervollständigen');
+      cy.get(PrmDataCy.TACTILE_VISUAL_MARKS).should('contain.text', 'Zu vervollständigen');
+      cy.get(PrmDataCy.CONTRASTING_AREAS).should('contain.text', 'Zu vervollständigen');
     });
 
     it('Step-4: Fill relation form', () => {
