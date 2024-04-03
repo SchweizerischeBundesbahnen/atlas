@@ -23,6 +23,7 @@ import { SelectComponent } from '../../../../core/form-components/select/select.
 import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import {ValidityConfirmationService} from "../../../sepodi/validity/validity-confirmation.service";
 
 const sublineVersion: SublineVersion = {
   id: 1234,
@@ -76,7 +77,9 @@ const error = new HttpErrorResponse({
 let component: SublineDetailComponent;
 let fixture: ComponentFixture<SublineDetailComponent>;
 let router: Router;
-
+const validityConfirmationService = jasmine.createSpyObj<ValidityConfirmationService>([
+  'confirmValidity','confirmValidityOverServicePoint'
+]);
 describe('SublineDetailComponent for existing sublineVersion', () => {
   const mockSublinesService = jasmine.createSpyObj('sublinesService', [
     'updateSublineVersion',
@@ -88,7 +91,8 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
 
   beforeEach(() => {
     setupTestBed(mockSublinesService, mockData);
-
+    validityConfirmationService.confirmValidityOverServicePoint.and.returnValue(of(true))
+    validityConfirmationService.confirmValidity.and.returnValue(of(true))
     fixture = TestBed.createComponent(SublineDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -133,6 +137,45 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
     expect(snackBarContainer.textContent.trim()).toBe('LIDI.SUBLINE.NOTIFICATION.DELETE_SUCCESS');
     expect(snackBarContainer.classList).toContain('success');
     expect(router.navigate).toHaveBeenCalled();
+  });
+
+  it('should call confirm on save', () => {
+    spyOn(component, 'confirmValidity');
+
+    component.toggleEdit();
+    component.form.markAsDirty();
+    component.save();
+
+    expect(component.confirmValidity).toHaveBeenCalled();
+  });
+
+  it('should call initValidity on toggleEdit', () => {
+    spyOn(component, 'initValidity');
+
+    component.toggleEdit();
+
+    expect(component.initValidity).toHaveBeenCalled();
+  });
+
+  it('should call update when confirmValidity returns true', () => {
+    spyOn(component, 'updateRecord').and.callThrough();
+    mockSublinesService.updateSublineVersion.and.returnValue(of(sublineVersion));
+
+    component.confirmValidity();
+
+    expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
+    expect(component.updateRecord).toHaveBeenCalled();
+  });
+
+  it('should not call update when confirmValidity returns false', () => {
+    validityConfirmationService.confirmValidity.and.returnValue(of(false))
+
+    spyOn(component, 'updateRecord').and.callThrough();
+
+    component.confirmValidity();
+
+    expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
+    expect(component.updateRecord).not.toHaveBeenCalled();
   });
 });
 
@@ -206,6 +249,7 @@ function setupTestBed(
       { provide: FormBuilder },
       { provide: SublinesService, useValue: sublinesService },
       { provide: AuthService, useValue: authServiceMock },
+      {provide: ValidityConfirmationService, useValue: validityConfirmationService},
       { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
       TranslatePipe,
     ],
