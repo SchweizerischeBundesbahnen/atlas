@@ -31,12 +31,16 @@ export default class SepodiUtils {
   static searchAddedServicePoint(designationOfficial: string) {
     CommonUtils.navigateToHomeViaHomeLogo();
     this.navigateToServicePoint();
+    this.searchServicePoint(designationOfficial);
+  }
+
+  static searchServicePoint(searchString: string) {
     cy.get(DataCy.SEPODI_SEARCH_SERVICE_POINT_SELECT + ' input')
-      .type(designationOfficial)
+      .type(searchString)
       .then(() => {
-        cy.wait(1000)
+        cy.wait(1000);
         cy.get(DataCy.SEPODI_SEARCH_SERVICE_POINT_SELECT + ' .ng-option')
-          .should('contain', designationOfficial).click({force: true});
+          .should('contain', searchString).click({force: true});
       });
   }
 

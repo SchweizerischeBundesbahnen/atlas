@@ -1,6 +1,7 @@
 export class DataCy {
   static BACK_TO_OVERVIEW = '[data-cy=back-to-overview]';
   static CANCEL = '[data-cy=cancel]';
+  static BACK = '[data-cy=back]';
   static ATLAS_LOGO_HOME_LINK = '[data-cy=atlas-logo-home-link]';
   static HEADER_TITLE = '[data-cy=header-title]';
   static TOTAL_RANGE = '[data-cy=total-range]';
@@ -73,7 +74,6 @@ export class DataCy {
   static ADD_NEW_TIMETABLE_HEARING_SELECT_YEAR_DROPDOWN = '[data-cy=timetableYear]';
   static START_TIMETABLE_HEARING_YEAR_BUTTON = '[data-cy=startTimetableHearing]';
   static SELECT_TTH_CANTON_DROPDOWN = '[data-cy=selectTthCanton]';
-  static SELECT_TTH_YEAR_DROPDOWN = '[data-cy=selectTthYear]';
   static NEW_STATEMENT_BUTTON = '[data-cy=addNewStatement]';
   static STATEMENT_STOP_PLACE = '[data-cy=stopPlace]';
   static STATEMENT_FIRTS_NAME = '[data-cy=firstName]';
@@ -100,16 +100,15 @@ export class DataCy {
   static SEPODI_SELECT_COUNTRY = '[data-cy=select-country]';
   static SEPODI_DESIGNATION_OFFICIAL = '[data-cy=designationOfficial]';
   static SEPODI_DESIGNATION_LONG = '[data-cy=designationLong]';
-  static SEPODI_ABBREVIATION = '[data-cy=abbreviation]';
   static SEPODI_CHECKBOX_STOP_POINT = '[data-cy=checkboxStopPoint] input';
   static SEPODI_GEOLOCATION_EAST = '[data-cy=east]';
   static SEPODI_GEOLOCATION_NORTH = '[data-cy=north]';
-  static SEPODI_GEOLOCATION_HEIGHT = '[data-cy=height]';
   static SEPODI_CATEGORIES = '[data-cy=categories]';
   static SEPODI_STOP_POINT_TYPE_SELECTION = '[data-cy=stopPointType]';
   static SEPODI_SEARCH_SERVICE_POINT_SELECT = '[data-cy=search-service-point-select]';
   static SEPODI_SEARCH_FORM = '[data-cy=search-sepodi-form]';
   static MEANS_OF_TRANSPORT_TRAIN = '[data-cy=TRAIN]';
+  static MEANS_OF_TRANSPORT_CABLE_CAR = '[data-cy=CABLE_CAR]';
   static SEPODI_TRAFFIC_POINT_TAB = '[data-cy=tab-traffic-point-elements]';
   static SEPODI_NEW_TRAFFIC_POINT_BUTTON = '[data-cy=new-traffic-point-element]';
   static SEPODI_TRAFFIC_POINT_HEADER = '[data-cy=traffic-point-header]';
