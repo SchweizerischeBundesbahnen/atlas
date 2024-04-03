@@ -114,8 +114,6 @@ describe('LoadingPointsDetailComponent', () => {
     });
 
     it('should call confirm on save', () => {
-      validityConfirmationService.confirmValidityOverServicePoint.and.returnValue(of(true))
-
       spyOn(component, 'confirmValidity');
 
       component.toggleEdit();
@@ -134,8 +132,6 @@ describe('LoadingPointsDetailComponent', () => {
     });
 
     it('should call update when confirmValidity returns true', () => {
-      validityConfirmationService.confirmValidity.and.returnValue(of(true))
-
       spyOn(component, 'update').and.callThrough();
 
       component.confirmValidity(LOADING_POINT_CREATE);
@@ -145,7 +141,7 @@ describe('LoadingPointsDetailComponent', () => {
     });
 
     it('should not call update when confirmValidity returns false', () => {
-      validityConfirmationService.confirmValidity.and.returnValue(of(false))
+      validityConfirmationService.confirmValidity.and.returnValue(of(false));
 
       spyOn(component, 'update').and.callThrough();
 
@@ -219,11 +215,12 @@ describe('LoadingPointsDetailComponent', () => {
         { provide: ServicePointsService, useValue: servicePointService },
         { provide: LoadingPointsService, useValue: loadingPointService },
         { provide: ValidityConfirmationService, useValue: validityConfirmationService },
-        { provide: ValidityConfirmationService, useValue: validityConfirmationService },
         { provide: DialogService, useValue: dialogService },
         SplitServicePointNumberPipe,
         TranslatePipe,
       ],
     }).compileComponents();
+    validityConfirmationService.confirmValidity.and.returnValue(of(true));
+    validityConfirmationService.confirmValidityOverServicePoint.and.returnValue(of(true));
   }
 });
