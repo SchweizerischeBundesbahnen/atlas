@@ -203,6 +203,8 @@ describe('ReferencePointDetailComponent', () => {
       fixture = TestBed.createComponent(ReferencePointDetailComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
+      validityConfirmationService.confirmValidity.and.returnValue(of(true));
+      validityConfirmationService.confirmValidityOverServicePoint.and.returnValue(of(true));
     });
 
     it('should init', () => {
@@ -245,8 +247,6 @@ describe('ReferencePointDetailComponent', () => {
     });
 
     it('should call confirm on save', () => {
-      validityConfirmationService.confirmValidityOverServicePoint.and.returnValue(of(true))
-
       spyOn(component, 'confirmValidity');
 
       component.toggleEdit();
@@ -265,8 +265,6 @@ describe('ReferencePointDetailComponent', () => {
     });
 
     it('should call update when confirmValidity returns true', () => {
-      validityConfirmationService.confirmValidity.and.returnValue(of(true))
-
       spyOn(component, 'update').and.callThrough();
 
       component.confirmValidity(referencePointCreate);

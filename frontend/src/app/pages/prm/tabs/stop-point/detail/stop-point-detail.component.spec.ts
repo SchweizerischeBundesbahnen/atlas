@@ -95,6 +95,8 @@ describe('StopPointDetailComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     router = TestBed.inject(Router);
+    validityConfirmationService.confirmValidity.and.returnValue(of(true));
+    validityConfirmationService.confirmValidityOverServicePoint.and.returnValue(of(true));
   });
 
   it('should create', () => {

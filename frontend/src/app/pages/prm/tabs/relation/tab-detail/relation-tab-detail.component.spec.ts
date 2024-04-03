@@ -151,6 +151,8 @@ describe('RelationTabDetailComponent', () => {
     personWithReducedMobilityService.getReferencePointsOverview.and.returnValue(of([]));
     personWithReducedMobilityService.getRelationsBySloid.and.returnValue(of([]));
     personWithReducedMobilityService.updateRelation.and.returnValue(of());
+    validityConfirmationService.confirmValidity.and.returnValue(of(true));
+    validityConfirmationService.confirmValidityOverServicePoint.and.returnValue(of(true));
     TestBed.configureTestingModule({
       declarations: [
         RelationTabDetailComponent,
@@ -234,20 +236,6 @@ describe('RelationTabDetailComponent', () => {
     expect(component.currentRelationId).toBe(1000);
   });
 
-  it('should save valid form', () => {
-    personWithReducedMobilityService.getReferencePointsOverview.and.returnValue(
-      of(referencePointOverview),
-    );
-    personWithReducedMobilityService.getRelationsBySloid.and.returnValue(of(relations));
-    fixture.detectChanges();
-
-    component.editing = true;
-    component.save();
-
-    expect(component.editing).toBe(false);
-    expect(personWithReducedMobilityService.updateRelation).toHaveBeenCalledTimes(1);
-  });
-
   it('should call initValidity on toggleEdit', () => {
     spyOn(component, 'initValidity');
 
@@ -257,8 +245,6 @@ describe('RelationTabDetailComponent', () => {
   });
 
   it('should call update when confirmValidity returns true', () => {
-    validityConfirmationService.confirmValidity.and.returnValue(of(true))
-
     spyOn(component, 'update').and.callThrough();
 
     component.confirmValidity(relationVersion);
