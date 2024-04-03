@@ -181,7 +181,7 @@
     "USER_ADMIN": {
       "TITLE": "Gestire gli utenti",
       "TITLE_HEADER": "Amministrazione degli utenti",
-      "DESCRIPTION": "Registrare, gestire e visualizzare le autorizzazioni degli utenti per atlas."
+      "DESCRIPTION": "Registrare, gestire e visualizzare le autorizzazioni degli utenti per Atlas."
     },
     "SERVICE_POINTS": {
       "TITLE": "Gestire i punti di servizio",
@@ -839,8 +839,8 @@
     "MANAGE_TIMETABLE_HEARING": {
       "POPUP_TITLE": "Controllo dell'orario dell'udito",
       "CREATE_STATEMENT_EXTERNAL": "Acquisizione di dichiarazioni tramite API",
-      "CREATE_STATEMENT_INTERNAL": "Dichiarazione di registrazione in atlas",
-      "EDIT_STATEMENT": "Modifica del parere in atlas",
+      "CREATE_STATEMENT_INTERNAL": "Dichiarazione di registrazione in Atlas",
+      "EDIT_STATEMENT": "Modifica del parere in Atlas",
       "SUCCESSFUL_SAVE_NOTIFICATION": "Impostazioni salvate con successo"
     }
   },
