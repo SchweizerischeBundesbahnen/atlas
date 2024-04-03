@@ -1,17 +1,17 @@
 {
   "ERROR": {
     "CLIENT": {
-      "GENERIC": "Une erreur s’est produite sur le site Web, veuillez recharger la page en appuyant sur la touche F5. Si le problème persiste, veuillez vous adresser au service spécialisé Atlas."
+      "GENERIC": "Une erreur s’est produite sur le site Web, veuillez recharger la page en appuyant sur la touche F5. Si le problème persiste, veuillez vous adresser au service spécialisé atlas."
     },
     "WARNING": {
       "VERSIONING_NO_CHANGES": "Les données que vous avez saisies ont été vérifiées. Il a été constaté que votre saisie n’entraîne aucune modification des données déjà enregistrées. Veuillez modifier les données ou terminer l’édition."
     },
-    "GENERIC": "Une erreur générale est survenue! Veuillez recharger la page en appuyant sur la touche F5. Si le problème persiste, veuillez vous adresser au service spécialisé Atlas.",
+    "GENERIC": "Une erreur générale est survenue! Veuillez recharger la page en appuyant sur la touche F5. Si le problème persiste, veuillez vous adresser au service spécialisé atlas.",
     "NOTALLOWED": "Ils ne sont pas autorisés à traiter les données pendant toute la durée de la mutation.",
     "CONSTRAINT": "La demande n’a pas été réalisée dans le bon format. La valeur {{rejectedValue}} n’est pas autorisée en raison de {{cause}}.",
     "ENTITY_NOT_FOUND": "L’objet avec {{field}} {{value}} n’a pas été trouvé.",
-    "VERSIONING": "Ce changement de version n’est pas pris en charge par le système. Veuillez vous adresser au service spécialisé Atlas.",
-    "CORRELATION_ID": "Si les problèmes persistent, contactez le service Atlas avec le numéro d'identification suivant: {{correlationId}}"
+    "VERSIONING": "Ce changement de version n’est pas pris en charge par le système. Veuillez vous adresser au service spécialisé atlas.",
+    "CORRELATION_ID": "Si les problèmes persistent, contactez le service atlas avec le numéro d'identification suivant: {{correlationId}}"
   },
   "COMMON": {
     "AUTOMATICALLY_ASSIGNED": "Attribuer automatiquement",
@@ -141,7 +141,7 @@
   },
   "SW_DIALOG": {
     "UPDATE_TITLE": "Nouvelle version disponible",
-    "UPDATE_MESSAGE": "Une nouvelle version d'Atlas est disponible, veuillez recharger la page.",
+    "UPDATE_MESSAGE": "Une nouvelle version d'atlas est disponible, veuillez recharger la page.",
     "UNRECOVERABLE_TITLE": "Une erreur s'est produite",
     "UNRECOVERABLE_MESSAGE": "Veuillez recharger la page."
   },
@@ -181,7 +181,7 @@
     "USER_ADMIN": {
       "TITLE": "Gérer les utilisateurs",
       "TITLE_HEADER": "Gestion des utilisateurs",
-      "DESCRIPTION": "Saisir, modifier et consulter les droits d'accès des utilisateurs d'Atlas."
+      "DESCRIPTION": "Saisir, modifier et consulter les droits d'accès des utilisateurs d'atlas."
     },
     "SERVICE_POINTS": {
       "TITLE": "Gérer des points de services",
@@ -346,8 +346,8 @@
       },
       "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "La ligne temporaire valide de {{validFrom}} à {{validTo}} dépasse la validité maximale de 12 mois.",
       "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "La version de {{validFrom}} à {{validTo}} fait partie de versions temporaires connexes. Ensemble, elles dépassent la validité maximale de 12 mois.",
-      "UPDATE_IN_REVIEW": "Il n'est pas possible de modifier le type ou la validité pendant une audition. Veuillez attendre la fin de l'audition. Si vous avez des questions, veuillez vous adresser au service Atlas.",
-      "UPDATE_IN_REVIEW_MERGE_OR_SPLIT": "Cette modification a des répercussions sur une version qui se trouve en cours d'audition. Veuillez attendre la fin de l'audition. Si vous avez des questions, veuillez vous adresser au service Atlas.",
+      "UPDATE_IN_REVIEW": "Il n'est pas possible de modifier le type ou la validité pendant une audition. Veuillez attendre la fin de l'audition. Si vous avez des questions, veuillez vous adresser au service atlas.",
+      "UPDATE_IN_REVIEW_MERGE_OR_SPLIT": "Cette modification a des répercussions sur une version qui se trouve en cours d'audition. Veuillez attendre la fin de l'audition. Si vous avez des questions, veuillez vous adresser au service atlas.",
       "NUMBER": "Numéro de ligne",
       "NUMBER_INFO": "Information (chiffres, lettres ou combinaison des deux) dans le cadre de laquelle la ligne est communiquée aux voyageurs. L’information est communiquée dans sa globalité et non pas sous la forme de différentes informations.",
       "DESCRIPTION": "Désignation de la ligne",
@@ -551,12 +551,12 @@
     },
     "STATUS_DETAIL": "Statut d'audience",
     "STATUS": {
-      "ADDED": "saisit/saisie",
-      "STARTED": "Lancé",
-      "REVISION": "En révision",
-      "HEARING": "En audience",
-      "APPROVED": "approuvé/approuvée",
-      "REJECTED": "refusé/refusée"
+      "ADDED": "saisie",
+      "STARTED": "lancée",
+      "REVISION": "en révision",
+      "HEARING": "en audience",
+      "APPROVED": "approuvée",
+      "REJECTED": "refusée"
     },
     "NOTIFICATION": {
       "START": {
@@ -839,8 +839,8 @@
     "MANAGE_TIMETABLE_HEARING": {
       "POPUP_TITLE": "Contrôle de la consultation de l'horaire",
       "CREATE_STATEMENT_EXTERNAL": "Saisie de l'avis via API",
-      "CREATE_STATEMENT_INTERNAL": "Saisie de l'avis dans Atlas",
-      "EDIT_STATEMENT": "Traitement de l'avis dans Atlas",
+      "CREATE_STATEMENT_INTERNAL": "Saisie de l'avis dans atlas",
+      "EDIT_STATEMENT": "Traitement de l'avis dans atlas",
       "SUCCESSFUL_SAVE_NOTIFICATION": "Paramètres enregistrés avec succès"
     }
   },
@@ -962,7 +962,7 @@
       "TERMINATION_FORBIDDEN": "Vous n'êtes pas autorisé à planifier l'arrêt. Pour ce faire, veuillez utiliser le formulaire disponible sur https://www.tp-info.ch/fr/suppression-dun-arret.",
       "ABBREVIATION_UPDATE_NOT_ALLOWED": "L'organisation commerciale du service n'est pas autorisée à ajouter des abréviations ou le service dispose déjà d'une abréviation qui ne peut pas être modifiée ou supprimée.",
       "ABBREVIATION_NOT_UNIQUE": "L'abréviation est déjà utilisée ou la version du service choisie n'est pas la plus récente.",
-      "HEIGHT_SERVICE_UNAVAILABLE": "Le service d'altitude n'est pas disponible. Veuillez réessayer dans 30 minutes. Si le problème persiste, veuillez vous adresser au service spécialisé Atlas."
+      "HEIGHT_SERVICE_UNAVAILABLE": "Le service d'altitude n'est pas disponible. Veuillez réessayer dans 30 minutes. Si le problème persiste, veuillez vous adresser au service spécialisé atlas."
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Bordures d’arrêts",

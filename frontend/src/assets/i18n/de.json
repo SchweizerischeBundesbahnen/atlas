@@ -1,17 +1,17 @@
 {
   "ERROR": {
     "CLIENT": {
-      "GENERIC": "Ein Fehler auf der Webseite ist aufgetreten, bitte laden Sie die Seite neu, indem Sie die Taste F5 drücken. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an die Fachstelle Atlas."
+      "GENERIC": "Ein Fehler auf der Webseite ist aufgetreten, bitte laden Sie die Seite neu, indem Sie die Taste F5 drücken. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an die Fachstelle atlas."
     },
     "WARNING": {
       "VERSIONING_NO_CHANGES": "Die von Ihnen eingegebenen Daten wurden überprüft. Es wurde festgestellt, dass Ihre Eingabe keine Änderungen an den bereits gespeicherten Daten zur Folge hat. Bitte ändern Sie die Daten oder beenden Sie das Editieren."
     },
-    "GENERIC": "Es ist ein allgemeiner Fehler aufgetreten! Bitte laden Sie die Seite neu, indem Sie die Taste F5 drücken. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an die Fachstelle Atlas.",
+    "GENERIC": "Es ist ein allgemeiner Fehler aufgetreten! Bitte laden Sie die Seite neu, indem Sie die Taste F5 drücken. Wenn das Problem weiterhin besteht, wenden Sie sich bitte an die Fachstelle atlas.",
     "NOTALLOWED": "Sie sind nicht für die gesamte Zeitdauer der Mutation zur Datenbearbeitung berechtigt.",
     "CONSTRAINT": "Die Anfrage wurde nicht im richtigen Format gestellt. Der Wert {{rejectedValue}} ist nicht zulässig auf Grund von {{cause}}.",
     "ENTITY_NOT_FOUND": "Objekt mit {{field}} {{value}} wurde nicht gefunden.",
-    "VERSIONING": "Diese Versionierungs-Änderung ist vom System nicht unterstützt. Wenden Sie sich bitte an die Fachstelle Atlas.",
-    "CORRELATION_ID": "Bei anhaltenden Problemen wenden Sie sich mit folgender Identifikationsnummer an die Fachstelle Atlas: {{correlationId}}"
+    "VERSIONING": "Diese Versionierungs-Änderung ist vom System nicht unterstützt. Wenden Sie sich bitte an die Fachstelle atlas.",
+    "CORRELATION_ID": "Bei anhaltenden Problemen wenden Sie sich mit folgender Identifikationsnummer an die Fachstelle atlas: {{correlationId}}"
   },
   "COMMON": {
     "AUTOMATICALLY_ASSIGNED": "Automatisch vergeben",
@@ -141,7 +141,7 @@
   },
   "SW_DIALOG": {
     "UPDATE_TITLE": "Neue Version verfügbar",
-    "UPDATE_MESSAGE": "Es ist eine neue Version von Atlas verfügbar. Bitte laden Sie die Seite neu.",
+    "UPDATE_MESSAGE": "Es ist eine neue Version von atlas verfügbar. Bitte laden Sie die Seite neu.",
     "UNRECOVERABLE_TITLE": "Es ist ein Fehler aufgetreten",
     "UNRECOVERABLE_MESSAGE": "Bitte laden Sie die Seite neu."
   },
@@ -162,42 +162,42 @@
     "TTFN": {
       "TITLE": "Fahrplanfeldnummern verwalten",
       "TITLE_MENU": "Fahrplanfeld-nummern",
-      "DESCRIPTION": "Erfassen, bearbeiten und einsehen der Fahrplanfeldnummern.",
+      "DESCRIPTION": "Erfassen, Bearbeiten und Einsehen der Fahrplanfeldnummern.",
       "PATH_TEXT": "Fahrplanfelder"
     },
     "LIDI": {
       "TITLE": "Linien und Teillinien verwalten",
       "TITLE_MENU": "Linien und Teillinien",
-      "DESCRIPTION": "Erfassen, bearbeiten und einsehen der Linien und Teillinien (SLNID).",
+      "DESCRIPTION": "Erfassen, Bearbeiten und Einsehen der Linien und Teillinien (SLNID).",
       "PATH_TEXT": "Linienverzeichnis"
     },
     "BODI": {
       "TITLE": "Geschäftsorganisationen verwalten",
       "TITLE_HEADER": "Geschäftsorganisationen",
       "TITLE_MENU": "Geschäfts-organisationen",
-      "DESCRIPTION": "Erfassen, bearbeiten und einsehen der Geschäftsorganisationen (SBOID).",
+      "DESCRIPTION": "Erfassen, Bearbeiten und Einsehen der Geschäftsorganisationen (SBOID).",
       "PATH_TEXT": "Geschäftsorganisationen"
     },
     "USER_ADMIN": {
       "TITLE": "Benutzer verwalten",
       "TITLE_HEADER": "Benutzerverwaltung",
-      "DESCRIPTION": "Erfassen, bearbeiten und einsehen der Benutzerberechtigungen von Atlas."
+      "DESCRIPTION": "Erfassen, Bearbeiten und Einsehen der Benutzerberechtigungen von atlas."
     },
     "SERVICE_POINTS": {
       "TITLE": "Dienststellen verwalten",
       "TITLE_HEADER": "Dienststellen",
-      "DESCRIPTION": "Erfassen, bearbeiten und einsehen von Betriebspunkten und Haltestellen des öv-Schweiz (SLOID)."
+      "DESCRIPTION": "Erfassen, Bearbeiten und Einsehen von Betriebspunkten und Haltestellen des öv-Schweiz (SLOID)."
     },
     "TTH": {
       "TITLE": "Fahrplananhörung Schweiz",
       "TITLE_MENU": "Fahrplananhörung",
-      "DESCRIPTION": "Einsehen und bearbeiten der Rückmeldungen zum Fahrplanentwurf.",
+      "DESCRIPTION": "Einsehen und Bearbeiten der Rückmeldungen zum Fahrplanentwurf.",
       "PATH_TEXT": "Fahrplananhörung"
     },
     "PRM": {
       "TITLE": "Daten zur Barrierefreiheit verwalten",
       "TITLE_HEADER": "Barrierefreiheit",
-      "DESCRIPTION": "Erfassen, bearbeiten und einsehen von Daten zur Barrierefreiheit von öV-Haltestellen in der Schweiz."
+      "DESCRIPTION": "Erfassen, Bearbeiten und Einsehen von Daten zur Barrierefreiheit von öV-Haltestellen in der Schweiz."
     },
     "DETAILS": "Details"
   },
@@ -346,8 +346,8 @@
       },
       "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "Die temporäre Linie mit der Gültigkeit von {{validFrom}} bis {{validTo}} überschreitet die maximale Gültigkeit von 12 Monaten.",
       "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "Die Version von {{validFrom}} bis {{validTo}} ist ein Teil von zusammenhängenden temporären Versionen. Diese überschreiten zusammen die maximale Gültigkeit von 12 Monaten.",
-      "UPDATE_IN_REVIEW": "Während einer Anhörung ist es nicht möglich den Typ oder die Gültigkeit zu verändern. Bitte warten Sie den Abschluss der Anhörung ab. Bei Fragen wenden Sie sich bitte an die Fachstelle Atlas.",
-      "UPDATE_IN_REVIEW_MERGE_OR_SPLIT": "Diese Änderung hat Auswirkungen auf eine Version, welche sich in einer Anhörung befindet. Bitte warten Sie den Abschluss der Anhörung ab. Bei Fragen wenden Sie sich bitte an die Fachstelle Atlas.",
+      "UPDATE_IN_REVIEW": "Während einer Anhörung ist es nicht möglich den Typ oder die Gültigkeit zu verändern. Bitte warten Sie den Abschluss der Anhörung ab. Bei Fragen wenden Sie sich bitte an die Fachstelle atlas.",
+      "UPDATE_IN_REVIEW_MERGE_OR_SPLIT": "Diese Änderung hat Auswirkungen auf eine Version, welche sich in einer Anhörung befindet. Bitte warten Sie den Abschluss der Anhörung ab. Bei Fragen wenden Sie sich bitte an die Fachstelle atlas.",
       "NUMBER": "Liniennummer",
       "NUMBER_INFO": "Hierbei handelt es sich um die Information (Zahlen, Buchstaben oder die Kombination aus Zahl und Buchstabe) unter der die Linie dem Fahrgast kommuniziert wird. Die Information wird als Ganzes kommuniziert und nicht aus verschiedenen Informationen zusammengesetzt.",
       "DESCRIPTION": "Linienbezeichnung",
@@ -839,8 +839,8 @@
     "MANAGE_TIMETABLE_HEARING": {
       "POPUP_TITLE": "Steuerung Fahrplananhörung",
       "CREATE_STATEMENT_EXTERNAL": "Erfassung Stellungnahme via API",
-      "CREATE_STATEMENT_INTERNAL": "Erfassung Stellungnahme in Atlas",
-      "EDIT_STATEMENT": "Bearbeitung Stellungnahme in Atlas",
+      "CREATE_STATEMENT_INTERNAL": "Erfassung Stellungnahme in atlas",
+      "EDIT_STATEMENT": "Bearbeitung Stellungnahme in atlas",
       "SUCCESSFUL_SAVE_NOTIFICATION": "Einstellungen erfolgreich gespeichert"
     }
   },
@@ -962,7 +962,7 @@
       "TERMINATION_FORBIDDEN": "Sie sind nicht berechtigt die Haltestelle zu terminieren. Benutzen Sie hierzu bitte das Formular auf https://www.öv-info.ch/de/aufhebung-haltestelle.",
       "ABBREVIATION_UPDATE_NOT_ALLOWED": "Die Geschäftsorganisation der Dienststelle ist nicht berechtigt Abkürzungen hinzuzufügen oder die Dienststelle verfügt bereits über eine Abkürzung, die nicht geändert oder gelöscht werden darf.",
       "ABBREVIATION_NOT_UNIQUE": "Die Abkürzung wird bereits verwendet oder die gewählte Dienststellen Version ist nicht die aktuellste.",
-      "HEIGHT_SERVICE_UNAVAILABLE": "Der Höhenservice ist nicht erreichbar. Bitte versuchen Sie es in 30 Minuten erneut. Sollte das Problem weiterhin bestehen wenden Sie sich an die Fachtstelle Atlas."
+      "HEIGHT_SERVICE_UNAVAILABLE": "Der Höhenservice ist nicht erreichbar. Bitte versuchen Sie es in 30 Minuten erneut. Sollte das Problem weiterhin bestehen wenden Sie sich an die Fachtstelle atlas."
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Haltekanten",
