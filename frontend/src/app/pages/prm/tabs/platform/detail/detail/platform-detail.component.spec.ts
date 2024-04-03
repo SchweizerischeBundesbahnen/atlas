@@ -277,6 +277,8 @@ describe('PlatformDetailComponent', () => {
       fixture = TestBed.createComponent(PlatformDetailComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
+      validityConfirmationService.confirmValidity.and.returnValue(of(true));
+      validityConfirmationService.confirmValidityOverServicePoint.and.returnValue(of(true));
     });
 
     it('should init', () => {
@@ -323,6 +325,44 @@ describe('PlatformDetailComponent', () => {
       component.save();
       expect(personWithReducedMobilityService.updatePlatform).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
+    });
+
+    it('should call confirm on save', () => {
+      spyOn(component, 'confirmValidity');
+
+      component.toggleEdit();
+      component.form.markAsDirty();
+      component.save();
+
+      expect(component.confirmValidity).toHaveBeenCalled();
+    });
+
+    it('should call initValidity on toggleEdit', () => {
+      spyOn(component, 'initValidity');
+
+      component.toggleEdit();
+
+      expect(component.initValidity).toHaveBeenCalled();
+    });
+
+    it('should call update when confirmValidity returns true', () => {
+      spyOn(component, 'update').and.callThrough();
+
+      component.confirmValidity(platformVersion);
+
+      expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
+      expect(component.update).toHaveBeenCalled();
+    });
+
+    it('should not call update when confirmValidity returns false', () => {
+      validityConfirmationService.confirmValidity.and.returnValue(of(false))
+
+      spyOn(component, 'update').and.callThrough();
+
+      component.confirmValidity(platformVersion);
+
+      expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
+      expect(component.update).not.toHaveBeenCalled();
     });
   });
 

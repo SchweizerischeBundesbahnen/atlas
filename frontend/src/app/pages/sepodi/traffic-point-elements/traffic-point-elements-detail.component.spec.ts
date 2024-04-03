@@ -150,7 +150,6 @@ describe('TrafficPointElementsDetailComponent', () => {
     });
 
     it('should call confirm on save', () => {
-      validityConfirmationService.confirmValidityOverServicePoint.and.returnValue(of(true))
 
       spyOn(component, 'confirmValidity');
 
@@ -170,7 +169,6 @@ describe('TrafficPointElementsDetailComponent', () => {
     });
 
     it('should call update when confirmValidity returns true', () => {
-      validityConfirmationService.confirmValidity.and.returnValue(of(true))
 
       spyOn(component, 'update').and.callThrough();
 
@@ -259,7 +257,7 @@ describe('TrafficPointElementsDetailComponent', () => {
         TranslatePipe,
       ],
     }).compileComponents();
+    validityConfirmationService.confirmValidityOverServicePoint.and.returnValue(of(true))
+    validityConfirmationService.confirmValidity.and.returnValue(of(true))
   }
-
-
 });

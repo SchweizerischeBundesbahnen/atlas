@@ -20,9 +20,27 @@ export default class SepodiUtils {
       cy.get(DataCy.SKIP_WORKFLOW).should('exist');
     })
   }
+  static saveServicePointConfirmValidity() {
+    cy.get(DataCy.SAVE_ITEM).click().then(() => {
+      cy.intercept('GET', 'service-point-directory/v1/service-points/85*').as('saveAndGetVersion');
+      cy.get(DataCy.DIALOG_CONFIRM_BUTTON).click();
+      cy.wait('@saveAndGetVersion').its('response.statusCode').should('eq', 200);
+      cy.get(DataCy.EDIT).should('exist');
+      cy.get(DataCy.CLOSE_DETAIL).should('exist');
+      cy.get(DataCy.REVOKE_ITEM).should('exist');
+      cy.get(DataCy.SKIP_WORKFLOW).should('exist');
+    })
+  }
 
   static saveTrafficPoint() {
     cy.get(DataCy.SAVE_ITEM).click().then(() => {
+      cy.get(DataCy.EDIT).should('exist');
+      cy.get(DataCy.CLOSE_DETAIL).should('exist');
+    })
+  }
+  static saveTrafficPointConfirmValidity() {
+    cy.get(DataCy.SAVE_ITEM).click().then(() => {
+      cy.get(DataCy.DIALOG_CONFIRM_BUTTON).click();
       cy.get(DataCy.EDIT).should('exist');
       cy.get(DataCy.CLOSE_DETAIL).should('exist');
     })

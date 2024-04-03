@@ -90,7 +90,7 @@ describe('SePoDi use cases', {testIsolation: false}, () => {
       cy.intercept('GET', 'service-point-directory/v1/geodata/reverse-geocode?east*').as('getGeodata');
       CommonUtils.getClearType(DataCy.SEPODI_GEOLOCATION_EAST, newEastGeolocation);
       cy.wait('@getGeodata').its('response.statusCode').should('eq', 200);
-      SepodiUtils.saveServicePoint();
+      SepodiUtils.saveServicePointConfirmValidity();
       CommonUtils.assertItemValue(DataCy.SEPODI_GEOLOCATION_EAST, newEastGeolocation);
       CommonUtils.assertItemValue(DataCy.SEPODI_GEOLOCATION_NORTH, newNorthGeolocation);
     });
@@ -171,7 +171,7 @@ describe('SePoDi use cases', {testIsolation: false}, () => {
       cy.get(DataCy.SEPODI_MAP).should('exist').click(360,170);
       cy.wait('@getGeodata').its('response.statusCode').should('eq', 200);
       cy.intercept('GET', 'service-point-directory/v1/traffic-point-elements/actual-date/*').as('getTrafficPoint');
-      SepodiUtils.saveTrafficPoint();
+      SepodiUtils.saveTrafficPointConfirmValidity();
       cy.wait('@getTrafficPoint').its('response.statusCode').should('eq', 200);
     });
 
