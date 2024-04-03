@@ -1,17 +1,17 @@
 {
   "ERROR": {
     "CLIENT": {
-      "GENERIC": "Si è verificato un errore nella pagina web, ricaricare la pagina premendo il tasto F5. Se il problema persiste, contattare il servizio specializzato Atlas."
+      "GENERIC": "Si è verificato un errore nella pagina web, ricaricare la pagina premendo il tasto F5. Se il problema persiste, contattare il servizio specializzato atlas."
     },
     "WARNING": {
       "VERSIONING_NO_CHANGES": "I dati inseriti sono stati verificati. Ne risulta che i dati inseriti non modificano i dati già memorizzati. Modificare i dati o terminare la modifica."
     },
-    "GENERIC": "Si è verificato un errore generale! Ricaricare la pagina premendo il tasto F5. Se il problema persiste, contattare il servizio specializzato Atlas.",
+    "GENERIC": "Si è verificato un errore generale! Ricaricare la pagina premendo il tasto F5. Se il problema persiste, contattare il servizio specializzato atlas.",
     "NOTALLOWED": "Non siete autorizzati a modificare i dati per tutta la durata della mutazione.",
     "CONSTRAINT": "La richiesta non è stata effettuata nel formato corretto. Il valore {{rejectedValue}} non è consentito a causa di {{cause}}.",
     "ENTITY_NOT_FOUND": "Impossibile trovare l’oggetto con {{field}} {{value}}.",
-    "VERSIONING": "Questa modifica nel controllo delle versioni non è supportata dal sistema. Contattare il servizio specializzato Atlas.",
-    "CORRELATION_ID": "Se i problemi persistono, contattare il reparto Atlas con il seguente numero di identificazione: {{correlationId}}"
+    "VERSIONING": "Questa modifica nel controllo delle versioni non è supportata dal sistema. Contattare il servizio specializzato atlas.",
+    "CORRELATION_ID": "Se i problemi persistono, contattare il reparto atlas con il seguente numero di identificazione: {{correlationId}}"
   },
   "COMMON": {
     "AUTOMATICALLY_ASSIGNED": "Assegnato automaticamente",
@@ -141,7 +141,7 @@
   },
   "SW_DIALOG": {
     "UPDATE_TITLE": "Nuova versione disponibile.",
-    "UPDATE_MESSAGE": "È disponibile una nuova versione di Atlas. Ricaricare la pagina.",
+    "UPDATE_MESSAGE": "È disponibile una nuova versione di atlas. Ricaricare la pagina.",
     "UNRECOVERABLE_TITLE": "Si è verificato un errore.",
     "UNRECOVERABLE_MESSAGE": "Ricaricare la pagina."
   },
@@ -160,44 +160,44 @@
     "HOME_MENU": "Inizio",
     "HOME_BUSINESS_PLATFORM": "La piattaforma commerciale SKI",
     "TTFN": {
-      "TITLE": "Cartella del quadro d’orario",
-      "TITLE_MENU": "Cartella del quadro d’orario",
-      "DESCRIPTION": "Registrazione e gestione dei dati del quadro d’orario.",
+      "TITLE": "Gestione dei Numeri del quadro d'orario",
+      "TITLE_MENU": "Numeri del quadro d'orario",
+      "DESCRIPTION": "Registrare, gestire e visualizzare i numeri del quadro d'orario.",
       "PATH_TEXT": "Dai quadri d’orario"
     },
     "LIDI": {
-      "TITLE": "Cartella delle linee",
+      "TITLE": "Gestione dei numeri delle cartella delle linee",
       "TITLE_MENU": "Cartella delle linee",
-      "DESCRIPTION": "Registrazione e gestione dei dati delle linee.",
+      "DESCRIPTION": "Registrare, gestire e visualizzare i numeri della cartella delle linee (SLNID).",
       "PATH_TEXT": "Dalla cartella delle linee"
     },
     "BODI": {
       "TITLE": "Cartella delle organizzazioni aziendale",
       "TITLE_HEADER": "Organizzazioni aziendali",
       "TITLE_MENU": "Organizzazioni aziendali",
-      "DESCRIPTION": "Registrazione e gestione dei dati delle rganizzazioni aziendali.",
+      "DESCRIPTION": "Registrare, gestire e visualizzare le organizzazioni aziendali (SBOID).",
       "PATH_TEXT": "Organizzazioni aziendali"
     },
     "USER_ADMIN": {
       "TITLE": "Gestire gli utenti",
       "TITLE_HEADER": "Amministrazione degli utenti",
-      "DESCRIPTION": "Qui troverete tutte le informazioni sugli utenti autorizzati e potrete gestirli."
+      "DESCRIPTION": "Registrare, gestire e visualizzare le autorizzazioni degli utenti per atlas."
     },
     "SERVICE_POINTS": {
-      "TITLE": "Gestire i servizi",
-      "TITLE_HEADER": "Servizi",
-      "DESCRIPTION": "Qui si trovano tutte le informazioni necessarie per modificare e creare nuovi reparti."
+      "TITLE": "Gestire i punti di servizio",
+      "TITLE_HEADER": "Punti di servizio",
+      "DESCRIPTION": "Registrare, gestire e visualizzare i punti di esercizio e le fermate del trasporto pubblico svizzero (SLOID)."
     },
     "TTH": {
-      "TITLE": "Orario Audizione Svizzera",
+      "TITLE": "Orario Audizione Svizerra",
       "TITLE_MENU": "Orario Audizione",
-      "DESCRIPTION": "Qui potete trovare tutte le informazioni sull'orario dell'udienza in Svizzera.",
+      "DESCRIPTION": "Visualizzazione ed elaborazione del feedback sul progetto di orario.",
       "PATH_TEXT": "Orario Audizione"
     },
     "PRM": {
-      "TITLE": "Gestire dei dati BehiG",
-      "TITLE_HEADER": "Inventario LDis",
-      "DESCRIPTION": "Registrare, gestire e visualizzare i dati del servizio nell'ambito dell'inventario BehiG."
+      "TITLE": "Gestione dei dati di accessibilità",
+      "TITLE_HEADER": "Accessibilità",
+      "DESCRIPTION": "Registrare, gestire e visualizzare i dati sull'accessibilità delle fermate dei trasporti pubblici in Svizzera."
     },
     "DETAILS": "Precisazioni"
   },
@@ -347,7 +347,7 @@
       "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "La linea temporanea con validità dal {{validFrom}} al {{validTo}} supera la validità massima di 12 mesi.",
       "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "La versione dal {{validFrom}} al {{validTo}} è parte di versioni temporanee contigue. Insieme, esse superano la validità massima di 12 mesi.",
       "UPDATE_IN_REVIEW": "Nel corso dell'udienza non è possibile modificare il tipo o la validità della linea.",
-      "UPDATE_IN_REVIEW_MERGE_OR_SPLIT": "Questa modifica riguarda una versione in consultazione. Attendere il completamento della consultazione. Per qualsiasi domanda, contattare l'Unità Atlas.",
+      "UPDATE_IN_REVIEW_MERGE_OR_SPLIT": "Questa modifica riguarda una versione in consultazione. Attendere il completamento della consultazione. Per qualsiasi domanda, contattare l'Unità atlas.",
       "NUMBER": "Numero di linea",
       "NUMBER_INFO": "Si tratta dell’informazione (cifre, lettere o combinazione di cifre e lettere) con cui la linea viene comunicata al viaggiatore. L’informazione viene comunicata nella sua interezza e non comprende informazioni diverse.",
       "DESCRIPTION": "Denominazione linea",
@@ -484,14 +484,14 @@
       "BASIC_DATA": "Informazioni sull'azienda di trasporto",
       "OFFICIAL_DATA": "Dati ufficiali",
       "TRANSPORT_COMPANIES": "Azienda di trasporto",
-      "NUMBER": "Numero",
+      "NUMBER": "Numero IT",
       "ABBREVIATION": "Iniziali",
       "BUSINESS_REGISTER_NAME": "Nome del registro commerciale",
       "BUSINESS_REGISTER_NUMBER": "Nummero del registro commerciale",
       "DESCRIPTION": "Designazione ufficiale",
       "RICS_CODE": "RICS-Code",
       "GO_NUMBERS": "OA-Numero",
-      "ENTERPRISE_ID": "UID",
+      "ENTERPRISE_ID": "IDI",
       "STATUS": "Stato",
       "TRANSPORT_COMPANY_STATUS": {
         "OPERATOR": "Operatore",
@@ -962,14 +962,14 @@
       "TERMINATION_FORBIDDEN": "Non siete autorizzati a terminare la fermata. Utilizzate il modulo all'indirizzo https://www.tp-info.ch/it/soppressione-fermata.",
       "ABBREVIATION_UPDATE_NOT_ALLOWED": "L'organizzazione aziendale del servizio non è autorizzata ad aggiungere abbreviazioni, oppure il servizio ha già un'abbreviazione che non può essere modificata o cancellata.",
       "ABBREVIATION_NOT_UNIQUE": "La sigla è già in uso o la versione del servizio selezionata non è la più aggiornata.",
-      "HEIGHT_SERVICE_UNAVAILABLE": "Il servizio di altezza non è disponibile. Riprovare tra 30 minuti. Se il problema persiste, contattare il centro specializzato Atlas."
+      "HEIGHT_SERVICE_UNAVAILABLE": "Il servizio di altezza non è disponibile. Riprovare tra 30 minuti. Se il problema persiste, contattare il centro specializzato atlas."
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Bordi fermata",
       "NEW": "Acquisizione del nuovo bordo di tenuta",
       "DESIGNATION": "Designazione clienti",
       "DESIGNATION_OPERATIONAL": "Denominazione aziendale",
-      "HEADER": "Bordo di arresto / binario",
+      "HEADER": "Bordo di arresto",
       "SERVICE_POINT_NAME": "Nome della fermata",
       "DETAILS": "Dettagli del",
       "PARENT_SLOID": "Appartiene all'area",
@@ -1190,7 +1190,7 @@
       "EXTERNAL_LINK_LABEL": "Guida LDis"
     },
     "PLATFORMS": {
-      "TITLE": "Bordo di fermata/Binario",
+      "TITLE": "Bordo di fermata",
       "NEW": "Nuovo bordo di fermata",
       "NO_RECORD": "Questo bordo di fermata non è ancora stato registrato.",
       "RECORDING_STATUS": "Stato della registrazione",
