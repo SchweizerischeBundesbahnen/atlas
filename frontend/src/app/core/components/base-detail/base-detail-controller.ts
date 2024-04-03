@@ -128,8 +128,8 @@ export abstract class BaseDetailController<TYPE extends Record>
           }
         });
       } else {
-        this.createRecord();
         this.form.disable();
+        this.createRecord();
       }
     }
   }
@@ -319,9 +319,10 @@ export abstract class BaseDetailController<TYPE extends Record>
     ).pipe(take(1))
       .subscribe((confirmed) => {
         if (confirmed) {
-          this.updateRecord();
           this.form.disable();
+          this.updateRecord();
         }
+
       });
   }
 }
