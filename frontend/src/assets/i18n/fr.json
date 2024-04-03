@@ -1,17 +1,17 @@
 {
   "ERROR": {
     "CLIENT": {
-      "GENERIC": "Une erreur s’est produite sur le site Web, veuillez recharger la page en appuyant sur la touche F5. Si le problème persiste, veuillez vous adresser au service spécialisé Atlas."
+      "GENERIC": "Une erreur s’est produite sur le site Web, veuillez recharger la page en appuyant sur la touche F5. Si le problème persiste, veuillez vous adresser au service spécialisé atlas."
     },
     "WARNING": {
       "VERSIONING_NO_CHANGES": "Les données que vous avez saisies ont été vérifiées. Il a été constaté que votre saisie n’entraîne aucune modification des données déjà enregistrées. Veuillez modifier les données ou terminer l’édition."
     },
-    "GENERIC": "Une erreur générale est survenue! Veuillez recharger la page en appuyant sur la touche F5. Si le problème persiste, veuillez vous adresser au service spécialisé Atlas.",
+    "GENERIC": "Une erreur générale est survenue! Veuillez recharger la page en appuyant sur la touche F5. Si le problème persiste, veuillez vous adresser au service spécialisé atlas.",
     "NOTALLOWED": "Ils ne sont pas autorisés à traiter les données pendant toute la durée de la mutation.",
     "CONSTRAINT": "La demande n’a pas été réalisée dans le bon format. La valeur {{rejectedValue}} n’est pas autorisée en raison de {{cause}}.",
     "ENTITY_NOT_FOUND": "L’objet avec {{field}} {{value}} n’a pas été trouvé.",
-    "VERSIONING": "Ce changement de version n’est pas pris en charge par le système. Veuillez vous adresser au service spécialisé Atlas.",
-    "CORRELATION_ID": "Si les problèmes persistent, contactez le service Atlas avec le numéro d'identification suivant: {{correlationId}}"
+    "VERSIONING": "Ce changement de version n’est pas pris en charge par le système. Veuillez vous adresser au service spécialisé atlas.",
+    "CORRELATION_ID": "Si les problèmes persistent, contactez le service atlas avec le numéro d'identification suivant: {{correlationId}}"
   },
   "COMMON": {
     "AUTOMATICALLY_ASSIGNED": "Attribuer automatiquement",
@@ -58,11 +58,11 @@
     "COUNTRIES": "Des pays",
     "COUNTRY": "Pays",
     "STATUS_TYPES": {
-      "DRAFT": "Projet",
-      "VALIDATED": "Validé",
-      "IN_REVIEW": "En cours d'examen",
-      "WITHDRAWN": "Retiré",
-      "REVOKED": "Saisie des erreurs"
+      "DRAFT": "projet",
+      "VALIDATED": "validé",
+      "IN_REVIEW": "en cours d'examen",
+      "WITHDRAWN": "retiré",
+      "REVOKED": "saisie des erreurs"
     },
     "OK": "OK",
     "EDIT_VERSION": "Modifier la version",
@@ -117,7 +117,7 @@
     "DROPDOWN_SEARCH_RESULT_INFO": "Les éléments affichés sont {{pageSize}} sur {{totalCount}}. (recherche plus précise nécessaire)"
   },
   "VERSION_TABLE": {
-    "TITLE": "Versions avec validité différente",
+    "TITLE": "Versions avec une validité différente",
     "GAP": "Interruption",
     "VERSION_DESCRIPTION": "Désignation de la version"
   },
@@ -141,7 +141,7 @@
   },
   "SW_DIALOG": {
     "UPDATE_TITLE": "Nouvelle version disponible",
-    "UPDATE_MESSAGE": "Une nouvelle version d'ATLAS est disponible, veuillez recharger la page.",
+    "UPDATE_MESSAGE": "Une nouvelle version d'atlas est disponible, veuillez recharger la page.",
     "UNRECOVERABLE_TITLE": "Une erreur s'est produite",
     "UNRECOVERABLE_MESSAGE": "Veuillez recharger la page."
   },
@@ -162,42 +162,42 @@
     "TTFN": {
       "TITLE": "Gérer les numéros de tableaux-horaires",
       "TITLE_MENU": "Numéros de tableaux-horaires",
-      "DESCRIPTION": "Saisie et gestion des données des tableaux-horaires.",
+      "DESCRIPTION": "Saisier, modifier et consulter les numéros de tableaux-horaires.",
       "PATH_TEXT": "Vers tableaux-horaires"
     },
     "LIDI": {
-      "TITLE": "Liste des lignes",
+      "TITLE": "Gérer des lignes et lingnes partielles",
       "TITLE_MENU": "Lignes et lignes partielles",
-      "DESCRIPTION": "Saisie et gestion des données des lignes.",
+      "DESCRIPTION": "Saisier, modifier et consulter les lignes et lingnes partielles (SLNID).",
       "PATH_TEXT": "Vers liste des lignes"
     },
     "BODI": {
       "TITLE": "Liste des organisations commerciales",
       "TITLE_HEADER": "Organisations commerciales",
       "TITLE_MENU": "Organisations commerciales",
-      "DESCRIPTION": "Vers liste des organisations commerciales",
+      "DESCRIPTION": "Saisier, modifier et consulter les organisations commerciales (SBOID).",
       "PATH_TEXT": "Organisations commerciales"
     },
     "USER_ADMIN": {
       "TITLE": "Gérer les utilisateurs",
       "TITLE_HEADER": "Gestion des utilisateurs",
-      "DESCRIPTION": "Vous trouverez ici toutes les informations sur les utilisateurs autorisés et pourrez les gérer."
+      "DESCRIPTION": "Saisir, modifier et consulter les droits d'accès des utilisateurs d'atlas."
     },
     "SERVICE_POINTS": {
-      "TITLE": "Gérer les services",
-      "TITLE_HEADER": "Services",
-      "DESCRIPTION": "Vous trouverez ici toutes les informations nécessaires pour modifier et créer de nouveaux services."
+      "TITLE": "Gérer des points de services",
+      "TITLE_HEADER": "Points de services",
+      "DESCRIPTION": "Saisir, modifier et consulter les points d'exploitation et les arrêts des TP-Suisse (SLOID)."
     },
     "TTH": {
-      "TITLE": "Consultation sur le projet d'horaire en Suisse",
-      "TITLE_MENU": "Consultation sur le projet d'horaire",
-      "DESCRIPTION": "Vous trouverez ici toutes les informations relatives à la consultation sur le projet d'horaire en Suisse.",
+      "TITLE": "Consultation du projet d'horaire",
+      "TITLE_MENU": "Consultation du projet d'horaire",
+      "DESCRIPTION": "Consulter et modifier les commentaires du projet d'horaire.",
       "PATH_TEXT": "Consultation sur le projet d'horaire"
     },
     "PRM": {
-      "TITLE": "Gérer les données LHand",
-      "TITLE_HEADER": "Inventaire des actifs LHand",
-      "DESCRIPTION": "Saisir, modifier et consulter les données des services dans le cadre de I'inventaire LHand."
+      "TITLE": "Gérer les données d'accessibilité",
+      "TITLE_HEADER": "Accessibilité",
+      "DESCRIPTION": "Saisier, modifier et consulter les données d'accessibilité des arrêts de transports publics en Suisse."
     },
     "DETAILS": "Précisions"
   },
@@ -346,8 +346,8 @@
       },
       "TEMPORARY_VERSION_EXCEEDS_MAX_VALIDITY": "La ligne temporaire valide de {{validFrom}} à {{validTo}} dépasse la validité maximale de 12 mois.",
       "RELATING_TEMPORARY_VERSIONS_EXCEED_MAX_VALIDITY": "La version de {{validFrom}} à {{validTo}} fait partie de versions temporaires connexes. Ensemble, elles dépassent la validité maximale de 12 mois.",
-      "UPDATE_IN_REVIEW": "Il n'est pas possible de modifier le type ou la validité pendant une audition. Veuillez attendre la fin de l'audition. Si vous avez des questions, veuillez vous adresser au service Atlas.",
-      "UPDATE_IN_REVIEW_MERGE_OR_SPLIT": "Cette modification a des répercussions sur une version qui se trouve en cours d'audition. Veuillez attendre la fin de l'audition. Si vous avez des questions, veuillez vous adresser au service Atlas.",
+      "UPDATE_IN_REVIEW": "Il n'est pas possible de modifier le type ou la validité pendant une audition. Veuillez attendre la fin de l'audition. Si vous avez des questions, veuillez vous adresser au service atlas.",
+      "UPDATE_IN_REVIEW_MERGE_OR_SPLIT": "Cette modification a des répercussions sur une version qui se trouve en cours d'audition. Veuillez attendre la fin de l'audition. Si vous avez des questions, veuillez vous adresser au service atlas.",
       "NUMBER": "Numéro de ligne",
       "NUMBER_INFO": "Information (chiffres, lettres ou combinaison des deux) dans le cadre de laquelle la ligne est communiquée aux voyageurs. L’information est communiquée dans sa globalité et non pas sous la forme de différentes informations.",
       "DESCRIPTION": "Désignation de la ligne",
@@ -411,8 +411,8 @@
       "DETAIL_LINE_SNAPSHOT": "Détails des lignes historiques",
       "NAVIGATE_TO_VERSION": "Accéder à la vue détaillée de la ligne",
       "NAVIGATE_TO_SNAPHOT": "Accéder à la liste de toutes les audiences de cette ligne",
-      "TAB_HEADER": "Lignes Auditions",
-      "TABLE_HEADER": "Lignes Auditions",
+      "TAB_HEADER": "Lignes auditions",
+      "TABLE_HEADER": "Lignes auditions",
       "TABLE": {
         "NUMBER": "Numéro de ligne",
         "DESCRIPTION": "Désignation de la ligne",
@@ -484,23 +484,23 @@
       "BASIC_DATA": "Informations sur l'entreprise de transport",
       "OFFICIAL_DATA": "Données officielles",
       "TRANSPORT_COMPANIES": "Entreprise de transport",
-      "NUMBER": "Numéro",
+      "NUMBER": "Numéro ET",
       "ABBREVIATION": "Initiales",
       "BUSINESS_REGISTER_NAME": "Nom du registre du commerce",
       "BUSINESS_REGISTER_NUMBER": "Numéro d'enregistrement au registre du commerce",
       "DESCRIPTION": "Nom officiel",
       "RICS_CODE": "RICS-Code",
       "GO_NUMBERS": "OC-Numéro",
-      "ENTERPRISE_ID": "UID",
+      "ENTERPRISE_ID": "IDE",
       "STATUS": "Statut",
       "TRANSPORT_COMPANY_STATUS": {
-        "OPERATOR": "Opérateur",
-        "CURRENT": "Actuel",
-        "SUPERVISION": "Supervision",
-        "OPERATING_PART": "Partie opérationnelle",
-        "FORMER_OPERATING_PART": "Ancienne partie de l'entreprise",
-        "LIQUIDATED": "Liquidé",
-        "INACTIVE": "Inactif"
+        "OPERATOR": "opérateur",
+        "CURRENT": "actuel",
+        "SUPERVISION": "supervision",
+        "OPERATING_PART": "partie opérationnelle",
+        "FORMER_OPERATING_PART": "ancienne partie de l'entreprise",
+        "LIQUIDATED": "liquidé",
+        "INACTIVE": "inactif"
       },
       "RELATION_CONFLICT": "L'organisation commerciale {{sboid}} est déjà liée de {{validFrom}} à {{validTo}} à TU {{number}} - {{abbreviation}} - {{businessRegisterName}}."
     },
@@ -551,12 +551,12 @@
     },
     "STATUS_DETAIL": "Statut d'audience",
     "STATUS": {
-      "ADDED": "Saisit",
-      "STARTED": "Lancé",
-      "REVISION": "En révision",
-      "HEARING": "En audience",
-      "APPROVED": "Approuvé",
-      "REJECTED": "Refusé"
+      "ADDED": "saisie",
+      "STARTED": "lancée",
+      "REVISION": "en révision",
+      "HEARING": "en audience",
+      "APPROVED": "approuvée",
+      "REJECTED": "refusée"
     },
     "NOTIFICATION": {
       "START": {
@@ -617,7 +617,7 @@
       "DOWNLOAD_CSV": "Télécharger [CSV]",
       "MANAGE_TIMETABLE_HEARING": "Contrôle de la consultation de l'horaire",
       "ADD_NEW_STATEMENT": "Saisir une nouvelle prise de position",
-      "ADD_NEW_TIMETABLE_HEARING": "Créer une nouvelle consultation sur les horaires",
+      "ADD_NEW_TIMETABLE_HEARING": "Créer une nouvelle consultation du horaires",
       "START_TIMETABLE_HEARING": "Lancer cette année d'horaire",
       "CANCEL_COLLECTING_ACTION": "Terminer la collecte",
       "CLOSE_TIMETABLE_HEARING": "Clôture de l'année horaire"
@@ -676,15 +676,15 @@
       "OVERVIEW_ARCHIVED_NOT_FOUND": "Aucune audition archivée n'est actuellement disponible."
     },
     "STATEMENT_STATUS": {
-      "RECEIVED": "Réceptionnée",
-      "IN_REVIEW": "En cours de traitement",
-      "ACCEPTED": "Acceptée",
-      "REJECTED": "Rejetée",
-      "NOTED": "Prise de connaissance",
-      "PARTLY_IMPLEMENTED": "Partiellement acceptée",
-      "MOVED": "Reportée",
-      "JUNK": "*Spam-Mail*",
-      "REVOKED": "Saisie des erreurs"
+      "RECEIVED": "réceptionnée",
+      "IN_REVIEW": "en cours de traitement",
+      "ACCEPTED": "acceptée",
+      "REJECTED": "rejetée",
+      "NOTED": "prise de connaissance",
+      "PARTLY_IMPLEMENTED": "partiellement acceptée",
+      "MOVED": "reportée",
+      "JUNK": "*spam-mail*",
+      "REVOKED": "saisie des erreurs"
     },
     "CANTON": {
       "CH": "Suisse entière",
@@ -851,7 +851,7 @@
       "DIDOK_CODE_SEARCH": "Code DiDok",
       "SERVICE_POINT": "Service",
       "SERVICE_POINT_ID": "ID service",
-      "NEW_SERVICE_POINT": "Nouveau service",
+      "NEW_SERVICE_POINT": "Nouveau point de services",
       "AREAS": "Zones d'arrêt",
       "FOT_COMMENT": "Commentaire OFT",
       "DETAILS": "Informations sur le service",
@@ -893,7 +893,7 @@
         "ROUTE_SPEED_CHANGE": "Changement de vitesse de ligne"
       },
       "STOP_POINT": "Arrêt",
-      "STOP_POINT_TYPE": "Type de arrêt",
+      "STOP_POINT_TYPE": "Type d'arrêt",
       "STOP_POINT_TYPES": {
         "ORDERLY": "Arrêt ordinaire",
         "ON_REQUEST": "Arrêt sur demande",
@@ -962,14 +962,14 @@
       "TERMINATION_FORBIDDEN": "Vous n'êtes pas autorisé à planifier l'arrêt. Pour ce faire, veuillez utiliser le formulaire disponible sur https://www.tp-info.ch/fr/suppression-dun-arret.",
       "ABBREVIATION_UPDATE_NOT_ALLOWED": "L'organisation commerciale du service n'est pas autorisée à ajouter des abréviations ou le service dispose déjà d'une abréviation qui ne peut pas être modifiée ou supprimée.",
       "ABBREVIATION_NOT_UNIQUE": "L'abréviation est déjà utilisée ou la version du service choisie n'est pas la plus récente.",
-      "HEIGHT_SERVICE_UNAVAILABLE": "Le service d'altitude n'est pas disponible. Veuillez réessayer dans 30 minutes. Si le problème persiste, veuillez vous adresser au service spécialisé Atlas."
+      "HEIGHT_SERVICE_UNAVAILABLE": "Le service d'altitude n'est pas disponible. Veuillez réessayer dans 30 minutes. Si le problème persiste, veuillez vous adresser au service spécialisé atlas."
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Bordures d’arrêts",
-      "NEW": "Saisir un nouveau bord d'arrêt",
-      "DESIGNATION": "Désignation Clients",
+      "NEW": "Saisir une nouvelle bordure d'arrêt",
+      "DESIGNATION": "Désignation clients",
       "DESIGNATION_OPERATIONAL": "Désignation opérationnelle",
-      "HEADER": "Bord d'arrêt / voie",
+      "HEADER": "Bord d'arrêt",
       "SERVICE_POINT_NAME": "Nom de l'arrêt",
       "DETAILS": "Données relatives à la",
       "PARENT_SLOID": "Appartient au domaine",
@@ -1026,7 +1026,7 @@
         "NORTH": "Latitude [°]"
       },
       "HEIGHT": "Altitude [Alt. en m.]",
-      "ADMINISTRATION": "Administrative Einheiten",
+      "ADMINISTRATION": "Unités administrative",
       "COUNTRY": "Campagne",
       "CANTON": "Canton",
       "MUNICIPALITY": "Commune",
@@ -1092,10 +1092,10 @@
         "ASSISTANCE_AVAILABILITY_INFO": "Si oui/en partie, informations à ajouter dans le champ de remarques.\nNon applicable = pas nécessaire, arrêt utilisable de manière autonome.",
         "ASSISTANCE_CONDITION": "Remarques sur l’assistance",
         "ASSISTANCE_CONDITION_INFO": "Informations sur l’assistance (par ex. délai pour l’annonce préalable, heures de fonctionnement, contact, page d’accueil)",
-        "ALTERNATIVE_TRANSPORT": "Service de navette ou offre de mode de transport public alternatif",
-        "ALTERNATIVE_TRANSPORT_INFO": "N’est légalement admissible comme solution de rechange selon l’art. 2, al. 3, LHand qu’avec l’accord écrit de l’OFT! \nLa solution de rechange standard est la fourniture d’une aide par le personnel sur place selon l’art. 3, al. 2, OTHand.",
+        "ALTERNATIVE_TRANSPORT": "Service de navette resp. offre de transport public alternative",
+        "ALTERNATIVE_TRANSPORT_INFO": "N’est légalement admissible comme solution de remplacement selon l’art. 2, al. 3, LHand qu’avec l’accord écrit de l’OFT! \nLa solution de remplacement standard est la fourniture d’une aide par le personnel sur place selon l’art. 3, al. 2, OTHand.",
         "ALTERNATIVE_TRANSPORT_CONDITION": "Renseignements sur le service navette ou l'offre de modes de transport public alternatifs",
-        "ALTERNATIVE_TRANSPORT_CONDITION_INFO": "N’est légalement admissible comme solution de rechange selon l’art. 12, al. 3, LHand qu’avec l’accord écrit de l’OFT! \nLa solution de rechange standard est la fourniture d’une aide par le personnel sur place selon l’art. 3, al. 2, OTHand.",
+        "ALTERNATIVE_TRANSPORT_CONDITION_INFO": "N’est légalement admissible comme solution de remplacement selon l’art. 12, al. 3, LHand qu’avec l’accord écrit de l’OFT! \nLa solution de remplacement standard est la fourniture d’une aide par le personnel sur place selon l’art. 3, al. 2, OTHand.",
         "ADDITIONAL_INFORMATION": "Informations complémentaires",
         "TICKET_MACHINE": "Présence d'un distributeur de billets",
         "WHEELCHAIR_TICKET_MACHINE": "Accessible",
@@ -1174,7 +1174,7 @@
       }
     },
     "INFO_BOX": {
-      "HEADER": "Document",
+      "HEADER": "Documents",
       "GUIDE_LINE_URL": "https://www.tp-info.ch/sites/default/files/2023-05/Guide_aux_crit%C3%A8res_sur_l%E2%80%99accessibilit%C3%A9_en_DiDok.pdf",
       "GUIDE_LINE_LABEL": "Guide LHand",
       "GUIDE_LINE_ATTACHMENT_URL": "https://www.tp-info.ch/sites/default/files/2023-06/Annexe_au_guide_sur_l%E2%80%99accessibilit%C3%A9_web.xlsx",
@@ -1190,7 +1190,7 @@
       "EXTERNAL_LINK_LABEL": "Guide LHand"
     },
     "PLATFORMS": {
-      "TITLE": "Bordure d'arrêt/voie",
+      "TITLE": "Bordure d'arrêt",
       "NEW": "Nouveau bordure d’arrêt",
       "NO_RECORD": "Cette bordure d’arrêt n'a pas encore été saisie.",
       "RECORDING_STATUS": "État de la saisie",
