@@ -223,6 +223,18 @@ describe('RelationTabDetailComponent', () => {
     expect(component.selectedRelationVersion).toBe(1);
   });
 
+  it('should save valid form', () => {
+    personWithReducedMobilityService.getReferencePointsOverview.and.returnValue(
+      of(referencePointOverview),
+    );
+    personWithReducedMobilityService.getRelationsBySloid.and.returnValue(of(relations));
+    fixture.detectChanges();
+    component.editing = true;
+    component.save();
+    expect(component.editing).toBe(false);
+    expect(personWithReducedMobilityService.updateRelation).toHaveBeenCalledTimes(1);
+  });
+
   it('should change relation version correctly', () => {
     personWithReducedMobilityService.getReferencePointsOverview.and.returnValue(
       of(referencePointOverview),
