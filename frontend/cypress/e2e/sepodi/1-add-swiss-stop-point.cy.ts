@@ -124,7 +124,7 @@ describe('SePoDi use cases', {testIsolation: false}, () => {
     it('Step-2: navigate to Haltekante', () => {
       cy.get(DataCy.SEPODI_TRAFFIC_POINT_TAB).should('exist').click();
       cy.get(DataCy.SEPODI_NEW_TRAFFIC_POINT_BUTTON).should('exist').click();
-      cy.get(DataCy.SEPODI_TRAFFIC_POINT_HEADER).should('contain.text', 'Haltekante / Gleis');
+      cy.get(DataCy.SEPODI_TRAFFIC_POINT_HEADER).should('contain.text', 'Haltekante');
       cy.get(DataCy.SEPODI_TRAFFIC_POINT_HEADER_TITLE).should('contain.text', 'Haltestellenname ' + servicePoint.designationOfficial);
     });
 
