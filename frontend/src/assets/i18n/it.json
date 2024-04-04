@@ -1266,7 +1266,13 @@
         "ADD_SUCCESS": "Il punto di riferimento è stato aggiunto con successo.",
         "EDIT_SUCCESS": "Il punto di riferimento è stato salvato con successo."
       },
-      "CONFLICT": "Il punto di riferimento principale da {{validFrom}} a {{validTo}} è già rivendicato da {{sloid}}."
+      "CONFLICT": "Il punto di riferimento principale da {{validFrom}} a {{validTo}} è già rivendicato da {{sloid}}.",
+      "HINT_DIALOG": {
+        "TITLE": "Volete registrare un punto di riferimento?",
+        "MESSAGE": "La registrazione di un punto di riferimento è richiesta dalla legge (LDis) per questa sosta. Volete farlo immediatamente?",
+        "CANCEL_TEXT": "No, grazie ",
+        "CONFIRM_TEXT": "Sì, volentieri"
+      }
     },
     "PARKING_LOTS": {
       "PARKING_LOT": "Parcheggio",
