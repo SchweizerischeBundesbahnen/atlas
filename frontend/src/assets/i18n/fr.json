@@ -1266,7 +1266,13 @@
         "ADD_SUCCESS": "Le point de référence a été ajouté avec succès.",
         "EDIT_SUCCESS": "Le point de référence a été enregistré avec succès."
       },
-      "CONFLICT": "Le point de référence principal est déjà occupé par {{sloid}} de {{validFrom}} à {{validTo}}."
+      "CONFLICT": "Le point de référence principal est déjà occupé par {{sloid}} de {{validFrom}} à {{validTo}}.",
+      "HINT_DIALOG": {
+        "TITLE": "Vous souhaitez saisir un point de référence?",
+        "MESSAGE": "La saisie d'un point de référence est nécessaire pour cet arrêt, conformément aux dispositions légales (LHand). Voulez-vous le faire immédiatement?",
+        "CANCEL_TEXT": "Non merci",
+        "CONFIRM_TEXT": "Oui, volontiers"
+      }
     },
     "PARKING_LOTS": {
       "PARKING_LOT": "Place de stationnement",
