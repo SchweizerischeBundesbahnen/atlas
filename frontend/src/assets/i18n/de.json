@@ -1266,7 +1266,13 @@
         "ADD_SUCCESS": "Der Referenzpunkt wurde erfolgreich hinzugefügt.",
         "EDIT_SUCCESS": "Der Referenzpunkt wurde erfolgreich gespeichert."
       },
-      "CONFLICT": "Hauptreferenzpunkt wird von {{validFrom}} bis {{validTo}} bereits von {{sloid}} beansprucht."
+      "CONFLICT": "Hauptreferenzpunkt wird von {{validFrom}} bis {{validTo}} bereits von {{sloid}} beansprucht.",
+      "HINT_DIALOG": {
+        "TITLE": "Möchten Sie einen Referenzpunkt erfassen?",
+        "MESSAGE": "Die Erfassung eines Referenzpunktes ist gemäss gesetzlichen Vorgaben (BehiG) für diese Haltestelle erforderlich. Möchten Sie dies sofort tun?",
+        "CANCEL_TEXT": "Nein, danke",
+        "CONFIRM_TEXT": "Ja, gerne"
+      }
     },
     "PARKING_LOTS": {
       "PARKING_LOT": "Parkplatz",
