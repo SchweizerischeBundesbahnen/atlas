@@ -1,13 +1,13 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SideNavComponent } from './side-nav.component';
-import { By } from '@angular/platform-browser';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { Pages } from '../../../pages/pages';
-import { LidiOverviewComponent } from '../../../pages/lidi/overview/lidi-overview.component';
-import { TimetableFieldNumberOverviewComponent } from '../../../pages/ttfn/overview/timetable-field-number-overview.component';
-import { AuthService } from '../../auth/auth.service';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {SideNavComponent} from './side-nav.component';
+import {By} from '@angular/platform-browser';
+import {Router} from '@angular/router';
+import {RouterTestingModule} from '@angular/router/testing';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {Pages} from '../../../pages/pages';
+import {LidiOverviewComponent} from '../../../pages/lidi/overview/lidi-overview.component';
+import {TimetableFieldNumberOverviewComponent} from '../../../pages/ttfn/overview/timetable-field-number-overview.component';
+import {AuthService} from '../../auth/auth.service';
 
 describe('SideNavComponent', () => {
   let component: SideNavComponent;
