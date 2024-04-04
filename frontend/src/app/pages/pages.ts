@@ -12,7 +12,7 @@ export class Pages {
   public static TTFN: Page = {
     title: 'PAGES.TTFN.TITLE',
     titleMenu: 'PAGES.TTFN.TITLE_MENU',
-    headerTitle: 'PAGES.TTFN.TITLE_MENU',
+    headerTitle: 'PAGES.TTFN.TITLE_HEADER',
     path: 'timetable-field-number',
     pathText: 'PAGES.TTFN.PATH_TEXT',
     description: 'PAGES.TTFN.DESCRIPTION',
