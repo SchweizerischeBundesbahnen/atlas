@@ -1104,7 +1104,7 @@
         "AUDIO_TICKET_MACHINE_INFO": "Gemäss Art. 8 VAböV",
         "INFO_TICKET_MACHINE": "Hinweise zu den Billettautomaten"
       },
-      "NO_STOP_POINT_FOUND": "Für diese Haltestelle wurden noch keine BehiG-Daten durch das Transportunternehmen erfasst.",
+      "NO_STOP_POINT_FOUND": "Für diese Haltestelle wurden noch keine Daten zur Barrierefreiheit erfasst.",
       "NOTIFICATION": {
         "ADD_SUCCESS": "Die Haltestelle wurde erfolgreich hinzugefügt.",
         "EDIT_SUCCESS": "Die Haltestelle wurde erfolgreich gespeichert."
