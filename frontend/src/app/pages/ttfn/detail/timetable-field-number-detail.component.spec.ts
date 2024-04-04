@@ -129,6 +129,9 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     router = TestBed.inject(Router);
+    validityConfirmationService.confirmValidity.and.returnValue(of(true));
+    validityConfirmationService.confirmValidityOverServicePoint.and.returnValue(of(true));
+
   });
 
   it('should create', () => {
@@ -193,6 +196,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
 
   it('should call update when confirmValidity returns true', () => {
     spyOn(component, 'updateRecord').and.callThrough();
+    mockTimetableFieldNumbersService.updateVersionWithVersioning.and.returnValue(of(version));
 
     component.confirmValidity();
 
@@ -217,7 +221,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
     'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,s';
 
   const mockTimetableFieldNumbersService = jasmine.createSpyObj('timetableFieldNumbersService', [
-    'createVersion',
+    'createVersion', 'up'
   ]);
   let router: Router;
 
