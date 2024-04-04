@@ -161,6 +161,7 @@
     "HOME_BUSINESS_PLATFORM": "La piattaforma commerciale SKI",
     "TTFN": {
       "TITLE": "Gestione dei Numeri del quadro d'orario",
+      "TITLE_HEADER": "Numeri del quadro d'orario",
       "TITLE_MENU": "Numeri del quadro d'orario",
       "DESCRIPTION": "Registrare, gestire e visualizzare i numeri del quadro d'orario.",
       "PATH_TEXT": "Dai quadri d’orario"
