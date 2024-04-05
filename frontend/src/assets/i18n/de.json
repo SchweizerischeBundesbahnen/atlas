@@ -161,6 +161,7 @@
     "HOME_BUSINESS_PLATFORM": "Die SKI Business Plattform",
     "TTFN": {
       "TITLE": "Fahrplanfeldnummern verwalten",
+      "TITLE_HEADER": "Fahrplanfeldnummern",
       "TITLE_MENU": "Fahrplanfeld-nummern",
       "DESCRIPTION": "Erfassen, Bearbeiten und Einsehen der Fahrplanfeldnummern.",
       "PATH_TEXT": "Fahrplanfelder"
