@@ -1,5 +1,5 @@
 import CommonUtils from './common-utils';
-import { DataCy } from '../data-cy';
+import {DataCy} from '../data-cy';
 import BodiDependentUtils from './bodi-dependent-utils';
 import AngularMaterialConstants from './angular-material-constants';
 
@@ -18,7 +18,7 @@ export default class TtfnUtils {
   }
 
   static checkHeaderTitle() {
-    CommonUtils.assertHeaderTitle('Fahrplanfeld-Nummern');
+    CommonUtils.assertHeaderTitle('Fahrplanfeldnummern');
   }
 
   static readTtfnidFromForm(element: { ttfnid: string }) {
