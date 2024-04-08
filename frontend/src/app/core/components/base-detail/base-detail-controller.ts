@@ -13,7 +13,8 @@ import {DetailFormComponent} from '../../leave-guard/leave-dirty-form-guard.serv
 import {VersionsHandlingService} from '../../versioning/versions-handling.service';
 import {DateRange} from '../../versioning/date-range';
 import {ValidityConfirmationService} from "../../../pages/sepodi/validity/validity-confirmation.service";
-import {Moment} from "moment";
+import {Validity} from "../../../pages/model/validity";
+import {ValidityService} from "../../../pages/sepodi/validity/validity.service";
 
 @Directive()
 export abstract class BaseDetailController<TYPE extends Record>
@@ -27,8 +28,7 @@ export abstract class BaseDetailController<TYPE extends Record>
   showSwitch: boolean | undefined;
   switchVersionEvent = new Subject<Record>();
   maxValidity!: DateRange;
-  initValidFrom!: Moment | null | undefined;
-  initValidTo!: Moment | null | undefined;
+  validity!: Validity
 
 
   protected constructor(
@@ -38,7 +38,7 @@ export abstract class BaseDetailController<TYPE extends Record>
     protected authService: AuthService,
     protected activatedRoute: ActivatedRoute,
     protected validityConfirmationService: ValidityConfirmationService,
-
+    protected validityService: ValidityService
   ) {}
 
   get versionNumberOfCurrentRecord(): number {
@@ -110,7 +110,7 @@ export abstract class BaseDetailController<TYPE extends Record>
       this.showConfirmationDialog();
     } else {
       this.form.enable();
-      this.initValidity()
+      this.validity = this.validityService.initValidity(this.form)
       this.disableUneditableFormFields();
     }
   }
@@ -122,6 +122,7 @@ export abstract class BaseDetailController<TYPE extends Record>
       if (this.getId()) {
         this.confirmBoTransfer().subscribe((confirmed) => {
           if (confirmed) {
+            this.validity = this.validityService.formValidity(this.validity, this.form)
             this.confirmValidity()
           } else {
             this.form.enable();
@@ -306,23 +307,15 @@ export abstract class BaseDetailController<TYPE extends Record>
     }
     return of(true);
   }
-  initValidity(){
-    this.initValidTo = this.form?.value.validTo;
-    this.initValidFrom = this.form?.value.validFrom;
-  }
+
   confirmValidity(){
-    this.validityConfirmationService.confirmValidity(
-      this.form.controls.validTo.value,
-      this.form.controls.validFrom.value,
-      this.initValidTo,
-      this.initValidFrom
-    ).pipe(take(1))
+    this.validityConfirmationService.confirmValidity(this.validity)
+      .pipe(take(1))
       .subscribe((confirmed) => {
         if (confirmed) {
           this.form.disable();
           this.updateRecord();
         }
-
       });
   }
 }

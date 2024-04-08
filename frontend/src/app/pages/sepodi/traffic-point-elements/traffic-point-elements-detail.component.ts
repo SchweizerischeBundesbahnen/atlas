@@ -21,7 +21,8 @@ import {TrafficPointMapService} from '../map/traffic-point-map.service';
 import {ValidityConfirmationService} from '../validity/validity-confirmation.service';
 import {DetailFormComponent} from '../../../core/leave-guard/leave-dirty-form-guard.service';
 import {GeographyFormGroup, GeographyFormGroupBuilder} from '../geography/geography-form-group';
-import {Moment} from "moment/moment";
+import {ValidityService} from "../validity/validity.service";
+import {Validity} from "../../model/validity";
 
 interface AreaOption {
   sloid: string | undefined;
@@ -35,6 +36,7 @@ const NUMBER_COLONS_AREA = 0;
   selector: 'app-traffic-point-elements',
   templateUrl: './traffic-point-elements-detail.component.html',
   styleUrls: ['./traffic-point-elements-detail.component.scss'],
+  providers: [ValidityService]
 })
 export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, DetailFormComponent {
   readonly extractSloid = (option: AreaOption) => option.sloid;
@@ -59,8 +61,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
   servicePointBusinessOrganisations: string[] = [];
   isTrafficPointArea = false;
   numberColons!: number;
-  initValidFrom!: Moment | null | undefined;
-  initValidTo!: Moment | null | undefined;
+  validity!: Validity;
   trafficPointElementVersion!:CreateTrafficPointElementVersion;
 
 
@@ -75,6 +76,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
     private dialogService: DialogService,
     private validityConfirmationService: ValidityConfirmationService,
     private notificationService: NotificationService,
+    private validityService: ValidityService,
   ) {}
 
   ngOnInit() {
@@ -189,7 +191,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
       this.showConfirmationDialog();
     } else {
       this.isSwitchVersionDisabled = true;
-      this.initValidity()
+      this.validity = this.validityService.initValidity(this.form)
       this.form.enable({ emitEvent: false });
     }
   }
@@ -236,6 +238,7 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
             this.disableForm()
           }
           else{
+            this.validity = this.validityService.formValidity(this.validity, this.form)
             this.confirmValidity(this.trafficPointElementVersion);
           }
         }
@@ -310,17 +313,9 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
     }
   }
 
-  initValidity(){
-    this.initValidTo = this.form?.value.validTo;
-    this.initValidFrom = this.form?.value.validFrom;
-  }
-
   confirmValidity(trafficPointElementVersion: CreateTrafficPointElementVersion){
     this.validityConfirmationService.confirmValidity(
-      this.form.controls.validTo.value,
-      this.form.controls.validFrom.value,
-      this.initValidTo,
-      this.initValidFrom
+      this.validity
     ).pipe(take(1))
       .subscribe((confirmed) => {
         if (confirmed) {

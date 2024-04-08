@@ -23,10 +23,12 @@ import { AtlasFieldLengthValidator } from '../../../../core/validation/field-len
 import { LineDetailFormGroup } from './line-detail-form-group';
 import { AuthService } from '../../../../core/auth/auth.service';
 import {ValidityConfirmationService} from "../../../sepodi/validity/validity-confirmation.service";
+import {ValidityService} from "../../../sepodi/validity/validity.service";
 
 @Component({
   templateUrl: './line-detail.component.html',
   styleUrls: ['./line-detail.component.scss'],
+  providers: [ValidityService],
 })
 export class LineDetailComponent extends BaseDetailController<LineVersion> implements OnInit {
   isShowLineSnapshotHistory = false;
@@ -39,8 +41,9 @@ export class LineDetailComponent extends BaseDetailController<LineVersion> imple
     protected authService: AuthService,
     protected activatedRoute: ActivatedRoute,
     protected validityConfirmationService: ValidityConfirmationService,
+    protected validityService: ValidityService,
   ) {
-    super(router, dialogService, notificationService, authService, activatedRoute, validityConfirmationService);
+    super(router, dialogService, notificationService, authService, activatedRoute, validityConfirmationService, validityService);
   }
 
   ngOnInit() {
