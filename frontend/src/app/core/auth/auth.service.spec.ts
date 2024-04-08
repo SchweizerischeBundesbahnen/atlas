@@ -426,11 +426,8 @@ describe('AuthService', () => {
 
   describe('Available Pages based on permissions', () => {
 
-    const fakeToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTI1Nzk0MjgsIm5iZiI6MTcxMjU3OTQyOCwiZXhwIjoxNzEyNTg0ODQ2LCJhaW8iOiJBV1FBbS84V0FBQUFlL1pLbDYrdGpFSmF6TVh6ZE9uYkNqa3F6M3I0Y1poTjdISHFXeEZjSmNUS2xtdHFUZVpoWmdmOEtkd3NLMTZxK2o2T2JObFNBaUl3OGFIZUNjYWs2aWwzNTgwRFBJZTZTRHlXMWVSbndscUxqSlZTWFFYSWlESjdjYVZpd3gwSyIsImF6cCI6IjE4NzQ2ZjMwLTc5NzgtNDhiNS1iMTliLTBmODcxZmIxMmU2NyIsImF6cGFjciI6IjAiLCJuYW1lIjoiTWUiLCJvaWQiOiI4MjMxYzY0Yi1iY2I0LTQ5N2UtOTNiZi0wMjEzZWJkYWM5ZTQiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJtZUBzYmIuY2giLCJyaCI6IjAuQVlJQUVWM2FMS3p3czBhV2ZhOGJMaHZRR2pUbTVvZWhhM3BPaHAwelNMVEQ2dnlDQUVNLiIsInJvbGVzIjpbImFwaW0tZGVmYXVsdC1yb2xlIl0sInNjcCI6ImFwaW0iLCJzdWIiOiJUWDExMFJvQXl2b3QyQlRISVU2M0hMS1llQU03WWV6c21JWVRTdVNjVDJrIiwidGlkIjoiMmNkYTVkMTEtZjBhYy00NmIzLTk2N2QtYWYxYjJlMWJkMDFhIiwidXRpIjoiT01xS2VheTFua3UzemhVZEgwYkxBQSIsInZlciI6IjIuMCIsInNiYnVpZCI6ImU1MjQzODEifQ.O5CzmblVS7EVuBRgzMF00_UVkTaS-47euK_ZvdkEUuM';
-
     it('should show TTFN if at least supervisor', () => {
       oauthService.getIdentityClaims.and.returnValue({ name: 'me', email: 'me@sbb.ch', roles: [] });
-      oauthService.getAccessToken.and.returnValue(fakeToken);
 
       const user: User = {
         sbbUserId: 'e132456',
@@ -442,19 +439,14 @@ describe('AuthService', () => {
       };
       userAdministrationService.getCurrentUser.and.returnValue(of(user))
 
-      authService.permissionsLoaded
-        .pipe(delay(300))
-        .subscribe(loaded => {
-        if (loaded) {
-          expect(Pages.viewablePages.filter(i => i.path === Pages.TTFN.path).length).toBe(1);
-        }
-      })
-      expect(authService.loggedIn).toBeTrue();
+      authService.loadPermissions().subscribe(() => {
+        const mayAccessTtfn = authService.mayAccessTtfn();
+        expect(mayAccessTtfn).toBeTrue();
+      });
     });
 
-    it('should not show TTFN if reader', () => {
+    it('should show TTFN if reader', () => {
       oauthService.getIdentityClaims.and.returnValue({ name: 'me', email: 'me@sbb.ch', roles: [] });
-      oauthService.getAccessToken.and.returnValue(fakeToken);
 
       const user: User = {
         sbbUserId: 'e132456',
@@ -466,14 +458,10 @@ describe('AuthService', () => {
       };
       userAdministrationService.getCurrentUser.and.returnValue(of(user))
 
-      authService.permissionsLoaded
-        .pipe(delay(300))
-        .subscribe(loaded => {
-          if (loaded) {
-            expect(Pages.viewablePages.filter(i => i.path === Pages.TTFN.path).length).toBe(0);
-          }
-        })
-      expect(authService.loggedIn).toBeTrue();
+      authService.loadPermissions().subscribe(() => {
+        const mayAccessTtfn = authService.mayAccessTtfn();
+        expect(mayAccessTtfn).toBeFalse();
+      });
     });
 
   });
