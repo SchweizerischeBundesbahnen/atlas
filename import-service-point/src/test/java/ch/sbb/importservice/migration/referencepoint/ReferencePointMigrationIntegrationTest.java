@@ -35,7 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ReferencePointMigrationIntegrationTest {
 
-    private static final String DIDOK_REFERENCE_POINT_CSV_FILE = "PRM_REFERENCE_POINTS_20240312011410.csv";
+    private static final String DIDOK_REFERENCE_POINT_CSV_FILE = "PRM_REFERENCE_POINTS_20240408013239.csv";
     private static final String ATLAS_REFERENCE_POINT_CSV_FILE = "full-reference_point-2024-03-12.csv";
     private static final List<ReferencePointCsvModel> didokReferencePointCsvLines = new ArrayList<>();
     private static final List<ReferencePointVersionCsvModel> atlasReferencePointCsvLines = new ArrayList<>();
