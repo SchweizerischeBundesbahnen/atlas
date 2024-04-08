@@ -16,22 +16,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Disabled
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ToiletMigrationActualDateIntegrationTest {
 
     private static final String DIDOK_TOILET_CSV_FILE = "PRM_TOILETS_20240408013609.csv";
-    private static final String ATLAS_TOILET_CSV_FILE = "actual-date-toilet-2024-03-12.csv";
-    static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 3, 12);
+    private static final String ATLAS_TOILET_CSV_FILE = "actual-date-toilet-2024-04-08.csv";
+    static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 4, 8);
 
     private static final List<ToiletCsvModel> didokToiletCsvLines = new ArrayList<>();
     private static final List<ToiletVersionCsvModel> atlasToiletCsvLines = new ArrayList<>();
