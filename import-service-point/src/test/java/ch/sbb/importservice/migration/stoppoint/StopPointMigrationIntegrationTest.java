@@ -33,8 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StopPointMigrationIntegrationTest {
 
-  private static final String DIDOK_STOP_PLACE_CSV_FILE = "PRM_STOP_PLACES_20240312011244.csv";
-  private static final String ATLAS_STOP_POINT_CSV_FILE = "full-stop_point-2024-03-12.csv";
+  private static final String DIDOK_STOP_PLACE_CSV_FILE = "PRM_STOP_PLACES_20240408013117.csv";
+  private static final String ATLAS_STOP_POINT_CSV_FILE = "full-stop_point-2024-04-08.csv";
   private static final List<StopPointCsvModel> didokStopPointCsvLines = new ArrayList<>();
   private static final List<StopPointVersionCsvModel> atlasStopPointCsvLines = new ArrayList<>();
 
