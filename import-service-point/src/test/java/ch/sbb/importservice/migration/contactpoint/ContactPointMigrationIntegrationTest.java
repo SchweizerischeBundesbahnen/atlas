@@ -36,9 +36,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ContactPointMigrationIntegrationTest {
 
-    private static final String DIDOK_CSV_FILE_TICKET_COUNTER = "PRM_TICKET_COUNTERS_20240320013805.csv";
-    private static final String DIDOK_CSV_FILE_INFO_DESK = "PRM_INFO_DESKS_20240320013756.csv";
-    private static final String ATLAS_CSV_FILE = "full-contact_point-2024-03-20.csv";
+    private static final String DIDOK_CSV_FILE_TICKET_COUNTER = "PRM_TICKET_COUNTERS_20240408013627.csv";
+    private static final String DIDOK_CSV_FILE_INFO_DESK = "PRM_INFO_DESKS_20240408013618.csv";
+    private static final String ATLAS_CSV_FILE = "full-contact_point-2024-04-08.csv";
     private static final List<ContactPointCsvModel> allDidokCsvLines = new ArrayList<>();
     private static final List<ContactPointCsvModel> didokCsvLinesTicketCounter = new ArrayList<>();
     private static final List<ContactPointCsvModel> didokCsvLinesInfoDesk = new ArrayList<>();
