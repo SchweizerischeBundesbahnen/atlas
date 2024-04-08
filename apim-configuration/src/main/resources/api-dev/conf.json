@@ -9,21 +9,25 @@
   "teaser": "This is the API for all your needs SKI core data",
   "tags": [
     "atlas",
-    "ttfn",
-    "timetable",
+    "ski",
     "timetable-field-number",
-    "fpfn",
-    "fahrplan",
     "feldnummer",
-    "lidi",
     "line",
     "linie",
     "slnid",
     "geschäftsorganisation",
     "businessorganisation",
+    "sboid",
+    "transportcompany",
     "transportunternehmen",
     "rics",
-    "crd"
+    "didok",
+    "sloid",
+    "dienststelle",
+    "servicepoint",
+    "barrierefreiheit",
+    "accessibility",
+    "prm"
   ],
   "environment_tags": [
     "dev"
