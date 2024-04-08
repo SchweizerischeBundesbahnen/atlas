@@ -159,7 +159,7 @@ scheduler:
 
   location:
     sync:
-      chron: "0 0 6 * * 1" #At 06:00 AM, only on Monday
+      chron: "0 0 6 * * ?" #At 06:00 every day
 
 atlas:
   client:
