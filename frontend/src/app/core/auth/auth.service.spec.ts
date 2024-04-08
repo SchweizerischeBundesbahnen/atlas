@@ -1,10 +1,10 @@
-import { TestBed } from '@angular/core/testing';
-import { AuthService } from './auth.service';
-import { OAuthService } from 'angular-oauth2-oidc';
+import {TestBed} from '@angular/core/testing';
+import {AuthService} from './auth.service';
+import {OAuthService} from 'angular-oauth2-oidc';
 import {of, Subject} from 'rxjs';
-import { Role } from './role';
-import { Component } from '@angular/core';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import {Role} from './role';
+import {Component} from '@angular/core';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {
   ApplicationRole,
   ApplicationType,
@@ -14,8 +14,6 @@ import {
   UserAdministrationService,
 } from '../../api';
 import {RouterModule} from "@angular/router";
-import {Pages} from "../../pages/pages";
-import {delay} from "rxjs/operators";
 
 function createOauthServiceSpy() {
   const oauthServiceSpy = jasmine.createSpyObj<OAuthService>('OAuthService', [
