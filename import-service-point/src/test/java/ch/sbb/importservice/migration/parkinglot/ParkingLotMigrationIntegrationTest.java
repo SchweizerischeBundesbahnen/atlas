@@ -35,8 +35,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ParkingLotMigrationIntegrationTest {
 
-    private static final String DIDOK_CSV_FILE = "PRM_PARKING_LOTS_20240312011813.csv";
-    private static final String ATLAS_CSV_FILE = "full-parking_lot-2024-03-12.csv";
+    private static final String DIDOK_CSV_FILE = "PRM_PARKING_LOTS_20240408013636.csv";
+    private static final String ATLAS_CSV_FILE = "full-parking_lot-2024-04-08.csv";
     private static final List<ParkingLotCsvModel> didokCsvLines = new ArrayList<>();
     private static final List<ParkingLotVersionCsvModel> atlasCsvLines = new ArrayList<>();
 
