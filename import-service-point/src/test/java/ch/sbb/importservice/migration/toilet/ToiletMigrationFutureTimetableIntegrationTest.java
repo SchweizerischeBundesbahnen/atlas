@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ToiletMigrationFutureTimetableIntegrationTest {
 
-    private static final String DIDOK_TOILET_CSV_FILE = "PRM_TOILETS_20240312011740.csv";
+    private static final String DIDOK_TOILET_CSV_FILE = "PRM_TOILETS_20240408013609.csv";
     private static final String ATLAS_TOILET_CSV_FILE = "future-timetable-toilet-2024-03-12.csv";
     private static final LocalDate FUTURE_TIMETABLE_DATE = LocalDate.of(2024, 12, 15);
 
