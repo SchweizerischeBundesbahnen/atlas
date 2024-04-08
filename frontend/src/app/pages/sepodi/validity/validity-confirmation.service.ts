@@ -5,6 +5,8 @@ import { VersionsHandlingService } from '../../../core/versioning/versions-handl
 import { DateService } from '../../../core/date/date.service';
 import { ReadServicePointVersion } from '../../../api';
 import { Moment } from 'moment';
+import {Validity} from "../../model/validity";
+import {FormGroup} from "@angular/forms";
 
 @Injectable({ providedIn: 'root' })
 export class ValidityConfirmationService {
@@ -36,11 +38,8 @@ export class ValidityConfirmationService {
     return of(true);
   }
 
-  confirmValidity(formValidTo: Moment | null | undefined,
-                  formValidFrom:Moment | null | undefined,
-                  initValidTo: Moment | null | undefined,
-                  initValidFrom: Moment | null | undefined) {
-    if (formValidTo!.isSame(initValidTo) && formValidFrom!.isSame(initValidFrom)) {
+  confirmValidity(validity:Validity) {
+    if (validity.formValidTo!.isSame(validity.initValidTo) && validity.formValidFrom!.isSame(validity.initValidFrom)) {
       return this.dialogService.confirm({
         title: 'DIALOG.CONFIRM_VALIDITY_HAS_NOT_CHANGED_TITLE',
         message: 'DIALOG.CONFIRM_VALIDITY_HAS_NOT_CHANGED',

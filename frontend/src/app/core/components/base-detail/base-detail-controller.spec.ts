@@ -19,6 +19,7 @@ import { ApplicationType } from 'src/app/api';
 import { AuthService } from '../../auth/auth.service';
 import { authServiceMock } from '../../../app.testing.module';
 import {ValidityConfirmationService} from "../../../pages/sepodi/validity/validity-confirmation.service";
+import {ValidityService} from "../../../pages/sepodi/validity/validity.service";
 
 const dialogServiceSpy = jasmine.createSpyObj(['confirm']);
 const dialogRefSpy = jasmine.createSpyObj(['close']);
@@ -36,7 +37,7 @@ describe('BaseDetailController', () => {
 
   class DummyBaseDetailController extends BaseDetailController<Record> implements OnInit {
     constructor() {
-      super(router, dialogService, notificationService, authService, activatedRoute, validityConfirmationService);
+      super(router, dialogService, notificationService, authService, activatedRoute, validityConfirmationService, validityService);
     }
 
     getPageType(): Page {
@@ -97,6 +98,7 @@ describe('BaseDetailController', () => {
   let authService: AuthService;
   let activatedRoute: ActivatedRoute;
   let validityConfirmationService: ValidityConfirmationService;
+  let validityService: ValidityService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
