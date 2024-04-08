@@ -164,16 +164,16 @@
       "TITLE_HEADER": "Numéros de tableaux-horaires",
       "TITLE_MENU": "Numéros de tableaux-horaires",
       "DESCRIPTION": "Saisier, modifier et consulter les numéros de tableaux-horaires.",
-      "PATH_TEXT": "Vers tableaux-horaires"
+      "PATH_TEXT": "Tableaux-horaires"
     },
     "LIDI": {
-      "TITLE": "Gérer des lignes et lingnes partielles",
+      "TITLE": "Gérer des lignes et lignes partielles",
       "TITLE_MENU": "Lignes et lignes partielles",
-      "DESCRIPTION": "Saisier, modifier et consulter les lignes et lingnes partielles (SLNID).",
-      "PATH_TEXT": "Vers liste des lignes"
+      "DESCRIPTION": "Saisier, modifier et consulter les lignes et lignes partielles (SLNID).",
+      "PATH_TEXT": "Liste des lignes"
     },
     "BODI": {
-      "TITLE": "Liste des organisations commerciales",
+      "TITLE": "Gérer des organisations commerciale",
       "TITLE_HEADER": "Organisations commerciales",
       "TITLE_MENU": "Organisations commerciales",
       "DESCRIPTION": "Saisier, modifier et consulter les organisations commerciales (SBOID).",
@@ -187,7 +187,7 @@
     "SERVICE_POINTS": {
       "TITLE": "Gérer des points de services",
       "TITLE_HEADER": "Points de services",
-      "DESCRIPTION": "Saisir, modifier et consulter les points d'exploitation et les arrêts des TP-Suisse (SLOID)."
+      "DESCRIPTION": "Saisir, modifier et consulter les points d'exploitation et les arrêts de transports publics en Suisse. (SLOID)."
     },
     "TTH": {
       "TITLE": "Consultation du projet d'horaire",
@@ -618,7 +618,7 @@
       "DOWNLOAD_CSV": "Télécharger [CSV]",
       "MANAGE_TIMETABLE_HEARING": "Contrôle de la consultation de l'horaire",
       "ADD_NEW_STATEMENT": "Saisir une nouvelle prise de position",
-      "ADD_NEW_TIMETABLE_HEARING": "Créer une nouvelle consultation du horaires",
+      "ADD_NEW_TIMETABLE_HEARING": "Créer une nouvelle consultation du horaire",
       "START_TIMETABLE_HEARING": "Lancer cette année d'horaire",
       "CANCEL_COLLECTING_ACTION": "Terminer la collecte",
       "CLOSE_TIMETABLE_HEARING": "Clôture de l'année horaire"
@@ -970,7 +970,7 @@
       "NEW": "Saisir une nouvelle bordure d'arrêt",
       "DESIGNATION": "Désignation clients",
       "DESIGNATION_OPERATIONAL": "Désignation opérationnelle",
-      "HEADER": "Bord d'arrêt",
+      "HEADER": "Bordure d'arrêt",
       "SERVICE_POINT_NAME": "Nom de l'arrêt",
       "DETAILS": "Données relatives à la",
       "PARENT_SLOID": "Appartient au domaine",
