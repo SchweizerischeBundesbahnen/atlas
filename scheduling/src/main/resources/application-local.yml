@@ -91,25 +91,25 @@ scheduler:
 
   import-service-point:
     service-point-trigger-batch:
-      chron: "0 0 3 * * ?" #At 03:00:00am every day
+      chron: "-" #Never ever
     traffic-point-trigger-batch:
-      chron: "0 30 4 * * ?" #At 04:30:00am every day
+      chron: "-" #Never ever
     loading-point-trigger-batch:
-      chron: "0 30 4 * * ?" #At 04:30:00am every day
+      chron: "-" #Never ever
     stop-point-trigger-batch:
-      chron: "0 00 5 * * ?" #At 05:00:00am every day
+      chron: "-" #Never ever
     platform-trigger-batch:
-      chron: "0 10 5 * * ?" #At 05:10:00am every day
+      chron: "-" #Never ever
     reference-point-trigger-batch:
-      chron: "0 20 5 * * ?" #At 05:20:00am every day
+      chron: "-" #Never ever
     toilet-trigger-batch:
-      chron: "0 25 5 * * ?" #At 05:25:00am every day
+      chron: "-" #Never ever
     parking-lot-trigger-batch:
-      chron: "0 30 5 * * ?" #At 05:30:00am every day
+      chron: "-" #Never ever
     contact-point-trigger-batch:
-      chron: "0 35 5 * * ?" #At 05:35:00am every day
+      chron: "-" #Never ever
     relation-trigger-batch:
-      chron: "0 40 5 * * ?" #At 05:40:00am every day
+      chron: "-" #Never ever
 
   lidi:
     export:
@@ -137,25 +137,25 @@ scheduler:
 
   export-service-point:
     service-point-trigger-batch:
-      chron: "0 0 5 * * ?" #At 05:00:00am every day
+      chron: "0 1 0 * * ?" #At 00:01:00am every day
     traffic-point-trigger-batch:
-      chron: "0 10 5 * * ?" #At 05:10:00am every day
+      chron: "0 5 0 * * ?" #At 00:05:00am every day
     loading-point-trigger-batch:
-      chron: "0 20 5 * * ?" #At 05:20:00am every day
+      chron: "0 8 0 * * ?" #At 00:08:00am every day
     stop-point-trigger-batch:
-      chron: "0 25 5 * * ?" #At 05:25:00am every day
+      chron: "0 10 0 * * ?" #At 00:10:00am every day
     platform-trigger-batch:
-      chron: "0 30 5 * * ?" #At 05:30:00am every day
+      chron: "0 13 0 * * ?" #At 00:13:00am every day
     reference-point-trigger-batch:
-      chron: "0 35 5 * * ?" #At 05:35:00am every day
+      chron: "0 15 0 * * ?" #At 00:15:00am every day
     contact-point-trigger-batch:
-      chron: "0 45 5 * * ?" #At 05:45:00am every day
+      chron: "0 17 0 * * ?" #At 00:17:00am every day
     toilet-trigger-batch:
-      chron: "0 50 5 * * ?" #At 05:50:00am every day
+      chron: "0 20 0 * * ?" #At 00:20:00am every day
     parking-lot-trigger-batch:
-      chron: "0 55 5 * * ?" #At 05:55:00am every day
+      chron: "0 22 0 * * ?" #At 00:22:00am every day
     relation-trigger-batch:
-      chron: "0 00 6 * * ?" #At 06:00:00am every day
+      chron: "0 25 0 * * ?" #At 00:25:00am every day
 
   location:
     sync:
