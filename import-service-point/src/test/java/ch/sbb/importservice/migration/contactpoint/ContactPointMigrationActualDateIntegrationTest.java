@@ -16,14 +16,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Disabled
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -31,8 +29,8 @@ public class ContactPointMigrationActualDateIntegrationTest {
 
     private static final String DIDOK_CSV_FILE_TICKET_COUNTER = "PRM_TICKET_COUNTERS_20240408013627.csv";
     private static final String DIDOK_CSV_FILE_INFO_DESK = "PRM_INFO_DESKS_20240408013618.csv";
-    private static final String ATLAS_CSV_FILE = "actual-date-contact_point-2024-03-20.csv";
-    static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 3, 20);
+    private static final String ATLAS_CSV_FILE = "actual-date-contact_point-2024-04-08.csv";
+    static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 4, 8);
 
     private static final List<ContactPointCsvModel> didokCsvLines = new ArrayList<>();
     private static final List<ContactPointVersionCsvModel> atlasCsvLines = new ArrayList<>();
