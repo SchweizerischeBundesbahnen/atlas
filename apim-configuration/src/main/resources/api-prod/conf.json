@@ -1,7 +1,7 @@
 {
   "apim_schemaversion": "2.0",
   "system_name": "atlas",
-  "name": "Atlas API",
+  "name": "atlas API",
   "mega_id": "ADB3AE9A60E510ED",
   "scm_url": "https://code.sbb.ch/scm/ki_atlas/atlas-apim-configuration.git",
   "developer_resources_url": "https://code.sbb.ch/projects/KI_ATLAS",
@@ -34,12 +34,12 @@
   "routing_over_wsg": false,
   "owner_email": "TechSupport-ATLAS@sbb.ch",
   "contact": {
-    "name": "DiDok / ATLAS",
+    "name": "DiDok / atlas",
     "email": "TechSupport-ATLAS@sbb.ch"
   },
   "personenkreis_betrieb": [
     {
-      "name": "DiDok / ATLAS",
+      "name": "DiDok / atlas",
       "email": "TechSupport-ATLAS@sbb.ch"
     }
   ],
