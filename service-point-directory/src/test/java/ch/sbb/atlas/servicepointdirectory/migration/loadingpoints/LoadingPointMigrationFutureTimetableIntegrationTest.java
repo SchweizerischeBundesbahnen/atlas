@@ -11,20 +11,18 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
-@Disabled
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class LoadingPointMigrationFutureTimetableIntegrationTest {
 
   private static final String DIDOK_CSV_FILE = "DIDOK3_LADESTELLEN_20240408013709.csv";
-  private static final String ATLAS_CSV_FILE = "future_timetable-world-loading_point-2024-03-18.csv";
+  private static final String ATLAS_CSV_FILE = "future_timetable-world-loading_point-2024-04-08.csv";
   private static final LocalDate FUTURE_TIMETABLE_DATE = LocalDate.of(2024, 12, 15);
 
   private static final List<LoadingPointDidokCsvModel> didokCsvLines = new ArrayList<>();
