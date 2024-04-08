@@ -20,14 +20,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.util.FileSystemUtils;
 
-@Disabled
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -35,7 +33,7 @@ import org.springframework.util.FileSystemUtils;
 
   private static final String ZIPPED_DIDOK_CSV_FILE = "src/test/resources/migration/DIDOK3_DIENSTSTELLEN_ALL_V_3_20240408011228.zip";
   private static final String DECOMPRESSED_FILE_PATH = "src/test/resources/migration/DIDOK3_DIENSTSTELLEN_ALL_V_3_20240408011228";
-  private static final String ATLAS_CSV_FILE = "full-world-service_point-2024-03-12.csv";
+  private static final String ATLAS_CSV_FILE = "full-world-service_point-2024-04-08.csv";
 
   private static final List<ServicePointAtlasCsvModel> atlasCsvLines = new ArrayList<>();
   private static final List<ServicePointCsvModel> didokCsvLines = new ArrayList<>();
