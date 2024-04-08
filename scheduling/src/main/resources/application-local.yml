@@ -91,25 +91,25 @@ scheduler:
 
   import-service-point:
     service-point-trigger-batch:
-      chron: "0 0 3 * * ?" #At 03:00:00am every day
+      chron: "-" #Never ever
     traffic-point-trigger-batch:
-      chron: "0 30 4 * * ?" #At 04:30:00am every day
+      chron: "-" #Never ever
     loading-point-trigger-batch:
-      chron: "0 30 4 * * ?" #At 04:30:00am every day
+      chron: "-" #Never ever
     stop-point-trigger-batch:
-      chron: "0 00 5 * * ?" #At 05:00:00am every day
+      chron: "-" #Never ever
     platform-trigger-batch:
-      chron: "0 10 5 * * ?" #At 05:10:00am every day
+      chron: "-" #Never ever
     reference-point-trigger-batch:
-      chron: "0 20 5 * * ?" #At 05:20:00am every day
+      chron: "-" #Never ever
     toilet-trigger-batch:
-      chron: "0 25 5 * * ?" #At 05:25:00am every day
+      chron: "-" #Never ever
     parking-lot-trigger-batch:
-      chron: "0 30 5 * * ?" #At 05:30:00am every day
+      chron: "-" #Never ever
     contact-point-trigger-batch:
-      chron: "0 35 5 * * ?" #At 05:35:00am every day
+      chron: "-" #Never ever
     relation-trigger-batch:
-      chron: "0 40 5 * * ?" #At 05:40:00am every day
+      chron: "-" #Never ever
 
   lidi:
     export:
