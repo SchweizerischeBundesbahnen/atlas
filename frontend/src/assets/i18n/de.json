@@ -1105,7 +1105,7 @@
         "AUDIO_TICKET_MACHINE_INFO": "Gemäss Art. 8 VAböV",
         "INFO_TICKET_MACHINE": "Hinweise zu den Billettautomaten"
       },
-      "NO_STOP_POINT_FOUND": "Für diese Haltestelle wurden noch keine BehiG-Daten durch das Transportunternehmen erfasst.",
+      "NO_STOP_POINT_FOUND": "Für diese Haltestelle wurden noch keine Daten zur Barrierefreiheit erfasst.",
       "NOTIFICATION": {
         "ADD_SUCCESS": "Die Haltestelle wurde erfolgreich hinzugefügt.",
         "EDIT_SUCCESS": "Die Haltestelle wurde erfolgreich gespeichert."
@@ -1267,7 +1267,13 @@
         "ADD_SUCCESS": "Der Referenzpunkt wurde erfolgreich hinzugefügt.",
         "EDIT_SUCCESS": "Der Referenzpunkt wurde erfolgreich gespeichert."
       },
-      "CONFLICT": "Hauptreferenzpunkt wird von {{validFrom}} bis {{validTo}} bereits von {{sloid}} beansprucht."
+      "CONFLICT": "Hauptreferenzpunkt wird von {{validFrom}} bis {{validTo}} bereits von {{sloid}} beansprucht.",
+      "HINT_DIALOG": {
+        "TITLE": "Möchten Sie einen Referenzpunkt erfassen?",
+        "MESSAGE": "Die Erfassung eines Referenzpunktes ist gemäss gesetzlichen Vorgaben (BehiG) für diese Haltestelle erforderlich. Möchten Sie dies sofort tun?",
+        "CANCEL_TEXT": "Nein, danke",
+        "CONFIRM_TEXT": "Ja, gerne"
+      }
     },
     "PARKING_LOTS": {
       "PARKING_LOT": "Parkplatz",
