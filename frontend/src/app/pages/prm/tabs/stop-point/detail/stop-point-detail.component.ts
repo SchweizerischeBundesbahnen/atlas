@@ -67,7 +67,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   }
 
   backToSearchPrm() {
-    if (this.form.dirty) {
+    if (this.form && this.form.dirty) {
       this.showConfirmationDialog();
     } else {
       this.navigateToPrmHomeSearch();
