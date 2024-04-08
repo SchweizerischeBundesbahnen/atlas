@@ -22,21 +22,19 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Disabled
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ParkingLotMigrationIntegrationTest {
 
     private static final String DIDOK_CSV_FILE = "PRM_PARKING_LOTS_20240408013636.csv";
-    private static final String ATLAS_CSV_FILE = "full-parking_lot-2024-03-12.csv";
+    private static final String ATLAS_CSV_FILE = "full-parking_lot-2024-04-08.csv";
     private static final List<ParkingLotCsvModel> didokCsvLines = new ArrayList<>();
     private static final List<ParkingLotVersionCsvModel> atlasCsvLines = new ArrayList<>();
 
