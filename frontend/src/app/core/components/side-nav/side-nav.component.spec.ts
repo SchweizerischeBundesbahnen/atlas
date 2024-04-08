@@ -1,8 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {SideNavComponent} from './side-nav.component';
 import {By} from '@angular/platform-browser';
-import {Router} from '@angular/router';
-import {RouterTestingModule} from '@angular/router/testing';
+import {Router, RouterModule} from '@angular/router';
 import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {Pages} from '../../../pages/pages';
 import {LidiOverviewComponent} from '../../../pages/lidi/overview/lidi-overview.component';
@@ -18,7 +17,7 @@ describe('SideNavComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [SideNavComponent],
       imports: [
-        RouterTestingModule.withRoutes([
+        RouterModule. forRoot([
           {
             path: Pages.LIDI.path,
             component: LidiOverviewComponent,
@@ -66,12 +65,6 @@ describe('SideNavComponent', () => {
 
   it('home route should be active', () => {
     assertActiveNavItem('PAGES.HOME_MENU');
-  });
-
-  it('timetable route should be active', async () => {
-    await router.navigate(['timetable-field-number']);
-    fixture.detectChanges();
-    assertActiveNavItem('PAGES.TTFN.TITLE_MENU');
   });
 
   it('line directory route should be active', async () => {

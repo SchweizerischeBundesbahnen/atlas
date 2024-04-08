@@ -37,6 +37,9 @@ export class AuthService {
             if (this.mayAccessTimetableHearing()) {
               Pages.viewablePages.push(Pages.TTH);
             }
+            if (this.mayAccessTtfn()) {
+              Pages.viewablePages.push(Pages.TTFN);
+            }
           });
         }
         if (this.hasRole(Role.AtlasAdmin)) {
@@ -265,6 +268,14 @@ export class AuthService {
       [ApplicationRole.Supervisor, ApplicationRole.Writer, ApplicationRole.ExplicitReader].includes(
         applicationUserPermission.role,
       )
+    );
+  }
+
+  mayAccessTtfn() {
+    const applicationUserPermission = this.getApplicationUserPermission(ApplicationType.Ttfn);
+    return (
+      this.isAdmin ||
+      [ApplicationRole.Supervisor].includes(applicationUserPermission.role)
     );
   }
 
