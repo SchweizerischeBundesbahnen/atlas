@@ -23,21 +23,19 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Disabled
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class RelationMigrationIntegrationTest {
 
   private static final String DIDOK_CSV_FILE = "PRM_CONNECTIONS_20240408013646.csv";
-  private static final String ATLAS_CSV_FILE = "full-relation-2024-03-14.csv";
+  private static final String ATLAS_CSV_FILE = "full-relation-2024-04-08.csv";
 
   private static final List<RelationCsvModel> didokCsvLines = new ArrayList<>();
   private static final List<RelationVersionCsvModel> atlasCsvLines = new ArrayList<>();
@@ -75,7 +73,7 @@ public class RelationMigrationIntegrationTest {
       "ch:1:sloid:1255:520823");
 
   private final RelationCsvService relationCsvService;
-  static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 3, 14);
+  static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 4, 8);
 
   @Autowired
   public RelationMigrationIntegrationTest(RelationCsvService relationCsvService) {
