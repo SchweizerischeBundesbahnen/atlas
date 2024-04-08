@@ -33,9 +33,9 @@ import org.springframework.util.FileSystemUtils;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
  class ServicePointMigrationIntegrationTest {
 
-  private static final String ZIPPED_DIDOK_CSV_FILE = "src/test/resources/migration/DIDOK3_DIENSTSTELLEN_ALL_V_3_20240312015458.zip";
-  private static final String DECOMPRESSED_FILE_PATH = "src/test/resources/migration/DIDOK3_DIENSTSTELLEN_ALL_V_3_20240312015458";
-  private static final String ATLAS_CSV_FILE = "full-world-service_point-2024-03-12.csv";
+  private static final String ZIPPED_DIDOK_CSV_FILE = "src/test/resources/migration/DIDOK3_DIENSTSTELLEN_ALL_V_3_20240408011228.zip";
+  private static final String DECOMPRESSED_FILE_PATH = "src/test/resources/migration/DIDOK3_DIENSTSTELLEN_ALL_V_3_20240408011228";
+  private static final String ATLAS_CSV_FILE = "full-world-service_point-2024-04-08.csv";
 
   private static final List<ServicePointAtlasCsvModel> atlasCsvLines = new ArrayList<>();
   private static final List<ServicePointCsvModel> didokCsvLines = new ArrayList<>();

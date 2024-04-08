@@ -31,9 +31,9 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ServicePointMigrationActualDateIntegrationTest {
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ACTUALDATE_V_2_20240312013105.csv";
-  private static final String ATLAS_CSV_FILE = "actual_date-world-service_point-2024-03-12.csv";
-  static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 3, 12);
+  private static final String DIDOK_CSV_FILE = "DIDOK3_DIENSTSTELLEN_ACTUALDATE_V_2_20240408015026.csv";
+  private static final String ATLAS_CSV_FILE = "actual_date-world-service_point-2024-04-08.csv";
+  static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 4, 8);
 
   private static final List<ServicePointAtlasCsvModel> atlasCsvLines = new ArrayList<>();
   private static final Map<Integer, ServicePointAtlasCsvModel> atlasCsvLinesAsMap = new HashMap<>();
