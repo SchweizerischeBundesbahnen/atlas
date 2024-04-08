@@ -17,6 +17,7 @@ import {
   StopPointVersion,
 } from '../../../../../api';
 import {PrmMeanOfTransportHelper} from "../../../util/prm-mean-of-transport-helper";
+import {ReferencePointCreationHintService} from "./reference-point-creation-hint/reference-point-creation-hint.service";
 
 @Component({
   selector: 'app-stop-point-detail',
@@ -45,6 +46,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     private dialogService: DialogService,
     private authService: AuthService,
     private prmTabsService: PrmTabsService,
+    private referencePointCreationHintService: ReferencePointCreationHintService,
   ) {
   }
 
@@ -201,6 +203,9 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
         this.notificationService.success('PRM.STOP_POINTS.NOTIFICATION.ADD_SUCCESS');
         this.prmTabsService.initTabs([stopPoint]);
         this.reloadPage();
+        if (!stopPoint.reduced) {
+          this.referencePointCreationHintService.showHint();
+        }
       });
   }
 
