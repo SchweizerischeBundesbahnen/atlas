@@ -23,7 +23,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
  class LoadingPointMigrationActualDateIntegrationTest {
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_LADESTELLEN_20240318013859.csv";
+  private static final String DIDOK_CSV_FILE = "DIDOK3_LADESTELLEN_20240408013709.csv";
   private static final String ATLAS_CSV_FILE = "actual_date-world-loading_point-2024-03-18.csv";
   static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 3, 18);
 
