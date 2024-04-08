@@ -14,6 +14,8 @@ import { FormModule } from '../../../../core/module/form.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import {ValidityConfirmationService} from "../../../sepodi/validity/validity-confirmation.service";
+import {ValidityService} from "../../../sepodi/validity/validity.service";
 
 const businessOrganisationVersion: BusinessOrganisationVersion = {
   id: 1234,
@@ -79,8 +81,16 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
     businessOrganisationDetail: businessOrganisationVersion,
   };
 
+  const validityConfirmationService = jasmine.createSpyObj<ValidityConfirmationService>([
+    'confirmValidity','confirmValidityOverServicePoint'
+  ]);
+
+  const validityService = jasmine.createSpyObj<ValidityService>([
+    'initValidity', 'formValidity'
+  ]);
+
   beforeEach(() => {
-    setupTestBed(mockBusinessOrganisationsService, mockData);
+    setupTestBed(mockBusinessOrganisationsService, validityConfirmationService,validityService , mockData);
 
     fixture = TestBed.createComponent(BusinessOrganisationDetailComponent);
     component = fixture.componentInstance;
@@ -135,6 +145,40 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
     expect(snackBarContainer.classList).toContain('success');
     expect(router.navigate).toHaveBeenCalled();
   });
+  it('should call confirm on save', () => {
+    validityConfirmationService.confirmValidity.and.returnValue(of(true));
+    spyOn(component, 'confirmValidity');
+
+    component.toggleEdit();
+    component.form.markAsDirty();
+    component.save();
+
+    expect(component.confirmValidity).toHaveBeenCalled();
+  });
+
+  it('should call update when confirmValidity returns true', () => {
+    validityConfirmationService.confirmValidity.and.returnValue(of(true));
+    spyOn(component, 'updateRecord').and.callThrough();
+    mockBusinessOrganisationsService.updateBusinessOrganisationVersion.and.returnValue(
+      of(businessOrganisationVersion)
+    );
+
+    component.confirmValidity();
+
+    expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
+    expect(component.updateRecord).toHaveBeenCalled();
+  });
+
+  it('should not call update when confirmValidity returns false', () => {
+    validityConfirmationService.confirmValidity.and.returnValue(of(false))
+
+    spyOn(component, 'updateRecord').and.callThrough();
+
+    component.confirmValidity();
+
+    expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
+    expect(component.updateRecord).not.toHaveBeenCalled();
+  });
 });
 
 describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersion', () => {
@@ -145,8 +189,14 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
     businessOrganisationDetail: 'add',
   };
 
+  const validityConfirmationService = jasmine.createSpyObj<ValidityConfirmationService>([
+    'confirmValidity','confirmValidityOverServicePoint'
+  ]);
+  const validityService = jasmine.createSpyObj<ValidityService>([
+    'initValidity', 'formValidity'
+  ]);
   beforeEach(() => {
-    setupTestBed(mockLinesService, mockData);
+    setupTestBed(mockLinesService, validityConfirmationService, validityService, mockData);
 
     fixture = TestBed.createComponent(BusinessOrganisationDetailComponent);
     component = fixture.componentInstance;
@@ -189,6 +239,8 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
 
 function setupTestBed(
   businessOrganisationsService: BusinessOrganisationsService,
+  validityConfirmationService: ValidityConfirmationService,
+  validityService: ValidityService,
   data: { businessOrganisationDetail: string | BusinessOrganisationVersion }
 ) {
   TestBed.configureTestingModule({
@@ -206,6 +258,8 @@ function setupTestBed(
       { provide: FormBuilder },
       { provide: BusinessOrganisationsService, useValue: businessOrganisationsService },
       { provide: AuthService, useValue: authServiceMock },
+      {provide: ValidityConfirmationService, useValue: validityConfirmationService},
+      {provide: ValidityService, useValue: validityService},
       { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
       { provide: TranslatePipe },
     ],
