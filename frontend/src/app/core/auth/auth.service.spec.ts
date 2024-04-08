@@ -1,18 +1,19 @@
-import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AuthService } from './auth.service';
-import { OAuthService } from 'angular-oauth2-oidc';
-import { Subject } from 'rxjs';
-import { Role } from './role';
-import { Component } from '@angular/core';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import {TestBed} from '@angular/core/testing';
+import {AuthService} from './auth.service';
+import {OAuthService} from 'angular-oauth2-oidc';
+import {of, Subject} from 'rxjs';
+import {Role} from './role';
+import {Component} from '@angular/core';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {
   ApplicationRole,
   ApplicationType,
   CantonPermissionRestrictionModel,
   PermissionRestrictionType,
+  User,
   UserAdministrationService,
 } from '../../api';
+import {RouterModule} from "@angular/router";
 
 function createOauthServiceSpy() {
   const oauthServiceSpy = jasmine.createSpyObj<OAuthService>('OAuthService', [
@@ -36,6 +37,9 @@ function createOauthServiceSpy() {
   return oauthServiceSpy;
 }
 
+const userAdministrationService = jasmine.createSpyObj('userAdministrationService', [
+  'getCurrentUser']);
+
 const oauthService = createOauthServiceSpy();
 
 @Component({
@@ -53,15 +57,12 @@ describe('AuthService', () => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
-        RouterTestingModule.withRoutes([{ path: 'mock', component: MockComponent }]),
+        RouterModule.forRoot([{ path: 'mock', component: MockComponent }]),
       ],
       providers: [
         AuthService,
-        {
-          provide: OAuthService,
-          useValue: oauthService,
-        },
-        UserAdministrationService,
+        {provide: OAuthService, useValue: oauthService},
+        {provide: UserAdministrationService, useValue: userAdministrationService},
       ],
     });
     authService = TestBed.inject(AuthService);
@@ -419,5 +420,47 @@ describe('AuthService', () => {
       );
       expect(result).toBeTrue();
     });
+  });
+
+  describe('Available Pages based on permissions', () => {
+
+    it('should show TTFN if at least supervisor', () => {
+      oauthService.getIdentityClaims.and.returnValue({ name: 'me', email: 'me@sbb.ch', roles: [] });
+
+      const user: User = {
+        sbbUserId: 'e132456',
+        permissions: new Set([{
+          application: ApplicationType.Ttfn,
+          role: ApplicationRole.Supervisor,
+          permissionRestrictions:[]
+        }])
+      };
+      userAdministrationService.getCurrentUser.and.returnValue(of(user))
+
+      authService.loadPermissions().subscribe(() => {
+        const mayAccessTtfn = authService.mayAccessTtfn();
+        expect(mayAccessTtfn).toBeTrue();
+      });
+    });
+
+    it('should show TTFN if reader', () => {
+      oauthService.getIdentityClaims.and.returnValue({ name: 'me', email: 'me@sbb.ch', roles: [] });
+
+      const user: User = {
+        sbbUserId: 'e132456',
+        permissions: new Set([{
+          application: ApplicationType.Ttfn,
+          role: ApplicationRole.Reader,
+          permissionRestrictions:[]
+        }])
+      };
+      userAdministrationService.getCurrentUser.and.returnValue(of(user))
+
+      authService.loadPermissions().subscribe(() => {
+        const mayAccessTtfn = authService.mayAccessTtfn();
+        expect(mayAccessTtfn).toBeFalse();
+      });
+    });
+
   });
 });
