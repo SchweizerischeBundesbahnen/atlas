@@ -14,21 +14,19 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
-@Disabled
 @IntegrationTest
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
  class TrafficPointMigrationActualDateIntegrationTest {
 
   private static final String DIDOK_CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_ACTUALDATE_V_1_20240408013938.csv";
-  private static final String ATLAS_CSV_FILE = "actual_date-world-traffic_point-2024-03-12.csv";
-  static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 3, 12);
+  private static final String ATLAS_CSV_FILE = "actual_date-world-traffic_point-2024-04-08.csv";
+  static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 4, 8);
 
   private static final List<TrafficPointAtlasCsvModel> trafficPointElementCsvModels = new ArrayList<>();
   private static final List<TrafficPointDidokCsvModel> didokCsvLines = new ArrayList<>();
