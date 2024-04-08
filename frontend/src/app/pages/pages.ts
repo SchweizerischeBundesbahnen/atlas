@@ -239,7 +239,6 @@ export class Pages {
 
   public static pages: Page[] = [
     Pages.HOME,
-    Pages.TTFN,
     Pages.LIDI,
     Pages.BODI,
     Pages.SEPODI,
