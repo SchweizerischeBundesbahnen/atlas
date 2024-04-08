@@ -1105,7 +1105,7 @@
         "AUDIO_TICKET_MACHINE_INFO": "Secondo l’art. 8 ORTDis",
         "INFO_TICKET_MACHINE": "Osservazioni sui distributori automatici di biglietti"
       },
-      "NO_STOP_POINT_FOUND": "L'azienda di trasporto non ha ancora registrato alcun dato LDis per questa fermata.",
+      "NO_STOP_POINT_FOUND": "Per questa fermata non sono ancora stati registrati dati sull'accessibilità.",
       "NOTIFICATION": {
         "ADD_SUCCESS": "La fermata è stata aggiunta con successo.",
         "EDIT_SUCCESS": "La fermata è stata salvata con successo."
@@ -1267,7 +1267,13 @@
         "ADD_SUCCESS": "Il punto di riferimento è stato aggiunto con successo.",
         "EDIT_SUCCESS": "Il punto di riferimento è stato salvato con successo."
       },
-      "CONFLICT": "Il punto di riferimento principale da {{validFrom}} a {{validTo}} è già rivendicato da {{sloid}}."
+      "CONFLICT": "Il punto di riferimento principale da {{validFrom}} a {{validTo}} è già rivendicato da {{sloid}}.",
+      "HINT_DIALOG": {
+        "TITLE": "Volete registrare un punto di riferimento?",
+        "MESSAGE": "La registrazione di un punto di riferimento è richiesta dalla legge (LDis) per questa sosta. Volete farlo immediatamente?",
+        "CANCEL_TEXT": "No, grazie ",
+        "CONFIRM_TEXT": "Sì, volentieri"
+      }
     },
     "PARKING_LOTS": {
       "PARKING_LOT": "Parcheggio",

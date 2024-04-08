@@ -56,6 +56,10 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
 
     it('Step-5: Save and assert complete tabs', () => {
       PrmUtils.saveItemAndAssertTabs().then(() => {
+        // Assert Refence Point Hint Dialog
+        cy.get(DataCy.DIALOG_CONFIRM_BUTTON).should('exist');
+        cy.get(DataCy.DIALOG_CANCEL_BUTTON).should('exist').click();
+
         cy.get(PrmDataCy.TAB_REFERENCE_POINTS).should('exist');
       });
     });
