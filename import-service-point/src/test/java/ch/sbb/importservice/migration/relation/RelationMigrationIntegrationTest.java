@@ -36,8 +36,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class RelationMigrationIntegrationTest {
 
-  private static final String DIDOK_CSV_FILE = "PRM_CONNECTIONS_20240314013817.csv";
-  private static final String ATLAS_CSV_FILE = "full-relation-2024-03-14.csv";
+  private static final String DIDOK_CSV_FILE = "PRM_CONNECTIONS_20240408013646.csv";
+  private static final String ATLAS_CSV_FILE = "full-relation-2024-04-08.csv";
 
   private static final List<RelationCsvModel> didokCsvLines = new ArrayList<>();
   private static final List<RelationVersionCsvModel> atlasCsvLines = new ArrayList<>();
@@ -75,7 +75,7 @@ public class RelationMigrationIntegrationTest {
       "ch:1:sloid:1255:520823");
 
   private final RelationCsvService relationCsvService;
-  static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 3, 14);
+  static final LocalDate ACTUAL_DATE = LocalDate.of(2024, 4, 8);
 
   @Autowired
   public RelationMigrationIntegrationTest(RelationCsvService relationCsvService) {

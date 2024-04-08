@@ -28,8 +28,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
  class TrafficPointMigrationIntegrationTest {
 
-  private static final String DIDOK_CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_20240312011007.csv";
-  private static final String ATLAS_CSV_FILE = "full-world-traffic_point-2024-03-12.csv";
+  private static final String DIDOK_CSV_FILE = "DIDOK3_VERKEHRSPUNKTELEMENTE_ALL_V_1_20240408011006.csv";
+  private static final String ATLAS_CSV_FILE = "full-world-traffic_point-2024-04-08.csv";
 
   private static final List<TrafficPointAtlasCsvModel> trafficPointElementCsvModels = new ArrayList<>();
   private static final List<TrafficPointDidokCsvModel> didokCsvLines = new ArrayList<>();
