@@ -17,8 +17,9 @@ import {
   StopPointVersion,
 } from '../../../../../api';
 import {PrmMeanOfTransportHelper} from "../../../util/prm-mean-of-transport-helper";
-import {Moment} from "moment";
 import {ValidityConfirmationService} from "../../../../sepodi/validity/validity-confirmation.service";
+import {Validity} from "../../../../model/validity";
+import {ValidityService} from "../../../../sepodi/validity/validity.service";
 import {ReferencePointCreationHintService} from "./reference-point-creation-hint/reference-point-creation-hint.service";
 
 @Component({
@@ -39,8 +40,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   preferredId?: number;
   public isFormEnabled$ = new BehaviorSubject<boolean>(false);
   isReduced!: boolean | undefined;
-  initValidFrom!: Moment | null | undefined;
-  initValidTo!: Moment | null | undefined;
+  validity!: Validity
   constructor(
     private readonly router: Router,
     private readonly route: ActivatedRoute,
@@ -50,7 +50,8 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     private authService: AuthService,
     private prmTabsService: PrmTabsService,
     private referencePointCreationHintService: ReferencePointCreationHintService,
-    private validityConfirmationService: ValidityConfirmationService
+    private validityConfirmationService: ValidityConfirmationService,
+    private validityService: ValidityService
   ) {
   }
 
@@ -82,7 +83,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     if (this.form.enabled) {
       this.showConfirmationDialog();
     } else {
-      this.initValidity()
+      this.validity = this.validityService.initValidity(this.form)
       this.enableForm();
     }
   }
@@ -99,6 +100,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
       const writableStopPoint = StopPointFormGroupBuilder.getWritableStopPoint(this.form);
       this.form.disable();
       if (!this.isNew) {
+        this.validity = this.validityService.formValidity(this.validity, this.form)
         this.confirmValidity(writableStopPoint)
       } else {
         this.createStopPoint(writableStopPoint);
@@ -260,17 +262,9 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     });
   }
 
-  initValidity(){
-    this.initValidTo = this.form?.value.validTo;
-    this.initValidFrom = this.form?.value.validFrom;
-  }
-
   confirmValidity(stopPointVersion: StopPointVersion){
     this.validityConfirmationService.confirmValidity(
-      this.form.controls.validTo.value,
-      this.form.controls.validFrom.value,
-      this.initValidTo,
-      this.initValidFrom
+      this.validity
     ).pipe(take(1))
       .subscribe((confirmed) => {
         if (confirmed) {
