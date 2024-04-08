@@ -26,10 +26,12 @@ import { AtlasFieldLengthValidator } from '../../../../core/validation/field-len
 import { SublineDetailFormGroup } from './subline-detail-form-group';
 import { AuthService } from '../../../../core/auth/auth.service';
 import {ValidityConfirmationService} from "../../../sepodi/validity/validity-confirmation.service";
+import {ValidityService} from "../../../sepodi/validity/validity.service";
 
 @Component({
   templateUrl: './subline-detail.component.html',
   styleUrls: ['./subline-detail.component.scss'],
+  providers: [ValidityService],
 })
 export class SublineDetailComponent extends BaseDetailController<SublineVersion> implements OnInit {
   TYPE_OPTIONS = Object.values(SublineType);
@@ -49,8 +51,9 @@ export class SublineDetailComponent extends BaseDetailController<SublineVersion>
     protected authService: AuthService,
     protected activatedRoute: ActivatedRoute,
     protected validityConfirmationService: ValidityConfirmationService,
+    protected validityService: ValidityService,
   ) {
-    super(router, dialogService, notificationService, authService, activatedRoute, validityConfirmationService);
+    super(router, dialogService, notificationService, authService, activatedRoute, validityConfirmationService, validityService);
   }
 
   ngOnInit() {

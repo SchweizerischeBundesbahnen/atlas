@@ -24,6 +24,7 @@ import { LinkIconComponent } from '../../../../core/form-components/link-icon/li
 import { FormModule } from '../../../../core/module/form.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import {ValidityConfirmationService} from "../../../sepodi/validity/validity-confirmation.service";
+import {ValidityService} from "../../../sepodi/validity/validity.service";
 
 const lineVersion: LineVersion = {
   id: 1234,
@@ -83,6 +84,10 @@ let fixture: ComponentFixture<LineDetailComponent>;
 let router: Router;
 const validityConfirmationService = jasmine.createSpyObj<ValidityConfirmationService>([
   'confirmValidity','confirmValidityOverServicePoint'
+]);
+
+const validityService = jasmine.createSpyObj<ValidityService>([
+  'initValidity', 'formValidity'
 ]);
 
 describe('LineDetailComponent for existing lineVersion', () => {
@@ -172,16 +177,9 @@ describe('LineDetailComponent for existing lineVersion', () => {
     expect(component.confirmValidity).toHaveBeenCalled();
   });
 
-  it('should call initValidity on toggleEdit', () => {
-    spyOn(component, 'initValidity');
-
-    component.toggleEdit();
-
-    expect(component.initValidity).toHaveBeenCalled();
-  });
-
   it('should call update when confirmValidity returns true', () => {
     spyOn(component, 'updateRecord').and.callThrough();
+    mockLinesService.updateLineVersion.and.returnValue(of(lineVersion));
 
     component.confirmValidity();
 
