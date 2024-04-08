@@ -18,12 +18,14 @@ import {CompletePlatformFormGroup, PlatformFormGroupBuilder, ReducedPlatformForm
 import {DateRange} from "../../../../../../core/versioning/date-range";
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
 import {take} from "rxjs";
-import {Moment} from "moment/moment";
 import {ValidityConfirmationService} from "../../../../../sepodi/validity/validity-confirmation.service";
+import {Validity} from "../../../../../model/validity";
+import {ValidityService} from "../../../../../sepodi/validity/validity.service";
 
 @Component({
   selector: 'app-platforms',
   templateUrl: './platform-detail.component.html',
+  providers: [ValidityService]
 })
 export class PlatformDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
   isNew = false;
@@ -41,8 +43,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
   showVersionSwitch = false;
   selectedVersionIndex!: number;
   mayCreate = true;
-  initValidFrom!: Moment | null | undefined;
-  initValidTo!: Moment | null | undefined;
+  validity!: Validity;
   get reducedForm(): FormGroup<ReducedPlatformFormGroup> {
     return this.form as FormGroup<ReducedPlatformFormGroup>;
   }
@@ -58,7 +59,8 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
     private notificationService: NotificationService,
     private detailHelperService: DetailHelperService,
     private authService: AuthService,
-    private validityConfirmationService: ValidityConfirmationService
+    private validityConfirmationService: ValidityConfirmationService,
+    private validityService: ValidityService
   ) {}
 
   ngOnInit(): void {
@@ -131,7 +133,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
     if (this.form.enabled) {
       this.detailHelperService.showCancelEditDialog(this);
     } else {
-      this.initValidity()
+      this.validity = this.validityService.initValidity(this.form)
       this.form.enable();
     }
   }
@@ -147,6 +149,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
       if (this.isNew) {
         this.create(platformVersion);
       } else {
+        this.validity = this.validityService.formValidity(this.validity, this.form)
         this.confirmValidity(platformVersion)
       }
     }
@@ -176,18 +179,9 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
       .then(() => this.ngOnInit());
   }
 
-  initValidity(){
-    this.initValidTo = this.form?.value.validTo;
-    this.initValidFrom = this.form?.value.validFrom;
-  }
-
   confirmValidity(platformVersion: PlatformVersion){
-    this.validityConfirmationService.confirmValidity(
-      this.form.controls.validTo.value,
-      this.form.controls.validFrom.value,
-      this.initValidTo,
-      this.initValidFrom
-    ).pipe(take(1))
+    this.validityConfirmationService.confirmValidity(this.validity)
+      .pipe(take(1))
       .subscribe((confirmed) => {
         if (confirmed) {
           this.update(platformVersion);

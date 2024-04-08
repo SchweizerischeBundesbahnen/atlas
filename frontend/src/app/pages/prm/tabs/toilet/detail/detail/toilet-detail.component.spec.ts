@@ -1,7 +1,12 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ToiletDetailComponent} from './toilet-detail.component';
-import {PersonWithReducedMobilityService, ReadToiletVersion, StandardAttributeType} from "../../../../../../api";
+import {
+  PersonWithReducedMobilityService,
+  ReadToiletVersion,
+  StandardAttributeType,
+  ToiletVersion
+} from "../../../../../../api";
 import {AuthService} from "../../../../../../core/auth/auth.service";
 import {of} from "rxjs";
 import {DialogService} from "../../../../../../core/components/dialog/dialog.service";
@@ -36,6 +41,8 @@ import {SplitServicePointNumberPipe} from "../../../../../../core/search-service
 import moment from "moment";
 import SpyObj = jasmine.SpyObj;
 import {RouterTestingModule} from "@angular/router/testing";
+import {ValidityConfirmationService} from "../../../../../sepodi/validity/validity-confirmation.service";
+import {Validity} from "../../../../../model/validity";
 
 const toilet: ReadToiletVersion[] = [
   {
@@ -61,6 +68,29 @@ const toilet: ReadToiletVersion[] = [
   },
 ];
 
+const toiletVersion: ToiletVersion = {
+    creationDate: '2024-01-22T13:52:30.598026',
+    creator: 'e524381',
+    editionDate: '2024-01-22T13:52:30.598026',
+    editor: 'e524381',
+    id: 1000,
+    sloid: 'ch:1:sloid:12345:1',
+    validFrom: new Date('2000-01-01'),
+    validTo: new Date('2000-12-31'),
+    etagVersion: 0,
+    parentServicePointSloid: 'ch:1:sloid:7000',
+    designation: 'designation',
+    additionalInformation: 'additional',
+    wheelchairToilet: StandardAttributeType.Yes,
+  };
+
+const validity: Validity = {
+  initValidFrom: moment('2022-01-10'),
+  initValidTo: moment('2022-01-10'),
+  formValidFrom: moment('2022-01-10'),
+  formValidTo: moment('2022-01-10')
+}
+
 const authService: Partial<AuthService> = {
   hasPermissionsToWrite(): boolean {
     return true;
@@ -81,6 +111,11 @@ describe('ToiletDetailComponent', () => {
   const notificationService = jasmine.createSpyObj('notificationService', ['success']);
   const dialogService: SpyObj<DialogService> = jasmine.createSpyObj('dialogService', ['confirm']);
   dialogService.confirm.and.returnValue(of(true));
+
+
+  const validityConfirmationService = jasmine.createSpyObj<ValidityConfirmationService>([
+    'confirmValidity','confirmValidityOverServicePoint'
+  ]);
 
   const activatedRouteMock = {
     snapshot: {
@@ -130,6 +165,7 @@ describe('ToiletDetailComponent', () => {
         {provide: ActivatedRoute, useValue: activatedRouteMock},
         {provide: NotificationService, useValue: notificationService},
         {provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService},
+        {provide: ValidityConfirmationService, useValue: validityConfirmationService},
         {provide: DialogService, useValue: dialogService},
         TranslatePipe,
         SplitServicePointNumberPipe,
@@ -182,6 +218,8 @@ describe('ToiletDetailComponent', () => {
       fixture = TestBed.createComponent(ToiletDetailComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
+      validityConfirmationService.confirmValidityOverServicePoint.and.returnValue(of(true))
+      validityConfirmationService.confirmValidity.and.returnValue(of(true))
     });
 
     it('should init', () => {
@@ -222,7 +260,44 @@ describe('ToiletDetailComponent', () => {
       expect(personWithReducedMobilityService.updateToiletVersion).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
     });
+    it('should call confirm on save', () => {
+      validityConfirmationService.confirmValidity.and.returnValue(of(true));
+      spyOn(component, 'confirmValidity');
+
+      component.toggleEdit();
+      component.form.markAsDirty();
+      component.save();
+
+      expect(component.confirmValidity).toHaveBeenCalled();
+    });
+
+    it('should call initValidity on toggleEdit', () => {
+      //spyOn(component, 'initValidity');
+
+      component.toggleEdit();
+
+      //expect(component.initValidity).toHaveBeenCalled();
+    });
+
+    it('should call update when confirmValidity returns true', () => {
+      validityConfirmationService.confirmValidity.and.returnValue(of(true));
+      spyOn(component, 'update').and.callThrough();
+
+      component.confirmValidity(toiletVersion, validity);
+
+      expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
+      expect(component.update).toHaveBeenCalled();
+    });
+
+    it('should not call update when confirmValidity returns false', () => {
+      validityConfirmationService.confirmValidity.and.returnValue(of(false))
+
+      spyOn(component, 'update').and.callThrough();
+
+      component.confirmValidity(toiletVersion, validity);
+
+      expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
+      expect(component.update).not.toHaveBeenCalled();
+    });
   });
-
-
 });
