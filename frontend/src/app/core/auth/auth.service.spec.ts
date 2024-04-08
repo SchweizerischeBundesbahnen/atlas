@@ -1,8 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from './auth.service';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { Subject } from 'rxjs';
+import {of, Subject} from 'rxjs';
 import { Role } from './role';
 import { Component } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -11,8 +10,12 @@ import {
   ApplicationType,
   CantonPermissionRestrictionModel,
   PermissionRestrictionType,
+  User,
   UserAdministrationService,
 } from '../../api';
+import {RouterModule} from "@angular/router";
+import {Pages} from "../../pages/pages";
+import {delay} from "rxjs/operators";
 
 function createOauthServiceSpy() {
   const oauthServiceSpy = jasmine.createSpyObj<OAuthService>('OAuthService', [
@@ -36,6 +39,9 @@ function createOauthServiceSpy() {
   return oauthServiceSpy;
 }
 
+const userAdministrationService = jasmine.createSpyObj('userAdministrationService', [
+  'getCurrentUser']);
+
 const oauthService = createOauthServiceSpy();
 
 @Component({
@@ -53,15 +59,12 @@ describe('AuthService', () => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
-        RouterTestingModule.withRoutes([{ path: 'mock', component: MockComponent }]),
+        RouterModule.forRoot([{ path: 'mock', component: MockComponent }]),
       ],
       providers: [
         AuthService,
-        {
-          provide: OAuthService,
-          useValue: oauthService,
-        },
-        UserAdministrationService,
+        {provide: OAuthService, useValue: oauthService},
+        {provide: UserAdministrationService, useValue: userAdministrationService},
       ],
     });
     authService = TestBed.inject(AuthService);
@@ -419,5 +422,59 @@ describe('AuthService', () => {
       );
       expect(result).toBeTrue();
     });
+  });
+
+  describe('Available Pages based on permissions', () => {
+
+    const fakeToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTI1Nzk0MjgsIm5iZiI6MTcxMjU3OTQyOCwiZXhwIjoxNzEyNTg0ODQ2LCJhaW8iOiJBV1FBbS84V0FBQUFlL1pLbDYrdGpFSmF6TVh6ZE9uYkNqa3F6M3I0Y1poTjdISHFXeEZjSmNUS2xtdHFUZVpoWmdmOEtkd3NLMTZxK2o2T2JObFNBaUl3OGFIZUNjYWs2aWwzNTgwRFBJZTZTRHlXMWVSbndscUxqSlZTWFFYSWlESjdjYVZpd3gwSyIsImF6cCI6IjE4NzQ2ZjMwLTc5NzgtNDhiNS1iMTliLTBmODcxZmIxMmU2NyIsImF6cGFjciI6IjAiLCJuYW1lIjoiTWUiLCJvaWQiOiI4MjMxYzY0Yi1iY2I0LTQ5N2UtOTNiZi0wMjEzZWJkYWM5ZTQiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJtZUBzYmIuY2giLCJyaCI6IjAuQVlJQUVWM2FMS3p3czBhV2ZhOGJMaHZRR2pUbTVvZWhhM3BPaHAwelNMVEQ2dnlDQUVNLiIsInJvbGVzIjpbImFwaW0tZGVmYXVsdC1yb2xlIl0sInNjcCI6ImFwaW0iLCJzdWIiOiJUWDExMFJvQXl2b3QyQlRISVU2M0hMS1llQU03WWV6c21JWVRTdVNjVDJrIiwidGlkIjoiMmNkYTVkMTEtZjBhYy00NmIzLTk2N2QtYWYxYjJlMWJkMDFhIiwidXRpIjoiT01xS2VheTFua3UzemhVZEgwYkxBQSIsInZlciI6IjIuMCIsInNiYnVpZCI6ImU1MjQzODEifQ.O5CzmblVS7EVuBRgzMF00_UVkTaS-47euK_ZvdkEUuM';
+
+    it('should show TTFN if at least supervisor', () => {
+      oauthService.getIdentityClaims.and.returnValue({ name: 'me', email: 'me@sbb.ch', roles: [] });
+      oauthService.getAccessToken.and.returnValue(fakeToken);
+
+      const user: User = {
+        sbbUserId: 'e132456',
+        permissions: new Set([{
+          application: ApplicationType.Ttfn,
+          role: ApplicationRole.Supervisor,
+          permissionRestrictions:[]
+        }])
+      };
+      userAdministrationService.getCurrentUser.and.returnValue(of(user))
+
+      authService.permissionsLoaded
+        .pipe(delay(300))
+        .subscribe(loaded => {
+        if (loaded) {
+          expect(Pages.viewablePages.filter(i => i.path === Pages.TTFN.path).length).toBe(1);
+        }
+      })
+      expect(authService.loggedIn).toBeTrue();
+    });
+
+    it('should not show TTFN if reader', () => {
+      oauthService.getIdentityClaims.and.returnValue({ name: 'me', email: 'me@sbb.ch', roles: [] });
+      oauthService.getAccessToken.and.returnValue(fakeToken);
+
+      const user: User = {
+        sbbUserId: 'e132456',
+        permissions: new Set([{
+          application: ApplicationType.Ttfn,
+          role: ApplicationRole.Reader,
+          permissionRestrictions:[]
+        }])
+      };
+      userAdministrationService.getCurrentUser.and.returnValue(of(user))
+
+      authService.permissionsLoaded
+        .pipe(delay(300))
+        .subscribe(loaded => {
+          if (loaded) {
+            expect(Pages.viewablePages.filter(i => i.path === Pages.TTFN.path).length).toBe(0);
+          }
+        })
+      expect(authService.loggedIn).toBeTrue();
+    });
+
   });
 });
