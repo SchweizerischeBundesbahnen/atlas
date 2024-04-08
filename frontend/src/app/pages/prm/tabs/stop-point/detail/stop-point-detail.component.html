@@ -68,6 +68,7 @@
     ></atlas-button>
   </ng-container>
   <atlas-button
+    *ngIf="form"
     (click)="save()"
     [footerEdit]="isNew || ((isFormEnabled$ | async) ?? false)"
     [disabled]="!form.dirty"
