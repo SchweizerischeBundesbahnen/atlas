@@ -5,6 +5,7 @@ import { DialogService } from '../../../core/components/dialog/dialog.service';
 import moment from 'moment';
 import SpyObj = jasmine.SpyObj;
 import { BERN } from '../../../../test/data/service-point';
+import {Validity} from "../../model/validity";
 
 describe('ValidityConfirmationService', () => {
   let service: ValidityConfirmationService;
@@ -15,6 +16,13 @@ describe('ValidityConfirmationService', () => {
   let momentMockFormValidFrom = jasmine.createSpyObj('Moment', ['isSame']);
   let momentMockInitValidTo = jasmine.createSpyObj('Moment', ['isSame']);
   let momentMockInitValidFrom = jasmine.createSpyObj('Moment', ['isSame']);
+
+  let validity: Validity = {
+    initValidTo: momentMockInitValidTo,
+    initValidFrom: momentMockInitValidFrom,
+    formValidTo: momentMockFormValidTo,
+    formValidFrom: momentMockInitValidFrom
+  }
 
   beforeEach(() => {
     dialogService = jasmine.createSpyObj('dialogService', ['confirm']);
@@ -49,7 +57,7 @@ describe('ValidityConfirmationService', () => {
     //when
     momentMockFormValidTo.isSame.and.returnValue(true);
     momentMockFormValidFrom.isSame.and.returnValue(true);
-    service.confirmValidity(momentMockFormValidTo,momentMockFormValidFrom, momentMockInitValidTo, momentMockInitValidFrom)
+    service.confirmValidity(validity)
     //then
     expect(dialogService.confirm).toHaveBeenCalled();
   });
@@ -58,7 +66,7 @@ describe('ValidityConfirmationService', () => {
     momentMockFormValidTo.isSame.and.returnValue(false);
     momentMockFormValidFrom.isSame.and.returnValue(false);
 
-    service.confirmValidity(momentMockFormValidTo, momentMockFormValidFrom, momentMockInitValidTo, momentMockInitValidFrom).subscribe(result => {
+    service.confirmValidity(validity).subscribe(result => {
       expect(result).toBeTrue();
       done();
     });

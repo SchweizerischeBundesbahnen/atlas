@@ -22,12 +22,14 @@ import { NotificationService } from '../../../core/notification/notification.ser
 import { ValidityConfirmationService } from '../validity/validity-confirmation.service';
 import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {Moment} from "moment";
+import {Validity} from "../../model/validity";
+import {ValidityService} from "../validity/validity.service";
 
 @Component({
   selector: 'app-loading-points',
   templateUrl: './loading-points-detail.component.html',
   styleUrls: ['./loading-points-detail.component.scss'],
+  providers: [ValidityService]
 })
 export class LoadingPointsDetailComponent implements DetailFormComponent {
   loadingPointVersions!: ReadLoadingPointVersion[];
@@ -44,8 +46,7 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
   servicePointNumber!: number;
   servicePoint: ReadServicePointVersion[] = [];
   servicePointBusinessOrganisations: string[] = [];
-  initValidFrom!: Moment | null | undefined;
-  initValidTo!: Moment | null | undefined;
+  validity!: Validity;
   loadingPointVersion!: CreateLoadingPointVersion
 
   constructor(
@@ -56,6 +57,7 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
     private dialogService: DialogService,
     private validityConfirmationService: ValidityConfirmationService,
     private notificationService: NotificationService,
+    private validityService: ValidityService,
   ) {
     this.route.data.pipe(takeUntilDestroyed()).subscribe((next) => {
       this.loadingPointVersions = next.loadingPoint;
@@ -132,7 +134,7 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
       this.showConfirmationDialog();
     } else {
       this.form.enable();
-      this.initValidity();
+      this.validity = this.validityService.initValidity(this.form);
     }
   }
 
@@ -176,6 +178,7 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
               this.create(this.loadingPointVersion);
               this.form.disable();
             } else {
+              this.validity = this.validityService.formValidity(this.validity, this.form);
               this.confirmValidity(this.loadingPointVersion)
             }
           }
@@ -224,17 +227,9 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
     };
   }
 
-  initValidity(){
-    this.initValidTo = this.form?.value.validTo;
-    this.initValidFrom = this.form?.value.validFrom;
-  }
-
   confirmValidity(loadingPointVersion: CreateLoadingPointVersion){
     this.validityConfirmationService.confirmValidity(
-      this.form.controls.validTo.value,
-      this.form.controls.validFrom.value,
-      this.initValidTo,
-      this.initValidFrom
+      this.validity
     ).pipe(take(1))
       .subscribe((confirmed) => {
         if (confirmed) {

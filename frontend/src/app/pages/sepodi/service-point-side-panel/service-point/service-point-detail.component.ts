@@ -27,12 +27,14 @@ import {
   GeographyFormGroupBuilder,
 } from '../../geography/geography-form-group';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {Moment} from "moment";
 import {ValidityConfirmationService} from "../../validity/validity-confirmation.service";
+import {Validity} from "../../../model/validity";
+import {ValidityService} from "../../validity/validity.service";
 
 @Component({
   selector: 'app-service-point',
   templateUrl: './service-point-detail.component.html',
+  providers: [ValidityService]
 })
 export class ServicePointDetailComponent implements OnDestroy, DetailFormComponent {
   servicePointVersions!: ReadServicePointVersion[];
@@ -49,9 +51,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
 
   isSwitchVersionDisabled = false;
 
-  initValidFrom!: Moment | null | undefined;
-
-  initValidTo!: Moment | null | undefined;
+  validity!: Validity;
 
   public isFormEnabled$ = new BehaviorSubject<boolean>(false);
   private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
@@ -66,6 +66,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
     private mapService: MapService,
     private authService: AuthService,
     private validityConfirmationService: ValidityConfirmationService,
+    private validityService: ValidityService,
   ) {
     this.route.parent?.data.pipe(takeUntilDestroyed()).subscribe((next) => {
       this.servicePointVersions = next.servicePoint;
@@ -179,7 +180,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   private enableForm(): void {
     this.form?.enable({ emitEvent: false });
     this.isFormEnabled$.next(true);
-    this.initValidity();
+    this.validity = this.validityService.initValidity(this.form!);
   }
 
   confirmLeave(): Observable<boolean> {
@@ -212,6 +213,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   save() {
     ValidationService.validateForm(this.form!);
     if (this.form?.valid) {
+      this.validity = this.validityService.formValidity(this.validity, this.form)
       this.confirmValidity();
     }
   }
@@ -311,17 +313,9 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
       });
   }
 
-  initValidity(){
-    this.initValidTo = this.form?.value.validTo;
-    this.initValidFrom = this.form?.value.validFrom;
-  }
-
   confirmValidity(){
       this.validityConfirmationService.confirmValidity(
-        this.form!.controls.validTo.value,
-        this.form!.controls.validFrom.value,
-        this.initValidTo,
-        this.initValidFrom
+        this.validity
       ).pipe(take(1))
         .subscribe((confirmed) => {
           if (confirmed) {

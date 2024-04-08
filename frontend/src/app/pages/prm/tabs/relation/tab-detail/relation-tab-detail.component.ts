@@ -22,11 +22,13 @@ import {DetailFormComponent} from '../../../../../core/leave-guard/leave-dirty-f
 import {RelationFormGroup, RelationFormGroupBuilder} from './relation-form-group';
 import {MatSelectChange} from '@angular/material/select';
 import {ValidityConfirmationService} from "../../../../sepodi/validity/validity-confirmation.service";
-import {Moment} from "moment/moment";
+import {ValidityService} from "../../../../sepodi/validity/validity.service";
+import {Validity} from "../../../../model/validity";
 
 @Component({
   selector: 'app-relation-tab-detail',
   templateUrl: './relation-tab-detail.component.html',
+  providers: [ValidityService],
 })
 export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
   referencePoints: ReadReferencePointVersion[] = [];
@@ -48,8 +50,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
   businessOrganisations: string[] = [];
   editing = false;
 
-  initValidFrom!: Moment | null | undefined;
-  initValidTo!: Moment | null | undefined;
+  validity!: Validity
 
   readonly extractSloid = (option: ReadReferencePointVersion) => option.sloid;
   readonly displayExtractor = (option: ReadReferencePointVersion) =>
@@ -61,7 +62,8 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
     private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
     private readonly dialogService: DialogService,
     private readonly notificationService: NotificationService,
-    private validityConfirmationService: ValidityConfirmationService
+    private validityConfirmationService: ValidityConfirmationService,
+    private validityService: ValidityService
 
   ) {}
 
@@ -114,6 +116,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
         parentServicePointSloid: this.parentServicePointSloid,
         referencePointSloid: this.selectedReferencePointSloid,
       };
+      this.validity = this.validityService.formValidity(this.validity, this.form!)
       this.confirmValidity(relationVersion);
     }
   }
@@ -123,7 +126,7 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
       this.showCancelEditDialog();
     } else {
       this.form?.enable();
-      this.initValidity()
+      this.validity = this.validityService.initValidity(this.form!)
       this.editing = true;
     }
   }
@@ -191,17 +194,9 @@ export class RelationTabDetailComponent implements OnInit, DetailFormComponent {
     return of(true);
   }
 
-  initValidity(){
-    this.initValidTo = this.form?.value.validTo;
-    this.initValidFrom = this.form?.value.validFrom;
-  }
-
   confirmValidity(relationVersion: RelationVersion){
     this.validityConfirmationService.confirmValidity(
-      this.form?.controls.validTo.value,
-      this.form?.controls.validFrom.value,
-      this.initValidTo,
-      this.initValidFrom
+      this.validity
     ).pipe(take(1))
       .subscribe((confirmed) => {
         if (confirmed) {

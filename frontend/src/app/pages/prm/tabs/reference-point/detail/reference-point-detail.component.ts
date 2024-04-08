@@ -14,12 +14,14 @@ import {
 } from '../../../../../api';
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../core/detail/detail-helper.service";
 import {take} from "rxjs";
-import {Moment} from "moment/moment";
 import {ValidityConfirmationService} from "../../../../sepodi/validity/validity-confirmation.service";
+import {Validity} from "../../../../model/validity";
+import {ValidityService} from "../../../../sepodi/validity/validity.service";
 
 @Component({
   selector: 'app-reference-point',
   templateUrl: './reference-point-detail.component.html',
+  providers: [ValidityService],
 })
 export class ReferencePointDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
   isNew = false;
@@ -35,8 +37,7 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
 
   businessOrganisations: string[] = [];
 
-  initValidFrom!: Moment | null | undefined;
-  initValidTo!: Moment | null | undefined;
+  validity!: Validity
 
   constructor(
     private route: ActivatedRoute,
@@ -44,7 +45,8 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
     private personWithReducedMobilityService: PersonWithReducedMobilityService,
     private notificationService: NotificationService,
     private detailHelperService: DetailHelperService,
-    private validityConfirmationService: ValidityConfirmationService
+    private validityConfirmationService: ValidityConfirmationService,
+    private validityService: ValidityService
   ) {}
 
   ngOnInit(): void {
@@ -98,7 +100,7 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
     if (this.form.enabled) {
       this.detailHelperService.showCancelEditDialog(this);
     } else {
-      this.initValidity()
+      this.validity = this.validityService.initValidity(this.form)
       this.form.enable();
     }
   }
@@ -113,6 +115,7 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
       if (this.isNew) {
         this.create(referencePointVersion);
       } else {
+       this.validity = this.validityService.formValidity(this.validity, this.form)
        this.confirmValidity(referencePointVersion)
       }
     }
@@ -143,19 +146,9 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
           .then(() => this.ngOnInit());
       });
   }
-
-  initValidity(){
-    this.initValidTo = this.form?.value.validTo;
-    this.initValidFrom = this.form?.value.validFrom;
-  }
-
   confirmValidity(referencePointVersion: ReferencePointVersion){
-    this.validityConfirmationService.confirmValidity(
-      this.form.controls.validTo.value,
-      this.form.controls.validFrom.value,
-      this.initValidTo,
-      this.initValidFrom
-    ).pipe(take(1))
+    this.validityConfirmationService.confirmValidity(this.validity)
+      .pipe(take(1))
       .subscribe((confirmed) => {
         if (confirmed) {
           this.update(referencePointVersion);
