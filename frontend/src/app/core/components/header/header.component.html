@@ -8,10 +8,13 @@
       data-cy="header-title"
       class="font-bold-4xl"
       *ngIf="headerTitle$ | async as translationKey"
-      >{{ translationKey | translate }}</span
+    >{{ translationKey | translate }}</span
     >
     <div class="font-regular-sm">
       <span>Version {{ version }}</span>
+      <a href="{{ environmentReleaseNotesUrl }}" target="_blank" rel="noopener">
+        <form-info-icon infoTitle="Release Notes"></form-info-icon>
+      </a>
       <span *ngIf="showLabel" [ngClass]="getEnvLabelClass()">
         {{ environmentLabel }}
       </span>
