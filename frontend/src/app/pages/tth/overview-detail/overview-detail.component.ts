@@ -154,7 +154,7 @@ export class OverviewDetailComponent implements OnInit {
         Pages.TTH_PLANNED,
       );
       this.sorting = 'swissCanton,asc';
-      this.tableColumns = this.getPlannedTableColumns();
+      this.tableColumns = this.getPlannedOrArchivedTableColumns();
       this.showAddNewTimetableHearingButton = true;
       this.showHearingDetail = true;
       this.initOverviewPlannedTable();
@@ -167,7 +167,7 @@ export class OverviewDetailComponent implements OnInit {
         Pages.TTH_ARCHIVED,
       );
       this.sorting = 'swissCanton,asc';
-      this.tableColumns = this.getArchivedTableColumns();
+      this.tableColumns = this.getPlannedOrArchivedTableColumns();
       this.showDownloadCsvButton = true;
       this.initOverviewArchivedTable();
     }
@@ -603,7 +603,7 @@ export class OverviewDetailComponent implements OnInit {
           },
         },
         { headerTitle: 'TTH.SWISS_CANTON', value: 'swissCanton', callback: this.mapToShortCanton },
-        { headerTitle: 'TTH.ID', value: 'id', disabled: true },
+        { headerTitle: 'ID', value: 'id', disabled: true },
         {
           headerTitle: 'TTH.TRANSPORT_COMPANY',
           value: 'responsibleTransportCompaniesDisplay',
@@ -671,30 +671,7 @@ export class OverviewDetailComponent implements OnInit {
     }
   }
 
-  private getPlannedTableColumns(): TableColumn<TimetableHearingStatement>[] {
-    if (this.isSwissCanton) {
-      return this.getTableColumns().filter((col) => {
-        return (
-          col.value === 'swissCanton' ||
-          col.value === 'id' ||
-          col.value === 'responsibleTransportCompaniesDisplay' ||
-          col.value === 'timetableFieldNumber' ||
-          col.value === 'timetableFieldDescription'
-        );
-      });
-    } else {
-      return this.getTableColumns().filter((col) => {
-        return (
-          col.value === 'id' ||
-          col.value === 'responsibleTransportCompaniesDisplay' ||
-          col.value === 'timetableFieldNumber' ||
-          col.value === 'timetableFieldDescription'
-        );
-      });
-    }
-  }
-
-  private getArchivedTableColumns(): TableColumn<TimetableHearingStatement>[] {
+  private getPlannedOrArchivedTableColumns(): TableColumn<TimetableHearingStatement>[] {
     if (this.isSwissCanton) {
       return this.getTableColumns().filter((col) => {
         return (
