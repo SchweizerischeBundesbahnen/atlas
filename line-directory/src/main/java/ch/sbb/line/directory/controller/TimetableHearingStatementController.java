@@ -211,4 +211,5 @@ public class TimetableHearingStatementController implements TimetableHearingStat
     LocalDate validOn = LocalDate.of(year.intValue(), 1, 1);
     return responsibleTransportCompaniesResolverService.getResponsibleTransportCompanies(ttfnid, validOn);
   }
+
 }
