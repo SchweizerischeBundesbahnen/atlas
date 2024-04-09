@@ -328,11 +328,13 @@ import org.springframework.web.multipart.MultipartFile;
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
-    timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
+    TimetableHearingStatementModel created =
+        timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel,
+        Collections.emptyList());
 
     TimetableHearingStatementSearchRestrictions searchRestrictions = TimetableHearingStatementSearchRestrictions.builder()
         .statementRequestParams(TimetableHearingStatementRequestParams.builder()
-            .searchCriterias(List.of("gerne", "Luca"))
+            .searchCriterias(List.of("gerne", "Luca", created.getId().toString()))
             .canton(SwissCanton.BERN)
             .timetableHearingYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .build())
@@ -342,6 +344,38 @@ import org.springframework.web.multipart.MultipartFile;
     Page<TimetableHearingStatement> hearingStatements = timetableHearingStatementService.getHearingStatements(searchRestrictions);
 
     assertThat(hearingStatements.getTotalElements()).isEqualTo(1);
+  }
+
+  @Test
+  void shouldNotFindStatementBySearchCriteria() {
+    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingStatementModel timetableHearingStatementModel = TimetableHearingStatementModel.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+            .firstName("Luca")
+            .email("fabienne.mueller@sbb.ch")
+            .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build();
+    TimetableHearingStatementModel created =
+        timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel,
+            Collections.emptyList());
+
+    long fakeId = created.getId() + 10L;
+
+    TimetableHearingStatementSearchRestrictions searchRestrictions = TimetableHearingStatementSearchRestrictions.builder()
+        .statementRequestParams(TimetableHearingStatementRequestParams.builder()
+            .searchCriterias(List.of("gerne", "Luca", Long.toString(fakeId)))
+            .canton(SwissCanton.BERN)
+            .timetableHearingYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .build())
+        .pageable(Pageable.unpaged())
+        .build();
+
+    Page<TimetableHearingStatement> hearingStatements = timetableHearingStatementService.getHearingStatements(searchRestrictions);
+
+    assertThat(hearingStatements.getTotalElements()).isEqualTo(0);
   }
 
   @Test
