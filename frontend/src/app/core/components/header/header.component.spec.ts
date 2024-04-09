@@ -1,11 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { HeaderComponent } from './header.component';
-import { AuthService } from '../../auth/auth.service';
-import { UserComponent } from '../user/user.component';
-import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
-import { AppTestingModule } from '../../../app.testing.module';
-import { MaintenanceIconComponent } from './maintenance-icon/maintenance-icon.component';
+import {HeaderComponent} from './header.component';
+import {AuthService} from '../../auth/auth.service';
+import {UserComponent} from '../user/user.component';
+import {LanguageSwitcherComponent} from '../language-switcher/language-switcher.component';
+import {AppTestingModule} from '../../../app.testing.module';
+import {MaintenanceIconComponent} from './maintenance-icon/maintenance-icon.component';
 
 describe('HeaderComponent', () => {
   const authServiceMock: Partial<AuthService> = {
