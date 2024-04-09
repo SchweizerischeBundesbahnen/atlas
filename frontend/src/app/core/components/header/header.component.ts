@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { environment } from '../../../../environments/environment';
-import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
-import { filter, map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { NON_PROD_STAGES, Stages } from '../../constants/stages';
+import {Component, OnInit} from '@angular/core';
+import {environment} from '../../../../environments/environment';
+import {ActivatedRouteSnapshot, NavigationEnd, Router} from '@angular/router';
+import {filter, map} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {NON_PROD_STAGES, Stages} from '../../constants/stages';
 
 @Component({
   selector: 'app-header',
@@ -14,6 +14,7 @@ export class HeaderComponent implements OnInit {
   version: string = environment.appVersion;
   showLabel = true;
   environmentLabel: string = environment.label;
+  environmentReleaseNotesUrl: string = environment.atlasReleaseNotes;
   headerTitle$: Observable<string>;
 
   isItWednesday = false;

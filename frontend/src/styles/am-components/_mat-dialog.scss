@@ -44,3 +44,21 @@ mat-dialog-actions {
   color: variables.$black;
   padding-left: unset;
 }
+
+.link {
+  text-align: center;
+  padding-bottom: 1rem;
+  color: variables.$gray-600;
+  a:link {
+    text-decoration: none;
+  }
+  a:visited {
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: none;
+  }
+  a:active {
+    text-decoration: none;
+  }
+}
