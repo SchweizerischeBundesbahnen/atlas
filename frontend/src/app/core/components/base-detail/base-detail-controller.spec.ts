@@ -23,7 +23,9 @@ import {ValidityService} from "../../../pages/sepodi/validity/validity.service";
 
 const dialogServiceSpy = jasmine.createSpyObj(['confirm']);
 const dialogRefSpy = jasmine.createSpyObj(['close']);
-
+const validityService = jasmine.createSpyObj<ValidityService>([
+  'initValidity', 'formValidity'
+]);
 describe('BaseDetailController', () => {
   const dummyController = jasmine.createSpyObj('controller', [
     'backToOverview',
@@ -34,6 +36,13 @@ describe('BaseDetailController', () => {
     'isDetailWorkflowable',
   ]);
   let record: Record;
+
+  const validity = {
+    initValidTo: moment('9999-12-12'),
+    initValidFrom: moment('2021-12-12'),
+    formValidTo: undefined,
+    formValidFrom: undefined,
+  }
 
   class DummyBaseDetailController extends BaseDetailController<Record> implements OnInit {
     constructor() {
@@ -98,7 +107,6 @@ describe('BaseDetailController', () => {
   let authService: AuthService;
   let activatedRoute: ActivatedRoute;
   let validityConfirmationService: ValidityConfirmationService;
-  let validityService: ValidityService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -116,6 +124,7 @@ describe('BaseDetailController', () => {
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: MatSnackBarRef, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
+        { provide: ValidityService, useValue: validityService },
         { provide: AuthService, useValue: authServiceMock },
       ],
     });
@@ -145,6 +154,7 @@ describe('BaseDetailController', () => {
 
     it('should toggle edit form', () => {
       dialogServiceSpy.confirm.and.returnValue(of(true));
+      validityService.initValidity.and.returnValue(validity);
 
       expect(controller.form.enabled).toBeFalse();
 

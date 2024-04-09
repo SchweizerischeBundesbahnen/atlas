@@ -86,10 +86,6 @@ const validityConfirmationService = jasmine.createSpyObj<ValidityConfirmationSer
   'confirmValidity','confirmValidityOverServicePoint'
 ]);
 
-const validityService = jasmine.createSpyObj<ValidityService>([
-  'initValidity', 'formValidity'
-]);
-
 describe('LineDetailComponent for existing lineVersion', () => {
   const mockLinesService = jasmine.createSpyObj('linesService', [
     'updateLineVersion',
