@@ -375,7 +375,7 @@ import org.springframework.web.multipart.MultipartFile;
 
     Page<TimetableHearingStatement> hearingStatements = timetableHearingStatementService.getHearingStatements(searchRestrictions);
 
-    assertThat(hearingStatements.getTotalElements()).isEqualTo(0);
+    assertThat(hearingStatements.getTotalElements()).isZero();
   }
 
   @Test
