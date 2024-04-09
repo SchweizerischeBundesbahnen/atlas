@@ -8,6 +8,12 @@
   <mat-dialog-content class="font-regular-base message">{{
     data.message | translate: data.messageArgs
   }}</mat-dialog-content>
+  @if(data.link) {
+  <div class="link font-bold-base message">
+      <span>{{ data.link.text | translate }}&nbsp;</span>
+      <a href="{{ data.link.url }}" target="_blank" rel="noopener">{{ data.link.textLink }}</a>
+    </div>
+  }
   <mat-dialog-actions class="justify-content-end">
     <button
       [mat-dialog-close]="false"
