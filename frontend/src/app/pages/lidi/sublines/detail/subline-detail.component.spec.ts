@@ -24,6 +24,8 @@ import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-s
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
 import {ValidityConfirmationService} from "../../../sepodi/validity/validity-confirmation.service";
+import {ValidityService} from "../../../sepodi/validity/validity.service";
+import moment from "moment";
 
 const sublineVersion: SublineVersion = {
   id: 1234,
@@ -80,6 +82,10 @@ let router: Router;
 const validityConfirmationService = jasmine.createSpyObj<ValidityConfirmationService>([
   'confirmValidity','confirmValidityOverServicePoint'
 ]);
+
+const validityService = jasmine.createSpyObj<ValidityService>([
+  'initValidity', 'formValidity'
+]);
 describe('SublineDetailComponent for existing sublineVersion', () => {
   const mockSublinesService = jasmine.createSpyObj('sublinesService', [
     'updateSublineVersion',
@@ -97,6 +103,13 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     router = TestBed.inject(Router);
+    const validity = {
+      initValidTo: moment('9999-12-12'),
+      initValidFrom: moment('2021-12-12'),
+      formValidTo: undefined,
+      formValidFrom: undefined,
+    }
+    validityService.initValidity.and.returnValue(validity);
   });
 
   it('should be created', () => {
@@ -147,14 +160,6 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
     component.save();
 
     expect(component.confirmValidity).toHaveBeenCalled();
-  });
-
-  it('should call initValidity on toggleEdit', () => {
-    //spyOn(component, 'initValidity');
-
-    component.toggleEdit();
-
-    //expect(component.initValidity).toHaveBeenCalled();
   });
 
   it('should call update when confirmValidity returns true', () => {
@@ -250,6 +255,7 @@ function setupTestBed(
       { provide: SublinesService, useValue: sublinesService },
       { provide: AuthService, useValue: authServiceMock },
       {provide: ValidityConfirmationService, useValue: validityConfirmationService},
+      {provide: ValidityService, useValue: validityService},
       { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
       TranslatePipe,
     ],

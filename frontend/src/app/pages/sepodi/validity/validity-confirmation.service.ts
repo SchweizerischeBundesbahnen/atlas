@@ -6,7 +6,6 @@ import { DateService } from '../../../core/date/date.service';
 import { ReadServicePointVersion } from '../../../api';
 import { Moment } from 'moment';
 import {Validity} from "../../model/validity";
-import {FormGroup} from "@angular/forms";
 
 @Injectable({ providedIn: 'root' })
 export class ValidityConfirmationService {
