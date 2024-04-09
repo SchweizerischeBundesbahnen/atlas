@@ -139,7 +139,7 @@ async function baseTestConfiguration() {
   return TestBed.createComponent(OverviewDetailComponent);
 }
 
-fdescribe('TimetableHearingOverviewDetailComponent', () => {
+describe('TimetableHearingOverviewDetailComponent', () => {
   let component: OverviewDetailComponent;
   let route: ActivatedRoute;
   let fixture: ComponentFixture<OverviewDetailComponent>;
@@ -322,11 +322,12 @@ fdescribe('TimetableHearingOverviewDetailComponent', () => {
       //when
       fixture.detectChanges();
       //then
-      expect(component.tableColumns.length).toEqual(4);
+      expect(component.tableColumns.length).toEqual(5);
       expect(component.tableColumns[0].value).toEqual('swissCanton');
-      expect(component.tableColumns[1].value).toEqual('responsibleTransportCompaniesDisplay');
-      expect(component.tableColumns[2].value).toEqual('timetableFieldNumber');
-      expect(component.tableColumns[3].value).toEqual('timetableFieldDescription');
+      expect(component.tableColumns[1].value).toEqual('id');
+      expect(component.tableColumns[2].value).toEqual('responsibleTransportCompaniesDisplay');
+      expect(component.tableColumns[3].value).toEqual('timetableFieldNumber');
+      expect(component.tableColumns[4].value).toEqual('timetableFieldDescription');
     });
   });
 
@@ -369,10 +370,10 @@ fdescribe('TimetableHearingOverviewDetailComponent', () => {
       //then
       expect(component.tableColumns.length).toEqual(5);
       expect(component.tableColumns[0].value).toEqual('swissCanton');
-      expect(component.tableColumns[1].value).toEqual('responsibleTransportCompaniesDisplay');
-      expect(component.tableColumns[2].value).toEqual('timetableFieldNumber');
-      expect(component.tableColumns[3].value).toEqual('timetableFieldDescription');
-      expect(component.tableColumns[4].value).toEqual('editor');
+      expect(component.tableColumns[1].value).toEqual('id');
+      expect(component.tableColumns[2].value).toEqual('responsibleTransportCompaniesDisplay');
+      expect(component.tableColumns[3].value).toEqual('timetableFieldNumber');
+      expect(component.tableColumns[4].value).toEqual('timetableFieldDescription');
     });
   });
 });
