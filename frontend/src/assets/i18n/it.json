@@ -186,7 +186,7 @@
       "DESCRIPTION": "Registrare, gestire e visualizzare le autorizzazioni degli utenti per atlas."
     },
     "SERVICE_POINTS": {
-      "TITLE": "Gestion dei punti di servizio",
+      "TITLE": "Gestione dei punti di servizio",
       "TITLE_HEADER": "Punti di servizio",
       "DESCRIPTION": "Registrare, gestire e visualizzare i punti di esercizio e le fermate del trasporto pubblico svizzero (SLOID)."
     },
