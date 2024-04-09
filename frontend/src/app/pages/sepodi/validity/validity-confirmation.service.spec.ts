@@ -5,33 +5,22 @@ import { DialogService } from '../../../core/components/dialog/dialog.service';
 import moment from 'moment';
 import SpyObj = jasmine.SpyObj;
 import { BERN } from '../../../../test/data/service-point';
-import {Validity} from "../../model/validity";
 
 describe('ValidityConfirmationService', () => {
   let service: ValidityConfirmationService;
 
   let dialogService: SpyObj<DialogService>;
 
-  let momentMockFormValidTo = jasmine.createSpyObj('Moment', ['isSame']);
-  let momentMockFormValidFrom = jasmine.createSpyObj('Moment', ['isSame']);
-  let momentMockInitValidTo = jasmine.createSpyObj('Moment', ['isSame']);
-  let momentMockInitValidFrom = jasmine.createSpyObj('Moment', ['isSame']);
-
-  let validity: Validity = {
-    initValidTo: momentMockInitValidTo,
-    initValidFrom: momentMockInitValidFrom,
-    formValidTo: momentMockFormValidTo,
-    formValidFrom: momentMockInitValidFrom
-  }
+  const validity = {
+    formValidTo: moment('2024-01-01'),
+    initValidTo: moment('2024-01-01'),
+    formValidFrom: moment('2023-01-01'),
+    initValidFrom: moment('2023-01-01')
+  };
 
   beforeEach(() => {
     dialogService = jasmine.createSpyObj('dialogService', ['confirm']);
     dialogService.confirm.and.returnValue(of(true));
-
-    momentMockFormValidTo = jasmine.createSpyObj('moment', ['isSame']);
-    momentMockFormValidFrom = jasmine.createSpyObj('moment', ['isSame']);
-    momentMockInitValidTo = jasmine.createSpyObj('moment', ['isSame']);
-    momentMockInitValidFrom = jasmine.createSpyObj('moment', ['isSame']);
 
     TestBed.configureTestingModule({
       providers: [{ provide: DialogService, useValue: dialogService }],
@@ -55,16 +44,19 @@ describe('ValidityConfirmationService', () => {
 
   it('should open popup when formValidTo and formValidFrom didnt change', () => {
     //when
-    momentMockFormValidTo.isSame.and.returnValue(true);
-    momentMockFormValidFrom.isSame.and.returnValue(true);
+
     service.confirmValidity(validity)
     //then
     expect(dialogService.confirm).toHaveBeenCalled();
   });
 
   it('should not open popup, when formValidTo and formValidFrom did change', (done: DoneFn) => {
-    momentMockFormValidTo.isSame.and.returnValue(false);
-    momentMockFormValidFrom.isSame.and.returnValue(false);
+    const validity = {
+      formValidTo: moment('2024-01-01'),
+      initValidTo: moment('2023-01-01'),
+      formValidFrom: moment('2023-01-01'),
+      initValidFrom: moment('2021-01-01')
+    };
 
     service.confirmValidity(validity).subscribe(result => {
       expect(result).toBeTrue();
