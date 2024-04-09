@@ -24,7 +24,6 @@ import { LinkIconComponent } from '../../../../core/form-components/link-icon/li
 import { FormModule } from '../../../../core/module/form.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import {ValidityConfirmationService} from "../../../sepodi/validity/validity-confirmation.service";
-import {ValidityService} from "../../../sepodi/validity/validity.service";
 
 const lineVersion: LineVersion = {
   id: 1234,
