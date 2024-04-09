@@ -322,14 +322,6 @@ describe('StopPointDetailComponent', () => {
     expect(component.confirmValidity).toHaveBeenCalled();
   });
 
-  it('should call initValidity on toggleEdit', () => {
-    //spyOn(component, 'initValidity');
-
-    component.toggleEdit();
-
-    //expect(component.initValidity).toHaveBeenCalled();
-  });
-
   it('should call update when confirmValidity returns true', () => {
     validityConfirmationService.confirmValidity.and.returnValue(of(true))
 
