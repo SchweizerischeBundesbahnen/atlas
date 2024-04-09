@@ -672,26 +672,49 @@ export class OverviewDetailComponent implements OnInit {
   }
 
   private getPlannedTableColumns(): TableColumn<TimetableHearingStatement>[] {
-    return this.getTableColumns().filter((col) => {
-      return (
-        col.value === 'swissCanton' ||
-        col.value === 'responsibleTransportCompaniesDisplay' ||
-        col.value === 'timetableFieldNumber' ||
-        col.value === 'timetableFieldDescription'
-      );
-    });
+    if (this.isSwissCanton) {
+      return this.getTableColumns().filter((col) => {
+        return (
+          col.value === 'swissCanton' ||
+          col.value === 'id' ||
+          col.value === 'responsibleTransportCompaniesDisplay' ||
+          col.value === 'timetableFieldNumber' ||
+          col.value === 'timetableFieldDescription'
+        );
+      });
+    } else {
+      return this.getTableColumns().filter((col) => {
+        return (
+          col.value === 'id' ||
+          col.value === 'responsibleTransportCompaniesDisplay' ||
+          col.value === 'timetableFieldNumber' ||
+          col.value === 'timetableFieldDescription'
+        );
+      });
+    }
   }
 
   private getArchivedTableColumns(): TableColumn<TimetableHearingStatement>[] {
-    return this.getTableColumns().filter((col) => {
-      return (
-        col.value === 'swissCanton' ||
-        col.value === 'responsibleTransportCompaniesDisplay' ||
-        col.value === 'timetableFieldNumber' ||
-        col.value === 'timetableFieldDescription' ||
-        col.value === 'editor'
-      );
-    });
+    if (this.isSwissCanton) {
+      return this.getTableColumns().filter((col) => {
+        return (
+          col.value === 'swissCanton' ||
+          col.value === 'id' ||
+          col.value === 'responsibleTransportCompaniesDisplay' ||
+          col.value === 'timetableFieldNumber' ||
+          col.value === 'timetableFieldDescription'
+        );
+      });
+    } else {
+      return this.getTableColumns().filter((col) => {
+        return (
+          col.value === 'id' ||
+          col.value === 'responsibleTransportCompaniesDisplay' ||
+          col.value === 'timetableFieldNumber' ||
+          col.value === 'timetableFieldDescription'
+        );
+      });
+    }
   }
 
   private initShowStartTimetableHearingButton() {
