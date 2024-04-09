@@ -142,6 +142,7 @@
   "SW_DIALOG": {
     "UPDATE_TITLE": "Neue Version verfügbar",
     "UPDATE_MESSAGE": "Es ist eine neue Version von atlas verfügbar. Bitte laden Sie die Seite neu.",
+    "NEW_RELEASE_TEXT": "Was ist neue:",
     "UNRECOVERABLE_TITLE": "Es ist ein Fehler aufgetreten",
     "UNRECOVERABLE_MESSAGE": "Bitte laden Sie die Seite neu."
   },
