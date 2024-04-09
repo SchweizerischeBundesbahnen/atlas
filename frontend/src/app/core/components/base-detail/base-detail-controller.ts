@@ -1,17 +1,17 @@
-import { Directive, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { Record } from './record';
-import { DialogService } from '../dialog/dialog.service';
-import { EMPTY, Observable, of, Subject } from 'rxjs';
-import { Page } from '../../model/page';
-import { NotificationService } from '../../notification/notification.service';
-import { ApplicationRole, ApplicationType, Status } from '../../../api';
-import { AuthService } from '../../auth/auth.service';
-import { ValidationService } from '../../validation/validation.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DetailFormComponent } from '../../leave-guard/leave-dirty-form-guard.service';
-import { VersionsHandlingService } from '../../versioning/versions-handling.service';
-import { DateRange } from '../../versioning/date-range';
+import {Directive, OnInit} from '@angular/core';
+import {FormGroup} from '@angular/forms';
+import {Record} from './record';
+import {DialogService} from '../dialog/dialog.service';
+import {EMPTY, Observable, of, Subject} from 'rxjs';
+import {Page} from '../../model/page';
+import {NotificationService} from '../../notification/notification.service';
+import {ApplicationRole, ApplicationType, Status} from '../../../api';
+import {AuthService} from '../../auth/auth.service';
+import {ValidationService} from '../../validation/validation.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {DetailFormComponent} from '../../leave-guard/leave-dirty-form-guard.service';
+import {VersionsHandlingService} from '../../versioning/versions-handling.service';
+import {DateRange} from '../../versioning/date-range';
 
 @Directive()
 export abstract class BaseDetailController<TYPE extends Record>
