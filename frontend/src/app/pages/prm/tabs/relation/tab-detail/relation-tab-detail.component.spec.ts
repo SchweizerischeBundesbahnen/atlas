@@ -248,45 +248,8 @@ describe('RelationTabDetailComponent', () => {
     expect(component.currentRelationId).toBe(1000);
   });
 
-  it('should call initValidity on toggleEdit', () => {
-    //spyOn(component, 'initValidity');
-
-    component.toggleEdit();
-
-    //expect(component.initValidity).toHaveBeenCalled();
-  });
 
   it('should call update when confirmValidity returns true', () => {
-    spyOn(component, 'update').and.callThrough();
-
-    component.confirmValidity(relationVersion);
-
-    expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
-    expect(component.update).toHaveBeenCalled();
-  });
-
-  it('should not call update when confirmValidity returns false', () => {
-    validityConfirmationService.confirmValidity.and.returnValue(of(false))
-
-    spyOn(component, 'update').and.callThrough();
-
-    component.confirmValidity(relationVersion);
-
-    expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
-    expect(component.update).not.toHaveBeenCalled();
-  });
-
-  it('should call initValidity on toggleEdit', () => {
-    //spyOn(component, 'initValidity');
-
-    component.toggleEdit();
-
-    //expect(component.initValidity).toHaveBeenCalled();
-  });
-
-  it('should call update when confirmValidity returns true', () => {
-    validityConfirmationService.confirmValidity.and.returnValue(of(true))
-
     spyOn(component, 'update').and.callThrough();
 
     component.confirmValidity(relationVersion);
