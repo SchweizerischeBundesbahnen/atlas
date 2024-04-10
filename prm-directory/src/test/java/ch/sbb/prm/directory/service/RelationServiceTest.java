@@ -42,7 +42,7 @@ class RelationServiceTest extends BasePrmServiceTest {
   }
 
   @Test
-  void shouldNotCreateRelationPointWhenStopPointIsReduced() {
+  void shouldNotCreateRelationWhenStopPointIsReduced() {
     //given
     String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.builderVersion1().meansOfTransport(Set.of(MeanOfTransport.BUS)).build();
@@ -64,8 +64,9 @@ class RelationServiceTest extends BasePrmServiceTest {
         parentServicePointSloid);
     assertThat(relations).isEmpty();
   }
+
   @Test
-  void shouldNotUpdateRelationPointWhenStopPointIsReduced() {
+  void shouldNotUpdateRelationWhenStopPointIsReduced() {
     //given
     String parentServicePointSloid = "ch:1:sloid:70000";
     StopPointVersion stopPointVersion = StopPointTestData.builderVersion1().meansOfTransport(Set.of(MeanOfTransport.BUS)).build();
@@ -100,6 +101,56 @@ class RelationServiceTest extends BasePrmServiceTest {
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
         parentServicePointSloid);
     assertThat(relations).hasSize(1);
+  }
+
+  @Test
+  void shouldUpdateRelationWhenWithMultipleReferencePoints() {
+    //given
+    String parentServicePointSloid = "ch:1:sloid:7000";
+    StopPointVersion stopPointVersion = StopPointTestData.builderVersion1().meansOfTransport(Set.of(MeanOfTransport.TRAIN)).build();
+    stopPointVersion.setSloid(parentServicePointSloid);
+    stopPointRepository.save(stopPointVersion);
+
+    String referencePointSloid = "ch:1:sloid:7000:5";
+    String elementSloid = "ch:1:sloid:7000:1";
+
+    // First relation
+    RelationVersion version1 = RelationTestData.builderVersion1().build();
+    version1.setSloid(elementSloid);
+    version1.setReferencePointSloid(referencePointSloid);
+    version1.setParentServicePointSloid(parentServicePointSloid);
+    RelationVersion savedVersion1 = relationRepository.saveAndFlush(version1);
+
+    // Second relation to a different reference point
+    RelationVersion version2 = RelationTestData.builderVersion1().build();
+    version2.setSloid(elementSloid);
+    version2.setReferencePointSloid("ch:1:sloid:7000:6");
+    version2.setParentServicePointSloid(parentServicePointSloid);
+    relationRepository.saveAndFlush(version2);
+
+    // Edit first relation
+    RelationVersion editedVersion = RelationTestData.builderVersion1().build();
+    editedVersion.setSloid(savedVersion1.getSloid());
+    editedVersion.setReferencePointSloid(referencePointSloid);
+    editedVersion.setParentServicePointSloid(parentServicePointSloid);
+    editedVersion.setValidFrom(savedVersion1.getValidFrom().plusDays(3));
+    editedVersion.setContrastingAreas(StandardAttributeType.TO_BE_COMPLETED);
+    editedVersion.setReferencePointElementType(ReferencePointElementType.PARKING_LOT);
+    editedVersion.setStepFreeAccess(StepFreeAccessAttributeType.YES_WITH_LIFT);
+    editedVersion.setTactileVisualMarks(TactileVisualAttributeType.PARTIALLY);
+    editedVersion.setCreationDate(savedVersion1.getCreationDate());
+    editedVersion.setEditionDate(savedVersion1.getEditionDate());
+    editedVersion.setCreator(savedVersion1.getCreator());
+    editedVersion.setEditor(savedVersion1.getEditor());
+    editedVersion.setVersion(savedVersion1.getVersion());
+
+    //when
+    relationService.updateVersion(savedVersion1, editedVersion);
+    List<RelationVersion> relationsByParentServicePointSloid = relationService.getRelationsByParentServicePointSloid(
+        parentServicePointSloid);
+
+    //then
+    assertThat(relationsByParentServicePointSloid).isNotEmpty();
   }
 
 }
