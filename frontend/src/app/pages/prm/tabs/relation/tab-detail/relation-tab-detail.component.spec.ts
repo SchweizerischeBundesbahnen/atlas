@@ -22,6 +22,7 @@ import {
 import { of } from 'rxjs';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
+import {ValidityService} from "../../../../sepodi/validity/validity.service";
 
 const referencePointOverview: ReadReferencePointVersion[] = [
   {
@@ -99,6 +100,7 @@ const relations: ReadRelationVersion[] = [
 describe('RelationTabDetailComponent', () => {
   let component: RelationTabDetailComponent;
   let fixture: ComponentFixture<RelationTabDetailComponent>;
+  let validityService: ValidityService;
 
   let personWithReducedMobilityService = jasmine.createSpyObj('personWithReducedMobilityService', [
     'getReferencePointsOverview',
@@ -140,11 +142,13 @@ describe('RelationTabDetailComponent', () => {
       ],
       imports: [AppTestingModule],
       providers: [
+        ValidityService,
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService },
       ],
     });
     fixture = TestBed.createComponent(RelationTabDetailComponent);
+    validityService = TestBed.inject(ValidityService)
     component = fixture.componentInstance;
   });
 
@@ -207,5 +211,23 @@ describe('RelationTabDetailComponent', () => {
 
     expect(component.selectedRelationVersion).toBe(1);
     expect(component.currentRelationId).toBe(1000);
+  });
+
+  fit('should save valid form', () => {
+    spyOn(validityService, 'initValidity').and.callThrough();
+    spyOn(validityService, 'validateAndDisableCustom').and.callThrough();
+    spyOn(validityService, 'confirmValidityDialog').and.returnValue(of(true));
+
+    personWithReducedMobilityService.getReferencePointsOverview.and.returnValue(
+      of(referencePointOverview),
+    );
+    personWithReducedMobilityService.getRelationsBySloid.and.returnValue(of(relations));
+    fixture.detectChanges();
+
+    component.editing = true;
+    component.save();
+
+    expect(component.editing).toBe(false);
+    expect(personWithReducedMobilityService.updateRelation).toHaveBeenCalledTimes(1);
   });
 });
