@@ -9,7 +9,7 @@ import {
 } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
-import { catchError, EMPTY, Observable, of } from 'rxjs';
+import {catchError, EMPTY, Observable, of} from 'rxjs';
 import { Pages } from '../../pages';
 import { FormGroup } from '@angular/forms';
 import {
@@ -22,11 +22,14 @@ import { NotificationService } from '../../../core/notification/notification.ser
 import { ValidityConfirmationService } from '../validity/validity-confirmation.service';
 import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {Validity} from "../../model/validity";
+import {ValidityService} from "../validity/validity.service";
 
 @Component({
   selector: 'app-loading-points',
   templateUrl: './loading-points-detail.component.html',
   styleUrls: ['./loading-points-detail.component.scss'],
+  providers: [ValidityService]
 })
 export class LoadingPointsDetailComponent implements DetailFormComponent {
   loadingPointVersions!: ReadLoadingPointVersion[];
@@ -43,6 +46,8 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
   servicePointNumber!: number;
   servicePoint: ReadServicePointVersion[] = [];
   servicePointBusinessOrganisations: string[] = [];
+  validity!: Validity;
+  loadingPointVersion!: CreateLoadingPointVersion
 
   constructor(
     private route: ActivatedRoute,
@@ -52,6 +57,7 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
     private dialogService: DialogService,
     private validityConfirmationService: ValidityConfirmationService,
     private notificationService: NotificationService,
+    private validityService: ValidityService,
   ) {
     this.route.data.pipe(takeUntilDestroyed()).subscribe((next) => {
       this.loadingPointVersions = next.loadingPoint;
@@ -128,6 +134,7 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
       this.showConfirmationDialog();
     } else {
       this.form.enable();
+      this.validityService.initValidity(this.form);
     }
   }
 
@@ -165,13 +172,15 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
         )
         .subscribe((confirmed) => {
           if (confirmed) {
-            const loadingPointVersion = this.form.value as unknown as CreateLoadingPointVersion;
-            loadingPointVersion.servicePointNumber = this.servicePointNumber;
-            this.form.disable();
+            this.loadingPointVersion = this.form.value as unknown as CreateLoadingPointVersion;
+            this.loadingPointVersion.servicePointNumber = this.servicePointNumber;
             if (this.isNew) {
-              this.create(loadingPointVersion);
+              this.create(this.loadingPointVersion);
+              this.form.disable();
             } else {
-              this.update(this.selectedVersion.id!, loadingPointVersion);
+
+              this.validityService.updateValidity(this.form);
+              this.validityService.validateAndDisableForm(() => this.update(this.selectedVersion.id!, this.loadingPointVersion), this.form);
             }
           }
         });
@@ -195,7 +204,7 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
       });
   }
 
-  private update(id: number, loadingPointVersion: CreateLoadingPointVersion) {
+  update(id: number, loadingPointVersion: CreateLoadingPointVersion) {
     this.loadingPointsService
       .updateLoadingPoint(id, loadingPointVersion)
       .pipe(catchError(this.handleError()))
@@ -218,5 +227,4 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
       return EMPTY;
     };
   }
-
 }
