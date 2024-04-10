@@ -13,9 +13,6 @@ import {FormGroup} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NotificationService} from "../../../../../../core/notification/notification.service";
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
-import {take} from "rxjs";
-import {ValidityConfirmationService} from "../../../../../sepodi/validity/validity-confirmation.service";
-import {Validity} from "../../../../../model/validity";
 import {ValidityService} from "../../../../../sepodi/validity/validity.service";
 
 @Component({
@@ -37,7 +34,6 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent, Detai
   selectedVersionIndex!: number;
 
   businessOrganisations: string[] = [];
-  validity!: Validity;
 
   constructor(
     private route: ActivatedRoute,
@@ -45,7 +41,6 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent, Detai
     private personWithReducedMobilityService: PersonWithReducedMobilityService,
     private notificationService: NotificationService,
     private detailHelperService: DetailHelperService,
-    private validityConfirmationService: ValidityConfirmationService,
     private validityService: ValidityService
   ) {}
 
@@ -100,7 +95,7 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent, Detai
     if (this.form.enabled) {
       this.detailHelperService.showCancelEditDialog(this);
     } else {
-      this.validity = this.validityService.initValidity(this.form)
+      this.validityService.initValidity(this.form)
       this.form.enable();
     }
   }
@@ -114,9 +109,10 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent, Detai
       );
       if (this.isNew) {
         this.create(toiletVersion);
+        this.form.disable();
       } else {
-        this.validity = this.validityService.formValidity(this.validity, this.form);
-        this.confirmValidity(toiletVersion, this.validity)
+        this.validityService.updateValidity(this.form);
+        this.validityService.validateAndDisableForm(() => this.update(toiletVersion), this.form);
       }
     }
   }
@@ -144,19 +140,6 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent, Detai
             relativeTo: this.route.parent,
           })
           .then(() => this.ngOnInit());
-      });
-  }
-
-
-
-  confirmValidity(toiletVersion: ToiletVersion, validity: Validity){
-    this.validityConfirmationService.confirmValidity(validity)
-      .pipe(take(1))
-      .subscribe((confirmed) => {
-        if (confirmed) {
-          this.update(toiletVersion);
-          this.form.disable();
-        }
       });
   }
 }

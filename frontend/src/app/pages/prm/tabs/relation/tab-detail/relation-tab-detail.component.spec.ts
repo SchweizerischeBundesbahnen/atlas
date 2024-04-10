@@ -17,12 +17,11 @@ import { DetailPageContentComponent } from '../../../../../core/components/detai
 import {
   PersonWithReducedMobilityService,
   ReadReferencePointVersion,
-  ReadRelationVersion, RelationVersion,
+  ReadRelationVersion,
 } from '../../../../../api';
 import { of } from 'rxjs';
 import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
 import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
-import {ValidityConfirmationService} from "../../../../sepodi/validity/validity-confirmation.service";
 
 const referencePointOverview: ReadReferencePointVersion[] = [
   {
@@ -97,25 +96,6 @@ const relations: ReadRelationVersion[] = [
     referencePointElementType: 'PLATFORM',
   },
 ];
-
-const relationVersion: RelationVersion = {
-    creationDate: '2024-01-22T13:52:30.598026',
-    creator: 'e524381',
-    editionDate: '2024-01-22T13:52:30.598026',
-    editor: 'e524381',
-    id: 1000,
-    validFrom: new Date('2000-01-01'),
-    validTo: new Date('2000-12-31'),
-    etagVersion: 0,
-    parentServicePointSloid: 'ch:1:sloid:7000',
-    referencePointSloid: 'ch:1:sloid:12345:1',
-    elementSloid: 'ch:1:sloid:89008:0:1',
-    tactileVisualMarks: 'TO_BE_COMPLETED',
-    contrastingAreas: 'TO_BE_COMPLETED',
-    stepFreeAccess: 'TO_BE_COMPLETED',
-    referencePointElementType: 'PLATFORM',
-};
-
 describe('RelationTabDetailComponent', () => {
   let component: RelationTabDetailComponent;
   let fixture: ComponentFixture<RelationTabDetailComponent>;
@@ -124,10 +104,6 @@ describe('RelationTabDetailComponent', () => {
     'getReferencePointsOverview',
     'getRelationsBySloid',
     'updateRelation',
-  ]);
-
-  const validityConfirmationService = jasmine.createSpyObj<ValidityConfirmationService>([
-    'confirmValidity','confirmValidityOverServicePoint'
   ]);
 
   const activatedRouteMock = {
@@ -151,8 +127,6 @@ describe('RelationTabDetailComponent', () => {
     personWithReducedMobilityService.getReferencePointsOverview.and.returnValue(of([]));
     personWithReducedMobilityService.getRelationsBySloid.and.returnValue(of([]));
     personWithReducedMobilityService.updateRelation.and.returnValue(of());
-    validityConfirmationService.confirmValidity.and.returnValue(of(true));
-    validityConfirmationService.confirmValidityOverServicePoint.and.returnValue(of(true));
     TestBed.configureTestingModule({
       declarations: [
         RelationTabDetailComponent,
@@ -168,7 +142,6 @@ describe('RelationTabDetailComponent', () => {
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService },
-        { provide: ValidityConfirmationService, useValue: validityConfirmationService },
       ],
     });
     fixture = TestBed.createComponent(RelationTabDetailComponent);
@@ -223,18 +196,6 @@ describe('RelationTabDetailComponent', () => {
     expect(component.selectedRelationVersion).toBe(1);
   });
 
-  it('should save valid form', () => {
-    personWithReducedMobilityService.getReferencePointsOverview.and.returnValue(
-      of(referencePointOverview),
-    );
-    personWithReducedMobilityService.getRelationsBySloid.and.returnValue(of(relations));
-    fixture.detectChanges();
-    component.editing = true;
-    component.save();
-    expect(component.editing).toBe(false);
-    expect(personWithReducedMobilityService.updateRelation).toHaveBeenCalledTimes(1);
-  });
-
   it('should change relation version correctly', () => {
     personWithReducedMobilityService.getReferencePointsOverview.and.returnValue(
       of(referencePointOverview),
@@ -246,26 +207,5 @@ describe('RelationTabDetailComponent', () => {
 
     expect(component.selectedRelationVersion).toBe(1);
     expect(component.currentRelationId).toBe(1000);
-  });
-
-
-  it('should call update when confirmValidity returns true', () => {
-    spyOn(component, 'update').and.callThrough();
-
-    component.confirmValidity(relationVersion);
-
-    expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
-    expect(component.update).toHaveBeenCalled();
-  });
-
-  it('should not call update when confirmValidity returns false', () => {
-    validityConfirmationService.confirmValidity.and.returnValue(of(false))
-
-    spyOn(component, 'update').and.callThrough();
-
-    component.confirmValidity(relationVersion);
-
-    expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
-    expect(component.update).not.toHaveBeenCalled();
   });
 });

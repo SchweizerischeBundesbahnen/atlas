@@ -25,13 +25,12 @@ import { LoadingPointsService, ServicePointsService } from '../../../api';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import moment from 'moment/moment';
 import { LoadingPointsDetailComponent } from './loading-points-detail.component';
-import {LOADING_POINT, LOADING_POINT_CREATE} from '../../../../test/data/loading-point';
+import {LOADING_POINT} from '../../../../test/data/loading-point';
 import { BERN_WYLEREGG } from '../../../../test/data/service-point';
 import { UserDetailInfoComponent } from '../../../core/components/base-detail/user-edit-info/user-detail-info.component';
 import {DetailPageContainerComponent} from "../../../core/components/detail-page-container/detail-page-container.component";
 import {DetailPageContentComponent} from "../../../core/components/detail-page-content/detail-page-content.component";
 import {DetailFooterComponent} from "../../../core/components/detail-footer/detail-footer.component";
-import {ValidityConfirmationService} from "../validity/validity-confirmation.service";
 
 const authService: Partial<AuthService> = {};
 
@@ -51,9 +50,6 @@ describe('LoadingPointsDetailComponent', () => {
 
   const dialogService = jasmine.createSpyObj('dialogService', ['confirm']);
   dialogService.confirm.and.returnValue(of(true));
-  const validityConfirmationService = jasmine.createSpyObj<ValidityConfirmationService>([
-    'confirmValidity','confirmValidityOverServicePoint'
-  ]);
 
   describe('for existing Version', () => {
     beforeEach(() => {
@@ -111,36 +107,6 @@ describe('LoadingPointsDetailComponent', () => {
       component.save();
 
       expect(loadingPointService.updateLoadingPoint).toHaveBeenCalled();
-    });
-
-    it('should call confirm on save', () => {
-      spyOn(component, 'confirmValidity');
-
-      component.toggleEdit();
-      component.form.markAsDirty();
-      component.save();
-
-      expect(component.confirmValidity).toHaveBeenCalled();
-    });
-
-    it('should call update when confirmValidity returns true', () => {
-      spyOn(component, 'update').and.callThrough();
-
-      component.confirmValidity(LOADING_POINT_CREATE);
-
-      expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
-      expect(component.update).toHaveBeenCalled();
-    });
-
-    it('should not call update when confirmValidity returns false', () => {
-      validityConfirmationService.confirmValidity.and.returnValue(of(false));
-
-      spyOn(component, 'update').and.callThrough();
-
-      component.confirmValidity(LOADING_POINT_CREATE);
-
-      expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
-      expect(component.update).not.toHaveBeenCalled();
     });
   });
 
@@ -206,13 +172,10 @@ describe('LoadingPointsDetailComponent', () => {
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: ServicePointsService, useValue: servicePointService },
         { provide: LoadingPointsService, useValue: loadingPointService },
-        { provide: ValidityConfirmationService, useValue: validityConfirmationService },
         { provide: DialogService, useValue: dialogService },
         SplitServicePointNumberPipe,
         TranslatePipe,
       ],
     }).compileComponents();
-    validityConfirmationService.confirmValidity.and.returnValue(of(true));
-    validityConfirmationService.confirmValidityOverServicePoint.and.returnValue(of(true));
   }
 });
