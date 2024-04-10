@@ -27,10 +27,12 @@ import {
   GeographyFormGroupBuilder,
 } from '../../geography/geography-form-group';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {ValidityService} from "../../validity/validity.service";
 
 @Component({
   selector: 'app-service-point',
   templateUrl: './service-point-detail.component.html',
+  providers: [ValidityService]
 })
 export class ServicePointDetailComponent implements OnDestroy, DetailFormComponent {
   servicePointVersions!: ReadServicePointVersion[];
@@ -59,6 +61,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
     private notificationService: NotificationService,
     private mapService: MapService,
     private authService: AuthService,
+    private validityService: ValidityService,
   ) {
     this.route.parent?.data.pipe(takeUntilDestroyed()).subscribe((next) => {
       this.servicePointVersions = next.servicePoint;
@@ -172,6 +175,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   private enableForm(): void {
     this.form?.enable({ emitEvent: false });
     this.isFormEnabled$.next(true);
+    this.validityService.initValidity(this.form!);
   }
 
   confirmLeave(): Observable<boolean> {
@@ -204,13 +208,12 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   save() {
     ValidationService.validateForm(this.form!);
     if (this.form?.valid) {
-      const servicePointVersion = ServicePointFormGroupBuilder.getWritableServicePoint(this.form);
-      this.disableForm();
-      this.update(this.selectedVersion!.id!, servicePointVersion);
+      this.validityService.updateValidity(this.form);
+      this.validityService.validateAndDisableCustom(() => this.updateVersion(), () => this.disableForm())
     }
   }
 
-  private update(id: number, servicePointVersion: CreateServicePointVersion) {
+  update(id: number, servicePointVersion: CreateServicePointVersion) {
     this.confirmBoTransfer()
       .pipe(take(1))
       .subscribe((confirmed) => {
@@ -303,5 +306,10 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
             });
         }
       });
+  }
+
+  updateVersion(){
+    const servicePointVersion = ServicePointFormGroupBuilder.getWritableServicePoint(this.form!);
+    this.update(this.selectedVersion!.id!, servicePointVersion);
   }
 }

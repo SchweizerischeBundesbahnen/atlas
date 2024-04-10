@@ -82,6 +82,7 @@ describe('ContactPointDetailComponent', () => {
     'personWithReducedMobilityService',
     ['createContactPoint', 'updateContactPoint'],
   );
+
   personWithReducedMobilityService.createContactPoint.and.returnValue(of(contactPoint[0]));
   personWithReducedMobilityService.updateContactPoint.and.returnValue(of(contactPoint));
 

@@ -137,7 +137,10 @@
     "LEAVE_SITE": "Se si esce dalla pagina, i dati non verranno salvati.",
     "CANCEL_EDITMODE": "All’uscita dalla modalità di modifica tutti i dati modificati andranno perduti.",
     "CONFIRM_BO_TRANSFER_TITLE": "Nota",
-    "CONFIRM_BO_TRANSFER": "Modificando l'organizzazione aziendale, si perde l'autorizzazione a modificare l'oggetto a partire dalla data di mutazione."
+    "CONFIRM_BO_TRANSFER": "Modificando l'organizzazione aziendale, si perde l'autorizzazione a modificare l'oggetto a partire dalla data di mutazione.",
+    "CONFIRM_VALIDITY_HAS_NOT_CHANGED_TITLE": "Attenzione: La validità non è stata modificata!",
+    "CONFIRM_VALIDITY_HAS_NOT_CHANGED": "Siete sicuri di voler apportare la modifica senza regolare la validità? Se la modifica non si applica all'intero periodo di questa versione, modificare la data \"valida da\" o \"valida fino al\"."
+
   },
   "SW_DIALOG": {
     "UPDATE_TITLE": "Nuova versione disponibile.",

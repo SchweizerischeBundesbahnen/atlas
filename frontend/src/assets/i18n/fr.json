@@ -137,7 +137,9 @@
     "LEAVE_SITE": "Si vous quittez le site, vos données ne sont pas enregistrées.",
     "CANCEL_EDITMODE": "Si vous quittez le mode d’édition, vous perdez toutes les données adaptées.",
     "CONFIRM_BO_TRANSFER_TITLE": "Remarque",
-    "CONFIRM_BO_TRANSFER": "La modification de l'organisation commerciale vous fait perdre l'autorisation de traiter l'objet à partir du moment de la mutation."
+    "CONFIRM_BO_TRANSFER": "La modification de l'organisation commerciale vous fait perdre l'autorisation de traiter l'objet à partir du moment de la mutation.",
+    "CONFIRM_VALIDITY_HAS_NOT_CHANGED_TITLE": "Attention : La validité n'a pas été modifiée!",
+    "CONFIRM_VALIDITY_HAS_NOT_CHANGED": "Êtes-vous sûr de vouloir effectuer la modification sans adapter la validité ? Si la modification ne s'applique pas à toute la période de cette version, veuillez adapter la date \"valable du\" ou \"valable au\"."
   },
   "SW_DIALOG": {
     "UPDATE_TITLE": "Nouvelle version disponible",
