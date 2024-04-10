@@ -210,6 +210,39 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[7].value).toEqual('etagVersion');
     });
 
+    it('should display active table columns timetableHearing for Canton CH', () => {
+      //given
+      component.cantonShort = 'ch';
+      //when
+      component.tableColumns = component.getActiveTableColumns();
+      //then
+      expect(component.tableColumns.length).toEqual(8);
+      expect(component.tableColumns[0].value).toEqual('statementStatus');
+      expect(component.tableColumns[1].value).toEqual('swissCanton');
+      expect(component.tableColumns[2].value).toEqual('id');
+      expect(component.tableColumns[3].value).toEqual('responsibleTransportCompaniesDisplay');
+      expect(component.tableColumns[4].value).toEqual('timetableFieldNumber');
+      expect(component.tableColumns[5].value).toEqual('timetableFieldDescription');
+      expect(component.tableColumns[6].value).toEqual('editionDate');
+      expect(component.tableColumns[7].value).toEqual('etagVersion');
+    });
+
+    it('should display active table columns timetableHearing for Canton BL', () => {
+      //given
+      component.cantonShort = 'bl';
+      //when
+      component.tableColumns = component.getActiveTableColumns();
+      //then
+      expect(component.tableColumns.length).toEqual(7);
+      expect(component.tableColumns[0].value).toEqual('statementStatus');
+      expect(component.tableColumns[1].value).toEqual('id');
+      expect(component.tableColumns[2].value).toEqual('responsibleTransportCompaniesDisplay');
+      expect(component.tableColumns[3].value).toEqual('timetableFieldNumber');
+      expect(component.tableColumns[4].value).toEqual('timetableFieldDescription');
+      expect(component.tableColumns[5].value).toEqual('editionDate');
+      expect(component.tableColumns[6].value).toEqual('etagVersion');
+    });
+
     it('should get statements table', async () => {
       //when
       component.cantonShort = 'ch';
@@ -272,7 +305,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       //when
       fixture.detectChanges();
       //then
-      expect(component.tableColumns.length).toEqual(10);
+      expect(component.tableColumns.length).toEqual(9);
       expect(component.tableColumns[0].value).toEqual('id');
       expect(component.tableColumns[1].value).toEqual('statementStatus');
       expect(component.tableColumns[2].value).toEqual('swissCanton');
@@ -281,8 +314,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[5].value).toEqual('timetableFieldNumber');
       expect(component.tableColumns[6].value).toEqual('timetableFieldDescription');
       expect(component.tableColumns[7].value).toEqual('editionDate');
-      expect(component.tableColumns[8].value).toEqual('editor');
-      expect(component.tableColumns[9].value).toEqual('etagVersion');
+      expect(component.tableColumns[8].value).toEqual('etagVersion');
     });
   });
 
@@ -329,6 +361,34 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[3].value).toEqual('timetableFieldNumber');
       expect(component.tableColumns[4].value).toEqual('timetableFieldDescription');
     });
+
+    it('should display planned table columns timetableHearing for Canton CH', () => {
+      //given
+      component.cantonShort = 'ch';
+      //when
+      component.tableColumns = component.getPlannedOrArchivedTableColumns();
+      //then
+      expect(component.tableColumns.length).toEqual(5);
+      expect(component.tableColumns[0].value).toEqual('swissCanton');
+      expect(component.tableColumns[1].value).toEqual('id');
+      expect(component.tableColumns[2].value).toEqual('responsibleTransportCompaniesDisplay');
+      expect(component.tableColumns[3].value).toEqual('timetableFieldNumber');
+      expect(component.tableColumns[4].value).toEqual('timetableFieldDescription');
+    });
+
+    it('should display planned table columns timetableHearing for Canton BL', () => {
+      //given
+      component.cantonShort = 'bl';
+      //when
+      component.tableColumns = component.getPlannedOrArchivedTableColumns();
+      //then
+      expect(component.tableColumns.length).toEqual(4);
+      expect(component.tableColumns[0].value).toEqual('id');
+      expect(component.tableColumns[1].value).toEqual('responsibleTransportCompaniesDisplay');
+      expect(component.tableColumns[2].value).toEqual('timetableFieldNumber');
+      expect(component.tableColumns[3].value).toEqual('timetableFieldDescription');
+    });
+
   });
 
   describe('HearingOverviewTab Archived', async () => {
@@ -352,7 +412,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.isHearingYearActive).toBeFalsy();
     });
 
-    it('should display rchived button timetableHearing', () => {
+    it('should display archived button timetableHearing', () => {
       //when
       fixture.detectChanges();
       //then
@@ -375,5 +435,33 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[3].value).toEqual('timetableFieldNumber');
       expect(component.tableColumns[4].value).toEqual('timetableFieldDescription');
     });
+
+    it('should display archived table columns timetableHearing for Canton CH', () => {
+      //given
+      component.cantonShort = 'ch';
+      //when
+      component.tableColumns = component.getPlannedOrArchivedTableColumns();
+      //then
+      expect(component.tableColumns.length).toEqual(5);
+      expect(component.tableColumns[0].value).toEqual('swissCanton');
+      expect(component.tableColumns[1].value).toEqual('id');
+      expect(component.tableColumns[2].value).toEqual('responsibleTransportCompaniesDisplay');
+      expect(component.tableColumns[3].value).toEqual('timetableFieldNumber');
+      expect(component.tableColumns[4].value).toEqual('timetableFieldDescription');
+    });
+
+    it('should display archived table columns timetableHearing for Canton BL', () => {
+      //given
+      component.cantonShort = 'bl';
+      //when
+      component.tableColumns = component.getPlannedOrArchivedTableColumns();
+      //then
+      expect(component.tableColumns.length).toEqual(4);
+      expect(component.tableColumns[0].value).toEqual('id');
+      expect(component.tableColumns[1].value).toEqual('responsibleTransportCompaniesDisplay');
+      expect(component.tableColumns[2].value).toEqual('timetableFieldNumber');
+      expect(component.tableColumns[3].value).toEqual('timetableFieldDescription');
+    });
+
   });
 });
