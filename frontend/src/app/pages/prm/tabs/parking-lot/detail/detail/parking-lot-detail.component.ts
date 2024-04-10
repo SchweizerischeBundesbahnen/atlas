@@ -13,9 +13,6 @@ import {VersionsHandlingService} from "../../../../../../core/versioning/version
 import {ParkingLotFormGroup, ParkingLotFormGroupBuilder} from "../form/parking-lot-form-group";
 import {DateRange} from "../../../../../../core/versioning/date-range";
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
-import {take} from "rxjs";
-import {ValidityConfirmationService} from "../../../../../sepodi/validity/validity-confirmation.service";
-import {Validity} from "../../../../../model/validity";
 import {ValidityService} from "../../../../../sepodi/validity/validity.service";
 
 @Component({
@@ -37,15 +34,12 @@ export class ParkingLotDetailComponent implements OnInit, DetailFormComponent, D
 
   businessOrganisations: string[] = [];
 
-  validity!: Validity
-
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private personWithReducedMobilityService: PersonWithReducedMobilityService,
     private notificationService: NotificationService,
     private detailHelperService: DetailHelperService,
-    private validityConfirmationService: ValidityConfirmationService,
     private validityService: ValidityService
   ) {}
 
@@ -100,7 +94,7 @@ export class ParkingLotDetailComponent implements OnInit, DetailFormComponent, D
     if (this.form.enabled) {
       this.detailHelperService.showCancelEditDialog(this);
     } else {
-      this.validity = this.validityService.initValidity(this.form);
+      this.validityService.initValidity(this.form);
       this.form.enable();
     }
   }
@@ -114,9 +108,10 @@ export class ParkingLotDetailComponent implements OnInit, DetailFormComponent, D
       );
       if (this.isNew) {
         this.create(parkingLotVersion);
+        this.form.disable();
       } else {
-        this.validity = this.validityService.formValidity(this.validity, this.form);
-        this.confirmValidity(parkingLotVersion);
+        this.validityService.updateValidity(this.form);
+        this.validityService.validateAndDisableForm(() => this.update(parkingLotVersion), this.form);
       }
     }
   }
@@ -144,17 +139,6 @@ export class ParkingLotDetailComponent implements OnInit, DetailFormComponent, D
             relativeTo: this.route.parent,
           })
           .then(() => this.ngOnInit());
-      });
-  }
-
-  confirmValidity(parkingLotVersion: ParkingLotVersion){
-    this.validityConfirmationService.confirmValidity(this.validity)
-      .pipe(take(1))
-      .subscribe((confirmed) => {
-        if (confirmed) {
-          this.update(parkingLotVersion);
-          this.form.disable();
-        }
       });
   }
 }

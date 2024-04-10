@@ -31,14 +31,11 @@ import moment from 'moment/moment';
 import { BERN_WYLEREGG } from '../../../../test/data/service-point';
 import {
   BERN_WYLEREGG_TRAFFIC_POINTS,
-  BERN_WYLEREGG_TRAFFIC_POINTS_CREATE
 } from '../../../../test/data/traffic-point-element';
 import { UserDetailInfoComponent } from '../../../core/components/base-detail/user-edit-info/user-detail-info.component';
 import {DetailPageContainerComponent} from "../../../core/components/detail-page-container/detail-page-container.component";
 import {DetailPageContentComponent} from "../../../core/components/detail-page-content/detail-page-content.component";
 import {DetailFooterComponent} from "../../../core/components/detail-footer/detail-footer.component";
-import {ValidityConfirmationService} from "../validity/validity-confirmation.service";
-
 const authService: Partial<AuthService> = {};
 const trafficPointMapService = jasmine.createSpyObj<TrafficPointMapService>([
   'displayTrafficPointsOnMap',
@@ -62,10 +59,6 @@ describe('TrafficPointElementsDetailComponent', () => {
 
   const coordinateTransformationService = jasmine.createSpyObj<CoordinateTransformationService>([
     'transform',
-  ]);
-
-  const validityConfirmationService = jasmine.createSpyObj<ValidityConfirmationService>([
-    'confirmValidity','confirmValidityOverServicePoint'
   ]);
 
   const servicePointService = jasmine.createSpyObj(['getServicePointVersions']);
@@ -148,38 +141,6 @@ describe('TrafficPointElementsDetailComponent', () => {
 
       expect(trafficPointService.updateTrafficPoint).toHaveBeenCalled();
     });
-
-    it('should call confirm on save', () => {
-
-      spyOn(component, 'confirmValidity');
-
-      component.toggleEdit();
-      component.form.markAsDirty();
-      component.save();
-
-      expect(component.confirmValidity).toHaveBeenCalled();
-    });
-
-    it('should call update when confirmValidity returns true', () => {
-
-      spyOn(component, 'update').and.callThrough();
-
-      component.confirmValidity(BERN_WYLEREGG_TRAFFIC_POINTS_CREATE);
-
-      expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
-      expect(component.update).toHaveBeenCalled();
-    });
-
-    it('should not call update when confirmValidity returns false', () => {
-      validityConfirmationService.confirmValidity.and.returnValue(of(false))
-
-      spyOn(component, 'update').and.callThrough();
-
-      component.confirmValidity(BERN_WYLEREGG_TRAFFIC_POINTS_CREATE);
-
-      expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
-      expect(component.update).not.toHaveBeenCalled();
-    });
   });
 
   describe('for new Version', () => {
@@ -243,13 +204,10 @@ describe('TrafficPointElementsDetailComponent', () => {
         { provide: CoordinateTransformationService, useValue: coordinateTransformationService },
         { provide: ServicePointsService, useValue: servicePointService },
         { provide: TrafficPointElementsService, useValue: trafficPointService },
-        { provide: ValidityConfirmationService, useValue: validityConfirmationService },
         { provide: DialogService, useValue: dialogService },
         SplitServicePointNumberPipe,
         TranslatePipe,
       ],
     }).compileComponents();
-    validityConfirmationService.confirmValidityOverServicePoint.and.returnValue(of(true))
-    validityConfirmationService.confirmValidity.and.returnValue(of(true))
   }
 });

@@ -18,13 +18,12 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { ApplicationType } from 'src/app/api';
 import { AuthService } from '../../auth/auth.service';
 import { authServiceMock } from '../../../app.testing.module';
-import {ValidityConfirmationService} from "../../../pages/sepodi/validity/validity-confirmation.service";
 import {ValidityService} from "../../../pages/sepodi/validity/validity.service";
 
 const dialogServiceSpy = jasmine.createSpyObj(['confirm']);
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 const validityService = jasmine.createSpyObj<ValidityService>([
-  'initValidity', 'formValidity'
+  'initValidity', 'updateValidity', 'validateAndDisableForm'
 ]);
 describe('BaseDetailController', () => {
   const dummyController = jasmine.createSpyObj('controller', [
@@ -37,16 +36,9 @@ describe('BaseDetailController', () => {
   ]);
   let record: Record;
 
-  const validity = {
-    initValidTo: moment('9999-12-12'),
-    initValidFrom: moment('2021-12-12'),
-    formValidTo: undefined,
-    formValidFrom: undefined,
-  }
-
   class DummyBaseDetailController extends BaseDetailController<Record> implements OnInit {
     constructor() {
-      super(router, dialogService, notificationService, authService, activatedRoute, validityConfirmationService, validityService);
+      super(router, dialogService, notificationService, authService, activatedRoute, validityService);
     }
 
     getPageType(): Page {
@@ -106,7 +98,6 @@ describe('BaseDetailController', () => {
   let notificationService: NotificationService;
   let authService: AuthService;
   let activatedRoute: ActivatedRoute;
-  let validityConfirmationService: ValidityConfirmationService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -121,10 +112,10 @@ describe('BaseDetailController', () => {
         }),
       ],
       providers: [
+        ValidityService,
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: MatSnackBarRef, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
-        { provide: ValidityService, useValue: validityService },
         { provide: AuthService, useValue: authServiceMock },
       ],
     });
@@ -154,15 +145,24 @@ describe('BaseDetailController', () => {
 
     it('should toggle edit form', () => {
       dialogServiceSpy.confirm.and.returnValue(of(true));
-      validityService.initValidity.and.returnValue(validity);
 
       expect(controller.form.enabled).toBeFalse();
 
       controller.toggleEdit();
       expect(controller.form.enabled).toBeTrue();
+      expect(validityService.initValidity).toHaveBeenCalled()
 
       controller.toggleEdit();
       expect(controller.form.enabled).toBeFalse();
+    });
+
+    it('should update on save', () => {
+      spyOn(controller, 'confirmBoTransfer').and.returnValue(of(true));
+
+      controller.toggleEdit();
+      controller.form.markAsDirty();
+      controller.save();
+      expect(validityService.validateAndDisableForm).toHaveBeenCalled();
     });
 
     it('should ask for confirmation to cancel when dirty', () => {
@@ -232,6 +232,7 @@ describe('Get actual versioned record', () => {
         }),
       ],
       providers: [
+        ValidityService,
         { provide: BaseDetailController },
         { provide: MatDialogRef, useValue: dialogRefSpy },
         { provide: DialogService, useValue: dialogServiceSpy },
