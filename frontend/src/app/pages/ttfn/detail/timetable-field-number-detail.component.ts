@@ -19,7 +19,6 @@ import { WhitespaceValidator } from '../../../core/validation/whitespace/whitesp
 import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
 import { TimetableFieldNumberDetailFormGroup } from './timetable-field-number-detail-form-group';
 import { AuthService } from '../../../core/auth/auth.service';
-import {ValidityConfirmationService} from "../../sepodi/validity/validity-confirmation.service";
 import {ValidityService} from "../../sepodi/validity/validity.service";
 
 @Component({
@@ -39,10 +38,9 @@ export class TimetableFieldNumberDetailComponent
     protected dialogService: DialogService,
     protected authService: AuthService,
     protected activatedRoute: ActivatedRoute,
-    protected validityConfirmationService: ValidityConfirmationService,
     protected validityService: ValidityService,
   ) {
-    super(router, dialogService, notificationService, authService, activatedRoute, validityConfirmationService, validityService);
+    super(router, dialogService, notificationService, authService, activatedRoute, validityService);
   }
 
   ngOnInit() {

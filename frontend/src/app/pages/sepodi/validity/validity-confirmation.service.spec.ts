@@ -11,13 +11,6 @@ describe('ValidityConfirmationService', () => {
 
   let dialogService: SpyObj<DialogService>;
 
-  const validity = {
-    formValidTo: moment('2024-01-01'),
-    initValidTo: moment('2024-01-01'),
-    formValidFrom: moment('2023-01-01'),
-    initValidFrom: moment('2023-01-01')
-  };
-
   beforeEach(() => {
     dialogService = jasmine.createSpyObj('dialogService', ['confirm']);
     dialogService.confirm.and.returnValue(of(true));
@@ -41,29 +34,4 @@ describe('ValidityConfirmationService', () => {
     //then
     expect(dialogService.confirm).not.toHaveBeenCalled();
   });
-
-  it('should open popup when formValidTo and formValidFrom didnt change', () => {
-    //when
-
-    service.confirmValidity(validity)
-    //then
-    expect(dialogService.confirm).toHaveBeenCalled();
-  });
-
-  it('should not open popup, when formValidTo and formValidFrom did change', (done: DoneFn) => {
-    const validity = {
-      formValidTo: moment('2024-01-01'),
-      initValidTo: moment('2023-01-01'),
-      formValidFrom: moment('2023-01-01'),
-      initValidFrom: moment('2021-01-01')
-    };
-
-    service.confirmValidity(validity).subscribe(result => {
-      expect(result).toBeTrue();
-      done();
-    });
-
-    expect(dialogService.confirm).not.toHaveBeenCalled();
-  });
-
 });
