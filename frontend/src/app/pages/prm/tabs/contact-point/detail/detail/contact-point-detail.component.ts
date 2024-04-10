@@ -13,9 +13,6 @@ import {VersionsHandlingService} from "../../../../../../core/versioning/version
 import {ContactPointFormGroup, ContactPointFormGroupBuilder} from "../form/contact-point-form-group";
 import {DateRange} from "../../../../../../core/versioning/date-range";
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
-import {take} from "rxjs";
-import {ValidityConfirmationService} from "../../../../../sepodi/validity/validity-confirmation.service";
-import {Validity} from "../../../../../model/validity";
 import {ValidityService} from "../../../../../sepodi/validity/validity.service";
 
 @Component({
@@ -36,7 +33,6 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent,
   selectedVersionIndex!: number;
 
   businessOrganisations: string[] = [];
-  validity!: Validity
 
   constructor(
     private route: ActivatedRoute,
@@ -44,7 +40,6 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent,
     private personWithReducedMobilityService: PersonWithReducedMobilityService,
     private notificationService: NotificationService,
     private detailHelperService: DetailHelperService,
-    private validityConfirmationService: ValidityConfirmationService,
     private validityService: ValidityService,
   ) {}
 
@@ -99,7 +94,7 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent,
     if (this.form.enabled) {
       this.detailHelperService.showCancelEditDialog(this);
     } else {
-      this.validity = this.validityService.initValidity(this.form)
+      this.validityService.initValidity(this.form);
       this.form.enable();
     }
   }
@@ -114,8 +109,8 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent,
       if (this.isNew) {
         this.create(contactPointVersion);
       } else {
-        this.validity = this.validityService.formValidity(this.validity, this.form)
-        this.confirmValidity(contactPointVersion);
+        this.validityService.updateValidity(this.form);
+        this.validityService.validateAndDisableForm(() => this.update(contactPointVersion), this.form);
       }
     }
   }
@@ -143,17 +138,6 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent,
             relativeTo: this.route.parent,
           })
           .then(() => this.ngOnInit());
-      });
-  }
-
-  confirmValidity(contactPointVersion:ContactPointVersion){
-    this.validityConfirmationService.confirmValidity(this.validity)
-      .pipe(take(1))
-      .subscribe((confirmed) => {
-        if (confirmed) {
-          this.update(contactPointVersion);
-          this.form.disable();
-        }
       });
   }
 }
