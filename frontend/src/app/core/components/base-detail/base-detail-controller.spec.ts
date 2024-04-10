@@ -18,10 +18,13 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { ApplicationType } from 'src/app/api';
 import { AuthService } from '../../auth/auth.service';
 import { authServiceMock } from '../../../app.testing.module';
+import {ValidityService} from "../../../pages/sepodi/validity/validity.service";
 
 const dialogServiceSpy = jasmine.createSpyObj(['confirm']);
 const dialogRefSpy = jasmine.createSpyObj(['close']);
-
+const validityService = jasmine.createSpyObj<ValidityService>([
+  'initValidity', 'updateValidity', 'validateAndDisableForm'
+]);
 describe('BaseDetailController', () => {
   const dummyController = jasmine.createSpyObj('controller', [
     'backToOverview',
@@ -35,7 +38,7 @@ describe('BaseDetailController', () => {
 
   class DummyBaseDetailController extends BaseDetailController<Record> implements OnInit {
     constructor() {
-      super(router, dialogService, notificationService, authService, activatedRoute);
+      super(router, dialogService, notificationService, authService, activatedRoute, validityService);
     }
 
     getPageType(): Page {
@@ -109,6 +112,7 @@ describe('BaseDetailController', () => {
         }),
       ],
       providers: [
+        ValidityService,
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: MatSnackBarRef, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
@@ -146,9 +150,19 @@ describe('BaseDetailController', () => {
 
       controller.toggleEdit();
       expect(controller.form.enabled).toBeTrue();
+      expect(validityService.initValidity).toHaveBeenCalled()
 
       controller.toggleEdit();
       expect(controller.form.enabled).toBeFalse();
+    });
+
+    it('should update on save', () => {
+      spyOn(controller, 'confirmBoTransfer').and.returnValue(of(true));
+
+      controller.toggleEdit();
+      controller.form.markAsDirty();
+      controller.save();
+      expect(validityService.validateAndDisableForm).toHaveBeenCalled();
     });
 
     it('should ask for confirmation to cancel when dirty', () => {
@@ -159,14 +173,6 @@ describe('BaseDetailController', () => {
 
       controller.toggleEdit();
       expect(controller.form.enabled).toBeTrue();
-    });
-
-    it('should update on save', () => {
-      controller.toggleEdit();
-      controller.form.markAsDirty();
-      controller.save();
-
-      expect(dummyController.updateRecord).toHaveBeenCalled();
     });
 
     it('should delete on confirm', () => {
@@ -226,6 +232,7 @@ describe('Get actual versioned record', () => {
         }),
       ],
       providers: [
+        ValidityService,
         { provide: BaseDetailController },
         { provide: MatDialogRef, useValue: dialogRefSpy },
         { provide: DialogService, useValue: dialogServiceSpy },

@@ -1,7 +1,11 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ParkingLotDetailComponent} from './parking-lot-detail.component';
-import {BooleanOptionalAttributeType, PersonWithReducedMobilityService, ReadParkingLotVersion} from "../../../../../../api";
+import {
+  BooleanOptionalAttributeType,
+  PersonWithReducedMobilityService,
+  ReadParkingLotVersion
+} from "../../../../../../api";
 import {AuthService} from "../../../../../../core/auth/auth.service";
 import {of} from "rxjs";
 import {BERN_WYLEREGG} from "../../../../../../../test/data/service-point";
