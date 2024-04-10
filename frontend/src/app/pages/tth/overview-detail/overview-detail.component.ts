@@ -400,7 +400,7 @@ export class OverviewDetailComponent implements OnInit {
     this.isCheckBoxModeActive =
       this.statusChangeCollectingActionsEnabled || this.cantonDeliveryCollectingActionsEnabled;
     if (this.isCheckBoxModeActive) {
-      this.tableColumns = this.getTableColumns();
+      this.tableColumns = this.getActiveTableColumns();
       this.tableColumns.unshift({
         headerTitle: '',
         disabled: true,
@@ -539,7 +539,7 @@ export class OverviewDetailComponent implements OnInit {
           } else if (timetableHearingYears.length >= 1) {
             this.foundTimetableHearingYear = timetableHearingYears[0];
             this.statementEditable = this.foundTimetableHearingYear.statementEditable!;
-            // this.tableColumns = this.getActiveTableColumns();
+            this.tableColumns = this.getActiveTableColumns();
             this.enableCheckboxViewMode();
             this.initOverviewTable();
           }
@@ -614,16 +614,6 @@ export class OverviewDetailComponent implements OnInit {
           disabled: true,
         },
         { headerTitle: 'COMMON.EDIT_ON', value: 'editionDate', formatAsDate: true },
-        // {
-        //   headerTitle: 'COMMON.EDIT_BY',
-        //   value: 'editor',
-        //   getTitle: (value: string): Observable<string> => {
-        //     return this.userAdministrationService.getUserDisplayName(value).pipe(
-        //       take(1),
-        //       map((userDisplayName) => userDisplayName.displayName ?? value),
-        //     );
-        //   },
-        // },
         {
           headerTitle: '',
           value: 'etagVersion',
@@ -688,60 +678,6 @@ export class OverviewDetailComponent implements OnInit {
       col.value === 'timetableFieldDescription'
     );
   }
-
-
-
-    // private getActiveTableColumns(): TableColumn<TimetableHearingStatement>[] {
-    //     if (this.isSwissCanton) {
-    //         return this.getTableColumns().filter(col => this.isActiveColumnForSwissCanton(col));
-    //     } else {
-    //         return this.getTableColumns().filter(col => this.isActiveColumn(col));
-    //     }
-    // }
-    //
-    // private getPlannedOrArchivedTableColumns(): TableColumn<TimetableHearingStatement>[] {
-    //     if (this.isSwissCanton) {
-    //         return this.getTableColumns().filter(col => this.isPlannedOrArchivedColumnForSwissCanton(col));
-    //     } else {
-    //         return this.getTableColumns().filter(col => this.isPlannedOrArchivedColumn(col));
-    //     }
-    // }
-    //
-    // private isActiveColumn(col: TableColumn<TimetableHearingStatement>): boolean {
-    //     return (
-    //         col.value === 'statementStatus' ||
-    //         col.value === 'id' ||
-    //         col.value === 'responsibleTransportCompaniesDisplay' ||
-    //         col.value === 'timetableFieldNumber' ||
-    //         col.value === 'timetableFieldDescription' ||
-    //         col.value === 'editionDate' ||
-    //         col.value === 'etagVersion'
-    //     );
-    // }
-    //
-    // private isActiveColumnForSwissCanton(col: TableColumn<TimetableHearingStatement>): boolean {
-    //     return (
-    //         col.value === 'swissCanton' ||
-    //         this.isActiveColumn(col)
-    //     );
-    // }
-    //
-    // private isPlannedOrArchivedColumn(col: TableColumn<TimetableHearingStatement>): boolean {
-    //     return (
-    //         col.value === 'id' ||
-    //         col.value === 'responsibleTransportCompaniesDisplay' ||
-    //         col.value === 'timetableFieldNumber' ||
-    //         col.value === 'timetableFieldDescription'
-    //     );
-    // }
-    //
-    // private isPlannedOrArchivedColumnForSwissCanton(col: TableColumn<TimetableHearingStatement>): boolean {
-    //     return (
-    //         col.value === 'swissCanton' ||
-    //         this.isPlannedOrArchivedColumn(col)
-    //     );
-    // }
-
 
   private initShowStartTimetableHearingButton() {
     this.showStartTimetableHearingButton = true;
