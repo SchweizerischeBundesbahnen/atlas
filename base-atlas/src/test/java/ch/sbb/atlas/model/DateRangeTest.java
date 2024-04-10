@@ -74,4 +74,11 @@ class DateRangeTest {
     assertThat(dateRange.containsEveryDateOf(dateRange)).isTrue();
     assertThat(other.containsEveryDateOf(dateRange)).isFalse();
   }
+
+  @Test
+  void shouldEvaluateDateRangeContainsToday() {
+    DateRange dateRange = DateRange.builder().from(LocalDate.now().minusDays(1)).to(LocalDate.now().plusDays(1)).build();
+
+    assertThat(dateRange.containsToday()).isTrue();
+  }
 }
