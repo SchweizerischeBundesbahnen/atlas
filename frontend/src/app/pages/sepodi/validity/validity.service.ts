@@ -9,7 +9,7 @@ export class ValidityService {
 
   validity!: Validity
 
-  constructor(public dialogService: DialogService) {}
+  constructor(private dialogService: DialogService) {}
 
   initValidity(form: FormGroup){
     this.validity = {
@@ -17,7 +17,7 @@ export class ValidityService {
       initValidFrom: form?.value.validFrom,
       formValidTo: undefined,
       formValidFrom: undefined
-    }
+    };
   }
 
   updateValidity(form: FormGroup){
@@ -25,7 +25,7 @@ export class ValidityService {
       ...this.validity,
       formValidTo: form?.value?.validTo,
       formValidFrom: form?.value?.validFrom
-    }
+    };
   }
 
   confirmValidityDialog() {
@@ -33,7 +33,7 @@ export class ValidityService {
       return this.dialogService.confirm({
         title: 'DIALOG.CONFIRM_VALIDITY_HAS_NOT_CHANGED_TITLE',
         message: 'DIALOG.CONFIRM_VALIDITY_HAS_NOT_CHANGED',
-      })
+      });
     }
     return of(true);
   }
