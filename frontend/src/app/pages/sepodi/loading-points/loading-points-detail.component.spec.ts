@@ -25,7 +25,7 @@ import { LoadingPointsService, ServicePointsService } from '../../../api';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import moment from 'moment/moment';
 import { LoadingPointsDetailComponent } from './loading-points-detail.component';
-import { LOADING_POINT } from '../../../../test/data/loading-point';
+import {LOADING_POINT} from '../../../../test/data/loading-point';
 import { BERN_WYLEREGG } from '../../../../test/data/service-point';
 import { UserDetailInfoComponent } from '../../../core/components/base-detail/user-edit-info/user-detail-info.component';
 import {DetailPageContainerComponent} from "../../../core/components/detail-page-container/detail-page-container.component";

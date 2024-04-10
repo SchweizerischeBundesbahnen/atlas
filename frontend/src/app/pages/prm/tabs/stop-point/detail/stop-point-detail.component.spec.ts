@@ -25,6 +25,7 @@ import {InfoIconComponent} from '../../../../../core/form-components/info-icon/i
 import {DetailFooterComponent} from "../../../../../core/components/detail-footer/detail-footer.component";
 import {PrmVariantInfoServiceService} from "../prm-variant-info-service.service";
 import SpyObj = jasmine.SpyObj;
+import {ValidityService} from "../../../../sepodi/validity/validity.service";
 
 const authService: Partial<AuthService> = {};
 describe('StopPointDetailComponent', () => {
@@ -77,6 +78,7 @@ describe('StopPointDetailComponent', () => {
       ],
       imports: [AppTestingModule],
       providers: [
+        ValidityService,
         { provide: AuthService, useValue: authService },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService },

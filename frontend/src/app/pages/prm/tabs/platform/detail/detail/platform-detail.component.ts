@@ -7,7 +7,7 @@ import {
   ReadPlatformVersion,
   ReadServicePointVersion,
   ReadStopPointVersion,
-  ReadTrafficPointElementVersion
+  ReadTrafficPointElementVersion,
 } from "../../../../../../api";
 import {FormGroup} from "@angular/forms";
 import {NotificationService} from "../../../../../../core/notification/notification.service";
@@ -17,10 +17,12 @@ import {VersionsHandlingService} from "../../../../../../core/versioning/version
 import {CompletePlatformFormGroup, PlatformFormGroupBuilder, ReducedPlatformFormGroup} from "../form/platform-form-group";
 import {DateRange} from "../../../../../../core/versioning/date-range";
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
+import {ValidityService} from "../../../../../sepodi/validity/validity.service";
 
 @Component({
   selector: 'app-platforms',
   templateUrl: './platform-detail.component.html',
+  providers: [ValidityService]
 })
 export class PlatformDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
   isNew = false;
@@ -54,6 +56,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
     private notificationService: NotificationService,
     private detailHelperService: DetailHelperService,
     private authService: AuthService,
+    private validityService: ValidityService
   ) {}
 
   ngOnInit(): void {
@@ -126,6 +129,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
     if (this.form.enabled) {
       this.detailHelperService.showCancelEditDialog(this);
     } else {
+      this.validityService.initValidity(this.form)
       this.form.enable();
     }
   }
@@ -140,8 +144,10 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
       );
       if (this.isNew) {
         this.create(platformVersion);
+        this.form.disable();
       } else {
-        this.update(platformVersion);
+        this.validityService.updateValidity(this.form);
+        this.validityService.validateAndDisableForm(() => this.update(platformVersion), this.form);
       }
     }
   }
@@ -153,7 +159,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
     });
   }
 
-  private update(platformVersion: PlatformVersion) {
+  update(platformVersion: PlatformVersion) {
     this.personWithReducedMobilityService
       .updatePlatform(this.selectedVersion.id!, platformVersion)
       .subscribe(() => {
@@ -169,5 +175,4 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
       })
       .then(() => this.ngOnInit());
   }
-
 }

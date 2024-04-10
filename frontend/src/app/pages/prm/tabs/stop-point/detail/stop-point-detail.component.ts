@@ -17,6 +17,7 @@ import {
   StopPointVersion,
 } from '../../../../../api';
 import {PrmMeanOfTransportHelper} from "../../../util/prm-mean-of-transport-helper";
+import {ValidityService} from "../../../../sepodi/validity/validity.service";
 import {ReferencePointCreationHintService} from "./reference-point-creation-hint/reference-point-creation-hint.service";
 
 @Component({
@@ -47,6 +48,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     private authService: AuthService,
     private prmTabsService: PrmTabsService,
     private referencePointCreationHintService: ReferencePointCreationHintService,
+    private validityService: ValidityService
   ) {
   }
 
@@ -78,6 +80,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     if (this.form.enabled) {
       this.showConfirmationDialog();
     } else {
+      this.validityService.initValidity(this.form)
       this.enableForm();
     }
   }
@@ -94,9 +97,11 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
       const writableStopPoint = StopPointFormGroupBuilder.getWritableStopPoint(this.form);
       this.form.disable();
       if (!this.isNew) {
-        this.updateStopPoint(writableStopPoint);
+        this.validityService.updateValidity(this.form);
+        this.validityService.validateAndDisableCustom(() => this.updateStopPoint(writableStopPoint), () => this.disableForm());
       } else {
         this.createStopPoint(writableStopPoint);
+        this.disableForm();
       }
     }
   }
@@ -254,5 +259,4 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
       message: 'PRM.DIALOG.PRM_VARIANT_CHANGES_MSG',
     });
   }
-
 }
