@@ -1,28 +1,23 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RelationTabDetailComponent } from './relation-tab-detail.component';
-import { AppTestingModule } from '../../../../../app.testing.module';
-import { ActivatedRoute } from '@angular/router';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {RelationTabDetailComponent} from './relation-tab-detail.component';
+import {AppTestingModule} from '../../../../../app.testing.module';
+import {ActivatedRoute} from '@angular/router';
 import {
   MockAtlasButtonComponent,
   MockSelectComponent,
   MockSwitchVersionComponent,
   MockUserDetailInfoComponent,
 } from '../../../../../app.testing.mocks';
-import { STOP_POINT } from '../../../util/stop-point-test-data.spec';
-import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
-import {
-  BERN_WYLEREGG_TRAFFIC_POINTS,
-} from '../../../../../../test/data/traffic-point-element';
-import { DetailPageContentComponent } from '../../../../../core/components/detail-page-content/detail-page-content.component';
-import {
-  PersonWithReducedMobilityService,
-  ReadReferencePointVersion,
-  ReadRelationVersion,
-} from '../../../../../api';
-import { of } from 'rxjs';
-import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
-import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
+import {STOP_POINT} from '../../../util/stop-point-test-data.spec';
+import {BERN_WYLEREGG} from '../../../../../../test/data/service-point';
+import {BERN_WYLEREGG_TRAFFIC_POINTS,} from '../../../../../../test/data/traffic-point-element';
+import {DetailPageContentComponent} from '../../../../../core/components/detail-page-content/detail-page-content.component';
+import {PersonWithReducedMobilityService, ReadReferencePointVersion, ReadRelationVersion,} from '../../../../../api';
+import {of} from 'rxjs';
+import {DetailFooterComponent} from '../../../../../core/components/detail-footer/detail-footer.component';
+import {AtlasSpacerComponent} from '../../../../../core/components/spacer/atlas-spacer.component';
 import {ValidityService} from "../../../../sepodi/validity/validity.service";
+import moment from "moment";
 
 const referencePointOverview: ReadReferencePointVersion[] = [
   {
@@ -100,7 +95,6 @@ const relations: ReadRelationVersion[] = [
 describe('RelationTabDetailComponent', () => {
   let component: RelationTabDetailComponent;
   let fixture: ComponentFixture<RelationTabDetailComponent>;
-  let validityService: ValidityService;
 
   let personWithReducedMobilityService = jasmine.createSpyObj('personWithReducedMobilityService', [
     'getReferencePointsOverview',
@@ -148,7 +142,6 @@ describe('RelationTabDetailComponent', () => {
       ],
     });
     fixture = TestBed.createComponent(RelationTabDetailComponent);
-    validityService = TestBed.inject(ValidityService)
     component = fixture.componentInstance;
   });
 
@@ -214,20 +207,19 @@ describe('RelationTabDetailComponent', () => {
   });
 
   it('should save valid form', () => {
-    spyOn(validityService, 'initValidity').and.callThrough();
-    spyOn(validityService, 'validateAndDisableCustom').and.callThrough();
-    spyOn(validityService, 'confirmValidityDialog').and.returnValue(of(true));
-
     personWithReducedMobilityService.getReferencePointsOverview.and.returnValue(
       of(referencePointOverview),
     );
     personWithReducedMobilityService.getRelationsBySloid.and.returnValue(of(relations));
     fixture.detectChanges();
 
-    component.editing = true;
+    component.toggleEdit();
+    expect(component.editing).toBeTrue();
+
+    component.form?.controls.validFrom.setValue(moment('2000-01-02'));
     component.save();
 
-    expect(component.editing).toBe(false);
+    expect(component.editing).toBeFalse();
     expect(personWithReducedMobilityService.updateRelation).toHaveBeenCalledTimes(1);
   });
 });
