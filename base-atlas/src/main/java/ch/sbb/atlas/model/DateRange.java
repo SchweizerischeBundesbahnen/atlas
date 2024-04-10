@@ -33,6 +33,10 @@ public class DateRange {
     return !localDate.isBefore(from) && !localDate.isAfter(to);
   }
 
+  public boolean containsToday() {
+    return contains(LocalDate.now());
+  }
+
   public boolean overlapsWith(DateRange dateRange) {
     return !to.isBefore(dateRange.getFrom()) && !from.isAfter(dateRange.getTo());
   }

@@ -69,6 +69,22 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
     return updateVersion(currentVersion, editedVersion);
   }
 
+  @Override
+  public RelationVersion updateVersion(RelationVersion currentVersion, RelationVersion editedVersion) {
+    checkStaleObjectIntegrity(currentVersion, editedVersion);
+    editedVersion.setSloid(currentVersion.getSloid());
+    editedVersion.setReferencePointSloid(currentVersion.getReferencePointSloid());
+    editedVersion.setNumber(currentVersion.getNumber());
+
+    List<RelationVersion> existingDbVersions = getAllVersionsBySloidAndReferencePoint(currentVersion.getSloid(),
+        currentVersion.getReferencePointSloid());
+
+    List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
+        editedVersion, existingDbVersions);
+    applyVersioning(versionedObjects);
+    return currentVersion;
+  }
+
   public Optional<RelationVersion> getRelationById(Long id) {
     return relationRepository.findById(id);
   }
