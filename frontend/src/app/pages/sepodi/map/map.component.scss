@@ -14,25 +14,25 @@ $map-overlay-element-shadow: 0 0 5px 1px variables.$gray-700;
   .map-style-selector {
     background: white;
     position: absolute;
-    bottom: 135px;
+    bottom: 155px;
     right: 15px;
   }
 
   .zoom-in {
-    bottom: 245px;
+    bottom: 265px;
   }
 
   .zoom-out {
-    bottom: 190px;
+    bottom: 210px;
   }
 
   .zoom-home {
-    bottom: 25px;
+    bottom: 45px;
   }
 
   .map-styles {
     position: absolute;
-    bottom: 135px;
+    bottom: 155px;
     right: 80px;
 
     button {
@@ -52,13 +52,13 @@ $map-overlay-element-shadow: 0 0 5px 1px variables.$gray-700;
   .map-legend-button {
     background: white;
     position: absolute;
-    bottom: 80px;
+    bottom: 100px;
     right: 15px;
   }
 
   .map-legend {
     position: absolute;
-    bottom: 80px;
+    bottom: 100px;
     right: 80px;
   }
 
