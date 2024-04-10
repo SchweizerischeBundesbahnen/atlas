@@ -167,15 +167,6 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
     expect(snackBarContainer.classList).toContain('success');
     expect(router.navigate).toHaveBeenCalled();
   });
-  it('should call confirm on save', () => {
-    //spyOn(component, 'confirmValidity');
-
-    component.toggleEdit();
-    component.form.markAsDirty();
-    component.save();
-
-    //expect(component.confirmValidity).toHaveBeenCalled();
-  });
 });
 
 describe('TimetableFieldNumberDetailComponent Detail page add new version', () => {
