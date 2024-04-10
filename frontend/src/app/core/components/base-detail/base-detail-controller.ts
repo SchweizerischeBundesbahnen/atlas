@@ -2,7 +2,7 @@ import {Directive, OnInit} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {Record} from './record';
 import {DialogService} from '../dialog/dialog.service';
-import {EMPTY, Observable, of, Subject, take} from 'rxjs';
+import {EMPTY, Observable, of, Subject} from 'rxjs';
 import {Page} from '../../model/page';
 import {NotificationService} from '../../notification/notification.service';
 import {ApplicationRole, ApplicationType, Status} from '../../../api';
@@ -12,8 +12,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {DetailFormComponent} from '../../leave-guard/leave-dirty-form-guard.service';
 import {VersionsHandlingService} from '../../versioning/versions-handling.service';
 import {DateRange} from '../../versioning/date-range';
-import {ValidityConfirmationService} from "../../../pages/sepodi/validity/validity-confirmation.service";
-import {Validity} from "../../../pages/model/validity";
 import {ValidityService} from "../../../pages/sepodi/validity/validity.service";
 
 @Directive()
@@ -28,7 +26,6 @@ export abstract class BaseDetailController<TYPE extends Record>
   showSwitch: boolean | undefined;
   switchVersionEvent = new Subject<Record>();
   maxValidity!: DateRange;
-  validity!: Validity
 
 
   protected constructor(
@@ -37,7 +34,6 @@ export abstract class BaseDetailController<TYPE extends Record>
     protected notificationService: NotificationService,
     protected authService: AuthService,
     protected activatedRoute: ActivatedRoute,
-    protected validityConfirmationService: ValidityConfirmationService,
     protected validityService: ValidityService
   ) {}
 
@@ -110,7 +106,7 @@ export abstract class BaseDetailController<TYPE extends Record>
       this.showConfirmationDialog();
     } else {
       this.form.enable();
-      this.validity = this.validityService.initValidity(this.form)
+      this.validityService.initValidity(this.form);
       this.disableUneditableFormFields();
     }
   }
@@ -122,8 +118,8 @@ export abstract class BaseDetailController<TYPE extends Record>
       if (this.getId()) {
         this.confirmBoTransfer().subscribe((confirmed) => {
           if (confirmed) {
-            this.validity = this.validityService.formValidity(this.validity, this.form)
-            this.confirmValidity()
+            this.validityService.updateValidity(this.form)
+            this.validityService.validateAndDisableForm(()=> this.updateRecord(), this.form)
           } else {
             this.form.enable();
           }
@@ -291,7 +287,7 @@ export abstract class BaseDetailController<TYPE extends Record>
     return of(true);
   }
 
-  private confirmBoTransfer(): Observable<boolean> {
+  confirmBoTransfer(): Observable<boolean> {
     const currentlySelectedBo = this.form.value.businessOrganisation;
     const permission = this.authService.getApplicationUserPermission(this.getApplicationType());
     if (
@@ -306,16 +302,5 @@ export abstract class BaseDetailController<TYPE extends Record>
       });
     }
     return of(true);
-  }
-
-  confirmValidity(){
-    this.validityConfirmationService.confirmValidity(this.validity)
-      .pipe(take(1))
-      .subscribe((confirmed) => {
-        if (confirmed) {
-          this.form.disable();
-          this.updateRecord();
-        }
-      });
   }
 }

@@ -9,7 +9,7 @@ import {
 } from '../../../api';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateRange } from '../../../core/versioning/date-range';
-import {catchError, EMPTY, Observable, of, take} from 'rxjs';
+import {catchError, EMPTY, Observable, of} from 'rxjs';
 import { Pages } from '../../pages';
 import { FormGroup } from '@angular/forms';
 import {
@@ -134,7 +134,7 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
       this.showConfirmationDialog();
     } else {
       this.form.enable();
-      this.validity = this.validityService.initValidity(this.form);
+      this.validityService.initValidity(this.form);
     }
   }
 
@@ -178,8 +178,9 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
               this.create(this.loadingPointVersion);
               this.form.disable();
             } else {
-              this.validity = this.validityService.formValidity(this.validity, this.form);
-              this.confirmValidity(this.loadingPointVersion)
+
+              this.validityService.updateValidity(this.form);
+              this.validityService.validateAndDisableForm(() => this.update(this.selectedVersion.id!, this.loadingPointVersion), this.form);
             }
           }
         });
@@ -226,17 +227,4 @@ export class LoadingPointsDetailComponent implements DetailFormComponent {
       return EMPTY;
     };
   }
-
-  confirmValidity(loadingPointVersion: CreateLoadingPointVersion){
-    this.validityConfirmationService.confirmValidity(
-      this.validity
-    ).pipe(take(1))
-      .subscribe((confirmed) => {
-        if (confirmed) {
-          this.update(this.selectedVersion.id!, loadingPointVersion);
-          this.form.disable();
-        }
-      });
-  }
-
 }

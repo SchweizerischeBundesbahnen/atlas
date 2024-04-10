@@ -21,7 +21,6 @@ import { AtlasFieldLengthValidator } from '../../../../core/validation/field-len
 import { BusinessOrganisationDetailFormGroup } from './business-organisation-detail-form-group';
 import { BusinessOrganisationLanguageService } from '../../../../core/form-components/bo-select/business-organisation-language.service';
 import { AuthService } from '../../../../core/auth/auth.service';
-import {ValidityConfirmationService} from "../../../sepodi/validity/validity-confirmation.service";
 import {ValidityService} from "../../../sepodi/validity/validity.service";
 
 @Component({
@@ -43,11 +42,10 @@ export class BusinessOrganisationDetailComponent
     protected dialogService: DialogService,
     protected authService: AuthService,
     protected activatedRoute: ActivatedRoute,
-    protected validityConfirmationService: ValidityConfirmationService,
     protected validityService: ValidityService,
 
   ) {
-    super(router, dialogService, notificationService, authService, activatedRoute, validityConfirmationService, validityService);
+    super(router, dialogService, notificationService, authService, activatedRoute, validityService);
   }
 
   ngOnInit() {

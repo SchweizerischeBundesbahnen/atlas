@@ -19,13 +19,13 @@ import {DialogService} from '../../../../../core/components/dialog/dialog.servic
 import {StopPointFormGroupBuilder} from '../form/stop-point-detail-form-group';
 import {MeanOfTransport, PersonWithReducedMobilityService} from '../../../../../api';
 import {NotificationService} from '../../../../../core/notification/notification.service';
-import {STOP_POINT, STOP_POINT_COMPLETE, STOP_POINT_VESION} from '../../../util/stop-point-test-data.spec';
+import {STOP_POINT, STOP_POINT_COMPLETE} from '../../../util/stop-point-test-data.spec';
 import {BERN_WYLEREGG} from '../../../../../../test/data/service-point';
 import {InfoIconComponent} from '../../../../../core/form-components/info-icon/info-icon.component';
 import {DetailFooterComponent} from "../../../../../core/components/detail-footer/detail-footer.component";
 import {PrmVariantInfoServiceService} from "../prm-variant-info-service.service";
 import SpyObj = jasmine.SpyObj;
-import {ValidityConfirmationService} from "../../../../sepodi/validity/validity-confirmation.service";
+import {ValidityService} from "../../../../sepodi/validity/validity.service";
 
 const authService: Partial<AuthService> = {};
 describe('StopPointDetailComponent', () => {
@@ -56,10 +56,6 @@ describe('StopPointDetailComponent', () => {
     parent: { data: of({ stopPoints: [STOP_POINT], servicePoints: [BERN_WYLEREGG] }) },
   };
 
-  const validityConfirmationService = jasmine.createSpyObj<ValidityConfirmationService>([
-    'confirmValidity','confirmValidityOverServicePoint'
-  ]);
-
   beforeEach(() => {
     dialogService = jasmine.createSpyObj('dialogService', ['confirm']);
     dialogService.confirm.and.returnValue(of(true));
@@ -82,11 +78,11 @@ describe('StopPointDetailComponent', () => {
       ],
       imports: [AppTestingModule],
       providers: [
+        ValidityService,
         { provide: AuthService, useValue: authService },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService },
         { provide: PrmVariantInfoServiceService, useValue: prmVariantInfoServiceService },
-        { provide: ValidityConfirmationService, useValue: validityConfirmationService },
         { provide: NotificationService, useValue: notificationService },
         TranslatePipe,
       ],
@@ -95,8 +91,6 @@ describe('StopPointDetailComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     router = TestBed.inject(Router);
-    validityConfirmationService.confirmValidity.and.returnValue(of(true));
-    validityConfirmationService.confirmValidityOverServicePoint.and.returnValue(of(true));
   });
 
   it('should create', () => {
@@ -308,39 +302,5 @@ describe('StopPointDetailComponent', () => {
     expect(component.form.controls.number.value).toEqual(BERN_WYLEREGG.number.number);
     expect(component.form.controls.sloid.value).toEqual(BERN_WYLEREGG.sloid);
     expect(buildEmptyWithReducedValidationFormGroupSpy).toHaveBeenCalled();
-  });
-
-  it('should call confirm on save', () => {
-    validityConfirmationService.confirmValidityOverServicePoint.and.returnValue(of(true))
-
-    spyOn(component, 'confirmValidity');
-
-    component.toggleEdit();
-    component.form.markAsDirty();
-    component.save();
-
-    expect(component.confirmValidity).toHaveBeenCalled();
-  });
-
-  it('should call update when confirmValidity returns true', () => {
-    validityConfirmationService.confirmValidity.and.returnValue(of(true))
-
-    spyOn(component, 'updateStopPoint').and.callThrough();
-
-    component.confirmValidity(STOP_POINT_VESION);
-
-    expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
-    expect(component.updateStopPoint).toHaveBeenCalled();
-  });
-
-  it('should not call update when confirmValidity returns false', () => {
-    validityConfirmationService.confirmValidity.and.returnValue(of(false))
-
-    spyOn(component, 'updateStopPoint').and.callThrough();
-
-    component.confirmValidity(STOP_POINT_VESION);
-
-    expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
-    expect(component.updateStopPoint).not.toHaveBeenCalled();
   });
 });

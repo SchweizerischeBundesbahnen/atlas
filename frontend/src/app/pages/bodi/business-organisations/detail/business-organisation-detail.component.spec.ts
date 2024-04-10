@@ -1,5 +1,5 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormBuilder} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { BusinessOrganisationsService, BusinessOrganisationVersion } from '../../../../api';
@@ -14,7 +14,6 @@ import { FormModule } from '../../../../core/module/form.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
-import {ValidityConfirmationService} from "../../../sepodi/validity/validity-confirmation.service";
 import {ValidityService} from "../../../sepodi/validity/validity.service";
 
 const businessOrganisationVersion: BusinessOrganisationVersion = {
@@ -72,25 +71,24 @@ let component: BusinessOrganisationDetailComponent;
 let fixture: ComponentFixture<BusinessOrganisationDetailComponent>;
 let router: Router;
 
+
+
 describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationVersion', () => {
   const mockBusinessOrganisationsService = jasmine.createSpyObj('businessOrganisationsService', [
     'updateBusinessOrganisationVersion',
     'deleteBusinessOrganisation',
   ]);
+
   const mockData = {
     businessOrganisationDetail: businessOrganisationVersion,
   };
 
-  const validityConfirmationService = jasmine.createSpyObj<ValidityConfirmationService>([
-    'confirmValidity','confirmValidityOverServicePoint'
-  ]);
-
-  const validityService = jasmine.createSpyObj<ValidityService>([
-    'initValidity', 'formValidity'
+  const validityService = jasmine.createSpyObj<ValidityService>('validityService', [
+    'initValidity', 'updateValidity', 'validateAndDisableForm', 'validateAndDisableCustom', 'confirmValidityDialog'
   ]);
 
   beforeEach(() => {
-    setupTestBed(mockBusinessOrganisationsService, validityConfirmationService,validityService , mockData);
+    setupTestBed(mockBusinessOrganisationsService, validityService , mockData);
 
     fixture = TestBed.createComponent(BusinessOrganisationDetailComponent);
     component = fixture.componentInstance;
@@ -145,40 +143,8 @@ describe('BusinessOrganisationDetailComponent for existing BusinessOrganisationV
     expect(snackBarContainer.classList).toContain('success');
     expect(router.navigate).toHaveBeenCalled();
   });
-  it('should call confirm on save', () => {
-    validityConfirmationService.confirmValidity.and.returnValue(of(true));
-    spyOn(component, 'confirmValidity');
 
-    component.toggleEdit();
-    component.form.markAsDirty();
-    component.save();
 
-    expect(component.confirmValidity).toHaveBeenCalled();
-  });
-
-  it('should call update when confirmValidity returns true', () => {
-    validityConfirmationService.confirmValidity.and.returnValue(of(true));
-    spyOn(component, 'updateRecord').and.callThrough();
-    mockBusinessOrganisationsService.updateBusinessOrganisationVersion.and.returnValue(
-      of(businessOrganisationVersion)
-    );
-
-    component.confirmValidity();
-
-    expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
-    expect(component.updateRecord).toHaveBeenCalled();
-  });
-
-  it('should not call update when confirmValidity returns false', () => {
-    validityConfirmationService.confirmValidity.and.returnValue(of(false))
-
-    spyOn(component, 'updateRecord').and.callThrough();
-
-    component.confirmValidity();
-
-    expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
-    expect(component.updateRecord).not.toHaveBeenCalled();
-  });
 });
 
 describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersion', () => {
@@ -189,14 +155,11 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
     businessOrganisationDetail: 'add',
   };
 
-  const validityConfirmationService = jasmine.createSpyObj<ValidityConfirmationService>([
-    'confirmValidity','confirmValidityOverServicePoint'
-  ]);
-  const validityService = jasmine.createSpyObj<ValidityService>([
-    'initValidity', 'formValidity'
+  const validityService = jasmine.createSpyObj<ValidityService>('validityService',[
+    'initValidity', 'updateValidity', 'validateAndDisableForm'
   ]);
   beforeEach(() => {
-    setupTestBed(mockLinesService, validityConfirmationService, validityService, mockData);
+    setupTestBed(mockLinesService, validityService, mockData);
 
     fixture = TestBed.createComponent(BusinessOrganisationDetailComponent);
     component = fixture.componentInstance;
@@ -239,7 +202,6 @@ describe('BusinessOrganisationDetailComponent for new BusinessOrganisationVersio
 
 function setupTestBed(
   businessOrganisationsService: BusinessOrganisationsService,
-  validityConfirmationService: ValidityConfirmationService,
   validityService: ValidityService,
   data: { businessOrganisationDetail: string | BusinessOrganisationVersion }
 ) {
@@ -258,7 +220,6 @@ function setupTestBed(
       { provide: FormBuilder },
       { provide: BusinessOrganisationsService, useValue: businessOrganisationsService },
       { provide: AuthService, useValue: authServiceMock },
-      {provide: ValidityConfirmationService, useValue: validityConfirmationService},
       {provide: ValidityService, useValue: validityService},
       { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
       { provide: TranslatePipe },
