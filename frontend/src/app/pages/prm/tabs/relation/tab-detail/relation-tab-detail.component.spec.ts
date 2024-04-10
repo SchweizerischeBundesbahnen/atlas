@@ -213,7 +213,7 @@ describe('RelationTabDetailComponent', () => {
     expect(component.currentRelationId).toBe(1000);
   });
 
-  fit('should save valid form', () => {
+  it('should save valid form', () => {
     spyOn(validityService, 'initValidity').and.callThrough();
     spyOn(validityService, 'validateAndDisableCustom').and.callThrough();
     spyOn(validityService, 'confirmValidityDialog').and.returnValue(of(true));
