@@ -3,6 +3,7 @@ package ch.sbb.prm.directory.service;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.RecordingStatus;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
+import ch.sbb.atlas.service.OverviewService;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
@@ -54,8 +55,9 @@ public abstract class PrmRelatableVersionableService<T extends Relatable & PrmVe
     if (!stopPointService.isReduced(version.getParentServicePointSloid())) {
       Map<String, List<ReferencePointVersion>> referencePoints = referencePointRepository.findByParentServicePointSloid(
           version.getParentServicePointSloid()).stream().collect(Collectors.groupingBy(ReferencePointVersion::getSloid));
-      referencePoints.forEach((referencePointSloid, versions) -> {
-        RelationVersion relationVersion = RelationUtil.buildRelationVersion(version, referencePointSloid,
+
+      referencePoints.forEach((referencePointSloid, referencePointVersions) -> {
+        RelationVersion relationVersion = RelationUtil.buildRelationVersion(version, referencePointVersions,
             getReferencePointElementType());
         relationService.save(relationVersion);
       });
@@ -69,8 +71,8 @@ public abstract class PrmRelatableVersionableService<T extends Relatable & PrmVe
       return elementRecordingStatus;
     }
 
-    boolean relationsIncomplete = relations.stream()
-        .anyMatch(relation -> relation.getRecordingStatus() == RecordingStatus.INCOMPLETE);
+    boolean relationsIncomplete =
+        OverviewService.getPrioritizedVersion(relations).getRecordingStatus() == RecordingStatus.INCOMPLETE;
 
     if (relationsIncomplete) {
       return RecordingStatus.INCOMPLETE;
