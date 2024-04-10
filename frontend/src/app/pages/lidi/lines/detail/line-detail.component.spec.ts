@@ -155,14 +155,6 @@ describe('LineDetailComponent for existing lineVersion', () => {
     expect(snackBarContainer.classList).toContain('success');
     expect(router.navigate).toHaveBeenCalled();
   });
-
-  it('should call confirm on save', () => {
-    component.toggleEdit();
-    component.form.markAsDirty();
-    component.save();
-
-    //expect(validitySer.confirmValidity).toHaveBeenCalled();
-  });
 });
 
 describe('LineDetailComponent for new lineVersion', () => {
