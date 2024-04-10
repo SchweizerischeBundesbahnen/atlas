@@ -26,10 +26,14 @@ public abstract class PrmVersionableService<T extends PrmVersionable> {
   protected abstract void applyVersioning(List<VersionedObject> versionedObjects);
 
   public T updateVersion(T currentVersion, T editedVersion) {
+    List<T> existingDbVersions = getAllVersions(currentVersion.getSloid());
+    return updateVersion(currentVersion, editedVersion, existingDbVersions);
+  }
+
+  public T updateVersion(T currentVersion, T editedVersion, List<T> existingDbVersions) {
     checkStaleObjectIntegrity(currentVersion, editedVersion);
     editedVersion.setSloid(currentVersion.getSloid());
     editedVersion.setNumber(currentVersion.getNumber());
-    List<T> existingDbVersions = getAllVersions(currentVersion.getSloid());
 
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, existingDbVersions);
