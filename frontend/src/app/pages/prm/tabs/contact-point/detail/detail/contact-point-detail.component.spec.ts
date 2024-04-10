@@ -2,7 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ContactPointDetailComponent} from './contact-point-detail.component';
 import {
-  ContactPointType, ContactPointVersion,
+  ContactPointType,
   PersonWithReducedMobilityService,
   ReadContactPointVersion,
   StandardAttributeType
@@ -40,7 +40,6 @@ import {SplitServicePointNumberPipe} from "../../../../../../core/search-service
 import moment from "moment";
 import SpyObj = jasmine.SpyObj;
 import {RouterTestingModule} from "@angular/router/testing";
-import {ValidityConfirmationService} from "../../../../../sepodi/validity/validity-confirmation.service";
 
 const contactPoint: ReadContactPointVersion[] = [
   {
@@ -69,25 +68,6 @@ const contactPoint: ReadContactPointVersion[] = [
   },
 ];
 
-const contactPointCreate: ContactPointVersion = {
-    creationDate: '2024-01-22T13:52:30.598026',
-    creator: 'e524381',
-    editionDate: '2024-01-22T13:52:30.598026',
-    editor: 'e524381',
-    id: 1000,
-    sloid: 'ch:1:sloid:12345:1',
-    validFrom: new Date('2000-01-01'),
-    validTo: new Date('2000-12-31'),
-    etagVersion: 0,
-    parentServicePointSloid: 'ch:1:sloid:7000',
-    designation: 'designation',
-    additionalInformation: 'additional',
-    inductionLoop: StandardAttributeType.ToBeCompleted,
-    openingHours: 'openingHours',
-    wheelchairAccess: StandardAttributeType.ToBeCompleted,
-    type: ContactPointType.InformationDesk,
-  };
-
 const authService: Partial<AuthService> = {
   hasPermissionsToWrite(): boolean {
     return true;
@@ -102,10 +82,6 @@ describe('ContactPointDetailComponent', () => {
     'personWithReducedMobilityService',
     ['createContactPoint', 'updateContactPoint'],
   );
-
-  const validityConfirmationService = jasmine.createSpyObj<ValidityConfirmationService>([
-    'confirmValidity','confirmValidityOverServicePoint'
-  ]);
 
   personWithReducedMobilityService.createContactPoint.and.returnValue(of(contactPoint[0]));
   personWithReducedMobilityService.updateContactPoint.and.returnValue(of(contactPoint));
@@ -161,7 +137,6 @@ describe('ContactPointDetailComponent', () => {
         {provide: ActivatedRoute, useValue: activatedRouteMock},
         {provide: NotificationService, useValue: notificationService},
         {provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService},
-        {provide: ValidityConfirmationService, useValue: validityConfirmationService},
         {provide: DialogService, useValue: dialogService},
         TranslatePipe,
         SplitServicePointNumberPipe,
@@ -215,8 +190,6 @@ describe('ContactPointDetailComponent', () => {
       fixture = TestBed.createComponent(ContactPointDetailComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
-      validityConfirmationService.confirmValidity.and.returnValue(of(true));
-      validityConfirmationService.confirmValidityOverServicePoint.and.returnValue(of(true));
     });
 
     it('should init', () => {
@@ -256,36 +229,6 @@ describe('ContactPointDetailComponent', () => {
       component.save();
       expect(personWithReducedMobilityService.updateContactPoint).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalled();
-    });
-
-    it('should call confirm on save', () => {
-      spyOn(component, 'confirmValidity');
-
-      component.toggleEdit();
-      component.form.markAsDirty();
-      component.save();
-
-      expect(component.confirmValidity).toHaveBeenCalled();
-    });
-
-    it('should call update when confirmValidity returns true', () => {
-      spyOn(component, 'update').and.callThrough();
-
-      component.confirmValidity(contactPointCreate);
-
-      expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
-      expect(component.update).toHaveBeenCalled();
-    });
-
-    it('should not call update when confirmValidity returns false', () => {
-      validityConfirmationService.confirmValidity.and.returnValue(of(false))
-
-      spyOn(component, 'update').and.callThrough();
-
-      component.confirmValidity(contactPointCreate);
-
-      expect(validityConfirmationService.confirmValidity).toHaveBeenCalled();
-      expect(component.update).not.toHaveBeenCalled();
     });
   });
 });

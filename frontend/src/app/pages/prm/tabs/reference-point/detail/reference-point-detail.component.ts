@@ -13,9 +13,6 @@ import {
   ReferencePointVersion,
 } from '../../../../../api';
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../core/detail/detail-helper.service";
-import {take} from "rxjs";
-import {ValidityConfirmationService} from "../../../../sepodi/validity/validity-confirmation.service";
-import {Validity} from "../../../../model/validity";
 import {ValidityService} from "../../../../sepodi/validity/validity.service";
 
 @Component({
@@ -37,15 +34,12 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
 
   businessOrganisations: string[] = [];
 
-  validity!: Validity
-
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private personWithReducedMobilityService: PersonWithReducedMobilityService,
     private notificationService: NotificationService,
     private detailHelperService: DetailHelperService,
-    private validityConfirmationService: ValidityConfirmationService,
     private validityService: ValidityService
   ) {}
 
@@ -100,7 +94,7 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
     if (this.form.enabled) {
       this.detailHelperService.showCancelEditDialog(this);
     } else {
-      this.validity = this.validityService.initValidity(this.form)
+      this.validityService.initValidity(this.form)
       this.form.enable();
     }
   }
@@ -114,9 +108,10 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
       );
       if (this.isNew) {
         this.create(referencePointVersion);
+        this.form.disable();
       } else {
-       this.validity = this.validityService.formValidity(this.validity, this.form)
-       this.confirmValidity(referencePointVersion)
+        this.validityService.updateValidity(this.form);
+        this.validityService.validateAndDisableForm(() => this.update(referencePointVersion), this.form);
       }
     }
   }
@@ -144,16 +139,6 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
             relativeTo: this.route,
           })
           .then(() => this.ngOnInit());
-      });
-  }
-  confirmValidity(referencePointVersion: ReferencePointVersion){
-    this.validityConfirmationService.confirmValidity(this.validity)
-      .pipe(take(1))
-      .subscribe((confirmed) => {
-        if (confirmed) {
-          this.update(referencePointVersion);
-          this.form.disable();
-        }
       });
   }
 }
