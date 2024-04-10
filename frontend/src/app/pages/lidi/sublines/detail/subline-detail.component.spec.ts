@@ -23,6 +23,7 @@ import { SelectComponent } from '../../../../core/form-components/select/select.
 import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
 import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
 import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import {ValidityService} from "../../../sepodi/validity/validity.service";
 
 const sublineVersion: SublineVersion = {
   id: 1234,
@@ -76,7 +77,9 @@ const error = new HttpErrorResponse({
 let component: SublineDetailComponent;
 let fixture: ComponentFixture<SublineDetailComponent>;
 let router: Router;
-
+const validityService = jasmine.createSpyObj<ValidityService>([
+  'initValidity', 'updateValidity'
+]);
 describe('SublineDetailComponent for existing sublineVersion', () => {
   const mockSublinesService = jasmine.createSpyObj('sublinesService', [
     'updateSublineVersion',
@@ -88,7 +91,6 @@ describe('SublineDetailComponent for existing sublineVersion', () => {
 
   beforeEach(() => {
     setupTestBed(mockSublinesService, mockData);
-
     fixture = TestBed.createComponent(SublineDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -206,6 +208,7 @@ function setupTestBed(
       { provide: FormBuilder },
       { provide: SublinesService, useValue: sublinesService },
       { provide: AuthService, useValue: authServiceMock },
+      {provide: ValidityService, useValue: validityService},
       { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
       TranslatePipe,
     ],

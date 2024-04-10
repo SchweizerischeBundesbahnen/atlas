@@ -79,6 +79,7 @@ describe('ReferencePointDetailComponent', () => {
     'personWithReducedMobilityService',
     ['createReferencePoint', 'updateReferencePoint'],
   );
+
   personWithReducedMobilityService.createReferencePoint.and.returnValue(of(referencePoint[0]));
   personWithReducedMobilityService.updateReferencePoint.and.returnValue(of(referencePoint));
 

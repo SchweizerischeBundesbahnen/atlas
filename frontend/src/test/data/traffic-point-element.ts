@@ -1,5 +1,5 @@
 import {
-  ContainerReadTrafficPointElementVersion,
+  ContainerReadTrafficPointElementVersion, CreateTrafficPointElementVersion,
   ReadTrafficPointElementVersion,
 } from '../../app/api';
 
@@ -100,3 +100,30 @@ export const BERN_WYLEREGG_TRAFFIC_POINTS_CONTAINER: ContainerReadTrafficPointEl
   objects: BERN_WYLEREGG_TRAFFIC_POINTS,
   totalCount: 2,
 };
+
+export const BERN_WYLEREGG_TRAFFIC_POINTS_CREATE: CreateTrafficPointElementVersion = {
+  creationDate: '2019-07-22T14:30:55',
+  creator: 'fs45117',
+  editionDate: '2020-04-12T23:57:10',
+  editor: 'GSU_DIDOK',
+  id: 9298,
+  designation: undefined,
+  designationOperational: '1',
+  length: undefined,
+  boardingAreaHeight: undefined,
+  compassDirection: 53.0,
+  trafficPointElementType: 'BOARDING_PLATFORM',
+  sloid: 'ch:1:sloid:89008:0:1',
+  parentSloid: undefined,
+  validFrom: new Date('2019-07-22'),
+  validTo: new Date('2099-12-31'),
+  etagVersion: 0,
+  trafficPointElementGeolocation: {
+    spatialReference: 'LV95',
+    north: 1201104.862,
+    east: 2600795.343,
+    height: 553.9,
+  },
+  numberWithoutCheckDigit: 8589008,
+  hasGeolocation: true,
+}

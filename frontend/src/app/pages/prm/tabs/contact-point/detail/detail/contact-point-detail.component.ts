@@ -13,10 +13,12 @@ import {VersionsHandlingService} from "../../../../../../core/versioning/version
 import {ContactPointFormGroup, ContactPointFormGroupBuilder} from "../form/contact-point-form-group";
 import {DateRange} from "../../../../../../core/versioning/date-range";
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
+import {ValidityService} from "../../../../../sepodi/validity/validity.service";
 
 @Component({
   selector: 'app-contact-point-detail',
   templateUrl: './contact-point-detail.component.html',
+  providers: [ValidityService]
 })
 export class ContactPointDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
   isNew = false;
@@ -38,6 +40,7 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent,
     private personWithReducedMobilityService: PersonWithReducedMobilityService,
     private notificationService: NotificationService,
     private detailHelperService: DetailHelperService,
+    private validityService: ValidityService,
   ) {}
 
   ngOnInit(): void {
@@ -91,6 +94,7 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent,
     if (this.form.enabled) {
       this.detailHelperService.showCancelEditDialog(this);
     } else {
+      this.validityService.initValidity(this.form);
       this.form.enable();
     }
   }
@@ -105,7 +109,8 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent,
       if (this.isNew) {
         this.create(contactPointVersion);
       } else {
-        this.update(contactPointVersion);
+        this.validityService.updateValidity(this.form);
+        this.validityService.validateAndDisableForm(() => this.update(contactPointVersion), this.form);
       }
     }
   }
@@ -123,7 +128,7 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent,
       });
   }
 
-  private update(contactPointVersion: ContactPointVersion) {
+  update(contactPointVersion: ContactPointVersion) {
     this.personWithReducedMobilityService
       .updateContactPoint(this.selectedVersion.id!, contactPointVersion)
       .subscribe(() => {
@@ -135,5 +140,4 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent,
           .then(() => this.ngOnInit());
       });
   }
-
 }

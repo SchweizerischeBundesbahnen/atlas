@@ -1,17 +1,24 @@
 import {Component, OnInit} from '@angular/core';
 import {VersionsHandlingService} from "../../../../../../core/versioning/versions-handling.service";
 import {ToiletFormGroup, ToiletFormGroupBuilder} from "../form/toilet-form-group";
-import {PersonWithReducedMobilityService, ReadServicePointVersion, ReadToiletVersion, ToiletVersion} from "../../../../../../api";
+import {
+  PersonWithReducedMobilityService,
+  ReadServicePointVersion,
+  ReadToiletVersion,
+  ToiletVersion
+} from "../../../../../../api";
 import {DetailFormComponent} from "../../../../../../core/leave-guard/leave-dirty-form-guard.service";
 import {DateRange} from "../../../../../../core/versioning/date-range";
 import {FormGroup} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NotificationService} from "../../../../../../core/notification/notification.service";
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
+import {ValidityService} from "../../../../../sepodi/validity/validity.service";
 
 @Component({
   selector: 'app-toilet-detail',
   templateUrl: './toilet-detail.component.html',
+  providers: [ValidityService],
 })
 export class ToiletDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
 
@@ -34,6 +41,7 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent, Detai
     private personWithReducedMobilityService: PersonWithReducedMobilityService,
     private notificationService: NotificationService,
     private detailHelperService: DetailHelperService,
+    private validityService: ValidityService
   ) {}
 
   ngOnInit(): void {
@@ -87,6 +95,7 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent, Detai
     if (this.form.enabled) {
       this.detailHelperService.showCancelEditDialog(this);
     } else {
+      this.validityService.initValidity(this.form)
       this.form.enable();
     }
   }
@@ -100,8 +109,10 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent, Detai
       );
       if (this.isNew) {
         this.create(toiletVersion);
+        this.form.disable();
       } else {
-        this.update(toiletVersion);
+        this.validityService.updateValidity(this.form);
+        this.validityService.validateAndDisableForm(() => this.update(toiletVersion), this.form);
       }
     }
   }
@@ -119,7 +130,7 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent, Detai
       });
   }
 
-  private update(toiletVersion: ToiletVersion) {
+  update(toiletVersion: ToiletVersion) {
     this.personWithReducedMobilityService
       .updateToiletVersion(this.selectedVersion.id!, toiletVersion)
       .subscribe(() => {
@@ -131,5 +142,6 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent, Detai
           .then(() => this.ngOnInit());
       });
   }
-
 }
+
+

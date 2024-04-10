@@ -25,10 +25,12 @@ import { WhitespaceValidator } from '../../../../core/validation/whitespace/whit
 import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import { SublineDetailFormGroup } from './subline-detail-form-group';
 import { AuthService } from '../../../../core/auth/auth.service';
+import {ValidityService} from "../../../sepodi/validity/validity.service";
 
 @Component({
   templateUrl: './subline-detail.component.html',
   styleUrls: ['./subline-detail.component.scss'],
+  providers: [ValidityService],
 })
 export class SublineDetailComponent extends BaseDetailController<SublineVersion> implements OnInit {
   TYPE_OPTIONS = Object.values(SublineType);
@@ -47,8 +49,9 @@ export class SublineDetailComponent extends BaseDetailController<SublineVersion>
     protected dialogService: DialogService,
     protected authService: AuthService,
     protected activatedRoute: ActivatedRoute,
+    protected validityService: ValidityService,
   ) {
-    super(router, dialogService, notificationService, authService, activatedRoute);
+    super(router, dialogService, notificationService, authService, activatedRoute, validityService);
   }
 
   ngOnInit() {

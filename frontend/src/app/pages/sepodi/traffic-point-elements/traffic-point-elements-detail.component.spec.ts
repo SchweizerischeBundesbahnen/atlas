@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import { TrafficPointElementsDetailComponent } from './traffic-point-elements-detail.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -29,12 +29,13 @@ import { ServicePointsService, TrafficPointElementsService } from '../../../api'
 import { DialogService } from '../../../core/components/dialog/dialog.service';
 import moment from 'moment/moment';
 import { BERN_WYLEREGG } from '../../../../test/data/service-point';
-import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../test/data/traffic-point-element';
+import {
+  BERN_WYLEREGG_TRAFFIC_POINTS,
+} from '../../../../test/data/traffic-point-element';
 import { UserDetailInfoComponent } from '../../../core/components/base-detail/user-edit-info/user-detail-info.component';
 import {DetailPageContainerComponent} from "../../../core/components/detail-page-container/detail-page-container.component";
 import {DetailPageContentComponent} from "../../../core/components/detail-page-content/detail-page-content.component";
 import {DetailFooterComponent} from "../../../core/components/detail-footer/detail-footer.component";
-
 const authService: Partial<AuthService> = {};
 const trafficPointMapService = jasmine.createSpyObj<TrafficPointMapService>([
   'displayTrafficPointsOnMap',
