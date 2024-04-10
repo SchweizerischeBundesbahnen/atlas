@@ -174,7 +174,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
     'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,s';
 
   const mockTimetableFieldNumbersService = jasmine.createSpyObj('timetableFieldNumbersService', [
-    'createVersion', 'up'
+    'createVersion',
   ]);
   let router: Router;
 
