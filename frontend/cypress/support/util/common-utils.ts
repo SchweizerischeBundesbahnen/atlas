@@ -81,12 +81,24 @@ export default class CommonUtils {
     this.saveVersionWithWait('/line-directory/v1/field-numbers/versions/*');
   }
 
+  static saveTtfnConfirmValidity() {
+    this.saveVersionWithWaitConfirmValidity('/line-directory/v1/field-numbers/versions/*');
+  }
+
   static saveLine() {
     this.saveVersionWithWait('line-directory/v1/lines/versions/*');
   }
 
+  static saveLineConfirmValidity() {
+    this.saveVersionWithWaitConfirmValidity('line-directory/v1/lines/versions/*');
+  }
+
   static saveSubline() {
     this.saveVersionWithWait('line-directory/v1/sublines/versions/*');
+  }
+
+  static saveSublineConfirmValidity() {
+    this.saveVersionWithWaitConfirmValidity('line-directory/v1/sublines/versions/*');
   }
 
   static getTotalRange() {
@@ -96,6 +108,16 @@ export default class CommonUtils {
   static saveVersionWithWait(urlToIntercept: string) {
     cy.intercept('GET', urlToIntercept).as('saveAndGetVersion');
     cy.get(DataCy.SAVE_ITEM).click();
+    cy.wait('@saveAndGetVersion').its('response.statusCode').should('eq', 200);
+    cy.get(DataCy.EDIT_ITEM).should('exist');
+    cy.get(DataCy.DELETE_ITEM).should('exist');
+  }
+
+
+  static saveVersionWithWaitConfirmValidity(urlToIntercept: string) {
+    cy.intercept('GET', urlToIntercept).as('saveAndGetVersion');
+    cy.get(DataCy.SAVE_ITEM).click();
+    cy.get(DataCy.DIALOG_CONFIRM_BUTTON).click();
     cy.wait('@saveAndGetVersion').its('response.statusCode').should('eq', 200);
     cy.get(DataCy.EDIT_ITEM).should('exist');
     cy.get(DataCy.DELETE_ITEM).should('exist');

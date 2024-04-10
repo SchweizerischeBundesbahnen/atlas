@@ -109,7 +109,7 @@ describe('Lines: TableSettings and Routing', { testIsolation: false }, () => {
     cy.get(DataCy.EDIT_ITEM).click();
     const newCHLNR = 'minimal1-changed';
     cy.get(DataCy.SWISS_LINE_NUMBER).clear().type(newCHLNR, { force: true });
-    CommonUtils.saveLine();
+    CommonUtils.saveLineConfirmValidity();
 
     cy.intercept('GET', lineDirectoryUrlPathToIntercept).as('getLines');
     CommonUtils.fromDetailBackToLinesOverview();

@@ -1,7 +1,11 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {PlatformDetailComponent} from './platform-detail.component';
-import {PersonWithReducedMobilityService, ReadPlatformVersion, VehicleAccessAttributeType} from "../../../../../../api";
+import {
+  PersonWithReducedMobilityService,
+  ReadPlatformVersion,
+  VehicleAccessAttributeType
+} from "../../../../../../api";
 import {AuthService} from "../../../../../../core/auth/auth.service";
 import {of} from "rxjs";
 import {DialogService} from "../../../../../../core/components/dialog/dialog.service";

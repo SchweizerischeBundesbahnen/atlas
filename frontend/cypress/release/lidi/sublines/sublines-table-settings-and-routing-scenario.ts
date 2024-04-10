@@ -105,7 +105,7 @@ describe('Sublines: TableSettings and Routing', { testIsolation: false }, () => 
     cy.get(DataCy.EDIT_ITEM).click();
     const newCHTLNR = 'r.31.001:x_-changed';
     cy.get(DataCy.SWISS_SUBLINE_NUMBER).clear().type(newCHTLNR, { force: true });
-    CommonUtils.saveSubline();
+    CommonUtils.saveSublineConfirmValidity();
 
     cy.intercept('GET', sublineDirectoryUrlPathToIntercept).as('getSublines');
     CommonUtils.fromDetailBackToSublinesOverview();

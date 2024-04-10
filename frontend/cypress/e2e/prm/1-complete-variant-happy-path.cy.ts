@@ -184,6 +184,7 @@ describe('PRM use case: complete variant', {testIsolation: false}, () => {
 
     it('Step-5: Save relation', () => {
       cy.get(DataCy.SAVE_ITEM).click().then(() => {
+        cy.get(DataCy.DIALOG_CONFIRM_BUTTON).click();
         cy.get(DataCy.EDIT).should('exist');
       });
     });

@@ -83,8 +83,7 @@ describe('TTFN: TableSettings and Routing', { testIsolation: false }, () => {
     cy.get(DataCy.EDIT_ITEM).click();
     const newDescription = 'Bern - Thun - Interlaken';
     cy.get(DataCy.DESCRIPTION).clear().type(newDescription, { force: true });
-    CommonUtils.saveTtfn();
-
+    CommonUtils.saveTtfnConfirmValidity();
     cy.intercept('GET', '/line-directory/v1/field-numbers?**').as('getTtfns');
     CommonUtils.fromDetailBackToTtfnOverview();
     cy.wait('@getTtfns');
