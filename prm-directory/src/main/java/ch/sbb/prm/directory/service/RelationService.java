@@ -71,6 +71,7 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
 
   @Override
   public RelationVersion updateVersion(RelationVersion currentVersion, RelationVersion editedVersion) {
+    checkStaleObjectIntegrity(currentVersion, editedVersion);
     editedVersion.setReferencePointSloid(currentVersion.getReferencePointSloid());
 
     List<RelationVersion> existingDbVersions = getAllVersionsBySloidAndReferencePoint(currentVersion.getSloid(),
