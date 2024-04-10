@@ -6,6 +6,7 @@ import {UserComponent} from '../user/user.component';
 import {LanguageSwitcherComponent} from '../language-switcher/language-switcher.component';
 import {AppTestingModule} from '../../../app.testing.module';
 import {MaintenanceIconComponent} from './maintenance-icon/maintenance-icon.component';
+import {InfoIconComponent} from "../../form-components/info-icon/info-icon.component";
 
 describe('HeaderComponent', () => {
   const authServiceMock: Partial<AuthService> = {
@@ -24,6 +25,7 @@ describe('HeaderComponent', () => {
         UserComponent,
         LanguageSwitcherComponent,
         MaintenanceIconComponent,
+        InfoIconComponent,
       ],
       imports: [AppTestingModule],
       providers: [{ provide: AuthService, useValue: authServiceMock }],

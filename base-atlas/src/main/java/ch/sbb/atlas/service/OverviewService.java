@@ -53,8 +53,8 @@ public class OverviewService {
     return versionToShow;
   }
 
-  private static <T extends Versionable> T getPrioritizedVersion(List<T> versions) {
-    Optional<T> validToday = versions.stream().filter(i -> DateRange.fromVersionable(i).contains(LocalDate.now())).findFirst();
+  public static <T extends Versionable> T getPrioritizedVersion(List<T> versions) {
+    Optional<T> validToday = versions.stream().filter(i -> DateRange.fromVersionable(i).containsToday()).findFirst();
     Optional<T> validInFuture = versions.stream().filter(i -> i.getValidFrom().isAfter(LocalDate.now())).findFirst();
     return validToday.orElse(validInFuture.orElse(versions.getLast()));
   }
