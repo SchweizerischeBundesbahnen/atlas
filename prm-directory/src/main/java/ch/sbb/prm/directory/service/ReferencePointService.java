@@ -30,6 +30,7 @@ import ch.sbb.prm.directory.search.ReferencePointSearchRestrictions;
 import ch.sbb.prm.directory.util.RelationUtil;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -110,10 +111,10 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
     referencePointValidationService.validatePreconditionBusinessRule(referencePointVersion);
     locationService.allocateSloid(referencePointVersion, SloidType.REFERENCE_POINT);
     setStatusToValidate(referencePointVersion);
-    searchAndUpdatePlatformRelation(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
-    searchAndUpdateToiletRelation(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
-    searchAndUpdateContactPoint(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
-    searchAndUpdateParkingLot(referencePointVersion.getParentServicePointSloid(), referencePointVersion.getSloid());
+    searchAndUpdatePlatformRelation(referencePointVersion);
+    searchAndUpdateToiletRelation(referencePointVersion);
+    searchAndUpdateContactPoint(referencePointVersion);
+    searchAndUpdateParkingLot(referencePointVersion);
 
     return referencePointRepository.saveAndFlush(referencePointVersion);
   }
@@ -131,33 +132,34 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
     return referencePointRepository.findById(id);
   }
 
-  private void searchAndUpdateParkingLot(String parentServicePointSloid, String referencePointSloid) {
+  private void searchAndUpdateParkingLot(ReferencePointVersion referencePointVersion) {
     List<ParkingLotVersion> parkingLotVersions = parkingLotRepository.findByParentServicePointSloid(
-        parentServicePointSloid);
-    searchAndUpdateVersion(parkingLotVersions, referencePointSloid, PARKING_LOT);
+        referencePointVersion.getParentServicePointSloid());
+    searchAndUpdateVersion(parkingLotVersions, referencePointVersion, PARKING_LOT);
   }
 
-  private void searchAndUpdateContactPoint(String parentServicePointSloid, String referencePointSloid) {
+  private void searchAndUpdateContactPoint(ReferencePointVersion referencePointVersion) {
     List<ContactPointVersion> contactPointVersions = contactPointRepository.findByParentServicePointSloid(
-        parentServicePointSloid);
-    searchAndUpdateVersion(contactPointVersions, referencePointSloid, CONTACT_POINT);
+        referencePointVersion.getParentServicePointSloid());
+    searchAndUpdateVersion(contactPointVersions, referencePointVersion, CONTACT_POINT);
   }
 
-  private void searchAndUpdatePlatformRelation(String parentServicePointSloid, String referencePointSloid) {
-    List<PlatformVersion> platformVersions = platformRepository.findByParentServicePointSloid(parentServicePointSloid);
-    searchAndUpdateVersion(platformVersions, referencePointSloid, PLATFORM);
+  private void searchAndUpdatePlatformRelation(ReferencePointVersion referencePointVersion) {
+    List<PlatformVersion> platformVersions =
+        platformRepository.findByParentServicePointSloid(referencePointVersion.getParentServicePointSloid());
+    searchAndUpdateVersion(platformVersions, referencePointVersion, PLATFORM);
   }
 
-  private void searchAndUpdateToiletRelation(String parentServicePointSloid, String referencePointSloid) {
-    List<ToiletVersion> toiletVersions = toiletRepository.findByParentServicePointSloid(parentServicePointSloid);
-    searchAndUpdateVersion(toiletVersions, referencePointSloid, TOILET);
+  private void searchAndUpdateToiletRelation(ReferencePointVersion referencePointVersion) {
+    List<ToiletVersion> toiletVersions = toiletRepository.findByParentServicePointSloid(referencePointVersion.getParentServicePointSloid());
+    searchAndUpdateVersion(toiletVersions, referencePointVersion, TOILET);
   }
 
-  private void searchAndUpdateVersion(List<? extends Relatable> versions, String referencePointSloid,
+  private void searchAndUpdateVersion(List<? extends Relatable> versions, ReferencePointVersion referencePointVersion,
       ReferencePointElementType referencePointElementType) {
-    versions.forEach(
-        version -> relationService.save(RelationUtil.buildRelationVersion(version, referencePointSloid,
-            referencePointElementType)));
+    versions.stream().collect(Collectors.groupingBy(Relatable::getSloid))
+        .forEach((sloid, relatedVersions) -> relationService.save(RelationUtil.buildRelationVersion(relatedVersions,
+            referencePointVersion, referencePointElementType)));
   }
 
   public Page<ReferencePointVersion> findAll(ReferencePointSearchRestrictions searchRestrictions) {
