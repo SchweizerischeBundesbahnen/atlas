@@ -5,7 +5,7 @@ import {
   ParkingLotVersion,
   PersonWithReducedMobilityService,
   ReadParkingLotVersion,
-  ReadServicePointVersion
+  ReadServicePointVersion,
 } from "../../../../../../api";
 import {FormGroup} from "@angular/forms";
 import {NotificationService} from "../../../../../../core/notification/notification.service";
@@ -13,10 +13,12 @@ import {VersionsHandlingService} from "../../../../../../core/versioning/version
 import {ParkingLotFormGroup, ParkingLotFormGroupBuilder} from "../form/parking-lot-form-group";
 import {DateRange} from "../../../../../../core/versioning/date-range";
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
+import {ValidityService} from "../../../../../sepodi/validity/validity.service";
 
 @Component({
   selector: 'app-parking-lot-detail',
   templateUrl: './parking-lot-detail.component.html',
+  providers: [ValidityService]
 })
 export class ParkingLotDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
   isNew = false;
@@ -38,6 +40,7 @@ export class ParkingLotDetailComponent implements OnInit, DetailFormComponent, D
     private personWithReducedMobilityService: PersonWithReducedMobilityService,
     private notificationService: NotificationService,
     private detailHelperService: DetailHelperService,
+    private validityService: ValidityService
   ) {}
 
   ngOnInit(): void {
@@ -91,6 +94,7 @@ export class ParkingLotDetailComponent implements OnInit, DetailFormComponent, D
     if (this.form.enabled) {
       this.detailHelperService.showCancelEditDialog(this);
     } else {
+      this.validityService.initValidity(this.form);
       this.form.enable();
     }
   }
@@ -104,8 +108,10 @@ export class ParkingLotDetailComponent implements OnInit, DetailFormComponent, D
       );
       if (this.isNew) {
         this.create(parkingLotVersion);
+        this.form.disable();
       } else {
-        this.update(parkingLotVersion);
+        this.validityService.updateValidity(this.form);
+        this.validityService.validateAndDisableForm(() => this.update(parkingLotVersion), this.form);
       }
     }
   }
@@ -123,7 +129,7 @@ export class ParkingLotDetailComponent implements OnInit, DetailFormComponent, D
       });
   }
 
-  private update(parkingLotVersion: ParkingLotVersion) {
+  update(parkingLotVersion: ParkingLotVersion) {
     this.personWithReducedMobilityService
       .updateParkingLot(this.selectedVersion.id!, parkingLotVersion)
       .subscribe(() => {
@@ -135,5 +141,4 @@ export class ParkingLotDetailComponent implements OnInit, DetailFormComponent, D
           .then(() => this.ngOnInit());
       });
   }
-
 }

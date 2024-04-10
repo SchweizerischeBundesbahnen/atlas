@@ -13,10 +13,12 @@ import {
   ReferencePointVersion,
 } from '../../../../../api';
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../core/detail/detail-helper.service";
+import {ValidityService} from "../../../../sepodi/validity/validity.service";
 
 @Component({
   selector: 'app-reference-point',
   templateUrl: './reference-point-detail.component.html',
+  providers: [ValidityService],
 })
 export class ReferencePointDetailComponent implements OnInit, DetailFormComponent, DetailWithCancelEdit {
   isNew = false;
@@ -38,6 +40,7 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
     private personWithReducedMobilityService: PersonWithReducedMobilityService,
     private notificationService: NotificationService,
     private detailHelperService: DetailHelperService,
+    private validityService: ValidityService
   ) {}
 
   ngOnInit(): void {
@@ -91,6 +94,7 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
     if (this.form.enabled) {
       this.detailHelperService.showCancelEditDialog(this);
     } else {
+      this.validityService.initValidity(this.form)
       this.form.enable();
     }
   }
@@ -104,8 +108,10 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
       );
       if (this.isNew) {
         this.create(referencePointVersion);
+        this.form.disable();
       } else {
-        this.update(referencePointVersion);
+        this.validityService.updateValidity(this.form);
+        this.validityService.validateAndDisableForm(() => this.update(referencePointVersion), this.form);
       }
     }
   }
@@ -123,7 +129,7 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
       });
   }
 
-  private update(referencePointVersion: ReferencePointVersion) {
+  update(referencePointVersion: ReferencePointVersion) {
     this.personWithReducedMobilityService
       .updateReferencePoint(this.selectedVersion.id!, referencePointVersion)
       .subscribe(() => {
@@ -135,5 +141,4 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
           .then(() => this.ngOnInit());
       });
   }
-
 }

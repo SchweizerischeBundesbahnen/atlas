@@ -1,7 +1,11 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ToiletDetailComponent} from './toilet-detail.component';
-import {PersonWithReducedMobilityService, ReadToiletVersion, StandardAttributeType} from "../../../../../../api";
+import {
+  PersonWithReducedMobilityService,
+  ReadToiletVersion,
+  StandardAttributeType,
+} from "../../../../../../api";
 import {AuthService} from "../../../../../../core/auth/auth.service";
 import {of} from "rxjs";
 import {DialogService} from "../../../../../../core/components/dialog/dialog.service";
@@ -82,6 +86,7 @@ describe('ToiletDetailComponent', () => {
   const dialogService: SpyObj<DialogService> = jasmine.createSpyObj('dialogService', ['confirm']);
   dialogService.confirm.and.returnValue(of(true));
 
+
   const activatedRouteMock = {
     snapshot: {
       parent: {
@@ -94,7 +99,7 @@ describe('ToiletDetailComponent', () => {
   };
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       declarations: [
         ToiletDetailComponent,
         ToiletFormComponent,
@@ -223,6 +228,4 @@ describe('ToiletDetailComponent', () => {
       expect(notificationService.success).toHaveBeenCalled();
     });
   });
-
-
 });
