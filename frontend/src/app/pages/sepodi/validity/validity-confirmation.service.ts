@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
-import { Observable, of } from 'rxjs';
+import {Observable, of} from 'rxjs';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateService } from '../../../core/date/date.service';
-import { ReadServicePointVersion } from '../../../api';
+import {ReadServicePointVersion} from '../../../api';
 import { Moment } from 'moment';
-import {Validity} from "../../model/validity";
 
 @Injectable({ providedIn: 'root' })
 export class ValidityConfirmationService {
@@ -37,13 +36,5 @@ export class ValidityConfirmationService {
     return of(true);
   }
 
-  confirmValidity(validity:Validity) {
-    if (validity.formValidTo!.isSame(validity.initValidTo) && validity.formValidFrom!.isSame(validity.initValidFrom)) {
-      return this.dialogService.confirm({
-        title: 'DIALOG.CONFIRM_VALIDITY_HAS_NOT_CHANGED_TITLE',
-        message: 'DIALOG.CONFIRM_VALIDITY_HAS_NOT_CHANGED',
-      })
-    }
-    return of(true);
-  }
+
 }
