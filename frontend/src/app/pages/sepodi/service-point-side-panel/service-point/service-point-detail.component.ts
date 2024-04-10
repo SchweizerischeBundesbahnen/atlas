@@ -167,8 +167,6 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   }
 
   private disableForm(): void {
-    console.log("im disable form");
-    console.log("form ", this.form);
     this.form?.disable({ emitEvent: false });
     this.isFormEnabled$.next(false);
     this._savedGeographyForm = undefined;
