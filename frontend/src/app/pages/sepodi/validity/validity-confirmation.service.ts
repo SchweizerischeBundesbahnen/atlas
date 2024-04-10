@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { DialogService } from '../../../core/components/dialog/dialog.service';
-import { Observable, of } from 'rxjs';
+import {Observable, of} from 'rxjs';
 import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
 import { DateService } from '../../../core/date/date.service';
-import { ReadServicePointVersion } from '../../../api';
+import {ReadServicePointVersion} from '../../../api';
 import { Moment } from 'moment';
 
 @Injectable({ providedIn: 'root' })
@@ -35,4 +35,6 @@ export class ValidityConfirmationService {
     }
     return of(true);
   }
+
+
 }

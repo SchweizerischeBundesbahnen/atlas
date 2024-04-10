@@ -92,7 +92,6 @@ describe('LineDetailComponent for existing lineVersion', () => {
 
   beforeEach(() => {
     setupTestBed(mockLinesService, mockData);
-
     fixture = TestBed.createComponent(LineDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -293,4 +292,5 @@ function setupTestBed(linesService: LinesService, data: { lineDetail: string | L
   })
     .compileComponents()
     .then();
+
 }

@@ -12,6 +12,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {DetailFormComponent} from '../../leave-guard/leave-dirty-form-guard.service';
 import {VersionsHandlingService} from '../../versioning/versions-handling.service';
 import {DateRange} from '../../versioning/date-range';
+import {ValidityService} from "../../../pages/sepodi/validity/validity.service";
 
 @Directive()
 export abstract class BaseDetailController<TYPE extends Record>
@@ -26,12 +27,14 @@ export abstract class BaseDetailController<TYPE extends Record>
   switchVersionEvent = new Subject<Record>();
   maxValidity!: DateRange;
 
+
   protected constructor(
     protected router: Router,
     protected dialogService: DialogService,
     protected notificationService: NotificationService,
     protected authService: AuthService,
     protected activatedRoute: ActivatedRoute,
+    protected validityService: ValidityService
   ) {}
 
   get versionNumberOfCurrentRecord(): number {
@@ -103,6 +106,7 @@ export abstract class BaseDetailController<TYPE extends Record>
       this.showConfirmationDialog();
     } else {
       this.form.enable();
+      this.validityService.initValidity(this.form);
       this.disableUneditableFormFields();
     }
   }
@@ -111,16 +115,17 @@ export abstract class BaseDetailController<TYPE extends Record>
     ValidationService.validateForm(this.form);
     this.switchedIndex = undefined;
     if (this.form.valid) {
-      this.form.disable();
       if (this.getId()) {
         this.confirmBoTransfer().subscribe((confirmed) => {
           if (confirmed) {
-            this.updateRecord();
+            this.validityService.updateValidity(this.form)
+            this.validityService.validateAndDisableForm(()=> this.updateRecord(), this.form)
           } else {
             this.form.enable();
           }
         });
       } else {
+        this.form.disable();
         this.createRecord();
       }
     }
@@ -282,7 +287,7 @@ export abstract class BaseDetailController<TYPE extends Record>
     return of(true);
   }
 
-  private confirmBoTransfer(): Observable<boolean> {
+  confirmBoTransfer(): Observable<boolean> {
     const currentlySelectedBo = this.form.value.businessOrganisation;
     const permission = this.authService.getApplicationUserPermission(this.getApplicationType());
     if (
@@ -298,5 +303,4 @@ export abstract class BaseDetailController<TYPE extends Record>
     }
     return of(true);
   }
-
 }
