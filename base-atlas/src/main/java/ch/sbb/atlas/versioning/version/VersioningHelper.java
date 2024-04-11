@@ -16,7 +16,8 @@ public final class VersioningHelper {
   }
 
   /**
-   * |___________| |-----------|----------------------|--------------------|
+   * |___________|
+   * |-----------|----------------------|--------------------|
    */
   public static boolean isEditedVersionInTheMiddleOfCurrentEntity(LocalDate editedValidFrom,
       LocalDate editedValidTo, ToVersioning toVersioning) {
@@ -25,7 +26,8 @@ public final class VersioningHelper {
   }
 
   /**
-   * |_____________________| |----------|----------|----------|----------|----------|
+   * |_____________________|
+   * |----------|----------|----------|----------|----------|
    */
   public static boolean isEditedVersionExactMatchingMultipleEntities(LocalDate editedValidFrom,
       LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
@@ -36,7 +38,8 @@ public final class VersioningHelper {
   }
 
   /**
-   * |_____________________| |----------|----------|----------|----------|----------|
+   * |_____________________|
+   * |----------|----------|----------|----------|----------|
    */
   public static boolean isOnTheLeftBorderAndEditedValidFromIsBeforeTheLeftBorder(
       VersioningData vd, ToVersioning toVersioning) {
@@ -45,7 +48,8 @@ public final class VersioningHelper {
   }
 
   /**
-   * |______________________________| |----------|----------|----------|----------|----------|
+   * |______________________________|
+   * |----------|----------|----------|----------|----------|
    */
   public static boolean isBetweenMultipleVersionsAndOverTheBorders(
       LocalDate editedValidFrom, LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
@@ -57,7 +61,8 @@ public final class VersioningHelper {
   }
 
   /**
-   * |___________________________| |----------|----------|----------|----------|----------|
+   * |___________________________|
+   * |----------|----------|----------|----------|----------|
    */
   public static boolean isBetweenMultipleVersionsAndStartsOnABorder(
       LocalDate editedValidFrom, LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
@@ -69,7 +74,8 @@ public final class VersioningHelper {
   }
 
   /**
-   * |___________________________| |----------|----------|----------|----------|----------|
+   * |___________________________|
+   * |----------|----------|----------|----------|----------|
    */
   public static boolean isBetweenMultipleVersionsAndEndsOnABorder(
       LocalDate editedValidFrom, LocalDate editedValidTo, List<ToVersioning> toVersioningList) {
@@ -81,7 +87,8 @@ public final class VersioningHelper {
   }
 
   /**
-   * |______________________________ |----------|----------|----------|----------|----------|
+   * |______________________________
+   * |----------|----------|----------|----------|----------|
    */
   public static boolean isEditedValidFromOverTheLeftBorder(
       LocalDate editedValidFrom, List<ToVersioning> toVersioningList) {
@@ -92,7 +99,8 @@ public final class VersioningHelper {
   }
 
   /**
-   * |______________| |----------|
+   * |______________|
+   * |----------|
    */
   public static boolean isEditedValidFromOverTheLeftBorderAndEndsWithin(
       VersioningData versioningData) {
@@ -106,7 +114,8 @@ public final class VersioningHelper {
   }
 
   /**
-   * ______________________________| |----------|----------|----------|----------|----------|
+   * ______________________________|
+   * |----------|----------|----------|----------|----------|
    */
   public static boolean isEditedValidToOverTheRightBorder(LocalDate editedValidTo,
       List<ToVersioning> toVersioningList) {
@@ -118,7 +127,8 @@ public final class VersioningHelper {
   }
 
   /**
-   * |______________| |----------|----------|----------|----------|----------|
+   * |______________|
+   * |----------|----------|----------|----------|----------|
    */
   public static boolean isOnTheRightBorderAndValidToIsOnOrOverTheBorder(
       VersioningData vd, ToVersioning toVersioning) {
@@ -128,7 +138,8 @@ public final class VersioningHelper {
   }
 
   /**
-   * |_____| |----------|----------|----------|----------|----------|
+   * |_____|
+   * |----------|----------|----------|----------|----------|
    */
   public static boolean isOnBeginningOfVersionAndEndingWithin(
       VersioningData vd, ToVersioning toVersioning) {
