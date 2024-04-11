@@ -994,8 +994,8 @@
       "BOARDING_AREAS": "Bereiche",
       "NEW": "Neuen Haltebereich erfassen",
       "NOTIFICATION": {
-        "ADD_SUCCESS": "Die Haltebereich wurde erfolgreich hinzugefügt.",
-        "EDIT_SUCCESS": "Die Haltebereich wurde erfolgreich gespeichert."
+        "ADD_SUCCESS": "Der Haltebereich wurde erfolgreich hinzugefügt.",
+        "EDIT_SUCCESS": "Der Haltebereich wurde erfolgreich gespeichert."
       }
     },
     "LOADING_POINTS": {
