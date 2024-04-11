@@ -96,13 +96,15 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   @Override
   public TimetableHearingStatementAlternatingModel getPreviousStatement(Long id, Pageable pageable,
       TimetableHearingStatementRequestParams statementRequestParams) {
-    return timetableHearingStatementService.getStatementAlternation(id, pageable, statementRequestParams, i -> i - 1);
+    return timetableHearingStatementService.getStatementAlternation(id, pageable, statementRequestParams,
+        TimetableHearingStatementService.PREVIOUS);
   }
 
   @Override
   public TimetableHearingStatementAlternatingModel getNextStatement(Long id, Pageable pageable,
       TimetableHearingStatementRequestParams statementRequestParams) {
-    return timetableHearingStatementService.getStatementAlternation(id, pageable, statementRequestParams, i -> i + 1);
+    return timetableHearingStatementService.getStatementAlternation(id, pageable, statementRequestParams,
+        TimetableHearingStatementService.NEXT);
   }
 
   @Override
