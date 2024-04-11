@@ -262,7 +262,9 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
       .createTrafficPoint(trafficPointElementVersion)
       .pipe(catchError(this.handleError()))
       .subscribe((trafficPointElementVersion) => {
-        this.notificationService.success('SEPODI.TRAFFIC_POINT_ELEMENTS.NOTIFICATION.ADD_SUCCESS');
+        this.notificationService.success(this.isTrafficPointArea ?
+          'SEPODI.BOARDING_AREAS.NOTIFICATION.ADD_SUCCESS' :
+          'SEPODI.TRAFFIC_POINT_ELEMENTS.NOTIFICATION.ADD_SUCCESS');
         this.router
           .navigate(['..', trafficPointElementVersion.sloid], { relativeTo: this.route })
           .then();
@@ -275,7 +277,9 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
       .updateTrafficPoint(id, trafficPointElementVersion)
       .pipe(catchError(this.handleError()))
       .subscribe(() => {
-        this.notificationService.success('SEPODI.TRAFFIC_POINT_ELEMENTS.NOTIFICATION.EDIT_SUCCESS');
+        this.notificationService.success(this.isTrafficPointArea ?
+          'SEPODI.BOARDING_AREAS.NOTIFICATION.EDIT_SUCCESS' :
+          'SEPODI.TRAFFIC_POINT_ELEMENTS.NOTIFICATION.EDIT_SUCCESS');
         this.router.navigate(['..', this.selectedVersion.sloid], { relativeTo: this.route }).then();
         this.isSwitchVersionDisabled = false;
       });
