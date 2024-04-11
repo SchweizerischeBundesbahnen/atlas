@@ -1,10 +1,9 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { BaseDetailController } from './base-detail-controller';
-import { KeepaliveService } from '../../keepalive/keepalive.service';
-import { Record } from './record';
-import { Subscription } from 'rxjs';
-import { environment } from '../../../../environments/environment';
-import { AuthService } from '../../auth/auth.service';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {BaseDetailController} from './base-detail-controller';
+import {KeepaliveService} from '../../keepalive/keepalive.service';
+import {Record} from './record';
+import {Subscription} from 'rxjs';
+import {AuthService} from '../../auth/auth.service';
 
 @Component({
   selector: 'app-detail-wrapper [controller][headingNew]',
@@ -16,7 +15,6 @@ export class BaseDetailComponent implements OnInit, OnDestroy {
   @Input() headingNew!: string;
   @Input() formDetailHeading!: string;
   selectedRecord!: Record;
-  workflowEnabled = environment.workflowEnabled;
   private recordSubscription!: Subscription;
 
   constructor(
