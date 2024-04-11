@@ -405,6 +405,7 @@ export class OverviewDetailComponent implements OnInit {
         headerTitle: '',
         disabled: true,
         value: 'id',
+        columnDef: 'select',
         checkbox: {
           changeSelectionCallback: this.collectingStatusChangeAction,
         },
