@@ -82,8 +82,8 @@ export class TableComponent<DATATYPE> implements OnInit {
     });
   }
 
-  getColumnValues(): string[] {
-    return this.tableColumns.map((i) => i.value as string);
+  getColumnDefs(): string[] {
+    return this.tableColumns.map((i) => (i.columnDef ?? i.value) as string);
   }
 
   edit(row: DATATYPE) {
