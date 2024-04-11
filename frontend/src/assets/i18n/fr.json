@@ -982,8 +982,8 @@
       "BOARDING_AREA_HEIGHT": "Hauteur de la bordure [cm]",
       "COMPASS_DIRECTION": "Direction du compas [°]",
       "NOTIFICATION": {
-        "ADD_SUCCESS": "La zone d'arrêt a été ajouté avec succès.",
-        "EDIT_SUCCESS": "La zone d'arrêt a été enregistrée avec succès."
+        "ADD_SUCCESS": "La bordure d'arrêt a été ajouté avec succès.",
+        "EDIT_SUCCESS": "La bordure d'arrêt a été enregistrée avec succès."
       },
       "VALIDITY_CONFIRMATION": {
         "TITLE": "Validité ",
@@ -992,7 +992,11 @@
     },
     "BOARDING_AREAS": {
       "BOARDING_AREAS": "Zones",
-      "NEW": "Saisir une nouvelle zone d'arrêt"
+      "NEW": "Saisir une nouvelle zone d'arrêt",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "La zone d'arrêt a été ajouté avec succès.",
+        "EDIT_SUCCESS": "La zone d'arrêt a été enregistrée avec succès."
+      }
     },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Places de chargement",
