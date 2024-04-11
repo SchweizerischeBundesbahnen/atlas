@@ -857,7 +857,7 @@
       "SERVICE_POINT": "Posto di servizio",
       "SERVICE_POINT_ID": "ID del posto di servizio",
       "NEW_SERVICE_POINT": "Nuovo posto di servizio",
-      "AREAS": "Zoni di fermata",
+      "AREAS": "Zone di fermata",
       "FOT_COMMENT": "Commento UFT",
       "DETAILS": "Informazioni sul posto di servizio",
       "DESIGNATION_OFFICIAL": "Denominazione ufficiale",
@@ -992,8 +992,8 @@
       }
     },
     "BOARDING_AREAS": {
-      "BOARDING_AREAS": "Aree",
-      "NEW": "Entrare nella nuova area di detenzione",
+      "BOARDING_AREAS": "Zone",
+      "NEW": "Entrare nella nuova zone di fermata",
       "NOTIFICATION": {
         "ADD_SUCCESS": "La zona di fermata è stata aggiunta con successo.",
         "EDIT_SUCCESS": "La zona di fermata è stata salvata con successo."
