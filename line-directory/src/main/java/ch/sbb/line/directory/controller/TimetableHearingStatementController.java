@@ -3,6 +3,7 @@ package ch.sbb.line.directory.controller;
 import ch.sbb.atlas.amazon.exception.FileException;
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementAlternatingModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementApiV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
@@ -93,6 +94,18 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   }
 
   @Override
+  public TimetableHearingStatementAlternatingModel getPreviousStatement(Long id, Pageable pageable,
+      TimetableHearingStatementRequestParams statementRequestParams) {
+    return timetableHearingStatementService.getStatementAlternation(id, pageable, statementRequestParams, i -> i - 1);
+  }
+
+  @Override
+  public TimetableHearingStatementAlternatingModel getNextStatement(Long id, Pageable pageable,
+      TimetableHearingStatementRequestParams statementRequestParams) {
+    return timetableHearingStatementService.getStatementAlternation(id, pageable, statementRequestParams, i -> i + 1);
+  }
+
+  @Override
   public Resource getStatementDocument(Long id, String filename) {
     File file = timetableHearingStatementService.getStatementDocument(id, filename);
     try {
@@ -157,15 +170,16 @@ public class TimetableHearingStatementController implements TimetableHearingStat
     }
     TimetableHearingStatement existingStatement = timetableHearingStatementService.getTimetableHearingStatementsById(id);
     statement.setId(id);
-    TimetableHearingStatement hearingStatement = timetableHearingStatementService.updateHearingStatement(existingStatement, statement, documents);
+    TimetableHearingStatement hearingStatement = timetableHearingStatementService.updateHearingStatement(existingStatement,
+        statement, documents);
     return TimetableHearingStatementMapper.toModel(hearingStatement);
   }
 
   @Override
   public void updateHearingStatementStatus(UpdateHearingStatementStatusModel updateHearingStatementStatus) {
 
-    if(updateHearingStatementStatus.getIds().isEmpty()){
-     return;
+    if (updateHearingStatementStatus.getIds().isEmpty()) {
+      return;
     }
 
     List<TimetableHearingStatement> timetableHearingStatements =
@@ -176,15 +190,16 @@ public class TimetableHearingStatementController implements TimetableHearingStat
 
     TimetableHearingYear hearingYear = timetableHearingYearService.getHearingYear(firstStatementTimetableYear);
 
-    boolean hasMoreThanOneTimetableYear = timetableHearingStatements.stream().map(TimetableHearingStatement::getTimetableYear).distinct().count() > 1;
+    boolean hasMoreThanOneTimetableYear =
+        timetableHearingStatements.stream().map(TimetableHearingStatement::getTimetableYear).distinct().count() > 1;
 
-    if(hasMoreThanOneTimetableYear){
+    if (hasMoreThanOneTimetableYear) {
       throw new ForbiddenDueWrongStatementTimeTableYearException(
-                    firstStatementTimetableYear,
-                    TimetableHearingYear_.TIMETABLE_YEAR);
+          firstStatementTimetableYear,
+          TimetableHearingYear_.TIMETABLE_YEAR);
     }
 
-    if(!hearingYear.isStatementEditable() || hearingYear.getHearingStatus() != HearingStatus.ACTIVE){
+    if (!hearingYear.isStatementEditable() || hearingYear.getHearingStatus() != HearingStatus.ACTIVE) {
       throw new ForbiddenDueToHearingYearSettingsException(
           hearingYear.getTimetableYear(),
           TimetableHearingYear_.STATEMENT_EDITABLE);
