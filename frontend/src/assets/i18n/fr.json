@@ -49,7 +49,7 @@
     "FILLED_AUTOMATICALLY": "Remplissage automatique",
     "VALID_FROM": "Valable du",
     "VALID_TO": "Valable au",
-    "TODAY": "Présent",
+    "TODAY": "Aujourd'hui",
     "TIMETABLE_YEAR_CHANGE": "Changement d'horaire",
     "EDIT_ON": "Modifiée",
     "EDIT_BY": "Par",
@@ -926,7 +926,7 @@
       "CATEGORIES": "Catégories",
       "CATEGORY": {
         "NOVA_VIRTUAL": "NOVA virtuel",
-        "BILLETING_MACHINE": "Billettautomat SBB",
+        "BILLETING_MACHINE": "Distributeur de billets CFF",
         "PARK_AND_RAIL": "P+Rail",
         "MAINTENANCE_POINT": "Point d'entretien",
         "BORDER_POINT": "Point de frontière (UIC)",
@@ -949,7 +949,7 @@
         "TRAVEL_AGENCY_ORGANISATION": "Organisation de l'agence de voyage"
       },
       "ROUTE_NETWORK_DATA": "Données du réseau (ferroviaire uniquement)",
-      "ROUTE_NETWORK": "PE-segment",
+      "ROUTE_NETWORK": "PE-ligne",
       "OPERATING_POINT_KILOMETER": "PE-kilométrage",
       "NOTIFICATION": {
         "ADD_SUCCESS": "Le service a été ajouté avec succès.",
@@ -976,14 +976,14 @@
       "HEADER": "Bordure d'arrêt",
       "SERVICE_POINT_NAME": "Nom de l'arrêt",
       "DETAILS": "Données relatives à la",
-      "PARENT_SLOID": "Appartient au domaine",
+      "PARENT_SLOID": "Appartient au zone",
       "CONSTRUCTION_INFORMATION": "Informations sur la construction",
       "LENGTH": "Longueur [m]",
       "BOARDING_AREA_HEIGHT": "Hauteur de la bordure [cm]",
       "COMPASS_DIRECTION": "Direction du compas [°]",
       "NOTIFICATION": {
-        "ADD_SUCCESS": "Le bord de retenue a été ajouté avec succès.",
-        "EDIT_SUCCESS": "Le bord d'arrêt a été enregistré avec succès."
+        "ADD_SUCCESS": "La zone d'arrêt a été ajouté avec succès.",
+        "EDIT_SUCCESS": "La zone d'arrêt a été enregistrée avec succès."
       },
       "VALIDITY_CONFIRMATION": {
         "TITLE": "Validité ",
@@ -991,17 +991,17 @@
       }
     },
     "BOARDING_AREAS": {
-      "BOARDING_AREAS": "Domaines",
+      "BOARDING_AREAS": "Zones",
       "NEW": "Saisir une nouvelle zone d'arrêt"
     },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Places de chargement",
       "LOADING_POINT": "Placs de chargement",
       "FREIGHT_SERVICE_POINT_NAME": "Nom du point de commande",
-      "NEW": "Saisir un nouveau point de chargement",
+      "NEW": "Saisir un nouveau place de chargement",
       "NUMBER": "Numéro",
-      "DESIGNATION": "Dénomination",
-      "DESIGNATION_LONG": "Désignation détaillée",
+      "DESIGNATION": "Désignation",
+      "DESIGNATION_LONG": "Désignation longue",
       "CONNECTION_POINT": "Point de liaison",
       "CONNECTION_POINT_VALUE": {
         "true": "Oui",
@@ -1019,7 +1019,7 @@
     "GEOLOCATION": {
       "INVALID": "Les coordonnées indiquées ne sont pas valables. Veuillez corriger les données saisies! ",
       "GEOGRAPHY": "Géographie",
-      "SYSTEM_LV95": "Coordonnées nationales LV95",
+      "SYSTEM_LV95": "Coordonnées nationales MN95",
       "SYSTEM_WGS84": "Coordinations mondiales WGS84",
       "LV95": {
         "EAST": "Est [m]",
@@ -1031,7 +1031,7 @@
       },
       "HEIGHT": "Altitude [Alt. en m.]",
       "ADMINISTRATION": "Unités administrative",
-      "COUNTRY": "Campagne",
+      "COUNTRY": "Pays",
       "CANTON": "Canton",
       "MUNICIPALITY": "Commune",
       "DISTRICT": "Localité",
@@ -1050,7 +1050,7 @@
       "FREIGHT_SERVICE_POINT": "Point de chargement",
       "OPERATING_POINT_TECHNICAL": "Point horaire",
       "SERVICE_POINT": "Service",
-      "BOARDING_PLATFORM": "Bord d'arrêt",
+      "BOARDING_PLATFORM": "Bordure d'arrêt",
       "BOARDING_AREA": "Zone d’arrêt"
     },
     "BACK_TO_MAP": "Fermer",
@@ -1181,10 +1181,9 @@
       "HEADER": "Documents",
       "GUIDE_LINE_URL": "https://www.tp-info.ch/sites/default/files/2023-05/Guide_aux_crit%C3%A8res_sur_l%E2%80%99accessibilit%C3%A9_en_DiDok.pdf",
       "GUIDE_LINE_LABEL": "Guide LHand",
-      "GUIDE_LINE_ATTACHMENT_URL": "https://www.tp-info.ch/sites/default/files/2023-06/Annexe_au_guide_sur_l%E2%80%99accessibilit%C3%A9_web.xlsx",
-      "GUIDE_LINE_ATTACHMENT_LABEL": "Annexe au guide sur l’accessibilité web",
+      "GUIDE_LINE_ATTACHMENT_URL": "https://www.tp-info.ch/sites/default/files/2024-04/Annexe_au_guide_sur_l%E2%80%99accessibilit%C3%A9_0.xlsx",
+      "GUIDE_LINE_ATTACHMENT_LABEL": "Annexe au guide sur l’accessibilité",
       "GUIDE_LINE_ATTACHMENT_TECHNICAL_URL": "https://www.tp-info.ch/sites/default/files/2023-05/Annexe_au_guide_sur_l%27accessibilite_tec.xlsx",
-      "GUIDE_LINE_ATTACHMENT_TECHNICAL_LABEL": "Annexe au guide sur l'accessibilité technique",
       "ADDITIONAL_LINK_LABEL": "Liens complémentaires",
       "DDA_URL": "https://www.fedlex.admin.ch/eli/cc/2003/667/fr",
       "DDA_LABEL": "Loi sur l’égalité pour les handicapés, LHand",

@@ -96,13 +96,12 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       const writableStopPoint = StopPointFormGroupBuilder.getWritableStopPoint(this.form);
-      this.form.disable();
       if (!this.isNew) {
         this.validityService.updateValidity(this.form);
         this.validityService.validateAndDisableCustom(() => this.updateStopPoint(writableStopPoint), () => this.disableForm());
       } else {
-        this.createStopPoint(writableStopPoint);
         this.disableForm();
+        this.createStopPoint(writableStopPoint);
       }
     }
   }
