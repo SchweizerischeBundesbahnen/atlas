@@ -25,7 +25,7 @@ describe('PrmInfoBoxComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show 6 links', () => {
+  it('should show 5 links', () => {
     expect(fixture.debugElement.queryAll(By.css('a')).length).toEqual(5);
   });
 });
