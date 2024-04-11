@@ -927,7 +927,7 @@
       "CATEGORIES": "Categorie",
       "CATEGORY": {
         "NOVA_VIRTUAL": "NOVA virtuale",
-        "BILLETING_MACHINE": "Billettautomat SBB",
+        "BILLETING_MACHINE": "Distributore automatico di biglietti SBB",
         "PARK_AND_RAIL": "P+Rail",
         "MAINTENANCE_POINT": "Punto di manutenzione",
         "BORDER_POINT": "Punto di confine (UIC)",
@@ -1020,7 +1020,7 @@
     "GEOLOCATION": {
       "INVALID": "Le coordinate fornite non sono valide. Correggere l’inserimento.",
       "GEOGRAPHY": "Geografia",
-      "SYSTEM_LV95": "Coordinate del paese LV95",
+      "SYSTEM_LV95": "Coordinate del paese MN95",
       "SYSTEM_WGS84": "Coordinate geografiche WGS84",
       "LV95": {
         "EAST": "Est [m]",
@@ -1182,10 +1182,9 @@
       "HEADER": "Documenti",
       "GUIDE_LINE_URL": "https://www.tp-info.ch/sites/default/files/2023-04/Guida_dei_criteri_di_accessibilit%C3%A0_in_DiDok.pdf",
       "GUIDE_LINE_LABEL": "Guida LDis",
-      "GUIDE_LINE_ATTACHMENT_URL": "https://www.tp-info.ch/sites/default/files/2023-06/Allegato_Guida_dei_criteri_di_accessibilit%C3%A0_in_DiDok_web.xlsx",
-      "GUIDE_LINE_ATTACHMENT_LABEL": "Allegato Guida LDis web",
+      "GUIDE_LINE_ATTACHMENT_URL": "https://www.tp-info.ch/sites/default/files/2024-04/Allegato_Guida_dei_criteri_di_accessibilit%C3%A0.xlsx",
+      "GUIDE_LINE_ATTACHMENT_LABEL": "Allegato Guida dei criteri di accessibilità",
       "GUIDE_LINE_ATTACHMENT_TECHNICAL_URL": "https://www.tp-info.ch/sites/default/files/2023-04/Allegato_Guida_dei_criteri_di_accessibilit%C3%A0_in_DiDok_tec_0.xlsx",
-      "GUIDE_LINE_ATTACHMENT_TECHNICAL_LABEL": "Allegato Guida LDis tecnica",
       "ADDITIONAL_LINK_LABEL": "Link correlati",
       "DDA_URL": "https://www.fedlex.admin.ch/eli/cc/2003/667/it",
       "DDA_LABEL": "Legge sui disabili, LDis",
