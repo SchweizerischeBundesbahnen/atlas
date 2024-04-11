@@ -271,6 +271,6 @@ Libraries used to perform:
 
 ATLAS Angular App. See [Frontend documentation](frontend/README.md);
 
-## Troubleshooting
+## Troubleshooting 
 
 * [Sonarqube](documentation/Troubleshooting.md)
