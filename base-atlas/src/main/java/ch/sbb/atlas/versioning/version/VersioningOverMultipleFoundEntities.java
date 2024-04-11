@@ -1,6 +1,5 @@
 package ch.sbb.atlas.versioning.version;
 
-import static ch.sbb.atlas.versioning.version.VersioningHelper.arePropertiesEdited;
 import static ch.sbb.atlas.versioning.version.VersioningHelper.isBetweenMultipleVersionsAndEndsOnABorder;
 
 import ch.sbb.atlas.versioning.exception.VersioningException;
@@ -38,9 +37,8 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
       return applyVersioningBetweenMultipleEntitiesAndStartsOnABorder(vd, toVersioningList);
     }
     if (isBetweenMultipleVersionsAndEndsOnABorder(vd.getEditedValidFrom(),vd.getEditedValidTo(),toVersioningList)) {
-      if(!arePropertiesEdited(vd) && VersioningHelper.isOnlyValidFromEdited(vd)
-          && vd.getEditedValidFrom().isBefore(toVersioningList.getFirst().getValidTo())){
-        return applyVersioningBetweenMultipleEntitiesAndEndsOnABorderWithoutPropertiesEdited(vd, toVersioningList);
+      if(VersioningHelper.isOnlyValidFromEditedInThePast(vd)){
+        return applyVersioningBetweenMultipleEntitiesOnTheLeftBorderInThePast(vd, toVersioningList);
       }
       return applyVersioningBetweenMultipleEntitiesAndEndsOnABorder(vd, toVersioningList);
     }
@@ -161,7 +159,7 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
     return versionedObjects;
   }
 
-  private List<VersionedObject> applyVersioningBetweenMultipleEntitiesAndEndsOnABorderWithoutPropertiesEdited(
+  private List<VersionedObject> applyVersioningBetweenMultipleEntitiesOnTheLeftBorderInThePast(
       VersioningData vd, List<ToVersioning> toVersioningList) {
     log.info("Ends on validTo (Szenario 13d) only validFrom or validTo edited");
     List<VersionedObject> versionedObjects = new ArrayList<>();

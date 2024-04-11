@@ -201,7 +201,7 @@ public class TrafficPointElementsServiceIntegrationTests extends BaseTrafficPoin
     }
 
     @Test
-    public void scenario13d() {
+    void scenario13d() {
         // given
         version1.setValidFrom(LocalDate.of(2000,1,1));
         version1.setValidTo(LocalDate.of(2000,12,31));
