@@ -603,7 +603,7 @@ export class OverviewDetailComponent implements OnInit {
           },
         },
         { headerTitle: 'TTH.SWISS_CANTON', value: 'swissCanton', callback: this.mapToShortCanton },
-        { headerTitle: 'ID', value: 'id', disabled: true },
+        { headerTitle: 'ID', value: 'id' },
         {
           headerTitle: 'TTH.TRANSPORT_COMPANY',
           value: 'responsibleTransportCompaniesDisplay',
