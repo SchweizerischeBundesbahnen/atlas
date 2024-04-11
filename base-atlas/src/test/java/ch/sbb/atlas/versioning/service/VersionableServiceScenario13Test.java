@@ -423,6 +423,66 @@ public class VersionableServiceScenario13Test extends VersionableServiceBaseTest
   }
 
   /**
+   * Scenario 13c: Update startet auf einer Version und endet in einer späteren Version
+   *
+   * NEU:                    |____________|
+   * IST:      |--------|-------|---------|
+   * Version:      1        2        3
+   *
+   * RESULTAT: |--------|___|_____________|
+   * Version:      1      2       3
+   */
+  @Test
+   void scenario13dInThePast() {
+    //given
+    LocalDate editedValidFrom = LocalDate.of(2022, 10, 1);
+    LocalDate editedValidTo = versionableObject3.getValidTo();
+
+    VersionableObject editedVersion = VersionableObject.builder()
+                                                       .validFrom(editedValidFrom)
+                                                       .validTo(editedValidTo)
+                                                       .build();
+
+    //when
+    List<VersionedObject> result = versionableService.versioningObjects(
+        versionableObject3,
+        editedVersion,
+        List.of(versionableObject1, versionableObject2, versionableObject3));
+
+    //then
+    assertThat(result).hasSize(3);
+    List<VersionedObject> sortedVersionedObjects =
+        result.stream().sorted(comparing(VersionedObject::getValidFrom)).toList();
+
+    VersionedObject firstVersionedObject = sortedVersionedObjects.get(0);
+    assertThat(firstVersionedObject.getAction()).isEqualTo(VersioningAction.NOT_TOUCHED);
+    assertThat(firstVersionedObject).isNotNull();
+    assertThat(firstVersionedObject.getValidFrom()).isEqualTo(LocalDate.of(2020, 1, 1));
+    assertThat(firstVersionedObject.getValidTo()).isEqualTo(LocalDate.of(2021, 12, 31));
+    Entity firstVersionedObjectEntity = firstVersionedObject.getEntity();
+    assertThat(firstVersionedObjectEntity).isNotNull();
+    assertThat(firstVersionedObjectEntity.getProperties()).isNotEmpty();
+
+    VersionedObject secondVersionedObject = sortedVersionedObjects.get(1);
+    assertThat(secondVersionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
+    assertThat(secondVersionedObject).isNotNull();
+    assertThat(secondVersionedObject.getValidFrom()).isEqualTo(versionableObject2.getValidFrom());
+    assertThat(secondVersionedObject.getValidTo()).isEqualTo(editedValidFrom.minusDays(1));
+    Entity secondVersionedObjectEntity = secondVersionedObject.getEntity();
+    assertThat(secondVersionedObjectEntity).isNotNull();
+    assertThat(secondVersionedObjectEntity.getProperties()).isNotEmpty();
+
+    VersionedObject thirdVersionedObject = sortedVersionedObjects.get(2);
+    assertThat(thirdVersionedObject.getAction()).isEqualTo(VersioningAction.UPDATE);
+    assertThat(thirdVersionedObject).isNotNull();
+    assertThat(thirdVersionedObject.getValidFrom()).isEqualTo(editedValidFrom);
+    assertThat(thirdVersionedObject.getValidTo()).isEqualTo(versionableObject3.getValidTo());
+    Entity thirdVersionedObjectEntity = thirdVersionedObject.getEntity();
+    assertThat(thirdVersionedObjectEntity).isNotNull();
+    assertThat(thirdVersionedObjectEntity.getProperties()).isNotEmpty();
+  }
+
+  /**
    * Szenario 13e: Update startet in einer Version und endet auf die nächste Version
    * NEU:                   |_____________|
    * IST:      |--------|-------|---------|----------|
