@@ -1,5 +1,7 @@
 package ch.sbb.atlas.versioning.version;
 
+import static ch.sbb.atlas.versioning.version.VersioningHelper.isBetweenMultipleVersionsAndEndsOnABorder;
+
 import ch.sbb.atlas.versioning.exception.VersioningException;
 import ch.sbb.atlas.versioning.model.Entity;
 import ch.sbb.atlas.versioning.model.ToVersioning;
@@ -34,9 +36,10 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
         toVersioningList)) {
       return applyVersioningBetweenMultipleEntitiesAndStartsOnABorder(vd, toVersioningList);
     }
-    if (VersioningHelper.isBetweenMultipleVersionsAndEndsOnABorder(vd.getEditedValidFrom(),
-        vd.getEditedValidTo(),
-        toVersioningList)) {
+    if (isBetweenMultipleVersionsAndEndsOnABorder(vd.getEditedValidFrom(),vd.getEditedValidTo(),toVersioningList)) {
+      if(VersioningHelper.isOnlyValidFromEditedInThePast(vd)){
+        return applyVersioningBetweenMultipleEntitiesOnTheLeftBorderInThePast(vd, toVersioningList);
+      }
       return applyVersioningBetweenMultipleEntitiesAndEndsOnABorder(vd, toVersioningList);
     }
     if (VersioningHelper.isEditedValidFromOverTheLeftBorder(vd.getEditedValidFrom(),
@@ -156,6 +159,22 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
     return versionedObjects;
   }
 
+  private List<VersionedObject> applyVersioningBetweenMultipleEntitiesOnTheLeftBorderInThePast(
+      VersioningData vd, List<ToVersioning> toVersioningList) {
+    log.info("Ends on validTo (Szenario 13d) only validFrom or validTo edited");
+    List<VersionedObject> versionedObjects = new ArrayList<>();
+
+    applyVersioningOnLeftBorderWhenOnlyValidFromAndOrValidToEdited(vd, toVersioningList,
+        versionedObjects);
+
+    ToVersioning lastVersion = toVersioningList.getLast();
+    versionedObjects.add(
+        shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(vd.getEditedValidFrom(),
+            lastVersion.getValidTo(), lastVersion, vd.getEditedEntity()));
+    applyVersioningBetweenLeftAndRightBorder(vd, toVersioningList, versionedObjects);
+    return versionedObjects;
+  }
+
   private List<VersionedObject> applyVersioningBetweenMultipleEntitiesAndEndsOnABorder(
       VersioningData vd, List<ToVersioning> toVersioningList) {
     log.info("Ends on validTo (Szenario 13d)");
@@ -182,6 +201,16 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
     VersionedObject versionedObjectAfterLeftBorder =
         addNewVersionAfterLeftBorder(vd, leftBorderVersioning);
     versionedObjects.add(versionedObjectAfterLeftBorder);
+  }
+
+  private void applyVersioningOnLeftBorderWhenOnlyValidFromAndOrValidToEdited(VersioningData vd,
+      List<ToVersioning> toVersioningList, List<VersionedObject> versionedObjects) {
+    log.info("Found version to split on the left border.");
+    // update version: validTo = editedValidFrom.minusDay(1) and no properties update
+    ToVersioning leftBorderVersioning = toVersioningList.get(0);
+    VersionedObject versionedLeftBorder =
+        shortenOrLengthenVersionOnLeftBorder(vd, leftBorderVersioning);
+    versionedObjects.add(versionedLeftBorder);
   }
 
 
