@@ -1,5 +1,4 @@
 import {Page} from '../core/model/page';
-import {environment} from '../../environments/environment';
 
 export class Pages {
   public static HOME: Page = {
@@ -248,10 +247,6 @@ export class Pages {
   public static viewablePages: Page[] = this.pages;
 
   public static get enabledPages(): Page[] {
-    let enabledPages = this.viewablePages;
-    if (!environment.pageSepodiEnabled) {
-      enabledPages = enabledPages.filter((page) => page !== Pages.SEPODI && page !== Pages.PRM);
-    }
-    return enabledPages;
+    return this.viewablePages;
   }
 }
