@@ -21,7 +21,7 @@
     matSort
   >
     <ng-container *ngFor="let column of tableColumns">
-      <ng-container matColumnDef="{{ column.value }}">
+      <ng-container matColumnDef="{{ column.columnDef ?? column.value }}">
         <th
           *matHeaderCellDef
           [disabled]="!!column.disabled"
@@ -120,10 +120,10 @@
       </ng-container>
     </ng-container>
 
-    <tr *matHeaderRowDef="getColumnValues()" mat-header-row></tr>
+    <tr *matHeaderRowDef="getColumnDefs()" mat-header-row></tr>
     <tr
       (click)="edit(row)"
-      *matRowDef="let row; columns: getColumnValues()"
+      *matRowDef="let row; columns: getColumnDefs()"
       class="atlas-table-row"
       mat-row
     ></tr>
