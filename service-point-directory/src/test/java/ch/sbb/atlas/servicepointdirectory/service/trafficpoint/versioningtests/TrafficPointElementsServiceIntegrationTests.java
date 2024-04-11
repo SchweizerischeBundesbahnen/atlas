@@ -200,4 +200,50 @@ public class TrafficPointElementsServiceIntegrationTests extends BaseTrafficPoin
         assertThat(firstTemporalVersion.getCompassDirection()).isEqualTo(271.0);
     }
 
+    @Test
+    void scenario13d() {
+        // given
+        version1.setValidFrom(LocalDate.of(2000,1,1));
+        version1.setValidTo(LocalDate.of(2000,12,31));
+        version1 = trafficPointElementVersionRepository.save(version1);
+        version2.setValidFrom(LocalDate.of(2001,1,1));
+        version2.setValidTo(LocalDate.of(2001,12,31));
+        version2 = trafficPointElementVersionRepository.save(version2);
+        version3.setValidFrom(LocalDate.of(2002,1,1));
+        version3.setValidTo(LocalDate.of(2002,12,31));
+        version3 = trafficPointElementVersionRepository.save(version3);
+        TrafficPointElementVersion editedVersion = version3Builder().build();
+        editedVersion.setValidFrom(LocalDate.of(2001, 10, 1));
+        editedVersion.setValidTo(LocalDate.of(2002,12,31));
+        editedVersion.setVersion(version3.getVersion());
+        // when
+        trafficPointElementService.updateTrafficPointElementVersion(version3, editedVersion);
+        List<TrafficPointElementVersion> result = trafficPointElementVersionRepository.findAllBySloidOrderByValidFrom(SLOID);
+
+        // then
+        assertThat(result).isNotNull().hasSize(3);
+        result.sort(Comparator.comparing(TrafficPointElementVersion::getValidFrom));
+        assertThat(result.get(0)).isNotNull();
+        assertThat(result.get(1)).isNotNull();
+        assertThat(result.get(2)).isNotNull();
+
+        // not touched
+        TrafficPointElementVersion firstTemporalVersion = result.get(0);
+        assertThat(firstTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2000, 1, 1));
+        assertThat(firstTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2000, 12, 31));
+        assertThat(firstTemporalVersion.getSloid()).isEqualTo(SLOID);
+
+        // updated
+        TrafficPointElementVersion secondTemporalVersion = result.get(1);
+        assertThat(secondTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2001, 1, 1));
+        assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2001, 9, 30));
+        assertThat(secondTemporalVersion.getSloid()).isEqualTo(SLOID);
+
+        // updated
+        TrafficPointElementVersion thirdTemporalVersion = result.get(2);
+        assertThat(thirdTemporalVersion.getValidFrom()).isEqualTo(LocalDate.of(2001, 10, 1));
+        assertThat(thirdTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2002, 12, 31));
+        assertThat(thirdTemporalVersion.getSloid()).isEqualTo(SLOID);
+    }
+
 }
