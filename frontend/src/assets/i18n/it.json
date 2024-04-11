@@ -993,7 +993,11 @@
     },
     "BOARDING_AREAS": {
       "BOARDING_AREAS": "Aree",
-      "NEW": "Entrare nella nuova area di detenzione"
+      "NEW": "Entrare nella nuova area di detenzione",
+      "NOTIFICATION": {
+        "ADD_SUCCESS": "L'area di contenimento è stata aggiunta con successo.",
+        "EDIT_SUCCESS": "L'area di contenimento è stata salvata con successo."
+      }
     },
     "LOADING_POINTS": {
       "LOADING_POINTS": "Posti di carico",
