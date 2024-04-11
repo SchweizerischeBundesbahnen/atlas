@@ -49,6 +49,9 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class TimetableHearingStatementService {
 
+  public static final IntUnaryOperator NEXT = i -> i + 1;
+  public static final IntUnaryOperator PREVIOUS = i -> i - 1;
+
   private final TimetableHearingStatementRepository timetableHearingStatementRepository;
   private final TimetableHearingYearRepository timetableHearingYearRepository;
   private final FileService fileService;
@@ -94,6 +97,9 @@ public class TimetableHearingStatementService {
         .findFirst().orElseThrow();
 
     int indexOfAlternation = indexModifier.applyAsInt(indexOfCurrentStatement);
+    if (indexOfAlternation < 0) {
+      indexOfAlternation += hearingStatements.size();
+    }
     TimetableHearingStatement alternation = hearingStatements.get(indexOfAlternation % hearingStatements.size());
 
     Pageable resultPageable = PageRequest.of((indexOfAlternation) / pageable.getPageSize(), pageable.getPageSize(),
@@ -104,8 +110,6 @@ public class TimetableHearingStatementService {
         .pageable(resultPageable)
         .build();
   }
-
-
 
   public TimetableHearingStatementModel createHearingStatement(TimetableHearingStatementModel statement,
       List<MultipartFile> documents) {
