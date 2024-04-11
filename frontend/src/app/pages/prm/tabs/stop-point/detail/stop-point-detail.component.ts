@@ -23,6 +23,7 @@ import {ReferencePointCreationHintService} from "./reference-point-creation-hint
 @Component({
   selector: 'app-stop-point-detail',
   templateUrl: './stop-point-detail.component.html',
+  providers: [ValidityService]
 })
 export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   isNew = false;
