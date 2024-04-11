@@ -4,8 +4,10 @@ import static ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants.MAX_D
 import static ch.sbb.line.directory.mapper.TimetableHearingStatementMapper.transformToCommaSeparated;
 
 import ch.sbb.atlas.amazon.service.FileService;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementAlternatingModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementDocumentModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
@@ -26,11 +28,15 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.IntUnaryOperator;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +62,10 @@ public class TimetableHearingStatementService {
     return timetableHearingStatementRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
 
+  public List<TimetableHearingStatement> getAllHearingStatements(TimetableHearingStatementSearchRestrictions searchRestrictions) {
+    return timetableHearingStatementRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable().getSort());
+  }
+
   public TimetableHearingStatement getTimetableHearingStatementById(Long id) {
     return timetableHearingStatementRepository.findById(id)
       .orElseThrow(() -> new IdNotFoundException(id));
@@ -69,6 +79,33 @@ public class TimetableHearingStatementService {
       throw new FileNotFoundException(documentFilename);
     }
   }
+
+  public TimetableHearingStatementAlternatingModel getStatementAlternation(
+      Long id, Pageable pageable, TimetableHearingStatementRequestParams statementRequestParams,
+      IntUnaryOperator indexModifier
+  ) {
+    List<TimetableHearingStatement> hearingStatements = getAllHearingStatements(
+        TimetableHearingStatementSearchRestrictions.builder()
+            .pageable(pageable)
+            .statementRequestParams(statementRequestParams).build());
+
+    int indexOfCurrentStatement = IntStream.range(0, hearingStatements.size())
+        .filter(i -> hearingStatements.get(i).getId().equals(id))
+        .findFirst().orElseThrow();
+
+    int indexOfAlternation = indexModifier.applyAsInt(indexOfCurrentStatement);
+    TimetableHearingStatement alternation = hearingStatements.get(indexOfAlternation % hearingStatements.size());
+
+    Pageable resultPageable = PageRequest.of((indexOfAlternation) / pageable.getPageSize(), pageable.getPageSize(),
+        pageable.getSort());
+
+    return TimetableHearingStatementAlternatingModel.builder()
+        .timetableHearingStatement(TimetableHearingStatementMapper.toModel(alternation))
+        .pageable(resultPageable)
+        .build();
+  }
+
+
 
   public TimetableHearingStatementModel createHearingStatement(TimetableHearingStatementModel statement,
       List<MultipartFile> documents) {
