@@ -2431,4 +2431,32 @@ public class VersioningHelperTest {
     //then
     assertThat(result).isFalse();
   }
+
+  @Test
+  void shouldReturnIsOnlyValidFromEditedInThePast() {
+    //given
+    VersionableObject editedVersion = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2019, 1, 1))
+        .build();
+    VersionableObject currentVersion = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build();
+    Property emptyProperty = Property.builder().build();
+    Entity entity = Entity.builder().id(1L).properties(new ArrayList<>()).build();
+    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(currentVersion).build();
+    List<ToVersioning> toVersioningList = new ArrayList<>();
+    toVersioningList.add(toVersioningCurrent);
+    VersioningData versioningData = new VersioningData(editedVersion, currentVersion, entity,
+        toVersioningList);
+    //when
+    boolean result = VersioningHelper.isOnlyValidFromEditedInThePast(versioningData);
+
+    //then
+    assertThat(result).isTrue();
+  }
 }
