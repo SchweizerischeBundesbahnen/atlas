@@ -34,6 +34,9 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
     if (VersioningHelper.isBetweenMultipleVersionsAndStartsOnABorder(vd.getEditedValidFrom(),
         vd.getEditedValidTo(),
         toVersioningList)) {
+      if(VersioningHelper.isOnlyValidToEditedInTheFuture(vd)){
+        return applyVersioningBetweenMultipleEntitiesAndStartsOnABorderWhenOnlyValidToEdited(vd, toVersioningList);
+      }
       return applyVersioningBetweenMultipleEntitiesAndStartsOnABorder(vd, toVersioningList);
     }
     if (isBetweenMultipleVersionsAndEndsOnABorder(vd.getEditedValidFrom(),vd.getEditedValidTo(),toVersioningList)) {
@@ -145,11 +148,29 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
     return versionedObjects;
   }
 
+  private List<VersionedObject> applyVersioningBetweenMultipleEntitiesAndStartsOnABorderWhenOnlyValidToEdited(
+      VersioningData vd, List<ToVersioning> toVersioningList) {
+    log.info("Starts on validFrom (Szenario 13c) when only validTo edited");
+    List<VersionedObject> versionedObjects = new ArrayList<>();
+
+    ToVersioning penultimateVersion = toVersioningList.get(toVersioningList.size() -2 );
+
+    versionedObjects.add(
+        shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(penultimateVersion.getValidFrom(),
+            vd.getEditedValidTo(), penultimateVersion, vd.getEditedEntity()));
+
+    ToVersioning lastVersion = toVersioningList.getLast();
+    versionedObjects.add(
+        shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(vd.getEditedValidTo().plusDays(1),
+            lastVersion.getValidTo(), lastVersion, vd.getEditedEntity()));
+
+    return versionedObjects;
+  }
   private List<VersionedObject> applyVersioningBetweenMultipleEntitiesAndStartsOnABorder(
       VersioningData vd, List<ToVersioning> toVersioningList) {
     log.info("Starts on validFrom (Szenario 13c)");
     List<VersionedObject> versionedObjects = new ArrayList<>();
-    ToVersioning firstVersion = toVersioningList.get(0);
+    ToVersioning firstVersion = toVersioningList.getFirst();
     versionedObjects.add(
         shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(firstVersion.getValidFrom(),
             firstVersion.getValidTo(), firstVersion, vd.getEditedEntity()));
@@ -161,17 +182,17 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
 
   private List<VersionedObject> applyVersioningBetweenMultipleEntitiesOnTheLeftBorderInThePast(
       VersioningData vd, List<ToVersioning> toVersioningList) {
-    log.info("Ends on validTo (Szenario 13d) only validFrom or validTo edited");
+    log.info("Ends on validTo (Szenario 13d) only validFrom");
     List<VersionedObject> versionedObjects = new ArrayList<>();
+    ToVersioning firstVersion = toVersioningList.getFirst();
+    versionedObjects.add(
+        shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(firstVersion.getValidFrom(),
+            vd.getEditedValidFrom().minusDays(1), firstVersion, vd.getEditedEntity()));
 
-    applyVersioningOnLeftBorderWhenOnlyValidFromAndOrValidToEdited(vd, toVersioningList,
-        versionedObjects);
-
-    ToVersioning lastVersion = toVersioningList.getLast();
+    ToVersioning secondVersion = toVersioningList.get(1);
     versionedObjects.add(
         shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(vd.getEditedValidFrom(),
-            lastVersion.getValidTo(), lastVersion, vd.getEditedEntity()));
-    applyVersioningBetweenLeftAndRightBorder(vd, toVersioningList, versionedObjects);
+            secondVersion.getValidTo(), secondVersion, vd.getEditedEntity()));
     return versionedObjects;
   }
 
@@ -202,17 +223,6 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
         addNewVersionAfterLeftBorder(vd, leftBorderVersioning);
     versionedObjects.add(versionedObjectAfterLeftBorder);
   }
-
-  private void applyVersioningOnLeftBorderWhenOnlyValidFromAndOrValidToEdited(VersioningData vd,
-      List<ToVersioning> toVersioningList, List<VersionedObject> versionedObjects) {
-    log.info("Found version to split on the left border.");
-    // update version: validTo = editedValidFrom.minusDay(1) and no properties update
-    ToVersioning leftBorderVersioning = toVersioningList.get(0);
-    VersionedObject versionedLeftBorder =
-        shortenOrLengthenVersionOnLeftBorder(vd, leftBorderVersioning);
-    versionedObjects.add(versionedLeftBorder);
-  }
-
 
   private void applyVersioningBetweenLeftAndRightBorder(VersioningData vd,
       List<ToVersioning> toVersioningList,
