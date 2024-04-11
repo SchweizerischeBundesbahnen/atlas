@@ -190,7 +190,7 @@
     "SERVICE_POINTS": {
       "TITLE": "Dienststellen verwalten",
       "TITLE_HEADER": "Dienststellen",
-      "DESCRIPTION": "Erfassen, Bearbeiten und Einsehen von Betriebspunkten und Haltestellen des öv-Schweiz (SLOID)."
+      "DESCRIPTION": "Erfassen, Bearbeiten und Einsehen von Betriebspunkten und Haltestellen des öV-Schweiz (SLOID)."
     },
     "TTH": {
       "TITLE": "Fahrplananhörung Schweiz",
@@ -1001,7 +1001,7 @@
       "NEW": "Neue Ladestelle erfassen",
       "NUMBER": "Nummer",
       "DESIGNATION": "Bezeichnung",
-      "DESIGNATION_LONG": "Bezeichnung Lang",
+      "DESIGNATION_LONG": "Lange Bezeichnung",
       "CONNECTION_POINT": "Anschlusspunkt",
       "CONNECTION_POINT_VALUE": {
         "true": "Ja",
@@ -1089,11 +1089,11 @@
         "DYNAMIC_AUDIO_SYSTEM": "Akustisch",
         "DYNAMIC_AUDIO_SYSTEM_INFO": "Sind akustische Informationen gemäss Vorgabe Bundesrecht vorhanden? \n\nz.B. Lautsprecher oder Text-to-speech System",
         "ASSISTANCE_REQUEST_FULFILLED": "Voraussetzungen erfüllt",
-        "ASSISTANCE_REQUEST_FULFILLED_INFO": "Ja = Haltestelle ist komplett autonom Benutzbar. \nNein = Haltestelle ist nicht autonom Benutzbar.",
+        "ASSISTANCE_REQUEST_FULFILLED_INFO": "Ja = Haltestelle ist komplett autonom benutzbar. \nNein = Haltestelle ist nicht autonom benutzbar.",
         "ASSISTANCE_SERVICE": "Hilfestellung durch Personal",
-        "ASSISTANCE_SERVICE_INFO": "Ist Hilfestellung durch Personal vorhanden?\n\n - Ja = Während der gesamten Betriebszeit.\n - Teilweise = Bedienzeiten im Freitextfeld ergänzen.\n - Nicht anwendbar = nicht nötig, Haltestelle autonom Benutzbar.",
+        "ASSISTANCE_SERVICE_INFO": "Ist Hilfestellung durch Personal vorhanden?\n\n - Ja = Während der gesamten Betriebszeit.\n - Teilweise = Bedienzeiten im Freitextfeld ergänzen.\n - Nicht anwendbar = nicht nötig, Haltestelle autonom benutzbar.",
         "ASSISTANCE_AVAILABILITY": "Voranmeldung für Hilfestellung nötig",
-        "ASSISTANCE_AVAILABILITY_INFO": "Wenn ja/teilweise, Informationen im Hinweisfeld ergänzen.\nNicht anwendbar = nicht nötig, Haltestelle autonom Benutzbar.",
+        "ASSISTANCE_AVAILABILITY_INFO": "Wenn ja/teilweise, Informationen im Hinweisfeld ergänzen.\nNicht anwendbar = nicht nötig, Haltestelle autonom benutzbar.",
         "ASSISTANCE_CONDITION": "Hinweise zur Hilfestellung",
         "ASSISTANCE_CONDITION_INFO": "Informationen zur Hilfestellung (z.B. Voranmeldefrist, Bedienzeiten, Kontakt, Homepage)",
         "ALTERNATIVE_TRANSPORT": "Shuttledienst bzw. alternatives öV-Angebot",
@@ -1181,10 +1181,9 @@
       "HEADER": "Dokumente",
       "GUIDE_LINE_URL": "https://www.öv-info.ch/sites/default/files/2023-02/Leitfaden-Erfassung-Kriterien-zur-Barrierefreiheit-im-DiDok_0.pdf",
       "GUIDE_LINE_LABEL": "Leitfaden",
-      "GUIDE_LINE_ATTACHMENT_URL": "https://www.öv-info.ch/sites/default/files/2023-06/Anhang_zum_Leitfaden_Barrierefreiheit_web.xlsx",
-      "GUIDE_LINE_ATTACHMENT_LABEL": "Anhang zum Leitfaden web",
+      "GUIDE_LINE_ATTACHMENT_URL": "https://www.öv-info.ch/sites/default/files/2024-04/Anhang_zum_Leitfaden_Barrierefreiheit.xlsx",
+      "GUIDE_LINE_ATTACHMENT_LABEL": "Anhang zum Leitfaden",
       "GUIDE_LINE_ATTACHMENT_TECHNICAL_URL": "https://www.öv-info.ch/sites/default/files/2023-04/Anhang_zum_Leitfaden_Barrierefreiheit_technisch_0.xlsx",
-      "GUIDE_LINE_ATTACHMENT_TECHNICAL_LABEL": "Anhang zum Leitfaden technisch",
       "ADDITIONAL_LINK_LABEL": "Weiterführende Links",
       "DDA_URL": "https://www.fedlex.admin.ch/eli/cc/2003/667/de",
       "DDA_LABEL": "Behindertengleichstellungsgesetz, BehiG",
@@ -1244,8 +1243,8 @@
         "WHEELCHAIR_AREA_WIDTH": "Breite [cm]"
       },
       "NOTIFICATION": {
-        "ADD_SUCCESS": "Die Haltekante wurde erfolgreich hinzugefügt.",
-        "EDIT_SUCCESS": "Die Haltekante wurde erfolgreich gespeichert."
+        "ADD_SUCCESS": "Die Haltebereich wurde erfolgreich hinzugefügt.",
+        "EDIT_SUCCESS": "Die Haltebereich wurde erfolgreich gespeichert."
       }
     },
     "REFERENCE_POINTS": {
