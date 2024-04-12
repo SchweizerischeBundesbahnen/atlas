@@ -349,6 +349,11 @@ public final class VersioningHelper {
         && vd.getEditedValidFrom().isBefore(vd.getObjectToVersioningFound().getFirst().getValidTo());
   }
 
+  public static boolean isOnlyValidToEditedInTheFuture(VersioningData vd) {
+    return !arePropertiesEdited(vd) && VersioningHelper.isOnlyValidToEdited(vd)
+        && vd.getEditedValidTo().isAfter(vd.getObjectToVersioningFound().getLast().getValidFrom());
+  }
+
   private static ToVersioning getToVersioningToCompare(List<ToVersioning> objectsToVersioning,
       Long id) {
     return objectsToVersioning
