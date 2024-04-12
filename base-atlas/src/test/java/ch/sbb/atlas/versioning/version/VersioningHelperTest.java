@@ -2446,7 +2446,6 @@ public class VersioningHelperTest {
         .validFrom(LocalDate.of(2020, 1, 1))
         .validTo(LocalDate.of(2020, 12, 31))
         .build();
-    Property emptyProperty = Property.builder().build();
     Entity entity = Entity.builder().id(1L).properties(new ArrayList<>()).build();
     ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(currentVersion).build();
     List<ToVersioning> toVersioningList = new ArrayList<>();
@@ -2455,6 +2454,32 @@ public class VersioningHelperTest {
         toVersioningList);
     //when
     boolean result = VersioningHelper.isOnlyValidFromEditedInThePast(versioningData);
+
+    //then
+    assertThat(result).isTrue();
+  }
+  @Test
+  void shouldReturnIsOnlyValidToEditedInTheFuture() {
+    //given
+    VersionableObject editedVersion = VersionableObject
+        .builder()
+        .id(1L)
+        .validTo(LocalDate.of(2020, 2, 1))
+        .build();
+    VersionableObject currentVersion = VersionableObject
+        .builder()
+        .id(1L)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2020, 12, 31))
+        .build();
+    Entity entity = Entity.builder().id(1L).properties(new ArrayList<>()).build();
+    ToVersioning toVersioningCurrent = ToVersioning.builder().versionable(currentVersion).build();
+    List<ToVersioning> toVersioningList = new ArrayList<>();
+    toVersioningList.add(toVersioningCurrent);
+    VersioningData versioningData = new VersioningData(editedVersion, currentVersion, entity,
+        toVersioningList);
+    //when
+    boolean result = VersioningHelper.isOnlyValidToEditedInTheFuture(versioningData);
 
     //then
     assertThat(result).isTrue();
