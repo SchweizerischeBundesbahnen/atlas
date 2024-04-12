@@ -2,8 +2,10 @@ package ch.sbb.atlas.versioning.service;
 
 import static java.util.Comparator.comparing;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.versioning.BaseTest.VersionableObject.Fields;
+import ch.sbb.atlas.versioning.exception.VersioningException;
 import ch.sbb.atlas.versioning.model.Entity;
 import ch.sbb.atlas.versioning.model.Property;
 import ch.sbb.atlas.versioning.model.VersionedObject;
@@ -505,7 +507,7 @@ public class VersionableServiceScenario13Test extends VersionableServiceBaseTest
   }
 
   /**
-   * Scenario 13c: Update startet auf einer Version und endet in einer späteren Version
+   * Scenario 13c: Only validFrom edited over 1 version
    *
    * NEU:                    |____________|
    * IST:      |--------|-------|---------|
@@ -562,6 +564,61 @@ public class VersionableServiceScenario13Test extends VersionableServiceBaseTest
     Entity thirdVersionedObjectEntity = thirdVersionedObject.getEntity();
     assertThat(thirdVersionedObjectEntity).isNotNull();
     assertThat(thirdVersionedObjectEntity.getProperties()).isNotEmpty();
+  }
+
+  /**
+   * Scenario 13c: Only validFrom edited over multiple versions
+   *
+   * NEU:            |____________________|
+   * IST:      |--------|-------|---------|
+   * Version:      1        2        3
+   *
+   * RESULTAT: Versioning Scenario not allowed
+   */
+  @Test
+   void scenario13dInThePastOverMultipleVersions() {
+    //given
+    LocalDate editedValidFrom = LocalDate.of(2021, 10, 1);
+    LocalDate editedValidTo = versionableObject3.getValidTo();
+
+    VersionableObject editedVersion = VersionableObject.builder()
+                                                       .validFrom(editedValidFrom)
+                                                       .validTo(editedValidTo)
+                                                       .build();
+
+    //when
+    assertThrows(VersioningException.class, () -> versionableService.versioningObjects(
+        versionableObject3,
+        editedVersion,
+        List.of(versionableObject1, versionableObject2, versionableObject3)));
+  }
+
+
+  /**
+   * Scenario 13c: Only validTo edited over multiple versions
+   *
+   * NEU:      |____________________|
+   * IST:      |--------|-------|---------|
+   * Version:      1        2        3
+   *
+   * RESULTAT: Versioning Scenario not allowed
+   */
+  @Test
+  void scenario13dInTheFutureOverMultipleVersions() {
+   //given
+   LocalDate editedValidFrom = versionableObject1.getValidFrom();
+   LocalDate editedValidTo = LocalDate.of(2024, 10, 1);
+
+   VersionableObject editedVersion = VersionableObject.builder()
+       .validFrom(editedValidFrom)
+       .validTo(editedValidTo)
+       .build();
+
+   //when
+   assertThrows(VersioningException.class, () -> versionableService.versioningObjects(
+       versionableObject1,
+       editedVersion,
+       List.of(versionableObject1, versionableObject2, versionableObject3)));
   }
 
   /**
