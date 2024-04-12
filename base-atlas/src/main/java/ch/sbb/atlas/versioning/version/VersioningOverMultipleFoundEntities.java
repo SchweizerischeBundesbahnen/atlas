@@ -151,9 +151,11 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
   private List<VersionedObject> applyVersioningBetweenMultipleEntitiesAndStartsOnABorderWhenOnlyValidToEdited(
       VersioningData vd, List<ToVersioning> toVersioningList) {
     log.info("Starts on validFrom (Szenario 13c) when only validTo edited");
+    if(toVersioningList.size() > 2 ){
+      throw new VersioningException();
+    }
     List<VersionedObject> versionedObjects = new ArrayList<>();
-
-    ToVersioning penultimateVersion = toVersioningList.get(toVersioningList.size() -2 );
+    ToVersioning penultimateVersion = toVersioningList.getFirst();
 
     versionedObjects.add(
         shortenOrLengthenVersionAndUpdatePropertiesOnTheBorder(penultimateVersion.getValidFrom(),
@@ -183,6 +185,9 @@ public class VersioningOverMultipleFoundEntities implements Versioning {
   private List<VersionedObject> applyVersioningBetweenMultipleEntitiesOnTheLeftBorderInThePast(
       VersioningData vd, List<ToVersioning> toVersioningList) {
     log.info("Ends on validTo (Szenario 13d) only validFrom");
+    if(toVersioningList.size() > 2 ){
+      throw new VersioningException();
+    }
     List<VersionedObject> versionedObjects = new ArrayList<>();
     ToVersioning firstVersion = toVersioningList.getFirst();
     versionedObjects.add(
