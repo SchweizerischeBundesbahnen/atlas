@@ -1,5 +1,5 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, DestroyRef, inject, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {
   ApplicationType,
   HearingStatus,
@@ -12,33 +12,34 @@ import {
   TransportCompany,
   UserAdministrationService,
 } from '../../../api';
-import { Cantons } from '../../../core/cantons/Cantons';
-import { TableColumn } from '../../../core/components/table/table-column';
-import { Pages } from '../../pages';
-import { Observable, take } from 'rxjs';
+import {Cantons} from '../../../core/cantons/Cantons';
+import {TableColumn} from '../../../core/components/table/table-column';
+import {Pages} from '../../pages';
+import {take} from 'rxjs';
 import moment from 'moment';
-import { OverviewToTabShareDataService } from '../overview-tab/service/overview-to-tab-share-data.service';
-import { MatSelectChange } from '@angular/material/select';
-import { TthUtils } from '../util/tth-utils';
-import { TablePagination } from '../../../core/components/table/table-pagination';
-import { TthChangeStatusDialogService } from './tth-change-status-dialog/service/tth-change-status-dialog.service';
-import { ColumnDropDownEvent } from '../../../core/components/table/column-drop-down-event';
-import { addElementsToArrayWhenNotUndefined } from '../../../core/util/arrays';
-import { NewTimetableHearingYearDialogService } from '../new-timetable-hearing-year-dialog/service/new-timetable-hearing-year-dialog.service';
-import { SelectionModel } from '@angular/cdk/collections';
-import { TranslateService } from '@ngx-translate/core';
-import { TthChangeCantonDialogService } from './tth-change-canton-dialog/service/tth-change-canton-dialog.service';
-import { FileDownloadService } from '../../../core/components/file-upload/file/file-download.service';
-import { AuthService } from '../../../core/auth/auth.service';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogManageTthComponent } from '../dialog-manage-tth/dialog-manage-tth.component';
-import { DialogService } from '../../../core/components/dialog/dialog.service';
-import { StatementShareService } from './statement-share-service';
-import { map } from 'rxjs/operators';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TableService } from '../../../core/components/table/table.service';
-import { TableFilter } from '../../../core/components/table-filter/config/table-filter';
-import { TthTableFilterSettingsService } from '../tth-table-filter-settings.service';
+import {OverviewToTabShareDataService} from '../overview-tab/service/overview-to-tab-share-data.service';
+import {MatSelectChange} from '@angular/material/select';
+import {TthUtils} from '../util/tth-utils';
+import {TablePagination} from '../../../core/components/table/table-pagination';
+import {TthChangeStatusDialogService} from './tth-change-status-dialog/service/tth-change-status-dialog.service';
+import {ColumnDropDownEvent} from '../../../core/components/table/column-drop-down-event';
+import {addElementsToArrayWhenNotUndefined} from '../../../core/util/arrays';
+import {
+  NewTimetableHearingYearDialogService
+} from '../new-timetable-hearing-year-dialog/service/new-timetable-hearing-year-dialog.service';
+import {SelectionModel} from '@angular/cdk/collections';
+import {TranslateService} from '@ngx-translate/core';
+import {TthChangeCantonDialogService} from './tth-change-canton-dialog/service/tth-change-canton-dialog.service';
+import {FileDownloadService} from '../../../core/components/file-upload/file/file-download.service';
+import {AuthService} from '../../../core/auth/auth.service';
+import {MatDialog} from '@angular/material/dialog';
+import {DialogManageTthComponent} from '../dialog-manage-tth/dialog-manage-tth.component';
+import {DialogService} from '../../../core/components/dialog/dialog.service';
+import {StatementShareService} from './statement-share-service';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {TableService} from '../../../core/components/table/table.service';
+import {TableFilter} from '../../../core/components/table-filter/config/table-filter';
+import {TthTableFilterSettingsService} from '../tth-table-filter-settings.service';
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -152,7 +153,7 @@ export class OverviewDetailComponent implements OnInit {
         Pages.TTH_PLANNED,
       );
       this.sorting = 'swissCanton,asc';
-      this.tableColumns = this.getPlannedTableColumns();
+      this.tableColumns = this.getPlannedOrArchivedTableColumns();
       this.showAddNewTimetableHearingButton = true;
       this.showHearingDetail = true;
       this.initOverviewPlannedTable();
@@ -165,7 +166,7 @@ export class OverviewDetailComponent implements OnInit {
         Pages.TTH_ARCHIVED,
       );
       this.sorting = 'swissCanton,asc';
-      this.tableColumns = this.getArchivedTableColumns();
+      this.tableColumns = this.getPlannedOrArchivedTableColumns();
       this.showDownloadCsvButton = true;
       this.initOverviewArchivedTable();
     }
@@ -404,6 +405,7 @@ export class OverviewDetailComponent implements OnInit {
         headerTitle: '',
         disabled: true,
         value: 'id',
+        columnDef: 'select',
         checkbox: {
           changeSelectionCallback: this.collectingStatusChangeAction,
         },
@@ -585,81 +587,97 @@ export class OverviewDetailComponent implements OnInit {
     return Cantons.fromSwissCanton(canton)?.short;
   }
 
-  private getActiveTableColumns(): TableColumn<TimetableHearingStatement>[] {
-    return [
-      {
-        headerTitle: 'TTH.STATEMENT_STATUS_HEADER',
-        value: 'statementStatus',
-        dropdown: {
-          disabled: !this.statementEditable,
-          options: this.STATUS_OPTIONS,
-          changeSelectionCallback: this.changeSelectedStatus,
-          selectedOption: '',
-          translate: {
-            withPrefix: 'TTH.STATEMENT_STATUS.',
+  private getTableColumns(): TableColumn<TimetableHearingStatement>[] {
+      return [
+        {
+          headerTitle: 'TTH.STATEMENT_STATUS_HEADER',
+          value: 'statementStatus',
+          dropdown: {
+            disabled: !this.statementEditable,
+            options: this.STATUS_OPTIONS,
+            changeSelectionCallback: this.changeSelectedStatus,
+            selectedOption: '',
+            translate: {
+              withPrefix: 'TTH.STATEMENT_STATUS.',
+            },
           },
         },
-      },
-      { headerTitle: 'TTH.SWISS_CANTON', value: 'swissCanton', callback: this.mapToShortCanton },
-      {
-        headerTitle: 'TTH.TRANSPORT_COMPANY',
-        value: 'responsibleTransportCompaniesDisplay',
-      },
-      { headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER', value: 'timetableFieldNumber', disabled: true },
-      {
-        headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER_DESCRIPTION',
-        value: 'timetableFieldDescription',
-        disabled: true,
-      },
-      { headerTitle: 'COMMON.EDIT_ON', value: 'editionDate', formatAsDate: true },
-      {
-        headerTitle: 'COMMON.EDIT_BY',
-        value: 'editor',
-        getTitle: (value: string): Observable<string> => {
-          return this.userAdministrationService.getUserDisplayName(value).pipe(
-            take(1),
-            map((userDisplayName) => userDisplayName.displayName ?? value),
-          );
+        { headerTitle: 'TTH.SWISS_CANTON', value: 'swissCanton', callback: this.mapToShortCanton },
+        { headerTitle: 'ID', value: 'id' },
+        {
+          headerTitle: 'TTH.TRANSPORT_COMPANY',
+          value: 'responsibleTransportCompaniesDisplay',
         },
-      },
-      {
-        headerTitle: '',
-        value: 'etagVersion',
-        disabled: true,
-        button: {
-          icon: 'bi bi-files',
-          clickCallback: this.duplicate,
-          applicationType: 'TIMETABLE_HEARING',
-          buttonDataCy: 'duplicate-hearing',
-          title: 'TTH.BUTTON.DUPLICATE',
-          buttonType: 'icon',
-          disabled: false,
+        { headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER', value: 'timetableFieldNumber', disabled: true },
+        {
+          headerTitle: 'TTH.TIMETABLE_FIELD_NUMBER_DESCRIPTION',
+          value: 'timetableFieldDescription',
+          disabled: true,
         },
-      },
-    ];
+        { headerTitle: 'COMMON.EDIT_ON', value: 'editionDate', formatAsDate: true },
+        {
+          headerTitle: '',
+          value: 'etagVersion',
+          disabled: true,
+          button: {
+            icon: 'bi bi-files',
+            clickCallback: this.duplicate,
+            applicationType: 'TIMETABLE_HEARING',
+            buttonDataCy: 'duplicate-hearing',
+            title: 'TTH.BUTTON.DUPLICATE',
+            buttonType: 'icon',
+            disabled: false,
+          },
+        },
+      ];
   }
 
-  private getPlannedTableColumns(): TableColumn<TimetableHearingStatement>[] {
-    return this.getActiveTableColumns().filter((col) => {
-      return (
-        col.value === 'swissCanton' ||
-        col.value === 'responsibleTransportCompaniesDisplay' ||
-        col.value === 'timetableFieldNumber' ||
-        col.value === 'timetableFieldDescription'
-      );
-    });
+  getActiveTableColumns(): TableColumn<TimetableHearingStatement>[] {
+    if (this.isSwissCanton) {
+      return this.getTableColumns().filter(col => this.activeTthAndSwissCanton(col));
+    } else {
+      return this.getTableColumns().filter(col=> this.activeTth(col));
+    }
   }
 
-  private getArchivedTableColumns(): TableColumn<TimetableHearingStatement>[] {
-    return this.getActiveTableColumns().filter((col) => {
-      return (
-        col.value === 'swissCanton' ||
-        col.value === 'responsibleTransportCompaniesDisplay' ||
-        col.value === 'timetableFieldNumber' ||
-        col.value === 'timetableFieldDescription' ||
-        col.value === 'editor'
-      );
-    });
+  private activeTth(col: TableColumn<TimetableHearingStatement>): boolean {
+    return (
+      col.value === 'statementStatus' ||
+      col.value === 'editionDate' ||
+      col.value === 'etagVersion' ||
+      this.plannedOrArchivedTth(col)
+    );
+  }
+
+  private activeTthAndSwissCanton(col: TableColumn<TimetableHearingStatement>): boolean {
+    return (
+      col.value === 'swissCanton' ||
+      this.activeTth(col)
+    );
+  }
+
+  getPlannedOrArchivedTableColumns(): TableColumn<TimetableHearingStatement>[] {
+    if (this.isSwissCanton) {
+      return this.getTableColumns().filter(col => this.plannedOrArchivedTthAndSwissCanton(col));
+    } else {
+      return this.getTableColumns().filter(col => this.plannedOrArchivedTth(col));
+    }
+  }
+
+  private plannedOrArchivedTthAndSwissCanton(col: TableColumn<TimetableHearingStatement>): boolean {
+    return (
+      col.value === 'swissCanton' ||
+      this.plannedOrArchivedTth(col)
+    );
+  }
+
+  private plannedOrArchivedTth(col: TableColumn<TimetableHearingStatement>): boolean {
+    return (
+      col.value === 'id' ||
+      col.value === 'responsibleTransportCompaniesDisplay' ||
+      col.value === 'timetableFieldNumber' ||
+      col.value === 'timetableFieldDescription'
+    );
   }
 
   private initShowStartTimetableHearingButton() {

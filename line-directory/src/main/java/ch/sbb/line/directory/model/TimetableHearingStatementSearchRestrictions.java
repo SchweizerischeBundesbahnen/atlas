@@ -32,7 +32,7 @@ public class TimetableHearingStatementSearchRestrictions {
         .and(new SingleStringSpecification<>(Optional.ofNullable(statementRequestParams.getTtfnid()), Fields.ttfnid))
         .and(new ResponsibleTransportCompanySpecification(statementRequestParams.getTransportCompanies()))
         .and(new SearchCriteriaSpecification<>(statementRequestParams.getSearchCriterias(),
-            List.of(Fields.statement, Fields.justification, Fields.stopPlace,
+            List.of(Fields.id, Fields.statement, Fields.justification, Fields.stopPlace,
                 "statementSender.firstName", "statementSender.lastName",
                 "statementSender.organisation")));
   }
