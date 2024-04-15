@@ -23,6 +23,7 @@ import ch.sbb.line.directory.mapper.TimetableHearingStatementMapper;
 import ch.sbb.line.directory.model.TimetableHearingStatementSearchRestrictions;
 import ch.sbb.line.directory.service.hearing.ResponsibleTransportCompaniesResolverService;
 import ch.sbb.line.directory.service.hearing.TimetableFieldNumberResolverService;
+import ch.sbb.line.directory.service.hearing.TimetableHearingStatementAlternationService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingStatementExportService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingStatementService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingYearService;
@@ -49,6 +50,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class TimetableHearingStatementController implements TimetableHearingStatementApiV1 {
 
   private final TimetableHearingStatementService timetableHearingStatementService;
+  private final TimetableHearingStatementAlternationService timetableHearingStatementAlternationService;
   private final TimetableHearingYearService timetableHearingYearService;
   private final TimetableFieldNumberResolverService timetableFieldNumberResolverService;
   private final ResponsibleTransportCompaniesResolverService responsibleTransportCompaniesResolverService;
@@ -96,15 +98,13 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   @Override
   public TimetableHearingStatementAlternatingModel getPreviousStatement(Long id, Pageable pageable,
       TimetableHearingStatementRequestParams statementRequestParams) {
-    return timetableHearingStatementService.getStatementAlternation(id, pageable, statementRequestParams,
-        TimetableHearingStatementService.PREVIOUS);
+    return timetableHearingStatementAlternationService.getPreviousStatement(id, pageable, statementRequestParams);
   }
 
   @Override
   public TimetableHearingStatementAlternatingModel getNextStatement(Long id, Pageable pageable,
       TimetableHearingStatementRequestParams statementRequestParams) {
-    return timetableHearingStatementService.getStatementAlternation(id, pageable, statementRequestParams,
-        TimetableHearingStatementService.NEXT);
+    return timetableHearingStatementAlternationService.getNextStatement(id, pageable, statementRequestParams);
   }
 
   @Override

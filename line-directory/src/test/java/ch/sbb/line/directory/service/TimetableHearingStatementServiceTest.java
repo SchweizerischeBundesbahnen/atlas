@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementAlternatingModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
@@ -474,74 +473,6 @@ import org.springframework.web.multipart.MultipartFile;
 
     hearingStatements = timetableHearingStatementService.getHearingStatements(searchRestrictions);
     assertThat(hearingStatements.getTotalElements()).isZero();
-  }
-
-  @Test
-  void shouldNextFindStatementByTableSettings() {
-    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
-
-    // Statement 1
-    TimetableHearingStatementModel statement1 = TimetableHearingStatementModel.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-        .swissCanton(SwissCanton.BERN)
-        .statementSender(TimetableHearingStatementSenderModel.builder()
-            .email("fabienne.mueller@sbb.ch")
-            .build())
-        .statement("Statement 1")
-        .build();
-    statement1 = timetableHearingStatementService.createHearingStatement(statement1, Collections.emptyList());
-
-    // Statement 2
-    TimetableHearingStatementModel statement2 = TimetableHearingStatementModel.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-        .swissCanton(SwissCanton.BERN)
-        .statementSender(TimetableHearingStatementSenderModel.builder()
-            .email("fabienne.mueller@sbb.ch")
-            .build())
-        .statement("Statement 2")
-        .build();
-    statement2 = timetableHearingStatementService.createHearingStatement(statement2, Collections.emptyList());
-
-    // Statement 3
-    TimetableHearingStatementModel statement3 = TimetableHearingStatementModel.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-        .swissCanton(SwissCanton.BERN)
-        .statementSender(TimetableHearingStatementSenderModel.builder()
-            .email("fabienne.mueller@sbb.ch")
-            .build())
-        .statement("Statement 3")
-        .build();
-    statement3 = timetableHearingStatementService.createHearingStatement(statement3, Collections.emptyList());
-
-    TimetableHearingStatementRequestParams statementRequestParams = TimetableHearingStatementRequestParams.builder()
-        .canton(SwissCanton.BERN)
-        .timetableHearingYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-        .build();
-
-    // Assertions
-    Pageable pageable = Pageable.ofSize(5);
-
-    // Next
-    TimetableHearingStatementAlternatingModel statementAlternation = timetableHearingStatementService.getStatementAlternation(
-        statement2.getId(), pageable, statementRequestParams, TimetableHearingStatementService.NEXT);
-    assertThat(statementAlternation.getTimetableHearingStatement().getStatement()).isEqualTo("Statement 3");
-
-    TimetableHearingStatementAlternatingModel statementAlternationOverTheEnd =
-        timetableHearingStatementService.getStatementAlternation(
-        statement3.getId(), pageable, statementRequestParams, TimetableHearingStatementService.NEXT);
-    assertThat(statementAlternationOverTheEnd.getTimetableHearingStatement().getStatement()).isEqualTo("Statement 1");
-
-    // Previous
-    TimetableHearingStatementAlternatingModel statementAlternationPrevious =
-        timetableHearingStatementService.getStatementAlternation(
-        statement2.getId(), pageable, statementRequestParams, TimetableHearingStatementService.PREVIOUS);
-    assertThat(statementAlternationPrevious.getTimetableHearingStatement().getStatement()).isEqualTo("Statement 1");
-
-    TimetableHearingStatementAlternatingModel statementAlternationPreviousOverTheBeginning =
-        timetableHearingStatementService.getStatementAlternation(
-            statement1.getId(), pageable, statementRequestParams, TimetableHearingStatementService.PREVIOUS);
-    assertThat(statementAlternationPreviousOverTheBeginning.getTimetableHearingStatement().getStatement()).isEqualTo("Statement"
-        + " 3");
   }
 
 }
