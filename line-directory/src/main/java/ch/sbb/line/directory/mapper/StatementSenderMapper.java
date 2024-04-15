@@ -2,12 +2,22 @@ package ch.sbb.line.directory.mapper;
 
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
 import ch.sbb.line.directory.entity.StatementSender;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.experimental.UtilityClass;
+import org.springframework.util.CollectionUtils;
 
 @UtilityClass
 public class StatementSenderMapper {
 
   public static StatementSender toEntity(TimetableHearingStatementSenderModel timetableHearingStatementSenderModel) {
+    Set<String> emails = new HashSet<>();
+    if (timetableHearingStatementSenderModel.getEmail() != null) {
+      emails.add(timetableHearingStatementSenderModel.getEmail());
+    }
+    if (!CollectionUtils.isEmpty(timetableHearingStatementSenderModel.getEmails())) {
+      emails.addAll(timetableHearingStatementSenderModel.getEmails());
+    }
     return StatementSender.builder()
         .firstName(timetableHearingStatementSenderModel.getFirstName())
         .lastName(timetableHearingStatementSenderModel.getLastName())
@@ -15,7 +25,8 @@ public class StatementSenderMapper {
         .street(timetableHearingStatementSenderModel.getStreet())
         .zip(timetableHearingStatementSenderModel.getZip())
         .city(timetableHearingStatementSenderModel.getCity())
-        .email(timetableHearingStatementSenderModel.getEmail())
+//        .email(timetableHearingStatementSenderModel.getEmail())
+        .emails(emails)
         .build();
   }
 
@@ -27,7 +38,8 @@ public class StatementSenderMapper {
         .street(statementSender.getStreet())
         .zip(statementSender.getZip())
         .city(statementSender.getCity())
-        .email(statementSender.getEmail())
+//        .email(statementSender.getEmail())
+        .emails(statementSender.getEmails())
         .build();
   }
 }
