@@ -54,7 +54,8 @@ public class TimetableHearingStatementAlternationService {
     if (indexOfAlternation < 0) {
       indexOfAlternation += hearingStatements.size();
     }
-    TimetableHearingStatement alternation = hearingStatements.get(indexOfAlternation % hearingStatements.size());
+    indexOfAlternation %= hearingStatements.size();
+    TimetableHearingStatement alternation = hearingStatements.get(indexOfAlternation);
 
     Pageable resultPageable = PageRequest.of((indexOfAlternation) / pageable.getPageSize(), pageable.getPageSize(),
         pageable.getSort());

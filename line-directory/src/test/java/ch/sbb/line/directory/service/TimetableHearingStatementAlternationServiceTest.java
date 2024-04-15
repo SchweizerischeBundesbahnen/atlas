@@ -38,7 +38,7 @@ class TimetableHearingStatementAlternationServiceTest {
           .canton(SwissCanton.BERN)
           .timetableHearingYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
           .build();
-  private static final Pageable PAGEABLE = Pageable.ofSize(5);
+  private static final Pageable PAGEABLE = Pageable.ofSize(1);
 
   private final TimetableHearingYearRepository timetableHearingYearRepository;
   private final TimetableHearingYearService timetableHearingYearService;
@@ -97,6 +97,7 @@ class TimetableHearingStatementAlternationServiceTest {
     TimetableHearingStatementAlternatingModel statementAlternation = timetableHearingStatementAlternationService.getNextStatement(
         statement2.getId(), PAGEABLE, STATEMENT_REQUEST_PARAMS);
     assertThat(statementAlternation.getTimetableHearingStatement().getStatement()).isEqualTo("Statement 3");
+    assertThat(statementAlternation.getPageable().getPageNumber()).isEqualTo(2);
   }
 
   @Test
@@ -104,6 +105,7 @@ class TimetableHearingStatementAlternationServiceTest {
     TimetableHearingStatementAlternatingModel statementAlternation = timetableHearingStatementAlternationService.getNextStatement(
         statement3.getId(), PAGEABLE, STATEMENT_REQUEST_PARAMS);
     assertThat(statementAlternation.getTimetableHearingStatement().getStatement()).isEqualTo("Statement 1");
+    assertThat(statementAlternation.getPageable().getPageNumber()).isEqualTo(0);
   }
 
   @Test
@@ -111,6 +113,7 @@ class TimetableHearingStatementAlternationServiceTest {
     TimetableHearingStatementAlternatingModel statementAlternation = timetableHearingStatementAlternationService.getPreviousStatement(
         statement2.getId(), PAGEABLE, STATEMENT_REQUEST_PARAMS);
     assertThat(statementAlternation.getTimetableHearingStatement().getStatement()).isEqualTo("Statement 1");
+    assertThat(statementAlternation.getPageable().getPageNumber()).isEqualTo(0);
   }
 
   @Test
@@ -118,6 +121,7 @@ class TimetableHearingStatementAlternationServiceTest {
     TimetableHearingStatementAlternatingModel statementAlternation = timetableHearingStatementAlternationService.getPreviousStatement(
         statement1.getId(), PAGEABLE, STATEMENT_REQUEST_PARAMS);
     assertThat(statementAlternation.getTimetableHearingStatement().getStatement()).isEqualTo("Statement 3");
+    assertThat(statementAlternation.getPageable().getPageNumber()).isEqualTo(2);
   }
 
 }
