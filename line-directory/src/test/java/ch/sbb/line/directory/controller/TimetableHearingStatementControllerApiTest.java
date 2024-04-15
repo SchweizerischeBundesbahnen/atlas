@@ -54,6 +54,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -165,7 +166,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .swissCanton(SwissCanton.BERN)
         .ttfnid("ch:1:ttfnid:12341241")
         .statementSender(TimetableHearingStatementSenderModel.builder()
-            .email("fabienne.mueller@sbb.ch")
+            .emails(Set.of("fabienne.mueller@sbb.ch"))
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
@@ -205,7 +206,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModel.builder()
-            .email("fabienne.mueller@sbb.ch")
+            .emails(Set.of("fabienne.mueller@sbb.ch"))
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
@@ -233,7 +234,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModel.builder()
-            .email("fabienne.mueller@sbb.ch")
+            .emails(Set.of("fabienne.mueller@sbb.ch"))
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
@@ -266,7 +267,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .swissCanton(SwissCanton.BERN)
         .ttfnid("ch:1:ttfnid:12341241")
         .statementSender(TimetableHearingStatementSenderModel.builder()
-            .email("fabienne.mueller@sbb.ch")
+            .emails(Set.of("fabienne.mueller@sbb.ch"))
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
@@ -412,7 +413,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModel.builder()
-                .email("fabienne.mueller@sbb.ch")
+                .emails(Set.of("fabienne.mueller@sbb.ch"))
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
             .build(),
@@ -440,7 +441,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.RECEIVED)
         .statementSender(StatementSender.builder()
-            .email("mike@thebike.com")
+            .emails(Set.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -449,7 +450,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.JUNK)
         .statementSender(StatementSender.builder()
-            .email("mike@thebike.com")
+            .emails(Set.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -477,7 +478,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.IN_REVIEW)
         .statementSender(StatementSender.builder()
-            .email("mike@thebike.com")
+            .emails(Set.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -487,7 +488,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.JUNK)
         .statementSender(StatementSender.builder()
-            .email("mike@thebike.com")
+            .emails(Set.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -514,7 +515,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.IN_REVIEW)
         .statementSender(StatementSender.builder()
-            .email("mike@thebike.com")
+            .emails(Set.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -524,7 +525,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.JUNK)
         .statementSender(StatementSender.builder()
-            .email("mike@thebike.com")
+            .emails(Set.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -553,7 +554,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.IN_REVIEW)
         .statementSender(StatementSender.builder()
-            .email("mike@thebike.com")
+            .emails(Set.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -563,7 +564,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.JUNK)
         .statementSender(StatementSender.builder()
-            .email("mike@thebike.com")
+            .emails(Set.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -589,7 +590,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.RECEIVED)
         .statementSender(StatementSender.builder()
-            .email("mike@thebike.com")
+            .emails(Set.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -598,7 +599,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .swissCanton(SwissCanton.AARGAU)
         .statementStatus(StatementStatus.JUNK)
         .statementSender(StatementSender.builder()
-            .email("mike@thebike.com")
+            .emails(Set.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -627,7 +628,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModel.builder()
-                .email("fabienne.mueller@sbb.ch")
+                .emails(Set.of("fabienne.mueller@sbb.ch"))
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
             .build(),
@@ -655,7 +656,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModel.builder()
-                .email("fabienne.mueller@sbb.ch")
+                .emails(Set.of("fabienne.mueller@sbb.ch"))
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
             .build(),
@@ -680,7 +681,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModel.builder()
-            .email("fabienne.mueller@sbb.ch")
+            .emails(Set.of("fabienne.mueller@sbb.ch"))
             .build())
         .statement("Ich haette gerne mehrere Verbindungen am Abend.")
         .build();
@@ -711,7 +712,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModel.builder()
-            .email("fabienne.mueller@sbb.ch")
+            .emails(Set.of("fabienne.mueller@sbb.ch"))
             .build())
         .statement("Ich haette gerne mehrere Verbindungen am Abend.")
         .build();
@@ -742,7 +743,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModel.builder()
-                .email("fabienne.mueller@sbb.ch")
+                .emails(Set.of("fabienne.mueller@sbb.ch"))
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
             .build(),
@@ -761,7 +762,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModel.builder()
-                .email("fabienne.mueller@sbb.ch")
+                .emails(Set.of("fabienne.mueller@sbb.ch"))
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
             .build(),
@@ -783,7 +784,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModel.builder()
-                .email("fabienne.mueller@sbb.ch")
+                .emails(Set.of("fabienne.mueller@sbb.ch"))
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
             .build(),
@@ -802,7 +803,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModel.builder()
-                .email("fabienne.mueller@sbb.ch")
+                .emails(Set.of("fabienne.mueller@sbb.ch"))
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
             .build(),
@@ -820,7 +821,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModel.builder()
-                .email("fabienne.mueller@sbb.ch")
+                .emails(Set.of("fabienne.mueller@sbb.ch"))
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
             .build(),
@@ -838,7 +839,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModel.builder()
-                .email("fabienne.mueller@sbb.ch")
+                .emails(Set.of("fabienne.mueller@sbb.ch"))
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
             .build(),
@@ -860,7 +861,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModel.builder()
-                .email("fabienne.mueller@sbb.ch")
+                .emails(Set.of("fabienne.mueller@sbb.ch"))
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
             .build(),
@@ -886,7 +887,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModel.builder()
-            .email("fabienne.mueller@sbb.ch")
+            .emails(Set.of("fabienne.mueller@sbb.ch"))
             .build())
         .responsibleTransportCompanies(List.of(TimetableHearingStatementResponsibleTransportCompanyModel.builder()
             .id(1L)
