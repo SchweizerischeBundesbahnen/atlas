@@ -6,7 +6,7 @@
       <div class="statement-form">
         <ng-container [formGroup]="form">
           <h1 class="font-bold-4xl mt-5">
-            {{ (statement ? 'TTH.STATEMENT.STATEMENT' : 'TTH.STATEMENT.NEW') | translate }}
+            {{ (statement ? ('TTH.STATEMENT.STATEMENT' | translate) + ' ' + statement.id : 'TTH.STATEMENT.NEW' | translate)}}
           </h1>
 
           <app-user-detail-info
