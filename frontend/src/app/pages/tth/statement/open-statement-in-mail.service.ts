@@ -1,10 +1,6 @@
-import { Injectable } from '@angular/core';
-import {
-  TimetableFieldNumber,
-  TimetableFieldNumbersService,
-  TimetableHearingStatement,
-} from '../../../api';
-import { TranslatePipe } from '@ngx-translate/core';
+import {Injectable} from '@angular/core';
+import {TimetableFieldNumber, TimetableFieldNumbersService, TimetableHearingStatement,} from '../../../api';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
@@ -54,7 +50,7 @@ export class OpenStatementInMailService {
     const stopPointInfo = this.buildStopPointInfo(statement);
     const ttfnInfo = this.buildTtfnInfo(resolvedTtfn);
 
-    const subject = this.buildSubject(ttfnInfo);
+    const subject = this.buildSubject(ttfnInfo, statement.id);
     const body = `${ttfnInfo}${stopPointInfo}${statementInfo}`;
 
     return encodeURI(`mailto:?${subject}body=${body}`);
@@ -76,8 +72,8 @@ export class OpenStatementInMailService {
       : '';
   }
 
-  private buildSubject(ttfnInfo: string | undefined) {
+  private buildSubject(ttfnInfo: string | undefined, id: number | undefined) {
     const requestLabel = this.translatePipe.transform('TTH.STATEMENT.REQUEST');
-    return ttfnInfo ? `subject=${requestLabel} ${ttfnInfo}&` : '';
+    return ttfnInfo ? `subject=${requestLabel} ${id} ${ttfnInfo}&` : '';
   }
 }
