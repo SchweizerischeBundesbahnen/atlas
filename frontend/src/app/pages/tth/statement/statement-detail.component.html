@@ -293,6 +293,20 @@
 
     <atlas-detail-footer>
       <atlas-button
+        (click)="previous()"
+        [footerEdit]="form.enabled"
+        buttonDataCy="previous-item"
+        title="COMMON.PREVIOUS"
+        buttonType="whiteFooterNonEdit"
+        wrapperStyleClass="me-3"
+      >
+        <ng-template #rightIcon>
+          <b
+            class='bi bi-chevron-left'
+          ></b>
+        </ng-template>
+      </atlas-button>
+      <atlas-button
         (click)="backToOverview()"
         [footerEdit]="form.enabled"
         buttonDataCy="back-to-overview"
@@ -310,7 +324,21 @@
         buttonStyleClass="atlas-primary-btn"
         buttonText="COMMON.EDIT"
         buttonType="cantonWritePermission"
+        wrapperStyleClass="me-3"
       >
+      </atlas-button>
+      <atlas-button
+        (click)="next()"
+        [footerEdit]="form.enabled"
+        buttonDataCy="next-item"
+        title="COMMON.NEXT"
+        buttonType="whiteFooterNonEdit"
+      >
+        <ng-template #rightIcon>
+          <b
+            class='bi bi-chevron-right'
+          ></b>
+        </ng-template>
       </atlas-button>
       <atlas-button
         (click)="toggleEdit()"
