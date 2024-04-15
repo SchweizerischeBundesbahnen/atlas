@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.module.ts
 api/api.ts
@@ -8,6 +7,7 @@ api/clientCredentialAdministration.service.ts
 api/companies.service.ts
 api/exportServicePointBatch.service.ts
 api/geoData.service.ts
+api/importDidokUserBatch.service.ts
 api/importPrmBatch.service.ts
 api/importServicePointBatch.service.ts
 api/lines.service.ts
@@ -96,6 +96,8 @@ model/inlineObject10.ts
 model/inlineObject11.ts
 model/inlineObject12.ts
 model/inlineObject13.ts
+model/inlineObject14.ts
+model/inlineObject15.ts
 model/inlineObject2.ts
 model/inlineObject3.ts
 model/inlineObject4.ts
@@ -120,6 +122,7 @@ model/models.ts
 model/operatingPointTechnicalTimetableType.ts
 model/operatingPointTrafficPointType.ts
 model/operatingPointType.ts
+model/pageableObject.ts
 model/parameter.ts
 model/parkingLotCsvModel.ts
 model/parkingLotCsvModelContainer.ts
@@ -170,6 +173,7 @@ model/servicePointImportRequest.ts
 model/servicePointNumber.ts
 model/servicePointSearchRequest.ts
 model/servicePointSearchResult.ts
+model/sortObject.ts
 model/spatialReference.ts
 model/standardAttributeType.ts
 model/statementStatus.ts
@@ -189,6 +193,7 @@ model/tactileVisualAttributeType.ts
 model/timetableFieldNumber.ts
 model/timetableFieldNumberVersion.ts
 model/timetableHearingStatement.ts
+model/timetableHearingStatementAlternating.ts
 model/timetableHearingStatementDocument.ts
 model/timetableHearingStatementResponsibleTransportCompany.ts
 model/timetableHearingStatementSender.ts
