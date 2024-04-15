@@ -20,8 +20,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({"cantonAbbreviation", "timetableFieldNumber", "timetableFieldNumberDescription", "stopPlace",
-    "transportCompanyAbbreviations", "transportCompanyDescriptions", "statement", "documentsPresent", "status", "justification",
-    "firstName", "lastName", "organisation",
+    "timetabeHearingStatementId", "transportCompanyAbbreviations", "transportCompanyDescriptions", "statement",
+    "documentsPresent", "status", "justification", "firstName", "lastName", "organisation",
     "street", "zipAndCity", "email", "editor", "editionDate", "timetableHearingYear"})
 public class TimetableHearingStatementCsvModel implements VersionCsvModel {
 
@@ -29,6 +29,7 @@ public class TimetableHearingStatementCsvModel implements VersionCsvModel {
   private String timetableFieldNumber;
   private String timetableFieldNumberDescription;
   private String stopPlace;
+  private Long timetabeHearingStatementId;
   private String transportCompanyAbbreviations;
   private String transportCompanyDescriptions;
   private String statement;
@@ -52,6 +53,7 @@ public class TimetableHearingStatementCsvModel implements VersionCsvModel {
         .timetableFieldNumber(timetableHearingStatementModel.getTimetableFieldNumber())
         .timetableFieldNumberDescription(timetableHearingStatementModel.getTimetableFieldDescription())
         .stopPlace(timetableHearingStatementModel.getStopPlace())
+        .timetabeHearingStatementId(timetableHearingStatementModel.getId())
         .transportCompanyAbbreviations(
             timetableHearingStatementModel.getResponsibleTransportCompanies().stream()
                 .map(TimetableHearingStatementResponsibleTransportCompanyModel::getAbbreviation)
