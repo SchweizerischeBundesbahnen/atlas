@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   ApplicationRole,
   ApplicationType,
@@ -10,28 +10,31 @@ import {
   TimetableHearingStatementsService,
   TimetableHearingYearsService,
   TimetableYearChangeService,
+  TransportCompany,
 } from '../../../api';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DialogService } from '../../../core/components/dialog/dialog.service';
-import { Cantons } from '../../../core/cantons/Cantons';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AtlasCharsetsValidator } from '../../../core/validation/charsets/atlas-charsets-validator';
-import { AtlasFieldLengthValidator } from '../../../core/validation/field-lengths/atlas-field-length-validator';
-import { WhitespaceValidator } from '../../../core/validation/whitespace/whitespace-validator';
-import { StatementDetailFormGroup, StatementSenderFormGroup } from './statement-detail-form-group';
-import { Canton } from '../../../core/cantons/Canton';
-import { map, takeUntil } from 'rxjs/operators';
-import { catchError, EMPTY, Observable, of, Subject } from 'rxjs';
-import { NotificationService } from '../../../core/notification/notification.service';
-import { ValidationService } from '../../../core/validation/validation.service';
-import { AuthService } from '../../../core/auth/auth.service';
-import { TthUtils } from '../util/tth-utils';
-import { StatementDialogService } from './statement-dialog/service/statement.dialog.service';
-import { FileDownloadService } from '../../../core/components/file-upload/file/file-download.service';
-import { OpenStatementInMailService } from './open-statement-in-mail.service';
-import { StatementShareService } from '../overview-detail/statement-share-service';
-import { Pages } from '../../pages';
-import { DetailFormComponent } from '../../../core/leave-guard/leave-dirty-form-guard.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {DialogService} from '../../../core/components/dialog/dialog.service';
+import {Cantons} from '../../../core/cantons/Cantons';
+import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AtlasCharsetsValidator} from '../../../core/validation/charsets/atlas-charsets-validator';
+import {AtlasFieldLengthValidator} from '../../../core/validation/field-lengths/atlas-field-length-validator';
+import {WhitespaceValidator} from '../../../core/validation/whitespace/whitespace-validator';
+import {StatementDetailFormGroup, StatementSenderFormGroup} from './statement-detail-form-group';
+import {Canton} from '../../../core/cantons/Canton';
+import {map, takeUntil} from 'rxjs/operators';
+import {catchError, EMPTY, Observable, of, Subject} from 'rxjs';
+import {NotificationService} from '../../../core/notification/notification.service';
+import {ValidationService} from '../../../core/validation/validation.service';
+import {AuthService} from '../../../core/auth/auth.service';
+import {TthUtils} from '../util/tth-utils';
+import {StatementDialogService} from './statement-dialog/service/statement.dialog.service';
+import {FileDownloadService} from '../../../core/components/file-upload/file/file-download.service';
+import {OpenStatementInMailService} from './open-statement-in-mail.service';
+import {StatementShareService} from '../overview-detail/statement-share-service';
+import {Pages} from '../../pages';
+import {DetailFormComponent} from '../../../core/leave-guard/leave-dirty-form-guard.service';
+import {TableService} from "../../../core/components/table/table.service";
+import {addElementsToArrayWhenNotUndefined} from "../../../core/util/arrays";
 
 @Component({
   selector: 'app-statement-detail',
@@ -68,7 +71,9 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     private readonly statementDialogService: StatementDialogService,
     private readonly openStatementInMailService: OpenStatementInMailService,
     private readonly statementShareService: StatementShareService,
-  ) {}
+    private readonly tableService: TableService,
+  ) {
+  }
 
   get isHearingStatusArchived() {
     return TthUtils.isHearingStatusArchived(this.hearingStatus);
@@ -150,7 +155,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     if (this.form.enabled) {
       this.showConfirmationDialog();
     } else if (!this.isHearingStatusArchived) {
-      this.form.enable({ emitEvent: false });
+      this.form.enable({emitEvent: false});
     }
   }
 
@@ -389,7 +394,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   }
 
   private navigateToStatementDetail(statement: TimetableHearingStatement) {
-    this.router.navigate(['..', statement.id], { relativeTo: this.route }).then(() => {
+    this.router.navigate(['..', statement.id], {relativeTo: this.route}).then(() => {
       this.isInitializingComponent = false;
       this.statement = statement;
       this.ngOnInit();
@@ -409,7 +414,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
         if (this.isNew) {
           this.backToOverview();
         } else {
-          this.form.disable({ emitEvent: false });
+          this.form.disable({emitEvent: false});
           this.ngOnInit();
         }
       }
@@ -425,4 +430,37 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     }
     return of(true);
   }
+
+  next() {
+    this.timetableHearingStatementsService.getNextStatement(...this.getAlternationParams())
+      .subscribe(next => {
+        this.tableService.pageIndex = next.pageable.pageNumber!;
+        this.navigateToStatementDetail(next.timetableHearingStatement);
+      });
+  }
+
+  previous() {
+    this.timetableHearingStatementsService.getPreviousStatement(...this.getAlternationParams())
+      .subscribe(next => {
+        this.tableService.pageIndex = next.pageable.pageNumber!;
+        this.navigateToStatementDetail(next.timetableHearingStatement);
+      });
+  }
+
+  private getAlternationParams(): [number, number | undefined, SwissCanton | undefined, Array<string> | undefined,
+      Array<StatementStatus> | undefined, string | undefined, Array<number> | undefined, number | undefined,
+      number | undefined, Array<string> | undefined] {
+    return [this.statement!.id!, this.statement!.timetableYear,
+      this.statement!.swissCanton,
+      this.tableService.filterConfig?.filters.chipSearch.getActiveSearch(),
+      this.tableService.filterConfig?.filters.multiSelectStatementStatus.getActiveSearch(),
+      this.tableService.filterConfig?.filters.searchSelectTTFN.getActiveSearch()?.ttfnid,
+      (this.tableService.filterConfig?.filters.searchSelectTU.getActiveSearch() as TransportCompany[])
+        ?.map((tu) => tu.id)
+        .filter((numberOrUndefined): numberOrUndefined is number => !!numberOrUndefined),
+      this.tableService.pageIndex,
+      this.tableService.pageSize,
+      addElementsToArrayWhenNotUndefined(this.tableService.sortString, 'statementStatus,asc', 'ttfnid,asc')];
+  }
+
 }
