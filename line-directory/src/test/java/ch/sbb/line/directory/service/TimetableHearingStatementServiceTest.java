@@ -31,6 +31,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +76,7 @@ import org.springframework.web.multipart.MultipartFile;
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModel.builder()
-            .email("fabienne.mueller@sbb.ch")
+            .emails(Set.of("fabienne.mueller@sbb.ch"))
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
@@ -324,7 +325,7 @@ import org.springframework.web.multipart.MultipartFile;
         .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModel.builder()
             .firstName("Luca")
-            .email("fabienne.mueller@sbb.ch")
+            .emails(Set.of("fabienne.mueller@sbb.ch"))
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
@@ -354,7 +355,7 @@ import org.springframework.web.multipart.MultipartFile;
         .swissCanton(SwissCanton.BERN)
         .statementSender(TimetableHearingStatementSenderModel.builder()
             .firstName("Luca")
-            .email("fabienne.mueller@sbb.ch")
+            .emails(Set.of("fabienne.mueller@sbb.ch"))
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
@@ -386,7 +387,7 @@ import org.springframework.web.multipart.MultipartFile;
         .swissCanton(SwissCanton.BERN)
         .ttfnid("ch:1:ttfnid:2341234")
         .statementSender(TimetableHearingStatementSenderModel.builder()
-            .email("fabienne.mueller@sbb.ch")
+            .emails(Set.of("fabienne.mueller@sbb.ch"))
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
@@ -424,7 +425,7 @@ import org.springframework.web.multipart.MultipartFile;
         .swissCanton(SwissCanton.BERN)
         .ttfnid("ch:1:ttfnid:2341234")
         .statementSender(TimetableHearingStatementSenderModel.builder()
-            .email("fabienne.mueller@sbb.ch")
+            .emails(Set.of("fabienne.mueller@sbb.ch"))
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
@@ -480,7 +481,7 @@ import org.springframework.web.multipart.MultipartFile;
                 .build()))
         .statementSender(TimetableHearingStatementSenderModel.builder()
             .firstName("Luca")
-            .email("fabienne.mueller@sbb.ch")
+            .emails(Set.of("fabienne.mueller@sbb.ch"))
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
