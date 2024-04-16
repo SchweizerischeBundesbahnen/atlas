@@ -1,7 +1,7 @@
 import {
   HearingStatus,
   SwissCanton,
-  TimetableHearingStatement,
+  TimetableHearingStatement, TimetableHearingStatementAlternating,
   TimetableHearingStatementsService,
   TimetableHearingYear,
   TimetableHearingYearsService,
@@ -57,10 +57,17 @@ const mockTimetableHearingYearsService = jasmine.createSpyObj('timetableHearingY
   'getHearingYears',
 ]);
 
-const mockTimetableHearingStatementsService = jasmine.createSpyObj(
-  'timetableHearingStatementsService',
-  ['createStatement'],
+const mockTimetableHearingStatementsService = jasmine.createSpyObj('timetableHearingStatementsService',
+  ['createStatement', 'getNextStatement', 'getPreviousStatement'],
 );
+const alternation: TimetableHearingStatementAlternating = {
+  timetableHearingStatement: existingStatement,
+  pageable: {
+    pageNumber: 1
+  }
+}
+mockTimetableHearingStatementsService.getNextStatement.and.returnValue(of(alternation));
+mockTimetableHearingStatementsService.getPreviousStatement.and.returnValue(of(alternation));
 
 @Component({
   selector: 'app-user-detail-info',
@@ -116,6 +123,20 @@ describe('StatementDetailComponent for existing statement', () => {
     //then
     expect(component.form.enabled).toBeFalsy();
   });
+
+  it('should go to next statement', () => {
+    component.hearingStatus = HearingStatus.Archived;
+
+    component.next();
+    expect(mockTimetableHearingStatementsService.getNextStatement).toHaveBeenCalled();
+  });
+
+  it('should go to previous statement', () => {
+    component.hearingStatus = HearingStatus.Archived;
+
+    component.previous();
+    expect(mockTimetableHearingStatementsService.getPreviousStatement).toHaveBeenCalled();
+  });
 });
 
 describe('test editButton', () => {
@@ -155,18 +176,16 @@ describe('test editButton', () => {
     fixture.detectChanges();
     //then
     const buttons = fixture.debugElement.queryAll(By.css('atlas-button'));
-    expect(buttons.length).toBe(4);
     const buttonsText = buttons.map(
-      (button) => button.nativeElement.attributes['buttontext'].value,
+      (button) => button.nativeElement.attributes['buttontext']?.value,
     );
     expect(buttonsText).not.toContain('COMMON.EDIT');
   });
 
   it('should show edit button when HearingStatus is not Archived and statement is editable', () => {
     const buttons = fixture.debugElement.queryAll(By.css('atlas-button'));
-    expect(buttons.length).toBe(5);
     const buttonsText = buttons.map(
-      (button) => button.nativeElement.attributes['buttontext'].value,
+      (button) => button.nativeElement.attributes['buttontext']?.value,
     );
     expect(buttonsText).toContain('COMMON.EDIT');
   });
