@@ -7,6 +7,7 @@ import { ClientCredentialAdministrationService } from './api/clientCredentialAdm
 import { CompaniesService } from './api/companies.service';
 import { ExportServicePointBatchService } from './api/exportServicePointBatch.service';
 import { GeoDataService } from './api/geoData.service';
+import { ImportDidokUserBatchService } from './api/importDidokUserBatch.service';
 import { ImportPrmBatchService } from './api/importPrmBatch.service';
 import { ImportServicePointBatchService } from './api/importServicePointBatch.service';
 import { LinesService } from './api/lines.service';
