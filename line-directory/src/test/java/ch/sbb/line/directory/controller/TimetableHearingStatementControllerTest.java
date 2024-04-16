@@ -20,6 +20,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Pageable;
 
 class TimetableHearingStatementControllerTest {
 
@@ -78,5 +79,21 @@ class TimetableHearingStatementControllerTest {
         () -> timetableHearingStatementController.getStatementsAsCsv("en", params));
 
     assertThat(exception.getErrorResponse().getMessage()).isEqualTo("Language must be either de,fr,it");
+  }
+
+  @Test
+  void shouldCalculateNextStatement() {
+    TimetableHearingStatementRequestParams params = TimetableHearingStatementRequestParams.builder().build();
+    timetableHearingStatementController.getNextStatement(1L, Pageable.ofSize(1), params);
+
+    verify(timetableHearingStatementAlternationService).getNextStatement(1L, Pageable.ofSize(1), params);
+  }
+
+  @Test
+  void shouldCalculatePreviousStatement() {
+    TimetableHearingStatementRequestParams params = TimetableHearingStatementRequestParams.builder().build();
+    timetableHearingStatementController.getPreviousStatement(1L, Pageable.ofSize(1), params);
+
+    verify(timetableHearingStatementAlternationService).getPreviousStatement(1L, Pageable.ofSize(1), params);
   }
 }
