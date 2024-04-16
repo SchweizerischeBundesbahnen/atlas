@@ -2,13 +2,9 @@ package ch.sbb.line.directory.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.line.directory.converter.StringSetConverter;
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -56,13 +52,7 @@ public class StatementSender {
 
   @NotNull
   @Size(max = AtlasFieldLengths.LENGTH_1000)
-//  @Convert(converter = StringSetConverter.class)
-//  @Column(name = "emails", nullable = false)
-  @ElementCollection(fetch = FetchType.EAGER)
-  @CollectionTable(name = "timetable_hearing_statement_emails", joinColumns = @JoinColumn(name =
-      "timetable_hearing_statement_id"))
-  @Column(name = "email", nullable = false)
   @Convert(converter = StringSetConverter.class)
+  @Column(name = "emails", nullable = false)
   private Set<String> emails = new HashSet<>();
-
 }

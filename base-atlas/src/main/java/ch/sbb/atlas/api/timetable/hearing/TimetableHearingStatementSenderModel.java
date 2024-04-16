@@ -59,7 +59,8 @@ public class TimetableHearingStatementSenderModel {
 
   @Schema(description = "E-Mail addresses", example = "maurer@post.ch, burri@post.ch")
   @Size(max = AtlasFieldLengths.LENGTH_100)
-  @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
+//  @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
+  @ValidEmails
   private Set<String> emails;
 
   @AssertTrue(message = "Either email or emails must be provided")
