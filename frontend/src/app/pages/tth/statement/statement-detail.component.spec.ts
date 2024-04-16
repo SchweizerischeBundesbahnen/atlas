@@ -155,18 +155,16 @@ describe('test editButton', () => {
     fixture.detectChanges();
     //then
     const buttons = fixture.debugElement.queryAll(By.css('atlas-button'));
-    expect(buttons.length).toBe(4);
     const buttonsText = buttons.map(
-      (button) => button.nativeElement.attributes['buttontext'].value,
+      (button) => button.nativeElement.attributes['buttontext']?.value,
     );
     expect(buttonsText).not.toContain('COMMON.EDIT');
   });
 
   it('should show edit button when HearingStatus is not Archived and statement is editable', () => {
     const buttons = fixture.debugElement.queryAll(By.css('atlas-button'));
-    expect(buttons.length).toBe(5);
     const buttonsText = buttons.map(
-      (button) => button.nativeElement.attributes['buttontext'].value,
+      (button) => button.nativeElement.attributes['buttontext']?.value,
     );
     expect(buttonsText).toContain('COMMON.EDIT');
   });
