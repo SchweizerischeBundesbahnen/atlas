@@ -10,6 +10,7 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams
 import ch.sbb.atlas.model.exception.BadRequestException;
 import ch.sbb.line.directory.service.hearing.ResponsibleTransportCompaniesResolverService;
 import ch.sbb.line.directory.service.hearing.TimetableFieldNumberResolverService;
+import ch.sbb.line.directory.service.hearing.TimetableHearingStatementAlternationService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingStatementExportService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingStatementService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingYearService;
@@ -19,8 +20,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Pageable;
 
- class TimetableHearingStatementControllerTest {
+class TimetableHearingStatementControllerTest {
 
   @Mock
   private TimetableHearingStatementService timetableHearingStatementService;
@@ -32,6 +34,8 @@ import org.mockito.MockitoAnnotations;
   private ResponsibleTransportCompaniesResolverService responsibleTransportCompaniesResolverService;
   @Mock
   private TimetableHearingStatementExportService timetableHearingStatementExportService;
+  @Mock
+  private TimetableHearingStatementAlternationService timetableHearingStatementAlternationService;
 
   private TimetableHearingStatementController timetableHearingStatementController;
 
@@ -39,6 +43,7 @@ import org.mockito.MockitoAnnotations;
   void setUp() {
     MockitoAnnotations.openMocks(this);
     timetableHearingStatementController = new TimetableHearingStatementController(timetableHearingStatementService,
+        timetableHearingStatementAlternationService,
         timetableHearingYearService, timetableFieldNumberResolverService, responsibleTransportCompaniesResolverService,
         timetableHearingStatementExportService);
   }
@@ -74,5 +79,21 @@ import org.mockito.MockitoAnnotations;
         () -> timetableHearingStatementController.getStatementsAsCsv("en", params));
 
     assertThat(exception.getErrorResponse().getMessage()).isEqualTo("Language must be either de,fr,it");
+  }
+
+  @Test
+  void shouldCalculateNextStatement() {
+    TimetableHearingStatementRequestParams params = TimetableHearingStatementRequestParams.builder().build();
+    timetableHearingStatementController.getNextStatement(1L, Pageable.ofSize(1), params);
+
+    verify(timetableHearingStatementAlternationService).getNextStatement(1L, Pageable.ofSize(1), params);
+  }
+
+  @Test
+  void shouldCalculatePreviousStatement() {
+    TimetableHearingStatementRequestParams params = TimetableHearingStatementRequestParams.builder().build();
+    timetableHearingStatementController.getPreviousStatement(1L, Pageable.ofSize(1), params);
+
+    verify(timetableHearingStatementAlternationService).getPreviousStatement(1L, Pageable.ofSize(1), params);
   }
 }
