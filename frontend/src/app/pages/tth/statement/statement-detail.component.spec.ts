@@ -1,7 +1,7 @@
 import {
   HearingStatus,
   SwissCanton,
-  TimetableHearingStatement,
+  TimetableHearingStatement, TimetableHearingStatementAlternating,
   TimetableHearingStatementsService,
   TimetableHearingYear,
   TimetableHearingYearsService,
@@ -57,10 +57,17 @@ const mockTimetableHearingYearsService = jasmine.createSpyObj('timetableHearingY
   'getHearingYears',
 ]);
 
-const mockTimetableHearingStatementsService = jasmine.createSpyObj(
-  'timetableHearingStatementsService',
-  ['createStatement'],
+const mockTimetableHearingStatementsService = jasmine.createSpyObj('timetableHearingStatementsService',
+  ['createStatement', 'getNextStatement', 'getPreviousStatement'],
 );
+const alternation: TimetableHearingStatementAlternating = {
+  timetableHearingStatement: existingStatement,
+  pageable: {
+    pageNumber: 1
+  }
+}
+mockTimetableHearingStatementsService.getNextStatement.and.returnValue(of(alternation));
+mockTimetableHearingStatementsService.getPreviousStatement.and.returnValue(of(alternation));
 
 @Component({
   selector: 'app-user-detail-info',
@@ -115,6 +122,20 @@ describe('StatementDetailComponent for existing statement', () => {
 
     //then
     expect(component.form.enabled).toBeFalsy();
+  });
+
+  it('should go to next statement', () => {
+    component.hearingStatus = HearingStatus.Archived;
+
+    component.next();
+    expect(mockTimetableHearingStatementsService.getNextStatement).toHaveBeenCalled();
+  });
+
+  it('should go to previous statement', () => {
+    component.hearingStatus = HearingStatus.Archived;
+
+    component.previous();
+    expect(mockTimetableHearingStatementsService.getPreviousStatement).toHaveBeenCalled();
   });
 });
 
