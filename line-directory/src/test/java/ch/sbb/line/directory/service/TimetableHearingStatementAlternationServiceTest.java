@@ -105,7 +105,7 @@ class TimetableHearingStatementAlternationServiceTest {
     TimetableHearingStatementAlternatingModel statementAlternation = timetableHearingStatementAlternationService.getNextStatement(
         statement3.getId(), PAGEABLE, STATEMENT_REQUEST_PARAMS);
     assertThat(statementAlternation.getTimetableHearingStatement().getStatement()).isEqualTo("Statement 1");
-    assertThat(statementAlternation.getPageable().getPageNumber()).isEqualTo(0);
+    assertThat(statementAlternation.getPageable().getPageNumber()).isZero();
   }
 
   @Test
@@ -113,7 +113,7 @@ class TimetableHearingStatementAlternationServiceTest {
     TimetableHearingStatementAlternatingModel statementAlternation = timetableHearingStatementAlternationService.getPreviousStatement(
         statement2.getId(), PAGEABLE, STATEMENT_REQUEST_PARAMS);
     assertThat(statementAlternation.getTimetableHearingStatement().getStatement()).isEqualTo("Statement 1");
-    assertThat(statementAlternation.getPageable().getPageNumber()).isEqualTo(0);
+    assertThat(statementAlternation.getPageable().getPageNumber()).isZero();
   }
 
   @Test
