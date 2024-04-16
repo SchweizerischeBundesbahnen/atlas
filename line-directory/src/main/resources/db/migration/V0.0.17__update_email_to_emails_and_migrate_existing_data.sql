@@ -2,10 +2,16 @@
 -- Backup your_table to ensure you have a copy of the data before making changes.
 
 -- Step 2: Add a new column to store the list of emails
-ALTER TABLE timetable_hearing_statement ADD COLUMN emails VARCHAR(1000);
+CREATE TABLE timetable_hearing_statement_emails (
+                        id SERIAL PRIMARY KEY,
+                        email VARCHAR(255) NOT NULL,
+                        timetable_hearing_statement_id INT,
+                        FOREIGN KEY (timetable_hearing_statement_id) REFERENCES timetable_hearing_statement(id)
+);
 
 -- Step 3: Migrate existing email data to the new column
-UPDATE timetable_hearing_statement SET emails = ARRAY(SELECT email FROM timetable_hearing_statement);
+INSERT INTO timetable_hearing_statement_emails (email, timetable_hearing_statement_id)
+SELECT email, id FROM timetable_hearing_statement;
 --
 
 -- Step 4: Verify the migration
