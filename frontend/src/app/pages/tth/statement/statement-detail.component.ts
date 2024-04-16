@@ -376,6 +376,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((statement) => {
         this.isLoading = false;
+        this.isDuplicating = false;
         this.notificationService.success('TTH.STATEMENT.NOTIFICATION.ADD_SUCCESS');
         this.navigateToStatementDetail(statement);
       });
