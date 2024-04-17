@@ -5,7 +5,7 @@ import {
   HearingStatus,
   StatementStatus,
   SwissCanton,
-  TimetableHearingStatement,
+  TimetableHearingStatement, TimetableHearingStatementSender,
   TimetableHearingStatementsService,
   TimetableHearingYear,
   TimetableHearingYearsService,
@@ -585,6 +585,10 @@ export class OverviewDetailComponent implements OnInit {
     return Cantons.fromSwissCanton(canton)?.short;
   }
 
+  private mapToLastname(statementSender: TimetableHearingStatementSender) {
+    return statementSender.lastName;
+  }
+
   private getTableColumns(): TableColumn<TimetableHearingStatement>[] {
       return [
         {
@@ -603,6 +607,11 @@ export class OverviewDetailComponent implements OnInit {
         { headerTitle: 'TTH.SWISS_CANTON', value: 'swissCanton', callback: this.mapToShortCanton },
         { headerTitle: 'ID', value: 'id' },
         {
+          headerTitle: 'TTH.TIMETABLE_FIELD_LASTNAME',
+          value: 'statementSender',
+          callback: this.mapToLastname,
+        },
+        {
           headerTitle: 'TTH.TRANSPORT_COMPANY',
           value: 'responsibleTransportCompaniesDisplay',
         },
@@ -613,6 +622,13 @@ export class OverviewDetailComponent implements OnInit {
           disabled: true,
         },
         { headerTitle: 'COMMON.EDIT_ON', value: 'editionDate', formatAsDate: true },
+        {
+          headerTitle: 'TTH.TIMETABLE_FIELD_DOCUMENT',
+          value: 'documents',
+          icon: {
+            icon: 'bi bi-paperclip'
+          }
+        },
         {
           headerTitle: '',
           value: 'etagVersion',
@@ -674,6 +690,8 @@ export class OverviewDetailComponent implements OnInit {
       col.value === 'id' ||
       col.value === 'responsibleTransportCompaniesDisplay' ||
       col.value === 'timetableFieldNumber' ||
+      col.value === 'documents' ||
+      col.value === 'statementSender' ||
       col.value === 'timetableFieldDescription'
     );
   }
