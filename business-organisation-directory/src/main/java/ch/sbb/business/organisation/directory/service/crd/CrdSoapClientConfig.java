@@ -102,6 +102,10 @@ public class CrdSoapClientConfig {
     }
   }
 
+  /**
+   * Truststore must contain certificate from URL.
+   * You can download it using the browser (go to url, show cert ... download) and add it to the truststore.
+   */
   private TrustManagerFactory createTrustManagerFactory() {
     try {
       KeyStore truststore = KeyStore.getInstance("JKS");
