@@ -10,7 +10,6 @@ import {
   TimetableHearingYear,
   TimetableHearingYearsService,
   TransportCompany,
-  UserAdministrationService,
 } from '../../../api';
 import {Cantons} from '../../../core/cantons/Cantons';
 import {TableColumn} from '../../../core/components/table/table-column';
@@ -108,7 +107,6 @@ export class OverviewDetailComponent implements OnInit {
     private readonly authService: AuthService,
     private readonly statementShareService: StatementShareService,
     private readonly matDialog: MatDialog,
-    private readonly userAdministrationService: UserAdministrationService,
   ) {}
 
   get isHearingYearActive(): boolean {
