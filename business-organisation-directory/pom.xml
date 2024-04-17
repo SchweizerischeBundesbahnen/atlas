@@ -189,6 +189,7 @@
                   </goals>
                   <configuration>
                      <wsdlFiles>
+                        <!-- File from: https://crdservice-online.rne.eu/CRD/wsdl/CRDRFDataReplicationWS -->
                         <wsdlFile>crd.wsdl</wsdlFile>
                      </wsdlFiles>
                      <packageName>ch.sbb.business.organisation.directory.service.crd</packageName>
