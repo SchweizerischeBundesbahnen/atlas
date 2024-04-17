@@ -55,4 +55,9 @@ export class Cantons {
   public static fromSwissCanton(swissCanton: SwissCanton | undefined): Canton | undefined {
     return this.cantons.find((canton) => canton.enumCanton === swissCanton);
   }
+
+  public static getSwissCantonFromShort(cantonShort?: string): SwissCanton | undefined {
+    const foundCanton = Cantons.cantons.find((c) => c.short.toLowerCase() === cantonShort?.toLowerCase());
+    return foundCanton?.enumCanton;
+  }
 }
