@@ -451,8 +451,9 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   private getAlternationParams(): [number, number | undefined, SwissCanton | undefined, Array<string> | undefined,
       Array<StatementStatus> | undefined, string | undefined, Array<number> | undefined, number | undefined,
       number | undefined, Array<string> | undefined] {
+    const cantonFilter = Cantons.getSwissCantonFromShort(this.route.snapshot.params.canton);
     return [this.statement!.id!, this.statement!.timetableYear,
-      this.statement!.swissCanton,
+      cantonFilter,
       this.tableService.filterConfig?.filters.chipSearch.getActiveSearch(),
       this.tableService.filterConfig?.filters.multiSelectStatementStatus.getActiveSearch(),
       this.tableService.filterConfig?.filters.searchSelectTTFN.getActiveSearch()?.ttfnid,
