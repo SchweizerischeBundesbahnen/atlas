@@ -92,8 +92,8 @@ external:
     url: https://www.output.tu-verzeichnisse.bav.admin.ch
     # Environment Variables used for CRD can be found in the restricted access page for passwords
   crd:
-    url: https://crd.rne.eu/CRD/services/CRDRFDataReplicationWS
-    username: fs10651_li
+    url: https://crdservice-online.rne.eu/CRD/services/CRDRFDataReplicationWS
+    username: fs10651_li@rne.eu
     password: ${CRD_PASSWORD}
     keystore: classpath:crd/keystore.jks
     keystore-password: ${CRD_KEYSTORE_PASSWORD}
