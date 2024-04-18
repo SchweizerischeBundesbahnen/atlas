@@ -8,11 +8,11 @@ import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
+import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
-import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
@@ -100,14 +100,14 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
     ReferencePointVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
+        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
         .isEqualTo(referencePoint1);
 
     ReferencePointVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor,
-            Fields.creator, ReferencePointVersion.Fields.id)
+        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate, BaseEntity.Fields.editor,
+            BaseEntity.Fields.creator, ReferencePointVersion.Fields.id)
         .isEqualTo(editedVersion);
 
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
@@ -169,7 +169,7 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
     ReferencePointVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
+        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
         .isEqualTo(referencePoint1);
 
     ReferencePointVersion secondTemporalVersion = result.get(1);
@@ -190,9 +190,9 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
     ReferencePointVersion fifthTemporalVersion = result.get(4);
     assertThat(fifthTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(ReferencePointVersion.Fields.id, Fields.version, Fields.editionDate, Fields.creationDate,
-            Fields.editor,
-            Fields.creator)
+        .ignoringFields(ReferencePointVersion.Fields.id, BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate,
+            BaseEntity.Fields.editor,
+            BaseEntity.Fields.creator)
         .isEqualTo(version3);
 
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
@@ -247,14 +247,14 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
     ReferencePointVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
+        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
         .isEqualTo(referencePoint1);
 
     ReferencePointVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor,
-            Fields.creator, ReferencePointVersion.Fields.id, BasePrmEntityVersion.Fields.validTo)
+        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate, BaseEntity.Fields.editor,
+            BaseEntity.Fields.creator, ReferencePointVersion.Fields.id, BasePrmEntityVersion.Fields.validTo)
         .isEqualTo(version2);
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2001, 12, 31));
 
