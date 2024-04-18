@@ -10,7 +10,7 @@ import java.util.Objects;
 @Schema(enumAsRef = true, example = "ORDERLY")
 @Getter
 @RequiredArgsConstructor
-public enum StopPointType implements CodeAndDesignations {
+public enum StopPointType {
 
   ORDERLY(10, "Ordentliche Haltestelle", "Arrêt ordinaire", "Fermata ordinaria", "Ordinary stop", "Ho", "Ao", "Fo", null),
   ON_REQUEST(20, "Bedarfshaltestelle", "Arrêt sur demande", "Fermata facoltativa", "Request stop", "Hb", "Ad", "Ff", null),
@@ -38,8 +38,4 @@ public enum StopPointType implements CodeAndDesignations {
         .orElse(null);
   }
 
-  @Override
-  public String getCode() {
-    return String.valueOf(id);
-  }
 }
