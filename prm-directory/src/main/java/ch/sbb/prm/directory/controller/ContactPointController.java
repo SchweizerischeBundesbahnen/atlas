@@ -4,8 +4,6 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointOverviewModel;
 import ch.sbb.atlas.api.prm.model.contactpoint.ContactPointVersionModel;
 import ch.sbb.atlas.api.prm.model.contactpoint.ReadContactPointVersionModel;
-import ch.sbb.atlas.imports.ItemImportResult;
-import ch.sbb.atlas.imports.prm.contactpoint.ContactPointImportRequestModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.ContactPointApiV1;
 import ch.sbb.prm.directory.controller.model.ContactPointObjectRequestParams;
@@ -13,7 +11,6 @@ import ch.sbb.prm.directory.entity.ContactPointVersion;
 import ch.sbb.prm.directory.mapper.ContactPointVersionMapper;
 import ch.sbb.prm.directory.search.ContactPointSearchRestrictions;
 import ch.sbb.prm.directory.service.ContactPointService;
-import ch.sbb.prm.directory.service.dataimport.ContactPointImportService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ContactPointController implements ContactPointApiV1 {
 
   private final ContactPointService contactPointService;
-  private final ContactPointImportService contactPointImportService;
 
   @Override
   public Container<ReadContactPointVersionModel> getContactPoints(Pageable pageable,
@@ -75,8 +71,4 @@ public class ContactPointController implements ContactPointApiV1 {
     return contactPointService.getAllVersions(sloid).stream().map(ContactPointVersionMapper::toModel).toList();
   }
 
-  @Override
-  public List<ItemImportResult> importContactPoints(ContactPointImportRequestModel contactPointImportRequestModel) {
-    return contactPointImportService.importContactPoints(contactPointImportRequestModel.getContactPointCsvModelContainers());
-  }
 }
