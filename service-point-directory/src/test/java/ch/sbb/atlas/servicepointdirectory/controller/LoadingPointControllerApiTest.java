@@ -77,7 +77,7 @@ class LoadingPointControllerApiTest extends BaseControllerApiTest {
         .editionDate(LocalDateTime.of(2018, 6, 28, 11, 48, 56))
         .build();
 
-    this.loadingPointVersion = repository.save(loadingPointVersion);
+    this.loadingPointVersion = repository.saveAndFlush(loadingPointVersion);
   }
 
   @AfterEach
