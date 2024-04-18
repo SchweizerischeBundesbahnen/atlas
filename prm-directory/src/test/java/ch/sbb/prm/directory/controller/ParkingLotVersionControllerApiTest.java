@@ -24,7 +24,7 @@ import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.SharedServicePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
+import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
@@ -96,13 +96,13 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/parking-lots"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.objects", hasSize(1)))
-        .andExpect(jsonPath("$.objects[0]." + Fields.status, is(Status.VALIDATED.name())));
+        .andExpect(jsonPath("$.objects[0]." + BasePrmEntityVersion.Fields.status, is(Status.VALIDATED.name())));
   }
 
   @Test
   void shouldGetParkingLotVersionsWithFilter() throws Exception {
     //given
-    ParkingLotVersion version = parkingLotRepository.save(ParkingLotTestData.getParkingLotVersion());
+    ParkingLotVersion version = parkingLotRepository.saveAndFlush(ParkingLotTestData.getParkingLotVersion());
 
     //when & then
     mvc.perform(get("/v1/parking-lots" +
@@ -124,7 +124,7 @@ class ParkingLotVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldGetParkingLotVersionsWithArraySloidsFilter() throws Exception {
     //given
-    ParkingLotVersion version = parkingLotRepository.save(ParkingLotTestData.getParkingLotVersion());
+    ParkingLotVersion version = parkingLotRepository.saveAndFlush(ParkingLotTestData.getParkingLotVersion());
 
     //when & then
     mvc.perform(get("/v1/parking-lots" +
