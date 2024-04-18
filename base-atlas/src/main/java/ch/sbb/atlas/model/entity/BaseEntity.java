@@ -13,7 +13,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -24,7 +23,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 @ToString
 @SuperBuilder
 @MappedSuperclass
-@FieldNameConstants
 public abstract class BaseEntity {
 
   @CreationTimestamp
