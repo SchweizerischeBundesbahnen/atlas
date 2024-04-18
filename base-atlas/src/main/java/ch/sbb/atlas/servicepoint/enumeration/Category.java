@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true, example = "POINT_OF_SALE")
 @RequiredArgsConstructor
 @Getter
-public enum Category implements CodeAndDesignations {
+public enum Category {
 
   NOVA_VIRTUAL(19, "NOVA virtuell", "NOVA virtuel", "NOVA virtuale", "NOVA virtual", "Virtuelle Dienststellen für NOVA"),
   BILLETING_MACHINE(20, "Billettautomat SBB", "Billettautomat SBB", "Billettautomat SBB", "Ticket machine SBB", "Billettautomat "
@@ -58,8 +58,4 @@ public enum Category implements CodeAndDesignations {
         .orElseThrow(() -> new IllegalArgumentException(String.valueOf(id)));
   }
 
-  @Override
-  public String getCode() {
-    return String.valueOf(id);
-  }
 }
