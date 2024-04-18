@@ -3,8 +3,6 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateLoadingPointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
-import ch.sbb.atlas.imports.ItemImportResult;
-import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointImportRequestModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.LoadingPointApiV1;
@@ -15,7 +13,6 @@ import ch.sbb.atlas.servicepointdirectory.mapper.LoadingPointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.LoadingPointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointRequestParams;
-import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
 import java.util.List;
@@ -32,7 +29,6 @@ public class LoadingPointController implements LoadingPointApiV1 {
 
   private final LoadingPointService loadingPointService;
   private final ServicePointService servicePointService;
-  private final LoadingPointImportService loadingPointImportService;
   private final CrossValidationService crossValidationService;
 
   @Override
@@ -72,11 +68,6 @@ public class LoadingPointController implements LoadingPointApiV1 {
   public ReadLoadingPointVersionModel getLoadingPointVersion(Long id) {
     return loadingPointService.findById(id).map(LoadingPointVersionMapper::fromEntity)
         .orElseThrow(() -> new IdNotFoundException(id));
-  }
-
-  @Override
-  public List<ItemImportResult> importLoadingPoints(LoadingPointImportRequestModel loadingPointImportRequestModel) {
-    return loadingPointImportService.importLoadingPoints(loadingPointImportRequestModel.getLoadingPointCsvModelContainers());
   }
 
   @Override

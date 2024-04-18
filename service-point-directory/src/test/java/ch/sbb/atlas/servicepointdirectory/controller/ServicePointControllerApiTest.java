@@ -27,13 +27,10 @@ import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel.Fields;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
-import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModel;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
 import ch.sbb.atlas.journey.poi.model.CountryCode;
 import ch.sbb.atlas.location.LocationService;
+import ch.sbb.atlas.model.LocalDateTimeMatchers;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.Country;
@@ -47,9 +44,7 @@ import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointGeolocationMapper;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointFotCommentRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.JourneyPoiClient;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
-import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -57,8 +52,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
@@ -139,8 +132,8 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0].operatingPointKilometer", is(false)))
 
         .andExpect(jsonPath("$[0].servicePointGeolocation.swissLocation.cantonInformation.fsoNumber", is(2)))
-        .andExpect(jsonPath("$[0].creationDate", is("2021-03-22T09:26:29")))
-        .andExpect(jsonPath("$[0].creator", is("fs45117")));
+        .andExpect(jsonPath("$[0].creationDate", LocalDateTimeMatchers.stringDateTimeIsWithinOneHourOfNow()))
+        .andExpect(jsonPath("$[0].creator", is("e123456")));
   }
 
   @Test
@@ -355,77 +348,6 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
         .andExpect(jsonPath("$.details[0].message",
             is("Value 12345678 rejected due to must be less than or equal to 9999999")));
-  }
-
-  @Test
-  void shouldImportServicePointsSuccessfully() throws Exception {
-    try (InputStream csvStream = this.getClass().getResourceAsStream("/SERVICE_POINTS_VERSIONING.csv")) {
-      // given
-      List<ServicePointCsvModel> servicePointCsvModels = ServicePointImportService.parseServicePoints(csvStream);
-      List<ServicePointCsvModel> servicePointCsvModelsOrderedByValidFrom = servicePointCsvModels.stream()
-          .sorted(Comparator.comparing(BaseDidokCsvModel::getValidFrom))
-          .toList();
-      int didokCode = servicePointCsvModels.get(0).getDidokCode();
-      ServicePointImportRequestModel importRequestModel = new ServicePointImportRequestModel(
-          List.of(
-              ServicePointCsvModelContainer
-                  .builder()
-                  .servicePointCsvModelList(servicePointCsvModelsOrderedByValidFrom)
-                  .didokCode(didokCode)
-                  .build()
-          )
-      );
-      String jsonString = mapper.writeValueAsString(importRequestModel);
-
-      // when
-      mvc.perform(post("/v1/service-points/import")
-              .content(jsonString)
-              .contentType(contentType))
-          // then
-          .andExpect(status().isOk())
-          .andExpect(jsonPath("$", hasSize(5)));
-    }
-  }
-
-  @Test
-  void shouldReturnBadRequestOnEmptyListRequest() throws Exception {
-    // given
-    ServicePointImportRequestModel importRequestModel = new ServicePointImportRequestModel(
-        Collections.emptyList()
-    );
-    String jsonString = mapper.writeValueAsString(importRequestModel);
-
-    // when
-    mvc.perform(post("/v1/service-points/import")
-            .content(jsonString)
-            .contentType(contentType))
-        // then
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")));
-  }
-
-  @Test
-  void shouldReturnBadRequestOnNullListRequest() throws Exception {
-    // given
-    ServicePointImportRequestModel importRequestModel = new ServicePointImportRequestModel();
-    String jsonString = mapper.writeValueAsString(importRequestModel);
-
-    // when
-    mvc.perform(post("/v1/service-points/import")
-            .content(jsonString)
-            .contentType(contentType))
-        // then
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")));
-  }
-
-  @Test
-  void shouldReturnBadRequestOnNullImportRequestModel() throws Exception {
-    // given & when
-    mvc.perform(post("/v1/service-points/import")
-            .contentType(contentType))
-        // then
-        .andExpect(status().isBadRequest());
   }
 
   @Test
