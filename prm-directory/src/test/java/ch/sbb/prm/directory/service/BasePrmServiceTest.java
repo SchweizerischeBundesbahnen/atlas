@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public abstract class BasePrmServiceTest {
 
+    public static final String[] IGNORE_FIELDS = new String[]{"version", "editionDate", "creationDate", "editor", "creator"};
     protected static final String PARENT_SERVICE_POINT_SLOID = "ch:1:sloid:70000";
 
     private final SharedServicePointRepository sharedServicePointRepository;

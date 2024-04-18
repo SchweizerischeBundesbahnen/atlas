@@ -8,7 +8,6 @@ import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointAttributeType;
-import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
@@ -89,7 +88,7 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
     //when
     List<ReferencePointVersion> allReferencePointsInDb = referencePointRepository.findAllBySloidOrderByValidFrom(
         version2.getSloid());
-    version2.setId(allReferencePointsInDb.get(allReferencePointsInDb.size() - 1).getId());
+    version2.setId(allReferencePointsInDb.getLast().getId());
     referencePointService.updateReferencePointVersion(version2, editedVersion);
 
     //then
@@ -100,14 +99,14 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
     ReferencePointVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(referencePoint1);
 
     ReferencePointVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate, BaseEntity.Fields.editor,
-            BaseEntity.Fields.creator, ReferencePointVersion.Fields.id)
+        .ignoringFields(ReferencePointVersion.Fields.id)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(editedVersion);
 
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
@@ -169,7 +168,7 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
     ReferencePointVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(referencePoint1);
 
     ReferencePointVersion secondTemporalVersion = result.get(1);
@@ -190,9 +189,8 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
     ReferencePointVersion fifthTemporalVersion = result.get(4);
     assertThat(fifthTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(ReferencePointVersion.Fields.id, BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate,
-            BaseEntity.Fields.editor,
-            BaseEntity.Fields.creator)
+        .ignoringFields(ReferencePointVersion.Fields.id)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(version3);
 
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
@@ -247,14 +245,14 @@ class ReferencePointVersioningTest extends BasePrmServiceTest {
     ReferencePointVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(referencePoint1);
 
     ReferencePointVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate, BaseEntity.Fields.editor,
-            BaseEntity.Fields.creator, ReferencePointVersion.Fields.id, BasePrmEntityVersion.Fields.validTo)
+        .ignoringFields( ReferencePointVersion.Fields.id, BasePrmEntityVersion.Fields.validTo)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(version2);
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2001, 12, 31));
 
