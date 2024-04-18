@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @Schema(enumAsRef = true, example = "COUNTRY_BORDER")
 @Getter
 @RequiredArgsConstructor
-public enum OperatingPointTechnicalTimetableType implements CodeAndDesignations {
+public enum OperatingPointTechnicalTimetableType {
 
   PROPERTY_LINE(43, true, "Eigentumsgrenze", "Limite de propriété", "Confine di proprietà", "Border property",
       "technischerfahrplan",
@@ -80,8 +80,4 @@ public enum OperatingPointTechnicalTimetableType implements CodeAndDesignations 
         .findFirst().orElse(null);
   }
 
-  @Override
-  public String getCode() {
-    return String.valueOf(id);
-  }
 }

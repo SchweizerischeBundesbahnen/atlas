@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 @Schema(enumAsRef = true, example = "BUS")
 @Getter
 @RequiredArgsConstructor
-public enum MeanOfTransport implements CodeAndDesignations {
+public enum MeanOfTransport {
 
   TRAIN(0, "Z", "Zug", "Zug", "Train", "Train", "Treno"),
   BUS(1, "B", "Bus", "Bus", "Bus", "Bus", "Bus"),
