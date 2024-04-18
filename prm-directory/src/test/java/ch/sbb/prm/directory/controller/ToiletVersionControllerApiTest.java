@@ -288,7 +288,7 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldGetToiletVersionsWithFilter() throws Exception {
     //given
-    ToiletVersion version = toiletRepository.save(ToiletTestData.getToiletVersion());
+    ToiletVersion version = toiletRepository.saveAndFlush(ToiletTestData.getToiletVersion());
 
     //when & then
     mvc.perform(get("/v1/toilets" +
