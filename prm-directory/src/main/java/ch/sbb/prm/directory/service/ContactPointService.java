@@ -57,12 +57,6 @@ public class ContactPointService extends PrmRelatableVersionableService<ContactP
     return contactPointRepository.saveAndFlush(version);
   }
 
-  public void saveForImport(ContactPointVersion version) {
-    stopPointService.checkStopPointExists(version.getParentServicePointSloid());
-    setStatusToValidate(version);
-    contactPointRepository.saveAndFlush(version);
-  }
-
   public Page<ContactPointVersion> findAll(ContactPointSearchRestrictions searchRestrictions) {
     return contactPointRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
