@@ -134,7 +134,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldGetReferencePointVersionsWithFilter() throws Exception {
     //given
-    ReferencePointVersion version = referencePointRepository.save(ReferencePointTestData.getReferencePointVersion());
+    ReferencePointVersion version = referencePointRepository.saveAndFlush(ReferencePointTestData.getReferencePointVersion());
 
     //when & then
     mvc.perform(get("/v1/reference-points" +
@@ -156,7 +156,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldNotGetReferencePointVersionsWithFilterOnStatusRevoked() throws Exception {
     //given
-    ReferencePointVersion version = referencePointRepository.save(ReferencePointTestData.getReferencePointVersion());
+    ReferencePointVersion version = referencePointRepository.saveAndFlush(ReferencePointTestData.getReferencePointVersion());
 
     //when & then
     mvc.perform(get("/v1/reference-points" +
@@ -179,7 +179,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
     //given
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setStatus(Status.REVOKED);
-    ReferencePointVersion version = referencePointRepository.save(referencePointVersion);
+    ReferencePointVersion version = referencePointRepository.saveAndFlush(referencePointVersion);
 
     //when & then
     mvc.perform(get("/v1/reference-points" +

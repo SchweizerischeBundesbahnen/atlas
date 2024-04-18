@@ -88,8 +88,4 @@ public class RelationService extends PrmVersionableService<RelationVersion> {
     return relationRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
 
-  public RelationVersion createRelationThroughImport(RelationVersion version) {
-    setStatusToValidate(version);
-    return relationRepository.saveAndFlush(version);
-  }
 }

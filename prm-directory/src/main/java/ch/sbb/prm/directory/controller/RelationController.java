@@ -3,8 +3,6 @@ package ch.sbb.prm.directory.controller;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.relation.ReadRelationVersionModel;
 import ch.sbb.atlas.api.prm.model.relation.RelationVersionModel;
-import ch.sbb.atlas.imports.ItemImportResult;
-import ch.sbb.atlas.imports.prm.relation.RelationImportRequestModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.RelationApiV1;
 import ch.sbb.prm.directory.controller.model.RelationRequestParams;
@@ -12,7 +10,6 @@ import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.mapper.RelationVersionMapper;
 import ch.sbb.prm.directory.search.RelationSearchRestrictions;
 import ch.sbb.prm.directory.service.RelationService;
-import ch.sbb.prm.directory.service.dataimport.RelationImportService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RelationController implements RelationApiV1 {
 
   private final RelationService relationService;
-  private final RelationImportService relationImportService;
+
   @Override
   public Container<ReadRelationVersionModel> getRelations(Pageable pageable, RelationRequestParams relationRequestParams) {
     RelationSearchRestrictions searchRestrictions = RelationSearchRestrictions.builder()
@@ -54,11 +51,6 @@ public class RelationController implements RelationApiV1 {
 
     return relationService.getAllVersions(relationVersionToUpdate.getSloid()).stream()
         .map(RelationVersionMapper::toModel).toList();
-  }
-
-  @Override
-  public List<ItemImportResult> importRelations(RelationImportRequestModel relationImportRequestModel) {
-    return relationImportService.importRelations(relationImportRequestModel.getRelationCsvModelContainers());
   }
 
 }
