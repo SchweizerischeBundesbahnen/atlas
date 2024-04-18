@@ -48,6 +48,6 @@ export interface Button {
 }
 
 export interface Icon {
-  title?: string;
   icon?: string;
+  callback?: (...args: any[]) => any
 }
