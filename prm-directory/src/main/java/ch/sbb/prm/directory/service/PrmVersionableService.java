@@ -1,11 +1,9 @@
 package ch.sbb.prm.directory.service;
 
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import ch.sbb.prm.directory.entity.RelationVersion;
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,13 +47,7 @@ public abstract class PrmVersionableService<T extends PrmVersionable> {
   }
 
   protected void initDefaultData(T editedVersion){
-    setEditionDateAndEditor(editedVersion);
     setStatusToValidate(editedVersion);
-  }
-
-  private void setEditionDateAndEditor(T editedVersion) {
-    editedVersion.setEditionDate(LocalDateTime.now());
-    editedVersion.setEditor(UserService.getUserIdentifier());
   }
 
   protected void setStatusToValidate(T version){
