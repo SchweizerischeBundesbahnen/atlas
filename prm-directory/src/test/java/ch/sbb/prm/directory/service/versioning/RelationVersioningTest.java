@@ -6,10 +6,10 @@ import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StepFreeAccessAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
+import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.RelationTestData;
 import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.RelationRepository;
@@ -87,13 +87,13 @@ class RelationVersioningTest extends BasePrmServiceTest {
     RelationVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
+        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
         .isEqualTo(version1);
 
     RelationVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.id)
+        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate, BaseEntity.Fields.editor, StopPointVersion.Fields.id)
         .isEqualTo(editedVersion);
   }
 
@@ -145,7 +145,7 @@ class RelationVersioningTest extends BasePrmServiceTest {
     RelationVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
+        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
         .isEqualTo(version1);
 
     RelationVersion secondTemporalVersion = result.get(1);
@@ -166,7 +166,7 @@ class RelationVersioningTest extends BasePrmServiceTest {
     RelationVersion fifthTemporalVersion = result.get(4);
     assertThat(fifthTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
+        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
         .isEqualTo(version3);
 
   }
@@ -214,13 +214,13 @@ class RelationVersioningTest extends BasePrmServiceTest {
     RelationVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
+        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
         .isEqualTo(version1);
 
     RelationVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.validTo)
+        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate, BaseEntity.Fields.editor, StopPointVersion.Fields.validTo)
         .isEqualTo(version2);
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2001, 12, 31));
   }

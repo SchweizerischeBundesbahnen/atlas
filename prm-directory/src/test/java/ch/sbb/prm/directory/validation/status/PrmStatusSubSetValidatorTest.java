@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.model.BaseValidatorTest;
 import ch.sbb.atlas.model.Status;
-import ch.sbb.prm.directory.entity.BasePrmImportEntity;
+import ch.sbb.atlas.model.entity.BaseEntity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.ConstraintViolation;
 import java.util.List;
 import java.util.Set;
@@ -64,7 +66,11 @@ class PrmStatusSubSetValidatorTest extends BaseValidatorTest {
   @EqualsAndHashCode(callSuper = true)
   @Data
   @SuperBuilder
-  static class MyStatusObj extends BasePrmImportEntity {
+  static class MyStatusObj extends BaseEntity {
+
+    @Enumerated(EnumType.STRING)
+    @PrmStatusSubSet(anyOf = {Status.VALIDATED,Status.REVOKED})
+    private Status status;
 
   }
 
