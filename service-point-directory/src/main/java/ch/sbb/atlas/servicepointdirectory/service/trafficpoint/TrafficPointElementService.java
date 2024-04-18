@@ -65,14 +65,6 @@ public class TrafficPointElementService {
     return trafficPointElementVersionRepository.findById(id);
   }
 
-  public boolean isTrafficPointElementExisting(String sloid) {
-    return trafficPointElementVersionRepository.existsBySloid(sloid);
-  }
-
-  public void createThroughImport(TrafficPointElementVersion trafficPointElementVersion) {
-    create(trafficPointElementVersion, null);
-  }
-
   @PreAuthorize("""
       @countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject
       (#servicePointVersions,T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)""")
