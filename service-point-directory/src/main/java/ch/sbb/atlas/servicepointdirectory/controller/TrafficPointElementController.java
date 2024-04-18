@@ -3,8 +3,6 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
-import ch.sbb.atlas.imports.ItemImportResult;
-import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointImportRequestModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
@@ -18,17 +16,15 @@ import ch.sbb.atlas.servicepointdirectory.model.search.TrafficPointElementSearch
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
-import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementImportService;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementService;
+import java.time.LocalDate;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -38,7 +34,6 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   private final TrafficPointElementService trafficPointElementService;
   private final ServicePointService servicePointService;
   private final CrossValidationService crossValidationService;
-  private final TrafficPointElementImportService trafficPointElementImportService;
   private final ServicePointDistributor servicePointDistributor;
 
   @Override
@@ -97,12 +92,6 @@ public class TrafficPointElementController implements TrafficPointElementApiV1 {
   public ReadTrafficPointElementVersionModel getTrafficPointElementVersion(Long id) {
     return trafficPointElementService.findById(id).map(TrafficPointElementVersionMapper::toModel)
         .orElseThrow(() -> new IdNotFoundException(id));
-  }
-
-  @Override
-  public List<ItemImportResult> importTrafficPoints(TrafficPointImportRequestModel trafficPointImportRequestModel) {
-    return trafficPointElementImportService.importTrafficPoints(
-        trafficPointImportRequestModel.getTrafficPointCsvModelContainers());
   }
 
   @Override

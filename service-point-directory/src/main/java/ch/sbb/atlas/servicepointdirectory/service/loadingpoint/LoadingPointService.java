@@ -72,11 +72,6 @@ public class LoadingPointService {
     return loadingPointVersionRepository.saveAndFlush(loadingPointVersion);
   }
 
-  public LoadingPointVersion saveForImport(LoadingPointVersion loadingPointVersion) {
-    crossValidationService.validateServicePointNumberExists(loadingPointVersion.getServicePointNumber());
-    return loadingPointVersionRepository.saveAndFlush(loadingPointVersion);
-  }
-
   @PreAuthorize(
       "@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreateOrEditServicePointDependentObject"
           + "(#associatedServicePoint, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")

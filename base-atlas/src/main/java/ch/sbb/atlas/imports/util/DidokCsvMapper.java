@@ -6,6 +6,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
+@Deprecated(since = "2.0.0")
 public class DidokCsvMapper {
 
   public static final CsvMapper CSV_MAPPER = new CsvMapper().enable(Feature.EMPTY_STRING_AS_NULL);
