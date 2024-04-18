@@ -3,6 +3,8 @@ package ch.sbb.prm.directory.entity;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.StandardAttributeType;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.converter.MeanOfTransportConverter;
 import ch.sbb.atlas.servicepoint.converter.ServicePointNumberConverter;
@@ -14,6 +16,7 @@ import ch.sbb.prm.directory.validation.PrmMeansOfTransportHelper;
 import ch.sbb.prm.directory.validation.VariantsReducedCompleteRecordable;
 import ch.sbb.prm.directory.validation.annotation.PrmVariant;
 import ch.sbb.prm.directory.validation.annotation.RecordingVariant;
+import ch.sbb.prm.directory.validation.status.PrmStatusSubSet;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.ElementCollection;
@@ -50,7 +53,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "stop_point_version")
 @AtlasVersionable
-public class StopPointVersion extends BasePrmImportEntity implements PrmVersionable, VariantsReducedCompleteRecordable, PrmSharedVersion {
+public class StopPointVersion extends BaseEntity implements PrmVersionable, VariantsReducedCompleteRecordable, PrmSharedVersion {
 
   private static final String VERSION_SEQ = "stop_point_version_seq";
 
@@ -180,6 +183,10 @@ public class StopPointVersion extends BasePrmImportEntity implements PrmVersiona
   @Enumerated(EnumType.STRING)
   @AtlasVersionableProperty
   private BooleanOptionalAttributeType ticketMachine;
+
+  @Enumerated(EnumType.STRING)
+  @PrmStatusSubSet(anyOf = {Status.VALIDATED,Status.REVOKED})
+  private Status status;
 
   public Set<MeanOfTransport> getMeansOfTransport() {
     if (meansOfTransport == null) {
