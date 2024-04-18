@@ -6,7 +6,6 @@ import ch.sbb.atlas.api.prm.enumeration.BasicAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BoardingDeviceAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
 import ch.sbb.atlas.api.prm.enumeration.VehicleAccessAttributeType;
-import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.prm.directory.PlatformTestData;
 import ch.sbb.prm.directory.StopPointTestData;
@@ -91,13 +90,14 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     PlatformVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(savedVersion1);
 
     PlatformVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate, BaseEntity.Fields.editor, StopPointVersion.Fields.id)
+        .ignoringFields(StopPointVersion.Fields.id)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(editedVersion);
   }
 
@@ -148,13 +148,14 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     PlatformVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(savedVersion1);
 
     PlatformVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate, BaseEntity.Fields.editor, StopPointVersion.Fields.id)
+        .ignoringFields(StopPointVersion.Fields.id)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(editedVersion);
   }
 
@@ -202,7 +203,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     PlatformVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(savedVersion1);
 
     PlatformVersion secondTemporalVersion = result.get(1);
@@ -223,7 +224,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     PlatformVersion fifthTemporalVersion = result.get(4);
     assertThat(fifthTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(savedVersion3);
   }
 
@@ -273,7 +274,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     PlatformVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(savedVersion1);
 
     PlatformVersion secondTemporalVersion = result.get(1);
@@ -294,7 +295,7 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     PlatformVersion fifthTemporalVersion = result.get(4);
     assertThat(fifthTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(savedVersion3);
   }
 
@@ -337,13 +338,14 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     PlatformVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(savedVersion1);
 
     PlatformVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate, BaseEntity.Fields.editor, StopPointVersion.Fields.validTo)
+        .ignoringFields(StopPointVersion.Fields.validTo)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(savedVersion2);
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2001, 12, 31));
   }
@@ -388,13 +390,14 @@ class PlatformVersioningTest extends BasePrmServiceTest {
     PlatformVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(savedVersion1);
 
     PlatformVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate, BaseEntity.Fields.editor, StopPointVersion.Fields.validTo)
+        .ignoringFields(StopPointVersion.Fields.validTo)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(savedVersion2);
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2001, 12, 31));
   }
