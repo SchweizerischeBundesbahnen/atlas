@@ -44,7 +44,7 @@
           </div>
         </th>
         <div
-          *ngIf="!column.checkbox && !column.dropdown && !column.button && !column.icon"
+          *ngIf="!column.checkbox && !column.dropdown && !column.button"
           [ngSwitch]="!!column.getTitle"
         >
           <ng-template [ngSwitchCase]="true">
@@ -66,7 +66,8 @@
               class="table-cell bordered-cell"
               mat-cell
             >
-              {{ value[column.value] | format: column }}
+              <i *ngIf="(value[column.value] | format: column)" [class]="column.icon?.icon"></i>
+              {{ column.value !== 'documents' ? (value[column.value] | format: column) : ''}}
             </td>
           </ng-template>
         </div>
@@ -90,14 +91,6 @@
               (click)="$event.stopPropagation()"
               [checked]="checkBoxSelection.isSelected(row)"
             ></mat-checkbox>
-          </td>
-        </div>
-        <div *ngIf="column.icon">
-          <p>test</p>
-          <td *matCellDef="let row" class="table-cell bordered-cell" mat-cell>
-            <i
-              class="attachment {{ column.icon.icon}}"
-            ></i>
           </td>
         </div>
         <div *ngIf="column.button">
