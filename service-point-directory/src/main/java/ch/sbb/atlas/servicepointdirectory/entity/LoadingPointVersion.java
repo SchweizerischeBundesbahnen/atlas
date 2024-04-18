@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.converter.ServicePointNumberConverter;
 import ch.sbb.atlas.validation.DatesValidator;
@@ -35,7 +36,7 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "loading_point_version")
 @AtlasVersionable
-public class LoadingPointVersion extends BasePointVersion<LoadingPointVersion> implements Versionable, DatesValidator {
+public class LoadingPointVersion extends BaseEntity implements Versionable, DatesValidator {
 
   private static final String VERSION_SEQ = "loading_point_version_seq";
 

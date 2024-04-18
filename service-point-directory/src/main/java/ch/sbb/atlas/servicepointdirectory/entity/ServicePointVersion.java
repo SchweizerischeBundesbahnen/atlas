@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.model.CountryAndBusinessOrganisationAssociated;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.converter.MeanOfTransportConverter;
@@ -65,25 +66,10 @@ import java.util.stream.Stream;
 @FieldNameConstants
 @Entity(name = "service_point_version")
 @AtlasVersionable
-public class ServicePointVersion extends BasePointVersion<ServicePointVersion> implements Versionable,
+public class ServicePointVersion extends BaseEntity implements Versionable,
     CountryAndBusinessOrganisationAssociated, DatesValidator {
 
   private static final String VERSION_SEQ = "service_point_version_seq";
-
-  @Override
-  public boolean hasGeolocation() {
-    return servicePointGeolocation != null;
-  }
-
-  @Override
-  public void referenceGeolocationTo(ServicePointVersion version) {
-    servicePointGeolocation.setServicePointVersion(version);
-  }
-
-  @Override
-  public GeolocationBaseEntity geolocation() {
-    return servicePointGeolocation;
-  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
@@ -270,4 +256,7 @@ public class ServicePointVersion extends BasePointVersion<ServicePointVersion> i
     return categories;
   }
 
+  public boolean hasGeolocation() {
+    return servicePointGeolocation != null;
+  }
 }
