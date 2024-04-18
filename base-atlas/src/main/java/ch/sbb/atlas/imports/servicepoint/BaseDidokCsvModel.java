@@ -23,6 +23,7 @@ import org.apache.commons.lang3.ObjectUtils;
 @SuperBuilder
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Deprecated(since = "2.0.0")
 public class BaseDidokCsvModel implements ImportDataModifier {
 
   private static final int WGS84_EAST_MAX = 180;
