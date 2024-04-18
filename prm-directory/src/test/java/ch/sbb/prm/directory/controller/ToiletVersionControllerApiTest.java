@@ -26,7 +26,7 @@ import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.SharedServicePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.ToiletTestData;
-import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
+import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.SharedServicePoint;
@@ -100,7 +100,7 @@ class ToiletVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/toilets"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.objects", hasSize(1)))
-        .andExpect(jsonPath("$.objects[0]." + Fields.status, is(Status.VALIDATED.name())));
+        .andExpect(jsonPath("$.objects[0]." + BasePrmEntityVersion.Fields.status, is(Status.VALIDATED.name())));
   }
 
   @Test

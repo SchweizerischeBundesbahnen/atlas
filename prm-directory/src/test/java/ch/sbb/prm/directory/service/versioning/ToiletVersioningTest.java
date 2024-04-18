@@ -2,11 +2,11 @@ package ch.sbb.prm.directory.service.versioning;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.ToiletTestData;
-import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
@@ -94,13 +94,13 @@ class ToiletVersioningTest extends BasePrmServiceTest {
     ToiletVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
+        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
         .isEqualTo(version1);
 
     ToiletVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.id)
+        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate, BaseEntity.Fields.editor, StopPointVersion.Fields.id)
         .isEqualTo(editedVersion);
   }
 
@@ -170,7 +170,7 @@ class ToiletVersioningTest extends BasePrmServiceTest {
     ToiletVersion fifthTemporalVersion = result.get(4);
     assertThat(fifthTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
+        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
         .isEqualTo(version3);
 
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
