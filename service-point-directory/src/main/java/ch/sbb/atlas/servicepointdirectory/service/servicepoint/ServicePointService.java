@@ -114,11 +114,6 @@ public class ServicePointService {
     servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
   }
 
-  public void saveWithoutValidationForImportOnly(ServicePointVersion servicePointVersion, Status status) {
-    servicePointVersion.setStatus(status);
-    servicePointVersionRepository.saveAndFlush(servicePointVersion);
-  }
-
   @PreAuthorize(
       "@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased(#editedVersion, "
           + "#currentVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")

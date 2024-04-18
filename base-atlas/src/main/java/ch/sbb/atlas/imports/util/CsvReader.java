@@ -12,6 +12,7 @@ import java.util.List;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
+@Deprecated(since = "2.0.0")
 public class CsvReader {
 
   public final String BASE_PATH = "/migration/";
