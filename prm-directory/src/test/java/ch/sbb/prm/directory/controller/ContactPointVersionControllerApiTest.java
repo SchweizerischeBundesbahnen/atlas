@@ -103,7 +103,7 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldGetContactPointVersionsWithFilter() throws Exception {
     //given
-    ContactPointVersion version = contactPointRepository.save(ContactPointTestData.getContactPointVersion());
+    ContactPointVersion version = contactPointRepository.saveAndFlush(ContactPointTestData.getContactPointVersion());
 
     //when & then
     mvc.perform(get("/v1/contact-points" +
