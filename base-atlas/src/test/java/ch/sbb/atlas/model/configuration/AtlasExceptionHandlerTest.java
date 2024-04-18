@@ -20,6 +20,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.context.request.async.AsyncRequestNotUsableException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
@@ -144,5 +145,17 @@ public class AtlasExceptionHandlerTest {
     assertThat(displayInfo.getParameters().get(0).getValue()).isEqualTo("falseValue");
     assertThat(displayInfo.getParameters().get(1).getValue()).isEqualTo("ExportType");
     assertThat(displayInfo.getParameters().get(2).getValue()).isEqualTo("[FULL, ACTUAL_DATE, FUTURE_TIMETABLE]");
+  }
+
+  @Test
+  void shouldHandleConnectionAbortsGracefully() {
+    // Given
+    AsyncRequestNotUsableException exception = new AsyncRequestNotUsableException("Client abort");
+
+    // When
+    ResponseEntity<ErrorResponse> errorResponseEntity = atlasExceptionHandler.handleException(exception);
+
+    // Then
+    assertThat(errorResponseEntity.getStatusCode().value()).isEqualTo(499);
   }
 }
