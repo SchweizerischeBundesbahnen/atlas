@@ -4,11 +4,7 @@ import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PARKING
 import static ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType.PLATFORM;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -17,31 +13,24 @@ import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.prm.enumeration.ReferencePointElementType;
 import ch.sbb.atlas.api.prm.model.relation.RelationVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
-import ch.sbb.atlas.imports.prm.relation.RelationCsvModel;
-import ch.sbb.atlas.imports.prm.relation.RelationCsvModelContainer;
-import ch.sbb.atlas.imports.prm.relation.RelationImportRequestModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.prm.directory.RelationTestData;
 import ch.sbb.prm.directory.SharedServicePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
+import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.SharedServicePoint;
 import ch.sbb.prm.directory.repository.RelationRepository;
 import ch.sbb.prm.directory.repository.SharedServicePointRepository;
 import ch.sbb.prm.directory.repository.StopPointRepository;
-import ch.sbb.prm.directory.service.dataimport.RelationImportService;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -51,15 +40,11 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
   private final StopPointRepository stopPointRepository;
   private final SharedServicePointRepository sharedServicePointRepository;
 
-  @MockBean
-  private final RelationImportService relationImportService;
-
   @Autowired
-  RelationVersionControllerApiTest(RelationRepository relationRepository, RelationImportService relationImportService,
+  RelationVersionControllerApiTest(RelationRepository relationRepository,
       StopPointRepository stopPointRepository,
       SharedServicePointRepository sharedServicePointRepository) {
     this.relationRepository = relationRepository;
-    this.relationImportService = relationImportService;
     this.stopPointRepository = stopPointRepository;
     this.sharedServicePointRepository = sharedServicePointRepository;
   }
@@ -86,7 +71,7 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$", hasSize(1)))
         .andExpect(jsonPath("$[0].elementSloid", is(relation1Sloid)))
         .andExpect(jsonPath("$[0].referencePointElementType", is(PLATFORM.name())))
-        .andExpect(jsonPath("$[0]." + Fields.status, is(Status.VALIDATED.name())));
+        .andExpect(jsonPath("$[0]." + BasePrmEntityVersion.Fields.status, is(Status.VALIDATED.name())));
   }
 
   /**
@@ -345,37 +330,4 @@ class RelationVersionControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.totalCount", is(0)));
   }
 
-  @Test
-  void shouldCallImportRelationsService() throws Exception {
-    RelationCsvModel relationCsvModel1 = RelationCsvModel.builder()
-            .sloid("ch:1:sloid:7000:1")
-            .rpSloid("ch:1:sloid:5000:1")
-            .didokCode(123)
-            .tactVisualMarks(1)
-            .contrastingAreas(1)
-            .stepFreeAccess(1)
-            .status(1)
-            .elType("platform")
-            .dsSloid("ch:1:sloid:7000")
-            .build();
-
-    List<RelationCsvModel> csvModels = new ArrayList<>();
-    csvModels.add(relationCsvModel1);
-
-    RelationCsvModelContainer relationCsvModelContainer = RelationCsvModelContainer.builder()
-            .csvModels(csvModels)
-            .build();
-
-    List<RelationCsvModelContainer> containers = new ArrayList<>();
-    containers.add(relationCsvModelContainer);
-
-    RelationImportRequestModel requestModel = new RelationImportRequestModel(containers);
-
-    mvc.perform(post("/v1/relations/import")
-                    .contentType(contentType)
-                    .content(mapper.writeValueAsString(requestModel)))
-            .andExpect(status().isOk());
-
-    verify(relationImportService, times(1)).importRelations(any());
-  }
 }
