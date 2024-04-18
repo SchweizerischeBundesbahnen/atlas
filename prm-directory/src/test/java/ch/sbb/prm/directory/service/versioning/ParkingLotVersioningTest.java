@@ -3,7 +3,6 @@ package ch.sbb.prm.directory.service.versioning;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ch.sbb.atlas.api.prm.enumeration.BooleanOptionalAttributeType;
-import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.prm.directory.ParkingLotTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
@@ -94,13 +93,14 @@ class ParkingLotVersioningTest extends BasePrmServiceTest {
     ParkingLotVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(version1);
 
     ParkingLotVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate, BaseEntity.Fields.editor, StopPointVersion.Fields.id)
+        .ignoringFields(StopPointVersion.Fields.id)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(editedVersion);
   }
 
@@ -154,7 +154,7 @@ class ParkingLotVersioningTest extends BasePrmServiceTest {
     ParkingLotVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(version1);
 
     ParkingLotVersion secondTemporalVersion = result.get(1);
@@ -175,7 +175,7 @@ class ParkingLotVersioningTest extends BasePrmServiceTest {
     ParkingLotVersion fifthTemporalVersion = result.get(4);
     assertThat(fifthTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(version3);
 
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
@@ -226,13 +226,14 @@ class ParkingLotVersioningTest extends BasePrmServiceTest {
     ParkingLotVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(version1);
 
     ParkingLotVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(BaseEntity.Fields.version, BaseEntity.Fields.editionDate, BaseEntity.Fields.creationDate, BaseEntity.Fields.editor, StopPointVersion.Fields.validTo)
+        .ignoringFields(StopPointVersion.Fields.validTo)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(version2);
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2001, 12, 31));
   }
