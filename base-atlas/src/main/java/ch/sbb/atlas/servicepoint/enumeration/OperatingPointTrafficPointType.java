@@ -11,7 +11,7 @@ import java.util.Objects;
 @Schema(enumAsRef = true)
 @Getter
 @RequiredArgsConstructor
-public enum OperatingPointTrafficPointType implements CodeAndDesignations {
+public enum OperatingPointTrafficPointType {
 
   TARIFF_POINT(50, true, "Tarifpunkt", "Point tarifaire", "Punto tariffale", "Tariff point", "verkehrspunkt,tarifstelle", null,
           null,
@@ -37,8 +37,4 @@ public enum OperatingPointTrafficPointType implements CodeAndDesignations {
             .findFirst().orElse(null);
   }
 
-  @Override
-  public String getCode() {
-    return String.valueOf(id);
-  }
 }
