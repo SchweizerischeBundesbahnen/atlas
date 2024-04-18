@@ -5,7 +5,7 @@ import {
   HearingStatus,
   StatementStatus,
   SwissCanton,
-  TimetableHearingStatement, TimetableHearingStatementSender,
+  TimetableHearingStatement, TimetableHearingStatementDocument, TimetableHearingStatementSender,
   TimetableHearingStatementsService,
   TimetableHearingYear,
   TimetableHearingYearsService,
@@ -589,6 +589,13 @@ export class OverviewDetailComponent implements OnInit {
     return statementSender.lastName;
   }
 
+  private isDocumentExisting(documents: Array<TimetableHearingStatementDocument>) {
+    if(documents.length > 0){
+      return true
+    }
+    return false;
+  }
+
   private getTableColumns(): TableColumn<TimetableHearingStatement>[] {
       return [
         {
@@ -626,8 +633,9 @@ export class OverviewDetailComponent implements OnInit {
           headerTitle: 'TTH.TIMETABLE_FIELD_DOCUMENT',
           value: 'documents',
           icon: {
-            icon: 'bi bi-paperclip'
-          }
+            icon: 'attachment bi bi-paperclip',
+            callback: this.isDocumentExisting
+          },
         },
         {
           headerTitle: '',

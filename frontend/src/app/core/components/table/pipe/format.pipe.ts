@@ -23,6 +23,9 @@ export class FormatPipe implements PipeTransform {
     if (column.callback) {
       return column.callback(value);
     }
+    if (column.icon?.callback) {
+      return column.icon?.callback(value);
+    }
     return value as string;
   }
 }
