@@ -11,6 +11,6 @@
   <logger name="org.springframework.boot.test" level="error" />
   <logger name="org.springframework.security" level="error" />
   <logger name="org.hibernate" level="error" />
-  <logger name="org.apache.kafka.test.TestUtils" additivity="false"/>
+  <logger name="org.apache.kafka" additivity="false"/>
   <logger name="ch.sbb.prm.directory.ApimYamlExtractionTest" level="info" />
 </configuration>

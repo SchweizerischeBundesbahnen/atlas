@@ -2,6 +2,6 @@
 <configuration>
   <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
   <include resource="org/springframework/boot/logging/logback/base.xml" />
-  <logger name="org.apache.kafka.test.TestUtils" additivity="false"/>
+  <logger name="org.apache.kafka" additivity="false"/>
   <logger name="ch.sbb.atlas.user.administration.security.service" level="error"/>
 </configuration>
