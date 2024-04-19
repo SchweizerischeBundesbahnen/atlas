@@ -18,6 +18,7 @@ import ch.sbb.business.organisation.directory.service.BusinessOrganisationServic
 import ch.sbb.business.organisation.directory.service.export.BusinessOrganisationVersionExportService;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -43,19 +44,16 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
   private final BusinessOrganisationAmazonService businessOrganisationAmazonService;
 
   @Override
-  public Container<BusinessOrganisationModel> getAllBusinessOrganisations(Pageable pageable,
-      List<String> searchCriteria, List<String> inSboids, Optional<LocalDate> validOn, List<Status> statusChoices) {
-    log.info(
-        "Load BusinessOrganisations using pageable={}, searchCriteriaSpecification={}, inSboids={} validOn={} and "
-            + "statusChoices={}",
-        pageable, searchCriteria, inSboids, validOn, statusChoices);
+  public Container<BusinessOrganisationModel> getAllBusinessOrganisations(
+      Pageable pageable,
+      List<String> searchCriteria
+  ) {
     Page<BusinessOrganisation> businessOrganisationPage = service.getBusinessOrganisations(
         BusinessOrganisationSearchRestrictions.builder()
             .pageable(pageable)
             .searchCriterias(searchCriteria)
-            .inSboids(inSboids)
-            .statusRestrictions(statusChoices)
-            .validOn(validOn)
+            .inSboids(new ArrayList<>())
+            .statusRestrictions(new ArrayList<>())
             .build());
     List<BusinessOrganisationModel> versions = businessOrganisationPage.stream()
         .map(
@@ -69,7 +67,7 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
 
   @Override
   public Container<BusinessOrganisationVersionModel> getBusinessOrganisationVersions(Pageable pageable,
-                                                                 BusinessOrganisationVersionRequestParams businessOrganisationVersionRequestParams) {
+      BusinessOrganisationVersionRequestParams businessOrganisationVersionRequestParams) {
     log.info("Load BusinessOrganisationVersions using pageable={}, params={}", pageable,
         businessOrganisationVersionRequestParams);
     Page<BusinessOrganisationVersion> businessOrganisationVersions = service.getBusinessOrganisationVersions(
