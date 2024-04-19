@@ -15,7 +15,7 @@ import org.springframework.retry.RetryCallback;
 import org.springframework.retry.RetryContext;
 
 @ExtendWith(MockitoExtension.class)
-class RetryListenerTest {
+class AtlasRetryListenerTest {
 
   @Mock
   private MailProducerService service;
@@ -25,13 +25,13 @@ class RetryListenerTest {
 
   @InjectMocks
   @Spy
-  private RetryListener retryListener;
+  private AtlasRetryListener retryListener;
 
   @Mock
   private RetryContext retryContext;
 
   @Mock
-  private RetryCallback callback;
+  private RetryCallback<?,?> callback;
 
   private final Throwable throwable = new RuntimeException("Fatal exception");
 
