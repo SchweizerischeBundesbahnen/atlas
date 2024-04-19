@@ -51,7 +51,8 @@ class LoadingPointControllerApiTest extends BaseControllerApiTest {
   private ServicePointVersion servicePointVersion;
 
   @Autowired
-   LoadingPointControllerApiTest(LoadingPointVersionRepository repository, ServicePointVersionRepository servicePointVersionRepository,
+  LoadingPointControllerApiTest(LoadingPointVersionRepository repository,
+      ServicePointVersionRepository servicePointVersionRepository,
       LoadingPointController loadingPointController) {
     this.repository = repository;
     this.servicePointVersionRepository = servicePointVersionRepository;
@@ -90,11 +91,12 @@ class LoadingPointControllerApiTest extends BaseControllerApiTest {
   void shouldGetLoadingPoint() throws Exception {
     int servicePointNumber = servicePointVersion.getNumber().getValue();
     Integer number = loadingPointVersion.getNumber();
-    mvc.perform(get("/v1/loading-points/"+servicePointNumber+"/"+ number)).andExpect(status().isOk())
+    mvc.perform(get("/v1/loading-points/" + servicePointNumber + "/" + number)).andExpect(status().isOk())
         .andExpect(jsonPath("$[0]." + Fields.id, is(loadingPointVersion.getId().intValue())))
         .andExpect(jsonPath("$[0]." + Fields.number, is(NUMBER)))
         .andExpect(jsonPath("$[0]." + Fields.connectionPoint, is(false)))
-        .andExpect(jsonPath("$[0].servicePointNumber.number", is(ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber).getNumber())))
+        .andExpect(jsonPath("$[0].servicePointNumber.number",
+            is(ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber).getNumber())))
         .andExpect(jsonPath("$[0].creationDate", LocalDateTimeMatchers.stringDateTimeIsWithinOneHourOfNow()))
         .andExpect(jsonPath("$[0].creator", is("e123456")));
   }
@@ -102,53 +104,54 @@ class LoadingPointControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldGetLoadingPointVersionsWithoutFilter() throws Exception {
     mvc.perform(get("/v1/loading-points"))
-         .andExpect(status().isOk())
-         .andExpect(jsonPath("$.totalCount", is(1)))
-         .andExpect(jsonPath("$.objects[0]." + Fields.id, is(loadingPointVersion.getId().intValue())));
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(1)))
+        .andExpect(jsonPath("$.objects[0]." + Fields.id, is(loadingPointVersion.getId().intValue())));
   }
 
   @Test
   void shouldGetLoadingPointVersionsWithFilter() throws Exception {
     mvc.perform(get("/v1/loading-points" +
-                    "?numbers=4201" +
-                    "&servicePointSloids=ch:1:sloid:19768" +
-                    "&servicePointUicCountryCodes=58" +
-                    "&servicePointNumbersShorts=1976" +
-                    "8&servicePointNumbers=5819768" +
-                    "&sboid=ch:1:sboid:100626" +
-                    "&fromDate=" + loadingPointVersion.getValidFrom() +
-                    "&toDate=" + loadingPointVersion.getValidTo()+
-                    "&validOn=" + LocalDate.of(2020, 6, 28) +
-                    "&createdAfter=" + loadingPointVersion.getCreationDate().minusSeconds(1).truncatedTo(ChronoUnit.SECONDS) +
-                    "&modifiedAfter=" + loadingPointVersion.getEditionDate().truncatedTo(ChronoUnit.SECONDS)))
-         .andExpect(status().isOk())
-         .andExpect(jsonPath("$.totalCount", is(1)))
-         .andExpect(jsonPath("$.objects[0]." + Fields.id, is(loadingPointVersion.getId().intValue())));
+            "?numbers=4201" +
+            "&servicePointSloids=ch:1:sloid:19768" +
+            "&servicePointUicCountryCodes=58" +
+            "&servicePointNumbersShorts=1976" +
+            "8&servicePointNumbers=5819768" +
+            "&sboid=ch:1:sboid:100626" +
+            "&fromDate=" + loadingPointVersion.getValidFrom() +
+            "&toDate=" + loadingPointVersion.getValidTo() +
+            "&validOn=" + LocalDate.of(2020, 6, 28) +
+            "&createdAfter=" + loadingPointVersion.getCreationDate().minusSeconds(1).truncatedTo(ChronoUnit.SECONDS) +
+            "&modifiedAfter=" + loadingPointVersion.getEditionDate().truncatedTo(ChronoUnit.SECONDS)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(1)))
+        .andExpect(jsonPath("$.objects[0]." + Fields.id, is(loadingPointVersion.getId().intValue())));
   }
+
   @Test
   void shouldGetLoadingPointVersionsWithArrayInFilter() throws Exception {
     mvc.perform(get("/v1/loading-points" +
-                    "?numbers=4201&numbers=1000" +
-                    "&servicePointSloids=ch:1:sloid:19768&servicePointSloids=ch:1:sloid:19769" +
-                    "&servicePointUicCountryCodes=58&servicePointUicCountryCodes=85" +
-                    "&servicePointNumbersShorts=19768&servicePointNumbersShorts=12768" +
-                    "&servicePointNumbers=5819768&servicePointNumbers=5819768" +
-                    "&sboid=ch:1:sboid:100626&sboid=ch:1:sboid:100628" +
-                    "&fromDate=" + loadingPointVersion.getValidFrom() +
-                    "&toDate=" + loadingPointVersion.getValidTo()+
-                    "&validOn=" + LocalDate.of(2020, 6, 28) +
-                    "&createdAfter=" + loadingPointVersion.getCreationDate().minusSeconds(1).truncatedTo(ChronoUnit.SECONDS) +
-                    "&modifiedAfter=" + loadingPointVersion.getEditionDate().truncatedTo(ChronoUnit.SECONDS)))
-         .andExpect(status().isOk())
-         .andExpect(jsonPath("$.totalCount", is(1)))
-         .andExpect(jsonPath("$.objects[0]." + Fields.id, is(loadingPointVersion.getId().intValue())));
+            "?numbers=4201&numbers=1000" +
+            "&servicePointSloids=ch:1:sloid:19768&servicePointSloids=ch:1:sloid:19769" +
+            "&servicePointUicCountryCodes=58&servicePointUicCountryCodes=85" +
+            "&servicePointNumbersShorts=19768&servicePointNumbersShorts=12768" +
+            "&servicePointNumbers=5819768&servicePointNumbers=5819768" +
+            "&sboid=ch:1:sboid:100626&sboid=ch:1:sboid:100628" +
+            "&fromDate=" + loadingPointVersion.getValidFrom() +
+            "&toDate=" + loadingPointVersion.getValidTo() +
+            "&validOn=" + LocalDate.of(2020, 6, 28) +
+            "&createdAfter=" + loadingPointVersion.getCreationDate().minusSeconds(1).truncatedTo(ChronoUnit.SECONDS) +
+            "&modifiedAfter=" + loadingPointVersion.getEditionDate().truncatedTo(ChronoUnit.SECONDS)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(1)))
+        .andExpect(jsonPath("$.objects[0]." + Fields.id, is(loadingPointVersion.getId().intValue())));
   }
 
   @Test
   void shouldNotGetLoadingPointVersionsWithFilter() throws Exception {
     mvc.perform(get("/v1/loading-points?numbers=1000"))
-         .andExpect(status().isOk())
-         .andExpect(jsonPath("$.totalCount", is(0)));
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.totalCount", is(0)));
   }
 
   @Test
@@ -295,4 +298,10 @@ class LoadingPointControllerApiTest extends BaseControllerApiTest {
             is("Value 12345678 rejected due to must be less than or equal to 9999999")));
   }
 
+  @Test
+  void shouldReturnBadRequestWhenPageSizeExceeded() throws Exception {
+    mvc.perform(get("/v1/loading-points?size=10001"))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("The page size is limited to 10000")));
+  }
 }
