@@ -4,6 +4,6 @@
   <include resource="org/springframework/boot/logging/logback/base.xml" />
   <logger name="ch.sbb.atlas.api.model.ErrorResponse" additivity="false" />
   <logger name="ch.sbb.atlas.configuration.handler.AtlasExceptionHandler" additivity="false" />
-  <logger name="org.apache.kafka.test.TestUtils" additivity="false"/>
+  <logger name="org.apache.kafka" additivity="false"/>
   <logger name="ch.sbb.atlas.versioning" level="error"/>
 </configuration>
