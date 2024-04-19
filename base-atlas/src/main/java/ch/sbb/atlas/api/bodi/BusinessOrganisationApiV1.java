@@ -22,6 +22,7 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -44,11 +45,9 @@ public interface BusinessOrganisationApiV1 {
   @GetMapping
   @PageableAsQueryParam
   Container<BusinessOrganisationModel> getAllBusinessOrganisations(
-      @Parameter(hidden = true) Pageable pageable,
-      @Parameter @RequestParam(required = false) List<String> searchCriteria,
-      @Parameter @RequestParam(required = false) List<String> inSboids,
-      @Parameter @RequestParam(required = false) @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN) Optional<LocalDate> validOn,
-      @Parameter @RequestParam(required = false) List<Status> statusChoices);
+      @Parameter(hidden = true) @PageableDefault Pageable pageable,
+      @RequestParam(required = false) List<String> searchCriteria // todo: explore diff to working case
+  );
 
   @GetMapping("versions")
   @PageableAsQueryParam
