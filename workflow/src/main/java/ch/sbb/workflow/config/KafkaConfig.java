@@ -21,7 +21,7 @@ public class KafkaConfig {
 
   @Bean
   public ProducerFactory<String, Object> producerFactory() {
-    Map<String, Object> props = new HashMap<>(kafkaProperties.buildProducerProperties());
+    Map<String, Object> props = new HashMap<>(kafkaProperties.buildProducerProperties(null));
     return new DefaultKafkaProducerFactory<>(props);
   }
 
