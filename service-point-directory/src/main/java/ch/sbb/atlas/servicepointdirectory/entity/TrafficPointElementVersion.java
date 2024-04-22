@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.converter.ServicePointNumberConverter;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;
@@ -47,25 +48,10 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 @Entity(name = "traffic_point_element_version")
 @AtlasVersionable
-public class TrafficPointElementVersion extends BasePointVersion<TrafficPointElementVersion> implements Versionable,
+public class TrafficPointElementVersion extends BaseEntity implements Versionable,
     DatesValidator {
 
   private static final String VERSION_SEQ = "traffic_point_element_version_seq";
-
-  @Override
-  public boolean hasGeolocation() {
-    return trafficPointElementGeolocation != null;
-  }
-
-  @Override
-  public void referenceGeolocationTo(TrafficPointElementVersion version) {
-    trafficPointElementGeolocation.setTrafficPointElementVersion(version);
-  }
-
-  @Override
-  public GeolocationBaseEntity geolocation() {
-    return trafficPointElementGeolocation;
-  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
@@ -147,5 +133,9 @@ public class TrafficPointElementVersion extends BasePointVersion<TrafficPointEle
             Objects.isNull(compassDirection);
       }
     return true;
+  }
+
+  public boolean hasGeolocation() {
+    return trafficPointElementGeolocation != null;
   }
 }

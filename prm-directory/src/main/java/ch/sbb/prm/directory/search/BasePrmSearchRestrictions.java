@@ -5,7 +5,6 @@ import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification
 import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion_;
-import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import java.util.Collections;
 import java.util.Optional;
 import lombok.Data;
@@ -27,7 +26,7 @@ public abstract class BasePrmSearchRestrictions<T extends BasePrmEntityVersion> 
         .and(specBuilder().inSpecification(prmObjectRequestParams.getSloids(), BasePrmEntityVersion.Fields.sloid))
         .and(specBuilder().inSpecification(prmObjectRequestParams.getParentServicePointSloids(),
             BasePrmEntityVersion.Fields.parentServicePointSloid))
-        .and(specBuilder().inSpecification(prmObjectRequestParams.getStatusRestrictions(), Fields.status))
+        .and(specBuilder().inSpecification(prmObjectRequestParams.getStatusRestrictions(), BasePrmEntityVersion.Fields.status))
         .and(new ValidOrEditionTimerangeSpecification<>(
             prmObjectRequestParams.getFromDate(),
             prmObjectRequestParams.getToDate(),

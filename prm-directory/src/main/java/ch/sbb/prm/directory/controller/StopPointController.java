@@ -5,8 +5,6 @@ import static ch.sbb.prm.directory.util.PrmVariantUtil.isPrmVariantChanging;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.stoppoint.ReadStopPointVersionModel;
 import ch.sbb.atlas.api.prm.model.stoppoint.StopPointVersionModel;
-import ch.sbb.atlas.imports.ItemImportResult;
-import ch.sbb.atlas.imports.prm.stoppoint.StopPointImportRequestModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.prm.directory.api.StopPointApiV1;
 import ch.sbb.prm.directory.controller.model.StopPointRequestParams;
@@ -16,7 +14,6 @@ import ch.sbb.prm.directory.mapper.StopPointVersionMapper;
 import ch.sbb.prm.directory.search.StopPointSearchRestrictions;
 import ch.sbb.prm.directory.service.PrmChangeRecordingVariantService;
 import ch.sbb.prm.directory.service.StopPointService;
-import ch.sbb.prm.directory.service.dataimport.StopPointImportService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class StopPointController implements StopPointApiV1 {
 
   private final StopPointService stopPointService;
-  private final StopPointImportService stopPointImportService;
   private final PrmChangeRecordingVariantService prmChangeRecordingVariantService;
 
   @Override
@@ -78,11 +74,6 @@ public class StopPointController implements StopPointApiV1 {
     }
     return stopPointService.findAllByNumberOrderByValidFrom(stopPointVersionToUpdate.getNumber()).stream()
         .map(StopPointVersionMapper::toModel).toList();
-  }
-
-  @Override
-  public List<ItemImportResult> importStopPoints(StopPointImportRequestModel importRequestModel) {
-    return stopPointImportService.importServicePoints(importRequestModel.getStopPointCsvModelContainers());
   }
 
 }

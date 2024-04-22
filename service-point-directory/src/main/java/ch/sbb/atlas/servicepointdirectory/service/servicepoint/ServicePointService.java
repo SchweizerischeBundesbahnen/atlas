@@ -1,7 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
@@ -10,7 +9,6 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.Getter;
@@ -108,15 +106,8 @@ public class ServicePointService {
       List<ServicePointVersion> currentVersions) {
     servicePointVersion.setStatus(servicePointStatusDecider
         .getStatusForServicePoint(servicePointVersion, currentVersion, currentVersions));
-    servicePointVersion.setEditionDate(LocalDateTime.now());
-    servicePointVersion.setEditor(UserService.getUserIdentifier());
     servicePointValidationService.validateAndSetAbbreviation(servicePointVersion);
     servicePointValidationService.validateServicePointPreconditionBusinessRule(servicePointVersion);
-  }
-
-  public void saveWithoutValidationForImportOnly(ServicePointVersion servicePointVersion, Status status) {
-    servicePointVersion.setStatus(status);
-    servicePointVersionRepository.saveAndFlush(servicePointVersion);
   }
 
   @PreAuthorize(
