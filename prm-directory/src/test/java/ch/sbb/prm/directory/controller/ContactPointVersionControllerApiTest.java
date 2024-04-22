@@ -25,7 +25,7 @@ import ch.sbb.prm.directory.ContactPointTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.SharedServicePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
+import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.ContactPointVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
@@ -97,13 +97,13 @@ class ContactPointVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/contact-points"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.objects", hasSize(1)))
-        .andExpect(jsonPath("$.objects[0]." + Fields.status, is(Status.VALIDATED.name())));
+        .andExpect(jsonPath("$.objects[0]." + BasePrmEntityVersion.Fields.status, is(Status.VALIDATED.name())));
   }
 
   @Test
   void shouldGetContactPointVersionsWithFilter() throws Exception {
     //given
-    ContactPointVersion version = contactPointRepository.save(ContactPointTestData.getContactPointVersion());
+    ContactPointVersion version = contactPointRepository.saveAndFlush(ContactPointTestData.getContactPointVersion());
 
     //when & then
     mvc.perform(get("/v1/contact-points" +

@@ -3,9 +3,6 @@ package ch.sbb.atlas.servicepointdirectory.api;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
-import ch.sbb.atlas.configuration.Role;
-import ch.sbb.atlas.imports.ItemImportResult;
-import ch.sbb.atlas.imports.servicepoint.trafficpoint.TrafficPointImportRequestModel;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.TrafficPointElementVersion.Fields;
 import ch.sbb.atlas.servicepointdirectory.service.trafficpoint.TrafficPointElementRequestParams;
@@ -20,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,11 +57,6 @@ public interface TrafficPointElementApiV1 {
 
   @GetMapping("versions/{id}")
   ReadTrafficPointElementVersionModel getTrafficPointElementVersion(@PathVariable Long id);
-
-  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
-  @PostMapping("import")
-  List<ItemImportResult> importTrafficPoints(
-      @RequestBody @Valid TrafficPointImportRequestModel trafficPointImportRequestModel);
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping

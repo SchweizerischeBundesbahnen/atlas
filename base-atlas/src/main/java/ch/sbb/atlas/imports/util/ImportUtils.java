@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
+@Deprecated(since = "2.0.0")
 public class ImportUtils {
 
   private static final String EDITION_DATE_FIELD_NAME = "editionDate";
