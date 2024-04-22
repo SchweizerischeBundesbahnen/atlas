@@ -44,7 +44,7 @@
           </div>
         </th>
         <div
-          *ngIf="!column.checkbox && !column.dropdown && !column.button"
+          *ngIf="!column.checkbox && !column.dropdown && !column.button && !column.icon"
           [ngSwitch]="!!column.getTitle"
         >
           <ng-template [ngSwitchCase]="true">
@@ -115,6 +115,12 @@
                 ></i>
               </ng-template>
             </atlas-button>
+          </td>
+        </div>
+
+        <div *ngIf="column.icon">
+          <td *matCellDef="let value" class="table-cell bordered-cell" mat-cell>
+              <i *ngIf="column.icon.callback(value[column.value])" [class]="'icon ' + column.icon?.icon"></i>
           </td>
         </div>
       </ng-container>
