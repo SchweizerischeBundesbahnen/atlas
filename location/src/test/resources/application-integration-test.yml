@@ -8,6 +8,8 @@ spring:
     console:
       enabled: true
       path: /h2-console
+  main:
+    banner-mode: OFF
   security:
     oauth2:
       resourceserver:
