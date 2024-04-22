@@ -183,6 +183,29 @@ import org.springframework.test.web.servlet.MvcResult;
   }
 
   @Test
+  void shouldCreateStatementV2WithoutDocuments() throws Exception {
+    TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+        .ttfnid("ch:1:ttfnid:12341241")
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+            .emails(Set.of("fabienne.mueller@sbb.ch"))
+            .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build();
+
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
+
+    mvc.perform(multipart(HttpMethod.POST, "/v2/timetable-hearing/statements")
+            .file(statementJson))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
+        .andExpect(jsonPath("$." + Fields.ttfnid, is("ch:1:ttfnid:12341241")))
+        .andExpect(jsonPath("$." + Fields.documents, hasSize(0)));
+  }
+
+  @Test
   void shouldReportInvalidJsonInStatementWithoutDocuments() throws Exception {
     TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
@@ -215,6 +238,34 @@ import org.springframework.test.web.servlet.MvcResult;
         mapper.writeValueAsString(statement));
 
     mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
+            .file(statementJson)
+            .file(new MockMultipartFile(MULTIPART_FILES.get(0).getName(), MULTIPART_FILES.get(0).getOriginalFilename(),
+                MULTIPART_FILES.get(0).getContentType(), MULTIPART_FILES.get(0).getBytes()))
+            .file(
+                new MockMultipartFile(MULTIPART_FILES.get(1).getName(), MULTIPART_FILES.get(1).getOriginalFilename(),
+                    MULTIPART_FILES.get(1).getContentType(), MULTIPART_FILES.get(1).getBytes())))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
+        .andExpect(jsonPath("$.creationDate", notNullValue()))
+        .andExpect(jsonPath("$.editionDate", notNullValue()))
+        .andExpect(jsonPath("$." + Fields.documents, hasSize(2)));
+  }
+
+  @Test
+  void shouldCreateStatementV2WithTwoDocuments() throws Exception {
+    TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
+        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+        .swissCanton(SwissCanton.BERN)
+        .statementSender(TimetableHearingStatementSenderModel.builder()
+            .emails(Set.of("fabienne.mueller@sbb.ch"))
+            .build())
+        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+        .build();
+
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null, MediaType.APPLICATION_JSON_VALUE,
+        mapper.writeValueAsString(statement));
+
+    mvc.perform(multipart(HttpMethod.POST, "/v2/timetable-hearing/statements")
             .file(statementJson)
             .file(new MockMultipartFile(MULTIPART_FILES.get(0).getName(), MULTIPART_FILES.get(0).getOriginalFilename(),
                 MULTIPART_FILES.get(0).getContentType(), MULTIPART_FILES.get(0).getBytes()))
