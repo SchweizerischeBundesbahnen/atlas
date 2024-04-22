@@ -120,7 +120,7 @@
 
         <div *ngIf="column.icon">
           <td *matCellDef="let value" class="table-cell bordered-cell" mat-cell>
-              <i *ngIf="(value[column.value] | format: column)" [class]="'icon ' + column.icon?.icon"></i>
+              <i *ngIf="column.icon.callback(value[column.value])" [class]="'icon ' + column.icon?.icon"></i>
           </td>
         </div>
       </ng-container>
