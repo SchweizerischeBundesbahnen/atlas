@@ -2,7 +2,6 @@
 
 This is the repository for business relevant services for ATLAS.
 
-
 <!-- toc -->
 
 - [Big Picture](#big-picture)
@@ -16,7 +15,6 @@ This is the repository for business relevant services for ATLAS.
 - [Development](#development)
   * [Run locally](#run-locally)
   * [Monorepo](#monorepo)
-  * [Running Python scripts](#running-python-scripts)
 - [Structure](#structure)
   * [APIM-configuration](#apim-configuration)
   * [Charts](#charts)
@@ -165,12 +163,6 @@ master a Jenkins pipiline is executed. The modules are versionied and deployed w
 number.
 
 ![ATLAS Monorepo](documentation/image/ATLAS-Mono-Repo.svg)
-
-### Running Python scripts
-
-The backend services include python scripts, which were used to generate SQL-Insert-Scripts
-from `xlsx` or `csv` files.
-You can download and install python from https://www.python.org/downloads/.
 
 ## Structure
 
