@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @SuperBuilder
 @Getter
+@Deprecated(since = "2.0.0")
 public abstract class BaseCsvModelContainer<T extends BaseDidokCsvModel> {
 
   public List<T> csvModelList;

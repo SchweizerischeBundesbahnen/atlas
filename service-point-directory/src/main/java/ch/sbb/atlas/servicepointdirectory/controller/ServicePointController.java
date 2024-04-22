@@ -7,8 +7,6 @@ import ch.sbb.atlas.api.servicepoint.GeoReference;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
-import ch.sbb.atlas.imports.ItemImportResult;
-import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.location.SloidHelper;
 import ch.sbb.atlas.model.Status;
@@ -27,19 +25,17 @@ import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestric
 import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
-import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointImportService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchResult;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @Slf4j
@@ -48,7 +44,6 @@ public class ServicePointController implements ServicePointApiV1 {
 
   private final ServicePointService servicePointService;
   private final ServicePointFotCommentService servicePointFotCommentService;
-  private final ServicePointImportService servicePointImportService;
   private final GeoReferenceService geoReferenceService;
   private final ServicePointDistributor servicePointDistributor;
   private final LocationService locationService;
@@ -108,11 +103,6 @@ public class ServicePointController implements ServicePointApiV1 {
   public ReadServicePointVersionModel getServicePointVersion(Long id) {
     return servicePointService.findById(id).map(ServicePointVersionMapper::toModel)
         .orElseThrow(() -> new IdNotFoundException(id));
-  }
-
-  @Override
-  public List<ItemImportResult> importServicePoints(ServicePointImportRequestModel servicePointImportRequestModel) {
-    return servicePointImportService.importServicePoints(servicePointImportRequestModel.getServicePointCsvModelContainers());
   }
 
   @Override
