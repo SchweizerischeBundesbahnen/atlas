@@ -5,7 +5,7 @@ import {
   HearingStatus,
   StatementStatus,
   SwissCanton,
-  TimetableHearingStatement,
+  TimetableHearingStatement, TimetableHearingStatementDocument, TimetableHearingStatementSender,
   TimetableHearingStatementsService,
   TimetableHearingYear,
   TimetableHearingYearsService,
@@ -581,8 +581,16 @@ export class OverviewDetailComponent implements OnInit {
     }
   }
 
-  private mapToShortCanton(canton: SwissCanton) {
+  mapToShortCanton(canton: SwissCanton) {
     return Cantons.fromSwissCanton(canton)?.short;
+  }
+
+  mapToLastname(statementSender: TimetableHearingStatementSender) {
+    return statementSender.lastName;
+  }
+
+  isDocumentExisting(documents: Array<TimetableHearingStatementDocument>) {
+    return documents.length > 0;
   }
 
   private getTableColumns(): TableColumn<TimetableHearingStatement>[] {
@@ -603,6 +611,11 @@ export class OverviewDetailComponent implements OnInit {
         { headerTitle: 'TTH.SWISS_CANTON', value: 'swissCanton', callback: this.mapToShortCanton },
         { headerTitle: 'ID', value: 'id' },
         {
+          headerTitle: 'TTH.TIMETABLE_FIELD_LASTNAME',
+          value: 'statementSender',
+          callback: this.mapToLastname
+        },
+        {
           headerTitle: 'TTH.TRANSPORT_COMPANY',
           value: 'responsibleTransportCompaniesDisplay',
         },
@@ -613,6 +626,14 @@ export class OverviewDetailComponent implements OnInit {
           disabled: true,
         },
         { headerTitle: 'COMMON.EDIT_ON', value: 'editionDate', formatAsDate: true },
+        {
+          headerTitle: 'TTH.TIMETABLE_FIELD_DOCUMENT',
+          value: 'documents',
+          icon: {
+            icon: 'bi bi-paperclip',
+            callback: this.isDocumentExisting
+          },
+        },
         {
           headerTitle: '',
           value: 'etagVersion',
@@ -674,6 +695,8 @@ export class OverviewDetailComponent implements OnInit {
       col.value === 'id' ||
       col.value === 'responsibleTransportCompaniesDisplay' ||
       col.value === 'timetableFieldNumber' ||
+      col.value === 'documents' ||
+      col.value === 'statementSender' ||
       col.value === 'timetableFieldDescription'
     );
   }
