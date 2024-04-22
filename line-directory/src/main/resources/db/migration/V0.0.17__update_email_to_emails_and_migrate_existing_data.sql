@@ -5,7 +5,7 @@
 ALTER TABLE timetable_hearing_statement ADD COLUMN emails VARCHAR(1000);
 
 -- Step 3: Migrate existing email data to the new column
-UPDATE timetable_hearing_statement SET emails = ARRAY(SELECT email FROM timetable_hearing_statement);
+UPDATE timetable_hearing_statement SET emails = email;
 --
 
 ALTER TABLE timetable_hearing_statement ALTER COLUMN email DROP NOT NULL;
