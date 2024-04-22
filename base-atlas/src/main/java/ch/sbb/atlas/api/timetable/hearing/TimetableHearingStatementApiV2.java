@@ -23,14 +23,14 @@ import org.springframework.web.multipart.MultipartFile;
 public interface TimetableHearingStatementApiV2 {
 
   @GetMapping(path = "{id}")
-  @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin"
-      + ".ApplicationType).TIMETABLE_HEARING)")
+  @PreAuthorize("@cantonBasedUserAdministrationService"
+      + ".isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING)")
   TimetableHearingStatementModel getStatement(@PathVariable Long id);
 
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
-  @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
-      + ".ApplicationType).TIMETABLE_HEARING, #statement)")
+  @PreAuthorize("@cantonBasedUserAdministrationService"
+      + ".isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING, #statement)")
   TimetableHearingStatementModel createStatement(
       @RequestPart @Valid TimetableHearingStatementModel statement,
       @RequestPart(required = false) List<MultipartFile> documents);
@@ -38,8 +38,8 @@ public interface TimetableHearingStatementApiV2 {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(path = "external", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
   @RequestBody(content = @Content(encoding = @Encoding(name = "statement", contentType = MediaType.APPLICATION_JSON_VALUE)))
-  @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
-      + ".ApplicationType).TIMETABLE_HEARING, #statement)")
+  @PreAuthorize("@cantonBasedUserAdministrationService"
+      + ".isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING, #statement)")
   TimetableHearingStatementModel createStatementExternal(
       @RequestPart @Valid TimetableHearingStatementModel statement,
       @RequestPart(required = false) List<MultipartFile> documents);
