@@ -670,6 +670,8 @@
     "TRANSPORT_COMPANY": "Azienda di trasporto",
     "TIMETABLE_FIELD_NUMBER": "Numero del quadro d’orario",
     "TIMETABLE_FIELD_NUMBER_DESCRIPTION": "Quadro orario",
+    "TIMETABLE_FIELD_DOCUMENT": "Allegato",
+    "TIMETABLE_FIELD_LASTNAME": "Cognome",
     "OVERVIEW_TAB": {
       "OVERVIEW_ACTUAL_SUBHEADING_PREFIX": "La procedura dell'orario svizzero dell'UFT per l'orario {{timeTableYear}} dura da",
       "OVERVIEW_ACTUAL_SUBHEADING_POSTFIX": " {{hearingFrom}} fino a {{hearingTo}}.",
