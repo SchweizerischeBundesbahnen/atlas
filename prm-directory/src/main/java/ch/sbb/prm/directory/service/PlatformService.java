@@ -70,13 +70,6 @@ public class PlatformService extends PrmRelatableVersionableService<PlatformVers
     return platformRepository.saveAndFlush(version);
   }
 
-  public PlatformVersion saveForImport(PlatformVersion version) {
-    boolean reduced = stopPointService.isReduced(version.getParentServicePointSloid());
-    platformValidationService.validateRecordingVariants(version, reduced);
-    setStatusToValidate(version);
-    return platformRepository.saveAndFlush(version);
-  }
-
   @Override
   public List<PlatformVersion> getAllVersions(String sloid) {
     return platformRepository.findAllBySloidOrderByValidFrom(sloid);

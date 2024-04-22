@@ -1,7 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.ArgumentMatchers.any;
@@ -14,10 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateLoadingPointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
-import ch.sbb.atlas.imports.servicepoint.BaseDidokCsvModel;
-import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModel;
-import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointCsvModelContainer;
-import ch.sbb.atlas.imports.servicepoint.loadingpoint.LoadingPointImportRequestModel;
+import ch.sbb.atlas.model.LocalDateTimeMatchers;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
@@ -28,13 +24,9 @@ import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundEx
 import ch.sbb.atlas.servicepointdirectory.repository.LoadingPointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
-import ch.sbb.atlas.servicepointdirectory.service.loadingpoint.LoadingPointImportService;
-import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.time.temporal.ChronoUnit;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -85,7 +77,7 @@ class LoadingPointControllerApiTest extends BaseControllerApiTest {
         .editionDate(LocalDateTime.of(2018, 6, 28, 11, 48, 56))
         .build();
 
-    this.loadingPointVersion = repository.save(loadingPointVersion);
+    this.loadingPointVersion = repository.saveAndFlush(loadingPointVersion);
   }
 
   @AfterEach
@@ -103,8 +95,8 @@ class LoadingPointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0]." + Fields.number, is(NUMBER)))
         .andExpect(jsonPath("$[0]." + Fields.connectionPoint, is(false)))
         .andExpect(jsonPath("$[0].servicePointNumber.number", is(ServicePointNumber.ofNumberWithoutCheckDigit(servicePointNumber).getNumber())))
-        .andExpect(jsonPath("$[0].creationDate", is("2017-12-04T13:11:03")))
-        .andExpect(jsonPath("$[0].creator", is("fs45117")));
+        .andExpect(jsonPath("$[0].creationDate", LocalDateTimeMatchers.stringDateTimeIsWithinOneHourOfNow()))
+        .andExpect(jsonPath("$[0].creator", is("e123456")));
   }
 
   @Test
@@ -127,8 +119,8 @@ class LoadingPointControllerApiTest extends BaseControllerApiTest {
                     "&fromDate=" + loadingPointVersion.getValidFrom() +
                     "&toDate=" + loadingPointVersion.getValidTo()+
                     "&validOn=" + LocalDate.of(2020, 6, 28) +
-                    "&createdAfter=" + loadingPointVersion.getCreationDate().minusSeconds(1) +
-                    "&modifiedAfter=" + loadingPointVersion.getEditionDate()))
+                    "&createdAfter=" + loadingPointVersion.getCreationDate().minusSeconds(1).truncatedTo(ChronoUnit.SECONDS) +
+                    "&modifiedAfter=" + loadingPointVersion.getEditionDate().truncatedTo(ChronoUnit.SECONDS)))
          .andExpect(status().isOk())
          .andExpect(jsonPath("$.totalCount", is(1)))
          .andExpect(jsonPath("$.objects[0]." + Fields.id, is(loadingPointVersion.getId().intValue())));
@@ -145,8 +137,8 @@ class LoadingPointControllerApiTest extends BaseControllerApiTest {
                     "&fromDate=" + loadingPointVersion.getValidFrom() +
                     "&toDate=" + loadingPointVersion.getValidTo()+
                     "&validOn=" + LocalDate.of(2020, 6, 28) +
-                    "&createdAfter=" + loadingPointVersion.getCreationDate().minusSeconds(1) +
-                    "&modifiedAfter=" + loadingPointVersion.getEditionDate()))
+                    "&createdAfter=" + loadingPointVersion.getCreationDate().minusSeconds(1).truncatedTo(ChronoUnit.SECONDS) +
+                    "&modifiedAfter=" + loadingPointVersion.getEditionDate().truncatedTo(ChronoUnit.SECONDS)))
          .andExpect(status().isOk())
          .andExpect(jsonPath("$.totalCount", is(1)))
          .andExpect(jsonPath("$.objects[0]." + Fields.id, is(loadingPointVersion.getId().intValue())));
@@ -168,77 +160,6 @@ class LoadingPointControllerApiTest extends BaseControllerApiTest {
   void shouldFailOnInvalidLoadingPointNumber() throws Exception {
     mvc.perform(get("/v1/loading-points/versions/9123"))
         .andExpect(status().isNotFound());
-  }
-
-  @Test
-  void shouldImportLoadingPointsSuccessfully() throws Exception {
-    Mockito.doNothing().when(crossValidationServiceMock).validateServicePointNumberExists(any());
-
-    try (InputStream csvStream = this.getClass().getResourceAsStream("/LADESTELLEN_VERSIONING.csv")) {
-      // given
-      List<LoadingPointCsvModel> loadingPointCsvModels = LoadingPointImportService.parseLoadingPoints(csvStream);
-      List<LoadingPointCsvModel> loadingPointCsvModelsOrderedByValidFrom = loadingPointCsvModels.stream()
-          .sorted(Comparator.comparing(BaseDidokCsvModel::getValidFrom))
-          .toList();
-      LoadingPointImportRequestModel importRequestModel = new LoadingPointImportRequestModel(
-          List.of(
-              LoadingPointCsvModelContainer
-                  .builder()
-                  .didokCode(83017186)
-                  .loadingPointNumber(4600)
-                  .csvModelList(loadingPointCsvModelsOrderedByValidFrom)
-                  .build()
-          )
-      );
-      String jsonString = mapper.writeValueAsString(importRequestModel);
-
-      // when
-      mvc.perform(post("/v1/loading-points/import")
-              .content(jsonString)
-              .contentType(contentType))
-          // then
-          .andExpect(status().isOk())
-          .andExpect(jsonPath("$", hasSize(2)));
-    }
-  }
-
-  @Test
-  void shouldReturnBadRequestOnEmptyListImportRequest() throws Exception {
-    // given
-    LoadingPointImportRequestModel importRequestModel = new LoadingPointImportRequestModel(Collections.emptyList());
-    String jsonString = mapper.writeValueAsString(importRequestModel);
-
-    // when
-    mvc.perform(post("/v1/loading-points/import")
-            .content(jsonString)
-            .contentType(contentType))
-        // then
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")));
-  }
-
-  @Test
-  void shouldReturnBadRequestOnNullListImportRequest() throws Exception {
-    // given
-    LoadingPointImportRequestModel importRequestModel = new LoadingPointImportRequestModel();
-    String jsonString = mapper.writeValueAsString(importRequestModel);
-
-    // when
-    mvc.perform(post("/v1/loading-points/import")
-            .content(jsonString)
-            .contentType(contentType))
-        // then
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")));
-  }
-
-  @Test
-  void shouldReturnBadRequestOnNullImportRequestModel() throws Exception {
-    // given & when
-    mvc.perform(post("/v1/loading-points/import")
-            .contentType(contentType))
-        // then
-        .andExpect(status().isBadRequest());
   }
 
   @Test

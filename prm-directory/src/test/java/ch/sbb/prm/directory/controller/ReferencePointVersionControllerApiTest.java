@@ -29,7 +29,7 @@ import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.SharedServicePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
 import ch.sbb.prm.directory.ToiletTestData;
-import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
+import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.ContactPointVersion;
 import ch.sbb.prm.directory.entity.ParkingLotVersion;
 import ch.sbb.prm.directory.entity.PlatformVersion;
@@ -117,7 +117,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/reference-points"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.objects", hasSize(1)))
-        .andExpect(jsonPath("$.objects[0]." + Fields.status, is(Status.VALIDATED.name())));
+        .andExpect(jsonPath("$.objects[0]." + BasePrmEntityVersion.Fields.status, is(Status.VALIDATED.name())));
   }
 
   @Test
@@ -134,7 +134,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldGetReferencePointVersionsWithFilter() throws Exception {
     //given
-    ReferencePointVersion version = referencePointRepository.save(ReferencePointTestData.getReferencePointVersion());
+    ReferencePointVersion version = referencePointRepository.saveAndFlush(ReferencePointTestData.getReferencePointVersion());
 
     //when & then
     mvc.perform(get("/v1/reference-points" +
@@ -156,7 +156,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldNotGetReferencePointVersionsWithFilterOnStatusRevoked() throws Exception {
     //given
-    ReferencePointVersion version = referencePointRepository.save(ReferencePointTestData.getReferencePointVersion());
+    ReferencePointVersion version = referencePointRepository.saveAndFlush(ReferencePointTestData.getReferencePointVersion());
 
     //when & then
     mvc.perform(get("/v1/reference-points" +
@@ -179,7 +179,7 @@ class ReferencePointVersionControllerApiTest extends BaseControllerApiTest {
     //given
     ReferencePointVersion referencePointVersion = ReferencePointTestData.getReferencePointVersion();
     referencePointVersion.setStatus(Status.REVOKED);
-    ReferencePointVersion version = referencePointRepository.save(referencePointVersion);
+    ReferencePointVersion version = referencePointRepository.saveAndFlush(referencePointVersion);
 
     //when & then
     mvc.perform(get("/v1/reference-points" +
