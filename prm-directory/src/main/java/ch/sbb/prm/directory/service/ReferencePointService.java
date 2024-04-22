@@ -80,19 +80,6 @@ public class ReferencePointService extends PrmVersionableService<ReferencePointV
     return referencePointRepository.saveAndFlush(version);
   }
 
-  public ReferencePointVersion saveForImport(ReferencePointVersion version) {
-    stopPointService.validateIsNotReduced(version.getParentServicePointSloid());
-    setStatusToValidate(version);
-    return referencePointRepository.saveAndFlush(version);
-  }
-
-  public ReferencePointVersion createReferencePointThroughImport(ReferencePointVersion version) {
-    stopPointService.validateIsNotReduced(version.getParentServicePointSloid());
-    locationService.allocateSloid(version, SloidType.REFERENCE_POINT);
-    setStatusToValidate(version);
-    return referencePointRepository.saveAndFlush(version);
-  }
-
   @Override
   public List<ReferencePointVersion> getAllVersions(String sloid) {
     return referencePointRepository.findAllBySloidOrderByValidFrom(sloid);

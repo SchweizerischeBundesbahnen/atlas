@@ -9,7 +9,6 @@ import ch.sbb.atlas.api.prm.enumeration.TactileVisualAttributeType;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.RelationTestData;
 import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.RelationVersion;
 import ch.sbb.prm.directory.entity.StopPointVersion;
 import ch.sbb.prm.directory.repository.RelationRepository;
@@ -87,13 +86,14 @@ class RelationVersioningTest extends BasePrmServiceTest {
     RelationVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(version1);
 
     RelationVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.id)
+        .ignoringFields( StopPointVersion.Fields.id)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(editedVersion);
   }
 
@@ -145,7 +145,7 @@ class RelationVersioningTest extends BasePrmServiceTest {
     RelationVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(version1);
 
     RelationVersion secondTemporalVersion = result.get(1);
@@ -166,7 +166,7 @@ class RelationVersioningTest extends BasePrmServiceTest {
     RelationVersion fifthTemporalVersion = result.get(4);
     assertThat(fifthTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(version3);
 
   }
@@ -214,13 +214,14 @@ class RelationVersioningTest extends BasePrmServiceTest {
     RelationVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(version1);
 
     RelationVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.validTo)
+        .ignoringFields(StopPointVersion.Fields.validTo)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(version2);
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2001, 12, 31));
   }

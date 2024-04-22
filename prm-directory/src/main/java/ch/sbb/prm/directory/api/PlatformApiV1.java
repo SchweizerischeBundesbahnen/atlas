@@ -4,9 +4,6 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
-import ch.sbb.atlas.configuration.Role;
-import ch.sbb.atlas.imports.ItemImportResult;
-import ch.sbb.atlas.imports.prm.platform.PlatformImportRequestModel;
 import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion.Fields;
@@ -19,7 +16,6 @@ import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,10 +43,6 @@ public interface PlatformApiV1 {
   @PutMapping(path = "{id}")
   List<ReadPlatformVersionModel> updatePlatform(@PathVariable Long id,
       @RequestBody @Valid PlatformVersionModel platformVersionModel);
-
-  @Secured(Role.SECURED_FOR_ATLAS_ADMIN)
-  @PostMapping("import")
-  List<ItemImportResult> importPlatforms(@RequestBody @Valid PlatformImportRequestModel importRequestModel);
 
   @PageableAsQueryParam
   @GetMapping("/overview/{parentSloid}")
