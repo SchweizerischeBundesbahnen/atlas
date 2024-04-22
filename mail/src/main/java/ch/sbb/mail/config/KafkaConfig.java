@@ -22,7 +22,7 @@ public class KafkaConfig {
 
   @Bean
   public ConsumerFactory<String, Object> consumerFactory() {
-    Map<String, Object> props = new HashMap<>(kafkaProperties.buildConsumerProperties());
+    Map<String, Object> props = new HashMap<>(kafkaProperties.buildConsumerProperties(null));
     return new DefaultKafkaConsumerFactory<>(props);
   }
 
