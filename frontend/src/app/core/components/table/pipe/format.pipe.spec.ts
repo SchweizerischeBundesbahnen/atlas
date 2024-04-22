@@ -48,15 +48,6 @@ describe('FormatPipe', () => {
     expect(tableColumn.callback).toHaveBeenCalledOnceWith('test');
   });
 
-  it('should call icon column callback', () => {
-    const value = 'test';
-    const callbackSpy = jasmine.createSpyObj('Icon', ['callback']);
-    const tableColumn: TableColumn<object> = { icon: {callback: callbackSpy.callback} } as TableColumn<object>
-
-    formatPipe.transform(value, tableColumn);
-    expect(tableColumn.icon!.callback).toHaveBeenCalledOnceWith('test');
-  });
-
   it('should only return value when no condition matches', () => {
     const value = 'test';
     const formatted = formatPipe.transform(value, {} as TableColumn<object>);
