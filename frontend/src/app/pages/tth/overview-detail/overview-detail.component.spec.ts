@@ -6,8 +6,8 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {DisplayDatePipe} from '../../../core/pipe/display-date.pipe';
 import {
   ContainerTimetableHearingStatement,
-  HearingStatus,
-  TimetableHearingStatement,
+  HearingStatus, SwissCanton,
+  TimetableHearingStatement, TimetableHearingStatementDocument, TimetableHearingStatementSender,
   TimetableHearingStatementsService,
   TimetableHearingYear,
   TimetableHearingYearsService,
@@ -293,6 +293,21 @@ describe('TimetableHearingOverviewDetailComponent', () => {
         HearingStatus.Active.toLowerCase(),
       ]);
     });
+
+    it('should return the short form of the Swiss canton', () => {
+      const testCanton: SwissCanton = SwissCanton.Bern;
+      expect(component.mapToShortCanton(testCanton)).toEqual('BE');
+    });
+
+    it('should return the last name of the statement sender', () => {
+      const testSender: TimetableHearingStatementSender = { firstName: 'Max', lastName: 'Mustermann', email: 'muster@muster.com' };
+      expect(component.mapToLastname(testSender)).toEqual('Mustermann');
+    });
+
+    it('should return true if the documents array is not empty', () => {
+      const testDocuments: Array<TimetableHearingStatementDocument> = [{ id: 1, fileName: 'Document 1', fileSize: 123 }];
+      expect(component.isDocumentExisting(testDocuments)).toBeTrue();
+    });
   });
 
   describe('HearingOverviewTab Active with checkbox', async () => {
@@ -482,6 +497,5 @@ describe('TimetableHearingOverviewDetailComponent', () => {
       expect(component.tableColumns[4].value).toEqual('timetableFieldDescription');
       expect(component.tableColumns[5].value).toEqual('documents');
     });
-
   });
 });
