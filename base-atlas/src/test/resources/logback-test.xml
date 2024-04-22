@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+  <include resource="org/springframework/boot/logging/logback/base.xml" />
+  <logger name="ch.sbb.atlas.api.model.ErrorResponse" additivity="false" />
+  <logger name="ch.sbb.atlas.configuration.handler.AtlasExceptionHandler" additivity="false" />
+  <logger name="org.apache.kafka" additivity="false"/>
+  <logger name="ch.sbb.atlas.versioning" level="error"/>
+</configuration>

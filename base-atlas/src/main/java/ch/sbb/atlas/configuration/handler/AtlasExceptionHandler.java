@@ -36,6 +36,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.context.request.async.AsyncRequestNotUsableException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
@@ -292,6 +293,10 @@ public class AtlasExceptionHandler {
 
   @ExceptionHandler(value = Exception.class)
   public ResponseEntity<ErrorResponse> handleException(Exception exception) {
+    if (exception instanceof AsyncRequestNotUsableException) {
+      log.debug("Client aborted the connection", exception);
+      return ResponseEntity.status(499).build();
+    }
     log.error("Unexpected Exception occurred", exception);
     return ResponseEntity.internalServerError()
         .body(ErrorResponse.builder()
