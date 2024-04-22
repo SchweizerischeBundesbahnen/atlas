@@ -54,6 +54,7 @@ logging:
           test: error
         test: error
         web: error
+    ch.sbb.atlas.api.model.ErrorResponse: off
 info:
   app:
     name: prm-directory
