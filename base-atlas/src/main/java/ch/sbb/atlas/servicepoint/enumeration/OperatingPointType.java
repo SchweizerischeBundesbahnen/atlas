@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @Schema(enumAsRef = true, example = "RAILNET_POINT")
 @Getter
 @RequiredArgsConstructor
-public enum OperatingPointType implements CodeAndDesignations {
+public enum OperatingPointType {
 
   INVENTORY_POINT(30, false, "Inventarpunkt", "Point d'inventaire", "punto di inventario", "Inventory point", "betriebspunkt",
       null,
@@ -40,8 +40,4 @@ public enum OperatingPointType implements CodeAndDesignations {
         .findFirst().orElse(null);
   }
 
-  @Override
-  public String getCode() {
-    return String.valueOf(id);
-  }
 }

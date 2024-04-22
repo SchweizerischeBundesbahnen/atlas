@@ -7,7 +7,6 @@ import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.prm.directory.ContactPointTestData;
 import ch.sbb.prm.directory.ReferencePointTestData;
 import ch.sbb.prm.directory.StopPointTestData;
-import ch.sbb.prm.directory.entity.BasePrmImportEntity.Fields;
 import ch.sbb.prm.directory.entity.ContactPointVersion;
 import ch.sbb.prm.directory.entity.ReferencePointVersion;
 import ch.sbb.prm.directory.entity.RelationVersion;
@@ -98,13 +97,14 @@ class ContactPointVersioningTest extends BasePrmServiceTest {
     ContactPointVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(savedVersion1);
 
     ContactPointVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.id)
+        .ignoringFields(StopPointVersion.Fields.id)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(editedVersion);
   }
 
@@ -159,7 +159,7 @@ class ContactPointVersioningTest extends BasePrmServiceTest {
     ContactPointVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(version1);
 
     ContactPointVersion secondTemporalVersion = result.get(1);
@@ -180,7 +180,7 @@ class ContactPointVersioningTest extends BasePrmServiceTest {
     ContactPointVersion fifthTemporalVersion = result.get(4);
     assertThat(fifthTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(version3);
 
     List<RelationVersion> relations = relationService.getRelationsByParentServicePointSloid(
@@ -233,13 +233,14 @@ class ContactPointVersioningTest extends BasePrmServiceTest {
     ContactPointVersion firstTemporalVersion = result.get(0);
     assertThat(firstTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(version1);
 
     ContactPointVersion secondTemporalVersion = result.get(1);
     assertThat(secondTemporalVersion)
         .usingRecursiveComparison()
-        .ignoringFields(Fields.version, Fields.editionDate, Fields.creationDate, Fields.editor, StopPointVersion.Fields.validTo)
+        .ignoringFields(StopPointVersion.Fields.validTo)
+        .ignoringFields(IGNORE_FIELDS)
         .isEqualTo(version2);
     assertThat(secondTemporalVersion.getValidTo()).isEqualTo(LocalDate.of(2001, 12, 31));
   }

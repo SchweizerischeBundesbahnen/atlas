@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.model.entity.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
@@ -21,7 +22,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Entity(name = "service_point_fot_comment")
-public class ServicePointFotComment extends BaseDidokImportEntity {
+public class ServicePointFotComment extends BaseEntity {
 
   @Id
   private Integer servicePointNumber;
