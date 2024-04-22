@@ -15,10 +15,10 @@ public class SpecFilePath {
 
   public static Path getBasePath() {
     if (Files.exists(INTELLIJ_BASE_PATH)) {
-      log.info("Using intellij basepath");
+      log.debug("Using intellij basepath");
       return INTELLIJ_BASE_PATH;
     }
-    log.info("Using mvn basepath");
+    log.debug("Using mvn basepath");
     return Paths.get(MVN_RESOURCE_DIR);
   }
 

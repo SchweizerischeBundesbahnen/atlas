@@ -1,3 +1,4 @@
+spring.main.banner-mode: off
 publishing:
   stages:
     local:
