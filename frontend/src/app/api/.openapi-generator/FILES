@@ -18,6 +18,7 @@ api/servicePoints.service.ts
 api/sublines.service.ts
 api/timetableFieldNumbers.service.ts
 api/timetableHearingStatements.service.ts
+api/timetableHearingStatementsV2.service.ts
 api/timetableHearingYears.service.ts
 api/timetableYearChange.service.ts
 api/trafficPointElements.service.ts
@@ -95,6 +96,9 @@ model/inlineObject12.ts
 model/inlineObject13.ts
 model/inlineObject14.ts
 model/inlineObject15.ts
+model/inlineObject16.ts
+model/inlineObject17.ts
+model/inlineObject18.ts
 model/inlineObject2.ts
 model/inlineObject3.ts
 model/inlineObject4.ts
