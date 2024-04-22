@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+  <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
   <include resource="org/springframework/boot/logging/logback/base.xml" />
   <logger name="org.springframework.core" level="error" />
   <logger name="org.springframework.beans" level="error" />
@@ -10,5 +11,6 @@
   <logger name="org.springframework.boot.test" level="error" />
   <logger name="org.springframework.security" level="error" />
   <logger name="org.hibernate" level="error" />
+  <logger name="org.apache.kafka" additivity="false"/>
   <logger name="ch.sbb.prm.directory.ApimYamlExtractionTest" level="info" />
 </configuration>

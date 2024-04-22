@@ -8,6 +8,8 @@ spring:
     console:
       enabled: true
       path: /h2-console
+  main:
+    banner-mode: OFF
   security:
     oauth2:
       resourceserver:
@@ -30,3 +32,7 @@ spring:
 auth:
   audience:
     service-name: 87e6e634-6ba1-4e7a-869d-3348b4c3eafc
+
+logging:
+  level:
+    root: ERROR
