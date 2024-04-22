@@ -89,28 +89,6 @@ scheduler:
         bav:
           chron: "0 0 1 * * ?" #At 01:00:00am every day
 
-  import-service-point:
-    service-point-trigger-batch:
-      chron: "-" #Never ever
-    traffic-point-trigger-batch:
-      chron: "-" #Never ever
-    loading-point-trigger-batch:
-      chron: "-" #Never ever
-    stop-point-trigger-batch:
-      chron: "-" #Never ever
-    platform-trigger-batch:
-      chron: "-" #Never ever
-    reference-point-trigger-batch:
-      chron: "-" #Never ever
-    toilet-trigger-batch:
-      chron: "-" #Never ever
-    parking-lot-trigger-batch:
-      chron: "-" #Never ever
-    contact-point-trigger-batch:
-      chron: "-" #Never ever
-    relation-trigger-batch:
-      chron: "-" #Never ever
-
   lidi:
     export:
       line:
