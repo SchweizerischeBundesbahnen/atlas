@@ -24,22 +24,22 @@ public class ApimConfigurationGeneratorApplication implements CommandLineRunner 
 
   @Override
   public void run(String... args) {
-    log.info("Generating API ... hold on, args={}", Arrays.asList(args));
+    log.debug("Generating API ... hold on, args={}", Arrays.asList(args));
     if (args.length == 1) {
       publishingConfiguration.getStages().forEach((stage, stageConfig) -> exportApi(args[0], stage, stageConfig));
     } else {
-      log.info("No Argument was passed. Skipped execution");
+      log.debug("No Argument was passed. Skipped execution");
     }
   }
 
   private void exportApi(String version, String stage, StageConfig stageConfig) {
-    log.info("Loading APIs for {} ...", stage);
+    log.debug("Loading APIs for {} ...", stage);
     Map<String, OpenAPI> openApis = openApiLoader.loadOpenApis(stageConfig);
 
-    log.info("Loaded APIs for {} successfully ...", stage);
+    log.debug("Loaded APIs for {} successfully ...", stage);
     OpenAPI combinedApi = new OpenApiMerger(version, stage, stageConfig).getCombinedApi(openApis);
-    log.info("Combined successfully ...");
+    log.debug("Combined successfully ...");
     OpenApiYamlExporter.export(combinedApi, stageConfig.getExportDirectory());
-    log.info("Exported combined API successfully");
+    log.info("Exported combined API for {} successfully", stage);
   }
 }

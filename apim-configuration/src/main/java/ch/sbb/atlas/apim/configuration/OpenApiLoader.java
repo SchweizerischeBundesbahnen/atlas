@@ -25,12 +25,12 @@ public class OpenApiLoader {
   public Map<String, OpenAPI> loadOpenApis(StageConfig stageConfig) {
     Map<String, OpenAPI> result = new HashMap<>();
     Path sourcePath = SpecFilePath.getBasePath().resolve("apis");
-    log.info("From Source Path {}", sourcePath.toAbsolutePath());
+    log.debug("From Source Path {}", sourcePath.toAbsolutePath());
 
     try (Stream<Path> pathStream = Files.walk(sourcePath)) {
       List<File> apiSpecs = pathStream.filter(Files::isRegularFile)
           .map(Path::toFile).toList();
-      log.info("Found {} OpenAPI specs", apiSpecs.size());
+      log.debug("Found {} OpenAPI specs", apiSpecs.size());
       if (apiSpecs.isEmpty()) {
         throw new IllegalStateException("No OpenAPI specs found!");
       }
@@ -39,7 +39,7 @@ public class OpenApiLoader {
         OpenAPI openAPI = Yaml.mapper().readValue(inputStream, OpenAPI.class);
         String apiServiceName = apiSpec.getParentFile().getName();
         if (stageConfig.getApis().contains(apiServiceName)) {
-          log.info("Loaded OpenAPI spec for {}", apiServiceName);
+          log.debug("Loaded OpenAPI spec for {}", apiServiceName);
           result.put(apiServiceName, openAPI);
         }
       }

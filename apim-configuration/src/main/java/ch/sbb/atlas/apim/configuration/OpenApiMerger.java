@@ -6,12 +6,9 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Map;
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @RequiredArgsConstructor
 public class OpenApiMerger {
 
