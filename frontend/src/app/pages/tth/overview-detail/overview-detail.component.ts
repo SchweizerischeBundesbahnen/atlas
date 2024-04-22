@@ -581,19 +581,16 @@ export class OverviewDetailComponent implements OnInit {
     }
   }
 
-  private mapToShortCanton(canton: SwissCanton) {
+  mapToShortCanton(canton: SwissCanton) {
     return Cantons.fromSwissCanton(canton)?.short;
   }
 
-  private mapToLastname(statementSender: TimetableHearingStatementSender) {
+  mapToLastname(statementSender: TimetableHearingStatementSender) {
     return statementSender.lastName;
   }
 
-  private isDocumentExisting(documents: Array<TimetableHearingStatementDocument>) {
-    if(documents.length > 0){
-      return true
-    }
-    return false;
+  isDocumentExisting(documents: Array<TimetableHearingStatementDocument>) {
+    return documents.length > 0;
   }
 
   private getTableColumns(): TableColumn<TimetableHearingStatement>[] {
@@ -616,7 +613,7 @@ export class OverviewDetailComponent implements OnInit {
         {
           headerTitle: 'TTH.TIMETABLE_FIELD_LASTNAME',
           value: 'statementSender',
-          callback: this.mapToLastname,
+          callback: this.mapToLastname
         },
         {
           headerTitle: 'TTH.TRANSPORT_COMPANY',
@@ -633,7 +630,7 @@ export class OverviewDetailComponent implements OnInit {
           headerTitle: 'TTH.TIMETABLE_FIELD_DOCUMENT',
           value: 'documents',
           icon: {
-            icon: 'attachment bi bi-paperclip',
+            icon: 'bi bi-paperclip',
             callback: this.isDocumentExisting
           },
         },
