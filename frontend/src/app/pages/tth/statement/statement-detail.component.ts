@@ -462,7 +462,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
         .filter((numberOrUndefined): numberOrUndefined is number => !!numberOrUndefined),
       this.tableService.pageIndex,
       this.tableService.pageSize,
-      addElementsToArrayWhenNotUndefined(this.tableService.sortString, 'statementStatus,asc', 'ttfnid,asc')];
+      addElementsToArrayWhenNotUndefined(this.tableService.sortString, 'statementStatus,asc', 'ttfnid,asc', 'id,ASC')];
   }
 
 }
