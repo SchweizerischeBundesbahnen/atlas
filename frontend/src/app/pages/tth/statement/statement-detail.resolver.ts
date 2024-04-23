@@ -16,7 +16,7 @@ export class StatementDetailResolver {
     const hearingStatus = route.data['hearingStatus'];
     return idParameter === 'add'
       ? of(undefined)
-      : this.timetableHearingStatementsService.getStatement1(parseInt(idParameter)).pipe(
+      : this.timetableHearingStatementsService.getStatement(parseInt(idParameter)).pipe(
           catchError(() => {
             this.router
               .navigate(
