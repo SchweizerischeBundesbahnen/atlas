@@ -323,6 +323,37 @@ import org.springframework.test.web.servlet.MvcResult;
   }
 
   @Test
+  void shouldThrowExceptionWhenNotClientCredentialsAuthUsedForExternalEndpointV2() throws Exception {
+    String statement = """
+         {
+         	"statement": "I need some more busses please.",
+         	"statementSender": {
+         		"email": "maurer@post.ch",
+         		"firstName": "Fabienne",
+         		"lastName": "Maurer",
+         		"organisation": "Post AG",
+         		"street": "Bahnhofstrasse 12",
+         		"zip": 3000,
+         		"city": "Bern"
+         	},
+         	"timetableFieldNumber": "1.1",
+         	"swissCanton": "BERN",
+         	"stopPlace": "Bern, Wyleregg"
+         }
+        """;
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+        MediaType.APPLICATION_JSON_VALUE, statement);
+
+    mvc.perform(multipart(HttpMethod.POST, "/v2/timetable-hearing/statements/external")
+            .file(statementJson))
+        .andExpect(status().isBadRequest())
+        .andExpect(result -> assertTrue(result.getResolvedException() instanceof NoClientCredentialAuthUsedException))
+        .andExpect(result -> assertEquals("Bad authentication used",
+            ((NoClientCredentialAuthUsedException) Objects.requireNonNull(result.getResolvedException())).getErrorResponse()
+                .getMessage()));
+  }
+
+  @Test
   void shouldThrowForbiddenExceptionWhenStatementCreatableExternalIsFalse() throws Exception {
     // For Client-Credential Auth
     SecurityContext context = SecurityContextHolder.getContext();
