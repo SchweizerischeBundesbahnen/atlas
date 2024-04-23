@@ -1,10 +1,15 @@
 package ch.sbb.atlas.api.bodi;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +38,12 @@ public interface TransportCompanyRelationApiV1 {
 
   @PutMapping
   @ResponseStatus(HttpStatus.OK)
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "501", description = "Versioning scenario not implemented", content =
+          @Content(schema = @Schema(implementation = ErrorResponse.class))),
+          @ApiResponse(responseCode = "520", description = "No entities were modified after versioning execution", content =
+          @Content(schema = @Schema(implementation = ErrorResponse.class))),
+  })
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).BODI)")
   void updateTransportCompanyRelation(@RequestBody @Valid UpdateTransportCompanyRelationModel model);

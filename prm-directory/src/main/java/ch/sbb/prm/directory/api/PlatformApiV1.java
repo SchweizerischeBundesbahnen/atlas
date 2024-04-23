@@ -1,6 +1,7 @@
 package ch.sbb.prm.directory.api;
 
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.model.platform.PlatformOverviewModel;
 import ch.sbb.atlas.api.prm.model.platform.PlatformVersionModel;
 import ch.sbb.atlas.api.prm.model.platform.ReadPlatformVersionModel;
@@ -8,6 +9,10 @@ import ch.sbb.prm.directory.controller.model.PrmObjectRequestParams;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion.Fields;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -40,6 +45,12 @@ public interface PlatformApiV1 {
   ReadPlatformVersionModel createPlatform(@RequestBody @Valid PlatformVersionModel model);
 
   @ResponseStatus(HttpStatus.OK)
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "501", description = "Versioning scenario not implemented", content =
+          @Content(schema = @Schema(implementation = ErrorResponse.class))),
+          @ApiResponse(responseCode = "520", description = "No entities were modified after versioning execution", content =
+          @Content(schema = @Schema(implementation = ErrorResponse.class))),
+  })
   @PutMapping(path = "{id}")
   List<ReadPlatformVersionModel> updatePlatform(@PathVariable Long id,
       @RequestBody @Valid PlatformVersionModel platformVersionModel);
