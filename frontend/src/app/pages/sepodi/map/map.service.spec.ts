@@ -2,7 +2,14 @@ import {TestBed} from '@angular/core/testing';
 import {MapService} from './map.service';
 import {AuthService} from '../../../core/auth/auth.service';
 import {MAP_STYLES, MapOptionsService} from './map-options.service';
-import {GeoJSONSource, Map, MapGeoJSONFeature, MapMouseEvent} from 'maplibre-gl';
+import {
+  DragRotateHandler,
+  GeoJSONSource,
+  Map,
+  MapGeoJSONFeature,
+  MapMouseEvent, ScrollZoomHandler,
+  TwoFingersTouchZoomRotateHandler
+} from 'maplibre-gl';
 import {SpatialReference} from '../../../api';
 
 const authService: Partial<AuthService> = {};
@@ -43,8 +50,16 @@ describe('MapService', () => {
   });
 
   it('should init map', () => {
+    const mapSpy = jasmine.createSpyObj<Map>(['setMaxZoom', 'setMinZoom', 'resize', 'once', 'hasImage', 'addImage']);
+    mapSpy.dragRotate = jasmine.createSpyObj<DragRotateHandler>(['disable']);
+    mapSpy.touchZoomRotate = jasmine.createSpyObj<TwoFingersTouchZoomRotateHandler>(['disableRotation']);
+    mapSpy.scrollZoom = jasmine.createSpyObj<ScrollZoomHandler>(['setWheelZoomRate', 'setZoomRate']);
+
+    spyOn(service, 'createMap').and.returnValue(mapSpy);
+
     const htmlDivElement = document.createElement('div');
     const map = service.initMap(htmlDivElement);
+
     expect(map).toBeTruthy();
   });
 
@@ -223,8 +238,6 @@ describe('MapService', () => {
     service.coordinateSelectionMode = true;
 
     const latLngCoordinates = { lat: 40, lng: -74 };
-    const htmlDivElement = document.createElement('div');
-    service.initMap(htmlDivElement);
     markerSpy.setLngLat.and.returnValue(markerSpy);
     service.marker = markerSpy;
     service.map = mapSpy;
