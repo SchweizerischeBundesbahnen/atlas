@@ -2,8 +2,8 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import {AuthConfig} from 'angular-oauth2-oidc';
-import {Environment} from './environment.model';
+import { AuthConfig } from 'angular-oauth2-oidc';
+import { Environment } from './environment.model';
 import packageJson from '../../package.json';
 
 // See https://confluence.sbb.ch/display/CLEW/Azure+AD
