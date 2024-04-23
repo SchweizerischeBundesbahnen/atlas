@@ -1,35 +1,36 @@
 import {
   HearingStatus,
   SwissCanton,
-  TimetableHearingStatement, TimetableHearingStatementAlternating,
+  TimetableHearingStatement,
+  TimetableHearingStatementAlternating,
   TimetableHearingStatementsService,
   TimetableHearingYear,
   TimetableHearingYearsService,
 } from '../../../api';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder } from '@angular/forms';
-import { of } from 'rxjs';
-import { AuthService } from '../../../core/auth/auth.service';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ErrorNotificationComponent } from '../../../core/notification/error/error-notification.component';
-import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
-import { CommentComponent } from '../../../core/form-components/comment/comment.component';
-import { LinkIconComponent } from '../../../core/form-components/link-icon/link-icon.component';
-import { AppTestingModule, authServiceMock } from '../../../app.testing.module';
-import { FormModule } from '../../../core/module/form.module';
-import { TranslatePipe } from '@ngx-translate/core';
-import { StatementDetailComponent } from './statement-detail.component';
-import { AtlasSpacerComponent } from '../../../core/components/spacer/atlas-spacer.component';
-import { DetailFooterComponent } from '../../../core/components/detail-footer/detail-footer.component';
-import { DetailPageContainerComponent } from '../../../core/components/detail-page-container/detail-page-container.component';
-import { MockAtlasButtonComponent, MockSelectComponent } from '../../../app.testing.mocks';
-import { Component, Input } from '@angular/core';
-import { CreationEditionRecord } from '../../../core/components/base-detail/user-edit-info/creation-edition-record';
-import { By } from '@angular/platform-browser';
-import { FileUploadComponent } from '../../../core/components/file-upload/file-upload.component';
-import { FileSizePipe } from '../../../core/components/file-upload/file-size/file-size.pipe';
-import { FileComponent } from '../../../core/components/file-upload/file/file.component';
-import { LoadingSpinnerComponent } from '../../../core/components/loading-spinner/loading-spinner.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormBuilder} from '@angular/forms';
+import {of} from 'rxjs';
+import {AuthService} from '../../../core/auth/auth.service';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ErrorNotificationComponent} from '../../../core/notification/error/error-notification.component';
+import {InfoIconComponent} from '../../../core/form-components/info-icon/info-icon.component';
+import {CommentComponent} from '../../../core/form-components/comment/comment.component';
+import {LinkIconComponent} from '../../../core/form-components/link-icon/link-icon.component';
+import {AppTestingModule, authServiceMock} from '../../../app.testing.module';
+import {FormModule} from '../../../core/module/form.module';
+import {TranslatePipe} from '@ngx-translate/core';
+import {StatementDetailComponent} from './statement-detail.component';
+import {AtlasSpacerComponent} from '../../../core/components/spacer/atlas-spacer.component';
+import {DetailFooterComponent} from '../../../core/components/detail-footer/detail-footer.component';
+import {DetailPageContainerComponent} from '../../../core/components/detail-page-container/detail-page-container.component';
+import {MockAtlasButtonComponent, MockSelectComponent} from '../../../app.testing.mocks';
+import {Component, Input} from '@angular/core';
+import {CreationEditionRecord} from '../../../core/components/base-detail/user-edit-info/creation-edition-record';
+import {By} from '@angular/platform-browser';
+import {FileUploadComponent} from '../../../core/components/file-upload/file-upload.component';
+import {FileSizePipe} from '../../../core/components/file-upload/file-size/file-size.pipe';
+import {FileComponent} from '../../../core/components/file-upload/file/file.component';
+import {LoadingSpinnerComponent} from '../../../core/components/loading-spinner/loading-spinner.component';
 import {DetailPageContentComponent} from "../../../core/components/detail-page-content/detail-page-content.component";
 
 const existingStatement: TimetableHearingStatement = {
@@ -37,7 +38,7 @@ const existingStatement: TimetableHearingStatement = {
   swissCanton: SwissCanton.Bern,
   statement: 'Luca isch am yb match gsi',
   statementSender: {
-    email: 'luca@yb.ch',
+    emails: new Set(['luca@yb.ch']),
   },
 };
 
@@ -223,7 +224,7 @@ describe('StatementDetailComponent for new statement', () => {
 
       component.form.controls.swissCanton.setValue(SwissCanton.Bern);
       component.form.controls.statement.setValue('my yb busses');
-      component.form.controls.statementSender.controls.email.setValue('luca@yb.ch');
+      component.form.controls.statementSender.controls.emails.setValue(new Set(['luca@yb.ch']));
       fixture.detectChanges();
 
       component.save();
