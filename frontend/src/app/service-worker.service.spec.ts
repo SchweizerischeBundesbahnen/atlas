@@ -1,9 +1,9 @@
-import {TestBed} from '@angular/core/testing';
-import {ServiceWorkerService} from './service-worker.service';
-import {SwUpdate} from '@angular/service-worker';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {DialogComponent} from './core/components/dialog/dialog.component';
-import {of, Subject} from 'rxjs';
+import { TestBed } from '@angular/core/testing';
+import { ServiceWorkerService } from './service-worker.service';
+import { SwUpdate } from '@angular/service-worker';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { DialogComponent } from './core/components/dialog/dialog.component';
+import { of, Subject } from 'rxjs';
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 describe('ServiceWorkerService', () => {
@@ -58,7 +58,11 @@ describe('ServiceWorkerService', () => {
         confirmText: 'DIALOG.RELOAD',
         title: 'SW_DIALOG.UPDATE_TITLE',
         message: 'SW_DIALOG.UPDATE_MESSAGE',
-        link: {url: "https://atlas-info.app.sbb.ch/static/atlas-release-notes.html", textLink:"Release Notes", text: "SW_DIALOG.NEW_RELEASE_TEXT" }
+        link: {
+          url: 'https://atlas-info.app.sbb.ch/static/atlas-release-notes.html',
+          textLink: 'Release Notes',
+          text: 'SW_DIALOG.NEW_RELEASE_TEXT',
+        },
       },
       panelClass: 'atlas-dialog-panel',
       backdropClass: 'atlas-dialog-backdrop',
@@ -85,7 +89,11 @@ describe('ServiceWorkerService', () => {
         confirmText: 'DIALOG.RELOAD',
         title: 'SW_DIALOG.UNRECOVERABLE_TITLE',
         message: 'SW_DIALOG.UNRECOVERABLE_MESSAGE',
-        link: {url: "https://atlas-info.app.sbb.ch/static/atlas-release-notes.html", textLink:"Release Notes", text: "SW_DIALOG.NEW_RELEASE_TEXT" }
+        link: {
+          url: 'https://atlas-info.app.sbb.ch/static/atlas-release-notes.html',
+          textLink: 'Release Notes',
+          text: 'SW_DIALOG.NEW_RELEASE_TEXT',
+        },
       },
       panelClass: 'atlas-dialog-panel',
       backdropClass: 'atlas-dialog-backdrop',
