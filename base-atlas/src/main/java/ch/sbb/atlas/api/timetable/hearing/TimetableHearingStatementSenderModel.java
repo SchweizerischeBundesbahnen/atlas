@@ -54,16 +54,5 @@ public class TimetableHearingStatementSenderModel {
   @Size(max = AtlasFieldLengths.LENGTH_100)
   @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
   private String email;
-//
-//  @Schema(description = "E-Mail addresses", example = "maurer@post.ch, burri@post.ch")
-//  @Size(max = AtlasFieldLengths.LENGTH_100)
-////  @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
-//  @ValidEmails
-//  private Set<String> emails;
-
-//  @AssertTrue(message = "Either email or emails must be provided")
-//  private boolean isEmailOrEmailsNotNull() {
-//    return email != null || (emails != null && !emails.isEmpty());
-//  }
 
 }
