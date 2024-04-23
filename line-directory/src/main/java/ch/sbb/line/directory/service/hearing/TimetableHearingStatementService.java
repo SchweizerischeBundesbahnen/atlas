@@ -6,6 +6,7 @@ import static ch.sbb.line.directory.mapper.TimetableHearingStatementMapper.trans
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementDocumentModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
@@ -17,6 +18,7 @@ import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.mapper.ResponsibleTransportCompanyMapper;
 import ch.sbb.line.directory.mapper.StatementSenderMapper;
 import ch.sbb.line.directory.mapper.TimetableHearingStatementMapper;
+import ch.sbb.line.directory.mapper.TimetableHearingStatementMapperV2;
 import ch.sbb.line.directory.model.TimetableHearingStatementSearchRestrictions;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
@@ -50,6 +52,7 @@ public class TimetableHearingStatementService {
   private final StatementDocumentFilesValidationService statementDocumentFilesValidationService;
   private final ResponsibleTransportCompanyMapper responsibleTransportCompanyMapper;
   private final TimetableHearingStatementMapper timetableHearingStatementMapper;
+  private final TimetableHearingStatementMapperV2 timetableHearingStatementMapperV2;
 
   public Page<TimetableHearingStatement> getHearingStatements(TimetableHearingStatementSearchRestrictions searchRestrictions) {
     log.info("Loading statements using {}", searchRestrictions);
@@ -73,6 +76,28 @@ public class TimetableHearingStatementService {
   public TimetableHearingStatementModel createHearingStatement(TimetableHearingStatementModel statement,
       List<MultipartFile> documents) {
     TimetableHearingStatement statementToCreate = timetableHearingStatementMapper.toEntity(statement);
+    checkThatTimetableHearingYearExists(statementToCreate.getTimetableYear());
+    statementToCreate.setStatementStatus(StatementStatus.RECEIVED);
+
+    List<File> files = new ArrayList<>();
+
+    if (!CollectionUtils.isEmpty(documents)) {
+      files = getFilesFromMultipartFiles(documents);
+      filesValidation(files, Collections.emptySet());
+
+      addFilesToStatement(documents, statementToCreate);
+    }
+
+    TimetableHearingStatement timetableHearingStatement = timetableHearingStatementRepository.saveAndFlush(statementToCreate);
+
+    pdfsUploadAmazonService.uploadPdfFiles(files, timetableHearingStatement.getId().toString());
+
+    return TimetableHearingStatementMapper.toModel(timetableHearingStatement);
+  }
+
+  public TimetableHearingStatementModel createHearingStatementV2(TimetableHearingStatementModelV2 statement,
+      List<MultipartFile> documents) {
+    TimetableHearingStatement statementToCreate = timetableHearingStatementMapperV2.toEntity(statement);
     checkThatTimetableHearingYearExists(statementToCreate.getTimetableYear());
     statementToCreate.setStatementStatus(StatementStatus.RECEIVED);
 
