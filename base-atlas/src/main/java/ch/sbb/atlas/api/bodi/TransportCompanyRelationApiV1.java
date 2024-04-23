@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
+
 @Tag(name = "Transport Company Relations")
 @RequestMapping("v1/transport-company-relations")
 public interface TransportCompanyRelationApiV1 {
@@ -39,9 +42,9 @@ public interface TransportCompanyRelationApiV1 {
   @PutMapping
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "501", description = "Versioning scenario not implemented", content =
+          @ApiResponse(responseCode = "501", description = VERSIONING_NOT_IMPLEMENTED, content =
           @Content(schema = @Schema(implementation = ErrorResponse.class))),
-          @ApiResponse(responseCode = "520", description = "No entities were modified after versioning execution", content =
+          @ApiResponse(responseCode = "520", description = NO_ENTITIES_WERE_MODIFIED, content =
           @Content(schema = @Schema(implementation = ErrorResponse.class))),
   })
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
