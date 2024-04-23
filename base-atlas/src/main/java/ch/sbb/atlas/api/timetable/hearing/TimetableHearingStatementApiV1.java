@@ -70,7 +70,7 @@ public interface TimetableHearingStatementApiV1 {
   @PageableAsQueryParam
   @PreAuthorize("@cantonBasedUserAdministrationService"
       + ".isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING)")
-  Container<TimetableHearingStatementModel> getStatements(
+  Container<TimetableHearingStatementModelV2> getStatements(
       @Parameter(hidden = true) @PageableDefault(sort = {Fields.timetableYear, Fields.id}) Pageable pageable,
       @ParameterObject TimetableHearingStatementRequestParams statementRequestParams);
 
@@ -83,7 +83,7 @@ public interface TimetableHearingStatementApiV1 {
   @GetMapping(path = "{id}")
   @PreAuthorize("@cantonBasedUserAdministrationService"
       + ".isAtLeastExplicitReader(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING)")
-  TimetableHearingStatementModel getStatement(@PathVariable Long id);
+  TimetableHearingStatementModelV2 getStatement(@PathVariable Long id);
 
   @GetMapping(path = "{id}/previous")
   @PageableAsQueryParam
@@ -115,8 +115,8 @@ public interface TimetableHearingStatementApiV1 {
   @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
   @PreAuthorize("@cantonBasedUserAdministrationService"
       + ".isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING, #statement)")
-  TimetableHearingStatementModel createStatement(
-      @RequestPart @Valid TimetableHearingStatementModel statement,
+  TimetableHearingStatementModelV2 createStatement(
+      @RequestPart @Valid TimetableHearingStatementModelV2 statement,
       @RequestPart(required = false) List<MultipartFile> documents);
 
   @ResponseStatus(HttpStatus.CREATED)
@@ -138,9 +138,9 @@ public interface TimetableHearingStatementApiV1 {
           @ApiResponse(responseCode = "520", description = NO_ENTITIES_WERE_MODIFIED, content =
           @Content(schema = @Schema(implementation = ErrorResponse.class))),
   })
-  TimetableHearingStatementModel updateHearingStatement(
+  TimetableHearingStatementModelV2 updateHearingStatement(
       @PathVariable Long id,
-      @RequestPart @Valid TimetableHearingStatementModel statement,
+      @RequestPart @Valid TimetableHearingStatementModelV2 statement,
       @RequestPart(required = false) List<MultipartFile> documents
   );
 
