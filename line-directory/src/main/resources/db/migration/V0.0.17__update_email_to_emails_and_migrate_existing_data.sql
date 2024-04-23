@@ -40,3 +40,5 @@ CREATE TABLE timetable_hearing_statement_emails (
 
 INSERT INTO timetable_hearing_statement_emails (email, timetable_hearing_statement_id)
 SELECT email, id FROM timetable_hearing_statement;
+
+ALTER TABLE timetable_hearing_statement ALTER COLUMN email DROP NOT NULL;

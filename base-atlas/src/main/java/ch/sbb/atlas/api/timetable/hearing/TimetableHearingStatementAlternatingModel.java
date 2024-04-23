@@ -22,7 +22,7 @@ import org.springframework.data.domain.Pageable;
 public class TimetableHearingStatementAlternatingModel {
 
   @NotNull
-  private TimetableHearingStatementModel timetableHearingStatement;
+  private TimetableHearingStatementModelV2 timetableHearingStatement;
 
   @NotNull
   private Pageable pageable;
