@@ -69,7 +69,11 @@ public interface LoadingPointApiV1 {
       @ApiResponse(responseCode = "409", description = "Number is not unique in time per service point", content =
       @Content(schema = @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "412", description = "Entity has already been updated (etagVersion out of date)", content =
-      @Content(schema = @Schema(implementation = ErrorResponse.class)))
+      @Content(schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "501", description = "Versioning scenario not implemented", content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "520", description = "No entities were modified after versioning execution", content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class))),
   })
   List<ReadLoadingPointVersionModel> updateLoadingPoint(@PathVariable Long id,
       @RequestBody @Valid CreateLoadingPointVersionModel updatedVersion);

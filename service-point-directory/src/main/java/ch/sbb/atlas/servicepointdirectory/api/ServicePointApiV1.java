@@ -1,6 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
@@ -12,6 +13,10 @@ import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearc
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -75,6 +80,12 @@ public interface ServicePointApiV1 {
   ReadServicePointVersionModel validateServicePoint(@PathVariable Long id);
 
   @ResponseStatus(HttpStatus.OK)
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "501", description = "Versioning scenario not implemented", content =
+          @Content(schema = @Schema(implementation = ErrorResponse.class))),
+          @ApiResponse(responseCode = "520", description = "No entities were modified after versioning execution", content =
+          @Content(schema = @Schema(implementation = ErrorResponse.class))),
+  })
   @PutMapping(path = "{id}")
   List<ReadServicePointVersionModel> updateServicePoint(
       @PathVariable Long id,
@@ -85,6 +96,12 @@ public interface ServicePointApiV1 {
   Optional<ServicePointFotCommentModel> getFotComment(@PathVariable Integer servicePointNumber);
 
   @PutMapping("{servicePointNumber}/fot-comment")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "501", description = "Versioning scenario not implemented", content =
+          @Content(schema = @Schema(implementation = ErrorResponse.class))),
+          @ApiResponse(responseCode = "520", description = "No entities were modified after versioning execution", content =
+          @Content(schema = @Schema(implementation = ErrorResponse.class))),
+  })
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).SEPODI)")
   ServicePointFotCommentModel saveFotComment(@PathVariable Integer servicePointNumber,
