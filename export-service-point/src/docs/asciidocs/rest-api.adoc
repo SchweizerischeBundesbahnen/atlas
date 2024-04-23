@@ -56,6 +56,9 @@ This service exports the following data:
 * *Parking Lot Versions*
 * *Relation Versions*
 
+To get daily updated data, we recommend file users to only retrieve data after **00:30 (Europe/Zuerich time zone)** in the
+morning.
+
 include::../../../../base-atlas/documentation/servicepoint/when_to_use_files_or_API.adoc[]
 
 include::../../../../base-atlas/documentation/amazon/Amazon_S3_Buckets_Users_Onboarding.adoc[]
