@@ -214,7 +214,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
         street: new FormControl(statement?.statementSender?.street, [
           AtlasFieldLengthValidator.length_100,
         ]),
-        email: new FormControl(statement?.statementSender?.email, [
+        emails: new FormControl(statement?.statementSender?.emails, [
           Validators.required,
           AtlasFieldLengthValidator.length_100,
           AtlasCharsetsValidator.email,
@@ -376,7 +376,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   private createStatement(statement: TimetableHearingStatement) {
     this.isLoading = true;
     this.timetableHearingStatementsService
-      .createStatement1(statement, this.uploadedFiles)
+      .createStatement(statement, this.uploadedFiles)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((statement) => {
         this.isLoading = false;
@@ -389,7 +389,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   private updateStatement(id: number, statement: TimetableHearingStatement) {
     this.isLoading = true;
     this.timetableHearingStatementsService
-      .updateHearingStatement1(id, statement, this.uploadedFiles)
+      .updateHearingStatement(id, statement, this.uploadedFiles)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((statement) => {
         this.isLoading = false;

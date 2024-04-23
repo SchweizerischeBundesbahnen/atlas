@@ -6,8 +6,11 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {DisplayDatePipe} from '../../../core/pipe/display-date.pipe';
 import {
   ContainerTimetableHearingStatement,
-  HearingStatus, SwissCanton,
-  TimetableHearingStatement, TimetableHearingStatementDocument, TimetableHearingStatementSender,
+  HearingStatus,
+  SwissCanton,
+  TimetableHearingStatement,
+  TimetableHearingStatementDocument,
+  TimetableHearingStatementSender,
   TimetableHearingStatementsService,
   TimetableHearingYear,
   TimetableHearingYearsService,
@@ -84,7 +87,7 @@ const timetableHearingStatement: TimetableHearingStatement = {
       businessRegisterName: 'BLS',
     },
   ],
-  statementSender: { email: 'a@b.c' },
+  statementSender: { emails: new Set(['a@b.c'])},
   statement: 'Ich hätte gerne mehrere Verbindungen am Abend.',
   documents: [],
 };
@@ -300,7 +303,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
     });
 
     it('should return the last name of the statement sender', () => {
-      const testSender: TimetableHearingStatementSender = { firstName: 'Max', lastName: 'Mustermann', email: 'muster@muster.com' };
+      const testSender: TimetableHearingStatementSender = { firstName: 'Max', lastName: 'Mustermann', emails: new Set(['muster@muster.com'])};
       expect(component.mapToLastname(testSender)).toEqual('Mustermann');
     });
 
