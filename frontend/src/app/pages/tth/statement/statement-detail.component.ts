@@ -376,7 +376,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   private createStatement(statement: TimetableHearingStatement) {
     this.isLoading = true;
     this.timetableHearingStatementsService
-      .createStatement(statement, this.uploadedFiles)
+      .createStatement1(statement, this.uploadedFiles)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((statement) => {
         this.isLoading = false;
@@ -389,7 +389,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   private updateStatement(id: number, statement: TimetableHearingStatement) {
     this.isLoading = true;
     this.timetableHearingStatementsService
-      .updateHearingStatement(id, statement, this.uploadedFiles)
+      .updateHearingStatement1(id, statement, this.uploadedFiles)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((statement) => {
         this.isLoading = false;
