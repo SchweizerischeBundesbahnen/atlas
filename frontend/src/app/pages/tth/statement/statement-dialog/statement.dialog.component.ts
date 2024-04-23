@@ -1,12 +1,12 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormGroup } from '@angular/forms';
-import { TimetableHearingStatement, TimetableHearingStatementsService } from '../../../../api';
-import { Subject } from 'rxjs';
-import { NotificationService } from '../../../../core/notification/notification.service';
-import { StatementDetailFormGroup } from '../statement-detail-form-group';
-import { takeUntil } from 'rxjs/operators';
-import { ValidationService } from 'src/app/core/validation/validation.service';
+import {Component, Inject} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {FormGroup} from '@angular/forms';
+import {TimetableHearingStatement, TimetableHearingStatementsService} from '../../../../api';
+import {Subject} from 'rxjs';
+import {NotificationService} from '../../../../core/notification/notification.service';
+import {StatementDetailFormGroup} from '../statement-detail-form-group';
+import {takeUntil} from 'rxjs/operators';
+import {ValidationService} from 'src/app/core/validation/validation.service';
 
 @Component({
   selector: 'app-dialog',
@@ -33,7 +33,7 @@ export class StatementDialogComponent {
 
   private updateStatement(id: number, statement: TimetableHearingStatement) {
     this.timetableHearingStatementsService
-      .updateHearingStatement(id, statement)
+      .updateHearingStatement1(id, statement)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
         this.notificationService.success('TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS');
