@@ -184,7 +184,7 @@ export class OverviewDetailComponent implements OnInit {
           .filter((numberOrUndefined): numberOrUndefined is number => !!numberOrUndefined),
         pagination.page,
         pagination.size,
-        addElementsToArrayWhenNotUndefined(pagination.sort, this.sorting, 'ttfnid,ASC'),
+        addElementsToArrayWhenNotUndefined(pagination.sort, this.sorting, 'ttfnid,ASC', 'id,ASC'),
       )
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((container) => {
