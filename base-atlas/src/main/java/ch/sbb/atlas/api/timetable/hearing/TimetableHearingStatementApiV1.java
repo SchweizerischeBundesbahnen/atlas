@@ -34,8 +34,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
-import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
-import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.*;
 
 @Tag(name = "Timetable Hearing Statements")
 @RequestMapping("v1/timetable-hearing/statements")
@@ -44,9 +43,11 @@ public interface TimetableHearingStatementApiV1 {
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "/update-statement-status")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "501", description = "Versioning scenario not implemented", content =
+          @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
           @Content(schema = @Schema(implementation = ErrorResponse.class))),
-          @ApiResponse(responseCode = "520", description = "No entities were modified after versioning execution", content =
+          @ApiResponse(responseCode = "501", description = VERSIONING_NOT_IMPLEMENTED, content =
+          @Content(schema = @Schema(implementation = ErrorResponse.class))),
+          @ApiResponse(responseCode = "520", description = NO_ENTITIES_WERE_MODIFIED, content =
           @Content(schema = @Schema(implementation = ErrorResponse.class))),
   })
   void updateHearingStatementStatus(
@@ -55,9 +56,11 @@ public interface TimetableHearingStatementApiV1 {
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "/update-canton")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "501", description = "Versioning scenario not implemented", content =
+          @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
           @Content(schema = @Schema(implementation = ErrorResponse.class))),
-          @ApiResponse(responseCode = "520", description = "No entities were modified after versioning execution", content =
+          @ApiResponse(responseCode = "501", description = VERSIONING_NOT_IMPLEMENTED, content =
+          @Content(schema = @Schema(implementation = ErrorResponse.class))),
+          @ApiResponse(responseCode = "520", description = NO_ENTITIES_WERE_MODIFIED, content =
           @Content(schema = @Schema(implementation = ErrorResponse.class))),
   })
   void updateHearingCanton(
@@ -128,6 +131,8 @@ public interface TimetableHearingStatementApiV1 {
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
   @ApiResponses(value = {
+          @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
+          @Content(schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "501", description = VERSIONING_NOT_IMPLEMENTED, content =
           @Content(schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "520", description = NO_ENTITIES_WERE_MODIFIED, content =
