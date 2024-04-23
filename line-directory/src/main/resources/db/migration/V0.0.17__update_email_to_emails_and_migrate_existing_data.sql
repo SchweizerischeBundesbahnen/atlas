@@ -20,14 +20,23 @@
 
 
 
--- Step 1: Add the new column 'emails' to the table
-ALTER TABLE timetable_hearing_statement ADD COLUMN emails VARCHAR(1000) NOT NULL DEFAULT '';
+-- -- Step 1: Add the new column 'emails' to the table
+-- ALTER TABLE timetable_hearing_statement ADD COLUMN emails VARCHAR(1000) NOT NULL DEFAULT '';
+--
+-- -- Step 2: Update the new 'emails' column with data from the existing 'email' column
+-- UPDATE timetable_hearing_statement SET emails = email;
+--
+-- -- Step 3: Remove the 'NOT NULL' constraint from the 'email' column
+-- ALTER TABLE timetable_hearing_statement ALTER COLUMN email DROP NOT NULL;
+--
+-- -- Step 4: Drop the 'email' column
+-- ALTER TABLE timetable_hearing_statement DROP COLUMN email;
 
--- Step 2: Update the new 'emails' column with data from the existing 'email' column
-UPDATE timetable_hearing_statement SET emails = email;
 
--- Step 3: Remove the 'NOT NULL' constraint from the 'email' column
-ALTER TABLE timetable_hearing_statement ALTER COLUMN email DROP NOT NULL;
+CREATE TABLE timetable_hearing_statement_emails (
+    timetable_hearing_statement_id BIGINT       NOT NULL,
+    email                          VARCHAR(255) NOT NULL
+);
 
--- Step 4: Drop the 'email' column
-ALTER TABLE timetable_hearing_statement DROP COLUMN email;
+INSERT INTO timetable_hearing_statement_emails (email, timetable_hearing_statement_id)
+SELECT email, id FROM timetable_hearing_statement;
