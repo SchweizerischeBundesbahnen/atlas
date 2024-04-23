@@ -20,19 +20,11 @@ import org.springframework.web.multipart.MultipartFile;
 public interface TimetableHearingStatementApiV2 {
 
   @ResponseStatus(HttpStatus.CREATED)
-  @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
-  @PreAuthorize("@cantonBasedUserAdministrationService"
-      + ".isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING, #statement)")
-  TimetableHearingStatementModel createStatement(
-      @RequestPart @Valid TimetableHearingStatementModelV2 statement,
-      @RequestPart(required = false) List<MultipartFile> documents);
-
-  @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(path = "external", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
   @RequestBody(content = @Content(encoding = @Encoding(name = "statement", contentType = MediaType.APPLICATION_JSON_VALUE)))
   @PreAuthorize("@cantonBasedUserAdministrationService"
       + ".isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING, #statement)")
-  TimetableHearingStatementModel createStatementExternal(
+  TimetableHearingStatementModelV2 createStatementExternal(
       @RequestPart @Valid TimetableHearingStatementModelV2 statement,
       @RequestPart(required = false) List<MultipartFile> documents);
 
