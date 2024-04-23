@@ -26,6 +26,8 @@ export class UserAdministrationUserOverviewComponent {
     ApplicationType.Ttfn,
     ApplicationType.Lidi,
     ApplicationType.Bodi,
+    ApplicationType.Sepodi,
+    ApplicationType.Prm,
   ];
   readonly applicationCantonOptions: ApplicationType[] = [ApplicationType.TimetableHearing];
   readonly cantonOptions: SwissCanton[] = Object.values(SwissCanton);
