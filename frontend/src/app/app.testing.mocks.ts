@@ -1,15 +1,15 @@
-import {Component, EventEmitter, Input, NgModule, Output} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {ApplicationType, TimetableHearingStatement} from './api';
-import {AtlasButtonType} from './core/components/button/atlas-button.type';
-import {TableColumn} from './core/components/table/table-column';
-import {TablePagination} from './core/components/table/table-pagination';
-import {AtlasFieldCustomError} from './core/form-components/atlas-field-error/atlas-field-custom-error';
-import {SelectionModel} from '@angular/cdk/collections';
-import {TableFilter} from './core/components/table-filter/config/table-filter';
-import {CreationEditionRecord} from './core/components/base-detail/user-edit-info/creation-edition-record';
-import {BaseDetailController} from './core/components/base-detail/base-detail-controller';
-import {Record} from './core/components/base-detail/record';
+import { Component, EventEmitter, Input, NgModule, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ApplicationType, TimetableHearingStatement } from './api';
+import { AtlasButtonType } from './core/components/button/atlas-button.type';
+import { TableColumn } from './core/components/table/table-column';
+import { TablePagination } from './core/components/table/table-pagination';
+import { AtlasFieldCustomError } from './core/form-components/atlas-field-error/atlas-field-custom-error';
+import { SelectionModel } from '@angular/cdk/collections';
+import { TableFilter } from './core/components/table-filter/config/table-filter';
+import { CreationEditionRecord } from './core/components/base-detail/user-edit-info/creation-edition-record';
+import { BaseDetailController } from './core/components/base-detail/base-detail-controller';
+import { Record } from './core/components/base-detail/record';
 
 @Component({
   selector: 'app-switch-version',
@@ -151,13 +151,13 @@ export type ActivatedRouteMockType = { data: any };
     MockInfoIconComponent,
     MockSwitchVersionComponent,
   ],
-    exports: [
-        MockBoSelectComponent,
-        MockAtlasButtonComponent,
-        MockTableComponent,
-        MockSelectComponent,
-        MockSwitchVersionComponent,
-        MockInfoIconComponent,
-    ],
+  exports: [
+    MockBoSelectComponent,
+    MockAtlasButtonComponent,
+    MockTableComponent,
+    MockSelectComponent,
+    MockSwitchVersionComponent,
+    MockInfoIconComponent,
+  ],
 })
 export class AppMockComponents {}
