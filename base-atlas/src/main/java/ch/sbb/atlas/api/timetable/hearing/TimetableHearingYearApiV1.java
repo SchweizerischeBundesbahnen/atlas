@@ -21,8 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
-import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.*;
 
 @Tag(name = "Timetable Hearing Years")
 @RequestMapping("v1/timetable-hearing/years")
@@ -52,6 +51,8 @@ public interface TimetableHearingYearApiV1 {
 
   @PutMapping("{year}")
   @ApiResponses(value = {
+          @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
+          @Content(schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "501", description = VERSIONING_NOT_IMPLEMENTED, content =
           @Content(schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "520", description = NO_ENTITIES_WERE_MODIFIED, content =
