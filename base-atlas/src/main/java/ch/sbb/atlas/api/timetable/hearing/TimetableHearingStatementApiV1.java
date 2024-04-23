@@ -2,13 +2,17 @@ package ch.sbb.atlas.api.timetable.hearing;
 
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Encoding;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -36,11 +40,23 @@ public interface TimetableHearingStatementApiV1 {
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "/update-statement-status")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "501", description = "Versioning scenario not implemented", content =
+          @Content(schema = @Schema(implementation = ErrorResponse.class))),
+          @ApiResponse(responseCode = "520", description = "No entities were modified after versioning execution", content =
+          @Content(schema = @Schema(implementation = ErrorResponse.class))),
+  })
   void updateHearingStatementStatus(
       @org.springframework.web.bind.annotation.RequestBody UpdateHearingStatementStatusModel updateHearingStatementStatus);
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "/update-canton")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "501", description = "Versioning scenario not implemented", content =
+          @Content(schema = @Schema(implementation = ErrorResponse.class))),
+          @ApiResponse(responseCode = "520", description = "No entities were modified after versioning execution", content =
+          @Content(schema = @Schema(implementation = ErrorResponse.class))),
+  })
   void updateHearingCanton(
       @org.springframework.web.bind.annotation.RequestBody UpdateHearingCantonModel updateHearingCantonModel);
 
@@ -108,6 +124,10 @@ public interface TimetableHearingStatementApiV1 {
 
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "501", description = "Versioning scenario not implemented", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+          @ApiResponse(responseCode = "520", description = "No entities were modified after versioning execution", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+  })
   TimetableHearingStatementModel updateHearingStatement(
       @PathVariable Long id,
       @RequestPart @Valid TimetableHearingStatementModel statement,

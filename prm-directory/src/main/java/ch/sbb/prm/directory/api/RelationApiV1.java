@@ -1,12 +1,17 @@
 package ch.sbb.prm.directory.api;
 
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.prm.model.relation.ReadRelationVersionModel;
 import ch.sbb.atlas.api.prm.model.relation.RelationVersionModel;
 import ch.sbb.prm.directory.controller.model.RelationRequestParams;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion;
 import ch.sbb.prm.directory.entity.BasePrmEntityVersion.Fields;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -37,6 +42,12 @@ public interface RelationApiV1 {
   List<ReadRelationVersionModel> getRelationsBySloid(@PathVariable String sloid);
 
   @ResponseStatus(HttpStatus.OK)
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "501", description = "Versioning scenario not implemented", content =
+          @Content(schema = @Schema(implementation = ErrorResponse.class))),
+          @ApiResponse(responseCode = "520", description = "No entities were modified after versioning execution", content =
+          @Content(schema = @Schema(implementation = ErrorResponse.class))),
+  })
   @PutMapping(path = "{id}")
   List<ReadRelationVersionModel> updateRelation(@PathVariable Long id,
       @RequestBody @Valid RelationVersionModel model);
