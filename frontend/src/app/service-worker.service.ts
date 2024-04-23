@@ -1,14 +1,13 @@
-import {ApplicationRef, Injectable} from '@angular/core';
-import {filter, first} from 'rxjs/operators';
-import {concat, interval} from 'rxjs';
-import {DialogComponent} from './core/components/dialog/dialog.component';
-import {SwUpdate} from '@angular/service-worker';
-import {MatDialog} from '@angular/material/dialog';
-import {environment} from "../environments/environment";
+import { ApplicationRef, Injectable } from '@angular/core';
+import { filter, first } from 'rxjs/operators';
+import { concat, interval } from 'rxjs';
+import { DialogComponent } from './core/components/dialog/dialog.component';
+import { SwUpdate } from '@angular/service-worker';
+import { MatDialog } from '@angular/material/dialog';
+import { environment } from '../environments/environment';
 
 @Injectable()
 export class ServiceWorkerService {
-
   environmentReleaseNotesUrl: string = environment.atlasReleaseNotes;
   constructor(
     private readonly appRef: ApplicationRef,
@@ -39,7 +38,11 @@ export class ServiceWorkerService {
           confirmText: 'DIALOG.RELOAD',
           title: titleTranslateKey,
           message: messageTranslateKey,
-          link: {url: this.environmentReleaseNotesUrl , textLink:"Release Notes", text: "SW_DIALOG.NEW_RELEASE_TEXT" }
+          link: {
+            url: this.environmentReleaseNotesUrl,
+            textLink: 'Release Notes',
+            text: 'SW_DIALOG.NEW_RELEASE_TEXT',
+          },
         },
         panelClass: 'atlas-dialog-panel',
         backdropClass: 'atlas-dialog-backdrop',
