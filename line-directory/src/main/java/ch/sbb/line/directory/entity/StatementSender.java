@@ -45,23 +45,9 @@ public class StatementSender {
 
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String city;
-//
-//  @NotNull
-//  @Size(max = AtlasFieldLengths.LENGTH_100)
-//  private String email;
 
   @NotNull
   @Size(max = AtlasFieldLengths.LENGTH_1000)
-//  @Convert(converter = StringSetConverter.class)
-//  @Column(name = "emails", nullable = false)
-//  @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
-
-//  @ElementCollection
-//  @CollectionTable(name = "timetable_hearing_statement_emails", joinColumns = @JoinColumn(name = "timetable_hearing_statement_id"))
-//  @Column(name = "email")
-
-
-//  @Convert(converter = StringSetConverter.class)
   @Column(name = "email", nullable = false)
   @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
   private Set<String> emails = new HashSet<>();
