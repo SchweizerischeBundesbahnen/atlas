@@ -18,7 +18,6 @@ import ch.sbb.business.organisation.directory.service.BusinessOrganisationServic
 import ch.sbb.business.organisation.directory.service.export.BusinessOrganisationVersionExportService;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -44,16 +43,19 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
   private final BusinessOrganisationAmazonService businessOrganisationAmazonService;
 
   @Override
-  public Container<BusinessOrganisationModel> getAllBusinessOrganisations(
-      Pageable pageable,
-      List<String> searchCriteria
-  ) {
+  public Container<BusinessOrganisationModel> getAllBusinessOrganisations(Pageable pageable,
+      List<String> searchCriteria, List<String> inSboids, Optional<LocalDate> validOn, List<Status> statusChoices) {
+    log.info(
+        "Load BusinessOrganisations using pageable={}, searchCriteriaSpecification={}, inSboids={} validOn={} and "
+            + "statusChoices={}",
+        pageable, searchCriteria, inSboids, validOn, statusChoices);
     Page<BusinessOrganisation> businessOrganisationPage = service.getBusinessOrganisations(
         BusinessOrganisationSearchRestrictions.builder()
             .pageable(pageable)
             .searchCriterias(searchCriteria)
-            .inSboids(new ArrayList<>())
-            .statusRestrictions(new ArrayList<>())
+            .inSboids(inSboids)
+            .statusRestrictions(statusChoices)
+            .validOn(validOn)
             .build());
     List<BusinessOrganisationModel> versions = businessOrganisationPage.stream()
         .map(
