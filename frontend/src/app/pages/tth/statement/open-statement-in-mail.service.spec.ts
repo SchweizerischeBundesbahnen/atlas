@@ -41,7 +41,7 @@ describe('OpenStatementInMailService', () => {
       swissCanton: SwissCanton.Bern,
       statement: 'Mehr Bös pls',
       statementSender: {
-        email: 'me@sbb.ch',
+        emails: new Set(['me@sbb.ch']),
       },
     };
     const ttfn: TimetableFieldNumber = {
@@ -68,7 +68,7 @@ describe('OpenStatementInMailService', () => {
       swissCanton: SwissCanton.Bern,
       statement: 'Mehr Bös pls',
       statementSender: {
-        email: 'me@sbb.ch',
+        emails: new Set(['me@sbb.ch']),
       },
     };
 
@@ -84,7 +84,7 @@ describe('OpenStatementInMailService', () => {
       statement: 'Mehr Bös pls',
       stopPlace: 'Erste Haltestelle nach der Post',
       statementSender: {
-        email: 'me@sbb.ch',
+        emails: new Set(['me@sbb.ch']),
       },
     };
     const ttfn: TimetableFieldNumber = {

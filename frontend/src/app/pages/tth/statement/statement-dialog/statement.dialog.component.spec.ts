@@ -1,19 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  SwissCanton,
-  TimetableHearingStatement,
-  TimetableHearingStatementsService,
-} from '../../../../api';
-import { AppTestingModule } from '../../../../app.testing.module';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { TranslatePipe } from '@ngx-translate/core';
-import { By } from '@angular/platform-browser';
-import { StatementDialogComponent } from './statement.dialog.component';
-import { FormModule } from '../../../../core/module/form.module';
-import { FormControl, FormGroup } from '@angular/forms';
-import { NotificationService } from '../../../../core/notification/notification.service';
-import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
-import { of } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {SwissCanton, TimetableHearingStatement, TimetableHearingStatementsService,} from '../../../../api';
+import {AppTestingModule} from '../../../../app.testing.module';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {TranslatePipe} from '@ngx-translate/core';
+import {By} from '@angular/platform-browser';
+import {StatementDialogComponent} from './statement.dialog.component';
+import {FormModule} from '../../../../core/module/form.module';
+import {FormControl, FormGroup} from '@angular/forms';
+import {NotificationService} from '../../../../core/notification/notification.service';
+import {MockAtlasButtonComponent} from '../../../../app.testing.mocks';
+import {of} from 'rxjs';
 
 const mockTimetableHearingStatementsService = jasmine.createSpyObj(
   'timetableHearingStatementsService',
@@ -28,7 +24,7 @@ const statement: TimetableHearingStatement = {
   justification: 'This is justification.',
   comment: 'This is canton change comment.',
   statementSender: {
-    email: 'atlas@sbb.ch',
+    emails: new Set(['atlas@sbb.ch']),
   },
 };
 const form = new FormGroup({
