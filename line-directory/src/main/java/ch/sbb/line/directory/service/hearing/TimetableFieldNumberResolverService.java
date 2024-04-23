@@ -1,7 +1,7 @@
 package ch.sbb.line.directory.service.hearing;
 
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.model.FutureTimetableHelper;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.model.search.TimetableFieldNumberSearchRestrictions;
@@ -50,14 +50,14 @@ public class TimetableFieldNumberResolverService {
     return null;
   }
 
-  public List<TimetableHearingStatementModel> resolveAdditionalVersionInfo(List<TimetableHearingStatementModel> statements) {
+  public List<TimetableHearingStatementModelV2> resolveAdditionalVersionInfo(List<TimetableHearingStatementModelV2> statements) {
     if (statements.isEmpty()) {
       return Collections.emptyList();
     }
     LocalDate validAtDateForYear = getFirstDayOfTimetableYear(statements);
 
     List<TimetableFieldNumberVersion> versions = timetableFieldNumberService.getVersionsValidAt(
-        statements.stream().map(TimetableHearingStatementModel::getTtfnid).collect(
+        statements.stream().map(TimetableHearingStatementModelV2::getTtfnid).collect(
             Collectors.toSet()), validAtDateForYear);
 
     statements.stream()
@@ -76,8 +76,8 @@ public class TimetableFieldNumberResolverService {
     return statements;
   }
 
-  private static LocalDate getFirstDayOfTimetableYear(List<TimetableHearingStatementModel> statements) {
-    if (statements.stream().map(TimetableHearingStatementModel::getTimetableYear).distinct().count() != 1) {
+  private static LocalDate getFirstDayOfTimetableYear(List<TimetableHearingStatementModelV2> statements) {
+    if (statements.stream().map(TimetableHearingStatementModelV2::getTimetableYear).distinct().count() != 1) {
       throw new IllegalArgumentException("Statements should be from the same year for this");
     }
     return FutureTimetableHelper.getFirstDayOfTimetableYear(statements.get(0).getTimetableYear());
