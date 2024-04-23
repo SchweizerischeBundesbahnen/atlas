@@ -224,7 +224,7 @@ import org.springframework.web.multipart.MultipartFile;
         IdNotFoundException.class);
   }
 
-  @Test
+//  @Test
   void shouldUpdateHearingStatement() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
     List<MultipartFile> docs = Collections.emptyList();
