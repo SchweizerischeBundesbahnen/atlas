@@ -1,7 +1,6 @@
 package ch.sbb.line.directory.controller;
 
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementApiV2;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.atlas.service.UserService;
@@ -30,8 +29,8 @@ public class TimetableHearingStatementControllerV2 implements TimetableHearingSt
   private final TimetableFieldNumberResolverService timetableFieldNumberResolverService;
   private final ResponsibleTransportCompaniesResolverService responsibleTransportCompaniesResolverService;
 
-  @Override
-  public TimetableHearingStatementModel createStatement(TimetableHearingStatementModelV2 statement, List<MultipartFile> documents) {
+  public TimetableHearingStatementModelV2 createStatement(TimetableHearingStatementModelV2 statement,
+      List<MultipartFile> documents) {
     TimetableHearingYear hearingYear = timetableHearingYearService.getHearingYear(statement.getTimetableYear());
     if (!hearingYear.isStatementCreatableInternal()) {
       throw new ForbiddenDueToHearingYearSettingsException(hearingYear.getTimetableYear(),
@@ -41,7 +40,7 @@ public class TimetableHearingStatementControllerV2 implements TimetableHearingSt
   }
 
   @Override
-  public TimetableHearingStatementModel createStatementExternal(TimetableHearingStatementModelV2 statement,
+  public TimetableHearingStatementModelV2 createStatementExternal(TimetableHearingStatementModelV2 statement,
       List<MultipartFile> documents) {
     Jwt accessToken = UserService.getAccessToken();
     if (!UserService.isClientCredentialAuthentication(accessToken)) {
