@@ -14,7 +14,6 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -22,12 +21,6 @@ public class PagingConfig implements WebMvcConfigurer {
 
   @Autowired
   private SpringDataWebProperties properties;
-
-  @Override
-  public void addInterceptors(InterceptorRegistry registry) {
-    registry.addInterceptor(); // todo
-    WebMvcConfigurer.super.addInterceptors(registry);
-  }
 
   @Override
   public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
@@ -42,7 +35,6 @@ public class PagingConfig implements WebMvcConfigurer {
           pageSizeExceeded = hasText(pageSize) && Integer.parseInt(pageSize) > maxPageSize();
         } finally {
           if (pageSizeExceeded) {
-            System.out.println("error");
             throw new BadRequestException("The page size is limited to " + maxPageSize());
           }
           return super.resolveArgument(methodParameter, mavContainer, webRequest, binderFactory);
