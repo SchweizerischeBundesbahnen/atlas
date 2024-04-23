@@ -2,14 +2,13 @@ package ch.sbb.line.directory.controller;
 
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementApiV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.atlas.service.UserService;
-import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
 import ch.sbb.line.directory.entity.TimetableHearingYear_;
 import ch.sbb.line.directory.exception.ForbiddenDueToHearingYearSettingsException;
 import ch.sbb.line.directory.exception.NoClientCredentialAuthUsedException;
-import ch.sbb.line.directory.mapper.TimetableHearingStatementMapper;
 import ch.sbb.line.directory.service.hearing.ResponsibleTransportCompaniesResolverService;
 import ch.sbb.line.directory.service.hearing.TimetableFieldNumberResolverService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingStatementService;
@@ -32,23 +31,17 @@ public class TimetableHearingStatementControllerV2 implements TimetableHearingSt
   private final ResponsibleTransportCompaniesResolverService responsibleTransportCompaniesResolverService;
 
   @Override
-  public TimetableHearingStatementModel getStatement(Long id) {
-    return TimetableHearingStatementMapper.toModel(timetableHearingStatementService.getTimetableHearingStatementById(id));
-  }
-
-  @Override
-  public TimetableHearingStatementModel createStatement(TimetableHearingStatementModel statement,
-      List<MultipartFile> documents) {
+  public TimetableHearingStatementModel createStatement(TimetableHearingStatementModelV2 statement, List<MultipartFile> documents) {
     TimetableHearingYear hearingYear = timetableHearingYearService.getHearingYear(statement.getTimetableYear());
     if (!hearingYear.isStatementCreatableInternal()) {
       throw new ForbiddenDueToHearingYearSettingsException(hearingYear.getTimetableYear(),
           TimetableHearingYear_.STATEMENT_CREATABLE_INTERNAL);
     }
-    return timetableHearingStatementService.createHearingStatement(statement, documents);
+    return timetableHearingStatementService.createHearingStatementV2(statement, documents);
   }
 
   @Override
-  public TimetableHearingStatementModel createStatementExternal(TimetableHearingStatementModel statement,
+  public TimetableHearingStatementModel createStatementExternal(TimetableHearingStatementModelV2 statement,
       List<MultipartFile> documents) {
     Jwt accessToken = UserService.getAccessToken();
     if (!UserService.isClientCredentialAuthentication(accessToken)) {
@@ -73,21 +66,6 @@ public class TimetableHearingStatementControllerV2 implements TimetableHearingSt
     statement.setResponsibleTransportCompanies(responsibleTransportCompanies);
 
     return createStatement(statement, documents);
-  }
-
-  @Override
-  public TimetableHearingStatementModel updateHearingStatement(Long id, TimetableHearingStatementModel statement,
-      List<MultipartFile> documents) {
-    TimetableHearingYear hearingYear = timetableHearingYearService.getHearingYear(statement.getTimetableYear());
-    if (!hearingYear.isStatementEditable()) {
-      throw new ForbiddenDueToHearingYearSettingsException(
-          hearingYear.getTimetableYear(),
-          TimetableHearingYear_.STATEMENT_EDITABLE);
-    }
-    TimetableHearingStatement existingStatement = timetableHearingStatementService.getTimetableHearingStatementsById(id);
-    statement.setId(id);
-    TimetableHearingStatement hearingStatement = timetableHearingStatementService.updateHearingStatement(existingStatement, statement, documents);
-    return TimetableHearingStatementMapper.toModel(hearingStatement);
   }
 
 }

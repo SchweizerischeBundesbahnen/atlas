@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "TimetableHearingStatementSender")
-public class TimetableHearingStatementSenderModel {
+public class TimetableHearingStatementSenderModelV2 {
 
   @Schema(description = "First Name", example = "Fabienne")
   @Size(max = AtlasFieldLengths.LENGTH_100)
@@ -50,20 +51,8 @@ public class TimetableHearingStatementSenderModel {
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String city;
 
-  @Schema(description = "E-Mail address", example = "maurer@post.ch")
+  @Schema(description = "E-Mail addresses", example = "maurer@post.ch, burri@post.ch")
   @Size(max = AtlasFieldLengths.LENGTH_100)
-  @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
-  private String email;
-//
-//  @Schema(description = "E-Mail addresses", example = "maurer@post.ch, burri@post.ch")
-//  @Size(max = AtlasFieldLengths.LENGTH_100)
-////  @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
-//  @ValidEmails
-//  private Set<String> emails;
-
-//  @AssertTrue(message = "Either email or emails must be provided")
-//  private boolean isEmailOrEmailsNotNull() {
-//    return email != null || (emails != null && !emails.isEmpty());
-//  }
+  private Set< @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS) String> emails;
 
 }
