@@ -6,8 +6,11 @@ import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementAlternatingModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementApiV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModelV2;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
@@ -19,7 +22,7 @@ import ch.sbb.line.directory.entity.TimetableHearingYear_;
 import ch.sbb.line.directory.exception.ForbiddenDueToHearingYearSettingsException;
 import ch.sbb.line.directory.exception.ForbiddenDueWrongStatementTimeTableYearException;
 import ch.sbb.line.directory.exception.NoClientCredentialAuthUsedException;
-import ch.sbb.line.directory.mapper.TimetableHearingStatementMapper;
+import ch.sbb.line.directory.mapper.TimetableHearingStatementMapperV2;
 import ch.sbb.line.directory.model.TimetableHearingStatementSearchRestrictions;
 import ch.sbb.line.directory.service.hearing.ResponsibleTransportCompaniesResolverService;
 import ch.sbb.line.directory.service.hearing.TimetableFieldNumberResolverService;
@@ -57,15 +60,15 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   private final TimetableHearingStatementExportService timetableHearingStatementExportService;
 
   @Override
-  public Container<TimetableHearingStatementModel> getStatements(Pageable pageable,
+  public Container<TimetableHearingStatementModelV2> getStatements(Pageable pageable,
       TimetableHearingStatementRequestParams statementRequestParams) {
     Page<TimetableHearingStatement> hearingStatements = timetableHearingStatementService.getHearingStatements(
         TimetableHearingStatementSearchRestrictions.builder()
             .pageable(pageable)
             .statementRequestParams(statementRequestParams).build());
-    List<TimetableHearingStatementModel> enrichedModels = timetableFieldNumberResolverService.resolveAdditionalVersionInfo(
-        hearingStatements.stream().map(TimetableHearingStatementMapper::toModel).toList());
-    return Container.<TimetableHearingStatementModel>builder()
+    List<TimetableHearingStatementModelV2> enrichedModels = timetableFieldNumberResolverService.resolveAdditionalVersionInfo(
+        hearingStatements.stream().map(TimetableHearingStatementMapperV2::toModel).toList());
+    return Container.<TimetableHearingStatementModelV2>builder()
         .objects(enrichedModels)
         .totalCount(hearingStatements.getTotalElements())
         .build();
@@ -80,7 +83,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
       throw new BadRequestException("Language must be either de,fr,it");
     }
 
-    Container<TimetableHearingStatementModel> statements = getStatements(Pageable.unpaged(), statementRequestParams);
+    Container<TimetableHearingStatementModelV2> statements = getStatements(Pageable.unpaged(), statementRequestParams);
     File csvFile = timetableHearingStatementExportService.getStatementsAsCsv(statements.getObjects(), new Locale(language));
 
     try {
@@ -91,8 +94,8 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   }
 
   @Override
-  public TimetableHearingStatementModel getStatement(Long id) {
-    return TimetableHearingStatementMapper.toModel(timetableHearingStatementService.getTimetableHearingStatementById(id));
+  public TimetableHearingStatementModelV2 getStatement(Long id) {
+    return TimetableHearingStatementMapperV2.toModel(timetableHearingStatementService.getTimetableHearingStatementById(id));
   }
 
   @Override
@@ -124,7 +127,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   }
 
   @Override
-  public TimetableHearingStatementModel createStatement(TimetableHearingStatementModel statement, List<MultipartFile> documents) {
+  public TimetableHearingStatementModelV2 createStatement(TimetableHearingStatementModelV2 statement, List<MultipartFile> documents) {
     TimetableHearingYear hearingYear = timetableHearingYearService.getHearingYear(statement.getTimetableYear());
     if (!hearingYear.isStatementCreatableInternal()) {
       throw new ForbiddenDueToHearingYearSettingsException(hearingYear.getTimetableYear(),
@@ -158,11 +161,16 @@ public class TimetableHearingStatementController implements TimetableHearingStat
             resolvedTtfnid);
     statement.setResponsibleTransportCompanies(responsibleTransportCompanies);
 
-    return createStatement(statement, documents);
+
+    TimetableHearingStatementModelV2 statementModelV2 = trasnformFromModelToModel2(statement);
+
+    TimetableHearingStatementModelV2 modelV2 = createStatement(statementModelV2, documents);
+
+    return trasnformFromModel2ToModel(modelV2);
   }
 
   @Override
-  public TimetableHearingStatementModel updateHearingStatement(Long id, TimetableHearingStatementModel statement,
+  public TimetableHearingStatementModelV2 updateHearingStatement(Long id, TimetableHearingStatementModelV2 statement,
       List<MultipartFile> documents) {
     TimetableHearingYear hearingYear = timetableHearingYearService.getHearingYear(statement.getTimetableYear());
     if (!hearingYear.isStatementEditable()) {
@@ -174,7 +182,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
     statement.setId(id);
     TimetableHearingStatement hearingStatement = timetableHearingStatementService.updateHearingStatement(existingStatement,
         statement, documents);
-    return TimetableHearingStatementMapper.toModel(hearingStatement);
+    return TimetableHearingStatementMapperV2.toModel(hearingStatement);
   }
 
   @Override
@@ -227,6 +235,62 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   public List<TransportCompanyModel> getResponsibleTransportCompanies(String ttfnid, Long year) {
     LocalDate validOn = LocalDate.of(year.intValue(), 1, 1);
     return responsibleTransportCompaniesResolverService.getResponsibleTransportCompanies(ttfnid, validOn);
+  }
+
+  private TimetableHearingStatementModelV2 trasnformFromModelToModel2(TimetableHearingStatementModel statement) {
+    TimetableHearingStatementSenderModelV2 statementSenderModelV2 = new TimetableHearingStatementSenderModelV2();
+    statementSenderModelV2.setFirstName(statement.getStatementSender().getFirstName());
+    statementSenderModelV2.setLastName(statement.getStatementSender().getLastName());
+    statementSenderModelV2.setOrganisation(statement.getStatementSender().getOrganisation());
+    statementSenderModelV2.setStreet(statement.getStatementSender().getStreet());
+    statementSenderModelV2.setZip(statement.getStatementSender().getZip());
+    statementSenderModelV2.setCity(statement.getStatementSender().getCity());
+    statementSenderModelV2.setEmails(Set.of(statement.getStatementSender().getEmail()));
+
+    TimetableHearingStatementModelV2 statementModelV2 = new TimetableHearingStatementModelV2();
+    statementModelV2.setTimetableYear(statement.getTimetableYear());
+    statementModelV2.setStatus(statement.getStatus());
+    statementModelV2.setTtfnid(statement.getTtfnid());
+    statementModelV2.setTimetableFieldNumber(statement.getTimetableFieldNumber());
+    statementModelV2.setTimetableFieldDescription(statement.getTimetableFieldDescription());
+    statementModelV2.setSwissCanton(statement.getSwissCanton());
+    statementModelV2.setStopPlace(statement.getStopPlace());
+    statementModelV2.setResponsibleTransportCompanies(statement.getResponsibleTransportCompanies());
+    statementModelV2.setResponsibleTransportCompaniesDisplay(statement.getResponsibleTransportCompaniesDisplay());
+    statementModelV2.setStatementSender(statementSenderModelV2);
+    statementModelV2.setStatement(statement.getStatement());
+    statementModelV2.setDocuments(statement.getDocuments());
+    statementModelV2.setJustification(statement.getJustification());
+    statementModelV2.setComment(statement.getComment());
+    return statementModelV2;
+  }
+
+  private TimetableHearingStatementModel trasnformFromModel2ToModel(TimetableHearingStatementModelV2 statementV2) {
+    TimetableHearingStatementSenderModel statementSenderModel = new TimetableHearingStatementSenderModel();
+    statementSenderModel.setFirstName(statementV2.getStatementSender().getFirstName());
+    statementSenderModel.setLastName(statementV2.getStatementSender().getLastName());
+    statementSenderModel.setOrganisation(statementV2.getStatementSender().getOrganisation());
+    statementSenderModel.setStreet(statementV2.getStatementSender().getStreet());
+    statementSenderModel.setZip(statementV2.getStatementSender().getZip());
+    statementSenderModel.setCity(statementV2.getStatementSender().getCity());
+    statementSenderModel.setEmail(statementV2.getStatementSender().getEmails().stream().findFirst().orElse(""));
+
+    TimetableHearingStatementModel statementModel = new TimetableHearingStatementModel();
+    statementModel.setTimetableYear(statementV2.getTimetableYear());
+    statementModel.setStatus(statementV2.getStatus());
+    statementModel.setTtfnid(statementV2.getTtfnid());
+    statementModel.setTimetableFieldNumber(statementV2.getTimetableFieldNumber());
+    statementModel.setTimetableFieldDescription(statementV2.getTimetableFieldDescription());
+    statementModel.setSwissCanton(statementV2.getSwissCanton());
+    statementModel.setStopPlace(statementV2.getStopPlace());
+    statementModel.setResponsibleTransportCompanies(statementV2.getResponsibleTransportCompanies());
+    statementModel.setResponsibleTransportCompaniesDisplay(statementV2.getResponsibleTransportCompaniesDisplay());
+    statementModel.setStatementSender(statementSenderModel);
+    statementModel.setStatement(statementV2.getStatement());
+    statementModel.setDocuments(statementV2.getDocuments());
+    statementModel.setJustification(statementV2.getJustification());
+    statementModel.setComment(statementV2.getComment());
+    return statementModel;
   }
 
 }

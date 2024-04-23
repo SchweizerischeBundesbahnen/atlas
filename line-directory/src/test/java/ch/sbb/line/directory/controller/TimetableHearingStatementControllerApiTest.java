@@ -25,8 +25,10 @@ import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
 import ch.sbb.atlas.api.client.user.administration.UserAdministrationClient;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
@@ -161,11 +163,11 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldCreateStatementWithoutDocuments() throws Exception {
-    TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
+    TimetableHearingStatementModelV2 statement = TimetableHearingStatementModelV2.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .swissCanton(SwissCanton.BERN)
         .ttfnid("ch:1:ttfnid:12341241")
-        .statementSender(TimetableHearingStatementSenderModel.builder()
+        .statementSender(TimetableHearingStatementSenderModelV2.builder()
             .emails(Set.of("fabienne.mueller@sbb.ch"))
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
@@ -175,29 +177,6 @@ import org.springframework.test.web.servlet.MvcResult;
         MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
     mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
-            .file(statementJson))
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
-        .andExpect(jsonPath("$." + Fields.ttfnid, is("ch:1:ttfnid:12341241")))
-        .andExpect(jsonPath("$." + Fields.documents, hasSize(0)));
-  }
-
-  @Test
-  void shouldCreateStatementV2WithoutDocuments() throws Exception {
-    TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-        .swissCanton(SwissCanton.BERN)
-        .ttfnid("ch:1:ttfnid:12341241")
-        .statementSender(TimetableHearingStatementSenderModel.builder()
-            .emails(Set.of("fabienne.mueller@sbb.ch"))
-            .build())
-        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
-        .build();
-
-    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
-        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
-
-    mvc.perform(multipart(HttpMethod.POST, "/v2/timetable-hearing/statements")
             .file(statementJson))
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
@@ -225,10 +204,10 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldCreateStatementWithTwoDocuments() throws Exception {
-    TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
+    TimetableHearingStatementModelV2 statement = TimetableHearingStatementModelV2.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .swissCanton(SwissCanton.BERN)
-        .statementSender(TimetableHearingStatementSenderModel.builder()
+        .statementSender(TimetableHearingStatementSenderModelV2.builder()
             .emails(Set.of("fabienne.mueller@sbb.ch"))
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
@@ -252,39 +231,11 @@ import org.springframework.test.web.servlet.MvcResult;
   }
 
   @Test
-  void shouldCreateStatementV2WithTwoDocuments() throws Exception {
-    TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
-        .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-        .swissCanton(SwissCanton.BERN)
-        .statementSender(TimetableHearingStatementSenderModel.builder()
-            .emails(Set.of("fabienne.mueller@sbb.ch"))
-            .build())
-        .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
-        .build();
-
-    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null, MediaType.APPLICATION_JSON_VALUE,
-        mapper.writeValueAsString(statement));
-
-    mvc.perform(multipart(HttpMethod.POST, "/v2/timetable-hearing/statements")
-            .file(statementJson)
-            .file(new MockMultipartFile(MULTIPART_FILES.get(0).getName(), MULTIPART_FILES.get(0).getOriginalFilename(),
-                MULTIPART_FILES.get(0).getContentType(), MULTIPART_FILES.get(0).getBytes()))
-            .file(
-                new MockMultipartFile(MULTIPART_FILES.get(1).getName(), MULTIPART_FILES.get(1).getOriginalFilename(),
-                    MULTIPART_FILES.get(1).getContentType(), MULTIPART_FILES.get(1).getBytes())))
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
-        .andExpect(jsonPath("$.creationDate", notNullValue()))
-        .andExpect(jsonPath("$.editionDate", notNullValue()))
-        .andExpect(jsonPath("$." + Fields.documents, hasSize(2)));
-  }
-
-  @Test
   void shouldFailCreatingStatementWithFourDocuments() throws Exception {
-    TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
+    TimetableHearingStatementModelV2 statement = TimetableHearingStatementModelV2.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .swissCanton(SwissCanton.BERN)
-        .statementSender(TimetableHearingStatementSenderModel.builder()
+        .statementSender(TimetableHearingStatementSenderModelV2.builder()
             .emails(Set.of("fabienne.mueller@sbb.ch"))
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
@@ -313,11 +264,11 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldThrowForbiddenExceptionWhenStatementCreatableInternalIsFalse() throws Exception {
-    TimetableHearingStatementModel statement = TimetableHearingStatementModel.builder()
+    TimetableHearingStatementModelV2 statement = TimetableHearingStatementModelV2.builder()
         .timetableYear(YEAR)
         .swissCanton(SwissCanton.BERN)
         .ttfnid("ch:1:ttfnid:12341241")
-        .statementSender(TimetableHearingStatementSenderModel.builder()
+        .statementSender(TimetableHearingStatementSenderModelV2.builder()
             .emails(Set.of("fabienne.mueller@sbb.ch"))
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
@@ -471,7 +422,7 @@ import org.springframework.test.web.servlet.MvcResult;
          {
          	"statement": "I need some more busses please.",
          	"statementSender": {
-         		"email": "maurer@post.ch",
+         		"emails": ["maurer@post.ch", "max@post.ch"],
          		"firstName": "Fabienne",
          		"lastName": "Maurer",
          		"organisation": "Post AG",
@@ -502,11 +453,11 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldUpdateStatement() throws Exception {
-    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
-        TimetableHearingStatementModel.builder()
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
+        TimetableHearingStatementModelV2.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
-            .statementSender(TimetableHearingStatementSenderModel.builder()
+            .statementSender(TimetableHearingStatementSenderModelV2.builder()
                 .emails(Set.of("fabienne.mueller@sbb.ch"))
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
@@ -519,31 +470,6 @@ import org.springframework.test.web.servlet.MvcResult;
         MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
     mvc.perform(multipart(HttpMethod.PUT, "/v1/timetable-hearing/statements/" + statement.getId())
-            .file(statementJson))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.JUNK.toString())))
-        .andExpect(jsonPath("$." + Fields.documents, hasSize(0)));
-  }
-
-  @Test
-  void shouldUpdateStatementV2() throws Exception {
-    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
-        TimetableHearingStatementModel.builder()
-            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
-            .swissCanton(SwissCanton.BERN)
-            .statementSender(TimetableHearingStatementSenderModel.builder()
-                .emails(Set.of("fabienne.mueller@sbb.ch"))
-                .build())
-            .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
-            .build(),
-        Collections.emptyList());
-
-    statement.setStatementStatus(StatementStatus.JUNK);
-
-    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
-        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
-
-    mvc.perform(multipart(HttpMethod.PUT, "/v2/timetable-hearing/statements/" + statement.getId())
             .file(statementJson))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.JUNK.toString())))
@@ -742,11 +668,11 @@ import org.springframework.test.web.servlet.MvcResult;
     hearingYear.setStatementEditable(false);
     timetableHearingYearController.updateTimetableHearingSettings(YEAR, hearingYear);
 
-    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
-        TimetableHearingStatementModel.builder()
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
+        TimetableHearingStatementModelV2.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
-            .statementSender(TimetableHearingStatementSenderModel.builder()
+            .statementSender(TimetableHearingStatementSenderModelV2.builder()
                 .emails(Set.of("fabienne.mueller@sbb.ch"))
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
@@ -770,11 +696,11 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldAddDocumentsToExistingStatementWithoutDocuments() throws Exception {
-    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
-        TimetableHearingStatementModel.builder()
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
+        TimetableHearingStatementModelV2.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
-            .statementSender(TimetableHearingStatementSenderModel.builder()
+            .statementSender(TimetableHearingStatementSenderModelV2.builder()
                 .emails(Set.of("fabienne.mueller@sbb.ch"))
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
@@ -796,16 +722,16 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldUpdateStatementWithDocumentsWithAdditionalDocuments() throws Exception {
-    TimetableHearingStatementModel timetableHearingStatementModel = TimetableHearingStatementModel.builder()
+    TimetableHearingStatementModelV2 timetableHearingStatementModel = TimetableHearingStatementModelV2.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .swissCanton(SwissCanton.BERN)
-        .statementSender(TimetableHearingStatementSenderModel.builder()
+        .statementSender(TimetableHearingStatementSenderModelV2.builder()
             .emails(Set.of("fabienne.mueller@sbb.ch"))
             .build())
         .statement("Ich haette gerne mehrere Verbindungen am Abend.")
         .build();
 
-    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
         timetableHearingStatementModel,
         List.of(MULTIPART_FILES.get(1)));
 
@@ -827,16 +753,16 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldUpdateStatementWithDocumentsWithAdditionalDocumentAndRemoveExisting() throws Exception {
-    TimetableHearingStatementModel timetableHearingStatementModel = TimetableHearingStatementModel.builder()
+    TimetableHearingStatementModelV2 timetableHearingStatementModel = TimetableHearingStatementModelV2.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .swissCanton(SwissCanton.BERN)
-        .statementSender(TimetableHearingStatementSenderModel.builder()
+        .statementSender(TimetableHearingStatementSenderModelV2.builder()
             .emails(Set.of("fabienne.mueller@sbb.ch"))
             .build())
         .statement("Ich haette gerne mehrere Verbindungen am Abend.")
         .build();
 
-    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
         timetableHearingStatementModel,
         List.of(MULTIPART_FILES.get(1)));
 
@@ -857,11 +783,11 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldGetStatementById() throws Exception {
-    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
-        TimetableHearingStatementModel.builder()
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
+        TimetableHearingStatementModelV2.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
-            .statementSender(TimetableHearingStatementSenderModel.builder()
+            .statementSender(TimetableHearingStatementSenderModelV2.builder()
                 .emails(Set.of("fabienne.mueller@sbb.ch"))
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
@@ -876,11 +802,11 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldGetStatementByHearingYear() throws Exception {
-    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
-        TimetableHearingStatementModel.builder()
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
+        TimetableHearingStatementModelV2.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
-            .statementSender(TimetableHearingStatementSenderModel.builder()
+            .statementSender(TimetableHearingStatementSenderModelV2.builder()
                 .emails(Set.of("fabienne.mueller@sbb.ch"))
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
@@ -898,11 +824,11 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldGetStatementDocumentByDocumentId() throws Exception {
-    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
-        TimetableHearingStatementModel.builder()
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
+        TimetableHearingStatementModelV2.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
-            .statementSender(TimetableHearingStatementSenderModel.builder()
+            .statementSender(TimetableHearingStatementSenderModelV2.builder()
                 .emails(Set.of("fabienne.mueller@sbb.ch"))
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
@@ -917,11 +843,11 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldThrowExceptionOnGetStatementDocumentByDocumentId() throws Exception {
-    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
-        TimetableHearingStatementModel.builder()
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
+        TimetableHearingStatementModelV2.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
-            .statementSender(TimetableHearingStatementSenderModel.builder()
+            .statementSender(TimetableHearingStatementSenderModelV2.builder()
                 .emails(Set.of("fabienne.mueller@sbb.ch"))
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
@@ -935,11 +861,11 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldDeleteStatementDocumentByDocumentId() throws Exception {
-    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
-        TimetableHearingStatementModel.builder()
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
+        TimetableHearingStatementModelV2.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
-            .statementSender(TimetableHearingStatementSenderModel.builder()
+            .statementSender(TimetableHearingStatementSenderModelV2.builder()
                 .emails(Set.of("fabienne.mueller@sbb.ch"))
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
@@ -953,11 +879,11 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldGetStatementDocumentNotFoundWhenNoDocument() throws Exception {
-    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
-        TimetableHearingStatementModel.builder()
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
+        TimetableHearingStatementModelV2.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
-            .statementSender(TimetableHearingStatementSenderModel.builder()
+            .statementSender(TimetableHearingStatementSenderModelV2.builder()
                 .emails(Set.of("fabienne.mueller@sbb.ch"))
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
@@ -975,11 +901,11 @@ import org.springframework.test.web.servlet.MvcResult;
         Kanton;"Fahrplanfeld-Nr.";Fahrplanfeldbezeichnung;Haltestelle;ID;"Abkürzung Transportunternehmung";"Name Transportunternehmung";Stellungnahme;Anhang;Status;Begründung;Vorname;Nachname;Organisation;Strasse;"PLZ/Ort";"E-Mail";Bearbeiter;"Zuletzt bearbeitet";Fahrplanjahr;E-Mails
         """;
 
-    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
-        TimetableHearingStatementModel.builder()
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
+        TimetableHearingStatementModelV2.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
-            .statementSender(TimetableHearingStatementSenderModel.builder()
+            .statementSender(TimetableHearingStatementSenderModelV2.builder()
                 .emails(Set.of("fabienne.mueller@sbb.ch"))
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
@@ -1002,10 +928,10 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldUpdateStatementWithReplacingTransportCompany() throws Exception {
-    TimetableHearingStatementModel timetableHearingStatementModel = TimetableHearingStatementModel.builder()
+    TimetableHearingStatementModelV2 timetableHearingStatementModel = TimetableHearingStatementModelV2.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .swissCanton(SwissCanton.BERN)
-        .statementSender(TimetableHearingStatementSenderModel.builder()
+        .statementSender(TimetableHearingStatementSenderModelV2.builder()
             .emails(Set.of("fabienne.mueller@sbb.ch"))
             .build())
         .responsibleTransportCompanies(List.of(TimetableHearingStatementResponsibleTransportCompanyModel.builder()
@@ -1015,7 +941,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .statement("Ich haette gerne mehrere Verbindungen am Abend.")
         .build();
 
-    TimetableHearingStatementModel statement = timetableHearingStatementController.createStatement(
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
         timetableHearingStatementModel, Collections.emptyList());
     assertThat(statement.getResponsibleTransportCompanies()).hasSize(1);
     assertThat(statement.getResponsibleTransportCompanies().get(0).getId()).isEqualTo(1);
