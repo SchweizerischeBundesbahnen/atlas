@@ -30,6 +30,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
+
 @Tag(name = "Traffic Point Elements")
 @RequestMapping("v1/traffic-point-elements")
 public interface TrafficPointElementApiV1 {
@@ -70,9 +73,9 @@ public interface TrafficPointElementApiV1 {
 
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "501", description = "Versioning scenario not implemented", content =
+          @ApiResponse(responseCode = "501", description = VERSIONING_NOT_IMPLEMENTED, content =
           @Content(schema = @Schema(implementation = ErrorResponse.class))),
-          @ApiResponse(responseCode = "520", description = "No entities were modified after versioning execution", content =
+          @ApiResponse(responseCode = "520", description = NO_ENTITIES_WERE_MODIFIED, content =
           @Content(schema = @Schema(implementation = ErrorResponse.class))),
   })
   @PutMapping(path = "{id}")
