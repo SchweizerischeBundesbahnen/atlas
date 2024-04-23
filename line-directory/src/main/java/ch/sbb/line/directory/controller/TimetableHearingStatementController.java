@@ -249,7 +249,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
 
     TimetableHearingStatementModelV2 statementModelV2 = new TimetableHearingStatementModelV2();
     statementModelV2.setTimetableYear(statement.getTimetableYear());
-    statementModelV2.setStatus(statement.getStatus());
+    statementModelV2.setStatementStatus(statement.getStatementStatus());
     statementModelV2.setTtfnid(statement.getTtfnid());
     statementModelV2.setTimetableFieldNumber(statement.getTimetableFieldNumber());
     statementModelV2.setTimetableFieldDescription(statement.getTimetableFieldDescription());
@@ -276,8 +276,9 @@ public class TimetableHearingStatementController implements TimetableHearingStat
     statementSenderModel.setEmail(statementV2.getStatementSender().getEmails().stream().findFirst().orElse(""));
 
     TimetableHearingStatementModel statementModel = new TimetableHearingStatementModel();
+    statementModel.setId(statementV2.getId());
     statementModel.setTimetableYear(statementV2.getTimetableYear());
-    statementModel.setStatus(statementV2.getStatus());
+    statementModel.setStatementStatus(statementV2.getStatementStatus());
     statementModel.setTtfnid(statementV2.getTtfnid());
     statementModel.setTimetableFieldNumber(statementV2.getTimetableFieldNumber());
     statementModel.setTimetableFieldDescription(statementV2.getTimetableFieldDescription());
@@ -290,6 +291,11 @@ public class TimetableHearingStatementController implements TimetableHearingStat
     statementModel.setDocuments(statementV2.getDocuments());
     statementModel.setJustification(statementV2.getJustification());
     statementModel.setComment(statementV2.getComment());
+    statementModel.setEtagVersion(statementV2.getEtagVersion());
+    statementModel.setCreationDate(statementV2.getCreationDate());
+    statementModel.setCreator(statementV2.getCreator());
+    statementModel.setEditionDate(statementV2.getEditionDate());
+    statementModel.setEditor(statementV2.getEditor());
     return statementModel;
   }
 
