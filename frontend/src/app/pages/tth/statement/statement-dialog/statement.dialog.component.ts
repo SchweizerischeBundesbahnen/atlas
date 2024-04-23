@@ -33,7 +33,7 @@ export class StatementDialogComponent {
 
   private updateStatement(id: number, statement: TimetableHearingStatement) {
     this.timetableHearingStatementsService
-      .updateHearingStatement1(id, statement)
+      .updateHearingStatement(id, statement)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
         this.notificationService.success('TTH.STATEMENT.NOTIFICATION.EDIT_SUCCESS');
