@@ -113,12 +113,15 @@ describe('UserAdministrationClientCreateComponent', () => {
   it('should create client', fakeAsync(() => {
     const router = TestBed.inject(Router);
     component.form.controls.clientCredentialId.setValue('client-id');
+    component.form.controls.alias.setValue('alias');
+
     userServiceSpy.createClientCredentialPermission.and.returnValue(
       of({
         clientCredentialId: 'client-id',
       }),
     );
     spyOn(router, 'navigate').and.resolveTo(true);
+
     component.create();
     expect(
       userPermissionManagerSpy.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser,
