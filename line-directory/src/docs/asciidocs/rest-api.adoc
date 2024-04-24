@@ -262,9 +262,13 @@ include::{snippets}/timetable-hearing-year-controller-api-test/should-close-hear
 
 include::{snippets}/timetable-hearing-statement-controller-api-test/should-create-statement-without-documents/atlas-doc.adoc[]
 
-== Create Hearing Statement from External (e.g. SKI Web)- Successfully
+== Create Hearing Statement from External V1 (e.g. SKI Web)- Successfully
 
 include::{snippets}/timetable-hearing-statement-controller-api-test/should-create-statement-external-from-ski-web/atlas-doc.adoc[]
+
+== Create Hearing Statement from External V2 (e.g. SKI Web)- Successfully
+
+include::{snippets}/timetable-hearing-statement-controller-api-test/should-create-statement-external-v2-from-ski-web/atlas-doc.adoc[]
 
 == Create Hearing Statement with Documents - Successfully
 
