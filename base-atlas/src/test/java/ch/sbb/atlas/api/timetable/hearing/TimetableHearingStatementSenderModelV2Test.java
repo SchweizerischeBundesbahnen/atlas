@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 class TimetableHearingStatementSenderModelV2Test {
 
-  private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+  private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
   TimetableHearingStatementSenderModelV2 timetableHearingStatementSenderModelV2 = new TimetableHearingStatementSenderModelV2();
 
