@@ -348,9 +348,9 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldReturnBadRequestWhenPagesizeExceeded() throws Exception {
-    mvc.perform(get("/v1/stop-points")
-            .queryParam("size", "15000"))
-        .andExpect(status().isBadRequest());
+  void shouldReturnBadRequestWhenPageSizeExceeded() throws Exception {
+    mvc.perform(get("/v1/stop-points?size=15000"))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("The page size is limited to 5000")));
   }
 }
