@@ -2,7 +2,7 @@ spring:
   data:
     web:
       pageable:
-        max-page-size: 10_000
+        max-page-size: 5_000
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1

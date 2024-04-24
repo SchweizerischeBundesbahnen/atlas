@@ -550,6 +550,7 @@ class BusinessOrganisationControllerIntegrationTest extends BaseControllerWithAm
   @Test
   void shouldReturnBadRequestWhenPageSizeExceeded() throws Exception {
     mvc.perform(get("/v1/business-organisations?size=15000"))
-        .andExpect(status().isBadRequest());
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("The page size is limited to 5000")));
   }
 }

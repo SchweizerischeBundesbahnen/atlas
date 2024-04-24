@@ -37,7 +37,7 @@ spring:
   data:
     web:
       pageable:
-        max-page-size: 10_000
+        max-page-size: 5_000
 
 auth:
   audience:

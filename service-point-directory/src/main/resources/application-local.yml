@@ -16,7 +16,7 @@ spring:
   data:
     web:
       pageable:
-        max-page-size: 10_000
+        max-page-size: 5_000
   datasource:
     url: jdbc:postgresql://localhost:5439/service-point-directory?currentSchema=service_point_directory
     username: user
