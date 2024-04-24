@@ -618,6 +618,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .content(mapper.writeValueAsString(updateHearingStatementStatusModel)))
         .andExpect(status().isForbidden());
   }
+
   @Test
   void shouldThrowForbiddenWhenHearingYearStatementEditableIsDisabled() throws Exception{
     timetableHearingYearController.startHearingYear(YEAR);
@@ -925,11 +926,11 @@ import org.springframework.test.web.servlet.MvcResult;
         .andExpect(status().isNotFound());
   }
 
-//  @Test
+  @Test
   void shouldGetStatementsAsCsv() throws Exception {
     // Given
     String expectedCsvHeader = """
-        Kanton;"Fahrplanfeld-Nr.";Fahrplanfeldbezeichnung;Haltestelle;ID;"Abkürzung Transportunternehmung";"Name Transportunternehmung";Stellungnahme;Anhang;Status;Begründung;Vorname;Nachname;Organisation;Strasse;"PLZ/Ort";"E-Mail";Bearbeiter;"Zuletzt bearbeitet";Fahrplanjahr;E-Mails
+        Kanton;"Fahrplanfeld-Nr.";Fahrplanfeldbezeichnung;Haltestelle;ID;"Abkürzung Transportunternehmung";"Name Transportunternehmung";Stellungnahme;Anhang;Status;Begründung;Vorname;Nachname;Organisation;Strasse;"PLZ/Ort";"E-Mails";Bearbeiter;"Zuletzt bearbeitet";Fahrplanjahr
         """;
 
     TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
@@ -937,7 +938,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
             .statementSender(TimetableHearingStatementSenderModelV2.builder()
-                .emails(Set.of("fabienne.mueller@sbb.ch"))
+                .emails(Set.of("fabienne.mueller@sbb.ch","flo.mueller@sbb.ch"))
                 .build())
             .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
             .build(),
