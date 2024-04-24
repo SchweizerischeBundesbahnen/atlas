@@ -30,6 +30,7 @@ import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
@@ -224,36 +225,31 @@ import org.springframework.web.multipart.MultipartFile;
         IdNotFoundException.class);
   }
 
-//  @Test
+  @Test
   void shouldUpdateHearingStatement() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
     List<MultipartFile> docs = Collections.emptyList();
 
     TimetableHearingStatementSenderModelV2 timetableHearingStatementSenderModelV2 = new TimetableHearingStatementSenderModelV2();
-    timetableHearingStatementSenderModelV2.setFirstName("FirstName");
-    timetableHearingStatementSenderModelV2.setLastName("LastName");
+    timetableHearingStatementSenderModelV2.setFirstName("Jack");
+    timetableHearingStatementSenderModelV2.setLastName("Smith");
     timetableHearingStatementSenderModelV2.setCity("Bern");
-    timetableHearingStatementSenderModelV2.setOrganisation("MyOrganisation");
+    timetableHearingStatementSenderModelV2.setOrganisation("BigCompany");
     timetableHearingStatementSenderModelV2.setStreet("MyStreet");
     timetableHearingStatementSenderModelV2.setEmails(Set.of("hello@op.com", "test@test.com"));
-
     TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModel();
     timetableHearingStatementModel.setStatementSender(timetableHearingStatementSenderModelV2);
+    TimetableHearingStatement timetableHearingStatement=
+        timetableHearingStatementMapperV2.toEntity(timetableHearingStatementModel);
 
     TimetableHearingStatementModelV2 updatingStatement = timetableHearingStatementService.createHearingStatement(
         timetableHearingStatementModel, docs);
-    TimetableHearingStatement existingStatement=
-        timetableHearingStatementMapperV2.toEntity(updatingStatement);
-    //    updatingStatement.setStatementStatus(StatementStatus.JUNK);
-    //    updatingStatement.setStatementSender(timetableHearingStatementSenderModelV2);
+    updatingStatement.setStatementStatus(StatementStatus.JUNK);
+    timetableHearingStatementSenderModelV2.setEmails(new HashSet<>(Set.of("antohertest@test.com")));
+    updatingStatement.setStatementSender(timetableHearingStatementSenderModelV2);
 
-
-    timetableHearingStatementModel.setStatementStatus(StatementStatus.JUNK);
-    timetableHearingStatementSenderModelV2.setEmails(Set.of("antohertest@test.com"));
-    timetableHearingStatementModel.setStatementSender(timetableHearingStatementSenderModelV2);
-    timetableHearingStatementModel.setId(updatingStatement.getId());
-    TimetableHearingStatement updatedStatement = timetableHearingStatementService.updateHearingStatement(existingStatement,
-        timetableHearingStatementModel, docs);
+    TimetableHearingStatement updatedStatement = timetableHearingStatementService.updateHearingStatement(timetableHearingStatement,
+        updatingStatement, docs);
 
     assertThat(updatedStatement).isNotNull();
     assertThat(updatedStatement.getStatementStatus()).isEqualTo(StatementStatus.JUNK);
