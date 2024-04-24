@@ -52,7 +52,8 @@ public class TimetableHearingStatementSenderModelV2 {
   private String city;
 
   @Schema(description = "E-Mail addresses", example = "maurer@post.ch, burri@post.ch")
-  @Size(max = AtlasFieldLengths.LENGTH_100)
-  private Set< @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS) String> emails;
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_10,
+      message = "Minimum 1 email address is required and maximum 10 email addresses are allowed")
+  private Set< @Size(max = AtlasFieldLengths.LENGTH_100) @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS) String> emails;
 
 }
