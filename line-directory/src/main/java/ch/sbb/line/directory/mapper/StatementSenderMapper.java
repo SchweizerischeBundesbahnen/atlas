@@ -9,13 +9,6 @@ import lombok.experimental.UtilityClass;
 public class StatementSenderMapper {
 
   public static StatementSender toEntity(TimetableHearingStatementSenderModel timetableHearingStatementSenderModel) {
-//    Set<String> emails = new HashSet<>();
-//    if (timetableHearingStatementSenderModel.getEmail() != null) {
-//      emails.add(timetableHearingStatementSenderModel.getEmail());
-//    }
-//    if (!CollectionUtils.isEmpty(timetableHearingStatementSenderModel.getEmails())) {
-//      emails.addAll(timetableHearingStatementSenderModel.getEmails());
-//    }
     return StatementSender.builder()
         .firstName(timetableHearingStatementSenderModel.getFirstName())
         .lastName(timetableHearingStatementSenderModel.getLastName())
@@ -23,7 +16,6 @@ public class StatementSenderMapper {
         .street(timetableHearingStatementSenderModel.getStreet())
         .zip(timetableHearingStatementSenderModel.getZip())
         .city(timetableHearingStatementSenderModel.getCity())
-//        .email(timetableHearingStatementSenderModel.getEmail())
         .emails(Set.of(timetableHearingStatementSenderModel.getEmail()))
         .build();
   }
@@ -37,7 +29,6 @@ public class StatementSenderMapper {
         .zip(statementSender.getZip())
         .city(statementSender.getCity())
         .email(statementSender.getEmails().stream().findFirst().orElse(""))
-//        .emails(statementSender.getEmails())
         .build();
   }
 }
