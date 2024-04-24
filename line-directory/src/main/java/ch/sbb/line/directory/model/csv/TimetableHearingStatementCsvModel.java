@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +22,7 @@ import lombok.NoArgsConstructor;
 @JsonPropertyOrder({"cantonAbbreviation", "timetableFieldNumber", "timetableFieldNumberDescription", "stopPlace",
     "timetabeHearingStatementId", "transportCompanyAbbreviations", "transportCompanyDescriptions", "statement",
     "documentsPresent", "status", "justification", "firstName", "lastName", "organisation",
-    "street", "zipAndCity", "email", "editor", "editionDate", "timetableHearingYear"})
+    "street", "zipAndCity", "emails", "editor", "editionDate", "timetableHearingYear"})
 public class TimetableHearingStatementCsvModel implements VersionCsvModel {
 
   private String cantonAbbreviation;
@@ -42,8 +41,7 @@ public class TimetableHearingStatementCsvModel implements VersionCsvModel {
   private String organisation;
   private String street;
   private String zipAndCity;
-  private String email;
-  private Set<String> emails;
+  private String emails;
   private String editor;
   private LocalDateTime editionDate;
   private Long timetableHearingYear;
@@ -75,7 +73,7 @@ public class TimetableHearingStatementCsvModel implements VersionCsvModel {
         .street(timetableHearingStatementModel.getStatementSender().getStreet())
         .zipAndCity(getZipAndCity(timetableHearingStatementModel.getStatementSender().getZip(),
             timetableHearingStatementModel.getStatementSender().getCity()))
-        .emails(timetableHearingStatementModel.getStatementSender().getEmails())
+        .emails(timetableHearingStatementModel.getStatementSender().getEmails().stream().sorted().collect(Collectors.joining(",")))
         .editor(timetableHearingStatementModel.getEditor())
         .editionDate(timetableHearingStatementModel.getEditionDate())
         .timetableHearingYear(timetableHearingStatementModel.getTimetableYear())
