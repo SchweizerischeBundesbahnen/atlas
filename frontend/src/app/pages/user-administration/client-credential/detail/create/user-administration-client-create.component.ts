@@ -50,26 +50,29 @@ export class UserAdministrationClientCreateComponent {
   ) {}
 
   create(): void {
-    this.saveEnabled = false;
-    this.userPermissionManager.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser();
-    const managedPermission = this.userPermissionManager.userPermission;
-    const permission = {
-      ...this.form.value,
-      ...managedPermission,
-    } as ClientCredentialPermissionCreate;
-    this.userService.createClientCredentialPermission(permission).subscribe({
-      next: () => {
-        this.router
-          .navigate(
-            [Pages.USER_ADMINISTRATION.path, Pages.CLIENTS.path, permission.clientCredentialId],
-            {
-              relativeTo: this.route,
-            }
-          )
-          .then(() => this.notificationService.success('USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'));
-      },
-      error: () => (this.saveEnabled = true),
-    });
+    this.form.markAllAsTouched();
+    if (this.form.valid) {
+      this.saveEnabled = false;
+      this.userPermissionManager.clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser();
+      const managedPermission = this.userPermissionManager.userPermission;
+      const permission = {
+        ...this.form.value,
+        ...managedPermission,
+      } as ClientCredentialPermissionCreate;
+      this.userService.createClientCredentialPermission(permission).subscribe({
+        next: () => {
+          this.router
+            .navigate(
+              [Pages.USER_ADMINISTRATION.path, Pages.CLIENTS.path, permission.clientCredentialId],
+              {
+                relativeTo: this.route,
+              }
+            )
+            .then(() => this.notificationService.success('USER_ADMIN.NOTIFICATIONS.ADD_SUCCESS'));
+        },
+        error: () => (this.saveEnabled = true),
+      });
+    }
   }
 
   cancelCreation(): void {

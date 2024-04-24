@@ -59,14 +59,7 @@ export class MapService {
   ) {}
 
   initMap(mapContainer: HTMLElement) {
-    this.map = new Map({
-      container: mapContainer,
-      style: MAP_STYLE_SPEC,
-      bounds: this.mapOptionsService.getInitialBoundingBox(),
-      transformRequest: (url: string, resourceType?: ResourceType) =>
-        this.mapOptionsService.authoriseRequest(url, resourceType),
-      minZoom: 5,
-    });
+    this.map = this.createMap(mapContainer);
     MapIconsService.addTrafficPointIconToMap(this.map);
     this.initMapEvents();
     this.map.resize();
@@ -77,6 +70,17 @@ export class MapService {
     this.map.scrollZoom.setWheelZoomRate(1 / 950);
     this.map.scrollZoom.setZoomRate(1 / 150);
     return this.map;
+  }
+
+  createMap(mapContainer: HTMLElement){
+    return new Map({
+      container: mapContainer,
+      style: MAP_STYLE_SPEC,
+      bounds: this.mapOptionsService.getInitialBoundingBox(),
+      transformRequest: (url: string, resourceType?: ResourceType) =>
+        this.mapOptionsService.authoriseRequest(url, resourceType),
+      minZoom: 5,
+    });
   }
 
   centerOn(wgs84Coordinates: CoordinatePair | undefined) {
