@@ -37,7 +37,7 @@ public abstract class AtlasTableSnippet extends TemplatedSnippet {
 
   private static Map<String, Object> createModelForDescriptor(FieldDescriptor descriptor) {
     Map<String, Object> result = new HashMap<>();
-    result.put("path", descriptor.getName());
+    result.put("path", descriptor.getName() == null ? "" : descriptor.getName());
     result.put("type", descriptor.getType());
     result.put("optional", descriptor.isOptional());
     result.put("description", descriptor.getDescription().replaceAll("\\|", "\\\\|").replaceAll(" #", " \\\\#"));
