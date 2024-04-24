@@ -689,9 +689,9 @@ class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
   }
 
   @Test
-  void shouldReturnBadRequestWhenPagesizeExceeded() throws Exception {
-    mvc.perform(get("/v1/lines")
-            .queryParam("size", "15000"))
-        .andExpect(status().isBadRequest());
+  void shouldReturnBadRequestWhenPageSizeExceeded() throws Exception {
+    mvc.perform(get("/v1/lines?size=15000"))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("The page size is limited to 5000")));
   }
 }
