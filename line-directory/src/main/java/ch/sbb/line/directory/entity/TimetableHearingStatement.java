@@ -63,6 +63,9 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
   @Enumerated(EnumType.STRING)
   private SwissCanton swissCanton;
 
+  @Enumerated(EnumType.STRING)
+  private SwissCanton oldSwissCanton;
+
   @Size(max = AtlasFieldLengths.LENGTH_255)
   private String stopPlace;
 
