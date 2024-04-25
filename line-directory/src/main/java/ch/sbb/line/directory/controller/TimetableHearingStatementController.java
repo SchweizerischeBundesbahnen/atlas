@@ -5,11 +5,11 @@ import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementAlternatingModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementApiV1;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModelV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModelV2;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
@@ -137,7 +137,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
   }
 
   @Override
-  public TimetableHearingStatementModel createStatementExternal(TimetableHearingStatementModel statement,
+  public TimetableHearingStatementModelV1 createStatementExternal(TimetableHearingStatementModelV1 statement,
       List<MultipartFile> documents) {
     Jwt accessToken = UserService.getAccessToken();
     if (!UserService.isClientCredentialAuthentication(accessToken)) {
@@ -237,7 +237,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
     return responsibleTransportCompaniesResolverService.getResponsibleTransportCompanies(ttfnid, validOn);
   }
 
-  private TimetableHearingStatementModelV2 transformFromModelToModel2(TimetableHearingStatementModel statement) {
+  private TimetableHearingStatementModelV2 transformFromModelToModel2(TimetableHearingStatementModelV1 statement) {
     TimetableHearingStatementSenderModelV2 statementSenderModelV2 = new TimetableHearingStatementSenderModelV2();
     statementSenderModelV2.setFirstName(statement.getStatementSender().getFirstName());
     statementSenderModelV2.setLastName(statement.getStatementSender().getLastName());
@@ -265,8 +265,8 @@ public class TimetableHearingStatementController implements TimetableHearingStat
     return statementModelV2;
   }
 
-  private TimetableHearingStatementModel transformFromModel2ToModel(TimetableHearingStatementModelV2 statementV2) {
-    TimetableHearingStatementSenderModel statementSenderModel = new TimetableHearingStatementSenderModel();
+  private TimetableHearingStatementModelV1 transformFromModel2ToModel(TimetableHearingStatementModelV2 statementV2) {
+    TimetableHearingStatementSenderModelV1 statementSenderModel = new TimetableHearingStatementSenderModelV1();
     statementSenderModel.setFirstName(statementV2.getStatementSender().getFirstName());
     statementSenderModel.setLastName(statementV2.getStatementSender().getLastName());
     statementSenderModel.setOrganisation(statementV2.getStatementSender().getOrganisation());
@@ -275,7 +275,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
     statementSenderModel.setCity(statementV2.getStatementSender().getCity());
     statementSenderModel.setEmail(statementV2.getStatementSender().getEmails().iterator().next());
 
-    TimetableHearingStatementModel statementModel = new TimetableHearingStatementModel();
+    TimetableHearingStatementModelV1 statementModel = new TimetableHearingStatementModelV1();
     statementModel.setId(statementV2.getId());
     statementModel.setTimetableYear(statementV2.getTimetableYear());
     statementModel.setStatementStatus(statementV2.getStatementStatus());
