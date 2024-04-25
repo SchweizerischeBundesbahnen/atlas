@@ -1,10 +1,9 @@
 package ch.sbb.atlas.configuration;
 
-import static org.springframework.util.StringUtils.hasText;
-
 import ch.sbb.atlas.model.exception.BadRequestException;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
@@ -17,38 +16,57 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+@RequiredArgsConstructor
 public class PagingConfig implements WebMvcConfigurer {
 
-  @Autowired
-  private SpringDataWebProperties properties;
+  private final SpringDataWebProperties properties;
 
   @Override
   public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-    PageableHandlerMethodArgumentResolver resolver = new PageableHandlerMethodArgumentResolver() {
-      @Override
-      public Pageable resolveArgument(MethodParameter methodParameter, ModelAndViewContainer mavContainer,
-          NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+    CustomPageableArgumentResolver customPageableArgumentResolver = getCustomPageableArgumentResolver();
+    customPageableArgumentResolver.setMaxPageSize(maxPageSize());
+    resolvers.add(customPageableArgumentResolver);
+  }
 
-        String pageSize = webRequest.getParameter(getParameterNameToUse(getSizeParameterName(), methodParameter));
-        boolean pageSizeExceeded = false;
-        try {
-          pageSizeExceeded = hasText(pageSize) && Integer.parseInt(pageSize) > maxPageSize();
-        } finally {
-          if (pageSizeExceeded) {
-            throw new BadRequestException("The page size is limited to " + maxPageSize());
-          }
-          return super.resolveArgument(methodParameter, mavContainer, webRequest, binderFactory);
-        }
-      }
-    };
-
-    resolver.setMaxPageSize(maxPageSize());
-    resolvers.add(resolver);
-    WebMvcConfigurer.super.addArgumentResolvers(resolvers);
+  CustomPageableArgumentResolver getCustomPageableArgumentResolver() {
+    return new CustomPageableArgumentResolver();
   }
 
   private int maxPageSize() {
     return properties.getPageable().getMaxPageSize();
+  }
+
+  class CustomPageableArgumentResolver extends PageableHandlerMethodArgumentResolver {
+
+    @Override
+    public Pageable resolveArgument(MethodParameter methodParameter, ModelAndViewContainer mavContainer,
+        NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+      String sizeParameter = webRequest.getParameter(getParameterNameToUse(getSizeParameterName(), methodParameter));
+      if (isPageSizeValid(sizeParameter)) {
+        throw new BadRequestException("The page size is limited to " + maxPageSize());
+      } else {
+        return doResolveArgument(methodParameter, mavContainer, webRequest, binderFactory);
+      }
+    }
+
+    private boolean isPageSizeValid(String sizeParameter) {
+      Optional<Integer> pageSize = getPageSize(sizeParameter);
+      return pageSize.isPresent() && pageSize.get() > maxPageSize();
+    }
+
+    private Optional<Integer> getPageSize(String pageSize) {
+      try {
+        return Optional.of(Integer.parseInt(pageSize));
+      } catch (NumberFormatException e) {
+        return Optional.empty();
+      }
+    }
+
+    Pageable doResolveArgument(MethodParameter methodParameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest,
+        WebDataBinderFactory binderFactory) {
+      return super.resolveArgument(methodParameter, mavContainer, webRequest, binderFactory);
+    }
+
   }
 
 }
