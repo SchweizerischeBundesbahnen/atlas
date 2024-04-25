@@ -300,8 +300,8 @@ class LoadingPointControllerApiTest extends BaseControllerApiTest {
 
   @Test
   void shouldReturnBadRequestWhenPageSizeExceeded() throws Exception {
-    mvc.perform(get("/v1/loading-points?size=15000"))
+    mvc.perform(get("/v1/loading-points?size=5000"))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is("The page size is limited to 5000")));
+        .andExpect(jsonPath("$.message", is("The page size is limited to 2000")));
   }
 }
