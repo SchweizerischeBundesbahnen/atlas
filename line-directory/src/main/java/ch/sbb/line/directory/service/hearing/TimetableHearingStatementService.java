@@ -97,6 +97,8 @@ public class TimetableHearingStatementService {
   public TimetableHearingStatement updateHearingStatement(TimetableHearingStatement existingStatement, TimetableHearingStatementModel timetableHearingStatementModel, List<MultipartFile> documents) {
     checkThatTimetableHearingYearExists(timetableHearingStatementModel.getTimetableYear());
 
+    setOldSwissCanton(existingStatement, timetableHearingStatementModel);
+
     TimetableHearingStatement timetableHearingStatementInDb = timetableHearingStatementRepository.getReferenceById(
         timetableHearingStatementModel.getId());
 
@@ -154,6 +156,15 @@ public class TimetableHearingStatementService {
     log.info("Concluded files validation.");
   }
 
+  private void setOldSwissCanton(TimetableHearingStatement existingStatement, TimetableHearingStatementModel timetableHearingStatementModel){
+    if (existingStatement.getSwissCanton() != timetableHearingStatementModel.getSwissCanton()){
+      timetableHearingStatementModel.setOldSwissCanton(existingStatement.getSwissCanton());
+    }
+    else {
+      timetableHearingStatementModel.setOldSwissCanton(existingStatement.getOldSwissCanton());
+    }
+  }
+
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).TIMETABLE_HEARING, #timetableHearingStatement)")
   public void deleteStatementDocument(TimetableHearingStatement timetableHearingStatement, String documentFilename) {
@@ -183,6 +194,9 @@ public class TimetableHearingStatementService {
     timetableHearingStatementInDb.setStatementStatus(timetableHearingStatementModel.getStatementStatus());
     timetableHearingStatementInDb.setTtfnid(timetableHearingStatementModel.getTtfnid());
     timetableHearingStatementInDb.setSwissCanton(timetableHearingStatementModel.getSwissCanton());
+
+    timetableHearingStatementInDb.setOldSwissCanton(timetableHearingStatementModel.getOldSwissCanton());
+
     timetableHearingStatementInDb.setStopPlace(timetableHearingStatementModel.getStopPlace());
     timetableHearingStatementInDb.setStatement(timetableHearingStatementModel.getStatement());
     timetableHearingStatementInDb.setJustification(timetableHearingStatementModel.getJustification());
