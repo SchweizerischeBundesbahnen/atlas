@@ -162,11 +162,11 @@ public class TimetableHearingStatementController implements TimetableHearingStat
     statement.setResponsibleTransportCompanies(responsibleTransportCompanies);
 
 
-    TimetableHearingStatementModelV2 statementModelV2 = trasnformFromModelToModel2(statement);
+    TimetableHearingStatementModelV2 statementModelV2 = transformFromModelToModel2(statement);
 
     TimetableHearingStatementModelV2 modelV2 = createStatement(statementModelV2, documents);
 
-    return trasnformFromModel2ToModel(modelV2);
+    return transformFromModel2ToModel(modelV2);
   }
 
   @Override
@@ -237,7 +237,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
     return responsibleTransportCompaniesResolverService.getResponsibleTransportCompanies(ttfnid, validOn);
   }
 
-  private TimetableHearingStatementModelV2 trasnformFromModelToModel2(TimetableHearingStatementModel statement) {
+  private TimetableHearingStatementModelV2 transformFromModelToModel2(TimetableHearingStatementModel statement) {
     TimetableHearingStatementSenderModelV2 statementSenderModelV2 = new TimetableHearingStatementSenderModelV2();
     statementSenderModelV2.setFirstName(statement.getStatementSender().getFirstName());
     statementSenderModelV2.setLastName(statement.getStatementSender().getLastName());
@@ -265,7 +265,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
     return statementModelV2;
   }
 
-  private TimetableHearingStatementModel trasnformFromModel2ToModel(TimetableHearingStatementModelV2 statementV2) {
+  private TimetableHearingStatementModel transformFromModel2ToModel(TimetableHearingStatementModelV2 statementV2) {
     TimetableHearingStatementSenderModel statementSenderModel = new TimetableHearingStatementSenderModel();
     statementSenderModel.setFirstName(statementV2.getStatementSender().getFirstName());
     statementSenderModel.setLastName(statementV2.getStatementSender().getLastName());
@@ -273,7 +273,7 @@ public class TimetableHearingStatementController implements TimetableHearingStat
     statementSenderModel.setStreet(statementV2.getStatementSender().getStreet());
     statementSenderModel.setZip(statementV2.getStatementSender().getZip());
     statementSenderModel.setCity(statementV2.getStatementSender().getCity());
-    statementSenderModel.setEmail(statementV2.getStatementSender().getEmails().stream().findFirst().orElse(""));
+    statementSenderModel.setEmail(statementV2.getStatementSender().getEmails().iterator().next());
 
     TimetableHearingStatementModel statementModel = new TimetableHearingStatementModel();
     statementModel.setId(statementV2.getId());
