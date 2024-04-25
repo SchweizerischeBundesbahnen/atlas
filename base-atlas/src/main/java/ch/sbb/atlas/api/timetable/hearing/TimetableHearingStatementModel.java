@@ -59,6 +59,9 @@ public class TimetableHearingStatementModel extends BaseVersionModel implements 
   @Schema(description = "Canton, the statement is for")
   private SwissCanton swissCanton;
 
+  @Schema(description = "Canton, the statement was before")
+  private SwissCanton oldSwissCanton;
+
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @Schema(description = "StopPlace information for the statement", example = "Bern, Wyleregg")
   private String stopPlace;
