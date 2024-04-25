@@ -39,7 +39,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
- class BusinessOrganisationControllerIntegrationTest extends BaseControllerWithAmazonS3ApiTest {
+class BusinessOrganisationControllerIntegrationTest extends BaseControllerWithAmazonS3ApiTest {
 
   private final BusinessOrganisationVersion version = BusinessOrganisationVersion
       .builder()
@@ -75,43 +75,43 @@ import org.springframework.boot.test.mock.mockito.MockBean;
   @BeforeEach
   void createDefaultVersion() {
     version1 = BusinessOrganisationVersion.builder()
-            .sboid("ch:1:sboid:100000")
-            .abbreviationDe("de1")
-            .abbreviationFr("fr1")
-            .abbreviationIt("it1")
-            .abbreviationEn("en1")
-            .descriptionDe("desc-de1")
-            .descriptionFr("desc-fr1")
-            .descriptionIt("desc-it1")
-            .descriptionEn("desc-en1")
-            .businessTypes(new HashSet<>(
-                    Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR,
-                            BusinessType.SHIP)))
-            .contactEnterpriseEmail("mail1@mail.ch")
-            .organisationNumber(1234)
-            .status(Status.VALIDATED)
-            .validFrom(LocalDate.of(2020, 1, 1))
-            .validTo(LocalDate.of(2021, 12, 31))
-            .build();
+        .sboid("ch:1:sboid:100000")
+        .abbreviationDe("de1")
+        .abbreviationFr("fr1")
+        .abbreviationIt("it1")
+        .abbreviationEn("en1")
+        .descriptionDe("desc-de1")
+        .descriptionFr("desc-fr1")
+        .descriptionIt("desc-it1")
+        .descriptionEn("desc-en1")
+        .businessTypes(new HashSet<>(
+            Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR,
+                BusinessType.SHIP)))
+        .contactEnterpriseEmail("mail1@mail.ch")
+        .organisationNumber(1234)
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2020, 1, 1))
+        .validTo(LocalDate.of(2021, 12, 31))
+        .build();
     version2 = BusinessOrganisationVersion.builder()
-            .sboid("ch:1:sboid:100000")
-            .abbreviationDe("de2")
-            .abbreviationFr("fr1")
-            .abbreviationIt("it1")
-            .abbreviationEn("en1")
-            .descriptionDe("desc-de1")
-            .descriptionFr("desc-fr1")
-            .descriptionIt("desc-it1")
-            .descriptionEn("desc-en1")
-            .businessTypes(new HashSet<>(
-                    Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR,
-                            BusinessType.SHIP)))
-            .contactEnterpriseEmail("mail1@mail.ch")
-            .organisationNumber(1234)
-            .status(Status.VALIDATED)
-            .validFrom(LocalDate.of(2022, 1, 1))
-            .validTo(LocalDate.of(2023, 12, 31))
-            .build();
+        .sboid("ch:1:sboid:100000")
+        .abbreviationDe("de2")
+        .abbreviationFr("fr1")
+        .abbreviationIt("it1")
+        .abbreviationEn("en1")
+        .descriptionDe("desc-de1")
+        .descriptionFr("desc-fr1")
+        .descriptionIt("desc-it1")
+        .descriptionEn("desc-en1")
+        .businessTypes(new HashSet<>(
+            Arrays.asList(BusinessType.RAILROAD, BusinessType.AIR,
+                BusinessType.SHIP)))
+        .contactEnterpriseEmail("mail1@mail.ch")
+        .organisationNumber(1234)
+        .status(Status.VALIDATED)
+        .validFrom(LocalDate.of(2022, 1, 1))
+        .validTo(LocalDate.of(2023, 12, 31))
+        .build();
     versionRepository.save(version);
   }
 
@@ -121,7 +121,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
   }
 
   @Test
-   void shouldCreateBusinessOrganisationVersion() throws Exception {
+  void shouldCreateBusinessOrganisationVersion() throws Exception {
     //given
     BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
         .builder()
@@ -149,7 +149,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
   }
 
   @Test
-   void shouldGetBusinessOrganisationVersionsBySboid() throws Exception {
+  void shouldGetBusinessOrganisationVersionsBySboid() throws Exception {
     //given
     BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
         .builder()
@@ -208,7 +208,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
   }
 
   @Test
-   void shouldNotGetBusinessOrganisationVersionsWhenProvidedSboidDoesNotExists()
+  void shouldNotGetBusinessOrganisationVersionsWhenProvidedSboidDoesNotExists()
       throws Exception {
     //when and then
     mvc.perform(get("/v1/business-organisations/versions/ch:1:sboid:110000112"))
@@ -226,7 +226,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
   }
 
   @Test
-   void shouldGetAllBusinessOrganisationVersions() throws Exception {
+  void shouldGetAllBusinessOrganisationVersions() throws Exception {
     //given
     BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
         .builder()
@@ -284,7 +284,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
   }
 
   @Test
-   void shouldNotCreateBusinessOrganisationVersionWhenRequiredAbbreviationDeFieldProvidedIsTooLong()
+  void shouldNotCreateBusinessOrganisationVersionWhenRequiredAbbreviationDeFieldProvidedIsTooLong()
       throws Exception {
     //given
     BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
@@ -324,7 +324,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
   }
 
   @Test
-   void shouldNotUpdateBusinessOrganisationVersionWhenRequiredAbbreviationDeFieldNotProvided()
+  void shouldNotUpdateBusinessOrganisationVersionWhenRequiredAbbreviationDeFieldNotProvided()
       throws Exception {
     //given
     BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
@@ -362,7 +362,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
   }
 
   @Test
-   void shouldNotUpdateBusinessOrganisationVersionWhenProvidedIdDoesNotExists()
+  void shouldNotUpdateBusinessOrganisationVersionWhenProvidedIdDoesNotExists()
       throws Exception {
     //given
     BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
@@ -401,14 +401,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
   }
 
   @Test
-   void shouldDeleteBusinessOrganisationBySboid() throws Exception {
+  void shouldDeleteBusinessOrganisationBySboid() throws Exception {
     //when and then
     mvc.perform(delete("/v1/business-organisations/" + version.getSboid()))
         .andExpect(status().isOk());
   }
 
   @Test
-   void shouldRevokeBusinessOrganisationBySboid() throws Exception {
+  void shouldRevokeBusinessOrganisationBySboid() throws Exception {
     //when and then
     mvc.perform(post("/v1/business-organisations/" + version.getSboid() + "/revoke"))
         .andExpect(status().isOk())
@@ -417,7 +417,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
   }
 
   @Test
-   void shouldReturnConflictErrorResponse() throws Exception {
+  void shouldReturnConflictErrorResponse() throws Exception {
     //given
     BusinessOrganisationVersionModel model = BusinessOrganisationVersionModel
         .builder()
@@ -466,9 +466,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
   void shouldReturnOptimisticLockingOnBusinessObjectChanges() throws Exception {
     //given
     BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
-                                                                            .validFrom(LocalDate.of(2001, 1, 1))
-                                                                            .validTo(LocalDate.of(2001, 12, 31))
-                                                                            .build();
+        .validFrom(LocalDate.of(2001, 1, 1))
+        .validTo(LocalDate.of(2001, 12, 31))
+        .build();
     versionModel = controller.createBusinessOrganisationVersion(versionModel);
 
     // When first update it is ok
@@ -492,9 +492,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
   void shouldExportFullBusinessOrganisationVersions() throws Exception {
     //given
     BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
-                                                                            .validFrom(LocalDate.of(2001, 1, 1))
-                                                                            .validTo(LocalDate.of(2001, 12, 31))
-                                                                            .build();
+        .validFrom(LocalDate.of(2001, 1, 1))
+        .validTo(LocalDate.of(2001, 12, 31))
+        .build();
     controller.createBusinessOrganisationVersion(versionModel);
 
     //when and then
@@ -506,9 +506,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
   void shouldExportActualBusinessOrganisationVersions() throws Exception {
     //given
     BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
-                                                                            .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
-                                                                            .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
-                                                                            .build();
+        .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
+        .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
+        .build();
     controller.createBusinessOrganisationVersion(versionModel);
 
     //when and then
@@ -520,9 +520,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
   void shouldExportFutureTimetableBusinessOrganisationVersions() throws Exception {
     //given
     BusinessOrganisationVersionModel versionModel = BusinessOrganisationData.businessOrganisationVersionModelBuilder()
-                                                                            .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
-                                                                            .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
-                                                                            .build();
+        .validFrom(LocalDate.now().withMonth(1).withDayOfMonth(1))
+        .validTo(LocalDate.now().withMonth(12).withDayOfMonth(31))
+        .build();
     controller.createBusinessOrganisationVersion(versionModel);
 
     //when and then
@@ -531,15 +531,15 @@ import org.springframework.boot.test.mock.mockito.MockBean;
   }
 
   @Test
-   void shouldReturnErrorMessageOnEmptyBody() throws Exception {
+  void shouldReturnErrorMessageOnEmptyBody() throws Exception {
     // when and then
     mvc.perform(post("/v1/business-organisations/versions").contentType(contentType)
-                    .content(mapper.writeValueAsString("{}")))
-            .andExpect(status().isBadRequest());
+            .content(mapper.writeValueAsString("{}")))
+        .andExpect(status().isBadRequest());
   }
 
   @Test
-   void shouldGetBusinessOrganisationVersions() throws Exception {
+  void shouldGetBusinessOrganisationVersions() throws Exception {
     //when and then
     mvc.perform(get("/v1/business-organisations/versions"))
         .andExpect(status().isOk())
@@ -547,4 +547,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
         .andExpect(jsonPath("$.objects[0].sboid").value(version.getSboid()));
   }
 
+  @Test
+  void shouldReturnBadRequestWhenPageSizeExceeded() throws Exception {
+    mvc.perform(get("/v1/business-organisations?size=5000"))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("The page size is limited to 2000")));
+  }
 }

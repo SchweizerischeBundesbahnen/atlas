@@ -69,7 +69,7 @@ public class BusinessOrganisationController implements BusinessOrganisationApiV1
 
   @Override
   public Container<BusinessOrganisationVersionModel> getBusinessOrganisationVersions(Pageable pageable,
-                                                                 BusinessOrganisationVersionRequestParams businessOrganisationVersionRequestParams) {
+      BusinessOrganisationVersionRequestParams businessOrganisationVersionRequestParams) {
     log.info("Load BusinessOrganisationVersions using pageable={}, params={}", pageable,
         businessOrganisationVersionRequestParams);
     Page<BusinessOrganisationVersion> businessOrganisationVersions = service.getBusinessOrganisationVersions(
