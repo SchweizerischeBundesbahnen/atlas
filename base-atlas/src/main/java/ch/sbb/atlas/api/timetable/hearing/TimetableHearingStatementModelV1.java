@@ -21,10 +21,10 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @FieldNameConstants
 @Schema(name = "TimetableHearingStatement")
-public class TimetableHearingStatementModelV2 extends TimetableHearingStatementModel {
+public class TimetableHearingStatementModelV1 extends TimetableHearingStatementModel {
 
   @NotNull
   @Valid
-  private TimetableHearingStatementSenderModelV2 statementSender;
+  private TimetableHearingStatementSenderModelV1 statementSender;
 
 }

@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.mapper;
 
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.line.directory.entity.SharedTransportCompany;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
@@ -16,7 +16,7 @@ public class TimetableHearingStatementMapper {
 
   private final ResponsibleTransportCompanyMapper responsibleTransportCompanyMapper;
 
-  public TimetableHearingStatement toEntity(TimetableHearingStatementModel statementModel) {
+  public TimetableHearingStatement toEntity(TimetableHearingStatementModelV1 statementModel) {
     TimetableHearingStatement timetableHearingStatement = TimetableHearingStatement.builder()
         .id(statementModel.getId())
         .statementStatus(statementModel.getStatementStatus())
@@ -40,8 +40,8 @@ public class TimetableHearingStatementMapper {
     return timetableHearingStatement;
   }
 
-  public static TimetableHearingStatementModel toModel(TimetableHearingStatement statement) {
-    return TimetableHearingStatementModel.builder()
+  public static TimetableHearingStatementModelV1 toModel(TimetableHearingStatement statement) {
+    return TimetableHearingStatementModelV1.builder()
         .id(statement.getId())
         .statementStatus(statement.getStatementStatus())
         .timetableYear(statement.getTimetableYear())
