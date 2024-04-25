@@ -44,7 +44,7 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
 
   @Autowired
   StopPointVersionControllerApiTest(SharedServicePointRepository sharedServicePointRepository,
-                                    StopPointRepository stopPointRepository,
+      StopPointRepository stopPointRepository,
       PrmChangeRecordingVariantService prmChangeRecordingVariantService) {
     this.sharedServicePointRepository = sharedServicePointRepository;
     this.stopPointRepository = stopPointRepository;
@@ -74,14 +74,16 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
             "&sloids=ch:1:sloid:12345" +
             "&statusRestrictions=VALIDATED" +
             "&fromDate=" + version.getValidFrom() +
-            "&toDate=" + version.getValidTo()+
+            "&toDate=" + version.getValidTo() +
             "&validOn=" + LocalDate.of(2000, 6, 28) +
-            "&createdAfter=" + version.getCreationDate().minusSeconds(1).format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)) +
-            "&modifiedAfter=" + version.getEditionDate().format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN))
-            ))
+            "&createdAfter=" + version.getCreationDate().minusSeconds(1)
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)) +
+            "&modifiedAfter=" + version.getEditionDate()
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN))
+        ))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount", is(1)))
-        .andExpect(jsonPath("$.objects[0].id" , is(version.getId().intValue())));
+        .andExpect(jsonPath("$.objects[0].id", is(version.getId().intValue())));
   }
 
   @Test
@@ -93,14 +95,16 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
             "?numbers=1234567&numbers=1000000" +
             "&sloids=ch:1:sloid:12345&sloids=ch:1:sloid:54321" +
             "&fromDate=" + version.getValidFrom() +
-            "&toDate=" + version.getValidTo()+
+            "&toDate=" + version.getValidTo() +
             "&validOn=" + LocalDate.of(2000, 6, 28) +
-            "&createdAfter=" + version.getCreationDate().minusSeconds(1).format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)) +
-            "&modifiedAfter=" + version.getEditionDate().format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN))
-            ))
+            "&createdAfter=" + version.getCreationDate().minusSeconds(1)
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)) +
+            "&modifiedAfter=" + version.getEditionDate()
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN))
+        ))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount", is(1)))
-        .andExpect(jsonPath("$.objects[0].id" , is(version.getId().intValue())));
+        .andExpect(jsonPath("$.objects[0].id", is(version.getId().intValue())));
   }
 
   @Test
@@ -117,7 +121,8 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
   void shouldCreateStopPoint() throws Exception {
     //given
     StopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
-    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:7000", Set.of("ch:1:sboid:100602"),
+    SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:7000",
+        Set.of("ch:1:sboid:100602"),
         Collections.emptySet());
     sharedServicePointRepository.saveAndFlush(servicePoint);
     //when && then
@@ -145,7 +150,8 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldNotCreateStopPointCompleteWithNotValidatableProperties() throws Exception {
     //given
-    StopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getCompleteNotValidatableStopPointReducedCreateVersionModel();
+    StopPointVersionModel stopPointCreateVersionModel =
+        StopPointTestData.getCompleteNotValidatableStopPointReducedCreateVersionModel();
     SharedServicePoint servicePoint = SharedServicePoint.builder()
         .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7000\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
         .sloid("ch:1:sloid:7000")
@@ -185,7 +191,8 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
     StopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
     stopPointCreateVersionModel.setSloid("ch:1:sloid:1101407");
     SharedServicePoint servicePoint = SharedServicePoint.builder()
-        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:1101407\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
+        .servicePoint(
+            "{\"servicePointSloid\":\"ch:1:sloid:1101407\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
         .sloid("ch:1:sloid:1101407")
         .build();
     sharedServicePointRepository.saveAndFlush(servicePoint);
@@ -203,16 +210,16 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
     //given
     StopPointVersionModel stopPointCreateVersionModel = StopPointTestData.getStopPointCreateVersionModel();
     SharedServicePoint servicePoint = SharedServicePoint.builder()
-            .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7001\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
-            .sloid("ch:1:sloid:7001")
-            .build();
+        .servicePoint("{\"servicePointSloid\":\"ch:1:sloid:7001\",\"sboids\":[\"ch:1:sboid:100602\"],\"trafficPointSloids\":[]}")
+        .sloid("ch:1:sloid:7001")
+        .build();
     sharedServicePointRepository.saveAndFlush(servicePoint);
 
     //when && then
     mvc.perform(post("/v1/stop-points").contentType(contentType)
-                    .content(mapper.writeValueAsString(stopPointCreateVersionModel)))
-            .andExpect(status().isPreconditionFailed())
-            .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7000 does not exist.")));
+            .content(mapper.writeValueAsString(stopPointCreateVersionModel)))
+        .andExpect(status().isPreconditionFailed())
+        .andExpect(jsonPath("$.message", is("The service point with sloid ch:1:sloid:7000 does not exist.")));
   }
 
   /**
@@ -263,7 +270,7 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setSloid("ch:1:sloid:12345");
 
     SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:12345", Set.of("ch:1:sboid"
-        + ":100602"),Collections.emptySet());
+        + ":100602"), Collections.emptySet());
     sharedServicePointRepository.saveAndFlush(servicePoint);
 
     //when && then
@@ -319,14 +326,14 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
     editedVersionModel.setSloid("ch:1:sloid:12345");
 
     SharedServicePoint servicePoint = SharedServicePointTestData.buildSharedServicePoint("ch:1:sloid:12345", Set.of("ch:1:sboid"
-        + ":100602"),Collections.emptySet());
+        + ":100602"), Collections.emptySet());
     sharedServicePointRepository.saveAndFlush(servicePoint);
 
     //when && then
     mvc.perform(put("/v1/stop-points/" + version1.getId()).contentType(contentType)
             .content(mapper.writeValueAsString(editedVersionModel)))
         .andExpect(status().isOk());
-    verify(prmChangeRecordingVariantService).stopPointChangeRecordingVariant(any(),any());
+    verify(prmChangeRecordingVariantService).stopPointChangeRecordingVariant(any(), any());
   }
 
   @Test
@@ -337,7 +344,13 @@ class StopPointVersionControllerApiTest extends BaseControllerApiTest {
     mvc.perform(get("/v1/stop-points/" + version.getSloid()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)))
-        .andExpect(jsonPath("$[0].sloid" , is(version.getSloid())));
+        .andExpect(jsonPath("$[0].sloid", is(version.getSloid())));
   }
 
+  @Test
+  void shouldReturnBadRequestWhenPageSizeExceeded() throws Exception {
+    mvc.perform(get("/v1/stop-points?size=5000"))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("The page size is limited to 2000")));
+  }
 }
