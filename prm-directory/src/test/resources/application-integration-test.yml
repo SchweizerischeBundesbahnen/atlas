@@ -34,10 +34,6 @@ spring:
 
   kafka:
     bootstrap-servers: .bootstrap-servers=${spring.embedded.kafka.brokers}
-  data:
-    web:
-      pageable:
-        max-page-size: 5_000
 
 auth:
   audience:
