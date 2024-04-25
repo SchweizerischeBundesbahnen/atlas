@@ -59,10 +59,6 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       retries: 1
-  data:
-    web:
-      pageable:
-        max-page-size: 5_000
 
 kafka:
   atlas:
