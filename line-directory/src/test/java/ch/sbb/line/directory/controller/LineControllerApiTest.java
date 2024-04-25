@@ -53,7 +53,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
- class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
+class LineControllerApiTest extends BaseControllerWithAmazonS3ApiTest {
 
   @MockBean
   private SharedBusinessOrganisationService sharedBusinessOrganisationService;
@@ -83,7 +83,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
   private AmazonService amazonService;
 
   @AfterEach
-   void tearDown() {
+  void tearDown() {
     sublineVersionRepository.deleteAll();
     lineVersionRepository.deleteAll();
     coverageRepository.deleteAll();
@@ -686,5 +686,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     List<LineVersionModel> lineVersions = lineController.getLineVersions(lineVersionSaved.getSlnid());
     assertThat(lineVersions).hasSize(1);
     assertThat(lineVersions.get(0).getStatus()).isEqualTo(Status.VALIDATED);
+  }
+
+  @Test
+  void shouldReturnBadRequestWhenPageSizeExceeded() throws Exception {
+    mvc.perform(get("/v1/lines?size=5000"))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is("The page size is limited to 2000")));
   }
 }
