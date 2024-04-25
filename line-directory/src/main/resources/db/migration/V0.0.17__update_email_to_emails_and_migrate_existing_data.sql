@@ -8,4 +8,4 @@ SELECT email, id FROM timetable_hearing_statement;
 
 ALTER TABLE timetable_hearing_statement ALTER COLUMN email DROP NOT NULL;
 
--- ALTER TABLE timetable_hearing_statement DROP COLUMN email;
+ALTER TABLE timetable_hearing_statement DROP COLUMN email;
