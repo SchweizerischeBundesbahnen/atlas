@@ -2,16 +2,13 @@ package ch.sbb.atlas.api.timetable.hearing;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.model.BaseValidatorTest;
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
-class TimetableHearingStatementSenderModelV2Test {
-
-  private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+class TimetableHearingStatementSenderModelV2Test extends BaseValidatorTest {
 
   TimetableHearingStatementSenderModelV2 timetableHearingStatementSenderModelV2 = new TimetableHearingStatementSenderModelV2();
 
