@@ -7,7 +7,6 @@ import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -71,10 +70,6 @@ public class TimetableHearingStatementModel extends BaseVersionModel implements 
   @Schema(description = "Comma separated Transport Companies abbreviation", example = "BLS,SBB", accessMode =
       AccessMode.READ_ONLY)
   private String responsibleTransportCompaniesDisplay;
-
-  @NotNull
-  @Valid
-  private TimetableHearingStatementSenderModel statementSender;
 
   @NotNull
   @Size(max = AtlasFieldLengths.LENGTH_5000)

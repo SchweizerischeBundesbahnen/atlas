@@ -3,9 +3,9 @@ package ch.sbb.atlas.api.timetable.hearing;
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,11 +22,12 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldNameConstants
 @Schema(name = "TimetableHearingStatementSender")
-public class TimetableHearingStatementSenderModelV2 extends TimetableHearingStatementSenderModel {
+public class TimetableHearingStatementSenderModelV1 extends TimetableHearingStatementSenderModel{
 
-  @Schema(description = "E-Mail addresses", example = "maurer@post.ch, burri@post.ch")
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_10,
-      message = "Minimum 1 email address is required and maximum 10 email addresses are allowed")
-  private Set< @Size(max = AtlasFieldLengths.LENGTH_100) @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS) String> emails;
+  @Schema(description = "E-Mail address", example = "maurer@post.ch")
+  @NotNull
+  @Size(max = AtlasFieldLengths.LENGTH_100)
+  @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
+  private String email;
 
 }

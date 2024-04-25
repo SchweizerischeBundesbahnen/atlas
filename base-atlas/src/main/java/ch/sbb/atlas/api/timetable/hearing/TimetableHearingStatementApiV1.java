@@ -1,5 +1,9 @@
 package ch.sbb.atlas.api.timetable.hearing;
 
+import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
+
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
@@ -33,8 +37,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
-
-import static ch.sbb.atlas.model.ResponseCodeDescription.*;
 
 @Tag(name = "Timetable Hearing Statements")
 @RequestMapping("v1/timetable-hearing/statements")
@@ -124,8 +126,8 @@ public interface TimetableHearingStatementApiV1 {
   @RequestBody(content = @Content(encoding = @Encoding(name = "statement", contentType = MediaType.APPLICATION_JSON_VALUE)))
   @PreAuthorize("@cantonBasedUserAdministrationService"
       + ".isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING, #statement)")
-  TimetableHearingStatementModel createStatementExternal(
-      @RequestPart @Valid TimetableHearingStatementModel statement,
+  TimetableHearingStatementModelV1 createStatementExternal(
+      @RequestPart @Valid TimetableHearingStatementModelV1 statement,
       @RequestPart(required = false) List<MultipartFile> documents);
 
   @ResponseStatus(HttpStatus.OK)
