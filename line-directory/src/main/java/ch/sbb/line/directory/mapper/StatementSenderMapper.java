@@ -28,7 +28,7 @@ public class StatementSenderMapper {
         .street(statementSender.getStreet())
         .zip(statementSender.getZip())
         .city(statementSender.getCity())
-        .email(statementSender.getEmails().stream().findFirst().orElse(""))
+        .email(statementSender.getEmails().iterator().next())
         .build();
   }
 }
