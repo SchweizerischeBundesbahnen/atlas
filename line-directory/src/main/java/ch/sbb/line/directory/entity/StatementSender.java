@@ -47,7 +47,8 @@ public class StatementSender {
   private String city;
 
   @NotNull
-  @Size(max = AtlasFieldLengths.LENGTH_1000)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_10,
+      message = "Minimum 1 email address is required and maximum 10 email addresses are allowed")
   @Column(name = "email", nullable = false)
   @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
   private Set<String> emails = new HashSet<>();
