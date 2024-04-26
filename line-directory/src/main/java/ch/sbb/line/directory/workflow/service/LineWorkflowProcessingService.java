@@ -2,16 +2,18 @@ package ch.sbb.line.directory.workflow.service;
 
 import static ch.sbb.atlas.workflow.model.WorkflowProcessingStatus.getProcessingStatus;
 
+import ch.sbb.atlas.workflow.model.BaseWorkflowEntity;
 import ch.sbb.atlas.workflow.model.WorkflowEvent;
-import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.WorkflowProcessingStatus;
-import ch.sbb.atlas.workflow.repository.ObjectWorkflowRepository;
+import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.service.BaseWorkflowProcessingService;
 import ch.sbb.line.directory.entity.LineVersion;
 import ch.sbb.line.directory.entity.LineVersionSnapshot;
 import ch.sbb.line.directory.entity.LineVersionWorkflow;
-import java.util.Optional;
+import ch.sbb.line.directory.repository.LineVersionWorkflowRepository;
 import jakarta.transaction.Transactional;
+import java.util.Optional;
+import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,11 +25,13 @@ import org.springframework.stereotype.Service;
 public class LineWorkflowProcessingService extends
     BaseWorkflowProcessingService<LineVersion, LineVersionWorkflow, LineVersionSnapshot> {
 
+  private final LineVersionWorkflowRepository lineVersionWorkflowRepository;
 
   public LineWorkflowProcessingService(JpaRepository<LineVersion, Long> objectRepository,
-      ObjectWorkflowRepository<LineVersionWorkflow> objectWorkflowRepository,
+      LineVersionWorkflowRepository lineVersionWorkflowRepository,
       JpaRepository<LineVersionSnapshot, Long> objectVerionSnapshotRepositroy) {
-    super(objectRepository, objectWorkflowRepository, objectVerionSnapshotRepositroy);
+    super(objectRepository, lineVersionWorkflowRepository, objectVerionSnapshotRepositroy);
+    this.lineVersionWorkflowRepository=lineVersionWorkflowRepository;
   }
 
   @PreAuthorize("@businessOrganisationBasedUserAdministrationService.hasUserPermissionsToCreate(#lineVersion, T(ch.sbb.atlas.kafka.model.user.admin"
@@ -42,8 +46,17 @@ public class LineWorkflowProcessingService extends
 
   @Override
   protected LineVersionWorkflow buildObjectVersionWorkflow(WorkflowEvent workflowEvent, LineVersion object) {
+    Stream<WorkflowProcessingStatus> existingWorkflowsForLineVersion = lineVersionWorkflowRepository.findAllByLineVersion(object)
+        .stream()
+        .map(BaseWorkflowEntity::getWorkflowProcessingStatus);
+
     Optional<LineVersionWorkflow> existingLineRelation = objectWorkflowRepository.findByWorkflowId(workflowEvent.getWorkflowId());
     WorkflowProcessingStatus workflowProcessingStatus = getProcessingStatus(workflowEvent.getWorkflowStatus());
+
+    if (Stream.concat(existingWorkflowsForLineVersion, Stream.of(workflowProcessingStatus))
+        .filter(i -> i == WorkflowProcessingStatus.IN_PROGRESS).count() > 1) {
+      throw new IllegalStateException("There is max one workflow allowed to be in progress");
+    }
 
     if (existingLineRelation.isPresent()) {
       existingLineRelation.get().setWorkflowProcessingStatus(workflowProcessingStatus);
