@@ -1,10 +1,11 @@
 package ch.sbb.line.directory.service.hearing;
 
 import static ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants.MAX_DOCUMENTS_SIZE;
-import static ch.sbb.line.directory.mapper.TimetableHearingStatementMapper.transformToCommaSeparated;
+import static ch.sbb.line.directory.mapper.TimetableHearingStatementMapperV1.transformToCommaSeparated;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementDocumentModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV1;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
@@ -16,6 +17,7 @@ import ch.sbb.line.directory.entity.StatementDocument;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.mapper.ResponsibleTransportCompanyMapper;
 import ch.sbb.line.directory.mapper.StatementSenderMapperV2;
+import ch.sbb.line.directory.mapper.TimetableHearingStatementMapperV1;
 import ch.sbb.line.directory.mapper.TimetableHearingStatementMapperV2;
 import ch.sbb.line.directory.model.TimetableHearingStatementSearchRestrictions;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
@@ -50,6 +52,7 @@ public class TimetableHearingStatementService {
   private final StatementDocumentFilesValidationService statementDocumentFilesValidationService;
   private final ResponsibleTransportCompanyMapper responsibleTransportCompanyMapper;
   private final TimetableHearingStatementMapperV2 timetableHearingStatementMapperV2;
+  private final TimetableHearingStatementMapperV1 timetableHearingStatementMapperV1;
 
   public Page<TimetableHearingStatement> getHearingStatements(TimetableHearingStatementSearchRestrictions searchRestrictions) {
     log.info("Loading statements using {}", searchRestrictions);
@@ -70,9 +73,8 @@ public class TimetableHearingStatementService {
     }
   }
 
-  public TimetableHearingStatementModelV2 createHearingStatement(TimetableHearingStatementModelV2 statement,
+  public TimetableHearingStatement createHearingStatement(TimetableHearingStatement statementToCreate,
       List<MultipartFile> documents) {
-    TimetableHearingStatement statementToCreate = timetableHearingStatementMapperV2.toEntity(statement);
     checkThatTimetableHearingYearExists(statementToCreate.getTimetableYear());
     statementToCreate.setStatementStatus(StatementStatus.RECEIVED);
 
@@ -89,29 +91,19 @@ public class TimetableHearingStatementService {
 
     pdfsUploadAmazonService.uploadPdfFiles(files, timetableHearingStatement.getId().toString());
 
-    return TimetableHearingStatementMapperV2.toModel(timetableHearingStatement);
+    return timetableHearingStatement;
+  }
+
+  public TimetableHearingStatementModelV1 createHearingStatementV1(TimetableHearingStatementModelV1 statement,
+      List<MultipartFile> documents) {
+    TimetableHearingStatement statementToCreate = timetableHearingStatementMapperV1.toEntity(statement);
+    return TimetableHearingStatementMapperV1.toModel(createHearingStatement(statementToCreate, documents));
   }
 
   public TimetableHearingStatementModelV2 createHearingStatementV2(TimetableHearingStatementModelV2 statement,
       List<MultipartFile> documents) {
     TimetableHearingStatement statementToCreate = timetableHearingStatementMapperV2.toEntity(statement);
-    checkThatTimetableHearingYearExists(statementToCreate.getTimetableYear());
-    statementToCreate.setStatementStatus(StatementStatus.RECEIVED);
-
-    List<File> files = new ArrayList<>();
-
-    if (!CollectionUtils.isEmpty(documents)) {
-      files = getFilesFromMultipartFiles(documents);
-      filesValidation(files, Collections.emptySet());
-
-      addFilesToStatement(documents, statementToCreate);
-    }
-
-    TimetableHearingStatement timetableHearingStatement = timetableHearingStatementRepository.saveAndFlush(statementToCreate);
-
-    pdfsUploadAmazonService.uploadPdfFiles(files, timetableHearingStatement.getId().toString());
-
-    return TimetableHearingStatementMapperV2.toModel(timetableHearingStatement);
+    return TimetableHearingStatementMapperV2.toModel(createHearingStatement(statementToCreate, documents));
   }
 
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
