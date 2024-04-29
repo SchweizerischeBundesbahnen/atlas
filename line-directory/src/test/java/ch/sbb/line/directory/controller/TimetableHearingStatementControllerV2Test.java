@@ -22,7 +22,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Pageable;
 
-class TimetableHearingStatementControllerTest {
+class TimetableHearingStatementControllerV2Test {
 
   @Mock
   private TimetableHearingStatementService timetableHearingStatementService;
@@ -37,15 +37,14 @@ class TimetableHearingStatementControllerTest {
   @Mock
   private TimetableHearingStatementAlternationService timetableHearingStatementAlternationService;
 
-  private TimetableHearingStatementController timetableHearingStatementController;
+  private TimetableHearingStatementControllerV2 timetableHearingStatementController;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    timetableHearingStatementController = new TimetableHearingStatementController(timetableHearingStatementService,
-        timetableHearingStatementAlternationService,
-        timetableHearingYearService, timetableFieldNumberResolverService, responsibleTransportCompaniesResolverService,
-        timetableHearingStatementExportService);
+    timetableHearingStatementController = new TimetableHearingStatementControllerV2(timetableHearingStatementService,
+        timetableHearingStatementAlternationService, timetableHearingYearService, timetableFieldNumberResolverService,
+        responsibleTransportCompaniesResolverService, timetableHearingStatementExportService);
   }
 
   @Test
