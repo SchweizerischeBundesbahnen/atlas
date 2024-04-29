@@ -75,7 +75,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.test.web.servlet.MvcResult;
 
- class TimetableHearingStatementControllerApiTest extends BaseControllerApiTest {
+ class TimetableHearingStatementControllerV1ApiTest extends BaseControllerApiTest {
 
   private static final long YEAR = 2022L;
   private static final TimetableHearingYearModel TIMETABLE_HEARING_YEAR = TimetableHearingYearModel.builder()
@@ -93,7 +93,7 @@ import org.springframework.test.web.servlet.MvcResult;
   private TimetableHearingYearController timetableHearingYearController;
 
   @Autowired
-  private TimetableHearingStatementController timetableHearingStatementController;
+  private TimetableHearingStatementControllerV1 timetableHearingStatementController;
 
   @Autowired
   private TimetableHearingStatementRepository timetableHearingStatementRepository;
@@ -176,7 +176,7 @@ import org.springframework.test.web.servlet.MvcResult;
     MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
         MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
-    mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
+    mvc.perform(multipart(HttpMethod.POST, "/v2/timetable-hearing/statements")
             .file(statementJson))
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
@@ -197,7 +197,7 @@ import org.springframework.test.web.servlet.MvcResult;
     MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
         MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
-    mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
+    mvc.perform(multipart(HttpMethod.POST, "/v2/timetable-hearing/statements")
             .file(statementJson))
         .andExpect(status().isBadRequest());
   }
@@ -216,7 +216,7 @@ import org.springframework.test.web.servlet.MvcResult;
     MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null, MediaType.APPLICATION_JSON_VALUE,
         mapper.writeValueAsString(statement));
 
-    mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
+    mvc.perform(multipart(HttpMethod.POST, "/v2/timetable-hearing/statements")
             .file(statementJson)
             .file(new MockMultipartFile(MULTIPART_FILES.get(0).getName(), MULTIPART_FILES.get(0).getOriginalFilename(),
                 MULTIPART_FILES.get(0).getContentType(), MULTIPART_FILES.get(0).getBytes()))
@@ -244,7 +244,7 @@ import org.springframework.test.web.servlet.MvcResult;
     MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null, MediaType.APPLICATION_JSON_VALUE,
         mapper.writeValueAsString(statement));
 
-    mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
+    mvc.perform(multipart(HttpMethod.POST, "/v2/timetable-hearing/statements")
             .file(statementJson)
             .file(new MockMultipartFile(MULTIPART_FILES.get(0).getName(), MULTIPART_FILES.get(0).getOriginalFilename(),
                 MULTIPART_FILES.get(0).getContentType(), MULTIPART_FILES.get(0).getBytes()))
@@ -281,44 +281,13 @@ import org.springframework.test.web.servlet.MvcResult;
     hearingYearModel.setStatementCreatableInternal(false);
     timetableHearingYearController.updateTimetableHearingSettings(YEAR, hearingYearModel);
 
-    mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements")
+    mvc.perform(multipart(HttpMethod.POST, "/v2/timetable-hearing/statements")
             .file(statementJson))
         .andExpect(status().isForbidden())
         .andExpect(result -> assertTrue(result.getResolvedException() instanceof ForbiddenDueToHearingYearSettingsException))
         .andExpect(result -> assertEquals("Operation not allowed",
             ((ForbiddenDueToHearingYearSettingsException) Objects.requireNonNull(
                 result.getResolvedException())).getErrorResponse()
-                .getMessage()));
-  }
-
-  @Test
-  void shouldThrowExceptionWhenNotClientCredentialsAuthUsedForExternalEndpoint() throws Exception {
-    String statement = """
-         {
-         	"statement": "I need some more busses please.",
-         	"statementSender": {
-         		"email": "maurer@post.ch",
-         		"firstName": "Fabienne",
-         		"lastName": "Maurer",
-         		"organisation": "Post AG",
-         		"street": "Bahnhofstrasse 12",
-         		"zip": 3000,
-         		"city": "Bern"
-         	},
-         	"timetableFieldNumber": "1.1",
-         	"swissCanton": "BERN",
-         	"stopPlace": "Bern, Wyleregg"
-         }
-        """;
-    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
-        MediaType.APPLICATION_JSON_VALUE, statement);
-
-    mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements/external")
-            .file(statementJson))
-        .andExpect(status().isBadRequest())
-        .andExpect(result -> assertTrue(result.getResolvedException() instanceof NoClientCredentialAuthUsedException))
-        .andExpect(result -> assertEquals("Bad authentication used",
-            ((NoClientCredentialAuthUsedException) Objects.requireNonNull(result.getResolvedException())).getErrorResponse()
                 .getMessage()));
   }
 
@@ -351,92 +320,6 @@ import org.springframework.test.web.servlet.MvcResult;
         .andExpect(result -> assertEquals("Bad authentication used",
             ((NoClientCredentialAuthUsedException) Objects.requireNonNull(result.getResolvedException())).getErrorResponse()
                 .getMessage()));
-  }
-
-  @Test
-  void shouldThrowForbiddenExceptionWhenStatementCreatableExternalIsFalse() throws Exception {
-    // For Client-Credential Auth
-    SecurityContext context = SecurityContextHolder.getContext();
-    Authentication authentication = new JwtAuthenticationToken(createJwtWithoutSbbUid(),
-        AuthorityUtils.createAuthorityList("ROLE_atlas-admin"));
-    authentication.setAuthenticated(true);
-    context.setAuthentication(authentication);
-
-    TimetableHearingYearModel hearingYearModel = timetableHearingYearController.startHearingYear(YEAR);
-    hearingYearModel.setStatementCreatableExternal(false);
-    timetableHearingYearController.updateTimetableHearingSettings(YEAR, hearingYearModel);
-
-    String statement = """
-         {
-         	"statement": "I need some more busses please.",
-         	"statementSender": {
-         		"email": "maurer@post.ch",
-         		"firstName": "Fabienne",
-         		"lastName": "Maurer",
-         		"organisation": "Post AG",
-         		"street": "Bahnhofstrasse 12",
-         		"zip": 3000,
-         		"city": "Bern"
-         	},
-         	"timetableFieldNumber": "1.1",
-         	"swissCanton": "BERN",
-         	"stopPlace": "Bern, Wyleregg"
-         }
-        """;
-    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
-        MediaType.APPLICATION_JSON_VALUE, statement);
-
-    mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements/external")
-            .file(statementJson))
-        .andExpect(status().isForbidden())
-        .andExpect(result -> assertTrue(result.getResolvedException() instanceof ForbiddenDueToHearingYearSettingsException))
-        .andExpect(result -> assertEquals("Operation not allowed",
-            ((ForbiddenDueToHearingYearSettingsException) Objects.requireNonNull(
-                result.getResolvedException())).getErrorResponse()
-                .getMessage()));
-  }
-
-  @Test
-  void shouldCreateStatementExternalFromSkiWeb() throws Exception {
-    // For Client-Credential Auth
-    SecurityContext context = SecurityContextHolder.getContext();
-    Authentication authentication = new JwtAuthenticationToken(createJwtWithoutSbbUid(),
-        AuthorityUtils.createAuthorityList("ROLE_atlas-admin"));
-    authentication.setAuthenticated(true);
-    context.setAuthentication(authentication);
-
-    timetableHearingYearController.startHearingYear(YEAR);
-    String statement = """
-         {
-         	"statement": "I need some more busses please.",
-         	"statementSender": {
-         		"email": "maurer@post.ch",
-         		"firstName": "Fabienne",
-         		"lastName": "Maurer",
-         		"organisation": "Post AG",
-         		"street": "Bahnhofstrasse 12",
-         		"zip": 3000,
-         		"city": "Bern"
-         	},
-         	"timetableFieldNumber": "1.1",
-         	"swissCanton": "BERN",
-         	"stopPlace": "Bern, Wyleregg"
-         }
-        """;
-    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
-        MediaType.APPLICATION_JSON_VALUE, statement);
-
-    mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements/external")
-            .file(statementJson)
-            .file(new MockMultipartFile(MULTIPART_FILES.get(0).getName(), MULTIPART_FILES.get(0).getOriginalFilename(),
-                MULTIPART_FILES.get(0).getContentType(), MULTIPART_FILES.get(0).getBytes()))
-            .file(
-                new MockMultipartFile(MULTIPART_FILES.get(1).getName(), MULTIPART_FILES.get(1).getOriginalFilename(),
-                    MULTIPART_FILES.get(1).getContentType(), MULTIPART_FILES.get(1).getBytes())))
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
-        .andExpect(jsonPath("$." + Fields.documents, hasSize(2)))
-        .andExpect(jsonPath("$." + Fields.documents + "[0].id", notNullValue()));
   }
 
   @Test
@@ -500,7 +383,7 @@ import org.springframework.test.web.servlet.MvcResult;
     MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
         MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
-    mvc.perform(multipart(HttpMethod.PUT, "/v1/timetable-hearing/statements/" + statement.getId())
+    mvc.perform(multipart(HttpMethod.PUT, "/v2/timetable-hearing/statements/" + statement.getId())
             .file(statementJson))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.JUNK.toString())))
@@ -538,7 +421,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .statementStatus(StatementStatus.ACCEPTED).build();
 
     //when
-    mvc.perform(put("/v1/timetable-hearing/statements/update-statement-status")
+    mvc.perform(put("/v2/timetable-hearing/statements/update-statement-status")
             .contentType(contentType)
             .content(mapper.writeValueAsString(updateHearingStatementStatusModel)))
         .andExpect(status().isOk());
@@ -577,7 +460,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .statementStatus(StatementStatus.ACCEPTED).build();
 
     //when
-    mvc.perform(put("/v1/timetable-hearing/statements/update-statement-status")
+    mvc.perform(put("/v2/timetable-hearing/statements/update-statement-status")
             .contentType(contentType)
             .content(mapper.writeValueAsString(updateHearingStatementStatusModel)))
         .andExpect(status().isForbidden());
@@ -613,7 +496,7 @@ import org.springframework.test.web.servlet.MvcResult;
         UpdateHearingStatementStatusModel.builder().ids(ids).justification("Forza Napoli")
             .statementStatus(StatementStatus.ACCEPTED).build();
     //when
-    mvc.perform(put("/v1/timetable-hearing/statements/update-statement-status")
+    mvc.perform(put("/v2/timetable-hearing/statements/update-statement-status")
             .contentType(contentType)
             .content(mapper.writeValueAsString(updateHearingStatementStatusModel)))
         .andExpect(status().isForbidden());
@@ -653,7 +536,7 @@ import org.springframework.test.web.servlet.MvcResult;
         UpdateHearingStatementStatusModel.builder().ids(ids).justification("Forza Napoli")
             .statementStatus(StatementStatus.ACCEPTED).build();
     //when
-    mvc.perform(put("/v1/timetable-hearing/statements/update-statement-status")
+    mvc.perform(put("/v2/timetable-hearing/statements/update-statement-status")
             .contentType(contentType)
             .content(mapper.writeValueAsString(updateHearingStatementStatusModel)))
         .andExpect(status().isForbidden());
@@ -688,7 +571,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .build();
 
     //when
-    mvc.perform(put("/v1/timetable-hearing/statements/update-canton")
+    mvc.perform(put("/v2/timetable-hearing/statements/update-canton")
             .contentType(contentType)
             .content(mapper.writeValueAsString(updateHearingCantonModel)))
         .andExpect(status().isOk());
@@ -716,7 +599,7 @@ import org.springframework.test.web.servlet.MvcResult;
     MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
         MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
-    mvc.perform(multipart(HttpMethod.PUT, "/v1/timetable-hearing/statements/" + statement.getId())
+    mvc.perform(multipart(HttpMethod.PUT, "/v2/timetable-hearing/statements/" + statement.getId())
             .file(statementJson))
         .andExpect(status().isForbidden())
         .andExpect(result -> assertTrue(result.getResolvedException() instanceof ForbiddenDueToHearingYearSettingsException))
@@ -742,7 +625,7 @@ import org.springframework.test.web.servlet.MvcResult;
     MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
         MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
-    mvc.perform(multipart(HttpMethod.PUT, "/v1/timetable-hearing/statements/" + statement.getId())
+    mvc.perform(multipart(HttpMethod.PUT, "/v2/timetable-hearing/statements/" + statement.getId())
             .file(statementJson)
             .file(
                 new MockMultipartFile(MULTIPART_FILES.get(2).getName(), MULTIPART_FILES.get(2).getOriginalFilename(),
@@ -770,7 +653,7 @@ import org.springframework.test.web.servlet.MvcResult;
     MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
         MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
-    mvc.perform(multipart(HttpMethod.PUT, "/v1/timetable-hearing/statements/" + statement.getId())
+    mvc.perform(multipart(HttpMethod.PUT, "/v2/timetable-hearing/statements/" + statement.getId())
             .file(statementJson)
             .file(new MockMultipartFile(MULTIPART_FILES.get(0).getName(), MULTIPART_FILES.get(0).getOriginalFilename(),
                 MULTIPART_FILES.get(0).getContentType(), MULTIPART_FILES.get(0).getBytes()))
@@ -802,7 +685,7 @@ import org.springframework.test.web.servlet.MvcResult;
     MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
         MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
-    mvc.perform(multipart(HttpMethod.PUT, "/v1/timetable-hearing/statements/" + statement.getId())
+    mvc.perform(multipart(HttpMethod.PUT, "/v2/timetable-hearing/statements/" + statement.getId())
             .file(statementJson)
             .file(
                 new MockMultipartFile(MULTIPART_FILES.get(2).getName(), MULTIPART_FILES.get(2).getOriginalFilename(),
@@ -826,7 +709,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .build(),
         Collections.emptyList());
 
-    mvc.perform(get("/v1/timetable-hearing/statements/" + statement.getId()))
+    mvc.perform(get("/v2/timetable-hearing/statements/" + statement.getId()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
         .andExpect(jsonPath("$." + Fields.documents, hasSize(0)));
@@ -845,11 +728,11 @@ import org.springframework.test.web.servlet.MvcResult;
             .build(),
         Collections.emptyList());
 
-    mvc.perform(get("/v1/timetable-hearing/statements?timetableHearingYear=" + statement.getTimetableYear()))
+    mvc.perform(get("/v2/timetable-hearing/statements?timetableHearingYear=" + statement.getTimetableYear()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount", is(1)));
 
-    mvc.perform(get("/v1/timetable-hearing/statements?timetableHearingYear=2010"))
+    mvc.perform(get("/v2/timetable-hearing/statements?timetableHearingYear=2010"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount", is(0)));
   }
@@ -867,7 +750,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .build(),
         List.of(MULTIPART_FILES.get(0)));
 
-    mvc.perform(get("/v1/timetable-hearing/statements/" + statement.getId() + "/documents/" + MULTIPART_FILES.get(0)
+    mvc.perform(get("/v2/timetable-hearing/statements/" + statement.getId() + "/documents/" + MULTIPART_FILES.get(0)
             .getOriginalFilename()))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_PDF_VALUE));
@@ -886,7 +769,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .build(),
         List.of(MULTIPART_FILES.get(0)));
 
-    mvc.perform(get("/v1/timetable-hearing/statements/" + statement.getId() + "/documents/" + "nonexistingfilename"))
+    mvc.perform(get("/v2/timetable-hearing/statements/" + statement.getId() + "/documents/" + "nonexistingfilename"))
         .andExpect(status().isNotFound())
         .andExpect(result -> assertTrue(result.getResolvedException() instanceof FileNotFoundException));
   }
@@ -905,7 +788,7 @@ import org.springframework.test.web.servlet.MvcResult;
         List.of(MULTIPART_FILES.get(0)));
 
     mvc.perform(delete(
-            "/v1/timetable-hearing/statements/" + statement.getId() + "/documents/" + MULTIPART_FILES.get(0).getOriginalFilename()))
+            "/v2/timetable-hearing/statements/" + statement.getId() + "/documents/" + MULTIPART_FILES.get(0).getOriginalFilename()))
         .andExpect(status().isOk());
   }
 
@@ -922,7 +805,7 @@ import org.springframework.test.web.servlet.MvcResult;
             .build(),
         Collections.emptyList());
 
-    mvc.perform(get("/v1/timetable-hearing/statements/" + statement.getId() + "/documents/" + "nonexistingfilename"))
+    mvc.perform(get("/v2/timetable-hearing/statements/" + statement.getId() + "/documents/" + "nonexistingfilename"))
         .andExpect(status().isNotFound());
   }
 
@@ -946,7 +829,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
     // When
     MvcResult mvcResult = mvc.perform(
-            get("/v1/timetable-hearing/statements/csv/de?timetableHearingYear=" + statement.getTimetableYear()))
+            get("/v2/timetable-hearing/statements/csv/de?timetableHearingYear=" + statement.getTimetableYear()))
         .andExpect(status().isOk())
         .andReturn();
 
@@ -985,7 +868,7 @@ import org.springframework.test.web.servlet.MvcResult;
     MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
         MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
 
-    mvc.perform(multipart(HttpMethod.PUT, "/v1/timetable-hearing/statements/" + statement.getId())
+    mvc.perform(multipart(HttpMethod.PUT, "/v2/timetable-hearing/statements/" + statement.getId())
             .file(statementJson))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
