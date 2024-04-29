@@ -16,6 +16,7 @@ const form = new FormGroup<StatementDetailFormGroup>({
   statementStatus: new FormControl(),
   ttfnid: new FormControl(),
   responsibleTransportCompanies: new FormControl(),
+  oldSwissCanton: new FormControl(SwissCanton.Zurich),
   swissCanton: new FormControl(SwissCanton.Bern),
   statementSender: new FormGroup<StatementSenderFormGroup>({
     firstName: new FormControl(),
