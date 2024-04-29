@@ -1,13 +1,13 @@
 import {inject, Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, ResolveFn, Router} from '@angular/router';
 import {catchError, Observable, of} from 'rxjs';
-import {TimetableHearingStatement, TimetableHearingStatementsService} from '../../../api';
+import {TimetableHearingStatement, TimetableHearingStatementsV2Service} from '../../../api';
 import {Pages} from '../../pages';
 
 @Injectable({ providedIn: 'root' })
 export class StatementDetailResolver {
   constructor(
-    private readonly timetableHearingStatementsService: TimetableHearingStatementsService,
+    private readonly timetableHearingStatementsServiceV2: TimetableHearingStatementsV2Service,
     private readonly router: Router,
   ) {}
 
@@ -16,7 +16,7 @@ export class StatementDetailResolver {
     const hearingStatus = route.data['hearingStatus'];
     return idParameter === 'add'
       ? of(undefined)
-      : this.timetableHearingStatementsService.getStatement(parseInt(idParameter)).pipe(
+      : this.timetableHearingStatementsServiceV2.getStatement(parseInt(idParameter)).pipe(
           catchError(() => {
             this.router
               .navigate(
