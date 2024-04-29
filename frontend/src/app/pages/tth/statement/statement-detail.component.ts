@@ -328,7 +328,9 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     }
     if (!this.isNew) {
       this.initialValueForCanton = this.form.value.swissCanton;
-      this.translateCanton(this.statement?.oldSwissCanton!)
+    }
+    if(!this.isNew && this.statement?.oldSwissCanton){
+      this.translateCanton(this.statement.oldSwissCanton);
     }
     if (!this.isNew || this.isHearingStatusArchived) {
       this.form.disable();
@@ -404,8 +406,10 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     this.router.navigate(['..', statement.id], {relativeTo: this.route}).then(() => {
       this.isInitializingComponent = false;
       this.statement = statement;
-      this.translateCanton(statement.oldSwissCanton!)
       this.ngOnInit();
+      if(statement.oldSwissCanton){
+        this.translateCanton(statement.oldSwissCanton)
+      }
     });
   }
 
@@ -473,7 +477,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   }
 
 
-  private translateCanton(oldSwissCanton: SwissCanton){
+  translateCanton(oldSwissCanton: SwissCanton){
     this.cantonName = this.translateService.instant(`TTH.CANTON.${cantonMap[oldSwissCanton]}`);
   }
 
