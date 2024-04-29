@@ -7,7 +7,7 @@ import {
   SwissCanton,
   TimetableHearingStatement,
   TimetableHearingStatementDocument,
-  TimetableHearingStatementsService,
+  TimetableHearingStatementsV2Service,
   TimetableHearingYearsService,
   TimetableYearChangeService,
   TransportCompany,
@@ -64,7 +64,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     private route: ActivatedRoute,
     private dialogService: DialogService,
     private timetableHearingYearsService: TimetableHearingYearsService,
-    private readonly timetableHearingStatementsService: TimetableHearingStatementsService,
+    private readonly timetableHearingStatementsServiceV2: TimetableHearingStatementsV2Service,
     private notificationService: NotificationService,
     private authService: AuthService,
     private timetableYearChangeService: TimetableYearChangeService,
@@ -248,7 +248,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   }
 
   downloadFile(fileName: string) {
-    this.timetableHearingStatementsService
+    this.timetableHearingStatementsServiceV2
       .getStatementDocument(this.statement!.id!, fileName)
       .subscribe((response) => FileDownloadService.downloadFile(fileName, response));
   }
@@ -264,7 +264,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     if (documents!.length > 0) {
       this.isLoading = true;
       for (let i = 0; i < documents!.length!; i++) {
-        this.timetableHearingStatementsService
+        this.timetableHearingStatementsServiceV2
           .getStatementDocument(id, documents![i].fileName)
           .pipe(takeUntil(this.ngUnsubscribe))
           .subscribe((response) => {
@@ -364,7 +364,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   private initResponsibleTransportCompanyPrefill() {
     this.form.controls.ttfnid.valueChanges.subscribe((ttfnid) => {
       if (ttfnid) {
-        this.timetableHearingStatementsService
+        this.timetableHearingStatementsServiceV2
           .getResponsibleTransportCompanies(ttfnid, this.form.value.timetableYear! - 1)
           .subscribe((result) => {
             this.form.controls.responsibleTransportCompanies.setValue(result);
@@ -375,7 +375,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
 
   private createStatement(statement: TimetableHearingStatement) {
     this.isLoading = true;
-    this.timetableHearingStatementsService
+    this.timetableHearingStatementsServiceV2
       .createStatement(statement, this.uploadedFiles)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((statement) => {
@@ -388,7 +388,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
 
   private updateStatement(id: number, statement: TimetableHearingStatement) {
     this.isLoading = true;
-    this.timetableHearingStatementsService
+    this.timetableHearingStatementsServiceV2
       .updateHearingStatement(id, statement, this.uploadedFiles)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((statement) => {
@@ -437,7 +437,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   }
 
   next() {
-    this.timetableHearingStatementsService.getNextStatement(...this.getAlternationParams())
+    this.timetableHearingStatementsServiceV2.getNextStatement(...this.getAlternationParams())
       .subscribe(next => {
         this.tableService.pageIndex = next.pageable.pageNumber!;
         this.navigateToStatementDetail(next.timetableHearingStatement);
@@ -445,7 +445,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   }
 
   previous() {
-    this.timetableHearingStatementsService.getPreviousStatement(...this.getAlternationParams())
+    this.timetableHearingStatementsServiceV2.getPreviousStatement(...this.getAlternationParams())
       .subscribe(next => {
         this.tableService.pageIndex = next.pageable.pageNumber!;
         this.navigateToStatementDetail(next.timetableHearingStatement);
