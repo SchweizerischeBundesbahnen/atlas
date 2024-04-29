@@ -5,8 +5,10 @@ import {
   HearingStatus,
   StatementStatus,
   SwissCanton,
-  TimetableHearingStatement, TimetableHearingStatementDocument, TimetableHearingStatementSender,
-  TimetableHearingStatementsService,
+  TimetableHearingStatement,
+  TimetableHearingStatementDocument,
+  TimetableHearingStatementSender,
+  TimetableHearingStatementsV2Service,
   TimetableHearingYear,
   TimetableHearingYearsService,
   TransportCompany,
@@ -95,7 +97,7 @@ export class OverviewDetailComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly timetableHearingStatementsService: TimetableHearingStatementsService,
+    private readonly timetableHearingStatementsServiceV2: TimetableHearingStatementsV2Service,
     private readonly timetableHearingYearsService: TimetableHearingYearsService,
     private readonly overviewToTabService: OverviewToTabShareDataService,
     private readonly tthStatusChangeDialogService: TthChangeStatusDialogService,
@@ -172,7 +174,7 @@ export class OverviewDetailComponent implements OnInit {
 
   getOverview(pagination: TablePagination) {
     const selectedCantonEnum = this.getSelectedCantonToBeSearchFromNavigation();
-    this.timetableHearingStatementsService
+    this.timetableHearingStatementsServiceV2
       .getStatements(
         this.foundTimetableHearingYear.timetableYear,
         selectedCantonEnum,
@@ -215,7 +217,7 @@ export class OverviewDetailComponent implements OnInit {
   }
 
   downloadCsv() {
-    this.timetableHearingStatementsService
+    this.timetableHearingStatementsServiceV2
       .getStatementsAsCsv(
         this.translateService.currentLang,
         this.foundTimetableHearingYear.timetableYear,
