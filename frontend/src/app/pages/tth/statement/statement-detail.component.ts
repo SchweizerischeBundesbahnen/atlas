@@ -136,6 +136,10 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     });
   }
 
+  stringToEmails(emailsStr: string): Set<string> {
+    return new Set(emailsStr.split(',').map(email => email.trim()));
+  }
+
   save() {
     if (!this.isNew && this.initialValueForCanton != this.form.value.swissCanton) {
       this.cantonSelectionChanged();
@@ -143,7 +147,9 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       ValidationService.validateForm(this.form);
       if (this.form.valid) {
         this.form.disable();
+        const emails = this.stringToEmails(this.form.value.statementSender!.emails!);
         const hearingStatement = this.form.value as TimetableHearingStatement;
+        hearingStatement.statementSender.emails = emails;
         if (this.isNew) {
           this.createStatement(hearingStatement);
         } else {
@@ -214,7 +220,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
         street: new FormControl(statement?.statementSender?.street, [
           AtlasFieldLengthValidator.length_100,
         ]),
-        emails: new FormControl(statement?.statementSender?.emails, [
+        emails: new FormControl(this.emailsToString(statement?.statementSender?.emails), [
           Validators.required,
           AtlasFieldLengthValidator.length_100,
           AtlasCharsetsValidator.email,
@@ -234,6 +240,13 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       etagVersion: new FormControl(statement?.etagVersion),
       editor: new FormControl(statement?.editor),
     });
+  }
+
+  emailsToString(emails: Set<string> | undefined): string {
+    if (!emails || emails.size === 0) {
+      return '';
+    }
+    return Array.from(emails).join(', ');
   }
 
   saveButtonDisabled() {
