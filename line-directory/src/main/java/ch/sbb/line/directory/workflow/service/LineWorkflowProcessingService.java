@@ -1,8 +1,8 @@
 package ch.sbb.line.directory.workflow.service;
 
+import static ch.sbb.atlas.workflow.model.WorkflowProcessingStatus.IN_PROGRESS;
 import static ch.sbb.atlas.workflow.model.WorkflowProcessingStatus.getProcessingStatus;
 
-import ch.sbb.atlas.workflow.model.BaseWorkflowEntity;
 import ch.sbb.atlas.workflow.model.WorkflowEvent;
 import ch.sbb.atlas.workflow.model.WorkflowProcessingStatus;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
@@ -13,7 +13,6 @@ import ch.sbb.line.directory.entity.LineVersionWorkflow;
 import ch.sbb.line.directory.repository.LineVersionWorkflowRepository;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
-import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,17 +45,10 @@ public class LineWorkflowProcessingService extends
 
   @Override
   protected LineVersionWorkflow buildObjectVersionWorkflow(WorkflowEvent workflowEvent, LineVersion object) {
-    Stream<WorkflowProcessingStatus> existingWorkflowsForLineVersion = lineVersionWorkflowRepository.findAllByLineVersion(object)
-        .stream()
-        .map(BaseWorkflowEntity::getWorkflowProcessingStatus);
-
     Optional<LineVersionWorkflow> existingLineRelation = objectWorkflowRepository.findByWorkflowId(workflowEvent.getWorkflowId());
     WorkflowProcessingStatus workflowProcessingStatus = getProcessingStatus(workflowEvent.getWorkflowStatus());
 
-    if (Stream.concat(existingWorkflowsForLineVersion, Stream.of(workflowProcessingStatus))
-        .filter(i -> i == WorkflowProcessingStatus.IN_PROGRESS).count() > 1) {
-      throw new IllegalStateException("There is max one workflow allowed to be in progress");
-    }
+    checkThatOnlyOneWorkflowIsInProgress(object, workflowProcessingStatus);
 
     if (existingLineRelation.isPresent()) {
       existingLineRelation.get().setWorkflowProcessingStatus(workflowProcessingStatus);
@@ -68,6 +60,15 @@ public class LineWorkflowProcessingService extends
         .lineVersion(object)
         .workflowProcessingStatus(workflowProcessingStatus)
         .build();
+  }
+
+  private void checkThatOnlyOneWorkflowIsInProgress(LineVersion object, WorkflowProcessingStatus newStatus) {
+    boolean hasWorkflowInProgress = lineVersionWorkflowRepository.findAllByLineVersion(object)
+        .stream().anyMatch(i -> i.getWorkflowProcessingStatus() == IN_PROGRESS);
+
+    if (newStatus == WorkflowProcessingStatus.IN_PROGRESS && hasWorkflowInProgress) {
+      throw new IllegalStateException("There is max one workflow allowed to be in progress");
+    }
   }
 
   private LineVersionSnapshot buildLineVersionSnapshot(WorkflowEvent workflowEvent, LineVersion lineVersion) {
