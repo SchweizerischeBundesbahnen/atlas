@@ -51,8 +51,8 @@ public class TimetableHearingStatementService {
   private final TimetableHearingPdfsAmazonService pdfsUploadAmazonService;
   private final StatementDocumentFilesValidationService statementDocumentFilesValidationService;
   private final ResponsibleTransportCompanyMapper responsibleTransportCompanyMapper;
-  private final TimetableHearingStatementMapperV2 timetableHearingStatementMapperV2;
   private final TimetableHearingStatementMapperV1 timetableHearingStatementMapperV1;
+  private final TimetableHearingStatementMapperV2 timetableHearingStatementMapperV2;
 
   public Page<TimetableHearingStatement> getHearingStatements(TimetableHearingStatementSearchRestrictions searchRestrictions) {
     log.info("Loading statements using {}", searchRestrictions);
