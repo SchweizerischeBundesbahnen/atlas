@@ -33,10 +33,10 @@ import org.mockito.MockitoAnnotations;
   private StatementDocumentFilesValidationService statementDocumentFilesValidationServiceMock;
   @Mock
   private ResponsibleTransportCompanyMapper responsibleTransportCompanyMapper;
+   @Mock
+   private TimetableHearingStatementMapperV1 timetableHearingStatementMapperV1;
   @Mock
   private TimetableHearingStatementMapperV2 timetableHearingStatementMapperV2;
-  @Mock
-  private TimetableHearingStatementMapperV1 timetableHearingStatementMapperV1;
 
   @BeforeEach
   void setUp() {
@@ -48,8 +48,8 @@ import org.mockito.MockitoAnnotations;
         timetableHearingPdfsAmazonServiceMock,
         statementDocumentFilesValidationServiceMock,
         responsibleTransportCompanyMapper,
-        timetableHearingStatementMapperV2,
-        timetableHearingStatementMapperV1
+        timetableHearingStatementMapperV1,
+        timetableHearingStatementMapperV2
     );
   }
 
