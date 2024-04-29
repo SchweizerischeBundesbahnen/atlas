@@ -97,8 +97,6 @@ public class TimetableHearingStatementService {
   public TimetableHearingStatement updateHearingStatement(TimetableHearingStatement existingStatement, TimetableHearingStatementModel timetableHearingStatementModel, List<MultipartFile> documents) {
     checkThatTimetableHearingYearExists(timetableHearingStatementModel.getTimetableYear());
 
-    setOldSwissCanton(existingStatement, timetableHearingStatementModel);
-
     TimetableHearingStatement timetableHearingStatementInDb = timetableHearingStatementRepository.getReferenceById(
         timetableHearingStatementModel.getId());
 
@@ -154,15 +152,6 @@ public class TimetableHearingStatementService {
     log.info("Starting PDF filetype validation.");
     statementDocumentFilesValidationService.validateAllFilessArePdfs(files);
     log.info("Concluded files validation.");
-  }
-
-  private void setOldSwissCanton(TimetableHearingStatement existingStatement, TimetableHearingStatementModel timetableHearingStatementModel){
-    if (existingStatement.getSwissCanton() != timetableHearingStatementModel.getSwissCanton()){
-      timetableHearingStatementModel.setOldSwissCanton(existingStatement.getSwissCanton());
-    }
-    else {
-      timetableHearingStatementModel.setOldSwissCanton(existingStatement.getOldSwissCanton());
-    }
   }
 
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
