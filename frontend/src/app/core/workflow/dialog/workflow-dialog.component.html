@@ -36,6 +36,7 @@
         (click)="startWorkflow()"
         class="atlas-primary-btn primary-color-btn"
         data-cy="dialog-confirm-button"
+        [disabled]="workflowStartFormGroup.disabled"
       >
         {{ data.confirmText ?? 'DIALOG.OK' | translate }}
       </button>
