@@ -131,6 +131,7 @@ export class WorkflowDialogComponent implements OnInit {
     ValidationService.validateForm(this.workflowStartFormGroup);
     if (this.workflowStartFormGroup.valid) {
       const workflowStart = this.populateWorkflowStart();
+      this.workflowStartFormGroup.disable();
       this.workflowService.startWorkflow(workflowStart).subscribe(() => {
         this.closeDialog();
         this.notificationService.success('WORKFLOW.NOTIFICATION.START.SUCCESS');
