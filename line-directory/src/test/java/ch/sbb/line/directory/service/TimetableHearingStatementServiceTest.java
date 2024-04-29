@@ -94,7 +94,7 @@ import org.springframework.web.multipart.MultipartFile;
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
 
     TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModel();
-    TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatement(
+    TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatementV2(
         timetableHearingStatementModel, Collections.emptyList());
 
     TimetableHearingStatement hearingStatement = timetableHearingStatementService.getTimetableHearingStatementById(
@@ -110,7 +110,7 @@ import org.springframework.web.multipart.MultipartFile;
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
     TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModel();
 
-    TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatement(
+    TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatementV2(
         timetableHearingStatementModel, Collections.emptyList());
 
     assertThatThrownBy(
@@ -127,7 +127,7 @@ import org.springframework.web.multipart.MultipartFile;
     documents.add(PdfFiles.MULTIPART_FILES.get(0));
     documents.add(PdfFiles.MULTIPART_FILES.get(1));
 
-    TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatement(
+    TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatementV2(
         timetableHearingStatementModel, documents);
 
     String originalFilename = PdfFiles.MULTIPART_FILES.get(0).getOriginalFilename();
@@ -141,7 +141,7 @@ import org.springframework.web.multipart.MultipartFile;
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
     TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModel();
 
-    TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatement(
+    TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatementV2(
         timetableHearingStatementModel, Collections.emptyList());
     TimetableHearingStatement createdStatementEntity = timetableHearingStatementMapperV2.toEntity(createdStatement);
 
@@ -170,7 +170,7 @@ import org.springframework.web.multipart.MultipartFile;
     documents.add(PdfFiles.MULTIPART_FILES.get(0));
     documents.add(PdfFiles.MULTIPART_FILES.get(1));
 
-    TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatement(
+    TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatementV2(
         timetableHearingStatementModel, documents);
     TimetableHearingStatement createdStatementEntity = timetableHearingStatementMapperV2.toEntity(createdStatement);
 
@@ -183,7 +183,7 @@ import org.springframework.web.multipart.MultipartFile;
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
     TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModel();
 
-    TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatement(
+    TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatementV2(
         timetableHearingStatementModel, Collections.emptyList());
     TimetableHearingStatement createdStatementEntity = timetableHearingStatementMapperV2.toEntity(createdStatement);
 
@@ -196,7 +196,7 @@ import org.springframework.web.multipart.MultipartFile;
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
     TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModel();
 
-    TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatement(
+    TimetableHearingStatementModelV2 createdStatement = timetableHearingStatementService.createHearingStatementV2(
         timetableHearingStatementModel, Collections.emptyList());
 
     assertThatThrownBy(
@@ -209,7 +209,7 @@ import org.springframework.web.multipart.MultipartFile;
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
     TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModel();
 
-    TimetableHearingStatementModelV2 hearingStatement = timetableHearingStatementService.createHearingStatement(
+    TimetableHearingStatementModelV2 hearingStatement = timetableHearingStatementService.createHearingStatementV2(
         timetableHearingStatementModel, Collections.emptyList());
 
     assertThat(hearingStatement).isNotNull();
@@ -220,7 +220,7 @@ import org.springframework.web.multipart.MultipartFile;
   void shouldNotCreateHearingStatementIfYearIsUnknown() {
     TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModel();
 
-    assertThatThrownBy(() -> timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel,
+    assertThatThrownBy(() -> timetableHearingStatementService.createHearingStatementV2(timetableHearingStatementModel,
         Collections.emptyList())).isInstanceOf(
         IdNotFoundException.class);
   }
@@ -242,7 +242,7 @@ import org.springframework.web.multipart.MultipartFile;
     TimetableHearingStatement timetableHearingStatement=
         timetableHearingStatementMapperV2.toEntity(timetableHearingStatementModel);
 
-    TimetableHearingStatementModelV2 updatingStatement = timetableHearingStatementService.createHearingStatement(
+    TimetableHearingStatementModelV2 updatingStatement = timetableHearingStatementService.createHearingStatementV2(
         timetableHearingStatementModel, docs);
     updatingStatement.setStatementStatus(StatementStatus.JUNK);
     timetableHearingStatementSenderModelV2.setEmails(new HashSet<>(Set.of("antohertest@test.com")));
@@ -262,7 +262,7 @@ import org.springframework.web.multipart.MultipartFile;
     TimetableHearingStatement timetableHearingStatement=
         timetableHearingStatementMapperV2.toEntity(timetableHearingStatementModel);
 
-    TimetableHearingStatementModelV2 updatingStatement = timetableHearingStatementService.createHearingStatement(
+    TimetableHearingStatementModelV2 updatingStatement = timetableHearingStatementService.createHearingStatementV2(
         timetableHearingStatementModel, Collections.emptyList());
     updatingStatement.setTimetableYear(2020L);
 
@@ -344,7 +344,7 @@ import org.springframework.web.multipart.MultipartFile;
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
     TimetableHearingStatementModelV2 created =
-        timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel,
+        timetableHearingStatementService.createHearingStatementV2(timetableHearingStatementModel,
         Collections.emptyList());
 
     TimetableHearingStatementSearchRestrictions searchRestrictions = TimetableHearingStatementSearchRestrictions.builder()
@@ -374,7 +374,7 @@ import org.springframework.web.multipart.MultipartFile;
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
     TimetableHearingStatementModelV2 created =
-        timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel,
+        timetableHearingStatementService.createHearingStatementV2(timetableHearingStatementModel,
             Collections.emptyList());
 
     long fakeId = created.getId() + 10L;
@@ -405,7 +405,7 @@ import org.springframework.web.multipart.MultipartFile;
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
-    timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
+    timetableHearingStatementService.createHearingStatementV2(timetableHearingStatementModel, Collections.emptyList());
 
     TimetableHearingStatementSearchRestrictions searchRestrictions = TimetableHearingStatementSearchRestrictions.builder()
         .statementRequestParams(TimetableHearingStatementRequestParams.builder()
@@ -443,7 +443,7 @@ import org.springframework.web.multipart.MultipartFile;
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
-    timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
+    timetableHearingStatementService.createHearingStatementV2(timetableHearingStatementModel, Collections.emptyList());
 
     TimetableHearingStatementSearchRestrictions searchRestrictions = TimetableHearingStatementSearchRestrictions.builder()
         .statementRequestParams(TimetableHearingStatementRequestParams.builder()
@@ -499,7 +499,7 @@ import org.springframework.web.multipart.MultipartFile;
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
-    timetableHearingStatementService.createHearingStatement(timetableHearingStatementModel, Collections.emptyList());
+    timetableHearingStatementService.createHearingStatementV2(timetableHearingStatementModel, Collections.emptyList());
 
     TimetableHearingStatementSearchRestrictions searchRestrictions = TimetableHearingStatementSearchRestrictions.builder()
         .statementRequestParams(TimetableHearingStatementRequestParams.builder()
