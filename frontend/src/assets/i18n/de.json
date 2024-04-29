@@ -832,7 +832,8 @@
         "COMMENT_LABEL": "Kommentar zur Kantonsübergabe",
         "CANCEL": "Zurück",
         "CONFIRM": "Kanton editieren"
-      }
+      },
+      "STATEMENT_TRANSFER_COUNTRY": "Diese Stellungnahme wurde vom Kanton {{oldSwissCanton}} übertragen."
     },
     "CLOSE_TIMETABLE_HEARING": {
       "POPUP_TITLE": "Fahrplanjahr schliessen",
