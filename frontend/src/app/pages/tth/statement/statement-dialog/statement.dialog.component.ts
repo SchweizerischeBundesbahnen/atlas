@@ -1,7 +1,7 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormGroup} from '@angular/forms';
-import {TimetableHearingStatement, TimetableHearingStatementsService} from '../../../../api';
+import {TimetableHearingStatement, TimetableHearingStatementsV2Service} from '../../../../api';
 import {Subject} from 'rxjs';
 import {NotificationService} from '../../../../core/notification/notification.service';
 import {StatementDetailFormGroup} from '../statement-detail-form-group';
@@ -18,7 +18,7 @@ export class StatementDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<StatementDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public form: FormGroup<StatementDetailFormGroup>,
-    private readonly timetableHearingStatementsService: TimetableHearingStatementsService,
+    private readonly timetableHearingStatementsServiceV2: TimetableHearingStatementsV2Service,
     private readonly notificationService: NotificationService,
   ) {}
 
@@ -32,7 +32,7 @@ export class StatementDialogComponent {
   }
 
   private updateStatement(id: number, statement: TimetableHearingStatement) {
-    this.timetableHearingStatementsService
+    this.timetableHearingStatementsServiceV2
       .updateHearingStatement(id, statement)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
