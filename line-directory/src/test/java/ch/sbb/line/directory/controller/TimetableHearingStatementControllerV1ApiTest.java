@@ -93,7 +93,7 @@ import org.springframework.test.web.servlet.MvcResult;
   private TimetableHearingYearController timetableHearingYearController;
 
   @Autowired
-  private TimetableHearingStatementControllerV1 timetableHearingStatementController;
+  private TimetableHearingStatementControllerV2 timetableHearingStatementControllerV2;
 
   @Autowired
   private TimetableHearingStatementRepository timetableHearingStatementRepository;
@@ -367,7 +367,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldUpdateStatement() throws Exception {
-    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerV2.createStatement(
         TimetableHearingStatementModelV2.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
@@ -583,7 +583,7 @@ import org.springframework.test.web.servlet.MvcResult;
     hearingYear.setStatementEditable(false);
     timetableHearingYearController.updateTimetableHearingSettings(YEAR, hearingYear);
 
-    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerV2.createStatement(
         TimetableHearingStatementModelV2.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
@@ -611,7 +611,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldAddDocumentsToExistingStatementWithoutDocuments() throws Exception {
-    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerV2.createStatement(
         TimetableHearingStatementModelV2.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
@@ -646,7 +646,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .statement("Ich haette gerne mehrere Verbindungen am Abend.")
         .build();
 
-    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerV2.createStatement(
         timetableHearingStatementModel,
         List.of(MULTIPART_FILES.get(1)));
 
@@ -677,7 +677,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .statement("Ich haette gerne mehrere Verbindungen am Abend.")
         .build();
 
-    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerV2.createStatement(
         timetableHearingStatementModel,
         List.of(MULTIPART_FILES.get(1)));
 
@@ -698,7 +698,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldGetStatementById() throws Exception {
-    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerV2.createStatement(
         TimetableHearingStatementModelV2.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
@@ -717,7 +717,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldGetStatementByHearingYear() throws Exception {
-    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerV2.createStatement(
         TimetableHearingStatementModelV2.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
@@ -739,7 +739,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldGetStatementDocumentByDocumentId() throws Exception {
-    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerV2.createStatement(
         TimetableHearingStatementModelV2.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
@@ -758,7 +758,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldThrowExceptionOnGetStatementDocumentByDocumentId() throws Exception {
-    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerV2.createStatement(
         TimetableHearingStatementModelV2.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
@@ -776,7 +776,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldDeleteStatementDocumentByDocumentId() throws Exception {
-    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerV2.createStatement(
         TimetableHearingStatementModelV2.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
@@ -794,7 +794,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Test
   void shouldGetStatementDocumentNotFoundWhenNoDocument() throws Exception {
-    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerV2.createStatement(
         TimetableHearingStatementModelV2.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
@@ -816,7 +816,7 @@ import org.springframework.test.web.servlet.MvcResult;
         Kanton;"Fahrplanfeld-Nr.";Fahrplanfeldbezeichnung;Haltestelle;ID;"Abkürzung Transportunternehmung";"Name Transportunternehmung";Stellungnahme;Anhang;Status;Begründung;Vorname;Nachname;Organisation;Strasse;"PLZ/Ort";"E-Mails";Bearbeiter;"Zuletzt bearbeitet";Fahrplanjahr
         """;
 
-    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerV2.createStatement(
         TimetableHearingStatementModelV2.builder()
             .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
             .swissCanton(SwissCanton.BERN)
@@ -856,7 +856,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .statement("Ich haette gerne mehrere Verbindungen am Abend.")
         .build();
 
-    TimetableHearingStatementModelV2 statement = timetableHearingStatementController.createStatement(
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerV2.createStatement(
         timetableHearingStatementModel, Collections.emptyList());
     assertThat(statement.getResponsibleTransportCompanies()).hasSize(1);
     assertThat(statement.getResponsibleTransportCompanies().get(0).getId()).isEqualTo(1);

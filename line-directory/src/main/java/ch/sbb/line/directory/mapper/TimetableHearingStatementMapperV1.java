@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class TimetableHearingStatementMapper {
+public class TimetableHearingStatementMapperV1 {
 
   private final ResponsibleTransportCompanyMapper responsibleTransportCompanyMapper;
 
@@ -25,7 +25,7 @@ public class TimetableHearingStatementMapper {
         .swissCanton(statementModel.getSwissCanton())
         .oldSwissCanton(statementModel.getOldSwissCanton())
         .stopPlace(statementModel.getStopPlace())
-        .statementSender(StatementSenderMapper.toEntity(statementModel.getStatementSender()))
+        .statementSender(StatementSenderMapperV1.toEntity(statementModel.getStatementSender()))
         .statement(statementModel.getStatement())
         .documents(statementModel.getDocuments().stream().map(StatementDocumentMapper::toEntity).collect(Collectors.toSet()))
         .justification(statementModel.getJustification())
@@ -51,7 +51,7 @@ public class TimetableHearingStatementMapper {
         .stopPlace(statement.getStopPlace())
         .responsibleTransportCompanies(getResponsibleTransportCompanies(statement))
         .responsibleTransportCompaniesDisplay(statement.getResponsibleTransportCompaniesDisplay())
-        .statementSender(StatementSenderMapper.toModel(statement.getStatementSender()))
+        .statementSender(StatementSenderMapperV1.toModel(statement.getStatementSender()))
         .statement(statement.getStatement())
         .documents(statement.getDocuments().stream().map(StatementDocumentMapper::toModel).toList())
         .justification(statement.getJustification())
