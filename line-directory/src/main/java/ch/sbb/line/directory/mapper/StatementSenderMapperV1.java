@@ -6,7 +6,7 @@ import java.util.Set;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class StatementSenderMapper {
+public class StatementSenderMapperV1 {
 
   public static StatementSender toEntity(TimetableHearingStatementSenderModelV1 timetableHearingStatementSenderModel) {
     return StatementSender.builder()

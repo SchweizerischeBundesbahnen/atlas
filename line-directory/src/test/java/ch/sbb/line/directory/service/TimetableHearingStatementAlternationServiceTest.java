@@ -76,15 +76,15 @@ class TimetableHearingStatementAlternationServiceTest {
         .build();
 
     // Statement 1
-    statement1 = timetableHearingStatementService.createHearingStatement(model1, Collections.emptyList());
+    statement1 = timetableHearingStatementService.createHearingStatementV2(model1, Collections.emptyList());
 
     // Statement 2
     model1.setStatement("Statement 2");
-    statement2 = timetableHearingStatementService.createHearingStatement(model1, Collections.emptyList());
+    statement2 = timetableHearingStatementService.createHearingStatementV2(model1, Collections.emptyList());
 
     // Statement 3
     model1.setStatement("Statement 3");
-    statement3 = timetableHearingStatementService.createHearingStatement(model1, Collections.emptyList());
+    statement3 = timetableHearingStatementService.createHearingStatementV2(model1, Collections.emptyList());
   }
 
   @AfterEach
