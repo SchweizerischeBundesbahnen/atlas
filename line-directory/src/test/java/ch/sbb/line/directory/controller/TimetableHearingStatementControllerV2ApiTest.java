@@ -15,7 +15,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.api.bodi.TransportCompanyModel;
 import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
-import ch.sbb.atlas.api.client.user.administration.UserAdministrationClient;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
@@ -68,9 +67,6 @@ class TimetableHearingStatementControllerV2ApiTest extends BaseControllerApiTest
  private TimetableHearingYearController timetableHearingYearController;
 
  @Autowired
- private TimetableHearingStatementControllerV1 timetableHearingStatementController;
-
- @Autowired
  private TimetableHearingStatementRepository timetableHearingStatementRepository;
 
  @MockBean
@@ -78,9 +74,6 @@ class TimetableHearingStatementControllerV2ApiTest extends BaseControllerApiTest
 
  @MockBean
  private TransportCompanyClient transportCompanyClient;
-
- @MockBean
- private UserAdministrationClient userAdministrationClient;
 
  @MockBean
  private SharedTransportCompanyRepository sharedTransportCompanyRepository;
@@ -241,49 +234,6 @@ class TimetableHearingStatementControllerV2ApiTest extends BaseControllerApiTest
        MediaType.APPLICATION_JSON_VALUE, statement);
 
    mvc.perform(multipart(HttpMethod.POST, "/v1/timetable-hearing/statements/external")
-           .file(statementJson)
-           .file(new MockMultipartFile(MULTIPART_FILES.get(0).getName(), MULTIPART_FILES.get(0).getOriginalFilename(),
-               MULTIPART_FILES.get(0).getContentType(), MULTIPART_FILES.get(0).getBytes()))
-           .file(
-               new MockMultipartFile(MULTIPART_FILES.get(1).getName(), MULTIPART_FILES.get(1).getOriginalFilename(),
-                   MULTIPART_FILES.get(1).getContentType(), MULTIPART_FILES.get(1).getBytes())))
-       .andExpect(status().isCreated())
-       .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.RECEIVED.toString())))
-       .andExpect(jsonPath("$." + Fields.documents, hasSize(2)))
-       .andExpect(jsonPath("$." + Fields.documents + "[0].id", notNullValue()));
- }
-
- @Test
- void shouldCreateStatementExternalV2FromSkiWeb() throws Exception {
-   // For Client-Credential Auth
-   SecurityContext context = SecurityContextHolder.getContext();
-   Authentication authentication = new JwtAuthenticationToken(createJwtWithoutSbbUid(),
-       AuthorityUtils.createAuthorityList("ROLE_atlas-admin"));
-   authentication.setAuthenticated(true);
-   context.setAuthentication(authentication);
-
-   timetableHearingYearController.startHearingYear(YEAR);
-   String statement = """
-        {
-          "statement": "I need some more busses please.",
-          "statementSender": {
-            "emails": ["maurer@post.ch", "max@post.ch"],
-            "firstName": "Fabienne",
-            "lastName": "Maurer",
-            "organisation": "Post AG",
-            "street": "Bahnhofstrasse 12",
-            "zip": 3000,
-            "city": "Bern"
-          },
-          "timetableFieldNumber": "1.1",
-          "swissCanton": "BERN",
-          "stopPlace": "Bern, Wyleregg"
-        }
-       """;
-   MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
-       MediaType.APPLICATION_JSON_VALUE, statement);
-
-   mvc.perform(multipart(HttpMethod.POST, "/v2/timetable-hearing/statements/external")
            .file(statementJson)
            .file(new MockMultipartFile(MULTIPART_FILES.get(0).getName(), MULTIPART_FILES.get(0).getOriginalFilename(),
                MULTIPART_FILES.get(0).getContentType(), MULTIPART_FILES.get(0).getBytes()))
