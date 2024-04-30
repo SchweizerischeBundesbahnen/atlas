@@ -22,6 +22,7 @@ export interface StatementDetailFormGroup {
   comment: FormControl<string | null | undefined>;
   documents: FormArray;
   etagVersion: FormControl<number | null | undefined>;
+  editor: FormControl<string | null | undefined>;
 }
 
 export interface StatementSenderFormGroup {
