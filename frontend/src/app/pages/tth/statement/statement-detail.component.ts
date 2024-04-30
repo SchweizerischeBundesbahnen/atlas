@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {
   ApplicationRole,
-  ApplicationType, SwissCantonMap,
+  ApplicationType,
   HearingStatus,
   StatementStatus,
   SwissCanton,
@@ -36,6 +36,7 @@ import {DetailFormComponent} from '../../../core/leave-guard/leave-dirty-form-gu
 import {TableService} from "../../../core/components/table/table.service";
 import {addElementsToArrayWhenNotUndefined} from "../../../core/util/arrays";
 import {TranslateService} from "@ngx-translate/core";
+import {SwissCantonMap} from "../../model/swissCantonMap";
 
 @Component({
   selector: 'app-statement-detail',
