@@ -11,7 +11,7 @@
  */
 
 
-export interface TimetableHearingStatementSender { 
+export interface TimetableHearingStatementSender {
     /**
      * First Name
      */
@@ -37,8 +37,9 @@ export interface TimetableHearingStatementSender {
      */
     city?: string;
     /**
-     * E-Mail address
+     * E-Mail addresses
      */
-    email: string;
+    // emails?: Set<string>;
+    emails?: string[];
 }
 

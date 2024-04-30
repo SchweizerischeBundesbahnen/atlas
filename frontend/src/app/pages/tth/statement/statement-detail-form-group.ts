@@ -30,4 +30,5 @@ export interface StatementSenderFormGroup {
   street: FormControl<string | null | undefined>;
   // emails: FormControl<Set<string> | null | undefined>;
   emails: FormControl<string | null | undefined>;
+  // emails: FormControl<string[] | null | undefined>;
 }
