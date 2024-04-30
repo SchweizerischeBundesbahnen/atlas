@@ -200,7 +200,7 @@
           <div class="d-flex flex-row col-12 mb-4">
             <div class="d-flex flex-column col-12">
             <h2>Add Emails</h2>
-            <app-email-list (emailsChange)="onEmailsChange($event)"></app-email-list>
+            <app-email-list [existingEmails]="existingEmails" (emailsChange)="onEmailsChange($event)"></app-email-list>
             </div>
           </div>
 
