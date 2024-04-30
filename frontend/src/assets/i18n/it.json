@@ -833,7 +833,8 @@
         "COMMENT_LABEL": "Commento sul passaggio di consegne cantonale",
         "CANCEL": "Ritorno",
         "CONFIRM": "Modifica Cantone"
-      }
+      },
+      "STATEMENT_TRANSFER_COUNTRY": "Questo parere è stato trasmesso dal Cantone {{oldSwissCanton}}."
     },
     "CLOSE_TIMETABLE_HEARING": {
       "POPUP_TITLE": "Chiusura dell'anno di calendario",
