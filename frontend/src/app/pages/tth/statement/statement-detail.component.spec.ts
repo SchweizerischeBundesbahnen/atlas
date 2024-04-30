@@ -137,11 +137,6 @@ describe('StatementDetailComponent for existing statement', () => {
     component.previous();
     expect(mockTimetableHearingStatementsService.getPreviousStatement).toHaveBeenCalled();
   });
-
-  it('should return translated canton', () => {
-    component.translateCanton(SwissCanton.Zurich);
-    expect(component.cantonName).toEqual('TTH.CANTON.ZH');
-  });
 });
 
 describe('test editButton', () => {

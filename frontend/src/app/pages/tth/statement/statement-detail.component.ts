@@ -35,8 +35,6 @@ import {Pages} from '../../pages';
 import {DetailFormComponent} from '../../../core/leave-guard/leave-dirty-form-guard.service';
 import {TableService} from "../../../core/components/table/table.service";
 import {addElementsToArrayWhenNotUndefined} from "../../../core/util/arrays";
-import {TranslateService} from "@ngx-translate/core";
-import {SwissCantonMap} from "../../model/swissCantonMap";
 
 @Component({
   selector: 'app-statement-detail',
@@ -58,7 +56,6 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   isLoading = false;
   isDuplicating = false;
   isInitializingComponent = true;
-  cantonName!: SwissCanton
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -75,7 +72,6 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     private readonly openStatementInMailService: OpenStatementInMailService,
     private readonly statementShareService: StatementShareService,
     private readonly tableService: TableService,
-    private readonly translateService: TranslateService
   ) {
   }
 
@@ -332,9 +328,6 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     if (!this.isNew) {
       this.initialValueForCanton = this.form.value.swissCanton;
     }
-    if(!this.isNew && this.statement?.oldSwissCanton){
-      this.translateCanton(this.statement.oldSwissCanton);
-    }
     if (!this.isNew || this.isHearingStatusArchived) {
       this.form.disable();
     }
@@ -410,9 +403,6 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       this.isInitializingComponent = false;
       this.statement = statement;
       this.ngOnInit();
-      if(statement.oldSwissCanton){
-        this.translateCanton(statement.oldSwissCanton)
-      }
     });
   }
 
@@ -478,10 +468,4 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       this.tableService.pageSize,
       addElementsToArrayWhenNotUndefined(this.tableService.sortString, 'statementStatus,asc', 'ttfnid,asc', 'id,ASC')];
   }
-
-
-  translateCanton(oldSwissCanton: SwissCanton){
-    this.cantonName = this.translateService.instant(`TTH.CANTON.${SwissCantonMap[oldSwissCanton]}`);
-  }
-
 }
