@@ -128,6 +128,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   }
 
   cantonSelectionChanged() {
+    this.form.controls.editor.setValue(this.statement?.editor);
     this.form.controls.oldSwissCanton.setValue(this.initialValueForCanton);
     this.statementDialogService.openDialog(this.form).subscribe((result) => {
       if (result) {
@@ -235,6 +236,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
         statement?.documents?.map((document) => new FormControl(document)) ?? [],
       ),
       etagVersion: new FormControl(statement?.etagVersion),
+      editor: new FormControl(statement?.editor),
     });
   }
 
