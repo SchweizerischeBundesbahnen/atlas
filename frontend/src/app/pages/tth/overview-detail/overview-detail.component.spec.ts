@@ -87,7 +87,7 @@ const timetableHearingStatement: TimetableHearingStatement = {
       businessRegisterName: 'BLS',
     },
   ],
-  statementSender: { emails: new Set(['a@b.c'])},
+  statementSender: { emails: new Array('a@b.c')},
   statement: 'Ich hätte gerne mehrere Verbindungen am Abend.',
   documents: [],
 };
@@ -303,7 +303,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
     });
 
     it('should return the last name of the statement sender', () => {
-      const testSender: TimetableHearingStatementSender = { firstName: 'Max', lastName: 'Mustermann', emails: new Set(['muster@muster.com'])};
+      const testSender: TimetableHearingStatementSender = { firstName: 'Max', lastName: 'Mustermann', emails: new Array('muster@muster.com')};
       expect(component.mapToLastname(testSender)).toEqual('Mustermann');
     });
 

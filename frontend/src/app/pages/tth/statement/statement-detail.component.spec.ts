@@ -38,7 +38,7 @@ const existingStatement: TimetableHearingStatement = {
   swissCanton: SwissCanton.Bern,
   statement: 'Luca isch am yb match gsi',
   statementSender: {
-    emails: new Set(['luca@yb.ch']),
+    emails: new Array('luca@yb.ch'),
   },
 };
 
@@ -224,7 +224,7 @@ describe('StatementDetailComponent for new statement', () => {
 
       component.form.controls.swissCanton.setValue(SwissCanton.Bern);
       component.form.controls.statement.setValue('my yb busses');
-      component.form.controls.statementSender.controls.emails.setValue(new Set(['luca@yb.ch']));
+      component.form.controls.statementSender.controls.emails.setValue('luca@yb.ch');
       fixture.detectChanges();
 
       component.save();
