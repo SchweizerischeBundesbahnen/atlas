@@ -35,6 +35,7 @@ import {Pages} from '../../pages';
 import {DetailFormComponent} from '../../../core/leave-guard/leave-dirty-form-guard.service';
 import {TableService} from "../../../core/components/table/table.service";
 import {addElementsToArrayWhenNotUndefined} from "../../../core/util/arrays";
+import {AtlasElementLengthValidator} from "../../../core/validation/element-length/atlas-element-length-validator";
 
 @Component({
   selector: 'app-statement-detail',
@@ -222,8 +223,9 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
         ]),
         emails: new FormControl(this.emailsToString(statement?.statementSender?.emails), [
           Validators.required,
-          AtlasFieldLengthValidator.length_100,
-          // AtlasCharsetsValidator.email,
+          AtlasElementLengthValidator.maxElements,
+          AtlasElementLengthValidator.noDuplicates,
+          AtlasCharsetsValidator.emails,
         ]),
       }),
       statement: new FormControl(statement?.statement, [
