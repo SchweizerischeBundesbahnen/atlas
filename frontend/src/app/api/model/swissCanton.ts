@@ -45,7 +45,7 @@ export const SwissCanton = {
     Jura: 'JURA' as SwissCanton
 };
 
-export const cantonMap: { [key in SwissCanton]: string } = {
+export const SwissCantonMap: { [key in SwissCanton]: string } = {
   ZURICH: 'ZH',
   BERN: 'BE',
   LUCERNE: 'LU',
