@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'app-email-list',
@@ -6,10 +6,18 @@ import {Component, EventEmitter, Output} from '@angular/core';
   styleUrls: ['./email-list.component.scss']
 })
 export class EmailListComponent {
+  @Input() existingEmails: string[] = [];
+  email: string = '';
   emailList: string[] = [];
   maxEmails: number = 10;
 
   @Output() emailsChange = new EventEmitter<string[]>();
+
+  ngOnInit() {
+    if (this.existingEmails) {
+      this.emailList = this.existingEmails;
+    }
+  }
 
   addEmail(email: string) {
     if (email && this.emailList.length < this.maxEmails && !this.emailList.includes(email)) {
