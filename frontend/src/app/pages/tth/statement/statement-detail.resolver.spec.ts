@@ -10,7 +10,7 @@ const statement: TimetableHearingStatement = {
   swissCanton: SwissCanton.Aargau,
   statement: 'Mehr Busse bitte',
   statementSender: {
-    emails: new Set(['luca@yb.ch']),
+    emails: new Array('luca@yb.ch'),
   },
 };
 
