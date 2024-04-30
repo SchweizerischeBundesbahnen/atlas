@@ -1,6 +1,7 @@
 CREATE TABLE timetable_hearing_statement_emails (
     timetable_hearing_statement_id BIGINT       NOT NULL,
-    email                          VARCHAR(255) NOT NULL
+    email                          VARCHAR(255) NOT NULL,
+    FOREIGN KEY (timetable_hearing_statement_id) REFERENCES timetable_hearing_statement(id)
 );
 
 INSERT INTO timetable_hearing_statement_emails (email, timetable_hearing_statement_id)
