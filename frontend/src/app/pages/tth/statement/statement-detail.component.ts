@@ -147,7 +147,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       ValidationService.validateForm(this.form);
       if (this.form.valid) {
         this.form.disable();
-        const emails = this.stringToEmails(this.form.value.statementSender!.emails!);
+        const emails = this.form.value.statementSender!.emails!.split(',').map(email => email.trim());
         const hearingStatement = this.form.value as TimetableHearingStatement;
         hearingStatement.statementSender.emails = emails;
         if (this.isNew) {
@@ -223,7 +223,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
         emails: new FormControl(this.emailsToString(statement?.statementSender?.emails), [
           Validators.required,
           AtlasFieldLengthValidator.length_100,
-          AtlasCharsetsValidator.email,
+          // AtlasCharsetsValidator.email,
         ]),
       }),
       statement: new FormControl(statement?.statement, [
@@ -242,8 +242,8 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     });
   }
 
-  emailsToString(emails: Set<string> | undefined): string {
-    if (!emails || emails.size === 0) {
+  emailsToString(emails: string[] | undefined): string {
+    if (!emails || emails.length === 0) {
       return '';
     }
     return Array.from(emails).join(', ');
