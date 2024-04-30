@@ -29,6 +29,6 @@ export interface StatementSenderFormGroup {
   city: FormControl<string | null | undefined>;
   street: FormControl<string | null | undefined>;
   // emails: FormControl<Set<string> | null | undefined>;
-  emails: FormControl<string | null | undefined>;
+  emails: FormControl<string[] | null | undefined>;
   // emails: FormControl<string[] | null | undefined>;
 }

@@ -35,7 +35,6 @@ import {Pages} from '../../pages';
 import {DetailFormComponent} from '../../../core/leave-guard/leave-dirty-form-guard.service';
 import {TableService} from "../../../core/components/table/table.service";
 import {addElementsToArrayWhenNotUndefined} from "../../../core/util/arrays";
-import {AtlasElementLengthValidator} from "../../../core/validation/element-length/atlas-element-length-validator";
 
 @Component({
   selector: 'app-statement-detail',
@@ -43,6 +42,7 @@ import {AtlasElementLengthValidator} from "../../../core/validation/element-leng
   styleUrls: ['./statement-detail.component.scss'],
 })
 export class StatementDetailComponent implements OnInit, DetailFormComponent {
+  existingEmails: string[] = [];
   YEAR_OPTIONS: number[] = [];
   CANTON_OPTIONS: Canton[] = [];
   STATUS_OPTIONS: StatementStatus[] = [];
@@ -122,6 +122,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     this.initCantonOptions();
     this.initStatusOptions();
     this.initResponsibleTransportCompanyPrefill();
+    this.retrieveExistingEmails();
   }
 
   cantonSelectionChanged() {
@@ -148,9 +149,9 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       ValidationService.validateForm(this.form);
       if (this.form.valid) {
         this.form.disable();
-        const emails = this.form.value.statementSender!.emails!.split(',').map(email => email.trim());
+        // const emails = this.form.value.statementSender!.emails!.split(',').map(email => email.trim());
         const hearingStatement = this.form.value as TimetableHearingStatement;
-        hearingStatement.statementSender.emails = emails;
+        // hearingStatement.statementSender.emails = emails;
         if (this.isNew) {
           this.createStatement(hearingStatement);
         } else {
@@ -221,12 +222,18 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
         street: new FormControl(statement?.statementSender?.street, [
           AtlasFieldLengthValidator.length_100,
         ]),
-        emails: new FormControl(this.emailsToString(statement?.statementSender?.emails), [
+        // emails: new FormControl(this.emailsToString(statement?.statementSender?.emails), [
+        //   Validators.required,
+        //   AtlasElementLengthValidator.maxElements,
+        //   AtlasElementLengthValidator.noDuplicates,
+        //   AtlasCharsetsValidator.emails,
+        // ]),
+        emails: new FormControl(statement?.statementSender?.emails, [
           Validators.required,
-          AtlasElementLengthValidator.maxElements,
-          AtlasElementLengthValidator.noDuplicates,
-          AtlasCharsetsValidator.emails,
-        ]),
+          // AtlasElementLengthValidator.maxElements,
+          // AtlasElementLengthValidator.noDuplicates,
+          // AtlasCharsetsValidator.emails,
+        ])
       }),
       statement: new FormControl(statement?.statement, [
         Validators.required,
@@ -242,6 +249,12 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       etagVersion: new FormControl(statement?.etagVersion),
       editor: new FormControl(statement?.editor),
     });
+  }
+
+  retrieveExistingEmails() {
+    const emailsFormArray = this.form.get('statementSender.emails') as FormArray;
+    this.existingEmails = emailsFormArray.value.filter((email: string) => email !== null && email !== undefined);
+
   }
 
   onEmailsChange(emails: string[]) {
