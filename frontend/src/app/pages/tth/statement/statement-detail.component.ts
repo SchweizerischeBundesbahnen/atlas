@@ -244,6 +244,10 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     });
   }
 
+  onEmailsChange(emails: string[]) {
+    console.log(emails);
+  }
+
   emailsToString(emails: string[] | undefined): string {
     if (!emails || emails.length === 0) {
       return '';
