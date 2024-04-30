@@ -14,6 +14,7 @@ import {BoSelectionDisplayPipe} from '../form-components/bo-select/bo-selection-
 import {LinkIconComponent} from '../form-components/link-icon/link-icon.component';
 import {InfoLinkDirective} from '../form-components/info-icon/info-link.directive';
 import {TextFieldComponent} from '../form-components/text-field/text-field.component';
+import {EmailListComponent} from "../form-components/email-list/email-list.component";
 import {AtlasFieldErrorComponent} from '../form-components/atlas-field-error/atlas-field-error.component';
 import {AtlasLabelFieldComponent} from '../form-components/atlas-label-field/atlas-label-field.component';
 import {DownloadIconComponent} from '../form-components/download-icon/download-icon.component';
@@ -47,6 +48,7 @@ import {
     TimetableFieldNumberSelectOptionPipe,
     InfoLinkDirective,
     TextFieldComponent,
+    EmailListComponent,
     AtlasFieldErrorComponent,
     AtlasLabelFieldComponent,
     AtlasSlideToggleComponent,
@@ -69,6 +71,7 @@ import {
     LinkIconComponent,
     InfoLinkDirective,
     TextFieldComponent,
+    EmailListComponent,
     AtlasFieldErrorComponent,
     AtlasLabelFieldComponent,
     AtlasSlideToggleComponent,
