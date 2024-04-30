@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {
   ApplicationRole,
-  ApplicationType, cantonMap,
+  ApplicationType, SwissCantonMap,
   HearingStatus,
   StatementStatus,
   SwissCanton,
@@ -478,7 +478,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
 
 
   translateCanton(oldSwissCanton: SwissCanton){
-    this.cantonName = this.translateService.instant(`TTH.CANTON.${cantonMap[oldSwissCanton]}`);
+    this.cantonName = this.translateService.instant(`TTH.CANTON.${SwissCantonMap[oldSwissCanton]}`);
   }
 
 }
