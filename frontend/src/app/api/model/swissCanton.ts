@@ -44,33 +44,3 @@ export const SwissCanton = {
     Geneve: 'GENEVE' as SwissCanton,
     Jura: 'JURA' as SwissCanton
 };
-
-export const SwissCantonMap: { [key in SwissCanton]: string } = {
-  ZURICH: 'ZH',
-  BERN: 'BE',
-  LUCERNE: 'LU',
-  URI: 'UR',
-  SCHWYZ: 'SZ',
-  OBWALDEN: 'OW',
-  NIDWALDEN: 'NW',
-  GLARUS: 'GL',
-  ZUG: 'ZG',
-  FRIBOURG: 'FR',
-  SOLOTHURN: 'SO',
-  BASEL_CITY: 'BS',
-  BASEL_COUNTRY: 'BL',
-  SCHAFFHAUSEN: 'SH',
-  APPENZELL_AUSSERRHODEN: 'AR',
-  APPENZELL_INNERRHODEN: 'AI',
-  ST_GALLEN: 'SG',
-  GRAUBUNDEN: 'GR',
-  AARGAU: 'AG',
-  THURGAU: 'TG',
-  TICINO: 'TI',
-  VAUD: 'VD',
-  VALAIS: 'VS',
-  NEUCHATEL: 'NE',
-  GENEVE: 'GE',
-  JURA: 'JU'
-};
-
