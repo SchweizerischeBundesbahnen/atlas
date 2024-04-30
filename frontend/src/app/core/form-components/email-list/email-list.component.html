@@ -1,0 +1,12 @@
+<div>
+  <input #emailInput type="text">
+  <button (click)="addEmail(emailInput.value)">Add Email</button>
+</div>
+<div *ngIf="emailList.length > 0">
+  <ul>
+    <li *ngFor="let email of emailList; let i = index;">
+      <span>{{ email }}</span>
+      <button (click)="removeEmail(i)">Delete</button>
+    </li>
+  </ul>
+</div>
