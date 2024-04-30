@@ -18,7 +18,7 @@ const statement: TimetableHearingStatement = {
   statement: '***REMOVED*** is am yb match gsi',
   justification: 'Napoli ist besser als YB',
   statementSender: {
-    emails: new Set(['***REMOVED***@yb.ch']),
+    emails: new Array('***REMOVED***@yb.ch'),
   },
 };
 const dialogRefSpy = jasmine.createSpyObj(['close']);

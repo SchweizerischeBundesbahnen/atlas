@@ -24,7 +24,7 @@ const statement: TimetableHearingStatement = {
   justification: 'This is justification.',
   comment: 'This is canton change comment.',
   statementSender: {
-    emails: new Set(['atlas@sbb.ch']),
+    emails: new Array('atlas@sbb.ch'),
   },
 };
 const form = new FormGroup({
