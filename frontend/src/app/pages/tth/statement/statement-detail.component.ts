@@ -93,7 +93,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
 
   readonly extractShort = (option: Canton) => option.short;
 
-    ngOnInit() {
+  ngOnInit() {
     if (this.isInitializingComponent) {
       this.statement = this.route.snapshot.data.statement;
     }
@@ -148,9 +148,9 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     } else {
       ValidationService.validateForm(this.form);
       if (this.form.valid) {
+        const hearingStatement = this.form.value as TimetableHearingStatement;
         this.form.disable();
         // const emails = this.form.value.statementSender!.emails!.split(',').map(email => email.trim());
-        const hearingStatement = this.form.value as TimetableHearingStatement;
         // hearingStatement.statementSender.emails = emails;
         if (this.isNew) {
           this.createStatement(hearingStatement);
@@ -258,7 +258,10 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   }
 
   onEmailsChange(emails: string[]) {
+    this.form.value.statementSender!.emails = emails;
+    this.form.markAsDirty();
     console.log(emails);
+    console.log(this.form.value.statementSender!.emails);
   }
 
   emailsToString(emails: string[] | undefined): string {
