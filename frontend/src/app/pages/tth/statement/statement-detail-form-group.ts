@@ -14,6 +14,7 @@ export interface StatementDetailFormGroup {
     Array<TimetableHearingStatementResponsibleTransportCompany> | null | undefined
   >;
   swissCanton: FormControl<SwissCanton | null | undefined>;
+  oldSwissCanton: FormControl<SwissCanton | null | undefined>;
   stopPlace: FormControl<string | null | undefined>;
   statement: FormControl<string | null | undefined>;
   statementSender: FormGroup<StatementSenderFormGroup>;
@@ -21,6 +22,7 @@ export interface StatementDetailFormGroup {
   comment: FormControl<string | null | undefined>;
   documents: FormArray;
   etagVersion: FormControl<number | null | undefined>;
+  editor: FormControl<string | null | undefined>;
 }
 
 export interface StatementSenderFormGroup {

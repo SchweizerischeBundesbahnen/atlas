@@ -832,7 +832,8 @@
         "COMMENT_LABEL": "Commentaire sur la cession de canton",
         "CANCEL": "Retour",
         "CONFIRM": "Modifier le canton"
-      }
+      },
+      "STATEMENT_TRANSFER_COUNTRY": "Cet pris de position a été transmis par le canton {{oldSwissCanton}}."
     },
     "CLOSE_TIMETABLE_HEARING": {
       "POPUP_TITLE": "Clôture de l'année horaire",
