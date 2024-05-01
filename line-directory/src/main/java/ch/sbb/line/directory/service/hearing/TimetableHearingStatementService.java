@@ -183,6 +183,9 @@ public class TimetableHearingStatementService {
     timetableHearingStatementInDb.setStatementStatus(timetableHearingStatementModel.getStatementStatus());
     timetableHearingStatementInDb.setTtfnid(timetableHearingStatementModel.getTtfnid());
     timetableHearingStatementInDb.setSwissCanton(timetableHearingStatementModel.getSwissCanton());
+
+    timetableHearingStatementInDb.setOldSwissCanton(timetableHearingStatementModel.getOldSwissCanton());
+
     timetableHearingStatementInDb.setStopPlace(timetableHearingStatementModel.getStopPlace());
     timetableHearingStatementInDb.setStatement(timetableHearingStatementModel.getStatement());
     timetableHearingStatementInDb.setJustification(timetableHearingStatementModel.getJustification());

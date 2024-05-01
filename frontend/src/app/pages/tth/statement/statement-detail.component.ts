@@ -92,7 +92,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
 
   readonly extractShort = (option: Canton) => option.short;
 
-  ngOnInit() {
+    ngOnInit() {
     if (this.isInitializingComponent) {
       this.statement = this.route.snapshot.data.statement;
     }
@@ -124,6 +124,8 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   }
 
   cantonSelectionChanged() {
+    this.form.controls.editor.setValue(this.statement?.editor);
+    this.form.controls.oldSwissCanton.setValue(this.initialValueForCanton);
     this.statementDialogService.openDialog(this.form).subscribe((result) => {
       if (result) {
         const hearingStatement = this.form.value as TimetableHearingStatement;
@@ -185,6 +187,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       responsibleTransportCompanies: new FormControl(
         statement?.responsibleTransportCompanies ?? [],
       ),
+      oldSwissCanton: new FormControl(statement?.oldSwissCanton),
       swissCanton: new FormControl(statement?.swissCanton, [Validators.required]),
       stopPlace: new FormControl(statement?.stopPlace, [
         AtlasFieldLengthValidator.length_255,
@@ -229,6 +232,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
         statement?.documents?.map((document) => new FormControl(document)) ?? [],
       ),
       etagVersion: new FormControl(statement?.etagVersion),
+      editor: new FormControl(statement?.editor),
     });
   }
 
@@ -464,5 +468,4 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       this.tableService.pageSize,
       addElementsToArrayWhenNotUndefined(this.tableService.sortString, 'statementStatus,asc', 'ttfnid,asc', 'id,ASC')];
   }
-
 }
