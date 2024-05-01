@@ -23,7 +23,6 @@ export class EmailListComponent {
     if (email && this.emailList.length < this.maxEmails && !this.emailList.includes(email)) {
       this.emailList.push(email);
       this.emailsChange.emit(this.emailList);
-      email = '';
     }
   }
 
