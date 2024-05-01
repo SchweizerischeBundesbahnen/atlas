@@ -57,6 +57,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   isLoading = false;
   isDuplicating = false;
   isInitializingComponent = true;
+  emailListDisabled = true;
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -123,6 +124,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     this.initStatusOptions();
     this.initResponsibleTransportCompanyPrefill();
     this.retrieveExistingEmails();
+    this.emailListDisabled = true;
   }
 
   cantonSelectionChanged() {
@@ -162,6 +164,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   }
 
   toggleEdit() {
+    this.emailListDisabled = false;
     if (this.form.enabled) {
       this.showConfirmationDialog();
     } else if (!this.isHearingStatusArchived) {
