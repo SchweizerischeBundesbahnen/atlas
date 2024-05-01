@@ -1,6 +1,6 @@
 <div>
-  <input #emailInput type="text">
-  <button (click)="addEmail(emailInput.value)">Add Email</button>
+  <input #emailInput type="text" (keyup.enter)="addEmail(emailInput.value); emailInput.value = ''">
+  <button (click)="addEmail(emailInput.value); emailInput.value = ''">Add Email</button>
 </div>
 <div *ngIf="emailList.length > 0">
   <ul>
@@ -10,3 +10,4 @@
     </li>
   </ul>
 </div>
+
