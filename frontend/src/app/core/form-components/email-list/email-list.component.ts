@@ -8,6 +8,7 @@ import {AtlasFieldCustomError} from "../atlas-field-error/atlas-field-custom-err
   styleUrls: ['./email-list.component.scss']
 })
 export class EmailListComponent {
+  @Input() disabled: boolean = false;
   @Input() fieldLabel!: string;
   @Input() infoIconTitle!: string;
   @Input() infoIconLink!: string;
