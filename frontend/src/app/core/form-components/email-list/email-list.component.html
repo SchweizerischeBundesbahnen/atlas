@@ -12,8 +12,15 @@
       *ngTemplateOutlet="customChildInputPrefixTemplate"
     >
     </ng-container>
-  <input #emailInput type="text" (keyup.enter)="addEmail(emailInput.value); emailInput.value = ''">
-  <button (click)="addEmail(emailInput.value); emailInput.value = ''">Add Email</button>
+  <input
+    [disabled]=disabled
+    #emailInput
+    type="text"
+    (keyup.enter)="addEmail(emailInput.value); emailInput.value = ''"
+  />
+  <button
+    [disabled]=disabled
+    (click)="addEmail(emailInput.value); emailInput.value = ''">Add Email</button>
     <ng-container
       #customChildInputPostfixTemplate
       *ngTemplateOutlet="customChildInputPostfixTemplate"
@@ -26,7 +33,7 @@
     <div *ngFor="let email of emailList; let i = index;">
       <div style="display: inline-block;">
         <span>{{ email }}</span>
-        <button (click)="removeEmail(i)">Delete</button>
+        <button [disabled]=disabled (click)="removeEmail(i)">Delete</button>
       </div>
     </div>
   </div>
