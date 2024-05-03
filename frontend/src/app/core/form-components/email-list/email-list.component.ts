@@ -1,7 +1,7 @@
-import {Component, ContentChild, EventEmitter, Input, Output, TemplateRef} from '@angular/core';
-import {FieldExample} from "../text-field/field-example";
-import {AtlasFieldCustomError} from "../atlas-field-error/atlas-field-custom-error";
-import {FormGroup} from "@angular/forms";
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {FormControl, FormGroup} from "@angular/forms";
+import {AtlasFieldLengthValidator} from "../../validation/field-lengths/atlas-field-length-validator";
+import {AtlasCharsetsValidator} from "../../validation/charsets/atlas-charsets-validator";
 
 @Component({
   selector: 'atlas-email-list',
@@ -10,38 +10,44 @@ import {FormGroup} from "@angular/forms";
 })
 export class EmailListComponent {
   @Input() disabled: boolean = false;
-  @Input() fieldLabel!: string;
   @Input() formGroup!: FormGroup;
   @Input() controlName!: string;
-  @Input() infoIconTitle!: string;
-  @Input() infoIconLink!: string;
-  @Input() required!: boolean;
-  @Input() fieldExamples!: Array<FieldExample>;
-  @Input() customError!: AtlasFieldCustomError;
-  @ContentChild('customChildInputPostfixTemplate')
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  customChildInputPostfixTemplate!: TemplateRef<any>;
-  @ContentChild('customChildInputPrefixTemplate')
-    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  customChildInputPrefixTemplate!: TemplateRef<any>;
-  email: string = '';
+  // email: string = '';
   emailList: string[] = [];
-  maxEmails: number = 10;
+  maxEmails = 10;
+
+  formGroupEmailList!: FormGroup;
 
   @Output() emailsChange = new EventEmitter<string[]>();
 
   ngOnInit() {
+    this.formGroupEmailList = new FormGroup({
+      myStringParameter: new FormControl('', [
+        AtlasFieldLengthValidator.length_100,
+        AtlasCharsetsValidator.email
+      ])
+    });
     this.emailList = this.formGroup.get('statementSender')!.get('emails')!.value;
   }
 
-  addEmail(email: string) {
+  addEmail() {
+    // const emailsArray = this.formGroup.get('statementSender.emails') as FormArray;
+    // emailsArray.push(this.formGroupEmailList.get('myStringParameter')!.value);
+    const email = this.formGroupEmailList.get('myStringParameter')!.value;
     if (email && this.emailList.length < this.maxEmails && !this.emailList.includes(email)) {
       this.emailList.push(email);
       this.emailsChange.emit(this.emailList);
     }
+    // this.formGroupEmailList.get('myStringParameter')!.setValue('');
+  }
+
+  emptyField() {
+    this.formGroupEmailList.get('myStringParameter')!.setValue('');
   }
 
   removeEmail(index: number) {
+    // const emailsArray = this.formGroup.get('statementSender.emails') as FormArray;
+    // emailsArray.removeAt(index);
     this.emailList.splice(index, 1);
     this.emailsChange.emit(this.emailList);
   }
