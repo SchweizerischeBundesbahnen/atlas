@@ -1,40 +1,15 @@
-<!--<atlas-text-field [formGroup]="form.controls.statementSender"-->
-<!--                  controlName="street"-->
-<!--                  fieldLabel="TTH.STATEMENT.STREET">-->
-
-<!--</atlas-text-field>-->
-
-<app-atlas-label-field
-  [fieldExamples]="fieldExamples"
-  [required]="required"
-  fieldLabel="{{ fieldLabel }}"
-  infoIconLink="{{ infoIconLink }}"
-  infoIconTitle="{{ infoIconTitle }}"
-></app-atlas-label-field>
 <div class="text-field-wrapper">
   <div class="text-field-flex">
-    <ng-container
-      #customChildInputPrefixTemplate
-      *ngTemplateOutlet="customChildInputPrefixTemplate"
-    >
-    </ng-container>
-  <input
-    [disabled]=disabled
-    #emailInput
-    type="text"
-    (keyup.enter)="addEmail(emailInput.value); emailInput.value = ''"
-  />
+    <atlas-text-field controlName="myStringParameter"
+                      fieldLabel="E-Mail"
+                      [required]="true"
+                      [formGroup]="formGroupEmailList"
+                      (keyup.enter)="addEmail(); emptyField()">
+    </atlas-text-field>
   <button
     [disabled]=disabled
-    (click)="addEmail(emailInput.value); emailInput.value = ''">Add Email</button>
-    <ng-container
-      #customChildInputPostfixTemplate
-      *ngTemplateOutlet="customChildInputPostfixTemplate"
-    ></ng-container>
+    (click)="addEmail(); emptyField()">Add Email</button>
   </div>
-    <app-atlas-field-error
-      [customError]="customError"
-    ></app-atlas-field-error>
   <div *ngIf="emailList.length > 0">
     <div *ngFor="let email of emailList; let i = index;">
       <div style="display: inline-block;">
