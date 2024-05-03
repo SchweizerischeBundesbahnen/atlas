@@ -178,27 +178,6 @@
 
           <div class="d-flex flex-row col-12 mb-4">
             <div class="d-flex flex-column col-12">
-              <atlas-text-field
-                [fieldExamples]="[
-                { label: 'TTH.STATEMENT.E_MAIL_TEXT', translate: true },
-                { label: ' |', translate: false },
-                {
-                  label: 'FORM.MAX_CHARS',
-                  translate: true,
-                  arg: { key: 'numberOfChars', value: '100' }
-                }
-              ]"
-                [formGroup]="form.controls.statementSender"
-                [required]="true"
-                controlName="emails"
-                fieldLabel="TTH.STATEMENT.E_MAIL"
-              >
-              </atlas-text-field>
-            </div>
-          </div>
-
-          <div class="d-flex flex-row col-12 mb-4">
-            <div class="d-flex flex-column col-12">
             <atlas-email-list [disabled]=emailListDisabled
                               [formGroup]="form"
                               controlName="emails"
