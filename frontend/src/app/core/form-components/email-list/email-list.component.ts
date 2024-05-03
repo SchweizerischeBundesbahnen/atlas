@@ -1,6 +1,7 @@
 import {Component, ContentChild, EventEmitter, Input, Output, TemplateRef} from '@angular/core';
 import {FieldExample} from "../text-field/field-example";
 import {AtlasFieldCustomError} from "../atlas-field-error/atlas-field-custom-error";
+import {FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'atlas-email-list',
@@ -10,6 +11,8 @@ import {AtlasFieldCustomError} from "../atlas-field-error/atlas-field-custom-err
 export class EmailListComponent {
   @Input() disabled: boolean = false;
   @Input() fieldLabel!: string;
+  @Input() formGroup!: FormGroup;
+  @Input() controlName!: string;
   @Input() infoIconTitle!: string;
   @Input() infoIconLink!: string;
   @Input() required!: boolean;
@@ -21,7 +24,6 @@ export class EmailListComponent {
   @ContentChild('customChildInputPrefixTemplate')
     // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   customChildInputPrefixTemplate!: TemplateRef<any>;
-  @Input() existingEmails: string[] = [];
   email: string = '';
   emailList: string[] = [];
   maxEmails: number = 10;
@@ -29,9 +31,7 @@ export class EmailListComponent {
   @Output() emailsChange = new EventEmitter<string[]>();
 
   ngOnInit() {
-    if (this.existingEmails) {
-      this.emailList = this.existingEmails;
-    }
+    this.emailList = this.formGroup.get('statementSender')!.get('emails')!.value;
   }
 
   addEmail(email: string) {
