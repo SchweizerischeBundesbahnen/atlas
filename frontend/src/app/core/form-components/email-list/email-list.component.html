@@ -1,5 +1,6 @@
-<div class="text-field-wrapper">
+<div >
   <div class="text-field-flex">
+    <div style="display: flex; align-items: center;">
     <atlas-text-field controlName="myStringParameter"
                       fieldLabel="E-Mail"
                       [required]="true"
@@ -8,13 +9,17 @@
     </atlas-text-field>
   <button
     [disabled]=disabled
-    (click)="addEmail(); emptyField()">Add Email</button>
+    (click)="addEmail(); emptyField()"
+    style="margin-left: 10px;">
+    Add Email</button>
+  </div>
   </div>
   <div *ngIf="emailList.length > 0">
     <div *ngFor="let email of emailList; let i = index;">
       <div style="display: inline-block;">
         <span>{{ email }}</span>
-        <button [disabled]=disabled (click)="removeEmail(i)">Delete</button>
+        <button [disabled]=disabled (click)="removeEmail(i)"
+                style="margin-left: 10px;">Delete</button>
       </div>
     </div>
   </div>
