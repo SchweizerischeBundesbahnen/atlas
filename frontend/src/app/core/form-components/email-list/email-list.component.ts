@@ -13,7 +13,7 @@ export class EmailListComponent {
   @Input() formGroup!: FormGroup;
   @Input() controlName!: string;
   emailList: string[] = [];
-  maxEmails = 10;
+  maxNumberOfEmails = 10;
 
   formGroupEmailList!: FormGroup;
 
@@ -21,7 +21,7 @@ export class EmailListComponent {
 
   ngOnInit() {
     this.formGroupEmailList = new FormGroup({
-      myStringParameter: new FormControl('', [
+      newEmail: new FormControl('', [
         AtlasFieldLengthValidator.length_100,
         AtlasCharsetsValidator.email
       ])
@@ -30,15 +30,15 @@ export class EmailListComponent {
   }
 
   addEmail() {
-    const email = this.formGroupEmailList.get('myStringParameter')!.value;
-    if (email && this.emailList.length < this.maxEmails && !this.emailList.includes(email)) {
+    const email = this.formGroupEmailList.get('newEmail')!.value;
+    if (email && this.emailList.length < this.maxNumberOfEmails && !this.emailList.includes(email)) {
       this.emailList.push(email);
       this.emailsChange.emit(this.emailList);
     }
   }
 
   emptyInputField() {
-    this.formGroupEmailList.get('myStringParameter')!.setValue('');
+    this.formGroupEmailList.get('newEmail')!.setValue('');
   }
 
   removeEmail(index: number) {
