@@ -12,7 +12,6 @@ export class EmailListComponent {
   @Input() disabled: boolean = false;
   @Input() formGroup!: FormGroup;
   @Input() controlName!: string;
-  // email: string = '';
   emailList: string[] = [];
   maxEmails = 10;
 
@@ -31,23 +30,18 @@ export class EmailListComponent {
   }
 
   addEmail() {
-    // const emailsArray = this.formGroup.get('statementSender.emails') as FormArray;
-    // emailsArray.push(this.formGroupEmailList.get('myStringParameter')!.value);
     const email = this.formGroupEmailList.get('myStringParameter')!.value;
     if (email && this.emailList.length < this.maxEmails && !this.emailList.includes(email)) {
       this.emailList.push(email);
       this.emailsChange.emit(this.emailList);
     }
-    // this.formGroupEmailList.get('myStringParameter')!.setValue('');
   }
 
-  emptyField() {
+  emptyInputField() {
     this.formGroupEmailList.get('myStringParameter')!.setValue('');
   }
 
   removeEmail(index: number) {
-    // const emailsArray = this.formGroup.get('statementSender.emails') as FormArray;
-    // emailsArray.removeAt(index);
     this.emailList.splice(index, 1);
     this.emailsChange.emit(this.emailList);
   }
