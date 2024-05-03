@@ -123,7 +123,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     this.initCantonOptions();
     this.initStatusOptions();
     this.initResponsibleTransportCompanyPrefill();
-    this.retrieveExistingEmails();
+    this.getExistingEmails();
     this.emailListDisabled = true;
   }
 
@@ -140,10 +140,6 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     });
   }
 
-  stringToEmails(emailsStr: string): Set<string> {
-    return new Set(emailsStr.split(',').map(email => email.trim()));
-  }
-
   save() {
     if (!this.isNew && this.initialValueForCanton != this.form.value.swissCanton) {
       this.cantonSelectionChanged();
@@ -152,8 +148,6 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       if (this.form.valid) {
         const hearingStatement = this.form.value as TimetableHearingStatement;
         this.form.disable();
-        // const emails = this.form.value.statementSender!.emails!.split(',').map(email => email.trim());
-        // hearingStatement.statementSender.emails = emails;
         if (this.isNew) {
           this.createStatement(hearingStatement);
         } else {
@@ -243,24 +237,14 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     });
   }
 
-  retrieveExistingEmails() {
+  getExistingEmails() {
     const emailsFormArray = this.form.get('statementSender.emails') as FormArray;
     this.existingEmails = emailsFormArray.value.filter((email: string) => email !== null && email !== undefined);
-
   }
 
   onEmailsChange(emails: string[]) {
     this.form.value.statementSender!.emails = emails;
     this.form.markAsDirty();
-    console.log(emails);
-    console.log(this.form.value.statementSender!.emails);
-  }
-
-  emailsToString(emails: string[] | undefined): string {
-    if (!emails || emails.length === 0) {
-      return '';
-    }
-    return Array.from(emails).join(', ');
   }
 
   saveButtonDisabled() {

@@ -1,4 +1,4 @@
-import {AbstractControl, FormControl, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
+import {AbstractControl, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 
 export class AtlasCharsetsValidator {
   static numeric(control: AbstractControl): ValidationErrors | null {
@@ -88,20 +88,6 @@ export class AtlasCharsetsValidator {
 
   static alphaNumeric(control: AbstractControl): ValidationErrors | null {
     return AtlasCharsetsValidator.validateAllowedCharacters(control, '[0-9a-zA-Z]*', '0-9a-zA-Z');
-  }
-
-  static emails(control: AbstractControl): ValidationErrors | null {
-    const value: string = control.value;
-    const emails: string[] = value.split(/[;,]/).map(elem => elem.trim());
-
-    for (const email of emails) {
-      const emailControl = new FormControl(email);
-      const emailError = AtlasCharsetsValidator.email(emailControl);
-      if (emailError) {
-        return { emailFormat: true };
-      }
-    }
-    return null;
   }
 
   static email(control: AbstractControl): ValidationErrors | null {
