@@ -5,11 +5,11 @@
                       fieldLabel="E-Mail"
                       [required]="true"
                       [formGroup]="formGroupEmailList"
-                      (keyup.enter)="addEmail(); emptyField()">
+                      (keyup.enter)="addEmail(); emptyInputField()">
     </atlas-text-field>
   <button
     [disabled]=disabled
-    (click)="addEmail(); emptyField()"
+    (click)="addEmail(); emptyInputField()"
     style="margin-left: 10px;">
     Add Email</button>
   </div>
