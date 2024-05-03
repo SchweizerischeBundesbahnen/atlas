@@ -224,7 +224,7 @@ describe('StatementDetailComponent for new statement', () => {
 
       component.form.controls.swissCanton.setValue(SwissCanton.Bern);
       component.form.controls.statement.setValue('my yb busses');
-      component.form.controls.statementSender.controls.emails.setValue('***REMOVED***@yb.ch');
+      component.form.controls.statementSender.controls.emails.setValue(['***REMOVED***@yb.ch']);
       fixture.detectChanges();
 
       component.save();
