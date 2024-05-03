@@ -225,18 +225,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
         street: new FormControl(statement?.statementSender?.street, [
           AtlasFieldLengthValidator.length_100,
         ]),
-        // emails: new FormControl(this.emailsToString(statement?.statementSender?.emails), [
-        //   Validators.required,
-        //   AtlasElementLengthValidator.maxElements,
-        //   AtlasElementLengthValidator.noDuplicates,
-        //   AtlasCharsetsValidator.emails,
-        // ]),
-        emails: new FormControl(statement?.statementSender?.emails, [
-          Validators.required,
-          // AtlasElementLengthValidator.maxElements,
-          // AtlasElementLengthValidator.noDuplicates,
-          // AtlasCharsetsValidator.emails,
-        ])
+        emails: new FormControl(statement?.statementSender?.emails, [])
       }),
       statement: new FormControl(statement?.statement, [
         Validators.required,
