@@ -1,6 +1,6 @@
 import {TestBed} from '@angular/core/testing';
 import {ActivatedRouteSnapshot, convertToParamMap} from '@angular/router';
-import {HearingStatus, SwissCanton, TimetableHearingStatement, TimetableHearingStatementsService,} from '../../../api';
+import {HearingStatus, SwissCanton, TimetableHearingStatement, TimetableHearingStatementsV2Service,} from '../../../api';
 import {StatementDetailResolver} from './statement-detail.resolver';
 import {AppTestingModule} from '../../../app.testing.module';
 import {of} from 'rxjs';
@@ -29,7 +29,7 @@ describe('StatementDetailResolver', () => {
       providers: [
         StatementDetailResolver,
         {
-          provide: TimetableHearingStatementsService,
+          provide: TimetableHearingStatementsV2Service,
           useValue: timetableHearingStatementsServiceSpy,
         },
       ],

@@ -42,7 +42,6 @@ import {addElementsToArrayWhenNotUndefined} from "../../../core/util/arrays";
   styleUrls: ['./statement-detail.component.scss'],
 })
 export class StatementDetailComponent implements OnInit, DetailFormComponent {
-  existingEmails: string[] = [];
   YEAR_OPTIONS: number[] = [];
   CANTON_OPTIONS: Canton[] = [];
   STATUS_OPTIONS: StatementStatus[] = [];
@@ -57,7 +56,8 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   isLoading = false;
   isDuplicating = false;
   isInitializingComponent = true;
-  emailListDisabled = true;
+
+  readonly emailValidator = [AtlasCharsetsValidator.email, AtlasFieldLengthValidator.length_100];
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -123,8 +123,6 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     this.initCantonOptions();
     this.initStatusOptions();
     this.initResponsibleTransportCompanyPrefill();
-    this.getExistingEmails();
-    this.emailListDisabled = true;
   }
 
   cantonSelectionChanged() {
@@ -158,11 +156,10 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   }
 
   toggleEdit() {
-    this.emailListDisabled = false;
     if (this.form.enabled) {
       this.showConfirmationDialog();
     } else if (!this.isHearingStatusArchived) {
-      this.form.enable({emitEvent: false});
+      this.form.enable();
     }
   }
 
@@ -219,7 +216,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
         street: new FormControl(statement?.statementSender?.street, [
           AtlasFieldLengthValidator.length_100,
         ]),
-        emails: new FormControl(statement?.statementSender?.emails, [])
+        emails: new FormControl(statement?.statementSender?.emails, [Validators.required])
       }),
       statement: new FormControl(statement?.statement, [
         Validators.required,
@@ -235,16 +232,6 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       etagVersion: new FormControl(statement?.etagVersion),
       editor: new FormControl(statement?.editor),
     });
-  }
-
-  getExistingEmails() {
-    const emailsFormArray = this.form.get('statementSender.emails') as FormArray;
-    this.existingEmails = emailsFormArray.value.filter((email: string) => email !== null && email !== undefined);
-  }
-
-  onEmailsChange(emails: string[]) {
-    this.form.value.statementSender!.emails = emails;
-    this.form.markAsDirty();
   }
 
   saveButtonDisabled() {
@@ -430,7 +417,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
         if (this.isNew) {
           this.backToOverview();
         } else {
-          this.form.disable({emitEvent: false});
+          this.form.disable();
           this.ngOnInit();
         }
       }

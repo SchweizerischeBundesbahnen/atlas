@@ -3,7 +3,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {TthChangeStatusDialogComponent} from './tth-change-status-dialog.component';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {AppTestingModule} from '../../../../app.testing.module';
-import {SwissCanton, TimetableHearingStatement, TimetableHearingStatementsService,} from '../../../../api';
+import {SwissCanton, TimetableHearingStatement, TimetableHearingStatementsV2Service,} from '../../../../api';
 import {of} from 'rxjs';
 import {DialogService} from '../../../../core/components/dialog/dialog.service';
 import {MAT_SNACK_BAR_DATA, MatSnackBarRef} from '@angular/material/snack-bar';
@@ -67,7 +67,7 @@ describe('TthChangeStatusDialogComponent', () => {
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: NotificationService, useValue: notificationServiceSpy },
         {
-          provide: TimetableHearingStatementsService,
+          provide: TimetableHearingStatementsV2Service,
           useValue: mockTimetableHearingStatementsService,
         },
         { provide: TranslatePipe },

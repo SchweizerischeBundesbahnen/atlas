@@ -11,7 +11,7 @@ import {
   TimetableHearingStatement,
   TimetableHearingStatementDocument,
   TimetableHearingStatementSender,
-  TimetableHearingStatementsService,
+  TimetableHearingStatementsV2Service,
   TimetableHearingYear,
   TimetableHearingYearsService,
 } from '../../../api';
@@ -128,7 +128,7 @@ async function baseTestConfiguration() {
     imports: [AppTestingModule],
     providers: [
       {
-        provide: TimetableHearingStatementsService,
+        provide: TimetableHearingStatementsV2Service,
         useValue: mockTimetableHearingStatementsService,
       },
       { provide: TimetableHearingYearsService, useValue: mockTimetableHearingYearsService },
