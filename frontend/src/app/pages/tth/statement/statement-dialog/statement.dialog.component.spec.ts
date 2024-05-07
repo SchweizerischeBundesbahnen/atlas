@@ -1,5 +1,5 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {SwissCanton, TimetableHearingStatement, TimetableHearingStatementsService,} from '../../../../api';
+import {SwissCanton, TimetableHearingStatement, TimetableHearingStatementsV2Service,} from '../../../../api';
 import {AppTestingModule} from '../../../../app.testing.module';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -47,7 +47,7 @@ describe('StatementDialogComponent', () => {
         { provide: NotificationService, useValue: notificationServiceSpy },
         { provide: MatDialogRef, useValue: dialogRefSpy },
         {
-          provide: TimetableHearingStatementsService,
+          provide: TimetableHearingStatementsV2Service,
           useValue: mockTimetableHearingStatementsService,
         },
         { provide: TranslatePipe },

@@ -6,7 +6,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {AppTestingModule} from '../../../../app.testing.module';
 import {FormModule} from '../../../../core/module/form.module';
 import {BaseChangeDialogComponent} from '../base-change-dialog/base-change-dialog.component';
-import {SwissCanton, TimetableHearingStatement, TimetableHearingStatementsService,} from '../../../../api';
+import {SwissCanton, TimetableHearingStatement, TimetableHearingStatementsV2Service,} from '../../../../api';
 import {TranslatePipe} from '@ngx-translate/core';
 import {NotificationService} from '../../../../core/notification/notification.service';
 import {DialogService} from '../../../../core/components/dialog/dialog.service';
@@ -57,7 +57,7 @@ describe('TthChangeCantonDialogComponent', () => {
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: NotificationService, useValue: notificationServiceSpy },
         {
-          provide: TimetableHearingStatementsService,
+          provide: TimetableHearingStatementsV2Service,
           useValue: mockTimetableHearingStatementsService,
         },
         { provide: TranslatePipe },
