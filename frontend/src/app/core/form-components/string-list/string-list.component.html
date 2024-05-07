@@ -1,0 +1,45 @@
+<div class="d-flex flex-column col-12">
+  <div class="d-flex flex-row col-12">
+    <div class="flex-grow-1 me-3">
+      <atlas-text-field controlName="input"
+                        fieldLabel="TTH.STATEMENT.E_MAIL"
+                        [required]="true"
+                        [formGroup]="_form">
+      </atlas-text-field>
+    </div>
+    <div class="d-flex align-items-center">
+      <atlas-button
+        (click)="addItem()"
+        [disabled]="buttonDisabled"
+        buttonDataCy="next-item"
+        buttonType="defaultPrimary"
+      >
+        <ng-template #rightIcon>
+          <b
+            class='bi bi-plus'
+          ></b>
+        </ng-template>
+      </atlas-button>
+    </div>
+  </div>
+  <div class="d-flex">
+    <app-atlas-field-error
+      [form]="formGroup"
+      [controlName]="controlName"
+    ></app-atlas-field-error>
+  </div>
+  <div class="d-flex flex-row">
+    <mat-chip-set [disabled]="formGroup.disabled">
+      <mat-chip
+        *ngFor="let value of _strings;let i=index"
+        (removed)="removeItem(i)"
+        class="font-bold-sm"
+      >
+        {{ value }}
+        <button matChipRemove>
+          <i class="bi bi-x-circle-fill"></i>
+        </button>
+      </mat-chip>
+    </mat-chip-set>
+  </div>
+</div>
