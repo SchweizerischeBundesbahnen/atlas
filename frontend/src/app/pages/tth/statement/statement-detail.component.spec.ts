@@ -3,7 +3,7 @@ import {
   SwissCanton,
   TimetableHearingStatement,
   TimetableHearingStatementAlternating,
-  TimetableHearingStatementsService,
+  TimetableHearingStatementsV2Service,
   TimetableHearingYear,
   TimetableHearingYearsService,
 } from '../../../api';
@@ -32,6 +32,7 @@ import {FileSizePipe} from '../../../core/components/file-upload/file-size/file-
 import {FileComponent} from '../../../core/components/file-upload/file/file.component';
 import {LoadingSpinnerComponent} from '../../../core/components/loading-spinner/loading-spinner.component';
 import {DetailPageContentComponent} from "../../../core/components/detail-page-content/detail-page-content.component";
+import {StringListComponent} from "../../../core/form-components/string-list/string-list.component";
 
 const existingStatement: TimetableHearingStatement = {
   id: 1,
@@ -265,13 +266,14 @@ function setupTestBed(activatedRoute: {
       FileUploadComponent,
       FileSizePipe,
       FileComponent,
+      StringListComponent,
     ],
     imports: [AppTestingModule, FormModule],
     providers: [
       { provide: FormBuilder },
       { provide: TimetableHearingYearsService, useValue: mockTimetableHearingYearsService },
       {
-        provide: TimetableHearingStatementsService,
+        provide: TimetableHearingStatementsV2Service,
         useValue: mockTimetableHearingStatementsService,
       },
       { provide: AuthService, useValue: authServiceMock },

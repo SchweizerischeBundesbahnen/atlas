@@ -178,14 +178,12 @@
 
           <div class="d-flex flex-row col-12 mb-4">
             <div class="d-flex flex-column col-12">
-            <atlas-email-list [disabled]=emailListDisabled
-                              [formGroup]="form"
-                              controlName="emails"
-                              (emailsChange)="onEmailsChange($event)">
-            </atlas-email-list>
+              <atlas-text-list [formGroup]="form"
+                               [itemValidator]="emailValidator"
+                                controlName="statementSender.emails">
+              </atlas-text-list>
             </div>
           </div>
-
 
           <div class="d-flex flex-row col-12 mb-4">
             <div class="d-flex flex-column col-12">
