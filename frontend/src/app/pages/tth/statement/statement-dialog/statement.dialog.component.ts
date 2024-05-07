@@ -1,7 +1,7 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormGroup} from '@angular/forms';
-import {TimetableHearingStatement, TimetableHearingStatementsV2Service} from '../../../../api';
+import {TimetableHearingStatementsV2Service, TimetableHearingStatement} from '../../../../api';
 import {Subject} from 'rxjs';
 import {NotificationService} from '../../../../core/notification/notification.service';
 import {StatementDetailFormGroup} from '../statement-detail-form-group';
