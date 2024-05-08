@@ -2,8 +2,11 @@
   <div class="d-flex flex-row col-12">
     <div class="flex-grow-1">
       <atlas-text-field controlName="input"
-                        fieldLabel="TTH.STATEMENT.E_MAIL"
-                        [required]="true"
+                        [fieldLabel]="fieldLabel"
+                        [infoIconTitle]="infoIconTitle"
+                        [infoIconLink]="infoIconLink"
+                        [required]="required"
+                        [fieldExamples]="fieldExamples"
                         [formGroup]="_form"
                         (keyup.enter)="addItem()">
       </atlas-text-field>
