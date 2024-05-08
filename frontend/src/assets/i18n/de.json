@@ -114,7 +114,8 @@
     "OPTIONAL": "(optional)",
     "COMMENT": "Kommentar",
     "TEXT": "Freitext",
-    "DROPDOWN_SEARCH_RESULT_INFO": "Angezeigt werden {{pageSize}} von {{totalCount}} gefundenen Elementen. (genauere Suche notwendig)"
+    "DROPDOWN_SEARCH_RESULT_INFO": "Angezeigt werden {{pageSize}} von {{totalCount}} gefundenen Elementen. (genauere Suche notwendig)",
+    "MAX_ITEMS": "Es sind maximal {{numberOfItems}} Einträge erlaubt."
   },
   "VERSION_TABLE": {
     "TITLE": "Versionen mit unterschiedlicher Gültigkeit",
