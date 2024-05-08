@@ -2,7 +2,7 @@ package ch.sbb.line.directory.mapper;
 
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModelV1;
 import ch.sbb.line.directory.entity.StatementSender;
-import java.util.Set;
+import java.util.List;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -16,7 +16,7 @@ public class StatementSenderMapperV1 {
         .street(timetableHearingStatementSenderModel.getStreet())
         .zip(timetableHearingStatementSenderModel.getZip())
         .city(timetableHearingStatementSenderModel.getCity())
-        .emails(Set.of(timetableHearingStatementSenderModel.getEmail()))
+        .emails(List.of(timetableHearingStatementSenderModel.getEmail()))
         .build();
   }
 
@@ -28,7 +28,7 @@ public class StatementSenderMapperV1 {
         .street(statementSender.getStreet())
         .zip(statementSender.getZip())
         .city(statementSender.getCity())
-        .email(statementSender.getEmails().iterator().next())
+        .email(statementSender.getEmails().getFirst())
         .build();
   }
 }
