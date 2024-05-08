@@ -1,5 +1,6 @@
 import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {FormControl, FormGroup, ValidatorFn} from "@angular/forms";
+import {FieldExample} from "../text-field/field-example";
 
 @Component({
   selector: 'atlas-text-list',
@@ -11,6 +12,12 @@ export class StringListComponent implements OnInit, OnChanges {
   @Input() controlName!: string;
   @Input() maxItems = 10;
   @Input() itemValidator!: ValidatorFn[];
+
+  @Input() fieldLabel!: string;
+  @Input() infoIconTitle!: string;
+  @Input() infoIconLink!: string;
+  @Input() required!: boolean;
+  @Input() fieldExamples!: Array<FieldExample>;
 
   _form!: FormGroup;
   _strings: string[] = [];
@@ -29,7 +36,7 @@ export class StringListComponent implements OnInit, OnChanges {
     });
     this.syncFormEnable();
     this.formGroup.statusChanges.subscribe(() => this.syncFormEnable());
-    this._strings = this.formControl.value ?? [];
+    this._strings = Object.assign([], (this.formControl.value ?? []));
   }
 
   private syncFormEnable() {
@@ -38,6 +45,7 @@ export class StringListComponent implements OnInit, OnChanges {
     } else {
       this._form.disable();
     }
+    this.handleMaxInput();
   }
 
   get formControl() {
@@ -50,7 +58,7 @@ export class StringListComponent implements OnInit, OnChanges {
 
   addItem() {
     const inputValue = this.inputFormControl.value;
-    if (inputValue) {
+    if (inputValue && this._form.valid) {
       if (!this._strings.includes(inputValue)) {
         this._strings.push(inputValue);
       }
@@ -58,6 +66,8 @@ export class StringListComponent implements OnInit, OnChanges {
 
       this.formControl.setValue(this._strings);
       this.formGroup.markAsDirty();
+
+      this.handleMaxInput();
     }
   }
 
@@ -65,6 +75,16 @@ export class StringListComponent implements OnInit, OnChanges {
     this._strings.splice(index, 1);
     this.formControl.setValue(this._strings);
     this.formGroup.markAsDirty();
+
+    this.handleMaxInput();
+  }
+
+  private handleMaxInput() {
+    if (this._strings.length == this.maxItems) {
+      this.inputFormControl.disable();
+    } else {
+      this.inputFormControl.enable();
+    }
   }
 }
 
