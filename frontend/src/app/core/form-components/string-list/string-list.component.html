@@ -1,25 +1,12 @@
 <div class="d-flex flex-column col-12">
   <div class="d-flex flex-row col-12">
-    <div class="flex-grow-1 me-3">
+    <div class="flex-grow-1">
       <atlas-text-field controlName="input"
                         fieldLabel="TTH.STATEMENT.E_MAIL"
                         [required]="true"
-                        [formGroup]="_form">
+                        [formGroup]="_form"
+                        (keyup.enter)="addItem()">
       </atlas-text-field>
-    </div>
-    <div class="d-flex align-items-center">
-      <atlas-button
-        (click)="addItem()"
-        [disabled]="buttonDisabled"
-        buttonDataCy="next-item"
-        buttonType="defaultPrimary"
-      >
-        <ng-template #rightIcon>
-          <b
-            class='bi bi-plus'
-          ></b>
-        </ng-template>
-      </atlas-button>
     </div>
   </div>
   <div class="d-flex">

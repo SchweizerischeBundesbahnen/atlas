@@ -1,5 +1,9 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {SwissCanton, TimetableHearingStatement, TimetableHearingStatementsV2Service,} from '../../../../api';
+import {
+  SwissCanton,
+  TimetableHearingStatementV2,
+  TimetableHearingStatementsService,
+} from '../../../../api';
 import {AppTestingModule} from '../../../../app.testing.module';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -17,14 +21,14 @@ const mockTimetableHearingStatementsService = jasmine.createSpyObj(
 );
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 const notificationServiceSpy = jasmine.createSpyObj(['success']);
-const statement: TimetableHearingStatement = {
+const statement: TimetableHearingStatementV2 = {
   id: 1,
   swissCanton: SwissCanton.Bern,
   statement: 'Canton change statement.',
   justification: 'This is justification.',
   comment: 'This is canton change comment.',
   statementSender: {
-    emails: new Array('atlas@sbb.ch'),
+    emails: new Set('atlas@sbb.ch'),
   },
 };
 const form = new FormGroup({
@@ -47,7 +51,7 @@ describe('StatementDialogComponent', () => {
         { provide: NotificationService, useValue: notificationServiceSpy },
         { provide: MatDialogRef, useValue: dialogRefSpy },
         {
-          provide: TimetableHearingStatementsV2Service,
+          provide: TimetableHearingStatementsService,
           useValue: mockTimetableHearingStatementsService,
         },
         { provide: TranslatePipe },
