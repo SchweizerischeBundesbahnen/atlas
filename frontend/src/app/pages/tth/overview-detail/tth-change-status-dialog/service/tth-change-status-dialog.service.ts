@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { TthChangeStatusDialogComponent } from '../tth-change-status-dialog.component';
 import { StatusChangeData, StatusChangeDataType } from '../model/status-change-data';
-import { StatementStatus, TimetableHearingStatement } from '../../../../../api';
+import {StatementStatus, TimetableHearingStatementV2} from '../../../../../api';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +16,7 @@ export class TthChangeStatusDialogService {
 
   onClick(
     changedStatus: StatementStatus,
-    tths: TimetableHearingStatement[],
+    tths: TimetableHearingStatementV2[],
     justification: string | undefined,
     statusChangeDataType: StatusChangeDataType
   ): Observable<boolean> {

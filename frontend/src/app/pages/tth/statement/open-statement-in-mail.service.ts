@@ -1,5 +1,9 @@
 import {Injectable} from '@angular/core';
-import {TimetableFieldNumber, TimetableFieldNumbersService, TimetableHearingStatement,} from '../../../api';
+import {
+  TimetableFieldNumber,
+  TimetableFieldNumbersService,
+  TimetableHearingStatementV2,
+} from '../../../api';
 import {TranslatePipe} from '@ngx-translate/core';
 
 @Injectable({
@@ -11,7 +15,7 @@ export class OpenStatementInMailService {
     private readonly timetableFieldNumbersService: TimetableFieldNumbersService
   ) {}
 
-  openAsMail(statement: TimetableHearingStatement, ttfnValidOn: Date | undefined) {
+  openAsMail(statement: TimetableHearingStatementV2, ttfnValidOn: Date | undefined) {
     if (statement?.ttfnid) {
       this.timetableFieldNumbersService
         .getOverview(
@@ -34,7 +38,7 @@ export class OpenStatementInMailService {
   }
 
   openStatementInMailClient(
-    statement: TimetableHearingStatement,
+    statement: TimetableHearingStatementV2,
     resolvedTtfn: TimetableFieldNumber | undefined
   ) {
     const a = document.createElement('a');
@@ -43,7 +47,7 @@ export class OpenStatementInMailService {
   }
 
   buildMailToLink(
-    statement: TimetableHearingStatement,
+    statement: TimetableHearingStatementV2,
     resolvedTtfn: TimetableFieldNumber | undefined
   ) {
     const statementInfo = this.buildStatementInfo(statement);
@@ -56,11 +60,11 @@ export class OpenStatementInMailService {
     return encodeURI(`mailto:?${subject}body=${body}`);
   }
 
-  private buildStatementInfo(statement: TimetableHearingStatement) {
+  private buildStatementInfo(statement: TimetableHearingStatementV2) {
     return this.translatePipe.transform('TTH.STATEMENT.STATEMENT') + ': ' + statement?.statement;
   }
 
-  private buildStopPointInfo(statement: TimetableHearingStatement) {
+  private buildStopPointInfo(statement: TimetableHearingStatementV2) {
     const stopPointLabel = this.translatePipe.transform('TTH.STATEMENT.STOP_POINT');
     return statement?.stopPlace ? `${stopPointLabel}: ${statement?.stopPlace}\r\r` : '';
   }

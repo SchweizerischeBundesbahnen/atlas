@@ -28,5 +28,5 @@ export interface StatementSenderFormGroup {
   zip: FormControl<number | null | undefined>;
   city: FormControl<string | null | undefined>;
   street: FormControl<string | null | undefined>;
-  emails: FormControl<string[] | null | undefined>;
+  emails: FormControl<Set<string> | null | undefined>;
 }

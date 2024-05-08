@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
-import { StatementStatus, TimetableHearingStatement } from '../../../api';
+import {StatementStatus, TimetableHearingStatementV2} from '../../../api';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StatementShareService {
-  private _statement!: TimetableHearingStatement | undefined;
+  private _statement!: TimetableHearingStatementV2 | undefined;
 
   get statement() {
     return this._statement;
   }
 
-  set statement(statement: TimetableHearingStatement | undefined) {
+  set statement(statement: TimetableHearingStatementV2 | undefined) {
     this._statement = statement;
   }
 
@@ -19,7 +19,7 @@ export class StatementShareService {
     this._statement = undefined;
   }
 
-  public getCloneStatement(): TimetableHearingStatement {
+  public getCloneStatement(): TimetableHearingStatementV2 {
     return {
       timetableYear: this.statement!.timetableYear,
       statementStatus: StatementStatus.Received,
