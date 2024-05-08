@@ -35,7 +35,7 @@ import org.springframework.transaction.TransactionSystemException;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.RECEIVED)
         .statementSender(StatementSender.builder()
-            .emails(Set.of("mike@thebike.com"))
+            .emails(List.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -61,7 +61,7 @@ import org.springframework.transaction.TransactionSystemException;
             .street("Hauptstrasse 1")
             .zip(39012)
             .city("Algund")
-            .emails(Set.of("mike@thebike.com"))
+            .emails(List.of("mike@thebike.com"))
             .build())
         .comment(
             "Sie ändern die Kantonszuordnung der ausgewählten Stellungnahme. Mit der Übertragung verlieren Sie die "
@@ -143,7 +143,7 @@ import org.springframework.transaction.TransactionSystemException;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.RECEIVED)
         .statementSender(StatementSender.builder()
-            .emails(Set.of("mike@thebike.com"))
+            .emails(List.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -153,7 +153,7 @@ import org.springframework.transaction.TransactionSystemException;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.RECEIVED)
         .statementSender(StatementSender.builder()
-            .emails(Set.of("mike@thebike.com"))
+            .emails(List.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -163,7 +163,7 @@ import org.springframework.transaction.TransactionSystemException;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.JUNK)
         .statementSender(StatementSender.builder()
-            .emails(Set.of("mike@thebike.com"))
+            .emails(List.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -192,7 +192,7 @@ import org.springframework.transaction.TransactionSystemException;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.RECEIVED)
         .statementSender(StatementSender.builder()
-            .emails(Set.of("mike@thebike.com"))
+            .emails(List.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -202,7 +202,7 @@ import org.springframework.transaction.TransactionSystemException;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.JUNK)
         .statementSender(StatementSender.builder()
-            .emails(Set.of("mike@thebike.com"))
+            .emails(List.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -212,7 +212,7 @@ import org.springframework.transaction.TransactionSystemException;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.JUNK)
         .statementSender(StatementSender.builder()
-            .emails(Set.of("mike@thebike.com"))
+            .emails(List.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
