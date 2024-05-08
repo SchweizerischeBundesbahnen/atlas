@@ -48,14 +48,14 @@ export class StringListComponent implements OnInit, OnChanges {
     return this._form.controls.input!;
   }
 
-  get buttonDisabled() {
-    return this._form.invalid || this._form.disabled || this._strings.includes(this.inputFormControl.value);
-  }
-
   addItem() {
     const inputValue = this.inputFormControl.value;
-    if (inputValue && this._strings.length < this.maxItems && !this._strings.includes(inputValue)) {
-      this._strings.push(inputValue);
+    if (inputValue) {
+      if (!this._strings.includes(inputValue)) {
+        this._strings.push(inputValue);
+      }
+      this.inputFormControl.setValue(undefined);
+
       this.formControl.setValue(this._strings);
       this.formGroup.markAsDirty();
     }

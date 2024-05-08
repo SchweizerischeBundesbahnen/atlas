@@ -6,19 +6,19 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {AppTestingModule} from '../../../../app.testing.module';
 import {FormModule} from '../../../../core/module/form.module';
 import {BaseChangeDialogComponent} from '../base-change-dialog/base-change-dialog.component';
-import {SwissCanton, TimetableHearingStatement, TimetableHearingStatementsV2Service,} from '../../../../api';
+import {SwissCanton, TimetableHearingStatementV2, TimetableHearingStatementsService,} from '../../../../api';
 import {TranslatePipe} from '@ngx-translate/core';
 import {NotificationService} from '../../../../core/notification/notification.service';
 import {DialogService} from '../../../../core/components/dialog/dialog.service';
 import {of} from 'rxjs';
 
-const statement: TimetableHearingStatement = {
+const statement: TimetableHearingStatementV2 = {
   id: 1,
   swissCanton: SwissCanton.Bern,
   statement: 'Luca is am yb match gsi',
   justification: 'Napoli ist besser als YB',
   statementSender: {
-    emails: new Array('luca@yb.ch'),
+    emails: new Set('luca@yb.ch'),
   },
 };
 const dialogRefSpy = jasmine.createSpyObj(['close']);
@@ -57,7 +57,7 @@ describe('TthChangeCantonDialogComponent', () => {
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: NotificationService, useValue: notificationServiceSpy },
         {
-          provide: TimetableHearingStatementsV2Service,
+          provide: TimetableHearingStatementsService,
           useValue: mockTimetableHearingStatementsService,
         },
         { provide: TranslatePipe },
