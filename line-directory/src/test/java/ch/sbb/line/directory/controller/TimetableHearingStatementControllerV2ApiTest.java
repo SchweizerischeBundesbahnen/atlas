@@ -443,7 +443,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.RECEIVED)
         .statementSender(StatementSender.builder()
-            .emails(Set.of("mike@thebike.com"))
+            .emails(List.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -452,7 +452,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.JUNK)
         .statementSender(StatementSender.builder()
-            .emails(Set.of("mike@thebike.com"))
+            .emails(List.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -480,7 +480,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.IN_REVIEW)
         .statementSender(StatementSender.builder()
-            .emails(Set.of("mike@thebike.com"))
+            .emails(List.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -490,7 +490,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.JUNK)
         .statementSender(StatementSender.builder()
-            .emails(Set.of("mike@thebike.com"))
+            .emails(List.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -517,7 +517,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.IN_REVIEW)
         .statementSender(StatementSender.builder()
-            .emails(Set.of("mike@thebike.com"))
+            .emails(List.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -527,7 +527,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.JUNK)
         .statementSender(StatementSender.builder()
-            .emails(Set.of("mike@thebike.com"))
+            .emails(List.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -557,7 +557,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.IN_REVIEW)
         .statementSender(StatementSender.builder()
-            .emails(Set.of("mike@thebike.com"))
+            .emails(List.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -567,7 +567,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.JUNK)
         .statementSender(StatementSender.builder()
-            .emails(Set.of("mike@thebike.com"))
+            .emails(List.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -593,7 +593,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.RECEIVED)
         .statementSender(StatementSender.builder()
-            .emails(Set.of("mike@thebike.com"))
+            .emails(List.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();
@@ -602,7 +602,7 @@ import org.springframework.test.web.servlet.MvcResult;
         .swissCanton(SwissCanton.AARGAU)
         .statementStatus(StatementStatus.JUNK)
         .statementSender(StatementSender.builder()
-            .emails(Set.of("mike@thebike.com"))
+            .emails(List.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .build();

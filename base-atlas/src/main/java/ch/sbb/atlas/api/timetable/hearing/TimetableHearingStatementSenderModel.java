@@ -20,7 +20,6 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "TimetableHearingStatementSender")
 public class TimetableHearingStatementSenderModel {
 
   @Schema(description = "First Name", example = "Fabienne")
