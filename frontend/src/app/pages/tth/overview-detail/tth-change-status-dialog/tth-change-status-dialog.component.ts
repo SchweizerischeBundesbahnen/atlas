@@ -7,7 +7,7 @@ import {NotificationService} from '../../../../core/notification/notification.se
 import {Subject, takeUntil} from 'rxjs';
 import {TthChangeStatusFormGroup} from './model/tth-change-status-form-group';
 import {ValidationService} from 'src/app/core/validation/validation.service';
-import {TimetableHearingStatementsV2Service} from '../../../../api';
+import {TimetableHearingStatementsService} from "../../../../api";
 
 @Component({
   selector: 'app-tth-change-status-dialog',
@@ -23,7 +23,7 @@ export class TthChangeStatusDialogComponent {
     public dialogRef: MatDialogRef<TthChangeStatusDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: StatusChangeData,
     private readonly notificationService: NotificationService,
-    private readonly timetableHearingStatementsServiceV2: TimetableHearingStatementsV2Service,
+    private readonly timetableHearingStatementsService: TimetableHearingStatementsService,
   ) {}
 
   onClick(): void {
@@ -33,7 +33,7 @@ export class TthChangeStatusDialogComponent {
       if (this.formGroup.controls['justification'].value) {
         justification = this.formGroup.controls['justification'].value;
       }
-      this.timetableHearingStatementsServiceV2
+      this.timetableHearingStatementsService
         .updateHearingStatementStatus({
           ids: this.data.tths.map((value) => Number(value.id)),
           justification: justification,

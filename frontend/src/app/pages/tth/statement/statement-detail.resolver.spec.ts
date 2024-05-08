@@ -1,16 +1,16 @@
 import {TestBed} from '@angular/core/testing';
 import {ActivatedRouteSnapshot, convertToParamMap} from '@angular/router';
-import {HearingStatus, SwissCanton, TimetableHearingStatement, TimetableHearingStatementsV2Service,} from '../../../api';
+import {HearingStatus, SwissCanton, TimetableHearingStatementV2, TimetableHearingStatementsService,} from '../../../api';
 import {StatementDetailResolver} from './statement-detail.resolver';
 import {AppTestingModule} from '../../../app.testing.module';
 import {of} from 'rxjs';
 
-const statement: TimetableHearingStatement = {
+const statement: TimetableHearingStatementV2 = {
   id: 1234,
   swissCanton: SwissCanton.Aargau,
   statement: 'Mehr Busse bitte',
   statementSender: {
-    emails: new Array('luca@yb.ch'),
+    emails: new Set('luca@yb.ch'),
   },
 };
 
@@ -29,7 +29,7 @@ describe('StatementDetailResolver', () => {
       providers: [
         StatementDetailResolver,
         {
-          provide: TimetableHearingStatementsV2Service,
+          provide: TimetableHearingStatementsService,
           useValue: timetableHearingStatementsServiceSpy,
         },
       ],

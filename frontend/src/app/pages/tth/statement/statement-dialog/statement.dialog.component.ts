@@ -1,7 +1,7 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormGroup} from '@angular/forms';
-import {TimetableHearingStatementsV2Service, TimetableHearingStatement} from '../../../../api';
+import {TimetableHearingStatementsService, TimetableHearingStatementV2} from '../../../../api';
 import {Subject} from 'rxjs';
 import {NotificationService} from '../../../../core/notification/notification.service';
 import {StatementDetailFormGroup} from '../statement-detail-form-group';
@@ -18,12 +18,12 @@ export class StatementDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<StatementDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public form: FormGroup<StatementDetailFormGroup>,
-    private readonly timetableHearingStatementsServiceV2: TimetableHearingStatementsV2Service,
+    private readonly timetableHearingStatementsService: TimetableHearingStatementsService,
     private readonly notificationService: NotificationService,
   ) {}
 
   changeCantonAndAddComment() {
-    const hearingStatement = this.form.value as TimetableHearingStatement;
+    const hearingStatement = this.form.value as TimetableHearingStatementV2;
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
       this.updateStatement(this.form.value!.id!, hearingStatement);
@@ -31,8 +31,8 @@ export class StatementDialogComponent {
     }
   }
 
-  private updateStatement(id: number, statement: TimetableHearingStatement) {
-    this.timetableHearingStatementsServiceV2
+  private updateStatement(id: number, statement: TimetableHearingStatementV2) {
+    this.timetableHearingStatementsService
       .updateHearingStatement(id, statement)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
