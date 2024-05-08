@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TimetableHearingStatement } from './timetableHearingStatement';
+import { TimetableHearingStatementV2 } from './timetableHearingStatementV2';
 
 
 export interface InlineObject1 { 
-    statement: TimetableHearingStatement;
+    statement: TimetableHearingStatementV2;
     documents?: Array<Blob>;
 }
 
