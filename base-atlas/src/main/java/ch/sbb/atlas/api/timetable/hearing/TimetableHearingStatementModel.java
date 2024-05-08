@@ -31,7 +31,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @FieldNameConstants
-@Schema(name = "TimetableHearingStatement")
 public class TimetableHearingStatementModel extends BaseVersionModel implements CantonAssociated {
 
   @Schema(description = "Technical identifier", example = "1", accessMode = AccessMode.READ_ONLY)

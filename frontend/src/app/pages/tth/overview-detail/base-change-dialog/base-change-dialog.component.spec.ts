@@ -8,20 +8,20 @@ import {FormModule} from '../../../../core/module/form.module';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {MAT_SNACK_BAR_DATA, MatSnackBarRef} from '@angular/material/snack-bar';
 import {TranslatePipe} from '@ngx-translate/core';
-import {SwissCanton, TimetableHearingStatement} from '../../../../api';
+import {SwissCanton, TimetableHearingStatementV2} from '../../../../api';
 import {FormControl, FormGroup} from '@angular/forms';
 import {TthChangeStatusFormGroup} from '../tth-change-status-dialog/model/tth-change-status-form-group';
 import {AtlasFieldLengthValidator} from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import {WhitespaceValidator} from '../../../../core/validation/whitespace/whitespace-validator';
 import {By} from '@angular/platform-browser';
 
-const statement: TimetableHearingStatement = {
+const statement: TimetableHearingStatementV2 = {
   id: 1,
   swissCanton: SwissCanton.Bern,
   statement: 'Luca is am yb match gsi',
   justification: 'Napoli ist besser als YB',
   statementSender: {
-    emails: new Array('luca@yb.ch'),
+    emails: new Set('luca@yb.ch'),
   },
 };
 

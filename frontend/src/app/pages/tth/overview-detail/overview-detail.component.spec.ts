@@ -5,13 +5,11 @@ import {AppTestingModule} from '../../../app.testing.module';
 import {TranslatePipe} from '@ngx-translate/core';
 import {DisplayDatePipe} from '../../../core/pipe/display-date.pipe';
 import {
-  ContainerTimetableHearingStatement,
+  ContainerTimetableHearingStatementV2,
   HearingStatus,
   SwissCanton,
-  TimetableHearingStatement,
-  TimetableHearingStatementDocument,
-  TimetableHearingStatementSender,
-  TimetableHearingStatementsV2Service,
+  TimetableHearingStatementDocument, TimetableHearingStatementSenderV2,
+  TimetableHearingStatementsService, TimetableHearingStatementV2,
   TimetableHearingYear,
   TimetableHearingYearsService,
 } from '../../../api';
@@ -61,7 +59,7 @@ const hearingYear2001: TimetableHearingYear = {
   hearingTo: moment().toDate(),
 };
 
-const timetableHearingStatement: TimetableHearingStatement = {
+const timetableHearingStatement: TimetableHearingStatementV2 = {
   timetableYear: 2001,
   statementStatus: 'REVOKED',
   ttfnid: 'ch:1:ttfnid:1000008',
@@ -87,11 +85,11 @@ const timetableHearingStatement: TimetableHearingStatement = {
       businessRegisterName: 'BLS',
     },
   ],
-  statementSender: { emails: new Array('a@b.c')},
+  statementSender: { emails: new Set('a@b.c')},
   statement: 'Ich hätte gerne mehrere Verbindungen am Abend.',
   documents: [],
 };
-const containerTimetableHearingStatement: ContainerTimetableHearingStatement = {
+const containerTimetableHearingStatement: ContainerTimetableHearingStatementV2 = {
   objects: [timetableHearingStatement, timetableHearingStatement],
   totalCount: 2,
 };
@@ -128,7 +126,7 @@ async function baseTestConfiguration() {
     imports: [AppTestingModule],
     providers: [
       {
-        provide: TimetableHearingStatementsV2Service,
+        provide: TimetableHearingStatementsService,
         useValue: mockTimetableHearingStatementsService,
       },
       { provide: TimetableHearingYearsService, useValue: mockTimetableHearingYearsService },
@@ -303,7 +301,7 @@ describe('TimetableHearingOverviewDetailComponent', () => {
     });
 
     it('should return the last name of the statement sender', () => {
-      const testSender: TimetableHearingStatementSender = { firstName: 'Max', lastName: 'Mustermann', emails: new Array('muster@muster.com')};
+      const testSender: TimetableHearingStatementSenderV2 = { firstName: 'Max', lastName: 'Mustermann', emails: new Set('muster@muster.com')};
       expect(component.mapToLastname(testSender)).toEqual('Mustermann');
     });
 

@@ -4,10 +4,9 @@ import {
   ApplicationType,
   HearingStatus,
   StatementStatus,
-  SwissCanton,
-  TimetableHearingStatement,
+  SwissCanton, TimetableHearingStatement,
   TimetableHearingStatementDocument,
-  TimetableHearingStatementsV2Service,
+  TimetableHearingStatementsService, TimetableHearingStatementV2,
   TimetableHearingYearsService,
   TimetableYearChangeService,
   TransportCompany,
@@ -46,7 +45,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   CANTON_OPTIONS: Canton[] = [];
   STATUS_OPTIONS: StatementStatus[] = [];
   ttfnValidOn: Date | undefined = undefined;
-  statement: TimetableHearingStatement | undefined;
+  statement: TimetableHearingStatementV2 | undefined;
   initialValueForCanton: SwissCanton | null | undefined;
   hearingStatus!: HearingStatus;
   isNew!: boolean;
@@ -66,7 +65,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     private route: ActivatedRoute,
     private dialogService: DialogService,
     private timetableHearingYearsService: TimetableHearingYearsService,
-    private readonly timetableHearingStatementsServiceV2: TimetableHearingStatementsV2Service,
+    private readonly timetableHearingStatementsService: TimetableHearingStatementsService,
     private notificationService: NotificationService,
     private authService: AuthService,
     private timetableYearChangeService: TimetableYearChangeService,
@@ -180,7 +179,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       .then();
   }
 
-  getFormGroup(statement: TimetableHearingStatement | undefined): FormGroup {
+  getFormGroup(statement: TimetableHearingStatementV2 | undefined): FormGroup {
     return new FormGroup<StatementDetailFormGroup>({
       id: new FormControl(statement?.id),
       timetableYear: new FormControl(statement?.timetableYear, [Validators.required]),
@@ -216,7 +215,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
         street: new FormControl(statement?.statementSender?.street, [
           AtlasFieldLengthValidator.length_100,
         ]),
-        emails: new FormControl(statement?.statementSender?.emails, [Validators.required])
+        emails: new FormControl(statement?.statementSender?.emails, [Validators.required, Validators.maxLength(10)])
       }),
       statement: new FormControl(statement?.statement, [
         Validators.required,
@@ -246,7 +245,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   }
 
   downloadFile(fileName: string) {
-    this.timetableHearingStatementsServiceV2
+    this.timetableHearingStatementsService
       .getStatementDocument(this.statement!.id!, fileName)
       .subscribe((response) => FileDownloadService.downloadFile(fileName, response));
   }
@@ -262,7 +261,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     if (documents!.length > 0) {
       this.isLoading = true;
       for (let i = 0; i < documents!.length!; i++) {
-        this.timetableHearingStatementsServiceV2
+        this.timetableHearingStatementsService
           .getStatementDocument(id, documents![i].fileName)
           .pipe(takeUntil(this.ngUnsubscribe))
           .subscribe((response) => {
@@ -362,7 +361,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   private initResponsibleTransportCompanyPrefill() {
     this.form.controls.ttfnid.valueChanges.subscribe((ttfnid) => {
       if (ttfnid) {
-        this.timetableHearingStatementsServiceV2
+        this.timetableHearingStatementsService
           .getResponsibleTransportCompanies(ttfnid, this.form.value.timetableYear! - 1)
           .subscribe((result) => {
             this.form.controls.responsibleTransportCompanies.setValue(result);
@@ -371,9 +370,9 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     });
   }
 
-  private createStatement(statement: TimetableHearingStatement) {
+  private createStatement(statement: TimetableHearingStatementV2) {
     this.isLoading = true;
-    this.timetableHearingStatementsServiceV2
+    this.timetableHearingStatementsService
       .createStatement(statement, this.uploadedFiles)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((statement) => {
@@ -384,9 +383,9 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       });
   }
 
-  private updateStatement(id: number, statement: TimetableHearingStatement) {
+  private updateStatement(id: number, statement: TimetableHearingStatementV2) {
     this.isLoading = true;
-    this.timetableHearingStatementsServiceV2
+    this.timetableHearingStatementsService
       .updateHearingStatement(id, statement, this.uploadedFiles)
       .pipe(takeUntil(this.ngUnsubscribe), catchError(this.handleError()))
       .subscribe((statement) => {
@@ -396,7 +395,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       });
   }
 
-  private navigateToStatementDetail(statement: TimetableHearingStatement) {
+  private navigateToStatementDetail(statement: TimetableHearingStatementV2) {
     this.router.navigate(['..', statement.id], {relativeTo: this.route}).then(() => {
       this.isInitializingComponent = false;
       this.statement = statement;
@@ -435,7 +434,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   }
 
   next() {
-    this.timetableHearingStatementsServiceV2.getNextStatement(...this.getAlternationParams())
+    this.timetableHearingStatementsService.getNextStatement(...this.getAlternationParams())
       .subscribe(next => {
         this.tableService.pageIndex = next.pageable.pageNumber!;
         this.navigateToStatementDetail(next.timetableHearingStatement);
@@ -443,7 +442,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   }
 
   previous() {
-    this.timetableHearingStatementsServiceV2.getPreviousStatement(...this.getAlternationParams())
+    this.timetableHearingStatementsService.getPreviousStatement(...this.getAlternationParams())
       .subscribe(next => {
         this.tableService.pageIndex = next.pageable.pageNumber!;
         this.navigateToStatementDetail(next.timetableHearingStatement);

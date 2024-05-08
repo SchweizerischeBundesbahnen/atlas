@@ -1,9 +1,9 @@
 import {
   HearingStatus,
   SwissCanton,
-  TimetableHearingStatement,
   TimetableHearingStatementAlternating,
-  TimetableHearingStatementsV2Service,
+  TimetableHearingStatementsService,
+  TimetableHearingStatementV2,
   TimetableHearingYear,
   TimetableHearingYearsService,
 } from '../../../api';
@@ -34,12 +34,12 @@ import {LoadingSpinnerComponent} from '../../../core/components/loading-spinner/
 import {DetailPageContentComponent} from "../../../core/components/detail-page-content/detail-page-content.component";
 import {StringListComponent} from "../../../core/form-components/string-list/string-list.component";
 
-const existingStatement: TimetableHearingStatement = {
+const existingStatement: TimetableHearingStatementV2 = {
   id: 1,
   swissCanton: SwissCanton.Bern,
   statement: 'Luca isch am yb match gsi',
   statementSender: {
-    emails: new Array('luca@yb.ch'),
+    emails: new Set('luca@yb.ch'),
   },
 };
 
@@ -225,7 +225,7 @@ describe('StatementDetailComponent for new statement', () => {
 
       component.form.controls.swissCanton.setValue(SwissCanton.Bern);
       component.form.controls.statement.setValue('my yb busses');
-      component.form.controls.statementSender.controls.emails.setValue(['luca@yb.ch']);
+      component.form.controls.statementSender.controls.emails.setValue(new Set('luca@yb.ch'));
       fixture.detectChanges();
 
       component.save();
@@ -244,7 +244,7 @@ describe('StatementDetailComponent for new statement', () => {
 });
 
 function setupTestBed(activatedRoute: {
-  snapshot: { data: { statement: undefined | TimetableHearingStatement } };
+  snapshot: { data: { statement: undefined | TimetableHearingStatementV2 } };
 }) {
   mockTimetableHearingYearsService.getHearingYears.and.returnValue(of(years));
 
@@ -273,7 +273,7 @@ function setupTestBed(activatedRoute: {
       { provide: FormBuilder },
       { provide: TimetableHearingYearsService, useValue: mockTimetableHearingYearsService },
       {
-        provide: TimetableHearingStatementsV2Service,
+        provide: TimetableHearingStatementsService,
         useValue: mockTimetableHearingStatementsService,
       },
       { provide: AuthService, useValue: authServiceMock },

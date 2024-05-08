@@ -3,7 +3,11 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {TthChangeStatusDialogComponent} from './tth-change-status-dialog.component';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {AppTestingModule} from '../../../../app.testing.module';
-import {SwissCanton, TimetableHearingStatement, TimetableHearingStatementsV2Service,} from '../../../../api';
+import {
+  SwissCanton,
+  TimetableHearingStatementV2,
+  TimetableHearingStatementsService,
+} from '../../../../api';
 import {of} from 'rxjs';
 import {DialogService} from '../../../../core/components/dialog/dialog.service';
 import {MAT_SNACK_BAR_DATA, MatSnackBarRef} from '@angular/material/snack-bar';
@@ -23,13 +27,13 @@ const mockTimetableHearingStatementsService = jasmine.createSpyObj(
 const dialogServiceSpy = jasmine.createSpyObj(DialogService, { confirmLeave: of({}) });
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 const notificationServiceSpy = jasmine.createSpyObj(['success']);
-const statement: TimetableHearingStatement = {
+const statement: TimetableHearingStatementV2 = {
   id: 1,
   swissCanton: SwissCanton.Bern,
   statement: 'Luca is am yb match gsi',
   justification: 'Napoli ist besser als YB',
   statementSender: {
-    emails: new Array('luca@yb.ch'),
+    emails: new Set('luca@yb.ch'),
   },
 };
 
@@ -67,7 +71,7 @@ describe('TthChangeStatusDialogComponent', () => {
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: NotificationService, useValue: notificationServiceSpy },
         {
-          provide: TimetableHearingStatementsV2Service,
+          provide: TimetableHearingStatementsService,
           useValue: mockTimetableHearingStatementsService,
         },
         { provide: TranslatePipe },
