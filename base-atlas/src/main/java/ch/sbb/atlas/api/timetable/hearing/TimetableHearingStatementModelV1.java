@@ -20,7 +20,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @FieldNameConstants
-@Schema(name = "TimetableHearingStatement", deprecated = true)
+@Schema(name = "TimetableHearingStatement", description = "Deprecated in favor of TimetableHearingStatementV2")
 public class TimetableHearingStatementModelV1 extends TimetableHearingStatementModel {
 
   @NotNull
