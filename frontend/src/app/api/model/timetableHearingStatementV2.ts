@@ -9,11 +9,84 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TimetableHearingStatement } from './timetableHearingStatement';
+import { Status } from './status';
+import { TimetableHearingStatementDocument } from './timetableHearingStatementDocument';
+import { TimetableHearingStatementSenderV2 } from './timetableHearingStatementSenderV2';
+import { SwissCanton } from './swissCanton';
+import { StatementStatus } from './statementStatus';
+import { TimetableHearingStatementResponsibleTransportCompany } from './timetableHearingStatementResponsibleTransportCompany';
 
 
-export interface ContainerTimetableHearingStatement { 
-    objects?: Array<TimetableHearingStatement>;
-    totalCount?: number;
+export interface TimetableHearingStatementV2 { 
+    /**
+     * Object creation date
+     */
+    readonly creationDate?: string;
+    /**
+     * User creator
+     */
+    readonly creator?: string;
+    /**
+     * Last edition date
+     */
+    readonly editionDate?: string;
+    /**
+     * User editor
+     */
+    readonly editor?: string;
+    status?: Status;
+    /**
+     * Technical identifier
+     */
+    readonly id?: number;
+    /**
+     * TimetableYear
+     */
+    timetableYear?: number;
+    statementStatus?: StatementStatus;
+    /**
+     * TimetableFieldNumberId regarding the statement
+     */
+    ttfnid?: string;
+    /**
+     * Timetable field number
+     */
+    timetableFieldNumber?: string;
+    /**
+     * Timetable field number description
+     */
+    timetableFieldDescription?: string;
+    swissCanton: SwissCanton;
+    oldSwissCanton?: SwissCanton;
+    /**
+     * StopPlace information for the statement
+     */
+    stopPlace?: string;
+    responsibleTransportCompanies?: Array<TimetableHearingStatementResponsibleTransportCompany>;
+    /**
+     * Comma separated Transport Companies abbreviation
+     */
+    readonly responsibleTransportCompaniesDisplay?: string;
+    /**
+     * Statement of citizen
+     */
+    statement: string;
+    /**
+     * List of uploaded documents
+     */
+    documents?: Array<TimetableHearingStatementDocument>;
+    /**
+     * Statement of Federal office of transport
+     */
+    justification?: string;
+    /**
+     * Statement comment
+     */
+    comment?: string;
+    /**
+     * Optimistic locking version - instead of ETag HTTP Header (see RFC7232:Section 2.3)
+     */
+    etagVersion?: number;
+    statementSender: TimetableHearingStatementSenderV2;
 }
 

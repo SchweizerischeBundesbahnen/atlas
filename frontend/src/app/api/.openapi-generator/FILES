@@ -1,4 +1,5 @@
 .gitignore
+.openapi-generator-ignore
 README.md
 api.module.ts
 api/api.ts
@@ -18,7 +19,6 @@ api/servicePoints.service.ts
 api/sublines.service.ts
 api/timetableFieldNumbers.service.ts
 api/timetableHearingStatements.service.ts
-api/timetableHearingStatementsV2.service.ts
 api/timetableHearingYears.service.ts
 api/timetableYearChange.service.ts
 api/trafficPointElements.service.ts
@@ -67,7 +67,7 @@ model/containerReadToiletVersion.ts
 model/containerReadTrafficPointElementVersion.ts
 model/containerSubline.ts
 model/containerTimetableFieldNumber.ts
-model/containerTimetableHearingStatement.ts
+model/containerTimetableHearingStatementV2.ts
 model/containerTransportCompany.ts
 model/containerUser.ts
 model/coordinatePair.ts
@@ -172,7 +172,8 @@ model/timetableHearingStatement.ts
 model/timetableHearingStatementAlternating.ts
 model/timetableHearingStatementDocument.ts
 model/timetableHearingStatementResponsibleTransportCompany.ts
-model/timetableHearingStatementSender.ts
+model/timetableHearingStatementSenderV2.ts
+model/timetableHearingStatementV2.ts
 model/timetableHearingYear.ts
 model/toiletOverview.ts
 model/toiletVersion.ts
