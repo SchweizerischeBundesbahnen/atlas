@@ -10,11 +10,11 @@
  * Do not edit the class manually.
  */
 import { PageableObject } from './pageableObject';
-import { TimetableHearingStatement } from './timetableHearingStatement';
+import { TimetableHearingStatementV2 } from './timetableHearingStatementV2';
 
 
 export interface TimetableHearingStatementAlternating { 
-    timetableHearingStatement: TimetableHearingStatement;
+    timetableHearingStatement: TimetableHearingStatementV2;
     pageable: PageableObject;
 }
 
