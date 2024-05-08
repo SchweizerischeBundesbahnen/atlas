@@ -297,7 +297,7 @@ import org.springframework.test.web.servlet.MvcResult;
          {
          	"statement": "I need some more busses please.",
          	"statementSender": {
-         		"email": "maurer@post.ch",
+         		"emails": ["maurer@post.ch", "burri@post.ch"],
          		"firstName": "Fabienne",
          		"lastName": "Maurer",
          		"organisation": "Post AG",
