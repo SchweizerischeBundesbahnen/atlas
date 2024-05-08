@@ -18,7 +18,6 @@ import { ServicePointsService } from './api/servicePoints.service';
 import { SublinesService } from './api/sublines.service';
 import { TimetableFieldNumbersService } from './api/timetableFieldNumbers.service';
 import { TimetableHearingStatementsService } from './api/timetableHearingStatements.service';
-import { TimetableHearingStatementsV2Service } from './api/timetableHearingStatementsV2.service';
 import { TimetableHearingYearsService } from './api/timetableHearingYears.service';
 import { TimetableYearChangeService } from './api/timetableYearChange.service';
 import { TrafficPointElementsService } from './api/trafficPointElements.service';
