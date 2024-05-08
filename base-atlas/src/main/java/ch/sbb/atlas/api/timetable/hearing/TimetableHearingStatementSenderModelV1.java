@@ -21,7 +21,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "TimetableHearingStatementSender", deprecated = true)
+@Schema(name = "TimetableHearingStatementSender", description = "Deprecated in favor of TimetableHearingStatementSenderV2")
 public class TimetableHearingStatementSenderModelV1 extends TimetableHearingStatementSenderModel {
 
   @Schema(description = "E-Mail address", example = "maurer@post.ch")
