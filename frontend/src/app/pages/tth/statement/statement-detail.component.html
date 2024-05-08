@@ -180,7 +180,12 @@
             <div class="d-flex flex-column col-12">
               <atlas-text-list [formGroup]="form"
                                [itemValidator]="emailValidator"
-                                controlName="statementSender.emails">
+                               fieldLabel="TTH.STATEMENT.E_MAIL"
+                               [required]="true"
+                               [fieldExamples]="[
+                                { label: 'FORM.MAX_ITEMS', translate: true, arg: { key: 'numberOfItems', value: '10' } },
+                              ]"
+                               controlName="statementSender.emails">
               </atlas-text-list>
             </div>
           </div>
