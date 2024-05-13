@@ -60,6 +60,7 @@ public class SecurityConfig {
                 // <code>@EnableGlobalMethodSecurity(prePostEnabled = true)</code>.
                 .requestMatchers(HttpMethod.DELETE, "/**").hasRole(Role.ATLAS_ADMIN)
                 .requestMatchers(HttpMethod.POST, "/**").hasRole(Role.ATLAS_ADMIN)
+                .requestMatchers(HttpMethod.GET, "/static/**").permitAll()
                 .anyRequest().authenticated()
         )
 
