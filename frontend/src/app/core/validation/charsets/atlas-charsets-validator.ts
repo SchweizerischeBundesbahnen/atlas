@@ -1,4 +1,4 @@
-import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import {AbstractControl, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 
 export class AtlasCharsetsValidator {
   static numeric(control: AbstractControl): ValidationErrors | null {

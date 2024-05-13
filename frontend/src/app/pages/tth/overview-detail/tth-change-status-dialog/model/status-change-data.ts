@@ -1,8 +1,8 @@
-import { DialogData } from '../../../../../core/components/dialog/dialog.data';
-import { StatementStatus, TimetableHearingStatement } from '../../../../../api';
+import {DialogData} from '../../../../../core/components/dialog/dialog.data';
+import {StatementStatus, TimetableHearingStatementV2} from '../../../../../api';
 
 export interface StatusChangeData extends DialogData {
-  tths: TimetableHearingStatement[];
+  tths: TimetableHearingStatementV2[];
   statementStatus: StatementStatus;
   justification: string | undefined;
   type: StatusChangeDataType;

@@ -1,7 +1,7 @@
 import {TestBed} from '@angular/core/testing';
 import {TranslateFakeLoader, TranslateLoader, TranslateModule, TranslatePipe,} from '@ngx-translate/core';
 import {OpenStatementInMailService} from './open-statement-in-mail.service';
-import {Status, SwissCanton, TimetableFieldNumber, TimetableHearingStatement} from '../../../api';
+import {Status, SwissCanton, TimetableFieldNumber, TimetableHearingStatementV2} from '../../../api';
 import {AppTestingModule} from '../../../app.testing.module';
 
 const translatePipeSpy = jasmine.createSpyObj('translatePipe', ['transform']);
@@ -36,12 +36,12 @@ describe('OpenStatementInMailService', () => {
   });
 
   it('should construct mailto link with ttfn', () => {
-    const statement: TimetableHearingStatement = {
+    const statement: TimetableHearingStatementV2 = {
       id: 456,
       swissCanton: SwissCanton.Bern,
       statement: 'Mehr Bös pls',
       statementSender: {
-        email: 'me@sbb.ch',
+        emails: new Set('me@sbb.ch'),
       },
     };
     const ttfn: TimetableFieldNumber = {
@@ -63,12 +63,12 @@ describe('OpenStatementInMailService', () => {
   });
 
   it('should construct mailto link without ttfn', () => {
-    const statement: TimetableHearingStatement = {
+    const statement: TimetableHearingStatementV2 = {
       id: 456,
       swissCanton: SwissCanton.Bern,
       statement: 'Mehr Bös pls',
       statementSender: {
-        email: 'me@sbb.ch',
+        emails: new Set('me@sbb.ch'),
       },
     };
 
@@ -78,13 +78,13 @@ describe('OpenStatementInMailService', () => {
   });
 
   it('should construct mailto link with stopplace', () => {
-    const statement: TimetableHearingStatement = {
+    const statement: TimetableHearingStatementV2 = {
       id: 456,
       swissCanton: SwissCanton.Bern,
       statement: 'Mehr Bös pls',
       stopPlace: 'Erste Haltestelle nach der Post',
       statementSender: {
-        email: 'me@sbb.ch',
+        emails: new Set('me@sbb.ch'),
       },
     };
     const ttfn: TimetableFieldNumber = {

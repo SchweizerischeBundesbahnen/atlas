@@ -3,7 +3,7 @@ package ch.sbb.line.directory.service.hearing;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementAlternatingModel;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
-import ch.sbb.line.directory.mapper.TimetableHearingStatementMapper;
+import ch.sbb.line.directory.mapper.TimetableHearingStatementMapperV2;
 import ch.sbb.line.directory.model.TimetableHearingStatementSearchRestrictions;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import java.util.List;
@@ -61,7 +61,7 @@ public class TimetableHearingStatementAlternationService {
         pageable.getSort());
 
     return TimetableHearingStatementAlternatingModel.builder()
-        .timetableHearingStatement(TimetableHearingStatementMapper.toModel(alternation))
+        .timetableHearingStatement(TimetableHearingStatementMapperV2.toModel(alternation))
         .pageable(resultPageable)
         .build();
   }
