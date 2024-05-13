@@ -1,0 +1,37 @@
+:doctype: book
+:compat-mode:
+:page-layout!:
+:toc: left
+:toclevels: 0
+:toc-title: Contents
+:stylesheet: ../../../../auto-rest-doc/src/test/resources/layout/style/asciidoctor.css
+:sectanchors:
+:sectlinks:
+:linkattrs:
+:icons: font
+:table-caption!:
+:source-highlighter: highlightjs
+:highlightjsdir: highlight
+:hide-uri-scheme:
+:revnumber: {version}
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= atlas - {name} API Guide
+[[abstract]]
+
+== Project information
+
+[width="60%" cols="18%,35%" ]
+|=================================
+|Application Name | {name}
+|Version | {version}
+|Build-Time| {buildTime}
+|Release Notes| https://atlas-info.app.sbb.ch/static/atlas-release-notes.html
+|=================================
+
+== Developer Portal
+
+This API is available as a part of the ATLAS API on the SBB developer portal.
+
+- Production: https://developer.sbb.ch/apis/atlas/information
+- Lower Stages are available here: https://developer-int.sbb.ch/apis?all=&text=atlas&scopes=PUBLIC;INTERNAL

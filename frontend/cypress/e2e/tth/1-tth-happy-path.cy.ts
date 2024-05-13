@@ -1,5 +1,5 @@
 import TthUtils from '../../support/util/tth-utils';
-import { DataCy } from '../../support/data-cy';
+import {DataCy} from '../../support/data-cy';
 import CommonUtils from '../../support/util/common-utils';
 import AngularMaterialConstants from '../../support/util/angular-material-constants';
 
@@ -61,17 +61,20 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
     CommonUtils.getClearType(DataCy.STATEMENT_ZIP, '8400');
     CommonUtils.getClearType(DataCy.STATEMENT_CITY, 'Napoli');
     CommonUtils.getClearType(DataCy.STATEMENT_STREET, 'San Paolo');
-    CommonUtils.getClearType(DataCy.STATEMENT_EMAIL, 'k@k.it');
+
+    CommonUtils.getClearType(DataCy.STRINGS_ITEM, 'k@k.it');
+    cy.get(DataCy.STRINGS_ITEM).type('{enter}');
+
     CommonUtils.getClearType(DataCy.STATEMENT_STATEMENT, 'Forza Napoli');
     CommonUtils.getClearType(DataCy.STATEMENT_JUSTIFICATION, 'Campioni in Italia');
 
-    cy.intercept('POST', 'line-directory/v1/timetable-hearing/statements').as('createStatement');
+    cy.intercept('POST', 'line-directory/v2/timetable-hearing/statements').as('createStatement');
     cy.get(DataCy.SAVE_ITEM).click();
     cy.wait('@createStatement').its('response.statusCode').should('eq', 201);
   });
 
   it('Step-7: Stellungnahmen editieren', () => {
-    const getStatementsPath = 'line-directory/v1/timetable-hearing/statements*';
+    const getStatementsPath = 'line-directory/v2/timetable-hearing/statements*';
     cy.intercept('GET', getStatementsPath).as('getStatementsPath');
     cy.get(DataCy.BACK_TO_OVERVIEW).click();
     cy.wait('@getStatementsPath').its('response.statusCode').should('eq', 200);

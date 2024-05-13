@@ -5,8 +5,8 @@ import {
   HearingStatus,
   StatementStatus,
   SwissCanton,
-  TimetableHearingStatement, TimetableHearingStatementDocument, TimetableHearingStatementSender,
-  TimetableHearingStatementsService,
+  TimetableHearingStatementDocument, TimetableHearingStatementSenderV2,
+  TimetableHearingStatementsService, TimetableHearingStatementV2,
   TimetableHearingYear,
   TimetableHearingYearsService,
   TransportCompany,
@@ -46,9 +46,9 @@ import {TthTableFilterSettingsService} from '../tth-table-filter-settings.servic
   styleUrls: ['./overview-detail.component.scss'],
 })
 export class OverviewDetailComponent implements OnInit {
-  timeTableHearingStatements: TimetableHearingStatement[] = [];
+  timeTableHearingStatements: TimetableHearingStatementV2[] = [];
   totalCount$ = 0;
-  tableColumns: TableColumn<TimetableHearingStatement>[] = [];
+  tableColumns: TableColumn<TimetableHearingStatementV2>[] = [];
 
   hearingStatus = HearingStatus.Active;
   noTimetableHearingYearFound = false;
@@ -84,9 +84,9 @@ export class OverviewDetailComponent implements OnInit {
   isTableColumnsInitialized = false;
 
   statementEditable = false;
-  selectedItems: TimetableHearingStatement[] = [];
+  selectedItems: TimetableHearingStatementV2[] = [];
   sorting = 'statementStatus,asc';
-  selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
+  selectedCheckBox = new SelectionModel<TimetableHearingStatementV2>(true, []);
   isCheckBoxModeActive = false;
   private destroyRef = inject(DestroyRef);
 
@@ -206,7 +206,7 @@ export class OverviewDetailComponent implements OnInit {
     this.navigateTo(this.cantonShort.toLowerCase(), selectedYear.value);
   }
 
-  editStatement(statement: TimetableHearingStatement) {
+  editStatement(statement: TimetableHearingStatementV2) {
     this.router
       .navigate([this.hearingStatus.toLowerCase(), statement.id], {
         relativeTo: this.route.parent,
@@ -332,7 +332,7 @@ export class OverviewDetailComponent implements OnInit {
           if (result) {
             this.statusChangeCollectingActionsEnabled = false;
             this.showCollectingActionButton = true;
-            this.selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
+            this.selectedCheckBox = new SelectionModel<TimetableHearingStatementV2>(true, []);
             this.removeCheckBoxViewMode();
             this.ngOnInit();
           }
@@ -348,7 +348,7 @@ export class OverviewDetailComponent implements OnInit {
           if (result) {
             this.cantonDeliveryCollectingActionsEnabled = false;
             this.showCollectingActionButton = true;
-            this.selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
+            this.selectedCheckBox = new SelectionModel<TimetableHearingStatementV2>(true, []);
             this.removeCheckBoxViewMode();
             this.ngOnInit();
           }
@@ -356,11 +356,11 @@ export class OverviewDetailComponent implements OnInit {
     }
   }
 
-  checkedBoxEvent($event: SelectionModel<TimetableHearingStatement>) {
+  checkedBoxEvent($event: SelectionModel<TimetableHearingStatementV2>) {
     this.selectedItems = $event.selected;
   }
 
-  duplicate($event: TimetableHearingStatement) {
+  duplicate($event: TimetableHearingStatementV2) {
     this.dialogService
       .confirm({
         title: 'TTH.DUPLICATE.DIALOG.TITLE',
@@ -375,7 +375,7 @@ export class OverviewDetailComponent implements OnInit {
       });
   }
 
-  duplicateStatement(statement: TimetableHearingStatement) {
+  duplicateStatement(statement: TimetableHearingStatementV2) {
     this.statementShareService.statement = statement;
     this.router
       .navigate([this.hearingStatus.toLowerCase(), 'add'], {
@@ -389,7 +389,7 @@ export class OverviewDetailComponent implements OnInit {
     this.showCollectingActionButton = true;
     this.statusChangeCollectingActionsEnabled = false;
     this.cantonDeliveryCollectingActionsEnabled = false;
-    this.selectedCheckBox = new SelectionModel<TimetableHearingStatement>(true, []);
+    this.selectedCheckBox = new SelectionModel<TimetableHearingStatementV2>(true, []);
     this.selectedItems = [];
     this.tableService.filterConfig?.enableFilters();
   }
@@ -585,7 +585,7 @@ export class OverviewDetailComponent implements OnInit {
     return Cantons.fromSwissCanton(canton)?.short;
   }
 
-  mapToLastname(statementSender: TimetableHearingStatementSender) {
+  mapToLastname(statementSender: TimetableHearingStatementSenderV2) {
     return statementSender.lastName;
   }
 
@@ -593,7 +593,7 @@ export class OverviewDetailComponent implements OnInit {
     return documents.length > 0;
   }
 
-  private getTableColumns(): TableColumn<TimetableHearingStatement>[] {
+  private getTableColumns(): TableColumn<TimetableHearingStatementV2>[] {
       return [
         {
           headerTitle: 'TTH.STATEMENT_STATUS_HEADER',
@@ -651,7 +651,7 @@ export class OverviewDetailComponent implements OnInit {
       ];
   }
 
-  getActiveTableColumns(): TableColumn<TimetableHearingStatement>[] {
+  getActiveTableColumns(): TableColumn<TimetableHearingStatementV2>[] {
     if (this.isSwissCanton) {
       return this.getTableColumns().filter(col => this.activeTthAndSwissCanton(col));
     } else {
@@ -659,7 +659,7 @@ export class OverviewDetailComponent implements OnInit {
     }
   }
 
-  private activeTth(col: TableColumn<TimetableHearingStatement>): boolean {
+  private activeTth(col: TableColumn<TimetableHearingStatementV2>): boolean {
     return (
       col.value === 'statementStatus' ||
       col.value === 'editionDate' ||
@@ -668,14 +668,14 @@ export class OverviewDetailComponent implements OnInit {
     );
   }
 
-  private activeTthAndSwissCanton(col: TableColumn<TimetableHearingStatement>): boolean {
+  private activeTthAndSwissCanton(col: TableColumn<TimetableHearingStatementV2>): boolean {
     return (
       col.value === 'swissCanton' ||
       this.activeTth(col)
     );
   }
 
-  getPlannedOrArchivedTableColumns(): TableColumn<TimetableHearingStatement>[] {
+  getPlannedOrArchivedTableColumns(): TableColumn<TimetableHearingStatementV2>[] {
     if (this.isSwissCanton) {
       return this.getTableColumns().filter(col => this.plannedOrArchivedTthAndSwissCanton(col));
     } else {
@@ -683,14 +683,14 @@ export class OverviewDetailComponent implements OnInit {
     }
   }
 
-  private plannedOrArchivedTthAndSwissCanton(col: TableColumn<TimetableHearingStatement>): boolean {
+  private plannedOrArchivedTthAndSwissCanton(col: TableColumn<TimetableHearingStatementV2>): boolean {
     return (
       col.value === 'swissCanton' ||
       this.plannedOrArchivedTth(col)
     );
   }
 
-  private plannedOrArchivedTth(col: TableColumn<TimetableHearingStatement>): boolean {
+  private plannedOrArchivedTth(col: TableColumn<TimetableHearingStatementV2>): boolean {
     return (
       col.value === 'id' ||
       col.value === 'responsibleTransportCompaniesDisplay' ||
