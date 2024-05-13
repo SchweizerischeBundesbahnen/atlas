@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.model.csv;
 
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.export.model.VersionCsvModel;
@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @JsonPropertyOrder({"cantonAbbreviation", "timetableFieldNumber", "timetableFieldNumberDescription", "stopPlace",
     "timetabeHearingStatementId", "transportCompanyAbbreviations", "transportCompanyDescriptions", "statement",
     "documentsPresent", "status", "justification", "firstName", "lastName", "organisation",
-    "street", "zipAndCity", "email", "editor", "editionDate", "timetableHearingYear"})
+    "street", "zipAndCity", "emails", "editor", "editionDate", "timetableHearingYear"})
 public class TimetableHearingStatementCsvModel implements VersionCsvModel {
 
   private String cantonAbbreviation;
@@ -41,12 +41,12 @@ public class TimetableHearingStatementCsvModel implements VersionCsvModel {
   private String organisation;
   private String street;
   private String zipAndCity;
-  private String email;
+  private String emails;
   private String editor;
   private LocalDateTime editionDate;
   private Long timetableHearingYear;
 
-  public static TimetableHearingStatementCsvModel fromModel(TimetableHearingStatementModel timetableHearingStatementModel) {
+  public static TimetableHearingStatementCsvModel fromModel(TimetableHearingStatementModelV2 timetableHearingStatementModel) {
 
     return TimetableHearingStatementCsvModel.builder()
         .cantonAbbreviation(timetableHearingStatementModel.getSwissCanton().getAbbreviation())
@@ -73,7 +73,7 @@ public class TimetableHearingStatementCsvModel implements VersionCsvModel {
         .street(timetableHearingStatementModel.getStatementSender().getStreet())
         .zipAndCity(getZipAndCity(timetableHearingStatementModel.getStatementSender().getZip(),
             timetableHearingStatementModel.getStatementSender().getCity()))
-        .email(timetableHearingStatementModel.getStatementSender().getEmail())
+        .emails(timetableHearingStatementModel.getStatementSender().getEmails().stream().sorted().collect(Collectors.joining(",")))
         .editor(timetableHearingStatementModel.getEditor())
         .editionDate(timetableHearingStatementModel.getEditionDate())
         .timetableHearingYear(timetableHearingStatementModel.getTimetableYear())

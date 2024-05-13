@@ -5,10 +5,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ch.sbb.atlas.model.FutureTimetableHelper;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModelV2;
 import ch.sbb.atlas.kafka.model.SwissCanton;
+import ch.sbb.atlas.model.FutureTimetableHelper;
 import ch.sbb.line.directory.entity.TimetableFieldNumber;
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.model.search.TimetableFieldNumberSearchRestrictions;
@@ -16,6 +16,7 @@ import ch.sbb.line.directory.service.TimetableFieldNumberService;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -64,7 +65,8 @@ class TimetableFieldNumberResolverServiceTest {
 
   @Test
   void shouldResolveAdditionalVersionInfoForEmptyList() {
-    List<TimetableHearingStatementModel> result = timetableFieldNumberResolverService.resolveAdditionalVersionInfo(Collections.emptyList());
+    List<TimetableHearingStatementModelV2> result =
+        timetableFieldNumberResolverService.resolveAdditionalVersionInfo(Collections.emptyList());
     assertThat(result).isEmpty();
   }
 
@@ -78,18 +80,18 @@ class TimetableFieldNumberResolverServiceTest {
         .build();
     when(timetableFieldNumberService.getVersionsValidAt(any(), any())).thenReturn(Collections.singletonList(version));
 
-    TimetableHearingStatementModel statementModel =TimetableHearingStatementModel.builder()
+    TimetableHearingStatementModelV2 statementModel =TimetableHearingStatementModelV2.builder()
         .timetableYear(2023L)
         .swissCanton(SwissCanton.BERN)
         .ttfnid("ch:1:ttfnid:12341241")
-        .statementSender(TimetableHearingStatementSenderModel.builder()
-            .email("fabienne.mueller@sbb.ch")
+        .statementSender(TimetableHearingStatementSenderModelV2.builder()
+            .emails(Set.of("fabienne.mueller@sbb.ch"))
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
 
     // When
-    List<TimetableHearingStatementModel> result =
+    List<TimetableHearingStatementModelV2> result =
         timetableFieldNumberResolverService.resolveAdditionalVersionInfo(Collections.singletonList(statementModel));
 
     // Then

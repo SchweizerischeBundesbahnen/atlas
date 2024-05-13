@@ -5,7 +5,8 @@ import static org.mockito.Mockito.verify;
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.line.directory.mapper.ResponsibleTransportCompanyMapper;
-import ch.sbb.line.directory.mapper.TimetableHearingStatementMapper;
+import ch.sbb.line.directory.mapper.TimetableHearingStatementMapperV1;
+import ch.sbb.line.directory.mapper.TimetableHearingStatementMapperV2;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.service.hearing.StatementDocumentFilesValidationService;
@@ -32,8 +33,10 @@ import org.mockito.MockitoAnnotations;
   private StatementDocumentFilesValidationService statementDocumentFilesValidationServiceMock;
   @Mock
   private ResponsibleTransportCompanyMapper responsibleTransportCompanyMapper;
+   @Mock
+   private TimetableHearingStatementMapperV1 timetableHearingStatementMapperV1;
   @Mock
-  private TimetableHearingStatementMapper timetableHearingStatementMapper;
+  private TimetableHearingStatementMapperV2 timetableHearingStatementMapperV2;
 
   @BeforeEach
   void setUp() {
@@ -45,7 +48,8 @@ import org.mockito.MockitoAnnotations;
         timetableHearingPdfsAmazonServiceMock,
         statementDocumentFilesValidationServiceMock,
         responsibleTransportCompanyMapper,
-        timetableHearingStatementMapper
+        timetableHearingStatementMapperV1,
+        timetableHearingStatementMapperV2
     );
   }
 

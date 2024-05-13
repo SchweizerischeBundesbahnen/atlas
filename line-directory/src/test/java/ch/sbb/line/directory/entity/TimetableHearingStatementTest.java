@@ -8,6 +8,7 @@ import ch.sbb.line.directory.entity.TimetableHearingStatement.TimetableHearingSt
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
@@ -35,7 +36,7 @@ class TimetableHearingStatementTest {
             .street("Hauptstrasse 1")
             .zip(39012)
             .city("Algund")
-            .email("mike@thebike.com")
+            .emails(List.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .justification("Weil ich mag")
@@ -77,7 +78,7 @@ class TimetableHearingStatementTest {
     // given
     TimetableHearingStatement statement = minimalStatement()
         .statementSender(StatementSender.builder()
-            .email("mike@thebike.com")
+            .emails(List.of("mike@thebike.com"))
             .zip(999)
             .build())
         .build();
@@ -94,7 +95,7 @@ class TimetableHearingStatementTest {
     // given
     TimetableHearingStatement statement = minimalStatement()
         .statementSender(StatementSender.builder()
-            .email("mike@thebike.com")
+            .emails(List.of("mike@thebike.com"))
             .zip(100000)
             .build())
         .build();
@@ -141,7 +142,7 @@ class TimetableHearingStatementTest {
         .swissCanton(SwissCanton.BERN)
         .statementStatus(StatementStatus.RECEIVED)
         .statementSender(StatementSender.builder()
-            .email("mike@thebike.com")
+            .emails(List.of("mike@thebike.com"))
             .build())
         .statement("Ich mag bitte mehr Bös fahren")
         .version(1);

@@ -1,4 +1,4 @@
-import { AbstractControl, ValidationErrors, Validators } from '@angular/forms';
+import {AbstractControl, ValidationErrors, Validators} from '@angular/forms';
 
 export class AtlasFieldLengthValidator {
   static length_10(control: AbstractControl): ValidationErrors | null {
