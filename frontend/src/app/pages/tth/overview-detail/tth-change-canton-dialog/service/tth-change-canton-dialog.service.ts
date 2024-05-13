@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { TthChangeCantonDialogComponent } from '../tth-change-canton-dialog.component';
-import { SwissCanton, TimetableHearingStatement } from '../../../../../api';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { ChangeCantonData } from '../model/change-canton-data';
+import {Injectable} from '@angular/core';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {TthChangeCantonDialogComponent} from '../tth-change-canton-dialog.component';
+import {SwissCanton, TimetableHearingStatementV2} from '../../../../../api';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {ChangeCantonData} from '../model/change-canton-data';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +14,7 @@ export class TthChangeCantonDialogService {
 
   constructor(private dialog: MatDialog) {}
 
-  onClick(changedCanton: SwissCanton, tths: TimetableHearingStatement[]): Observable<boolean> {
+  onClick(changedCanton: SwissCanton, tths: TimetableHearingStatementV2[]): Observable<boolean> {
     const changeCantonData: ChangeCantonData = {
       title: 'TTH.STATEMENT.DIALOG.TITLE',
       message: 'TTH.DIALOG.MULTIPLE_STATUS_CHANGE_MESSAGE',

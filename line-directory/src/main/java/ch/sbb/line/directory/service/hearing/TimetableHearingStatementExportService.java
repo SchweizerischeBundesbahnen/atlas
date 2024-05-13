@@ -2,7 +2,7 @@ package ch.sbb.line.directory.service.hearing;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.client.user.administration.UserAdministrationClient;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.user.administration.UserDisplayNameModel;
 import ch.sbb.atlas.export.AtlasCsvMapper;
 import ch.sbb.atlas.export.CsvExportWriter;
@@ -30,7 +30,7 @@ public class TimetableHearingStatementExportService {
   private final MessageSource timetableHearingStatementCsvTranslations;
   private final UserAdministrationClient userAdministrationClient;
 
-  public File getStatementsAsCsv(List<TimetableHearingStatementModel> statements, Locale locale) {
+  public File getStatementsAsCsv(List<TimetableHearingStatementModelV2> statements, Locale locale) {
     List<TimetableHearingStatementCsvModel> csvData = statements.stream().map(TimetableHearingStatementCsvModel::fromModel)
         .toList();
 

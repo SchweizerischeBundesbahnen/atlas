@@ -1,36 +1,4 @@
-= ATLAS - LiDi API Guide
-:doctype: book
-:compat-mode:
-:page-layout!:
-:toc: left
-:toclevels: 1
-:sectanchors:
-:sectlinks:
-:linkattrs:
-:icons: font
-:table-caption!:
-:source-highlighter: highlightjs
-:highlightjsdir: highlight
-:revnumber: {version}
-
-[[abstract]]
-= Overview
-
-=== Project information
-
-[width="60%" cols="18%,35%" ]
-|=================================
-|Application Name | {name}
-|Version | {version}
-|Build-Time| {buildTime}
-|=================================
-
-=== Developer Portal
-
-This API is available as a part of the ATLAS API on the SBB developer portal.
-
-- Production: https://developer.sbb.ch/apis/atlas/information
-- Lower Stages are available here: https://developer-int.sbb.ch/apis?all=&text=atlas&scopes=PUBLIC;INTERNAL
+include::../../../../auto-rest-doc/src/test/resources/layout/common/ATLAS-HEAD.adoc[]
 
 == Release Notes
 
@@ -260,36 +228,40 @@ include::{snippets}/timetable-hearing-year-controller-api-test/should-close-hear
 
 == Create Hearing Statement - Successfully
 
-include::{snippets}/timetable-hearing-statement-controller-api-test/should-create-statement-without-documents/atlas-doc.adoc[]
+include::{snippets}/timetable-hearing-statement-controller-v2-api-test/should-create-statement-without-documents/atlas-doc.adoc[]
 
-== Create Hearing Statement from External (e.g. SKI Web)- Successfully
+== Create Hearing Statement from External V1 (e.g. SKI Web)- Successfully
 
-include::{snippets}/timetable-hearing-statement-controller-api-test/should-create-statement-external-from-ski-web/atlas-doc.adoc[]
+include::{snippets}/timetable-hearing-statement-controller-v1-api-test/should-create-statement-external-from-ski-web/atlas-doc.adoc[]
+
+== Create Hearing Statement from External V2 (e.g. SKI Web)- Successfully
+
+include::{snippets}/timetable-hearing-statement-controller-v2-api-test/should-create-statement-external-v2-from-ski-web/atlas-doc.adoc[]
 
 == Create Hearing Statement with Documents - Successfully
 
-include::{snippets}/timetable-hearing-statement-controller-api-test/should-create-statement-with-two-documents/atlas-doc.adoc[]
+include::{snippets}/timetable-hearing-statement-controller-v2-api-test/should-create-statement-with-two-documents/atlas-doc.adoc[]
 
 == Get Hearing Statement - Successfully
 
-include::{snippets}/timetable-hearing-statement-controller-api-test/should-get-statement-by-id/atlas-doc.adoc[]
+include::{snippets}/timetable-hearing-statement-controller-v2-api-test/should-get-statement-by-id/atlas-doc.adoc[]
 
 == Get Hearing Statements by Year - Successfully
 
-include::{snippets}/timetable-hearing-statement-controller-api-test/should-get-statement-by-hearing-year/atlas-doc.adoc[]
+include::{snippets}/timetable-hearing-statement-controller-v2-api-test/should-get-statement-by-hearing-year/atlas-doc.adoc[]
 
 == Update Hearing Statement - Successfully
 
-include::{snippets}/timetable-hearing-statement-controller-api-test/should-update-statement/atlas-doc.adoc[]
+include::{snippets}/timetable-hearing-statement-controller-v2-api-test/should-update-statement/atlas-doc.adoc[]
 
 == Update Hearing Statement adding documents - Successfully
 
-include::{snippets}/timetable-hearing-statement-controller-api-test/should-update-statement-with-documents-with-additional-documents/atlas-doc.adoc[]
+include::{snippets}/timetable-hearing-statement-controller-v2-api-test/should-update-statement-with-documents-with-additional-documents/atlas-doc.adoc[]
 
 == Update Hearing Statement Status - Successfully
 
-include::{snippets}/timetable-hearing-statement-controller-api-test/should-update-hearing-statement-status/atlas-doc.adoc[]
+include::{snippets}/timetable-hearing-statement-controller-v2-api-test/should-update-hearing-statement-status/atlas-doc.adoc[]
 
 == Update Hearing Statement Swiss Canton - Successfully
 
-include::{snippets}/timetable-hearing-statement-controller-api-test/should-update-hearing-canton/atlas-doc.adoc[]
+include::{snippets}/timetable-hearing-statement-controller-v2-api-test/should-update-hearing-canton/atlas-doc.adoc[]

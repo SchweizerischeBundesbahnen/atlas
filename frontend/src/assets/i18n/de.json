@@ -114,7 +114,8 @@
     "OPTIONAL": "(optional)",
     "COMMENT": "Kommentar",
     "TEXT": "Freitext",
-    "DROPDOWN_SEARCH_RESULT_INFO": "Angezeigt werden {{pageSize}} von {{totalCount}} gefundenen Elementen. (genauere Suche notwendig)"
+    "DROPDOWN_SEARCH_RESULT_INFO": "Angezeigt werden {{pageSize}} von {{totalCount}} gefundenen Elementen. (genauere Suche notwendig)",
+    "MAX_ITEMS": "Es sind maximal {{numberOfItems}} Einträge erlaubt."
   },
   "VERSION_TABLE": {
     "TITLE": "Versionen mit unterschiedlicher Gültigkeit",
@@ -813,6 +814,7 @@
       "LAST_NAME": "Nachname",
       "E_MAIL": "E-Mail",
       "E_MAIL_TEXT": "Falls keine E-Mail vorhanden ist, reicht eine fiktive Eingabe z.B. xxx@xxx.ch",
+      "E_MAIL_ITEMS_LIMIT_REACHED": "Es sind bereits 10 E-Mails erfasst",
       "JUSTIFICATION": "Begründung",
       "COMMENT": "Kommentar zur Kantonsübergabe",
       "ATTACHMENT_INFO": "Sie können die Stellungnahme mit PDF-Anhang einreichen. Es sind 3 PDFs bis zu 20 MB möglich.",
