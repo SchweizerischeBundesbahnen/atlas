@@ -4,8 +4,7 @@ import {FieldExample} from "../text-field/field-example";
 
 @Component({
   selector: 'atlas-text-list',
-  templateUrl: './string-list.component.html',
-})
+  templateUrl: './string-list.component.html'})
 export class StringListComponent implements OnInit, OnChanges {
 
   @Input() formGroup!: FormGroup;
@@ -18,6 +17,8 @@ export class StringListComponent implements OnInit, OnChanges {
   @Input() infoIconLink!: string;
   @Input() required!: boolean;
   @Input() fieldExamples!: Array<FieldExample>;
+  @Input() placeHolderText!: string;
+  showPlaceHolder = false
 
   _form!: FormGroup;
   _strings: string[] = [];
@@ -31,6 +32,7 @@ export class StringListComponent implements OnInit, OnChanges {
   }
 
   private init() {
+    this.showPlaceHolder = false;
     this._form = new FormGroup({
       input: new FormControl('', this.itemValidator)
     });
@@ -81,8 +83,12 @@ export class StringListComponent implements OnInit, OnChanges {
 
   private handleMaxInput() {
     if (this._strings.length == this.maxItems) {
+      if(this.formControl.enabled){
+        this.showPlaceHolder = true;
+      }
       this.inputFormControl.disable();
     } else {
+      this.showPlaceHolder = false;
       this.inputFormControl.enable();
     }
   }

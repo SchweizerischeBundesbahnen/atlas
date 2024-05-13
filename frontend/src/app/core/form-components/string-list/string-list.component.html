@@ -8,6 +8,7 @@
                         [required]="required"
                         [fieldExamples]="fieldExamples"
                         [formGroup]="_form"
+                        [placeholder]="this.showPlaceHolder ? this.placeHolderText  : ''"
                         (keyup.enter)="addItem()">
       </atlas-text-field>
     </div>
