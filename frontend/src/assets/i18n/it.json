@@ -815,6 +815,7 @@
       "LAST_NAME": "Cognome",
       "E_MAIL": "E-Mail",
       "E_MAIL_TEXT": "Se non è disponibile un'e-mail, è sufficiente una voce fittizia, ad esempio xxx@xxx.ch.",
+      "E_MAIL_ITEMS_LIMIT_REACHED": "Sono già state registrate 10 email",
       "JUSTIFICATION": "Giustificazione",
       "COMMENT": "Commento sul passaggio di consegne cantonale",
       "ATTACHMENT_INFO": "È possibile inviare la dichiarazione con un allegato PDF. Sono possibili 3 PDF fino a 20 MB.",
