@@ -62,6 +62,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/v1/users/*/displayname").authenticated()
                 .requestMatchers(HttpMethod.GET, "/v1/users/display-info").authenticated()
                 .requestMatchers("/**").hasAnyRole(Role.ATLAS_ADMIN)
+                .requestMatchers(HttpMethod.GET, "/static/**").permitAll()
                 .anyRequest().authenticated()
         )
 
