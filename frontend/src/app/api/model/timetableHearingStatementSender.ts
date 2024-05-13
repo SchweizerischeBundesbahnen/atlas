@@ -11,7 +11,7 @@
  */
 
 
-export interface TimetableHearingStatementSender { 
+export interface TimetableHearingStatementSender {
     /**
      * First Name
      */

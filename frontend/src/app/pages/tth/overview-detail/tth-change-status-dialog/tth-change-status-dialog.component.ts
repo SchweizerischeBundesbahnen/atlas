@@ -1,13 +1,13 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { StatusChangeData } from './model/status-change-data';
-import { FormControl, FormGroup } from '@angular/forms';
-import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
-import { NotificationService } from '../../../../core/notification/notification.service';
-import { Subject, takeUntil } from 'rxjs';
-import { TthChangeStatusFormGroup } from './model/tth-change-status-form-group';
-import { ValidationService } from 'src/app/core/validation/validation.service';
-import { TimetableHearingStatementsService } from '../../../../api';
+import {Component, Inject} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {StatusChangeData} from './model/status-change-data';
+import {FormControl, FormGroup} from '@angular/forms';
+import {AtlasFieldLengthValidator} from '../../../../core/validation/field-lengths/atlas-field-length-validator';
+import {NotificationService} from '../../../../core/notification/notification.service';
+import {Subject, takeUntil} from 'rxjs';
+import {TthChangeStatusFormGroup} from './model/tth-change-status-form-group';
+import {ValidationService} from 'src/app/core/validation/validation.service';
+import {TimetableHearingStatementsService} from "../../../../api";
 
 @Component({
   selector: 'app-tth-change-status-dialog',

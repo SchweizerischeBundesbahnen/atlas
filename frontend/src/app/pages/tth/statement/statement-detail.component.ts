@@ -8,6 +8,7 @@ import {
   TimetableHearingStatement,
   TimetableHearingStatementDocument,
   TimetableHearingStatementsService,
+  TimetableHearingStatementV2,
   TimetableHearingYearsService,
   TimetableYearChangeService,
   TransportCompany,
@@ -46,7 +47,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   CANTON_OPTIONS: Canton[] = [];
   STATUS_OPTIONS: StatementStatus[] = [];
   ttfnValidOn: Date | undefined = undefined;
-  statement: TimetableHearingStatement | undefined;
+  statement: TimetableHearingStatementV2 | undefined;
   initialValueForCanton: SwissCanton | null | undefined;
   hearingStatus!: HearingStatus;
   isNew!: boolean;
@@ -56,6 +57,8 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   isLoading = false;
   isDuplicating = false;
   isInitializingComponent = true;
+
+  readonly emailValidator = [AtlasCharsetsValidator.email, AtlasFieldLengthValidator.length_100];
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -92,7 +95,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
 
   readonly extractShort = (option: Canton) => option.short;
 
-    ngOnInit() {
+  ngOnInit() {
     if (this.isInitializingComponent) {
       this.statement = this.route.snapshot.data.statement;
     }
@@ -142,8 +145,8 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     } else {
       ValidationService.validateForm(this.form);
       if (this.form.valid) {
-        this.form.disable();
         const hearingStatement = this.form.value as TimetableHearingStatement;
+        this.form.disable();
         if (this.isNew) {
           this.createStatement(hearingStatement);
         } else {
@@ -157,7 +160,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     if (this.form.enabled) {
       this.showConfirmationDialog();
     } else if (!this.isHearingStatusArchived) {
-      this.form.enable({emitEvent: false});
+      this.form.enable();
     }
   }
 
@@ -178,7 +181,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       .then();
   }
 
-  getFormGroup(statement: TimetableHearingStatement | undefined): FormGroup {
+  getFormGroup(statement: TimetableHearingStatementV2 | undefined): FormGroup {
     return new FormGroup<StatementDetailFormGroup>({
       id: new FormControl(statement?.id),
       timetableYear: new FormControl(statement?.timetableYear, [Validators.required]),
@@ -214,11 +217,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
         street: new FormControl(statement?.statementSender?.street, [
           AtlasFieldLengthValidator.length_100,
         ]),
-        email: new FormControl(statement?.statementSender?.email, [
-          Validators.required,
-          AtlasFieldLengthValidator.length_100,
-          AtlasCharsetsValidator.email,
-        ]),
+        emails: new FormControl(statement?.statementSender?.emails, [Validators.required, Validators.maxLength(10)])
       }),
       statement: new FormControl(statement?.statement, [
         Validators.required,
@@ -373,7 +372,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     });
   }
 
-  private createStatement(statement: TimetableHearingStatement) {
+  private createStatement(statement: TimetableHearingStatementV2) {
     this.isLoading = true;
     this.timetableHearingStatementsService
       .createStatement(statement, this.uploadedFiles)
@@ -386,7 +385,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       });
   }
 
-  private updateStatement(id: number, statement: TimetableHearingStatement) {
+  private updateStatement(id: number, statement: TimetableHearingStatementV2) {
     this.isLoading = true;
     this.timetableHearingStatementsService
       .updateHearingStatement(id, statement, this.uploadedFiles)
@@ -398,7 +397,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
       });
   }
 
-  private navigateToStatementDetail(statement: TimetableHearingStatement) {
+  private navigateToStatementDetail(statement: TimetableHearingStatementV2) {
     this.router.navigate(['..', statement.id], {relativeTo: this.route}).then(() => {
       this.isInitializingComponent = false;
       this.statement = statement;
@@ -419,7 +418,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
         if (this.isNew) {
           this.backToOverview();
         } else {
-          this.form.disable({emitEvent: false});
+          this.form.disable();
           this.ngOnInit();
         }
       }

@@ -66,7 +66,7 @@ model/containerReadToiletVersion.ts
 model/containerReadTrafficPointElementVersion.ts
 model/containerSubline.ts
 model/containerTimetableFieldNumber.ts
-model/containerTimetableHearingStatement.ts
+model/containerTimetableHearingStatementV2.ts
 model/containerTransportCompany.ts
 model/containerUser.ts
 model/coordinatePair.ts
@@ -95,6 +95,7 @@ model/inlineObject12.ts
 model/inlineObject13.ts
 model/inlineObject14.ts
 model/inlineObject15.ts
+model/inlineObject16.ts
 model/inlineObject2.ts
 model/inlineObject3.ts
 model/inlineObject4.ts
@@ -170,7 +171,8 @@ model/timetableHearingStatement.ts
 model/timetableHearingStatementAlternating.ts
 model/timetableHearingStatementDocument.ts
 model/timetableHearingStatementResponsibleTransportCompany.ts
-model/timetableHearingStatementSender.ts
+model/timetableHearingStatementSenderV2.ts
+model/timetableHearingStatementV2.ts
 model/timetableHearingYear.ts
 model/toiletOverview.ts
 model/toiletVersion.ts
