@@ -158,6 +158,7 @@ export type ActivatedRouteMockType = { data: any };
     MockSelectComponent,
     MockSwitchVersionComponent,
     MockInfoIconComponent,
+    MockAtlasFieldErrorComponent,
   ],
 })
 export class AppMockComponents {}

@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModelV2;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.HearingStatus;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
@@ -14,7 +14,7 @@ import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
 import ch.sbb.line.directory.exception.HearingCurrentlyActiveException;
 import ch.sbb.line.directory.exception.NoHearingCurrentlyActiveException;
-import ch.sbb.line.directory.mapper.TimetableHearingStatementMapper;
+import ch.sbb.line.directory.mapper.TimetableHearingStatementMapperV2;
 import ch.sbb.line.directory.model.TimetableHearingYearSearchRestrictions;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
@@ -40,25 +40,26 @@ import org.springframework.beans.factory.annotation.Autowired;
   private final TimetableHearingYearRepository timetableHearingYearRepository;
   private final TimetableHearingYearService timetableHearingYearService;
   private final TimetableHearingStatementRepository timetableHearingStatementRepository;
-  private final TimetableHearingStatementMapper timetableHearingStatementMapper;
+  private final TimetableHearingStatementMapperV2 timetableHearingStatementMapperV2;
 
   @Autowired
    TimetableHearingYearServiceTest(TimetableHearingYearRepository timetableHearingYearRepository,
       TimetableHearingYearService timetableHearingYearService,
       TimetableHearingStatementRepository timetableHearingStatementRepository,
-      TimetableHearingStatementMapper timetableHearingStatementMapper) {
+      TimetableHearingStatementMapperV2 timetableHearingStatementMapperV2
+  ) {
     this.timetableHearingYearRepository = timetableHearingYearRepository;
     this.timetableHearingYearService = timetableHearingYearService;
     this.timetableHearingStatementRepository = timetableHearingStatementRepository;
-    this.timetableHearingStatementMapper = timetableHearingStatementMapper;
+    this.timetableHearingStatementMapperV2 = timetableHearingStatementMapperV2;
   }
 
-  private static TimetableHearingStatementModel buildTimetableHearingStatementModel() {
-    return TimetableHearingStatementModel.builder()
+  private static TimetableHearingStatementModelV2 buildTimetableHearingStatementModel() {
+    return TimetableHearingStatementModelV2.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .swissCanton(SwissCanton.BERN)
-        .statementSender(TimetableHearingStatementSenderModel.builder()
-            .email("fabienne.mueller@sbb.ch")
+        .statementSender(TimetableHearingStatementSenderModelV2.builder()
+            .emails(Set.of("fabienne.mueller@sbb.ch"))
             .build())
         .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
         .build();
@@ -166,16 +167,16 @@ import org.springframework.beans.factory.annotation.Autowired;
     TimetableHearingYear timetableHearing = timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
     TimetableHearingYear startedTimetableHearing = timetableHearingYearService.startTimetableHearing(timetableHearing);
 
-    TimetableHearingStatementModel statementModel;
+    TimetableHearingStatementModelV2 statementModel;
     // Junk Statement
     statementModel = buildTimetableHearingStatementModel();
     statementModel.setStatementStatus(StatementStatus.JUNK);
-    timetableHearingStatementRepository.save(timetableHearingStatementMapper.toEntity(statementModel));
+    timetableHearingStatementRepository.save(timetableHearingStatementMapperV2.toEntity(statementModel));
 
     // Statement to move to next year and to update status
     statementModel = buildTimetableHearingStatementModel();
     statementModel.setStatementStatus(StatementStatus.MOVED);
-    timetableHearingStatementRepository.save(timetableHearingStatementMapper.toEntity(statementModel));
+    timetableHearingStatementRepository.save(timetableHearingStatementMapperV2.toEntity(statementModel));
 
     // when
     TimetableHearingYear closed = timetableHearingYearService.closeTimetableHearing(startedTimetableHearing);

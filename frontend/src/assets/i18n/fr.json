@@ -114,7 +114,8 @@
     "OPTIONAL": "(optionnel)",
     "COMMENT": "Commentaire",
     "TEXT": "Texte libre",
-    "DROPDOWN_SEARCH_RESULT_INFO": "Les éléments affichés sont {{pageSize}} sur {{totalCount}}. (recherche plus précise nécessaire)"
+    "DROPDOWN_SEARCH_RESULT_INFO": "Les éléments affichés sont {{pageSize}} sur {{totalCount}}. (recherche plus précise nécessaire)",
+    "MAX_ITEMS": "Un maximum de {{numberOfItems}} entrées est autorisé."
   },
   "VERSION_TABLE": {
     "TITLE": "Versions avec une validité différente",
@@ -813,6 +814,7 @@
       "LAST_NAME": "Nom de famille",
       "E_MAIL": "E-Mail",
       "E_MAIL_TEXT": "Si aucun e-mail n'est disponible, une entrée fictive, par exemple xxx@xxx.ch, suffit.",
+      "E_MAIL_ITEMS_LIMIT_REACHED": "10 emails ont déjà été enregistrés",
       "JUSTIFICATION": "Justification",
       "COMMENT": "Commentaire sur la cession de canton",
       "ATTACHMENT_INFO": "Vous pouvez envoyer votre prise de position avec une annexe PDF. Il est possible d'envoyer 3 PDF jusqu'à 20 MB.",
