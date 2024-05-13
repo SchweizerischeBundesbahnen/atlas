@@ -1,40 +1,4 @@
-= ATLAS -Import Service API Guide
-:doctype: book
-:compat-mode:
-:page-layout!:
-:toc: left
-:toclevels: 1
-:sectanchors:
-:sectlinks:
-:linkattrs:
-:icons: font
-:table-caption!:
-:source-highlighter: highlightjs
-:highlightjsdir: highlight
-:revnumber: {version}
-
-[[abstract]]
-= Overview
-
-=== Project information
-
-[width="60%" cols="18%,35%" ]
-|=================================
-|Application Name | {name}
-|Version | {version}
-|Build-Time| {buildTime}
-|=================================
-
-=== Developer Portal
-
-This API is available as a part of the ATLAS API on the SBB developer portal.
-
-- Production: https://developer.sbb.ch/apis/atlas/information
-- Lower Stages are available here: https://developer-int.sbb.ch/apis?all=&text=atlas&scopes=PUBLIC;INTERNAL
-
-=== Release Notes
-
-include::../release-notes.adoc[]
+include::../../../../auto-rest-doc/src/test/resources/layout/common/ATLAS-HEAD.adoc[]
 
 = Import Service Point
 
