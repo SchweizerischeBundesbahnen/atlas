@@ -1,42 +1,6 @@
-= ATLAS - Service Point Export Service API Guide
-:doctype: book
-:compat-mode:
-:page-layout!:
-:toc: left
-:toclevels: 3
-:sectanchors:
-:sectlinks:
-:linkattrs:
-:icons: font
-:table-caption!:
-:source-highlighter: highlightjs
-:highlightjsdir: highlight
-:revnumber: {version}
+include::../../../../auto-rest-doc/src/test/resources/layout/common/ATLAS-HEAD.adoc[]
 
-[[abstract]]
-= Overview
-
-=== Project information
-
-[width="60%" cols="18%,35%" ]
-|=================================
-|Application Name | {name}
-|Version | {version}
-|Build-Time| {buildTime}
-|=================================
-
-=== Developer Portal
-
-This API is available as a part of the ATLAS API on the SBB developer portal.
-
-- Production: https://developer.sbb.ch/apis/atlas/information
-- Lower Stages are available here: https://developer-int.sbb.ch/apis?all=&text=atlas&scopes=PUBLIC;INTERNAL
-
-=== Release Notes
-
-include::../release-notes.adoc[]
-
-= Export
+= Data Export
 
 This service exports the following data:
 
@@ -63,15 +27,15 @@ include::../../../../base-atlas/documentation/servicepoint/when_to_use_files_or_
 
 include::../../../../base-atlas/documentation/amazon/Amazon_S3_Buckets_Users_Onboarding.adoc[]
 
-== Service Point Directory
+= Service Point Directory Version
 
-=== Unsuccessfully Examples
+== Unsuccessfully Examples
 
 include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-get-json-unsuccessfully/atlas-doc.adoc[]
 
 include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-gzip-json-unsuccessfully/atlas-doc.adoc[]
 
-=== Service Point Versions
+== Service Point Versions
 
 Service Point Versions data is available via the ServicePoint API or as a File (CSV or JSON) via the Export Service Point API or through the Amazon S3 Bucket Client (CSV and JSON).
 
@@ -89,31 +53,31 @@ If you want to consume this files you have two options:
 * Via API: see following section
 * Through the Amazon S3 Bucket Client: see **Atlas Amazon S3 Bucket Users onboarding**
 
-==== Data Mapping Migration from DiDok to ATLAS
+== Data Mapping Migration from DiDok to ATLAS
 
 See https://confluence.sbb.ch/x/GI3aj to get additional information about the data mapping migration from DiDok to ATLAS.
 
-=== Trigger export Service Point Versions
+== Trigger export Service Point Versions
 
 include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-post-service-point-export-batch-successfully/atlas-doc.adoc[]
 
-=== Get Service Point Json - Successfully
+== Get Service Point Json - Successfully
 
 include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-get-service-point-json-successfully/atlas-doc.adoc[]
 
-=== Download Service Point Gzip (Json) - Successfully
+== Download Service Point Gzip (Json) - Successfully
 
 include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-service-point-gzip-json-successfully/curl-request.adoc[]
 
-=== Download Latest Service Point Json - Successfully
+== Download Latest Service Point Json - Successfully
 
 include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-latest-service-point-json-successfully/atlas-doc.adoc[]
 
-=== Download Latest Service Point Gzip (Json) - Successfully
+== Download Latest Service Point Gzip (Json) - Successfully
 
 include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-latest-service-point-gzip-json-successfully/curl-request.adoc[]
 
-=== Traffic Point Element Versions
+= Traffic Point Element Versions
 
 Traffic Point Element Versions data is available via the ServicePoint API or as a File (CSV or JSON) via the Export Service Point API or through the Amazon S3 Bucket Client (CSV and JSON).
 
@@ -128,31 +92,31 @@ If you want to consume this files you have two options:
 * Via API: see following section
 * Through the Amazon S3 Bucket Client: see **Atlas Amazon S3 Bucket Users onboarding**
 
-==== Data Mapping Migration from DiDok to ATLAS
+=== Data Mapping Migration from DiDok to ATLAS
 
 See https://confluence.sbb.ch/x/PB1Xl to get additional information about the data mapping migration from DiDok to ATLAS.
 
-=== Trigger export Traffic Point Element Versions
+== Trigger export Traffic Point Element Versions
 
 include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-post-traffic-point-export-batch-successfully/atlas-doc.adoc[]
 
-=== Get Traffic Point Json - Successfully
+== Get Traffic Point Json - Successfully
 
 include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-get-traffic-point-json-successfully/atlas-doc.adoc[]
 
-=== Download Traffic Point Gzip (Json) - Successfully
+== Download Traffic Point Gzip (Json) - Successfully
 
 include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-traffic-point-gzip-json-successfully/curl-request.adoc[]
 
-=== Download Latest Traffic Point Json - Successfully
+== Download Latest Traffic Point Json - Successfully
 
 include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-latest-traffic-point-json-successfully/atlas-doc.adoc[]
 
-=== Download Latest Traffic Point Gzip (Json) - Successfully
+== Download Latest Traffic Point Gzip (Json) - Successfully
 
 include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-latest-traffic-point-gzip-json-successfully/curl-request.adoc[]
 
-=== Loading Point Versions
+= Loading Point Versions
 
 Loading Point Versions data is available via the ServicePoint API or as a File (CSV or JSON) via the Export Service Point API or through the Amazon S3 Bucket Client (CSV and JSON).
 
@@ -167,31 +131,31 @@ If you want to consume this files you have two options:
 * Via API: see following section
 * Through the Amazon S3 Bucket Client: see **Atlas Amazon S3 Bucket Users onboarding**
 
-==== Data Mapping Migration from DiDok to ATLAS
+== Data Mapping Migration from DiDok to ATLAS
 
 See https://confluence.sbb.ch/x/6R_uj to get additional information about the data mapping migration from DiDok to ATLAS.
 
-=== Trigger export Loading Point Versions
+== Trigger export Loading Point Versions
 
 include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-post-loading-point-export-batch-successfully/atlas-doc.adoc[]
 
-=== Get Loading Point Json - Successfully
+== Get Loading Point Json - Successfully
 
 include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-get-loading-point-json-successfully/atlas-doc.adoc[]
 
-=== Download Loading Point Gzip (Json) - Successfully
+== Download Loading Point Gzip (Json) - Successfully
 
 include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-loading-point-gzip-json-successfully/curl-request.adoc[]
 
-=== Download Latest Loading Point Json - Successfully
+== Download Latest Loading Point Json - Successfully
 
 include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-latest-loading-point-json-successfully/atlas-doc.adoc[]
 
-=== Download Latest Loading Point Gzip (Json) - Successfully
+== Download Latest Loading Point Gzip (Json) - Successfully
 
 include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-latest-loading-point-gzip-json-successfully/curl-request.adoc[]
 
-== PRM (Person with Reduced Mobility) Directory
+= PRM (Person with Reduced Mobility) Directory
 
 PRM data is available via the PRM-Directory API or as a File (CSV or JSON) via the Export PRM API or through the Amazon S3 Bucket Client (CSV and JSON).
 
@@ -206,151 +170,151 @@ If you want to consume this files you have two options:
 * Via API: see following sections
 * Through the Amazon S3 Bucket Client: see **Atlas Amazon S3 Bucket Users onboarding**
 
-=== Unsuccessfully Examples
+== Unsuccessfully Examples
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-get-json-unsuccessfully/atlas-doc.adoc[]
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-gzip-json-unsuccessfully/atlas-doc.adoc[]
 
-=== Stop Point Versions
-
-==== Data Mapping Migration from DiDok to ATLAS-PRM
+== Data Mapping Migration from DiDok to ATLAS-PRM
 
 See https://confluence.sbb.ch/x/GI3aj to get additional information about the data mapping migration from DiDok to ATLAS.
 
-=== Trigger export Stop Point Versions
+= Stop Point Versions
+
+== Trigger export Stop Point Versions
 
 include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-post-stop-point-export-batch-successfully/atlas-doc.adoc[]
 
-=== Get Stop Point Json - Successfully
+== Get Stop Point Json - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-get-stop-point-json-successfully/atlas-doc.adoc[]
 
-=== Download Stop Point Gzip (Json) - Successfully
+== Download Stop Point Gzip (Json) - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-stop-point-gzip-json-successfully/curl-request.adoc[]
 
-=== Download Latest Stop Point Json - Successfully
+== Download Latest Stop Point Json - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-stop-point-json-successfully/atlas-doc.adoc[]
 
-=== Download Latest Stop Point Gzip (Json) - Successfully
+== Download Latest Stop Point Gzip (Json) - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-stop-point-gzip-json-successfully/curl-request.adoc[]
 
-=== Platform Versions
+= Platform Versions
 
-=== Trigger Export Platform Versions
+== Trigger Export Platform Versions
 
 include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-post-platform-export-batch-successfully/atlas-doc.adoc[]
 
-=== Get Platform Json - Successfully
+== Get Platform Json - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-get-platform-json-successfully/atlas-doc.adoc[]
 
-=== Download Platform Gzip (Json) - Successfully
+== Download Platform Gzip (Json) - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-platform-gzip-json-successfully/curl-request.adoc[]
 
-=== Download Latest Platform Json - Successfully
+== Download Latest Platform Json - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-platform-json-successfully/atlas-doc.adoc[]
 
-=== Download Latest Platform Gzip (Json) - Successfully
+== Download Latest Platform Gzip (Json) - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-platform-gzip-json-successfully/curl-request.adoc[]
 
-=== Reference Point Versions
+= Reference Point Versions
 
-=== Trigger Export Reference Point Versions
+== Trigger Export Reference Point Versions
 
 include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-post-reference-point-export-batch-successfully/atlas-doc.adoc[]
 
-=== Get Reference Point Json - Successfully
+== Get Reference Point Json - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-get-reference-point-json-successfully/atlas-doc.adoc[]
 
-=== Download Reference Point Gzip (Json) - Successfully
+== Download Reference Point Gzip (Json) - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-reference-point-gzip-json-successfully/curl-request.adoc[]
 
-=== Download Latest Reference Point Json - Successfully
+== Download Latest Reference Point Json - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-reference-point-json-successfully/atlas-doc.adoc[]
 
-=== Download Latest Reference Point Gzip (Json) - Successfully
+== Download Latest Reference Point Gzip (Json) - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-reference-point-gzip-json-successfully/curl-request.adoc[]
 
-=== Contact Point Versions
+= Contact Point Versions
 
-=== Trigger Export Contact Point Versions
+== Trigger Export Contact Point Versions
 
 include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-post-contact-point-export-batch-successfully/atlas-doc.adoc[]
 
-=== Get Contact Point Json - Successfully
+== Get Contact Point Json - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-get-contact-point-json-successfully/atlas-doc.adoc[]
 
-=== Download Contact Point Gzip (Json) - Successfully
+== Download Contact Point Gzip (Json) - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-contact-point-gzip-json-successfully/curl-request.adoc[]
 
-=== Download Latest Contact Point Json - Successfully
+== Download Latest Contact Point Json - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-contact-point-json-successfully/atlas-doc.adoc[]
 
-=== Download Latest Contact Point Gzip (Json) - Successfully
+== Download Latest Contact Point Gzip (Json) - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-contact-point-gzip-json-successfully/curl-request.adoc[]
 
-=== Toilet Versions
+= Toilet Versions
 
-=== Trigger Export Toilet Versions
+== Trigger Export Toilet Versions
 
 include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-post-toilet-export-batch-successfully/atlas-doc.adoc[]
 
-=== Get Toilet Json - Successfully
+== Get Toilet Json - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-get-toilet-json-successfully/atlas-doc.adoc[]
 
-=== Download Toilet Gzip (Json) - Successfully
+== Download Toilet Gzip (Json) - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-toilet-gzip-json-successfully/curl-request.adoc[]
 
-=== Download Latest Toilet Json - Successfully
+== Download Latest Toilet Json - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-toilet-json-successfully/atlas-doc.adoc[]
 
-=== Download Latest Toilet Gzip (Json) - Successfully
+== Download Latest Toilet Gzip (Json) - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-toilet-gzip-json-successfully/curl-request.adoc[]
 
-=== Parking Lot Versions
+= Parking Lot Versions
 
-=== Trigger Export Parking Lot Versions
+== Trigger Export Parking Lot Versions
 
 include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-post-parking-lot-export-batch-successfully/atlas-doc.adoc[]
 
-=== Get Parking Lot Json - Successfully
+== Get Parking Lot Json - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-get-parking-lot-json-successfully/atlas-doc.adoc[]
 
-=== Download Parking Lot Gzip (Json) - Successfully
+== Download Parking Lot Gzip (Json) - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-parking-lot-gzip-json-successfully/curl-request.adoc[]
 
-=== Download Latest Parking Lot Json - Successfully
+== Download Latest Parking Lot Json - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-parking-lot-json-successfully/atlas-doc.adoc[]
 
-=== Download Latest Parking Lot Gzip (Json) - Successfully
+== Download Latest Parking Lot Gzip (Json) - Successfully
 
 include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-parking-lot-gzip-json-successfully/curl-request.adoc[]
 
-=== Relation Versions
+= Relation Versions
 
-=== Trigger Export Relation Versions
+== Trigger Export Relation Versions
 
 include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-post-relation-export-batch-successfully/atlas-doc.adoc[]
 

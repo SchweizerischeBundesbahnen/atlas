@@ -150,6 +150,28 @@
       <pluginManagement>
          <plugins>
             <plugin>
+               <artifactId>maven-resources-plugin</artifactId>
+               <version>3.3.1</version>
+               <executions>
+                  <execution>
+                     <id>copy-resources</id>
+                     <phase>generate-resources</phase>
+                     <goals>
+                        <goal>copy-resources</goal>
+                     </goals>
+                     <configuration>
+                        <outputDirectory>${basedir}/target/classes/static</outputDirectory>
+                        <resources>
+                           <resource>
+                              <directory>${project.parent.basedir}/auto-rest-doc/src/test/resources/layout/images/</directory>
+                              <filtering>true</filtering>
+                           </resource>
+                        </resources>
+                     </configuration>
+                  </execution>
+               </executions>
+            </plugin>
+            <plugin>
                <groupId>org.asciidoctor</groupId>
                <artifactId>asciidoctor-maven-plugin</artifactId>
                <version>${asciidoctor-plugin.version}</version>
