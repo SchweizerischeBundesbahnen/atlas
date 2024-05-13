@@ -182,8 +182,11 @@
                                [itemValidator]="emailValidator"
                                fieldLabel="TTH.STATEMENT.E_MAIL"
                                [required]="true"
+                               placeHolderText="TTH.STATEMENT.E_MAIL_ITEMS_LIMIT_REACHED"
                                [fieldExamples]="[
                                 { label: 'FORM.MAX_ITEMS', translate: true, arg: { key: 'numberOfItems', value: '10' } },
+                                { label: ' | ' },
+                                { label: 'TTH.STATEMENT.E_MAIL_TEXT' }
                               ]"
                                controlName="statementSender.emails">
               </atlas-text-list>
