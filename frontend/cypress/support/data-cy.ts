@@ -82,7 +82,7 @@ export class DataCy {
   static STATEMENT_ZIP = '[data-cy=zip]';
   static STATEMENT_CITY = '[data-cy=city]';
   static STATEMENT_STREET = '[data-cy=street]';
-  static STATEMENT_EMAIL = '[data-cy=email]';
+  static STRINGS_ITEM = '[data-cy=input]';
   static STATEMENT_STATEMENT = '[data-cy=statement]';
   static STATEMENT_JUSTIFICATION = '[data-cy=justification]';
   static TTH_TABLE = '[data-cy=tthTable]';
