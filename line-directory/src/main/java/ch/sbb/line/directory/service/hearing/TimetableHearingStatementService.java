@@ -1,11 +1,12 @@
 package ch.sbb.line.directory.service.hearing;
 
 import static ch.sbb.atlas.api.timetable.hearing.TimetableHearingConstants.MAX_DOCUMENTS_SIZE;
-import static ch.sbb.line.directory.mapper.TimetableHearingStatementMapper.transformToCommaSeparated;
+import static ch.sbb.line.directory.mapper.TimetableHearingStatementMapperV1.transformToCommaSeparated;
 
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementDocumentModel;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV1;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
@@ -15,8 +16,9 @@ import ch.sbb.line.directory.entity.SharedTransportCompany;
 import ch.sbb.line.directory.entity.StatementDocument;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.mapper.ResponsibleTransportCompanyMapper;
-import ch.sbb.line.directory.mapper.StatementSenderMapper;
-import ch.sbb.line.directory.mapper.TimetableHearingStatementMapper;
+import ch.sbb.line.directory.mapper.StatementSenderMapperV2;
+import ch.sbb.line.directory.mapper.TimetableHearingStatementMapperV1;
+import ch.sbb.line.directory.mapper.TimetableHearingStatementMapperV2;
 import ch.sbb.line.directory.model.TimetableHearingStatementSearchRestrictions;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
@@ -49,7 +51,8 @@ public class TimetableHearingStatementService {
   private final TimetableHearingPdfsAmazonService pdfsUploadAmazonService;
   private final StatementDocumentFilesValidationService statementDocumentFilesValidationService;
   private final ResponsibleTransportCompanyMapper responsibleTransportCompanyMapper;
-  private final TimetableHearingStatementMapper timetableHearingStatementMapper;
+  private final TimetableHearingStatementMapperV1 timetableHearingStatementMapperV1;
+  private final TimetableHearingStatementMapperV2 timetableHearingStatementMapperV2;
 
   public Page<TimetableHearingStatement> getHearingStatements(TimetableHearingStatementSearchRestrictions searchRestrictions) {
     log.info("Loading statements using {}", searchRestrictions);
@@ -70,9 +73,8 @@ public class TimetableHearingStatementService {
     }
   }
 
-  public TimetableHearingStatementModel createHearingStatement(TimetableHearingStatementModel statement,
+  public TimetableHearingStatement createHearingStatement(TimetableHearingStatement statementToCreate,
       List<MultipartFile> documents) {
-    TimetableHearingStatement statementToCreate = timetableHearingStatementMapper.toEntity(statement);
     checkThatTimetableHearingYearExists(statementToCreate.getTimetableYear());
     statementToCreate.setStatementStatus(StatementStatus.RECEIVED);
 
@@ -89,12 +91,25 @@ public class TimetableHearingStatementService {
 
     pdfsUploadAmazonService.uploadPdfFiles(files, timetableHearingStatement.getId().toString());
 
-    return TimetableHearingStatementMapper.toModel(timetableHearingStatement);
+    return timetableHearingStatement;
+  }
+
+  public TimetableHearingStatementModelV1 createHearingStatementV1(TimetableHearingStatementModelV1 statement,
+      List<MultipartFile> documents) {
+    TimetableHearingStatement statementToCreate = timetableHearingStatementMapperV1.toEntity(statement);
+    return TimetableHearingStatementMapperV1.toModel(createHearingStatement(statementToCreate, documents));
+  }
+
+  public TimetableHearingStatementModelV2 createHearingStatementV2(TimetableHearingStatementModelV2 statement,
+      List<MultipartFile> documents) {
+    TimetableHearingStatement statementToCreate = timetableHearingStatementMapperV2.toEntity(statement);
+    return TimetableHearingStatementMapperV2.toModel(createHearingStatement(statementToCreate, documents));
   }
 
   @PreAuthorize("@cantonBasedUserAdministrationService.isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin"
       + ".ApplicationType).TIMETABLE_HEARING, #existingStatement)")
-  public TimetableHearingStatement updateHearingStatement(TimetableHearingStatement existingStatement, TimetableHearingStatementModel timetableHearingStatementModel, List<MultipartFile> documents) {
+  public TimetableHearingStatement updateHearingStatement(TimetableHearingStatement existingStatement,
+      TimetableHearingStatementModelV2 timetableHearingStatementModel, List<MultipartFile> documents) {
     checkThatTimetableHearingYearExists(timetableHearingStatementModel.getTimetableYear());
 
     TimetableHearingStatement timetableHearingStatementInDb = timetableHearingStatementRepository.getReferenceById(
@@ -177,7 +192,7 @@ public class TimetableHearingStatementService {
         .toList();
   }
 
-  private TimetableHearingStatement updateObject(TimetableHearingStatementModel timetableHearingStatementModel,
+  private TimetableHearingStatement updateObject(TimetableHearingStatementModelV2 timetableHearingStatementModel,
     TimetableHearingStatement timetableHearingStatementInDb) {
     timetableHearingStatementInDb.setTimetableYear(timetableHearingStatementModel.getTimetableYear());
     timetableHearingStatementInDb.setStatementStatus(timetableHearingStatementModel.getStatementStatus());
@@ -191,7 +206,7 @@ public class TimetableHearingStatementService {
     timetableHearingStatementInDb.setJustification(timetableHearingStatementModel.getJustification());
     timetableHearingStatementInDb.setComment(timetableHearingStatementModel.getComment());
     timetableHearingStatementInDb.setStatementSender(
-        StatementSenderMapper.toEntity(timetableHearingStatementModel.getStatementSender()));
+        StatementSenderMapperV2.toEntity(timetableHearingStatementModel.getStatementSender()));
 
     updateResponsibleTransportCompanies(timetableHearingStatementModel, timetableHearingStatementInDb);
     timetableHearingStatementInDb.setResponsibleTransportCompaniesDisplay(transformToCommaSeparated(timetableHearingStatementInDb));
@@ -199,7 +214,7 @@ public class TimetableHearingStatementService {
     return timetableHearingStatementInDb;
   }
 
-  private void updateResponsibleTransportCompanies(TimetableHearingStatementModel timetableHearingStatementModel,
+  private void updateResponsibleTransportCompanies(TimetableHearingStatementModelV2 timetableHearingStatementModel,
       TimetableHearingStatement timetableHearingStatementInDb) {
     Set<Long> desiredTransportCompanies = timetableHearingStatementModel.getResponsibleTransportCompanies().stream().map(
         TimetableHearingStatementResponsibleTransportCompanyModel::getId).collect(Collectors.toSet());

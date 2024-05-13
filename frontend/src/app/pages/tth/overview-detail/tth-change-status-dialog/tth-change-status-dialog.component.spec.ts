@@ -1,24 +1,24 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TthChangeStatusDialogComponent } from './tth-change-status-dialog.component';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AppTestingModule } from '../../../../app.testing.module';
+import {TthChangeStatusDialogComponent} from './tth-change-status-dialog.component';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {AppTestingModule} from '../../../../app.testing.module';
 import {
   SwissCanton,
-  TimetableHearingStatement,
+  TimetableHearingStatementV2,
   TimetableHearingStatementsService,
 } from '../../../../api';
-import { of } from 'rxjs';
-import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
-import { NotificationService } from '../../../../core/notification/notification.service';
-import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
-import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
-import { FormModule } from '../../../../core/module/form.module';
-import { TranslatePipe } from '@ngx-translate/core';
-import { By } from '@angular/platform-browser';
-import { BaseChangeDialogComponent } from '../base-change-dialog/base-change-dialog.component';
-import { MaintenanceIconComponent } from '../../../../core/components/header/maintenance-icon/maintenance-icon.component';
+import {of} from 'rxjs';
+import {DialogService} from '../../../../core/components/dialog/dialog.service';
+import {MAT_SNACK_BAR_DATA, MatSnackBarRef} from '@angular/material/snack-bar';
+import {NotificationService} from '../../../../core/notification/notification.service';
+import {CommentComponent} from '../../../../core/form-components/comment/comment.component';
+import {ErrorNotificationComponent} from '../../../../core/notification/error/error-notification.component';
+import {FormModule} from '../../../../core/module/form.module';
+import {TranslatePipe} from '@ngx-translate/core';
+import {By} from '@angular/platform-browser';
+import {BaseChangeDialogComponent} from '../base-change-dialog/base-change-dialog.component';
+import {MaintenanceIconComponent} from '../../../../core/components/header/maintenance-icon/maintenance-icon.component';
 
 const mockTimetableHearingStatementsService = jasmine.createSpyObj(
   'timetableHearingStatementsService',
@@ -27,13 +27,13 @@ const mockTimetableHearingStatementsService = jasmine.createSpyObj(
 const dialogServiceSpy = jasmine.createSpyObj(DialogService, { confirmLeave: of({}) });
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 const notificationServiceSpy = jasmine.createSpyObj(['success']);
-const statement: TimetableHearingStatement = {
+const statement: TimetableHearingStatementV2 = {
   id: 1,
   swissCanton: SwissCanton.Bern,
   statement: 'Luca is am yb match gsi',
   justification: 'Napoli ist besser als YB',
   statementSender: {
-    email: 'luca@yb.ch',
+    emails: new Set('luca@yb.ch'),
   },
 };
 

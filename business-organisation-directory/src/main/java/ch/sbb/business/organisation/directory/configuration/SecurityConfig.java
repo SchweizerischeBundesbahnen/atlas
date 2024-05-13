@@ -65,6 +65,7 @@ public class SecurityConfig {
                 // In order to use these annotations, you have to enable global-method-security using
                 // <code>@EnableGlobalMethodSecurity(prePostEnabled = true)</code>.
                 .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.DELETE, "/**")).hasRole(Role.ATLAS_ADMIN)
+                .requestMatchers(HttpMethod.GET, "/static/**").permitAll()
                 .anyRequest().authenticated()
         )
 
