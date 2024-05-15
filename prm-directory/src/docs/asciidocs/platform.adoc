@@ -1,0 +1,52 @@
+include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Platform API Guide
+
+link:rest-api.adoc[*< Back to main*]
+
+== Get Platforms - Successfully
+
+include::{snippets}/platform-version-controller-api-test/should-get-platforms-version/atlas-doc.adoc[]
+
+== Get Platforms by parentSloid - Successfully
+
+include::{snippets}/platform-version-controller-api-test/should-get-platforms-version-by-parent-sloid/atlas-doc.adoc[]
+
+== Get Platforms by Sloid - Successfully
+
+include::{snippets}/platform-version-controller-api-test/should-get-platform-by-sloid/atlas-doc.adoc[]
+
+== Get Platforms with filter - Successfully
+
+include::{snippets}/platform-version-controller-api-test/should-get-platform-versions-with-filter/atlas-doc.adoc[]
+
+== Get Platform Overview - Successfully
+
+include::{snippets}/platform-version-controller-api-test/should-get-platform-overview/atlas-doc.adoc[]
+
+== Create Complete Platforms - Successfully
+
+include::{snippets}/platform-version-controller-api-test/should-create-complete-platform/atlas-doc.adoc[]
+
+== Create Reduced Platforms - Successfully
+
+include::{snippets}/platform-version-controller-api-test/should-create-reduced-platform/atlas-doc.adoc[]
+
+== Create Reduced Platforms - Unsuccessfully
+
+include::{snippets}/platform-version-controller-api-test/should-not-create-platform-reduced-when-complete-properties-provided/atlas-doc.adoc[]
+
+== Create Complete Platforms - Unsuccessfully
+
+include::{snippets}/platform-version-controller-api-test/should-not-create-platform-completed-when-reduced-properties-provided/atlas-doc.adoc[]
+
+== Update Platforms - Successfully
+
+include::{snippets}/platform-version-controller-api-test/should-update-platform/atlas-doc.adoc[]
+
+== Create Platforms without Stop Point- Unsuccessfully
+
+include::{snippets}/platform-version-controller-api-test/should-not-create-platform-when-stop-point-does-not-exist/atlas-doc.adoc[]
+
+link:rest-api.adoc[*< Back to main*]

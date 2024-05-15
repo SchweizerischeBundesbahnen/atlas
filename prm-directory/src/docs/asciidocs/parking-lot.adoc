@@ -1,0 +1,50 @@
+include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Parking Lot API Guide
+
+link:rest-api.adoc[*< Back to main*]
+
+include::{snippets}/parking-lot-version-controller-api-test/should-get-parking-lot-version/atlas-doc.adoc[]
+
+== Get Parking Lot Versions - Successfully
+
+include::{snippets}/parking-lot-version-controller-api-test/should-get-parking-lot-versions/atlas-doc.adoc[]
+
+== Get Parking Lot Versions with filter - Successfully
+
+include::{snippets}/parking-lot-version-controller-api-test/should-get-parking-lot-versions-with-filter/atlas-doc.adoc[]
+
+== Get Parking Lot Versions with sloid array filter - Successfully
+
+include::{snippets}/parking-lot-version-controller-api-test/should-get-parking-lot-versions-with-array-sloids-filter/atlas-doc.adoc[]
+
+== Get Parking Lot Versions with sloid filter - Successfully
+
+include::{snippets}/parking-lot-version-controller-api-test/should-get-parking-lot-versions-by-sloid-filter/atlas-doc.adoc[]
+
+== Get Parking Lot Versions with number filter - Successfully
+
+include::{snippets}/parking-lot-version-controller-api-test/should-get-parking-lot-versions-by-number-filter/atlas-doc.adoc[]
+
+== Get Parking Lot Versions with parentSloid filter - Successfully
+
+include::{snippets}/parking-lot-version-controller-api-test/should-get-parking-lot-versions-by-parent-sloid-filter/atlas-doc.adoc[]
+
+== Get Parking Lot Overview - Successfully
+
+include::{snippets}/parking-lot-version-controller-api-test/should-get-parking-lot-overview/atlas-doc.adoc[]
+
+== Create Parking Lots - Successfully
+
+include::{snippets}/parking-lot-version-controller-api-test/should-create-parking-lot/atlas-doc.adoc[]
+
+== Create Parking Lots - Successfully
+
+include::{snippets}/parking-lot-version-controller-api-test/should-not-create-parking-lot-when-stop-point-does-not-exist/atlas-doc.adoc[]
+
+== Update Parking Lots - Successfully
+
+include::{snippets}/parking-lot-version-controller-api-test/should-update-parking-lot/atlas-doc.adoc[]
+
+link:rest-api.adoc[*< Back to main*]
