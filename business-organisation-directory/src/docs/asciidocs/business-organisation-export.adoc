@@ -1,0 +1,24 @@
+include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Business Organisation Export API Guide
+
+link:rest-api.adoc[*< Back to main*]
+
+== Export Full Business Organisation Versions Csv, Zip and Json gz file to Amazon S3 Bucket
+
+include::{snippets}/business-organisation-controller-integration-test/should-export-full-business-organisation-versions/atlas-doc.adoc[]
+
+== Export Actual Business Organisation Versions Csv, Zip and Json gz file to Amazon S3 Bucket
+
+include::{snippets}/business-organisation-controller-integration-test/should-export-actual-business-organisation-versions/atlas-doc.adoc[]
+
+== Export Timetable Year change Business Organisation Versions Csv, Zip and Json gz file to Amazon S3 Bucket
+
+include::{snippets}/business-organisation-controller-integration-test/should-export-future-timetable-business-organisation-versions/atlas-doc.adoc[]
+
+== Get Business Organisation Version CSV or JSON from Atlas S3 Bucket
+
+include::../../../../base-atlas/documentation/amazon/Amazon_S3_Buckets_Users_Onboarding.adoc[]
+
+link:rest-api.adoc[*< Back to main*]
