@@ -14,6 +14,6 @@ Below are the links to the REST API Documentations:
 
 == Business Organisation Export REST API Documentation
 
-Below are the links to the REST API Documentations:
+Below are the links to the Export REST API Documentations:
 
 * link:business-organisation-export.adoc[*Business Organisation Export REST API Documentation*]
