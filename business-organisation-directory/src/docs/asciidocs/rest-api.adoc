@@ -4,96 +4,16 @@ include::../../../../auto-rest-doc/src/test/resources/layout/common/ATLAS-HEAD.a
 
 include::../release-notes.adoc[]
 
-= Business Organisation Directory
+== Business Organisation REST API Documentation
 
-== Create Business Organisation Directory - Successfully
+Below are the links to the REST API Documentations:
 
-include::{snippets}/business-organisation-controller-integration-test/should-create-business-organisation-version/atlas-doc.adoc[]
+* link:business-organisation.adoc[*Business Organisation REST API Documentation*]
+* link:transport-company.adoc[*Transport Company REST API Documentation*]
+* link:companies.adoc[*Company (CRD) REST API Documentation*]
 
-== Get All Business Organisation Directories - Successfully
+== Business Organisation Export REST API Documentation
 
-include::{snippets}/business-organisation-controller-integration-test/should-get-all-business-organisation-versions/atlas-doc.adoc[]
+Below are the links to the REST API Documentations:
 
-== Get Business Organisation Directories Versions - Successfully
-
-include::{snippets}/business-organisation-controller-integration-test/should-get-business-organisation-versions/atlas-doc.adoc[]
-
-== Get Business Organisation Directories Versions By SBOID - Successfully
-
-include::{snippets}/business-organisation-controller-integration-test/should-get-business-organisation-versions-by-sboid/atlas-doc.adoc[]
-
-== Get Business Organisation Directories Versions- Unsuccessfully
-
-include::{snippets}/business-organisation-controller-integration-test/should-not-get-business-organisation-versions-when-provided-sboid-does-not-exists/atlas-doc.adoc[]
-
-== Create Business Organisation Directory when provided field is too long - Unsuccessfully
-
-include::{snippets}/business-organisation-controller-integration-test/should-not-create-business-organisation-version-when-required-abbreviation-de-field-provided-is-too-long/atlas-doc.adoc[]
-
-== Update Business Organisation Directory when required field is not provided - Unsuccessfully
-
-include::{snippets}/business-organisation-controller-integration-test/should-not-update-business-organisation-version-when-required-abbreviation-de-field-not-provided/atlas-doc.adoc[]
-
-== Update Business Organisation Directory when id provided does not exist - Unsuccessfully
-
-include::{snippets}/business-organisation-controller-integration-test/should-not-update-business-organisation-version-when-provided-id-does-not-exists/atlas-doc.adoc[]
-
-== Delete Business Organisation when id provided does exist - Successful
-
-include::{snippets}/business-organisation-controller-integration-test/should-delete-business-organisation-by-sboid/atlas-doc.adoc[]
-
-== Create Business Organisation when Abbreviation conflict occurs
-
-include::{snippets}/business-organisation-controller-integration-test/should-return-conflict-error-response/atlas-doc.adoc[]
-
-= Export Business Organisation
-
-include::../../../../base-atlas/documentation/amazon/Amazon_S3_Buckets_Users_Onboarding.adoc[]
-
-== Export Full Business Organisation Versions Csv, Zip and Json gz file to Amazon S3 Bucket
-
-include::{snippets}/business-organisation-controller-integration-test/should-export-full-business-organisation-versions/atlas-doc.adoc[]
-
-== Export Actual Business Organisation Versions Csv, Zip and Json gz file to Amazon S3 Bucket
-
-include::{snippets}/business-organisation-controller-integration-test/should-export-actual-business-organisation-versions/atlas-doc.adoc[]
-
-== Export Timetable Year change Business Organisation Versions Csv, Zip and Json gz file to Amazon S3 Bucket
-
-include::{snippets}/business-organisation-controller-integration-test/should-export-future-timetable-business-organisation-versions/atlas-doc.adoc[]
-
-= Transport Companies
-
-== Get Transport Companies - Successfully
-
-include::{snippets}/transport-company-controller-api-test/should-get-transport-companies/atlas-doc.adoc[]
-
-== Get Transport Company - Successfully
-
-include::{snippets}/transport-company-controller-api-test/should-get-transport-company/atlas-doc.adoc[]
-
-= Transport Company Relations
-
-== Create Transport Company Relation - Successfully
-
-include::{snippets}/transport-company-relation-controller-api-test/should-create-transport-company-relation/atlas-doc.adoc[]
-
-= Companies (CRD)
-
-== Get Companies - Successfully
-
-include::{snippets}/company-controller-api-test/should-get-companies/atlas-doc.adoc[]
-
-== Get Company - Successfully
-
-include::{snippets}/company-controller-api-test/should-get-company/atlas-doc.adoc[]
-
-== Export Business Organisation - Successfully
-
-include::{snippets}/business-organisation-controller-integration-test/should-export-actual-business-organisation-versions/atlas-doc.adoc[]
-include::{snippets}/business-organisation-controller-integration-test/should-export-full-business-organisation-versions/atlas-doc.adoc[]
-include::{snippets}/business-organisation-controller-integration-test/should-export-future-timetable-business-organisation-versions/atlas-doc.adoc[]
-
-== Stream Business Organisation Json - Successfully
-
-include::{snippets}/business-organisation-controller-streaming-response-body-tests/should-read-json-after-export-timetable-year-change-business-organisation-versions/atlas-doc.adoc[]
+* link:business-organisation-export.adoc[*Business Organisation Export REST API Documentation*]

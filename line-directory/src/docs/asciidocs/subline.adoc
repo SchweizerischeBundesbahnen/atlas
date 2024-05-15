@@ -1,0 +1,44 @@
+include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Subline API Guide
+
+link:rest-api.adoc[*< Back to main*]
+
+== Get Subline Overview - Successfully
+
+include::{snippets}/subline-controller-api-test/should-get-subline-overview/atlas-doc.adoc[]
+
+== Create Subline - Successfully
+
+include::{snippets}/subline-controller-api-test/should-create-subline/atlas-doc.adoc[]
+
+== Create Subline with conflict error
+
+include::{snippets}/subline-controller-api-test/should-return-conflict-error-response/atlas-doc.adoc[]
+
+== Get Subline with not found error
+
+include::{snippets}/subline-controller-api-test/should-return-not-found-error-response-when-no-found-lines/atlas-doc.adoc[]
+
+== Update Subline with optimistic locking error
+
+include::{snippets}/subline-controller-api-test/should-return-optimistic-locking-error-response/atlas-doc.adoc[]
+
+== Update Subline with no changes after versioning error
+
+include::{snippets}/subline-controller-api-test/should-return-validation-no-changes-error-response/atlas-doc.adoc[]
+
+== Update Subline with conflict error
+
+include::{snippets}/subline-controller-api-test/should-return-sub-line-assign-to-line-conflict-error-response/atlas-doc.adoc[]
+
+== Create Subline with line range error
+
+include::{snippets}/subline-controller-api-test/should-return-subline-outside-of-line-range/atlas-doc.adoc[]
+
+== Get Subline Coverage
+
+include::{snippets}/subline-controller-api-test/should-get-subline-coverage/atlas-doc.adoc[]
+
+link:rest-api.adoc[*< Back to main*]
