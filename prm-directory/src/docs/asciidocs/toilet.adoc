@@ -1,0 +1,45 @@
+include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Toilet API Guide
+
+link:rest-api.adoc[*< Back to main*]
+
+== Get Toilets - Successfully
+
+include::{snippets}/toilet-version-controller-api-test/should-get-toilet/atlas-doc.adoc[]
+
+== Get Toilet Versions - Successfully
+
+include::{snippets}/toilet-version-controller-api-test/should-get-toilet-versions/atlas-doc.adoc[]
+
+
+== Get Toilet Versions with filter - Successfully
+
+include::{snippets}/toilet-version-controller-api-test/should-get-toilet-versions-with-filter/atlas-doc.adoc[]
+
+== Get Toilet Versions by sloid filter - Successfully
+
+include::{snippets}/toilet-version-controller-api-test/should-get-toilet-versions-by-sloid-filter/atlas-doc.adoc[]
+
+== Get Toilet Versions by parentSloid filter - Successfully
+
+include::{snippets}/toilet-version-controller-api-test/should-get-toilet-versions-by-parent-sloid-filter/atlas-doc.adoc[]
+
+== Get Toilet Versions by parentServicePointNumber filter - Successfully
+
+include::{snippets}/toilet-version-controller-api-test/should-get-toilet-versions-by-number-filter/atlas-doc.adoc[]
+
+== Create Toilets - Successfully
+
+include::{snippets}/toilet-version-controller-api-test/should-create-toilet/atlas-doc.adoc[]
+
+== Create Toilets - Unsuccessfully
+
+include::{snippets}/toilet-version-controller-api-test/should-not-create-toilet-with-violation/atlas-doc.adoc[]
+
+== Create Toilets without Stop Point - Unsuccessfully
+
+include::{snippets}/toilet-version-controller-api-test/should-not-create-toilet-when-stop-point-does-not-exist/atlas-doc.adoc[]
+
+link:rest-api.adoc[*< Back to main*]
