@@ -1,0 +1,20 @@
+include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Transport Company API Guide
+
+link:rest-api.adoc[*< Back to main*]
+
+== Get Transport Companies - Successfully
+
+include::{snippets}/transport-company-controller-api-test/should-get-transport-companies/atlas-doc.adoc[]
+
+== Get Transport Company - Successfully
+
+include::{snippets}/transport-company-controller-api-test/should-get-transport-company/atlas-doc.adoc[]
+
+== Create Transport Company Relation - Successfully
+
+include::{snippets}/transport-company-relation-controller-api-test/should-create-transport-company-relation/atlas-doc.adoc[]
+
+link:rest-api.adoc[*< Back to main*]
