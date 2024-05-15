@@ -1,0 +1,81 @@
+include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Service Points  API Guide
+
+link:rest-api.adoc[*< Back to main*]
+
+== Read ServicePointVersions - Successfully
+
+include::{snippets}/service-point-controller-api-test/should-get-service-point-versions/atlas-doc.adoc[]
+
+== Read ServicePoint by ServicePointNumber - Successfully
+
+include::{snippets}/service-point-controller-api-test/should-get-service-point/atlas-doc.adoc[]
+
+== Read ServicePoint by ServicePointNumber - Unsuccessfully
+
+include::{snippets}/service-point-controller-api-test/should-fail-on-find-with-invalid-service-point-number/atlas-doc.adoc[]
+
+== Read ServicePointVersion by ID - Successfully
+
+include::{snippets}/service-point-controller-api-test/should-get-service-point-version-by-id/atlas-doc.adoc[]
+
+== Read ServicePoint by ServicePointNumber - NotFound
+
+include::{snippets}/service-point-controller-api-test/should-fail-on-invalid-service-point-number/atlas-doc.adoc[]
+
+== Search ServicePoint successfully
+
+include::{snippets}/service-point-controller-api-test/should-search-service-point-successfully/atlas-doc.adoc[]
+
+== Search ServicePoint when no match
+
+include::{snippets}/service-point-controller-api-test/should-return-empty-list-when-no-match-found/atlas-doc.adoc[]
+
+== Search ServicePoint when try to search with less than 2 digits
+
+include::{snippets}/service-point-controller-api-test/should-return-bad-request-when-search-whit-less-than-two-digit/atlas-doc.adoc[]
+
+== Search ServicePoint with route network true successfully
+
+include::{snippets}/service-point-controller-api-test/when-search-request-for-search-se-po-with-network-true-valid-then-should-find-service-point-successfully/atlas-doc.adoc[]
+
+== Search ServicePoint when no match
+
+include::{snippets}/service-point-controller-api-test/should-return-empty-list-when-no-match-found/atlas-doc.adoc[]
+
+== Search ServicePoint when try to search with less than 2 digits
+
+include::{snippets}/service-point-controller-api-test/should-return-bad-request-when-search-whit-less-than-two-digit/atlas-doc.adoc[]
+
+== Search SwissOnly ServicePoint successfully
+
+include::{snippets}/service-point-controller-api-test/should-search-swiss-only-service-point-successfully/atlas-doc.adoc[]
+
+== Create ServicePoint
+
+include::{snippets}/service-point-controller-api-test/should-create-service-point/atlas-doc.adoc[]
+
+== Validate ServicePoint Status
+
+include::{snippets}/service-point-controller-api-test/should-set-status-to-validate-for-service-point/atlas-doc.adoc[]
+
+== Revoke ServicePoints Status
+
+include::{snippets}/service-point-controller-api-test/should-set-status-to-revoke-for-all-service-points/atlas-doc.adoc[]
+
+== Update ServicePoint by ID
+
+include::{snippets}/service-point-controller-api-test/should-update-service-point-and-create-multiple-versions/atlas-doc.adoc[]
+
+== Get ServicePoint FotComment
+
+include::{snippets}/service-point-controller-api-test/should-get-service-point-fot-comment/atlas-doc.adoc[]
+
+== Create ServicePoint FotComment
+
+include::{snippets}/service-point-controller-api-test/should-create-service-point-fot-comment/atlas-doc.adoc[]
+
+
+link:rest-api.adoc[*< Back to main*]
