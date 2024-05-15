@@ -1,0 +1,26 @@
+include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Companies (CRD) API Guide
+
+link:rest-api.adoc[*< Back to main*]
+
+== Get Companies - Successfully
+
+include::{snippets}/company-controller-api-test/should-get-companies/atlas-doc.adoc[]
+
+== Get Company - Successfully
+
+include::{snippets}/company-controller-api-test/should-get-company/atlas-doc.adoc[]
+
+== Export Business Organisation - Successfully
+
+include::{snippets}/business-organisation-controller-integration-test/should-export-actual-business-organisation-versions/atlas-doc.adoc[]
+include::{snippets}/business-organisation-controller-integration-test/should-export-full-business-organisation-versions/atlas-doc.adoc[]
+include::{snippets}/business-organisation-controller-integration-test/should-export-future-timetable-business-organisation-versions/atlas-doc.adoc[]
+
+== Stream Business Organisation Json - Successfully
+
+include::{snippets}/business-organisation-controller-streaming-response-body-tests/should-read-json-after-export-timetable-year-change-business-organisation-versions/atlas-doc.adoc[]
+
+link:rest-api.adoc[*< Back to main*]
