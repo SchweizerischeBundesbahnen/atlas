@@ -1,0 +1,55 @@
+include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Export Service Point Version API Guide
+
+link:rest-api.adoc[*< Back to main*]
+
+Service Point Versions data is available via the ServicePoint API or as a File (CSV or JSON) via the Export Service Point API or through the Amazon S3 Bucket Client (CSV and JSON).
+
+The Export Service Point generates nightly the following zipped CSV and gzipped JSON files:
+
+* WORLD FULL
+* WORLD ONLY ACTUAL DATE
+* WORLD ONLY FUTURE TIMETABLE
+* SWISS FULL
+* SWISS ONLY ACTUAL DATE
+* SWISS ONLY FUTURE TIMETABLE
+
+If you want to consume this files you have two options:
+
+* Via API: see following section
+* Through the Amazon S3 Bucket Client: see **Atlas Amazon S3 Bucket Users onboarding**
+
+== Data Mapping Migration from DiDok to ATLAS
+
+See https://confluence.sbb.ch/x/GI3aj to get additional information about the data mapping migration from DiDok to ATLAS.
+
+== Get Service Point Json - Successfully
+
+include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-get-service-point-json-successfully/atlas-doc.adoc[]
+
+== Download Service Point Gzip (Json) - Successfully
+
+include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-service-point-gzip-json-successfully/curl-request.adoc[]
+
+== Download Latest Service Point Json - Successfully
+
+include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-latest-service-point-json-successfully/atlas-doc.adoc[]
+
+== Download Latest Service Point Gzip (Json) - Successfully
+
+include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-latest-service-point-gzip-json-successfully/curl-request.adoc[]
+
+== Unsuccessfully Examples
+
+include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-get-json-unsuccessfully/atlas-doc.adoc[]
+
+include::{snippets}/service-point-batch-controller-api-v1-integration-test/should-download-gzip-json-unsuccessfully/atlas-doc.adoc[]
+
+== Trigger export Service Point Versions
+
+include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-post-service-point-export-batch-successfully/atlas-doc.adoc[]
+
+
+link:rest-api.adoc[*< Back to main*]

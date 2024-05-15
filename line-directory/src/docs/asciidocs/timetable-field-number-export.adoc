@@ -1,0 +1,24 @@
+include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Export Timetable Field Number API Guide
+
+link:rest-api.adoc[*< Back to main*]
+
+== Export Full Timetable Field Number Versions Csv and Zip file to Amazon S3 Bucket
+
+include::{snippets}/timetable-field-number-controller-api-test/should-export-full-timetable-field-number-versions-csv/atlas-doc.adoc[]
+
+== Export Actual Timetable Field Number Versions Csv and Zip file to Amazon S3 Bucket
+
+include::{snippets}/timetable-field-number-controller-api-test/should-export-actual-timetable-field-number-versions-csv/atlas-doc.adoc[]
+
+== Export Timetable Year change Timetable Field Number Versions Csv and Zip file to Amazon S3 Bucket
+
+include::{snippets}/timetable-field-number-controller-api-test/should-export-time-table-year-change-timetable-field-number-versions-csv/atlas-doc.adoc[]
+
+== Get Timetable Field Version CSV or JSON from Atlas S3 Bucket
+
+include::../../../../base-atlas/documentation/amazon/Amazon_S3_Buckets_Users_Onboarding.adoc[]
+
+link:rest-api.adoc[*< Back to main*]
