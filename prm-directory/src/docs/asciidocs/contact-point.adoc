@@ -1,0 +1,53 @@
+include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Contact Point API Guide
+
+link:rest-api.adoc[*< Back to main*]
+
+== Get Contact Points - Successfully
+
+include::{snippets}/contact-point-version-controller-api-test/should-get-contact-points-version/atlas-doc.adoc[]
+
+== Get Contact Points by parentSloids - Successfully
+
+include::{snippets}/contact-point-version-controller-api-test/should-get-contact-points-by-parent-sloids/atlas-doc.adoc[]
+
+== Get Contact Points by sloids - Successfully
+
+include::{snippets}/contact-point-version-controller-api-test/should-get-contact-points-by-sloids/atlas-doc.adoc[]
+
+== Get Contact Points by servicePointNumbers - Successfully
+
+include::{snippets}/contact-point-version-controller-api-test/should-get-contact-points-by-service-point-numbers/atlas-doc.adoc[]
+
+== Get Contact Points with filter - Successfully
+
+include::{snippets}/contact-point-version-controller-api-test/should-get-contact-point-versions-with-filter/atlas-doc.adoc[]
+
+== Get Contact Points by Contact Point types - Successfully
+
+include::{snippets}/contact-point-version-controller-api-test/should-get-contact-points-by-contact-point-types/atlas-doc.adoc[]
+
+== Get All Contact Point Versions - Successfully
+
+include::{snippets}/contact-point-version-controller-api-test/should-get-all-contact-point-versions/atlas-doc.adoc[]
+
+
+== Get Contact Point Overview - Successfully
+
+include::{snippets}/contact-point-version-controller-api-test/should-get-contact-point-overview/atlas-doc.adoc[]
+
+== Create Contact Point - Successfully
+
+include::{snippets}/contact-point-version-controller-api-test/should-create-contact-point/atlas-doc.adoc[]
+
+== Update Contact Point - Successfully
+
+include::{snippets}/contact-point-version-controller-api-test/should-update-contact-point/atlas-doc.adoc[]
+
+== Create Contact Point without Stop Point - Unsuccessfully
+
+include::{snippets}/contact-point-version-controller-api-test/should-not-create-contact-point-when-stop-point-does-exist/atlas-doc.adoc[]
+
+link:rest-api.adoc[*< Back to main*]
