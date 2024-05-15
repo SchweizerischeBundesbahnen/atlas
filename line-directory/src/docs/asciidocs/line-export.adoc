@@ -1,0 +1,24 @@
+include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Line Export API Guide
+
+link:rest-api.adoc[*< Back to main*]
+
+== Export Full Line Versions Csv and Zip file to Amazon S3 Bucket
+
+include::{snippets}/line-controller-api-test/should-export-full-line-versions-csv/atlas-doc.adoc[]
+
+== Export Actual Line Versions Csv and Zip file to Amazon S3 Bucket
+
+include::{snippets}/line-controller-api-test/should-export-actual-line-versions-csv/atlas-doc.adoc[]
+
+== Export Timetable Year change Line Versions Csv and Zip file to Amazon S3 Bucket
+
+include::{snippets}/line-controller-api-test/should-export-future-timetable-line-versions-csv/atlas-doc.adoc[]
+
+== Get Line Version CSV or JSON from Atlas S3 Bucket
+
+include::../../../../base-atlas/documentation/amazon/Amazon_S3_Buckets_Users_Onboarding.adoc
+
+link:rest-api.adoc[*< Back to main*]

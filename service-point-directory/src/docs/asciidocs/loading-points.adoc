@@ -1,0 +1,44 @@
+include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Loading Points API Guide
+
+link:rest-api.adoc[*< Back to main*]
+
+== Read LoadingPoint by number - Successfully
+
+include::{snippets}/loading-point-controller-api-test/should-get-loading-point/atlas-doc.adoc[]
+
+== Read LoadingPoint by ID - Successfully
+
+include::{snippets}/loading-point-controller-api-test/should-get-loading-point-version-by-id/atlas-doc.adoc[]
+
+== Read LoadingPoint by number - NotFound
+
+include::{snippets}/loading-point-controller-api-test/should-fail-on-invalid-loading-point-number/atlas-doc.adoc[]
+
+== Read LoadingPoint by number - Unsuccessfully
+
+include::{snippets}/loading-point-controller-api-test/should-fail-on-invalid-loading-point-number/atlas-doc.adoc[]
+
+== Read LoadingPoint by servicePointNumber - Unsuccessfully
+
+include::{snippets}/loading-point-controller-api-test/should-fail-on-find-with-invalid-service-point-number/atlas-doc.adoc[]
+
+== Read LoadingPoints without filter - Successfully
+
+include::{snippets}/loading-point-controller-api-test/should-get-loading-point-versions-without-filter/atlas-doc.adoc[]
+
+== Read LoadingPoints with search filter - Successfully
+
+include::{snippets}/loading-point-controller-api-test/should-get-loading-point-versions-with-filter/atlas-doc.adoc[]
+
+== Read LoadingPoints with search array in filter - Successfully
+
+include::{snippets}/loading-point-controller-api-test/should-get-loading-point-versions-with-array-in-filter/atlas-doc.adoc[]
+
+== Read LoadingPoints with search filter - Unsuccessfully
+
+include::{snippets}/loading-point-controller-api-test/should-not-get-loading-point-versions-with-filter/atlas-doc.adoc[]
+
+link:rest-api.adoc[*< Back to main*]
