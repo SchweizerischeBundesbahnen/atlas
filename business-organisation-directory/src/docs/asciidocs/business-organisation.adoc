@@ -1,0 +1,48 @@
+include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Business Organisation API Guide
+
+link:rest-api.adoc[*< Back to main*]
+
+== Create Business Organisation Directory - Successfully
+
+include::{snippets}/business-organisation-controller-integration-test/should-create-business-organisation-version/atlas-doc.adoc[]
+
+== Get All Business Organisation Directories - Successfully
+
+include::{snippets}/business-organisation-controller-integration-test/should-get-all-business-organisation-versions/atlas-doc.adoc[]
+
+== Get Business Organisation Directories Versions - Successfully
+
+include::{snippets}/business-organisation-controller-integration-test/should-get-business-organisation-versions/atlas-doc.adoc[]
+
+== Get Business Organisation Directories Versions By SBOID - Successfully
+
+include::{snippets}/business-organisation-controller-integration-test/should-get-business-organisation-versions-by-sboid/atlas-doc.adoc[]
+
+== Get Business Organisation Directories Versions- Unsuccessfully
+
+include::{snippets}/business-organisation-controller-integration-test/should-not-get-business-organisation-versions-when-provided-sboid-does-not-exists/atlas-doc.adoc[]
+
+== Create Business Organisation Directory when provided field is too long - Unsuccessfully
+
+include::{snippets}/business-organisation-controller-integration-test/should-not-create-business-organisation-version-when-required-abbreviation-de-field-provided-is-too-long/atlas-doc.adoc[]
+
+== Update Business Organisation Directory when required field is not provided - Unsuccessfully
+
+include::{snippets}/business-organisation-controller-integration-test/should-not-update-business-organisation-version-when-required-abbreviation-de-field-not-provided/atlas-doc.adoc[]
+
+== Update Business Organisation Directory when id provided does not exist - Unsuccessfully
+
+include::{snippets}/business-organisation-controller-integration-test/should-not-update-business-organisation-version-when-provided-id-does-not-exists/atlas-doc.adoc[]
+
+== Delete Business Organisation when id provided does exist - Successful
+
+include::{snippets}/business-organisation-controller-integration-test/should-delete-business-organisation-by-sboid/atlas-doc.adoc[]
+
+== Create Business Organisation when Abbreviation conflict occurs
+
+include::{snippets}/business-organisation-controller-integration-test/should-return-conflict-error-response/atlas-doc.adoc[]
+
+link:rest-api.adoc[*< Back to main*]
