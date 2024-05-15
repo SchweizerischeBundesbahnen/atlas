@@ -1,0 +1,30 @@
+include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Export Parking Lot Version API Guide
+
+link:rest-api.adoc[*< Back to main*]
+
+include::prm-base.adoc[]
+
+== Get Parking Lot Json - Successfully
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-get-parking-lot-json-successfully/atlas-doc.adoc[]
+
+== Download Parking Lot Gzip (Json) - Successfully
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-parking-lot-gzip-json-successfully/curl-request.adoc[]
+
+== Download Latest Parking Lot Json - Successfully
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-parking-lot-json-successfully/atlas-doc.adoc[]
+
+== Download Latest Parking Lot Gzip (Json) - Successfully
+
+include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download-latest-parking-lot-gzip-json-successfully/curl-request.adoc[]
+
+== Trigger Export Parking Lot Versions
+
+include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-post-parking-lot-export-batch-successfully/atlas-doc.adoc[]
+
+link:rest-api.adoc[*< Back to main*]

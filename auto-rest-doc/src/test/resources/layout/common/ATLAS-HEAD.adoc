@@ -2,7 +2,7 @@
 :compat-mode:
 :page-layout!:
 :toc: left
-:toclevels: 0
+:toclevels: 1
 :toc-title: Contents
 :stylesheet: ../../../../auto-rest-doc/src/test/resources/layout/style/asciidoctor.css
 :sectanchors:

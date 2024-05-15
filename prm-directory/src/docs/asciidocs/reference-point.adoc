@@ -1,0 +1,36 @@
+include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Reference Point API Guide
+
+link:rest-api.adoc[*< Back to main*]
+
+== Get Reference Points - Successfully
+
+include::{snippets}/reference-point-version-controller-api-test/should-get-reference-points-version/atlas-doc.adoc[]
+
+== Get Reference Point by Sloid - Successfully
+
+include::{snippets}/reference-point-version-controller-api-test/should-get-reference-point-by-sloid/atlas-doc.adoc[]
+
+== Get Reference Point with filters - Successfully
+
+include::{snippets}/reference-point-version-controller-api-test/should-get-reference-point-versions-with-filter/atlas-doc.adoc[]
+
+== Get Reference Point Overview by Parent Sloid - Successfully
+
+include::{snippets}/reference-point-version-controller-api-test/should-get-reference-point-overview/atlas-doc.adoc[]
+
+== Create Reference Points - Successfully
+
+include::{snippets}/reference-point-version-controller-api-test/should-create-reference-point/atlas-doc.adoc[]
+
+== Create Reference Point With automatic sloid - Successfully
+
+include::{snippets}/reference-point-version-controller-api-test/should-create-reference-point-with-automatic-sloid/atlas-doc.adoc[]
+
+== Create Reference Points without Stop Point- Unsuccessfully
+
+include::{snippets}/reference-point-version-controller-api-test/should-not-create-reference-point-when-stop-point-does-not-exist/atlas-doc.adoc[]
+
+link:rest-api.adoc[*< Back to main*]
