@@ -1,0 +1,34 @@
+include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Future Timetable API Guide
+
+link:rest-api.adoc[*< Back to main*]
+
+For more information go to  https://www.xn--v-info-vxa.ch/de/fahrplan-aktuell/fahrplanwissen/fahrplanjahr-und-wechsel[*Timetable year*] definition.
+
+== Get Timetable Year change
+
+include::{snippets}/timetable-year-change-controller-api-test/should-return-future-time-table/atlas-doc.adoc[]
+
+== Get Timetable Year change - Error: param greater than 9999
+
+include::{snippets}/timetable-year-change-controller-api-test/should-return-error-when-year-after9999/atlas-doc.adoc[]
+
+== Get Timetable Year change - Error: param smaller than 1700
+
+include::{snippets}/timetable-year-change-controller-api-test/should-return-error-when-year-before1700/atlas-doc.adoc[]
+
+== Get Next Timetable Years change
+
+include::{snippets}/timetable-year-change-controller-api-test/should-return-next-future-time-tables/atlas-doc.adoc[]
+
+== Get Next Timetable Years change - Error: param greater than 100
+
+include::{snippets}/timetable-year-change-controller-api-test/should-return-error-when-next-future-time-tables-is-more-than-hundred/atlas-doc.adoc[]
+
+== Get Next Timetable Years change - Error: param smaller than 1
+
+include::{snippets}/timetable-year-change-controller-api-test/should-return-error-when-next-future-time-tables-is-zero/atlas-doc.adoc[]
+
+link:rest-api.adoc[*< Back to main*]

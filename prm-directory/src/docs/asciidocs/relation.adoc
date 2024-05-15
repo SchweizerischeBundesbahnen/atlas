@@ -1,0 +1,40 @@
+include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Relation API Guide
+
+link:rest-api.adoc[*< Back to main*]
+
+== Get Relations by Sloid - Successfully
+
+include::{snippets}/relation-version-controller-api-test/should-get-relation-by-sloid/atlas-doc.adoc[]
+
+== Update Relation - Successfully
+
+include::{snippets}/relation-version-controller-api-test/should-update-relation/atlas-doc.adoc[]
+
+== Update Relation with constraints violation- Unsuccessfully
+
+include::{snippets}/relation-version-controller-api-test/should-not-update-relation-with-constraint-violation/atlas-doc.adoc[]
+
+== Update Relation when id not exists- Unsuccessfully
+
+include::{snippets}/relation-version-controller-api-test/should-not-update-relation-when-id-not-found/atlas-doc.adoc[]
+
+== Get Relations with filter - Successfully
+
+include::{snippets}/relation-version-controller-api-test/should-get-relation-versions-with-filter/atlas-doc.adoc[]
+
+== Get Relations with filter without match - Successfully
+
+include::{snippets}/relation-version-controller-api-test/should-not-get-relation-versions/atlas-doc.adoc[]
+
+== Get Relations with filter array filter - Successfully
+
+include::{snippets}/relation-version-controller-api-test/should-get-relation-versions-with-array-in-filter/atlas-doc.adoc[]
+
+== Get Relations with ReferenceElementType filter - Successfully
+
+include::{snippets}/relation-version-controller-api-test/should-get-relation-versions-from-reference-point-type/atlas-doc.adoc[]
+
+link:rest-api.adoc[*< Back to main*]

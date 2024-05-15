@@ -1,0 +1,48 @@
+include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Timetable Hearing Statements API Guide
+
+link:rest-api.adoc[*< Back to main*]
+
+== Create Hearing Statement - Successfully
+
+include::{snippets}/timetable-hearing-statement-controller-v2-api-test/should-create-statement-without-documents/atlas-doc.adoc[]
+
+== Create Hearing Statement from External V1 (e.g. SKI Web)- Successfully
+
+include::{snippets}/timetable-hearing-statement-controller-v1-api-test/should-create-statement-external-from-ski-web/atlas-doc.adoc[]
+
+== Create Hearing Statement from External V2 (e.g. SKI Web)- Successfully
+
+include::{snippets}/timetable-hearing-statement-controller-v2-api-test/should-create-statement-external-v2-from-ski-web/atlas-doc.adoc[]
+
+== Create Hearing Statement with Documents - Successfully
+
+include::{snippets}/timetable-hearing-statement-controller-v2-api-test/should-create-statement-with-two-documents/atlas-doc.adoc[]
+
+== Get Hearing Statement - Successfully
+
+include::{snippets}/timetable-hearing-statement-controller-v2-api-test/should-get-statement-by-id/atlas-doc.adoc[]
+
+== Get Hearing Statements by Year - Successfully
+
+include::{snippets}/timetable-hearing-statement-controller-v2-api-test/should-get-statement-by-hearing-year/atlas-doc.adoc[]
+
+== Update Hearing Statement - Successfully
+
+include::{snippets}/timetable-hearing-statement-controller-v2-api-test/should-update-statement/atlas-doc.adoc[]
+
+== Update Hearing Statement adding documents - Successfully
+
+include::{snippets}/timetable-hearing-statement-controller-v2-api-test/should-update-statement-with-documents-with-additional-documents/atlas-doc.adoc[]
+
+== Update Hearing Statement Status - Successfully
+
+include::{snippets}/timetable-hearing-statement-controller-v2-api-test/should-update-hearing-statement-status/atlas-doc.adoc[]
+
+== Update Hearing Statement Swiss Canton - Successfully
+
+include::{snippets}/timetable-hearing-statement-controller-v2-api-test/should-update-hearing-canton/atlas-doc.adoc[]
+
+link:rest-api.adoc[*< Back to main*]

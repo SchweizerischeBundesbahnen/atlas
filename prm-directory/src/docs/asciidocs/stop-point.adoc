@@ -1,0 +1,56 @@
+include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CONFIG.adoc[]
+
+image::logo-atlas.svg[50,50,align=left,role=left]
+= Stop Point API Guide
+
+link:rest-api.adoc[*< Back to main*]
+
+== Get Stop Points without filter - Successfully
+
+include::{snippets}/stop-point-version-controller-api-test/should-get-stop-points-version-without-filter/atlas-doc.adoc[]
+
+== Get Stop Points by SLOID - Successfully
+
+include::{snippets}/stop-point-version-controller-api-test/should-get-stop-point-versions-by-sloid/atlas-doc.adoc[]
+
+== Get Stop Points with filter - Successfully
+
+include::{snippets}/stop-point-version-controller-api-test/should-get-stop-point-versions-with-filter/atlas-doc.adoc[]
+
+== Get Stop Points with filter without match - Successfully
+
+include::{snippets}/stop-point-version-controller-api-test/should-not-get-stop-point-versions-with-filter/atlas-doc.adoc[]
+
+== Get Stop Points with filter array filter - Successfully
+
+include::{snippets}/stop-point-version-controller-api-test/should-get-stop-point-versions-with-array-in-filter/atlas-doc.adoc[]
+
+== Create Stop Points - Successfully
+
+include::{snippets}/stop-point-version-controller-api-test/should-create-stop-point/atlas-doc.adoc[]
+
+== Create Stop Points - Unsuccessfully
+
+include::{snippets}/stop-point-version-controller-api-test/should-not-create-stop-point-version-when-service-point-does-not-exist/atlas-doc.adoc[]
+
+== Create Stop Points - Properties Validation Unsuccessfully
+
+include::{snippets}/stop-point-version-controller-api-test/should-not-create-stop-point-complete-with-not-validatable-properties/atlas-doc.adoc[]
+
+== Create Stop Points - Reduced provide complete properties Unsuccessfully
+
+include::{snippets}/stop-point-version-controller-api-test/should-not-create-stop-point-reduced-if-complete-properties-provided/atlas-doc.adoc[]
+
+== Create Stop Points - Not Swiss ServicePoint provided Unsuccessfully
+
+include::{snippets}/stop-point-version-controller-api-test/should-not-create-stop-point-reduced-if-service-point-has-as-country-not-swiss/atlas-doc.adoc[]
+
+== Update Stop Points - Successfully
+
+include::{snippets}/stop-point-version-controller-api-test/should-update-stop-point/atlas-doc.adoc[]
+
+== Change Recording Variant Stop Points - Successfully
+
+include::{snippets}/stop-point-version-controller-api-test/should-change-stop-point-variant/atlas-doc.adoc[]
+
+link:rest-api.adoc[*< Back to main*]
