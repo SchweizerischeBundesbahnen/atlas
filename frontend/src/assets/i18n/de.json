@@ -14,6 +14,8 @@
     "CORRELATION_ID": "Bei anhaltenden Problemen wenden Sie sich mit folgender Identifikationsnummer an die Fachstelle atlas: {{correlationId}}"
   },
   "COMMON": {
+    "COPY_CLIPBOARD_SUCCESS": "Das Kopieren war erfolgreich.",
+    "COPY_CLIPBOARD": "In Zwischenablage kopieren",
     "AUTOMATICALLY_ASSIGNED": "Automatisch vergeben",
     "MAINTENANCE_WINDOW": "Wartungsfenster jeweils mittwochs von 16 - 17 Uhr, es kann zu Systemunterbrüchen kommen.",
     "LOADING": "Wird geladen...",
