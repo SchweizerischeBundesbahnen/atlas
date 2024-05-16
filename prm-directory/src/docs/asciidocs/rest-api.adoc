@@ -8,10 +8,10 @@ include::../when_to_use_files_or_API.adoc[]
 
 Below are the links to the REST API Documentations:
 
-* link:stop-point.adoc[*Stop Point REST API Documentation*]
-* link:reference-point.adoc[*Reference Point REST API Documentation*]
-* link:platform.adoc[*Platform REST API Documentation*]
-* link:toilet.adoc[*Toilet REST API Documentation*]
-* link:contact-point.adoc[*Contact Point REST API Documentation*]
-* link:parking-lot.adoc[*Parking Lot REST API Documentation*]
-* link:relation.adoc[*Relation REST API Documentation*]
+* link:stop-point.html[*Stop Point REST API Documentation*]
+* link:reference-point.html[*Reference Point REST API Documentation*]
+* link:platform.html[*Platform REST API Documentation*]
+* link:toilet.html[*Toilet REST API Documentation*]
+* link:contact-point.html[*Contact Point REST API Documentation*]
+* link:parking-lot.html[*Parking Lot REST API Documentation*]
+* link:relation.html[*Relation REST API Documentation*]

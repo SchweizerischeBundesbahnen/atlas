@@ -3,7 +3,7 @@ include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CON
 image::logo-atlas.svg[50,50,align=left,role=left]
 = Export Parking Lot Version API Guide
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
 
 include::prm-base.adoc[]
 
@@ -27,4 +27,4 @@ include::{snippets}/prm-batch-controller-api-v1-integration-test/should-download
 
 include::{snippets}/export-prm-batch-controller-api-v1-integration-test/should-post-parking-lot-export-batch-successfully/atlas-doc.adoc[]
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]

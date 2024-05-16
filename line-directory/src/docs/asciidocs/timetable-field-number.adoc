@@ -3,7 +3,7 @@ include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CON
 image::logo-atlas.svg[50,50,align=left,role=left]
 = Timetable field number API Guide
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
 
 == Search versions - Successfully
 
@@ -33,4 +33,4 @@ include::{snippets}/line-controller-api-test/should-get-line-version-snaphots/at
 
 include::{snippets}/timetable-field-number-controller-exception-handling-test/should-return-bad-request-exception-on-invalid-sort-param/atlas-doc.adoc[]
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
