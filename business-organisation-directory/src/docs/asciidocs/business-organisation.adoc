@@ -3,7 +3,7 @@ include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CON
 image::logo-atlas.svg[50,50,align=left,role=left]
 = Business Organisation API Guide
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
 
 == Create Business Organisation Directory - Successfully
 
@@ -45,4 +45,4 @@ include::{snippets}/business-organisation-controller-integration-test/should-del
 
 include::{snippets}/business-organisation-controller-integration-test/should-return-conflict-error-response/atlas-doc.adoc[]
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]

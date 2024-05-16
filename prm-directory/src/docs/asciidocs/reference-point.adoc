@@ -3,7 +3,7 @@ include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CON
 image::logo-atlas.svg[50,50,align=left,role=left]
 = Reference Point API Guide
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
 
 == Get Reference Points - Successfully
 
@@ -33,4 +33,4 @@ include::{snippets}/reference-point-version-controller-api-test/should-create-re
 
 include::{snippets}/reference-point-version-controller-api-test/should-not-create-reference-point-when-stop-point-does-not-exist/atlas-doc.adoc[]
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]

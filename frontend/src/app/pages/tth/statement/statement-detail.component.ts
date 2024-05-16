@@ -58,6 +58,15 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   isDuplicating = false;
   isInitializingComponent = true;
 
+  _emails: string | undefined;
+
+  get emails(): string {
+    if(this.statement?.statementSender.emails){
+     return Array.from(this.statement?.statementSender.emails).join('\n')
+    }
+    return '';
+  }
+
   readonly emailValidator = [AtlasCharsetsValidator.email, AtlasFieldLengthValidator.length_100];
 
   private ngUnsubscribe = new Subject<void>();
