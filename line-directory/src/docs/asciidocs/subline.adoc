@@ -3,7 +3,7 @@ include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CON
 image::logo-atlas.svg[50,50,align=left,role=left]
 = Subline API Guide
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
 
 == Get Subline Overview - Successfully
 
@@ -41,4 +41,4 @@ include::{snippets}/subline-controller-api-test/should-return-subline-outside-of
 
 include::{snippets}/subline-controller-api-test/should-get-subline-coverage/atlas-doc.adoc[]
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]

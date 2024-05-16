@@ -26,6 +26,8 @@ import {SloidComponent} from '../form-components/sloid/sloid.component';
 import {
   TodayAndFutureTimetableHeaderComponent
 } from "../form-components/date-range/today-and-future-timetable-header/today-and-future-timetable-header.component";
+import {AtlasClipboardComponent} from "../form-components/atlas-clipboard/atlas-clipboard.component";
+import {CdkCopyToClipboard} from "@angular/cdk/clipboard";
 
 @NgModule({
   declarations: [
@@ -51,8 +53,9 @@ import {
     AtlasLabelFieldComponent,
     AtlasSlideToggleComponent,
     SloidComponent,
+    AtlasClipboardComponent
   ],
-  imports: [CommonModule, MaterialModule, TranslateModule],
+  imports: [CommonModule, MaterialModule, TranslateModule, CdkCopyToClipboard],
   exports: [
     BusinessOrganisationSelectComponent,
     TimetableFieldNumberSelectComponent,
@@ -73,6 +76,7 @@ import {
     AtlasLabelFieldComponent,
     AtlasSlideToggleComponent,
     SloidComponent,
+    AtlasClipboardComponent
   ],
 })
 export class FormModule {}
