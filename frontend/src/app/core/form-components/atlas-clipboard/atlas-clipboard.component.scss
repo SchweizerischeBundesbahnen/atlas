@@ -1,0 +1,10 @@
+@use 'src/styles/variables' as variables;
+
+span {
+  padding-left: 0.3rem;
+}
+
+svg:hover {
+  fill: variables.$primary-400;
+}
+

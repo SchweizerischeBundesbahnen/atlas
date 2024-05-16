@@ -3,7 +3,7 @@ include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CON
 image::logo-atlas.svg[50,50,align=left,role=left]
 = Business Organisation Export API Guide
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
 
 == Export Full Business Organisation Versions Csv, Zip and Json gz file to Amazon S3 Bucket
 
@@ -21,4 +21,4 @@ include::{snippets}/business-organisation-controller-integration-test/should-exp
 
 include::../../../../base-atlas/documentation/amazon/Amazon_S3_Buckets_Users_Onboarding.adoc[]
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]

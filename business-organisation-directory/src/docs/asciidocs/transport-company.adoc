@@ -3,7 +3,7 @@ include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CON
 image::logo-atlas.svg[50,50,align=left,role=left]
 = Transport Company API Guide
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
 
 == Get Transport Companies - Successfully
 
@@ -17,4 +17,4 @@ include::{snippets}/transport-company-controller-api-test/should-get-transport-c
 
 include::{snippets}/transport-company-relation-controller-api-test/should-create-transport-company-relation/atlas-doc.adoc[]
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
