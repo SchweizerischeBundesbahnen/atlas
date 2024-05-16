@@ -189,6 +189,8 @@
                                 { label: 'TTH.STATEMENT.E_MAIL_TEXT' }
                               ]"
                                controlName="statementSender.emails">
+
+                <atlas-clipboard [value]="this.emails" [showMe]="this.form.disabled" class="ps-2 pt-2"></atlas-clipboard>
               </atlas-text-list>
             </div>
           </div>
