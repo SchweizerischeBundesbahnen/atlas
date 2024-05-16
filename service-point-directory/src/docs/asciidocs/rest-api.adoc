@@ -10,6 +10,6 @@ include::../../../../base-atlas/documentation/servicepoint/when_to_use_files_or_
 
 Below are the links to the REST API Documentations:
 
-* link:service-points.adoc[*Service Point REST API Documentation*]
-* link:traffic-points.adoc[*Traffic Point Element REST API Documentation*]
-* link:loading-points.adoc[*Loading Point REST API Documentation*]
+* link:service-points.html[*Service Point REST API Documentation*]
+* link:traffic-points.html[*Traffic Point Element REST API Documentation*]
+* link:loading-points.html[*Loading Point REST API Documentation*]

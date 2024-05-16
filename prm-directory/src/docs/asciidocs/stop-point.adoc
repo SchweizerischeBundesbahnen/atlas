@@ -3,7 +3,7 @@ include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CON
 image::logo-atlas.svg[50,50,align=left,role=left]
 = Stop Point API Guide
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
 
 == Get Stop Points without filter - Successfully
 
@@ -53,4 +53,4 @@ include::{snippets}/stop-point-version-controller-api-test/should-update-stop-po
 
 include::{snippets}/stop-point-version-controller-api-test/should-change-stop-point-variant/atlas-doc.adoc[]
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
