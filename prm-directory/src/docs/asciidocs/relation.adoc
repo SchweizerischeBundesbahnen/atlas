@@ -3,7 +3,7 @@ include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CON
 image::logo-atlas.svg[50,50,align=left,role=left]
 = Relation API Guide
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
 
 == Get Relations by Sloid - Successfully
 
@@ -37,4 +37,4 @@ include::{snippets}/relation-version-controller-api-test/should-get-relation-ver
 
 include::{snippets}/relation-version-controller-api-test/should-get-relation-versions-from-reference-point-type/atlas-doc.adoc[]
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
