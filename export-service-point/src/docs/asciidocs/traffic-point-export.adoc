@@ -3,7 +3,7 @@ include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CON
 image::logo-atlas.svg[50,50,align=left,role=left]
 = Export Traffic Point Element Version API Guide
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
 
 Traffic Point Element Versions data is available via the ServicePoint API or as a File (CSV or JSON) via the Export Service Point API or through the Amazon S3 Bucket Client (CSV and JSON).
 
@@ -44,4 +44,4 @@ include::{snippets}/service-point-batch-controller-api-v1-integration-test/shoul
 include::{snippets}/export-service-point-batch-controller-api-v1-integration-test/should-post-traffic-point-export-batch-successfully/atlas-doc.adoc[]
 
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]

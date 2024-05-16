@@ -6,20 +6,20 @@ This service exports the following data:
 
 *Service Point Directory*:
 
-* link:service-point-export.adoc[*Service Point Export REST API Documentation*]
-* link:traffic-point-export.adoc[*Traffic Point Export REST API Documentation*]
-* link:loading-point-export.adoc[*Loading Point Export REST API Documentation*]
+* link:service-point-export.html[*Service Point Export REST API Documentation*]
+* link:traffic-point-export.html[*Traffic Point Export REST API Documentation*]
+* link:loading-point-export.html[*Loading Point Export REST API Documentation*]
 
 *PRM (Person with Reduced Mobility) Directory*:
 
 
-* link:stop-point-export.adoc[*Stop Point Export REST API Documentation*]
-* link:platform-export.adoc[*Platform Export REST API Documentation*]
-* link:reference-point-export.adoc[*Reference Point Export REST API Documentation*]
-* link:contact-point-export.adoc[*Contact Point Export REST API Documentation*]
-* link:toilet-export.adoc[*Toilet Export REST API Documentation*]
-* link:parking-lot-export.adoc[*Parking Lot Export REST API Documentation*]
-* link:relation-export.adoc[*Relation Export REST API Documentation*]
+* link:stop-point-export.html[*Stop Point Export REST API Documentation*]
+* link:platform-export.html[*Platform Export REST API Documentation*]
+* link:reference-point-export.html[*Reference Point Export REST API Documentation*]
+* link:contact-point-export.html[*Contact Point Export REST API Documentation*]
+* link:toilet-export.html[*Toilet Export REST API Documentation*]
+* link:parking-lot-export.html[*Parking Lot Export REST API Documentation*]
+* link:relation-export.html[*Relation Export REST API Documentation*]
 
 To get daily updated data, we recommend file users to only retrieve data after **00:30 (Europe/Zuerich time zone)** in the
 morning.

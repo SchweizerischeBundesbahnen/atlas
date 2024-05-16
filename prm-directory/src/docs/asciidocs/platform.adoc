@@ -3,7 +3,7 @@ include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CON
 image::logo-atlas.svg[50,50,align=left,role=left]
 = Platform API Guide
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
 
 == Get Platforms - Successfully
 
@@ -49,4 +49,4 @@ include::{snippets}/platform-version-controller-api-test/should-update-platform/
 
 include::{snippets}/platform-version-controller-api-test/should-not-create-platform-when-stop-point-does-not-exist/atlas-doc.adoc[]
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
