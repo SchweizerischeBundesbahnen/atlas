@@ -13,6 +13,7 @@ import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.servicepointdirectory.service.georeference.GeoReferenceService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointFotCommentService;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointValidationService;
 import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,6 +32,8 @@ class ServicePointControllerTest {
   private ServicePointDistributor servicePointDistributor;
   @Mock
   private LocationService locationService;
+  @Mock
+  private ServicePointValidationService servicePointValidationService;
 
   private ServicePointController servicePointController;
 
@@ -38,7 +41,7 @@ class ServicePointControllerTest {
   void setUp() {
     MockitoAnnotations.openMocks(this);
     servicePointController = new ServicePointController(servicePointService, servicePointFotCommentService,
-        geoReferenceService, servicePointDistributor, locationService);
+        geoReferenceService, servicePointDistributor, locationService, servicePointValidationService);
 
     when(servicePointService.create(any(), any(), any())).then(i -> i.getArgument(0, ServicePointVersion.class));
   }
