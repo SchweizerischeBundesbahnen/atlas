@@ -3,7 +3,7 @@ include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CON
 image::logo-atlas.svg[50,50,align=left,role=left]
 = Service Points  API Guide
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
 
 == Read ServicePointVersions - Successfully
 
@@ -78,4 +78,4 @@ include::{snippets}/service-point-controller-api-test/should-get-service-point-f
 include::{snippets}/service-point-controller-api-test/should-create-service-point-fot-comment/atlas-doc.adoc[]
 
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
