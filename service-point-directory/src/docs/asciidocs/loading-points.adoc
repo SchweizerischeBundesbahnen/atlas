@@ -3,7 +3,7 @@ include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CON
 image::logo-atlas.svg[50,50,align=left,role=left]
 = Loading Points API Guide
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
 
 == Read LoadingPoint by number - Successfully
 
@@ -41,4 +41,4 @@ include::{snippets}/loading-point-controller-api-test/should-get-loading-point-v
 
 include::{snippets}/loading-point-controller-api-test/should-not-get-loading-point-versions-with-filter/atlas-doc.adoc[]
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]

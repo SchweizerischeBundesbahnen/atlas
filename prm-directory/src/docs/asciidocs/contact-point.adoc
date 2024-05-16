@@ -3,7 +3,7 @@ include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CON
 image::logo-atlas.svg[50,50,align=left,role=left]
 = Contact Point API Guide
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
 
 == Get Contact Points - Successfully
 
@@ -50,4 +50,4 @@ include::{snippets}/contact-point-version-controller-api-test/should-update-cont
 
 include::{snippets}/contact-point-version-controller-api-test/should-not-create-contact-point-when-stop-point-does-exist/atlas-doc.adoc[]
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
