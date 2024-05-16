@@ -3,7 +3,7 @@ include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CON
 image::logo-atlas.svg[50,50,align=left,role=left]
 = Traffic Point Elements API Guide
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
 
 == Read TrafficPointElements - Successfully
 
@@ -53,4 +53,4 @@ include::{snippets}/traffic-point-element-controller-api-test/should-throw-sloid
 
 include::{snippets}/traffic-point-element-controller-api-test/should-return-optimistic-locking-error-response/atlas-doc.adoc[]
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]

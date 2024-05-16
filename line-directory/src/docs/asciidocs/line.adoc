@@ -3,7 +3,7 @@ include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CON
 image::logo-atlas.svg[50,50,align=left,role=left]
 = Line API Guide
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
 
 == Get Line Overview - Successfully
 
@@ -53,4 +53,4 @@ include::{snippets}/line-controller-api-test/should-return-not-found-error-respo
 
 include::{snippets}/line-controller-api-test/should-get-subline-coverage/atlas-doc.adoc[]
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]

@@ -2,18 +2,18 @@ include::../../../../auto-rest-doc/src/test/resources/layout/common/ATLAS-HEAD.a
 
 == Release Notes
 
-include::../release-notes.adoc[]
+include::../release-notes.html[]
 
 == Business Organisation REST API Documentation
 
 Below are the links to the REST API Documentations:
 
-* link:business-organisation.adoc[*Business Organisation REST API Documentation*]
-* link:transport-company.adoc[*Transport Company REST API Documentation*]
-* link:companies.adoc[*Company (CRD) REST API Documentation*]
+* link:business-organisation.html[*Business Organisation REST API Documentation*]
+* link:transport-company.html[*Transport Company REST API Documentation*]
+* link:companies.html[*Company (CRD) REST API Documentation*]
 
 == Business Organisation Export REST API Documentation
 
 Below are the links to the Export REST API Documentations:
 
-* link:business-organisation-export.adoc[*Business Organisation Export REST API Documentation*]
+* link:business-organisation-export.html[*Business Organisation Export REST API Documentation*]
