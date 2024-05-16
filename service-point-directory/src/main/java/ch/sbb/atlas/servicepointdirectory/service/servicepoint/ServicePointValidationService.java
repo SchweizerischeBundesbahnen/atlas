@@ -1,6 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.abbreviationsallowlist.ServicePointAbbreviationAllowList;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -9,6 +11,7 @@ import ch.sbb.atlas.servicepointdirectory.exception.ForbiddenDueToChosenServiceP
 import ch.sbb.atlas.servicepointdirectory.exception.InvalidAbbreviationException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationLongConflictException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationOfficialConflictException;
+import ch.sbb.atlas.servicepointdirectory.exception.UpdateAffectsInReviewVersionException;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +30,8 @@ public class ServicePointValidationService {
   private final ServicePointVersionRepository servicePointVersionRepository;
 
   public void validateServicePointPreconditionBusinessRule(ServicePointVersion servicePointVersion) {
-    if (servicePointVersion.getOperatingPointKilometerMaster() != null && !servicePointVersion.getOperatingPointKilometerMaster().getNumber().equals(servicePointVersion.getNumber().getNumber())) {
+    if (servicePointVersion.getOperatingPointKilometerMaster() != null && !servicePointVersion.getOperatingPointKilometerMaster()
+        .getNumber().equals(servicePointVersion.getNumber().getNumber())) {
       checkIfKilometerMasterNumberCanBeAssigned(servicePointVersion.getOperatingPointKilometerMaster(), servicePointVersion);
     }
     validateDesignationOfficialUniqueness(servicePointVersion);
@@ -35,11 +39,13 @@ public class ServicePointValidationService {
     sharedBusinessOrganisationService.validateSboidExists(servicePointVersion.getBusinessOrganisation());
   }
 
-  public void checkIfKilometerMasterNumberCanBeAssigned(ServicePointNumber kilometerMasterNumber, ServicePointVersion servicePointVersion) {
+  public void checkIfKilometerMasterNumberCanBeAssigned(ServicePointNumber kilometerMasterNumber,
+      ServicePointVersion servicePointVersion) {
     List<ServicePointVersion> allKilometerMasterNumberVersions = servicePointVersionRepository
-            .findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(
-                    kilometerMasterNumber);
-    boolean result = new Timeline(allKilometerMasterNumberVersions, servicePointVersion).isSePoTimelineInsideOrEqToOneOfKilomMastTimelines();
+        .findAllByNumberAndOperatingPointRouteNetworkTrueOrderByValidFrom(
+            kilometerMasterNumber);
+    boolean result = new Timeline(allKilometerMasterNumberVersions,
+        servicePointVersion).isSePoTimelineInsideOrEqToOneOfKilomMastTimelines();
     if (!result) {
       throw new ForbiddenDueToChosenServicePointVersionValidationPeriodException(kilometerMasterNumber);
     }
@@ -64,18 +70,18 @@ public class ServicePointValidationService {
   }
 
   public void validateAndSetAbbreviation(ServicePointVersion editedVersion) {
-    boolean isBussinesOrganisationInList = ServicePointAbbreviationAllowList.SBOIDS.contains(editedVersion.getBusinessOrganisation());
-
+    boolean isBussinesOrganisationInList = ServicePointAbbreviationAllowList.SBOIDS.contains(
+        editedVersion.getBusinessOrganisation());
 
     if ((isAbbreviationEqualWithPreviousVersions(editedVersion) || isServicePointNew(editedVersion))) {
       return;
     }
 
-    if(!isBussinesOrganisationInList || hasServicePointVersionsAbbreviation(editedVersion)) {
+    if (!isBussinesOrganisationInList || hasServicePointVersionsAbbreviation(editedVersion)) {
       throw new AbbreviationUpdateNotAllowedException();
     }
 
-    if(isServicePointHighDateVersion(editedVersion) || !isAbbreviationUnique(editedVersion) ) {
+    if (isServicePointHighDateVersion(editedVersion) || !isAbbreviationUnique(editedVersion)) {
       throw new InvalidAbbreviationException();
     }
   }
@@ -99,13 +105,46 @@ public class ServicePointValidationService {
   }
 
   private boolean isServicePointNew(ServicePointVersion editedVersion) {
-    return servicePointVersionRepository.findAllByNumberOrderByValidFrom(editedVersion.getNumber()).isEmpty() && StringUtils.isBlank(editedVersion.getAbbreviation());
+    return servicePointVersionRepository.findAllByNumberOrderByValidFrom(editedVersion.getNumber()).isEmpty()
+        && StringUtils.isBlank(editedVersion.getAbbreviation());
   }
 
   private boolean hasServicePointVersionsAbbreviation(ServicePointVersion editedVersion) {
     return servicePointVersionRepository.findAllByNumberOrderByValidFrom(editedVersion.getNumber())
         .stream()
-        .anyMatch(obj -> StringUtils.isNotBlank(obj.getAbbreviation()) && !Objects.equals(obj.getAbbreviation(), editedVersion.getAbbreviation()));
+        .anyMatch(obj -> StringUtils.isNotBlank(obj.getAbbreviation()) && !Objects.equals(obj.getAbbreviation(),
+            editedVersion.getAbbreviation()));
   }
 
+  public void checkNotAffectingInReviewVersions(List<ServicePointVersion> existingVersions,
+      UpdateServicePointVersionModel updateVersionModel) {
+    List<ServicePointVersion> affectedVersions =
+        existingVersions.stream().filter(version -> version.getStatus() == Status.IN_REVIEW &&
+            (
+                (
+                    (
+                        version.getValidFrom().isAfter(updateVersionModel.getValidFrom())
+                            || version.getValidFrom() == updateVersionModel.getValidFrom()
+                    ) && (
+                        version.getValidFrom().isBefore(updateVersionModel.getValidTo())
+                            || version.getValidTo() == updateVersionModel.getValidFrom()
+                    )
+                ) || (
+                    version.getValidTo().isAfter(updateVersionModel.getValidFrom())
+                        || updateVersionModel.getValidFrom() == version.getValidTo()
+                ) && (
+                    version.getValidTo().isBefore(updateVersionModel.getValidTo())
+                        || updateVersionModel.getValidTo() == version.getValidTo()
+                )
+            )
+        ).toList();
+
+    if (affectedVersions.size() != 0) {
+      throw new UpdateAffectsInReviewVersionException(
+          updateVersionModel.getValidFrom(),
+          updateVersionModel.getValidTo(),
+          affectedVersions
+      );
+    }
+  }
 }
