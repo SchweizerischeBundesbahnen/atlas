@@ -19,6 +19,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoloca
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberAlreadyExistsException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointStatusChangeNotAllowedException;
+import ch.sbb.atlas.servicepointdirectory.exception.UpdateAffectsInReviewVersionException;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointFotCommentMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
@@ -29,6 +30,7 @@ import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointReque
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchResult;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointService;
+import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointValidationService;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +49,7 @@ public class ServicePointController implements ServicePointApiV1 {
   private final GeoReferenceService geoReferenceService;
   private final ServicePointDistributor servicePointDistributor;
   private final LocationService locationService;
+  private final ServicePointValidationService servicePointValidationService;
 
   @Override
   public Container<ReadServicePointVersionModel> getServicePoints(Pageable pageable,
@@ -176,13 +179,17 @@ public class ServicePointController implements ServicePointApiV1 {
 
     checkIfServicePointStatusRevoked(servicePointVersionToUpdate);
 
+    List<ServicePointVersion> currentVersions = servicePointService.findAllByNumberOrderByValidFrom(
+        servicePointVersionToUpdate.getNumber());
+
+    servicePointValidationService.checkNotAffectingInReviewVersions(currentVersions, updateServicePointVersionModel);
+
     ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(updateServicePointVersionModel,
         servicePointVersionToUpdate.getNumber());
 
     addGeoReferenceInformation(editedVersion);
 
-    servicePointService.update(servicePointVersionToUpdate, editedVersion,
-        servicePointService.findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber()));
+    servicePointService.update(servicePointVersionToUpdate, editedVersion, currentVersions);
 
     List<ServicePointVersion> servicePoint = servicePointService.findAllByNumberOrderByValidFrom(
         servicePointVersionToUpdate.getNumber());
