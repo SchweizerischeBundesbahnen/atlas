@@ -3,7 +3,7 @@ include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CON
 image::logo-atlas.svg[50,50,align=left,role=left]
 = Timetable Hearing Statements API Guide
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
 
 == Create Hearing Statement - Successfully
 
@@ -45,4 +45,4 @@ include::{snippets}/timetable-hearing-statement-controller-v2-api-test/should-up
 
 include::{snippets}/timetable-hearing-statement-controller-v2-api-test/should-update-hearing-canton/atlas-doc.adoc[]
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
