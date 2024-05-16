@@ -10,16 +10,16 @@ include::../release-notes.adoc[]
 
 Below are the links to the REST API Documentations:
 
-* link:line.adoc[*Line REST API Documentation*]
-* link:subline.adoc[*Subline REST API Documentation*]
-* link:timetable-field-number.adoc[*Timetable field number REST API Documentation*]
-* link:future-timetable.adoc[*Future Timetable REST API Documentation*]
-* link:timetable-hearing-year.adoc[*Timetable hearing year REST API Documentation*]
-* link:timetable-hearing-statement.adoc[*Timetable hearing statement REST API Documentation*]
+* link:line.html[*Line REST API Documentation*]
+* link:subline.html[*Subline REST API Documentation*]
+* link:timetable-field-number.html[*Timetable field number REST API Documentation*]
+* link:future-timetable.html[*Future Timetable REST API Documentation*]
+* link:timetable-hearing-year.html[*Timetable hearing year REST API Documentation*]
+* link:timetable-hearing-statement.html[*Timetable hearing statement REST API Documentation*]
 
 == LiDi Line Directory Export REST API Documentation
 
 Below are the links to the Export REST API Documentations:
 
-* link:line-export.adoc[*Line Export REST API Documentation*]
-* link:subline-export.adoc[*Subline Export REST API Documentation*]
+* link:line-export.html[*Line Export REST API Documentation*]
+* link:subline-export.html[*Subline Export REST API Documentation*]
