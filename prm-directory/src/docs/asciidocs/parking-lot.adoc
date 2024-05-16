@@ -3,7 +3,7 @@ include::../../../../auto-rest-doc/src/test/resources/layout/common/ASCIIDOC-CON
 image::logo-atlas.svg[50,50,align=left,role=left]
 = Parking Lot API Guide
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
 
 include::{snippets}/parking-lot-version-controller-api-test/should-get-parking-lot-version/atlas-doc.adoc[]
 
@@ -47,4 +47,4 @@ include::{snippets}/parking-lot-version-controller-api-test/should-not-create-pa
 
 include::{snippets}/parking-lot-version-controller-api-test/should-update-parking-lot/atlas-doc.adoc[]
 
-link:rest-api.adoc[*< Back to main*]
+link:rest-api.html[*< Back to main*]
