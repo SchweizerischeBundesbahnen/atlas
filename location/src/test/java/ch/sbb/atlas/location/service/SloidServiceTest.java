@@ -3,6 +3,7 @@ package ch.sbb.atlas.location.service;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import ch.sbb.atlas.api.location.SloidType;
+import ch.sbb.atlas.location.BaseLocationIntegrationTest;
 import ch.sbb.atlas.location.LocationSchemaCreation;
 import ch.sbb.atlas.location.repository.SloidRepository;
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -15,13 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @IntegrationTest
 @LocationSchemaCreation
-class SloidServiceTest {
+class SloidServiceTest extends BaseLocationIntegrationTest {
 
   private final SloidRepository sloidRepository;
   private final SloidService sloidService;
 
   @Autowired
   SloidServiceTest(SloidRepository sloidRepository, SloidService sloidService) {
+    super(sloidRepository);
     this.sloidRepository = sloidRepository;
     this.sloidService = sloidService;
   }
