@@ -22,12 +22,19 @@ function createOauthServiceSpy() {
     'configure',
     'setupAutomaticSilentRefresh',
     'loadDiscoveryDocumentAndLogin',
+    'loadDiscoveryDocumentAndTryLogin',
     'loadDiscoveryDocument',
     'logOut',
     'initCodeFlow',
     'getAccessToken',
   ]);
   oauthServiceSpy.loadDiscoveryDocumentAndLogin.and.returnValue(
+    new Promise((resolve: (v: boolean) => void): void => {
+      oauthServiceSpy.state = undefined;
+      resolve(true);
+    })
+  );
+  oauthServiceSpy.loadDiscoveryDocumentAndTryLogin.and.returnValue(
     new Promise((resolve: (v: boolean) => void): void => {
       oauthServiceSpy.state = undefined;
       resolve(true);

@@ -1,8 +1,8 @@
-import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AuthService } from '../auth.service';
-import { TimetableHearingGuard } from './timetable-hearing-guard.service';
-import { BehaviorSubject } from 'rxjs';
+import {TestBed} from '@angular/core/testing';
+import {AuthService} from '../auth.service';
+import {TimetableHearingGuard} from './timetable-hearing-guard.service';
+import {BehaviorSubject} from 'rxjs';
+import {RouterModule} from "@angular/router";
 
 describe('TimetableHearingGuard', () => {
   let guard: TimetableHearingGuard;
@@ -14,7 +14,7 @@ describe('TimetableHearingGuard', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterModule.forRoot([])],
       providers: [
         {
           provide: AuthService,
