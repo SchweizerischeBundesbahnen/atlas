@@ -1,26 +1,26 @@
 package ch.sbb.workflow.service.lidi;
 
-import ch.sbb.atlas.model.controller.IntegrationTest;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
+import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
+import ch.sbb.workflow.entity.LineWorkflow;
 import ch.sbb.workflow.entity.Person;
-import ch.sbb.workflow.entity.Workflow;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @IntegrationTest
 @EmbeddedKafka(topics = {"atlas.mail"})
-class LineWorkflowServiceTest {
+class LineLineWorkflowServiceTest {
 
     @Autowired
     private LineWorkflowService lineWorkflowService;
 
     @Test
     void buildWorkflowStartedNotification() {
-        MailNotification mailNotification = lineWorkflowService.buildWorkflowStartedMailNotification(Workflow.builder()
+        MailNotification mailNotification = lineWorkflowService.buildWorkflowStartedMailNotification(LineWorkflow.builder()
                 .status(WorkflowStatus.STARTED)
                 .workflowComment("Wee need this workflow")
                         .swissId("ch:1:slnid:123")
@@ -37,7 +37,7 @@ class LineWorkflowServiceTest {
 
     @Test
     void buildWorkflowCompletedNotification() {
-        MailNotification mailNotification = lineWorkflowService.buildWorkflowCompletedMailNotification(Workflow.builder()
+        MailNotification mailNotification = lineWorkflowService.buildWorkflowCompletedMailNotification(LineWorkflow.builder()
                 .status(WorkflowStatus.APPROVED)
                 .workflowComment("Wee need this workflow")
                 .swissId("ch:1:slnid:123")
