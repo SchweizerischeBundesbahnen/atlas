@@ -1,7 +1,7 @@
 package ch.sbb.workflow.controller;
 
 import ch.sbb.atlas.api.workflow.ExaminantWorkflowCheckModel;
-import ch.sbb.atlas.api.workflow.WorkflowApiV1;
+import ch.sbb.workflow.api.LineWorkflowApiV1;
 import ch.sbb.atlas.api.workflow.WorkflowModel;
 import ch.sbb.atlas.api.workflow.WorkflowStartModel;
 import ch.sbb.workflow.entity.LineWorkflow;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class WorkflowController implements WorkflowApiV1 {
+public class LineWorkflowController implements LineWorkflowApiV1 {
 
   private final WorkflowService service;
 
