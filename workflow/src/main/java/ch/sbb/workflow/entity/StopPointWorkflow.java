@@ -2,23 +2,27 @@ package ch.sbb.workflow.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
-import ch.sbb.atlas.workflow.model.WorkflowType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -35,10 +39,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-@Entity(name = "line_workflow")
-public class LineWorkflow {
+@Entity(name = "stop_point_workflow")
+public class StopPointWorkflow {
 
-  private static final String VERSION_SEQ = "line_workflow_seq";
+  private static final String VERSION_SEQ = "stop_point_workflow_seq";
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
@@ -46,36 +50,47 @@ public class LineWorkflow {
   private Long id;
 
   @NotNull
-  private Long businessObjectId;
+  private Long versionId;
 
   @NotBlank
   @Size(max = AtlasFieldLengths.LENGTH_500)
-  private String swissId;
-
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  private WorkflowType workflowType;
-
-  @Size(max = AtlasFieldLengths.LENGTH_500)
-  private String description;
+  private String sloid;
 
   @NotNull
   @Enumerated(EnumType.STRING)
   private WorkflowStatus status;
 
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "examinant_bav_id", referencedColumnName = "id")
+  private Person examinantBav;
+
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "follow_up_workflow_id", referencedColumnName = "id")
+  private StopPointWorkflow followUpWorkflow;
+
+  @Builder.Default
+  @OneToMany(mappedBy = "id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  private Set<Person> examinants = new HashSet<>();
+
+  @Size(max = AtlasFieldLengths.LENGTH_1500)
+  private String closingComment;
+
+  @Size(max = AtlasFieldLengths.LENGTH_1500)
+  private String cancelComment;
+
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   private String workflowComment;
 
   @Size(max = AtlasFieldLengths.LENGTH_1500)
-  private String checkComment;
+  private String fotComment;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "client_id", referencedColumnName = "id")
-  private Person client;
+  @Size(max = AtlasFieldLengths.LENGTH_30)
+  private String designationOfficial;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "examinant_id", referencedColumnName = "id")
-  private Person examinant;
+  @Column(updatable = false)
+  private String creator;
+
+  private String editor;
 
   @CreationTimestamp
   @Column(columnDefinition = "TIMESTAMP", updatable = false)
