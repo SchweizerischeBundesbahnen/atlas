@@ -69,7 +69,7 @@ public class TimetableHearingStatement extends BaseEntity implements CantonAssoc
   @Size(max = AtlasFieldLengths.LENGTH_255)
   private String stopPlace;
 
-  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinTable(name = "timetable_hearing_statement_responsible_transport_companies",
       joinColumns = {@JoinColumn(name = "timetable_hearing_statement_id")},
       inverseJoinColumns = {@JoinColumn(name = "transport_company_id")})
