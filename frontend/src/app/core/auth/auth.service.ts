@@ -29,7 +29,7 @@ export class AuthService {
     this.oauthService.configure(environment.authConfig);
     this.oauthService.setupAutomaticSilentRefresh();
 
-    this.oauthService.loadDiscoveryDocument().then(() => {
+    this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
       if (this.loggedIn) {
         this.eventUserComponentNotification.emit(this.claims);
         if (this.accessToken) {
@@ -198,7 +198,7 @@ export class AuthService {
   login() {
     sessionStorage.setItem(this.REQUESTED_ROUTE_STORAGE_KEY, location.pathname + location.search);
     // App will be reloaded after initCodeFlow
-    this.oauthService.initCodeFlow();
+    this.oauthService.initCodeFlow(this.router.url);
   }
 
   logout() {
