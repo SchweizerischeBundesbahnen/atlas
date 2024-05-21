@@ -7,7 +7,7 @@ import static org.mockito.Mockito.when;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.WorkflowType;
-import ch.sbb.workflow.entity.Workflow;
+import ch.sbb.workflow.entity.LineWorkflow;
 import ch.sbb.workflow.service.lidi.LineWorkflowService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
- class WorkflowNotificationServiceTest {
+ class LineWorkflowNotificationServiceTest {
 
   private WorkflowNotificationService notificationService;
 
@@ -34,15 +34,15 @@ import org.mockito.MockitoAnnotations;
   @Test
    void shouldSendEventToMail() {
     //given
-    Workflow workflow = Workflow.builder()
+    LineWorkflow lineWorkflow = LineWorkflow.builder()
         .workflowType(WorkflowType.LINE)
         .status(WorkflowStatus.STARTED)
         .build();
     MailNotification mailNotification = MailNotification.builder().build();
-    when(lineWorkflowService.buildWorkflowStartedMailNotification(workflow)).thenReturn(mailNotification);
+    when(lineWorkflowService.buildWorkflowStartedMailNotification(lineWorkflow)).thenReturn(mailNotification);
 
     //when
-    notificationService.sendEventToMail(workflow);
+    notificationService.sendEventToMail(lineWorkflow);
 
     //then
     Mockito.verify(mailProducerService).produceMailNotification(any(MailNotification.class));
@@ -51,12 +51,12 @@ import org.mockito.MockitoAnnotations;
   @Test
    void shouldNotSendEventToMail() {
     //given
-    Workflow workflow = Workflow.builder()
+    LineWorkflow lineWorkflow = LineWorkflow.builder()
         .build();
     MailNotification mailNotification = MailNotification.builder().build();
-    when(lineWorkflowService.buildWorkflowStartedMailNotification(workflow)).thenReturn(mailNotification);
+    when(lineWorkflowService.buildWorkflowStartedMailNotification(lineWorkflow)).thenReturn(mailNotification);
     //when
-    notificationService.sendEventToMail(workflow);
+    notificationService.sendEventToMail(lineWorkflow);
     //then
     Mockito.verify(mailProducerService, never()).produceMailNotification(any(MailNotification.class));
   }

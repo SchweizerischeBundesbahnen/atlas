@@ -1,8 +1,8 @@
 package ch.sbb.workflow.kafka;
 
-import ch.sbb.atlas.workflow.model.WorkflowType;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
-import ch.sbb.workflow.entity.Workflow;
+import ch.sbb.atlas.workflow.model.WorkflowType;
+import ch.sbb.workflow.entity.LineWorkflow;
 import ch.sbb.workflow.service.lidi.LineWorkflowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,16 +15,16 @@ public class WorkflowNotificationService {
 
     private final LineWorkflowService lineWorkflowService;
 
-    public void sendEventToMail(Workflow workflow) {
-        if (WorkflowType.LINE == workflow.getWorkflowType()) {
-            mailProducerService.produceMailNotification(getMailNotificationByStatus(workflow));
+    public void sendEventToMail(LineWorkflow lineWorkflow) {
+        if (WorkflowType.LINE == lineWorkflow.getWorkflowType()) {
+            mailProducerService.produceMailNotification(getMailNotificationByStatus(lineWorkflow));
         }
     }
 
-    private MailNotification getMailNotificationByStatus(Workflow workflow) {
-        return switch (workflow.getStatus()) {
-            case STARTED -> lineWorkflowService.buildWorkflowStartedMailNotification(workflow);
-            case APPROVED, REJECTED -> lineWorkflowService.buildWorkflowCompletedMailNotification(workflow);
+    private MailNotification getMailNotificationByStatus(LineWorkflow lineWorkflow) {
+        return switch (lineWorkflow.getStatus()) {
+            case STARTED -> lineWorkflowService.buildWorkflowStartedMailNotification(lineWorkflow);
+            case APPROVED, REJECTED -> lineWorkflowService.buildWorkflowCompletedMailNotification(lineWorkflow);
             default -> throw new IllegalArgumentException();
         };
     }

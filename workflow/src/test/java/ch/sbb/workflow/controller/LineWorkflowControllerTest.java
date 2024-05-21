@@ -18,8 +18,8 @@ import ch.sbb.atlas.api.workflow.WorkflowStartModel;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.WorkflowType;
+import ch.sbb.workflow.entity.LineWorkflow;
 import ch.sbb.workflow.entity.Person;
-import ch.sbb.workflow.entity.Workflow;
 import ch.sbb.workflow.workflow.WorkflowRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +29,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 
 @EmbeddedKafka(topics = {"atlas.mail"})
- class WorkflowControllerTest extends BaseControllerApiTest {
+ class LineWorkflowControllerTest extends BaseControllerApiTest {
 
    static final String MAIL_ADDRESS = "marek@hamsik.com";
   @Autowired
@@ -81,7 +81,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
         .lastName("Hamsik")
         .function("Centrocampista")
         .mail(MAIL_ADDRESS).build();
-    Workflow workflow = Workflow.builder()
+    LineWorkflow lineWorkflow = LineWorkflow.builder()
         .client(person)
         .examinant(person)
         .swissId("CH123456")
@@ -94,7 +94,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
         .businessObjectId(123456L)
         .build();
 
-    Workflow entity = workflowRepository.save(workflow);
+    LineWorkflow entity = workflowRepository.save(lineWorkflow);
 
     mvc.perform(get("/v1/workflows/" + entity.getId()))
         .andExpect(status().isOk())
