@@ -30,8 +30,8 @@ spring:
       client:
         registration:
           sbb:
-            client-id: abab81fb-6ba0-4153-af93-8fb3dc910210
-            client-secret: super-secret
+            client-id: 53c15fc4-cd4c-4b01-87f4-6ba50ded9e10
+            client-secret: ${UNAUTHORIZED_API_CLIENT_SECRET}
             authorization-grant-type: client_credentials
             scope: api://87e6e634-6ba1-4e7a-869d-3348b4c3eafc/.default
         provider:
