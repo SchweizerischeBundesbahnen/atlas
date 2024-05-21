@@ -10,6 +10,9 @@ export class TimetableHearingGuard {
   constructor(private readonly authService: AuthService, private readonly router: Router) {}
 
   canActivate() {
+    if (!this.authService.loggedIn) {
+      return this.router.parseUrl('/');
+    }
     return this.authService.permissionsLoaded.pipe(
       filter((loaded) => loaded),
       map(() => {
