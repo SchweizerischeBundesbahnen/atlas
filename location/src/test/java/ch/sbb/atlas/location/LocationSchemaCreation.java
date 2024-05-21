@@ -14,8 +14,8 @@ import org.springframework.test.context.jdbc.SqlGroup;
 @Retention(RetentionPolicy.RUNTIME)
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 @SqlGroup({
-    @Sql(scripts = {"/db-creation.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
-    @Sql(scripts = {"/db-drop.sql"}, executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = {"/db-creation.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_CLASS),
+    @Sql(scripts = {"/db-reset-sequence.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 })
 public @interface LocationSchemaCreation {
 
