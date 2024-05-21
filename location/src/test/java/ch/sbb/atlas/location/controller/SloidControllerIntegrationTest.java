@@ -5,13 +5,20 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.location.BaseLocationIntegrationTest;
 import ch.sbb.atlas.location.LocationSchemaCreation;
-import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.location.repository.SloidRepository;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
 @LocationSchemaCreation
-class SloidControllerIntegrationTest extends BaseControllerApiTest {
+class SloidControllerIntegrationTest extends BaseLocationIntegrationTest {
+
+  @Autowired
+  SloidControllerIntegrationTest(SloidRepository sloidRepository) {
+    super(sloidRepository);
+  }
 
   /** endpoint /generate */
   @Test
