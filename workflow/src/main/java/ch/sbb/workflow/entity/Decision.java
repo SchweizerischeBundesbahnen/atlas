@@ -1,20 +1,15 @@
 package ch.sbb.workflow.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.workflow.model.WorkflowStatus;
-import ch.sbb.atlas.workflow.model.WorkflowType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -35,10 +30,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 @ToString
 @SuperBuilder
 @FieldNameConstants
-@Entity(name = "line_workflow")
-public class LineWorkflow {
+@Entity(name = "decision")
+public class Decision {
 
-  private static final String VERSION_SEQ = "line_workflow_seq";
+  private static final String VERSION_SEQ = "decision_seq";
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
@@ -46,36 +41,32 @@ public class LineWorkflow {
   private Long id;
 
   @NotNull
-  private Long businessObjectId;
-
-  @NotBlank
-  @Size(max = AtlasFieldLengths.LENGTH_500)
-  private String swissId;
-
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  private WorkflowType workflowType;
-
-  @Size(max = AtlasFieldLengths.LENGTH_500)
-  private String description;
-
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  private WorkflowStatus status;
+  private Boolean judgement;
 
   @Size(max = AtlasFieldLengths.LENGTH_1500)
-  private String workflowComment;
+  private String motivation;
+
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "examinant_bav_id", referencedColumnName = "id")
+  private Person examinantBav;
+
+  @Column(columnDefinition = "TIMESTAMP", updatable = false)
+  private LocalDateTime motivationDate;
+
+  @NotNull
+  private Boolean fot_judgement;
 
   @Size(max = AtlasFieldLengths.LENGTH_1500)
-  private String checkComment;
+  private String fot_motivation;
 
   @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "client_id", referencedColumnName = "id")
-  private Person client;
+  @JoinColumn(name = "fot_overrider_id", referencedColumnName = "id")
+  private Person fotOverrider;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "examinant_id", referencedColumnName = "id")
-  private Person examinant;
+  @Column(updatable = false)
+  private String creator;
+
+  private String editor;
 
   @CreationTimestamp
   @Column(columnDefinition = "TIMESTAMP", updatable = false)
