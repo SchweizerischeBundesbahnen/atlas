@@ -33,7 +33,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 
    static final String MAIL_ADDRESS = "marek@hamsik.com";
   @Autowired
-  private WorkflowController controller;
+  private LineWorkflowController controller;
 
   @Autowired
   private WorkflowRepository workflowRepository;

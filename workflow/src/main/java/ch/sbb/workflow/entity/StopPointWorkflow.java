@@ -1,6 +1,8 @@
 package ch.sbb.workflow.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.service.UserService;
+import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -14,10 +16,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -56,10 +61,19 @@ public class StopPointWorkflow {
   @Size(max = AtlasFieldLengths.LENGTH_500)
   private String sloid;
 
+  @NotBlank
+  @Size(max = AtlasFieldLengths.LENGTH_32)
+  private String sboid;
+
+  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @AtlasVersionableProperty
+  private String swissMunicipalityName;
+
   @NotNull
   @Enumerated(EnumType.STRING)
   private WorkflowStatus status;
 
+  //From predefined list
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "examinant_bav_id", referencedColumnName = "id")
   private Person examinantBav;
@@ -87,6 +101,14 @@ public class StopPointWorkflow {
   @Size(max = AtlasFieldLengths.LENGTH_30)
   private String designationOfficial;
 
+  @NotNull
+  @Column(columnDefinition = "DATE")
+  private LocalDate startDate;
+
+  @NotNull
+  @Column(columnDefinition = "DATE")
+  private LocalDate endDate;
+
   @Column(updatable = false)
   private String creator;
 
@@ -99,5 +121,17 @@ public class StopPointWorkflow {
   @UpdateTimestamp
   @Column(columnDefinition = "TIMESTAMP")
   private LocalDateTime editionDate;
+
+  @PrePersist
+  public void onPrePersist() {
+    String sbbUid = UserService.getUserIdentifier();
+    setCreator(sbbUid);
+    setEditor(sbbUid);
+  }
+
+  @PreUpdate
+  public void onPreUpdate() {
+    setEditor(UserService.getUserIdentifier());
+  }
 
 }
