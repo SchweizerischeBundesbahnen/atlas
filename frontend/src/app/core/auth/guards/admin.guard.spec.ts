@@ -1,8 +1,7 @@
-import { TestBed } from '@angular/core/testing';
-import { AdminGuard } from './admin.guard';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AuthService } from '../auth.service';
-import { Router } from '@angular/router';
+import {TestBed} from '@angular/core/testing';
+import {AdminGuard} from './admin.guard';
+import {AuthService} from '../auth.service';
+import {Router, RouterModule} from '@angular/router';
 
 describe('AdminGuard', () => {
   let guard: AdminGuard;
@@ -10,7 +9,7 @@ describe('AdminGuard', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterModule.forRoot([])],
       providers: [
         { provide: AuthService, useValue: jasmine.createSpyObj<AuthService>(['hasRole']) },
       ],
