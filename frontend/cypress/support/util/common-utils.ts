@@ -1,4 +1,4 @@
-import {DataCy} from '../data-cy';
+import { DataCy } from '../data-cy';
 
 export default class CommonUtils {
   static fromDetailBackToTtfnOverview() {
@@ -44,7 +44,7 @@ export default class CommonUtils {
   }
 
   static navigateToHomeViaHomeLogo() {
-    cy.get(DataCy.ATLAS_LOGO_HOME_LINK).click({ force: true });
+    cy.get(DataCy.ATLAS_LOGO_HOME_LINK).should('be.visible').click();
     cy.url().should('contain', Cypress.config().baseUrl);
   }
 
@@ -112,7 +112,6 @@ export default class CommonUtils {
     cy.get(DataCy.EDIT_ITEM).should('exist');
     cy.get(DataCy.DELETE_ITEM).should('exist');
   }
-
 
   static saveVersionWithWaitConfirmValidity(urlToIntercept: string) {
     cy.intercept('GET', urlToIntercept).as('saveAndGetVersion');

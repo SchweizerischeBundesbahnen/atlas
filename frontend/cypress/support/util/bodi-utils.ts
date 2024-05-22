@@ -71,11 +71,6 @@ export default class BodiUtils {
       businessOrganisation.descriptionDe,
     );
 
-    CommonUtils.selectItemFromDropdownSearchItem(
-      DataCy.BODI_BUSINESS_ORGANISATION + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 0),
-      'Aktiv',
-    );
-
     CommonUtils.typeSearchInput(
       pathToIntercept,
       DataCy.BODI_BUSINESS_ORGANISATION + ' ' + DataCy.TABLE_FILTER_DATE_INPUT(1, 1),
@@ -193,6 +188,8 @@ export default class BodiUtils {
   }
 
   private static interceptBusinessOrganisations(visitSelector: string) {
+    cy.get('.card-container').children().should('have.length', 7);
+
     const selector = cy.get(visitSelector);
     selector.scrollIntoView();
 
