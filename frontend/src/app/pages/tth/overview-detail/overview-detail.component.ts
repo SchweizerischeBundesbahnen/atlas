@@ -5,8 +5,10 @@ import {
   HearingStatus,
   StatementStatus,
   SwissCanton,
-  TimetableHearingStatementDocument, TimetableHearingStatementSenderV2,
-  TimetableHearingStatementsService, TimetableHearingStatementV2,
+  TimetableHearingStatementDocument,
+  TimetableHearingStatementSenderV2,
+  TimetableHearingStatementsService,
+  TimetableHearingStatementV2,
   TimetableHearingYear,
   TimetableHearingYearsService,
   TransportCompany,
@@ -30,7 +32,6 @@ import {SelectionModel} from '@angular/cdk/collections';
 import {TranslateService} from '@ngx-translate/core';
 import {TthChangeCantonDialogService} from './tth-change-canton-dialog/service/tth-change-canton-dialog.service';
 import {FileDownloadService} from '../../../core/components/file-upload/file/file-download.service';
-import {AuthService} from '../../../core/auth/auth.service';
 import {MatDialog} from '@angular/material/dialog';
 import {DialogManageTthComponent} from '../dialog-manage-tth/dialog-manage-tth.component';
 import {DialogService} from '../../../core/components/dialog/dialog.service';
@@ -39,6 +40,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {TableService} from '../../../core/components/table/table.service';
 import {TableFilter} from '../../../core/components/table-filter/config/table-filter';
 import {TthTableFilterSettingsService} from '../tth-table-filter-settings.service';
+import {PermissionService} from "../../../core/auth/permission.service";
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',
@@ -104,7 +106,7 @@ export class OverviewDetailComponent implements OnInit {
     private readonly tableService: TableService,
     private readonly newTimetableHearingYearDialogService: NewTimetableHearingYearDialogService,
     private readonly translateService: TranslateService,
-    private readonly authService: AuthService,
+    private readonly permissionService: PermissionService,
     private readonly statementShareService: StatementShareService,
     private readonly matDialog: MatDialog,
   ) {}
@@ -118,7 +120,7 @@ export class OverviewDetailComponent implements OnInit {
   }
 
   get isCollectingActionEnabled(): boolean {
-    return this.authService.hasWritePermissionsToForCanton(
+    return this.permissionService.hasWritePermissionsToForCanton(
       ApplicationType.TimetableHearing,
       this.cantonShort.toLowerCase(),
     );

@@ -1,4 +1,4 @@
-<div *ngIf="authService.isAtLeastSupervisor('LIDI')" class="mt-5">
+<div *ngIf="permissionService.isAtLeastSupervisor('LIDI')" class="mt-5">
   <div class="mb-2">
     <span class="font-bold-4xl">{{ 'WORKFLOW.CHECK.CHECK' | translate }}</span>
   </div>

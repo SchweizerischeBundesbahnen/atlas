@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Pages } from '../pages';
 import { Page } from '../../core/model/page';
+import {PageService} from "../../core/auth/page.service";
 
 @Component({
   selector: 'app-home',
@@ -8,7 +9,11 @@ import { Page } from '../../core/model/page';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
+
+  constructor(private pageService: PageService) {
+  }
+
   get enabledPages(): Page[] {
-    return Pages.enabledPages.filter((page) => page !== Pages.HOME);
+    return this.pageService.enabledPages.filter((page) => page !== Pages.HOME);
   }
 }
