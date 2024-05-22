@@ -21,6 +21,7 @@ const authConfig: AuthConfig = {
 
 export const environment: Environment = {
   production: false,
+  sepodiWorkflowEnabled: true,
   label: 'dev',
   appVersion: packageJson.version,
   atlasApiUrl: 'http://localhost:8888',
