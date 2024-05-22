@@ -19,7 +19,7 @@ export class HeaderComponent implements OnInit {
 
   isItWednesday = false;
 
-  constructor(private readonly router: Router) {
+  constructor(router: Router) {
     this.headerTitle$ = router.events.pipe(
       filter((e) => e instanceof NavigationEnd),
       map(() => this.getHeaderTitleForCurrentRoute(router.routerState.snapshot.root))

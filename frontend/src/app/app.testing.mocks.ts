@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, NgModule, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ApplicationType, TimetableHearingStatement } from './api';
+import {ApplicationRole, ApplicationType, TimetableHearingStatement, User} from './api';
 import { AtlasButtonType } from './core/components/button/atlas-button.type';
 import { TableColumn } from './core/components/table/table-column';
 import { TablePagination } from './core/components/table/table-pagination';
@@ -10,6 +10,12 @@ import { TableFilter } from './core/components/table-filter/config/table-filter'
 import { CreationEditionRecord } from './core/components/base-detail/user-edit-info/creation-edition-record';
 import { BaseDetailController } from './core/components/base-detail/base-detail-controller';
 import { Record } from './core/components/base-detail/record';
+import {AuthService} from "./core/auth/auth.service";
+import {UserService} from "./core/auth/user.service";
+import {Subject} from "rxjs";
+import {PermissionService} from "./core/auth/permission.service";
+import {PageService} from "./core/auth/page.service";
+import {Pages} from "./pages/pages";
 
 @Component({
   selector: 'app-switch-version',
@@ -137,6 +143,35 @@ export class MockAtlasFieldErrorComponent {
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 export type ActivatedRouteMockType = { data: any };
+
+export const adminUserServiceMock: Partial<UserService> = {
+  currentUser: { name: 'Test (ITC)', email: 'test@test.ch', sbbuid: 'e123456', isAdmin: true, permissions: [] },
+  userChanged: new Subject<void>(),
+  loggedIn: true,
+  isAdmin: true,
+  permissions: []
+};
+
+export const adminPermissionServiceMock: Partial<PermissionService> = {
+  isAdmin: true,
+  hasPermissionsToCreate: () => true,
+  isAtLeastSupervisor: () => true,
+  hasPermissionsToWrite: () => true,
+  hasWritePermissionsToForCanton: () => true,
+  getApplicationUserPermission: (applicationType) => {
+    return {
+      application: applicationType,
+      role: ApplicationRole.Supervisor,
+      permissionRestrictions: [],
+    };
+  },
+};
+
+export const pageServiceMock: Partial<PageService> = {
+  enabledPages: [...Pages.pages]
+};
+
+export const authServiceSpy = jasmine.createSpyObj<AuthService>(['login', 'logout']);
 
 // Module only to declare mock components in Angular. Do not import. Declare the mocks in tests yourself
 @NgModule({
