@@ -1,4 +1,4 @@
-import {defineConfig} from 'cypress';
+import { defineConfig } from 'cypress';
 import cypress_failed_log from 'cypress-failed-log/src/failed';
 import cypress_high_resolution from 'cypress-high-resolution';
 
@@ -17,7 +17,7 @@ export default defineConfig({
   video: true,
   reporter: 'cypress-mochawesome-reporter',
   reporterOptions: {
-    reportDir:'cypress/test-results/reports',
+    reportDir: 'cypress/test-results/reports',
     charts: true,
     reportPageTitle: 'Atlas E2E Tests',
     embeddedScreenshots: true,
@@ -27,20 +27,19 @@ export default defineConfig({
   },
 
   env: {
-    resolution: 'high'
+    resolution: 'high',
   },
   e2e: {
     // We've imported your old cypress plugins here.
     // You may want to clean this up later by importing these.
     async setupNodeEvents(on, config) {
       on('task', {
-        failed: cypress_failed_log()
+        failed: cypress_failed_log(),
       });
       cypress_high_resolution(on, config);
       require('cypress-mochawesome-reporter/plugin')(on);
       return config;
-
     },
-    baseUrl: 'http://localhost:4200'
-  }
+    baseUrl: 'http://localhost:4200',
+  },
 });
