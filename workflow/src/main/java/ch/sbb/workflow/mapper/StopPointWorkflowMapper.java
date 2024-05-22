@@ -11,7 +11,7 @@ public class StopPointWorkflowMapper {
   public static StopPointWorkflowStartModel toModel(StopPointWorkflow entity) {
     return StopPointWorkflowStartModel.builder()
         .sloid(entity.getSloid())
-        .examinants(entity.getExaminants().stream().map(PersonMapper::toModel).toList())
+        .examinants(entity.getExaminants().stream().map(ClientPersonMapper::toModel).toList())
         .sboid(entity.getSboid())
         .designationOfficial(entity.getDesignationOfficial())
         .swissMunicipalityName(entity.getSwissMunicipalityName())
@@ -30,7 +30,7 @@ public class StopPointWorkflowMapper {
         .startDate(model.getValidFrom())
         .endDate(model.getValidTo())
         .workflowComment(model.getWorkflowComment())
-        .examinants(model.getExaminants().stream().map(PersonMapper::toEntity).collect(Collectors.toSet()))
+        .examinants(model.getExaminants().stream().map(ClientPersonMapper::toEntity).collect(Collectors.toSet()))
         .build();
   }
 
