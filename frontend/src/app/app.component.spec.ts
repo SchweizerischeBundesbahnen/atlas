@@ -11,12 +11,7 @@ import { AppTestingModule } from './app.testing.module';
 import { SwUpdate } from '@angular/service-worker';
 import { MaintenanceIconComponent } from './core/components/header/maintenance-icon/maintenance-icon.component';
 import { InfoIconComponent } from './core/form-components/info-icon/info-icon.component';
-
-const authServiceMock: Partial<AuthService> = {
-  claims: { name: 'Test', email: 'test@test.ch', sbbuid: 'e123456', roles: [] },
-  getPermissions: () => [],
-  logout: () => Promise.resolve(true),
-};
+import {authServiceSpy} from "./app.testing.mocks";
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -36,7 +31,7 @@ describe('AppComponent', () => {
         InfoIconComponent,
       ],
       providers: [
-        { provide: AuthService, useValue: authServiceMock },
+        { provide: AuthService, useValue: authServiceSpy },
         {
           provide: SwUpdate,
           useValue: {},

@@ -1,10 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { BodiOverviewComponent } from './bodi-overview.component';
-import { BusinessOrganisationComponent } from '../business-organisations/business-organisation.component';
-import { AppTestingModule } from '../../../app.testing.module';
-import { AuthService } from '../../../core/auth/auth.service';
-import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
+import {BodiOverviewComponent} from './bodi-overview.component';
+import {BusinessOrganisationComponent} from '../business-organisations/business-organisation.component';
+import {AppTestingModule} from '../../../app.testing.module';
+import {AtlasButtonComponent} from '../../../core/components/button/atlas-button.component';
+import {PermissionService} from "../../../core/auth/permission.service";
+import {adminPermissionServiceMock} from "../../../app.testing.mocks";
 
 describe('BoDiOverviewComponent', () => {
   let component: BodiOverviewComponent;
@@ -16,8 +17,8 @@ describe('BoDiOverviewComponent', () => {
       imports: [AppTestingModule],
       providers: [
         {
-          provide: AuthService,
-          useValue: jasmine.createSpyObj<AuthService>('AuthService', ['hasPermissionsToCreate']),
+          provide: PermissionService,
+          useValue: adminPermissionServiceMock,
         },
       ],
     }).compileComponents();

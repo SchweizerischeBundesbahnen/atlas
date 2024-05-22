@@ -1,44 +1,37 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ReferencePointDetailComponent } from './reference-point-detail.component';
-import { AuthService } from '../../../../../core/auth/auth.service';
-import { of } from 'rxjs';
-import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import { BERN_WYLEREGG } from '../../../../../../test/data/service-point';
-import {
-  MockAtlasButtonComponent,
-  MockAtlasFieldErrorComponent,
-} from '../../../../../app.testing.mocks';
-import { DisplayDatePipe } from '../../../../../core/pipe/display-date.pipe';
-import { TextFieldComponent } from '../../../../../core/form-components/text-field/text-field.component';
-import { AtlasLabelFieldComponent } from '../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
-import { AtlasSpacerComponent } from '../../../../../core/components/spacer/atlas-spacer.component';
-import { InfoIconComponent } from '../../../../../core/form-components/info-icon/info-icon.component';
-import { SelectComponent } from '../../../../../core/form-components/select/select.component';
-import { CommentComponent } from '../../../../../core/form-components/comment/comment.component';
-import { DateRangeTextComponent } from '../../../../../core/versioning/date-range-text/date-range-text.component';
-import { SwitchVersionComponent } from '../../../../../core/components/switch-version/switch-version.component';
-import { DateRangeComponent } from '../../../../../core/form-components/date-range/date-range.component';
-import { DateIconComponent } from '../../../../../core/form-components/date-icon/date-icon.component';
-import { AppTestingModule } from '../../../../../app.testing.module';
-import { ActivatedRoute } from '@angular/router';
-import { NotificationService } from '../../../../../core/notification/notification.service';
-import {
-  PersonWithReducedMobilityService,
-  ReadReferencePointVersion,
-  ReferencePointAttributeType,
-} from '../../../../../api';
-import { TranslatePipe } from '@ngx-translate/core';
-import { SplitServicePointNumberPipe } from '../../../../../core/search-service-point/split-service-point-number.pipe';
+import {ReferencePointDetailComponent} from './reference-point-detail.component';
+import {of} from 'rxjs';
+import {DialogService} from '../../../../../core/components/dialog/dialog.service';
+import {BERN_WYLEREGG} from '../../../../../../test/data/service-point';
+import {MockAtlasButtonComponent, MockAtlasFieldErrorComponent,} from '../../../../../app.testing.mocks';
+import {DisplayDatePipe} from '../../../../../core/pipe/display-date.pipe';
+import {TextFieldComponent} from '../../../../../core/form-components/text-field/text-field.component';
+import {AtlasLabelFieldComponent} from '../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import {AtlasSpacerComponent} from '../../../../../core/components/spacer/atlas-spacer.component';
+import {InfoIconComponent} from '../../../../../core/form-components/info-icon/info-icon.component';
+import {SelectComponent} from '../../../../../core/form-components/select/select.component';
+import {CommentComponent} from '../../../../../core/form-components/comment/comment.component';
+import {DateRangeTextComponent} from '../../../../../core/versioning/date-range-text/date-range-text.component';
+import {SwitchVersionComponent} from '../../../../../core/components/switch-version/switch-version.component';
+import {DateRangeComponent} from '../../../../../core/form-components/date-range/date-range.component';
+import {DateIconComponent} from '../../../../../core/form-components/date-icon/date-icon.component';
+import {AppTestingModule} from '../../../../../app.testing.module';
+import {ActivatedRoute} from '@angular/router';
+import {NotificationService} from '../../../../../core/notification/notification.service';
+import {PersonWithReducedMobilityService, ReadReferencePointVersion, ReferencePointAttributeType,} from '../../../../../api';
+import {TranslatePipe} from '@ngx-translate/core';
+import {SplitServicePointNumberPipe} from '../../../../../core/search-service-point/split-service-point-number.pipe';
 import moment from 'moment';
-import { UserDetailInfoComponent } from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
-import { ReferencePointCompleteFormComponent } from './form/reference-point-complete-form/reference-point-complete-form.component';
-import SpyObj = jasmine.SpyObj;
-import { SloidComponent } from '../../../../../core/form-components/sloid/sloid.component';
-import { AtlasSlideToggleComponent } from '../../../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
+import {UserDetailInfoComponent} from '../../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import {ReferencePointCompleteFormComponent} from './form/reference-point-complete-form/reference-point-complete-form.component';
+import {SloidComponent} from '../../../../../core/form-components/sloid/sloid.component';
+import {AtlasSlideToggleComponent} from '../../../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
 import {DetailPageContainerComponent} from "../../../../../core/components/detail-page-container/detail-page-container.component";
 import {DetailPageContentComponent} from "../../../../../core/components/detail-page-content/detail-page-content.component";
 import {DetailFooterComponent} from "../../../../../core/components/detail-footer/detail-footer.component";
+import {PermissionService} from "../../../../../core/auth/permission.service";
+import SpyObj = jasmine.SpyObj;
 
 const referencePoint: ReadReferencePointVersion[] = [
   {
@@ -65,7 +58,7 @@ const referencePoint: ReadReferencePointVersion[] = [
   },
 ];
 
-const authService: Partial<AuthService> = {
+const permissionService: Partial<PermissionService> = {
   hasPermissionsToWrite(): boolean {
     return true;
   },
@@ -123,7 +116,7 @@ describe('ReferencePointDetailComponent', () => {
       ],
       imports: [AppTestingModule],
       providers: [
-        { provide: AuthService, useValue: authService },
+        { provide: PermissionService, useValue: permissionService },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: NotificationService, useValue: notificationService },
         { provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService },

@@ -1,23 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { BaseDetailComponent } from './base-detail.component';
-import { By } from '@angular/platform-browser';
-import { BaseDetailController } from './base-detail-controller';
-import { of, Subject } from 'rxjs';
-import { AppTestingModule } from '../../../app.testing.module';
-import { AuthService } from '../../auth/auth.service';
-import { Role } from '../../auth/role';
-import { Component, Input } from '@angular/core';
-import { ApplicationRole, ApplicationType, Permission, Status } from '../../../api';
-import { MockUserDetailInfoComponent } from '../../../app.testing.mocks';
-import { AtlasButtonComponent } from '../button/atlas-button.component';
-import { NotificationService } from '../../notification/notification.service';
-import { DetailPageContainerComponent } from '../detail-page-container/detail-page-container.component';
-import { DetailFooterComponent } from '../detail-footer/detail-footer.component';
-import { DateRangeTextComponent } from '../../versioning/date-range-text/date-range-text.component';
-import { Record } from './record';
-import { Page } from '../../model/page';
+import {BaseDetailComponent} from './base-detail.component';
+import {By} from '@angular/platform-browser';
+import {BaseDetailController} from './base-detail-controller';
+import {of, Subject} from 'rxjs';
+import {AppTestingModule} from '../../../app.testing.module';
+import {Component, Input} from '@angular/core';
+import {ApplicationType, Status} from '../../../api';
+import {adminPermissionServiceMock, MockUserDetailInfoComponent} from '../../../app.testing.mocks';
+import {AtlasButtonComponent} from '../button/atlas-button.component';
+import {NotificationService} from '../../notification/notification.service';
+import {DetailPageContainerComponent} from '../detail-page-container/detail-page-container.component';
+import {DetailFooterComponent} from '../detail-footer/detail-footer.component';
+import {DateRangeTextComponent} from '../../versioning/date-range-text/date-range-text.component';
+import {Record} from './record';
+import {Page} from '../../model/page';
 import {DetailPageContentComponent} from "../detail-page-content/detail-page-content.component";
+import {PermissionService} from "../../auth/permission.service";
 
 @Component({
   selector: 'app-coverage',
@@ -32,42 +31,6 @@ describe('BaseDetailComponent', () => {
   /*eslint-disable */
   let component: BaseDetailComponent;
   let fixture: ComponentFixture<BaseDetailComponent>;
-
-  const authServiceMock: Partial<AuthService> = {
-    claims: {
-      name: 'Test (ITC)',
-      email: 'test@test.ch',
-      sbbuid: 'e123456',
-      roles: ['lidi-admin', 'lidi-writer'],
-    },
-    logout: () => Promise.resolve(true),
-    login: () => Promise.resolve(true),
-    hasAnyRole(roles: Role[]): boolean {
-      for (let role of roles) {
-        if (this.claims?.roles.includes(role)) return true;
-      }
-      return false;
-    },
-    hasRole(role: Role): boolean {
-      return this.claims!.roles.includes(role);
-    },
-    get isAdmin(): boolean {
-      return true;
-    },
-    isAtLeastSupervisor(): boolean {
-      return true;
-    },
-    hasPermissionsToWrite(): boolean {
-      return true;
-    },
-    getApplicationUserPermission(applicationType: ApplicationType): Permission {
-      return {
-        application: applicationType,
-        role: ApplicationRole.Supervisor,
-        permissionRestrictions: [],
-      };
-    },
-  };
 
   const notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['success', 'error']);
 
@@ -85,7 +48,7 @@ describe('BaseDetailComponent', () => {
       ],
       imports: [AppTestingModule],
       providers: [
-        { provide: AuthService, useValue: authServiceMock },
+        { provide: PermissionService, useValue: adminPermissionServiceMock },
         { provide: NotificationService, useValue: notificationServiceSpy },
       ],
     }).compileComponents();
