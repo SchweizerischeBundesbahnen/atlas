@@ -28,7 +28,7 @@ CREATE TABLE stop_point_workflow
     editor                  VARCHAR(50) NOT NULL,
     follow_up_workflow_id   BIGINT,
 
-    CONSTRAINT fk_examinant
+    CONSTRAINT fk_examinant_bav
         FOREIGN KEY (examinant_bav_id)
             REFERENCES person (id),
 
@@ -55,7 +55,7 @@ CREATE TABLE decision
     edition_date        TIMESTAMP   NOT NULL,
     editor              VARCHAR(50) NOT NULL,
 
-    CONSTRAINT fk_examinant
+    CONSTRAINT fk_examinant_decision_bav
         FOREIGN KEY (examinant_bav_id)
             REFERENCES person (id),
 
@@ -80,3 +80,10 @@ CREATE TABLE otp
 );
 
 CREATE SEQUENCE otp_seq START WITH 1000 INCREMENT BY 1;
+
+ALTER TABLE person
+    ADD stop_point_workflow_id BIGINT DEFAULT NULL;
+
+ALTER TABLE person
+    ADD foreign key (stop_point_workflow_id) references
+        person (id)
