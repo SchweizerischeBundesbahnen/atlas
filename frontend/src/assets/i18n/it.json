@@ -174,10 +174,10 @@
       "PATH_TEXT": "Dai quadri d’orario"
     },
     "LIDI": {
-      "TITLE": "Gestione dei numeri delle cartella delle linee",
-      "TITLE_MENU": "Cartella delle linee",
-      "DESCRIPTION": "Registrare, gestire e visualizzare i numeri della cartella delle linee (SLNID).",
-      "PATH_TEXT": "Dalla cartella delle linee"
+      "TITLE": "Gestione dei numeri delle elenco delle linee",
+      "TITLE_MENU": "Elenco delle linee",
+      "DESCRIPTION": "Registrare, gestire e visualizzare i numeri della elenco delle linee (SLNID).",
+      "PATH_TEXT": "Elenco delle linee"
     },
     "BODI": {
       "TITLE": "Gestione delle organizzazioni aziendali",
@@ -192,8 +192,8 @@
       "DESCRIPTION": "Registrare, gestire e visualizzare le autorizzazioni degli utenti per atlas."
     },
     "SERVICE_POINTS": {
-      "TITLE": "Gestione dei punti di servizio",
-      "TITLE_HEADER": "Punti di servizio",
+      "TITLE": "Gestione dei posto di servizio",
+      "TITLE_HEADER": "Posto di servizio",
       "DESCRIPTION": "Registrare, gestire e visualizzare i punti di esercizio e le fermate del trasporto pubblico svizzero (SLOID)."
     },
     "TTH": {
@@ -978,16 +978,16 @@
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Bordi fermata",
-      "NEW": "Acquisizione del nuovo bordo di tenuta",
+      "NEW": "Inserire un nuovo bordo della fermata",
       "DESIGNATION": "Designazione clienti",
       "DESIGNATION_OPERATIONAL": "Denominazione aziendale",
-      "HEADER": "Bordo di arresto",
+      "HEADER": "Bordo di fermata",
       "SERVICE_POINT_NAME": "Nome della fermata",
       "DETAILS": "Dettagli del",
-      "PARENT_SLOID": "Appartiene all'area",
-      "CONSTRUCTION_INFORMATION": "Informazioni sull'edificio",
+      "PARENT_SLOID": "Appartiene alla zona",
+      "CONSTRUCTION_INFORMATION": "Informazioni strutturali",
       "LENGTH": "Lunghezza [m]",
-      "BOARDING_AREA_HEIGHT": "Altezza del ciglio del marciapiede [cm]",
+      "BOARDING_AREA_HEIGHT": "Altezza del bordo [cm]",
       "COMPASS_DIRECTION": "Orientamento [°]",
       "NOTIFICATION": {
         "ADD_SUCCESS": "Il bordo di contenimento è stato aggiunto con successo.",
@@ -1000,7 +1000,7 @@
     },
     "BOARDING_AREAS": {
       "BOARDING_AREAS": "Zone",
-      "NEW": "Entrare nella nuova zona di fermata",
+      "NEW": "Inserire un nuova zona di fermata",
       "NOTIFICATION": {
         "ADD_SUCCESS": "La zona di fermata è stata aggiunta con successo.",
         "EDIT_SUCCESS": "La zona di fermata è stata salvata con successo."
@@ -1043,7 +1043,7 @@
       },
       "HEIGHT": "Altezza [m.s.l.m.]",
       "ADMINISTRATION": "Unità amministrative",
-      "COUNTRY": "Campagna",
+      "COUNTRY": "Paese",
       "CANTON": "Cantone",
       "MUNICIPALITY": "Comune",
       "DISTRICT": "Località",
@@ -1165,12 +1165,12 @@
       },
       "INFO_OPPORTUNITY_TYPES": {
         "TO_BE_COMPLETED": "Da completare",
-        "STATIC_VISUAL_INFORMATION": "statische optische Informationen (Aushangfahrplan, evtl. Netz- bzw. Tarifzonenplan)",
-        "ELECTRONIC_VISUAL_INFORMATION_DEPARTURES": "elektronische Anzeige, nur mit Abfahrten",
-        "ELECTRONIC_VISUAL_INFORMATION_COMPLETE": "elektronische Anzeige, mit Abfahrten und Störungsinformationen",
-        "ACOUSTIC_INFORMATION": "Lautsprecher (in der Regel nur Störungsinformation)",
-        "TEXT_TO_SPEECH_DEPARTURES": "Text-to-Speech, nur mit Abfahrten",
-        "TEXT_TO_SPEECH_COMPLETE": "Text-to-Speech, mit Abfahrten und Störungsinformationen"
+        "STATIC_VISUAL_INFORMATION": "Informazioni visive statiche (orario, eventualmente mappa della rete o delle zone tariffarie)",
+        "ELECTRONIC_VISUAL_INFORMATION_DEPARTURES": "Display elettronico, solo con le partenze",
+        "ELECTRONIC_VISUAL_INFORMATION_COMPLETE": "Display elettronico, con informazioni sulle partenze e sui disturbi/ inconvenienti",
+        "ACOUSTIC_INFORMATION": "Altoparlante (di solito solo informazioni sui disturbi/inconvenienti)",
+        "TEXT_TO_SPEECH_DEPARTURES": "Text-to-speech, solo con le partenze",
+        "TEXT_TO_SPEECH_COMPLETE": "Text-to-speech, con informazioni sulle partenze e sui disturbi/inconvenienti"
       },
       "STEP_FREE_ACCESS_TYPES": {
         "TO_BE_COMPLETED": "Da completare",
@@ -1228,7 +1228,7 @@
         "DYNAMIC_VISUAL_INFO": "Al bordo di fermata sono disponibili informazioni ottiche dinamiche?",
         "DYNAMIC_AUDIO": "Informazioni acustiche",
         "DYNAMIC_AUDIO_INFO": "Al bordo di fermata sono disponibili informazioni acustiche (altoparlanti e/o sintesi vocale)?",
-        "ACCESS": "Zugang zum Verkehrsmittel",
+        "ACCESS": "Accesso ai mezzi di trasporto",
         "LEVEL_ACCESS_WHEELCHAIR": "Accesso a livello",
         "LEVEL_ACCESS_WHEELCHAIR_INFO": "Sono soddisfatte le esigenze infrastrutturali per l’accesso a livello?\nÈ possibile selezionare «Sì» anche nel caso di innalzamenti o conformità parziali di marciapiedi secondo DE Oferr ad art. 34, DE 34, cifra 2.1.1.1.",
         "BOARDING_DEVICE": "Mezzi ausiliari per sedie a rotelle",
