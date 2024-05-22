@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { WorkflowDialogComponent } from './workflow-dialog.component';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { TranslatePipe } from '@ngx-translate/core';
-import { WorkflowDialogData } from './workflow-dialog-data';
+import {WorkflowDialogComponent} from './workflow-dialog.component';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {TranslatePipe} from '@ngx-translate/core';
+import {WorkflowDialogData} from './workflow-dialog-data';
 import {
   LineVersionWorkflow,
   Status,
@@ -14,17 +14,17 @@ import {
   WorkflowService,
   WorkflowStart,
 } from '../../../api';
-import { CommentComponent } from '../../form-components/comment/comment.component';
-import { ErrorNotificationComponent } from '../../notification/error/error-notification.component';
-import { AppTestingModule } from '../../../app.testing.module';
-import { FormModule } from '../../module/form.module';
-import { NotificationService } from '../../notification/notification.service';
-import { of } from 'rxjs';
+import {CommentComponent} from '../../form-components/comment/comment.component';
+import {ErrorNotificationComponent} from '../../notification/error/error-notification.component';
+import {AppTestingModule} from '../../../app.testing.module';
+import {FormModule} from '../../module/form.module';
+import {NotificationService} from '../../notification/notification.service';
+import {of} from 'rxjs';
+import {WorkflowCheckFormComponent} from '../workflow-check-form/workflow-check-form.component';
+import {WorkflowFormComponent} from '../workflow-form/workflow-form.component';
+import {adminPermissionServiceMock, MockAtlasButtonComponent} from '../../../app.testing.mocks';
+import {PermissionService} from "../../auth/permission.service";
 import WorkflowTypeEnum = WorkflowStart.WorkflowTypeEnum;
-import { WorkflowCheckFormComponent } from '../workflow-check-form/workflow-check-form.component';
-import { AuthService } from '../../auth/auth.service';
-import { WorkflowFormComponent } from '../workflow-form/workflow-form.component';
-import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
 
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 const notificationServiceSpy = jasmine.createSpyObj(['success']);
@@ -56,12 +56,6 @@ const workflowServiceMock = jasmine.createSpyObj(WorkflowService, {
   getWorkflow: of(workflow),
   startWorkflow: of({}),
 });
-
-const authServiceMock: Partial<AuthService> = {
-  isAtLeastSupervisor(): boolean {
-    return true;
-  },
-};
 
 describe('WorkflowDialogComponent new', () => {
   let component: WorkflowDialogComponent;
@@ -159,7 +153,7 @@ function setupTestBed(workflowDialogData: WorkflowDialogData) {
     ],
     imports: [AppTestingModule, FormModule],
     providers: [
-      { provide: AuthService, useValue: authServiceMock },
+      { provide: PermissionService, useValue: adminPermissionServiceMock },
       { provide: UserAdministrationService, useValue: userAdministrationServiceMock },
       { provide: WorkflowService, useValue: workflowServiceMock },
       {

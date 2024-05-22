@@ -1,6 +1,6 @@
-import {EventEmitter, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {User} from "../components/user/user";
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {Permission, UserAdministrationService} from "../../api";
 import {map, tap} from "rxjs/operators";
 
@@ -9,7 +9,7 @@ import {map, tap} from "rxjs/operators";
 })
 export class UserService {
 
-  readonly userChanged: EventEmitter<User> = new EventEmitter<User>();
+  readonly userChanged = new Subject<void>();
   readonly permissionsLoaded = new BehaviorSubject(false);
 
   currentUser?: User = undefined;
@@ -20,13 +20,13 @@ export class UserService {
 
   setCurrentUserAndLoadPermissions(user: User) {
     this.currentUser = user;
-    this.userChanged.emit(this.currentUser);
+    this.userChanged.next();
     return this.loadPermissions();
   }
 
   resetCurrentUser() {
     this.currentUser = undefined;
-    this.userChanged.emit(this.currentUser);
+    this.userChanged.next();
   }
 
   get loggedIn() {
@@ -42,7 +42,7 @@ export class UserService {
       tap((response) => {
         this.currentUser!.permissions = response.permissions ? Array.from(response.permissions) : [];
         this.permissionsLoaded.next(true);
-        this.userChanged.emit(this.currentUser);
+        this.userChanged.next();
       }),
       map(() => this.currentUser!)
     );
@@ -53,6 +53,7 @@ export class UserService {
   }
 
   get isAdmin(): boolean {
+    // Return true here if you want to be admin locally
     return this.currentUser?.isAdmin ?? false;
   }
 
