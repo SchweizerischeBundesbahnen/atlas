@@ -17,18 +17,18 @@ class ExaminantLineWorkflowCheckModelTest {
   private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
   private static final PersonModel EXAMINANT = PersonModel.builder()
-                                                          .firstName("Marek")
-                                                          .lastName("Hamsik")
-                                                          .personFunction("Centrocampista")
-                                                          .build();
+      .firstName("Marek")
+      .lastName("Hamsik")
+      .personFunction("Centrocampista")
+      .build();
 
   @Test
   void shouldAcceptBavCheckWithoutCommentOnAccepted() {
     // Given
     ExaminantWorkflowCheckModel object = ExaminantWorkflowCheckModel.builder()
-                                                                    .accepted(true)
-                                                                    .examinant(EXAMINANT)
-                                                                    .build();
+        .accepted(true)
+        .examinant(EXAMINANT)
+        .build();
     //when
     Set<ConstraintViolation<ExaminantWorkflowCheckModel>> constraintViolations = validator.validate(
         object);
@@ -41,9 +41,9 @@ class ExaminantLineWorkflowCheckModelTest {
   void shouldNotAcceptBavCheckWithoutCommentOnRejection() {
     // Given
     ExaminantWorkflowCheckModel object = ExaminantWorkflowCheckModel.builder()
-                                                                    .accepted(false)
-                                                                    .examinant(EXAMINANT)
-                                                                    .build();
+        .accepted(false)
+        .examinant(EXAMINANT)
+        .build();
     //when
     Set<ConstraintViolation<ExaminantWorkflowCheckModel>> constraintViolations = validator.validate(
         object);
@@ -51,8 +51,8 @@ class ExaminantLineWorkflowCheckModelTest {
     //then
     assertThat(constraintViolations).hasSize(1);
     List<String> violationMessages = constraintViolations.stream()
-                                                         .map(ConstraintViolation::getMessage)
-                                                         .collect(Collectors.toList());
+        .map(ConstraintViolation::getMessage)
+        .collect(Collectors.toList());
     assertThat(violationMessages).contains("Examinant did not accept without comment");
   }
 
@@ -60,10 +60,10 @@ class ExaminantLineWorkflowCheckModelTest {
   void shouldAcceptBavCheckWithCommentOnRejection() {
     // Given
     ExaminantWorkflowCheckModel object = ExaminantWorkflowCheckModel.builder()
-                                                                    .accepted(false)
-                                                                    .checkComment("This is bs")
-                                                                    .examinant(EXAMINANT)
-                                                                    .build();
+        .accepted(false)
+        .checkComment("This is bs")
+        .examinant(EXAMINANT)
+        .build();
     //when
     Set<ConstraintViolation<ExaminantWorkflowCheckModel>> constraintViolations = validator.validate(
         object);
@@ -76,17 +76,17 @@ class ExaminantLineWorkflowCheckModelTest {
   void shouldNotAcceptBavCheckWithEmptyPersonFunction() {
     // Given
     ExaminantWorkflowCheckModel object = ExaminantWorkflowCheckModel.builder()
-            .accepted(false)
-            .checkComment("This is bs")
-            .examinant(PersonModel.builder()
-                    .firstName("Marek")
-                    .lastName("Hamsik")
-                    .personFunction("")
-                    .build())
-            .build();
+        .accepted(false)
+        .checkComment("This is bs")
+        .examinant(PersonModel.builder()
+            .firstName("Marek")
+            .lastName("Hamsik")
+            .personFunction("")
+            .build())
+        .build();
     //when
     Set<ConstraintViolation<ExaminantWorkflowCheckModel>> constraintViolations = validator.validate(
-            object);
+        object);
 
     //then
     assertThat(constraintViolations).hasSize(1);
