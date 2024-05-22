@@ -12,6 +12,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class SideNavComponent {
   activePageIndex = 0;
+  selectedPage: Page | null = null;
 
   constructor(private readonly router: Router) {
     this.router.events
@@ -34,5 +35,13 @@ export class SideNavComponent {
     return this.enabledPages.findIndex(
       (value) => value.path.length > 0 && currentUrl.includes(value.path),
     );
+  }
+
+  selectPage(page: Page) {
+    if (this.selectedPage === page) {
+      this.selectedPage = null;
+    } else {
+      this.selectedPage = page;
+    }
   }
 }

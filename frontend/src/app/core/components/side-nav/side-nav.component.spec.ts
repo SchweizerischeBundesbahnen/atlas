@@ -7,6 +7,7 @@ import {Pages} from '../../../pages/pages';
 import {LidiOverviewComponent} from '../../../pages/lidi/overview/lidi-overview.component';
 import {TimetableFieldNumberOverviewComponent} from '../../../pages/ttfn/overview/timetable-field-number-overview.component';
 import {AuthService} from '../../auth/auth.service';
+import {Page} from "../../model/page";
 
 describe('SideNavComponent', () => {
   let component: SideNavComponent;
@@ -83,4 +84,21 @@ describe('SideNavComponent', () => {
       pageTitle
     );
   };
+
+  it('should select and deselect a page', () => {
+    const page = { title: 'page 1', path: 'path-1' } as Page;
+
+    component.selectPage(page);
+    expect(component.selectedPage).toBe(page);
+
+    component.selectPage(page);
+    expect(component.selectedPage).toBeNull();
+
+    const anotherPage = { title: 'page 2', path: 'path-2' } as Page;
+    component.selectPage(anotherPage);
+    expect(component.selectedPage).toBe(anotherPage);
+
+    component.selectPage(page);
+    expect(component.selectedPage).toBe(page);
+  });
 });
