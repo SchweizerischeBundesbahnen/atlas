@@ -1,10 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UserAdministrationOverviewComponent } from './user-administration-overview.component';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { RouterTestingModule } from '@angular/router/testing';
-import { MaterialModule } from '../../../core/module/material.module';
-import { FormsModule } from '@angular/forms';
-import { MockAtlasButtonComponent } from '../../../app.testing.mocks';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {UserAdministrationOverviewComponent} from './user-administration-overview.component';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {MaterialModule} from '../../../core/module/material.module';
+import {FormsModule} from '@angular/forms';
+import {MockAtlasButtonComponent} from '../../../app.testing.mocks';
+import {RouterModule} from "@angular/router";
 
 describe('UserAdministrationOverviewComponent', () => {
   let component: UserAdministrationOverviewComponent;
@@ -17,7 +17,7 @@ describe('UserAdministrationOverviewComponent', () => {
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
-        RouterTestingModule,
+        RouterModule.forRoot([]),
         MaterialModule,
         FormsModule,
       ],

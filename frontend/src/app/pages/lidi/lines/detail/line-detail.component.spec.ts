@@ -1,7 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { of, throwError } from 'rxjs';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormBuilder} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {of, throwError} from 'rxjs';
 import {
   LinesService,
   LineType,
@@ -11,18 +11,18 @@ import {
   Status,
   WorkflowProcessingStatus,
 } from '../../../../api';
-import { LineDetailComponent } from './line-detail.component';
-import { HttpErrorResponse } from '@angular/common/http';
-import { AppTestingModule, authServiceMock } from '../../../../app.testing.module';
-import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
-import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
-import { MockAppDetailWrapperComponent, MockSelectComponent } from '../../../../app.testing.mocks';
-import { AuthService } from '../../../../core/auth/auth.service';
-import { LineDetailFormComponent } from './line-detail-form/line-detail-form.component';
-import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
-import { LinkIconComponent } from '../../../../core/form-components/link-icon/link-icon.component';
-import { FormModule } from '../../../../core/module/form.module';
-import { TranslatePipe } from '@ngx-translate/core';
+import {LineDetailComponent} from './line-detail.component';
+import {HttpErrorResponse} from '@angular/common/http';
+import {AppTestingModule} from '../../../../app.testing.module';
+import {ErrorNotificationComponent} from '../../../../core/notification/error/error-notification.component';
+import {InfoIconComponent} from '../../../../core/form-components/info-icon/info-icon.component';
+import {adminPermissionServiceMock, MockAppDetailWrapperComponent, MockSelectComponent} from '../../../../app.testing.mocks';
+import {LineDetailFormComponent} from './line-detail-form/line-detail-form.component';
+import {CommentComponent} from '../../../../core/form-components/comment/comment.component';
+import {LinkIconComponent} from '../../../../core/form-components/link-icon/link-icon.component';
+import {FormModule} from '../../../../core/module/form.module';
+import {TranslatePipe} from '@ngx-translate/core';
+import {PermissionService} from "../../../../core/auth/permission.service";
 
 const lineVersion: LineVersion = {
   id: 1234,
@@ -285,7 +285,7 @@ function setupTestBed(linesService: LinesService, data: { lineDetail: string | L
     providers: [
       { provide: FormBuilder },
       { provide: LinesService, useValue: linesService },
-      { provide: AuthService, useValue: authServiceMock },
+      { provide: PermissionService, useValue: adminPermissionServiceMock },
       { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
       { provide: TranslatePipe },
     ],

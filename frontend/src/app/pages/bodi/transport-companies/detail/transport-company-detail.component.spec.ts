@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {
   BusinessOrganisation,
   BusinessOrganisationsService,
@@ -7,24 +7,24 @@ import {
   TransportCompanyBoRelation,
   TransportCompanyRelationsService,
 } from '../../../../api';
-import { TransportCompanyDetailComponent } from './transport-company-detail.component';
-import { AppTestingModule } from '../../../../app.testing.module';
-import { AuthService } from '../../../../core/auth/auth.service';
-import { RelationComponent } from '../../../../core/components/relation/relation.component';
+import {TransportCompanyDetailComponent} from './transport-company-detail.component';
+import {AppTestingModule} from '../../../../app.testing.module';
+import {RelationComponent} from '../../../../core/components/relation/relation.component';
 import moment from 'moment';
-import { Observable, of } from 'rxjs';
-import { CommentComponent } from '../../../../core/form-components/comment/comment.component';
-import { Component } from '@angular/core';
-import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
-import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
-import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
-import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
-import { TranslatePipe } from '@ngx-translate/core';
-import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
-import { ActivatedRoute } from '@angular/router';
-import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
-import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import {Observable, of} from 'rxjs';
+import {CommentComponent} from '../../../../core/form-components/comment/comment.component';
+import {Component} from '@angular/core';
+import {adminPermissionServiceMock, MockAtlasButtonComponent} from '../../../../app.testing.mocks';
+import {TextFieldComponent} from '../../../../core/form-components/text-field/text-field.component';
+import {AtlasLabelFieldComponent} from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import {AtlasFieldErrorComponent} from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import {TranslatePipe} from '@ngx-translate/core';
+import {SearchSelectComponent} from '../../../../core/form-components/search-select/search-select.component';
+import {ActivatedRoute} from '@angular/router';
+import {DetailPageContainerComponent} from '../../../../core/components/detail-page-container/detail-page-container.component';
+import {DetailFooterComponent} from '../../../../core/components/detail-footer/detail-footer.component';
 import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
+import {PermissionService} from "../../../../core/auth/permission.service";
 
 const transportCompany: TransportCompany = {
   id: 1234,
@@ -251,8 +251,8 @@ function setupTestBed(data: (TransportCompany | TransportCompanyBoRelation[])[])
         useValue: { snapshot: { data: { transportCompanyDetail: data } } },
       },
       {
-        provide: AuthService,
-        useValue: jasmine.createSpyObj<AuthService>(['hasPermissionsToCreate']),
+        provide: PermissionService,
+        useValue: adminPermissionServiceMock,
       },
       {
         provide: TransportCompanyRelationsService,
