@@ -3,6 +3,7 @@ package ch.sbb.atlas.api.workflow;
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -53,7 +54,8 @@ public class StopPointWorkflowStartModel {
   private String workflowComment;
 
   @Schema(description = "List hearing axamiannts")
-  private List<PersonModel> examinants;
+  @Valid
+  private List<ClientPersonModel> examinants;
 
   @NotNull
   private LocalDate validFrom;
