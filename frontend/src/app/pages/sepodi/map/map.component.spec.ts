@@ -1,15 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MapComponent } from './map.component';
-import { AppTestingModule } from '../../../app.testing.module';
-import { MAP_STYLES } from './map-options';
-import { CoordinatePairWGS84, MapService } from './map.service';
-import maplibregl, { Map } from 'maplibre-gl';
-import { BehaviorSubject } from 'rxjs';
-import { Component, Input } from '@angular/core';
-import { AuthService } from '../../../core/auth/auth.service';
-import { ServicePointSearchType } from '../../../core/search-service-point/service-point-search';
-import SpyObj = jasmine.SpyObj;
+import {MapComponent} from './map.component';
+import {AppTestingModule} from '../../../app.testing.module';
+import {MAP_STYLES} from './map-options';
+import {CoordinatePairWGS84, MapService} from './map.service';
+import maplibregl, {Map} from 'maplibre-gl';
+import {BehaviorSubject} from 'rxjs';
+import {Component, Input} from '@angular/core';
+import {ServicePointSearchType} from '../../../core/search-service-point/service-point-search';
+import {PermissionService} from "../../../core/auth/permission.service";
+import {adminPermissionServiceMock} from "../../../app.testing.mocks";
 
 const clickedGeographyCoordinatesSubject = new BehaviorSubject<CoordinatePairWGS84>({
   lat: 0,
@@ -59,20 +59,13 @@ describe('MapComponent', () => {
   let component: MapComponent;
   let fixture: ComponentFixture<MapComponent>;
 
-  let authServiceSpy: SpyObj<AuthService>;
-
   beforeEach(async () => {
-    authServiceSpy = jasmine.createSpyObj(['hasPermissionsToCreate'], {
-      permissionsLoaded: new BehaviorSubject(true),
-    });
-    authServiceSpy.hasPermissionsToCreate.and.returnValue(true);
-
     await TestBed.configureTestingModule({
       declarations: [MapComponent, SearchServicePointMockComponent],
       imports: [AppTestingModule],
       providers: [
         { provide: MapService, useValue: mapService },
-        { provide: AuthService, useValue: authServiceSpy },
+        { provide: PermissionService, useValue: adminPermissionServiceMock },
       ],
     }).compileComponents();
 

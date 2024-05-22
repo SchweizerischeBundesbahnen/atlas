@@ -1,19 +1,19 @@
 import {TestBed} from '@angular/core/testing';
 
 import {PrmVariantInfoServiceService} from './prm-variant-info-service.service';
-import {AuthService} from "../../../../core/auth/auth.service";
 import {completeMeansOfTransport, reducedMeansOfTransport} from "../../util/prm-mean-of-transport-helper";
 import {MeanOfTransport} from "../../../../api";
+import {PermissionService} from "../../../../core/auth/permission.service";
 
 describe('PrmVariantInfoServiceService', () => {
   let service: PrmVariantInfoServiceService;
 
-  const isAtLeastSupervisorMock: Partial<AuthService> = {
+  const isAtLeastSupervisorMock: Partial<PermissionService> = {
     isAtLeastSupervisor(): boolean {
       return true;
     }
   };
-  const isNotAtLeastSupervisorMock: Partial<AuthService> = {
+  const isNotAtLeastSupervisorMock: Partial<PermissionService> = {
     isAtLeastSupervisor(): boolean {
       return false;
     }
@@ -23,7 +23,7 @@ describe('PrmVariantInfoServiceService', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         providers: [
-          { provide: AuthService, useValue: isAtLeastSupervisorMock },
+          { provide: PermissionService, useValue: isAtLeastSupervisorMock },
         ]
       });
       service = TestBed.inject(PrmVariantInfoServiceService);
@@ -54,7 +54,7 @@ describe('PrmVariantInfoServiceService', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         providers: [
-          { provide: AuthService, useValue: isNotAtLeastSupervisorMock },
+          { provide: PermissionService, useValue: isNotAtLeastSupervisorMock },
         ]
       });
       service = TestBed.inject(PrmVariantInfoServiceService);
