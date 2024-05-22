@@ -207,7 +207,10 @@
       "TITLE_HEADER": "Accessibilità",
       "DESCRIPTION": "Registrare, gestire e visualizzare i dati sull'accessibilità delle fermate dei trasporti pubblici in Svizzera."
     },
-    "DETAILS": "Precisazioni"
+    "DETAILS": "Precisazioni",
+    "WORKFLOW": {
+      "TITLE_HEADER": "Audizione"
+    }
   },
   "PAGINATOR": {
     "ITEMS_PER_PAGE": "Oggetti per pagina",
@@ -562,7 +565,7 @@
       "ADDED": "Inizializzato",
       "STARTED": "Avviato",
       "REVISION": "In Revisione",
-      "HEARING": "In audizione",
+      "WORKFLOW": "In audizione",
       "APPROVED": "Approvato",
       "REJECTED": "Respinto"
     },
