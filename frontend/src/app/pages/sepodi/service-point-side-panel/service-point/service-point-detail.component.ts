@@ -1,6 +1,6 @@
-import { Component, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { VersionsHandlingService } from '../../../../core/versioning/versions-handling.service';
+import {Component, OnDestroy} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {VersionsHandlingService} from '../../../../core/versioning/versions-handling.service';
 import {
   ApplicationRole,
   ApplicationType,
@@ -8,26 +8,20 @@ import {
   ReadServicePointVersion,
   ServicePointsService,
 } from '../../../../api';
-import { FormGroup } from '@angular/forms';
-import {
-  ServicePointDetailFormGroup,
-  ServicePointFormGroupBuilder,
-} from './service-point-detail-form-group';
-import { MapService } from '../../map/map.service';
-import { BehaviorSubject, catchError, EMPTY, Observable, of, take } from 'rxjs';
-import { Pages } from '../../../pages';
-import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { ValidationService } from '../../../../core/validation/validation.service';
-import { NotificationService } from '../../../../core/notification/notification.service';
-import { DetailFormComponent } from '../../../../core/leave-guard/leave-dirty-form-guard.service';
-import { AuthService } from '../../../../core/auth/auth.service';
-import { ServicePointAbbreviationAllowList } from './service-point-abbreviation-allow-list';
-import {
-  GeographyFormGroup,
-  GeographyFormGroupBuilder,
-} from '../../geography/geography-form-group';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {FormGroup} from '@angular/forms';
+import {ServicePointDetailFormGroup, ServicePointFormGroupBuilder,} from './service-point-detail-form-group';
+import {MapService} from '../../map/map.service';
+import {BehaviorSubject, catchError, EMPTY, Observable, of, take} from 'rxjs';
+import {Pages} from '../../../pages';
+import {DialogService} from '../../../../core/components/dialog/dialog.service';
+import {ValidationService} from '../../../../core/validation/validation.service';
+import {NotificationService} from '../../../../core/notification/notification.service';
+import {DetailFormComponent} from '../../../../core/leave-guard/leave-dirty-form-guard.service';
+import {ServicePointAbbreviationAllowList} from './service-point-abbreviation-allow-list';
+import {GeographyFormGroup, GeographyFormGroupBuilder,} from '../../geography/geography-form-group';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {ValidityService} from "../../validity/validity.service";
+import {PermissionService} from "../../../../core/auth/permission.service";
 
 @Component({
   selector: 'app-service-point',
@@ -60,7 +54,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
     private servicePointService: ServicePointsService,
     private notificationService: NotificationService,
     private mapService: MapService,
-    private authService: AuthService,
+    private permissionService: PermissionService,
     private validityService: ValidityService,
   ) {
     this.route.parent?.data.pipe(takeUntilDestroyed()).subscribe((next) => {
@@ -190,12 +184,12 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
 
   private confirmBoTransfer(): Observable<boolean> {
     const currentlySelectedBo = this.form?.controls.businessOrganisation.value;
-    const permission = this.authService.getApplicationUserPermission(ApplicationType.Sepodi);
+    const permission = this.permissionService.getApplicationUserPermission(ApplicationType.Sepodi);
     if (
-      !this.authService.isAdmin &&
+      !this.permissionService.isAdmin &&
       permission.role == ApplicationRole.Writer &&
       currentlySelectedBo &&
-      !AuthService.getSboidRestrictions(permission).includes(currentlySelectedBo)
+      !PermissionService.getSboidRestrictions(permission).includes(currentlySelectedBo)
     ) {
       return this.dialogService.confirm({
         title: 'DIALOG.CONFIRM_BO_TRANSFER_TITLE',

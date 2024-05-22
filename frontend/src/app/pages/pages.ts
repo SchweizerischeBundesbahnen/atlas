@@ -255,7 +255,6 @@ export class Pages {
     Pages.PRM,
   ];
   public static adminPages: Page[] = [Pages.USER_ADMINISTRATION];
-  public static viewablePages: Page[] = this.pages;
 
   public static get enabledPages(): Page[] {
     return this.viewablePages.map(page => {

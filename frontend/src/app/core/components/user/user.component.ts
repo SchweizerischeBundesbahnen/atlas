@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { User } from './user';
 import { ApplicationRole, ApplicationType, Permission } from '../../../api';
+import {UserService} from "../../auth/user.service";
+import {filter} from "rxjs/operators";
 
 @Component({
   selector: 'app-user',
@@ -11,39 +13,33 @@ import { ApplicationRole, ApplicationType, Permission } from '../../../api';
 export class UserComponent implements OnInit {
   user: User | undefined;
   userName: string | undefined;
-  isAuthenticated = false;
-  roles: string[] | undefined;
+  isLoggedIn = false;
+  isAdmin = false;
   permissions: Permission[] | undefined;
 
-  protected authenticated: boolean | undefined;
-
-  constructor(private authService: AuthService) {}
+  constructor(private userService: UserService,
+              private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.authService.eventUserComponentNotification?.subscribe((user) => {
-      if (user) {
-        this.init();
-      }
-    });
-    this.init();
+    this.userService.userChanged.subscribe(() => this.init());
   }
 
   init() {
-    this.authenticated = this.authService.loggedIn;
-    this.user = this.authService.claims;
-    this.extractUserName();
-    this.authenticate();
-    this.extractRoles();
+    this.isLoggedIn = this.userService.loggedIn;
+    if (this.isLoggedIn) {
+      this.user = this.userService.currentUser;
+      this.extractUserName();
+      this.loadPermissions();
+    }
   }
 
   extractUserName() {
-    this.userName = this.user?.name.substr(0, this.user.name.indexOf('(')).trim();
+    this.userName = this.user?.name.substring(0, this.user.name.indexOf('(')).trim();
   }
 
-  extractRoles() {
-    this.roles = this.authService.roles;
-    this.permissions = this.authService
-      .getPermissions()
+  loadPermissions() {
+    this.isAdmin = this.userService.isAdmin;
+    this.permissions = this.userService.permissions
       .filter(
         (permission) =>
           !(
@@ -53,18 +49,11 @@ export class UserComponent implements OnInit {
       );
   }
 
-  authenticate() {
-    this.isAuthenticated = this.user != null;
-  }
-
   login(): void {
     this.authService.login();
   }
 
   logout() {
-    return this.authService.logout()?.then(() => {
-      this.user = undefined;
-      this.authenticate();
-    });
+    this.authService.logout();
   }
 }
