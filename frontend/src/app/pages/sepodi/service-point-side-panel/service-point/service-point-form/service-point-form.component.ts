@@ -1,17 +1,9 @@
-import {
-  Component,
-  ContentChild,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { ServicePointDetailFormGroup } from '../service-point-detail-form-group';
-import { ServicePointType } from '../service-point-type';
-import { TranslationSortingService } from '../../../../../core/translation/translation-sorting.service';
-import { Observable, of, Subject, Subscription, take } from 'rxjs';
+import {Component, ContentChild, EventEmitter, Input, OnDestroy, OnInit, Output,} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {ServicePointDetailFormGroup} from '../service-point-detail-form-group';
+import {ServicePointType} from '../service-point-type';
+import {TranslationSortingService} from '../../../../../core/translation/translation-sorting.service';
+import {Observable, of, Subject, Subscription, take} from 'rxjs';
 import {
   ApplicationRole,
   ApplicationType,
@@ -22,12 +14,12 @@ import {
   ReadServicePointVersion,
   StopPointType,
 } from '../../../../../api';
-import { LocationInformation } from '../location-information';
-import { map, takeUntil } from 'rxjs/operators';
-import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import { GeographyComponent } from '../../../geography/geography.component';
-import { Countries } from '../../../../../core/country/Countries';
-import { AuthService } from '../../../../../core/auth/auth.service';
+import {LocationInformation} from '../location-information';
+import {map, takeUntil} from 'rxjs/operators';
+import {DialogService} from '../../../../../core/components/dialog/dialog.service';
+import {GeographyComponent} from '../../../geography/geography.component';
+import {Countries} from '../../../../../core/country/Countries';
+import {PermissionService} from "../../../../../core/auth/permission.service";
 
 @Component({
   selector: 'service-point-form',
@@ -86,7 +78,7 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
     private readonly translationSortingService: TranslationSortingService,
     private readonly dialogService: DialogService,
     private readonly geoDataService: GeoDataService,
-    private readonly authService: AuthService,
+    private readonly permissionService: PermissionService,
   ) {}
 
   ngOnInit(): void {
@@ -171,12 +163,12 @@ export class ServicePointFormComponent implements OnInit, OnDestroy {
   }
 
   initBoSboidRestriction() {
-    if (!this.isNew || this.authService.isAdmin) {
+    if (!this.isNew || this.permissionService.isAdmin) {
       this.boSboidRestriction = [];
     } else {
-      const permission = this.authService.getApplicationUserPermission(ApplicationType.Sepodi);
+      const permission = this.permissionService.getApplicationUserPermission(ApplicationType.Sepodi);
       if (permission.role === ApplicationRole.Writer) {
-        this.boSboidRestriction = AuthService.getSboidRestrictions(permission);
+        this.boSboidRestriction = PermissionService.getSboidRestrictions(permission);
       } else {
         this.boSboidRestriction = [];
       }
