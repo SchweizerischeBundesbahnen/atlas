@@ -1,17 +1,17 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { UserService } from '../../service/user.service';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { of } from 'rxjs';
-import { Component, Input } from '@angular/core';
-import { RouterTestingModule } from '@angular/router/testing';
-import { User } from '../../../../api';
-import { MaterialModule } from '../../../../core/module/material.module';
-import { FormGroup, FormsModule } from '@angular/forms';
-import { AtlasButtonComponent } from '../../../../core/components/button/atlas-button.component';
-import { AuthService } from '../../../../core/auth/auth.service';
-import { UserAdministrationUserOverviewComponent } from './user-administration-overview.component';
-import { MockTableComponent } from '../../../../app.testing.mocks';
-import { TableService } from '../../../../core/components/table/table.service';
+import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import {UserService} from '../../service/user.service';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {of} from 'rxjs';
+import {Component, Input} from '@angular/core';
+import {User} from '../../../../api';
+import {MaterialModule} from '../../../../core/module/material.module';
+import {FormGroup, FormsModule} from '@angular/forms';
+import {AtlasButtonComponent} from '../../../../core/components/button/atlas-button.component';
+import {UserAdministrationUserOverviewComponent} from './user-administration-overview.component';
+import {adminPermissionServiceMock, MockTableComponent} from '../../../../app.testing.mocks';
+import {TableService} from '../../../../core/components/table/table.service';
+import {PermissionService} from "../../../../core/auth/permission.service";
+import {RouterModule} from "@angular/router";
 
 @Component({
   selector: 'form-search-select',
@@ -54,7 +54,7 @@ describe('UserAdministrationUserOverviewComponent', () => {
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
-        RouterTestingModule,
+        RouterModule.forRoot([]),
         MaterialModule,
         FormsModule,
       ],
@@ -64,8 +64,8 @@ describe('UserAdministrationUserOverviewComponent', () => {
           useValue: userServiceMock,
         },
         {
-          provide: AuthService,
-          useValue: jasmine.createSpyObj<AuthService>('AuthService', ['hasPermissionsToCreate']),
+          provide: PermissionService,
+          useValue: adminPermissionServiceMock,
         },
       ],
     }).compileComponents();

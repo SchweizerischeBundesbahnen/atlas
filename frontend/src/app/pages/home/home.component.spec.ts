@@ -1,11 +1,13 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule } from '@angular/router';
-import { HomeComponent } from './home.component';
-import { By } from '@angular/platform-browser';
-import { AuthService } from '../../core/auth/auth.service';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {RouterModule} from '@angular/router';
+import {HomeComponent} from './home.component';
+import {By} from '@angular/platform-browser';
+import {PageService} from "../../core/auth/page.service";
+import {Pages} from "../pages";
+import {pageServiceMock} from "../../app.testing.mocks";
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -24,13 +26,8 @@ describe('HomeComponent', () => {
       ],
       providers: [
         {
-          provide: AuthService,
-          useValue: jasmine.createSpyObj<AuthService>(
-            {},
-            {
-              roles: [],
-            },
-          ),
+          provide: PageService,
+          useValue: pageServiceMock,
         },
       ],
     }).compileComponents();
