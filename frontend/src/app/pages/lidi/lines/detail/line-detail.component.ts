@@ -1,28 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  ApplicationType,
-  LinesService,
-  LineType,
-  LineVersion,
-  LineVersionWorkflow,
-  Status,
-} from '../../../../api';
-import { BaseDetailController } from '../../../../core/components/base-detail/base-detail-controller';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { NotificationService } from '../../../../core/notification/notification.service';
-import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { catchError } from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {ApplicationType, LinesService, LineType, LineVersion, LineVersionWorkflow, Status,} from '../../../../api';
+import {BaseDetailController} from '../../../../core/components/base-detail/base-detail-controller';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {NotificationService} from '../../../../core/notification/notification.service';
+import {DialogService} from '../../../../core/components/dialog/dialog.service';
+import {catchError} from 'rxjs';
 import moment from 'moment';
-import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
-import { Pages } from '../../../pages';
-import { Page } from 'src/app/core/model/page';
-import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
-import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
-import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
-import { LineDetailFormGroup } from './line-detail-form-group';
-import { AuthService } from '../../../../core/auth/auth.service';
+import {DateRangeValidator} from '../../../../core/validation/date-range/date-range-validator';
+import {Pages} from '../../../pages';
+import {Page} from 'src/app/core/model/page';
+import {AtlasCharsetsValidator} from '../../../../core/validation/charsets/atlas-charsets-validator';
+import {WhitespaceValidator} from '../../../../core/validation/whitespace/whitespace-validator';
+import {AtlasFieldLengthValidator} from '../../../../core/validation/field-lengths/atlas-field-length-validator';
+import {LineDetailFormGroup} from './line-detail-form-group';
 import {ValidityService} from "../../../sepodi/validity/validity.service";
+import {PermissionService} from "../../../../core/auth/permission.service";
 
 @Component({
   templateUrl: './line-detail.component.html',
@@ -37,11 +30,11 @@ export class LineDetailComponent extends BaseDetailController<LineVersion> imple
     private linesService: LinesService,
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
-    protected authService: AuthService,
+    protected permissionService: PermissionService,
     protected activatedRoute: ActivatedRoute,
     protected validityService: ValidityService,
   ) {
-    super(router, dialogService, notificationService, authService, activatedRoute, validityService);
+    super(router, dialogService, notificationService, permissionService, activatedRoute, validityService);
   }
 
   ngOnInit() {
