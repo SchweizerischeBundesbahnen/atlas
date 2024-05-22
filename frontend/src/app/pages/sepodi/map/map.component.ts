@@ -18,6 +18,8 @@ import { ApplicationType } from '../../../api';
 import { filter } from 'rxjs/operators';
 import { MapIcon, MapIconsService } from './map-icons.service';
 import { ServicePointSearch } from '../../../core/search-service-point/service-point-search';
+import {PermissionService} from "../../../core/auth/permission.service";
+import {UserService} from "../../../core/auth/user.service";
 
 @Component({
   selector: 'atlas-map',
@@ -43,17 +45,18 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private readonly mapService: MapService,
     private readonly router: Router,
-    private readonly authService: AuthService,
+    private readonly userService: UserService,
+    private readonly permissionService: PermissionService,
   ) {}
 
   ngOnInit() {
-    this.authService.permissionsLoaded
+    this.userService.permissionsLoaded
       .pipe(
         filter((loaded) => loaded),
         take(1),
       )
       .subscribe(() => {
-        this.canCreateServicePoint = this.authService.hasPermissionsToCreate(
+        this.canCreateServicePoint = this.permissionService.hasPermissionsToCreate(
           ApplicationType.Sepodi,
         );
       });

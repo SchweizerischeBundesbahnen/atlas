@@ -1,10 +1,10 @@
-import { Component, ContentChild, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
-import { ApplicationType } from '../../../api';
-import { AuthService } from '../../auth/auth.service';
-import { AtlasButtonType } from './atlas-button.type';
-import { NON_PROD_STAGES } from '../../constants/stages';
-import { environment } from '../../../../environments/environment';
-import { Countries } from '../../country/Countries';
+import {Component, ContentChild, EventEmitter, Input, Output, TemplateRef} from '@angular/core';
+import {ApplicationType} from '../../../api';
+import {AtlasButtonType} from './atlas-button.type';
+import {NON_PROD_STAGES} from '../../constants/stages';
+import {environment} from '../../../../environments/environment';
+import {Countries} from '../../country/Countries';
+import {PermissionService} from "../../auth/permission.service";
 
 @Component({
   selector: 'atlas-button[buttonType]',
@@ -31,7 +31,7 @@ export class AtlasButtonComponent {
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @ContentChild('rightIcon') rightIcon!: TemplateRef<any>;
 
-  constructor(private authService: AuthService) {}
+  constructor(private permissionService: PermissionService) {}
 
   isButtonVisible() {
     if (this.buttonType === AtlasButtonType.CREATE_CHECKING_PERMISSION) {
@@ -72,7 +72,7 @@ export class AtlasButtonComponent {
     if (!this.applicationType) {
       throw new Error('Permission checking button needs applicationtype');
     }
-    return this.authService.hasPermissionsToCreate(this.applicationType);
+    return this.permissionService.hasPermissionsToCreate(this.applicationType);
   }
 
   mayEdit() {
@@ -85,13 +85,13 @@ export class AtlasButtonComponent {
     if (this.uicCountryCode) {
       return this.mayEditWithUicCountryCode();
     }
-    return this.authService.hasPermissionsToWrite(this.applicationType, this.businessOrganisation);
+    return this.permissionService.hasPermissionsToWrite(this.applicationType, this.businessOrganisation);
   }
 
   private mayEditWithUicCountryCode() {
     return (
-      this.authService.hasPermissionsToWrite(this.applicationType, this.businessOrganisation) &&
-      this.authService.hasPermissionsToWrite(
+      this.permissionService.hasPermissionsToWrite(this.applicationType, this.businessOrganisation) &&
+      this.permissionService.hasPermissionsToWrite(
         this.applicationType,
         Countries.fromUicCode(this.uicCountryCode!).enumCountry,
       )
@@ -102,15 +102,15 @@ export class AtlasButtonComponent {
     if (!this.applicationType) {
       throw new Error('Revoke button needs applicationtype');
     }
-    return this.authService.isAtLeastSupervisor(this.applicationType);
+    return this.permissionService.isAtLeastSupervisor(this.applicationType);
   }
 
   mayDelete(): boolean {
-    return this.authService.isAdmin && NON_PROD_STAGES.includes(environment.label);
+    return this.permissionService.isAdmin && NON_PROD_STAGES.includes(environment.label);
   }
 
   hasWritePermissionsForCanton() {
-    return this.authService.hasWritePermissionsToForCanton(this.applicationType, this.canton);
+    return this.permissionService.hasWritePermissionsToForCanton(this.applicationType, this.canton);
   }
 
   getButtonStyleClass() {
@@ -142,7 +142,7 @@ export class AtlasButtonComponent {
   private mayEditServicePointDependentObject() {
     return this.businessOrganisations
       .map((organisation) =>
-        this.authService.hasPermissionsToWrite(this.applicationType, organisation),
+        this.permissionService.hasPermissionsToWrite(this.applicationType, organisation),
       )
       .includes(true);
   }
