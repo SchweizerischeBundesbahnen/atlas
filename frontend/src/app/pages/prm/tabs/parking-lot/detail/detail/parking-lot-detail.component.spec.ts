@@ -1,17 +1,16 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ParkingLotDetailComponent} from './parking-lot-detail.component';
-import {
-  BooleanOptionalAttributeType,
-  PersonWithReducedMobilityService,
-  ReadParkingLotVersion
-} from "../../../../../../api";
-import {AuthService} from "../../../../../../core/auth/auth.service";
+import {BooleanOptionalAttributeType, PersonWithReducedMobilityService, ReadParkingLotVersion} from "../../../../../../api";
 import {of} from "rxjs";
 import {BERN_WYLEREGG} from "../../../../../../../test/data/service-point";
 import {SloidComponent} from "../../../../../../core/form-components/sloid/sloid.component";
 import {AtlasSlideToggleComponent} from "../../../../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component";
-import {MockAtlasButtonComponent, MockAtlasFieldErrorComponent} from "../../../../../../app.testing.mocks";
+import {
+  adminPermissionServiceMock,
+  MockAtlasButtonComponent,
+  MockAtlasFieldErrorComponent
+} from "../../../../../../app.testing.mocks";
 import {DisplayDatePipe} from "../../../../../../core/pipe/display-date.pipe";
 import {ParkingLotFormComponent} from "../form/parking-lot-form/parking-lot-form.component";
 import {TextFieldComponent} from "../../../../../../core/form-components/text-field/text-field.component";
@@ -31,14 +30,14 @@ import {
 import {DetailPageContentComponent} from "../../../../../../core/components/detail-page-content/detail-page-content.component";
 import {DetailFooterComponent} from "../../../../../../core/components/detail-footer/detail-footer.component";
 import {AppTestingModule} from "../../../../../../app.testing.module";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, RouterModule} from "@angular/router";
 import {NotificationService} from "../../../../../../core/notification/notification.service";
 import {DialogService} from "../../../../../../core/components/dialog/dialog.service";
 import {TranslatePipe} from "@ngx-translate/core";
 import {SplitServicePointNumberPipe} from "../../../../../../core/search-service-point/split-service-point-number.pipe";
 import moment from "moment";
+import {PermissionService} from "../../../../../../core/auth/permission.service";
 import SpyObj = jasmine.SpyObj;
-import {RouterTestingModule} from "@angular/router/testing";
 
 const parkingLot: ReadParkingLotVersion[] = [
   {
@@ -64,12 +63,6 @@ const parkingLot: ReadParkingLotVersion[] = [
     },
   },
 ];
-
-const authService: Partial<AuthService> = {
-  hasPermissionsToWrite(): boolean {
-    return true;
-  },
-};
 
 describe('ParkingLotDetailComponent', () => {
   let component: ParkingLotDetailComponent;
@@ -124,12 +117,12 @@ describe('ParkingLotDetailComponent', () => {
       ],
       imports: [
         AppTestingModule,
-        RouterTestingModule.withRoutes([{
+        RouterModule.forRoot([{
           path: ':sloid', redirectTo: ''
         }]),
       ],
       providers: [
-        {provide: AuthService, useValue: authService},
+        {provide: PermissionService, useValue: adminPermissionServiceMock},
         {provide: ActivatedRoute, useValue: activatedRouteMock},
         {provide: NotificationService, useValue: notificationService},
         {provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService},
