@@ -1,27 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  ApplicationType,
-  BusinessOrganisationsService,
-  BusinessOrganisationVersion,
-  BusinessType,
-} from '../../../../api';
-import { BaseDetailController } from '../../../../core/components/base-detail/base-detail-controller';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { NotificationService } from '../../../../core/notification/notification.service';
-import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { catchError } from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {ApplicationType, BusinessOrganisationsService, BusinessOrganisationVersion, BusinessType,} from '../../../../api';
+import {BaseDetailController} from '../../../../core/components/base-detail/base-detail-controller';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {NotificationService} from '../../../../core/notification/notification.service';
+import {DialogService} from '../../../../core/components/dialog/dialog.service';
+import {catchError} from 'rxjs';
 import moment from 'moment';
-import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
-import { Pages } from '../../../pages';
-import { Page } from 'src/app/core/model/page';
-import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
-import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
-import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
-import { BusinessOrganisationDetailFormGroup } from './business-organisation-detail-form-group';
-import { BusinessOrganisationLanguageService } from '../../../../core/form-components/bo-select/business-organisation-language.service';
-import { AuthService } from '../../../../core/auth/auth.service';
+import {DateRangeValidator} from '../../../../core/validation/date-range/date-range-validator';
+import {Pages} from '../../../pages';
+import {Page} from 'src/app/core/model/page';
+import {AtlasCharsetsValidator} from '../../../../core/validation/charsets/atlas-charsets-validator';
+import {WhitespaceValidator} from '../../../../core/validation/whitespace/whitespace-validator';
+import {AtlasFieldLengthValidator} from '../../../../core/validation/field-lengths/atlas-field-length-validator';
+import {BusinessOrganisationDetailFormGroup} from './business-organisation-detail-form-group';
+import {
+  BusinessOrganisationLanguageService
+} from '../../../../core/form-components/bo-select/business-organisation-language.service';
 import {ValidityService} from "../../../sepodi/validity/validity.service";
+import {PermissionService} from "../../../../core/auth/permission.service";
 
 @Component({
   templateUrl: './business-organisation-detail.component.html',
@@ -40,12 +37,12 @@ export class BusinessOrganisationDetailComponent
     private businessOrganisationLanguageService: BusinessOrganisationLanguageService,
     protected notificationService: NotificationService,
     protected dialogService: DialogService,
-    protected authService: AuthService,
+    protected permissionService: PermissionService,
     protected activatedRoute: ActivatedRoute,
     protected validityService: ValidityService,
 
   ) {
-    super(router, dialogService, notificationService, authService, activatedRoute, validityService);
+    super(router, dialogService, notificationService, permissionService, activatedRoute, validityService);
   }
 
   ngOnInit() {

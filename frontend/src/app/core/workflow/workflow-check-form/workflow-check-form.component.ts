@@ -1,16 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AtlasFieldLengthValidator } from '../../validation/field-lengths/atlas-field-length-validator';
-import { AtlasCharsetsValidator } from '../../validation/charsets/atlas-charsets-validator';
-import { Subject } from 'rxjs';
-import { UserAdministrationService, WorkflowService } from '../../../api';
-import { takeUntil } from 'rxjs/operators';
-import { WorkflowCheckFormGroup } from './workflow-check-form-group';
-import { Router } from '@angular/router';
-import { NotificationService } from '../../notification/notification.service';
-import { AuthService } from '../../auth/auth.service';
-import { ValidationService } from '../../validation/validation.service';
-import { WhitespaceValidator } from '../../validation/whitespace/whitespace-validator';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AtlasFieldLengthValidator} from '../../validation/field-lengths/atlas-field-length-validator';
+import {AtlasCharsetsValidator} from '../../validation/charsets/atlas-charsets-validator';
+import {Subject} from 'rxjs';
+import {UserAdministrationService, WorkflowService} from '../../../api';
+import {takeUntil} from 'rxjs/operators';
+import {WorkflowCheckFormGroup} from './workflow-check-form-group';
+import {NotificationService} from '../../notification/notification.service';
+import {ValidationService} from '../../validation/validation.service';
+import {WhitespaceValidator} from '../../validation/whitespace/whitespace-validator';
+import {PermissionService} from "../../auth/permission.service";
 
 @Component({
   selector: 'app-workflow-check-form',
@@ -49,10 +48,9 @@ export class WorkflowCheckFormComponent implements OnInit {
 
   constructor(
     private readonly workflowService: WorkflowService,
-    private readonly router: Router,
     private readonly notificationService: NotificationService,
     private readonly userAdministrationService: UserAdministrationService,
-    public authService: AuthService
+    public permissionService: PermissionService
   ) {}
 
   ngOnInit(): void {

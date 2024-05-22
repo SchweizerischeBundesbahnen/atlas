@@ -7,7 +7,6 @@ import {Pages} from '../../../../pages';
 import {NotificationService} from '../../../../../core/notification/notification.service';
 import {DialogService} from '../../../../../core/components/dialog/dialog.service';
 import {DetailFormComponent} from '../../../../../core/leave-guard/leave-dirty-form-guard.service';
-import {AuthService} from '../../../../../core/auth/auth.service';
 import {StopPointDetailFormGroup, StopPointFormGroupBuilder,} from '../form/stop-point-detail-form-group';
 import {PrmTabsService} from '../../../prm-panel/prm-tabs.service';
 import {
@@ -19,6 +18,7 @@ import {
 import {PrmMeanOfTransportHelper} from "../../../util/prm-mean-of-transport-helper";
 import {ValidityService} from "../../../../sepodi/validity/validity.service";
 import {ReferencePointCreationHintService} from "./reference-point-creation-hint/reference-point-creation-hint.service";
+import {PermissionService} from "../../../../../core/auth/permission.service";
 
 @Component({
   selector: 'app-stop-point-detail',
@@ -46,7 +46,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
     private readonly personWithReducedMobilityService: PersonWithReducedMobilityService,
     private notificationService: NotificationService,
     private dialogService: DialogService,
-    private authService: AuthService,
+    private permissionService: PermissionService,
     private prmTabsService: PrmTabsService,
     private referencePointCreationHintService: ReferencePointCreationHintService,
     private validityService: ValidityService
@@ -126,7 +126,7 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
 
   hasPermissionToCreateNewStopPoint(): boolean {
     const sboidsPermissions = this.businessOrganisations.map((bo) =>
-      this.authService.hasPermissionsToWrite('PRM', bo),
+      this.permissionService.hasPermissionsToWrite('PRM', bo),
     );
     return sboidsPermissions.includes(true);
   }

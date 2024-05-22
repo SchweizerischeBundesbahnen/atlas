@@ -99,7 +99,7 @@
             (editModeChanged)="editMode = !editMode"
             (selectedIndexChanged)="selectedTransportCompanyRelationIndex = $event"
             [editMode]="editMode"
-            [editable]="isAdmin()"
+            [editable]="mayCreate()"
             [records]="transportCompanyRelations"
             [selectedIndex]="selectedTransportCompanyRelationIndex"
             [tableColumns]="transportCompanyRelationTableColumns"
