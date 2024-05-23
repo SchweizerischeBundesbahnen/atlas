@@ -990,7 +990,6 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     repository.save(bern);
 
     bern = ServicePointTestData.getBern();
-    bern.setStatus(Status.VALIDATED);
     bern.setValidFrom(LocalDate.of(2016, 1, 1));
     bern.setValidTo(LocalDate.of(2018, 1, 1));
     ServicePointVersion saved = repository.save(bern);
@@ -1005,7 +1004,8 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(updateModel)))
         .andExpect(status().isConflict())
         .andExpect(
-            jsonPath("$.message", is("Update from 01.01.2011 to 01.01.2014 affects a version that is in IN_REVIEW status")));
+            jsonPath("$.message",
+                is("Update from 01.01.2011 to 01.01.2014 affects 1 version/s that have status: IN_REVIEW.")));
   }
 
   @Test
