@@ -6,7 +6,6 @@ import {RouterModule} from '@angular/router';
 import {HomeComponent} from './home.component';
 import {By} from '@angular/platform-browser';
 import {PageService} from "../../core/auth/page.service";
-import {Pages} from "../pages";
 import {pageServiceMock} from "../../app.testing.mocks";
 
 describe('HomeComponent', () => {
