@@ -33,7 +33,15 @@ export class UserComponent implements OnInit {
   }
 
   extractUserName() {
-    this.userName = this.user?.name.substring(0, this.user.name.indexOf('(')).trim();
+    this.userName = this.removeDepartment(this.user?.name);
+  }
+
+  removeDepartment(username?: string) {
+    const departmentStart = '(';
+    if (!username?.includes(departmentStart)) {
+      return username;
+    }
+    return username?.substring(0, username.indexOf(departmentStart)).trim();
   }
 
   loadPermissions() {
