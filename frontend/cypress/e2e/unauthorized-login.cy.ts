@@ -1,4 +1,4 @@
-import CommonUtils from '../support/util/common-utils';
+import {DataCy} from "../support/data-cy";
 
 describe('Unauthorized navigation and login', () => {
 
@@ -13,14 +13,21 @@ describe('Unauthorized navigation and login', () => {
   });
 
   it('Step-02: Login to ATLAS', () => {
+    cy.intercept('GET', '/user-administration/v1/users/current').as('loadPermissions');
+
     cy.atlasLogin();
-    cy.visit('/');
 
-    // Login button is not available
-    cy.get('#login').should('not.exist');
+    cy.wait('@loadPermissions').then(() => {
+      // Login button is not available
+      cy.get('#login').should('not.exist');
 
-    // Pages for admin should be 7
-    cy.get('.card').should('have.length', 7);
+      // Username is displayed
+      cy.get(DataCy.USER_NAME).should('contain.text', 'ATLAS / LIDI / FPFN Admin User');
+
+      // Pages for admin should be 7
+      cy.get('.card').should('have.length', 7);
+    });
+
   });
 
 });
