@@ -69,7 +69,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 
     controller.startWorkflow(workflowModel);
 
-    mvc.perform(get("/v1/workflows"))
+    mvc.perform(get("/v1/line/workflows"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
   }
@@ -96,7 +96,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 
     LineWorkflow entity = workflowRepository.save(lineWorkflow);
 
-    mvc.perform(get("/v1/workflows/" + entity.getId()))
+    mvc.perform(get("/v1/line/workflows/" + entity.getId()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.swissId", is("CH123456")));
   }
@@ -122,7 +122,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
         .build();
 
     //given
-    mvc.perform(post("/v1/workflows")
+    mvc.perform(post("/v1/line/workflows")
         .contentType(contentType)
         .content(mapper.writeValueAsString(workflowModel))
     ).andExpect(status().isCreated());
@@ -146,7 +146,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
         .build();
 
     //given
-    mvc.perform(post("/v1/workflows")
+    mvc.perform(post("/v1/line/workflows")
             .contentType(contentType)
             .content(mapper.writeValueAsString(workflowModel))
         ).andExpect(status().isBadRequest())
@@ -181,7 +181,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
         .build();
 
     //given
-    mvc.perform(post("/v1/workflows")
+    mvc.perform(post("/v1/line/workflows")
             .contentType(contentType)
             .content(mapper.writeValueAsString(workflowModel))
         ).andExpect(status().isBadRequest())
@@ -217,7 +217,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
             .build();
 
     //given
-    mvc.perform(post("/v1/workflows")
+    mvc.perform(post("/v1/line/workflows")
                     .contentType(contentType)
                     .content(mapper.writeValueAsString(workflowModel))
             ).andExpect(status().isBadRequest())
@@ -262,7 +262,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
             .build();
 
     //given
-    mvc.perform(post("/v1/workflows/" + startedWorkflow.getId() + "/examinant-check")
+    mvc.perform(post("/v1/line/workflows/" + startedWorkflow.getId() + "/examinant-check")
                     .contentType(contentType)
                     .content(mapper.writeValueAsString(workflowCheck)))
             .andExpect(status().isOk())
