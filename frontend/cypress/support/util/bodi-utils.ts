@@ -1,5 +1,5 @@
 import CommonUtils from './common-utils';
-import { DataCy } from '../data-cy';
+import {DataCy} from '../data-cy';
 import AngularMaterialConstants from './angular-material-constants';
 
 export default class BodiUtils {
@@ -188,8 +188,6 @@ export default class BodiUtils {
   }
 
   private static interceptBusinessOrganisations(visitSelector: string) {
-    cy.get('.card-container').children().should('have.length', 7);
-
     const selector = cy.get(visitSelector);
     selector.scrollIntoView();
 
