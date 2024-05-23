@@ -8,10 +8,11 @@ import {Cantons} from "../cantons/Cantons";
 })
 export class PermissionService {
 
-  constructor(private userService: UserService) {  }
+  constructor(private userService: UserService) {
+  }
 
   public static getSboidRestrictions(userPermission: Permission): string[] {
-    return userPermission.permissionRestrictions!.map((restriction) => restriction.valueAsString!);
+    return userPermission.permissionRestrictions.map((restriction) => restriction.valueAsString!);
   }
 
   hasPermissionsToCreate(applicationType: ApplicationType): boolean {
@@ -93,9 +94,7 @@ export class PermissionService {
       permissions,
       applicationType,
     );
-    return PermissionService.getRolesAllowedToCreate(applicationType).includes(
-      applicationPermission.role!,
-    );
+    return PermissionService.getRolesAllowedToCreate(applicationType).includes(applicationPermission.role);
   }
 
   static hasPermissionToWriteOnCanton(
@@ -138,14 +137,12 @@ export class PermissionService {
       permissions,
       applicationType,
     );
-    if (
-      PermissionService.getRolesAllowedToUpdate(applicationType).includes(applicationPermission.role!)
-    ) {
+    if (PermissionService.getRolesAllowedToUpdate(applicationType).includes(applicationPermission.role)) {
       return true;
     }
 
     // Writer must be explicitely permitted to edit for a specific sboid
-    if (sboid && ApplicationRole.Writer === applicationPermission.role!) {
+    if (sboid && ApplicationRole.Writer === applicationPermission.role) {
       return PermissionService.getSboidRestrictions(applicationPermission).includes(sboid);
     }
     return false;

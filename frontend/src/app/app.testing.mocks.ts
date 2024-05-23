@@ -12,7 +12,7 @@ import {BaseDetailController} from './core/components/base-detail/base-detail-co
 import {Record} from './core/components/base-detail/record';
 import {AuthService} from "./core/auth/auth.service";
 import {UserService} from "./core/auth/user.service";
-import {Subject} from "rxjs";
+import {BehaviorSubject, of, Subject} from "rxjs";
 import {PermissionService} from "./core/auth/permission.service";
 import {PageService} from "./core/auth/page.service";
 import {Pages} from "./pages/pages";
@@ -149,7 +149,8 @@ export const adminUserServiceMock: Partial<UserService> = {
   userChanged: new Subject<void>(),
   loggedIn: true,
   isAdmin: true,
-  permissions: []
+  permissions: [],
+  permissionsLoaded: new BehaviorSubject(true),
 };
 
 export const adminPermissionServiceMock: Partial<PermissionService> = {
