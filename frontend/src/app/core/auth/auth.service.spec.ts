@@ -1,10 +1,12 @@
 import {TestBed} from '@angular/core/testing';
 import {AuthService} from './auth.service';
 import {OAuthService, OAuthSuccessEvent} from 'angular-oauth2-oidc';
-import {Subject} from 'rxjs';
+import {of, Subject} from 'rxjs';
 import {Component} from '@angular/core';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {RouterModule} from "@angular/router";
+import {UserService} from "./user.service";
+import {PageService} from "./page.service";
 
 function createOauthServiceSpy() {
   const oauthServiceSpy = jasmine.createSpyObj<OAuthService>('OAuthService', [
@@ -39,6 +41,8 @@ function createOauthServiceSpy() {
   );
   oauthServiceSpy.events = new Subject();
   oauthServiceSpy.state = undefined;
+
+  oauthServiceSpy.getIdentityClaims.and.returnValue({name: 'me', email: 'me@sbb.ch', roles: []});
   return oauthServiceSpy;
 }
 
@@ -54,6 +58,16 @@ describe('AuthService', () => {
   sessionStorage.setItem('requested_route', 'mock');
 
   let authService: AuthService;
+  const userService = jasmine.createSpyObj(['setCurrentUserAndLoadPermissions', 'resetCurrentUser']);
+  userService.setCurrentUserAndLoadPermissions.and.returnValue(of({
+    name: 'Test (ITC)',
+    email: 'test@test.ch',
+    sbbuid: 'e123456',
+    isAdmin: true,
+    permissions: []
+  }));
+
+  const pageService = jasmine.createSpyObj(['addPagesBasedOnPermissions','resetPages']);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -62,10 +76,12 @@ describe('AuthService', () => {
         RouterModule.forRoot([{ path: 'mock', component: MockComponent }]),
       ],
       providers: [
-        AuthService,
         {provide: OAuthService, useValue: oauthService},
+        {provide: UserService, useValue: userService},
+        {provide: PageService, useValue: pageService},
       ],
     });
+
     authService = TestBed.inject(AuthService);
   });
 
@@ -81,6 +97,8 @@ describe('AuthService', () => {
   it('logs out with oauthService', () => {
     authService.logout();
     expect(oauthService.logOut).toHaveBeenCalled();
+    expect(userService.resetCurrentUser).toHaveBeenCalled();
+    expect(pageService.resetPages).toHaveBeenCalled();
   });
 
 });
