@@ -6,7 +6,7 @@
       <p class="font-regular-lg m-0">{{ 'PAGES.HOME_BUSINESS_PLATFORM' | translate }}</p>
     </div>
   </div>
-  <div class="card-container">
+  <div class="card-container" data-cy="home-card-container">
     <a *ngFor="let page of enabledPages" id="{{ page.path }}" class="card" [routerLink]="page.path">
       <div class="d-flex flex-column justify-content-between card-content-box">
         <h3 class="title color-gray-900 font-bold-xl m-0">{{ page.title | translate }}</h3>
