@@ -46,6 +46,7 @@ import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.exception.ForbiddenDueToHearingYearSettingsException;
 import ch.sbb.line.directory.exception.NoClientCredentialAuthUsedException;
 import ch.sbb.line.directory.exception.PdfDocumentConstraintViolationException;
+import ch.sbb.line.directory.mapper.ResponsibleTransportCompanyMapper;
 import ch.sbb.line.directory.repository.SharedTransportCompanyRepository;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
@@ -55,7 +56,6 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
@@ -85,6 +85,8 @@ import org.springframework.test.web.servlet.MvcResult;
       .build();
   private static final String TTFNID = "ch:1:ttfnid:123123123";
   private static final String SBOID = "ch:1:sboid:123451";
+  private SharedTransportCompany sharedTransportCompany;
+  private SharedTransportCompany sharedTransportCompany1;
 
   @Autowired
   private TimetableHearingYearRepository timetableHearingYearRepository;
@@ -98,6 +100,9 @@ import org.springframework.test.web.servlet.MvcResult;
   @Autowired
   private TimetableHearingStatementRepository timetableHearingStatementRepository;
 
+  @Autowired
+  private SharedTransportCompanyRepository sharedTransportCompanyRepository;
+
   @MockBean
   private TimetableFieldNumberService timetableFieldNumberService;
 
@@ -106,9 +111,6 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @MockBean
   private UserAdministrationClient userAdministrationClient;
-
-  @MockBean
-  private SharedTransportCompanyRepository sharedTransportCompanyRepository;
 
   @BeforeEach
   void setUp() {
@@ -141,24 +143,32 @@ import org.springframework.test.web.servlet.MvcResult;
         .build();
     when(transportCompanyClient.getTransportCompaniesBySboid(SBOID)).thenReturn(List.of(transportCompanyModel));
 
-    when(sharedTransportCompanyRepository.findById(1L)).thenReturn(Optional.of(SharedTransportCompany.builder()
+    sharedTransportCompany = SharedTransportCompany.builder()
         .id(1L)
         .number("#0001")
+        .description("SBB description")
         .abbreviation("SBB")
         .businessRegisterName("Schweizerische Bundesbahnen SBB")
-        .build()));
-    when(sharedTransportCompanyRepository.findById(2L)).thenReturn(Optional.of(SharedTransportCompany.builder()
+        .businessRegisterNumber("SBB register number")
+        .build();
+    sharedTransportCompanyRepository.saveAndFlush(sharedTransportCompany);
+
+    sharedTransportCompany1 = SharedTransportCompany.builder()
         .id(2L)
-        .number("#0001")
+        .number("#0002")
+        .description("BLS description")
         .abbreviation("BLS")
         .businessRegisterName("Berner Land Seilbahnen")
-        .build()));
+        .businessRegisterNumber("BLS register number")
+        .build();
+    sharedTransportCompanyRepository.saveAndFlush(sharedTransportCompany1);
   }
 
   @AfterEach
   void tearDown() {
     timetableHearingYearRepository.deleteAll();
     timetableHearingStatementRepository.deleteAll();
+    sharedTransportCompanyRepository.deleteAll();
   }
 
   @Test
@@ -430,6 +440,50 @@ import org.springframework.test.web.servlet.MvcResult;
             .file(statementJson))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.statementStatus, is(StatementStatus.JUNK.toString())))
+        .andExpect(jsonPath("$." + Fields.documents, hasSize(0)));
+  }
+
+  @Test
+  void shouldCreateTwoStatementsWithTheSameCompanyAndThenUpdateOneStatementWithAnotherCompany() throws Exception {
+    TimetableHearingStatementResponsibleTransportCompanyModel thsrtcm =
+        ResponsibleTransportCompanyMapper.toModel(sharedTransportCompany);
+    TimetableHearingStatementSenderModelV2 statementSenderModelV2 = TimetableHearingStatementSenderModelV2.builder()
+        .firstName("Fabienne")
+        .emails(Set.of("fabienne.mueller@sbb.ch"))
+        .build();
+    TimetableHearingStatementModelV2 statement = timetableHearingStatementControllerV2.createStatement(
+        TimetableHearingStatementModelV2.builder()
+            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .swissCanton(SwissCanton.BERN)
+            .statementSender(statementSenderModelV2)
+            .responsibleTransportCompaniesDisplay(sharedTransportCompany.getAbbreviation())
+            .responsibleTransportCompanies(List.of(thsrtcm))
+            .statement("Ich hätte gerne mehrere Verbindungen am Abend.")
+            .build(),
+        Collections.emptyList());
+    timetableHearingStatementControllerV2.createStatement(
+        TimetableHearingStatementModelV2.builder()
+            .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
+            .swissCanton(SwissCanton.BERN)
+            .statementSender(statementSenderModelV2)
+            .responsibleTransportCompaniesDisplay(sharedTransportCompany.getAbbreviation())
+            .responsibleTransportCompanies(List.of(thsrtcm))
+            .statement("Ich hätte gerne mehrere Verbindungen am Abend1.")
+            .build(),
+        Collections.emptyList());
+
+    statementSenderModelV2.setFirstName("Fabienne2");
+    statement.setStatementSender(statementSenderModelV2);
+    TimetableHearingStatementResponsibleTransportCompanyModel thsrtcm1 =
+        ResponsibleTransportCompanyMapper.toModel(sharedTransportCompany1);
+    statement.setResponsibleTransportCompanies(List.of(thsrtcm1));
+
+    MockMultipartFile statementJson = new AtlasMockMultipartFile("statement", null,
+        MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(statement));
+
+    mvc.perform(multipart(HttpMethod.PUT, "/v2/timetable-hearing/statements/" + statement.getId())
+            .file(statementJson))
+        .andExpect(status().isOk())
         .andExpect(jsonPath("$." + Fields.documents, hasSize(0)));
   }
 
