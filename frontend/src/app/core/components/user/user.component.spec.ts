@@ -113,5 +113,21 @@ describe('UserComponent', () => {
       expect(component.userName).toBeUndefined();
     });
 
+    it('should return user name if no (', () => {
+      //when
+      const result = component.removeDepartment('ATLAS / LIDI / FPFN Admin User');
+
+      //then
+      expect(result).toBe('ATLAS / LIDI / FPFN Admin User');
+    });
+
+    it('should return part before (', () => {
+      //when
+      const result = component.removeDepartment('***REMOVED***');
+
+      //then
+      expect(result).toBe('***REMOVED***');
+    });
+
   });
 });
