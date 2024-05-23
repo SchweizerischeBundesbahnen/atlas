@@ -120,6 +120,7 @@ export class DataCy {
   static SEPODI_TRAFFIC_POINT_COMPASS_DIRECTION = '[data-cy=compassDirection]';
   static SEPODI_TRAFFIC_POINT_ELEMENTS_TABLE = '[data-cy=traffic-point-elements-table]';
   static SEPODI_MAP = '[data-cy=sepodi-map]';
+  static HOME_CARD_CONTAINER = '[data-cy=home-card-container]';
 
   static TABLE_FILTER_MULTI_SELECT = (rowIndex: number, columnIndex: number) =>
     `[data-cy=table-filter-multi-select-${rowIndex}-${columnIndex}]`;

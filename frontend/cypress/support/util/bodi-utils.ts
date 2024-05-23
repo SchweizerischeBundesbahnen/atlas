@@ -10,6 +10,7 @@ export default class BodiUtils {
 
   static navigateToBusinessOrganisation() {
     CommonUtils.navigateToHomeViaHomeLogo();
+    cy.get(DataCy.HOME_CARD_CONTAINER).children().should('have.length', 7);
     this.interceptBusinessOrganisations('#business-organisation-directory');
   }
 
