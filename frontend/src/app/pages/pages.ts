@@ -262,7 +262,7 @@ export class Pages {
       if (page === Pages.SEPODI && !environment.sepodiWorkflowEnabled) {
         return {
           ...page,
-          subpages: page.subpages!.filter(subpage => subpage.title !== 'PAGES.HEARING.TITLE_HEADER')
+          subpages: page.subpages!.filter(subpage => subpage.title !== 'PAGES.WORKFLOW.TITLE_HEADER')
         };
       }
       return page;
