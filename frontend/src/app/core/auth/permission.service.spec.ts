@@ -340,5 +340,37 @@ describe('PermissionService', () => {
       expect(mayAccessTtfn).toBeFalse();
     });
 
+    it('should show TTH if explicit reader', () => {
+      userServiceMock.permissions = [{
+        application: ApplicationType.TimetableHearing,
+        role: ApplicationRole.ExplicitReader,
+        permissionRestrictions: []
+      }];
+
+      const mayAccessTth = permissionService.mayAccessTimetableHearing();
+      expect(mayAccessTth).toBeTrue();
+    });
+
+    it('should not show TTH if reader', () => {
+      userServiceMock.permissions = [{
+        application: ApplicationType.TimetableHearing,
+        role: ApplicationRole.Reader,
+        permissionRestrictions: []
+      }];
+
+      const mayAccessTth = permissionService.mayAccessTimetableHearing();
+      expect(mayAccessTth).toBeFalse();
+    });
+
+    it('should evaluate at least supervisor', () => {
+      userServiceMock.permissions = [{
+        application: ApplicationType.Ttfn,
+        role: ApplicationRole.Supervisor,
+        permissionRestrictions: []
+      }];
+
+      const ttfnSupervisor = permissionService.isAtLeastSupervisor(ApplicationType.Ttfn);
+      expect(ttfnSupervisor).toBeTrue();
+    });
   });
 });

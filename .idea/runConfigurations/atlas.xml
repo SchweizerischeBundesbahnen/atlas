@@ -2,6 +2,7 @@
   <configuration default="false" name="atlas" type="CompoundRunConfigurationType">
     <toRun name="atlas compose" type="docker-deploy" />
     <toRun name="Angular CLI Server (frontend)" type="js.build_tools.npm" />
+    <toRun name="AtlasApiAuthGatewayApplication" type="SpringBootApplicationConfigurationType" />
     <toRun name="AtlasGatewayApplication" type="SpringBootApplicationConfigurationType" />
     <toRun name="BusinessOrganisationDirectoryApplication" type="SpringBootApplicationConfigurationType" />
     <toRun name="ExportServicePointApplication" type="SpringBootApplicationConfigurationType" />
