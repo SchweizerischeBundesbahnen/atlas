@@ -124,18 +124,28 @@ public class ServicePointValidationService {
                 (
                     (
                         version.getValidFrom().isAfter(updateVersionModel.getValidFrom())
-                            || version.getValidFrom() == updateVersionModel.getValidFrom()
+                            || version.getValidFrom().isEqual(updateVersionModel.getValidFrom())
                     ) && (
                         version.getValidFrom().isBefore(updateVersionModel.getValidTo())
-                            || version.getValidTo() == updateVersionModel.getValidFrom()
+                            || version.getValidFrom().isEqual(updateVersionModel.getValidTo())
                     )
-                ) || (
-                    version.getValidTo().isAfter(updateVersionModel.getValidFrom())
-                        || updateVersionModel.getValidFrom() == version.getValidTo()
-                ) && (
-                    version.getValidTo().isBefore(updateVersionModel.getValidTo())
-                        || updateVersionModel.getValidTo() == version.getValidTo()
                 )
+                    ||
+                    (
+                        (
+                            version.getValidTo().isAfter(updateVersionModel.getValidFrom())
+                                || updateVersionModel.getValidFrom().isEqual(version.getValidTo())
+                        ) && (
+                            version.getValidTo().isBefore(updateVersionModel.getValidTo())
+                                || updateVersionModel.getValidTo().isEqual(version.getValidTo())
+                        )
+                    ) ||
+                    (
+                        (version.getValidFrom().isEqual(updateVersionModel.getValidFrom()) || version.getValidFrom()
+                            .isBefore(updateVersionModel.getValidFrom()))
+                            && (version.getValidTo().isEqual(updateVersionModel.getValidTo()) || version.getValidTo()
+                            .isAfter(updateVersionModel.getValidTo()))
+                    )
             )
         ).toList();
 

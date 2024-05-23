@@ -25,10 +25,10 @@ public class UpdateAffectsInReviewVersionException extends AtlasException {
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
         .status(HttpStatus.CONFLICT.value())
-        .error("Update affects a version that is in " + Status.IN_REVIEW + " status")
+        .error("Update affects one or more versions that have status: " + Status.IN_REVIEW + ".")
         .message("Update from " + updateFrom.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) + " to " + updateTo.format(
-            DateTimeFormatter.ofPattern("dd.MM.yyyy")) + " affects"
-            + " a version that is in " + Status.IN_REVIEW + " status")
+            DateTimeFormatter.ofPattern("dd.MM.yyyy")) + " affects "
+            + affectedVersions.size() + " version/s that have status: " + Status.IN_REVIEW + ".")
         .details(getErrorDetails())
         .build();
   }
@@ -37,7 +37,7 @@ public class UpdateAffectsInReviewVersionException extends AtlasException {
     TreeSet<Detail> details = new TreeSet<>();
     affectedVersions.forEach(version -> details.add(
         Detail.builder()
-            .message("update affects version from {0} to {1} that is currently " + Status.IN_REVIEW)
+            .message("Update affects version from {0} to {1} that has currently the status: " + Status.IN_REVIEW + ".")
             .displayInfo(DisplayInfo.builder()
                 .code("SEPODI.UPDATE_AFFECTS_VERSION_IN_REVIEW")
                 .with("validFrom", version.getValidFrom())
@@ -48,4 +48,5 @@ public class UpdateAffectsInReviewVersionException extends AtlasException {
     return details;
   }
 
+  // todo: test
 }
