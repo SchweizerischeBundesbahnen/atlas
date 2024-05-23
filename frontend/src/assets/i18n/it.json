@@ -174,9 +174,9 @@
       "PATH_TEXT": "Dai quadri d’orario"
     },
     "LIDI": {
-      "TITLE": "Gestione dei numeri delle elenco delle linee",
+      "TITLE": "Gestione dei numeri dell'elenco delle linee",
       "TITLE_MENU": "Elenco delle linee",
-      "DESCRIPTION": "Registrare, gestire e visualizzare i numeri della elenco delle linee (SLNID).",
+      "DESCRIPTION": "Registrare, gestire e visualizzare i numeri dell'elenco delle linee (SLNID).",
       "PATH_TEXT": "Elenco delle linee"
     },
     "BODI": {
@@ -192,7 +192,7 @@
       "DESCRIPTION": "Registrare, gestire e visualizzare le autorizzazioni degli utenti per atlas."
     },
     "SERVICE_POINTS": {
-      "TITLE": "Gestione dei posto di servizio",
+      "TITLE": "Gestione dei posti di servizio",
       "TITLE_HEADER": "Posto di servizio",
       "DESCRIPTION": "Registrare, gestire e visualizzare i punti di esercizio e le fermate del trasporto pubblico svizzero (SLOID)."
     },
@@ -1167,7 +1167,7 @@
         "TO_BE_COMPLETED": "Da completare",
         "STATIC_VISUAL_INFORMATION": "Informazioni visive statiche (orario, eventualmente mappa della rete o delle zone tariffarie)",
         "ELECTRONIC_VISUAL_INFORMATION_DEPARTURES": "Display elettronico, solo con le partenze",
-        "ELECTRONIC_VISUAL_INFORMATION_COMPLETE": "Display elettronico, con informazioni sulle partenze e sui disturbi/ inconvenienti",
+        "ELECTRONIC_VISUAL_INFORMATION_COMPLETE": "Display elettronico, con informazioni sulle partenze e sui disturbi/inconvenienti",
         "ACOUSTIC_INFORMATION": "Altoparlante (di solito solo informazioni sui disturbi/inconvenienti)",
         "TEXT_TO_SPEECH_DEPARTURES": "Text-to-speech, solo con le partenze",
         "TEXT_TO_SPEECH_COMPLETE": "Text-to-speech, con informazioni sulle partenze e sui disturbi/inconvenienti"
