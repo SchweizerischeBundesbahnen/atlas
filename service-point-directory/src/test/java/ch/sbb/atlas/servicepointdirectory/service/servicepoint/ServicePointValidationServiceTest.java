@@ -70,5 +70,151 @@ class ServicePointValidationServiceTest {
     assertThat(exception.getErrorResponse().getDetails()).hasSize(2);
   }
 
-  // todo one not affected:success, one left,right border, one left,right overlap
+  @Test
+  void checkNotAffectedInReviewShouldNotThrow() {
+    ServicePointVersion bern = ServicePointTestData.getBern();
+    bern.setStatus(Status.IN_REVIEW);
+    bern.setValidFrom(LocalDate.of(2020, 1, 1));
+    bern.setValidTo(LocalDate.of(2022, 1, 1));
+
+    CreateServicePointVersionModel updateVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    updateVersion.setValidFrom(LocalDate.of(2024, 1, 1));
+    updateVersion.setValidTo(LocalDate.of(2026, 1, 1));
+
+    assertDoesNotThrow(() -> servicePointValidationService.checkNotAffectingInReviewVersions(List.of(bern), updateVersion));
+  }
+
+  @Test
+  void checkUpdateIsInsideInReviewVersionShouldThrow() {
+    ServicePointVersion bern = ServicePointTestData.getBern();
+    bern.setStatus(Status.IN_REVIEW);
+    bern.setValidFrom(LocalDate.of(2020, 1, 1));
+    bern.setValidTo(LocalDate.of(2022, 1, 1));
+
+    CreateServicePointVersionModel updateVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    updateVersion.setValidFrom(LocalDate.of(2021, 1, 1));
+    updateVersion.setValidTo(LocalDate.of(2021, 8, 1));
+
+    UpdateAffectsInReviewVersionException exception = assertThrows(
+        UpdateAffectsInReviewVersionException.class,
+        () -> servicePointValidationService.checkNotAffectingInReviewVersions(List.of(bern), updateVersion));
+    assertThat(exception.getErrorResponse().getDetails()).hasSize(1);
+  }
+
+  @Test
+  void checkOneInReviewIsAffectedAtLeftBorderShouldThrow() {
+    ServicePointVersion bern = ServicePointTestData.getBern();
+    bern.setStatus(Status.IN_REVIEW);
+    bern.setValidFrom(LocalDate.of(2020, 1, 1));
+    bern.setValidTo(LocalDate.of(2022, 1, 1));
+
+    CreateServicePointVersionModel updateVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    updateVersion.setValidFrom(LocalDate.of(2018, 1, 1));
+    updateVersion.setValidTo(LocalDate.of(2020, 1, 1));
+
+    UpdateAffectsInReviewVersionException exception = assertThrows(
+        UpdateAffectsInReviewVersionException.class,
+        () -> servicePointValidationService.checkNotAffectingInReviewVersions(List.of(bern), updateVersion));
+    assertThat(exception.getErrorResponse().getDetails()).hasSize(1);
+  }
+
+  @Test
+  void checkOneInReviewAffectedAtRightBorderShouldThrow() {
+    ServicePointVersion bern = ServicePointTestData.getBern();
+    bern.setStatus(Status.IN_REVIEW);
+    bern.setValidFrom(LocalDate.of(2020, 1, 1));
+    bern.setValidTo(LocalDate.of(2022, 1, 1));
+
+    CreateServicePointVersionModel updateVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    updateVersion.setValidFrom(LocalDate.of(2022, 1, 1));
+    updateVersion.setValidTo(LocalDate.of(2024, 1, 1));
+
+    UpdateAffectsInReviewVersionException exception = assertThrows(
+        UpdateAffectsInReviewVersionException.class,
+        () -> servicePointValidationService.checkNotAffectingInReviewVersions(List.of(bern), updateVersion));
+    assertThat(exception.getErrorResponse().getDetails()).hasSize(1);
+  }
+
+  @Test
+  void checkUpdateInsideAndTouchingLeftBorderShouldThrow() {
+    ServicePointVersion bern = ServicePointTestData.getBern();
+    bern.setStatus(Status.IN_REVIEW);
+    bern.setValidFrom(LocalDate.of(2020, 1, 1));
+    bern.setValidTo(LocalDate.of(2022, 1, 1));
+
+    CreateServicePointVersionModel updateVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    updateVersion.setValidFrom(LocalDate.of(2020, 1, 1));
+    updateVersion.setValidTo(LocalDate.of(2021, 1, 1));
+
+    UpdateAffectsInReviewVersionException exception = assertThrows(
+        UpdateAffectsInReviewVersionException.class,
+        () -> servicePointValidationService.checkNotAffectingInReviewVersions(List.of(bern), updateVersion));
+    assertThat(exception.getErrorResponse().getDetails()).hasSize(1);
+  }
+
+  @Test
+  void checkUpdateInsideAndTouchingRightBorderShouldThrow() {
+    ServicePointVersion bern = ServicePointTestData.getBern();
+    bern.setStatus(Status.IN_REVIEW);
+    bern.setValidFrom(LocalDate.of(2020, 1, 1));
+    bern.setValidTo(LocalDate.of(2022, 1, 1));
+
+    CreateServicePointVersionModel updateVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    updateVersion.setValidFrom(LocalDate.of(2021, 1, 1));
+    updateVersion.setValidTo(LocalDate.of(2022, 1, 1));
+
+    UpdateAffectsInReviewVersionException exception = assertThrows(
+        UpdateAffectsInReviewVersionException.class,
+        () -> servicePointValidationService.checkNotAffectingInReviewVersions(List.of(bern), updateVersion));
+    assertThat(exception.getErrorResponse().getDetails()).hasSize(1);
+  }
+
+  @Test
+  void checkOneNotInReviewAffectedShouldNotThrow() {
+    ServicePointVersion bern = ServicePointTestData.getBern();
+    bern.setStatus(Status.VALIDATED);
+    bern.setValidFrom(LocalDate.of(2020, 1, 1));
+    bern.setValidTo(LocalDate.of(2022, 1, 1));
+
+    CreateServicePointVersionModel updateVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    updateVersion.setValidFrom(LocalDate.of(2021, 1, 1));
+    updateVersion.setValidTo(LocalDate.of(2022, 1, 1));
+
+    assertDoesNotThrow(() -> servicePointValidationService.checkNotAffectingInReviewVersions(List.of(bern), updateVersion));
+  }
+
+  @Test
+  void checkOneInReviewIsAffectedWithLeftBorderOverlapShouldThrow() {
+    ServicePointVersion bern = ServicePointTestData.getBern();
+    bern.setStatus(Status.IN_REVIEW);
+    bern.setValidFrom(LocalDate.of(2020, 1, 1));
+    bern.setValidTo(LocalDate.of(2022, 1, 1));
+
+    CreateServicePointVersionModel updateVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    updateVersion.setValidFrom(LocalDate.of(2018, 1, 1));
+    updateVersion.setValidTo(LocalDate.of(2021, 1, 1));
+
+    UpdateAffectsInReviewVersionException exception = assertThrows(
+        UpdateAffectsInReviewVersionException.class,
+        () -> servicePointValidationService.checkNotAffectingInReviewVersions(List.of(bern), updateVersion));
+    assertThat(exception.getErrorResponse().getDetails()).hasSize(1);
+  }
+
+  @Test
+  void checkOneInReviewIsAffectedWithRightBorderOverlapShouldThrow() {
+    ServicePointVersion bern = ServicePointTestData.getBern();
+    bern.setStatus(Status.IN_REVIEW);
+    bern.setValidFrom(LocalDate.of(2020, 1, 1));
+    bern.setValidTo(LocalDate.of(2022, 1, 1));
+
+    CreateServicePointVersionModel updateVersion = ServicePointTestData.getAargauServicePointVersionModel();
+    updateVersion.setValidFrom(LocalDate.of(2021, 1, 1));
+    updateVersion.setValidTo(LocalDate.of(2023, 1, 1));
+
+    UpdateAffectsInReviewVersionException exception = assertThrows(
+        UpdateAffectsInReviewVersionException.class,
+        () -> servicePointValidationService.checkNotAffectingInReviewVersions(List.of(bern), updateVersion));
+    assertThat(exception.getErrorResponse().getDetails()).hasSize(1);
+  }
+
 }
