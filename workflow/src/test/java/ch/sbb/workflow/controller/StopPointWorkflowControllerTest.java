@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.api.workflow.StopPointWorkflowStartModel;
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.Person;
@@ -48,6 +49,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .sboid("ch:1:sboid:666")
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
         .swissMunicipalityName("Biel/Bienne")
+        .swissCanton(SwissCanton.BERN)
         .mails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .examinants(List.of(person))
@@ -101,6 +103,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     StopPointWorkflowStartModel workflowModel = StopPointWorkflowStartModel.builder()
         .sloid("ch:1:sloid:1234")
         .sboid("ch:1:sboid:666")
+        .swissCanton(SwissCanton.BERN)
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
         .swissMunicipalityName("Biel/Bienne")
         .mails(List.of(MAIL_ADDRESS))
@@ -140,6 +143,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     StopPointWorkflowStartModel workflowModel = StopPointWorkflowStartModel.builder()
         .sloid("ch:1:sloid:1234")
         .sboid("ch:1:sboid:666")
+        .swissCanton(SwissCanton.BERN)
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
         .swissMunicipalityName("Biel/Bienne")
         .mails(List.of(MAIL_ADDRESS))

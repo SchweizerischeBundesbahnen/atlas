@@ -2,6 +2,7 @@ package ch.sbb.atlas.api.workflow;
 
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.kafka.model.SwissCanton;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -40,6 +41,11 @@ public class StopPointWorkflowStartModel {
   @Schema(description = "Official designation of a location that must be used by all recipients"
       , example = "Biel/Bienne Bözingenfeld/Champ", maxLength = 30)
   private String designationOfficial;
+
+  @NotNull
+  @Schema(description = "Canton, the statement is for")
+  private SwissCanton swissCanton;
+
 
   @Schema(description = "SwissMunicipalityName the location is in", example = "Biel/Bienne")
   @Size(max = AtlasFieldLengths.LENGTH_255)
