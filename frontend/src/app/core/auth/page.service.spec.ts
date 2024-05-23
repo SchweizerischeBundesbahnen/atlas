@@ -4,13 +4,10 @@ import {RouterModule} from "@angular/router";
 import {PageService} from "./page.service";
 import {PermissionService} from "./permission.service";
 
-let mayAccessTth = true;
-let mayAccessTtfn = true;
-let admin = true;
 const permissionServiceMock: Partial<PermissionService> = {
-  mayAccessTimetableHearing: () => mayAccessTth,
-  mayAccessTtfn: () => mayAccessTtfn,
-  isAdmin: admin
+  mayAccessTimetableHearing: () => true,
+  mayAccessTtfn: () => true,
+  isAdmin: true
 };
 
 describe('PageService', () => {
