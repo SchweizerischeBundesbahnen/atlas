@@ -83,7 +83,7 @@ public class StopPointWorkflow {
   private StopPointWorkflow followUpWorkflow;
 
   @Builder.Default
-  @OneToMany(mappedBy = "id", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "stopPointWorkflow", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Set<Person> examinants = new HashSet<>();
 
   @Size(max = AtlasFieldLengths.LENGTH_1500)

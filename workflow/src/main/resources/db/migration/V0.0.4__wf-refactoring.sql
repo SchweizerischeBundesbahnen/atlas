@@ -86,4 +86,4 @@ ALTER TABLE person
 
 ALTER TABLE person
     ADD foreign key (stop_point_workflow_id) references
-        person (id)
+        stop_point_workflow (id)
