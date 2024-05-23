@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../auth/auth.service';
-import { User } from './user';
-import { ApplicationRole, ApplicationType, Permission } from '../../../api';
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from '../../auth/auth.service';
+import {User} from './user';
+import {ApplicationRole, ApplicationType, Permission} from '../../../api';
 import {UserService} from "../../auth/user.service";
-import {filter} from "rxjs/operators";
 
 @Component({
   selector: 'app-user',
