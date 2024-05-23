@@ -27,8 +27,9 @@ export class AuthService {
 
     this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
       if (this.oauthService.getIdentityClaims()) {
-        this.userService.setCurrentUserAndLoadPermissions(this.userFromAccessToken()).subscribe(() => {
-          this.pageService.addPagesBasedOnPermissions()
+        const user = this.userFromAccessToken();
+        this.userService.setCurrentUserAndLoadPermissions(user).subscribe(() => {
+          this.pageService.addPagesBasedOnPermissions();
         });
 
         this.router.navigateByUrl(sessionStorage.getItem(this.REQUESTED_ROUTE_STORAGE_KEY) ?? '').then();
@@ -51,7 +52,7 @@ export class AuthService {
     this.router.navigate([Pages.HOME.path]).then();
   }
 
-  private userFromAccessToken(): User {
+  userFromAccessToken(): User {
     const decodedUser: User & { roles: string[] } = jwtDecode(this.oauthService.getAccessToken());
     return {
       ...decodedUser,
