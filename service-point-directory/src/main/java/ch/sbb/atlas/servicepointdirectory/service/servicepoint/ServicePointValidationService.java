@@ -13,6 +13,7 @@ import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationLongC
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationOfficialConflictException;
 import ch.sbb.atlas.servicepointdirectory.exception.UpdateAffectsInReviewVersionException;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -121,31 +122,10 @@ public class ServicePointValidationService {
     List<ServicePointVersion> affectedVersions =
         existingVersions.stream().filter(version -> version.getStatus() == Status.IN_REVIEW &&
             (
-                (
-                    (
-                        version.getValidFrom().isAfter(updateVersionModel.getValidFrom())
-                            || version.getValidFrom().isEqual(updateVersionModel.getValidFrom())
-                    ) && (
-                        version.getValidFrom().isBefore(updateVersionModel.getValidTo())
-                            || version.getValidFrom().isEqual(updateVersionModel.getValidTo())
-                    )
-                )
-                    ||
-                    (
-                        (
-                            version.getValidTo().isAfter(updateVersionModel.getValidFrom())
-                                || updateVersionModel.getValidFrom().isEqual(version.getValidTo())
-                        ) && (
-                            version.getValidTo().isBefore(updateVersionModel.getValidTo())
-                                || updateVersionModel.getValidTo().isEqual(version.getValidTo())
-                        )
-                    ) ||
-                    (
-                        (version.getValidFrom().isEqual(updateVersionModel.getValidFrom()) || version.getValidFrom()
-                            .isBefore(updateVersionModel.getValidFrom()))
-                            && (version.getValidTo().isEqual(updateVersionModel.getValidTo()) || version.getValidTo()
-                            .isAfter(updateVersionModel.getValidTo()))
-                    )
+                // todo: refactor in seperate class
+                isValidFromInsideUpdate(updateVersionModel, version)
+                    || isValidToInsideUpdate(updateVersionModel, version)
+                    || isUpdateInsideVersion(updateVersionModel, version)
             )
         ).toList();
 
@@ -156,5 +136,28 @@ public class ServicePointValidationService {
           affectedVersions
       );
     }
+  }
+
+  private boolean isUpdateInsideVersion(UpdateServicePointVersionModel updateVersionModel, ServicePointVersion version) {
+    return isAfterOrEqual(version.getValidTo(), updateVersionModel.getValidTo())
+        && isBeforeOrEqual(version.getValidFrom(), updateVersionModel.getValidFrom());
+  }
+
+  private boolean isValidToInsideUpdate(UpdateServicePointVersionModel updateVersionModel, ServicePointVersion version) {
+    return isAfterOrEqual(version.getValidTo(), updateVersionModel.getValidFrom())
+        && isBeforeOrEqual(version.getValidTo(), updateVersionModel.getValidTo());
+  }
+
+  private boolean isValidFromInsideUpdate(UpdateServicePointVersionModel updateVersionModel, ServicePointVersion version) {
+    return isAfterOrEqual(version.getValidFrom(), updateVersionModel.getValidFrom())
+        && isBeforeOrEqual(version.getValidFrom(), updateVersionModel.getValidTo());
+  }
+
+  private boolean isBeforeOrEqual(LocalDate date, LocalDate date2) {
+    return date.isBefore(date2) || date.isEqual(date2);
+  }
+
+  private boolean isAfterOrEqual(LocalDate date, LocalDate date2) {
+    return date.isAfter(date2) || date.isEqual(date2);
   }
 }
