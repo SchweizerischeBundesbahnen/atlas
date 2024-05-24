@@ -6,6 +6,7 @@ import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -25,6 +26,7 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -85,6 +87,10 @@ public class StopPointWorkflow {
   @Builder.Default
   @OneToMany(mappedBy = "stopPointWorkflow", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Set<Person> examinants = new HashSet<>();
+
+  @Size(max = AtlasFieldLengths.LENGTH_10)
+  @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+  private List<String> ccEmails;
 
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   private String closingComment;
