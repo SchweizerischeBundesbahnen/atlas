@@ -90,6 +90,12 @@ atlas:
       url: "http://localhost:8888"
 
 examinants:
+  specialistOffice:
+    lastName: "SKI"
+    firstname: "atlas"
+    organisation: "SKI - Systemaufgaben Kundeninformation"
+    email: "TechSupport-ATLAS@sbb.ch"
+    function: "Specialist Office"
   cantons:
   - canton: "ZH"
     lastName: "ZVV Stationsnamen"
