@@ -1,7 +1,7 @@
 package ch.sbb.workflow.model;
 
+import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
-import ch.sbb.workflow.entity.Person;
 import java.util.List;
 import lombok.Builder;
 import lombok.Data;
@@ -18,28 +18,49 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "examinants")
 public class Examinants {
 
+  private SpecialistOffice specialistOffice;
+
   private List<Canton> cantons;
 
-  public Canton getExaminantByCanton(SwissCanton canton) {
-    return cantons.stream().filter(examinant -> canton.getAbbreviation().equals(examinant.canton)).findFirst()
-        .orElseThrow(() -> new IllegalStateException("Canton abbreviation does not exists"));
-  }
-
-  public Person getExaminantPersonByCanton(String canton) {
-    Canton examinantByCanton = getExaminantByCanton(SwissCanton.fromAbbreviation(canton));
-    return Person.builder()
-        .function(examinantByCanton.getFunction())
+  public ClientPersonModel getExaminantPersonByCanton(SwissCanton canton) {
+    Canton examinantByCanton = getExaminantByCanton(SwissCanton.fromAbbreviation(canton.getAbbreviation()));
+    return ClientPersonModel.builder()
+        .personFunction(examinantByCanton.getFunction())
         .firstName(examinantByCanton.getFirstname())
         .lastName(examinantByCanton.getLastname())
         .mail(examinantByCanton.getEmail())
         .build();
   }
 
+  public ClientPersonModel getExaminantSpecialistOffice() {
+    return ClientPersonModel.builder()
+        .personFunction(specialistOffice.getFunction())
+        .firstName(specialistOffice.getFirstname())
+        .lastName(specialistOffice.getLastname())
+        .mail(specialistOffice.getEmail())
+        .build();
+  }
+
+
+  Canton getExaminantByCanton(SwissCanton canton) {
+    return cantons.stream().filter(examinant -> canton.getAbbreviation().equals(examinant.canton)).findFirst()
+        .orElseThrow(() -> new IllegalStateException("Canton abbreviation does not exists"));
+  }
+
   @Data
   @Builder
-  public static class Canton {
-
+  private static class Canton {
     private String canton;
+    private String lastname;
+    private String firstname;
+    private String organisation;
+    private String email;
+    private String function;
+  }
+
+  @Data
+  @Builder
+  private static class SpecialistOffice {
     private String lastname;
     private String firstname;
     private String organisation;
