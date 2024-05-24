@@ -37,6 +37,13 @@ CREATE TABLE stop_point_workflow
             REFERENCES stop_point_workflow (id)
 );
 
+CREATE TABLE stop_point_workflow_cc_emails
+(
+    stop_point_workflow_id BIGINT       NOT NULL,
+    cc_emails              VARCHAR(255) NOT NULL,
+    FOREIGN KEY (stop_point_workflow_id) REFERENCES stop_point_workflow (id)
+);
+
 CREATE SEQUENCE stop_point_workflow_seq START WITH 1000 INCREMENT BY 1;
 
 CREATE TABLE decision
@@ -86,4 +93,4 @@ ALTER TABLE person
 
 ALTER TABLE person
     ADD foreign key (stop_point_workflow_id) references
-        stop_point_workflow (id)
+        stop_point_workflow (id);
