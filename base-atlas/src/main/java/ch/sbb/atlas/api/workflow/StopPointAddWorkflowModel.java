@@ -19,8 +19,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-@Schema(name = "StopPointWorkflowStart")
-public class StopPointWorkflowStartModel {
+@Schema(name = "StopPointAddWorkflow")
+public class StopPointAddWorkflowModel {
 
   @Schema(description = "Service Point version id")
   @NotNull
@@ -52,7 +52,7 @@ public class StopPointWorkflowStartModel {
   private String swissMunicipalityName;
 
   @Schema(description = "List of cc emails for status of hearing")
-  private List<String> mails;
+  private List<String> ccEmails;
 
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_1500)
