@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.api.workflow.ClientPersonModel;
-import ch.sbb.atlas.api.workflow.StopPointWorkflowStartModel;
+import ch.sbb.atlas.api.workflow.StopPointAddWorkflowModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
@@ -16,6 +16,7 @@ import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.workflow.StopPointWorkflowRepository;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
@@ -44,25 +45,29 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .lastName("Hamsik")
         .personFunction("Centrocampista")
         .mail(MAIL_ADDRESS).build();
-    StopPointWorkflowStartModel workflowModel = StopPointWorkflowStartModel.builder()
+    List<ClientPersonModel> clientPersonModels = new ArrayList<>();
+    clientPersonModels.add(person);
+    StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
         .sloid("ch:1:sloid:1234")
         .sboid("ch:1:sboid:666")
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
         .swissMunicipalityName("Biel/Bienne")
         .swissCanton(SwissCanton.BERN)
-        .mails(List.of(MAIL_ADDRESS))
+        .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
-        .examinants(List.of(person))
+        .examinants(clientPersonModels)
+        .ccEmails(List.of("a@b.ch","b@c.it"))
         .validFrom(LocalDate.of(2000,1,1))
         .validTo(LocalDate.of(2000,12,31))
         .versionId(123456L)
         .build();
 
-    controller.startWorkflow(workflowModel);
+    controller.addWorkflow(workflowModel);
 
     mvc.perform(get("/v1/stop-point/workflows"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(1)));
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0].examinants", hasSize(3)));
   }
 
   @Test
@@ -100,13 +105,13 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .lastName("Hamsik")
         .personFunction("Centrocampista")
         .mail(MAIL_ADDRESS).build();
-    StopPointWorkflowStartModel workflowModel = StopPointWorkflowStartModel.builder()
+    StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
         .sloid("ch:1:sloid:1234")
         .sboid("ch:1:sboid:666")
         .swissCanton(SwissCanton.BERN)
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
         .swissMunicipalityName("Biel/Bienne")
-        .mails(List.of(MAIL_ADDRESS))
+        .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .examinants(List.of(person))
         .validFrom(LocalDate.of(2000,1,1))
@@ -133,6 +138,35 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldCreateAddWorkflow() throws Exception {
+    //when
+    ClientPersonModel person = ClientPersonModel.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .personFunction("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+    StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .swissCanton(SwissCanton.BERN)
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .examinants(List.of(person))
+        .validFrom(LocalDate.of(2000,1,1))
+        .validTo(LocalDate.of(2000,12,31))
+        .versionId(123456L)
+        .build();
+
+    //given
+    mvc.perform(post("/v1/stop-point/workflows")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(workflowModel))
+        ).andExpect(status().isCreated());
+  }
+
+  @Test
   void shouldNotCreateWorkflowWhenWorkflowWorkflowDescriptionHasWrongEncoding() throws Exception {
     //when
     ClientPersonModel person = ClientPersonModel.builder()
@@ -140,13 +174,13 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .lastName("Hamsik")
         .personFunction("Centrocampista")
         .mail(MAIL_ADDRESS).build();
-    StopPointWorkflowStartModel workflowModel = StopPointWorkflowStartModel.builder()
+    StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
         .sloid("ch:1:sloid:1234")
         .sboid("ch:1:sboid:666")
         .swissCanton(SwissCanton.BERN)
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
         .swissMunicipalityName("Biel/Bienne")
-        .mails(List.of(MAIL_ADDRESS))
+        .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("\uD83D\uDE00\uD83D\uDE01\uD83D")
         .examinants(List.of(person))
         .validFrom(LocalDate.of(2000,1,1))
