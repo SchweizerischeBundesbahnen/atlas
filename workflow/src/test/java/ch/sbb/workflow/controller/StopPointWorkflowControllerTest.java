@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -402,7 +401,9 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .endDate(LocalDate.of(2000, 12, 31))
         .versionId(versionId)
         .build();
-    workflowRepository.save(stopPointWorkflow);
+    StopPointWorkflow workflow = workflowRepository.save(stopPointWorkflow);
+    person.setStopPointWorkflow(workflow);
+    workflowRepository.save(workflow);
 
     ClientPersonModel examinant = ClientPersonModel.builder()
         .firstName("Luca")
@@ -414,14 +415,52 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     mvc.perform(put("/v1/stop-point/workflows/add-examinant/" + stopPointWorkflow.getId())
             .contentType(contentType)
             .content(mapper.writeValueAsString(examinant)))
-        .andDo(print())
         .andExpect(status().isOk());
 
     List<StopPointWorkflow> workflows =
         workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
             .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
     assertThat(workflows).hasSize(1);
-    assertThat(workflows.get(0).getExaminants()).hasSize(1);
+    assertThat(workflows.get(0).getExaminants()).hasSize(2);
+  }
+
+  @Test
+  void shouldRemoveExaminantToWorkflow() throws Exception {
+    //when
+    Person person = Person.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .function("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+
+    Long versionId = 123456L;
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .status(WorkflowStatus.ADDED)
+        .examinants(Set.of(person))
+        .startDate(LocalDate.of(2000, 1, 1))
+        .endDate(LocalDate.of(2000, 12, 31))
+        .versionId(versionId)
+        .build();
+    StopPointWorkflow workflow = workflowRepository.save(stopPointWorkflow);
+    person.setStopPointWorkflow(workflow);
+    workflowRepository.save(workflow);
+
+    //given
+    mvc.perform(put("/v1/stop-point/workflows/remove-examinant/" + stopPointWorkflow.getId() + "/" + person.getId())
+            .contentType(contentType))
+        .andExpect(status().isOk());
+
+    List<StopPointWorkflow> workflows =
+        workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
+            .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
+    assertThat(workflows).hasSize(1);
+    assertThat(workflows.get(0).getExaminants()).hasSize(0);
   }
 
   private static UpdateServicePointVersionModel getUpdateServicePointVersionModel(Status status) {
