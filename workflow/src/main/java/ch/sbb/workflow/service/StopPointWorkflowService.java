@@ -119,6 +119,17 @@ public class StopPointWorkflowService {
     return stopPointWorkflow;
   }
 
+  public StopPointWorkflow addExaminantToWorkflow(Long id, ClientPersonModel personModel) {
+    StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
+    if(stopPointWorkflow.getStatus() != WorkflowStatus.ADDED || stopPointWorkflow.getStatus() != WorkflowStatus.APPROVED ){
+      Person examinant = ClientPersonMapper.toEntity(personModel);
+      stopPointWorkflow.getExaminants().add(examinant);
+      examinant.setStopPointWorkflow(stopPointWorkflow);
+      return  workflowRepository.save(stopPointWorkflow);
+    }
+    throw new IllegalStateException("Workflow status must be ADDED!!!");
+  }
+
   private StopPointWorkflow findStopPointWorkflow(Long id) {
     return workflowRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }
