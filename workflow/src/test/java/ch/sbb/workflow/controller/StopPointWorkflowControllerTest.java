@@ -25,12 +25,14 @@ import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.Decision;
+import ch.sbb.workflow.entity.Otp;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.kafka.WorkflowNotificationService;
 import ch.sbb.workflow.mapper.ClientPersonMapper;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
 import ch.sbb.workflow.workflow.DecisionRepository;
+import ch.sbb.workflow.workflow.OtpRepository;
 import ch.sbb.workflow.workflow.StopPointWorkflowRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -57,6 +59,9 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   @Autowired
   private DecisionRepository decisionRepository;
 
+  @Autowired
+  private OtpRepository otpRepository;
+
   @MockBean
   private SePoDiClient sePoDiClient;
 
@@ -65,6 +70,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
 
   @AfterEach
   void tearDown() {
+    otpRepository.deleteAll();
     decisionRepository.deleteAll();
     workflowRepository.deleteAll();
   }
@@ -422,6 +428,45 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
             .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
     assertThat(workflows).hasSize(1);
     assertThat(workflows.get(0).getExaminants()).hasSize(2);
+  }
+
+  @Test
+  void shouldGetOtpWorkflow() throws Exception {
+    //when
+    Person person = Person.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .function("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+
+    Long versionId = 123456L;
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .status(WorkflowStatus.ADDED)
+        .examinants(Set.of(person))
+        .startDate(LocalDate.of(2000, 1, 1))
+        .endDate(LocalDate.of(2000, 12, 31))
+        .versionId(versionId)
+        .build();
+    StopPointWorkflow workflow = workflowRepository.save(stopPointWorkflow);
+    person.setStopPointWorkflow(workflow);
+    workflowRepository.save(workflow);
+
+    //given
+    mvc.perform(put("/v1/stop-point/workflows/obtain-otp/" + stopPointWorkflow.getId() + "/" + person.getId())
+            .contentType(contentType))
+        .andExpect(status().isOk());
+
+    Otp otpResult = otpRepository.findAll().stream().filter(otp -> otp.getPerson().getId().equals(person.getId())).findFirst()
+        .orElse(null);
+
+    assertThat(otpResult).isNotNull();
+    assertThat(otpResult.getPerson().getId()).isEqualTo(person.getId());
   }
 
   @Test
