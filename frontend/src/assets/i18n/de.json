@@ -206,7 +206,10 @@
       "TITLE_HEADER": "Barrierefreiheit",
       "DESCRIPTION": "Erfassen, Bearbeiten und Einsehen von Daten zur Barrierefreiheit von öV-Haltestellen in der Schweiz."
     },
-    "DETAILS": "Details"
+    "DETAILS": "Details",
+    "WORKFLOW": {
+      "TITLE_HEADER": "Anhörung"
+    }
   },
   "PAGINATOR": {
     "ITEMS_PER_PAGE": "Objekte pro Seite",
@@ -561,7 +564,7 @@
       "ADDED": "Erfasst",
       "STARTED": "Gestartet",
       "REVISION": "In Überarbeitung",
-      "HEARING": "In Anhörung",
+      "WORKFLOW": "In Anhörung",
       "APPROVED": "Genehmigt",
       "REJECTED": "Abgelehnt"
     },
