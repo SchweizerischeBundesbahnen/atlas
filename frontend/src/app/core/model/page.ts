@@ -5,4 +5,5 @@ export interface Page {
   path: string;
   pathText?: string;
   description?: string;
+  subpages?: Page[];
 }
