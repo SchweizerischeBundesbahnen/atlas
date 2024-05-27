@@ -93,6 +93,10 @@
          <groupId>org.flywaydb</groupId>
       </dependency>
       <dependency>
+         <artifactId>flyway-database-postgresql</artifactId>
+         <groupId>org.flywaydb</groupId>
+      </dependency>
+      <dependency>
          <artifactId>base-atlas</artifactId>
          <groupId>ch.sbb.atlas</groupId>
          <version>2.48.0</version>
