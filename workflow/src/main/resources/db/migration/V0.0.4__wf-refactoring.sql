@@ -48,22 +48,22 @@ CREATE SEQUENCE stop_point_workflow_seq START WITH 1000 INCREMENT BY 1;
 
 CREATE TABLE decision
 (
-    id                  BIGINT      NOT NULL PRIMARY KEY,
+    id                  BIGINT        NOT NULL PRIMARY KEY,
     judgement           BOOLEAN,
-    motivation          VARCHAR(1500),
-    examinant_bav_id    BIGINT,
-    motivation_date     TIMESTAMP   NOT NULL,
+    motivation          VARCHAR(1500) NOT NULL,
+    examinant_id        BIGINT        NOT NULL,
+    motivation_date     TIMESTAMP     NOT NULL,
     fot_judgement       BOOLEAN,
     fot_motivation      VARCHAR(1500),
-    fot_motivation_date TIMESTAMP   NOT NULL,
+    fot_motivation_date TIMESTAMP,
     fot_overrider_id    BIGINT,
-    creation_date       TIMESTAMP   NOT NULL,
-    creator             VARCHAR(50) NOT NULL,
-    edition_date        TIMESTAMP   NOT NULL,
-    editor              VARCHAR(50) NOT NULL,
+    creation_date       TIMESTAMP     NOT NULL,
+    creator             VARCHAR(50)   NOT NULL,
+    edition_date        TIMESTAMP     NOT NULL,
+    editor              VARCHAR(50)   NOT NULL,
 
     CONSTRAINT fk_examinant_decision_bav
-        FOREIGN KEY (examinant_bav_id)
+        FOREIGN KEY (examinant_id)
             REFERENCES person (id),
 
     CONSTRAINT fk_for_overrider
