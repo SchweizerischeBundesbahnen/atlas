@@ -12,7 +12,7 @@ import { BaseDetailComponent } from '../components/base-detail/base-detail.compo
 import { SideNavComponent } from '../components/side-nav/side-nav.component';
 import { MaterialModule } from './material.module';
 import { RouterModule } from '@angular/router';
-import { OAuthModule } from 'angular-oauth2-oidc';
+import {OAuthModule, OAuthStorage} from 'angular-oauth2-oidc';
 import { environment } from '../../../environments/environment';
 import { EmptyToNullDirective } from '../text-input/empty-to-null';
 import { TrimInputDirective } from '../text-input/trim-input';
@@ -55,6 +55,7 @@ import { SplitServicePointNumberPipe } from '../search-service-point/split-servi
 import { MeansOfTransportPickerComponent } from '../../pages/sepodi/means-of-transport-picker/means-of-transport-picker.component';
 import {DetailPageContentComponent} from "../components/detail-page-content/detail-page-content.component";
 import {StringListComponent} from "../form-components/string-list/string-list.component";
+import {OAuthCookieStorage} from "../cookies/oauth-cookie-storage";
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -130,6 +131,10 @@ const coreComponents = [
     }),
   ],
   exports: [...coreComponents, CommonModule, MaterialModule, TranslateModule],
-  providers: [TranslatePipe, FormatPipe],
+  providers: [
+    TranslatePipe,
+    FormatPipe,
+    { provide: OAuthStorage, useClass: OAuthCookieStorage }
+  ]
 })
 export class CoreModule {}
