@@ -2,9 +2,12 @@ package ch.sbb.workflow.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -21,6 +24,7 @@ import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
+import ch.sbb.workflow.kafka.WorkflowNotificationService;
 import ch.sbb.workflow.workflow.StopPointWorkflowRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -45,6 +49,9 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
 
   @MockBean
   private SePoDiClient sePoDiClient;
+
+  @MockBean
+  private WorkflowNotificationService notificationService;
 
   @AfterEach
   void tearDown() {
@@ -224,6 +231,40 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("\uD83D\uDE00\uD83D\uDE01?")))
         .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("cause")))
         .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("must match \"[\\u0000-\\u00ff]*\"")));
+  }
+
+  @Test
+  void shouldStartWorkflow() throws Exception {
+    //when
+    Person person = Person.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .function("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+
+    Long versionId = 123456L;
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .status(WorkflowStatus.ADDED)
+        .examinants(Set.of(person))
+        .startDate(LocalDate.of(2000, 1, 1))
+        .endDate(LocalDate.of(2000, 12, 31))
+        .versionId(versionId)
+        .build();
+    workflowRepository.save(stopPointWorkflow);
+
+    //given
+    mvc.perform(put("/v1/stop-point/workflows/" + stopPointWorkflow.getId())
+            .contentType(contentType))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.status", is("HEARING")));
+    stopPointWorkflow.setStatus(WorkflowStatus.HEARING);
+    verify(notificationService).sendStopPointWorkflowMail(any(StopPointWorkflow.class));
   }
 
   private static UpdateServicePointVersionModel getUpdateServicePointVersionModel(Status status) {

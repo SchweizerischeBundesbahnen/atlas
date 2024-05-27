@@ -41,10 +41,10 @@ public class StopPointWorkflowService {
   public StopPointWorkflow addWorkflow(StopPointAddWorkflowModel stopPointAddWorkflowModel) {
     StopPointWorkflow stopPointWorkflow = mapStopPointWorkflow(stopPointAddWorkflowModel);
     if (hasWorkflowAdded(stopPointWorkflow.getVersionId())) {
-      // TODO: BusinessObjectCurrentlyAddedException
+      // TODO: WorkflowCurrentlyAddedException
       throw new IllegalStateException("Workflow already in Hearing!");
     }
-    //TODO: set in SePoDi ServicePointVersion in status IN_REVIEW
+    //TODO: extract me in a SePoDiService
     UpdateServicePointVersionModel updateServicePointVersionModel = sePoDiClient.postServicePointsImport(
             stopPointWorkflow.getVersionId(), Status.IN_REVIEW)
         .getBody();
@@ -55,13 +55,17 @@ public class StopPointWorkflowService {
     throw new IllegalStateException("Something went wrong!");
   }
 
-  public StopPointWorkflow startWorkflow(StopPointWorkflow stopPointWorkflow) {
+  public StopPointWorkflow startWorkflow(Long id) {
+    StopPointWorkflow stopPointWorkflow = repository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+    // TODO: WorkflowCurrentlyInHearingException
     if (hasWorkflowHearing(stopPointWorkflow.getVersionId())) {
       throw new IllegalStateException("Workflow already in Hearing!");
     }
+    // TODO: WorkflowCurrentlyAddedException
     if (stopPointWorkflow.getStatus() != WorkflowStatus.ADDED) {
       throw new IllegalStateException("Workflow status must be ADDED!!!");
     }
+    stopPointWorkflow.setStatus(WorkflowStatus.HEARING);
     StopPointWorkflow workflow = repository.save(stopPointWorkflow);
     notificationService.sendStopPointWorkflowMail(workflow);
     return workflow;
