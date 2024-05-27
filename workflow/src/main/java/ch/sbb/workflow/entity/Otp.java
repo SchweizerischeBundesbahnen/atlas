@@ -1,6 +1,5 @@
 package ch.sbb.workflow.entity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,7 +39,7 @@ public class Otp {
   @NotNull
   private Integer code;
 
-  @OneToOne(cascade = CascadeType.ALL)
+  @OneToOne
   @JoinColumn(name = "person_id", referencedColumnName = "id")
   private Person person;
 
