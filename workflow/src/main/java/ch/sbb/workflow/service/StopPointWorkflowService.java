@@ -2,6 +2,7 @@ package ch.sbb.workflow.service;
 
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.api.workflow.ClientPersonModel;
+import ch.sbb.atlas.api.workflow.DecisionModel;
 import ch.sbb.atlas.api.workflow.StopPointAddWorkflowModel;
 import ch.sbb.atlas.api.workflow.StopPointRejectWorkflowModel;
 import ch.sbb.atlas.model.Status;
@@ -113,7 +114,6 @@ public class StopPointWorkflowService {
     Decision decision = new Decision();
     decision.setJudgement(false);
     decision.setExaminant(examinantBAV);
-    decision.setJudgement(false);
     decision.setMotivation(workflowModel.getMotivationComment());
     decision.setMotivationDate(LocalDateTime.now());
     decisionRepository.save(decision);
@@ -157,6 +157,29 @@ public class StopPointWorkflowService {
       otpRepository.save(otp);
     }else {
       throw new IllegalStateException("Workflow status must be ADDED!!!");
+    }
+  }
+
+  public void voteWorkFlow(Long id, Long personId, DecisionModel decisionModel) {
+    StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
+    if(stopPointWorkflow.getStatus() != WorkflowStatus.HEARING){
+      throw new IllegalStateException("Workflow status must be HEARING!!!");
+    }
+    Person examinant = stopPointWorkflow.getExaminants().stream().filter(p -> p.getId().equals(personId)).findFirst()
+        .orElseThrow(() -> new IdNotFoundException(personId));
+    validatePinCode(decisionModel, examinant);
+    Decision decision = new Decision();
+    decision.setJudgement(decisionModel.getJudgement());
+    decision.setExaminant(examinant);
+    decision.setMotivation(decisionModel.getMotivation());
+    decision.setMotivationDate(LocalDateTime.now());
+    decisionRepository.save(decision);
+  }
+
+  void validatePinCode(DecisionModel decisionModel, Person examinant) {
+    Otp otp = otpRepository.findByPersonId(examinant.getId());
+    if(!otp.getCode().equals(decisionModel.getPinCode())){
+      throw new IllegalStateException("Wrong pin code");
     }
   }
 
