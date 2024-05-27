@@ -52,4 +52,9 @@ public interface StopPointWorkflowApiV1 {
   @PutMapping(path = "/obtain-otp/{id}/{personId}")
   void obtainOtpWorkflow(@PathVariable Long id,@PathVariable Long personId);
 
+  //TODO: 1. restartWorkflow(id, designationOfficial, decisionComment, ClientPersonModel)
+  //TODO: 2. rejectWorkflow(id, decisionComment, ClientPersonModel)
+  //TODO: 3. voteWorkflow(id, ClientPersonModel, Decision)
+  //TODO: 3. overrideVoteWorkflow(id, ClientPersonModel, Decision)
+
 }
