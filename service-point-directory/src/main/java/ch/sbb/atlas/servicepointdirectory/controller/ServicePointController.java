@@ -194,6 +194,11 @@ public class ServicePointController implements ServicePointApiV1 {
   }
 
   @Override
+  public ReadServicePointVersionModel updateServicePointStatus(Long id, Status status) {
+    return ServicePointVersionMapper.toModel(servicePointService.updateServicePointStatus(id,status));
+  }
+
+  @Override
   public Optional<ServicePointFotCommentModel> getFotComment(Integer servicePointNumber) {
     return servicePointFotCommentService.findByServicePointNumber(servicePointNumber).map(ServicePointFotCommentMapper::toModel);
   }
