@@ -124,6 +124,8 @@ export * from './standardAttributeType';
 export * from './statementStatus';
 export * from './status';
 export * from './stepFreeAccessAttributeType';
+export * from './stopPointAddWorkflow';
+export * from './stopPointRejectWorkflow';
 export * from './stopPointType';
 export * from './stopPointVersion';
 export * from './subline';
