@@ -43,6 +43,8 @@ function createOauthServiceSpy() {
   oauthServiceSpy.state = undefined;
 
   oauthServiceSpy.getIdentityClaims.and.returnValue({name: 'me', email: 'me@sbb.ch', roles: []});
+  const fakeToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJyb2xlcyI6W119.yjh-DMdelyF78dO4LdVa--VDaJOcdk8OYJ-FOQnAkKA'
+  oauthServiceSpy.getAccessToken.and.returnValue(fakeToken);
   return oauthServiceSpy;
 }
 
