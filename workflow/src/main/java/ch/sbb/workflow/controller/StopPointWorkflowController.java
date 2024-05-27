@@ -31,8 +31,8 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   }
 
   @Override
-  public StopPointAddWorkflowModel startWorkflow(Long id, StopPointAddWorkflowModel workflowStartModel) {
-    return null;
+  public StopPointAddWorkflowModel startWorkflow(Long id) {
+    return StopPointWorkflowMapper.toModel(service.startWorkflow(id));
   }
 
 }

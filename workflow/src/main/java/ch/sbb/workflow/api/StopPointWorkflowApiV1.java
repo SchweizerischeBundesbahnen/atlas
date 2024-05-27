@@ -32,7 +32,6 @@ public interface StopPointWorkflowApiV1 {
   StopPointAddWorkflowModel addWorkflow(@RequestBody @Valid StopPointAddWorkflowModel workflowStartModel);
 
   @PutMapping(path = "{id}")
-  StopPointAddWorkflowModel startWorkflow(@PathVariable Long id,
-      @RequestBody @Valid StopPointAddWorkflowModel workflowStartModel);
+  StopPointAddWorkflowModel startWorkflow(@PathVariable Long id);
 
 }
