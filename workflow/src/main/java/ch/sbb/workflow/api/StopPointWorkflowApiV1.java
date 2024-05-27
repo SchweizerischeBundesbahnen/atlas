@@ -49,4 +49,7 @@ public interface StopPointWorkflowApiV1 {
   @PutMapping(path = "/remove-examinant/{id}/{personId}")
   StopPointAddWorkflowModel removeExaminantToWorkflow(@PathVariable Long id,@PathVariable Long personId);
 
+  @PutMapping(path = "/obtain-otp/{id}/{personId}")
+  void obtainOtpWorkflow(@PathVariable Long id,@PathVariable Long personId);
+
 }
