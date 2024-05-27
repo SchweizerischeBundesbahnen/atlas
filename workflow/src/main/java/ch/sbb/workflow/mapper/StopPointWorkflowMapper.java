@@ -40,6 +40,7 @@ public class StopPointWorkflowMapper {
         .workflowComment(model.getWorkflowComment())
         .build();
     model.getExaminants().addAll(examinants);
+    //TODO: add better implementation
     stopPointWorkflow.setExaminants(
         model.getExaminants().stream().map(clientPersonModel -> ClientPersonMapper.toEntity(clientPersonModel, stopPointWorkflow))
             .collect(Collectors.toSet()));

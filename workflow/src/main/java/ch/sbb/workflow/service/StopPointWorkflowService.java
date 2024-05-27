@@ -130,6 +130,18 @@ public class StopPointWorkflowService {
     throw new IllegalStateException("Workflow status must be ADDED!!!");
   }
 
+
+  public StopPointWorkflow removeExaminantToWorkflow(Long id, Long personId) {
+    StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
+    if(stopPointWorkflow.getStatus() != WorkflowStatus.ADDED || stopPointWorkflow.getStatus() != WorkflowStatus.APPROVED ){
+      Person person = stopPointWorkflow.getExaminants().stream().filter(p -> p.getId().equals(personId)).findFirst()
+          .orElseThrow(() -> new IdNotFoundException(personId));
+      stopPointWorkflow.getExaminants().remove(person);
+      return  workflowRepository.save(stopPointWorkflow);
+    }
+    throw new IllegalStateException("Workflow status must be ADDED!!!");
+  }
+
   private StopPointWorkflow findStopPointWorkflow(Long id) {
     return workflowRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }

@@ -52,4 +52,9 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
     return StopPointWorkflowMapper.toModel(service.addExaminantToWorkflow(id,personModel));
   }
 
+  @Override
+  public StopPointAddWorkflowModel removeExaminantToWorkflow(Long id, Long personId) {
+    return StopPointWorkflowMapper.toModel(service.removeExaminantToWorkflow(id,personId));
+  }
+
 }
