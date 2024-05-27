@@ -1,5 +1,6 @@
 package ch.sbb.workflow.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,9 +26,11 @@ import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.kafka.WorkflowNotificationService;
+import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
 import ch.sbb.workflow.workflow.StopPointWorkflowRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
@@ -259,12 +262,55 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     workflowRepository.save(stopPointWorkflow);
 
     //given
-    mvc.perform(put("/v1/stop-point/workflows/" + stopPointWorkflow.getId())
+    mvc.perform(put("/v1/stop-point/workflows/start/" + stopPointWorkflow.getId())
             .contentType(contentType))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.status", is("HEARING")));
-    stopPointWorkflow.setStatus(WorkflowStatus.HEARING);
     verify(notificationService).sendStopPointWorkflowMail(any(StopPointWorkflow.class));
+  }
+
+  @Test
+  void shouldEditWorkflow() throws Exception {
+    //when
+    Person person = Person.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .function("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+
+    Long versionId = 123456L;
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .status(WorkflowStatus.ADDED)
+        .examinants(Set.of(person))
+        .startDate(LocalDate.of(2000, 1, 1))
+        .endDate(LocalDate.of(2000, 12, 31))
+        .versionId(versionId)
+        .build();
+    workflowRepository.save(stopPointWorkflow);
+    StopPointAddWorkflowModel stopPointAddWorkflowModel = StopPointWorkflowMapper.toModel(stopPointWorkflow);
+    stopPointAddWorkflowModel.setSwissCanton(SwissCanton.BERN);
+    stopPointAddWorkflowModel.setDesignationOfficial("Bern");
+    stopPointAddWorkflowModel.setWorkflowComment("New Comment");
+
+    //given
+    mvc.perform(put("/v1/stop-point/workflows/edit/" + stopPointWorkflow.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(stopPointAddWorkflowModel)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.status", is("ADDED")));
+    List<StopPointWorkflow> workflows =
+        workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
+            .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
+    assertThat(workflows).hasSize(2);
+    assertThat(workflows.get(0).getStatus()).isEqualTo(WorkflowStatus.REJECTED);
+    assertThat(workflows.get(0).getFollowUpWorkflow()).isNotNull();
+    assertThat(workflows.get(1).getStatus()).isEqualTo(WorkflowStatus.ADDED);
   }
 
   private static UpdateServicePointVersionModel getUpdateServicePointVersionModel(Status status) {
