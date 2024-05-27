@@ -46,4 +46,7 @@ public interface StopPointWorkflowApiV1 {
   StopPointAddWorkflowModel addExaminantToWorkflow(@PathVariable Long id,
       @RequestBody @Valid ClientPersonModel personModel);
 
+  @PutMapping(path = "/remove-examinant/{id}/{personId}")
+  StopPointAddWorkflowModel removeExaminantToWorkflow(@PathVariable Long id,@PathVariable Long personId);
+
 }
