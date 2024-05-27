@@ -1,6 +1,7 @@
 package ch.sbb.workflow.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.service.UserService;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,8 +10,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -40,20 +42,18 @@ public class Decision {
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
-  @NotNull
   private Boolean judgement;
 
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   private String motivation;
 
   @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "examinant_bav_id", referencedColumnName = "id")
-  private Person examinantBav;
+  @JoinColumn(name = "examinant_id", referencedColumnName = "id")
+  private Person examinant;
 
-  @Column(columnDefinition = "TIMESTAMP", updatable = false)
+  @Column(columnDefinition = "TIMESTAMP")
   private LocalDateTime motivationDate;
 
-  @NotNull
   private Boolean fot_judgement;
 
   @Size(max = AtlasFieldLengths.LENGTH_1500)
@@ -62,6 +62,9 @@ public class Decision {
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "fot_overrider_id", referencedColumnName = "id")
   private Person fotOverrider;
+
+  @Column(columnDefinition = "TIMESTAMP")
+  private LocalDateTime fotMotivationDate;
 
   @Column(updatable = false)
   private String creator;
@@ -75,5 +78,17 @@ public class Decision {
   @UpdateTimestamp
   @Column(columnDefinition = "TIMESTAMP")
   private LocalDateTime editionDate;
+
+  @PrePersist
+  public void onPrePersist() {
+    String sbbUid = UserService.getUserIdentifier();
+    setCreator(sbbUid);
+    setEditor(sbbUid);
+  }
+
+  @PreUpdate
+  public void onPreUpdate() {
+    setEditor(UserService.getUserIdentifier());
+  }
 
 }
