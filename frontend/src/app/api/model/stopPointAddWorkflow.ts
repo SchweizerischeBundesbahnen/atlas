@@ -9,9 +9,47 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { SwissCanton } from './swissCanton';
+import { Client } from './client';
+import { WorkflowStatus } from './workflowStatus';
 
 
-export interface InlineObject15 { 
-    file: Blob;
+export interface StopPointAddWorkflow { 
+    /**
+     * Service Point version id
+     */
+    versionId: number;
+    /**
+     * Unique code for locations that is used in customer information. The structure is described in the “Swiss Location ID” specification, chapter 4.2. The document is available here. https://transportdatamanagement.ch/standards/
+     */
+    sloid?: string;
+    /**
+     * Swiss Business Organisation ID (SBOID)
+     */
+    sboid: string;
+    /**
+     * Official designation of a location that must be used by all recipients
+     */
+    designationOfficial: string;
+    swissCanton: SwissCanton;
+    /**
+     * SwissMunicipalityName the location is in
+     */
+    swissMunicipalityName?: string;
+    /**
+     * List of cc emails for status of hearing
+     */
+    ccEmails?: Array<string>;
+    /**
+     * Hearing reasons
+     */
+    workflowComment?: string;
+    /**
+     * List hearing axamiannts
+     */
+    examinants?: Array<Client>;
+    validFrom: Date;
+    validTo: Date;
+    status?: WorkflowStatus;
 }
 
