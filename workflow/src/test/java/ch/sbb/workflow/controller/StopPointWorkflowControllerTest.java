@@ -15,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.api.workflow.StopPointAddWorkflowModel;
+import ch.sbb.atlas.api.workflow.StopPointRejectWorkflowModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -23,10 +24,13 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.client.SePoDiClient;
+import ch.sbb.workflow.entity.Decision;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.kafka.WorkflowNotificationService;
+import ch.sbb.workflow.mapper.ClientPersonMapper;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
+import ch.sbb.workflow.workflow.DecisionRepository;
 import ch.sbb.workflow.workflow.StopPointWorkflowRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -50,6 +54,9 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   @Autowired
   private StopPointWorkflowRepository workflowRepository;
 
+  @Autowired
+  private DecisionRepository decisionRepository;
+
   @MockBean
   private SePoDiClient sePoDiClient;
 
@@ -58,6 +65,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
 
   @AfterEach
   void tearDown() {
+    decisionRepository.deleteAll();
     workflowRepository.deleteAll();
   }
 
@@ -311,6 +319,63 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(workflows.get(0).getStatus()).isEqualTo(WorkflowStatus.REJECTED);
     assertThat(workflows.get(0).getFollowUpWorkflow()).isNotNull();
     assertThat(workflows.get(1).getStatus()).isEqualTo(WorkflowStatus.ADDED);
+  }
+
+  @Test
+  void shouldRejectWorkflow() throws Exception {
+    //when
+    Person person = Person.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .function("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+
+    Long versionId = 123456L;
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .status(WorkflowStatus.ADDED)
+        .examinants(Set.of(person))
+        .startDate(LocalDate.of(2000, 1, 1))
+        .endDate(LocalDate.of(2000, 12, 31))
+        .versionId(versionId)
+        .build();
+    workflowRepository.save(stopPointWorkflow);
+
+    ClientPersonModel examinantBAV = ClientPersonModel.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .personFunction("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+
+    StopPointRejectWorkflowModel stopPointRejectWorkflowModel = StopPointRejectWorkflowModel.builder()
+        .motivationComment("No Comment")
+        .examinantBAVClient(examinantBAV).build();
+
+    //given
+    mvc.perform(put("/v1/stop-point/workflows/reject/" + stopPointWorkflow.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(stopPointRejectWorkflowModel)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.status", is("REJECTED")));
+
+    List<StopPointWorkflow> workflows =
+        workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
+            .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
+    assertThat(workflows).hasSize(1);
+    assertThat(workflows.get(0).getStatus()).isEqualTo(WorkflowStatus.REJECTED);
+
+    Decision decisionResult = decisionRepository.findAll().stream()
+        .filter(decision -> decision.getExaminant().getStopPointWorkflow().getId().equals(stopPointWorkflow.getId())).findFirst()
+        .orElse(null);
+    assertThat(decisionResult).isNotNull();
+    Person examinant = decisionResult.getExaminant();
+    assertThat(examinant.getMail()).isEqualTo(ClientPersonMapper.toEntity(examinantBAV).getMail());
+    assertThat(decisionResult.getMotivation()).isEqualTo(stopPointRejectWorkflowModel.getMotivationComment());
   }
 
   private static UpdateServicePointVersionModel getUpdateServicePointVersionModel(Status status) {

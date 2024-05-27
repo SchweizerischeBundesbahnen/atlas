@@ -1,6 +1,7 @@
 package ch.sbb.workflow.api;
 
 import ch.sbb.atlas.api.workflow.StopPointAddWorkflowModel;
+import ch.sbb.atlas.api.workflow.StopPointRejectWorkflowModel;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -36,5 +37,8 @@ public interface StopPointWorkflowApiV1 {
 
   @PutMapping(path = "/edit/{id}")
   StopPointAddWorkflowModel editWorkflow(@PathVariable Long id, @RequestBody @Valid StopPointAddWorkflowModel workflowModel);
+
+  @PutMapping(path = "/reject/{id}")
+  StopPointAddWorkflowModel rejectWorkflow(@PathVariable Long id, @RequestBody @Valid StopPointRejectWorkflowModel workflowModel);
 
 }
