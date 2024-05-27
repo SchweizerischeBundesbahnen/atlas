@@ -1,5 +1,6 @@
 package ch.sbb.workflow.api;
 
+import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.api.workflow.StopPointAddWorkflowModel;
 import ch.sbb.atlas.api.workflow.StopPointRejectWorkflowModel;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -40,5 +41,9 @@ public interface StopPointWorkflowApiV1 {
 
   @PutMapping(path = "/reject/{id}")
   StopPointAddWorkflowModel rejectWorkflow(@PathVariable Long id, @RequestBody @Valid StopPointRejectWorkflowModel workflowModel);
+
+  @PutMapping(path = "/add-examinant/{id}")
+  StopPointAddWorkflowModel addExaminantToWorkflow(@PathVariable Long id,
+      @RequestBody @Valid ClientPersonModel personModel);
 
 }
