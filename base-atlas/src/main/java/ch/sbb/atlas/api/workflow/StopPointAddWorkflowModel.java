@@ -3,7 +3,9 @@ package ch.sbb.atlas.api.workflow;
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.kafka.model.SwissCanton;
+import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -68,4 +70,7 @@ public class StopPointAddWorkflowModel {
 
   @NotNull
   private LocalDate validTo;
+
+  @Schema(description = "Workflow Status", accessMode = AccessMode.READ_ONLY)
+  private WorkflowStatus status;
 }
