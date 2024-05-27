@@ -18,6 +18,7 @@ public class StopPointWorkflowMapper {
         .sboid(entity.getSboid())
         .designationOfficial(entity.getDesignationOfficial())
         .swissMunicipalityName(entity.getSwissMunicipalityName())
+        .status(entity.getStatus())
         .workflowComment(entity.getWorkflowComment())
         .build();
   }
