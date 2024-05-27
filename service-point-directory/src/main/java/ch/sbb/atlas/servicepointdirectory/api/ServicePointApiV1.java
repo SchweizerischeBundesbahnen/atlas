@@ -1,5 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.api;
 
+import static ch.sbb.atlas.model.ResponseCodeDescription.ENTITY_ALREADY_UPDATED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.NO_ENTITIES_WERE_MODIFIED;
+import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMENTED;
+
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
@@ -7,6 +11,7 @@ import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.configuration.Role;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointRequestParams;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchRequest;
@@ -35,8 +40,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import static ch.sbb.atlas.model.ResponseCodeDescription.*;
 
 @Tag(name = "Service Points")
 @RequestMapping("v1/service-points")
@@ -95,6 +98,9 @@ public interface ServicePointApiV1 {
       @PathVariable Long id,
       @RequestBody @Valid UpdateServicePointVersionModel servicePointVersionModel
   );
+
+  @PutMapping(path = "/status/{id}")
+  ReadServicePointVersionModel updateServicePointStatus(@PathVariable Long id,@RequestBody @Valid Status status);
 
   @GetMapping("{servicePointNumber}/fot-comment")
   Optional<ServicePointFotCommentModel> getFotComment(@PathVariable Integer servicePointNumber);
