@@ -103,7 +103,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     when(sePoDiClient.postServicePointsImport(versionId, Status.IN_REVIEW))
         .thenReturn(ResponseEntity.ok(getUpdateServicePointVersionModel(Status.IN_REVIEW)));
 
-    controller.addWorkflow(workflowModel);
+    controller.addStopPointWorkflow(workflowModel);
 
     mvc.perform(get("/v1/stop-point/workflows"))
         .andExpect(status().isOk())

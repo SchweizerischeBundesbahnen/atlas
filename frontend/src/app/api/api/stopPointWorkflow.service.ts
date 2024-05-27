@@ -17,10 +17,10 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { ContainerTimetableFieldNumber } from '../model/models';
+import { Client } from '../model/models';
 import { ErrorResponse } from '../model/models';
-import { Status } from '../model/models';
-import { TimetableFieldNumberVersion } from '../model/models';
+import { StopPointAddWorkflow } from '../model/models';
+import { StopPointRejectWorkflow } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -30,7 +30,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class TimetableFieldNumbersService {
+export class StopPointWorkflowService {
 
     protected basePath = 'http://localhost';
     public defaultHeaders = new HttpHeaders();
@@ -88,16 +88,20 @@ export class TimetableFieldNumbersService {
     }
 
     /**
-     * @param timetableFieldNumberVersion 
+     * @param id 
+     * @param client 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createVersion(timetableFieldNumberVersion: TimetableFieldNumberVersion, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<TimetableFieldNumberVersion>;
-    public createVersion(timetableFieldNumberVersion: TimetableFieldNumberVersion, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<TimetableFieldNumberVersion>>;
-    public createVersion(timetableFieldNumberVersion: TimetableFieldNumberVersion, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<TimetableFieldNumberVersion>>;
-    public createVersion(timetableFieldNumberVersion: TimetableFieldNumberVersion, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (timetableFieldNumberVersion === null || timetableFieldNumberVersion === undefined) {
-            throw new Error('Required parameter timetableFieldNumberVersion was null or undefined when calling createVersion.');
+    public addExaminantToStopPointWorkflow(id: number, client: Client, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<StopPointAddWorkflow>;
+    public addExaminantToStopPointWorkflow(id: number, client: Client, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<StopPointAddWorkflow>>;
+    public addExaminantToStopPointWorkflow(id: number, client: Client, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<StopPointAddWorkflow>>;
+    public addExaminantToStopPointWorkflow(id: number, client: Client, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling addExaminantToStopPointWorkflow.');
+        }
+        if (client === null || client === undefined) {
+            throw new Error('Required parameter client was null or undefined when calling addExaminantToStopPointWorkflow.');
         }
 
         let headers = this.defaultHeaders;
@@ -129,8 +133,8 @@ export class TimetableFieldNumbersService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<TimetableFieldNumberVersion>(`${this.configuration.basePath}/line-directory/v1/field-numbers/versions`,
-            timetableFieldNumberVersion,
+        return this.httpClient.put<StopPointAddWorkflow>(`${this.configuration.basePath}/workflow/v1/stop-point/workflows/add-examinant/${encodeURIComponent(String(id))}`,
+            client,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -142,16 +146,128 @@ export class TimetableFieldNumbersService {
     }
 
     /**
-     * @param ttfnid 
+     * @param stopPointAddWorkflow 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteVersions(ttfnid: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<any>;
-    public deleteVersions(ttfnid: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<any>>;
-    public deleteVersions(ttfnid: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<any>>;
-    public deleteVersions(ttfnid: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (ttfnid === null || ttfnid === undefined) {
-            throw new Error('Required parameter ttfnid was null or undefined when calling deleteVersions.');
+    public addStopPointWorkflow(stopPointAddWorkflow: StopPointAddWorkflow, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<StopPointAddWorkflow>;
+    public addStopPointWorkflow(stopPointAddWorkflow: StopPointAddWorkflow, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<StopPointAddWorkflow>>;
+    public addStopPointWorkflow(stopPointAddWorkflow: StopPointAddWorkflow, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<StopPointAddWorkflow>>;
+    public addStopPointWorkflow(stopPointAddWorkflow: StopPointAddWorkflow, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (stopPointAddWorkflow === null || stopPointAddWorkflow === undefined) {
+            throw new Error('Required parameter stopPointAddWorkflow was null or undefined when calling addStopPointWorkflow.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.post<StopPointAddWorkflow>(`${this.configuration.basePath}/workflow/v1/stop-point/workflows`,
+            stopPointAddWorkflow,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param id 
+     * @param stopPointAddWorkflow 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public editStopPointWorkflow(id: number, stopPointAddWorkflow: StopPointAddWorkflow, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<StopPointAddWorkflow>;
+    public editStopPointWorkflow(id: number, stopPointAddWorkflow: StopPointAddWorkflow, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<StopPointAddWorkflow>>;
+    public editStopPointWorkflow(id: number, stopPointAddWorkflow: StopPointAddWorkflow, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<StopPointAddWorkflow>>;
+    public editStopPointWorkflow(id: number, stopPointAddWorkflow: StopPointAddWorkflow, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling editStopPointWorkflow.');
+        }
+        if (stopPointAddWorkflow === null || stopPointAddWorkflow === undefined) {
+            throw new Error('Required parameter stopPointAddWorkflow was null or undefined when calling editStopPointWorkflow.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.put<StopPointAddWorkflow>(`${this.configuration.basePath}/workflow/v1/stop-point/workflows/edit/${encodeURIComponent(String(id))}`,
+            stopPointAddWorkflow,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getStopPointWorkflow(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<StopPointAddWorkflow>;
+    public getStopPointWorkflow(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<StopPointAddWorkflow>>;
+    public getStopPointWorkflow(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<StopPointAddWorkflow>>;
+    public getStopPointWorkflow(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling getStopPointWorkflow.');
         }
 
         let headers = this.defaultHeaders;
@@ -174,7 +290,7 @@ export class TimetableFieldNumbersService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.delete<any>(`${this.configuration.basePath}/line-directory/v1/field-numbers/${encodeURIComponent(String(ttfnid))}`,
+        return this.httpClient.get<StopPointAddWorkflow>(`${this.configuration.basePath}/workflow/v1/stop-point/workflows/${encodeURIComponent(String(id))}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -186,14 +302,13 @@ export class TimetableFieldNumbersService {
     }
 
     /**
-     * Export all actual Timetable Field Number versions as csv and zip file to the ATLAS Amazon S3 Bucket
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public exportActualTimetableFieldNumberVersions(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json'}): Observable<Array<string>>;
-    public exportActualTimetableFieldNumberVersions(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json'}): Observable<HttpResponse<Array<string>>>;
-    public exportActualTimetableFieldNumberVersions(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json'}): Observable<HttpEvent<Array<string>>>;
-    public exportActualTimetableFieldNumberVersions(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*' | 'application/json'}): Observable<any> {
+    public getStopPointWorkflows(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<StopPointAddWorkflow>>;
+    public getStopPointWorkflows(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<StopPointAddWorkflow>>>;
+    public getStopPointWorkflows(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<StopPointAddWorkflow>>>;
+    public getStopPointWorkflows(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -201,8 +316,7 @@ export class TimetableFieldNumbersService {
         if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
-                '*/*',
-                'application/json'
+                '*/*'
             ];
             httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -216,8 +330,7 @@ export class TimetableFieldNumbersService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<Array<string>>(`${this.configuration.basePath}/line-directory/v1/field-numbers/export-csv/actual`,
-            null,
+        return this.httpClient.get<Array<StopPointAddWorkflow>>(`${this.configuration.basePath}/workflow/v1/stop-point/workflows`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -229,102 +342,20 @@ export class TimetableFieldNumbersService {
     }
 
     /**
-     * Export all Timetable Field Number versions as csv and zip file to the ATLAS Amazon S3 Bucket
+     * @param id 
+     * @param personId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public exportFullTimetableFieldNumberVersions(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json'}): Observable<Array<string>>;
-    public exportFullTimetableFieldNumberVersions(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json'}): Observable<HttpResponse<Array<string>>>;
-    public exportFullTimetableFieldNumberVersions(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json'}): Observable<HttpEvent<Array<string>>>;
-    public exportFullTimetableFieldNumberVersions(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*' | 'application/json'}): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*',
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+    public obtainOtpForStopPointWorkflow(id: number, personId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<any>;
+    public obtainOtpForStopPointWorkflow(id: number, personId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<any>>;
+    public obtainOtpForStopPointWorkflow(id: number, personId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<any>>;
+    public obtainOtpForStopPointWorkflow(id: number, personId: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling obtainOtpForStopPointWorkflow.');
         }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.post<Array<string>>(`${this.configuration.basePath}/line-directory/v1/field-numbers/export-csv/full`,
-            null,
-            {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Export all Timetable Field Number versions for the current timetable year change as csv and zip file to the ATLAS Amazon S3 Bucket
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public exportTimetableYearChangeTimetableFieldNumberVersions(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json'}): Observable<Array<string>>;
-    public exportTimetableYearChangeTimetableFieldNumberVersions(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json'}): Observable<HttpResponse<Array<string>>>;
-    public exportTimetableYearChangeTimetableFieldNumberVersions(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json'}): Observable<HttpEvent<Array<string>>>;
-    public exportTimetableYearChangeTimetableFieldNumberVersions(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*' | 'application/json'}): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*',
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.post<Array<string>>(`${this.configuration.basePath}/line-directory/v1/field-numbers/export-csv/timetable-year-change`,
-            null,
-            {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param ttfnId 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getAllVersionsVersioned(ttfnId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<TimetableFieldNumberVersion>>;
-    public getAllVersionsVersioned(ttfnId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<TimetableFieldNumberVersion>>>;
-    public getAllVersionsVersioned(ttfnId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<TimetableFieldNumberVersion>>>;
-    public getAllVersionsVersioned(ttfnId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (ttfnId === null || ttfnId === undefined) {
-            throw new Error('Required parameter ttfnId was null or undefined when calling getAllVersionsVersioned.');
+        if (personId === null || personId === undefined) {
+            throw new Error('Required parameter personId was null or undefined when calling obtainOtpForStopPointWorkflow.');
         }
 
         let headers = this.defaultHeaders;
@@ -347,140 +378,7 @@ export class TimetableFieldNumbersService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<Array<TimetableFieldNumberVersion>>(`${this.configuration.basePath}/line-directory/v1/field-numbers/versions/${encodeURIComponent(String(ttfnId))}`,
-            {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param searchCriteria 
-     * @param number 
-     * @param businessOrganisation 
-     * @param validOn 
-     * @param statusChoices 
-     * @param page Zero-based page index (0..N)
-     * @param size The size of the page to be returned
-     * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getOverview(searchCriteria?: Array<string>, number?: string, businessOrganisation?: string, validOn?: Date, statusChoices?: Array<Status>, page?: number, size?: number, sort?: Array<string>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ContainerTimetableFieldNumber>;
-    public getOverview(searchCriteria?: Array<string>, number?: string, businessOrganisation?: string, validOn?: Date, statusChoices?: Array<Status>, page?: number, size?: number, sort?: Array<string>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ContainerTimetableFieldNumber>>;
-    public getOverview(searchCriteria?: Array<string>, number?: string, businessOrganisation?: string, validOn?: Date, statusChoices?: Array<Status>, page?: number, size?: number, sort?: Array<string>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ContainerTimetableFieldNumber>>;
-    public getOverview(searchCriteria?: Array<string>, number?: string, businessOrganisation?: string, validOn?: Date, statusChoices?: Array<Status>, page?: number, size?: number, sort?: Array<string>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-
-        let queryParameters = new HttpParams({encoder: this.encoder});
-        if (searchCriteria) {
-            searchCriteria.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'searchCriteria');
-            })
-        }
-        if (number !== undefined && number !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>number, 'number');
-        }
-        if (businessOrganisation !== undefined && businessOrganisation !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>businessOrganisation, 'businessOrganisation');
-        }
-        if (validOn !== undefined && validOn !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>validOn, 'validOn');
-        }
-        if (statusChoices) {
-            statusChoices.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'statusChoices');
-            })
-        }
-        if (page !== undefined && page !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>page, 'page');
-        }
-        if (size !== undefined && size !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>size, 'size');
-        }
-        if (sort) {
-            sort.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'sort');
-            })
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.get<ContainerTimetableFieldNumber>(`${this.configuration.basePath}/line-directory/v1/field-numbers`,
-            {
-                params: queryParameters,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param ttfnId 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public revokeTimetableFieldNumber(ttfnId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<TimetableFieldNumberVersion>>;
-    public revokeTimetableFieldNumber(ttfnId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<TimetableFieldNumberVersion>>>;
-    public revokeTimetableFieldNumber(ttfnId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<TimetableFieldNumberVersion>>>;
-    public revokeTimetableFieldNumber(ttfnId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (ttfnId === null || ttfnId === undefined) {
-            throw new Error('Required parameter ttfnId was null or undefined when calling revokeTimetableFieldNumber.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
-        }
-
-        return this.httpClient.post<Array<TimetableFieldNumberVersion>>(`${this.configuration.basePath}/line-directory/v1/field-numbers/${encodeURIComponent(String(ttfnId))}/revoke`,
+        return this.httpClient.put<any>(`${this.configuration.basePath}/workflow/v1/stop-point/workflows/obtain-otp/${encodeURIComponent(String(id))}/${encodeURIComponent(String(personId))}`,
             null,
             {
                 responseType: <any>responseType_,
@@ -494,19 +392,19 @@ export class TimetableFieldNumbersService {
 
     /**
      * @param id 
-     * @param timetableFieldNumberVersion 
+     * @param stopPointRejectWorkflow 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateVersionWithVersioning(id: number, timetableFieldNumberVersion: TimetableFieldNumberVersion, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<TimetableFieldNumberVersion>>;
-    public updateVersionWithVersioning(id: number, timetableFieldNumberVersion: TimetableFieldNumberVersion, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<TimetableFieldNumberVersion>>>;
-    public updateVersionWithVersioning(id: number, timetableFieldNumberVersion: TimetableFieldNumberVersion, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<TimetableFieldNumberVersion>>>;
-    public updateVersionWithVersioning(id: number, timetableFieldNumberVersion: TimetableFieldNumberVersion, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public rejectStopPointWorkflow(id: number, stopPointRejectWorkflow: StopPointRejectWorkflow, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<StopPointAddWorkflow>;
+    public rejectStopPointWorkflow(id: number, stopPointRejectWorkflow: StopPointRejectWorkflow, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<StopPointAddWorkflow>>;
+    public rejectStopPointWorkflow(id: number, stopPointRejectWorkflow: StopPointRejectWorkflow, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<StopPointAddWorkflow>>;
+    public rejectStopPointWorkflow(id: number, stopPointRejectWorkflow: StopPointRejectWorkflow, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling updateVersionWithVersioning.');
+            throw new Error('Required parameter id was null or undefined when calling rejectStopPointWorkflow.');
         }
-        if (timetableFieldNumberVersion === null || timetableFieldNumberVersion === undefined) {
-            throw new Error('Required parameter timetableFieldNumberVersion was null or undefined when calling updateVersionWithVersioning.');
+        if (stopPointRejectWorkflow === null || stopPointRejectWorkflow === undefined) {
+            throw new Error('Required parameter stopPointRejectWorkflow was null or undefined when calling rejectStopPointWorkflow.');
         }
 
         let headers = this.defaultHeaders;
@@ -538,8 +436,102 @@ export class TimetableFieldNumbersService {
             responseType_ = 'text';
         }
 
-        return this.httpClient.post<Array<TimetableFieldNumberVersion>>(`${this.configuration.basePath}/line-directory/v1/field-numbers/versions/${encodeURIComponent(String(id))}`,
-            timetableFieldNumberVersion,
+        return this.httpClient.put<StopPointAddWorkflow>(`${this.configuration.basePath}/workflow/v1/stop-point/workflows/reject/${encodeURIComponent(String(id))}`,
+            stopPointRejectWorkflow,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param id 
+     * @param personId 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public removeExaminantFromStopPointWorkflow(id: number, personId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<StopPointAddWorkflow>;
+    public removeExaminantFromStopPointWorkflow(id: number, personId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<StopPointAddWorkflow>>;
+    public removeExaminantFromStopPointWorkflow(id: number, personId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<StopPointAddWorkflow>>;
+    public removeExaminantFromStopPointWorkflow(id: number, personId: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling removeExaminantFromStopPointWorkflow.');
+        }
+        if (personId === null || personId === undefined) {
+            throw new Error('Required parameter personId was null or undefined when calling removeExaminantFromStopPointWorkflow.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.put<StopPointAddWorkflow>(`${this.configuration.basePath}/workflow/v1/stop-point/workflows/remove-examinant/${encodeURIComponent(String(id))}/${encodeURIComponent(String(personId))}`,
+            null,
+            {
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public startStopPointWorkflow(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<StopPointAddWorkflow>;
+    public startStopPointWorkflow(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<StopPointAddWorkflow>>;
+    public startStopPointWorkflow(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<StopPointAddWorkflow>>;
+    public startStopPointWorkflow(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling startStopPointWorkflow.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                '*/*'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType_: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType_ = 'text';
+        }
+
+        return this.httpClient.put<StopPointAddWorkflow>(`${this.configuration.basePath}/workflow/v1/stop-point/workflows/start/${encodeURIComponent(String(id))}`,
+            null,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
