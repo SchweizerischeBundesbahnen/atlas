@@ -71,6 +71,26 @@ public class StopPointWorkflowService {
     return workflow;
   }
 
+  public StopPointWorkflow editWorkflow(Long id, StopPointAddWorkflowModel workflowModel) {
+    StopPointWorkflow stopPointWorkflow = repository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+    if (!stopPointWorkflow.getDesignationOfficial().equals(workflowModel.getDesignationOfficial())){
+      if(stopPointWorkflow.getStatus() != WorkflowStatus.ADDED){
+        throw new IllegalStateException("Workflow status must be ADDED!!!");
+      }
+      //TODO: 1. sePoDiClient.update(officialDesignation)
+      //create new Workflow
+      StopPointWorkflow newStopPointWorkflow = mapStopPointWorkflow(workflowModel);
+      newStopPointWorkflow.setStatus(WorkflowStatus.ADDED);
+      StopPointWorkflow newWorkflow = repository.save(newStopPointWorkflow);
+
+      stopPointWorkflow.setStatus(WorkflowStatus.REJECTED);
+      stopPointWorkflow.setFollowUpWorkflow(newWorkflow);
+      repository.save(stopPointWorkflow);
+      return newWorkflow;
+    }
+    return repository.save(stopPointWorkflow);
+  }
+
   private StopPointWorkflow mapStopPointWorkflow(StopPointAddWorkflowModel workflowStartModel) {
     ClientPersonModel examinantPersonByCanton = examinants.getExaminantPersonByCanton(workflowStartModel.getSwissCanton());
     ClientPersonModel examinantSpecialistOffice = examinants.getExaminantSpecialistOffice();
