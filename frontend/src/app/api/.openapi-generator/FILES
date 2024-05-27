@@ -15,6 +15,7 @@ api/loadingPoints.service.ts
 api/personWithReducedMobility.service.ts
 api/personWithReducedMobilityExport.service.ts
 api/servicePoints.service.ts
+api/stopPointWorkflow.service.ts
 api/sublines.service.ts
 api/timetableFieldNumbers.service.ts
 api/timetableHearingStatements.service.ts
@@ -157,6 +158,8 @@ model/standardAttributeType.ts
 model/statementStatus.ts
 model/status.ts
 model/stepFreeAccessAttributeType.ts
+model/stopPointAddWorkflow.ts
+model/stopPointRejectWorkflow.ts
 model/stopPointType.ts
 model/stopPointVersion.ts
 model/subline.ts
