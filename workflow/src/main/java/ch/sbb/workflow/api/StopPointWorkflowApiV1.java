@@ -29,9 +29,12 @@ public interface StopPointWorkflowApiV1 {
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201")})
-  StopPointAddWorkflowModel addWorkflow(@RequestBody @Valid StopPointAddWorkflowModel workflowStartModel);
+  StopPointAddWorkflowModel addWorkflow(@RequestBody @Valid StopPointAddWorkflowModel workflowModel);
 
-  @PutMapping(path = "{id}")
+  @PutMapping(path = "/start/{id}")
   StopPointAddWorkflowModel startWorkflow(@PathVariable Long id);
+
+  @PutMapping(path = "/edit/{id}")
+  StopPointAddWorkflowModel editWorkflow(@PathVariable Long id, @RequestBody @Valid StopPointAddWorkflowModel workflowModel);
 
 }
