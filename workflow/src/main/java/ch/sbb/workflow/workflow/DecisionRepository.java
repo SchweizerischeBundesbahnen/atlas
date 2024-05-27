@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DecisionRepository extends JpaRepository<Decision, Long> {
 
+  Decision findDecisionByExaminantId(Long personId);
+
 }
