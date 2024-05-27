@@ -9,6 +9,7 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.Decision;
+import ch.sbb.workflow.entity.Otp;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.kafka.WorkflowNotificationService;
@@ -16,12 +17,14 @@ import ch.sbb.workflow.mapper.ClientPersonMapper;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
 import ch.sbb.workflow.model.Examinants;
 import ch.sbb.workflow.workflow.DecisionRepository;
+import ch.sbb.workflow.workflow.OtpRepository;
 import ch.sbb.workflow.workflow.StopPointWorkflowRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +35,7 @@ public class StopPointWorkflowService {
 
   private final StopPointWorkflowRepository workflowRepository;
   private final DecisionRepository decisionRepository;
+  private final OtpRepository otpRepository;
   private final SePoDiClient sePoDiClient;
 
   private final Examinants examinants;
@@ -80,8 +84,8 @@ public class StopPointWorkflowService {
 
   public StopPointWorkflow editWorkflow(Long id, StopPointAddWorkflowModel workflowModel) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
-    if (!stopPointWorkflow.getDesignationOfficial().equals(workflowModel.getDesignationOfficial())){
-      if(stopPointWorkflow.getStatus() != WorkflowStatus.ADDED){
+    if (!stopPointWorkflow.getDesignationOfficial().equals(workflowModel.getDesignationOfficial())) {
+      if (stopPointWorkflow.getStatus() != WorkflowStatus.ADDED) {
         throw new IllegalStateException("Workflow status must be ADDED!!!");
       }
       //TODO: 1. sePoDiClient.update(officialDesignation)
@@ -100,7 +104,7 @@ public class StopPointWorkflowService {
 
   public StopPointWorkflow rejectWorkflow(Long id, StopPointRejectWorkflowModel workflowModel) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
-    if(stopPointWorkflow.getStatus() != WorkflowStatus.ADDED){
+    if (stopPointWorkflow.getStatus() != WorkflowStatus.ADDED) {
       throw new IllegalStateException("Workflow status must be ADDED!!!");
     }
     ClientPersonModel examinantBAVclientPersonModel = workflowModel.getExaminantBAVClient();
@@ -121,25 +125,39 @@ public class StopPointWorkflowService {
 
   public StopPointWorkflow addExaminantToWorkflow(Long id, ClientPersonModel personModel) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
-    if(stopPointWorkflow.getStatus() != WorkflowStatus.ADDED || stopPointWorkflow.getStatus() != WorkflowStatus.APPROVED ){
+    if (stopPointWorkflow.getStatus() != WorkflowStatus.ADDED || stopPointWorkflow.getStatus() != WorkflowStatus.APPROVED) {
       Person examinant = ClientPersonMapper.toEntity(personModel);
       stopPointWorkflow.getExaminants().add(examinant);
       examinant.setStopPointWorkflow(stopPointWorkflow);
-      return  workflowRepository.save(stopPointWorkflow);
+      return workflowRepository.save(stopPointWorkflow);
     }
     throw new IllegalStateException("Workflow status must be ADDED!!!");
   }
 
-
   public StopPointWorkflow removeExaminantToWorkflow(Long id, Long personId) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
-    if(stopPointWorkflow.getStatus() != WorkflowStatus.ADDED || stopPointWorkflow.getStatus() != WorkflowStatus.APPROVED ){
+    if (stopPointWorkflow.getStatus() != WorkflowStatus.ADDED || stopPointWorkflow.getStatus() != WorkflowStatus.APPROVED) {
       Person person = stopPointWorkflow.getExaminants().stream().filter(p -> p.getId().equals(personId)).findFirst()
           .orElseThrow(() -> new IdNotFoundException(personId));
       stopPointWorkflow.getExaminants().remove(person);
-      return  workflowRepository.save(stopPointWorkflow);
+      return workflowRepository.save(stopPointWorkflow);
     }
     throw new IllegalStateException("Workflow status must be ADDED!!!");
+  }
+
+  public void obtainOtp(Long id, Long personId) {
+    StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
+    if (stopPointWorkflow.getStatus() != WorkflowStatus.REJECTED || stopPointWorkflow.getStatus() != WorkflowStatus.APPROVED) {
+      Person person = stopPointWorkflow.getExaminants().stream().filter(p -> p.getId().equals(personId)).findFirst()
+          .orElseThrow(() -> new IdNotFoundException(personId));
+      Otp otp = Otp.builder()
+          .person(person)
+          .code(Integer.valueOf(RandomStringUtils.randomNumeric(5)))
+          .build();
+      otpRepository.save(otp);
+    }else {
+      throw new IllegalStateException("Workflow status must be ADDED!!!");
+    }
   }
 
   private StopPointWorkflow findStopPointWorkflow(Long id) {
