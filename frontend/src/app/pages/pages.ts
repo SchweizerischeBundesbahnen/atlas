@@ -1,4 +1,5 @@
 import {Page} from '../core/model/page';
+import {environment} from "../../environments/environment";
 
 export class Pages {
   public static HOME: Page = {
@@ -130,6 +131,16 @@ export class Pages {
     path: 'service-point-directory',
     pathText: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
     description: 'PAGES.SERVICE_POINTS.DESCRIPTION',
+    subpages: [
+      {
+        title: 'PAGES.WORKFLOW.TITLE_HEADER',
+        titleMenu: 'PAGES.WORKFLOW.TITLE_HEADER',
+        headerTitle: 'PAGES.WORKFLOW.TITLE_HEADER',
+        path: '',
+        pathText: 'PAGES.WORKFLOW.TITLE_HEADER',
+        description: 'PAGES.WORKFLOW.TITLE_HEADER',
+      }
+    ]
   };
 
   public static SERVICE_POINTS: Page = {
@@ -247,6 +258,14 @@ export class Pages {
   public static viewablePages: Page[] = this.pages;
 
   public static get enabledPages(): Page[] {
-    return this.viewablePages;
+    return this.viewablePages.map(page => {
+      if (page === Pages.SEPODI && !environment.sepodiWorkflowEnabled) {
+        return {
+          ...page,
+          subpages: page.subpages!.filter(subpage => subpage.title !== 'PAGES.WORKFLOW.TITLE_HEADER')
+        };
+      }
+      return page;
+    });
   }
 }
