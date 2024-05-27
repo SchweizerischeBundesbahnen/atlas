@@ -9,9 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Client } from './client';
 
 
-export interface InlineObject15 { 
-    file: Blob;
+export interface StopPointRejectWorkflow { 
+    examinantBAVClient: Client;
+    /**
+     * Reject motivation
+     */
+    motivationComment?: string;
 }
 
