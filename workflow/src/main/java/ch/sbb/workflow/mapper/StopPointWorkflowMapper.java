@@ -45,6 +45,7 @@ public class StopPointWorkflowMapper {
             .collect(Collectors.toSet()));
     return stopPointWorkflow;
   }
+
   public static StopPointWorkflow toEntity(StopPointAddWorkflowModel model) {
     StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
         .sloid(model.getSloid())
