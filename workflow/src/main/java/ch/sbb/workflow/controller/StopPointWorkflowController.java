@@ -18,47 +18,47 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
 
 
   @Override
-  public StopPointAddWorkflowModel getWorkflow(Long id) {
+  public StopPointAddWorkflowModel getStopPointWorkflow(Long id) {
     return StopPointWorkflowMapper.toModel(service.getWorkflow(id));
   }
 
   @Override
-  public List<StopPointAddWorkflowModel> getWorkflows() {
+  public List<StopPointAddWorkflowModel> getStopPointWorkflows() {
     return service.getWorkflows().stream().map(StopPointWorkflowMapper::toModel).toList();
   }
 
   @Override
-  public StopPointAddWorkflowModel addWorkflow(StopPointAddWorkflowModel workflowModel) {
+  public StopPointAddWorkflowModel addStopPointWorkflow(StopPointAddWorkflowModel workflowModel) {
     return StopPointWorkflowMapper.toModel(service.addWorkflow(workflowModel));
   }
 
   @Override
-  public StopPointAddWorkflowModel startWorkflow(Long id) {
+  public StopPointAddWorkflowModel startStopPointWorkflow(Long id) {
     return StopPointWorkflowMapper.toModel(service.startWorkflow(id));
   }
 
   @Override
-  public StopPointAddWorkflowModel editWorkflow(Long id, StopPointAddWorkflowModel workflowModel) {
+  public StopPointAddWorkflowModel editStopPointWorkflow(Long id, StopPointAddWorkflowModel workflowModel) {
     return StopPointWorkflowMapper.toModel(service.editWorkflow(id,workflowModel));
   }
 
   @Override
-  public StopPointAddWorkflowModel rejectWorkflow(Long id, StopPointRejectWorkflowModel workflowModel) {
+  public StopPointAddWorkflowModel rejectStopPointWorkflow(Long id, StopPointRejectWorkflowModel workflowModel) {
     return StopPointWorkflowMapper.toModel(service.rejectWorkflow(id,workflowModel));
   }
 
   @Override
-  public StopPointAddWorkflowModel addExaminantToWorkflow(Long id, ClientPersonModel personModel) {
+  public StopPointAddWorkflowModel addExaminantToStopPointWorkflow(Long id, ClientPersonModel personModel) {
     return StopPointWorkflowMapper.toModel(service.addExaminantToWorkflow(id,personModel));
   }
 
   @Override
-  public StopPointAddWorkflowModel removeExaminantToWorkflow(Long id, Long personId) {
+  public StopPointAddWorkflowModel removeExaminantFromStopPointWorkflow(Long id, Long personId) {
     return StopPointWorkflowMapper.toModel(service.removeExaminantToWorkflow(id,personId));
   }
 
   @Override
-  public void obtainOtpWorkflow(Long id, Long personId) {
+  public void obtainOtpForStopPointWorkflow(Long id, Long personId) {
     service.obtainOtp(id,personId);
   }
 
