@@ -3,15 +3,21 @@ package ch.sbb.workflow.service;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.api.workflow.StopPointAddWorkflowModel;
+import ch.sbb.atlas.api.workflow.StopPointRejectWorkflowModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.client.SePoDiClient;
+import ch.sbb.workflow.entity.Decision;
+import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.kafka.WorkflowNotificationService;
+import ch.sbb.workflow.mapper.ClientPersonMapper;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
 import ch.sbb.workflow.model.Examinants;
+import ch.sbb.workflow.workflow.DecisionRepository;
 import ch.sbb.workflow.workflow.StopPointWorkflowRepository;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -24,18 +30,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class StopPointWorkflowService {
 
-  private final StopPointWorkflowRepository repository;
+  private final StopPointWorkflowRepository workflowRepository;
+  private final DecisionRepository decisionRepository;
   private final SePoDiClient sePoDiClient;
 
   private final Examinants examinants;
   private final WorkflowNotificationService notificationService;
 
   public StopPointWorkflow getWorkflow(Long id) {
-    return repository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+    return workflowRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }
 
   public List<StopPointWorkflow> getWorkflows() {
-    return repository.findAll();
+    return workflowRepository.findAll();
   }
 
   public StopPointWorkflow addWorkflow(StopPointAddWorkflowModel stopPointAddWorkflowModel) {
@@ -50,13 +57,13 @@ public class StopPointWorkflowService {
         .getBody();
     if (Objects.requireNonNull(updateServicePointVersionModel).getStatus() == Status.IN_REVIEW) {
       stopPointWorkflow.setStatus(WorkflowStatus.ADDED);
-      return repository.save(stopPointWorkflow);
+      return workflowRepository.save(stopPointWorkflow);
     }
     throw new IllegalStateException("Something went wrong!");
   }
 
   public StopPointWorkflow startWorkflow(Long id) {
-    StopPointWorkflow stopPointWorkflow = repository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+    StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
     // TODO: WorkflowCurrentlyInHearingException
     if (hasWorkflowHearing(stopPointWorkflow.getVersionId())) {
       throw new IllegalStateException("Workflow already in Hearing!");
@@ -66,13 +73,13 @@ public class StopPointWorkflowService {
       throw new IllegalStateException("Workflow status must be ADDED!!!");
     }
     stopPointWorkflow.setStatus(WorkflowStatus.HEARING);
-    StopPointWorkflow workflow = repository.save(stopPointWorkflow);
+    StopPointWorkflow workflow = workflowRepository.save(stopPointWorkflow);
     notificationService.sendStopPointWorkflowMail(workflow);
     return workflow;
   }
 
   public StopPointWorkflow editWorkflow(Long id, StopPointAddWorkflowModel workflowModel) {
-    StopPointWorkflow stopPointWorkflow = repository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+    StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
     if (!stopPointWorkflow.getDesignationOfficial().equals(workflowModel.getDesignationOfficial())){
       if(stopPointWorkflow.getStatus() != WorkflowStatus.ADDED){
         throw new IllegalStateException("Workflow status must be ADDED!!!");
@@ -81,14 +88,39 @@ public class StopPointWorkflowService {
       //create new Workflow
       StopPointWorkflow newStopPointWorkflow = mapStopPointWorkflow(workflowModel);
       newStopPointWorkflow.setStatus(WorkflowStatus.ADDED);
-      StopPointWorkflow newWorkflow = repository.save(newStopPointWorkflow);
+      StopPointWorkflow newWorkflow = workflowRepository.save(newStopPointWorkflow);
 
       stopPointWorkflow.setStatus(WorkflowStatus.REJECTED);
       stopPointWorkflow.setFollowUpWorkflow(newWorkflow);
-      repository.save(stopPointWorkflow);
+      workflowRepository.save(stopPointWorkflow);
       return newWorkflow;
     }
-    return repository.save(stopPointWorkflow);
+    return workflowRepository.save(stopPointWorkflow);
+  }
+
+  public StopPointWorkflow rejectWorkflow(Long id, StopPointRejectWorkflowModel workflowModel) {
+    StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
+    if(stopPointWorkflow.getStatus() != WorkflowStatus.ADDED){
+      throw new IllegalStateException("Workflow status must be ADDED!!!");
+    }
+    ClientPersonModel examinantBAVclientPersonModel = workflowModel.getExaminantBAVClient();
+    Person examinantBAV = ClientPersonMapper.toEntity(examinantBAVclientPersonModel);
+    examinantBAV.setStopPointWorkflow(stopPointWorkflow);
+    Decision decision = new Decision();
+    decision.setJudgement(false);
+    decision.setExaminant(examinantBAV);
+    decision.setJudgement(false);
+    decision.setMotivation(workflowModel.getMotivationComment());
+    decision.setMotivationDate(LocalDateTime.now());
+    decisionRepository.save(decision);
+
+    //TODO: 1. sePoDiClient.update(officialDesignation)
+    stopPointWorkflow.setStatus(WorkflowStatus.REJECTED);
+    return stopPointWorkflow;
+  }
+
+  private StopPointWorkflow findStopPointWorkflow(Long id) {
+    return workflowRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }
 
   private StopPointWorkflow mapStopPointWorkflow(StopPointAddWorkflowModel workflowStartModel) {
@@ -101,11 +133,11 @@ public class StopPointWorkflowService {
   }
 
   private boolean hasWorkflowAdded(Long businessObjectId) {
-    return !repository.findAllByVersionIdAndStatus(businessObjectId, WorkflowStatus.ADDED).isEmpty();
+    return !workflowRepository.findAllByVersionIdAndStatus(businessObjectId, WorkflowStatus.ADDED).isEmpty();
   }
 
   private boolean hasWorkflowHearing(Long businessObjectId) {
-    return !repository.findAllByVersionIdAndStatus(businessObjectId, WorkflowStatus.HEARING).isEmpty();
+    return !workflowRepository.findAllByVersionIdAndStatus(businessObjectId, WorkflowStatus.HEARING).isEmpty();
   }
 
 }

@@ -1,6 +1,7 @@
 package ch.sbb.workflow.controller;
 
 import ch.sbb.atlas.api.workflow.StopPointAddWorkflowModel;
+import ch.sbb.atlas.api.workflow.StopPointRejectWorkflowModel;
 import ch.sbb.workflow.api.StopPointWorkflowApiV1;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
 import ch.sbb.workflow.service.StopPointWorkflowService;
@@ -38,6 +39,11 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   @Override
   public StopPointAddWorkflowModel editWorkflow(Long id, StopPointAddWorkflowModel workflowModel) {
     return StopPointWorkflowMapper.toModel(service.editWorkflow(id,workflowModel));
+  }
+
+  @Override
+  public StopPointAddWorkflowModel rejectWorkflow(Long id, StopPointRejectWorkflowModel workflowModel) {
+    return StopPointWorkflowMapper.toModel(service.rejectWorkflow(id,workflowModel));
   }
 
 }
