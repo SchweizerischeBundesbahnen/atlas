@@ -206,7 +206,10 @@
       "TITLE_HEADER": "Accessibilité",
       "DESCRIPTION": "Saisier, modifier et consulter les données d'accessibilité des arrêts de transports publics en Suisse."
     },
-    "DETAILS": "Précisions"
+    "DETAILS": "Précisions",
+    "WORKFLOW": {
+      "TITLE_HEADER": "Audience"
+    }
   },
   "PAGINATOR": {
     "ITEMS_PER_PAGE": "Objets par page",
@@ -561,7 +564,7 @@
       "ADDED": "saisie",
       "STARTED": "lancée",
       "REVISION": "en révision",
-      "HEARING": "en audience",
+      "WORKFLOW": "en audience",
       "APPROVED": "approuvée",
       "REJECTED": "refusée"
     },
