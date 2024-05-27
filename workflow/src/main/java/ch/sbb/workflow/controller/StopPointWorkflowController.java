@@ -1,6 +1,7 @@
 package ch.sbb.workflow.controller;
 
 import ch.sbb.atlas.api.workflow.ClientPersonModel;
+import ch.sbb.atlas.api.workflow.DecisionModel;
 import ch.sbb.atlas.api.workflow.StopPointAddWorkflowModel;
 import ch.sbb.atlas.api.workflow.StopPointRejectWorkflowModel;
 import ch.sbb.workflow.api.StopPointWorkflowApiV1;
@@ -60,6 +61,11 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   @Override
   public void obtainOtpForStopPointWorkflow(Long id, Long personId) {
     service.obtainOtp(id,personId);
+  }
+
+  @Override
+  public void voteWorkflow(Long id, Long personId, DecisionModel decisionModel) {
+    service.voteWorkFlow(id, personId,decisionModel);
   }
 
 }
