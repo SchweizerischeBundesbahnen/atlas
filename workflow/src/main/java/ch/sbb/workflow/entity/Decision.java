@@ -42,6 +42,7 @@ public class Decision {
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
+  //TODO: replace wit enum YES/NO
   private Boolean judgement;
 
   @Size(max = AtlasFieldLengths.LENGTH_1500)
@@ -54,10 +55,10 @@ public class Decision {
   @Column(columnDefinition = "TIMESTAMP")
   private LocalDateTime motivationDate;
 
-  private Boolean fot_judgement;
+  private Boolean fotJudgement;
 
   @Size(max = AtlasFieldLengths.LENGTH_1500)
-  private String fot_motivation;
+  private String fotMotivation;
 
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "fot_overrider_id", referencedColumnName = "id")
