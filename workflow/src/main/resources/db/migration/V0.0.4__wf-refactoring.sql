@@ -14,7 +14,6 @@ CREATE TABLE stop_point_workflow
     sboid                   VARCHAR(32),
     swiss_municipality_name VARCHAR(255),
     status                  VARCHAR(50),
-    examinant_bav_id        BIGINT,
     workflow_comment        VARCHAR(1500),
     designation_official    VARCHAR(30) NOT NULL,
     start_date              DATE        NOT NULL,
@@ -24,10 +23,6 @@ CREATE TABLE stop_point_workflow
     edition_date            TIMESTAMP   NOT NULL,
     editor                  VARCHAR(50) NOT NULL,
     follow_up_workflow_id   BIGINT,
-
-    CONSTRAINT fk_examinant_bav
-        FOREIGN KEY (examinant_bav_id)
-            REFERENCES person (id),
 
     CONSTRAINT fk_follow_up_workflow
         FOREIGN KEY (follow_up_workflow_id)
@@ -74,10 +69,10 @@ CREATE SEQUENCE decision_seq START WITH 1000 INCREMENT BY 1;
 
 CREATE TABLE otp
 (
-    id            BIGINT        NOT NULL PRIMARY KEY,
+    id            BIGINT     NOT NULL PRIMARY KEY,
     person_id     BIGINT,
-    code          VARCHAR(1500) NOT NULL,
-    creation_time TIMESTAMP     NOT NULL,
+    code          VARCHAR(6) NOT NULL,
+    creation_time TIMESTAMP  NOT NULL,
 
     CONSTRAINT fk_person
         FOREIGN KEY (person_id)

@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public enum DecisionType {
   VOTED,
   REJECTED,
-  RESTATED,
+  RESTARTED,
   CANCELED,
-  CLOSED
 }
