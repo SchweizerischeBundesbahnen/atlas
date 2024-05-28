@@ -43,14 +43,14 @@ public class Examinants {
 
 
   Canton getExaminantByCanton(SwissCanton canton) {
-    return cantons.stream().filter(examinant -> canton.getAbbreviation().equals(examinant.canton)).findFirst()
+    return cantons.stream().filter(examinant -> canton.getAbbreviation().equals(examinant.abbreviation)).findFirst()
         .orElseThrow(() -> new IllegalStateException("Canton abbreviation does not exists"));
   }
 
   @Data
   @Builder
   private static class Canton {
-    private String canton;
+    private String abbreviation;
     private String lastname;
     private String firstname;
     private String organisation;
