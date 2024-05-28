@@ -1,7 +1,8 @@
-package ch.sbb.atlas.api.workflow;
+package ch.sbb.workflow.model.sepodi;
 
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;

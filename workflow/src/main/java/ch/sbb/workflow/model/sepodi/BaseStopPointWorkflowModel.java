@@ -1,8 +1,8 @@
-package ch.sbb.atlas.api.workflow;
+package ch.sbb.workflow.model.sepodi;
 
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.kafka.model.SwissCanton;
+import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
@@ -13,16 +13,15 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
-@Schema(name = "StopPointAddWorkflow")
-public class StopPointAddWorkflowModel {
+@SuperBuilder
+public abstract class BaseStopPointWorkflowModel {
 
   @Schema(description = "Service Point version id")
   @NotNull
@@ -43,11 +42,6 @@ public class StopPointAddWorkflowModel {
   @Schema(description = "Official designation of a location that must be used by all recipients"
       , example = "Biel/Bienne Bözingenfeld/Champ", maxLength = 30)
   private String designationOfficial;
-
-  @NotNull
-  @Schema(description = "Canton, the statement is for")
-  private SwissCanton swissCanton;
-
 
   @Schema(description = "SwissMunicipalityName the location is in", example = "Biel/Bienne")
   @Size(max = AtlasFieldLengths.LENGTH_255)
@@ -73,4 +67,5 @@ public class StopPointAddWorkflowModel {
 
   @Schema(description = "Workflow Status", accessMode = AccessMode.READ_ONLY)
   private WorkflowStatus status;
+
 }

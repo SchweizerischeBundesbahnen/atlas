@@ -1,11 +1,13 @@
 package ch.sbb.workflow.api;
 
 import ch.sbb.atlas.api.workflow.ClientPersonModel;
-import ch.sbb.atlas.api.workflow.DecisionModel;
-import ch.sbb.atlas.api.workflow.OverrideDecisionModel;
-import ch.sbb.atlas.api.workflow.StopPointAddWorkflowModel;
-import ch.sbb.atlas.api.workflow.StopPointRejectWorkflowModel;
-import ch.sbb.atlas.api.workflow.StopPointRestartWorkflowModel;
+import ch.sbb.workflow.model.sepodi.DecisionModel;
+import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
+import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
+import ch.sbb.workflow.model.sepodi.ReadStopPointWorkflowModel;
+import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
+import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
+import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,34 +26,34 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public interface StopPointWorkflowApiV1 {
 
   @GetMapping("{id}")
-  StopPointAddWorkflowModel getStopPointWorkflow(@PathVariable Long id);
+  ReadStopPointWorkflowModel getStopPointWorkflow(@PathVariable Long id);
 
   @GetMapping()
-  List<StopPointAddWorkflowModel> getStopPointWorkflows();
+  List<ReadStopPointWorkflowModel> getStopPointWorkflows();
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201")})
-  StopPointAddWorkflowModel addStopPointWorkflow(@RequestBody @Valid StopPointAddWorkflowModel workflowModel);
+  ReadStopPointWorkflowModel addStopPointWorkflow(@RequestBody @Valid StopPointAddWorkflowModel workflowModel);
 
   @PostMapping(path = "/start/{id}")
-  StopPointAddWorkflowModel startStopPointWorkflow(@PathVariable Long id);
+  ReadStopPointWorkflowModel startStopPointWorkflow(@PathVariable Long id);
 
   @PostMapping(path = "/edit/{id}")
-  StopPointAddWorkflowModel editStopPointWorkflow(@PathVariable Long id,
-      @RequestBody @Valid StopPointAddWorkflowModel workflowModel);
+  ReadStopPointWorkflowModel editStopPointWorkflow(@PathVariable Long id,
+      @RequestBody @Valid EditStopPointWorkflowModel workflowModel);
 
   @PostMapping(path = "/reject/{id}")
-  StopPointAddWorkflowModel rejectStopPointWorkflow(@PathVariable Long id,
+  ReadStopPointWorkflowModel rejectStopPointWorkflow(@PathVariable Long id,
       @RequestBody @Valid StopPointRejectWorkflowModel workflowModel);
 
   @PostMapping(path = "/add-examinant/{id}")
-  StopPointAddWorkflowModel addExaminantToStopPointWorkflow(@PathVariable Long id,
+  ReadStopPointWorkflowModel addExaminantToStopPointWorkflow(@PathVariable Long id,
       @RequestBody @Valid ClientPersonModel personModel);
 
   @PostMapping(path = "/remove-examinant/{id}/{personId}")
-  StopPointAddWorkflowModel removeExaminantFromStopPointWorkflow(@PathVariable Long id, @PathVariable Long personId);
+  ReadStopPointWorkflowModel removeExaminantFromStopPointWorkflow(@PathVariable Long id, @PathVariable Long personId);
 
   @PostMapping(path = "/obtain-otp/{id}/{personId}")
   void obtainOtpForStopPointWorkflow(@PathVariable Long id, @PathVariable Long personId);
@@ -64,11 +66,11 @@ public interface StopPointWorkflowApiV1 {
       @RequestBody @Valid OverrideDecisionModel decisionModel);
 
   @PostMapping(path = "/restart/{id}")
-  StopPointAddWorkflowModel restartStopPointWorkflow(@PathVariable Long id,
+  ReadStopPointWorkflowModel restartStopPointWorkflow(@PathVariable Long id,
       @RequestBody @Valid StopPointRestartWorkflowModel restartWorkflowModel);
 
   @PostMapping(path = "/cancel/{id}")
-  StopPointAddWorkflowModel cancelStopPointWorkflow(@PathVariable Long id,
+  ReadStopPointWorkflowModel cancelStopPointWorkflow(@PathVariable Long id,
       @RequestBody @Valid StopPointRejectWorkflowModel stopPointCancelWorkflowModel);
 
 }
