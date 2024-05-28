@@ -3,6 +3,8 @@ import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {RouterModule} from "@angular/router";
 import {PageService} from "./page.service";
 import {PermissionService} from "./permission.service";
+import {environment} from "../../../environments/environment";
+import {Pages} from "../../pages/pages";
 
 const permissionServiceMock: Partial<PermissionService> = {
   mayAccessTimetableHearing: () => true,
@@ -46,6 +48,23 @@ describe('PageService', () => {
 
     pageService.resetPages();
     expect(pageService.enabledPages).toHaveSize(5);
+  });
+
+  it('should not return submenu when sepodiWorkflowEnabled is false', () => {
+    environment.sepodiWorkflowEnabled = false;
+
+    const result = pageService.enabledPages.filter(i=> i.title===Pages.SEPODI.title)[0];
+
+    expect(result.subpages!.length).toBe(0);
+  });
+
+  it('should return submenu when sepodiWorkflowEnabled is true', () => {
+    environment.sepodiWorkflowEnabled = true;
+
+    const result = pageService.enabledPages.filter(i=> i===Pages.SEPODI)[0];
+
+    expect(result.subpages!.length).toBe(1);
+    expect(result.subpages![0].title).toBe('PAGES.WORKFLOW.TITLE_HEADER');
   });
 
 });
