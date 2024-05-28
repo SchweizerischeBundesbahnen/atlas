@@ -2,9 +2,12 @@ package ch.sbb.workflow.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.service.UserService;
+import ch.sbb.atlas.workflow.model.Judgement;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -42,8 +45,8 @@ public class Decision {
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
-  //TODO: replace wit enum YES/NO
-  private Boolean judgement;
+  @Enumerated(EnumType.STRING)
+  private Judgement judgement;
 
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   private String motivation;
@@ -55,8 +58,8 @@ public class Decision {
   @Column(columnDefinition = "TIMESTAMP")
   private LocalDateTime motivationDate;
 
-  //TODO: replace wit enum YES/NO
-  private Boolean fotJudgement;
+  @Enumerated(EnumType.STRING)
+  private Judgement fotJudgement;
 
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   private String fotMotivation;
