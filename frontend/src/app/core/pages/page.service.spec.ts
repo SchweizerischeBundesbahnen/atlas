@@ -2,9 +2,9 @@ import {TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {RouterModule} from "@angular/router";
 import {PageService} from "./page.service";
-import {PermissionService} from "./permission.service";
 import {environment} from "../../../environments/environment";
 import {Pages} from "../../pages/pages";
+import {PermissionService} from "../auth/permission/permission.service";
 
 const permissionServiceMock: Partial<PermissionService> = {
   mayAccessTimetableHearing: () => true,

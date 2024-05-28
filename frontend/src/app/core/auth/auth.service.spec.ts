@@ -5,8 +5,8 @@ import {of, Subject} from 'rxjs';
 import {Component} from '@angular/core';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {RouterModule} from "@angular/router";
-import {UserService} from "./user.service";
-import {PageService} from "./page.service";
+import {UserService} from "./user/user.service";
+import {PageService} from "../pages/page.service";
 
 function createOauthServiceSpy() {
   const oauthServiceSpy = jasmine.createSpyObj<OAuthService>('OAuthService', [

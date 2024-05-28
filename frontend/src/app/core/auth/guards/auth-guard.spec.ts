@@ -5,7 +5,7 @@ import {AuthGuard} from './auth-guard';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {RouterModule} from "@angular/router";
 import {adminUserServiceMock, authServiceSpy} from "../../../app.testing.mocks";
-import {UserService} from "../user.service";
+import {UserService} from "../user/user.service";
 
 describe('AuthGuard', () => {
   let authGuard: AuthGuard;

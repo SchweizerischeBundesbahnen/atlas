@@ -37,7 +37,7 @@ import {NotificationService} from "../../../../../../core/notification/notificat
 import {TranslatePipe} from "@ngx-translate/core";
 import {SplitServicePointNumberPipe} from "../../../../../../core/search-service-point/split-service-point-number.pipe";
 import moment from "moment";
-import {PermissionService} from "../../../../../../core/auth/permission.service";
+import {PermissionService} from "../../../../../../core/auth/permission/permission.service";
 import SpyObj = jasmine.SpyObj;
 
 const toilet: ReadToiletVersion[] = [

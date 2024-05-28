@@ -17,7 +17,7 @@ import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-transl
 import {MatDialogRef} from '@angular/material/dialog';
 import {ApplicationType} from 'src/app/api';
 import {ValidityService} from "../../../pages/sepodi/validity/validity.service";
-import {PermissionService} from "../../auth/permission.service";
+import {PermissionService} from "../../auth/permission/permission.service";
 import {adminPermissionServiceMock} from "../../../app.testing.mocks";
 
 const dialogServiceSpy = jasmine.createSpyObj(['confirm']);

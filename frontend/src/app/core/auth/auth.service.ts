@@ -2,12 +2,12 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {OAuthService} from 'angular-oauth2-oidc';
 import {environment} from '../../../environments/environment';
-import {User} from '../components/user/user';
 import {Pages} from '../../pages/pages';
 import {jwtDecode} from 'jwt-decode';
 import {Role} from './role';
-import {UserService} from "./user.service";
-import {PageService} from "./page.service";
+import {UserService} from "./user/user.service";
+import {PageService} from "../pages/page.service";
+import {User} from "./user/user";
 
 @Injectable({
   providedIn: 'root',

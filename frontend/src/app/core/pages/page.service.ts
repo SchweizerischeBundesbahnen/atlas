@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {PermissionService} from "./permission.service";
 import {Pages} from "../../pages/pages";
 import {Page} from "../model/page";
 import {environment} from "../../../environments/environment";
+import {PermissionService} from "../auth/permission/permission.service";
 
 @Injectable({
   providedIn: 'root',

@@ -17,7 +17,7 @@ import {CompletePlatformFormGroup, PlatformFormGroupBuilder, ReducedPlatformForm
 import {DateRange} from "../../../../../../core/versioning/date-range";
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
 import {ValidityService} from "../../../../../sepodi/validity/validity.service";
-import {PermissionService} from "../../../../../../core/auth/permission.service";
+import {PermissionService} from "../../../../../../core/auth/permission/permission.service";
 
 @Component({
   selector: 'app-platforms',

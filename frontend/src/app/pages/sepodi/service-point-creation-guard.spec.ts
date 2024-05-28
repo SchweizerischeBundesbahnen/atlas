@@ -1,6 +1,6 @@
 import {TestBed} from '@angular/core/testing';
 import {ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot, UrlTree} from '@angular/router';
-import {PermissionService} from "../../core/auth/permission.service";
+import {PermissionService} from "../../core/auth/permission/permission.service";
 import {AppTestingModule} from "../../app.testing.module";
 import {CanActivateServicePointCreationGuard, canCreateServicePoint} from "./service-point-creation-guard";
 import {Pages} from "../pages";
