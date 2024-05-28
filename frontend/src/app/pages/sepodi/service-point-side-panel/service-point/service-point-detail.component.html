@@ -75,14 +75,16 @@
     [footerEdit]="(isFormEnabled$ | async) ?? false"
   >
   </atlas-button>
-  <!--  todo: disable edit of in review versions and check error message on save when in review version is affected -->
   <atlas-button
     *ngIf="(isFormEnabled$ | async) === false && form"
     (buttonClicked)="toggleEdit()"
     applicationType="SEPODI"
     [businessOrganisation]="form.controls.businessOrganisation.value!"
     [uicCountryCode]="selectedVersion?.number?.uicCountryCode"
-    [disabled]="selectedVersion?.status === 'REVOKED'"
+    [disabled]="
+      selectedVersion?.status === servicePointStatus.Revoked ||
+      selectedVersion?.status === servicePointStatus.InReview
+    "
     buttonDataCy="edit"
     buttonText="COMMON.EDIT"
     buttonType="edit"

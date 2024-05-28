@@ -977,7 +977,7 @@
       "ABBREVIATION_UPDATE_NOT_ALLOWED": "Die Geschäftsorganisation der Dienststelle ist nicht berechtigt Abkürzungen hinzuzufügen oder die Dienststelle verfügt bereits über eine Abkürzung, die nicht geändert oder gelöscht werden darf.",
       "ABBREVIATION_NOT_UNIQUE": "Die Abkürzung wird bereits verwendet oder die gewählte Dienststellen Version ist nicht die aktuellste.",
       "HEIGHT_SERVICE_UNAVAILABLE": "Der Höhenservice ist nicht erreichbar. Bitte versuchen Sie es in 30 Minuten erneut. Sollte das Problem weiterhin bestehen wenden Sie sich an die Fachtstelle atlas.",
-      "UPDATE_AFFECTS_VERSION_IN_REVIEW": "Die Änderung betrifft die Version von {{validFrom}} bis {{validTo}}, die aktuell in Prüfung ist und deswegen nicht geändert werden darf."
+      "UPDATE_AFFECTS_VERSION_IN_REVIEW": "Das Editieren ist aufgrund einer laufenden Anhörung der Version vom {{validFrom}} bis {{validTo}} zum Haltestellennamen nicht möglich. Mutationen können erst nach Abschluss der Anhörung wieder erfasst werden."
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Haltekanten",
