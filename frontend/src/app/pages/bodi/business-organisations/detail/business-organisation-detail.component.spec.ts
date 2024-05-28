@@ -14,7 +14,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {DetailPageContainerComponent} from '../../../../core/components/detail-page-container/detail-page-container.component';
 import {DetailFooterComponent} from '../../../../core/components/detail-footer/detail-footer.component';
 import {ValidityService} from "../../../sepodi/validity/validity.service";
-import {PermissionService} from "../../../../core/auth/permission.service";
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 const businessOrganisationVersion: BusinessOrganisationVersion = {
   id: 1234,

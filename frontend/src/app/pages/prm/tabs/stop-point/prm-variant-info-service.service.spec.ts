@@ -3,7 +3,7 @@ import {TestBed} from '@angular/core/testing';
 import {PrmVariantInfoServiceService} from './prm-variant-info-service.service';
 import {completeMeansOfTransport, reducedMeansOfTransport} from "../../util/prm-mean-of-transport-helper";
 import {MeanOfTransport} from "../../../../api";
-import {PermissionService} from "../../../../core/auth/permission.service";
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 describe('PrmVariantInfoServiceService', () => {
   let service: PrmVariantInfoServiceService;

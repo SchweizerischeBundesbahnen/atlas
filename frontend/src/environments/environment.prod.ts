@@ -37,6 +37,7 @@ export const environment: Environment = {
   label: process.env.ENVIRONMENT_LABEL!,
   appVersion: process.env.APP_VERSION!,
   atlasApiUrl: process.env.ATLAS_API_URL!,
+  atlasUnauthApiUrl: process.env.ATLAS_UNAUTH_API_URL!,
   atlasReleaseNotes: 'https://atlas-info.app.sbb.ch/static/atlas-release-notes.html',
   authConfig,
 };

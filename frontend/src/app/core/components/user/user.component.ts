@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../auth/auth.service';
-import {User} from './user';
 import {ApplicationRole, ApplicationType, Permission} from '../../../api';
-import {UserService} from "../../auth/user.service";
+import {UserService} from "../../auth/user/user.service";
+import {User} from "../../auth/user/user";
 
 @Component({
   selector: 'app-user',

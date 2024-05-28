@@ -15,7 +15,7 @@ import {WhitespaceValidator} from '../../../core/validation/whitespace/whitespac
 import {AtlasFieldLengthValidator} from '../../../core/validation/field-lengths/atlas-field-length-validator';
 import {TimetableFieldNumberDetailFormGroup} from './timetable-field-number-detail-form-group';
 import {ValidityService} from "../../sepodi/validity/validity.service";
-import {PermissionService} from "../../../core/auth/permission.service";
+import {PermissionService} from "../../../core/auth/permission/permission.service";
 
 @Component({
   selector: 'app-timetable-field-number-detail',

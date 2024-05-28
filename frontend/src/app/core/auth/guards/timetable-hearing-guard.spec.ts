@@ -2,8 +2,8 @@ import {TestBed} from '@angular/core/testing';
 import {canActivateTimetableHearing, TimetableHearingGuard} from './timetable-hearing-guard.service';
 import {ActivatedRouteSnapshot, convertToParamMap, RouterModule, RouterStateSnapshot, UrlTree} from "@angular/router";
 import {adminUserServiceMock} from "../../../app.testing.mocks";
-import {PermissionService} from "../permission.service";
-import {UserService} from "../user.service";
+import {PermissionService} from "../permission/permission.service";
+import {UserService} from "../user/user.service";
 import {Observable} from "rxjs";
 
 let mayAccessTth = true;

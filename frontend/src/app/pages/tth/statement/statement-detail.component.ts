@@ -35,7 +35,7 @@ import {Pages} from '../../pages';
 import {DetailFormComponent} from '../../../core/leave-guard/leave-dirty-form-guard.service';
 import {TableService} from "../../../core/components/table/table.service";
 import {addElementsToArrayWhenNotUndefined} from "../../../core/util/arrays";
-import {PermissionService} from "../../../core/auth/permission.service";
+import {PermissionService} from "../../../core/auth/permission/permission.service";
 
 @Component({
   selector: 'app-statement-detail',

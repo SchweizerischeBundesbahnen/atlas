@@ -13,7 +13,7 @@ import {AtlasFieldErrorComponent} from '../../form-components/atlas-field-error/
 import {AtlasLabelFieldComponent} from '../../form-components/atlas-label-field/atlas-label-field.component';
 import {TextFieldComponent} from '../../form-components/text-field/text-field.component';
 import {TranslatePipe} from '@ngx-translate/core';
-import {PermissionService} from "../../auth/permission.service";
+import {PermissionService} from "../../auth/permission/permission.service";
 
 let isAtLeastSupervisor = true;
 const permissionServiceMock: Partial<PermissionService> = {

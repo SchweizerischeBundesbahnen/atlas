@@ -4,7 +4,7 @@ import {BodiOverviewComponent} from './bodi-overview.component';
 import {BusinessOrganisationComponent} from '../business-organisations/business-organisation.component';
 import {AppTestingModule} from '../../../app.testing.module';
 import {AtlasButtonComponent} from '../../../core/components/button/atlas-button.component';
-import {PermissionService} from "../../../core/auth/permission.service";
+import {PermissionService} from "../../../core/auth/permission/permission.service";
 import {adminPermissionServiceMock} from "../../../app.testing.mocks";
 
 describe('BoDiOverviewComponent', () => {

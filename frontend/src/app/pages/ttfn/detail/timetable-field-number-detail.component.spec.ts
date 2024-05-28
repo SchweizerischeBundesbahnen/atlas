@@ -21,7 +21,7 @@ import {AtlasLabelFieldComponent} from '../../../core/form-components/atlas-labe
 import {TextFieldComponent} from '../../../core/form-components/text-field/text-field.component';
 import {Page} from '../../../core/model/page';
 import {Record} from '../../../core/components/base-detail/record';
-import {PermissionService} from "../../../core/auth/permission.service";
+import {PermissionService} from "../../../core/auth/permission/permission.service";
 
 const version: TimetableFieldNumberVersion = {
   id: 1,
