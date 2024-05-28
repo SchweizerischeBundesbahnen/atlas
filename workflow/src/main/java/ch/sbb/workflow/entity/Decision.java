@@ -1,7 +1,6 @@
 package ch.sbb.workflow.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.service.UserService;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,8 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -24,8 +21,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,7 +30,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @SuperBuilder
 @FieldNameConstants
 @Entity(name = "decision")
-public class Decision {
+public class Decision extends BaseWorkflowEntity {
 
   private static final String VERSION_SEQ = "decision_seq";
 
@@ -72,30 +67,5 @@ public class Decision {
 
   @Column(columnDefinition = "TIMESTAMP")
   private LocalDateTime fotMotivationDate;
-
-  @Column(updatable = false)
-  private String creator;
-
-  private String editor;
-
-  @CreationTimestamp
-  @Column(columnDefinition = "TIMESTAMP", updatable = false)
-  private LocalDateTime creationDate;
-
-  @UpdateTimestamp
-  @Column(columnDefinition = "TIMESTAMP")
-  private LocalDateTime editionDate;
-
-  @PrePersist
-  public void onPrePersist() {
-    String sbbUid = UserService.getUserIdentifier();
-    setCreator(sbbUid);
-    setEditor(sbbUid);
-  }
-
-  @PreUpdate
-  public void onPreUpdate() {
-    setEditor(UserService.getUserIdentifier());
-  }
 
 }
