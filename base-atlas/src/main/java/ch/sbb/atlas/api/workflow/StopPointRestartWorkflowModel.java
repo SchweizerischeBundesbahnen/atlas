@@ -1,0 +1,36 @@
+package ch.sbb.atlas.api.workflow;
+
+import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
+import ch.sbb.atlas.api.AtlasFieldLengths;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Builder
+@Schema(name = "StopPointRestartWorkflow")
+public class StopPointRestartWorkflowModel {
+
+  @Schema(description = "BAV Examinant Client")
+  @NotNull
+  private ClientPersonModel examinantBAVClient;
+
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_1500)
+  @Schema(description = "Reject motivation")
+  private String motivationComment;
+
+  @NotNull
+  @Size(min = 2, max = AtlasFieldLengths.LENGTH_30)
+  @Schema(description = "Official designation of a location that must be used by all recipients"
+      , example = "Biel/Bienne Bözingenfeld/Champ", maxLength = 30)
+  private String newDesignationOfficial;
+
+}
