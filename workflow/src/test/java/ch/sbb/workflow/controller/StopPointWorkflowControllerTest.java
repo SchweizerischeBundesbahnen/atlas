@@ -8,34 +8,33 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.api.workflow.ClientPersonModel;
-import ch.sbb.atlas.api.workflow.DecisionModel;
-import ch.sbb.atlas.api.workflow.OverrideDecisionModel;
-import ch.sbb.atlas.api.workflow.StopPointAddWorkflowModel;
-import ch.sbb.atlas.api.workflow.StopPointRejectWorkflowModel;
-import ch.sbb.atlas.api.workflow.StopPointRestartWorkflowModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
-import ch.sbb.atlas.workflow.model.DecisionType;
-import ch.sbb.atlas.workflow.model.Judgement;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.Decision;
+import ch.sbb.workflow.entity.DecisionType;
+import ch.sbb.workflow.entity.JudgementType;
 import ch.sbb.workflow.entity.Otp;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.kafka.WorkflowNotificationService;
 import ch.sbb.workflow.mapper.ClientPersonMapper;
-import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
+import ch.sbb.workflow.model.sepodi.DecisionModel;
+import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
+import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
+import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
+import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
+import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
 import ch.sbb.workflow.workflow.DecisionRepository;
 import ch.sbb.workflow.workflow.OtpRepository;
 import ch.sbb.workflow.workflow.StopPointWorkflowRepository;
@@ -313,15 +312,15 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .versionId(versionId)
         .build();
     workflowRepository.save(stopPointWorkflow);
-    StopPointAddWorkflowModel stopPointAddWorkflowModel = StopPointWorkflowMapper.toModel(stopPointWorkflow);
-    stopPointAddWorkflowModel.setSwissCanton(SwissCanton.BERN);
-    stopPointAddWorkflowModel.setDesignationOfficial("Bern");
-    stopPointAddWorkflowModel.setWorkflowComment("New Comment");
+    EditStopPointWorkflowModel editStopPointWorkflowModel = EditStopPointWorkflowModel.builder()
+        .workflowComment("New Comment")
+        .designationOfficial("Bern")
+        .build();
 
     //given
     mvc.perform(post("/v1/stop-point/workflows/edit/" + stopPointWorkflow.getId())
             .contentType(contentType)
-            .content(mapper.writeValueAsString(stopPointAddWorkflowModel)))
+            .content(mapper.writeValueAsString(editStopPointWorkflowModel)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.status", is("ADDED")));
     List<StopPointWorkflow> workflows =
@@ -329,7 +328,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
             .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
     assertThat(workflows).hasSize(1);
     assertThat(workflows.get(0).getStatus()).isEqualTo(WorkflowStatus.ADDED);
-    assertThat(workflows.get(0).getWorkflowComment()).isEqualTo(stopPointAddWorkflowModel.getWorkflowComment());
+    assertThat(workflows.get(0).getWorkflowComment()).isEqualTo(editStopPointWorkflowModel.getWorkflowComment());
   }
 
   @Test
@@ -429,7 +428,6 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/stop-point/workflows/cancel/" + stopPointWorkflow.getId())
             .contentType(contentType)
             .content(mapper.writeValueAsString(stopPointCancelWorkflowModel)))
-        .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.status", is("CANCELED")));
 
@@ -603,7 +601,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     Otp otp = Otp.builder().code("12345").person(person).build();
     otpRepository.saveAndFlush(otp);
     DecisionModel decisionModel = DecisionModel.builder()
-        .judgement(Judgement.NO)
+        .judgement(JudgementType.NO)
         .motivation("Perfetto")
         .pinCode("12345")
         .build();
@@ -711,7 +709,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .mail(MAIL_ADDRESS).build();
     OverrideDecisionModel overrideDecisionModel = OverrideDecisionModel.builder()
         .overrideExaminant(overrider)
-        .fotJudgement(Judgement.NO)
+        .fotJudgement(JudgementType.NO)
         .fotMotivation("Ja save")
         .build();
 
@@ -765,7 +763,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     Otp otp = Otp.builder().code("12345").person(person).build();
     otpRepository.save(otp);
     Decision decision = Decision.builder()
-        .judgement(Judgement.YES)
+        .judgement(JudgementType.YES)
         .motivation("Perfetto")
         .motivationDate(LocalDateTime.now())
         .build();
@@ -779,7 +777,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .mail(MAIL_ADDRESS).build();
     OverrideDecisionModel overrideDecisionModel = OverrideDecisionModel.builder()
         .overrideExaminant(overrider)
-        .fotJudgement(Judgement.NO)
+        .fotJudgement(JudgementType.NO)
         .fotMotivation("Ja save")
         .build();
 
