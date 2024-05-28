@@ -28,7 +28,7 @@ public class WorkflowNotificationService {
     public void sendStopPointWorkflowMail(StopPointWorkflow stopPointWorkflow) {
         Set<String> mails = stopPointWorkflow.getExaminants().stream().map(Person::getMail).collect(Collectors.toSet());
         mails.addAll(stopPointWorkflow.getCcEmails());
-        //Send Email
+        //TODO: Send Email
     }
 
     private MailNotification getMailNotificationByStatus(LineWorkflow lineWorkflow) {
