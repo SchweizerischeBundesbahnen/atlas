@@ -1,19 +1,14 @@
-package ch.sbb.workflow.service;
+package ch.sbb.workflow.service.sepodi;
 
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.api.workflow.ClientPersonModel;
-import ch.sbb.atlas.api.workflow.DecisionModel;
-import ch.sbb.atlas.api.workflow.OverrideDecisionModel;
-import ch.sbb.atlas.api.workflow.StopPointAddWorkflowModel;
-import ch.sbb.atlas.api.workflow.StopPointRejectWorkflowModel;
-import ch.sbb.atlas.api.workflow.StopPointRestartWorkflowModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
-import ch.sbb.atlas.workflow.model.DecisionType;
-import ch.sbb.atlas.workflow.model.Judgement;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.Decision;
+import ch.sbb.workflow.entity.DecisionType;
+import ch.sbb.workflow.entity.JudgementType;
 import ch.sbb.workflow.entity.Otp;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
@@ -22,6 +17,12 @@ import ch.sbb.workflow.kafka.WorkflowNotificationService;
 import ch.sbb.workflow.mapper.ClientPersonMapper;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
 import ch.sbb.workflow.model.Examinants;
+import ch.sbb.workflow.model.sepodi.DecisionModel;
+import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
+import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
+import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
+import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
+import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
 import ch.sbb.workflow.workflow.DecisionRepository;
 import ch.sbb.workflow.workflow.OtpRepository;
 import ch.sbb.workflow.workflow.StopPointWorkflowRepository;
@@ -90,7 +91,7 @@ public class StopPointWorkflowService {
     return workflow;
   }
 
-  public StopPointWorkflow editWorkflow(Long id, StopPointAddWorkflowModel workflowModel) {
+  public StopPointWorkflow editWorkflow(Long id, EditStopPointWorkflowModel workflowModel) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
     if (!stopPointWorkflow.getDesignationOfficial().equals(workflowModel.getDesignationOfficial())
         && stopPointWorkflow.getStatus() != WorkflowStatus.ADDED) {
@@ -109,7 +110,7 @@ public class StopPointWorkflowService {
     Person examinantBAV = ClientPersonMapper.toEntity(examinantBAVclientPersonModel);
     examinantBAV.setStopPointWorkflow(stopPointWorkflow);
     Decision decision = new Decision();
-    decision.setJudgement(Judgement.NO);
+    decision.setJudgement(JudgementType.NO);
     decision.setDecisionType(DecisionType.REJECTED);
     decision.setExaminant(examinantBAV);
     decision.setMotivation(workflowModel.getMotivationComment());
@@ -130,7 +131,7 @@ public class StopPointWorkflowService {
     Person examinantBAV = ClientPersonMapper.toEntity(examinantBAVclientPersonModel);
     examinantBAV.setStopPointWorkflow(stopPointWorkflow);
     Decision decision = new Decision();
-    decision.setJudgement(Judgement.NO);
+    decision.setJudgement(JudgementType.NO);
     decision.setDecisionType(DecisionType.CANCELED);
     decision.setExaminant(examinantBAV);
     decision.setMotivation(stopPointCancelWorkflowModel.getMotivationComment());
@@ -269,10 +270,10 @@ public class StopPointWorkflowService {
   private StopPointWorkflow mapStopPointWorkflow(StopPointAddWorkflowModel workflowStartModel) {
     ClientPersonModel examinantPersonByCanton = examinants.getExaminantPersonByCanton(workflowStartModel.getSwissCanton());
     ClientPersonModel examinantSpecialistOffice = examinants.getExaminantSpecialistOffice();
-    List<ClientPersonModel> examinants = new ArrayList<>();
-    examinants.add(examinantSpecialistOffice);
-    examinants.add(examinantPersonByCanton);
-    return StopPointWorkflowMapper.toEntity(workflowStartModel, examinants);
+    List<ClientPersonModel> personModels = new ArrayList<>();
+    personModels.add(examinantSpecialistOffice);
+    personModels.add(examinantPersonByCanton);
+    return StopPointWorkflowMapper.toEntity(workflowStartModel, personModels);
   }
 
   private boolean hasWorkflowAdded(Long businessObjectId) {
