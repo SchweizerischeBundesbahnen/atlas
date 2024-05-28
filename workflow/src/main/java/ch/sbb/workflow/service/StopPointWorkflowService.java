@@ -156,14 +156,14 @@ public class StopPointWorkflowService {
           .code(Integer.valueOf(RandomStringUtils.randomNumeric(5)))
           .build();
       otpRepository.save(otp);
-    }else {
+    } else {
       throw new IllegalStateException("Workflow status must be ADDED!!!");
     }
   }
 
   public void voteWorkFlow(Long id, Long personId, DecisionModel decisionModel) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
-    if(stopPointWorkflow.getStatus() != WorkflowStatus.HEARING){
+    if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
       throw new IllegalStateException("Workflow status must be HEARING!!!");
     }
     Person examinant = stopPointWorkflow.getExaminants().stream().filter(p -> p.getId().equals(personId)).findFirst()
@@ -179,15 +179,16 @@ public class StopPointWorkflowService {
 
   public void overrideVoteWorkflow(Long id, Long personId, OverrideDecisionModel decisionModel) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
-    if(stopPointWorkflow.getStatus() != WorkflowStatus.HEARING){
+    if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
       throw new IllegalStateException("Workflow status must be HEARING!!!");
     }
     Person examinant = stopPointWorkflow.getExaminants().stream().filter(p -> p.getId().equals(personId)).findFirst()
         .orElseThrow(() -> new IdNotFoundException(personId));
     Decision decision = decisionRepository.findDecisionByExaminantId(examinant.getId());
-    if(decision == null){
-      throw new IllegalStateException("No decision found!!!");
+    if (decision == null) {
+      decision = new Decision();
     }
+    decision.setExaminant(examinant);
     decision.setFotMotivationDate(LocalDateTime.now());
     decision.setFotMotivation(decisionModel.getFotMotivation());
     decision.setFotJudgement(decisionModel.getFotJudgement());
@@ -196,10 +197,9 @@ public class StopPointWorkflowService {
     decisionRepository.save(decision);
   }
 
-
   void validatePinCode(DecisionModel decisionModel, Person examinant) {
     Otp otp = otpRepository.findByPersonId(examinant.getId());
-    if(!otp.getCode().equals(decisionModel.getPinCode())){
+    if (!otp.getCode().equals(decisionModel.getPinCode())) {
       throw new IllegalStateException("Wrong pin code");
     }
   }
@@ -224,6 +224,5 @@ public class StopPointWorkflowService {
   private boolean hasWorkflowHearing(Long businessObjectId) {
     return !workflowRepository.findAllByVersionIdAndStatus(businessObjectId, WorkflowStatus.HEARING).isEmpty();
   }
-
 
 }

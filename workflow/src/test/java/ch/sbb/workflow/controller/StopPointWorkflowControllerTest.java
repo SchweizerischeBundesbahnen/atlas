@@ -564,7 +564,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldOverrideVoteToWorkflow() throws Exception {
+  void shouldOverrideVoteWihtoutDecisionToWorkflow() throws Exception {
     //when
     Person person = Person.builder()
         .firstName("Marek")
@@ -590,16 +590,74 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     person.setStopPointWorkflow(workflow);
     workflowRepository.saveAndFlush(workflow);
 
+    ClientPersonModel overrider = ClientPersonModel.builder()
+        .firstName("Luca")
+        .lastName("Fix")
+        .personFunction("YB-Fun")
+        .mail(MAIL_ADDRESS).build();
+    OverrideDecisionModel overrideDecisionModel = OverrideDecisionModel.builder()
+        .overrideExaminant(overrider)
+        .fotJudgement(false)
+        .fotMotivation("Ja save")
+        .build();
+
+    //given
+    mvc.perform(post("/v1/stop-point/workflows/override-vote/" + stopPointWorkflow.getId() + "/" + person.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(overrideDecisionModel)))
+        .andExpect(status().isOk());
+
+    List<StopPointWorkflow> workflows =
+        workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
+            .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
+    assertThat(workflows).hasSize(1);
+    Set<Person> examinants = workflows.get(0).getExaminants();
+    assertThat(examinants).hasSize(1);
+    Decision decisionByExaminantId = decisionRepository.findDecisionByExaminantId(person.getId());
+    assertThat(decisionByExaminantId).isNotNull();
+    assertThat(decisionByExaminantId.getFotMotivation()).isEqualTo(overrideDecisionModel.getFotMotivation());
+    assertThat(decisionByExaminantId.getFotJudgement()).isEqualTo(overrideDecisionModel.getFotJudgement());
+    assertThat(decisionByExaminantId.getFotOverrider().getMail()).isEqualTo(
+        overrideDecisionModel.getOverrideExaminant().getMail());
+  }
+
+  @Test
+  void shouldOverrideVoteWitDecisionToWorkflow() throws Exception {
+    //when
+    Person person = Person.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .function("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+
+    Long versionId = 123456L;
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .status(WorkflowStatus.HEARING)
+        .examinants(Set.of(person))
+        .startDate(LocalDate.of(2000, 1, 1))
+        .endDate(LocalDate.of(2000, 12, 31))
+        .versionId(versionId)
+        .build();
+    StopPointWorkflow workflow = workflowRepository.save(stopPointWorkflow);
+    person.setStopPointWorkflow(workflow);
+    workflowRepository.save(workflow);
+
     Otp otp = Otp.builder().code(12345).person(person).build();
-    otpRepository.saveAndFlush(otp);
+    otpRepository.save(otp);
     Decision decision = Decision.builder()
         .judgement(true)
         .motivation("Perfetto")
         .motivationDate(LocalDateTime.now())
-        .examinant(person)
         .build();
     decisionRepository.save(decision);
-
+    decision.setExaminant(person);
+    decisionRepository.save(decision);
     ClientPersonModel overrider = ClientPersonModel.builder()
         .firstName("Luca")
         .lastName("Fix")
