@@ -1,5 +1,4 @@
 import {Page} from '../core/model/page';
-import {environment} from "../../environments/environment";
 
 export class Pages {
   public static HOME: Page = {
