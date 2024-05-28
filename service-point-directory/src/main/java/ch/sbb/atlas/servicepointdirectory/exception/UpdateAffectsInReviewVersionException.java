@@ -39,7 +39,7 @@ public class UpdateAffectsInReviewVersionException extends AtlasException {
         Detail.builder()
             .message("Update affects version from {0} to {1} that has currently the status: " + Status.IN_REVIEW + ".")
             .displayInfo(DisplayInfo.builder()
-                .code("SEPODI.UPDATE_AFFECTS_VERSION_IN_REVIEW")
+                .code("SEPODI.SERVICE_POINTS.UPDATE_AFFECTS_VERSION_IN_REVIEW")
                 .with("validFrom", version.getValidFrom())
                 .with("validTo", version.getValidTo())
                 .build())
