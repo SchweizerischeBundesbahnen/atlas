@@ -120,14 +120,10 @@ public class ServicePointValidationService {
   public void checkNotAffectingInReviewVersions(List<ServicePointVersion> existingVersions,
       UpdateServicePointVersionModel updateVersionModel) {
     List<ServicePointVersion> affectedVersions =
-        existingVersions.stream().filter(version -> version.getStatus() == Status.IN_REVIEW &&
-            (
-                // todo: refactor in seperate class
-                isValidFromInsideUpdate(updateVersionModel, version)
-                    || isValidToInsideUpdate(updateVersionModel, version)
-                    || isUpdateInsideVersion(updateVersionModel, version)
-            )
-        ).toList();
+        existingVersions.stream()
+            .filter(version -> version.getStatus() == Status.IN_REVIEW && new AffectingVersionValidator(updateVersionModel,
+                version).check())
+            .toList();
 
     if (affectedVersions.size() != 0) {
       throw new UpdateAffectsInReviewVersionException(
@@ -138,26 +134,41 @@ public class ServicePointValidationService {
     }
   }
 
-  private boolean isUpdateInsideVersion(UpdateServicePointVersionModel updateVersionModel, ServicePointVersion version) {
-    return isAfterOrEqual(version.getValidTo(), updateVersionModel.getValidTo())
-        && isBeforeOrEqual(version.getValidFrom(), updateVersionModel.getValidFrom());
+  @RequiredArgsConstructor
+  private static final class AffectingVersionValidator {
+
+    private final UpdateServicePointVersionModel updateVersionModel;
+    private final ServicePointVersion version;
+
+    private boolean check() {
+      return isValidFromInsideUpdate()
+          || isValidToInsideUpdate()
+          || isUpdateInsideVersion();
+    }
+
+    private boolean isValidFromInsideUpdate() {
+      return isAfterOrEqual(version.getValidFrom(), updateVersionModel.getValidFrom())
+          && isBeforeOrEqual(version.getValidFrom(), updateVersionModel.getValidTo());
+    }
+
+    private boolean isValidToInsideUpdate() {
+      return isAfterOrEqual(version.getValidTo(), updateVersionModel.getValidFrom())
+          && isBeforeOrEqual(version.getValidTo(), updateVersionModel.getValidTo());
+    }
+
+    private boolean isUpdateInsideVersion() {
+      return isAfterOrEqual(version.getValidTo(), updateVersionModel.getValidTo())
+          && isBeforeOrEqual(version.getValidFrom(), updateVersionModel.getValidFrom());
+    }
+
+    private boolean isAfterOrEqual(LocalDate date, LocalDate comparedDate) {
+      return date.isAfter(comparedDate) || date.isEqual(comparedDate);
+    }
+
+    private boolean isBeforeOrEqual(LocalDate date, LocalDate comparedDate) {
+      return date.isBefore(comparedDate) || date.isEqual(comparedDate);
+    }
+
   }
 
-  private boolean isValidToInsideUpdate(UpdateServicePointVersionModel updateVersionModel, ServicePointVersion version) {
-    return isAfterOrEqual(version.getValidTo(), updateVersionModel.getValidFrom())
-        && isBeforeOrEqual(version.getValidTo(), updateVersionModel.getValidTo());
-  }
-
-  private boolean isValidFromInsideUpdate(UpdateServicePointVersionModel updateVersionModel, ServicePointVersion version) {
-    return isAfterOrEqual(version.getValidFrom(), updateVersionModel.getValidFrom())
-        && isBeforeOrEqual(version.getValidFrom(), updateVersionModel.getValidTo());
-  }
-
-  private boolean isBeforeOrEqual(LocalDate date, LocalDate date2) {
-    return date.isBefore(date2) || date.isEqual(date2);
-  }
-
-  private boolean isAfterOrEqual(LocalDate date, LocalDate date2) {
-    return date.isAfter(date2) || date.isEqual(date2);
-  }
 }
