@@ -977,7 +977,7 @@
       "ABBREVIATION_UPDATE_NOT_ALLOWED": "L'organisation commerciale du service n'est pas autorisée à ajouter des abréviations ou le service dispose déjà d'une abréviation qui ne peut pas être modifiée ou supprimée.",
       "ABBREVIATION_NOT_UNIQUE": "L'abréviation est déjà utilisée ou la version du service choisie n'est pas la plus récente.",
       "HEIGHT_SERVICE_UNAVAILABLE": "Le service d'altitude n'est pas disponible. Veuillez réessayer dans 30 minutes. Si le problème persiste, veuillez vous adresser au service spécialisé atlas.",
-      "UPDATE_AFFECTS_VERSION_IN_REVIEW": "La modification concerne la version de {{validFrom}} à {{validTo}}, qui est actuellement en cours de vérification et ne doit donc pas être modifiée."
+      "UPDATE_AFFECTS_VERSION_IN_REVIEW": "L'édition n'est pas possible en raison d'une consultation en cours de la version de {{validFrom}} à {{validTo}} au nom de l'arrêt. Les mutations ne peuvent être saisies à nouveau qu'après la clôture de l'audition."
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Bordures d’arrêts",
