@@ -61,6 +61,5 @@ public interface StopPointWorkflowApiV1 {
 
   //TODO: 1. restartWorkflow(id, designationOfficial, decisionComment, ClientPersonModel)
   //TODO: 2. rejectWorkflow(id, decisionComment, ClientPersonModel)
-  //TODO: 3. overrideVoteWorkflow(id, ClientPersonModel, Decision)
 
 }

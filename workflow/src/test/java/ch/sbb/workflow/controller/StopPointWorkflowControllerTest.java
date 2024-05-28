@@ -24,6 +24,7 @@ import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
+import ch.sbb.atlas.workflow.model.Judgement;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.Decision;
@@ -541,7 +542,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     Otp otp = Otp.builder().code(12345).person(person).build();
     otpRepository.saveAndFlush(otp);
     DecisionModel decisionModel = DecisionModel.builder()
-        .judgement(true)
+        .judgement(Judgement.NO)
         .motivation("Perfetto")
         .pinCode(12345)
         .build();
@@ -597,7 +598,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .mail(MAIL_ADDRESS).build();
     OverrideDecisionModel overrideDecisionModel = OverrideDecisionModel.builder()
         .overrideExaminant(overrider)
-        .fotJudgement(false)
+        .fotJudgement(Judgement.NO)
         .fotMotivation("Ja save")
         .build();
 
@@ -651,7 +652,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     Otp otp = Otp.builder().code(12345).person(person).build();
     otpRepository.save(otp);
     Decision decision = Decision.builder()
-        .judgement(true)
+        .judgement(Judgement.YES)
         .motivation("Perfetto")
         .motivationDate(LocalDateTime.now())
         .build();
@@ -665,7 +666,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .mail(MAIL_ADDRESS).build();
     OverrideDecisionModel overrideDecisionModel = OverrideDecisionModel.builder()
         .overrideExaminant(overrider)
-        .fotJudgement(false)
+        .fotJudgement(Judgement.NO)
         .fotMotivation("Ja save")
         .build();
 
