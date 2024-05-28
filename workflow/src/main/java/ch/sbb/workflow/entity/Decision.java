@@ -48,13 +48,14 @@ public class Decision {
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   private String motivation;
 
-  @OneToOne(cascade = CascadeType.ALL)
+  @OneToOne
   @JoinColumn(name = "examinant_id", referencedColumnName = "id")
   private Person examinant;
 
   @Column(columnDefinition = "TIMESTAMP")
   private LocalDateTime motivationDate;
 
+  //TODO: replace wit enum YES/NO
   private Boolean fotJudgement;
 
   @Size(max = AtlasFieldLengths.LENGTH_1500)

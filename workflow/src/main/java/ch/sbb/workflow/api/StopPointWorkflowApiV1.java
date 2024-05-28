@@ -2,6 +2,7 @@ package ch.sbb.workflow.api;
 
 import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.api.workflow.DecisionModel;
+import ch.sbb.atlas.api.workflow.OverrideDecisionModel;
 import ch.sbb.atlas.api.workflow.StopPointAddWorkflowModel;
 import ch.sbb.atlas.api.workflow.StopPointRejectWorkflowModel;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -55,10 +56,11 @@ public interface StopPointWorkflowApiV1 {
 
   @PostMapping(path = "/vote/{id}/{personId}")
   void voteWorkflow(@PathVariable Long id, @PathVariable Long personId, @RequestBody @Valid DecisionModel decisionModel);
+  @PostMapping(path = "/override-vote/{id}/{personId}")
+  void overrideVoteWorkflow(@PathVariable Long id, @PathVariable Long personId, @RequestBody @Valid OverrideDecisionModel decisionModel);
 
   //TODO: 1. restartWorkflow(id, designationOfficial, decisionComment, ClientPersonModel)
   //TODO: 2. rejectWorkflow(id, decisionComment, ClientPersonModel)
-  //TODO: 3. voteWorkflow(id, ClientPersonModel, Decision)
   //TODO: 3. overrideVoteWorkflow(id, ClientPersonModel, Decision)
 
 }
