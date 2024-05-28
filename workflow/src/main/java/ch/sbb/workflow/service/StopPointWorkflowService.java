@@ -3,6 +3,7 @@ package ch.sbb.workflow.service;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.api.workflow.DecisionModel;
+import ch.sbb.atlas.api.workflow.OverrideDecisionModel;
 import ch.sbb.atlas.api.workflow.StopPointAddWorkflowModel;
 import ch.sbb.atlas.api.workflow.StopPointRejectWorkflowModel;
 import ch.sbb.atlas.model.Status;
@@ -176,6 +177,26 @@ public class StopPointWorkflowService {
     decisionRepository.save(decision);
   }
 
+  public void overrideVoteWorkflow(Long id, Long personId, OverrideDecisionModel decisionModel) {
+    StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
+    if(stopPointWorkflow.getStatus() != WorkflowStatus.HEARING){
+      throw new IllegalStateException("Workflow status must be HEARING!!!");
+    }
+    Person examinant = stopPointWorkflow.getExaminants().stream().filter(p -> p.getId().equals(personId)).findFirst()
+        .orElseThrow(() -> new IdNotFoundException(personId));
+    Decision decision = decisionRepository.findDecisionByExaminantId(examinant.getId());
+    if(decision == null){
+      throw new IllegalStateException("No decision found!!!");
+    }
+    decision.setFotMotivationDate(LocalDateTime.now());
+    decision.setFotMotivation(decisionModel.getFotMotivation());
+    decision.setFotJudgement(decisionModel.getFotJudgement());
+    Person fotOverrider = ClientPersonMapper.toEntity(decisionModel.getOverrideExaminant());
+    decision.setFotOverrider(fotOverrider);
+    decisionRepository.save(decision);
+  }
+
+
   void validatePinCode(DecisionModel decisionModel, Person examinant) {
     Otp otp = otpRepository.findByPersonId(examinant.getId());
     if(!otp.getCode().equals(decisionModel.getPinCode())){
@@ -203,5 +224,6 @@ public class StopPointWorkflowService {
   private boolean hasWorkflowHearing(Long businessObjectId) {
     return !workflowRepository.findAllByVersionIdAndStatus(businessObjectId, WorkflowStatus.HEARING).isEmpty();
   }
+
 
 }
