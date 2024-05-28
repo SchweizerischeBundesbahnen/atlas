@@ -7,6 +7,7 @@ import {
   CreateServicePointVersion,
   ReadServicePointVersion,
   ServicePointsService,
+  Status,
 } from '../../../../api';
 import {FormGroup} from '@angular/forms';
 import {ServicePointDetailFormGroup, ServicePointFormGroupBuilder,} from './service-point-detail-form-group';
@@ -20,15 +21,17 @@ import {DetailFormComponent} from '../../../../core/leave-guard/leave-dirty-form
 import {ServicePointAbbreviationAllowList} from './service-point-abbreviation-allow-list';
 import {GeographyFormGroup, GeographyFormGroupBuilder,} from '../../geography/geography-form-group';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {ValidityService} from "../../validity/validity.service";
+import { ValidityService } from '../../validity/validity.service';
 import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 @Component({
   selector: 'app-service-point',
   templateUrl: './service-point-detail.component.html',
-  providers: [ValidityService]
+  providers: [ValidityService],
 })
 export class ServicePointDetailComponent implements OnDestroy, DetailFormComponent {
+  readonly servicePointStatus = Status;
+
   servicePointVersions!: ReadServicePointVersion[];
   selectedVersion?: ReadServicePointVersion;
 
@@ -203,7 +206,10 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
     ValidationService.validateForm(this.form!);
     if (this.form?.valid) {
       this.validityService.updateValidity(this.form);
-      this.validityService.validateAndDisableCustom(() => this.updateVersion(), () => this.disableForm())
+      this.validityService.validateAndDisableCustom(
+        () => this.updateVersion(),
+        () => this.disableForm(),
+      );
     }
   }
 
@@ -302,7 +308,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
       });
   }
 
-  updateVersion(){
+  updateVersion() {
     const servicePointVersion = ServicePointFormGroupBuilder.getWritableServicePoint(this.form!);
     this.update(this.selectedVersion!.id!, servicePointVersion);
   }

@@ -977,7 +977,31 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldReturnConflictWhenInReviewVersionIsUpdated() throws Exception {
+    // given
+    ServicePointVersion bern = ServicePointTestData.getBern();
+    bern.setValidFrom(LocalDate.of(2016, 1, 1));
+    bern.setValidTo(LocalDate.of(2018, 1, 1));
+    bern.setStatus(Status.IN_REVIEW);
+    ServicePointVersion saved = repository.save(bern);
+
+    // when & then
+    CreateServicePointVersionModel updateModel = ServicePointTestData.getAargauServicePointVersionModel();
+    updateModel.setValidFrom(LocalDate.of(2011, 1, 1));
+    updateModel.setValidTo(LocalDate.of(2014, 1, 1));
+
+    mvc.perform(put("/v1/service-points/" + saved.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(updateModel)))
+        .andExpect(status().isConflict())
+        .andExpect(
+            jsonPath("$.message",
+                is("Update from 01.01.2011 to 01.01.2014 affects 1 version/s that have status: IN_REVIEW.")));
+  }
+
+  @Test
   void shouldReturnConflictWhenInReviewVersionIsAffectedDuringUpdate() throws Exception {
+    // given
     ServicePointVersion bern = ServicePointTestData.getBern();
     bern.setValidFrom(LocalDate.of(2010, 1, 1));
     bern.setValidTo(LocalDate.of(2012, 1, 1));
@@ -994,7 +1018,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     bern.setValidTo(LocalDate.of(2018, 1, 1));
     ServicePointVersion saved = repository.save(bern);
 
-    // when
+    // when & then
     CreateServicePointVersionModel updateModel = ServicePointTestData.getAargauServicePointVersionModel();
     updateModel.setValidFrom(LocalDate.of(2011, 1, 1));
     updateModel.setValidTo(LocalDate.of(2014, 1, 1));
