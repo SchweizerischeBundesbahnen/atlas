@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {ApplicationRole, ApplicationType, Permission} from "../../api";
-import {UserService} from "./user.service";
-import {Cantons} from "../cantons/Cantons";
+import {UserService} from "../user/user.service";
+import {ApplicationRole, ApplicationType, Permission} from "../../../api";
+import {Cantons} from "../../cantons/Cantons";
 
 @Injectable({
   providedIn: 'root',

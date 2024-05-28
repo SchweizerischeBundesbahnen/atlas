@@ -20,7 +20,7 @@ import {AtlasSpacerComponent} from '../../../../core/components/spacer/atlas-spa
 import {DetailPageContainerComponent} from '../../../../core/components/detail-page-container/detail-page-container.component';
 import {DetailFooterComponent} from '../../../../core/components/detail-footer/detail-footer.component';
 import {ValidityService} from "../../../sepodi/validity/validity.service";
-import {PermissionService} from "../../../../core/auth/permission.service";
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 const sublineVersion: SublineVersion = {
   id: 1234,

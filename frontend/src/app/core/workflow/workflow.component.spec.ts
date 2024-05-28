@@ -10,7 +10,7 @@ import {AtlasLabelFieldComponent} from '../form-components/atlas-label-field/atl
 import {TextFieldComponent} from '../form-components/text-field/text-field.component';
 import {TranslatePipe} from '@ngx-translate/core';
 import {adminPermissionServiceMock} from "../../app.testing.mocks";
-import {PermissionService} from "../auth/permission.service";
+import {PermissionService} from "../auth/permission/permission.service";
 
 describe('WorkflowComponent', () => {
   let component: WorkflowComponent;

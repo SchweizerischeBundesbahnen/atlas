@@ -5,8 +5,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterModule} from '@angular/router';
 import {HomeComponent} from './home.component';
 import {By} from '@angular/platform-browser';
-import {PageService} from "../../core/auth/page.service";
 import {pageServiceMock} from "../../app.testing.mocks";
+import {PageService} from "../../core/pages/page.service";
 
 describe('HomeComponent', () => {
   let component: HomeComponent;

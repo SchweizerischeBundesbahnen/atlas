@@ -1,5 +1,5 @@
-import {ApplicationRole, ApplicationType, CantonPermissionRestrictionModel, PermissionRestrictionType,} from '../../api';
 import {PermissionService} from "./permission.service";
+import {ApplicationRole, ApplicationType, CantonPermissionRestrictionModel, PermissionRestrictionType} from "../../../api";
 
 describe('PermissionService', () => {
 
