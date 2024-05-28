@@ -1,7 +1,6 @@
 package ch.sbb.workflow.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import jakarta.persistence.CascadeType;
@@ -17,14 +16,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,8 +32,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -47,7 +41,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @SuperBuilder
 @FieldNameConstants
 @Entity(name = "stop_point_workflow")
-public class StopPointWorkflow {
+public class StopPointWorkflow extends BaseWorkflowEntity {
 
   private static final String VERSION_SEQ = "stop_point_workflow_seq";
 
@@ -100,30 +94,5 @@ public class StopPointWorkflow {
   @NotNull
   @Column(columnDefinition = "DATE")
   private LocalDate endDate;
-
-  @Column(updatable = false)
-  private String creator;
-
-  private String editor;
-
-  @CreationTimestamp
-  @Column(columnDefinition = "TIMESTAMP", updatable = false)
-  private LocalDateTime creationDate;
-
-  @UpdateTimestamp
-  @Column(columnDefinition = "TIMESTAMP")
-  private LocalDateTime editionDate;
-
-  @PrePersist
-  public void onPrePersist() {
-    String sbbUid = UserService.getUserIdentifier();
-    setCreator(sbbUid);
-    setEditor(sbbUid);
-  }
-
-  @PreUpdate
-  public void onPreUpdate() {
-    setEditor(UserService.getUserIdentifier());
-  }
 
 }
