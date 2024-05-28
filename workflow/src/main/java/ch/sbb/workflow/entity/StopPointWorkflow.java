@@ -93,16 +93,7 @@ public class StopPointWorkflow {
   private List<String> ccEmails;
 
   @Size(max = AtlasFieldLengths.LENGTH_1500)
-  private String closingComment;
-
-  @Size(max = AtlasFieldLengths.LENGTH_1500)
-  private String cancelComment;
-
-  @Size(max = AtlasFieldLengths.LENGTH_1500)
   private String workflowComment;
-
-  @Size(max = AtlasFieldLengths.LENGTH_1500)
-  private String fotComment;
 
   @Size(max = AtlasFieldLengths.LENGTH_30)
   private String designationOfficial;
