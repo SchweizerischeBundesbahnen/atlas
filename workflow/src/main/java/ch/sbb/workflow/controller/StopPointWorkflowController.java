@@ -5,6 +5,7 @@ import ch.sbb.atlas.api.workflow.DecisionModel;
 import ch.sbb.atlas.api.workflow.OverrideDecisionModel;
 import ch.sbb.atlas.api.workflow.StopPointAddWorkflowModel;
 import ch.sbb.atlas.api.workflow.StopPointRejectWorkflowModel;
+import ch.sbb.atlas.api.workflow.StopPointRestartWorkflowModel;
 import ch.sbb.workflow.api.StopPointWorkflowApiV1;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
 import ch.sbb.workflow.service.StopPointWorkflowService;
@@ -72,6 +73,16 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   @Override
   public void overrideVoteWorkflow(Long id, Long personId, OverrideDecisionModel decisionModel) {
     service.overrideVoteWorkflow(id, personId,decisionModel);
+  }
+
+  @Override
+  public StopPointAddWorkflowModel restartStopPointWorkflow(Long id, StopPointRestartWorkflowModel restartWorkflowModel) {
+    return StopPointWorkflowMapper.toModel(service.restartWorkflow(id,restartWorkflowModel));
+  }
+
+  @Override
+  public StopPointAddWorkflowModel cancelStopPointWorkflow(Long id, StopPointRejectWorkflowModel stopPointCancelWorkflowModel) {
+    return StopPointWorkflowMapper.toModel(service.cancelWorkflow(id,stopPointCancelWorkflowModel));
   }
 
 }
