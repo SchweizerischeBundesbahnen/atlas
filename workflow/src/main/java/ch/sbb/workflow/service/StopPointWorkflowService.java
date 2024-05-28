@@ -17,6 +17,7 @@ import ch.sbb.workflow.entity.Decision;
 import ch.sbb.workflow.entity.Otp;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
+import ch.sbb.workflow.helper.OtpHelper;
 import ch.sbb.workflow.kafka.WorkflowNotificationService;
 import ch.sbb.workflow.mapper.ClientPersonMapper;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
@@ -28,9 +29,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +37,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class StopPointWorkflowService {
+
+  private static final String EXCEPTION_MSG = "Workflow status must be ADDED!!!(REPLACE ME WITH A CUSTOM EXCEPTION)";
+  private static final String EXCEPTION_HEARING_MSG = "Workflow status must be HEARING!!!(REPLACE ME WITH A CUSTOM EXCEPTION)";
 
   private final StopPointWorkflowRepository workflowRepository;
   private final DecisionRepository decisionRepository;
@@ -65,7 +67,7 @@ public class StopPointWorkflowService {
     UpdateServicePointVersionModel updateServicePointVersionModel = sePoDiClient.postServicePointsImport(
             stopPointWorkflow.getVersionId(), Status.IN_REVIEW)
         .getBody();
-    if (Objects.requireNonNull(updateServicePointVersionModel).getStatus() == Status.IN_REVIEW) {
+    if (updateServicePointVersionModel != null && Status.IN_REVIEW == updateServicePointVersionModel.getStatus()) {
       stopPointWorkflow.setStatus(WorkflowStatus.ADDED);
       return workflowRepository.save(stopPointWorkflow);
     }
@@ -80,7 +82,7 @@ public class StopPointWorkflowService {
     }
     // TODO: WorkflowCurrentlyAddedException
     if (stopPointWorkflow.getStatus() != WorkflowStatus.ADDED) {
-      throw new IllegalStateException("Workflow status must be ADDED!!!");
+      throw new IllegalStateException(EXCEPTION_MSG);
     }
     stopPointWorkflow.setStatus(WorkflowStatus.HEARING);
     StopPointWorkflow workflow = workflowRepository.save(stopPointWorkflow);
@@ -90,10 +92,9 @@ public class StopPointWorkflowService {
 
   public StopPointWorkflow editWorkflow(Long id, StopPointAddWorkflowModel workflowModel) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
-    if (!stopPointWorkflow.getDesignationOfficial().equals(workflowModel.getDesignationOfficial())) {
-      if (stopPointWorkflow.getStatus() != WorkflowStatus.ADDED) {
-        throw new IllegalStateException("Workflow status must be ADDED!!!");
-      }
+    if (!stopPointWorkflow.getDesignationOfficial().equals(workflowModel.getDesignationOfficial())
+        && stopPointWorkflow.getStatus() != WorkflowStatus.ADDED) {
+      throw new IllegalStateException(EXCEPTION_MSG);
     }
     stopPointWorkflow.setWorkflowComment(workflowModel.getWorkflowComment());
     return workflowRepository.save(stopPointWorkflow);
@@ -102,7 +103,7 @@ public class StopPointWorkflowService {
   public StopPointWorkflow rejectWorkflow(Long id, StopPointRejectWorkflowModel workflowModel) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
     if (stopPointWorkflow.getStatus() != WorkflowStatus.ADDED) {
-      throw new IllegalStateException("Workflow status must be ADDED!!!");
+      throw new IllegalStateException(EXCEPTION_MSG);
     }
     ClientPersonModel examinantBAVclientPersonModel = workflowModel.getExaminantBAVClient();
     Person examinantBAV = ClientPersonMapper.toEntity(examinantBAVclientPersonModel);
@@ -123,7 +124,7 @@ public class StopPointWorkflowService {
   public StopPointWorkflow cancelWorkflow(Long id, StopPointRejectWorkflowModel stopPointCancelWorkflowModel) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
     if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
-      throw new IllegalStateException("Workflow status must be HEARING!!!");
+      throw new IllegalStateException(EXCEPTION_HEARING_MSG);
     }
     ClientPersonModel examinantBAVclientPersonModel = stopPointCancelWorkflowModel.getExaminantBAVClient();
     Person examinantBAV = ClientPersonMapper.toEntity(examinantBAVclientPersonModel);
@@ -140,11 +141,10 @@ public class StopPointWorkflowService {
     return stopPointWorkflow;
   }
 
-
   public StopPointWorkflow restartWorkflow(Long id, StopPointRestartWorkflowModel restartWorkflowModel) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
     if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
-      throw new IllegalStateException("Workflow status must be HEARING!!!");
+      throw new IllegalStateException(EXCEPTION_HEARING_MSG);
     }
     String newDesignationOfficial = restartWorkflowModel.getNewDesignationOfficial();
     //TODO: sePoDiClient.update(officialDesignation)
@@ -153,7 +153,7 @@ public class StopPointWorkflowService {
     Person examinantBAV = ClientPersonMapper.toEntity(examinantBAVclientPersonModel);
     examinantBAV.setStopPointWorkflow(stopPointWorkflow);
     Decision decision = new Decision();
-    decision.setDecisionType(DecisionType.RESTATED);
+    decision.setDecisionType(DecisionType.RESTARTED);
     decision.setExaminant(examinantBAV);
     decision.setMotivation(restartWorkflowModel.getMotivationComment());
     decision.setMotivationDate(LocalDateTime.now());
@@ -181,7 +181,6 @@ public class StopPointWorkflowService {
     return newStopPointWorkflow;
   }
 
-
   public StopPointWorkflow addExaminantToWorkflow(Long id, ClientPersonModel personModel) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
     if (stopPointWorkflow.getStatus() != WorkflowStatus.ADDED || stopPointWorkflow.getStatus() != WorkflowStatus.APPROVED) {
@@ -190,7 +189,7 @@ public class StopPointWorkflowService {
       examinant.setStopPointWorkflow(stopPointWorkflow);
       return workflowRepository.save(stopPointWorkflow);
     }
-    throw new IllegalStateException("Workflow status must be ADDED!!!");
+    throw new IllegalStateException(EXCEPTION_MSG);
   }
 
   public StopPointWorkflow removeExaminantToWorkflow(Long id, Long personId) {
@@ -201,7 +200,7 @@ public class StopPointWorkflowService {
       stopPointWorkflow.getExaminants().remove(person);
       return workflowRepository.save(stopPointWorkflow);
     }
-    throw new IllegalStateException("Workflow status must be ADDED!!!");
+    throw new IllegalStateException(EXCEPTION_MSG);
   }
 
   public void obtainOtp(Long id, Long personId) {
@@ -211,18 +210,18 @@ public class StopPointWorkflowService {
           .orElseThrow(() -> new IdNotFoundException(personId));
       Otp otp = Otp.builder()
           .person(person)
-          .code(Integer.valueOf(RandomStringUtils.randomNumeric(5)))
+          .code(OtpHelper.generateCode())
           .build();
       otpRepository.save(otp);
     } else {
-      throw new IllegalStateException("Workflow status must be ADDED!!!");
+      throw new IllegalStateException(EXCEPTION_MSG);
     }
   }
 
   public void voteWorkFlow(Long id, Long personId, DecisionModel decisionModel) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
     if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
-      throw new IllegalStateException("Workflow status must be HEARING!!!");
+      throw new IllegalStateException(EXCEPTION_HEARING_MSG);
     }
     Person examinant = stopPointWorkflow.getExaminants().stream().filter(p -> p.getId().equals(personId)).findFirst()
         .orElseThrow(() -> new IdNotFoundException(personId));
@@ -239,7 +238,7 @@ public class StopPointWorkflowService {
   public void overrideVoteWorkflow(Long id, Long personId, OverrideDecisionModel decisionModel) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
     if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
-      throw new IllegalStateException("Workflow status must be HEARING!!!");
+      throw new IllegalStateException(EXCEPTION_HEARING_MSG);
     }
     Person examinant = stopPointWorkflow.getExaminants().stream().filter(p -> p.getId().equals(personId)).findFirst()
         .orElseThrow(() -> new IdNotFoundException(personId));

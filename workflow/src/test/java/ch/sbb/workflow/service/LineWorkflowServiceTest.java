@@ -126,8 +126,7 @@ import org.mockito.MockitoAnnotations;
     List<LineWorkflow> result = service.getWorkflows();
 
     //then
-    assertThat(result).isNotNull().hasSize(1);
-    assertThat(result).contains(lineWorkflow);
+    assertThat(result).isNotNull().hasSize(1).contains(lineWorkflow);
 
   }
 
