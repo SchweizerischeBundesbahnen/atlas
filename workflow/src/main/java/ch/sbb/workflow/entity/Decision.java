@@ -2,6 +2,7 @@ package ch.sbb.workflow.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.service.UserService;
+import ch.sbb.atlas.workflow.model.DecisionType;
 import ch.sbb.atlas.workflow.model.Judgement;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -44,6 +45,9 @@ public class Decision {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
+
+  @Enumerated(EnumType.STRING)
+  private DecisionType decisionType;
 
   @Enumerated(EnumType.STRING)
   private Judgement judgement;
