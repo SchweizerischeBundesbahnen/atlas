@@ -49,11 +49,11 @@ CREATE SEQUENCE stop_point_workflow_seq START WITH 1000 INCREMENT BY 1;
 CREATE TABLE decision
 (
     id                  BIGINT      NOT NULL PRIMARY KEY,
-    judgement           BOOLEAN,
+    judgement           VARCHAR(50),
     motivation          VARCHAR(1500),
     examinant_id        BIGINT,
     motivation_date     TIMESTAMP,
-    fot_judgement       BOOLEAN,
+    fot_judgement       VARCHAR(50),
     fot_motivation      VARCHAR(1500),
     fot_motivation_date TIMESTAMP,
     fot_overrider_id    BIGINT,
