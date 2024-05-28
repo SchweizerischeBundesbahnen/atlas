@@ -10,7 +10,7 @@ import {AtlasButtonComponent} from '../../../../core/components/button/atlas-but
 import {UserAdministrationUserOverviewComponent} from './user-administration-overview.component';
 import {adminPermissionServiceMock, MockTableComponent} from '../../../../app.testing.mocks';
 import {TableService} from '../../../../core/components/table/table.service';
-import {PermissionService} from "../../../../core/auth/permission.service";
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
 import {RouterModule} from "@angular/router";
 
 @Component({

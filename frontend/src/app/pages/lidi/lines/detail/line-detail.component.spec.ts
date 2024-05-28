@@ -22,7 +22,7 @@ import {CommentComponent} from '../../../../core/form-components/comment/comment
 import {LinkIconComponent} from '../../../../core/form-components/link-icon/link-icon.component';
 import {FormModule} from '../../../../core/module/form.module';
 import {TranslatePipe} from '@ngx-translate/core';
-import {PermissionService} from "../../../../core/auth/permission.service";
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 const lineVersion: LineVersion = {
   id: 1234,

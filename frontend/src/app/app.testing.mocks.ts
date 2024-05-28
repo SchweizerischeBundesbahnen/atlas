@@ -11,10 +11,10 @@ import {CreationEditionRecord} from './core/components/base-detail/user-edit-inf
 import {BaseDetailController} from './core/components/base-detail/base-detail-controller';
 import {Record} from './core/components/base-detail/record';
 import {AuthService} from "./core/auth/auth.service";
-import {UserService} from "./core/auth/user.service";
+import {UserService} from "./core/auth/user/user.service";
 import {BehaviorSubject, Subject} from "rxjs";
-import {PermissionService} from "./core/auth/permission.service";
-import {PageService} from "./core/auth/page.service";
+import {PermissionService} from "./core/auth/permission/permission.service";
+import {PageService} from "./core/pages/page.service";
 import {Pages} from "./pages/pages";
 
 @Component({

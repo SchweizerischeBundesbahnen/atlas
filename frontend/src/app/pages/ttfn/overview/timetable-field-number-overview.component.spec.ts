@@ -8,7 +8,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {AtlasButtonComponent} from '../../../core/components/button/atlas-button.component';
 import {adminPermissionServiceMock, MockTableComponent} from '../../../app.testing.mocks';
 import {DEFAULT_STATUS_SELECTION} from '../../../core/constants/status.choices';
-import {PermissionService} from "../../../core/auth/permission.service";
+import {PermissionService} from "../../../core/auth/permission/permission.service";
 import SpyObj = jasmine.SpyObj;
 import Spy = jasmine.Spy;
 

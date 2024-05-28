@@ -3,7 +3,7 @@ import {BaseDetailController} from './base-detail-controller';
 import {KeepaliveService} from '../../keepalive/keepalive.service';
 import {Record} from './record';
 import {Subscription} from 'rxjs';
-import {PermissionService} from "../../auth/permission.service";
+import {PermissionService} from "../../auth/permission/permission.service";
 
 @Component({
   selector: 'app-detail-wrapper [controller][headingNew]',

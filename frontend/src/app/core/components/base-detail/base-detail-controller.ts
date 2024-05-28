@@ -12,7 +12,7 @@ import {DetailFormComponent} from '../../leave-guard/leave-dirty-form-guard.serv
 import {VersionsHandlingService} from '../../versioning/versions-handling.service';
 import {DateRange} from '../../versioning/date-range';
 import {ValidityService} from "../../../pages/sepodi/validity/validity.service";
-import {PermissionService} from "../../auth/permission.service";
+import {PermissionService} from "../../auth/permission/permission.service";
 
 @Directive()
 export abstract class BaseDetailController<TYPE extends Record>

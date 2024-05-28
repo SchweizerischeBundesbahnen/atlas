@@ -16,7 +16,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Countries} from '../../../../../core/country/Countries';
 import {TestBed} from '@angular/core/testing';
 import {MapService} from '../../../map/map.service';
-import {PermissionService} from "../../../../../core/auth/permission.service";
+import {PermissionService} from "../../../../../core/auth/permission/permission.service";
 import SpyObj = jasmine.SpyObj;
 import anything = jasmine.anything;
 import Spy = jasmine.Spy;

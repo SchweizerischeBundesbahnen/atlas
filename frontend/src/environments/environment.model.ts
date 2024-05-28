@@ -6,6 +6,7 @@ export interface Environment {
   label: string;
   appVersion: string;
   atlasApiUrl: string;
+  atlasUnauthApiUrl: string;
   authConfig: AuthConfig;
   atlasReleaseNotes: string;
 }

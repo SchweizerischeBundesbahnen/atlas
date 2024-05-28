@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
-import {User} from "../components/user/user";
 import {BehaviorSubject, Observable, Subject} from "rxjs";
-import {Permission, UserAdministrationService} from "../../api";
 import {map, tap} from "rxjs/operators";
+import {ApiConfigService} from "../../configuration/api-config.service";
+import {Permission, UserAdministrationService} from "../../../api";
+import {User} from "./user";
 
 @Injectable({
   providedIn: 'root',
@@ -14,18 +15,20 @@ export class UserService {
 
   currentUser?: User = undefined;
 
-  constructor(private userAdministrationService: UserAdministrationService) {
+  constructor(private userAdministrationService: UserAdministrationService, private apiConfigService: ApiConfigService) {
   }
 
 
   setCurrentUserAndLoadPermissions(user: User) {
     this.currentUser = user;
+    this.apiConfigService.setToAuthenticatedUrl();
     this.userChanged.next();
     return this.loadPermissions();
   }
 
   resetCurrentUser() {
     this.currentUser = undefined;
+    this.apiConfigService.setToUnauthenticatedUrl();
     this.userChanged.next();
   }
 
