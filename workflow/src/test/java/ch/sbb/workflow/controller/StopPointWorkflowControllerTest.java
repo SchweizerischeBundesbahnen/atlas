@@ -8,7 +8,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -283,7 +282,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     workflowRepository.save(stopPointWorkflow);
 
     //given
-    mvc.perform(put("/v1/stop-point/workflows/start/" + stopPointWorkflow.getId())
+    mvc.perform(post("/v1/stop-point/workflows/start/" + stopPointWorkflow.getId())
             .contentType(contentType))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.status", is("HEARING")));
@@ -320,7 +319,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     stopPointAddWorkflowModel.setWorkflowComment("New Comment");
 
     //given
-    mvc.perform(put("/v1/stop-point/workflows/edit/" + stopPointWorkflow.getId())
+    mvc.perform(post("/v1/stop-point/workflows/edit/" + stopPointWorkflow.getId())
             .contentType(contentType)
             .content(mapper.writeValueAsString(stopPointAddWorkflowModel)))
         .andExpect(status().isOk())
@@ -369,7 +368,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .examinantBAVClient(examinantBAV).build();
 
     //given
-    mvc.perform(put("/v1/stop-point/workflows/reject/" + stopPointWorkflow.getId())
+    mvc.perform(post("/v1/stop-point/workflows/reject/" + stopPointWorkflow.getId())
             .contentType(contentType)
             .content(mapper.writeValueAsString(stopPointRejectWorkflowModel)))
         .andExpect(status().isOk())
@@ -484,7 +483,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .mail(MAIL_ADDRESS).build();
 
     //given
-    mvc.perform(put("/v1/stop-point/workflows/add-examinant/" + stopPointWorkflow.getId())
+    mvc.perform(post("/v1/stop-point/workflows/add-examinant/" + stopPointWorkflow.getId())
             .contentType(contentType)
             .content(mapper.writeValueAsString(examinant)))
         .andExpect(status().isOk());
@@ -524,7 +523,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     workflowRepository.save(workflow);
 
     //given
-    mvc.perform(put("/v1/stop-point/workflows/obtain-otp/" + stopPointWorkflow.getId() + "/" + person.getId())
+    mvc.perform(post("/v1/stop-point/workflows/obtain-otp/" + stopPointWorkflow.getId() + "/" + person.getId())
             .contentType(contentType))
         .andExpect(status().isOk());
 
@@ -563,7 +562,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     workflowRepository.save(workflow);
 
     //given
-    mvc.perform(put("/v1/stop-point/workflows/remove-examinant/" + stopPointWorkflow.getId() + "/" + person.getId())
+    mvc.perform(post("/v1/stop-point/workflows/remove-examinant/" + stopPointWorkflow.getId() + "/" + person.getId())
             .contentType(contentType))
         .andExpect(status().isOk());
 
@@ -601,12 +600,12 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     person.setStopPointWorkflow(workflow);
     workflowRepository.saveAndFlush(workflow);
 
-    Otp otp = Otp.builder().code(12345).person(person).build();
+    Otp otp = Otp.builder().code("12345").person(person).build();
     otpRepository.saveAndFlush(otp);
     DecisionModel decisionModel = DecisionModel.builder()
         .judgement(Judgement.NO)
         .motivation("Perfetto")
-        .pinCode(12345)
+        .pinCode("12345")
         .build();
 
     //given
@@ -763,7 +762,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     person.setStopPointWorkflow(workflow);
     workflowRepository.save(workflow);
 
-    Otp otp = Otp.builder().code(12345).person(person).build();
+    Otp otp = Otp.builder().code("12345").person(person).build();
     otpRepository.save(otp);
     Decision decision = Decision.builder()
         .judgement(Judgement.YES)

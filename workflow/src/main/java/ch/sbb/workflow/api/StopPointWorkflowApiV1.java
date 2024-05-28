@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -36,25 +35,25 @@ public interface StopPointWorkflowApiV1 {
       @ApiResponse(responseCode = "201")})
   StopPointAddWorkflowModel addStopPointWorkflow(@RequestBody @Valid StopPointAddWorkflowModel workflowModel);
 
-  @PutMapping(path = "/start/{id}")
+  @PostMapping(path = "/start/{id}")
   StopPointAddWorkflowModel startStopPointWorkflow(@PathVariable Long id);
 
-  @PutMapping(path = "/edit/{id}")
+  @PostMapping(path = "/edit/{id}")
   StopPointAddWorkflowModel editStopPointWorkflow(@PathVariable Long id,
       @RequestBody @Valid StopPointAddWorkflowModel workflowModel);
 
-  @PutMapping(path = "/reject/{id}")
+  @PostMapping(path = "/reject/{id}")
   StopPointAddWorkflowModel rejectStopPointWorkflow(@PathVariable Long id,
       @RequestBody @Valid StopPointRejectWorkflowModel workflowModel);
 
-  @PutMapping(path = "/add-examinant/{id}")
+  @PostMapping(path = "/add-examinant/{id}")
   StopPointAddWorkflowModel addExaminantToStopPointWorkflow(@PathVariable Long id,
       @RequestBody @Valid ClientPersonModel personModel);
 
-  @PutMapping(path = "/remove-examinant/{id}/{personId}")
+  @PostMapping(path = "/remove-examinant/{id}/{personId}")
   StopPointAddWorkflowModel removeExaminantFromStopPointWorkflow(@PathVariable Long id, @PathVariable Long personId);
 
-  @PutMapping(path = "/obtain-otp/{id}/{personId}")
+  @PostMapping(path = "/obtain-otp/{id}/{personId}")
   void obtainOtpForStopPointWorkflow(@PathVariable Long id, @PathVariable Long personId);
 
   @PostMapping(path = "/vote/{id}/{personId}")
@@ -67,6 +66,7 @@ public interface StopPointWorkflowApiV1 {
   @PostMapping(path = "/restart/{id}")
   StopPointAddWorkflowModel restartStopPointWorkflow(@PathVariable Long id,
       @RequestBody @Valid StopPointRestartWorkflowModel restartWorkflowModel);
+
   @PostMapping(path = "/cancel/{id}")
   StopPointAddWorkflowModel cancelStopPointWorkflow(@PathVariable Long id,
       @RequestBody @Valid StopPointRejectWorkflowModel stopPointCancelWorkflowModel);

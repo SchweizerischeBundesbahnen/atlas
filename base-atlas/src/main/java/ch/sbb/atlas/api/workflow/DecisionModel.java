@@ -28,6 +28,6 @@ public class DecisionModel {
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String motivation;
 
-  private Integer pinCode;
+  private String pinCode;
 
 }
