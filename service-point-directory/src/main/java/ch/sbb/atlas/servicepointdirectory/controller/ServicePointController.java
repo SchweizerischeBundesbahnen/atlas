@@ -178,6 +178,7 @@ public class ServicePointController implements ServicePointApiV1 {
         .orElseThrow(() -> new IdNotFoundException(id));
 
     checkIfServicePointStatusRevoked(servicePointVersionToUpdate);
+    checkIfServicePointStatusInReview(servicePointVersionToUpdate, updateServicePointVersionModel);
 
     List<ServicePointVersion> currentVersions = servicePointService.findAllByNumberOrderByValidFrom(
         servicePointVersionToUpdate.getNumber());
@@ -225,6 +226,17 @@ public class ServicePointController implements ServicePointApiV1 {
   private void checkIfServicePointStatusRevoked(ServicePointVersion servicePointVersion) {
     if (servicePointVersion.getStatus().equals(Status.REVOKED)) {
       throw new ServicePointStatusChangeNotAllowedException(servicePointVersion.getNumber(), servicePointVersion.getStatus());
+    }
+  }
+
+  private void checkIfServicePointStatusInReview(ServicePointVersion currentVersion,
+      UpdateServicePointVersionModel updateVersion) {
+    if (currentVersion.getStatus().equals(Status.IN_REVIEW)) {
+      throw new UpdateAffectsInReviewVersionException(
+          updateVersion.getValidFrom(),
+          updateVersion.getValidTo(),
+          List.of(currentVersion)
+      );
     }
   }
 
