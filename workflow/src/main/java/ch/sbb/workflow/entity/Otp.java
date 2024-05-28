@@ -37,7 +37,7 @@ public class Otp {
   private Long id;
 
   @NotNull
-  private Integer code;
+  private String code;
 
   @OneToOne
   @JoinColumn(name = "person_id", referencedColumnName = "id")
