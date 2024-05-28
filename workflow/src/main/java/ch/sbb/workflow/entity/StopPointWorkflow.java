@@ -75,11 +75,6 @@ public class StopPointWorkflow {
   @Enumerated(EnumType.STRING)
   private WorkflowStatus status;
 
-  //From predefined list
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "examinant_bav_id", referencedColumnName = "id")
-  private Person examinantBav;
-
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "follow_up_workflow_id", referencedColumnName = "id")
   private StopPointWorkflow followUpWorkflow;
