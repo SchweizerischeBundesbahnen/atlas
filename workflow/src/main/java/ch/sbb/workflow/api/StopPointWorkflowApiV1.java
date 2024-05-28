@@ -5,6 +5,7 @@ import ch.sbb.atlas.api.workflow.DecisionModel;
 import ch.sbb.atlas.api.workflow.OverrideDecisionModel;
 import ch.sbb.atlas.api.workflow.StopPointAddWorkflowModel;
 import ch.sbb.atlas.api.workflow.StopPointRejectWorkflowModel;
+import ch.sbb.atlas.api.workflow.StopPointRestartWorkflowModel;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -39,27 +40,35 @@ public interface StopPointWorkflowApiV1 {
   StopPointAddWorkflowModel startStopPointWorkflow(@PathVariable Long id);
 
   @PutMapping(path = "/edit/{id}")
-  StopPointAddWorkflowModel editStopPointWorkflow(@PathVariable Long id, @RequestBody @Valid StopPointAddWorkflowModel workflowModel);
+  StopPointAddWorkflowModel editStopPointWorkflow(@PathVariable Long id,
+      @RequestBody @Valid StopPointAddWorkflowModel workflowModel);
 
   @PutMapping(path = "/reject/{id}")
-  StopPointAddWorkflowModel rejectStopPointWorkflow(@PathVariable Long id, @RequestBody @Valid StopPointRejectWorkflowModel workflowModel);
+  StopPointAddWorkflowModel rejectStopPointWorkflow(@PathVariable Long id,
+      @RequestBody @Valid StopPointRejectWorkflowModel workflowModel);
 
   @PutMapping(path = "/add-examinant/{id}")
   StopPointAddWorkflowModel addExaminantToStopPointWorkflow(@PathVariable Long id,
       @RequestBody @Valid ClientPersonModel personModel);
 
   @PutMapping(path = "/remove-examinant/{id}/{personId}")
-  StopPointAddWorkflowModel removeExaminantFromStopPointWorkflow(@PathVariable Long id,@PathVariable Long personId);
+  StopPointAddWorkflowModel removeExaminantFromStopPointWorkflow(@PathVariable Long id, @PathVariable Long personId);
 
   @PutMapping(path = "/obtain-otp/{id}/{personId}")
-  void obtainOtpForStopPointWorkflow(@PathVariable Long id,@PathVariable Long personId);
+  void obtainOtpForStopPointWorkflow(@PathVariable Long id, @PathVariable Long personId);
 
   @PostMapping(path = "/vote/{id}/{personId}")
   void voteWorkflow(@PathVariable Long id, @PathVariable Long personId, @RequestBody @Valid DecisionModel decisionModel);
-  @PostMapping(path = "/override-vote/{id}/{personId}")
-  void overrideVoteWorkflow(@PathVariable Long id, @PathVariable Long personId, @RequestBody @Valid OverrideDecisionModel decisionModel);
 
-  //TODO: 1. restartWorkflow(id, designationOfficial, decisionComment, ClientPersonModel)
-  //TODO: 2. rejectWorkflow(id, decisionComment, ClientPersonModel)
+  @PostMapping(path = "/override-vote/{id}/{personId}")
+  void overrideVoteWorkflow(@PathVariable Long id, @PathVariable Long personId,
+      @RequestBody @Valid OverrideDecisionModel decisionModel);
+
+  @PostMapping(path = "/restart/{id}")
+  StopPointAddWorkflowModel restartStopPointWorkflow(@PathVariable Long id,
+      @RequestBody @Valid StopPointRestartWorkflowModel restartWorkflowModel);
+  @PostMapping(path = "/cancel/{id}")
+  StopPointAddWorkflowModel cancelStopPointWorkflow(@PathVariable Long id,
+      @RequestBody @Valid StopPointRejectWorkflowModel stopPointCancelWorkflowModel);
 
 }
