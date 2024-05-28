@@ -256,15 +256,4 @@ export class Pages {
   ];
   public static adminPages: Page[] = [Pages.USER_ADMINISTRATION];
 
-  public static get enabledPages(): Page[] {
-    return this.viewablePages.map(page => {
-      if (page === Pages.SEPODI && !environment.sepodiWorkflowEnabled) {
-        return {
-          ...page,
-          subpages: page.subpages!.filter(subpage => subpage.title !== 'PAGES.WORKFLOW.TITLE_HEADER')
-        };
-      }
-      return page;
-    });
-  }
 }
