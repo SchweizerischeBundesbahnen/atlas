@@ -50,6 +50,7 @@ CREATE TABLE decision
 (
     id                  BIGINT      NOT NULL PRIMARY KEY,
     judgement           VARCHAR(50),
+    decision_type       VARCHAR(50),
     motivation          VARCHAR(1500),
     examinant_id        BIGINT,
     motivation_date     TIMESTAMP,
