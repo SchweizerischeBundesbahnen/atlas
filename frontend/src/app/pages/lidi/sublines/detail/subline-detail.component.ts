@@ -17,7 +17,7 @@ import {WhitespaceValidator} from '../../../../core/validation/whitespace/whites
 import {AtlasFieldLengthValidator} from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import {SublineDetailFormGroup} from './subline-detail-form-group';
 import {ValidityService} from "../../../sepodi/validity/validity.service";
-import {PermissionService} from "../../../../core/auth/permission.service";
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 @Component({
   templateUrl: './subline-detail.component.html',

@@ -21,7 +21,7 @@ import {
 import {TransportCompanyFormGroup} from './transport-company-form-group';
 import {ActivatedRoute} from '@angular/router';
 import {DetailFormComponent} from '../../../../core/leave-guard/leave-dirty-form-guard.service';
-import {PermissionService} from "../../../../core/auth/permission.service";
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 @Component({
   templateUrl: './transport-company-detail.component.html',

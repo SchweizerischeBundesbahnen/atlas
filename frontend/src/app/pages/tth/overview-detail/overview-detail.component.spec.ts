@@ -28,7 +28,7 @@ import {SelectComponent} from '../../../core/form-components/select/select.compo
 import {AtlasSpacerComponent} from '../../../core/components/spacer/atlas-spacer.component';
 import {TableService} from '../../../core/components/table/table.service';
 import {AtlasLabelFieldComponent} from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
-import {PermissionService} from "../../../core/auth/permission.service";
+import {PermissionService} from "../../../core/auth/permission/permission.service";
 
 @Component({
   selector: 'app-timetable-hearing-overview-tab-heading',

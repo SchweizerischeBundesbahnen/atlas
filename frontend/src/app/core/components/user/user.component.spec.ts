@@ -7,7 +7,7 @@ import {By} from '@angular/platform-browser';
 import {MaterialModule} from '../../module/material.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {adminUserServiceMock, authServiceSpy} from "../../../app.testing.mocks";
-import {UserService} from "../../auth/user.service";
+import {UserService} from "../../auth/user/user.service";
 
 describe('UserComponent', () => {
   let component: UserComponent;

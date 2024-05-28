@@ -7,8 +7,8 @@ import {Pages} from '../../../pages/pages';
 import {LidiOverviewComponent} from '../../../pages/lidi/overview/lidi-overview.component';
 import {TimetableFieldNumberOverviewComponent} from '../../../pages/ttfn/overview/timetable-field-number-overview.component';
 import {Page} from "../../model/page";
-import {PageService} from "../../auth/page.service";
 import {pageServiceMock} from "../../../app.testing.mocks";
+import {PageService} from "../../pages/page.service";
 
 describe('SideNavComponent', () => {
   let component: SideNavComponent;
