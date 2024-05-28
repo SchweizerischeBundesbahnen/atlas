@@ -18,7 +18,7 @@ import {
   BusinessOrganisationLanguageService
 } from '../../../../core/form-components/bo-select/business-organisation-language.service';
 import {ValidityService} from "../../../sepodi/validity/validity.service";
-import {PermissionService} from "../../../../core/auth/permission.service";
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 @Component({
   templateUrl: './business-organisation-detail.component.html',

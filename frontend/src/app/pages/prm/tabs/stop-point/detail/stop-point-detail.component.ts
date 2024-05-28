@@ -18,7 +18,7 @@ import {
 import {PrmMeanOfTransportHelper} from "../../../util/prm-mean-of-transport-helper";
 import {ValidityService} from "../../../../sepodi/validity/validity.service";
 import {ReferencePointCreationHintService} from "./reference-point-creation-hint/reference-point-creation-hint.service";
-import {PermissionService} from "../../../../../core/auth/permission.service";
+import {PermissionService} from "../../../../../core/auth/permission/permission.service";
 
 @Component({
   selector: 'app-stop-point-detail',

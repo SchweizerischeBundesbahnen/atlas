@@ -19,7 +19,7 @@ import {map, takeUntil} from 'rxjs/operators';
 import {DialogService} from '../../../../../core/components/dialog/dialog.service';
 import {GeographyComponent} from '../../../geography/geography.component';
 import {Countries} from '../../../../../core/country/Countries';
-import {PermissionService} from "../../../../../core/auth/permission.service";
+import {PermissionService} from "../../../../../core/auth/permission/permission.service";
 
 @Component({
   selector: 'service-point-form',

@@ -1,8 +1,8 @@
 import {inject, Injectable} from '@angular/core';
 import {CanActivateFn, Router} from '@angular/router';
 import {filter, map} from 'rxjs/operators';
-import {PermissionService} from "../permission.service";
-import {UserService} from "../user.service";
+import {PermissionService} from "../permission/permission.service";
+import {UserService} from "../user/user.service";
 
 @Injectable({
   providedIn: 'root',

@@ -32,7 +32,7 @@ import {FileComponent} from '../../../core/components/file-upload/file/file.comp
 import {LoadingSpinnerComponent} from '../../../core/components/loading-spinner/loading-spinner.component';
 import {DetailPageContentComponent} from "../../../core/components/detail-page-content/detail-page-content.component";
 import {StringListComponent} from "../../../core/form-components/string-list/string-list.component";
-import {PermissionService} from "../../../core/auth/permission.service";
+import {PermissionService} from "../../../core/auth/permission/permission.service";
 
 const existingStatement: TimetableHearingStatementV2 = {
   id: 1,
