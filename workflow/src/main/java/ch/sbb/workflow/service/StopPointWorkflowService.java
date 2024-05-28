@@ -8,6 +8,7 @@ import ch.sbb.atlas.api.workflow.StopPointAddWorkflowModel;
 import ch.sbb.atlas.api.workflow.StopPointRejectWorkflowModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.workflow.model.Judgement;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.Decision;
@@ -113,7 +114,7 @@ public class StopPointWorkflowService {
     Person examinantBAV = ClientPersonMapper.toEntity(examinantBAVclientPersonModel);
     examinantBAV.setStopPointWorkflow(stopPointWorkflow);
     Decision decision = new Decision();
-    decision.setJudgement(false);
+    decision.setJudgement(Judgement.NO);
     decision.setExaminant(examinantBAV);
     decision.setMotivation(workflowModel.getMotivationComment());
     decision.setMotivationDate(LocalDateTime.now());

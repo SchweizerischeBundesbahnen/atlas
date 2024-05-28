@@ -2,6 +2,7 @@ package ch.sbb.atlas.api.workflow;
 
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.workflow.model.Judgement;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -24,7 +25,7 @@ public class OverrideDecisionModel {
 
   @Schema(description = "BAV Judgement", example = "true")
   @NotNull
-  private Boolean fotJudgement;
+  private Judgement fotJudgement;
 
   @Schema(description = "Motivation", example = "I'm agree")
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_1500)
