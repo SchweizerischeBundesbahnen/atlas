@@ -87,3 +87,9 @@ ALTER TABLE person
 ALTER TABLE person
     ADD foreign key (stop_point_workflow_id) references
         stop_point_workflow (id);
+
+ALTER TABLE person
+    ADD creator VARCHAR(50) NOT NULL default 'atlas';
+
+ALTER TABLE person
+    ADD editor VARCHAR(50) NOT NULL default 'atlas';
