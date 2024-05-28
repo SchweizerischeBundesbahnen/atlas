@@ -3,7 +3,7 @@ import {Page} from '../../model/page';
 import {NavigationEnd, Router} from '@angular/router';
 import {filter, tap} from 'rxjs/operators';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {PageService} from "../../auth/page.service";
+import {PageService} from "../../pages/page.service";
 
 @Component({
   selector: 'app-side-nav',

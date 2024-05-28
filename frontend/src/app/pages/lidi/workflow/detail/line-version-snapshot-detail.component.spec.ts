@@ -29,7 +29,7 @@ import {DetailPageContainerComponent} from '../../../../core/components/detail-p
 import {DateRangeTextComponent} from '../../../../core/versioning/date-range-text/date-range-text.component';
 import {DisplayDatePipe} from '../../../../core/pipe/display-date.pipe';
 import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
-import {PermissionService} from "../../../../core/auth/permission.service";
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 const lineVersionSnapsot: LineVersionSnapshot = {
   id: 1234,

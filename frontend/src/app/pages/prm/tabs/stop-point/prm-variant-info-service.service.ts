@@ -5,7 +5,7 @@ import {
   PrmMeanOfTransportHelper,
   reducedMeansOfTransport
 } from "../../util/prm-mean-of-transport-helper";
-import {PermissionService} from "../../../../core/auth/permission.service";
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 export const prmMeansOfTransport: MeanOfTransport[] = Object.values(MeanOfTransport)
   .filter((value) => value !== MeanOfTransport.Unknown);

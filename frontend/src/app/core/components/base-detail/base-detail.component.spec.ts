@@ -16,7 +16,7 @@ import {DateRangeTextComponent} from '../../versioning/date-range-text/date-rang
 import {Record} from './record';
 import {Page} from '../../model/page';
 import {DetailPageContentComponent} from "../detail-page-content/detail-page-content.component";
-import {PermissionService} from "../../auth/permission.service";
+import {PermissionService} from "../../auth/permission/permission.service";
 
 @Component({
   selector: 'app-coverage',

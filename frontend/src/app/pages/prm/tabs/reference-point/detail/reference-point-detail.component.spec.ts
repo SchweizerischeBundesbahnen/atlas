@@ -30,7 +30,7 @@ import {AtlasSlideToggleComponent} from '../../../../../core/form-components/atl
 import {DetailPageContainerComponent} from "../../../../../core/components/detail-page-container/detail-page-container.component";
 import {DetailPageContentComponent} from "../../../../../core/components/detail-page-content/detail-page-content.component";
 import {DetailFooterComponent} from "../../../../../core/components/detail-footer/detail-footer.component";
-import {PermissionService} from "../../../../../core/auth/permission.service";
+import {PermissionService} from "../../../../../core/auth/permission/permission.service";
 import SpyObj = jasmine.SpyObj;
 
 const referencePoint: ReadReferencePointVersion[] = [

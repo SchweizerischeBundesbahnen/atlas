@@ -15,7 +15,7 @@ import {WhitespaceValidator} from '../../../../core/validation/whitespace/whites
 import {AtlasFieldLengthValidator} from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import {LineDetailFormGroup} from './line-detail-form-group';
 import {ValidityService} from "../../../sepodi/validity/validity.service";
-import {PermissionService} from "../../../../core/auth/permission.service";
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 @Component({
   templateUrl: './line-detail.component.html',

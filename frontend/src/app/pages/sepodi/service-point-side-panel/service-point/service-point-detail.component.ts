@@ -21,7 +21,7 @@ import {ServicePointAbbreviationAllowList} from './service-point-abbreviation-al
 import {GeographyFormGroup, GeographyFormGroupBuilder,} from '../../geography/geography-form-group';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {ValidityService} from "../../validity/validity.service";
-import {PermissionService} from "../../../../core/auth/permission.service";
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 @Component({
   selector: 'app-service-point',

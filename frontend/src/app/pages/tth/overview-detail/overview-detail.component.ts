@@ -40,7 +40,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {TableService} from '../../../core/components/table/table.service';
 import {TableFilter} from '../../../core/components/table-filter/config/table-filter';
 import {TthTableFilterSettingsService} from '../tth-table-filter-settings.service';
-import {PermissionService} from "../../../core/auth/permission.service";
+import {PermissionService} from "../../../core/auth/permission/permission.service";
 
 @Component({
   selector: 'app-timetable-hearing-overview-detail',

@@ -34,7 +34,7 @@ function withBasePath(basePath: string) {
     }),
     BrowserAnimationsModule,
     AppRoutingModule,
-    AtlasApiModule.forRoot(withBasePath(environment.atlasApiUrl)),
+    AtlasApiModule.forRoot(withBasePath(environment.atlasUnauthApiUrl)),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the application is stable
