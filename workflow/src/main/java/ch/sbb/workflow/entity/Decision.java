@@ -48,7 +48,7 @@ public class Decision {
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   private String motivation;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "examinant_id", referencedColumnName = "id")
   private Person examinant;
 
