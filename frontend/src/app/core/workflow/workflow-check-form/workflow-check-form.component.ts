@@ -9,7 +9,7 @@ import {WorkflowCheckFormGroup} from './workflow-check-form-group';
 import {NotificationService} from '../../notification/notification.service';
 import {ValidationService} from '../../validation/validation.service';
 import {WhitespaceValidator} from '../../validation/whitespace/whitespace-validator';
-import {PermissionService} from "../../auth/permission.service";
+import {PermissionService} from "../../auth/permission/permission.service";
 
 @Component({
   selector: 'app-workflow-check-form',

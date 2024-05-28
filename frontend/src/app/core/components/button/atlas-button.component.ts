@@ -4,7 +4,7 @@ import {AtlasButtonType} from './atlas-button.type';
 import {NON_PROD_STAGES} from '../../constants/stages';
 import {environment} from '../../../../environments/environment';
 import {Countries} from '../../country/Countries';
-import {PermissionService} from "../../auth/permission.service";
+import {PermissionService} from "../../auth/permission/permission.service";
 
 @Component({
   selector: 'atlas-button[buttonType]',

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Pages } from '../pages';
 import { Page } from '../../core/model/page';
-import {PageService} from "../../core/auth/page.service";
+import {PageService} from "../../core/pages/page.service";
 
 @Component({
   selector: 'app-home',

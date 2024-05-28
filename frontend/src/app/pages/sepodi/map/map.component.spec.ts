@@ -8,7 +8,7 @@ import maplibregl, {Map} from 'maplibre-gl';
 import {BehaviorSubject} from 'rxjs';
 import {Component, Input} from '@angular/core';
 import {ServicePointSearchType} from '../../../core/search-service-point/service-point-search';
-import {PermissionService} from "../../../core/auth/permission.service";
+import {PermissionService} from "../../../core/auth/permission/permission.service";
 import {adminPermissionServiceMock} from "../../../app.testing.mocks";
 
 const clickedGeographyCoordinatesSubject = new BehaviorSubject<CoordinatePairWGS84>({

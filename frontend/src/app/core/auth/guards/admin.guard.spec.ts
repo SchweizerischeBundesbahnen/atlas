@@ -1,8 +1,8 @@
 import {TestBed} from '@angular/core/testing';
 import {AdminGuard} from './admin.guard';
 import {RouterModule} from '@angular/router';
-import {UserService} from "../user.service";
 import {adminUserServiceMock} from "../../../app.testing.mocks";
+import {UserService} from "../user/user.service";
 
 describe('AdminGuard', () => {
   let guard: AdminGuard;

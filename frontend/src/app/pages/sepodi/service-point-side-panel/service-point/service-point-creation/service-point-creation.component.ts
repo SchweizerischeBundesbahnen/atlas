@@ -19,7 +19,7 @@ import {GeographyFormGroupBuilder} from '../../../geography/geography-form-group
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {MapService} from '../../../map/map.service';
 import {DetailFormComponent} from "../../../../../core/leave-guard/leave-dirty-form-guard.service";
-import {PermissionService} from "../../../../../core/auth/permission.service";
+import {PermissionService} from "../../../../../core/auth/permission/permission.service";
 
 @Component({
   selector: 'app-service-point-creation',

@@ -27,7 +27,7 @@ import {DetailPageContainerComponent} from "../../../../core/components/detail-p
 import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
 import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
 import {ValidityService} from "../../validity/validity.service";
-import {PermissionService} from "../../../../core/auth/permission.service";
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
 const servicePointsServiceSpy = jasmine.createSpyObj('ServicePointService', [
