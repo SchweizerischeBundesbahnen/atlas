@@ -1,5 +1,4 @@
 import {Page} from '../core/model/page';
-import {environment} from "../../environments/environment";
 
 export class Pages {
   public static HOME: Page = {
@@ -255,17 +254,5 @@ export class Pages {
     Pages.PRM,
   ];
   public static adminPages: Page[] = [Pages.USER_ADMINISTRATION];
-  public static viewablePages: Page[] = this.pages;
 
-  public static get enabledPages(): Page[] {
-    return this.viewablePages.map(page => {
-      if (page === Pages.SEPODI && !environment.sepodiWorkflowEnabled) {
-        return {
-          ...page,
-          subpages: page.subpages!.filter(subpage => subpage.title !== 'PAGES.WORKFLOW.TITLE_HEADER')
-        };
-      }
-      return page;
-    });
-  }
 }

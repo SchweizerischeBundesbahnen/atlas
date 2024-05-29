@@ -1,28 +1,27 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TimetableFieldNumberDetailComponent } from './timetable-field-number-detail.component';
-import { AbstractControl, FormBuilder } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TimetableFieldNumbersService, TimetableFieldNumberVersion } from '../../../api';
+import {TimetableFieldNumberDetailComponent} from './timetable-field-number-detail.component';
+import {AbstractControl, FormBuilder} from '@angular/forms';
+import {ActivatedRoute, Router, RouterModule} from '@angular/router';
+import {TimetableFieldNumbersService, TimetableFieldNumberVersion} from '../../../api';
 import moment from 'moment';
-import { of, throwError } from 'rxjs';
-import { RouterTestingModule } from '@angular/router/testing';
-import { HomeComponent } from '../../home/home.component';
-import { HttpErrorResponse } from '@angular/common/http';
-import { AppTestingModule, authServiceMock } from '../../../app.testing.module';
-import { AuthService } from '../../../core/auth/auth.service';
-import { FormModule } from '../../../core/module/form.module';
-import { Component, Input } from '@angular/core';
-import { ErrorNotificationComponent } from '../../../core/notification/error/error-notification.component';
-import { InfoIconComponent } from '../../../core/form-components/info-icon/info-icon.component';
-import { MockAppDetailWrapperComponent, MockBoSelectComponent } from '../../../app.testing.mocks';
-import { CommentComponent } from '../../../core/form-components/comment/comment.component';
-import { TranslatePipe } from '@ngx-translate/core';
-import { AtlasFieldErrorComponent } from '../../../core/form-components/atlas-field-error/atlas-field-error.component';
-import { AtlasLabelFieldComponent } from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
-import { TextFieldComponent } from '../../../core/form-components/text-field/text-field.component';
-import { Page } from '../../../core/model/page';
-import { Record } from '../../../core/components/base-detail/record';
+import {of, throwError} from 'rxjs';
+import {HomeComponent} from '../../home/home.component';
+import {HttpErrorResponse} from '@angular/common/http';
+import {AppTestingModule} from '../../../app.testing.module';
+import {FormModule} from '../../../core/module/form.module';
+import {Component, Input} from '@angular/core';
+import {ErrorNotificationComponent} from '../../../core/notification/error/error-notification.component';
+import {InfoIconComponent} from '../../../core/form-components/info-icon/info-icon.component';
+import {adminPermissionServiceMock, MockAppDetailWrapperComponent, MockBoSelectComponent} from '../../../app.testing.mocks';
+import {CommentComponent} from '../../../core/form-components/comment/comment.component';
+import {TranslatePipe} from '@ngx-translate/core';
+import {AtlasFieldErrorComponent} from '../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import {AtlasLabelFieldComponent} from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import {TextFieldComponent} from '../../../core/form-components/text-field/text-field.component';
+import {Page} from '../../../core/model/page';
+import {Record} from '../../../core/components/base-detail/record';
+import {PermissionService} from "../../../core/auth/permission/permission.service";
 
 const version: TimetableFieldNumberVersion = {
   id: 1,
@@ -110,7 +109,7 @@ describe('TimetableFieldNumberDetailComponent detail page read version', () => {
       providers: [
         { provide: FormBuilder },
         { provide: TimetableFieldNumbersService, useValue: mockTimetableFieldNumbersService },
-        { provide: AuthService, useValue: authServiceMock },
+        { provide: PermissionService, useValue: adminPermissionServiceMock },
         { provide: ActivatedRoute, useValue: { snapshot: { data: mockData } } },
         { provide: TranslatePipe },
       ],
@@ -188,7 +187,7 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
         InfoIconComponent,
       ],
       imports: [
-        RouterTestingModule.withRoutes([{ path: '', component: HomeComponent }]),
+        RouterModule.forRoot([{ path: '', component: HomeComponent }]),
         AppTestingModule,
         FormModule,
       ],
@@ -200,8 +199,8 @@ describe('TimetableFieldNumberDetailComponent Detail page add new version', () =
           useValue: { snapshot: { data: { timetableFieldNumberDetail: 'add' } } },
         },
         {
-          provide: AuthService,
-          useValue: authServiceMock,
+          provide: PermissionService,
+          useValue: adminPermissionServiceMock,
         },
         { provide: TranslatePipe },
       ],
