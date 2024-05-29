@@ -12,7 +12,7 @@
         [additionalLabelspace]="25"
         [optionTranslateLabelPrefix]="'TTH.COUNTRY.'"
         [displayExtractor]="getCountryEnum"
-        [options]="(countryOptions$ | async) ?? []"
+        [options]="countryOptions"
         [required]="true"
         [formGroup]="form"
         [controlName]="'country'"

@@ -1,28 +1,14 @@
-import { Injectable } from '@angular/core';
-import maplibregl, {
-  GeoJSONSource,
-  LngLat,
-  LngLatLike,
-  Map,
-  MapGeoJSONFeature,
-  MapMouseEvent,
-  Popup,
-  ResourceType,
-} from 'maplibre-gl';
-import {
-  MAP_SOURCE_NAME,
-  MAP_STYLE_SPEC,
-  MAP_TRAFFIC_POINT_LAYER_NAME,
-  MAP_ZOOM_DETAILS,
-} from './map-style';
-import { GeoJsonProperties, Point } from 'geojson';
-import { MAP_STYLES, MapOptionsService, MapStyle } from './map-options.service';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { CoordinatePair, SpatialReference } from '../../../api';
-import { Pages } from '../../pages';
-import { MapIconsService } from './map-icons.service';
-import { Router } from '@angular/router';
-import { TrafficPointMapService } from './traffic-point-map.service';
+import {Injectable} from '@angular/core';
+import maplibregl, {GeoJSONSource, LngLat, LngLatLike, Map, MapGeoJSONFeature, MapMouseEvent, Popup,} from 'maplibre-gl';
+import {MAP_SOURCE_NAME, MAP_STYLE_SPEC, MAP_TRAFFIC_POINT_LAYER_NAME, MAP_ZOOM_DETAILS,} from './map-style';
+import {GeoJsonProperties, Point} from 'geojson';
+import {MAP_STYLES, MapStyle, SWISS_BOUNDING_BOX} from './map-options';
+import {BehaviorSubject, Subject} from 'rxjs';
+import {CoordinatePair, SpatialReference} from '../../../api';
+import {Pages} from '../../pages';
+import {MapIconsService} from './map-icons.service';
+import {Router} from '@angular/router';
+import {TrafficPointMapService} from './traffic-point-map.service';
 
 export const mapZoomLocalStorageKey = 'map-zoom';
 export const mapLocationLocalStorageKey = 'map-location';
@@ -54,7 +40,6 @@ export class MapService {
   private _keepPopup = false;
 
   constructor(
-    private mapOptionsService: MapOptionsService,
     private router: Router,
   ) {}
 
@@ -76,9 +61,7 @@ export class MapService {
     return new Map({
       container: mapContainer,
       style: MAP_STYLE_SPEC,
-      bounds: this.mapOptionsService.getInitialBoundingBox(),
-      transformRequest: (url: string, resourceType?: ResourceType) =>
-        this.mapOptionsService.authoriseRequest(url, resourceType),
+      bounds: SWISS_BOUNDING_BOX,
       minZoom: 5,
     });
   }
