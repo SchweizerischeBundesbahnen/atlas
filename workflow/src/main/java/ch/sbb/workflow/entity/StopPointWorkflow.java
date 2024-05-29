@@ -1,5 +1,7 @@
 package ch.sbb.workflow.entity;
 
+import static java.util.stream.Collectors.toSet;
+
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionableProperty;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
@@ -25,13 +27,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -73,7 +75,6 @@ public class StopPointWorkflow extends BaseWorkflowEntity {
   @JoinColumn(name = "follow_up_workflow_id", referencedColumnName = "id")
   private StopPointWorkflow followUpWorkflow;
 
-  @Builder.Default
   @OneToMany(mappedBy = "stopPointWorkflow", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<Person> examinants = new HashSet<>();
 
@@ -87,12 +88,16 @@ public class StopPointWorkflow extends BaseWorkflowEntity {
   @Size(max = AtlasFieldLengths.LENGTH_30)
   private String designationOfficial;
 
-  @NotNull
+  @CreationTimestamp
   @Column(columnDefinition = "DATE")
   private LocalDate startDate;
 
-  @NotNull
   @Column(columnDefinition = "DATE")
   private LocalDate endDate;
+
+   public void setExaminants(Set<Person> examinants) {
+    this.examinants =
+        examinants.stream().peek(examinant -> examinant.setStopPointWorkflow(this)).collect(toSet());
+  }
 
 }
