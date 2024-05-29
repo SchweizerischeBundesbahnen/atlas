@@ -9,15 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SortObject } from './sortObject';
 
 
-export interface PageableObject { 
-    offset?: number;
-    sort?: Array<SortObject>;
-    pageSize?: number;
-    pageNumber?: number;
-    paged?: boolean;
-    unpaged?: boolean;
+export interface EditStopPointWorkflow { 
+    /**
+     * Official designation of a location that must be used by all recipients
+     */
+    designationOfficial: string;
+    /**
+     * Hearing reasons
+     */
+    workflowComment?: string;
 }
 
