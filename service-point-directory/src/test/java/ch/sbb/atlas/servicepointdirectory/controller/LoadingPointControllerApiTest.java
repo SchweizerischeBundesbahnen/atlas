@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateLoadingPointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadLoadingPointVersionModel;
@@ -26,6 +27,7 @@ import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionReposito
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -121,8 +123,10 @@ class LoadingPointControllerApiTest extends BaseControllerApiTest {
             "&fromDate=" + loadingPointVersion.getValidFrom() +
             "&toDate=" + loadingPointVersion.getValidTo() +
             "&validOn=" + LocalDate.of(2020, 6, 28) +
-            "&createdAfter=" + loadingPointVersion.getCreationDate().minusSeconds(1).truncatedTo(ChronoUnit.SECONDS) +
-            "&modifiedAfter=" + loadingPointVersion.getEditionDate().truncatedTo(ChronoUnit.SECONDS)))
+            "&createdAfter=" + loadingPointVersion.getCreationDate().minusSeconds(1).truncatedTo(ChronoUnit.SECONDS)
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)) +
+            "&modifiedAfter=" + loadingPointVersion.getEditionDate().truncatedTo(ChronoUnit.SECONDS)
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN))))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount", is(1)))
         .andExpect(jsonPath("$.objects[0]." + Fields.id, is(loadingPointVersion.getId().intValue())));
@@ -140,8 +144,10 @@ class LoadingPointControllerApiTest extends BaseControllerApiTest {
             "&fromDate=" + loadingPointVersion.getValidFrom() +
             "&toDate=" + loadingPointVersion.getValidTo() +
             "&validOn=" + LocalDate.of(2020, 6, 28) +
-            "&createdAfter=" + loadingPointVersion.getCreationDate().minusSeconds(1).truncatedTo(ChronoUnit.SECONDS) +
-            "&modifiedAfter=" + loadingPointVersion.getEditionDate().truncatedTo(ChronoUnit.SECONDS)))
+            "&createdAfter=" + loadingPointVersion.getCreationDate().minusSeconds(1).truncatedTo(ChronoUnit.SECONDS)
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)) +
+            "&modifiedAfter=" + loadingPointVersion.getEditionDate().truncatedTo(ChronoUnit.SECONDS)
+            .format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN))))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.totalCount", is(1)))
         .andExpect(jsonPath("$.objects[0]." + Fields.id, is(loadingPointVersion.getId().intValue())));
