@@ -1,11 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AtlasButtonComponent } from './atlas-button.component';
-import { AppTestingModule } from '../../../app.testing.module';
-import { AuthService } from '../../auth/auth.service';
-import { Role } from '../../auth/role';
-import { ApplicationRole, ApplicationType, Permission } from '../../../api';
-import { AtlasButtonType } from './atlas-button.type';
-import { By } from '@angular/platform-browser';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {AtlasButtonComponent} from './atlas-button.component';
+import {AppTestingModule} from '../../../app.testing.module';
+import {ApplicationRole, ApplicationType, Permission} from '../../../api';
+import {AtlasButtonType} from './atlas-button.type';
+import {By} from '@angular/platform-browser';
+import {PermissionService} from "../../auth/permission/permission.service";
 
 let component: AtlasButtonComponent;
 let fixture: ComponentFixture<AtlasButtonComponent>;
@@ -15,24 +14,7 @@ let isAtLeastSupervisor = true;
 let hasPermissionsToCreate = true;
 let hasPermissionsToWrite = true;
 let role = ApplicationRole.Reader;
-const authServiceMock: Partial<AuthService> = {
-  claims: {
-    name: 'Test (ITC)',
-    email: 'test@test.ch',
-    sbbuid: 'e123456',
-    roles: ['lidi-admin', 'lidi-writer'],
-  },
-  logout: () => Promise.resolve(true),
-  login: () => Promise.resolve(true),
-  hasAnyRole(roles: Role[]): boolean {
-    for (const role of roles) {
-      if (this.claims?.roles.includes(role)) return true;
-    }
-    return false;
-  },
-  hasRole(role: Role): boolean {
-    return this.claims!.roles.includes(role);
-  },
+const permissionServiceMock: Partial<PermissionService> = {
   get isAdmin(): boolean {
     return isAdmin;
   },
@@ -55,7 +37,7 @@ describe('AtlasButtonComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [AtlasButtonComponent],
       imports: [AppTestingModule],
-      providers: [{ provide: AuthService, useValue: authServiceMock }],
+      providers: [{ provide: PermissionService, useValue: permissionServiceMock }],
     }).compileComponents();
   });
 

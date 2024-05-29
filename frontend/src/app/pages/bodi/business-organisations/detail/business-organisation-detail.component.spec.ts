@@ -1,20 +1,20 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormBuilder} from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { of, throwError } from 'rxjs';
-import { BusinessOrganisationsService, BusinessOrganisationVersion } from '../../../../api';
-import { BusinessOrganisationDetailComponent } from './business-organisation-detail.component';
-import { HttpErrorResponse } from '@angular/common/http';
-import { AppTestingModule, authServiceMock } from '../../../../app.testing.module';
-import { ErrorNotificationComponent } from '../../../../core/notification/error/error-notification.component';
-import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
-import { MockAppDetailWrapperComponent, MockSelectComponent } from '../../../../app.testing.mocks';
-import { AuthService } from '../../../../core/auth/auth.service';
-import { FormModule } from '../../../../core/module/form.module';
-import { TranslatePipe } from '@ngx-translate/core';
-import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
-import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {of, throwError} from 'rxjs';
+import {BusinessOrganisationsService, BusinessOrganisationVersion} from '../../../../api';
+import {BusinessOrganisationDetailComponent} from './business-organisation-detail.component';
+import {HttpErrorResponse} from '@angular/common/http';
+import {AppTestingModule} from '../../../../app.testing.module';
+import {ErrorNotificationComponent} from '../../../../core/notification/error/error-notification.component';
+import {InfoIconComponent} from '../../../../core/form-components/info-icon/info-icon.component';
+import {adminPermissionServiceMock, MockAppDetailWrapperComponent, MockSelectComponent} from '../../../../app.testing.mocks';
+import {FormModule} from '../../../../core/module/form.module';
+import {TranslatePipe} from '@ngx-translate/core';
+import {DetailPageContainerComponent} from '../../../../core/components/detail-page-container/detail-page-container.component';
+import {DetailFooterComponent} from '../../../../core/components/detail-footer/detail-footer.component';
 import {ValidityService} from "../../../sepodi/validity/validity.service";
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 const businessOrganisationVersion: BusinessOrganisationVersion = {
   id: 1234,
@@ -219,8 +219,8 @@ function setupTestBed(
     providers: [
       { provide: FormBuilder },
       { provide: BusinessOrganisationsService, useValue: businessOrganisationsService },
-      { provide: AuthService, useValue: authServiceMock },
-      {provide: ValidityService, useValue: validityService},
+      { provide: PermissionService, useValue: adminPermissionServiceMock },
+      { provide: ValidityService, useValue: validityService },
       { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
       { provide: TranslatePipe },
     ],

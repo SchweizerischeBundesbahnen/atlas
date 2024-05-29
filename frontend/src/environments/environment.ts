@@ -25,6 +25,7 @@ export const environment: Environment = {
   label: 'dev',
   appVersion: packageJson.version,
   atlasApiUrl: 'http://localhost:8888',
+  atlasUnauthApiUrl: 'http://localhost:6969',
   atlasReleaseNotes: 'https://atlas-info.app.sbb.ch/static/atlas-release-notes.html',
   authConfig,
 };

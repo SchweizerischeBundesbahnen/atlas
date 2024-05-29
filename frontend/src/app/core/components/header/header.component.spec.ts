@@ -1,20 +1,15 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {HeaderComponent} from './header.component';
-import {AuthService} from '../../auth/auth.service';
 import {UserComponent} from '../user/user.component';
 import {LanguageSwitcherComponent} from '../language-switcher/language-switcher.component';
 import {AppTestingModule} from '../../../app.testing.module';
 import {MaintenanceIconComponent} from './maintenance-icon/maintenance-icon.component';
 import {InfoIconComponent} from "../../form-components/info-icon/info-icon.component";
+import {AuthService} from "../../auth/auth.service";
+import {authServiceSpy} from "../../../app.testing.mocks";
 
 describe('HeaderComponent', () => {
-  const authServiceMock: Partial<AuthService> = {
-    claims: { name: 'Test', email: 'test@test.ch', sbbuid: 'e123456', roles: [] },
-    getPermissions: () => [],
-    logout: () => Promise.resolve(true),
-  };
-
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
 
@@ -28,7 +23,9 @@ describe('HeaderComponent', () => {
         InfoIconComponent,
       ],
       imports: [AppTestingModule],
-      providers: [{ provide: AuthService, useValue: authServiceMock }],
+      providers: [
+        { provide: AuthService, useValue: authServiceSpy },
+      ],
     }).compileComponents();
   });
 

@@ -3,7 +3,7 @@ import {BaseDetailController} from './base-detail-controller';
 import {KeepaliveService} from '../../keepalive/keepalive.service';
 import {Record} from './record';
 import {Subscription} from 'rxjs';
-import {AuthService} from '../../auth/auth.service';
+import {PermissionService} from "../../auth/permission/permission.service";
 
 @Component({
   selector: 'app-detail-wrapper [controller][headingNew]',
@@ -19,7 +19,7 @@ export class BaseDetailComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly keepaliveService: KeepaliveService,
-    public authService: AuthService
+    public permissionService: PermissionService
   ) {
     keepaliveService.startWatching(() => {
       this.controller.closeConfirmDialog();
@@ -46,7 +46,7 @@ export class BaseDetailComponent implements OnInit, OnDestroy {
   isEditButtonVisible() {
     return (
       this.selectedRecord.status !== 'IN_REVIEW' ||
-      this.authService.isAtLeastSupervisor(this.controller.getApplicationType())
+      this.permissionService.isAtLeastSupervisor(this.controller.getApplicationType())
     );
   }
 }
