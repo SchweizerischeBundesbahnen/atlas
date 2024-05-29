@@ -46,7 +46,6 @@ import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
@@ -100,12 +99,10 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .workflowComment("WF comment")
         .examinants(clientPersonModels)
         .ccEmails(List.of("a@b.ch", "b@c.it"))
-        .validFrom(LocalDate.of(2000, 1, 1))
-        .validTo(LocalDate.of(2000, 12, 31))
         .versionId(versionId)
         .build();
 
-    when(sePoDiClient.postServicePointsImport(versionId, Status.IN_REVIEW))
+    when(sePoDiClient.postServicePointsStatusUpdate(versionId, Status.IN_REVIEW))
         .thenReturn(ResponseEntity.ok(getUpdateServicePointVersionModel(Status.IN_REVIEW)));
 
     controller.addStopPointWorkflow(workflowModel);
@@ -160,8 +157,6 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .examinants(List.of(person))
-        .validFrom(LocalDate.of(2000, 1, 1))
-        .validTo(LocalDate.of(2000, 12, 31))
         .versionId(123456L)
         .build();
 
@@ -201,11 +196,9 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .examinants(List.of(person))
-        .validFrom(LocalDate.of(2000, 1, 1))
-        .validTo(LocalDate.of(2000, 12, 31))
         .versionId(versionId)
         .build();
-    Mockito.when(sePoDiClient.postServicePointsImport(versionId, Status.IN_REVIEW))
+    when(sePoDiClient.postServicePointsStatusUpdate(versionId, Status.IN_REVIEW))
         .thenReturn(ResponseEntity.ok(getUpdateServicePointVersionModel(Status.IN_REVIEW)));
 
     //given
@@ -232,8 +225,6 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("\uD83D\uDE00\uD83D\uDE01\uD83D")
         .examinants(List.of(person))
-        .validFrom(LocalDate.of(2000, 1, 1))
-        .validTo(LocalDate.of(2000, 12, 31))
         .versionId(123456L)
         .build();
 

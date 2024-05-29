@@ -15,7 +15,7 @@ public interface SePoDiClient {
   String BASEPATH = "/service-point-directory/v1/service-points/";
 
   @PutMapping(value = BASEPATH + "status/{id}")
-  ResponseEntity<UpdateServicePointVersionModel> postServicePointsImport(@PathVariable("id") Long id,
+  ResponseEntity<UpdateServicePointVersionModel> postServicePointsStatusUpdate(@PathVariable("id") Long id,
       @RequestBody Status status);
 
 }

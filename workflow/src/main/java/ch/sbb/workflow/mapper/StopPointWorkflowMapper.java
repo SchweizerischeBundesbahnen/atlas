@@ -17,23 +17,6 @@ public class StopPointWorkflowMapper {
         .examinants(entity.getExaminants().stream().map(ClientPersonMapper::toModel).toList())
         .ccEmails(entity.getCcEmails())
         .sboid(entity.getSboid())
-        .validFrom(entity.getStartDate())
-        .validTo(entity.getEndDate())
-        .versionId(entity.getVersionId())
-        .designationOfficial(entity.getDesignationOfficial())
-        .swissMunicipalityName(entity.getSwissMunicipalityName())
-        .status(entity.getStatus())
-        .workflowComment(entity.getWorkflowComment())
-        .build();
-  }
-  public static ReadStopPointWorkflowModel toReadModel(StopPointWorkflow entity) {
-    return ReadStopPointWorkflowModel.builder()
-        .sloid(entity.getSloid())
-        .examinants(entity.getExaminants().stream().map(ClientPersonMapper::toModel).toList())
-        .ccEmails(entity.getCcEmails())
-        .sboid(entity.getSboid())
-        .validFrom(entity.getStartDate())
-        .validTo(entity.getEndDate())
         .versionId(entity.getVersionId())
         .designationOfficial(entity.getDesignationOfficial())
         .swissMunicipalityName(entity.getSwissMunicipalityName())
@@ -42,7 +25,20 @@ public class StopPointWorkflowMapper {
         .build();
   }
 
-  //startStopPointModel
+  public static ReadStopPointWorkflowModel toReadModel(StopPointWorkflow entity) {
+    return ReadStopPointWorkflowModel.builder()
+        .sloid(entity.getSloid())
+        .examinants(entity.getExaminants().stream().map(ClientPersonMapper::toModel).toList())
+        .ccEmails(entity.getCcEmails())
+        .sboid(entity.getSboid())
+        .versionId(entity.getVersionId())
+        .designationOfficial(entity.getDesignationOfficial())
+        .swissMunicipalityName(entity.getSwissMunicipalityName())
+        .status(entity.getStatus())
+        .workflowComment(entity.getWorkflowComment())
+        .build();
+  }
+
   public static StopPointWorkflow toEntity(StopPointAddWorkflowModel model, List<ClientPersonModel> examinants) {
     StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
         .sloid(model.getSloid())
@@ -50,18 +46,14 @@ public class StopPointWorkflowMapper {
         .sboid(model.getSboid())
         .swissMunicipalityName(model.getSwissMunicipalityName())
         .designationOfficial(model.getDesignationOfficial())
-        .startDate(model.getValidFrom())
-        .endDate(model.getValidTo())
         .ccEmails(model.getCcEmails())
         .workflowComment(model.getWorkflowComment())
         .build();
     model.getExaminants().addAll(examinants);
-    //TODO: add better implementation
     stopPointWorkflow.setExaminants(
-        model.getExaminants().stream().map(clientPersonModel -> ClientPersonMapper.toEntity(clientPersonModel, stopPointWorkflow))
+        model.getExaminants().stream().map(ClientPersonMapper::toEntity)
             .collect(Collectors.toSet()));
     return stopPointWorkflow;
   }
-
 
 }
