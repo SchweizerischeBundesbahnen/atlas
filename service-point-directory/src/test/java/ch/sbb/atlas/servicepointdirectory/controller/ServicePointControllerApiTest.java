@@ -97,7 +97,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         ResponseEntity.ofNullable(
             new ch.sbb.atlas.journey.poi.model.Country().countryCode(new CountryCode().isoCountryCode("RO")));
     when(journeyPoiClient.closestCountry(any(), any())).thenReturn(poiResponse);
-    when(locationService.generateSloid(any(),any(Country.class))).thenReturn("ch:1:sloid:1");
+    when(locationService.generateSloid(any(), any(Country.class))).thenReturn("ch:1:sloid:1");
   }
 
   @AfterEach
@@ -371,7 +371,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0].status", is(Status.REVOKED.toString())))
         .andExpect(jsonPath("$[1].status", is(Status.REVOKED.toString())));
 
-    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
+    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
   }
 
   @Test
@@ -432,7 +432,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.objects[2].designationOfficial", is("Aargau Strasse")))
         .andExpect(jsonPath("$.objects[2].number.number", is(8055555)));
 
-    verify(locationService, times(0)).generateSloid(any(),any(Country.class));
+    verify(locationService, times(0)).generateSloid(any(), any(Country.class));
   }
 
   @Test
@@ -474,7 +474,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.details.[0].message", endsWith(
             "DesignationOfficial Aargau Strasse already taken from 11.08.2019 to 10.08.2020 by 8012345")));
 
-    verify(locationService, times(0)).generateSloid(any(),any(Country.class));
+    verify(locationService, times(0)).generateSloid(any(), any(Country.class));
   }
 
   @Test
@@ -521,7 +521,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             is("The abbreviation must be unique and the chosen servicepoint version should be the most recent version.")))
         .andExpect(jsonPath("$.details.[0].message", endsWith(
             "The abbreviation must be unique and the chosen servicepoint version should be the most recent version.")));
-    verify(locationService, times(0)).generateSloid(any(),any(Country.class));
+    verify(locationService, times(0)).generateSloid(any(), any(Country.class));
   }
 
   @Test
@@ -546,92 +546,93 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/service-points/versions/" + id + "/skip-workflow"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.status", is(Status.VALIDATED.toString())));
-    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
+    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
   }
 
   @Test
   void shouldNotAllowSetStatusToValidatedForServicePointWithValidatedStatus() throws Exception {
     CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
-            aargauServicePointVersionModel);
+        aargauServicePointVersionModel);
     Long id = servicePointVersionModel.getId();
     Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
     servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.VALIDATED));
     servicePointVersion1.ifPresent(repository::save);
 
     mvc.perform(post("/v1/service-points/versions/" + id + "/skip-workflow")
-                    .contentType(contentType)
-                    .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
-            .andExpect(status().isPreconditionFailed())
-            .andExpect(jsonPath("$.message", is(
-                    "ServicePoint Status cannot be changed for Status REVOKED and can be updated only from DRAFT to VALIDATED!")))
-            .andExpect(jsonPath("$.error", endsWith(
-                    "Trying to update status for ServicePointNumber 8500001 and current status: VALIDATED")));
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
+        .andExpect(status().isPreconditionFailed())
+        .andExpect(jsonPath("$.message", is(
+            "ServicePoint Status cannot be changed for Status REVOKED and can be updated only from DRAFT to VALIDATED!")))
+        .andExpect(jsonPath("$.error", endsWith(
+            "Trying to update status for ServicePointNumber 8500001 and current status: VALIDATED")));
   }
 
   @Test
   void shouldNotAllowSetStatusToValidatedForServicePointWithRevokedStatus() throws Exception {
     CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
-            aargauServicePointVersionModel);
+        aargauServicePointVersionModel);
     Long id = servicePointVersionModel.getId();
     Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
     servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.REVOKED));
     servicePointVersion1.ifPresent(repository::save);
 
     mvc.perform(post("/v1/service-points/versions/" + id + "/skip-workflow")
-                    .contentType(contentType)
-                    .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
-            .andExpect(status().isPreconditionFailed())
-            .andExpect(jsonPath("$.message", is(
-                    "ServicePoint Status cannot be changed for Status REVOKED and can be updated only from DRAFT to VALIDATED!")))
-            .andExpect(jsonPath("$.error", endsWith(
-                    "Trying to update status for ServicePointNumber 8500001 and current status: REVOKED")));
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
+        .andExpect(status().isPreconditionFailed())
+        .andExpect(jsonPath("$.message", is(
+            "ServicePoint Status cannot be changed for Status REVOKED and can be updated only from DRAFT to VALIDATED!")))
+        .andExpect(jsonPath("$.error", endsWith(
+            "Trying to update status for ServicePointNumber 8500001 and current status: REVOKED")));
   }
 
   @Test
   void shouldNotAllowSetStatusToValidatedForServicePointWithInReviewStatus() throws Exception {
     CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
-            aargauServicePointVersionModel);
+        aargauServicePointVersionModel);
     Long id = servicePointVersionModel.getId();
     Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
     servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.IN_REVIEW));
     servicePointVersion1.ifPresent(repository::save);
 
     mvc.perform(post("/v1/service-points/versions/" + id + "/skip-workflow")
-                    .contentType(contentType)
-                    .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
-            .andExpect(status().isPreconditionFailed())
-            .andExpect(jsonPath("$.message", is(
-                    "ServicePoint Status cannot be changed for Status REVOKED and can be updated only from DRAFT to VALIDATED!")))
-            .andExpect(jsonPath("$.error", endsWith(
-                    "Trying to update status for ServicePointNumber 8500001 and current status: IN_REVIEW")));
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
+        .andExpect(status().isPreconditionFailed())
+        .andExpect(jsonPath("$.message", is(
+            "ServicePoint Status cannot be changed for Status REVOKED and can be updated only from DRAFT to VALIDATED!")))
+        .andExpect(jsonPath("$.error", endsWith(
+            "Trying to update status for ServicePointNumber 8500001 and current status: IN_REVIEW")));
   }
 
   @Test
   void shouldNotAllowSetStatusToValidatedForServicePointWithWithdrownStatus() throws Exception {
     CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
-            aargauServicePointVersionModel);
+        aargauServicePointVersionModel);
     Long id = servicePointVersionModel.getId();
     Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
     servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.WITHDRAWN));
     servicePointVersion1.ifPresent(repository::save);
 
     mvc.perform(post("/v1/service-points/versions/" + id + "/skip-workflow")
-                    .contentType(contentType)
-                    .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
-            .andExpect(status().isPreconditionFailed())
-            .andExpect(jsonPath("$.message", is(
-                    "ServicePoint Status cannot be changed for Status REVOKED and can be updated only from DRAFT to VALIDATED!")))
-            .andExpect(jsonPath("$.error", endsWith(
-                    "Trying to update status for ServicePointNumber 8500001 and current status: WITHDRAWN")));
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
+        .andExpect(status().isPreconditionFailed())
+        .andExpect(jsonPath("$.message", is(
+            "ServicePoint Status cannot be changed for Status REVOKED and can be updated only from DRAFT to VALIDATED!")))
+        .andExpect(jsonPath("$.error", endsWith(
+            "Trying to update status for ServicePointNumber 8500001 and current status: WITHDRAWN")));
   }
+
   @Test
   void shouldNotAllowServicePointUpdateWhenStatusRevoked() throws Exception {
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
-            ServicePointTestData.getAargauServicePointVersionModel());
+        ServicePointTestData.getAargauServicePointVersionModel());
     Long id = servicePointVersionModel.getId();
     Optional<ServicePointVersion> servicePointVersion1 = repository.findById(id);
     servicePointVersion1.ifPresent(pointVersion -> pointVersion.setStatus(Status.REVOKED));
@@ -639,17 +640,17 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
 
     UpdateServicePointVersionModel newServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
     newServicePointVersionModel.setServicePointGeolocation(
-            ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
+        ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation()));
     newServicePointVersionModel.setOperatingPointRouteNetwork(true);
 
     mvc.perform(put("/v1/service-points/" + id)
-                    .contentType(contentType)
-                    .content(mapper.writeValueAsString(newServicePointVersionModel)))
-            .andExpect(status().isPreconditionFailed())
-            .andExpect(jsonPath("$.message", is(
-                    "ServicePoint Status cannot be changed for Status REVOKED and can be updated only from DRAFT to VALIDATED!")))
-            .andExpect(jsonPath("$.error", endsWith(
-                    "Trying to update status for ServicePointNumber 8500001 and current status: REVOKED")));
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(newServicePointVersionModel)))
+        .andExpect(status().isPreconditionFailed())
+        .andExpect(jsonPath("$.message", is(
+            "ServicePoint Status cannot be changed for Status REVOKED and can be updated only from DRAFT to VALIDATED!")))
+        .andExpect(jsonPath("$.error", endsWith(
+            "Trying to update status for ServicePointNumber 8500001 and current status: REVOKED")));
   }
 
   @Test
@@ -697,7 +698,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.trafficPoint", is(true)))
         .andExpect(jsonPath("$.hasGeolocation", is(true)))
         .andExpect(jsonPath("$.creator", is("e123456")));
-    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
+    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
   }
 
   @Test
@@ -730,7 +731,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.operatingPointKilometerMaster.number", is(8500001)))
         .andExpect(jsonPath("$.operatingPointKilometerMaster.numberShort", is(1)))
         .andExpect(jsonPath("$.operatingPointKilometerMaster.checkDigit", is(8)));
-    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
+    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
   }
 
   @Test
@@ -841,7 +842,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.trafficPoint", is(true)))
         .andExpect(jsonPath("$.hasGeolocation", is(true)))
         .andExpect(jsonPath("$.creator", is("e123456")));
-    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
+    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
   }
 
   @Test
@@ -882,7 +883,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[2].servicePointGeolocation.lv95.east", is(2600783.0)))
         .andExpect(jsonPath("$[2].servicePointGeolocation.wgs84.north", is(46.96096808019)))
         .andExpect(jsonPath("$[2].servicePointGeolocation.wgs84.east", is(7.44891972221)));
-    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
+    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
   }
 
   @Test
@@ -907,7 +908,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.details.[0].message", endsWith(
             "OperatingPointRouteNetwork true is allowed only for StopPoint, ControlPoint and OperatingPoint." +
                 " OperatingPointKilometerMasterNumber can be set only for StopPoint, ControlPoint and OperatingPoint.")));
-    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
+    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
   }
 
   @Test
@@ -929,7 +930,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(newServicePointVersionModel)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)));
-    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
+    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
   }
 
   @Test
@@ -953,7 +954,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[0].operatingPointKilometerMaster.numberShort", is(1)))
         .andExpect(jsonPath("$[0].operatingPointKilometerMaster.checkDigit", is(8)))
         .andExpect(jsonPath("$", hasSize(1)));
-    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
+    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
   }
 
   @Test
@@ -972,7 +973,63 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(newServicePointVersionModel)))
         .andExpect(status().is4xxClientError());
-    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
+    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
+  }
+
+  @Test
+  void shouldReturnConflictWhenInReviewVersionIsUpdated() throws Exception {
+    // given
+    ServicePointVersion bern = ServicePointTestData.getBern();
+    bern.setValidFrom(LocalDate.of(2016, 1, 1));
+    bern.setValidTo(LocalDate.of(2018, 1, 1));
+    bern.setStatus(Status.IN_REVIEW);
+    ServicePointVersion saved = repository.save(bern);
+
+    // when & then
+    CreateServicePointVersionModel updateModel = ServicePointTestData.getAargauServicePointVersionModel();
+    updateModel.setValidFrom(LocalDate.of(2011, 1, 1));
+    updateModel.setValidTo(LocalDate.of(2014, 1, 1));
+
+    mvc.perform(put("/v1/service-points/" + saved.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(updateModel)))
+        .andExpect(status().isConflict())
+        .andExpect(
+            jsonPath("$.message",
+                is("Update from 01.01.2011 to 01.01.2014 affects 1 version/s that have status: IN_REVIEW.")));
+  }
+
+  @Test
+  void shouldReturnConflictWhenInReviewVersionIsAffectedDuringUpdate() throws Exception {
+    // given
+    ServicePointVersion bern = ServicePointTestData.getBern();
+    bern.setValidFrom(LocalDate.of(2010, 1, 1));
+    bern.setValidTo(LocalDate.of(2012, 1, 1));
+    repository.save(bern);
+
+    bern = ServicePointTestData.getBern();
+    bern.setStatus(Status.IN_REVIEW);
+    bern.setValidFrom(LocalDate.of(2013, 1, 1));
+    bern.setValidTo(LocalDate.of(2015, 1, 1));
+    repository.save(bern);
+
+    bern = ServicePointTestData.getBern();
+    bern.setValidFrom(LocalDate.of(2016, 1, 1));
+    bern.setValidTo(LocalDate.of(2018, 1, 1));
+    ServicePointVersion saved = repository.save(bern);
+
+    // when & then
+    CreateServicePointVersionModel updateModel = ServicePointTestData.getAargauServicePointVersionModel();
+    updateModel.setValidFrom(LocalDate.of(2011, 1, 1));
+    updateModel.setValidTo(LocalDate.of(2014, 1, 1));
+
+    mvc.perform(put("/v1/service-points/" + saved.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(updateModel)))
+        .andExpect(status().isConflict())
+        .andExpect(
+            jsonPath("$.message",
+                is("Update from 01.01.2011 to 01.01.2014 affects 1 version/s that have status: IN_REVIEW.")));
   }
 
   @Test
@@ -1042,7 +1099,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
     assertThat(errorResponse.getDetails().first().getDisplayInfo().getCode()).isEqualTo(
         "COMMON.NOTIFICATION.OPTIMISTIC_LOCK_ERROR");
     assertThat(errorResponse.getError()).isEqualTo("Stale object state error");
-    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
+    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
   }
 
   @Test
@@ -1095,7 +1152,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.servicePointGeolocation.lv03.north", is(199776.88044)))
         .andExpect(jsonPath("$.servicePointGeolocation.lv03.east", is(600127.58303)))
         .andExpect(jsonPath("$.hasGeolocation", is(true)));
-    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
+    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
   }
 
   @Test
@@ -1120,7 +1177,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.servicePointGeolocation.lv95.east", is(2600127.58359)))
         .andExpect(jsonPath("$.servicePointGeolocation.lv95.north", is(1199776.88159)))
         .andExpect(jsonPath("$.hasGeolocation", is(true)));
-    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
+    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
   }
 
   @Test
@@ -1140,7 +1197,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.number.number", is(8500001)))
         .andExpect(jsonPath("$.sloid", is("ch:1:sloid:1")));
-    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
+    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
   }
 
   @Test
@@ -1159,7 +1216,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(aargauServicePointVersionModel)))
         .andExpect(status().isBadRequest());
-    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
+    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
   }
 
   @Test
@@ -1181,7 +1238,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(aargauServicePoint)))
         .andExpect(status().isForbidden());
-    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
+    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
   }
 
   @Test
@@ -1203,7 +1260,7 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(buchsiServicePoint)))
         .andExpect(status().isForbidden());
-    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT,Country.SWITZERLAND);
+    verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
   }
 
 }
