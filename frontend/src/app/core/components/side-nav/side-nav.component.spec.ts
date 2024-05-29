@@ -19,7 +19,7 @@ describe('SideNavComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [SideNavComponent],
       imports: [
-        RouterModule. forRoot([
+        RouterModule.forRoot([
           {
             path: Pages.LIDI.path,
             component: LidiOverviewComponent,
@@ -73,11 +73,11 @@ describe('SideNavComponent', () => {
   const assertActiveNavItem = (pageTitle: string) => {
     const navItems = fixture.debugElement.queryAll(By.css('div'));
     const activeNavItemIndex = navItems.findIndex((item) =>
-      Object.keys(item.classes).includes('route-active')
+      Object.keys(item.classes).includes('route-active'),
     );
 
     expect(navItems[activeNavItemIndex].nativeNode.querySelector('span').textContent).toBe(
-      pageTitle
+      pageTitle,
     );
   };
 
