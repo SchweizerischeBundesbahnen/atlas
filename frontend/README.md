@@ -6,6 +6,7 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
 
 <!-- toc -->
 
+- [Atlas API usage](#atlas-api-usage)
 - [Development](#development)
   * [Node.js](#nodejs)
   * [Angular update](#angular-update)
@@ -21,11 +22,19 @@ See [ESTA Documentation](https://confluence.sbb.ch/display/CLEW/ESTA-Web).
 
 <!-- tocstop -->
 
+## Atlas API usage
+As documented in `ApiConfigService` the frontend will use the api-auth-gateway as the basePath for the atlas API as a default.
+The default is configured in the `app.module.ts`:
+```typescript
+AtlasApiModule.forRoot(withBasePath(environment.atlasUnauthApiUrl))
+```
+The service then switches it to the real atlas api once a user is logged in.
+
 ## Development
 
 ### Node.js
 
-This project requires Node.js Version **16.15.0**. It has to be a LTS version.
+This project requires Node.js Version **18.17.0**. It has to be a LTS version.
 
 Use Node Version Manager to easily switch the NodeJS version between your angular projects.
 
@@ -37,7 +46,7 @@ You should have a NVM_DIR environment variable, which points to a directory (lik
 To install new Node.js version and set it as active using nvm, type this in the console:
 
 ```bash
- nvm install 16.13.2
+ nvm install 18.17.0
 ```
 
 Now you should be ready to install all required angular packages for this project. Just type:
@@ -75,8 +84,8 @@ npm install
 2. Paste the json from the [credentials site](https://vault-nonprod.sbb.ch/ui/vault/secrets/kv/show/SKI/ATLAS/users/cypress-local). This is excluded
    from git, so the credentials are not commited.
 3. run cypress:
-1. with the console for debugging: `npm run cypress:open` or `cypress open`
-2. as headless test: `npm run cypress:run` or `cypress run`
+   1. with the console for debugging: `npm run cypress:open` or `cypress open`
+   2. as headless test: `npm run cypress:run` or `cypress run`
 
 ##### Release-Tests (Used by Tester)
 
