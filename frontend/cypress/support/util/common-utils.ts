@@ -251,8 +251,8 @@ export default class CommonUtils {
   }
 
   static typeSearchInput(pathToIntercept: string, searchSelector: string, value: string) {
-    cy.intercept(pathToIntercept).as('searchItemUlrIntercept');
-    cy.get(searchSelector).clear().type(value).type('{enter}').wait('@searchItemUlrIntercept');
+    cy.intercept(pathToIntercept).as('searchItemUrlIntercept');
+    cy.get(searchSelector).clear().type(value).type('{enter}').wait('@searchItemUrlIntercept');
   }
 
   static selectItemFromDropdownSearchItem(searchStatusSelector: string, value: string) {

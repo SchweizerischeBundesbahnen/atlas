@@ -1,5 +1,5 @@
 import CommonUtils from './common-utils';
-import {DataCy} from '../data-cy';
+import { DataCy } from '../data-cy';
 import BodiDependentUtils from './bodi-dependent-utils';
 import AngularMaterialConstants from './angular-material-constants';
 
@@ -53,23 +53,18 @@ export default class LidiUtils {
     CommonUtils.typeSearchInput(
       pathToIntercept,
       DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
-      line.swissLineNumber
-    );
-
-    CommonUtils.selectItemFromDropdownSearchItem(
-      DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 2),
-      'Aktiv'
+      line.swissLineNumber,
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
       DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 1),
-      line.type
+      line.type,
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
       DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_DATE_INPUT(1, 3),
-      line.validTo
+      line.validTo,
     );
 
     cy.get('tbody')
@@ -90,23 +85,23 @@ export default class LidiUtils {
     CommonUtils.typeSearchInput(
       pathToIntercept,
       DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
-      sublineVersion.swissSublineNumber
+      sublineVersion.swissSublineNumber,
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
       DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 2),
-      'Aktiv'
+      'Aktiv',
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
       DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 1),
-      sublineVersion.type
+      sublineVersion.type,
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
       DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_DATE_INPUT(1, 3),
-      sublineVersion.validTo
+      sublineVersion.validTo,
     );
 
     cy.get('tbody')
@@ -165,23 +160,23 @@ export default class LidiUtils {
 
     CommonUtils.typeAndSelectItemFromDropDown(
       DataCy.BUSINESS_ORGANISATION + ' ' + 'input',
-      version.businessOrganisation
+      version.businessOrganisation,
     );
 
     CommonUtils.selectItemFromDropDown(DataCy.TYPE, version.type);
     CommonUtils.selectItemFromDropDown(DataCy.PAYMENT_TYPE, version.paymentType);
 
     cy.get(DataCy.COLOR_FONT_RGB + ' ' + DataCy.RGB_PICKER_INPUT).type(
-      '{selectall}' + version.colorFontRgb
+      '{selectall}' + version.colorFontRgb,
     );
     cy.get(DataCy.COLOR_BACK_RGB + ' ' + DataCy.RGB_PICKER_INPUT).type(
-      '{selectall}' + version.colorBackRgb
+      '{selectall}' + version.colorBackRgb,
     );
     cy.get(DataCy.COLOR_FONT_CMYK + ' ' + DataCy.CMYK_PICKER_INPUT).type(
-      '{selectall}' + version.colorFontCmyk
+      '{selectall}' + version.colorFontCmyk,
     );
     cy.get(DataCy.COLOR_BACK_CMYK + ' ' + DataCy.CMYK_PICKER_INPUT).type(
-      '{selectall}' + version.colorBackCmyk
+      '{selectall}' + version.colorBackCmyk,
     );
 
     CommonUtils.getClearType(DataCy.DESCRIPTION, version.description);
@@ -201,34 +196,34 @@ export default class LidiUtils {
     CommonUtils.typeSearchInput(
       pathToIntercept,
       DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
-      line.swissLineNumber
+      line.swissLineNumber,
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
       DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
-      line.slnid
+      line.slnid,
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
       DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 2),
-      'Aktiv'
+      'Aktiv',
     );
 
     CommonUtils.selectItemFromDropdownSearchItem(
       DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_MULTI_SELECT(1, 1),
-      line.type
+      line.type,
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
       DataCy.LIDI_LINES + ' ' + DataCy.TABLE_FILTER_DATE_INPUT(1, 3),
-      line.validTo
+      line.validTo,
     );
     // Check that the table contains 1 result
     cy.get(DataCy.LIDI_LINES + ' table tbody tr').should('have.length', 1);
     // Click on the item
-    cy.contains('td', line.swissLineNumber).parents('tr').click({force: true});
+    cy.contains('td', line.swissLineNumber).parents('tr').click({ force: true });
     this.assertContainsLineVersion(line);
   }
 
@@ -239,27 +234,27 @@ export default class LidiUtils {
     cy.get(DataCy.BUSINESS_ORGANISATION).should('contain.text', version.businessOrganisation);
     CommonUtils.assertItemText(
       DataCy.TYPE + AngularMaterialConstants.MAT_SELECT_TEXT_DEEP_SELECT,
-      version.type
+      version.type,
     );
     CommonUtils.assertItemText(
       DataCy.PAYMENT_TYPE + AngularMaterialConstants.MAT_SELECT_TEXT_DEEP_SELECT,
-      version.paymentType
+      version.paymentType,
     );
     CommonUtils.assertItemValue(
       DataCy.COLOR_FONT_RGB + ' ' + DataCy.RGB_PICKER_INPUT,
-      version.colorFontRgb
+      version.colorFontRgb,
     );
     CommonUtils.assertItemValue(
       DataCy.COLOR_BACK_RGB + ' ' + DataCy.RGB_PICKER_INPUT,
-      version.colorBackRgb
+      version.colorBackRgb,
     );
     CommonUtils.assertItemValue(
       DataCy.COLOR_FONT_CMYK + ' ' + DataCy.CMYK_PICKER_INPUT,
-      version.colorFontCmyk
+      version.colorFontCmyk,
     );
     CommonUtils.assertItemValue(
       DataCy.COLOR_BACK_CMYK + ' ' + DataCy.CMYK_PICKER_INPUT,
-      version.colorBackCmyk
+      version.colorBackCmyk,
     );
     CommonUtils.assertItemValue(DataCy.DESCRIPTION, version.description);
     CommonUtils.assertItemValue(DataCy.NUMBER, version.number);
@@ -311,7 +306,7 @@ export default class LidiUtils {
       longName:
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
       icon: 'https://en.wikipedia.org/wiki/File:Icon_train.svg',
-      comment: 'Kommentar'
+      comment: 'Kommentar',
     };
   }
 
@@ -334,7 +329,7 @@ export default class LidiUtils {
       combinationName: '',
       longName: '',
       icon: '',
-      comment: ''
+      comment: '',
     };
   }
 
@@ -357,7 +352,7 @@ export default class LidiUtils {
       combinationName: '',
       longName: '',
       icon: '',
-      comment: ''
+      comment: '',
     };
   }
 
@@ -381,7 +376,7 @@ export default class LidiUtils {
       longName:
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
       icon: 'https://en.wikipedia.org/wiki/File:Icon_train.svg',
-      comment: 'Kommentar'
+      comment: 'Kommentar',
     };
   }
 
@@ -404,7 +399,7 @@ export default class LidiUtils {
       longName:
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
       icon: 'https://en.wikipedia.org/wiki/File:Icon_train.svg',
-      comment: 'Kommentar-1'
+      comment: 'Kommentar-1',
     };
   }
 
@@ -427,7 +422,7 @@ export default class LidiUtils {
       longName:
         'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
       icon: 'https://en.wikipedia.org/wiki/File:Icon_train.svg',
-      comment: 'Kommentar-2'
+      comment: 'Kommentar-2',
     };
   }
 
@@ -435,7 +430,7 @@ export default class LidiUtils {
     return {
       validFrom: '01.06.2000',
       validTo: '01.06.2002',
-      alternativeName: 'IC2 alt edit'
+      alternativeName: 'IC2 alt edit',
     };
   }
 
@@ -443,19 +438,19 @@ export default class LidiUtils {
     // workaround for disabled input field error with (https://github.com/cypress-io/cypress/issues/5830)
     CommonUtils.getClearType(DataCy.VALID_FROM, version.validFrom, true);
     CommonUtils.getClearType(DataCy.VALID_TO, version.validTo, true);
-    cy.get(DataCy.SWISS_SUBLINE_NUMBER).clear().type(version.swissSublineNumber, {force: true});
+    cy.get(DataCy.SWISS_SUBLINE_NUMBER).clear().type(version.swissSublineNumber, { force: true });
     if (!skipMainline) {
       CommonUtils.typeAndSelectItemFromDropDown(DataCy.MAINLINE + ' ' + 'input', version.mainline);
     }
 
     CommonUtils.typeAndSelectItemFromDropDown(
       DataCy.BUSINESS_ORGANISATION + ' ' + 'input',
-      version.businessOrganisation
+      version.businessOrganisation,
     );
 
     CommonUtils.selectItemFromDropDown(DataCy.TYPE, version.type);
     CommonUtils.selectItemFromDropDown(DataCy.PAYMENT_TYPE, version.paymentType);
-    cy.get(DataCy.DESCRIPTION).clear().type(version.description, {force: true});
+    cy.get(DataCy.DESCRIPTION).clear().type(version.description, { force: true });
     cy.get(DataCy.NUMBER).clear().type(version.number);
     cy.get(DataCy.LONG_NAME).clear().type(version.longName);
     cy.get(DataCy.SAVE_ITEM).should('not.be.disabled');
@@ -467,19 +462,19 @@ export default class LidiUtils {
     CommonUtils.typeSearchInput(
       pathToIntercept,
       DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
-      subline.swissSublineNumber
+      subline.swissSublineNumber,
     );
 
     CommonUtils.typeSearchInput(
       pathToIntercept,
       DataCy.LIDI_SUBLINES + ' ' + DataCy.TABLE_FILTER_CHIP_INPUT,
-      subline.slnid
+      subline.slnid,
     );
 
     // Check that the table contains 1 result
     cy.get(DataCy.LIDI_SUBLINES + ' table tbody tr').should('have.length', 1);
     // Click on the item
-    cy.contains('td', subline.swissSublineNumber).parents('tr').click({force: true});
+    cy.contains('td', subline.swissSublineNumber).parents('tr').click({ force: true });
     this.assertContainsSublineVersion(subline);
   }
 
@@ -491,11 +486,11 @@ export default class LidiUtils {
     cy.get(DataCy.BUSINESS_ORGANISATION).should('contain.text', version.businessOrganisation);
     CommonUtils.assertItemText(
       DataCy.TYPE + AngularMaterialConstants.MAT_SELECT_TEXT_DEEP_SELECT,
-      version.type
+      version.type,
     );
     CommonUtils.assertItemText(
       DataCy.PAYMENT_TYPE + AngularMaterialConstants.MAT_SELECT_TEXT_DEEP_SELECT,
-      version.paymentType
+      version.paymentType,
     );
     CommonUtils.assertItemValue(DataCy.DESCRIPTION, version.description);
     CommonUtils.assertItemValue(DataCy.NUMBER, version.number);
@@ -517,7 +512,7 @@ export default class LidiUtils {
       description: 'Lorem Ipus Linie',
       number: 'IC2',
       longName:
-        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z'
+        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
     };
   }
 
@@ -533,7 +528,7 @@ export default class LidiUtils {
       description: 'Lorem Ipus Linie',
       number: 'IC2-update',
       longName:
-        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z'
+        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z',
     };
   }
 
@@ -543,7 +538,7 @@ export default class LidiUtils {
       validTo: '01.06.2002',
       number: 'IC2-Edit',
       longName:
-        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z - Edit'
+        'Chur - Thusis / St. Moritz - Pontresina - Campocologno - Granze (Weiterfahrt nach Tirano/I)Z - Edit',
     };
   }
 
@@ -559,7 +554,7 @@ export default class LidiUtils {
       validTo: '01.01.2000',
       businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Kompensation',
-      paymentType: 'Regional'
+      paymentType: 'Regional',
     };
   }
 
@@ -575,7 +570,7 @@ export default class LidiUtils {
       validTo: '31.12.2099',
       businessOrganisation: BodiDependentUtils.BO_DESCRIPTION,
       type: 'Konzession',
-      paymentType: 'Lokal'
+      paymentType: 'Lokal',
     };
   }
 
