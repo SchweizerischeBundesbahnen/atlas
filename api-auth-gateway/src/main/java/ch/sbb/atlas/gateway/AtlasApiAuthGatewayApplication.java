@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AtlasApiAuthGatewayApplication {
 
   public static void main(String[] args) {
-    TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of(ZURICH_ZONE_ID)));
+    TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("Europe/Zurich")));
     SpringApplication.run(AtlasApiAuthGatewayApplication.class, args);
   }
 

@@ -11,13 +11,13 @@ import {
 } from "../../../../../../api";
 import {FormGroup} from "@angular/forms";
 import {NotificationService} from "../../../../../../core/notification/notification.service";
-import {AuthService} from "../../../../../../core/auth/auth.service";
 import {PrmMeanOfTransportHelper} from "../../../../util/prm-mean-of-transport-helper";
 import {VersionsHandlingService} from "../../../../../../core/versioning/versions-handling.service";
 import {CompletePlatformFormGroup, PlatformFormGroupBuilder, ReducedPlatformFormGroup} from "../form/platform-form-group";
 import {DateRange} from "../../../../../../core/versioning/date-range";
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
 import {ValidityService} from "../../../../../sepodi/validity/validity.service";
+import {PermissionService} from "../../../../../../core/auth/permission/permission.service";
 
 @Component({
   selector: 'app-platforms',
@@ -55,7 +55,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
     private personWithReducedMobilityService: PersonWithReducedMobilityService,
     private notificationService: NotificationService,
     private detailHelperService: DetailHelperService,
-    private authService: AuthService,
+    private permissionService: PermissionService,
     private validityService: ValidityService
   ) {}
 
@@ -110,7 +110,7 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
 
   hasPermissionToCreateNewStopPoint(): boolean {
     const sboidsPermissions = this.businessOrganisations.map((bo) =>
-      this.authService.hasPermissionsToWrite('PRM', bo),
+      this.permissionService.hasPermissionsToWrite('PRM', bo),
     );
     return sboidsPermissions.includes(true);
   }

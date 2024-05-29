@@ -1,31 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  ApplicationType,
-  Line,
-  LinesService,
-  PaymentType,
-  SublinesService,
-  SublineType,
-  SublineVersion,
-} from '../../../../api';
-import { BaseDetailController } from '../../../../core/components/base-detail/base-detail-controller';
-import { catchError, Observable, of } from 'rxjs';
-import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { NotificationService } from '../../../../core/notification/notification.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Page } from '../../../../core/model/page';
-import { Pages } from '../../../pages';
+import {Component, OnInit} from '@angular/core';
+import {ApplicationType, Line, LinesService, PaymentType, SublinesService, SublineType, SublineVersion,} from '../../../../api';
+import {BaseDetailController} from '../../../../core/components/base-detail/base-detail-controller';
+import {catchError, Observable, of} from 'rxjs';
+import {DialogService} from '../../../../core/components/dialog/dialog.service';
+import {NotificationService} from '../../../../core/notification/notification.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Page} from '../../../../core/model/page';
+import {Pages} from '../../../pages';
 import moment from 'moment';
-import { DateRangeValidator } from '../../../../core/validation/date-range/date-range-validator';
-import { map } from 'rxjs/operators';
-import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
-import { ValidationService } from '../../../../core/validation/validation.service';
-import { WhitespaceValidator } from '../../../../core/validation/whitespace/whitespace-validator';
-import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
-import { SublineDetailFormGroup } from './subline-detail-form-group';
-import { AuthService } from '../../../../core/auth/auth.service';
+import {DateRangeValidator} from '../../../../core/validation/date-range/date-range-validator';
+import {map} from 'rxjs/operators';
+import {AtlasCharsetsValidator} from '../../../../core/validation/charsets/atlas-charsets-validator';
+import {ValidationService} from '../../../../core/validation/validation.service';
+import {WhitespaceValidator} from '../../../../core/validation/whitespace/whitespace-validator';
+import {AtlasFieldLengthValidator} from '../../../../core/validation/field-lengths/atlas-field-length-validator';
+import {SublineDetailFormGroup} from './subline-detail-form-group';
 import {ValidityService} from "../../../sepodi/validity/validity.service";
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 @Component({
   templateUrl: './subline-detail.component.html',
@@ -47,11 +39,11 @@ export class SublineDetailComponent extends BaseDetailController<SublineVersion>
     private validationService: ValidationService,
     private linesService: LinesService,
     protected dialogService: DialogService,
-    protected authService: AuthService,
+    protected permissionService: PermissionService,
     protected activatedRoute: ActivatedRoute,
     protected validityService: ValidityService,
   ) {
-    super(router, dialogService, notificationService, authService, activatedRoute, validityService);
+    super(router, dialogService, notificationService, permissionService, activatedRoute, validityService);
   }
 
   ngOnInit() {

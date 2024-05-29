@@ -1,4 +1,4 @@
-import { ServicePointCreationComponent } from './service-point-creation.component';
+import {ServicePointCreationComponent} from './service-point-creation.component';
 import {
   ApplicationRole,
   ApplicationType,
@@ -8,20 +8,20 @@ import {
   ServicePointsService,
   SwissCanton,
 } from '../../../../../api';
-import { FormControl, FormGroup } from '@angular/forms';
-import { of } from 'rxjs';
-import { NotificationService } from '../../../../../core/notification/notification.service';
-import { ServicePointFormGroupBuilder } from '../service-point-detail-form-group';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../../../../core/auth/auth.service';
-import { Countries } from '../../../../../core/country/Countries';
-import { TestBed } from '@angular/core/testing';
-import { MapService } from '../../../map/map.service';
+import {FormControl, FormGroup} from '@angular/forms';
+import {of} from 'rxjs';
+import {NotificationService} from '../../../../../core/notification/notification.service';
+import {ServicePointFormGroupBuilder} from '../service-point-detail-form-group';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Countries} from '../../../../../core/country/Countries';
+import {TestBed} from '@angular/core/testing';
+import {MapService} from '../../../map/map.service';
+import {PermissionService} from "../../../../../core/auth/permission/permission.service";
 import SpyObj = jasmine.SpyObj;
 import anything = jasmine.anything;
 import Spy = jasmine.Spy;
 
-class AuthServiceMock implements Partial<AuthService> {
+class PermissionServiceMock implements Partial<PermissionService> {
   getApplicationUserPermission = jasmine.createSpy();
   isAdmin = false;
 }
@@ -36,21 +36,21 @@ describe('ServicePointCreationComponent', () => {
   let servicePointServiceSpy: SpyObj<any>;
   let notificationServiceSpy: SpyObj<NotificationService>;
   let routerSpy: SpyObj<Router>;
-  let authServiceMock: AuthServiceMock;
+  let permissionServiceMock: PermissionServiceMock;
 
   beforeEach(() => {
     servicePointServiceSpy = jasmine.createSpyObj(['createServicePoint']);
     notificationServiceSpy = jasmine.createSpyObj(['success']);
     routerSpy = jasmine.createSpyObj(['navigate']);
     routerSpy.navigate.and.returnValue(Promise.resolve(true));
-    authServiceMock = new AuthServiceMock();
+    permissionServiceMock = new PermissionServiceMock();
 
     TestBed.configureTestingModule({
       providers: [
         ServicePointCreationComponent,
         {
-          provide: AuthService,
-          useValue: authServiceMock,
+          provide: PermissionService,
+          useValue: permissionServiceMock,
         },
         {
           provide: ActivatedRoute,
@@ -113,7 +113,7 @@ describe('ServicePointCreationComponent', () => {
   });
 
   it('should get country options role supervisor', () => {
-    authServiceMock.getApplicationUserPermission.withArgs(ApplicationType.Sepodi).and.returnValue({
+    permissionServiceMock.getApplicationUserPermission.withArgs(ApplicationType.Sepodi).and.returnValue({
       role: ApplicationRole.Supervisor,
       application: ApplicationType.Sepodi,
       permissionRestrictions: [],
@@ -132,12 +132,12 @@ describe('ServicePointCreationComponent', () => {
   });
 
   it('should get country options role admin', () => {
-    authServiceMock.getApplicationUserPermission.withArgs(ApplicationType.Sepodi).and.returnValue({
+    permissionServiceMock.getApplicationUserPermission.withArgs(ApplicationType.Sepodi).and.returnValue({
       role: ApplicationRole.Reader,
       application: ApplicationType.Sepodi,
       permissionRestrictions: [],
     });
-    authServiceMock.isAdmin = true;
+    permissionServiceMock.isAdmin = true;
 
     const countries = component['getCountryOptions']();
 
@@ -152,7 +152,7 @@ describe('ServicePointCreationComponent', () => {
   });
 
   it('should get country options role super user', () => {
-    authServiceMock.getApplicationUserPermission.withArgs(ApplicationType.Sepodi).and.returnValue({
+    permissionServiceMock.getApplicationUserPermission.withArgs(ApplicationType.Sepodi).and.returnValue({
       role: ApplicationRole.SuperUser,
       application: ApplicationType.Sepodi,
       permissionRestrictions: [
@@ -168,7 +168,7 @@ describe('ServicePointCreationComponent', () => {
   });
 
   it('should get country options role writer', () => {
-    authServiceMock.getApplicationUserPermission.withArgs(ApplicationType.Sepodi).and.returnValue({
+    permissionServiceMock.getApplicationUserPermission.withArgs(ApplicationType.Sepodi).and.returnValue({
       role: ApplicationRole.Writer,
       application: ApplicationType.Sepodi,
       permissionRestrictions: [
