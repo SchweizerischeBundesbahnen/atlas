@@ -1,50 +1,16 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { WorkflowComponent } from './workflow.component';
-import { AppTestingModule } from '../../app.testing.module';
-import { MatExpansionModule } from '@angular/material/expansion';
-import {
-  ApplicationRole,
-  ApplicationType,
-  LineVersionWorkflow,
-  Permission,
-  Status,
-} from '../../api';
-import { AtlasButtonComponent } from '../components/button/atlas-button.component';
-import { AtlasFieldErrorComponent } from '../form-components/atlas-field-error/atlas-field-error.component';
-import { AtlasLabelFieldComponent } from '../form-components/atlas-label-field/atlas-label-field.component';
-import { TextFieldComponent } from '../form-components/text-field/text-field.component';
-import { TranslatePipe } from '@ngx-translate/core';
-import { AuthService } from '../auth/auth.service';
-import { Role } from '../auth/role';
-
-const authServiceMock: Partial<AuthService> = {
-  claims: {
-    name: 'Test (ITC)',
-    email: 'test@test.ch',
-    sbbuid: 'e123456',
-    roles: ['lidi-admin', 'lidi-writer'],
-  },
-  hasRole(role: Role): boolean {
-    return this.claims!.roles.includes(role);
-  },
-  get isAdmin(): boolean {
-    return true;
-  },
-  hasPermissionsToWrite(): boolean {
-    return true;
-  },
-  isAtLeastSupervisor(): boolean {
-    return true;
-  },
-  getApplicationUserPermission(applicationType: ApplicationType): Permission {
-    return {
-      application: applicationType,
-      role: ApplicationRole.Supervisor,
-      permissionRestrictions: [],
-    };
-  },
-};
+import {WorkflowComponent} from './workflow.component';
+import {AppTestingModule} from '../../app.testing.module';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {LineVersionWorkflow, Status,} from '../../api';
+import {AtlasButtonComponent} from '../components/button/atlas-button.component';
+import {AtlasFieldErrorComponent} from '../form-components/atlas-field-error/atlas-field-error.component';
+import {AtlasLabelFieldComponent} from '../form-components/atlas-label-field/atlas-label-field.component';
+import {TextFieldComponent} from '../form-components/text-field/text-field.component';
+import {TranslatePipe} from '@ngx-translate/core';
+import {adminPermissionServiceMock} from "../../app.testing.mocks";
+import {PermissionService} from "../auth/permission/permission.service";
 
 describe('WorkflowComponent', () => {
   let component: WorkflowComponent;
@@ -60,7 +26,7 @@ describe('WorkflowComponent', () => {
         AtlasLabelFieldComponent,
         TextFieldComponent,
       ],
-      providers: [{ provide: AuthService, useValue: authServiceMock }, { provide: TranslatePipe }],
+      providers: [{ provide: PermissionService, useValue: adminPermissionServiceMock }, { provide: TranslatePipe }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(WorkflowComponent);

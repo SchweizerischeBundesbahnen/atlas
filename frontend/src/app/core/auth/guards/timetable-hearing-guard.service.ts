@@ -1,19 +1,26 @@
-import { inject, Injectable } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from '../auth.service';
-import { filter, map } from 'rxjs/operators';
+import {inject, Injectable} from '@angular/core';
+import {CanActivateFn, Router} from '@angular/router';
+import {filter, map} from 'rxjs/operators';
+import {PermissionService} from "../permission/permission.service";
+import {UserService} from "../user/user.service";
 
 @Injectable({
   providedIn: 'root',
 })
 export class TimetableHearingGuard {
-  constructor(private readonly authService: AuthService, private readonly router: Router) {}
+
+  constructor(private permissionService: PermissionService,
+              private userService: UserService,
+              private router: Router) {}
 
   canActivate() {
-    return this.authService.permissionsLoaded.pipe(
+    if (!this.userService.loggedIn) {
+      return this.router.parseUrl('/');
+    }
+    return this.userService.permissionsLoaded.pipe(
       filter((loaded) => loaded),
       map(() => {
-        if (this.authService.mayAccessTimetableHearing()) {
+        if (this.permissionService.mayAccessTimetableHearing()) {
           return true;
         } else {
           return this.router.parseUrl('/');

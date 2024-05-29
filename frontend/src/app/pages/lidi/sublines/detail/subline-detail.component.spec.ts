@@ -1,29 +1,26 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { of, throwError } from 'rxjs';
-import { PaymentType, SublinesService, SublineType, SublineVersion } from '../../../../api';
-import { SublineDetailComponent } from './subline-detail.component';
-import { HttpErrorResponse } from '@angular/common/http';
-import { AppTestingModule, authServiceMock } from '../../../../app.testing.module';
-import { InfoIconComponent } from '../../../../core/form-components/info-icon/info-icon.component';
-import {
-  MockAppDetailWrapperComponent,
-  MockBoSelectComponent,
-} from '../../../../app.testing.mocks';
-import { MainlineSelectOptionPipe } from './mainline-select-option.pipe';
-import { TranslatePipe } from '@ngx-translate/core';
-import { AuthService } from '../../../../core/auth/auth.service';
-import { LinkIconComponent } from '../../../../core/form-components/link-icon/link-icon.component';
-import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
-import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
-import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
-import { SearchSelectComponent } from '../../../../core/form-components/search-select/search-select.component';
-import { SelectComponent } from '../../../../core/form-components/select/select.component';
-import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
-import { DetailPageContainerComponent } from '../../../../core/components/detail-page-container/detail-page-container.component';
-import { DetailFooterComponent } from '../../../../core/components/detail-footer/detail-footer.component';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormBuilder} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {of, throwError} from 'rxjs';
+import {PaymentType, SublinesService, SublineType, SublineVersion} from '../../../../api';
+import {SublineDetailComponent} from './subline-detail.component';
+import {HttpErrorResponse} from '@angular/common/http';
+import {AppTestingModule} from '../../../../app.testing.module';
+import {InfoIconComponent} from '../../../../core/form-components/info-icon/info-icon.component';
+import {adminPermissionServiceMock, MockAppDetailWrapperComponent, MockBoSelectComponent,} from '../../../../app.testing.mocks';
+import {MainlineSelectOptionPipe} from './mainline-select-option.pipe';
+import {TranslatePipe} from '@ngx-translate/core';
+import {LinkIconComponent} from '../../../../core/form-components/link-icon/link-icon.component';
+import {AtlasLabelFieldComponent} from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import {AtlasFieldErrorComponent} from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import {TextFieldComponent} from '../../../../core/form-components/text-field/text-field.component';
+import {SearchSelectComponent} from '../../../../core/form-components/search-select/search-select.component';
+import {SelectComponent} from '../../../../core/form-components/select/select.component';
+import {AtlasSpacerComponent} from '../../../../core/components/spacer/atlas-spacer.component';
+import {DetailPageContainerComponent} from '../../../../core/components/detail-page-container/detail-page-container.component';
+import {DetailFooterComponent} from '../../../../core/components/detail-footer/detail-footer.component';
 import {ValidityService} from "../../../sepodi/validity/validity.service";
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 const sublineVersion: SublineVersion = {
   id: 1234,
@@ -207,8 +204,8 @@ function setupTestBed(
     providers: [
       { provide: FormBuilder },
       { provide: SublinesService, useValue: sublinesService },
-      { provide: AuthService, useValue: authServiceMock },
-      {provide: ValidityService, useValue: validityService},
+      { provide: PermissionService, useValue: adminPermissionServiceMock },
+      { provide: ValidityService, useValue: validityService },
       { provide: ActivatedRoute, useValue: { snapshot: { data: data } } },
       TranslatePipe,
     ],

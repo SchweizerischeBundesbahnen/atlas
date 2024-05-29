@@ -26,7 +26,6 @@ import {map, takeUntil} from 'rxjs/operators';
 import {catchError, EMPTY, Observable, of, Subject} from 'rxjs';
 import {NotificationService} from '../../../core/notification/notification.service';
 import {ValidationService} from '../../../core/validation/validation.service';
-import {AuthService} from '../../../core/auth/auth.service';
 import {TthUtils} from '../util/tth-utils';
 import {StatementDialogService} from './statement-dialog/service/statement.dialog.service';
 import {FileDownloadService} from '../../../core/components/file-upload/file/file-download.service';
@@ -36,6 +35,7 @@ import {Pages} from '../../pages';
 import {DetailFormComponent} from '../../../core/leave-guard/leave-dirty-form-guard.service';
 import {TableService} from "../../../core/components/table/table.service";
 import {addElementsToArrayWhenNotUndefined} from "../../../core/util/arrays";
+import {PermissionService} from "../../../core/auth/permission/permission.service";
 
 @Component({
   selector: 'app-statement-detail',
@@ -58,8 +58,6 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
   isDuplicating = false;
   isInitializingComponent = true;
 
-  _emails: string | undefined;
-
   get emails(): string {
     if(this.statement?.statementSender.emails){
      return Array.from(this.statement?.statementSender.emails).join('\n')
@@ -78,7 +76,7 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
     private timetableHearingYearsService: TimetableHearingYearsService,
     private readonly timetableHearingStatementsService: TimetableHearingStatementsService,
     private notificationService: NotificationService,
-    private authService: AuthService,
+    private permissionService: PermissionService,
     private timetableYearChangeService: TimetableYearChangeService,
     private readonly statementDialogService: StatementDialogService,
     private readonly openStatementInMailService: OpenStatementInMailService,
@@ -306,10 +304,10 @@ export class StatementDetailComponent implements OnInit, DetailFormComponent {
 
   private initCantonOptions() {
     if (this.isNew) {
-      const tthPermissions = this.authService.getApplicationUserPermission(
+      const tthPermissions = this.permissionService.getApplicationUserPermission(
         ApplicationType.TimetableHearing,
       );
-      if (tthPermissions.role === ApplicationRole.Supervisor || this.authService.isAdmin) {
+      if (tthPermissions.role === ApplicationRole.Supervisor || this.permissionService.isAdmin) {
         this.CANTON_OPTIONS = Cantons.cantons;
       } else if (tthPermissions.role === ApplicationRole.Writer) {
         this.CANTON_OPTIONS = tthPermissions.permissionRestrictions
