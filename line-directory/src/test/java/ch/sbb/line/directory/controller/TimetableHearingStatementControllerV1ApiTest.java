@@ -18,6 +18,7 @@ import ch.sbb.atlas.api.client.bodi.TransportCompanyClient;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModel.Fields;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingYearModel;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.AtlasMockMultipartFile;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.line.directory.entity.SharedTransportCompany;
@@ -26,6 +27,7 @@ import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.exception.ForbiddenDueToHearingYearSettingsException;
 import ch.sbb.line.directory.exception.NoClientCredentialAuthUsedException;
 import ch.sbb.line.directory.repository.SharedTransportCompanyRepository;
+import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
@@ -68,6 +70,9 @@ class TimetableHearingStatementControllerV1ApiTest extends BaseControllerApiTest
 
  @Autowired
  private TimetableHearingStatementRepository timetableHearingStatementRepository;
+
+ @Autowired
+ private TimetableFieldNumberVersionRepository timetableFieldNumberVersionRepository;
 
  @MockBean
  private TimetableFieldNumberService timetableFieldNumberService;
@@ -121,12 +126,28 @@ class TimetableHearingStatementControllerV1ApiTest extends BaseControllerApiTest
        .abbreviation("BLS")
        .businessRegisterName("Berner Land Seilbahnen")
        .build()));
+
+
+     TimetableFieldNumberVersion timetableFieldNumber = TimetableFieldNumberVersion.builder()
+             .ttfnid(TTFNID)
+             .swissTimetableFieldNumber("1234")
+             .number("5678")
+             .description("Description")
+             .status(Status.VALIDATED)
+             .businessOrganisation("Business Organisation")
+             .validFrom(LocalDate.now())
+             .validTo(LocalDate.now().plusYears(1))
+             .build();
+
+     timetableFieldNumberVersionRepository.saveAndFlush(timetableFieldNumber);
  }
 
  @AfterEach
  void tearDown() {
    timetableHearingYearRepository.deleteAll();
    timetableHearingStatementRepository.deleteAll();
+   timetableFieldNumberVersionRepository.deleteAll();
+
  }
 
  @Test
