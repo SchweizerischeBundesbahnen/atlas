@@ -1,4 +1,4 @@
-package ch.sbb.workflow.model;
+package ch.sbb.workflow.model.sepodi;
 
 import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
