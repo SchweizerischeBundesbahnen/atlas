@@ -16,9 +16,9 @@ import ch.sbb.workflow.helper.OtpHelper;
 import ch.sbb.workflow.kafka.WorkflowNotificationService;
 import ch.sbb.workflow.mapper.ClientPersonMapper;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
-import ch.sbb.workflow.model.Examinants;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
+import ch.sbb.workflow.model.sepodi.Examinants;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
@@ -65,7 +65,7 @@ public class StopPointWorkflowService {
       throw new IllegalStateException("Workflow already in Hearing!");
     }
     //TODO: extract me in a SePoDiService
-    UpdateServicePointVersionModel updateServicePointVersionModel = sePoDiClient.postServicePointsImport(
+    UpdateServicePointVersionModel updateServicePointVersionModel = sePoDiClient.postServicePointsStatusUpdate(
             stopPointWorkflow.getVersionId(), Status.IN_REVIEW)
         .getBody();
     if (updateServicePointVersionModel != null && Status.IN_REVIEW == updateServicePointVersionModel.getStatus()) {
@@ -171,7 +171,7 @@ public class StopPointWorkflowService {
         .versionId(stopPointWorkflow.getVersionId())
         .sloid(stopPointWorkflow.getSloid())
         .swissMunicipalityName(stopPointWorkflow.getSwissMunicipalityName())
-        .startDate(stopPointWorkflow.getStartDate())
+        .startDate(stopPointWorkflow.getStartDate())//todo
         .endDate(stopPointWorkflow.getEndDate())
         .build();
     workflowRepository.save(newStopPointWorkflow);
