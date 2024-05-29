@@ -1,14 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TimetableFieldNumberOverviewComponent } from './timetable-field-number-overview.component';
-import { Observable, of } from 'rxjs';
-import { ContainerTimetableFieldNumber, TimetableFieldNumbersService } from '../../../api';
-import { AppTestingModule } from '../../../app.testing.module';
-import { TranslatePipe } from '@ngx-translate/core';
-import { AuthService } from '../../../core/auth/auth.service';
-import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
-import { MockTableComponent } from '../../../app.testing.mocks';
-import { DEFAULT_STATUS_SELECTION } from '../../../core/constants/status.choices';
+import {TimetableFieldNumberOverviewComponent} from './timetable-field-number-overview.component';
+import {Observable, of} from 'rxjs';
+import {ContainerTimetableFieldNumber, TimetableFieldNumbersService} from '../../../api';
+import {AppTestingModule} from '../../../app.testing.module';
+import {TranslatePipe} from '@ngx-translate/core';
+import {AtlasButtonComponent} from '../../../core/components/button/atlas-button.component';
+import {adminPermissionServiceMock, MockTableComponent} from '../../../app.testing.mocks';
+import {DEFAULT_STATUS_SELECTION} from '../../../core/constants/status.choices';
+import {PermissionService} from "../../../core/auth/permission/permission.service";
 import SpyObj = jasmine.SpyObj;
 import Spy = jasmine.Spy;
 
@@ -59,8 +59,8 @@ describe('TimetableFieldNumberOverviewComponent', () => {
         },
         TranslatePipe,
         {
-          provide: AuthService,
-          useValue: jasmine.createSpyObj<AuthService>('AuthService', ['hasPermissionsToCreate']),
+          provide: PermissionService,
+          useValue: adminPermissionServiceMock,
         },
       ],
     }).compileComponents();

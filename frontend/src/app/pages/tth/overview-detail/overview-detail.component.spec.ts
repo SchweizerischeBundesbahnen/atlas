@@ -18,12 +18,17 @@ import {of} from 'rxjs';
 import moment from 'moment';
 import {Pages} from '../../pages';
 import {Component, Input} from '@angular/core';
-import {MockAtlasButtonComponent, MockAtlasFieldErrorComponent, MockTableComponent,} from '../../../app.testing.mocks';
+import {
+  adminPermissionServiceMock,
+  MockAtlasButtonComponent,
+  MockAtlasFieldErrorComponent,
+  MockTableComponent,
+} from '../../../app.testing.mocks';
 import {SelectComponent} from '../../../core/form-components/select/select.component';
 import {AtlasSpacerComponent} from '../../../core/components/spacer/atlas-spacer.component';
-import {AuthService} from '../../../core/auth/auth.service';
 import {TableService} from '../../../core/components/table/table.service';
 import {AtlasLabelFieldComponent} from '../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import {PermissionService} from "../../../core/auth/permission/permission.service";
 
 @Component({
   selector: 'app-timetable-hearing-overview-tab-heading',
@@ -94,15 +99,6 @@ const containerTimetableHearingStatement: ContainerTimetableHearingStatementV2 =
   totalCount: 2,
 };
 
-const authServiceMock: Partial<AuthService> = {
-  get isAdmin(): boolean {
-    return true;
-  },
-  hasWritePermissionsToForCanton(): boolean {
-    return true;
-  },
-};
-
 async function baseTestConfiguration() {
   mockTimetableHearingStatementsService.getStatements.and.returnValue(
     of(containerTimetableHearingStatement),
@@ -132,7 +128,7 @@ async function baseTestConfiguration() {
       { provide: TimetableHearingYearsService, useValue: mockTimetableHearingYearsService },
       { provide: TranslatePipe },
       { provide: DisplayDatePipe },
-      { provide: AuthService, useValue: authServiceMock },
+      { provide: PermissionService, useValue: adminPermissionServiceMock },
       { provide: TableService },
     ],
   }).compileComponents();

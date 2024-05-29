@@ -9,7 +9,6 @@ import {
 } from '../../../../api';
 import {Observable, of} from 'rxjs';
 import {map, switchMap, tap} from 'rxjs/operators';
-import {AuthService} from '../../../../core/auth/auth.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {DateRangeValidator} from '../../../../core/validation/date-range/date-range-validator';
 import moment, {Moment} from 'moment';
@@ -22,6 +21,7 @@ import {
 import {TransportCompanyFormGroup} from './transport-company-form-group';
 import {ActivatedRoute} from '@angular/router';
 import {DetailFormComponent} from '../../../../core/leave-guard/leave-dirty-form-guard.service';
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 @Component({
   templateUrl: './transport-company-detail.component.html',
@@ -89,7 +89,7 @@ export class TransportCompanyDetailComponent implements OnInit, DetailFormCompon
   constructor(
     private readonly businessOrganisationsService: BusinessOrganisationsService,
     private readonly transportCompanyRelationsService: TransportCompanyRelationsService,
-    private readonly authService: AuthService,
+    private readonly permissionService: PermissionService,
     private readonly businessOrganisationLanguageService: BusinessOrganisationLanguageService,
     private readonly dialogService: DialogService,
     private readonly notificationService: NotificationService,
@@ -123,8 +123,8 @@ export class TransportCompanyDetailComponent implements OnInit, DetailFormCompon
     });
   }
 
-  isAdmin(): boolean {
-    return this.authService.hasPermissionsToCreate(ApplicationType.Bodi);
+  mayCreate(): boolean {
+    return this.permissionService.hasPermissionsToCreate(ApplicationType.Bodi);
   }
 
   leaveEditMode(): void {

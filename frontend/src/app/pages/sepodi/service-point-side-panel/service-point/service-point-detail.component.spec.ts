@@ -1,39 +1,33 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ServicePointDetailComponent } from './service-point-detail.component';
-import { AppTestingModule } from '../../../../app.testing.module';
-import { AuthService } from '../../../../core/auth/auth.service';
-import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, of } from 'rxjs';
-import { FormGroup, FormsModule } from '@angular/forms';
-import { TextFieldComponent } from '../../../../core/form-components/text-field/text-field.component';
-import { MeansOfTransportPickerComponent } from '../../means-of-transport-picker/means-of-transport-picker.component';
-import { SelectComponent } from '../../../../core/form-components/select/select.component';
-import { SwitchVersionComponent } from '../../../../core/components/switch-version/switch-version.component';
-import { AtlasSlideToggleComponent } from '../../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
-import { TranslatePipe } from '@ngx-translate/core';
-import { AtlasLabelFieldComponent } from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
-import { AtlasFieldErrorComponent } from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
-import { AtlasSpacerComponent } from '../../../../core/components/spacer/atlas-spacer.component';
-import { Record } from '../../../../core/components/base-detail/record';
-import { MockAtlasButtonComponent } from '../../../../app.testing.mocks';
-import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import {
-  ApplicationRole,
-  Country,
-  ReadServicePointVersion,
-  ServicePointsService,
-  Status,
-} from '../../../../api';
-import { NotificationService } from '../../../../core/notification/notification.service';
-import { DisplayCantonPipe } from '../../../../core/cantons/display-canton.pipe';
-import { MapService } from '../../map/map.service';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { BERN } from '../../../../../test/data/service-point';
-import { UserDetailInfoComponent } from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ServicePointDetailComponent} from './service-point-detail.component';
+import {AppTestingModule} from '../../../../app.testing.module';
+import {ActivatedRoute} from '@angular/router';
+import {BehaviorSubject, of} from 'rxjs';
+import {FormGroup, FormsModule} from '@angular/forms';
+import {TextFieldComponent} from '../../../../core/form-components/text-field/text-field.component';
+import {MeansOfTransportPickerComponent} from '../../means-of-transport-picker/means-of-transport-picker.component';
+import {SelectComponent} from '../../../../core/form-components/select/select.component';
+import {SwitchVersionComponent} from '../../../../core/components/switch-version/switch-version.component';
+import {AtlasSlideToggleComponent} from '../../../../core/form-components/atlas-slide-toggle/atlas-slide-toggle.component';
+import {TranslatePipe} from '@ngx-translate/core';
+import {AtlasLabelFieldComponent} from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import {AtlasFieldErrorComponent} from '../../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import {AtlasSpacerComponent} from '../../../../core/components/spacer/atlas-spacer.component';
+import {Record} from '../../../../core/components/base-detail/record';
+import {adminPermissionServiceMock, MockAtlasButtonComponent} from '../../../../app.testing.mocks';
+import {DialogService} from '../../../../core/components/dialog/dialog.service';
+import {Country, ReadServicePointVersion, ServicePointsService, Status,} from '../../../../api';
+import {NotificationService} from '../../../../core/notification/notification.service';
+import {DisplayCantonPipe} from '../../../../core/cantons/display-canton.pipe';
+import {MapService} from '../../map/map.service';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {BERN} from '../../../../../test/data/service-point';
+import {UserDetailInfoComponent} from '../../../../core/components/base-detail/user-edit-info/user-detail-info.component';
 import {DetailPageContainerComponent} from "../../../../core/components/detail-page-container/detail-page-container.component";
 import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
 import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
 import {ValidityService} from "../../validity/validity.service";
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
 const servicePointsServiceSpy = jasmine.createSpyObj('ServicePointService', [
@@ -48,20 +42,6 @@ const mapServiceSpy = jasmine.createSpyObj('MapService', [
   'refreshMap',
 ]);
 mapServiceSpy.mapInitialized = new BehaviorSubject<boolean>(false);
-
-const authServiceMock: Partial<AuthService> = {
-  claims: { name: 'Test', email: 'test@test.ch', sbbuid: 'e123456', roles: [] },
-  isAdmin: false,
-  getPermissions: () => [],
-  getApplicationUserPermission: (applicationType) => {
-    return {
-      application: applicationType,
-      role: ApplicationRole.Writer,
-      permissionRestrictions: [],
-    };
-  },
-  logout: () => Promise.resolve(true),
-};
 
 @Component({
   selector: 'service-point-form',
@@ -115,7 +95,7 @@ describe('ServicePointDetailComponent', () => {
       imports: [AppTestingModule, FormsModule],
       providers: [
         ValidityService,
-        { provide: AuthService, useValue: authServiceMock },
+        { provide: PermissionService, useValue: adminPermissionServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: DialogService, useValue: dialogServiceSpy },
         { provide: ServicePointsService, useValue: servicePointsServiceSpy },

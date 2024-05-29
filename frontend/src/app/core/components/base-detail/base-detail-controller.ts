@@ -6,13 +6,13 @@ import {EMPTY, Observable, of, Subject} from 'rxjs';
 import {Page} from '../../model/page';
 import {NotificationService} from '../../notification/notification.service';
 import {ApplicationRole, ApplicationType, Status} from '../../../api';
-import {AuthService} from '../../auth/auth.service';
 import {ValidationService} from '../../validation/validation.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DetailFormComponent} from '../../leave-guard/leave-dirty-form-guard.service';
 import {VersionsHandlingService} from '../../versioning/versions-handling.service';
 import {DateRange} from '../../versioning/date-range';
 import {ValidityService} from "../../../pages/sepodi/validity/validity.service";
+import {PermissionService} from "../../auth/permission/permission.service";
 
 @Directive()
 export abstract class BaseDetailController<TYPE extends Record>
@@ -32,7 +32,7 @@ export abstract class BaseDetailController<TYPE extends Record>
     protected router: Router,
     protected dialogService: DialogService,
     protected notificationService: NotificationService,
-    protected authService: AuthService,
+    protected permissionService: PermissionService,
     protected activatedRoute: ActivatedRoute,
     protected validityService: ValidityService
   ) {}
@@ -203,12 +203,12 @@ export abstract class BaseDetailController<TYPE extends Record>
   }
 
   getBoSboidRestriction() {
-    if (this.isExistingRecord() || this.authService.isAdmin) {
+    if (this.isExistingRecord() || this.permissionService.isAdmin) {
       return [];
     }
-    const permission = this.authService.getApplicationUserPermission(this.getApplicationType());
+    const permission = this.permissionService.getApplicationUserPermission(this.getApplicationType());
     if (permission.role === ApplicationRole.Writer) {
-      return AuthService.getSboidRestrictions(permission);
+      return PermissionService.getSboidRestrictions(permission);
     }
     return [];
   }
@@ -289,12 +289,12 @@ export abstract class BaseDetailController<TYPE extends Record>
 
   confirmBoTransfer(): Observable<boolean> {
     const currentlySelectedBo = this.form.value.businessOrganisation;
-    const permission = this.authService.getApplicationUserPermission(this.getApplicationType());
+    const permission = this.permissionService.getApplicationUserPermission(this.getApplicationType());
     if (
-      !this.authService.isAdmin &&
+      !this.permissionService.isAdmin &&
       permission.role == ApplicationRole.Writer &&
       currentlySelectedBo &&
-      !AuthService.getSboidRestrictions(permission).includes(currentlySelectedBo)
+      !PermissionService.getSboidRestrictions(permission).includes(currentlySelectedBo)
     ) {
       return this.dialogService.confirm({
         title: 'DIALOG.CONFIRM_BO_TRANSFER_TITLE',
