@@ -20,8 +20,8 @@
       <div>
         <span class="font-bold-lg color-gray-900">{{ 'COMMON.STATUS' | translate }} </span>
         <span class="color-gray-900">{{
-            'COMMON.STATUS_TYPES.' + selectedVersion!.status | translate
-          }}</span>
+          'COMMON.STATUS_TYPES.' + selectedVersion!.status | translate
+        }}</span>
       </div>
     </div>
   </div>
@@ -65,7 +65,6 @@
     <mat-divider class="mt-4 mb-4"></mat-divider>
     <app-user-detail-info [record]="selectedVersion"></app-user-detail-info>
   </div>
-
 </atlas-detail-page-container>
 <atlas-detail-footer>
   <atlas-button
@@ -82,7 +81,10 @@
     applicationType="SEPODI"
     [businessOrganisation]="form.controls.businessOrganisation.value!"
     [uicCountryCode]="selectedVersion?.number?.uicCountryCode"
-    [disabled]="selectedVersion?.status === 'REVOKED'"
+    [disabled]="
+      selectedVersion?.status === servicePointStatus.Revoked ||
+      selectedVersion?.status === servicePointStatus.InReview
+    "
     buttonDataCy="edit"
     buttonText="COMMON.EDIT"
     buttonType="edit"
