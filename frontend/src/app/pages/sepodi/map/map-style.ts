@@ -63,7 +63,7 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       minzoom: 5,
       maxzoom: 20,
       tiles: [
-        `${environment.atlasApiUrl}/service-point-directory/v1/service-points/geodata/{z}/{x}/{y}.pbf`,
+        `${environment.atlasUnauthApiUrl}/service-point-directory/v1/service-points/geodata/{z}/{x}/{y}.pbf`,
       ],
       promoteId: 'number',
     },
