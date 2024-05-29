@@ -9,15 +9,18 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SortObject } from './sortObject';
+import { Client } from './client';
 
 
-export interface PageableObject { 
-    offset?: number;
-    sort?: Array<SortObject>;
-    pageSize?: number;
-    pageNumber?: number;
-    paged?: boolean;
-    unpaged?: boolean;
+export interface StopPointRestartWorkflow { 
+    examinantBAVClient: Client;
+    /**
+     * Reject motivation
+     */
+    motivationComment?: string;
+    /**
+     * Official designation of a location that must be used by all recipients
+     */
+    newDesignationOfficial: string;
 }
 

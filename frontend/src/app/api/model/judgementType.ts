@@ -9,15 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SortObject } from './sortObject';
 
 
-export interface PageableObject { 
-    offset?: number;
-    sort?: Array<SortObject>;
-    pageSize?: number;
-    pageNumber?: number;
-    paged?: boolean;
-    unpaged?: boolean;
-}
+/**
+ * Judgement
+ */
+export type JudgementType = 'YES' | 'NO';
+
+export const JudgementType = {
+    Yes: 'YES' as JudgementType,
+    No: 'NO' as JudgementType
+};
 
