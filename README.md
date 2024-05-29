@@ -18,6 +18,7 @@ This is the repository for business relevant services for ATLAS.
 - [Structure](#structure)
   * [APIM-configuration](#apim-configuration)
   * [Charts](#charts)
+  * [Api Auth Gateway](#api-auth-gateway)
   * [Gateway](#gateway)
   * [Kafka](#kafka)
   * [Line-directory](#line-directory)
@@ -188,6 +189,11 @@ This is useful for debugging and local inspection of value resolution.
 # Generate Template for atlas-dev
 helm template . -n atlas-dev -f values-atlas-dev.yaml
 ```
+
+### Api Auth Gateway
+
+Gateway used by the frontend to fake authenticate read access to the atlas platform.
+See [Api Auth Gateway documentation](api-auth-gateway/README.md);
 
 ### Gateway
 
