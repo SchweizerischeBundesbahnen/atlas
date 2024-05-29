@@ -17,7 +17,7 @@ CREATE TABLE stop_point_workflow
     workflow_comment        VARCHAR(1500),
     designation_official    VARCHAR(30) NOT NULL,
     start_date              DATE        NOT NULL,
-    end_date                DATE        NOT NULL,
+    end_date                DATE,
     creation_date           TIMESTAMP   NOT NULL,
     creator                 VARCHAR(50) NOT NULL,
     edition_date            TIMESTAMP   NOT NULL,
