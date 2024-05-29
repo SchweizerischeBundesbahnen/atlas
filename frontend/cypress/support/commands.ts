@@ -87,13 +87,13 @@ Cypress.Commands.add('login', () => {
     const now = new Date().getTime();
     const expiresAt = JSON.stringify(body.expires_in * 1000 + now);
 
-    window.sessionStorage.removeItem('refresh_token');
-    window.sessionStorage.removeItem('none');
-    window.sessionStorage.setItem('id_token_expires_at', expiresAt);
-    window.sessionStorage.setItem('expires_at', expiresAt);
-    window.sessionStorage.setItem('id_token', body.access_token);
+    cy.setCookie('id_token_expires_at', expiresAt);
+    cy.setCookie('expires_at', expiresAt);
+    cy.setCookie('id_token', body.access_token);
+    cy.setCookie('access_token', body.access_token);
+    cy.setCookie('refresh_token', body.access_token);
     window.sessionStorage.setItem('access_token', body.access_token);
-    window.sessionStorage.setItem(
+    cy.setCookie(
       'id_token_claims_obj',
       JSON.stringify({
         exp: expiresAt,

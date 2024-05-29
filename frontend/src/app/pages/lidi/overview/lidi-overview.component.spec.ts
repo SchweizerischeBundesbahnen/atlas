@@ -1,11 +1,12 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { LidiOverviewComponent } from './lidi-overview.component';
-import { LinesComponent } from '../lines/lines.component';
-import { SublinesComponent } from '../sublines/sublines.component';
-import { AppTestingModule } from '../../../app.testing.module';
-import { AuthService } from '../../../core/auth/auth.service';
-import { AtlasButtonComponent } from '../../../core/components/button/atlas-button.component';
+import {LidiOverviewComponent} from './lidi-overview.component';
+import {LinesComponent} from '../lines/lines.component';
+import {SublinesComponent} from '../sublines/sublines.component';
+import {AppTestingModule} from '../../../app.testing.module';
+import {AtlasButtonComponent} from '../../../core/components/button/atlas-button.component';
+import {PermissionService} from "../../../core/auth/permission/permission.service";
+import {adminPermissionServiceMock} from "../../../app.testing.mocks";
 
 describe('LidiOverviewComponent', () => {
   let component: LidiOverviewComponent;
@@ -22,8 +23,8 @@ describe('LidiOverviewComponent', () => {
       imports: [AppTestingModule],
       providers: [
         {
-          provide: AuthService,
-          useValue: jasmine.createSpyObj<AuthService>('AuthService', ['hasPermissionsToCreate']),
+          provide: PermissionService,
+          useValue: adminPermissionServiceMock,
         },
       ],
     }).compileComponents();

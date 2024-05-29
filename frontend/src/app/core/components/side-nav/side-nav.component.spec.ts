@@ -6,8 +6,9 @@ import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-transl
 import {Pages} from '../../../pages/pages';
 import {LidiOverviewComponent} from '../../../pages/lidi/overview/lidi-overview.component';
 import {TimetableFieldNumberOverviewComponent} from '../../../pages/ttfn/overview/timetable-field-number-overview.component';
-import {AuthService} from '../../auth/auth.service';
 import {Page} from "../../model/page";
+import {pageServiceMock} from "../../../app.testing.mocks";
+import {PageService} from "../../pages/page.service";
 
 describe('SideNavComponent', () => {
   let component: SideNavComponent;
@@ -34,13 +35,8 @@ describe('SideNavComponent', () => {
       ],
       providers: [
         {
-          provide: AuthService,
-          useValue: jasmine.createSpyObj<AuthService>(
-            {},
-            {
-              roles: [],
-            }
-          ),
+          provide: PageService,
+          useValue: pageServiceMock,
         },
       ],
     }).compileComponents();

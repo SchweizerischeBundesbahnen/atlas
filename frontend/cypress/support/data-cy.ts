@@ -4,6 +4,7 @@ export class DataCy {
   static BACK = '[data-cy=back]';
   static ATLAS_LOGO_HOME_LINK = '[data-cy=atlas-logo-home-link]';
   static HEADER_TITLE = '[data-cy=header-title]';
+  static USER_NAME = '[data-cy=user-name]';
   static TOTAL_RANGE = '[data-cy=total-range]';
   static SAVE_ITEM = '[data-cy=save-item]';
   static EDIT_ITEM = '[data-cy=edit-item]';

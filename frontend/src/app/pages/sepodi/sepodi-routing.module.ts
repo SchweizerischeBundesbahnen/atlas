@@ -1,36 +1,24 @@
-import { inject, Injectable, NgModule } from '@angular/core';
-import { Router, RouterModule, Routes, UrlTree } from '@angular/router';
-import { SepodiMapviewComponent } from './mapview/sepodi-mapview.component';
-import { ServicePointSidePanelComponent } from './service-point-side-panel/service-point-side-panel.component';
-import { Pages } from '../pages';
-import { servicePointResolver } from './service-point-side-panel/service-point-detail.resolver';
-import { ServicePointDetailComponent } from './service-point-side-panel/service-point/service-point-detail.component';
-import { TrafficPointElementsTableComponent } from './service-point-side-panel/traffic-point-elements/traffic-point-elements-table.component';
-import { LoadingPointsTableComponent } from './service-point-side-panel/loading-points/loading-points-table.component';
-import { FotCommentDetailComponent } from './service-point-side-panel/comment/fot-comment-detail.component';
-import { canLeaveDirtyForm } from '../../core/leave-guard/leave-dirty-form-guard.service';
-import { ServicePointCreationComponent } from './service-point-side-panel/service-point/service-point-creation/service-point-creation.component';
-import { AuthService } from '../../core/auth/auth.service';
-import { ApplicationType } from '../../api';
-import { TrafficPointElementsDetailComponent } from './traffic-point-elements/traffic-point-elements-detail.component';
-import { trafficPointResolver } from './traffic-point-elements/traffic-point-elements-detail-resolver.service';
-import { loadingPointResolver } from './loading-points/loading-points-detail-resolver.service';
-import { LoadingPointsDetailComponent } from './loading-points/loading-points-detail.component';
-
-@Injectable()
-class CanActivateServicePointCreationGuard {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly router: Router,
-  ) {}
-
-  canActivate(): true | UrlTree {
-    if (this.authService.hasPermissionsToCreate(ApplicationType.Sepodi)) {
-      return true;
-    }
-    return this.router.parseUrl(Pages.SEPODI.path);
-  }
-}
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {SepodiMapviewComponent} from './mapview/sepodi-mapview.component';
+import {ServicePointSidePanelComponent} from './service-point-side-panel/service-point-side-panel.component';
+import {Pages} from '../pages';
+import {servicePointResolver} from './service-point-side-panel/service-point-detail.resolver';
+import {ServicePointDetailComponent} from './service-point-side-panel/service-point/service-point-detail.component';
+import {
+  TrafficPointElementsTableComponent
+} from './service-point-side-panel/traffic-point-elements/traffic-point-elements-table.component';
+import {LoadingPointsTableComponent} from './service-point-side-panel/loading-points/loading-points-table.component';
+import {FotCommentDetailComponent} from './service-point-side-panel/comment/fot-comment-detail.component';
+import {canLeaveDirtyForm} from '../../core/leave-guard/leave-dirty-form-guard.service';
+import {
+  ServicePointCreationComponent
+} from './service-point-side-panel/service-point/service-point-creation/service-point-creation.component';
+import {TrafficPointElementsDetailComponent} from './traffic-point-elements/traffic-point-elements-detail.component';
+import {trafficPointResolver} from './traffic-point-elements/traffic-point-elements-detail-resolver.service';
+import {loadingPointResolver} from './loading-points/loading-points-detail-resolver.service';
+import {LoadingPointsDetailComponent} from './loading-points/loading-points-detail.component';
+import {canCreateServicePoint} from "./service-point-creation-guard";
 
 const routes: Routes = [
   {
@@ -40,7 +28,7 @@ const routes: Routes = [
       {
         path: Pages.SERVICE_POINTS.path,
         component: ServicePointCreationComponent,
-        canActivate: [() => inject(CanActivateServicePointCreationGuard).canActivate()],
+        canActivate: [canCreateServicePoint],
         canDeactivate: [canLeaveDirtyForm],
       },
       {
@@ -100,6 +88,5 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
-  providers: [CanActivateServicePointCreationGuard],
 })
 export class SepodiRoutingModule {}

@@ -1,22 +1,20 @@
-import { TestBed } from '@angular/core/testing';
-import { AdminGuard } from './admin.guard';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AuthService } from '../auth.service';
-import { Router } from '@angular/router';
+import {TestBed} from '@angular/core/testing';
+import {AdminGuard} from './admin.guard';
+import {RouterModule} from '@angular/router';
+import {adminUserServiceMock} from "../../../app.testing.mocks";
+import {UserService} from "../user/user.service";
 
 describe('AdminGuard', () => {
   let guard: AdminGuard;
-  let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterModule.forRoot([])],
       providers: [
-        { provide: AuthService, useValue: jasmine.createSpyObj<AuthService>(['hasRole']) },
+        { provide: UserService, useValue: adminUserServiceMock },
       ],
     });
     guard = TestBed.inject(AdminGuard);
-    router = TestBed.inject(Router);
   });
 
   it('should be created', () => {
@@ -26,6 +24,6 @@ describe('AdminGuard', () => {
   it('should return UrlTree', () => {
     const canActivateResult = guard.canActivate();
     expect(canActivateResult).toBeDefined();
-    expect(canActivateResult).toEqual(router.parseUrl('/'));
+    expect(canActivateResult).toBeTrue();
   });
 });

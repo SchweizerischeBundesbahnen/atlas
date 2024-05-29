@@ -1,40 +1,17 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { UserComponent } from './user.component';
-import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { AuthService } from '../../auth/auth.service';
-import { By } from '@angular/platform-browser';
-import { MaterialModule } from '../../module/material.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { User } from './user';
-import { EventEmitter } from '@angular/core';
+import {UserComponent} from './user.component';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {AuthService} from '../../auth/auth.service';
+import {By} from '@angular/platform-browser';
+import {MaterialModule} from '../../module/material.module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {adminUserServiceMock, authServiceSpy} from "../../../app.testing.mocks";
+import {UserService} from "../../auth/user/user.service";
 
 describe('UserComponent', () => {
   let component: UserComponent;
   let fixture: ComponentFixture<UserComponent>;
-  const user: User = {
-    name: 'Test (ITC)',
-    email: 'test@test.ch',
-    sbbuid: 'e123456',
-    roles: ['role1', 'role2', 'role3'],
-  };
-  const eventEmitterUser: EventEmitter<User> = new EventEmitter<User>();
-
-  const authServiceMock: Partial<AuthService> = {
-    claims: {
-      name: 'Test (ITC)',
-      email: 'test@test.ch',
-      sbbuid: 'e123456',
-      roles: ['role1', 'role2', 'role3'],
-    },
-    logout: () => Promise.resolve(true),
-    login: () => Promise.resolve(true),
-    getPermissions: () => [],
-    eventUserComponentNotification: eventEmitterUser,
-  };
-
-  const userName = authServiceMock.claims!.name;
-  const expectedUserName = userName.substr(0, userName.indexOf('(')).trim();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -46,14 +23,18 @@ describe('UserComponent', () => {
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
       ],
-      providers: [{ provide: AuthService, useValue: authServiceMock }],
+      providers: [
+        { provide: AuthService, useValue: authServiceSpy },
+        { provide: UserService, useValue: adminUserServiceMock },
+      ],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    eventEmitterUser.emit(user);
     fixture = TestBed.createComponent(UserComponent);
     component = fixture.componentInstance;
+
+    component.init();
     fixture.detectChanges();
   });
 
@@ -63,20 +44,15 @@ describe('UserComponent', () => {
     });
 
     it('should render username on the title', () => {
-      expect(fixture.nativeElement.querySelector('button').title).toContain(expectedUserName);
+      expect(fixture.nativeElement.querySelector('button').title).toContain('Test');
     });
 
     it('should show user menu', () => {
-      authServiceMock.eventUserComponentNotification?.emit(user);
-      fixture.detectChanges();
-      fixture.componentInstance.user = user;
-      fixture.componentInstance.roles = user.roles;
-      fixture.componentInstance.isAuthenticated = true;
-      fixture.componentInstance.authenticate();
+      adminUserServiceMock.userChanged?.next();
       fixture.detectChanges();
 
       const usernameModal = fixture.debugElement.query(By.css('.user-name')).nativeElement;
-      expect(usernameModal.textContent).toContain(expectedUserName);
+      expect(usernameModal.textContent).toContain('Test');
       fixture.detectChanges();
 
       const userMenuOpenButton = fixture.debugElement.query(By.css('#user-menu-button'));
@@ -90,14 +66,10 @@ describe('UserComponent', () => {
       fixture.detectChanges();
 
       const userRoles = userRolesModal.querySelectorAll('.user-role-item');
-      expect(userRoles[0].textContent).toContain(user.roles[0]);
-      expect(userRoles[1].textContent).toContain(user.roles[1]);
-      expect(userRoles[2].textContent).toContain(user.roles[2]);
+      expect(userRoles[0].textContent).toContain('atlas-admin');
     });
 
     it('should logout', () => {
-      const logoutSpy = spyOn(authServiceMock as AuthService, 'logout');
-
       // Open user menu
       const usermenuOpenButton = fixture.debugElement.query(By.css('button'));
       usermenuOpenButton.nativeElement.click();
@@ -107,19 +79,18 @@ describe('UserComponent', () => {
       const logoutButton = fixture.debugElement.query(By.css('#logout'));
       logoutButton.nativeElement.click();
 
-      expect(logoutSpy).toHaveBeenCalled();
+      expect(authServiceSpy.logout).toHaveBeenCalled();
     });
 
     it('should login', () => {
-      const loginSpy = spyOn(authServiceMock as AuthService, 'login');
-      component.isAuthenticated = false;
+      component.isLoggedIn = false;
       fixture.detectChanges();
 
-      // Logout
-      const logoutButton = fixture.debugElement.query(By.css('#login'));
-      logoutButton.nativeElement.click();
+      // Login
+      const loginButton = fixture.debugElement.query(By.css('#login'));
+      loginButton.nativeElement.click();
 
-      expect(loginSpy).toHaveBeenCalled();
+      expect(authServiceSpy.login).toHaveBeenCalled();
     });
   });
 
@@ -142,45 +113,21 @@ describe('UserComponent', () => {
       expect(component.userName).toBeUndefined();
     });
 
-    it('should be authenticate when user is not null', () => {
+    it('should return user name if no (', () => {
       //when
-      component.authenticate();
+      const result = component.removeDepartment('ATLAS / LIDI / FPFN Admin User');
 
       //then
-      expect(component.isAuthenticated).toBeTruthy();
+      expect(result).toBe('ATLAS / LIDI / FPFN Admin User');
     });
 
-    it('should not be authenticate when user is null', () => {
-      //given
-      component.user = undefined;
-
+    it('should return part before (', () => {
       //when
-      component.authenticate();
+      const result = component.removeDepartment('Ammann Luca (IT-PTR-CEN1-YPT1)');
 
       //then
-      expect(component.isAuthenticated).toBeFalse();
+      expect(result).toBe('Ammann Luca');
     });
 
-    it('should show roles', () => {
-      //given
-      component.roles = ['role1', 'role2', 'role3'];
-      //when
-      const result = component.roles;
-
-      //then
-      expect(result).toBeTruthy();
-    });
-
-    it('should not show roles', () => {
-      //given
-      if (component.user) {
-        component.user.roles = [];
-      }
-      //when
-      const result = component.roles;
-
-      //then
-      expect(result).toBeFalsy();
-    });
   });
 });
