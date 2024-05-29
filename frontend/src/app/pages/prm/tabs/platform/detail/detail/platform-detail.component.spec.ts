@@ -1,18 +1,17 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {PlatformDetailComponent} from './platform-detail.component';
-import {
-  PersonWithReducedMobilityService,
-  ReadPlatformVersion,
-  VehicleAccessAttributeType
-} from "../../../../../../api";
-import {AuthService} from "../../../../../../core/auth/auth.service";
+import {PersonWithReducedMobilityService, ReadPlatformVersion, VehicleAccessAttributeType} from "../../../../../../api";
 import {of} from "rxjs";
 import {DialogService} from "../../../../../../core/components/dialog/dialog.service";
 import {STOP_POINT, STOP_POINT_COMPLETE} from "../../../../util/stop-point-test-data.spec";
 import {BERN_WYLEREGG} from "../../../../../../../test/data/service-point";
 import {BERN_WYLEREGG_TRAFFIC_POINTS} from "../../../../../../../test/data/traffic-point-element";
-import {MockAtlasButtonComponent, MockAtlasFieldErrorComponent} from "../../../../../../app.testing.mocks";
+import {
+  adminPermissionServiceMock,
+  MockAtlasButtonComponent,
+  MockAtlasFieldErrorComponent
+} from "../../../../../../app.testing.mocks";
 import {DisplayDatePipe} from "../../../../../../core/pipe/display-date.pipe";
 import {PlatformReducedFormComponent} from "../form/platform-reduced-form/platform-reduced-form.component";
 import {PlatformCompleteFormComponent} from "../form/platform-complete-form/platform-complete-form.component";
@@ -33,12 +32,12 @@ import {
 import {DetailPageContentComponent} from "../../../../../../core/components/detail-page-content/detail-page-content.component";
 import {DetailFooterComponent} from "../../../../../../core/components/detail-footer/detail-footer.component";
 import {AppTestingModule} from "../../../../../../app.testing.module";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, RouterModule} from "@angular/router";
 import {NotificationService} from "../../../../../../core/notification/notification.service";
 import {TranslatePipe} from "@ngx-translate/core";
 import {SplitServicePointNumberPipe} from "../../../../../../core/search-service-point/split-service-point-number.pipe";
 import moment from "moment";
-import {RouterTestingModule} from "@angular/router/testing";
+import {PermissionService} from "../../../../../../core/auth/permission/permission.service";
 import SpyObj = jasmine.SpyObj;
 
 const reducedPlatform: ReadPlatformVersion[] = [
@@ -116,12 +115,6 @@ const reducedPlatform: ReadPlatformVersion[] = [
   },
 ];
 
-const authService: Partial<AuthService> = {
-  hasPermissionsToWrite(): boolean {
-    return true;
-  },
-};
-
 describe('PlatformDetailComponent', () => {
   let component: PlatformDetailComponent;
   let fixture: ComponentFixture<PlatformDetailComponent>;
@@ -176,12 +169,12 @@ describe('PlatformDetailComponent', () => {
       ],
       imports: [
         AppTestingModule,
-        RouterTestingModule.withRoutes([{
+        RouterModule.forRoot([{
          path: ':sloid', redirectTo: ''
         }]),
       ],
       providers: [
-        {provide: AuthService, useValue: authService},
+        {provide: PermissionService, useValue: adminPermissionServiceMock},
         {provide: ActivatedRoute, useValue: activatedRouteMock},
         {provide: NotificationService, useValue: notificationService},
         {provide: PersonWithReducedMobilityService, useValue: personWithReducedMobilityService},
