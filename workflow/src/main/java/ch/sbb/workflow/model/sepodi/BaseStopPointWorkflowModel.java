@@ -10,7 +10,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -58,12 +57,6 @@ public abstract class BaseStopPointWorkflowModel {
   @Schema(description = "List hearing axamiannts")
   @Valid
   private List<ClientPersonModel> examinants;
-
-  @NotNull
-  private LocalDate validFrom;
-
-  @NotNull
-  private LocalDate validTo;
 
   @Schema(description = "Workflow Status", accessMode = AccessMode.READ_ONLY)
   private WorkflowStatus status;
