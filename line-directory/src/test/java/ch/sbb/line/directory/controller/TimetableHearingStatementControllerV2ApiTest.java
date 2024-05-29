@@ -35,6 +35,7 @@ import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingCantonModel;
 import ch.sbb.atlas.api.timetable.hearing.model.UpdateHearingStatementStatusModel;
 import ch.sbb.atlas.export.CsvExportWriter;
 import ch.sbb.atlas.kafka.model.SwissCanton;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.AtlasMockMultipartFile;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
@@ -48,6 +49,7 @@ import ch.sbb.line.directory.exception.NoClientCredentialAuthUsedException;
 import ch.sbb.line.directory.exception.PdfDocumentConstraintViolationException;
 import ch.sbb.line.directory.mapper.ResponsibleTransportCompanyMapper;
 import ch.sbb.line.directory.repository.SharedTransportCompanyRepository;
+import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.service.TimetableFieldNumberService;
@@ -102,6 +104,9 @@ import org.springframework.test.web.servlet.MvcResult;
 
   @Autowired
   private SharedTransportCompanyRepository sharedTransportCompanyRepository;
+
+  @Autowired
+  private TimetableFieldNumberVersionRepository timetableFieldNumberVersionRepository;
 
   @MockBean
   private TimetableFieldNumberService timetableFieldNumberService;
@@ -162,17 +167,44 @@ import org.springframework.test.web.servlet.MvcResult;
         .businessRegisterNumber("BLS register number")
         .build();
     sharedTransportCompanyRepository.saveAndFlush(sharedTransportCompany1);
+
+      TimetableFieldNumberVersion timetableFieldNumber = TimetableFieldNumberVersion.builder()
+              .ttfnid(TTFNID)
+              .swissTimetableFieldNumber("1234")
+              .number("5678")
+              .description("Description")
+              .status(Status.VALIDATED)
+              .businessOrganisation("Business Organisation")
+              .validFrom(LocalDate.now())
+              .validTo(LocalDate.now().plusYears(1))
+              .build();
+
+      timetableFieldNumberVersionRepository.saveAndFlush(timetableFieldNumber);
   }
 
   @AfterEach
   void tearDown() {
     timetableHearingYearRepository.deleteAll();
     timetableHearingStatementRepository.deleteAll();
+    timetableFieldNumberVersionRepository.deleteAll();
     sharedTransportCompanyRepository.deleteAll();
   }
 
   @Test
   void shouldCreateStatementWithoutDocuments() throws Exception {
+      TimetableFieldNumberVersion timetableFieldNumber = TimetableFieldNumberVersion.builder()
+              .ttfnid("ch:1:ttfnid:12341241")
+              .swissTimetableFieldNumber("1234")
+              .number("5678")
+              .description("Description")
+              .status(Status.VALIDATED)
+              .businessOrganisation("Business Organisation")
+              .validFrom(LocalDate.now())
+              .validTo(LocalDate.now().plusYears(1))
+              .build();
+
+      timetableFieldNumberVersionRepository.saveAndFlush(timetableFieldNumber);
+
     TimetableHearingStatementModelV2 statement = TimetableHearingStatementModelV2.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .swissCanton(SwissCanton.BERN)
