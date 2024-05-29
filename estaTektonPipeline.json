@@ -79,6 +79,11 @@
       "imageName": "location"
     },
     {
+      "dockerFile": "api-auth-gateway/docker/Dockerfile",
+      "imageName": "api-auth-gateway",
+      "artifactoryDockerRepo": "atlas.docker"
+    },
+    {
       "dockerFile": "frontend/docker/Dockerfile",
       "imageName": "atlas-frontend",
       "artifactoryDockerRepo": "atlas.docker",
