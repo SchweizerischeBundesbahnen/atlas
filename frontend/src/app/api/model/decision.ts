@@ -9,15 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SortObject } from './sortObject';
+import { JudgementType } from './judgementType';
 
 
-export interface PageableObject { 
-    offset?: number;
-    sort?: Array<SortObject>;
-    pageSize?: number;
-    pageNumber?: number;
-    paged?: boolean;
-    unpaged?: boolean;
+export interface Decision { 
+    judgement: JudgementType;
+    /**
+     * Motivation
+     */
+    motivation?: string;
+    pinCode?: string;
 }
 
