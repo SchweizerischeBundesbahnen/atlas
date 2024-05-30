@@ -1,10 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {BusinessOrganisationsService, BusinessOrganisationVersion, ReadServicePointVersion} from "../../../../api";
 import {VersionsHandlingService} from "../../../../core/versioning/versions-handling.service";
-import {tap} from "rxjs/operators";
 import {
   BusinessOrganisationLanguageService
 } from "../../../../core/form-components/bo-select/business-organisation-language.service";
+import {take} from "rxjs";
+import {FormGroup} from "@angular/forms";
+import {AtlasCharsetsValidator} from "../../../../core/validation/charsets/atlas-charsets-validator";
+import {AtlasFieldLengthValidator} from "../../../../core/validation/field-lengths/atlas-field-length-validator";
 
 @Component({
   selector: 'stop-point-workflow-detail-form',
@@ -13,8 +16,13 @@ import {
 export class StopPointWorkflowDetailFormComponent implements OnInit {
 
   @Input() stopPoint!: ReadServicePointVersion;
-  stopPointBusinessOrganisation!: BusinessOrganisationVersion;
+
+  stopPointBusinessOrganisation?: BusinessOrganisationVersion;
   boDescription!: string;
+
+  form = new FormGroup({});
+
+  readonly emailValidator = [AtlasCharsetsValidator.email, AtlasFieldLengthValidator.length_100];
 
   constructor(
     private businessOrganisationsService: BusinessOrganisationsService,
@@ -29,20 +37,17 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   private initBusinessOrganisationHeaderPanel() {
     return this.businessOrganisationsService
       .getVersions(this.stopPoint.businessOrganisation)
-      .pipe(tap((bo) => this.initSelectedBusinessOrganisationVersion(bo)));
+      .pipe(take(1))
+      .subscribe((businessOrganisation) => this.initSelectedBusinessOrganisationVersion(businessOrganisation));
   }
 
-  private initSelectedBusinessOrganisationVersion(bos: BusinessOrganisationVersion[]) {
-    this.stopPointBusinessOrganisation = VersionsHandlingService.determineDefaultVersionByValidity(bos);
-
+  private initSelectedBusinessOrganisationVersion(businessOrganisation: BusinessOrganisationVersion[]) {
+    this.stopPointBusinessOrganisation = VersionsHandlingService.determineDefaultVersionByValidity(businessOrganisation);
     this.translateBoDescription();
   }
 
   private translateBoDescription() {
-    this.boDescription =
-      this.stopPointBusinessOrganisation![
-        this.businessOrganisationLanguageService.getCurrentLanguageDescription()
-        ];
+    this.boDescription = this.stopPointBusinessOrganisation![this.businessOrganisationLanguageService.getCurrentLanguageDescription()];
   }
 
 }
