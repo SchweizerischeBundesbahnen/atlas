@@ -15,6 +15,7 @@ import { LoadingPointsService } from './api/loadingPoints.service';
 import { PersonWithReducedMobilityService } from './api/personWithReducedMobility.service';
 import { PersonWithReducedMobilityExportService } from './api/personWithReducedMobilityExport.service';
 import { ServicePointsService } from './api/servicePoints.service';
+import { StopPointWorkflowService } from './api/stopPointWorkflow.service';
 import { SublinesService } from './api/sublines.service';
 import { TimetableFieldNumbersService } from './api/timetableFieldNumbers.service';
 import { TimetableHearingStatementsService } from './api/timetableHearingStatements.service';
