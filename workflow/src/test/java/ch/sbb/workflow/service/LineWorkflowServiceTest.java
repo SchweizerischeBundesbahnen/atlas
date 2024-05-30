@@ -14,7 +14,7 @@ import ch.sbb.atlas.api.workflow.PersonModel;
 import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.WorkflowType;
-import ch.sbb.workflow.entity.Workflow;
+import ch.sbb.workflow.entity.LineWorkflow;
 import ch.sbb.workflow.exception.BusinessObjectCurrentlyInReviewException;
 import ch.sbb.workflow.exception.BusinessObjectCurrentlyNotInReviewException;
 import ch.sbb.workflow.kafka.WorkflowNotificationService;
@@ -27,7 +27,7 @@ import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
- class WorkflowServiceTest {
+ class LineWorkflowServiceTest {
 
   private WorkflowService service;
 
@@ -48,22 +48,22 @@ import org.mockito.MockitoAnnotations;
   @Test
    void shouldCreateWorkflow() {
     //given
-    Workflow workflow = Workflow.builder()
+    LineWorkflow lineWorkflow = LineWorkflow.builder()
         .id(123L)
         .businessObjectId(123L)
         .workflowType(WorkflowType.LINE)
         .swissId("ch:slnid:123")
         .build();
-    when(repository.save(workflow)).thenReturn(workflow);
+    when(repository.save(lineWorkflow)).thenReturn(lineWorkflow);
     when(lineWorkflowClient.processWorkflow(any())).thenReturn(WorkflowStatus.STARTED);
 
     //when
-    Workflow result = service.startWorkflow(workflow);
+    LineWorkflow result = service.startWorkflow(lineWorkflow);
 
     //then
     assertThat(result).isNotNull();
     assertThat(result.getStatus()).isEqualTo(WorkflowStatus.STARTED);
-    verify(notificationService).sendEventToMail(workflow);
+    verify(notificationService).sendEventToMail(lineWorkflow);
     verify(lineWorkflowClient).processWorkflow(any());
     verify(repository).findAllByBusinessObjectIdAndStatus(any(), eq(WorkflowStatus.STARTED));
   }
@@ -71,34 +71,34 @@ import org.mockito.MockitoAnnotations;
   @Test
    void shouldNotCreateDuplicateWorkflow() {
     //given
-    Workflow workflow = Workflow.builder()
+    LineWorkflow lineWorkflow = LineWorkflow.builder()
         .id(123L)
         .businessObjectId(123L)
         .workflowType(WorkflowType.LINE)
         .swissId("ch:slnid:123")
         .build();
-    when(repository.findAllByBusinessObjectIdAndStatus(any(), eq(WorkflowStatus.STARTED))).thenReturn(List.of(workflow));
+    when(repository.findAllByBusinessObjectIdAndStatus(any(), eq(WorkflowStatus.STARTED))).thenReturn(List.of(lineWorkflow));
 
     //when
-    assertThrows(BusinessObjectCurrentlyInReviewException.class, () -> service.startWorkflow(workflow));
+    assertThrows(BusinessObjectCurrentlyInReviewException.class, () -> service.startWorkflow(lineWorkflow));
   }
 
   @Test
    void shouldGetWorkflow() {
     //given
-    Workflow workflow = Workflow.builder()
+    LineWorkflow lineWorkflow = LineWorkflow.builder()
         .id(123L)
         .businessObjectId(123L)
         .workflowType(WorkflowType.LINE)
         .swissId("ch:slnid:123")
         .build();
-    when(repository.findById(1L)).thenReturn(Optional.of(workflow));
+    when(repository.findById(1L)).thenReturn(Optional.of(lineWorkflow));
 
     //when
-    Workflow result = service.getWorkflow(1L);
+    LineWorkflow result = service.getWorkflow(1L);
 
     //then
-    assertThat(result).isNotNull().isEqualTo(workflow);
+    assertThat(result).isNotNull().isEqualTo(lineWorkflow);
   }
 
   @Test
@@ -114,37 +114,36 @@ import org.mockito.MockitoAnnotations;
   @Test
    void shouldGetWorkflows() {
     //given
-    Workflow workflow = Workflow.builder()
+    LineWorkflow lineWorkflow = LineWorkflow.builder()
         .id(123L)
         .businessObjectId(123L)
         .workflowType(WorkflowType.LINE)
         .swissId("ch:slnid:123")
         .build();
-    when(repository.findAll()).thenReturn(List.of(workflow));
+    when(repository.findAll()).thenReturn(List.of(lineWorkflow));
 
     //when
-    List<Workflow> result = service.getWorkflows();
+    List<LineWorkflow> result = service.getWorkflows();
 
     //then
-    assertThat(result).isNotNull().hasSize(1);
-    assertThat(result).contains(workflow);
+    assertThat(result).isNotNull().hasSize(1).contains(lineWorkflow);
 
   }
 
   @Test
    void shouldApproveWorkflow() {
     //given
-    Workflow workflow = Workflow.builder()
+    LineWorkflow lineWorkflow = LineWorkflow.builder()
         .id(1L)
         .businessObjectId(123L)
         .workflowType(WorkflowType.LINE)
         .swissId("ch:slnid:123")
         .status(WorkflowStatus.STARTED)
         .build();
-    when(repository.findById(1L)).thenReturn(Optional.of(workflow));
+    when(repository.findById(1L)).thenReturn(Optional.of(lineWorkflow));
 
     //when
-    Workflow result = service.examinantCheck(1L, ExaminantWorkflowCheckModel.builder()
+    LineWorkflow result = service.examinantCheck(1L, ExaminantWorkflowCheckModel.builder()
         .accepted(true)
         .checkComment("Great Job")
         .examinant(PersonModel.builder()
@@ -160,23 +159,23 @@ import org.mockito.MockitoAnnotations;
     assertThat(result.getStatus()).isEqualTo(WorkflowStatus.APPROVED);
 
     verify(lineWorkflowClient).processWorkflow(any());
-    verify(notificationService).sendEventToMail(workflow);
+    verify(notificationService).sendEventToMail(lineWorkflow);
   }
 
   @Test
    void shouldRejectWorkflow() {
     //given
-    Workflow workflow = Workflow.builder()
+    LineWorkflow lineWorkflow = LineWorkflow.builder()
         .id(1L)
         .businessObjectId(123L)
         .workflowType(WorkflowType.LINE)
         .swissId("ch:slnid:123")
         .status(WorkflowStatus.STARTED)
         .build();
-    when(repository.findById(1L)).thenReturn(Optional.of(workflow));
+    when(repository.findById(1L)).thenReturn(Optional.of(lineWorkflow));
 
     //when
-    Workflow result = service.examinantCheck(1L, ExaminantWorkflowCheckModel.builder()
+    LineWorkflow result = service.examinantCheck(1L, ExaminantWorkflowCheckModel.builder()
         .accepted(false)
         .checkComment("Bad Job")
         .examinant(PersonModel.builder()
@@ -192,21 +191,21 @@ import org.mockito.MockitoAnnotations;
     assertThat(result.getStatus()).isEqualTo(WorkflowStatus.REJECTED);
 
     verify(lineWorkflowClient).processWorkflow(any());
-    verify(notificationService).sendEventToMail(workflow);
+    verify(notificationService).sendEventToMail(lineWorkflow);
 
   }
 
   @Test
    void shouldFailOnRejectWorkflowWhenNotStarted() {
     //given
-    Workflow workflow = Workflow.builder()
+    LineWorkflow lineWorkflow = LineWorkflow.builder()
         .id(1L)
         .businessObjectId(123L)
         .workflowType(WorkflowType.LINE)
         .swissId("ch:slnid:123")
         .status(WorkflowStatus.APPROVED)
         .build();
-    when(repository.findById(1L)).thenReturn(Optional.of(workflow));
+    when(repository.findById(1L)).thenReturn(Optional.of(lineWorkflow));
 
     //when
     Executable executeRejection = () -> service.examinantCheck(1L, ExaminantWorkflowCheckModel.builder()
@@ -225,17 +224,17 @@ import org.mockito.MockitoAnnotations;
   @Test
    void shouldNotSendMailsOnRevokedWorkflow() {
     //given
-    Workflow workflow = Workflow.builder()
+    LineWorkflow lineWorkflow = LineWorkflow.builder()
         .id(123L)
         .businessObjectId(123L)
         .workflowType(WorkflowType.LINE)
         .swissId("ch:slnid:123")
         .build();
-    when(repository.save(workflow)).thenReturn(workflow);
+    when(repository.save(lineWorkflow)).thenReturn(lineWorkflow);
     when(lineWorkflowClient.processWorkflow(any())).thenReturn(WorkflowStatus.REVOKED);
 
     //when
-    Workflow result = service.startWorkflow(workflow);
+    LineWorkflow result = service.startWorkflow(lineWorkflow);
 
     //then
     assertThat(result).isNotNull();
