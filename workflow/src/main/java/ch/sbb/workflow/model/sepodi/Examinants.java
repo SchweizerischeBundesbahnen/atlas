@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,13 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "examinants")
 public class Examinants {
 
+  private static String PROD_PROFILE = "prod";
+  private static String NON_PROD_EMAIL = "TechSupport-ATLAS@sbb.ch";
+
+  @Value("${spring.profiles.active:local}")
+  @Setter
+  private String activeProfile;
+
   private SpecialistOffice specialistOffice;
 
   private List<Canton> cantons;
@@ -28,7 +36,7 @@ public class Examinants {
         .personFunction(examinantByCanton.getFunction())
         .firstName(examinantByCanton.getFirstname())
         .lastName(examinantByCanton.getLastname())
-        .mail(examinantByCanton.getEmail())
+        .mail(getEmailByEnv(examinantByCanton.getEmail()))
         .build();
   }
 
@@ -41,6 +49,9 @@ public class Examinants {
         .build();
   }
 
+  private String getEmailByEnv(String mail) {
+    return PROD_PROFILE.equals(activeProfile) ? mail : NON_PROD_EMAIL;
+  }
 
   Canton getExaminantByCanton(SwissCanton canton) {
     return cantons.stream().filter(examinant -> canton.getAbbreviation().equals(examinant.abbreviation)).findFirst()
@@ -50,6 +61,7 @@ public class Examinants {
   @Data
   @Builder
   private static class Canton {
+
     private String abbreviation;
     private String lastname;
     private String firstname;
