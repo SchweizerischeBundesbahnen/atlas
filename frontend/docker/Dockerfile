@@ -1,6 +1,8 @@
 # Dockerfile for ESTA Web
 FROM cloud.docker.bin.sbb.ch/cloud/plattform-nginx:1.22.1
 
+USER root
+
 ARG APP_RELEASE_VERSION=latest
 ENV APP_VERSION=$APP_RELEASE_VERSION
 
