@@ -17,6 +17,8 @@ import { ServicePointFormComponent } from './service-point-side-panel/service-po
 import { TrafficPointElementsDetailComponent } from './traffic-point-elements/traffic-point-elements-detail.component';
 import { LoadingPointsDetailComponent } from './loading-points/loading-points-detail.component';
 import { FotCommentDetailComponent } from './service-point-side-panel/comment/fot-comment-detail.component';
+import {AddStopPointWorkflowComponent} from "./workflow/add-dialog/add-stop-point-workflow.component";
+import {StopPointWorkflowDetailFormComponent} from "./workflow/detail-form/stop-point-workflow-detail-form.component";
 
 @NgModule({
   declarations: [
@@ -33,6 +35,8 @@ import { FotCommentDetailComponent } from './service-point-side-panel/comment/fo
     TrafficPointElementsDetailComponent,
     LoadingPointsDetailComponent,
     FotCommentDetailComponent,
+    AddStopPointWorkflowComponent,
+    StopPointWorkflowDetailFormComponent,
   ],
   imports: [CoreModule, FormModule, FormsModule, SepodiRoutingModule],
 })
