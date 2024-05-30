@@ -49,6 +49,7 @@
     "TO": "bis",
     "VERSION": "Version",
     "FILLED_AUTOMATICALLY": "Automatisch befüllt",
+    "VERSION_VALIDITY": "Version gültig ",
     "VALID_FROM": "Gültig von",
     "VALID_TO": "Gültig bis",
     "TODAY": "Heute",
@@ -537,6 +538,7 @@
     "TITLE": "Anhörung",
     "BUTTON": {
       "ADD": "Anhörung erfassen",
+      "SEND": "Antrag absenden",
       "OPEN": "Anhörung einsehen",
       "START": "Anhörung starten",
       "ACCEPT": "Genehmigen",

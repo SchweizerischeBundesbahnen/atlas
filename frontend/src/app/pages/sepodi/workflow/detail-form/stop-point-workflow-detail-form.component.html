@@ -1,0 +1,27 @@
+<div class="font-xl mb-2">
+    <span data-cy="version-range">
+      {{ 'COMMON.VERSION_VALIDITY' | translate }}
+      {{ 'COMMON.FROM' | translate }}
+      {{ stopPoint.validFrom | displayDate }}
+      {{ 'COMMON.TO' | translate }}
+      {{ stopPoint.validTo | displayDate }}
+    </span>
+
+  <div class="d-flex flex-row mb-3">
+    <div class="d-flex flex-column" data-cy="selected-version-sloid">
+      <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.SLOID' | translate }}</div>
+      <div>{{ stopPoint.sloid }}</div>
+    </div>
+    <div class="d-flex flex-column ms-5" data-cy="selected-version-number">
+      <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.DIDOK_CODE' | translate }}</div>
+      <div>{{ stopPoint.number | splitServicePointNumber }}</div>
+    </div>
+    <div class="d-flex flex-column ms-5" data-cy="selected-version-number">
+      <div class="font-bold-base">
+        {{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION' | translate }}
+      </div>
+      <div>{{ stopPointBusinessOrganisation?.organisationNumber }} - {{ boDescription }} -
+        {{ stopPointBusinessOrganisation?.sboid }}</div>
+    </div>
+  </div>
+</div>
