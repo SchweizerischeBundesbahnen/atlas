@@ -23,6 +23,7 @@ import ch.sbb.atlas.transport.company.repository.TransportCompanySharingDataAcce
 import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
+import ch.sbb.line.directory.exception.TtfnidNotFoundException;
 import ch.sbb.line.directory.helper.PdfFiles;
 import ch.sbb.line.directory.mapper.TimetableHearingStatementMapperV2;
 import ch.sbb.line.directory.model.TimetableHearingStatementSearchRestrictions;
@@ -260,6 +261,17 @@ import org.springframework.web.multipart.MultipartFile;
         IdNotFoundException.class);
   }
 
+    @Test
+    void shouldNotCreateHearingStatementIfTtfnidNotExists() {
+        timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+        TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
+        timetableHearingStatementModel.setTtfnid("ABC");
+
+        assertThatThrownBy(() -> timetableHearingStatementService.createHearingStatementV2(timetableHearingStatementModel,
+                Collections.emptyList())).isInstanceOf(
+                TtfnidNotFoundException.class);
+    }
+
   @Test
   void shouldUpdateHearingStatement() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
@@ -304,6 +316,22 @@ import org.springframework.web.multipart.MultipartFile;
     assertThatThrownBy(
         () -> timetableHearingStatementService.updateHearingStatement(timetableHearingStatement, updatingStatement, Collections.emptyList())).isInstanceOf(
         IdNotFoundException.class);
+  }
+  @Test
+  void shouldNotUpdateHearingStatementIfTtfnidNotExists() {
+    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
+
+      TimetableHearingStatement timetableHearingStatement=
+        timetableHearingStatementMapperV2.toEntity(timetableHearingStatementModel);
+
+    TimetableHearingStatementModelV2 updatingStatement = timetableHearingStatementService.createHearingStatementV2(
+        timetableHearingStatementModel, Collections.emptyList());
+    updatingStatement.setTtfnid("ungueltig");
+
+    assertThatThrownBy(
+        () -> timetableHearingStatementService.updateHearingStatement(timetableHearingStatement, updatingStatement, Collections.emptyList())).isInstanceOf(
+        TtfnidNotFoundException.class);
   }
 
   @Test
