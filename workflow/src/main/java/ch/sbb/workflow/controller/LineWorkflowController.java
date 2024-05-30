@@ -1,11 +1,11 @@
 package ch.sbb.workflow.controller;
 
 import ch.sbb.atlas.api.workflow.ExaminantWorkflowCheckModel;
-import ch.sbb.workflow.api.LineWorkflowApiV1;
 import ch.sbb.atlas.api.workflow.WorkflowModel;
 import ch.sbb.atlas.api.workflow.WorkflowStartModel;
+import ch.sbb.workflow.api.LineWorkflowApiV1;
 import ch.sbb.workflow.entity.LineWorkflow;
-import ch.sbb.workflow.mapper.WorkflowMapper;
+import ch.sbb.workflow.mapper.LineWorkflowMapper;
 import ch.sbb.workflow.mapper.WorkflowStartMapper;
 import ch.sbb.workflow.service.WorkflowService;
 import java.util.List;
@@ -23,19 +23,19 @@ public class LineWorkflowController implements LineWorkflowApiV1 {
 
   @Override
   public WorkflowModel getWorkflow(Long id) {
-    return WorkflowMapper.toModel(service.getWorkflow(id));
+    return LineWorkflowMapper.toModel(service.getWorkflow(id));
   }
 
   @Override
   public List<WorkflowModel> getWorkflows() {
-    return service.getWorkflows().stream().map(WorkflowMapper::toModel).toList();
+    return service.getWorkflows().stream().map(LineWorkflowMapper::toModel).toList();
   }
 
   @Override
   public WorkflowModel startWorkflow(WorkflowStartModel workflowStartModel) {
     log.info("Starting workflow");
     LineWorkflow lineWorkflow = service.startWorkflow(WorkflowStartMapper.toEntity(workflowStartModel));
-    return WorkflowMapper.toNewModel(lineWorkflow);
+    return LineWorkflowMapper.toNewModel(lineWorkflow);
   }
 
   @Override
@@ -43,7 +43,7 @@ public class LineWorkflowController implements LineWorkflowApiV1 {
   public WorkflowModel examinantCheck(Long id, ExaminantWorkflowCheckModel examinantWorkflowCheckModel) {
     log.info("Checking workflow");
     LineWorkflow lineWorkflow = service.examinantCheck(id, examinantWorkflowCheckModel);
-    return WorkflowMapper.toModel(lineWorkflow);
+    return LineWorkflowMapper.toModel(lineWorkflow);
   }
 
 }
