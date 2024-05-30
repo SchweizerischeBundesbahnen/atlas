@@ -1,4 +1,4 @@
-<div class="font-xl mb-2">
+<div class="mb-3">
     <span data-cy="version-range">
       {{ 'COMMON.VERSION_VALIDITY' | translate }}
       {{ 'COMMON.FROM' | translate }}
@@ -6,22 +6,46 @@
       {{ 'COMMON.TO' | translate }}
       {{ stopPoint.validTo | displayDate }}
     </span>
+</div>
 
-  <div class="d-flex flex-row mb-3">
-    <div class="d-flex flex-column" data-cy="selected-version-sloid">
-      <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.SLOID' | translate }}</div>
-      <div>{{ stopPoint.sloid }}</div>
+<div class="d-flex flex-row mb-3">
+  <div class="d-flex flex-column" data-cy="sloid">
+    <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.SLOID' | translate }}</div>
+    <div>{{ stopPoint.sloid }}</div>
+  </div>
+  <div class="d-flex flex-column ms-5" data-cy="number">
+    <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.DIDOK_CODE' | translate }}</div>
+    <div>{{ stopPoint.number | splitServicePointNumber }}</div>
+  </div>
+  <div class="d-flex flex-column ms-5" data-cy="business-organisation">
+    <div class="font-bold-base">
+      {{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION' | translate }}
     </div>
-    <div class="d-flex flex-column ms-5" data-cy="selected-version-number">
-      <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.DIDOK_CODE' | translate }}</div>
-      <div>{{ stopPoint.number | splitServicePointNumber }}</div>
-    </div>
-    <div class="d-flex flex-column ms-5" data-cy="selected-version-number">
-      <div class="font-bold-base">
-        {{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION' | translate }}
-      </div>
-      <div>{{ stopPointBusinessOrganisation?.organisationNumber }} - {{ boDescription }} -
-        {{ stopPointBusinessOrganisation?.sboid }}</div>
+    <div>{{ stopPointBusinessOrganisation?.organisationNumber }} - {{ boDescription }}
+      - {{ stopPointBusinessOrganisation?.sboid }}
     </div>
   </div>
 </div>
+
+<div class="d-flex flex-row mb-3">
+  <div class="d-flex flex-column" data-cy="new-designation-official">
+    <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.NEW_DESIGNATION_OFFICIAL' | translate }}</div>
+    <div>{{ stopPoint.designationOfficial }}</div>
+  </div>
+  @if (stopPoint.servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName) {
+    <div class="d-flex flex-column ms-5" data-cy="municipality">
+      <div class="font-bold-base">{{ 'SEPODI.GEOLOCATION.DISTRICT' | translate }}</div>
+      <div>{{ stopPoint.servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName }}</div>
+    </div>
+  }
+</div>
+
+<atlas-text-list [formGroup]="form"
+                 [itemValidator]="emailValidator"
+                 fieldLabel="SEPODI.SERVICE_POINTS.WORKFLOW.ADDITIONAL_MAIL_RECIPIENTS"
+                 infoIconTitle="SEPODI.SERVICE_POINTS.WORKFLOW.ADDITIONAL_MAIL_RECIPIENTS_INFO"
+                 [required]="false"
+                 placeHolderText="TTH.STATEMENT.E_MAIL_ITEMS_LIMIT_REACHED"
+                 [fieldExamples]="[{ label: 'FORM.MAX_ITEMS', translate: true, arg: { key: 'numberOfItems', value: '10' }}]"
+                 controlName="emails">
+</atlas-text-list>
