@@ -2,13 +2,13 @@ package ch.sbb.workflow.mapper;
 
 import ch.sbb.atlas.api.workflow.WorkflowModel;
 import ch.sbb.atlas.api.workflow.WorkflowModel.WorkflowModelBuilder;
-import ch.sbb.workflow.entity.Workflow;
+import ch.sbb.workflow.entity.LineWorkflow;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class WorkflowMapper {
+public class LineWorkflowMapper {
 
-  public static WorkflowModel toModel(Workflow entity) {
+  public static WorkflowModel toModel(LineWorkflow entity) {
     WorkflowModelBuilder builder = WorkflowModel.builder()
         .id(entity.getId())
         .workflowType(entity.getWorkflowType())
@@ -30,7 +30,7 @@ public class WorkflowMapper {
     return builder.build();
   }
 
-  public static WorkflowModel toNewModel(Workflow entity) {
+  public static WorkflowModel toNewModel(LineWorkflow entity) {
     return WorkflowModel.builder()
         .id(entity.getId())
         .workflowType(entity.getWorkflowType())

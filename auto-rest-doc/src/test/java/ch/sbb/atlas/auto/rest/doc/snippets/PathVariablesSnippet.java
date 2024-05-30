@@ -16,6 +16,7 @@ public class PathVariablesSnippet extends AtlasTableSnippet {
 
   @Override
   protected List<FieldDescriptor> getFields(HandlerMethod handlerMethod) {
+//if you are here because the test doesn't work, before losing patience, check that the url and http method are correct ;-)
     List<MethodParameter> parameters = List.of(handlerMethod.getMethodParameters());
 
     List<MethodParameter> pathVariables = parameters.stream()
