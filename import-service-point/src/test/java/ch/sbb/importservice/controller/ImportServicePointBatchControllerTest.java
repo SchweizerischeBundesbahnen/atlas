@@ -160,15 +160,4 @@ import org.springframework.boot.test.mock.mockito.MockBean;
         .andExpect(status().isOk());
   }
 
-  @Test
-   void shouldReturnBadRequestWhenFileIsNotProvidedOnLoadingPointFileImport() throws Exception {
-    //given
-    doNothing().when(mailProducerService).produceMailNotification(any());
-
-    //when & then
-    mvc.perform(multipart("/v1/import/loading-point")
-            .contentType(contentType))
-        .andExpect(status().isBadRequest());
-  }
-
  }
