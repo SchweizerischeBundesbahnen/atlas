@@ -79,6 +79,8 @@ public class TimetableHearingStatementService {
   public TimetableHearingStatement createHearingStatement(TimetableHearingStatement statementToCreate,
       List<MultipartFile> documents) {
     checkThatTimetableHearingYearExists(statementToCreate.getTimetableYear());
+    checkThatTimetableFieldNumberExists(statementToCreate);
+
     statementToCreate.setStatementStatus(StatementStatus.RECEIVED);
 
     List<File> files = new ArrayList<>();
@@ -88,10 +90,6 @@ public class TimetableHearingStatementService {
       filesValidation(files, Collections.emptySet());
 
       addFilesToStatement(documents, statementToCreate);
-    }
-
-    if(statementToCreate.getTtfnid() != null && !statementToCreate.getTtfnid().isEmpty()){
-      checkThatTimetableFieldNumberExists(statementToCreate.getTtfnid());
     }
 
     TimetableHearingStatement timetableHearingStatement = timetableHearingStatementRepository.saveAndFlush(statementToCreate);
@@ -139,10 +137,8 @@ public class TimetableHearingStatementService {
 
     TimetableHearingStatement updatedObject = updateObject(timetableHearingStatementModel, timetableHearingStatementInDb);
     addFilesToStatement(documents, updatedObject);
+    checkThatTimetableFieldNumberExists(updatedObject);
 
-    if(updatedObject.getTtfnid() != null && !updatedObject.getTtfnid().isEmpty()){
-      checkThatTimetableFieldNumberExists(updatedObject.getTtfnid());
-    }
 
     TimetableHearingStatement timetableHearingStatement = timetableHearingStatementRepository.save(updatedObject);
     pdfsUploadAmazonService.uploadPdfFiles(files, timetableHearingStatement.getId().toString());
@@ -253,10 +249,12 @@ public class TimetableHearingStatementService {
     }
   }
 
-  private void checkThatTimetableFieldNumberExists(String ttfnid) {
-    if (!timetableFieldNumberRepository.existsByTtfnid(ttfnid)) {
-      throw new TtfnidNotFoundException(ttfnid);
+  private void checkThatTimetableFieldNumberExists(TimetableHearingStatement statement) {
+    if(statement.getTtfnid() != null && !statement.getTtfnid().isEmpty() &&
+            !timetableFieldNumberRepository.existsByTtfnid(statement.getTtfnid())){
+        throw new TtfnidNotFoundException(statement.getTtfnid());
     }
+
   }
 
   private void addFilesToStatement(List<MultipartFile> documents, TimetableHearingStatement statement) {
