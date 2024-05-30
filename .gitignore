@@ -126,3 +126,4 @@ frontend/.npmrc
 /.export/
 /frontend/cypress/test-results/
 /frontend/cypress-mochawesome-reporter.log
+*.bkp
