@@ -6,7 +6,7 @@ import ch.sbb.workflow.entity.LineWorkflow;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class WorkflowMapper {
+public class LineWorkflowMapper {
 
   public static WorkflowModel toModel(LineWorkflow entity) {
     WorkflowModelBuilder builder = WorkflowModel.builder()
