@@ -13,5 +13,6 @@ public enum WorkflowStatus {
   HEARING,
   APPROVED,
   REJECTED,
-  REVOKED
+  REVOKED,
+  CANCELED
 }

@@ -6,7 +6,7 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.workflow.model.WorkflowEvent;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.WorkflowType;
-import ch.sbb.workflow.entity.Workflow;
+import ch.sbb.workflow.entity.LineWorkflow;
 import ch.sbb.workflow.exception.BusinessObjectCurrentlyInReviewException;
 import ch.sbb.workflow.exception.BusinessObjectCurrentlyNotInReviewException;
 import ch.sbb.workflow.kafka.WorkflowNotificationService;
@@ -26,12 +26,12 @@ public class WorkflowService {
   private final WorkflowNotificationService notificationService;
   private final LineWorkflowClient lineWorkflowClient;
 
-  public Workflow startWorkflow(Workflow workflow) {
-    if (hasWorkflowInProgress(workflow.getBusinessObjectId())) {
+  public LineWorkflow startWorkflow(LineWorkflow lineWorkflow) {
+    if (hasWorkflowInProgress(lineWorkflow.getBusinessObjectId())) {
       throw new BusinessObjectCurrentlyInReviewException();
     }
-    workflow.setStatus(WorkflowStatus.ADDED);
-    Workflow entity = repository.save(workflow);
+    lineWorkflow.setStatus(WorkflowStatus.ADDED);
+    LineWorkflow entity = repository.save(lineWorkflow);
     WorkflowStatus desiredWorkflowStatusByLidi = processWorkflowOnLidi(entity);
     entity.setStatus(desiredWorkflowStatusByLidi);
     if (entity.getStatus() == WorkflowStatus.STARTED) {
@@ -40,35 +40,35 @@ public class WorkflowService {
     return entity;
   }
 
-  public Workflow getWorkflow(Long id) {
+  public LineWorkflow getWorkflow(Long id) {
     return repository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }
 
-  public List<Workflow> getWorkflows() {
+  public List<LineWorkflow> getWorkflows() {
     return repository.findAll();
   }
 
-  public Workflow examinantCheck(Long workflowId, ExaminantWorkflowCheckModel examinantWorkflowCheckModel) {
-    Workflow workflow = getWorkflow(workflowId);
-    if (workflow.getStatus() != WorkflowStatus.STARTED) {
+  public LineWorkflow examinantCheck(Long workflowId, ExaminantWorkflowCheckModel examinantWorkflowCheckModel) {
+    LineWorkflow lineWorkflow = getWorkflow(workflowId);
+    if (lineWorkflow.getStatus() != WorkflowStatus.STARTED) {
       throw new BusinessObjectCurrentlyNotInReviewException();
     }
-    workflow.setCheckComment(examinantWorkflowCheckModel.getCheckComment());
-    workflow.setExaminant(PersonMapper.toEntity(examinantWorkflowCheckModel.getExaminant()));
-    workflow.setStatus(
+    lineWorkflow.setCheckComment(examinantWorkflowCheckModel.getCheckComment());
+    lineWorkflow.setExaminant(PersonMapper.toEntity(examinantWorkflowCheckModel.getExaminant()));
+    lineWorkflow.setStatus(
         examinantWorkflowCheckModel.isAccepted() ? WorkflowStatus.APPROVED : WorkflowStatus.REJECTED);
 
-    processWorkflowOnLidi(workflow);
-    notificationService.sendEventToMail(workflow);
-    return workflow;
+    processWorkflowOnLidi(lineWorkflow);
+    notificationService.sendEventToMail(lineWorkflow);
+    return lineWorkflow;
   }
 
-  WorkflowStatus processWorkflowOnLidi(Workflow workflow) {
+  WorkflowStatus processWorkflowOnLidi(LineWorkflow lineWorkflow) {
     WorkflowEvent workflowEvent = WorkflowEvent.builder()
-        .workflowId(workflow.getId())
-        .businessObjectId(workflow.getBusinessObjectId())
-        .workflowStatus(workflow.getStatus())
-        .workflowType(workflow.getWorkflowType())
+        .workflowId(lineWorkflow.getId())
+        .businessObjectId(lineWorkflow.getBusinessObjectId())
+        .workflowStatus(lineWorkflow.getStatus())
+        .workflowType(lineWorkflow.getWorkflowType())
         .build();
     if (workflowEvent.getWorkflowType() == WorkflowType.LINE) {
       return lineWorkflowClient.processWorkflow(workflowEvent);

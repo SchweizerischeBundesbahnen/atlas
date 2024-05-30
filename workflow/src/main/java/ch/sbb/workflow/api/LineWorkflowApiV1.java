@@ -1,5 +1,8 @@
-package ch.sbb.atlas.api.workflow;
+package ch.sbb.workflow.api;
 
+import ch.sbb.atlas.api.workflow.ExaminantWorkflowCheckModel;
+import ch.sbb.atlas.api.workflow.WorkflowModel;
+import ch.sbb.atlas.api.workflow.WorkflowStartModel;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Tag(name = "Workflow")
-@RequestMapping("v1/workflows")
-public interface WorkflowApiV1 {
+@RequestMapping("v1/line/workflows")
+public interface LineWorkflowApiV1 {
 
   @GetMapping("{id}")
   WorkflowModel getWorkflow(@PathVariable Long id);
