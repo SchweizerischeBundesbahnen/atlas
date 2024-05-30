@@ -34,7 +34,8 @@ The service then switches it to the real atlas api once a user is logged in.
 
 ### Node.js
 
-This project requires Node.js Version **18.17.0**. It has to be a LTS version.
+This project requires Node.js. It has to be a LTS version.
+Tekton currently is using: `Now using node v18.19.1 (npm v10.2.4)` please make sure to update your local version accordingly.
 
 Use Node Version Manager to easily switch the NodeJS version between your angular projects.
 
@@ -46,7 +47,7 @@ You should have a NVM_DIR environment variable, which points to a directory (lik
 To install new Node.js version and set it as active using nvm, type this in the console:
 
 ```bash
- nvm install 18.17.0
+ nvm install 18.19.1
 ```
 
 Now you should be ready to install all required angular packages for this project. Just type:

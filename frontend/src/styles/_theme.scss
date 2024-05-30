@@ -3,10 +3,10 @@
 @use './typography/atlas-typography' as typography;
 
 // Define the default theme
-$app-primary: mat.define-palette(palette.$atlas-primary);
-$app-accent: mat.define-palette(palette.$atlas-accent);
-$app-warn: mat.define-palette(palette.$atlas-red);
-$app-theme: mat.define-light-theme(
+$app-primary: mat.m2-define-palette(palette.$atlas-primary);
+$app-accent: mat.m2-define-palette(palette.$atlas-accent);
+$app-warn: mat.m2-define-palette(palette.$atlas-red);
+$app-theme: mat.m2-define-light-theme(
   (
     color: (
       primary: $app-primary,
