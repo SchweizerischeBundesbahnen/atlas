@@ -15,6 +15,7 @@ api/loadingPoints.service.ts
 api/personWithReducedMobility.service.ts
 api/personWithReducedMobilityExport.service.ts
 api/servicePoints.service.ts
+api/stopPointWorkflow.service.ts
 api/sublines.service.ts
 api/timetableFieldNumbers.service.ts
 api/timetableHearingStatements.service.ts
@@ -77,8 +78,10 @@ model/coverageType.ts
 model/createLoadingPointVersion.ts
 model/createServicePointVersion.ts
 model/createTrafficPointElementVersion.ts
+model/decision.ts
 model/displayInfo.ts
 model/district.ts
+model/editStopPointWorkflow.ts
 model/errorDetail.ts
 model/errorResponse.ts
 model/examinantWorkflowCheck.ts
@@ -104,6 +107,7 @@ model/inlineObject6.ts
 model/inlineObject7.ts
 model/inlineObject8.ts
 model/inlineObject9.ts
+model/judgementType.ts
 model/line.ts
 model/lineType.ts
 model/lineVersion.ts
@@ -136,6 +140,7 @@ model/readReferencePointVersion.ts
 model/readRelationVersion.ts
 model/readServicePointVersion.ts
 model/readStopPointVersion.ts
+model/readStopPointWorkflow.ts
 model/readToiletVersion.ts
 model/readTrafficPointElementVersion.ts
 model/recordingStatus.ts
@@ -157,6 +162,9 @@ model/standardAttributeType.ts
 model/statementStatus.ts
 model/status.ts
 model/stepFreeAccessAttributeType.ts
+model/stopPointAddWorkflow.ts
+model/stopPointRejectWorkflow.ts
+model/stopPointRestartWorkflow.ts
 model/stopPointType.ts
 model/stopPointVersion.ts
 model/subline.ts
