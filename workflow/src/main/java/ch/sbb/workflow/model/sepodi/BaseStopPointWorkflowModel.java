@@ -54,7 +54,7 @@ public abstract class BaseStopPointWorkflowModel {
   @Schema(description = "Hearing reasons")
   private String workflowComment;
 
-  @Schema(description = "List hearing axamiannts")
+  @Schema(description = "List hearing examinants")
   @Valid
   private List<ClientPersonModel> examinants;
 

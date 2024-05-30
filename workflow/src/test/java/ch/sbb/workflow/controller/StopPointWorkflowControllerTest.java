@@ -206,6 +206,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .contentType(contentType)
         .content(mapper.writeValueAsString(workflowModel))
     ).andExpect(status().isCreated());
+    System.out.println("");
   }
 
   @Test
