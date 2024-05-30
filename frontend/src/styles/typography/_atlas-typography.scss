@@ -1,11 +1,11 @@
 @use '@angular/material' as mat;
 
-$atlas-typography: mat.define-typography-config(
+$atlas-typography: mat.m2-define-typography-config(
   $font-family: 'IBM Plex Sans',
   // mat-typography-level(font-size, line-height, font-weight)
-  $subtitle-1: mat.define-typography-level(20px, 160%, 400),
-  $body-2: mat.define-typography-level(16px, 150%, 400),
-  $button: mat.define-typography-level(16px, 150%, 500),
+  $subtitle-1: mat.m2-define-typography-level(20px, 160%, 400),
+  $body-2: mat.m2-define-typography-level(16px, 150%, 400),
+  $button: mat.m2-define-typography-level(16px, 150%, 500),
   /*
    // see levels: https://material.angular.io/guide/typography#typography-levels
   display-4	112px, one-off header, usually at the top of the page (e.g. a hero header).
