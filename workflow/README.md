@@ -28,11 +28,12 @@ available [here](https://code.sbb.ch/projects/KI_ATLAS/repos/atlas/browse/README
 
 ## Use Cases
 
-![Workflow-Line-Use-Cases](documentation/workflow-line-use-cases.drawio.svg)
+1. [Line Workflow](documentation/line-wf-usecase.md)  
+2. [Stop Point Workflow](documentation/stop-point-wf-usecase.md)  
 
 ## Architecture
 
-![Workflow-Line-Architecture](documentation/workflow-line-architecture.drawio.svg)
+![Workflow-Line-Architecture](documentation/workflow-architecture.drawio.svg)
 
 ## DB Model
 

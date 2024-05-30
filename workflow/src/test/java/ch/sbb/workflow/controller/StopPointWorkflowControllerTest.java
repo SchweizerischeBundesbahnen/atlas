@@ -1,0 +1,814 @@
+package ch.sbb.workflow.controller;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
+import ch.sbb.atlas.api.workflow.ClientPersonModel;
+import ch.sbb.atlas.kafka.model.SwissCanton;
+import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.servicepoint.enumeration.Category;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
+import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
+import ch.sbb.atlas.workflow.model.WorkflowStatus;
+import ch.sbb.workflow.client.SePoDiClient;
+import ch.sbb.workflow.entity.Decision;
+import ch.sbb.workflow.entity.DecisionType;
+import ch.sbb.workflow.entity.JudgementType;
+import ch.sbb.workflow.entity.Otp;
+import ch.sbb.workflow.entity.Person;
+import ch.sbb.workflow.entity.StopPointWorkflow;
+import ch.sbb.workflow.kafka.WorkflowNotificationService;
+import ch.sbb.workflow.mapper.ClientPersonMapper;
+import ch.sbb.workflow.model.sepodi.DecisionModel;
+import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
+import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
+import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
+import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
+import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
+import ch.sbb.workflow.workflow.DecisionRepository;
+import ch.sbb.workflow.workflow.OtpRepository;
+import ch.sbb.workflow.workflow.StopPointWorkflowRepository;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.ResponseEntity;
+
+class StopPointWorkflowControllerTest extends BaseControllerApiTest {
+
+  static final String MAIL_ADDRESS = "marek@hamsik.com";
+
+  @Autowired
+  private StopPointWorkflowController controller;
+
+  @Autowired
+  private StopPointWorkflowRepository workflowRepository;
+
+  @Autowired
+  private DecisionRepository decisionRepository;
+
+  @Autowired
+  private OtpRepository otpRepository;
+
+  @MockBean
+  private SePoDiClient sePoDiClient;
+
+  @MockBean
+  private WorkflowNotificationService notificationService;
+
+  @AfterEach
+  void tearDown() {
+    otpRepository.deleteAll();
+    decisionRepository.deleteAll();
+    workflowRepository.deleteAll();
+  }
+
+  @Test
+  void shouldGetWorkflows() throws Exception {
+    ClientPersonModel person = ClientPersonModel.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .personFunction("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+    List<ClientPersonModel> clientPersonModels = new ArrayList<>();
+    clientPersonModels.add(person);
+    long versionId = 123456L;
+    StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .swissCanton(SwissCanton.BERN)
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .examinants(clientPersonModels)
+        .ccEmails(List.of("a@b.ch", "b@c.it"))
+        .versionId(versionId)
+        .build();
+
+    when(sePoDiClient.postServicePointsStatusUpdate(versionId, Status.IN_REVIEW))
+        .thenReturn(ResponseEntity.ok(getUpdateServicePointVersionModel(Status.IN_REVIEW)));
+
+    controller.addStopPointWorkflow(workflowModel);
+
+    mvc.perform(get("/v1/stop-point/workflows"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0].examinants", hasSize(3)));
+  }
+
+  @Test
+  void shouldGetWorkflowById() throws Exception {
+    Person person = Person.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .function("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+    StopPointWorkflow workflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .workflowComment("WF comment")
+        .examinants(Set.of(person))
+        .startDate(LocalDate.of(2000, 1, 1))
+        .endDate(LocalDate.of(2000, 12, 31))
+        .versionId(123456L)
+        .status(WorkflowStatus.ADDED)
+        .build();
+
+    StopPointWorkflow entity = workflowRepository.save(workflow);
+
+    mvc.perform(get("/v1/stop-point/workflows/" + entity.getId()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.sloid", is("ch:1:sloid:1234")));
+  }
+
+  @Test
+  void shouldNotCreateWorkflowWhenWorkflowPersonNameHasWrongEncoding() throws Exception {
+    //when
+    ClientPersonModel person = ClientPersonModel.builder()
+        .firstName("\uD83D\uDE00\uD83D\uDE01\uD83D")
+        .lastName("Hamsik")
+        .personFunction("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+    StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .swissCanton(SwissCanton.BERN)
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .examinants(List.of(person))
+        .versionId(123456L)
+        .build();
+
+    //given
+    mvc.perform(post("/v1/stop-point/workflows")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(workflowModel))
+        ).andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+        .andExpect(jsonPath("$.error", is("Method argument not valid error")))
+        .andExpect(jsonPath("$.details[0].message", is("Value \uD83D\uDE00\uD83D\uDE01? rejected due to must match "
+            + "\"[\\u0000-\\u00ff]*\"")))
+        .andExpect(jsonPath("$.details[0].field", is("examinants[0].firstName")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("rejectedValue")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("\uD83D\uDE00\uD83D\uDE01?")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("cause")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("must match \"[\\u0000-\\u00ff]*\"")));
+  }
+
+  @Test
+  void shouldCreateAddWorkflow() throws Exception {
+    //when
+    ClientPersonModel person = ClientPersonModel.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .personFunction("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+    long versionId = 123456L;
+    StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .swissCanton(SwissCanton.BERN)
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .examinants(List.of(person))
+        .versionId(versionId)
+        .build();
+    when(sePoDiClient.postServicePointsStatusUpdate(versionId, Status.IN_REVIEW))
+        .thenReturn(ResponseEntity.ok(getUpdateServicePointVersionModel(Status.IN_REVIEW)));
+
+    //given
+    mvc.perform(post("/v1/stop-point/workflows")
+        .contentType(contentType)
+        .content(mapper.writeValueAsString(workflowModel))
+    ).andExpect(status().isCreated());
+    System.out.println("");
+  }
+
+  @Test
+  void shouldNotCreateWorkflowWhenWorkflowWorkflowDescriptionHasWrongEncoding() throws Exception {
+    //when
+    ClientPersonModel person = ClientPersonModel.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .personFunction("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+    StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .swissCanton(SwissCanton.BERN)
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("\uD83D\uDE00\uD83D\uDE01\uD83D")
+        .examinants(List.of(person))
+        .versionId(123456L)
+        .build();
+
+    //given
+    mvc.perform(post("/v1/stop-point/workflows")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(workflowModel))
+        ).andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+        .andExpect(jsonPath("$.error", is("Method argument not valid error")))
+        .andExpect(jsonPath("$.details[0].message", is("Value \uD83D\uDE00\uD83D\uDE01? rejected due to must match "
+            + "\"[\\u0000-\\u00ff]*\"")))
+        .andExpect(jsonPath("$.details[0].field", is("workflowComment")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("rejectedValue")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("\uD83D\uDE00\uD83D\uDE01?")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("cause")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("must match \"[\\u0000-\\u00ff]*\"")));
+  }
+
+  @Test
+  void shouldStartWorkflow() throws Exception {
+    //when
+    Person person = Person.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .function("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+
+    Long versionId = 123456L;
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .status(WorkflowStatus.ADDED)
+        .examinants(Set.of(person))
+        .startDate(LocalDate.of(2000, 1, 1))
+        .endDate(LocalDate.of(2000, 12, 31))
+        .versionId(versionId)
+        .build();
+    workflowRepository.save(stopPointWorkflow);
+
+    //given
+    mvc.perform(post("/v1/stop-point/workflows/start/" + stopPointWorkflow.getId())
+            .contentType(contentType))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.status", is("HEARING")));
+    verify(notificationService).sendStopPointWorkflowMail(any(StopPointWorkflow.class));
+  }
+
+  @Test
+  void shouldEditWorkflow() throws Exception {
+    //when
+    Person person = Person.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .function("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+
+    Long versionId = 123456L;
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .status(WorkflowStatus.ADDED)
+        .examinants(Set.of(person))
+        .startDate(LocalDate.of(2000, 1, 1))
+        .endDate(LocalDate.of(2000, 12, 31))
+        .versionId(versionId)
+        .build();
+    workflowRepository.save(stopPointWorkflow);
+    EditStopPointWorkflowModel editStopPointWorkflowModel = EditStopPointWorkflowModel.builder()
+        .workflowComment("New Comment")
+        .designationOfficial("Bern")
+        .build();
+
+    //given
+    mvc.perform(post("/v1/stop-point/workflows/edit/" + stopPointWorkflow.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(editStopPointWorkflowModel)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.status", is("ADDED")));
+    List<StopPointWorkflow> workflows =
+        workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
+            .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
+    assertThat(workflows).hasSize(1);
+    assertThat(workflows.get(0).getStatus()).isEqualTo(WorkflowStatus.ADDED);
+    assertThat(workflows.get(0).getWorkflowComment()).isEqualTo(editStopPointWorkflowModel.getWorkflowComment());
+  }
+
+  @Test
+  void shouldRejectWorkflow() throws Exception {
+    //when
+    Person person = Person.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .function("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+
+    Long versionId = 123456L;
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .status(WorkflowStatus.ADDED)
+        .examinants(Set.of(person))
+        .startDate(LocalDate.of(2000, 1, 1))
+        .endDate(LocalDate.of(2000, 12, 31))
+        .versionId(versionId)
+        .build();
+    workflowRepository.save(stopPointWorkflow);
+
+    ClientPersonModel examinantBAV = ClientPersonModel.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .personFunction("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+
+    StopPointRejectWorkflowModel stopPointRejectWorkflowModel = StopPointRejectWorkflowModel.builder()
+        .motivationComment("No Comment")
+        .examinantBAVClient(examinantBAV).build();
+
+    //given
+    mvc.perform(post("/v1/stop-point/workflows/reject/" + stopPointWorkflow.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(stopPointRejectWorkflowModel)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.status", is("REJECTED")));
+
+    List<StopPointWorkflow> workflows =
+        workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
+            .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
+    assertThat(workflows).hasSize(1);
+    assertThat(workflows.get(0).getStatus()).isEqualTo(WorkflowStatus.REJECTED);
+
+    Decision decisionResult = decisionRepository.findAll().stream()
+        .filter(decision -> decision.getExaminant().getStopPointWorkflow().getId().equals(stopPointWorkflow.getId())).findFirst()
+        .orElse(null);
+    assertThat(decisionResult).isNotNull();
+    Person examinant = decisionResult.getExaminant();
+    assertThat(examinant.getMail()).isEqualTo(ClientPersonMapper.toEntity(examinantBAV).getMail());
+    assertThat(decisionResult.getMotivation()).isEqualTo(stopPointRejectWorkflowModel.getMotivationComment());
+    assertThat(decisionResult.getDecisionType()).isEqualTo(DecisionType.REJECTED);
+  }
+ @Test
+  void shouldCancelWorkflow() throws Exception {
+    //when
+    Person person = Person.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .function("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+
+    Long versionId = 123456L;
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .status(WorkflowStatus.HEARING)
+        .examinants(Set.of(person))
+        .startDate(LocalDate.of(2000, 1, 1))
+        .endDate(LocalDate.of(2000, 12, 31))
+        .versionId(versionId)
+        .build();
+    workflowRepository.save(stopPointWorkflow);
+
+    ClientPersonModel examinantBAV = ClientPersonModel.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .personFunction("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+
+   StopPointRejectWorkflowModel stopPointCancelWorkflowModel = StopPointRejectWorkflowModel.builder()
+        .motivationComment("I don't like it!")
+        .examinantBAVClient(examinantBAV)
+        .build();
+
+    //given
+    mvc.perform(post("/v1/stop-point/workflows/cancel/" + stopPointWorkflow.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(stopPointCancelWorkflowModel)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.status", is("CANCELED")));
+
+    List<StopPointWorkflow> workflows =
+        workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
+            .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
+    assertThat(workflows).hasSize(1);
+    assertThat(workflows.get(0).getStatus()).isEqualTo(WorkflowStatus.CANCELED);
+
+    Decision decisionResult = decisionRepository.findAll().stream()
+        .filter(decision -> decision.getExaminant().getStopPointWorkflow().getId().equals(stopPointWorkflow.getId())).findFirst()
+        .orElse(null);
+    assertThat(decisionResult).isNotNull();
+    Person examinant = decisionResult.getExaminant();
+    assertThat(examinant.getMail()).isEqualTo(ClientPersonMapper.toEntity(examinantBAV).getMail());
+    assertThat(decisionResult.getMotivation()).isEqualTo(stopPointCancelWorkflowModel.getMotivationComment());
+    assertThat(decisionResult.getDecisionType()).isEqualTo(DecisionType.CANCELED);
+  }
+
+  @Test
+  void shouldAddExaminantToWorkflow() throws Exception {
+    //when
+    Person person = Person.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .function("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+
+    Long versionId = 123456L;
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .status(WorkflowStatus.ADDED)
+        .examinants(Set.of(person))
+        .startDate(LocalDate.of(2000, 1, 1))
+        .endDate(LocalDate.of(2000, 12, 31))
+        .versionId(versionId)
+        .build();
+    StopPointWorkflow workflow = workflowRepository.save(stopPointWorkflow);
+    person.setStopPointWorkflow(workflow);
+    workflowRepository.save(workflow);
+
+    ClientPersonModel examinant = ClientPersonModel.builder()
+        .firstName("Luca")
+        .lastName("Fix")
+        .personFunction("YB-Fun")
+        .mail(MAIL_ADDRESS).build();
+
+    //given
+    mvc.perform(post("/v1/stop-point/workflows/add-examinant/" + stopPointWorkflow.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(examinant)))
+        .andExpect(status().isOk());
+
+    List<StopPointWorkflow> workflows =
+        workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
+            .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
+    assertThat(workflows).hasSize(1);
+    assertThat(workflows.get(0).getExaminants()).hasSize(2);
+  }
+
+  @Test
+  void shouldGetOtpWorkflow() throws Exception {
+    //when
+    Person person = Person.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .function("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+
+    Long versionId = 123456L;
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .status(WorkflowStatus.ADDED)
+        .examinants(Set.of(person))
+        .startDate(LocalDate.of(2000, 1, 1))
+        .endDate(LocalDate.of(2000, 12, 31))
+        .versionId(versionId)
+        .build();
+    StopPointWorkflow workflow = workflowRepository.save(stopPointWorkflow);
+    person.setStopPointWorkflow(workflow);
+    workflowRepository.save(workflow);
+
+    //given
+    mvc.perform(post("/v1/stop-point/workflows/obtain-otp/" + stopPointWorkflow.getId() + "/" + person.getId())
+            .contentType(contentType))
+        .andExpect(status().isOk());
+
+    Otp otpResult = otpRepository.findAll().stream().filter(otp -> otp.getPerson().getId().equals(person.getId())).findFirst()
+        .orElse(null);
+
+    assertThat(otpResult).isNotNull();
+    assertThat(otpResult.getPerson().getId()).isEqualTo(person.getId());
+  }
+
+  @Test
+  void shouldRemoveExaminantToWorkflow() throws Exception {
+    //when
+    Person person = Person.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .function("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+
+    Long versionId = 123456L;
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .status(WorkflowStatus.ADDED)
+        .examinants(Set.of(person))
+        .startDate(LocalDate.of(2000, 1, 1))
+        .endDate(LocalDate.of(2000, 12, 31))
+        .versionId(versionId)
+        .build();
+    StopPointWorkflow workflow = workflowRepository.save(stopPointWorkflow);
+    person.setStopPointWorkflow(workflow);
+    workflowRepository.save(workflow);
+
+    //given
+    mvc.perform(post("/v1/stop-point/workflows/remove-examinant/" + stopPointWorkflow.getId() + "/" + person.getId())
+            .contentType(contentType))
+        .andExpect(status().isOk());
+
+    List<StopPointWorkflow> workflows =
+        workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
+            .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
+    assertThat(workflows).hasSize(1);
+    assertThat(workflows.get(0).getExaminants()).isEmpty();
+  }
+
+  @Test
+  void shouldVoteToWorkflow() throws Exception {
+    //when
+    Person person = Person.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .function("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+
+    Long versionId = 123456L;
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .status(WorkflowStatus.HEARING)
+        .examinants(Set.of(person))
+        .startDate(LocalDate.of(2000, 1, 1))
+        .endDate(LocalDate.of(2000, 12, 31))
+        .versionId(versionId)
+        .build();
+    StopPointWorkflow workflow = workflowRepository.saveAndFlush(stopPointWorkflow);
+    person.setStopPointWorkflow(workflow);
+    workflowRepository.saveAndFlush(workflow);
+
+    Otp otp = Otp.builder().code("12345").person(person).build();
+    otpRepository.saveAndFlush(otp);
+    DecisionModel decisionModel = DecisionModel.builder()
+        .judgement(JudgementType.NO)
+        .motivation("Perfetto")
+        .pinCode("12345")
+        .build();
+
+    //given
+    mvc.perform(post("/v1/stop-point/workflows/vote/" + stopPointWorkflow.getId() + "/" + person.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(decisionModel)))
+        .andExpect(status().isOk());
+
+    List<StopPointWorkflow> workflows =
+        workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
+            .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
+    assertThat(workflows).hasSize(1);
+    assertThat(workflows.get(0).getExaminants()).hasSize(1);
+    Decision decisionByExaminantId = decisionRepository.findDecisionByExaminantId(person.getId());
+    assertThat(decisionByExaminantId).isNotNull();
+    assertThat(decisionByExaminantId.getMotivation()).isEqualTo(decisionModel.getMotivation());
+    assertThat(decisionByExaminantId.getJudgement()).isEqualTo(decisionModel.getJudgement());
+    assertThat(decisionByExaminantId.getDecisionType()).isEqualTo(DecisionType.VOTED);
+  }
+
+  @Test
+  void shouldRestartWorkflow() throws Exception {
+    //when
+    Person person = Person.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .function("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+
+    Long versionId = 123456L;
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .status(WorkflowStatus.HEARING)
+        .examinants(Set.of(person))
+        .startDate(LocalDate.of(2000, 1, 1))
+        .endDate(LocalDate.of(2000, 12, 31))
+        .versionId(versionId)
+        .build();
+    workflowRepository.save(stopPointWorkflow);
+
+    ClientPersonModel examinantBAV = ClientPersonModel.builder()
+        .firstName("Luca")
+        .lastName("Fix")
+        .personFunction("YB-Fun")
+        .mail(MAIL_ADDRESS).build();
+    StopPointRestartWorkflowModel restartWorkflowModel = StopPointRestartWorkflowModel.builder()
+        .examinantBAVClient(examinantBAV)
+        .newDesignationOfficial("Bern")
+        .motivationComment("Bern is better")
+        .build();
+
+    //given
+    mvc.perform(post("/v1/stop-point/workflows/restart/" + stopPointWorkflow.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(restartWorkflowModel)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.status", is("ADDED")));
+    List<StopPointWorkflow> workflows =
+        workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
+            .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
+    assertThat(workflows).hasSize(2);
+    assertThat(workflows.get(0).getStatus()).isEqualTo(WorkflowStatus.REJECTED);
+    assertThat(workflows.get(0).getFollowUpWorkflow()).isNotNull();
+    assertThat(workflows.get(1).getStatus()).isEqualTo(WorkflowStatus.ADDED);
+  }
+
+  @Test
+  void shouldOverrideVoteWihtoutDecisionToWorkflow() throws Exception {
+    //when
+    Person person = Person.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .function("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+
+    Long versionId = 123456L;
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .status(WorkflowStatus.HEARING)
+        .examinants(Set.of(person))
+        .startDate(LocalDate.of(2000, 1, 1))
+        .endDate(LocalDate.of(2000, 12, 31))
+        .versionId(versionId)
+        .build();
+    StopPointWorkflow workflow = workflowRepository.saveAndFlush(stopPointWorkflow);
+    person.setStopPointWorkflow(workflow);
+    workflowRepository.saveAndFlush(workflow);
+
+    ClientPersonModel overrider = ClientPersonModel.builder()
+        .firstName("Luca")
+        .lastName("Fix")
+        .personFunction("YB-Fun")
+        .mail(MAIL_ADDRESS).build();
+    OverrideDecisionModel overrideDecisionModel = OverrideDecisionModel.builder()
+        .overrideExaminant(overrider)
+        .fotJudgement(JudgementType.NO)
+        .fotMotivation("Ja save")
+        .build();
+
+    //given
+    mvc.perform(post("/v1/stop-point/workflows/override-vote/" + stopPointWorkflow.getId() + "/" + person.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(overrideDecisionModel)))
+        .andExpect(status().isOk());
+
+    List<StopPointWorkflow> workflows =
+        workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
+            .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
+    assertThat(workflows).hasSize(1);
+    Set<Person> examinants = workflows.get(0).getExaminants();
+    assertThat(examinants).hasSize(1);
+    Decision decisionByExaminantId = decisionRepository.findDecisionByExaminantId(person.getId());
+    assertThat(decisionByExaminantId).isNotNull();
+    assertThat(decisionByExaminantId.getFotMotivation()).isEqualTo(overrideDecisionModel.getFotMotivation());
+    assertThat(decisionByExaminantId.getFotJudgement()).isEqualTo(overrideDecisionModel.getFotJudgement());
+    assertThat(decisionByExaminantId.getFotOverrider().getMail()).isEqualTo(
+        overrideDecisionModel.getOverrideExaminant().getMail());
+  }
+
+  @Test
+  void shouldOverrideVoteWitDecisionToWorkflow() throws Exception {
+    //when
+    Person person = Person.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .function("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+
+    Long versionId = 123456L;
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .status(WorkflowStatus.HEARING)
+        .examinants(Set.of(person))
+        .startDate(LocalDate.of(2000, 1, 1))
+        .endDate(LocalDate.of(2000, 12, 31))
+        .versionId(versionId)
+        .build();
+    StopPointWorkflow workflow = workflowRepository.save(stopPointWorkflow);
+    person.setStopPointWorkflow(workflow);
+    workflowRepository.save(workflow);
+
+    Otp otp = Otp.builder().code("12345").person(person).build();
+    otpRepository.save(otp);
+    Decision decision = Decision.builder()
+        .judgement(JudgementType.YES)
+        .motivation("Perfetto")
+        .motivationDate(LocalDateTime.now())
+        .build();
+    decisionRepository.save(decision);
+    decision.setExaminant(person);
+    decisionRepository.save(decision);
+    ClientPersonModel overrider = ClientPersonModel.builder()
+        .firstName("Luca")
+        .lastName("Fix")
+        .personFunction("YB-Fun")
+        .mail(MAIL_ADDRESS).build();
+    OverrideDecisionModel overrideDecisionModel = OverrideDecisionModel.builder()
+        .overrideExaminant(overrider)
+        .fotJudgement(JudgementType.NO)
+        .fotMotivation("Ja save")
+        .build();
+
+    //given
+    mvc.perform(post("/v1/stop-point/workflows/override-vote/" + stopPointWorkflow.getId() + "/" + person.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(overrideDecisionModel)))
+        .andExpect(status().isOk());
+
+    List<StopPointWorkflow> workflows =
+        workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
+            .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
+    assertThat(workflows).hasSize(1);
+    assertThat(workflows.get(0).getExaminants()).hasSize(1);
+    Decision decisionByExaminantId = decisionRepository.findDecisionByExaminantId(person.getId());
+    assertThat(decisionByExaminantId).isNotNull();
+    assertThat(decisionByExaminantId.getMotivation()).isEqualTo(decision.getMotivation());
+    assertThat(decisionByExaminantId.getJudgement()).isEqualTo(decision.getJudgement());
+    assertThat(decisionByExaminantId.getFotMotivation()).isEqualTo(overrideDecisionModel.getFotMotivation());
+    assertThat(decisionByExaminantId.getFotJudgement()).isEqualTo(overrideDecisionModel.getFotJudgement());
+    assertThat(decisionByExaminantId.getFotOverrider().getMail()).isEqualTo(overrideDecisionModel.getOverrideExaminant().getMail());
+  }
+
+  private static UpdateServicePointVersionModel getUpdateServicePointVersionModel(Status status) {
+    return UpdateServicePointVersionModel.builder()
+        .designationLong("designation long 1")
+        .designationOfficial("Aargau Strasse")
+        .abbreviation("ABC")
+        .freightServicePoint(false)
+        .sortCodeOfDestinationStation("39136")
+        .businessOrganisation("ch:1:sboid:100871")
+        .categories(List.of(Category.POINT_OF_SALE))
+        .status(status)
+        .operatingPointRouteNetwork(true)
+        .meansOfTransport(List.of(MeanOfTransport.TRAIN))
+        .stopPointType(StopPointType.ON_REQUEST)
+        .validFrom(LocalDate.of(2010, 12, 11))
+        .validTo(LocalDate.of(2019, 8, 10))
+        .build();
+  }
+
+}
