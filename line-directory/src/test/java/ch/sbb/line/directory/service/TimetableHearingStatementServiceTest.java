@@ -1,46 +1,40 @@
 package ch.sbb.line.directory.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV1;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementResponsibleTransportCompanyModel;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModelV1;
-import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModelV2;
+import ch.sbb.atlas.api.timetable.hearing.*;
 import ch.sbb.atlas.api.timetable.hearing.enumeration.StatementStatus;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.kafka.model.transport.company.SharedTransportCompanyModel;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.transport.company.repository.TransportCompanySharingDataAccessor;
+import ch.sbb.line.directory.entity.TimetableFieldNumberVersion;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
+import ch.sbb.line.directory.exception.TtfnidNotFoundException;
 import ch.sbb.line.directory.helper.PdfFiles;
 import ch.sbb.line.directory.mapper.TimetableHearingStatementMapperV2;
 import ch.sbb.line.directory.model.TimetableHearingStatementSearchRestrictions;
+import ch.sbb.line.directory.repository.TimetableFieldNumberVersionRepository;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import ch.sbb.line.directory.service.hearing.TimetableHearingStatementService;
 import ch.sbb.line.directory.service.hearing.TimetableHearingYearService;
-import java.io.File;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.time.LocalDate;
+import java.util.*;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.*;
 
 @IntegrationTest
  class TimetableHearingStatementServiceTest {
@@ -59,19 +53,22 @@ import org.springframework.web.multipart.MultipartFile;
   private final TimetableHearingStatementMapperV2 timetableHearingStatementMapperV2;
   private final TransportCompanySharingDataAccessor transportCompanySharingDataAccessor;
 
+  private final TimetableFieldNumberVersionRepository timetableFieldNumberVersionRepository;
+
   @Autowired
    TimetableHearingStatementServiceTest(TimetableHearingYearRepository timetableHearingYearRepository,
-      TimetableHearingYearService timetableHearingYearService,
-      TimetableHearingStatementRepository timetableHearingStatementRepository,
-      TimetableHearingStatementService timetableHearingStatementService,
-      TimetableHearingStatementMapperV2 timetableHearingStatementMapperV2,
-      TransportCompanySharingDataAccessor transportCompanySharingDataAccessor) {
+                                        TimetableHearingYearService timetableHearingYearService,
+                                        TimetableHearingStatementRepository timetableHearingStatementRepository,
+                                        TimetableHearingStatementService timetableHearingStatementService,
+                                        TimetableHearingStatementMapperV2 timetableHearingStatementMapperV2,
+                                        TransportCompanySharingDataAccessor transportCompanySharingDataAccessor, TimetableFieldNumberVersionRepository timetableFieldNumberVersionRepository) {
     this.timetableHearingYearRepository = timetableHearingYearRepository;
     this.timetableHearingYearService = timetableHearingYearService;
     this.timetableHearingStatementRepository = timetableHearingStatementRepository;
     this.timetableHearingStatementService = timetableHearingStatementService;
     this.timetableHearingStatementMapperV2 = timetableHearingStatementMapperV2;
     this.transportCompanySharingDataAccessor = transportCompanySharingDataAccessor;
+      this.timetableFieldNumberVersionRepository = timetableFieldNumberVersionRepository;
   }
 
   private static TimetableHearingStatementModelV1 buildTimetableHearingStatementModelV1() {
@@ -254,6 +251,17 @@ import org.springframework.web.multipart.MultipartFile;
         IdNotFoundException.class);
   }
 
+    @Test
+    void shouldNotCreateHearingStatementIfTtfnidNotExists() {
+        timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+        TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
+        timetableHearingStatementModel.setTtfnid("ABC");
+        List<MultipartFile> emptyList = Collections.emptyList();
+
+        assertThatThrownBy(() -> timetableHearingStatementService.createHearingStatementV2(timetableHearingStatementModel, emptyList))
+                .isInstanceOf(TtfnidNotFoundException.class);
+    }
+
   @Test
   void shouldUpdateHearingStatement() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
@@ -298,6 +306,23 @@ import org.springframework.web.multipart.MultipartFile;
     assertThatThrownBy(
         () -> timetableHearingStatementService.updateHearingStatement(timetableHearingStatement, updatingStatement, Collections.emptyList())).isInstanceOf(
         IdNotFoundException.class);
+  }
+  @Test
+  void shouldNotUpdateHearingStatementIfTtfnidNotExists() {
+    timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+    TimetableHearingStatementModelV2 timetableHearingStatementModel = buildTimetableHearingStatementModelV2();
+
+      TimetableHearingStatement timetableHearingStatement=
+        timetableHearingStatementMapperV2.toEntity(timetableHearingStatementModel);
+
+    TimetableHearingStatementModelV2 updatingStatement = timetableHearingStatementService.createHearingStatementV2(
+        timetableHearingStatementModel, Collections.emptyList());
+    updatingStatement.setTtfnid("ungueltig");
+    List<MultipartFile> emptyList = Collections.emptyList();
+
+    assertThatThrownBy(
+        () -> timetableHearingStatementService.updateHearingStatement(timetableHearingStatement, updatingStatement, emptyList)).isInstanceOf(
+        TtfnidNotFoundException.class);
   }
 
   @Test
@@ -425,6 +450,19 @@ import org.springframework.web.multipart.MultipartFile;
   @Test
   void shouldFindStatementByTtfnid() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+      TimetableFieldNumberVersion timetableFieldNumber = TimetableFieldNumberVersion.builder()
+              .ttfnid("ch:1:ttfnid:2341234")
+              .swissTimetableFieldNumber("1234")
+              .number("5678")
+              .description("Description")
+              .status(Status.VALIDATED)
+              .businessOrganisation("Business Organisation")
+              .validFrom(LocalDate.now())
+              .validTo(LocalDate.now().plusYears(1))
+              .build();
+
+      timetableFieldNumberVersionRepository.saveAndFlush(timetableFieldNumber);
+
     TimetableHearingStatementModelV2 timetableHearingStatementModel = TimetableHearingStatementModelV2.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .swissCanton(SwissCanton.BERN)
@@ -463,6 +501,19 @@ import org.springframework.web.multipart.MultipartFile;
   @Test
   void shouldFindStatementByStatus() {
     timetableHearingYearService.createTimetableHearing(TIMETABLE_HEARING_YEAR);
+      TimetableFieldNumberVersion timetableFieldNumber = TimetableFieldNumberVersion.builder()
+              .ttfnid("ch:1:ttfnid:2341234")
+              .swissTimetableFieldNumber("1234")
+              .number("5678")
+              .description("Description")
+              .status(Status.VALIDATED)
+              .businessOrganisation("Business Organisation")
+              .validFrom(LocalDate.now())
+              .validTo(LocalDate.now().plusYears(1))
+              .build();
+
+      timetableFieldNumberVersionRepository.saveAndFlush(timetableFieldNumber);
+
     TimetableHearingStatementModelV2 timetableHearingStatementModel = TimetableHearingStatementModelV2.builder()
         .timetableYear(TIMETABLE_HEARING_YEAR.getTimetableYear())
         .swissCanton(SwissCanton.BERN)
