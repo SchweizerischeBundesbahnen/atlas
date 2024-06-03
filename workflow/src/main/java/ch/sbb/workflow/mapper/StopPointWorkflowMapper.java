@@ -11,21 +11,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class StopPointWorkflowMapper {
 
-  public static StopPointAddWorkflowModel toModel(StopPointWorkflow entity) {
-    return StopPointAddWorkflowModel.builder()
-        .sloid(entity.getSloid())
-        .examinants(entity.getExaminants().stream().map(ClientPersonMapper::toModel).toList())
-        .ccEmails(entity.getCcEmails())
-        .sboid(entity.getSboid())
-        .versionId(entity.getVersionId())
-        .designationOfficial(entity.getDesignationOfficial())
-        .swissMunicipalityName(entity.getSwissMunicipalityName())
-        .status(entity.getStatus())
-        .workflowComment(entity.getWorkflowComment())
-        .build();
-  }
-
-  public static ReadStopPointWorkflowModel toReadModel(StopPointWorkflow entity) {
+  public static ReadStopPointWorkflowModel toModel(StopPointWorkflow entity) {
     return ReadStopPointWorkflowModel.builder()
         .sloid(entity.getSloid())
         .examinants(entity.getExaminants().stream().map(ClientPersonMapper::toModel).toList())
