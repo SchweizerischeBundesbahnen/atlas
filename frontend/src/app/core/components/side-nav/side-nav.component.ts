@@ -29,6 +29,8 @@ export class SideNavComponent {
   }
 
   getActivePageIndex(currentUrl: string): number {
+    this.selectPage(currentUrl)
+
     if (currentUrl === '/') {
       return this.enabledPages.findIndex((value) => value.path.length === 0);
     }
@@ -36,12 +38,11 @@ export class SideNavComponent {
       (value) => value.path.length > 0 && currentUrl.includes(value.path),
     );
   }
-
-  selectPage(page: Page) {
-    if (this.selectedPage === page) {
-      this.selectedPage = null;
-    } else {
-      this.selectedPage = page;
-    }
+  selectPage(currentUrl: string){
+    this.enabledPages.forEach(value => {
+      if(currentUrl.includes(value.path)){
+        this.selectedPage = value
+      }
+    })
   }
 }
