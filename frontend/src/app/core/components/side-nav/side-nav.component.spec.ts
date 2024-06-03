@@ -81,20 +81,15 @@ describe('SideNavComponent', () => {
     );
   };
 
-  it('should select and deselect a page', () => {
-    const page = { title: 'page 1', path: 'path-1' } as Page;
+  it('should select the correct page based on the current URL', () => {
+    const currentUrl = '/service-point-directory';
+    component.selectPage(currentUrl);
+    expect(component.selectedPage).toEqual(Pages.SEPODI);
+  });
 
-    component.selectPage(page);
-    expect(component.selectedPage).toBe(page);
-
-    component.selectPage(page);
-    expect(component.selectedPage).toBeNull();
-
-    const anotherPage = { title: 'page 2', path: 'path-2' } as Page;
-    component.selectPage(anotherPage);
-    expect(component.selectedPage).toBe(anotherPage);
-
-    component.selectPage(page);
-    expect(component.selectedPage).toBe(page);
+  it('should select Home if the URL does not match', () => {
+    const currentUrl = '/nonexistent';
+    component.selectPage(currentUrl);
+    expect(component.selectedPage).toEqual(Pages.HOME);
   });
 });
