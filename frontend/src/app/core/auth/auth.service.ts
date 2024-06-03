@@ -42,7 +42,7 @@ export class AuthService {
 
     this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
       if (!this.oauthService.hasValidAccessToken()) {
-        this.AUTH_STORAGE_ITEMS.map((item) => this.oauthStorage.removeItem(item));
+        this.AUTH_STORAGE_ITEMS.forEach((item) => this.oauthStorage.removeItem(item));
       }
 
       if (this.oauthService.getIdentityClaims()) {
