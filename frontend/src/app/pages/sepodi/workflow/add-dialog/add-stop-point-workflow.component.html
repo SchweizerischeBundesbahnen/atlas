@@ -7,7 +7,7 @@
   <div class="mb-2">
     <span class="font-bold-4xl">{{ data.title | translate }}</span>
   </div>
-  <stop-point-workflow-detail-form [stopPoint]="data.stopPoint"></stop-point-workflow-detail-form>
+  <stop-point-workflow-detail-form [form]="form" [stopPoint]="data.stopPoint"></stop-point-workflow-detail-form>
 
   <mat-dialog-actions class="justify-content-end mt-5">
     <button (click)="closeDialog()" class="atlas-primary-btn me-3" data-cy="dialog-cancel-button">
