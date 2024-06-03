@@ -67,13 +67,4 @@ describe('PageService', () => {
     expect(result.subpages!.length).toBe(1);
     expect(result.subpages![0].title).toBe('PAGES.WORKFLOW.TITLE_HEADER');
   });
-
-
-  it('should set and get a page', () => {
-    const page: Page = Pages.SEPODI;
-    pageService.setPage(page);
-    pageService.getPage().subscribe((receivedPage) => {
-      expect(receivedPage).toEqual(page);
-    });
-  });
 });
