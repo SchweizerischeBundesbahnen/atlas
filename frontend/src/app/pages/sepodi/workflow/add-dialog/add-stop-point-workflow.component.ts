@@ -2,6 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {NotificationService} from "../../../../core/notification/notification.service";
 import {
+  Client,
   ReadServicePointVersion,
   StopPointAddWorkflow,
   StopPointWorkflowService,
@@ -13,6 +14,7 @@ import {
   StopPointWorkflowDetailFormGroup,
   StopPointWorkflowDetailFormGroupBuilder
 } from "../detail-form/stop-point-workflow-detail-form-group";
+import {ValidationService} from "../../../../core/validation/validation.service";
 
 @Component({
   selector: 'app-workflow-dialog',
@@ -36,10 +38,18 @@ export class AddStopPointWorkflowComponent implements OnInit {
   }
 
   addWorkflow() {
-    const workflow = this.stopPointToWorkflowInfo(this.data.stopPoint);
-    workflow.workflowComment = this.form.controls.workflowComment.value!;
-    workflow.ccEmails = this.form.controls.ccEmails.value!;
-    this.stopPointWorkflowService.addStopPointWorkflow(workflow);
+    ValidationService.validateForm(this.form);
+    if (this.form.valid) {
+      const workflow = this.stopPointToWorkflowInfo(this.data.stopPoint);
+      workflow.workflowComment = this.form.controls.workflowComment.value!;
+      workflow.ccEmails = this.form.controls.ccEmails.value!;
+      workflow.examinants = this.form.controls.examinants.value.map(examinant => examinant as Client);
+      console.log("adding ", workflow);
+      this.stopPointWorkflowService.addStopPointWorkflow(workflow);
+    }
+    else {
+      console.log("form not valid ", this.form);
+    }
   }
 
   private stopPointToWorkflowInfo(stopPoint: ReadServicePointVersion): StopPointAddWorkflow {
