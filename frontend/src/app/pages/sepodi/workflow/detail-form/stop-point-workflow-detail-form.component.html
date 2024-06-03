@@ -44,8 +44,17 @@
                  [itemValidator]="emailValidator"
                  fieldLabel="SEPODI.SERVICE_POINTS.WORKFLOW.ADDITIONAL_MAIL_RECIPIENTS"
                  infoIconTitle="SEPODI.SERVICE_POINTS.WORKFLOW.ADDITIONAL_MAIL_RECIPIENTS_INFO"
-                 [required]="false"
+                 [required]="true"
                  placeHolderText="TTH.STATEMENT.E_MAIL_ITEMS_LIMIT_REACHED"
                  [fieldExamples]="[{ label: 'FORM.MAX_ITEMS', translate: true, arg: { key: 'numberOfItems', value: '10' }}]"
-                 controlName="emails">
+                 controlName="ccEmails">
 </atlas-text-list>
+
+<div class="d-flex flex-column col-12">
+  <form-comment
+    [formGroup]="form"
+    label="SEPODI.SERVICE_POINTS.WORKFLOW.COMMENT"
+    controlName="workflowComment"
+    maxChars="2000"
+  ></form-comment>
+</div>
