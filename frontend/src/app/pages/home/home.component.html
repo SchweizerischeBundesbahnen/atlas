@@ -8,7 +8,7 @@
   </div>
   <div class="card-container" data-cy="home-card-container">
     <a *ngFor="let page of enabledPages" id="{{ page.path }}" class="card" [routerLink]="page.path">
-      <div class="d-flex flex-column justify-content-between card-content-box">
+      <div class="d-flex flex-column justify-content-between card-content-box" (click)="selectPage(page)">
         <h3 class="title color-gray-900 font-bold-xl m-0">{{ page.title | translate }}</h3>
         <p class="font-regular-base color-gray-900 m-0">{{ page.description! | translate }}</p>
         <span class="d-flex color-primary-400 font-bold-base"
