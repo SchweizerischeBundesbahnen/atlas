@@ -5,6 +5,7 @@ import {PageService} from "./page.service";
 import {environment} from "../../../environments/environment";
 import {Pages} from "../../pages/pages";
 import {PermissionService} from "../auth/permission/permission.service";
+import {Page} from "../model/page";
 
 const permissionServiceMock: Partial<PermissionService> = {
   mayAccessTimetableHearing: () => true,
@@ -67,4 +68,12 @@ describe('PageService', () => {
     expect(result.subpages![0].title).toBe('PAGES.WORKFLOW.TITLE_HEADER');
   });
 
+
+  it('should set and get a page', () => {
+    const page: Page = Pages.SEPODI;
+    pageService.setPage(page);
+    pageService.getPage().subscribe((receivedPage) => {
+      expect(receivedPage).toEqual(page);
+    });
+  });
 });
