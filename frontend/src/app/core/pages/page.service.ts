@@ -3,6 +3,7 @@ import {Pages} from "../../pages/pages";
 import {Page} from "../model/page";
 import {environment} from "../../../environments/environment";
 import {PermissionService} from "../auth/permission/permission.service";
+import {Observable, Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ import {PermissionService} from "../auth/permission/permission.service";
 export class PageService {
 
   private viewablePages: Page[] = [...Pages.pages];
-
+  private page = new Subject<Page>();
   constructor(private permissionService: PermissionService) {
   }
 
@@ -40,5 +41,13 @@ export class PageService {
       }
       return page;
     });
+  }
+
+  public getPage(): Observable<Page> {
+    return this.page.asObservable();
+  }
+
+  public setPage(page: Page) {
+    return this.page.next(page);
   }
 }
