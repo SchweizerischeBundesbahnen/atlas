@@ -16,8 +16,4 @@ export class HomeComponent {
   get enabledPages(): Page[] {
     return this.pageService.enabledPages.filter((page) => page !== Pages.HOME);
   }
-
-  selectPage(page: Page){
-    this.pageService.setPage(page);
-  }
 }
