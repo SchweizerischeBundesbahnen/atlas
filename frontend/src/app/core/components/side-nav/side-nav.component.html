@@ -1,7 +1,7 @@
   <div *ngFor="let page of enabledPages; let pageIndex = index" class="list-item-wrapper"
        [class.route-active]="activePageIndex === pageIndex"
        attr.data-cy="{{ page.path ? 'sidemenu-' + page.path : 'sidemenu-start' }}">
-    <a mat-list-item [routerLink]="page.path" (click)="selectPage(page)">
+    <a mat-list-item [routerLink]="page.path">
       <div class="list-item-content-wrapper">
         <span class="font-bold-base link-text">{{ page.titleMenu! | translate}}</span>
         <em class="bi ms-auto" [ngClass]="{
