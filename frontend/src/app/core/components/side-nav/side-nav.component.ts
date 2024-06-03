@@ -22,10 +22,6 @@ export class SideNavComponent {
         tap(() => (this.activePageIndex = this.getActivePageIndex(this.router.url))),
       )
       .subscribe();
-
-    this.pageService.getPage().subscribe(page => {
-      this.selectedPage = page
-    })
   }
 
   get enabledPages(): Page[] {
@@ -33,20 +29,20 @@ export class SideNavComponent {
   }
 
   getActivePageIndex(currentUrl: string): number {
+    this.selectPage(currentUrl)
+
     if (currentUrl === '/') {
-      this.selectedPage = null
       return this.enabledPages.findIndex((value) => value.path.length === 0);
     }
     return this.enabledPages.findIndex(
       (value) => value.path.length > 0 && currentUrl.includes(value.path),
     );
   }
-
-  selectPage(page: Page) {
-    if (this.selectedPage === page) {
-      this.selectedPage = null;
-    } else {
-      this.selectedPage = page;
-    }
+  selectPage(currentUrl: string){
+    this.enabledPages.findIndex(value => {
+      if(currentUrl.includes(value.path)){
+        this.selectedPage = value
+      }
+    })
   }
 }
