@@ -39,7 +39,7 @@ export class SideNavComponent {
     );
   }
   selectPage(currentUrl: string){
-    this.enabledPages.findIndex(value => {
+    this.enabledPages.find(value => {
       if(currentUrl.includes(value.path)){
         this.selectedPage = value
       }
