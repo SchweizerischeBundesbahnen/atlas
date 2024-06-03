@@ -15,11 +15,13 @@ import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.line.directory.entity.SharedTransportCompany;
 import ch.sbb.line.directory.entity.StatementDocument;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
+import ch.sbb.line.directory.exception.TtfnidNotFoundException;
 import ch.sbb.line.directory.mapper.ResponsibleTransportCompanyMapper;
 import ch.sbb.line.directory.mapper.StatementSenderMapperV2;
 import ch.sbb.line.directory.mapper.TimetableHearingStatementMapperV1;
 import ch.sbb.line.directory.mapper.TimetableHearingStatementMapperV2;
 import ch.sbb.line.directory.model.TimetableHearingStatementSearchRestrictions;
+import ch.sbb.line.directory.repository.TimetableFieldNumberRepository;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
 import java.io.File;
@@ -47,6 +49,7 @@ public class TimetableHearingStatementService {
 
   private final TimetableHearingStatementRepository timetableHearingStatementRepository;
   private final TimetableHearingYearRepository timetableHearingYearRepository;
+  private final TimetableFieldNumberRepository timetableFieldNumberRepository;
   private final FileService fileService;
   private final TimetableHearingPdfsAmazonService pdfsUploadAmazonService;
   private final StatementDocumentFilesValidationService statementDocumentFilesValidationService;
@@ -76,6 +79,8 @@ public class TimetableHearingStatementService {
   public TimetableHearingStatement createHearingStatement(TimetableHearingStatement statementToCreate,
       List<MultipartFile> documents) {
     checkThatTimetableHearingYearExists(statementToCreate.getTimetableYear());
+    checkThatTimetableFieldNumberExists(statementToCreate);
+
     statementToCreate.setStatementStatus(StatementStatus.RECEIVED);
 
     List<File> files = new ArrayList<>();
@@ -132,6 +137,8 @@ public class TimetableHearingStatementService {
 
     TimetableHearingStatement updatedObject = updateObject(timetableHearingStatementModel, timetableHearingStatementInDb);
     addFilesToStatement(documents, updatedObject);
+    checkThatTimetableFieldNumberExists(updatedObject);
+
 
     TimetableHearingStatement timetableHearingStatement = timetableHearingStatementRepository.save(updatedObject);
     pdfsUploadAmazonService.uploadPdfFiles(files, timetableHearingStatement.getId().toString());
@@ -240,6 +247,14 @@ public class TimetableHearingStatementService {
     if (!timetableHearingYearRepository.existsById(timetableYear)) {
       throw new IdNotFoundException(timetableYear);
     }
+  }
+
+  private void checkThatTimetableFieldNumberExists(TimetableHearingStatement statement) {
+    if(statement.getTtfnid() != null && !statement.getTtfnid().isEmpty() &&
+            !timetableFieldNumberRepository.existsByTtfnid(statement.getTtfnid())){
+        throw new TtfnidNotFoundException(statement.getTtfnid());
+    }
+
   }
 
   private void addFilesToStatement(List<MultipartFile> documents, TimetableHearingStatement statement) {
