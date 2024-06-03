@@ -1,10 +1,9 @@
-import {TestBed} from '@angular/core/testing';
+import {fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {AuthService} from './auth.service';
-import {OAuthService, OAuthSuccessEvent} from 'angular-oauth2-oidc';
+import {OAuthService, OAuthStorage, OAuthSuccessEvent} from 'angular-oauth2-oidc';
 import {of, Subject} from 'rxjs';
-import {Component} from '@angular/core';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {RouterModule} from "@angular/router";
+import {provideHttpClientTesting} from '@angular/common/http/testing';
+import {Router} from "@angular/router";
 import {UserService} from "./user/user.service";
 import {PageService} from "../pages/page.service";
 
@@ -20,6 +19,7 @@ function createOauthServiceSpy() {
     'logOut',
     'initCodeFlow',
     'getAccessToken',
+    'hasValidAccessToken',
   ]);
   oauthServiceSpy.loadDiscoveryDocumentAndLogin.and.returnValue(
     new Promise((resolve: (v: boolean) => void): void => {
@@ -45,16 +45,11 @@ function createOauthServiceSpy() {
   oauthServiceSpy.getIdentityClaims.and.returnValue({name: 'me', email: 'me@sbb.ch', roles: []});
   const fakeToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJyb2xlcyI6W119.yjh-DMdelyF78dO4LdVa--VDaJOcdk8OYJ-FOQnAkKA'
   oauthServiceSpy.getAccessToken.and.returnValue(fakeToken);
+  oauthServiceSpy.hasValidAccessToken.and.returnValue(true);
   return oauthServiceSpy;
 }
 
 const oauthService = createOauthServiceSpy();
-
-@Component({
-  selector: 'mock-component',
-  template: '<h1>Mock Component</h1>',
-})
-class MockComponent {}
 
 describe('AuthService', () => {
   sessionStorage.setItem('requested_route', 'mock');
@@ -70,21 +65,26 @@ describe('AuthService', () => {
   }));
 
   const pageService = jasmine.createSpyObj(['addPagesBasedOnPermissions','resetPages']);
+  const oauthStorage = jasmine.createSpyObj<OAuthStorage>(['removeItem']);
+  const router = jasmine.createSpyObj(['navigateByUrl', 'navigate']);
+  router.url = '/';
+  router.navigateByUrl.and.returnValue(Promise.resolve(true));
+  router.navigate.and.returnValue(Promise.resolve(true));
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        RouterModule.forRoot([{ path: 'mock', component: MockComponent }]),
-      ],
       providers: [
+        provideHttpClientTesting(),
         {provide: OAuthService, useValue: oauthService},
+        {provide: OAuthStorage, useValue: oauthStorage},
         {provide: UserService, useValue: userService},
         {provide: PageService, useValue: pageService},
+        {provide: Router, useValue: router},
       ],
     });
 
-    authService = TestBed.inject(AuthService);
+    authService = new AuthService(oauthService, router, userService, pageService, oauthStorage);
+    oauthStorage.removeItem.calls.reset();
   });
 
   it('should be created', () => {
@@ -102,5 +102,23 @@ describe('AuthService', () => {
     expect(userService.resetCurrentUser).toHaveBeenCalled();
     expect(pageService.resetPages).toHaveBeenCalled();
   });
+
+  it('removes access token from storage if not valid', fakeAsync(() => {
+    oauthService.hasValidAccessToken.and.returnValue(false);
+
+    new AuthService(oauthService, router, userService, pageService, oauthStorage);
+    tick(1000);
+
+    expect(oauthStorage.removeItem).toHaveBeenCalled();
+  }));
+
+  it('does not remove access token from storage if valid', fakeAsync(() => {
+    oauthService.hasValidAccessToken.and.returnValue(true);
+
+    new AuthService(oauthService, router, userService, pageService, oauthStorage);
+    tick(1000);
+
+    expect(oauthStorage.removeItem).not.toHaveBeenCalled();
+  }));
 
 });

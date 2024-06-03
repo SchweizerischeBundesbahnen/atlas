@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {OAuthService} from 'angular-oauth2-oidc';
+import {OAuthService, OAuthStorage} from 'angular-oauth2-oidc';
 import {environment} from '../../../environments/environment';
 import {Pages} from '../../pages/pages';
 import {jwtDecode} from 'jwt-decode';
@@ -15,17 +15,36 @@ import {User} from "./user/user";
 export class AuthService {
 
   private readonly REQUESTED_ROUTE_STORAGE_KEY = 'requested_route';
+  private readonly AUTH_STORAGE_ITEMS: string[] = [
+    'access_token',
+    'access_token_stored_at',
+    'expires_at',
+    'granted_scopes',
+    'id_token',
+    'id_token_claims_obj',
+    'id_token_expires_at',
+    'id_token_stored_at',
+    'nonce',
+    'PKCE_verifier',
+    'refresh_token',
+    'session_state'
+  ];
 
   constructor(
     private oauthService: OAuthService,
     private router: Router,
     private userService: UserService,
     private pageService: PageService,
+    private oauthStorage: OAuthStorage,
   ) {
     this.oauthService.configure(environment.authConfig);
     this.oauthService.setupAutomaticSilentRefresh();
 
     this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
+      if (!this.oauthService.hasValidAccessToken()) {
+        this.AUTH_STORAGE_ITEMS.map((item) => this.oauthStorage.removeItem(item));
+      }
+
       if (this.oauthService.getIdentityClaims()) {
         const user = this.userFromAccessToken();
         this.userService.setCurrentUserAndLoadPermissions(user).subscribe(() => {
