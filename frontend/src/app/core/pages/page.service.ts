@@ -10,6 +10,7 @@ import {PermissionService} from "../auth/permission/permission.service";
 export class PageService {
 
   private viewablePages: Page[] = [...Pages.pages];
+
   constructor(private permissionService: PermissionService) {
   }
 
