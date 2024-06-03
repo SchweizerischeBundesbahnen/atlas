@@ -44,7 +44,7 @@
                  [itemValidator]="emailValidator"
                  fieldLabel="SEPODI.SERVICE_POINTS.WORKFLOW.ADDITIONAL_MAIL_RECIPIENTS"
                  infoIconTitle="SEPODI.SERVICE_POINTS.WORKFLOW.ADDITIONAL_MAIL_RECIPIENTS_INFO"
-                 [required]="true"
+                 [required]="false"
                  placeHolderText="TTH.STATEMENT.E_MAIL_ITEMS_LIMIT_REACHED"
                  [fieldExamples]="[{ label: 'FORM.MAX_ITEMS', translate: true, arg: { key: 'numberOfItems', value: '10' }}]"
                  controlName="ccEmails">
@@ -53,8 +53,53 @@
 <div class="d-flex flex-column col-12">
   <form-comment
     [formGroup]="form"
+    [required]="true"
     label="SEPODI.SERVICE_POINTS.WORKFLOW.COMMENT"
     controlName="workflowComment"
-    maxChars="2000"
+    maxChars="1500"
   ></form-comment>
+</div>
+
+<div [formGroup]="form">
+  <div class="d-flex flex-column col-12">
+    <div class="font-bold-2xl mt-5">
+      {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.EXAMINANTS' | translate }}
+
+      <form-info-icon
+        infoTitle="{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.EXAMINANTS_INFO' | translate }}"
+      ></form-info-icon>
+
+      <atlas-slide-toggle [(toggle)]="examinantsActive"></atlas-slide-toggle>
+    </div>
+    <div>
+      {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.EXAMINANTS_SUBTITLE' | translate }}
+    </div>
+  </div>
+
+  <div formArrayName="examinants" *ngFor="let examinant of form.controls.examinants.controls; let i = index">
+    <ng-container [formGroupName]="i">
+      <div class="examinant d-flex flex-row col-12 gap-2">
+        <div class="flex-grow-1">
+        <atlas-text-field [formGroup]="examinant" controlName="firstName"></atlas-text-field>
+      </div>
+        <div class="flex-grow-1">
+        <atlas-text-field [formGroup]="examinant" controlName="lastName"></atlas-text-field>
+        </div>
+        <div class="flex-grow-1">
+        <atlas-text-field [formGroup]="examinant" controlName="personFunction"></atlas-text-field>
+        </div>
+        <div class="flex-grow-1">
+        <atlas-text-field [formGroup]="examinant" controlName="mail"></atlas-text-field>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <atlas-button
+    (click)="addExaminant()"
+    buttonDataCy="add-examinant"
+    buttonText="COMMON.ADD"
+    buttonType="defaultPrimary"
+  >
+  </atlas-button>
 </div>
