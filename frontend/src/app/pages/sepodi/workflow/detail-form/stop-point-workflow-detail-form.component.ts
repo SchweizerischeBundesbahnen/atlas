@@ -5,13 +5,15 @@ import {
   BusinessOrganisationLanguageService
 } from "../../../../core/form-components/bo-select/business-organisation-language.service";
 import {take} from "rxjs";
-import {FormGroup} from "@angular/forms";
+import {ControlContainer, FormGroup, NgForm} from "@angular/forms";
 import {AtlasCharsetsValidator} from "../../../../core/validation/charsets/atlas-charsets-validator";
 import {AtlasFieldLengthValidator} from "../../../../core/validation/field-lengths/atlas-field-length-validator";
+import {StopPointWorkflowDetailFormGroup} from "./stop-point-workflow-detail-form-group";
 
 @Component({
   selector: 'stop-point-workflow-detail-form',
   templateUrl: './stop-point-workflow-detail-form.component.html',
+  viewProviders: [{provide: ControlContainer, useExisting: NgForm}],
 })
 export class StopPointWorkflowDetailFormComponent implements OnInit {
 
@@ -20,7 +22,7 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   stopPointBusinessOrganisation?: BusinessOrganisationVersion;
   boDescription!: string;
 
-  form = new FormGroup({});
+  @Input() form!: FormGroup<StopPointWorkflowDetailFormGroup>;
 
   readonly emailValidator = [AtlasCharsetsValidator.email, AtlasFieldLengthValidator.length_100];
 
@@ -32,6 +34,7 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
 
   ngOnInit() {
     this.initBusinessOrganisationHeaderPanel();
+
   }
 
   private initBusinessOrganisationHeaderPanel() {
