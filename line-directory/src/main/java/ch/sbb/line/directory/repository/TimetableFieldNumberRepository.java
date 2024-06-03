@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface TimetableFieldNumberRepository extends JpaRepository<TimetableFieldNumber, String>,
     JpaSpecificationExecutor<TimetableFieldNumber> {
 
+    boolean existsByTtfnid(String ttfnid);
 }
