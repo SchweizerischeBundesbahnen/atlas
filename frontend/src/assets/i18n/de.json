@@ -983,7 +983,8 @@
       "WORKFLOW": {
         "NEW_DESIGNATION_OFFICIAL": "Neue offizielle Bezeichnung",
         "ADDITIONAL_MAIL_RECIPIENTS": "cc-Mail für Status der Anhörung",
-        "ADDITIONAL_MAIL_RECIPIENTS_INFO": "Es können zusätzliche E-Mail Adressen ergänzt werden. Diese werden über den Verlauf der Anhörung ebenfalls informiert."
+        "ADDITIONAL_MAIL_RECIPIENTS_INFO": "Es können zusätzliche E-Mail Adressen ergänzt werden. Diese werden über den Verlauf der Anhörung ebenfalls informiert.",
+        "COMMENT": "Begründung"
       }
     },
     "TRAFFIC_POINT_ELEMENTS": {
