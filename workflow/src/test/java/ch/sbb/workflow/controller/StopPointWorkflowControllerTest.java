@@ -16,6 +16,7 @@ import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
@@ -48,7 +49,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.ResponseEntity;
 
 class StopPointWorkflowControllerTest extends BaseControllerApiTest {
 
@@ -103,7 +103,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .build();
 
     when(sePoDiClient.postServicePointsStatusUpdate(versionId, Status.IN_REVIEW))
-        .thenReturn(ResponseEntity.ok(getUpdateServicePointVersionModel(Status.IN_REVIEW)));
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     controller.addStopPointWorkflow(workflowModel);
 
@@ -179,7 +179,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldCreateAddWorkflow() throws Exception {
+  void shouldAddWorkflow() throws Exception {
     //when
     ClientPersonModel person = ClientPersonModel.builder()
         .firstName("Marek")
@@ -199,14 +199,112 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .versionId(versionId)
         .build();
     when(sePoDiClient.postServicePointsStatusUpdate(versionId, Status.IN_REVIEW))
-        .thenReturn(ResponseEntity.ok(getUpdateServicePointVersionModel(Status.IN_REVIEW)));
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     //given
     mvc.perform(post("/v1/stop-point/workflows")
         .contentType(contentType)
         .content(mapper.writeValueAsString(workflowModel))
     ).andExpect(status().isCreated());
-    System.out.println("");
+  }
+
+  @Test
+  void shouldNotAddWorkflowWhenStopPointVersionIdNotFound() throws Exception {
+    //when
+    ClientPersonModel person = ClientPersonModel.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .personFunction("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+    long versionId = 123456L;
+    StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .swissCanton(SwissCanton.BERN)
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .examinants(List.of(person))
+        .versionId(versionId)
+        .build();
+    when(sePoDiClient.postServicePointsStatusUpdate(versionId, Status.IN_REVIEW))
+        .thenThrow(new IdNotFoundException(versionId));
+
+    //given
+    mvc.perform(post("/v1/stop-point/workflows")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(workflowModel))
+        ).andExpect(status().isNotFound())
+        .andExpect(jsonPath("$.status", is(404)))
+        .andExpect(jsonPath("$.message", is("Entity not found")))
+        .andExpect(jsonPath("$.error", is("Not found")))
+        .andExpect(jsonPath("$.details[0].message", is("Object with id " + versionId + " not found")))
+        .andExpect(jsonPath("$.details[0].field", is("id")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.ENTITY_NOT_FOUND")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("field")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("id")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("value")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is(String.valueOf(versionId))));
+  }
+
+  @Test
+  void shouldNotAddWhenWorkflowAlreadyInStatusAdded() throws Exception {
+    //when
+    Person person = Person.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .function("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+
+    Long versionId = 123456L;
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .status(WorkflowStatus.ADDED)
+        .examinants(Set.of(person))
+        .startDate(LocalDate.of(2000, 1, 1))
+        .endDate(LocalDate.of(2000, 12, 31))
+        .versionId(versionId)
+        .build();
+    workflowRepository.save(stopPointWorkflow);
+
+    ClientPersonModel personModel = ClientPersonModel.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .personFunction("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+    StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .swissCanton(SwissCanton.BERN)
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .examinants(List.of(personModel))
+        .versionId(versionId)
+        .build();
+    when(sePoDiClient.postServicePointsStatusUpdate(versionId, Status.IN_REVIEW))
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
+
+    //given
+    mvc.perform(post("/v1/stop-point/workflows")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(workflowModel))
+        ).andExpect(status().isPreconditionRequired())
+        .andExpect(jsonPath("$.status", is(428)))
+        .andExpect(jsonPath("$.message", is("Workflow already in status ADDED")))
+        .andExpect(jsonPath("$.error", is("StopPoint Workflow error")))
+        .andExpect(jsonPath("$.details[0].message", is("Wrong status")))
+        .andExpect(jsonPath("$.details[0].field", is("status")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("WORKFLOW.ERROR.WRONG_CHANGING_STATUS")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("status")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("ADDED")));
   }
 
   @Test
@@ -380,7 +478,8 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(decisionResult.getMotivation()).isEqualTo(stopPointRejectWorkflowModel.getMotivationComment());
     assertThat(decisionResult.getDecisionType()).isEqualTo(DecisionType.REJECTED);
   }
- @Test
+
+  @Test
   void shouldCancelWorkflow() throws Exception {
     //when
     Person person = Person.builder()
@@ -411,7 +510,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .personFunction("Centrocampista")
         .mail(MAIL_ADDRESS).build();
 
-   StopPointRejectWorkflowModel stopPointCancelWorkflowModel = StopPointRejectWorkflowModel.builder()
+    StopPointRejectWorkflowModel stopPointCancelWorkflowModel = StopPointRejectWorkflowModel.builder()
         .motivationComment("I don't like it!")
         .examinantBAVClient(examinantBAV)
         .build();
@@ -790,7 +889,8 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(decisionByExaminantId.getJudgement()).isEqualTo(decision.getJudgement());
     assertThat(decisionByExaminantId.getFotMotivation()).isEqualTo(overrideDecisionModel.getFotMotivation());
     assertThat(decisionByExaminantId.getFotJudgement()).isEqualTo(overrideDecisionModel.getFotJudgement());
-    assertThat(decisionByExaminantId.getFotOverrider().getMail()).isEqualTo(overrideDecisionModel.getOverrideExaminant().getMail());
+    assertThat(decisionByExaminantId.getFotOverrider().getMail()).isEqualTo(
+        overrideDecisionModel.getOverrideExaminant().getMail());
   }
 
   private static UpdateServicePointVersionModel getUpdateServicePointVersionModel(Status status) {
