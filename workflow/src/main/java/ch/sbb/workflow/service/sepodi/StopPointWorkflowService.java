@@ -1,17 +1,15 @@
 package ch.sbb.workflow.service.sepodi;
 
-import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.api.workflow.ClientPersonModel;
-import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
-import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.Decision;
 import ch.sbb.workflow.entity.DecisionType;
 import ch.sbb.workflow.entity.JudgementType;
 import ch.sbb.workflow.entity.Otp;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
+import ch.sbb.workflow.exception.StopPointWorkflowAlreadyInAddedStatusException;
 import ch.sbb.workflow.helper.OtpHelper;
 import ch.sbb.workflow.kafka.WorkflowNotificationService;
 import ch.sbb.workflow.mapper.ClientPersonMapper;
@@ -45,8 +43,7 @@ public class StopPointWorkflowService {
   private final StopPointWorkflowRepository workflowRepository;
   private final DecisionRepository decisionRepository;
   private final OtpRepository otpRepository;
-  private final SePoDiClient sePoDiClient;
-
+  private final SePoDiClientService sePoDiClientService;
   private final Examinants examinants;
   private final WorkflowNotificationService notificationService;
 
@@ -61,18 +58,11 @@ public class StopPointWorkflowService {
   public StopPointWorkflow addWorkflow(StopPointAddWorkflowModel stopPointAddWorkflowModel) {
     StopPointWorkflow stopPointWorkflow = mapStopPointWorkflow(stopPointAddWorkflowModel);
     if (hasWorkflowAdded(stopPointWorkflow.getVersionId())) {
-      // TODO: WorkflowCurrentlyAddedException
-      throw new IllegalStateException("Workflow already in Hearing!");
+      throw new StopPointWorkflowAlreadyInAddedStatusException();
     }
-    //TODO: extract me in a SePoDiService
-    UpdateServicePointVersionModel updateServicePointVersionModel = sePoDiClient.postServicePointsStatusUpdate(
-            stopPointWorkflow.getVersionId(), Status.IN_REVIEW)
-        .getBody();
-    if (updateServicePointVersionModel != null && Status.IN_REVIEW == updateServicePointVersionModel.getStatus()) {
-      stopPointWorkflow.setStatus(WorkflowStatus.ADDED);
-      return workflowRepository.save(stopPointWorkflow);
-    }
-    throw new IllegalStateException("Something went wrong!");
+    sePoDiClientService.updateStoPointStatusToInReview(stopPointWorkflow.getVersionId());
+    stopPointWorkflow.setStatus(WorkflowStatus.ADDED);
+    return workflowRepository.save(stopPointWorkflow);
   }
 
   public StopPointWorkflow startWorkflow(Long id) {
