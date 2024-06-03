@@ -8,7 +8,8 @@ import {take} from "rxjs";
 import {ControlContainer, FormGroup, NgForm} from "@angular/forms";
 import {AtlasCharsetsValidator} from "../../../../core/validation/charsets/atlas-charsets-validator";
 import {AtlasFieldLengthValidator} from "../../../../core/validation/field-lengths/atlas-field-length-validator";
-import {StopPointWorkflowDetailFormGroup} from "./stop-point-workflow-detail-form-group";
+import {StopPointWorkflowDetailFormGroup, StopPointWorkflowDetailFormGroupBuilder} from "./stop-point-workflow-detail-form-group";
+import {ValidationService} from "../../../../core/validation/validation.service";
 
 @Component({
   selector: 'stop-point-workflow-detail-form',
@@ -18,11 +19,10 @@ import {StopPointWorkflowDetailFormGroup} from "./stop-point-workflow-detail-for
 export class StopPointWorkflowDetailFormComponent implements OnInit {
 
   @Input() stopPoint!: ReadServicePointVersion;
-
+  @Input() form!: FormGroup<StopPointWorkflowDetailFormGroup>;
   stopPointBusinessOrganisation?: BusinessOrganisationVersion;
   boDescription!: string;
-
-  @Input() form!: FormGroup<StopPointWorkflowDetailFormGroup>;
+  examinantsActive = true;
 
   readonly emailValidator = [AtlasCharsetsValidator.email, AtlasFieldLengthValidator.length_100];
 
@@ -53,4 +53,11 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
     this.boDescription = this.stopPointBusinessOrganisation![this.businessOrganisationLanguageService.getCurrentLanguageDescription()];
   }
 
+  addExaminant() {
+    const examinantsControl = this.form.controls.examinants;
+    ValidationService.validateForm(examinantsControl);
+    if (examinantsControl.valid) {
+      examinantsControl.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup());
+    }
+  }
 }
