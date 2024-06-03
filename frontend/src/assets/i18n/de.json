@@ -984,7 +984,10 @@
         "NEW_DESIGNATION_OFFICIAL": "Neue offizielle Bezeichnung",
         "ADDITIONAL_MAIL_RECIPIENTS": "cc-Mail für Status der Anhörung",
         "ADDITIONAL_MAIL_RECIPIENTS_INFO": "Es können zusätzliche E-Mail Adressen ergänzt werden. Diese werden über den Verlauf der Anhörung ebenfalls informiert.",
-        "COMMENT": "Begründung"
+        "COMMENT": "Begründung",
+        "EXAMINANTS": "Empfänger",
+        "EXAMINANTS_INFO": "Es ist mindestens eine Gemeinde einzutragen. In bestimmten Fällen, wie bei vorheriger Abklärung ausserhalb von atlas kann dieser Part leer bleiben. Kanton und Fachstelle werden automatisch hinzugefügt.",
+        "EXAMINANTS_SUBTITLE": "Wichtig: Hier müssen die Kontaktinformationen für die Anhörung ergänzt werden (Gemeinde zwingend, weitere Empfänger bei Bedarf).\nDie Kantonsempfänger und Fachstellen werden durch atlas automatisch ergänzt."
       }
     },
     "TRAFFIC_POINT_ELEMENTS": {
