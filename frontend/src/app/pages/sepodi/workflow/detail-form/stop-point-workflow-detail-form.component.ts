@@ -18,16 +18,18 @@ import {ValidationService} from "../../../../core/validation/validation.service"
 })
 export class StopPointWorkflowDetailFormComponent implements OnInit {
 
+  readonly emailValidator = [AtlasCharsetsValidator.email, AtlasFieldLengthValidator.length_100];
+
   @Input() stopPoint!: ReadServicePointVersion;
   @Input() form!: FormGroup<StopPointWorkflowDetailFormGroup>;
+
   stopPointBusinessOrganisation?: BusinessOrganisationVersion;
   boDescription!: string;
-  _examinantsActive = true;
 
+  _examinantsActive = true;
   get examinantsActive() {
     return this._examinantsActive;
   }
-
   set examinantsActive(value: boolean) {
     if (value) {
       this.form.controls.examinants.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup());
@@ -37,8 +39,6 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
     this._examinantsActive = value;
   }
 
-  readonly emailValidator = [AtlasCharsetsValidator.email, AtlasFieldLengthValidator.length_100];
-
   constructor(
     private businessOrganisationsService: BusinessOrganisationsService,
     private businessOrganisationLanguageService: BusinessOrganisationLanguageService,
@@ -47,7 +47,6 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
 
   ngOnInit() {
     this.initBusinessOrganisationHeaderPanel();
-
   }
 
   private initBusinessOrganisationHeaderPanel() {
