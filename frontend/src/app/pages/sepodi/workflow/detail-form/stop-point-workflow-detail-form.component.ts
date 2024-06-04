@@ -22,7 +22,20 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   @Input() form!: FormGroup<StopPointWorkflowDetailFormGroup>;
   stopPointBusinessOrganisation?: BusinessOrganisationVersion;
   boDescription!: string;
-  examinantsActive = true;
+  _examinantsActive = true;
+
+  get examinantsActive() {
+    return this._examinantsActive;
+  }
+
+  set examinantsActive(value: boolean) {
+    if (value) {
+      this.form.controls.examinants.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup());
+    } else {
+      this.form.controls.examinants.clear();
+    }
+    this._examinantsActive = value;
+  }
 
   readonly emailValidator = [AtlasCharsetsValidator.email, AtlasFieldLengthValidator.length_100];
 
