@@ -1,5 +1,7 @@
 package ch.sbb.workflow.service.sepodi;
 
+import static ch.sbb.atlas.workflow.model.WorkflowStatus.REJECTED;
+
 import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
@@ -41,6 +43,7 @@ public class StopPointWorkflowService {
   private static final String EXCEPTION_HEARING_MSG = "Workflow status must be HEARING!!!(REPLACE ME WITH A CUSTOM EXCEPTION)";
 
   private final StopPointWorkflowRepository workflowRepository;
+  private final DecisionService decisionService;
   private final DecisionRepository decisionRepository;
   private final OtpRepository otpRepository;
   private final SePoDiClientService sePoDiClientService;
@@ -60,7 +63,7 @@ public class StopPointWorkflowService {
     if (hasWorkflowAdded(stopPointWorkflow.getVersionId())) {
       throw new StopPointWorkflowAlreadyInAddedStatusException();
     }
-    sePoDiClientService.updateStoPointStatusToInReview(stopPointWorkflow.getSloid(), stopPointWorkflow.getVersionId());
+    sePoDiClientService.updateStoPointStatusToInReview(stopPointWorkflow);
     stopPointWorkflow.setStatus(WorkflowStatus.ADDED);
     return workflowRepository.save(stopPointWorkflow);
   }
@@ -71,8 +74,21 @@ public class StopPointWorkflowService {
         WorkflowStatus.HEARING);
     stopPointWorkflow.setStatus(WorkflowStatus.HEARING);
     StopPointWorkflow workflow = workflowRepository.save(stopPointWorkflow);
-    notificationService.sendStopPointWorkflowMail(workflow);
+    notificationService.sendStartStopPointWorkflowMail(workflow);
     return workflow;
+  }
+
+  public StopPointWorkflow rejectWorkflow(Long id, StopPointRejectWorkflowModel workflowModel) {
+    StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
+    StopPointWorkflowStatusTransitionDecider.validateWorkflowStatusTransition(stopPointWorkflow.getStatus(), REJECTED);
+    Person examinantBAV = ClientPersonMapper.toEntity(workflowModel.getExaminantBAVClient());
+    decisionService.createRejectedDecision(examinantBAV, workflowModel.getMotivationComment());
+    sePoDiClientService.updateStoPointStatusToDraft(stopPointWorkflow);
+    examinantBAV.setStopPointWorkflow(stopPointWorkflow);
+    stopPointWorkflow.setStatus(REJECTED);
+    StopPointWorkflow workflow = workflowRepository.save(stopPointWorkflow);
+    notificationService.sendRejectPointWorkflowMail(workflow);
+    return stopPointWorkflow;
   }
 
   public StopPointWorkflow editWorkflow(Long id, EditStopPointWorkflowModel workflowModel) {
@@ -83,27 +99,6 @@ public class StopPointWorkflowService {
     }
     stopPointWorkflow.setWorkflowComment(workflowModel.getWorkflowComment());
     return workflowRepository.save(stopPointWorkflow);
-  }
-
-  public StopPointWorkflow rejectWorkflow(Long id, StopPointRejectWorkflowModel workflowModel) {
-    StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
-    if (stopPointWorkflow.getStatus() != WorkflowStatus.ADDED) {
-      throw new IllegalStateException(EXCEPTION_MSG);
-    }
-    ClientPersonModel examinantBAVclientPersonModel = workflowModel.getExaminantBAVClient();
-    Person examinantBAV = ClientPersonMapper.toEntity(examinantBAVclientPersonModel);
-    examinantBAV.setStopPointWorkflow(stopPointWorkflow);
-    Decision decision = new Decision();
-    decision.setJudgement(JudgementType.NO);
-    decision.setDecisionType(DecisionType.REJECTED);
-    decision.setExaminant(examinantBAV);
-    decision.setMotivation(workflowModel.getMotivationComment());
-    decision.setMotivationDate(LocalDateTime.now());
-    decisionRepository.save(decision);
-
-    //TODO: 1. sePoDiClient.update(officialDesignation)
-    stopPointWorkflow.setStatus(WorkflowStatus.REJECTED);
-    return stopPointWorkflow;
   }
 
   public StopPointWorkflow cancelWorkflow(Long id, StopPointRejectWorkflowModel stopPointCancelWorkflowModel) {
@@ -160,7 +155,7 @@ public class StopPointWorkflowService {
         .build();
     workflowRepository.save(newStopPointWorkflow);
     //update current workflow
-    stopPointWorkflow.setStatus(WorkflowStatus.REJECTED);
+    stopPointWorkflow.setStatus(REJECTED);
     stopPointWorkflow.setFollowUpWorkflow(newStopPointWorkflow);
     workflowRepository.save(stopPointWorkflow);
     return newStopPointWorkflow;
@@ -190,7 +185,7 @@ public class StopPointWorkflowService {
 
   public void obtainOtp(Long id, Long personId) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
-    if (stopPointWorkflow.getStatus() != WorkflowStatus.REJECTED || stopPointWorkflow.getStatus() != WorkflowStatus.APPROVED) {
+    if (stopPointWorkflow.getStatus() != REJECTED || stopPointWorkflow.getStatus() != WorkflowStatus.APPROVED) {
       Person person = stopPointWorkflow.getExaminants().stream().filter(p -> p.getId().equals(personId)).findFirst()
           .orElseThrow(() -> new IdNotFoundException(personId));
       Otp otp = Otp.builder()
