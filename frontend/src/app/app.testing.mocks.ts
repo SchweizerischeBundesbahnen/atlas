@@ -1,21 +1,21 @@
-import {Component, EventEmitter, Input, NgModule, Output} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {ApplicationRole, ApplicationType, TimetableHearingStatement} from './api';
-import {AtlasButtonType} from './core/components/button/atlas-button.type';
-import {TableColumn} from './core/components/table/table-column';
-import {TablePagination} from './core/components/table/table-pagination';
-import {AtlasFieldCustomError} from './core/form-components/atlas-field-error/atlas-field-custom-error';
-import {SelectionModel} from '@angular/cdk/collections';
-import {TableFilter} from './core/components/table-filter/config/table-filter';
-import {CreationEditionRecord} from './core/components/base-detail/user-edit-info/creation-edition-record';
-import {BaseDetailController} from './core/components/base-detail/base-detail-controller';
-import {Record} from './core/components/base-detail/record';
-import {AuthService} from "./core/auth/auth.service";
-import {UserService} from "./core/auth/user/user.service";
-import {BehaviorSubject, Subject} from "rxjs";
-import {PermissionService} from "./core/auth/permission/permission.service";
-import {PageService} from "./core/pages/page.service";
-import {Pages} from "./pages/pages";
+import { Component, EventEmitter, Input, NgModule, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ApplicationRole, ApplicationType, TimetableHearingStatement } from './api';
+import { AtlasButtonType } from './core/components/button/atlas-button.type';
+import { TableColumn } from './core/components/table/table-column';
+import { TablePagination } from './core/components/table/table-pagination';
+import { AtlasFieldCustomError } from './core/form-components/atlas-field-error/atlas-field-custom-error';
+import { SelectionModel } from '@angular/cdk/collections';
+import { TableFilter } from './core/components/table-filter/config/table-filter';
+import { CreationEditionRecord } from './core/components/base-detail/user-edit-info/creation-edition-record';
+import { BaseDetailController } from './core/components/base-detail/base-detail-controller';
+import { Record } from './core/components/base-detail/record';
+import { AuthService } from './core/auth/auth.service';
+import { UserService } from './core/auth/user/user.service';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { PermissionService } from './core/auth/permission/permission.service';
+import { PageService } from './core/pages/page.service';
+import { Pages } from './pages/pages';
 
 @Component({
   selector: 'app-switch-version',
@@ -145,7 +145,13 @@ export class MockAtlasFieldErrorComponent {
 export type ActivatedRouteMockType = { data: any };
 
 export const adminUserServiceMock: Partial<UserService> = {
-  currentUser: { name: 'Test (ITC)', email: 'test@test.ch', sbbuid: 'e123456', isAdmin: true, permissions: [] },
+  currentUser: {
+    name: 'Test (ITC)',
+    email: 'test@test.ch',
+    sbbuid: 'e123456',
+    isAdmin: true,
+    permissions: [],
+  },
   userChanged: new Subject<void>(),
   loggedIn: true,
   isAdmin: true,
@@ -169,7 +175,7 @@ export const adminPermissionServiceMock: Partial<PermissionService> = {
 };
 
 export const pageServiceMock: Partial<PageService> = {
-  enabledPages: [...Pages.pages]
+  enabledPages: [...Pages.pages],
 };
 
 export const authServiceSpy = jasmine.createSpyObj<AuthService>(['login', 'logout']);
