@@ -10,7 +10,7 @@ public class StatusTransitionDecider {
 
   private final Set<Status> FROM_STATUS_DRAFT_TO_STATUS_ALLOWED = Set.of(Status.IN_REVIEW, Status.VALIDATED);
 
-  public void validateStatusTransition(Status fromStatus, Status toStatus) {
+  public void validateWorkflowStatusTransition(Status fromStatus, Status toStatus) {
     switch (fromStatus) {
       case DRAFT -> fromStatusDraftTo(toStatus);
       default -> throw new ServicePointStatusChangeNotAllowedException(fromStatus, toStatus);
