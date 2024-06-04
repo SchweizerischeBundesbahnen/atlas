@@ -3,10 +3,13 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.imports.util.ImportUtils;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSearchVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
@@ -290,6 +293,21 @@ class ServicePointServiceTest {
     assertThat(result.getValidTo()).isEqualTo(LocalDate.of(2000, 6, 1));
 
     verify(servicePointTerminationService).checkTerminationAllowed(anyList(), anyList());
+  }
+
+  @Test
+  void shouldUpdateStopPointStatusForWorkflow() {
+    //given
+    ServicePointVersion version = ServicePointTestData.getBernWyleregg();
+    version.setStatus(Status.DRAFT);
+    doCallRealMethod().when(servicePointStatusDecider).isStoPointLocatedInSwitzerland(version);
+    //when
+    ServicePointVersion result = servicePointService.updateStopPointStatusForWorkflow(version, List.of(version),
+        Status.IN_REVIEW);
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getStatus()).isEqualTo(Status.IN_REVIEW);
+    verify(servicePointVersionRepositoryMock).save(version);
   }
 
   @Test
