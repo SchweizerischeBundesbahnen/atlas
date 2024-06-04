@@ -22,7 +22,7 @@ export class StopPointWorkflowDetailFormGroupBuilder {
       {
         ccEmails: new FormControl([], [Validators.maxLength(10)]),
         workflowComment: new FormControl('', [Validators.required, AtlasFieldLengthValidator.comments]),
-        examinants: new FormArray<FormGroup<ExaminantFormGroup>>([]),
+        examinants: new FormArray<FormGroup<ExaminantFormGroup>>([this.buildExaminantFormGroup()]),
       }
     );
   }
