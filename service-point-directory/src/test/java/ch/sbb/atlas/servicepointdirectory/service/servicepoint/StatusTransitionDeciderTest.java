@@ -7,25 +7,25 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointStatusChangeNotAllowedException;
 import org.junit.jupiter.api.Test;
 
-public class StatusTransitionDeciderTest {
+class StatusTransitionDeciderTest {
 
   @Test
-  void shouldValidateStatusTransitionFromDraftToInReview(){
+  void shouldValidateStatusTransitionFromDraftToInReview() {
     //when && then
-    assertDoesNotThrow(()-> StatusTransitionDecider.validateStatusTransition(Status.DRAFT,Status.IN_REVIEW));
+    assertDoesNotThrow(() -> StatusTransitionDecider.validateWorkflowStatusTransition(Status.DRAFT, Status.IN_REVIEW));
   }
 
   @Test
-  void shouldValidateStatusTransitionFromDraftToValidated(){
+  void shouldValidateStatusTransitionFromDraftToValidated() {
     //when && then
-    assertDoesNotThrow(()-> StatusTransitionDecider.validateStatusTransition(Status.DRAFT,Status.VALIDATED));
+    assertDoesNotThrow(() -> StatusTransitionDecider.validateWorkflowStatusTransition(Status.DRAFT, Status.VALIDATED));
   }
 
   @Test
   void shouldNotValidateStatusTransitionFromReviewToInReview(){
     //when && then
     assertThrows(ServicePointStatusChangeNotAllowedException.class,
-        ()-> StatusTransitionDecider.validateStatusTransition(Status.IN_REVIEW,Status.IN_REVIEW));
+        () -> StatusTransitionDecider.validateWorkflowStatusTransition(Status.IN_REVIEW, Status.IN_REVIEW));
   }
 
 }
