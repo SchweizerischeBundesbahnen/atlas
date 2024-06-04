@@ -14,9 +14,9 @@ public class SePoDiClientService {
 
   private final SePoDiClient sePoDiClient;
 
-  void updateStoPointStatusToInReview(Long versionId) {
+  void updateStoPointStatusToInReview(String sloid, Long versionId) {
     UpdateServicePointVersionModel updateServicePointVersionModel = sePoDiClient.postServicePointsStatusUpdate(
-        versionId, Status.IN_REVIEW);
+        sloid, versionId, Status.IN_REVIEW);
     if (updateServicePointVersionModel != null && Status.IN_REVIEW != updateServicePointVersionModel.getStatus()) {
       throw new IllegalStateException("Something went wrong! The StopPoint Status must be " + Status.IN_REVIEW);
     }
