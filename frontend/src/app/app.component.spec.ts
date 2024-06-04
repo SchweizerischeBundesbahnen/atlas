@@ -11,7 +11,7 @@ import { AppTestingModule } from './app.testing.module';
 import { SwUpdate } from '@angular/service-worker';
 import { MaintenanceIconComponent } from './core/components/header/maintenance-icon/maintenance-icon.component';
 import { InfoIconComponent } from './core/form-components/info-icon/info-icon.component';
-import {authServiceSpy} from "./app.testing.mocks";
+import { authServiceSpy } from './app.testing.mocks';
 
 describe('AppComponent', () => {
   let component: AppComponent;
