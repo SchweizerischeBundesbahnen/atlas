@@ -60,7 +60,7 @@ public class StopPointWorkflowService {
     if (hasWorkflowAdded(stopPointWorkflow.getVersionId())) {
       throw new StopPointWorkflowAlreadyInAddedStatusException();
     }
-    sePoDiClientService.updateStoPointStatusToInReview(stopPointWorkflow.getVersionId());
+    sePoDiClientService.updateStoPointStatusToInReview(stopPointWorkflow.getSloid(), stopPointWorkflow.getVersionId());
     stopPointWorkflow.setStatus(WorkflowStatus.ADDED);
     return workflowRepository.save(stopPointWorkflow);
   }
