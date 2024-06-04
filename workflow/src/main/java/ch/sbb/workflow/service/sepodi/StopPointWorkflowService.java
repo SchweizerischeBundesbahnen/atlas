@@ -67,14 +67,8 @@ public class StopPointWorkflowService {
 
   public StopPointWorkflow startWorkflow(Long id) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
-    // TODO: WorkflowCurrentlyInHearingException
-    if (hasWorkflowHearing(stopPointWorkflow.getVersionId())) {
-      throw new IllegalStateException("Workflow already in Hearing!");
-    }
-    // TODO: WorkflowCurrentlyAddedException
-    if (stopPointWorkflow.getStatus() != WorkflowStatus.ADDED) {
-      throw new IllegalStateException(EXCEPTION_MSG);
-    }
+    StopPointWorkflowStatusTransitionDecider.validateWorkflowStatusTransition(stopPointWorkflow.getStatus(),
+        WorkflowStatus.HEARING);
     stopPointWorkflow.setStatus(WorkflowStatus.HEARING);
     StopPointWorkflow workflow = workflowRepository.save(stopPointWorkflow);
     notificationService.sendStopPointWorkflowMail(workflow);
