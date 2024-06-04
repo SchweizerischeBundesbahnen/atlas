@@ -14,25 +14,18 @@ public class StopPointWorkflowStatusTransitionDecider {
 
   public void validateWorkflowStatusTransition(WorkflowStatus fromStatus, WorkflowStatus toStatus) {
     switch (fromStatus) {
-      case ADDED -> fromStatusAddedTo(toStatus);
-      case HEARING -> fromStatusHaringTo(toStatus);
+      case ADDED -> fromStatusTo(WorkflowStatus.ADDED, toStatus, FROM_STATUS_ADDED_TO_STATUS_ALLOWED);
+      case HEARING -> fromStatusTo(WorkflowStatus.HEARING, toStatus, FROM_STATUS_HEARING_TO_STATUS_ALLOWED);
       default -> throw new StopPointPointStatusChangeNotAllowedException(fromStatus, toStatus);
     }
 
   }
 
-  private void fromStatusAddedTo(WorkflowStatus toStatus) {
-    boolean statusTransitionAllowed = FROM_STATUS_ADDED_TO_STATUS_ALLOWED.contains(toStatus);
+  private void fromStatusTo(WorkflowStatus fromStatus, WorkflowStatus toStatus, Set<WorkflowStatus> allowedStatusList) {
+    boolean statusTransitionAllowed = allowedStatusList.contains(toStatus);
     if (!statusTransitionAllowed) {
-      throw new StopPointPointStatusChangeNotAllowedException(WorkflowStatus.ADDED, toStatus);
+      throw new StopPointPointStatusChangeNotAllowedException(fromStatus, toStatus);
     }
   }
-
-  private void fromStatusHaringTo(WorkflowStatus toStatus) {
-    boolean statusTransitionAllowed = FROM_STATUS_HEARING_TO_STATUS_ALLOWED.contains(toStatus);
-    if (!statusTransitionAllowed) {
-      throw new StopPointPointStatusChangeNotAllowedException(WorkflowStatus.HEARING, toStatus);
-    }
-  }
-
+  
 }
