@@ -1,5 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -161,19 +162,12 @@ public class ServicePointService {
           + "(#servicePointVersion, #servicePointVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   public ServicePointVersion updateStopPointStatusForWorkflow(ServicePointVersion servicePointVersion,
       List<ServicePointVersion> servicePointVersions, Status statusToChange) {
-    validateIsStopPointLocatedInSwitzerland(servicePointVersion);
-    StatusTransitionDecider.validateStatusTransition(servicePointVersion.getStatus(), statusToChange);
+    ServicePointHelper.validateIsStopPointLocatedInSwitzerland(servicePointVersion);
+    StatusTransitionDecider.validateWorkflowStatusTransition(servicePointVersion.getStatus(), statusToChange);
     servicePointVersion.setStatus(statusToChange);
     servicePointVersionRepository.save(servicePointVersion);
     return servicePointVersion;
   }
 
-  private void validateIsStopPointLocatedInSwitzerland(ServicePointVersion servicePointVersion) {
-    boolean stoPointLocatedInSwitzerland = servicePointStatusDecider.isStoPointLocatedInSwitzerland(servicePointVersion);
-    if (!stoPointLocatedInSwitzerland) {
-      throw new IllegalStateException("The provided ServicePoint with sloid " + servicePointVersion.getSloid() + " is not an "
-          + "StopPoint Located in Switzerland!");
-    }
-  }
 
 }
