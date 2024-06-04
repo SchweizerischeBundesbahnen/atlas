@@ -1,13 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {NotificationService} from "../../../../core/notification/notification.service";
-import {
-  Client,
-  ReadServicePointVersion,
-  StopPointAddWorkflow,
-  StopPointWorkflowService,
-  UserAdministrationService
-} from "../../../../api";
+import {Client, ReadServicePointVersion, StopPointAddWorkflow, StopPointWorkflowService} from "../../../../api";
 import {AddStopPointWorkflowDialogData} from "./add-stop-point-workflow-dialog-data";
 import {FormGroup} from "@angular/forms";
 import {
@@ -15,6 +8,8 @@ import {
   StopPointWorkflowDetailFormGroupBuilder
 } from "../detail-form/stop-point-workflow-detail-form-group";
 import {ValidationService} from "../../../../core/validation/validation.service";
+import {DetailHelperService} from "../../../../core/detail/detail-helper.service";
+import {NotificationService} from "../../../../core/notification/notification.service";
 
 @Component({
   selector: 'app-workflow-dialog',
@@ -22,16 +17,16 @@ import {ValidationService} from "../../../../core/validation/validation.service"
 })
 export class AddStopPointWorkflowComponent implements OnInit {
 
-  form!: FormGroup<StopPointWorkflowDetailFormGroup>;
-
   constructor(
     public dialogRef: MatDialogRef<AddStopPointWorkflowComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AddStopPointWorkflowDialogData,
+    private detailHelperService: DetailHelperService,
+    private stopPointWorkflowService: StopPointWorkflowService,
     private notificationService: NotificationService,
-    private userAdministrationService: UserAdministrationService,
-    private stopPointWorkflowService: StopPointWorkflowService
   ) {
   }
+
+  form!: FormGroup<StopPointWorkflowDetailFormGroup>;
 
   ngOnInit() {
     this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup();
@@ -45,9 +40,10 @@ export class AddStopPointWorkflowComponent implements OnInit {
       workflow.ccEmails = this.form.controls.ccEmails.value!;
       workflow.examinants = this.form.controls.examinants.value.map(examinant => examinant as Client);
       console.log("adding ", workflow);
-      this.stopPointWorkflowService.addStopPointWorkflow(workflow);
-    }
-    else {
+      this.stopPointWorkflowService.addStopPointWorkflow(workflow).subscribe(()=>{
+
+      })
+    }    else {
       console.log("form not valid ", this.form);
     }
   }
@@ -63,8 +59,11 @@ export class AddStopPointWorkflowComponent implements OnInit {
     }
   }
 
-
-  closeDialog() {
-    this.dialogRef.close(true);
+  cancel() {
+    this.detailHelperService.confirmLeaveDirtyForm(this.form).subscribe(confirmed => {
+      if (confirmed) {
+        this.dialogRef.close(true);
+      }
+    });
   }
 }
