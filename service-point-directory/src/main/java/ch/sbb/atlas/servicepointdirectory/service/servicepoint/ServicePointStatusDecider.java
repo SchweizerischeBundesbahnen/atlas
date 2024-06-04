@@ -58,16 +58,21 @@ public class ServicePointStatusDecider {
         return getStatusFromCurrentVersion(currentVersion);
     }
 
+    public boolean isStoPointLocatedInSwitzerland(ServicePointVersion servicePointVersion) {
+        boolean isStopPoint = servicePointVersion.isStopPoint();
+        boolean isSwissCountryCode = Objects.equals(servicePointVersion.getCountry().getUicCode(),
+            Country.SWITZERLAND.getUicCode());
+        boolean isSwissLocation = isSPLocatedInSwitzerland(servicePointVersion);
+        return isSwissCountryCode && isStopPoint && isSwissLocation;
+    }
+
     /**
      * Documentation at CreateNewServicePointStatusDecision.puml and UpdateNewServicePointStatusDecision.puml
      */
     private Status calculateStatusAccordingToStatusDecisionAlgorithm(ServicePointVersion newServicePointVersion) {
-        boolean isStopPoint = newServicePointVersion.isStopPoint();
-        boolean isSwissCountryCode = Objects.equals(newServicePointVersion.getCountry().getUicCode(), Country.SWITZERLAND.getUicCode());
-        boolean isSwissLocation = isSPLocatedInSwitzerland(newServicePointVersion);
+        boolean isStoPointLocatedInSwiss = isStoPointLocatedInSwitzerland(newServicePointVersion);
         boolean isValidityLongEnough = calculateDiffBetweenTwoDatesAndAddOne(newServicePointVersion) > VALIDITY_IN_DAYS;
-
-        return isSwissCountryCode && isStopPoint && isSwissLocation && isValidityLongEnough ? Status.DRAFT : Status.VALIDATED;
+        return isStoPointLocatedInSwiss && isValidityLongEnough ? Status.DRAFT : Status.VALIDATED;
     }
 
     private void logMessage(ServicePointVersion currentVersion, ServicePointVersion newServicePointVersion,
