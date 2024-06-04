@@ -89,8 +89,9 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     List<ClientPersonModel> clientPersonModels = new ArrayList<>();
     clientPersonModels.add(person);
     long versionId = 123456L;
+    String sloid = "ch:1:sloid:1234";
     StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
-        .sloid("ch:1:sloid:1234")
+        .sloid(sloid)
         .sboid("ch:1:sboid:666")
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
         .swissMunicipalityName("Biel/Bienne")
@@ -102,7 +103,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .versionId(versionId)
         .build();
 
-    when(sePoDiClient.postServicePointsStatusUpdate(versionId, Status.IN_REVIEW))
+    when(sePoDiClient.postServicePointsStatusUpdate(sloid, versionId, Status.IN_REVIEW))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     controller.addStopPointWorkflow(workflowModel);
@@ -187,8 +188,9 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .personFunction("Centrocampista")
         .mail(MAIL_ADDRESS).build();
     long versionId = 123456L;
+    String sloid = "ch:1:sloid:1234";
     StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
-        .sloid("ch:1:sloid:1234")
+        .sloid(sloid)
         .sboid("ch:1:sboid:666")
         .swissCanton(SwissCanton.BERN)
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
@@ -198,7 +200,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .examinants(List.of(person))
         .versionId(versionId)
         .build();
-    when(sePoDiClient.postServicePointsStatusUpdate(versionId, Status.IN_REVIEW))
+    when(sePoDiClient.postServicePointsStatusUpdate(sloid, versionId, Status.IN_REVIEW))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     //given
@@ -217,8 +219,9 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .personFunction("Centrocampista")
         .mail(MAIL_ADDRESS).build();
     long versionId = 123456L;
+    String sloid = "ch:1:sloid:1234";
     StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
-        .sloid("ch:1:sloid:1234")
+        .sloid(sloid)
         .sboid("ch:1:sboid:666")
         .swissCanton(SwissCanton.BERN)
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
@@ -228,7 +231,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .examinants(List.of(person))
         .versionId(versionId)
         .build();
-    when(sePoDiClient.postServicePointsStatusUpdate(versionId, Status.IN_REVIEW))
+    when(sePoDiClient.postServicePointsStatusUpdate(sloid, versionId, Status.IN_REVIEW))
         .thenThrow(new IdNotFoundException(versionId));
 
     //given
@@ -258,8 +261,9 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .mail(MAIL_ADDRESS).build();
 
     Long versionId = 123456L;
+    String sloid = "ch:1:sloid:1234";
     StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
-        .sloid("ch:1:sloid:1234")
+        .sloid(sloid)
         .sboid("ch:1:sboid:666")
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
         .swissMunicipalityName("Biel/Bienne")
@@ -279,7 +283,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .personFunction("Centrocampista")
         .mail(MAIL_ADDRESS).build();
     StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
-        .sloid("ch:1:sloid:1234")
+        .sloid(sloid)
         .sboid("ch:1:sboid:666")
         .swissCanton(SwissCanton.BERN)
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
@@ -289,7 +293,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .examinants(List.of(personModel))
         .versionId(versionId)
         .build();
-    when(sePoDiClient.postServicePointsStatusUpdate(versionId, Status.IN_REVIEW))
+    when(sePoDiClient.postServicePointsStatusUpdate(sloid, versionId, Status.IN_REVIEW))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     //given
