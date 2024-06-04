@@ -379,7 +379,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
             .contentType(contentType))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.status", is("HEARING")));
-    verify(notificationService).sendStopPointWorkflowMail(any(StopPointWorkflow.class));
+    verify(notificationService).sendStartStopPointWorkflowMail(any(StopPointWorkflow.class));
   }
 
   @Test
@@ -481,6 +481,8 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(examinant.getMail()).isEqualTo(ClientPersonMapper.toEntity(examinantBAV).getMail());
     assertThat(decisionResult.getMotivation()).isEqualTo(stopPointRejectWorkflowModel.getMotivationComment());
     assertThat(decisionResult.getDecisionType()).isEqualTo(DecisionType.REJECTED);
+
+    verify(notificationService).sendRejectPointWorkflowMail(any(StopPointWorkflow.class));
   }
 
   @Test
