@@ -25,7 +25,7 @@ public class WorkflowNotificationService {
         }
     }
 
-    public void sendStopPointWorkflowMail(StopPointWorkflow stopPointWorkflow) {
+    public void sendStartStopPointWorkflowMail(StopPointWorkflow stopPointWorkflow) {
         Set<String> mails = stopPointWorkflow.getExaminants().stream().map(Person::getMail).collect(Collectors.toSet());
         mails.addAll(stopPointWorkflow.getCcEmails());
         //TODO: Send Email
@@ -39,4 +39,7 @@ public class WorkflowNotificationService {
         };
     }
 
+    public void sendRejectPointWorkflowMail(StopPointWorkflow workflow) {
+        //TODO: Send Email
+    }
 }

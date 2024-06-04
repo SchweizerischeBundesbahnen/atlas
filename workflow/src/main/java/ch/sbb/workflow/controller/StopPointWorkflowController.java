@@ -43,18 +43,18 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   }
 
   @Override
-  public ReadStopPointWorkflowModel editStopPointWorkflow(Long id, EditStopPointWorkflowModel workflowModel) {
-    return StopPointWorkflowMapper.toModel(service.editWorkflow(id,workflowModel));
+  public ReadStopPointWorkflowModel rejectStopPointWorkflow(Long id, StopPointRejectWorkflowModel workflowModel) {
+    return StopPointWorkflowMapper.toModel(service.rejectWorkflow(id, workflowModel));
   }
 
   @Override
-  public ReadStopPointWorkflowModel rejectStopPointWorkflow(Long id, StopPointRejectWorkflowModel workflowModel) {
-    return StopPointWorkflowMapper.toModel(service.rejectWorkflow(id,workflowModel));
+  public ReadStopPointWorkflowModel editStopPointWorkflow(Long id, EditStopPointWorkflowModel workflowModel) {
+    return StopPointWorkflowMapper.toModel(service.editWorkflow(id, workflowModel));
   }
 
   @Override
   public ReadStopPointWorkflowModel addExaminantToStopPointWorkflow(Long id, ClientPersonModel personModel) {
-    return StopPointWorkflowMapper.toModel(service.addExaminantToWorkflow(id,personModel));
+    return StopPointWorkflowMapper.toModel(service.addExaminantToWorkflow(id, personModel));
   }
 
   @Override
