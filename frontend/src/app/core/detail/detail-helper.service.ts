@@ -34,7 +34,11 @@ export class DetailHelperService {
   }
 
   public confirmLeave(detail: DetailWithCancelEdit): Observable<boolean> {
-    if (detail.form.dirty) {
+    return this.confirmLeaveDirtyForm(detail.form);
+  }
+
+  public confirmLeaveDirtyForm(form: FormGroup): Observable<boolean> {
+    if (form.dirty) {
       return this.dialogService.confirm({
         title: 'DIALOG.DISCARD_CHANGES_TITLE',
         message: 'DIALOG.LEAVE_SITE',
