@@ -5,27 +5,39 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointStatusChangeNotAllowedException;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 class StatusTransitionDeciderTest {
 
-  @Test
-  void shouldValidateStatusTransitionFromDraftToInReview() {
+  @ParameterizedTest
+  @EnumSource(value = Status.class, names = {"IN_REVIEW", "VALIDATED"})
+  void shouldValidateStatusTransitionFromDraftToAllowedStatus(Status status) {
     //when && then
-    assertDoesNotThrow(() -> StatusTransitionDecider.validateWorkflowStatusTransition(Status.DRAFT, Status.IN_REVIEW));
+    assertDoesNotThrow(() -> StatusTransitionDecider.validateWorkflowStatusTransition(Status.DRAFT, status));
   }
 
-  @Test
-  void shouldValidateStatusTransitionFromDraftToValidated() {
-    //when && then
-    assertDoesNotThrow(() -> StatusTransitionDecider.validateWorkflowStatusTransition(Status.DRAFT, Status.VALIDATED));
-  }
-
-  @Test
-  void shouldNotValidateStatusTransitionFromReviewToInReview(){
+  @ParameterizedTest
+  @EnumSource(value = Status.class, names = {"DRAFT", "REVOKED", "WITHDRAWN"})
+  void shouldNotValidateStatusTransitionFromDraftToNotAllowedStatus(Status status) {
     //when && then
     assertThrows(ServicePointStatusChangeNotAllowedException.class,
-        () -> StatusTransitionDecider.validateWorkflowStatusTransition(Status.IN_REVIEW, Status.IN_REVIEW));
+        () -> StatusTransitionDecider.validateWorkflowStatusTransition(Status.DRAFT, status));
+  }
+
+  @ParameterizedTest
+  @EnumSource(value = Status.class, names = {"DRAFT", "VALIDATED"})
+  void shouldValidateStatusTransitionFromInReviewToAllowedStatus(Status status) {
+    //when && then
+    assertDoesNotThrow(() -> StatusTransitionDecider.validateWorkflowStatusTransition(Status.IN_REVIEW, status));
+  }
+
+  @ParameterizedTest
+  @EnumSource(value = Status.class, names = {"IN_REVIEW", "REVOKED", "WITHDRAWN"})
+  void shouldNotValidateStatusTransitionFromInReviewToNotAllowedStatus(Status status) {
+    //when && then
+    assertThrows(ServicePointStatusChangeNotAllowedException.class,
+        () -> StatusTransitionDecider.validateWorkflowStatusTransition(Status.IN_REVIEW, status));
   }
 
 }
