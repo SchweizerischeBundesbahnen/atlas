@@ -4,6 +4,10 @@
   background: rgba(0, 0, 0, 0.5);
 }
 
+.atlas-dialog-panel {
+  overflow-y: auto;
+}
+
 .atlas-dialog-panel mat-dialog-container {
   .mat-mdc-dialog-surface {
     //uses internal Angular Material design API!

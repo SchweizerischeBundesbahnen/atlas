@@ -1,1 +1,9 @@
-detail content
+<atlas-detail-page-container>
+  <atlas-detail-page-content>
+    <h1 class="font-bold-4xl">
+      <!-- TODO: workflowId -->
+      {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.WORKFLOW' | translate }}: {{ workflow.versionId }}
+    </h1>
+    <stop-point-workflow-detail-form [form]="form" [stopPoint]="stopPoint"></stop-point-workflow-detail-form>
+  </atlas-detail-page-content>
+</atlas-detail-page-container>

@@ -49,9 +49,13 @@ export class AuthService {
         const user = this.userFromAccessToken();
         this.userService.setCurrentUserAndLoadPermissions(user).subscribe(() => {
           this.pageService.addPagesBasedOnPermissions();
-        });
 
-        this.router.navigateByUrl(sessionStorage.getItem(this.REQUESTED_ROUTE_STORAGE_KEY) ?? '').then();
+          const url = sessionStorage.getItem(this.REQUESTED_ROUTE_STORAGE_KEY);
+          if (url) {
+            this.router.navigateByUrl(url).then();
+            sessionStorage.removeItem(this.REQUESTED_ROUTE_STORAGE_KEY);
+          }
+        });
       }
     });
   }
@@ -64,6 +68,7 @@ export class AuthService {
 
   logout() {
     this.oauthService.logOut(true);
+    this.AUTH_STORAGE_ITEMS.forEach((item) => this.oauthStorage.removeItem(item));
 
     this.userService.resetCurrentUser();
     this.pageService.resetPages();
