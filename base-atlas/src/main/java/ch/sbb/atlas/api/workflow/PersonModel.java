@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -21,16 +22,19 @@ public class PersonModel {
 
   @Schema(description = "Firstname", example = "John")
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @NotBlank
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   private String firstName;
 
   @Schema(description = "Second", example = "Doe")
+  @NotBlank
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String lastName;
 
   @Schema(description = "Person Function", example = "Officer")
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @NotBlank
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   private String personFunction;
 

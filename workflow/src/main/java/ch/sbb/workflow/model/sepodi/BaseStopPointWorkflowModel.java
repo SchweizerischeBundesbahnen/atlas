@@ -21,6 +21,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 public abstract class BaseStopPointWorkflowModel {
+  //TODO: refactor me: only Sloid and VersionId
 
   @Schema(description = "Service Point version id")
   @NotNull
@@ -55,8 +56,7 @@ public abstract class BaseStopPointWorkflowModel {
   private String workflowComment;
 
   @Schema(description = "List hearing examinants")
-  @Valid
-  private List<ClientPersonModel> examinants;
+  private List<@Valid ClientPersonModel> examinants;
 
   @Schema(description = "Workflow Status", accessMode = AccessMode.READ_ONLY)
   private WorkflowStatus status;

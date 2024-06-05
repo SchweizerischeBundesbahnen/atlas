@@ -89,7 +89,7 @@ class ExaminantLineWorkflowCheckModelTest {
         object);
 
     //then
-    assertThat(constraintViolations).hasSize(1);
+    assertThat(constraintViolations).hasSize(2);
   }
 
 }
