@@ -49,6 +49,7 @@
     "TO": "à",
     "VERSION": "Version",
     "FILLED_AUTOMATICALLY": "Remplissage automatique",
+    "VERSION_VALIDITY": "Version valable",
     "VALID_FROM": "Valable du",
     "VALID_TO": "Valable au",
     "TODAY": "Aujourd'hui",
@@ -537,6 +538,7 @@
     "TITLE": "Audience",
     "BUTTON": {
       "ADD": "Saisir une audience",
+      "SEND": "Envoi de la demande",
       "OPEN": "Consulter l'audience",
       "START": "Lancer l'audience",
       "ACCEPT": "Approuver",
@@ -977,7 +979,18 @@
       "ABBREVIATION_UPDATE_NOT_ALLOWED": "L'organisation commerciale du service n'est pas autorisée à ajouter des abréviations ou le service dispose déjà d'une abréviation qui ne peut pas être modifiée ou supprimée.",
       "ABBREVIATION_NOT_UNIQUE": "L'abréviation est déjà utilisée ou la version du service choisie n'est pas la plus récente.",
       "HEIGHT_SERVICE_UNAVAILABLE": "Le service d'altitude n'est pas disponible. Veuillez réessayer dans 30 minutes. Si le problème persiste, veuillez vous adresser au service spécialisé atlas.",
-      "UPDATE_AFFECTS_VERSION_IN_REVIEW": "L'édition n'est pas possible en raison d'une consultation en cours de la version de {{validFrom}} à {{validTo}} au nom de l'arrêt. Les mutations ne peuvent être saisies à nouveau qu'après la clôture de l'audition."
+      "UPDATE_AFFECTS_VERSION_IN_REVIEW": "L'édition n'est pas possible en raison d'une consultation en cours de la version de {{validFrom}} à {{validTo}} au nom de l'arrêt. Les mutations ne peuvent être saisies à nouveau qu'après la clôture de l'audition.",
+      "WORKFLOW": {
+        "WORKFLOW": "Audition",
+        "NEW_DESIGNATION_OFFICIAL": "Nouvelle désignation officielle",
+        "ADD_EXAMINANT": "Ajout de destinataires",
+        "ADDITIONAL_MAIL_RECIPIENTS": "cc-mail pour le statut de l'audience",
+        "ADDITIONAL_MAIL_RECIPIENTS_INFO": "Il est possible d'ajouter des adresses e-mail supplémentaires. Ceux-ci seront également informés du déroulement de l'audition.",
+        "COMMENT": "Fondation",
+        "EXAMINANTS": "Récepteur",
+        "EXAMINANTS_INFO": "Au moins une commune doit être inscrite. Dans certains cas, comme lors d'une clarification préalable en dehors d'atlas, cette partie peut rester vide. Le canton et le service spécialisé sont automatiquement ajoutés.",
+        "EXAMINANTS_SUBTITLE": "Important : les informations de contact pour l'audition doivent être complétées ici (commune obligatoire, autres destinataires si nécessaire).\nLes destinataires cantonaux et les services spécialisés sont automatiquement complétés par atlas."
+      }
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Bordures d’arrêts",
