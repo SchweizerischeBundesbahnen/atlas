@@ -8,12 +8,16 @@ import {take} from "rxjs";
 import {ControlContainer, FormGroup, NgForm} from "@angular/forms";
 import {AtlasCharsetsValidator} from "../../../../core/validation/charsets/atlas-charsets-validator";
 import {AtlasFieldLengthValidator} from "../../../../core/validation/field-lengths/atlas-field-length-validator";
-import {StopPointWorkflowDetailFormGroup, StopPointWorkflowDetailFormGroupBuilder} from "./stop-point-workflow-detail-form-group";
+import {
+  StopPointWorkflowDetailFormGroup,
+  StopPointWorkflowDetailFormGroupBuilder
+} from "./stop-point-workflow-detail-form-group";
 import {ValidationService} from "../../../../core/validation/validation.service";
 
 @Component({
   selector: 'stop-point-workflow-detail-form',
   templateUrl: './stop-point-workflow-detail-form.component.html',
+  styleUrls: ['./stop-point-workflow-detail-form.component.scss'],
   viewProviders: [{provide: ControlContainer, useExisting: NgForm}],
 })
 export class StopPointWorkflowDetailFormComponent implements OnInit {
@@ -25,19 +29,6 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
 
   stopPointBusinessOrganisation?: BusinessOrganisationVersion;
   boDescription!: string;
-
-  _examinantsActive = true;
-  get examinantsActive() {
-    return this._examinantsActive;
-  }
-  set examinantsActive(value: boolean) {
-    if (value) {
-      this.form.controls.examinants.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup());
-    } else {
-      this.form.controls.examinants.clear();
-    }
-    this._examinantsActive = value;
-  }
 
   constructor(
     private businessOrganisationsService: BusinessOrganisationsService,
@@ -71,5 +62,9 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
     if (examinantsControl.valid) {
       examinantsControl.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup());
     }
+  }
+
+  removeExaminant(index: number) {
+    this.form.controls.examinants.removeAt(index);
   }
 }
