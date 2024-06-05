@@ -67,7 +67,6 @@ public class StopPointWorkflowService {
     stopPointWorkflow.setStatus(WorkflowStatus.ADDED);
     return workflowRepository.save(stopPointWorkflow);
   }
-
   public StopPointWorkflow startWorkflow(Long id) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
     StopPointWorkflowStatusTransitionDecider.validateWorkflowStatusTransition(stopPointWorkflow.getStatus(),
