@@ -30,9 +30,9 @@ export class StopPointWorkflowDetailFormGroupBuilder {
   static buildExaminantFormGroup(): FormGroup<ExaminantFormGroup> {
     return new FormGroup<ExaminantFormGroup>(
       {
-        firstName: new FormControl(),
-        lastName: new FormControl(),
-        personFunction: new FormControl(),
+        firstName: new FormControl('', [Validators.required]),
+        lastName: new FormControl('', [Validators.required]),
+        personFunction: new FormControl('', [Validators.required]),
         mail: new FormControl(undefined, [Validators.required, AtlasCharsetsValidator.email])
       }
     );

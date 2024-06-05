@@ -10,6 +10,8 @@ import {
 import {ValidationService} from "../../../../core/validation/validation.service";
 import {DetailHelperService} from "../../../../core/detail/detail-helper.service";
 import {NotificationService} from "../../../../core/notification/notification.service";
+import {Router} from "@angular/router";
+import {Pages} from "../../../pages";
 
 @Component({
   selector: 'app-workflow-dialog',
@@ -23,6 +25,7 @@ export class AddStopPointWorkflowComponent implements OnInit {
     private detailHelperService: DetailHelperService,
     private stopPointWorkflowService: StopPointWorkflowService,
     private notificationService: NotificationService,
+    private router: Router,
   ) {
   }
 
@@ -39,12 +42,12 @@ export class AddStopPointWorkflowComponent implements OnInit {
       workflow.workflowComment = this.form.controls.workflowComment.value!;
       workflow.ccEmails = this.form.controls.ccEmails.value!;
       workflow.examinants = this.form.controls.examinants.value.map(examinant => examinant as Client);
-      console.log("adding ", workflow);
-      this.stopPointWorkflowService.addStopPointWorkflow(workflow).subscribe(()=>{
-
+      this.stopPointWorkflowService.addStopPointWorkflow(workflow).subscribe(() => {
+        this.notificationService.success('WORKFLOW.NOTIFICATION.START.SUCCESS');
+        this.dialogRef.close();
+        //TODO: link to id
+        this.router.navigate([Pages.SEPODI.path, 'workflows', 1000]).then();
       })
-    }    else {
-      console.log("form not valid ", this.form);
     }
   }
 
