@@ -12,7 +12,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.LocalityMunicipalityModel;
+import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationReadModel;
+import ch.sbb.atlas.api.servicepoint.SwissLocation;
 import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
@@ -22,7 +25,6 @@ import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
-import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.Decision;
 import ch.sbb.workflow.entity.DecisionType;
 import ch.sbb.workflow.entity.JudgementType;
@@ -37,6 +39,7 @@ import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
+import ch.sbb.workflow.service.sepodi.SePoDiClientService;
 import ch.sbb.workflow.workflow.DecisionRepository;
 import ch.sbb.workflow.workflow.OtpRepository;
 import ch.sbb.workflow.workflow.StopPointWorkflowRepository;
@@ -68,7 +71,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   private OtpRepository otpRepository;
 
   @MockBean
-  private SePoDiClient sePoDiClient;
+  private SePoDiClientService sePoDiClientService;
 
   @MockBean
   private WorkflowNotificationService notificationService;
@@ -93,10 +96,6 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     String sloid = "ch:1:sloid:1234";
     StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
         .sloid(sloid)
-        .sboid("ch:1:sboid:666")
-        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .swissMunicipalityName("Biel/Bienne")
-        .swissCanton(SwissCanton.BERN)
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .examinants(clientPersonModels)
@@ -104,7 +103,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .versionId(versionId)
         .build();
 
-    when(sePoDiClient.postServicePointsStatusUpdate(sloid, versionId, Status.IN_REVIEW))
+    when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     controller.addStopPointWorkflow(workflowModel);
@@ -126,7 +125,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .sloid("ch:1:sloid:1234")
         .sboid("ch:1:sboid:666")
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .swissMunicipalityName("Biel/Bienne")
+        .localityName("Biel/Bienne")
         .workflowComment("WF comment")
         .examinants(Set.of(person))
         .startDate(LocalDate.of(2000, 1, 1))
@@ -152,10 +151,6 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .mail(MAIL_ADDRESS).build();
     StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
         .sloid("ch:1:sloid:1234")
-        .sboid("ch:1:sboid:666")
-        .swissCanton(SwissCanton.BERN)
-        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .swissMunicipalityName("Biel/Bienne")
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .examinants(List.of(person))
@@ -186,10 +181,6 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     ClientPersonModel person = ClientPersonModel.builder().mail("a@b.ch").build();
     StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
         .sloid("ch:1:sloid:1234")
-        .sboid("ch:1:sboid:666")
-        .swissCanton(SwissCanton.BERN)
-        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .swissMunicipalityName("Biel/Bienne")
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .examinants(List.of(person))
@@ -238,16 +229,12 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     String sloid = "ch:1:sloid:1234";
     StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
         .sloid(sloid)
-        .sboid("ch:1:sboid:666")
-        .swissCanton(SwissCanton.BERN)
-        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .swissMunicipalityName("Biel/Bienne")
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .examinants(List.of(person))
         .versionId(versionId)
         .build();
-    when(sePoDiClient.postServicePointsStatusUpdate(sloid, versionId, Status.IN_REVIEW))
+    when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     //given
@@ -269,16 +256,12 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     String sloid = "ch:1:sloid:1234";
     StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
         .sloid(sloid)
-        .sboid("ch:1:sboid:666")
-        .swissCanton(SwissCanton.BERN)
-        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .swissMunicipalityName("Biel/Bienne")
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .examinants(List.of(person))
         .versionId(versionId)
         .build();
-    when(sePoDiClient.postServicePointsStatusUpdate(sloid, versionId, Status.IN_REVIEW))
+    when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
         .thenThrow(new IdNotFoundException(versionId));
 
     //given
@@ -313,7 +296,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .sloid(sloid)
         .sboid("ch:1:sboid:666")
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .swissMunicipalityName("Biel/Bienne")
+        .localityName("Biel/Bienne")
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .status(WorkflowStatus.ADDED)
@@ -331,23 +314,21 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .mail(MAIL_ADDRESS).build();
     StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
         .sloid(sloid)
-        .sboid("ch:1:sboid:666")
-        .swissCanton(SwissCanton.BERN)
-        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .swissMunicipalityName("Biel/Bienne")
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .examinants(List.of(personModel))
         .versionId(versionId)
         .build();
-    when(sePoDiClient.postServicePointsStatusUpdate(sloid, versionId, Status.IN_REVIEW))
+    when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     //given
     mvc.perform(post("/v1/stop-point/workflows")
             .contentType(contentType)
             .content(mapper.writeValueAsString(workflowModel))
-        ).andExpect(status().isPreconditionRequired())
+        )
+        .andDo(print())
+        .andExpect(status().isPreconditionRequired())
         .andExpect(jsonPath("$.status", is(428)))
         .andExpect(jsonPath("$.message", is("Workflow already in status ADDED")))
         .andExpect(jsonPath("$.error", is("StopPoint Workflow error")))
@@ -368,10 +349,6 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .mail(MAIL_ADDRESS).build();
     StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
         .sloid("ch:1:sloid:1234")
-        .sboid("ch:1:sboid:666")
-        .swissCanton(SwissCanton.BERN)
-        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .swissMunicipalityName("Biel/Bienne")
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("\uD83D\uDE00\uD83D\uDE01\uD83D")
         .examinants(List.of(person))
@@ -410,7 +387,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .sloid("ch:1:sloid:1234")
         .sboid("ch:1:sboid:666")
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .swissMunicipalityName("Biel/Bienne")
+        .localityName("Biel/Bienne")
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .status(WorkflowStatus.ADDED)
@@ -443,7 +420,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .sloid("ch:1:sloid:1234")
         .sboid("ch:1:sboid:666")
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .swissMunicipalityName("Biel/Bienne")
+        .localityName("Biel/Bienne")
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .status(WorkflowStatus.ADDED)
@@ -486,7 +463,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .sloid("ch:1:sloid:1234")
         .sboid("ch:1:sboid:666")
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .swissMunicipalityName("Biel/Bienne")
+        .localityName("Biel/Bienne")
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .status(WorkflowStatus.ADDED)
@@ -546,7 +523,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .sloid("ch:1:sloid:1234")
         .sboid("ch:1:sboid:666")
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .swissMunicipalityName("Biel/Bienne")
+        .localityName("Biel/Bienne")
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .status(WorkflowStatus.HEARING)
@@ -605,7 +582,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .sloid("ch:1:sloid:1234")
         .sboid("ch:1:sboid:666")
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .swissMunicipalityName("Biel/Bienne")
+        .localityName("Biel/Bienne")
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .status(WorkflowStatus.ADDED)
@@ -651,7 +628,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .sloid("ch:1:sloid:1234")
         .sboid("ch:1:sboid:666")
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .swissMunicipalityName("Biel/Bienne")
+        .localityName("Biel/Bienne")
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .status(WorkflowStatus.ADDED)
@@ -690,7 +667,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .sloid("ch:1:sloid:1234")
         .sboid("ch:1:sboid:666")
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .swissMunicipalityName("Biel/Bienne")
+        .localityName("Biel/Bienne")
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .status(WorkflowStatus.ADDED)
@@ -729,7 +706,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .sloid("ch:1:sloid:1234")
         .sboid("ch:1:sboid:666")
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .swissMunicipalityName("Biel/Bienne")
+        .localityName("Biel/Bienne")
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .status(WorkflowStatus.HEARING)
@@ -782,7 +759,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .sloid("ch:1:sloid:1234")
         .sboid("ch:1:sboid:666")
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .swissMunicipalityName("Biel/Bienne")
+        .localityName("Biel/Bienne")
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .status(WorkflowStatus.HEARING)
@@ -833,7 +810,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .sloid("ch:1:sloid:1234")
         .sboid("ch:1:sboid:666")
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .swissMunicipalityName("Biel/Bienne")
+        .localityName("Biel/Bienne")
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .status(WorkflowStatus.HEARING)
@@ -891,7 +868,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .sloid("ch:1:sloid:1234")
         .sboid("ch:1:sboid:666")
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .swissMunicipalityName("Biel/Bienne")
+        .localityName("Biel/Bienne")
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .status(WorkflowStatus.HEARING)
@@ -946,16 +923,27 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         overrideDecisionModel.getOverrideExaminant().getMail());
   }
 
-  private static UpdateServicePointVersionModel getUpdateServicePointVersionModel(Status status) {
-    return UpdateServicePointVersionModel.builder()
+  private static ReadServicePointVersionModel getUpdateServicePointVersionModel(Status status) {
+    long versionId = 123456L;
+    String sloid = "ch:1:sloid:1234";
+    ServicePointGeolocationReadModel geolocationReadModel = ServicePointGeolocationReadModel.builder()
+        .swissLocation(SwissLocation.builder()
+            .canton(SwissCanton.BERN)
+            .localityMunicipality(LocalityMunicipalityModel.builder().localityName("Bern").build())
+            .build())
+        .build();
+    return ReadServicePointVersionModel.builder()
         .designationLong("designation long 1")
         .designationOfficial("Aargau Strasse")
         .abbreviation("ABC")
+        .id(versionId)
+        .sloid(sloid)
         .freightServicePoint(false)
         .sortCodeOfDestinationStation("39136")
         .businessOrganisation("ch:1:sboid:100871")
         .categories(List.of(Category.POINT_OF_SALE))
         .status(status)
+        .servicePointGeolocation(geolocationReadModel)
         .operatingPointRouteNetwork(true)
         .meansOfTransport(List.of(MeanOfTransport.TRAIN))
         .stopPointType(StopPointType.ON_REQUEST)
