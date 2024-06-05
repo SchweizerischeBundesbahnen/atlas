@@ -13,13 +13,11 @@ public class StopPointWorkflowMapper {
 
   public static ReadStopPointWorkflowModel toModel(StopPointWorkflow entity) {
     return ReadStopPointWorkflowModel.builder()
+        .id(entity.getId())
         .sloid(entity.getSloid())
+        .versionId(entity.getVersionId())
         .examinants(entity.getExaminants().stream().map(ClientPersonMapper::toModel).toList())
         .ccEmails(entity.getCcEmails())
-        .sboid(entity.getSboid())
-        .versionId(entity.getVersionId())
-        .designationOfficial(entity.getDesignationOfficial())
-        .swissMunicipalityName(entity.getSwissMunicipalityName())
         .status(entity.getStatus())
         .workflowComment(entity.getWorkflowComment())
         .build();
@@ -29,9 +27,6 @@ public class StopPointWorkflowMapper {
     StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
         .sloid(model.getSloid())
         .versionId(model.getVersionId())
-        .sboid(model.getSboid())
-        .swissMunicipalityName(model.getSwissMunicipalityName())
-        .designationOfficial(model.getDesignationOfficial())
         .ccEmails(model.getCcEmails())
         .workflowComment(model.getWorkflowComment())
         .build();
