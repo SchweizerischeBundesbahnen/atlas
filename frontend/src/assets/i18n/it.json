@@ -49,6 +49,7 @@
     "TO": "al",
     "VERSION": "Versione",
     "FILLED_AUTOMATICALLY": "Compilato automaticamente",
+    "VERSION_VALIDITY": "Versione valida",
     "VALID_FROM": "Valido dal",
     "VALID_TO": "Valido fino al",
     "TODAY": "Oggi",
@@ -537,6 +538,7 @@
     "TITLE": "Audizione",
     "BUTTON": {
       "ADD": "Registrazione dell'audizione",
+      "SEND": "Inviare la richiesta",
       "OPEN": "Mostra l'audizione",
       "START": "Avviare audizione",
       "ACCEPT": "Approva",
@@ -977,7 +979,18 @@
       "ABBREVIATION_UPDATE_NOT_ALLOWED": "L'organizzazione aziendale del servizio non è autorizzata ad aggiungere abbreviazioni, oppure il servizio ha già un'abbreviazione che non può essere modificata o cancellata.",
       "ABBREVIATION_NOT_UNIQUE": "La sigla è già in uso o la versione del servizio selezionata non è la più aggiornata.",
       "HEIGHT_SERVICE_UNAVAILABLE": "Il servizio di altezza non è disponibile. Riprovare tra 30 minuti. Se il problema persiste, contattare il centro specializzato atlas.",
-      "UPDATE_AFFECTS_VERSION_IN_REVIEW": "La modifica non è possibile a causa di una consultazione in corso della versione da {{validFrom}} a {{validTo}} per conto dell'arresto. I trasferimenti possono essere reinseriti solo dopo la chiusura dell'udienza."
+      "UPDATE_AFFECTS_VERSION_IN_REVIEW": "La modifica non è possibile a causa di una consultazione in corso della versione da {{validFrom}} a {{validTo}} per conto dell'arresto. I trasferimenti possono essere reinseriti solo dopo la chiusura dell'udienza.",
+      "WORKFLOW": {
+        "WORKFLOW": "Audizione",
+        "NEW_DESIGNATION_OFFICIAL": "Nuova denominazione ufficiale",
+        "ADD_EXAMINANT": "Aggiungere destinatari",
+        "ADDITIONAL_MAIL_RECIPIENTS": "cc-e-mail per lo stato di avanzamento dell'udienza",
+        "ADDITIONAL_MAIL_RECIPIENTS_INFO": "È possibile aggiungere altri indirizzi e-mail. Saranno inoltre informati sullo svolgimento dell'udienza.",
+        "COMMENT": "Motivo",
+        "EXAMINANTS": "Ricevente",
+        "EXAMINANTS_INFO": "È necessario inserire almeno un comune. In alcuni casi, come nel caso di chiarimenti preliminari al di fuori dell'atlante, questa parte può rimanere vuota. Il cantone e il centro specializzato vengono aggiunti automaticamente.",
+        "EXAMINANTS_SUBTITLE": "Importante: le informazioni di contatto per l'udienza devono essere aggiunte qui (comune obbligatorio, altri destinatari se richiesti).\nI destinatari cantonali e le agenzie specializzate vengono aggiunti automaticamente dall'atlante."
+      }
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Bordi fermata",
