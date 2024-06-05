@@ -2,6 +2,7 @@ package ch.sbb.workflow.service.sepodi;
 
 import static ch.sbb.atlas.workflow.model.WorkflowStatus.REJECTED;
 
+import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
@@ -59,11 +60,16 @@ public class StopPointWorkflowService {
   }
 
   public StopPointWorkflow addWorkflow(StopPointAddWorkflowModel stopPointAddWorkflowModel) {
-    StopPointWorkflow stopPointWorkflow = mapStopPointWorkflow(stopPointAddWorkflowModel);
-    if (hasWorkflowAdded(stopPointWorkflow.getVersionId())) {
+    if (hasWorkflowAdded(stopPointAddWorkflowModel.getVersionId())) {
       throw new StopPointWorkflowAlreadyInAddedStatusException();
     }
-    sePoDiClientService.updateStoPointStatusToInReview(stopPointWorkflow);
+    ReadServicePointVersionModel servicePointVersionModel = sePoDiClientService.updateStopPointStatusToInReview(
+        stopPointAddWorkflowModel.getSloid(), stopPointAddWorkflowModel.getVersionId());
+    StopPointWorkflow stopPointWorkflow = mapStopPointWorkflow(stopPointAddWorkflowModel, servicePointVersionModel);
+    stopPointWorkflow.setSboid(servicePointVersionModel.getBusinessOrganisation());
+    stopPointWorkflow.setLocalityName(
+        servicePointVersionModel.getServicePointGeolocation().getSwissLocation().getLocalityMunicipality().getLocalityName());
+    stopPointWorkflow.setDesignationOfficial(servicePointVersionModel.getDesignationOfficial());
     stopPointWorkflow.setStatus(WorkflowStatus.ADDED);
     return workflowRepository.save(stopPointWorkflow);
   }
@@ -148,7 +154,7 @@ public class StopPointWorkflowService {
         .sboid(stopPointWorkflow.getSboid())
         .versionId(stopPointWorkflow.getVersionId())
         .sloid(stopPointWorkflow.getSloid())
-        .swissMunicipalityName(stopPointWorkflow.getSwissMunicipalityName())
+        .localityName(stopPointWorkflow.getLocalityName())
         .startDate(stopPointWorkflow.getStartDate())//todo
         .endDate(stopPointWorkflow.getEndDate())
         .build();
@@ -245,8 +251,11 @@ public class StopPointWorkflowService {
     return workflowRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }
 
-  private StopPointWorkflow mapStopPointWorkflow(StopPointAddWorkflowModel workflowStartModel) {
-    ClientPersonModel examinantPersonByCanton = examinants.getExaminantPersonByCanton(workflowStartModel.getSwissCanton());
+  private StopPointWorkflow mapStopPointWorkflow(StopPointAddWorkflowModel workflowStartModel,
+      ReadServicePointVersionModel servicePointVersionModel) {
+    ClientPersonModel examinantPersonByCanton =
+        examinants.getExaminantPersonByCanton(
+            servicePointVersionModel.getServicePointGeolocation().getSwissLocation().getCanton());
     ClientPersonModel examinantSpecialistOffice = examinants.getExaminantSpecialistOffice();
     List<ClientPersonModel> personModels = new ArrayList<>();
     personModels.add(examinantSpecialistOffice);
