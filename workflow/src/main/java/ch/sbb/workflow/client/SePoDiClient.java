@@ -1,7 +1,7 @@
 package ch.sbb.workflow.client;
 
 import ch.sbb.atlas.api.client.TokenPassingFeignClientConfig;
-import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.model.Status;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +14,7 @@ public interface SePoDiClient {
   String BASEPATH = "/service-point-directory/v1/service-points/";
 
   @PutMapping(value = BASEPATH + "status/{sloid}/{id}")
-  UpdateServicePointVersionModel postServicePointsStatusUpdate(@PathVariable("sloid") String sloid, @PathVariable("id") Long id,
+  ReadServicePointVersionModel postServicePointsStatusUpdate(@PathVariable("sloid") String sloid, @PathVariable("id") Long id,
       @RequestBody Status status);
 
 }
