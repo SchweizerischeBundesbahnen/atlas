@@ -1,18 +1,29 @@
-import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
-import { of } from 'rxjs';
-import { TrafficPointElementsService } from '../../../api';
-import { TestBed } from '@angular/core/testing';
-import { AppTestingModule } from '../../../app.testing.module';
-import { StopPointWorkflowDetailResolver } from './stop-point-workflow-detail-resolver.service';
-import { BERN_WYLEREGG_TRAFFIC_POINTS } from '../../../../test/data/traffic-point-element';
+import {ActivatedRouteSnapshot, convertToParamMap} from '@angular/router';
+import {of} from 'rxjs';
+import {TestBed} from '@angular/core/testing';
+import {StopPointWorkflowDetailResolver} from './stop-point-workflow-detail-resolver.service';
+import {ReadStopPointWorkflow, ServicePointsService, StopPointWorkflowService} from "../../../../api";
+import {BERN_WYLEREGG} from "../../../../../test/data/service-point";
+import {AppTestingModule} from "../../../../app.testing.module";
 
-describe('TrafficPointElementsDetailResolver', () => {
-  const trafficPointServiceSpy = jasmine.createSpyObj('trafficPointElementsService', [
-    'getTrafficPointElement',
+const workflow: ReadStopPointWorkflow = {
+  versionId: 1,
+  sboid: 'sboid',
+  designationOfficial: 'New Name',
+};
+
+describe('StopPointWorkflowDetailResolver', () => {
+  const stopPointWorkflowService = jasmine.createSpyObj('stopPointWorkflowService', [
+    'getStopPointWorkflow',
   ]);
-  trafficPointServiceSpy.getTrafficPointElement.and.returnValue(
-    of([BERN_WYLEREGG_TRAFFIC_POINTS[0]]),
+  stopPointWorkflowService.getStopPointWorkflow.and.returnValue(
+    of(workflow),
   );
+
+  const servicePointsService = jasmine.createSpyObj('servicePointsService', [
+    'getServicePointVersion',
+  ]);
+  servicePointsService.getServicePointVersion.and.returnValue(of(BERN_WYLEREGG));
 
   let resolver: StopPointWorkflowDetailResolver;
 
@@ -21,7 +32,8 @@ describe('TrafficPointElementsDetailResolver', () => {
       imports: [AppTestingModule],
       providers: [
         StopPointWorkflowDetailResolver,
-        { provide: TrafficPointElementsService, useValue: trafficPointServiceSpy },
+        { provide: StopPointWorkflowService, useValue: stopPointWorkflowService },
+        { provide: ServicePointsService, useValue: servicePointsService },
       ],
     });
     resolver = TestBed.inject(StopPointWorkflowDetailResolver);
@@ -31,15 +43,14 @@ describe('TrafficPointElementsDetailResolver', () => {
     expect(resolver).toBeTruthy();
   });
 
-  it('should get versions from service to display', () => {
+  it('should get workflow with service point', () => {
     const mockRoute = { paramMap: convertToParamMap({ id: '1000' }) } as ActivatedRouteSnapshot;
 
     const resolvedVersion = resolver.resolve(mockRoute);
 
-    resolvedVersion.subscribe((versions) => {
-      expect(versions.length).toBe(1);
-      expect(versions[0].id).toBe(9298);
-      expect(versions[0].sloid).toBe('ch:1:sloid:89008:0:1');
+    resolvedVersion.subscribe((workflowData) => {
+      expect(workflowData?.workflow.versionId).toBe(1);
+      expect(workflowData?.version.designationOfficial).toBe('Bern, Wyleregg');
     });
   });
 });
