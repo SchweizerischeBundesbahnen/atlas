@@ -37,10 +37,10 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.initBusinessOrganisationHeaderPanel();
+    this.initBusinessOrganisation();
   }
 
-  private initBusinessOrganisationHeaderPanel() {
+  private initBusinessOrganisation() {
     return this.businessOrganisationsService
       .getVersions(this.stopPoint.businessOrganisation)
       .pipe(take(1))

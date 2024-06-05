@@ -94,6 +94,7 @@
           <div class="icon-button-col text-align-center">
             <atlas-button
               (buttonClicked)="removeExaminant(i)"
+              [disabled]="form.disabled"
               buttonType="icon"
             >
               <ng-template #rightIcon>
@@ -110,6 +111,7 @@
 
   <atlas-button
     (click)="addExaminant()"
+    [disabled]="form.disabled"
     buttonDataCy="add-examinant"
     buttonText="SEPODI.SERVICE_POINTS.WORKFLOW.ADD_EXAMINANT"
     buttonType="defaultPrimary"
