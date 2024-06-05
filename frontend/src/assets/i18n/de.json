@@ -981,6 +981,7 @@
       "HEIGHT_SERVICE_UNAVAILABLE": "Der Höhenservice ist nicht erreichbar. Bitte versuchen Sie es in 30 Minuten erneut. Sollte das Problem weiterhin bestehen wenden Sie sich an die Fachtstelle atlas.",
       "UPDATE_AFFECTS_VERSION_IN_REVIEW": "Das Editieren ist aufgrund einer laufenden Anhörung der Version vom {{validFrom}} bis {{validTo}} zum Haltestellennamen nicht möglich. Mutationen können erst nach Abschluss der Anhörung wieder erfasst werden.",
       "WORKFLOW": {
+        "WORKFLOW": "Anhörung",
         "NEW_DESIGNATION_OFFICIAL": "Neue offizielle Bezeichnung",
         "ADD_EXAMINANT": "Empfänger hinzufügen",
         "ADDITIONAL_MAIL_RECIPIENTS": "cc-Mail für Status der Anhörung",
