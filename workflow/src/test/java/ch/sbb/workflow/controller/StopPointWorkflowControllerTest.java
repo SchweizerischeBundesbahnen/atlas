@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -177,6 +178,52 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("\uD83D\uDE00\uD83D\uDE01?")))
         .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("cause")))
         .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("must match \"[\\u0000-\\u00ff]*\"")));
+  }
+
+  @Test
+  void shouldNotCreateWorkflowWhenWorkflowPersonDataIsEmpty() throws Exception {
+    //when
+    ClientPersonModel person = ClientPersonModel.builder().mail("a@b.ch").build();
+    StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .swissCanton(SwissCanton.BERN)
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .swissMunicipalityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .examinants(List.of(person))
+        .versionId(123456L)
+        .build();
+
+    //given
+    mvc.perform(post("/v1/stop-point/workflows")
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(workflowModel))
+        ).andDo(print())
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status", is(400)))
+        .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
+        .andExpect(jsonPath("$.error", is("Method argument not valid error")))
+        .andExpect(jsonPath("$.details[0].message", is("Value null rejected due to must not be blank")))
+        .andExpect(jsonPath("$.details[0].displayInfo.code", is("ERROR.CONSTRAINT")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].key", is("rejectedValue")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[0].value", is("null")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].key", is("cause")))
+        .andExpect(jsonPath("$.details[0].displayInfo.parameters[1].value", is("must not be blank")))
+        .andExpect(jsonPath("$.details[1].message", is("Value null rejected due to must not be blank")))
+        .andExpect(jsonPath("$.details[1].displayInfo.code", is("ERROR.CONSTRAINT")))
+        .andExpect(jsonPath("$.details[1].displayInfo.parameters[0].key", is("rejectedValue")))
+        .andExpect(jsonPath("$.details[1].displayInfo.parameters[0].value", is("null")))
+        .andExpect(jsonPath("$.details[1].displayInfo.parameters[1].key", is("cause")))
+        .andExpect(jsonPath("$.details[1].displayInfo.parameters[1].value", is("must not be blank")))
+        .andExpect(jsonPath("$.details[2].message", is("Value null rejected due to must not be blank")))
+        .andExpect(jsonPath("$.details[2].displayInfo.code", is("ERROR.CONSTRAINT")))
+        .andExpect(jsonPath("$.details[2].displayInfo.parameters[0].key", is("rejectedValue")))
+        .andExpect(jsonPath("$.details[2].displayInfo.parameters[0].value", is("null")))
+        .andExpect(jsonPath("$.details[2].displayInfo.parameters[1].key", is("cause")))
+        .andExpect(jsonPath("$.details[2].displayInfo.parameters[1].value", is("must not be blank")))
+    ;
   }
 
   @Test
