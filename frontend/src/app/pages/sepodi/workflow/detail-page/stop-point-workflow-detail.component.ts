@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {ReadServicePointVersion, ReadStopPointWorkflow, ServicePointsService} from "../../../../api";
+import {ReadServicePointVersion, ReadStopPointWorkflow} from "../../../../api";
 import {FormGroup} from "@angular/forms";
 import {
   StopPointWorkflowDetailFormGroup,
   StopPointWorkflowDetailFormGroupBuilder
 } from "../detail-form/stop-point-workflow-detail-form-group";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {StopPointWorkflowDetailData} from "./stop-point-workflow-detail-resolver.service";
 
 @Component({
@@ -14,8 +14,7 @@ import {StopPointWorkflowDetailData} from "./stop-point-workflow-detail-resolver
 })
 export class StopPointWorkflowDetailComponent implements OnInit {
 
-  constructor(private router: Router, private route: ActivatedRoute,
-              private servicePointService: ServicePointsService) {
+  constructor(private route: ActivatedRoute) {
   }
 
   form!: FormGroup<StopPointWorkflowDetailFormGroup>;
