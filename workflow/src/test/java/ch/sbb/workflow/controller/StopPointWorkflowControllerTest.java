@@ -8,7 +8,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -191,8 +190,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/stop-point/workflows")
             .contentType(contentType)
             .content(mapper.writeValueAsString(workflowModel))
-        ).andDo(print())
-        .andExpect(status().isBadRequest())
+        ).andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.status", is(400)))
         .andExpect(jsonPath("$.message", is("Constraint for requestbody was violated")))
         .andExpect(jsonPath("$.error", is("Method argument not valid error")))
@@ -326,9 +324,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     mvc.perform(post("/v1/stop-point/workflows")
             .contentType(contentType)
             .content(mapper.writeValueAsString(workflowModel))
-        )
-        .andDo(print())
-        .andExpect(status().isPreconditionRequired())
+        ).andExpect(status().isPreconditionRequired())
         .andExpect(jsonPath("$.status", is(428)))
         .andExpect(jsonPath("$.message", is("Workflow already in status ADDED")))
         .andExpect(jsonPath("$.error", is("StopPoint Workflow error")))
