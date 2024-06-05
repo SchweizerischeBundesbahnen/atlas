@@ -1,13 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {StopPointWorkflowService} from "../../../../api";
+import {ReadServicePointVersion, ReadStopPointWorkflow, ServicePointsService} from "../../../../api";
 import {FormGroup} from "@angular/forms";
 import {
   StopPointWorkflowDetailFormGroup,
   StopPointWorkflowDetailFormGroupBuilder
 } from "../detail-form/stop-point-workflow-detail-form-group";
-import {DetailHelperService} from "../../../../core/detail/detail-helper.service";
-import {NotificationService} from "../../../../core/notification/notification.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {StopPointWorkflowDetailData} from "./stop-point-workflow-detail-resolver.service";
 
 @Component({
   selector: 'stop-point-workflow-detail',
@@ -15,19 +14,21 @@ import {Router} from "@angular/router";
 })
 export class StopPointWorkflowDetailComponent implements OnInit {
 
-  constructor(
-    private detailHelperService: DetailHelperService,
-    private stopPointWorkflowService: StopPointWorkflowService,
-    private notificationService: NotificationService,
-    private router: Router,
-  ) {
+  constructor(private router: Router, private route: ActivatedRoute,
+              private servicePointService: ServicePointsService) {
   }
 
   form!: FormGroup<StopPointWorkflowDetailFormGroup>;
+  stopPoint!: ReadServicePointVersion;
+  workflow!: ReadStopPointWorkflow;
 
   ngOnInit() {
-    console.log("init workfl detail");
-    this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup();
+    const workflowData: StopPointWorkflowDetailData = this.route.snapshot.data.workflow;
+    this.workflow = workflowData.workflow;
+    this.stopPoint = workflowData.version;
+
+    this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(this.workflow);
+    this.form.disable();
   }
 
 }
