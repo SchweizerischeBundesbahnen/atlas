@@ -982,6 +982,7 @@
       "UPDATE_AFFECTS_VERSION_IN_REVIEW": "Das Editieren ist aufgrund einer laufenden Anhörung der Version vom {{validFrom}} bis {{validTo}} zum Haltestellennamen nicht möglich. Mutationen können erst nach Abschluss der Anhörung wieder erfasst werden.",
       "WORKFLOW": {
         "NEW_DESIGNATION_OFFICIAL": "Neue offizielle Bezeichnung",
+        "ADD_EXAMINANT": "Empfänger hinzufügen",
         "ADDITIONAL_MAIL_RECIPIENTS": "cc-Mail für Status der Anhörung",
         "ADDITIONAL_MAIL_RECIPIENTS_INFO": "Es können zusätzliche E-Mail Adressen ergänzt werden. Diese werden über den Verlauf der Anhörung ebenfalls informiert.",
         "COMMENT": "Begründung",

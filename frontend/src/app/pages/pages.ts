@@ -123,6 +123,15 @@ export class Pages {
     path: 'companies',
   };
 
+  public static SERVICE_POINT_WORKFLOWS: Page = {
+    title: 'PAGES.WORKFLOW.TITLE_HEADER',
+    titleMenu: 'PAGES.WORKFLOW.TITLE_HEADER',
+    headerTitle: 'PAGES.WORKFLOW.TITLE_HEADER',
+    path: 'workflows',
+    pathText: 'PAGES.WORKFLOW.TITLE_HEADER',
+    description: 'PAGES.WORKFLOW.TITLE_HEADER',
+  }
+
   public static SEPODI: Page = {
     title: 'PAGES.SERVICE_POINTS.TITLE',
     titleMenu: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
@@ -131,14 +140,7 @@ export class Pages {
     pathText: 'PAGES.SERVICE_POINTS.TITLE_HEADER',
     description: 'PAGES.SERVICE_POINTS.DESCRIPTION',
     subpages: [
-      {
-        title: 'PAGES.WORKFLOW.TITLE_HEADER',
-        titleMenu: 'PAGES.WORKFLOW.TITLE_HEADER',
-        headerTitle: 'PAGES.WORKFLOW.TITLE_HEADER',
-        path: '',
-        pathText: 'PAGES.WORKFLOW.TITLE_HEADER',
-        description: 'PAGES.WORKFLOW.TITLE_HEADER',
-      }
+      Pages.SERVICE_POINT_WORKFLOWS
     ]
   };
 
