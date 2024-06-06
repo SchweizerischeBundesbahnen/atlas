@@ -28,6 +28,7 @@ import {DetailPageContentComponent} from "../../../../core/components/detail-pag
 import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
 import {ValidityService} from "../../validity/validity.service";
 import {PermissionService} from "../../../../core/auth/permission/permission.service";
+import {AddStopPointWorkflowDialogService} from "../../workflow/add-dialog/add-stop-point-workflow-dialog.service";
 
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
 const servicePointsServiceSpy = jasmine.createSpyObj('ServicePointService', [
@@ -42,6 +43,8 @@ const mapServiceSpy = jasmine.createSpyObj('MapService', [
   'refreshMap',
 ]);
 mapServiceSpy.mapInitialized = new BehaviorSubject<boolean>(false);
+
+const addStopPointWorkflowDialogService = jasmine.createSpyObj('addStopPointWorkflowDialogService', ['openDialog']);
 
 @Component({
   selector: 'service-point-form',
@@ -102,6 +105,7 @@ describe('ServicePointDetailComponent', () => {
         { provide: NotificationService, useValue: notificationServiceSpy },
         { provide: TranslatePipe },
         { provide: MapService, useValue: mapServiceSpy },
+        {provide: AddStopPointWorkflowDialogService, useValue: addStopPointWorkflowDialogService},
       ],
     }).compileComponents();
 
@@ -312,5 +316,11 @@ describe('ServicePointDetailComponent', () => {
     component.save();
 
     expect(servicePointsServiceSpy.updateServicePoint).toHaveBeenCalled();
+  });
+
+  it('should open add workflow dialog', () => {
+    component.addWorkflow();
+
+    expect(addStopPointWorkflowDialogService.openDialog).toHaveBeenCalled();
   });
 });
