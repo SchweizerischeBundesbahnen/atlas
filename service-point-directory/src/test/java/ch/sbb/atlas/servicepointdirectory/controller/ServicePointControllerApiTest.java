@@ -887,6 +887,32 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldUpdateServicePointStatus() throws Exception {
+    //given
+    servicePointVersion.setStatus(Status.DRAFT);
+    repository.save(servicePointVersion);
+
+    //when & then
+    mvc.perform(put("/v1/service-points/status/" + servicePointVersion.getSloid() + "/" + servicePointVersion.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(Status.IN_REVIEW)))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void shouldNotUpdateServicePointStatusWhenAlreadyInAdded() throws Exception {
+    //given
+    servicePointVersion.setStatus(Status.IN_REVIEW);
+    repository.save(servicePointVersion);
+
+    //when & then
+    mvc.perform(put("/v1/service-points/status/" + servicePointVersion.getSloid() + "/" + servicePointVersion.getId())
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(Status.IN_REVIEW)))
+        .andExpect(status().isPreconditionFailed());
+  }
+
+  @Test
   void shouldThrowExceptionWhenUpdateServicePointWithRouteNetworkTrueAndNotStopOrControlOrOperatingPoint() throws Exception {
     ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
         ServicePointTestData.getAargauServicePointVersionModelWithRouteNetworkFalse());

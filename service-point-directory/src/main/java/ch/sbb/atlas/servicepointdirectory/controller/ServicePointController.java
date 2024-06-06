@@ -11,6 +11,7 @@ import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.location.SloidHelper;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.model.exception.SloidNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.api.ServicePointApiV1;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointFotComment;
@@ -18,7 +19,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberAlreadyExistsException;
 import ch.sbb.atlas.servicepointdirectory.exception.ServicePointNumberNotFoundException;
-import ch.sbb.atlas.servicepointdirectory.exception.ServicePointStatusChangeNotAllowedException;
+import ch.sbb.atlas.servicepointdirectory.exception.ServicePointStatusRevokedChangeNotAllowedException;
 import ch.sbb.atlas.servicepointdirectory.exception.UpdateAffectsInReviewVersionException;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointFotCommentMapper;
 import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
@@ -163,7 +164,8 @@ public class ServicePointController implements ServicePointApiV1 {
         .orElseThrow(() -> new IdNotFoundException(id));
 
     if (!Status.DRAFT.equals(servicePointVersion.getStatus())) {
-      throw new ServicePointStatusChangeNotAllowedException(servicePointVersion.getNumber(), servicePointVersion.getStatus());
+      throw new ServicePointStatusRevokedChangeNotAllowedException(servicePointVersion.getNumber(),
+          servicePointVersion.getStatus());
     }
 
     ServicePointVersion validatedServicePointVersion = servicePointService.validate(servicePointVersion);
@@ -202,8 +204,17 @@ public class ServicePointController implements ServicePointApiV1 {
   }
 
   @Override
-  public ReadServicePointVersionModel updateServicePointStatus(Long id, Status status) {
-    return ServicePointVersionMapper.toModel(servicePointService.updateServicePointStatus(id,status));
+  public ReadServicePointVersionModel updateServicePointStatus(String sloid, Long id, Status status) {
+    List<ServicePointVersion> servicePointVersions = servicePointService.findBySloidAndOrderByValidFrom(sloid);
+    if (servicePointVersions.isEmpty()) {
+      throw new SloidNotFoundException(sloid);
+    }
+    ServicePointVersion servicePointVersion = servicePointVersions.stream().filter(sp -> sp.getId().equals(id)).findFirst()
+        .orElseThrow(() -> new IdNotFoundException(id));
+
+    return ServicePointVersionMapper.toModel(
+        servicePointService.updateStopPointStatusForWorkflow(servicePointVersion, servicePointVersions,
+            status));
   }
 
   @Override
@@ -230,7 +241,8 @@ public class ServicePointController implements ServicePointApiV1 {
 
   private void checkIfServicePointStatusRevoked(ServicePointVersion servicePointVersion) {
     if (servicePointVersion.getStatus().equals(Status.REVOKED)) {
-      throw new ServicePointStatusChangeNotAllowedException(servicePointVersion.getNumber(), servicePointVersion.getStatus());
+      throw new ServicePointStatusRevokedChangeNotAllowedException(servicePointVersion.getNumber(),
+          servicePointVersion.getStatus());
     }
   }
 

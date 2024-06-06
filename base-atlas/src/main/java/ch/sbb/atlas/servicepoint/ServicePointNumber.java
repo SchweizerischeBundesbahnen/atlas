@@ -7,9 +7,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,7 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 @EqualsAndHashCode
 @Getter
 @Slf4j
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public final class ServicePointNumber {
 
   private static final int TEN = 10;
@@ -32,7 +34,7 @@ public final class ServicePointNumber {
   public static final String EMPTY_STRING = "";
 
   @JsonIgnore
-  private final int value;
+  private int value;
 
   public static ServicePointNumber ofNumberWithoutCheckDigit(int number) {
     if (String.valueOf(number).length() != SERVICE_POINT_NUMBER_LENGTH) {
