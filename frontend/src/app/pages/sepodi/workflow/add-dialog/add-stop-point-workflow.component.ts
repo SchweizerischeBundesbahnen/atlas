@@ -55,8 +55,8 @@ export class AddStopPointWorkflowComponent implements OnInit {
     return {
       versionId: stopPoint.id!,
       sloid: stopPoint.sloid!,
-      sboid: stopPoint.businessOrganisation!,
-      designationOfficial: stopPoint.designationOfficial!,
+      sboid: stopPoint.businessOrganisation,
+      designationOfficial: stopPoint.designationOfficial,
       swissMunicipalityName: stopPoint.servicePointGeolocation!.swissLocation!.localityMunicipality?.localityName,
       swissCanton: stopPoint.servicePointGeolocation!.swissLocation!.canton!
     }
