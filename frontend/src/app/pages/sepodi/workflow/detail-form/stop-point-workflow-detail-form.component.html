@@ -21,9 +21,7 @@
     <div class="font-bold-base">
       {{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION' | translate }}
     </div>
-    <div>{{ stopPointBusinessOrganisation?.organisationNumber }} - {{ boDescription }}
-      - {{ stopPointBusinessOrganisation?.sboid }}
-    </div>
+    <div>{{ stopPoint.businessOrganisation | boDisplay | async }}</div>
   </div>
 </div>
 
