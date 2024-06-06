@@ -24,42 +24,42 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
 
   @Override
   public ReadStopPointWorkflowModel getStopPointWorkflow(Long id) {
-    return StopPointWorkflowMapper.toReadModel(service.getWorkflow(id));
+    return StopPointWorkflowMapper.toModel(service.getWorkflow(id));
   }
 
   @Override
   public List<ReadStopPointWorkflowModel> getStopPointWorkflows() {
-    return service.getWorkflows().stream().map(StopPointWorkflowMapper::toReadModel).toList();
+    return service.getWorkflows().stream().map(StopPointWorkflowMapper::toModel).toList();
   }
 
   @Override
   public ReadStopPointWorkflowModel addStopPointWorkflow(StopPointAddWorkflowModel workflowModel) {
-    return StopPointWorkflowMapper.toReadModel(service.addWorkflow(workflowModel));
+    return StopPointWorkflowMapper.toModel(service.addWorkflow(workflowModel));
   }
 
   @Override
   public ReadStopPointWorkflowModel startStopPointWorkflow(Long id) {
-    return StopPointWorkflowMapper.toReadModel(service.startWorkflow(id));
-  }
-
-  @Override
-  public ReadStopPointWorkflowModel editStopPointWorkflow(Long id, EditStopPointWorkflowModel workflowModel) {
-    return StopPointWorkflowMapper.toReadModel(service.editWorkflow(id,workflowModel));
+    return StopPointWorkflowMapper.toModel(service.startWorkflow(id));
   }
 
   @Override
   public ReadStopPointWorkflowModel rejectStopPointWorkflow(Long id, StopPointRejectWorkflowModel workflowModel) {
-    return StopPointWorkflowMapper.toReadModel(service.rejectWorkflow(id,workflowModel));
+    return StopPointWorkflowMapper.toModel(service.rejectWorkflow(id, workflowModel));
+  }
+
+  @Override
+  public ReadStopPointWorkflowModel editStopPointWorkflow(Long id, EditStopPointWorkflowModel workflowModel) {
+    return StopPointWorkflowMapper.toModel(service.editWorkflow(id, workflowModel));
   }
 
   @Override
   public ReadStopPointWorkflowModel addExaminantToStopPointWorkflow(Long id, ClientPersonModel personModel) {
-    return StopPointWorkflowMapper.toReadModel(service.addExaminantToWorkflow(id,personModel));
+    return StopPointWorkflowMapper.toModel(service.addExaminantToWorkflow(id, personModel));
   }
 
   @Override
   public ReadStopPointWorkflowModel removeExaminantFromStopPointWorkflow(Long id, Long personId) {
-    return StopPointWorkflowMapper.toReadModel(service.removeExaminantToWorkflow(id,personId));
+    return StopPointWorkflowMapper.toModel(service.removeExaminantToWorkflow(id,personId));
   }
 
   @Override
@@ -79,12 +79,12 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
 
   @Override
   public ReadStopPointWorkflowModel restartStopPointWorkflow(Long id, StopPointRestartWorkflowModel restartWorkflowModel) {
-    return StopPointWorkflowMapper.toReadModel(service.restartWorkflow(id,restartWorkflowModel));
+    return StopPointWorkflowMapper.toModel(service.restartWorkflow(id,restartWorkflowModel));
   }
 
   @Override
   public ReadStopPointWorkflowModel cancelStopPointWorkflow(Long id, StopPointRejectWorkflowModel stopPointCancelWorkflowModel) {
-    return StopPointWorkflowMapper.toReadModel(service.cancelWorkflow(id,stopPointCancelWorkflowModel));
+    return StopPointWorkflowMapper.toModel(service.cancelWorkflow(id,stopPointCancelWorkflowModel));
   }
 
 }
