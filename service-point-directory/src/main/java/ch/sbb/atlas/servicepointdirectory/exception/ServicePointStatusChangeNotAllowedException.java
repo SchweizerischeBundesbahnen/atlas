@@ -3,27 +3,26 @@ package ch.sbb.atlas.servicepointdirectory.exception;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.AtlasException;
-import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import java.text.MessageFormat;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-
 
 @RequiredArgsConstructor
 @Getter
 public class ServicePointStatusChangeNotAllowedException extends AtlasException {
 
-    private final ServicePointNumber servicePointNumber;
-    private final Status servicePointStatus;
+  private final Status actualServicePointStatus;
+  private final Status currentServicePointStatus;
 
-    @Override
-    public ErrorResponse getErrorResponse() {
-        return ErrorResponse.builder()
-                .status(HttpStatus.PRECONDITION_FAILED.value())
-                .message("ServicePoint Status cannot be changed for Status REVOKED and can be updated only from DRAFT to VALIDATED!")
-                .error("Trying to update status for ServicePointNumber " +
-                        servicePointNumber.getNumber() + " and current status: " + servicePointStatus)
-                .build();
-    }
+  @Override
+  public ErrorResponse getErrorResponse() {
+    return ErrorResponse.builder()
+        .status(HttpStatus.PRECONDITION_FAILED.value())
+        .message(MessageFormat.format(
+            "ServicePoint Status cannot be changed from {0} to {1}!", actualServicePointStatus, currentServicePointStatus))
+        .error("Update status not allowed!")
+        .build();
+  }
 
 }

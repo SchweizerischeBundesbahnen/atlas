@@ -22,6 +22,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public abstract class BaseStopPointWorkflowModel {
 
+  @Schema(description = "Workflow id", accessMode = AccessMode.READ_ONLY)
+  private Long id;
+
   @Schema(description = "Service Point version id")
   @NotNull
   private Long versionId;
@@ -32,20 +35,6 @@ public abstract class BaseStopPointWorkflowModel {
       + "https://transportdatamanagement.ch/standards/", example = "ch:1:sloid:18771")
   private String sloid;
 
-  @NotNull
-  @Schema(description = "Swiss Business Organisation ID (SBOID)", example = "ch:1:sboid:100052")
-  private String sboid;
-
-  @NotNull
-  @Size(min = 2, max = AtlasFieldLengths.LENGTH_30)
-  @Schema(description = "Official designation of a location that must be used by all recipients"
-      , example = "Biel/Bienne Bözingenfeld/Champ", maxLength = 30)
-  private String designationOfficial;
-
-  @Schema(description = "SwissMunicipalityName the location is in", example = "Biel/Bienne")
-  @Size(max = AtlasFieldLengths.LENGTH_255)
-  private String swissMunicipalityName;
-
   @Schema(description = "List of cc emails for status of hearing")
   private List<String> ccEmails;
 
@@ -55,8 +44,7 @@ public abstract class BaseStopPointWorkflowModel {
   private String workflowComment;
 
   @Schema(description = "List hearing examinants")
-  @Valid
-  private List<ClientPersonModel> examinants;
+  private List<@Valid ClientPersonModel> examinants;
 
   @Schema(description = "Workflow Status", accessMode = AccessMode.READ_ONLY)
   private WorkflowStatus status;
