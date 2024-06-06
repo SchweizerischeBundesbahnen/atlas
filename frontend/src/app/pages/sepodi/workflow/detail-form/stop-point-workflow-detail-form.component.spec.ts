@@ -6,7 +6,7 @@ import {DisplayDatePipe} from "../../../../core/pipe/display-date.pipe";
 import {SplitServicePointNumberPipe} from "../../../../core/search-service-point/split-service-point-number.pipe";
 import {BERN_WYLEREGG} from "../../../../../test/data/service-point";
 import {StopPointWorkflowDetailFormGroupBuilder} from "./stop-point-workflow-detail-form-group";
-import {ReadStopPointWorkflow} from "../../../../api";
+import {BusinessOrganisationsService, ReadStopPointWorkflow} from "../../../../api";
 import {TranslatePipe} from "@ngx-translate/core";
 import {StringListComponent} from "../../../../core/form-components/string-list/string-list.component";
 import {MockAtlasButtonComponent} from "../../../../app.testing.mocks";
@@ -33,6 +33,7 @@ describe('StopPointWorkflowDetailFormComponent', () => {
       imports: [AppTestingModule, FormModule],
       providers: [
         { provide: TranslatePipe },
+        { provide: BusinessOrganisationsService },
       ],
     }).compileComponents().then();
 
@@ -46,5 +47,25 @@ describe('StopPointWorkflowDetailFormComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should have one examinant per default', () => {
+    expect(component.form.controls.examinants.length).toBe(1);
+  });
+
+  it('should add second examinant', () => {
+    const firstExaminant = component.form.controls.examinants.at(0);
+    firstExaminant.controls.firstName.setValue('firstName');
+    firstExaminant.controls.lastName.setValue('lastName');
+    firstExaminant.controls.personFunction.setValue('personFunction');
+    firstExaminant.controls.mail.setValue('mail@sbb.ch');
+
+    component.addExaminant();
+    expect(component.form.controls.examinants.length).toBe(2);
+  });
+
+  it('should remove examinant', () => {
+    component.removeExaminant(0);
+    expect(component.form.controls.examinants.length).toBe(0);
   });
 });
