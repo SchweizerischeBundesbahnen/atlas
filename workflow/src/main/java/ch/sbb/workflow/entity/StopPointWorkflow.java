@@ -65,7 +65,7 @@ public class StopPointWorkflow extends BaseWorkflowEntity {
 
   @Size(max = AtlasFieldLengths.LENGTH_255)
   @AtlasVersionableProperty
-  private String swissMunicipalityName;
+  private String localityName;
 
   @NotNull
   @Enumerated(EnumType.STRING)

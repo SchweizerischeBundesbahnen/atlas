@@ -3,7 +3,6 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
-import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeolocation;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
@@ -58,16 +57,14 @@ public class ServicePointStatusDecider {
         return getStatusFromCurrentVersion(currentVersion);
     }
 
+
     /**
      * Documentation at CreateNewServicePointStatusDecision.puml and UpdateNewServicePointStatusDecision.puml
      */
     private Status calculateStatusAccordingToStatusDecisionAlgorithm(ServicePointVersion newServicePointVersion) {
-        boolean isStopPoint = newServicePointVersion.isStopPoint();
-        boolean isSwissCountryCode = Objects.equals(newServicePointVersion.getCountry().getUicCode(), Country.SWITZERLAND.getUicCode());
-        boolean isSwissLocation = isSPLocatedInSwitzerland(newServicePointVersion);
+        boolean isStoPointLocatedInSwiss = ServicePointHelper.isStoPointLocatedInSwitzerland(newServicePointVersion);
         boolean isValidityLongEnough = calculateDiffBetweenTwoDatesAndAddOne(newServicePointVersion) > VALIDITY_IN_DAYS;
-
-        return isSwissCountryCode && isStopPoint && isSwissLocation && isValidityLongEnough ? Status.DRAFT : Status.VALIDATED;
+        return isStoPointLocatedInSwiss && isValidityLongEnough ? Status.DRAFT : Status.VALIDATED;
     }
 
     private void logMessage(ServicePointVersion currentVersion, ServicePointVersion newServicePointVersion,
@@ -75,18 +72,6 @@ public class ServicePointStatusDecider {
         log.info(logMessage, currentVersion, newServicePointVersion);
     }
 
-    private boolean isSPLocatedInSwitzerland(ServicePointVersion newServicePointVersion) {
-        if (isGeolocationOrCountryNull(newServicePointVersion)) {
-            return false;
-        }
-        ServicePointGeolocation servicePointGeolocation = newServicePointVersion.getServicePointGeolocation();
-        return servicePointGeolocation.getCountry().equals(Country.SWITZERLAND);
-    }
-
-    private static boolean isGeolocationOrCountryNull(ServicePointVersion newServicePointVersion) {
-        return newServicePointVersion.getServicePointGeolocation() == null
-            || newServicePointVersion.getServicePointGeolocation().getCountry() == null;
-    }
 
     private boolean hasNameChanged(ServicePointVersion newServicePointVersion, ServicePointVersion currentVersion) {
         return !newServicePointVersion.getDesignationOfficial().equals(currentVersion.getDesignationOfficial());
@@ -145,7 +130,7 @@ public class ServicePointStatusDecider {
 
     private boolean hasGeolocationChangedBackToSwitzerland(ServicePointVersion newServicePointVersion,
         ServicePointVersion currentVersion) {
-        if (isGeolocationOrCountryNull(newServicePointVersion)) {
+        if (ServicePointHelper.isGeolocationOrCountryNull(newServicePointVersion)) {
             return false;
         }
         return isNewServicePointWithSwissGeolocation(newServicePointVersion)
@@ -153,7 +138,7 @@ public class ServicePointStatusDecider {
     }
 
     private static boolean isExistingServicePointWithAbroadOrNoGeolocation(ServicePointVersion currentVersion) {
-        return isGeolocationOrCountryNull(currentVersion)
+        return ServicePointHelper.isGeolocationOrCountryNull(currentVersion)
             || !isNewServicePointWithSwissGeolocation(currentVersion);
     }
 

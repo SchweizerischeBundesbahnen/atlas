@@ -6,7 +6,9 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.imports.util.ImportUtils;
+import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
+import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSearchVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
@@ -290,6 +292,20 @@ class ServicePointServiceTest {
     assertThat(result.getValidTo()).isEqualTo(LocalDate.of(2000, 6, 1));
 
     verify(servicePointTerminationService).checkTerminationAllowed(anyList(), anyList());
+  }
+
+  @Test
+  void shouldUpdateStopPointStatusForWorkflow() {
+    //given
+    ServicePointVersion version = ServicePointTestData.getBernWyleregg();
+    version.setStatus(Status.DRAFT);
+    //when
+    ServicePointVersion result = servicePointService.updateStopPointStatusForWorkflow(version, List.of(version),
+        Status.IN_REVIEW);
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getStatus()).isEqualTo(Status.IN_REVIEW);
+    verify(servicePointVersionRepositoryMock).save(version);
   }
 
   @Test

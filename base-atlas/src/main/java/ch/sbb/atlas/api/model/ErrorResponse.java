@@ -18,7 +18,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -124,6 +123,7 @@ public class ErrorResponse {
 
   }
 
+  @NoArgsConstructor
   @AllArgsConstructor
   @ToString
   @Getter
@@ -131,11 +131,11 @@ public class ErrorResponse {
 
     @Schema(description = "Errorcode for UI", example = "LIDI.LINE.CONFLICT")
     @NotNull
-    private final String code;
+    private String code;
 
     @Schema(description = "Parameters for messages")
     @NotNull
-    private final List<Parameter> parameters;
+    private List<Parameter> parameters;
 
     public static DisplayInfoBuilder builder() {
       return new DisplayInfoBuilder();
@@ -168,13 +168,14 @@ public class ErrorResponse {
     }
   }
 
-  @RequiredArgsConstructor
+  @NoArgsConstructor
+  @AllArgsConstructor
   @ToString
   @Getter
   public static class Parameter {
 
-    private final String key;
-    private final String value;
+    private String key;
+    private String value;
   }
 
 }
