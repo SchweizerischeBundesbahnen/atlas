@@ -42,6 +42,6 @@ import {StopPointWorkflowOverviewComponent} from "./workflow/overview/stop-point
     StopPointWorkflowDetailComponent,
     StopPointWorkflowOverviewComponent,
   ],
-  imports: [CoreModule, FormModule, FormsModule, SepodiRoutingModule],
+    imports: [CoreModule, FormModule, FormsModule, SepodiRoutingModule],
 })
 export class SepodiModule {}
