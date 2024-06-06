@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+
 import ch.sbb.atlas.model.Status;
-import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
@@ -157,13 +157,17 @@ public class ServicePointService {
     return servicePointSearchResults;
   }
 
-  public ServicePointVersion updateServicePointStatus(Long id, Status statusToChange) {
-    ServicePointVersion actualServicePointVersion = servicePointVersionRepository.findById(id)
-        .orElseThrow(() -> new IdNotFoundException(id));
-    if(actualServicePointVersion.getStatus() == Status.DRAFT && Status.IN_REVIEW == statusToChange){
-      actualServicePointVersion.setStatus(statusToChange);
-       return  servicePointVersionRepository.save(actualServicePointVersion);
-    }
-    throw new IllegalStateException("Status change not allowed!");
+  @PreAuthorize(
+      "@countryAndBusinessOrganisationBasedUserAdministrationService.hasUserPermissionsToUpdateCountryBased"
+          + "(#servicePointVersion, #servicePointVersions, T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
+  public ServicePointVersion updateStopPointStatusForWorkflow(ServicePointVersion servicePointVersion,
+      List<ServicePointVersion> servicePointVersions, Status statusToChange) {
+    ServicePointHelper.validateIsStopPointLocatedInSwitzerland(servicePointVersion);
+    StatusTransitionDecider.validateWorkflowStatusTransition(servicePointVersion.getStatus(), statusToChange);
+    servicePointVersion.setStatus(statusToChange);
+    servicePointVersionRepository.save(servicePointVersion);
+    return servicePointVersion;
   }
+
+
 }
