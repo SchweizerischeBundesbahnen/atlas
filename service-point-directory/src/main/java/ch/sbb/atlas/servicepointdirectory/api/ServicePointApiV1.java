@@ -90,8 +90,8 @@ public interface ServicePointApiV1 {
           @Content(schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "501", description = VERSIONING_NOT_IMPLEMENTED, content =
           @Content(schema = @Schema(implementation = ErrorResponse.class))),
-          @ApiResponse(responseCode = "520", description = NO_ENTITIES_WERE_MODIFIED, content =
-          @Content(schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "520", description = NO_ENTITIES_WERE_MODIFIED, content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class))),
   })
   @PutMapping(path = "{id}")
   List<ReadServicePointVersionModel> updateServicePoint(
@@ -99,18 +99,19 @@ public interface ServicePointApiV1 {
       @RequestBody @Valid UpdateServicePointVersionModel servicePointVersionModel
   );
 
-  @PutMapping(path = "/status/{id}")
-  ReadServicePointVersionModel updateServicePointStatus(@PathVariable Long id,@RequestBody @Valid Status status);
+  @PutMapping(path = "/status/{sloid}/{id}")
+  ReadServicePointVersionModel updateServicePointStatus(@PathVariable String sloid, @PathVariable Long id,
+      @RequestBody @Valid Status status);
 
   @GetMapping("{servicePointNumber}/fot-comment")
   Optional<ServicePointFotCommentModel> getFotComment(@PathVariable Integer servicePointNumber);
 
   @PutMapping("{servicePointNumber}/fot-comment")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
-          @Content(schema = @Schema(implementation = ErrorResponse.class))),
-          @ApiResponse(responseCode = "501", description = VERSIONING_NOT_IMPLEMENTED, content =
-          @Content(schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "501", description = VERSIONING_NOT_IMPLEMENTED, content =
+      @Content(schema = @Schema(implementation = ErrorResponse.class))),
           @ApiResponse(responseCode = "520", description = NO_ENTITIES_WERE_MODIFIED, content =
           @Content(schema = @Schema(implementation = ErrorResponse.class))),
   })
