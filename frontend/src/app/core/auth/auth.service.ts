@@ -39,10 +39,15 @@ export class AuthService {
   ) {
     this.oauthService.configure(environment.authConfig);
     this.oauthService.setupAutomaticSilentRefresh();
+    this.oauthService.events.subscribe(event => {
+      if (event.type === 'token_refresh_error') {
+        this.removeLoginTokenFromStorage();
+      }
+    })
 
     this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
       if (!this.oauthService.hasValidAccessToken()) {
-        this.AUTH_STORAGE_ITEMS.forEach((item) => this.oauthStorage.removeItem(item));
+        this.removeLoginTokenFromStorage();
       }
 
       if (this.oauthService.getIdentityClaims()) {
@@ -68,7 +73,7 @@ export class AuthService {
 
   logout() {
     this.oauthService.logOut(true);
-    this.AUTH_STORAGE_ITEMS.forEach((item) => this.oauthStorage.removeItem(item));
+    this.removeLoginTokenFromStorage();
 
     this.userService.resetCurrentUser();
     this.pageService.resetPages();
@@ -82,5 +87,9 @@ export class AuthService {
       ...decodedUser,
       isAdmin: decodedUser.roles.includes(Role.AtlasAdmin),
     }
+  }
+
+  private removeLoginTokenFromStorage() {
+    this.AUTH_STORAGE_ITEMS.forEach((item) => this.oauthStorage.removeItem(item));
   }
 }
