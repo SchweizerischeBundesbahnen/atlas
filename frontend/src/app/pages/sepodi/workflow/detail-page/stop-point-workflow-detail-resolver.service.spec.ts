@@ -6,10 +6,9 @@ import {
   stopPointWorkflowDetailResolver,
   StopPointWorkflowDetailResolver
 } from './stop-point-workflow-detail-resolver.service';
-import {ReadParkingLotVersion, ReadStopPointWorkflow, ServicePointsService, StopPointWorkflowService} from "../../../../api";
+import {ReadStopPointWorkflow, ServicePointsService, StopPointWorkflowService} from "../../../../api";
 import {BERN_WYLEREGG} from "../../../../../test/data/service-point";
 import {AppTestingModule} from "../../../../app.testing.module";
-import {parkingLotResolver} from "../../../prm/tabs/parking-lot/detail/resolvers/parking-lot.resolver";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
