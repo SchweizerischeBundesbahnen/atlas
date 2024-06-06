@@ -1,10 +1,15 @@
-import {ActivatedRouteSnapshot, convertToParamMap} from '@angular/router';
-import {of} from 'rxjs';
+import {ActivatedRouteSnapshot, convertToParamMap, RouterStateSnapshot} from '@angular/router';
+import {Observable, of} from 'rxjs';
 import {TestBed} from '@angular/core/testing';
-import {StopPointWorkflowDetailResolver} from './stop-point-workflow-detail-resolver.service';
-import {ReadStopPointWorkflow, ServicePointsService, StopPointWorkflowService} from "../../../../api";
+import {
+  StopPointWorkflowDetailData,
+  stopPointWorkflowDetailResolver,
+  StopPointWorkflowDetailResolver
+} from './stop-point-workflow-detail-resolver.service';
+import {ReadParkingLotVersion, ReadStopPointWorkflow, ServicePointsService, StopPointWorkflowService} from "../../../../api";
 import {BERN_WYLEREGG} from "../../../../../test/data/service-point";
 import {AppTestingModule} from "../../../../app.testing.module";
+import {parkingLotResolver} from "../../../prm/tabs/parking-lot/detail/resolvers/parking-lot.resolver";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
@@ -46,11 +51,14 @@ describe('StopPointWorkflowDetailResolver', () => {
   it('should get workflow with service point', () => {
     const mockRoute = { paramMap: convertToParamMap({ id: '1000' }) } as ActivatedRouteSnapshot;
 
-    const resolvedVersion = resolver.resolve(mockRoute);
+    const resolvedVersion = TestBed.runInInjectionContext(() =>
+      stopPointWorkflowDetailResolver(mockRoute, {} as RouterStateSnapshot),
+    ) as Observable<StopPointWorkflowDetailData>;
 
     resolvedVersion.subscribe((workflowData) => {
       expect(workflowData?.workflow.versionId).toBe(1);
       expect(workflowData?.version.designationOfficial).toBe('Bern, Wyleregg');
     });
   });
+
 });
