@@ -42,11 +42,10 @@ export class AddStopPointWorkflowComponent implements OnInit {
       workflow.workflowComment = this.form.controls.workflowComment.value!;
       workflow.ccEmails = this.form.controls.ccEmails.value!;
       workflow.examinants = this.form.controls.examinants.value.map(examinant => examinant as Client);
-      this.stopPointWorkflowService.addStopPointWorkflow(workflow).subscribe(() => {
+      this.stopPointWorkflowService.addStopPointWorkflow(workflow).subscribe(createdWorkflow => {
         this.notificationService.success('WORKFLOW.NOTIFICATION.START.SUCCESS');
         this.dialogRef.close();
-        //TODO: link to id
-        this.router.navigate([Pages.SEPODI.path, 'workflows', 1000]).then();
+        this.router.navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, createdWorkflow.id]).then();
       })
     }
   }
@@ -55,10 +54,6 @@ export class AddStopPointWorkflowComponent implements OnInit {
     return {
       versionId: stopPoint.id!,
       sloid: stopPoint.sloid!,
-      sboid: stopPoint.businessOrganisation,
-      designationOfficial: stopPoint.designationOfficial,
-      swissMunicipalityName: stopPoint.servicePointGeolocation!.swissLocation!.localityMunicipality?.localityName,
-      swissCanton: stopPoint.servicePointGeolocation!.swissLocation!.canton!
     }
   }
 
