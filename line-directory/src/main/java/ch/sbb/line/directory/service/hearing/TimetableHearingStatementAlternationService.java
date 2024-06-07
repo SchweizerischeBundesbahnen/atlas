@@ -1,12 +1,14 @@
 package ch.sbb.line.directory.service.hearing;
 
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementAlternatingModel;
+import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementModelV2;
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams;
 import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.mapper.TimetableHearingStatementMapperV2;
 import ch.sbb.line.directory.model.TimetableHearingStatementSearchRestrictions;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import java.util.List;
+import java.util.OptionalInt;
 import java.util.function.IntUnaryOperator;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
@@ -46,9 +48,17 @@ public class TimetableHearingStatementAlternationService {
             .pageable(pageable)
             .statementRequestParams(statementRequestParams).build());
 
-    int indexOfCurrentStatement = IntStream.range(0, hearingStatements.size())
+    OptionalInt lookupCurrentStatementIndex = IntStream.range(0, hearingStatements.size())
         .filter(i -> hearingStatements.get(i).getId().equals(id))
-        .findFirst().orElseThrow();
+        .findFirst();
+    if (lookupCurrentStatementIndex.isEmpty()) {
+      return TimetableHearingStatementAlternatingModel.builder()
+          .pageable(pageable)
+          .timetableHearingStatement(getStatementNotInTableFallback(id, hearingStatements))
+          .build();
+    }
+
+    int indexOfCurrentStatement = lookupCurrentStatementIndex.orElseThrow();
 
     int indexOfAlternation = indexModifier.applyAsInt(indexOfCurrentStatement);
     if (indexOfAlternation < 0) {
@@ -70,5 +80,11 @@ public class TimetableHearingStatementAlternationService {
       TimetableHearingStatementSearchRestrictions searchRestrictions) {
     return timetableHearingStatementRepository.findAll(searchRestrictions.getSpecification(),
         searchRestrictions.getPageable().getSort());
+  }
+
+  private TimetableHearingStatementModelV2 getStatementNotInTableFallback(Long id,
+      List<TimetableHearingStatement> hearingStatements) {
+    return TimetableHearingStatementMapperV2.toModel(
+        hearingStatements.stream().filter(i -> i.getId() >= id).findFirst().orElse(hearingStatements.getLast()));
   }
 }
