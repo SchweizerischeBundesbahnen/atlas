@@ -12,8 +12,6 @@ import {AppTestingModule} from "../../../../app.testing.module";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
-  sboid: 'sboid',
-  designationOfficial: 'New Name',
 };
 
 describe('StopPointWorkflowDetailResolver', () => {

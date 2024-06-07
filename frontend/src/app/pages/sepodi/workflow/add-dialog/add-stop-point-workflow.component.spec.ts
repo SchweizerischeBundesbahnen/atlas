@@ -20,9 +20,25 @@ import {SplitServicePointNumberPipe} from "../../../../core/search-service-point
 import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
 import {DetailPageContainerComponent} from "../../../../core/components/detail-page-container/detail-page-container.component";
 import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
+import {DetailHelperService} from "../../../../core/detail/detail-helper.service";
+import {of} from "rxjs";
+import {ReadStopPointWorkflow, StopPointWorkflowService} from "../../../../api";
+import {Router} from "@angular/router";
 
+const workflow: ReadStopPointWorkflow = {
+  versionId: 1,
+};
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 const notificationServiceSpy = jasmine.createSpyObj(['success']);
+const router = jasmine.createSpyObj({
+  navigate: Promise.resolve(),
+});
+const detailHelperService = jasmine.createSpyObj({
+  confirmLeaveDirtyForm: of(true),
+});
+const stopPointWorkflowService = jasmine.createSpyObj({
+  addStopPointWorkflow: of(workflow),
+});
 
 const workflowDialogData: AddStopPointWorkflowDialogData = {
   title: '',
@@ -60,6 +76,9 @@ describe('AddStopPointWorkflowComponent', () => {
         },
         {provide: MatDialogRef, useValue: dialogRefSpy},
         {provide: NotificationService, useValue: notificationServiceSpy},
+        {provide: DetailHelperService, useValue: detailHelperService},
+        {provide: StopPointWorkflowService, useValue: stopPointWorkflowService},
+        {provide: Router, useValue: router},
         {provide: TranslatePipe},
       ],
     })
@@ -73,6 +92,29 @@ describe('AddStopPointWorkflowComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should cancel workflow creation', () => {
+    component.cancel();
+
+    expect(detailHelperService.confirmLeaveDirtyForm).toHaveBeenCalled();
+    expect(dialogRefSpy.close).toHaveBeenCalled();
+  });
+
+  it('should add workflow via service', () => {
+    const firstExaminant = component.form.controls.examinants.at(0);
+    firstExaminant.controls.firstName.setValue('firstName');
+    firstExaminant.controls.lastName.setValue('lastName');
+    firstExaminant.controls.personFunction.setValue('personFunction');
+    firstExaminant.controls.mail.setValue('mail@sbb.ch');
+
+    component.form.controls.workflowComment.setValue('YB isch wida Meista');
+
+    component.addWorkflow();
+
+    expect(stopPointWorkflowService.addStopPointWorkflow).toHaveBeenCalled();
+    expect(notificationServiceSpy.success).toHaveBeenCalled();
+    expect(dialogRefSpy.close).toHaveBeenCalled();
   });
 
 });
