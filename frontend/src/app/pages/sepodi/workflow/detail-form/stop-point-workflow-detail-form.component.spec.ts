@@ -13,8 +13,6 @@ import {MockAtlasButtonComponent} from "../../../../app.testing.mocks";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
-  sboid: 'sboid',
-  designationOfficial: 'New Name',
 };
 
 describe('StopPointWorkflowDetailFormComponent', () => {

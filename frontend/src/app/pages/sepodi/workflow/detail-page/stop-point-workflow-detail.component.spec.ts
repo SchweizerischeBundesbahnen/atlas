@@ -17,8 +17,6 @@ import {DetailFooterComponent} from "../../../../core/components/detail-footer/d
 
 const workflow:ReadStopPointWorkflow = {
   versionId: 1,
-  sboid:'sboid',
-  designationOfficial:'New Name',
 };
 const activatedRoute = {
   snapshot: {
