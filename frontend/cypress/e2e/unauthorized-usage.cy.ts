@@ -3,7 +3,7 @@ import LidiUtils from "../support/util/lidi-utils";
 import SepodiUtils from "../support/util/sepodi-utils";
 import CommonUtils from "../support/util/common-utils";
 
-describe('Unauthorized usage', () => {
+describe('Unauthorized usage', { testIsolation: false },() => {
 
   it('Step-01: Check home', () => {
     cy.visit('/');
@@ -16,7 +16,6 @@ describe('Unauthorized usage', () => {
   });
 
   it('Step-02: Check Line', () => {
-    cy.visit('/');
     LidiUtils.navigateToLines();
     LidiUtils.checkHeaderTitle();
 
@@ -24,7 +23,6 @@ describe('Unauthorized usage', () => {
   });
 
   it('Step-03: Check Sepodi', () => {
-    cy.visit('/');
     SepodiUtils.navigateToServicePoint();
     cy.get(DataCy.SEPODI_SEARCH_FORM).should('exist');
     cy.get(DataCy.SEPODI_NEW_SERVICE_POINT_BUTTON).should('not.exist');
