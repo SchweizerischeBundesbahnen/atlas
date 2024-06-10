@@ -49,6 +49,7 @@
     "TO": "bis",
     "VERSION": "Version",
     "FILLED_AUTOMATICALLY": "Automatisch befüllt",
+    "VERSION_VALIDITY": "Version gültig",
     "VALID_FROM": "Gültig von",
     "VALID_TO": "Gültig bis",
     "TODAY": "Heute",
@@ -537,6 +538,7 @@
     "TITLE": "Anhörung",
     "BUTTON": {
       "ADD": "Anhörung erfassen",
+      "SEND": "Antrag absenden",
       "OPEN": "Anhörung einsehen",
       "START": "Anhörung starten",
       "ACCEPT": "Genehmigen",
@@ -977,7 +979,18 @@
       "ABBREVIATION_UPDATE_NOT_ALLOWED": "Die Geschäftsorganisation der Dienststelle ist nicht berechtigt Abkürzungen hinzuzufügen oder die Dienststelle verfügt bereits über eine Abkürzung, die nicht geändert oder gelöscht werden darf.",
       "ABBREVIATION_NOT_UNIQUE": "Die Abkürzung wird bereits verwendet oder die gewählte Dienststellen Version ist nicht die aktuellste.",
       "HEIGHT_SERVICE_UNAVAILABLE": "Der Höhenservice ist nicht erreichbar. Bitte versuchen Sie es in 30 Minuten erneut. Sollte das Problem weiterhin bestehen wenden Sie sich an die Fachtstelle atlas.",
-      "UPDATE_AFFECTS_VERSION_IN_REVIEW": "Das Editieren ist aufgrund einer laufenden Anhörung der Version vom {{validFrom}} bis {{validTo}} zum Haltestellennamen nicht möglich. Mutationen können erst nach Abschluss der Anhörung wieder erfasst werden."
+      "UPDATE_AFFECTS_VERSION_IN_REVIEW": "Das Editieren ist aufgrund einer laufenden Anhörung der Version vom {{validFrom}} bis {{validTo}} zum Haltestellennamen nicht möglich. Mutationen können erst nach Abschluss der Anhörung wieder erfasst werden.",
+      "WORKFLOW": {
+        "WORKFLOW": "Anhörung",
+        "NEW_DESIGNATION_OFFICIAL": "Neue offizielle Bezeichnung",
+        "ADD_EXAMINANT": "Empfänger hinzufügen",
+        "ADDITIONAL_MAIL_RECIPIENTS": "cc-Mail für Status der Anhörung",
+        "ADDITIONAL_MAIL_RECIPIENTS_INFO": "Es können zusätzliche E-Mail Adressen ergänzt werden. Diese werden über den Verlauf der Anhörung ebenfalls informiert.",
+        "COMMENT": "Begründung",
+        "EXAMINANTS": "Empfänger",
+        "EXAMINANTS_INFO": "Es ist mindestens eine Gemeinde einzutragen. In bestimmten Fällen, wie bei vorheriger Abklärung ausserhalb von atlas kann dieser Part leer bleiben. Kanton und Fachstelle werden automatisch hinzugefügt.",
+        "EXAMINANTS_SUBTITLE": "Wichtig: Hier müssen die Kontaktinformationen für die Anhörung ergänzt werden (Gemeinde zwingend, weitere Empfänger bei Bedarf).\nDie Kantonsempfänger und Fachstellen werden durch atlas automatisch ergänzt."
+      }
     },
     "TRAFFIC_POINT_ELEMENTS": {
       "TRAFFIC_POINT_ELEMENTS": "Haltekanten",
