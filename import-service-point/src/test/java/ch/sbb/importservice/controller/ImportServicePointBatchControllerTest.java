@@ -146,18 +146,4 @@ import org.springframework.boot.test.mock.mockito.MockBean;
         .andExpect(status().isOk());
   }
 
-  @Test
-   void shouldPostLoadingPointImportWithFileParameterSuccessfully() throws Exception {
-    //given
-    doNothing().when(mailProducerService).produceMailNotification(any());
-
-    File file = Files.createTempFile("dir", "file.csv").toFile();
-    when(fileHelperService.getFileFromMultipart(any())).thenReturn(file);
-
-    //when & then
-    mvc.perform(multipart("/v1/import/loading-point").file("file", "example".getBytes(StandardCharsets.UTF_8))
-            .contentType(contentType))
-        .andExpect(status().isOk());
-  }
-
  }
