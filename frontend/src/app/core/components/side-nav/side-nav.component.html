@@ -5,7 +5,7 @@
       <div class="list-item-content-wrapper">
         <span class="font-bold-base link-text">{{ page.titleMenu! | translate}}</span>
         <em class="bi ms-auto" [ngClass]="{
-          'bi-arrow-right': !(selectedPage === page && !page.subpages),
+          'bi-arrow-right': selectedPage === page || !page.subpages,
           'bi-chevron-down': selectedPage === page && page.subpages,
           'bi-chevron-up': selectedPage !== page && page.subpages}"></em>
       </div>
