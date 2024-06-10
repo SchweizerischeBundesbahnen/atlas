@@ -12,7 +12,7 @@
     </a>
     <div *ngIf="selectedPage === page && page.subpages">
       <div *ngFor="let subPage of page.subpages" class="list-item-wrapper">
-        <a mat-list-item [routerLink]="subPage.path">
+        <a mat-list-item [routerLink]="page.path +'/'+subPage.path">
           <div class="list-item-content-wrapper subpage">
             <span class="font-bold-base link-text">{{ subPage.titleMenu! | translate }}</span>
             <em class="bi bi-arrow-right ms-auto"></em>
