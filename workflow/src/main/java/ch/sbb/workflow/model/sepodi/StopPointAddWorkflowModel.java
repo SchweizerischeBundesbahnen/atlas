@@ -11,6 +11,6 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @Schema(name = "StopPointAddWorkflow")
-public class StopPointAddWorkflowModel extends BaseStopPointWorkflowModel{
+public class StopPointAddWorkflowModel extends BaseStopPointWorkflowModel {
 
 }
