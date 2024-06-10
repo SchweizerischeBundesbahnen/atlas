@@ -8,6 +8,7 @@ import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementRequestParams
 import ch.sbb.atlas.api.timetable.hearing.TimetableHearingStatementSenderModelV2;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.IntegrationTest;
+import ch.sbb.line.directory.entity.TimetableHearingStatement;
 import ch.sbb.line.directory.entity.TimetableHearingYear;
 import ch.sbb.line.directory.repository.TimetableHearingStatementRepository;
 import ch.sbb.line.directory.repository.TimetableHearingYearRepository;
@@ -111,7 +112,8 @@ class TimetableHearingStatementAlternationServiceTest {
 
   @Test
   void shouldFindPreviousStatementOfTwo() {
-    TimetableHearingStatementAlternatingModel statementAlternation = timetableHearingStatementAlternationService.getPreviousStatement(
+    TimetableHearingStatementAlternatingModel statementAlternation =
+        timetableHearingStatementAlternationService.getPreviousStatement(
         statement2.getId(), PAGEABLE, STATEMENT_REQUEST_PARAMS);
     assertThat(statementAlternation.getTimetableHearingStatement().getStatement()).isEqualTo("Statement 1");
     assertThat(statementAlternation.getPageable().getPageNumber()).isZero();
@@ -119,10 +121,22 @@ class TimetableHearingStatementAlternationServiceTest {
 
   @Test
   void shouldFindPreviousStatementOfOne() {
-    TimetableHearingStatementAlternatingModel statementAlternation = timetableHearingStatementAlternationService.getPreviousStatement(
+    TimetableHearingStatementAlternatingModel statementAlternation =
+        timetableHearingStatementAlternationService.getPreviousStatement(
         statement1.getId(), PAGEABLE, STATEMENT_REQUEST_PARAMS);
     assertThat(statementAlternation.getTimetableHearingStatement().getStatement()).isEqualTo("Statement 3");
     assertThat(statementAlternation.getPageable().getPageNumber()).isEqualTo(2);
+  }
+
+  @Test
+  void shouldFindFallbackNextIfCantonHasChanged() {
+    TimetableHearingStatement chosenStatement = timetableHearingStatementRepository.findById(statement1.getId()).orElseThrow();
+    chosenStatement.setSwissCanton(SwissCanton.AARGAU);
+    timetableHearingStatementRepository.save(chosenStatement);
+
+    TimetableHearingStatementAlternatingModel statementAlternation = timetableHearingStatementAlternationService.getNextStatement(
+        statement1.getId(), PAGEABLE, STATEMENT_REQUEST_PARAMS);
+    assertThat(statementAlternation.getTimetableHearingStatement().getStatement()).isEqualTo("Statement 2");
   }
 
 }
