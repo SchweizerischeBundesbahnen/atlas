@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,6 +74,10 @@ public class StopPointWorkflowService {
     stopPointWorkflow.setStatus(WorkflowStatus.ADDED);
     return workflowRepository.save(stopPointWorkflow);
   }
+
+  @PreAuthorize(
+      "@countryAndBusinessOrganisationBasedUserAdministrationService."
+          + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   public StopPointWorkflow startWorkflow(Long id) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
     StopPointWorkflowStatusTransitionDecider.validateWorkflowStatusTransition(stopPointWorkflow.getStatus(),
@@ -83,6 +88,9 @@ public class StopPointWorkflowService {
     return workflow;
   }
 
+  @PreAuthorize(
+      "@countryAndBusinessOrganisationBasedUserAdministrationService."
+          + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   public StopPointWorkflow rejectWorkflow(Long id, StopPointRejectWorkflowModel workflowModel) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
     StopPointWorkflowStatusTransitionDecider.validateWorkflowStatusTransition(stopPointWorkflow.getStatus(), REJECTED);
