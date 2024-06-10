@@ -1,6 +1,7 @@
 package ch.sbb.workflow.api;
 
 import ch.sbb.atlas.api.model.Container;
+import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.model.sepodi.WorkflowRequestParams;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
@@ -35,7 +36,7 @@ public interface StopPointWorkflowApiV1 {
   ReadStopPointWorkflowModel getStopPointWorkflow(@PathVariable Long id);
 
   @GetMapping()
-  Container<ReadStopPointWorkflowModel> getStopPointWorkflows(@Parameter(hidden = true) @PageableDefault(sort = {}) Pageable pageable,
+  Container<ReadStopPointWorkflowModel> getStopPointWorkflows(@Parameter(hidden = true) @PageableDefault(sort = {StopPointWorkflow.Fields.sloid}) Pageable pageable,
                                                               @ParameterObject WorkflowRequestParams workflowRequestParams);
 
   @PostMapping

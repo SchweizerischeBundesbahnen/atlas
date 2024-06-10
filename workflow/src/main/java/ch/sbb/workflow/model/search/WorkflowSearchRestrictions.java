@@ -26,10 +26,11 @@ public class WorkflowSearchRestrictions {
     public Specification<StopPointWorkflow> getSpecification() {
         return specificationBuilder().searchCriteriaSpecification(searchCriterias)
                 .and(specificationBuilder().inSpecification(workflowRequestParams.getSloids(), StopPointWorkflow.Fields.sloid))
-                .and(specificationBuilder().inSpecification(workflowRequestParams.getWorkflowId(), StopPointWorkflow.Fields.id))
+                .and(specificationBuilder().inSpecification(workflowRequestParams.getWorkflowIds(), StopPointWorkflow.Fields.id))
                 .and(specificationBuilder().inSpecification(workflowRequestParams.getStatus(), StopPointWorkflow.Fields.status))
                 .and(specificationBuilder().inSpecification(workflowRequestParams.getSboids(), StopPointWorkflow.Fields.sboid))
-                .and(specificationBuilder().inSpecification(workflowRequestParams.getLocality(), StopPointWorkflow.Fields.swissMunicipalityName));
+                .and(specificationBuilder().inSpecification(workflowRequestParams.getLocalities(), StopPointWorkflow.Fields.swissMunicipalityName))
+                .and(specificationBuilder().inSpecification(workflowRequestParams.getDesignations(), StopPointWorkflow.Fields.designationOfficial));
     }
 
     protected SpecificationBuilder<StopPointWorkflow> specificationBuilder() {
