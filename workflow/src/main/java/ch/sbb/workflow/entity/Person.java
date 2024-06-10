@@ -1,6 +1,8 @@
 package ch.sbb.workflow.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.service.UserService;
+import ch.sbb.workflow.helper.StringHelper;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -55,5 +57,13 @@ public class Person extends BaseWorkflowEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "stop_point_workflow_id")
   private StopPointWorkflow stopPointWorkflow;
+
+  public String getMail() {
+    boolean isUnauthorized = UserService.hasUnauthorizedRole();
+    if (isUnauthorized) {
+      return StringHelper.redactString(this.mail);
+    }
+    return this.mail;
+  }
 
 }
