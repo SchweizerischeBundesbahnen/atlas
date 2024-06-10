@@ -50,7 +50,6 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
   });
 
   it('Step-6: Stellungnahmen erfassen', () => {
-    CommonUtils.visit('timetable-hearing/ch/active');
     CommonUtils.selectItemFromDropDown(DataCy.SELECT_TTH_CANTON_DROPDOWN, ' Tessin');
     cy.get(DataCy.NEW_STATEMENT_BUTTON).click();
     CommonUtils.selectItemFromDropDown(DataCy.TTH_DETAIL_SELECT_YEAR, String(selectedHearingYear));
@@ -107,7 +106,7 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
   });
 
   it('Step-9: Fahrplanjahr schliessen', () => {
-    CommonUtils.visit('timetable-hearing/ch/active');
+    CommonUtils.selectItemFromDropDown(DataCy.SELECT_TTH_CANTON_DROPDOWN, ' Gesamtschweiz');
     cy.get(DataCy.TTH_TABLE).should('be.visible');
     cy.get(DataCy.TTH_MANAGE_TIMETABLE_HEARING).click();
     cy.get(DataCy.TTH_CLOSE_TTH_YEAR).click();
