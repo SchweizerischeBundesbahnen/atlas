@@ -20,6 +20,10 @@ public final class UserService {
     return getAccessToken().getClaim(Role.ROLES_JWT_KEY);
   }
 
+  public static boolean hasUnauthorizedRole() {
+    return getRoles().contains(Role.ATLAS_ROLES_UNAUTHORIZED_KEY);
+  }
+
   public static boolean isClientCredentialAuthentication(Jwt jwt) {
     return getSbbuidClaimFromJwt(jwt) == null;
   }
