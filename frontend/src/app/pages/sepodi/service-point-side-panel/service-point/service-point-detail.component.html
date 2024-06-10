@@ -99,6 +99,21 @@
     wrapperStyleClass="ms-3"
   ></atlas-button>
   <atlas-button
+    *ngIf="(isFormEnabled$ | async) === false && form && selectedVersion?.status===servicePointStatus.Draft"
+    (buttonClicked)="addWorkflow()"
+    applicationType="SEPODI"
+    [businessOrganisation]="form.controls.businessOrganisation.value!"
+    [uicCountryCode]="selectedVersion?.number?.uicCountryCode"
+    [disabled]="
+      selectedVersion?.status === servicePointStatus.Revoked ||
+      selectedVersion?.status === servicePointStatus.InReview
+    "
+    buttonDataCy="edit"
+    buttonText="WORKFLOW.BUTTON.ADD"
+    buttonType="edit"
+    wrapperStyleClass="ms-3"
+  ></atlas-button>
+  <atlas-button
     (click)="save()"
     [footerEdit]="(isFormEnabled$ | async) ?? false"
     [disabled]="!form?.dirty"

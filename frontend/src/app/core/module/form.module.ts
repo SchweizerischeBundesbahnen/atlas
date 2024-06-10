@@ -28,6 +28,7 @@ import {
 } from "../form-components/date-range/today-and-future-timetable-header/today-and-future-timetable-header.component";
 import {AtlasClipboardComponent} from "../form-components/atlas-clipboard/atlas-clipboard.component";
 import {CdkCopyToClipboard} from "@angular/cdk/clipboard";
+import {BoDisplayPipe} from "../form-components/bo-select/bo-display.pipe";
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import {CdkCopyToClipboard} from "@angular/cdk/clipboard";
     AtlasLabelFieldComponent,
     AtlasSlideToggleComponent,
     SloidComponent,
-    AtlasClipboardComponent
+    AtlasClipboardComponent,
+    BoDisplayPipe,
   ],
   imports: [CommonModule, MaterialModule, TranslateModule, CdkCopyToClipboard],
   exports: [
@@ -76,7 +78,12 @@ import {CdkCopyToClipboard} from "@angular/cdk/clipboard";
     AtlasLabelFieldComponent,
     AtlasSlideToggleComponent,
     SloidComponent,
-    AtlasClipboardComponent
+    AtlasClipboardComponent,
+    BoSelectionDisplayPipe,
+    BoDisplayPipe,
   ],
+  providers:[
+    BoSelectionDisplayPipe
+  ]
 })
 export class FormModule {}
