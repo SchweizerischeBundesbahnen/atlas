@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ValidationError } from './validation-error';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
+import {AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors} from '@angular/forms';
 import { DATE_PATTERN } from '../date/date.service';
 
 @Injectable({
@@ -55,7 +55,7 @@ export class ValidationService {
     }
   }
 
-  public static validateForm(formGroup: FormGroup) {
+  public static validateForm(formGroup: FormGroup | FormArray) {
     Object.keys(formGroup.controls).forEach((field) => {
       const control = formGroup.get(field);
 
@@ -67,6 +67,8 @@ export class ValidationService {
         control.markAsTouched({ onlySelf: true });
       } else if (control instanceof FormGroup) {
         ValidationService.validateForm(control);
+      } else if (control instanceof FormArray) {
+        control.controls.forEach(element => element.markAllAsTouched());
       }
     });
   }

@@ -39,19 +39,28 @@ export class AuthService {
   ) {
     this.oauthService.configure(environment.authConfig);
     this.oauthService.setupAutomaticSilentRefresh();
+    this.oauthService.events.subscribe(event => {
+      if (event.type === 'token_refresh_error') {
+        this.removeLoginTokenFromStorage();
+      }
+    })
 
     this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
       if (!this.oauthService.hasValidAccessToken()) {
-        this.AUTH_STORAGE_ITEMS.forEach((item) => this.oauthStorage.removeItem(item));
+        this.removeLoginTokenFromStorage();
       }
 
       if (this.oauthService.getIdentityClaims()) {
         const user = this.userFromAccessToken();
         this.userService.setCurrentUserAndLoadPermissions(user).subscribe(() => {
           this.pageService.addPagesBasedOnPermissions();
-        });
 
-        this.router.navigateByUrl(sessionStorage.getItem(this.REQUESTED_ROUTE_STORAGE_KEY) ?? '').then();
+          const url = sessionStorage.getItem(this.REQUESTED_ROUTE_STORAGE_KEY);
+          if (url) {
+            this.router.navigateByUrl(url).then();
+            sessionStorage.removeItem(this.REQUESTED_ROUTE_STORAGE_KEY);
+          }
+        });
       }
     });
   }
@@ -64,6 +73,7 @@ export class AuthService {
 
   logout() {
     this.oauthService.logOut(true);
+    this.removeLoginTokenFromStorage();
 
     this.userService.resetCurrentUser();
     this.pageService.resetPages();
@@ -77,5 +87,9 @@ export class AuthService {
       ...decodedUser,
       isAdmin: decodedUser.roles.includes(Role.AtlasAdmin),
     }
+  }
+
+  private removeLoginTokenFromStorage() {
+    this.AUTH_STORAGE_ITEMS.forEach((item) => this.oauthStorage.removeItem(item));
   }
 }
