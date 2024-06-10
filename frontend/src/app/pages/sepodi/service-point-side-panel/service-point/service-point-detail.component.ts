@@ -23,6 +23,7 @@ import {GeographyFormGroup, GeographyFormGroupBuilder,} from '../../geography/ge
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import { ValidityService } from '../../validity/validity.service';
 import {PermissionService} from "../../../../core/auth/permission/permission.service";
+import {AddStopPointWorkflowDialogService} from "../../workflow/add-dialog/add-stop-point-workflow-dialog.service";
 
 @Component({
   selector: 'app-service-point',
@@ -59,6 +60,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
     private mapService: MapService,
     private permissionService: PermissionService,
     private validityService: ValidityService,
+    private addStopPointWorkflowDialogService: AddStopPointWorkflowDialogService,
   ) {
     this.route.parent?.data.pipe(takeUntilDestroyed()).subscribe((next) => {
       this.servicePointVersions = next.servicePoint;
@@ -311,5 +313,9 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   updateVersion() {
     const servicePointVersion = ServicePointFormGroupBuilder.getWritableServicePoint(this.form!);
     this.update(this.selectedVersion!.id!, servicePointVersion);
+  }
+
+  addWorkflow() {
+    this.addStopPointWorkflowDialogService.openDialog(this.selectedVersion!);
   }
 }
