@@ -19,8 +19,21 @@ import {trafficPointResolver} from './traffic-point-elements/traffic-point-eleme
 import {loadingPointResolver} from './loading-points/loading-points-detail-resolver.service';
 import {LoadingPointsDetailComponent} from './loading-points/loading-points-detail.component';
 import {canCreateServicePoint} from "./service-point-creation-guard";
+import {StopPointWorkflowDetailComponent} from "./workflow/detail-page/stop-point-workflow-detail.component";
+import {stopPointWorkflowDetailResolver} from "./workflow/detail-page/stop-point-workflow-detail-resolver.service";
+import {StopPointWorkflowOverviewComponent} from "./workflow/overview/stop-point-workflow-overview.component";
 
 const routes: Routes = [
+  {
+    path: Pages.SERVICE_POINT_WORKFLOWS.path + '/:id',
+    component: StopPointWorkflowDetailComponent,
+    resolve: {workflow: stopPointWorkflowDetailResolver},
+    runGuardsAndResolvers: 'always',
+  },
+  {
+    path: Pages.SERVICE_POINT_WORKFLOWS.path,
+    component: StopPointWorkflowOverviewComponent,
+  },
   {
     path: '',
     component: SepodiMapviewComponent,
