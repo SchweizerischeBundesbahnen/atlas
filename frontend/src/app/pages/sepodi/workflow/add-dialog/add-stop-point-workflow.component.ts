@@ -42,6 +42,8 @@ export class AddStopPointWorkflowComponent implements OnInit {
       workflow.workflowComment = this.form.controls.workflowComment.value!;
       workflow.ccEmails = this.form.controls.ccEmails.value!;
       workflow.examinants = this.form.controls.examinants.value.map(examinant => examinant as Client);
+
+      this.form.disable();
       this.stopPointWorkflowService.addStopPointWorkflow(workflow).subscribe(createdWorkflow => {
         this.notificationService.success('WORKFLOW.NOTIFICATION.START.SUCCESS');
         this.dialogRef.close();
