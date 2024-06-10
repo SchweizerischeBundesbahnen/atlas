@@ -99,4 +99,40 @@ class UserServiceTest {
     assertThat(result).isNotNull().isEqualTo("client_id");
   }
 
+  @Test
+  void shouldReturnHasUnauthorizedRole() {
+    //given
+    Authentication authentication = Mockito.mock(Authentication.class);
+    Jwt jwt = Mockito.mock(Jwt.class);
+    when(jwt.getClaim(Role.ROLES_JWT_KEY)).thenReturn(List.of("Unauthorized", "role2", "role3"));
+    when(authentication.getPrincipal()).thenReturn(jwt);
+
+    SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+    when(securityContext.getAuthentication()).thenReturn(authentication);
+    SecurityContextHolder.setContext(securityContext);
+
+    //when
+    boolean result = UserService.hasUnauthorizedRole();
+    //then
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  void shouldReturnHasNotUnauthorizedRole() {
+    //given
+    Authentication authentication = Mockito.mock(Authentication.class);
+    Jwt jwt = Mockito.mock(Jwt.class);
+    when(jwt.getClaim(Role.ROLES_JWT_KEY)).thenReturn(List.of("role1", "role2", "role3"));
+    when(authentication.getPrincipal()).thenReturn(jwt);
+
+    SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+    when(securityContext.getAuthentication()).thenReturn(authentication);
+    SecurityContextHolder.setContext(securityContext);
+
+    //when
+    boolean result = UserService.hasUnauthorizedRole();
+    //then
+    assertThat(result).isFalse();
+  }
+
 }
