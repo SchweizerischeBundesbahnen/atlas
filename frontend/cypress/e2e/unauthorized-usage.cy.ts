@@ -16,12 +16,18 @@ describe('Unauthorized usage', () => {
 
   it('Step-02: Check Line', () => {
     cy.visit('/');
+    // Check that login button is available
+    cy.get('#login').should('contain.text', 'Login');
+
     LidiUtils.navigateToLines();
     LidiUtils.checkHeaderTitle();
   });
 
   it('Step-03: Check Sepodi', () => {
     cy.visit('/');
+    // Check that login button is available
+    cy.get('#login').should('contain.text', 'Login');
+
     SepodiUtils.navigateToServicePoint();
     cy.get(DataCy.SEPODI_SEARCH_FORM).should('exist');
     cy.get(DataCy.SEPODI_NEW_SERVICE_POINT_BUTTON).should('not.exist');
