@@ -59,6 +59,8 @@ mail:
       mail-html-title: Antrag für eine neue/geänderte Linie überprüfen.
     atlas:
       business: TechSupport-ATLAS@sbb.ch
+    stop-point:
+      from: no-reply-atlas@sbb.ch
 atlas:
   client:
     gateway:
