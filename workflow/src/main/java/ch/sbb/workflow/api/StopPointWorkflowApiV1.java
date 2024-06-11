@@ -1,11 +1,11 @@
 package ch.sbb.workflow.api;
 
-import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
 import ch.sbb.workflow.model.sepodi.ReadStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
+import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -50,7 +50,7 @@ public interface StopPointWorkflowApiV1 {
 
   @PostMapping(path = "/add-examinant/{id}")
   ReadStopPointWorkflowModel addExaminantToStopPointWorkflow(@PathVariable Long id,
-      @RequestBody @Valid ClientPersonModel personModel);
+      @RequestBody @Valid StopPointClientPersonModel personModel);
 
   @PostMapping(path = "/remove-examinant/{id}/{personId}")
   ReadStopPointWorkflowModel removeExaminantFromStopPointWorkflow(@PathVariable Long id, @PathVariable Long personId);
