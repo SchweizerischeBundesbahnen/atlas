@@ -37,6 +37,10 @@
             font-weight: bold;
         }
 
+        .ski-color {
+            color: #06348b
+        }
+
         .header-title {
             font-size: large;
             text-align: center;
@@ -70,6 +74,22 @@
             margin-left: 20px;
         }
 
+        a:link {
+            text-decoration: none;
+        }
+
+        a:visited {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        a:active {
+            text-decoration: underline;
+        }
+
         .mb-1 {
             margin-bottom: 48px;
         }
@@ -96,73 +116,80 @@
     </div>
     <div class='content-container'>
         <div>
-            <a href="#french">Pour la version française voir ci-dessous.</a>
-            <br><br>
-            <a href="#italian">Per la versione in lingua italiana vedi sotto.</a>
+            <i><a href="#french">Pour la version française voir ci-dessous.</a> / <a href="#italian">Per la versione in
+                lingua italiana vedi sotto.</a></i>
             <br><br>
             <hr style="height:2px;border-width:0;color:gray;background-color:gray">
             <div id="german">
                 <span>Sehr geehrte Damen und Herren</span><br><br>
-                <span>Ihr Antrag auf die Anhörung des neuen Haltestellennamens <b>[[${properties.get(0).get('sloid')}]],
-                    [[${properties.get(0).get('designationOfficial')}]]</b> wurde durch das BAV mit folgender Begründung
-                    zurückgewiesen:</span>
+                <span>Der Antrag auf die Anhörung des neuen Haltestellennamens
+                    <b>[[${properties.get(0).get('designationOfficial')}]], [[${properties.get(0).get('sloid')}]]</b>
+                    wurde durch das Bundesamt für Verkehr (BAV) mit folgender Begründung zurückgewiesen:</span>
                 <span><br><br>
                     [[${properties.get(0).get('comment')}]]
                 </span><br><br>
-                <span>Bitte nehmen Sie die nötigen Anpassungen in <b>atlas</b> vor und starten den Workflow neu.</span>
+                <span>Bitte nehmen Sie die nötigen Anpassungen in atlas vor und starten den Anhörungsprozess neu. </span>
                 <span>Weitere Informationen finden Sie unter
                     <a href="https://www.öv-info.ch/de">https://www.öv-info.ch/de</a>
-                    in den FAQ oder im Benutzerhandbuch.
+                    in der Beschreibung oder im Benutzerhandbuch.
                 </span>
                 <div>
-                    <br><br>Digitale Grüsse,<br>
-                    atlas<br><br>
-                    <b>SBB AG</b><br><br>
+                    <br>Freundliche Grüsse<br><br>
+                    Fachstelle atlas<br>
+                    <b>SKI - Systemaufgaben Kundeninformation</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>SBB AG</b><br>
                     Infrastruktur, Fahrplan und Betrieb, Kundeninformation<br>
-                    Hilfikerstrasse 3, 3000 Bern 65<br><br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
                 </div>
             </div>
             <hr style="height:2px;border-width:0;color:gray;background-color:gray">
             <div id="french">
-                <span>Madame, Monsieur,</span><br><br>
-                <span>Votre demande d’audition pour le nouveau nom de station  <b>[[${properties.get(0).get('sloid')}]],
-                    [[${properties.get(0).get('designationOfficial')}]]</b> a été rejetée par l’OFT pour le motif suivant:</span>
+                <span>Chères Mesdames, chers Messieurs</span><br><br>
+                <span>La demande d'audition du nouveau nom d'arrêt
+                    <b>[[${properties.get(0).get('designationOfficial')}]], [[${properties.get(0).get('sloid')}]]</b>
+                    a été rejetée par l'OFT avec la motivation suivante: </span>
                 <span><br><br>
                     [[${properties.get(0).get('comment')}]]
                 </span><br><br>
-                <span>Nous vous prions de bien vouloir procéder aux adaptations nécessaires sous <b>atlas</b>, puis de recommencer
-                    le processus.</span>
-                <span>Pour de plus amples informations, reportez-vous au manuel de l’utilisateur ou à la FAQ sur le site
-                    <a href="https://www.tp-info.ch/fr">https://www.tp-info.ch/fr</a>.
+                <span>Veuillez procéder aux adaptations nécessaires dans atlas et relancer le processus d'audition.</span>
+                <span>Vous trouverez de plus amples informations sur
+                    <a href="https://www.tp-info.ch/fr">https://www.tp-info.ch/fr </a>
+                    dans la description ou dans le manuel d'utilisation.
                 </span>
                 <div>
-                    <br><br>Digitale Grüsse,<br>
-                    atlas<br><br>
-                    <b>CFF SA</b><br><br>
-                    Infastructure, Horaire et exploitation, Information à la clientele<br>
-                    Hilfikerstrasse 3, 3000 Bern 65<br><br>
+                    <br>Meilleures Salutations <br><br>
+                    Service spécialisé atlas <br>
+                    <b>SKI - Systemaufgaben Kundeninformation</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>CFF SA</b><br>
+                    Incrastructure – Horaire et Exploitation, Information à la clientèle<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
                 </div>
             </div>
 
             <hr style="height:2px;border-width:0;color:gray;background-color:gray">
             <div id="italian">
                 <span>Gentili signore ed egregi signori,</span><br><br>
-                <span>la vostra richiesta di audizione del nuovo nome della fermata <b>[[${properties.get(0).get('sloid')}]],
-                    [[${properties.get(0).get('designationOfficial')}]]</b> è stata respinta dall’UFT con la seguente motivazione:</span>
+                <span>La richiesta di audizione per la nuova denominazione della fermata
+                    <b>[[${properties.get(0).get('designationOfficial')}]], [[${properties.get(0).get('sloid')}]]</b>
+                     è stata respinta dall'Ufficio federale dei trasporti (UFT) con la seguente motivazione:  </span>
                 <span><br><br>
                     [[${properties.get(0).get('comment')}]]
                 </span><br><br>
-                <span>Effettuare le modifiche necessarie in <b>atlas</b> e riavviare il workflow.</span>
-                <span>Ulteriori informazioni sono disponibili su
-                    <a href="https://www.tp-info.ch/it">https://www.tp-info.ch/it</a>
-                    nelle FAQ o nel manuale utente.
+                <span>Si prega di apportare le necessarie modifiche all’atlas e di riavviare il processo di consultazione.</span>
+                <span>Ulteriori informazioni sono disponibili sul sito
+                    <a href="https://www.tp-info.ch/it">https://www.tp-info.ch/it </a>
+                    nella descrizione o nel manuale d'uso.
                 </span>
                 <div>
-                    <br><br>Saluti Digitali,<br>
-                    atlas<br><br>
-                    <b>FFS SA</b><br><br>
-                    Infrastruttura, Orario ed esercizio, Informazione della clientela<br>
-                    Hilfikerstrasse 3, 3000 Bern 65<br><br>
+                    <br>Cordiali saluti<br><br>
+                    Servizio specializzato atlas<br>
+                    <b>SKI - Systemaufgaben Kundeninformation</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>FFS SA</b><br>
+                    Infrastrutture – Orario ed Esercizio, Informazione della clientela<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
                 </div>
             </div>
 
