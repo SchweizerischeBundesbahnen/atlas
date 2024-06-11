@@ -26,7 +26,7 @@ class ExaminantsTest {
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.getMail()).isEqualTo("no-reply-ATLAS@sbb.ch");
+    assertThat(result.getMail()).isEqualTo("TechSupport-ATLAS@sbb.ch");
   }
 
   @Test

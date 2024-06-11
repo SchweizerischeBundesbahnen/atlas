@@ -16,6 +16,7 @@ import ch.sbb.workflow.exception.StopPointWorkflowAlreadyInAddedStatusException;
 import ch.sbb.workflow.helper.OtpHelper;
 import ch.sbb.workflow.kafka.WorkflowNotificationService;
 import ch.sbb.workflow.mapper.ClientPersonMapper;
+import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
@@ -175,10 +176,10 @@ public class StopPointWorkflowService {
     return newStopPointWorkflow;
   }
 
-  public StopPointWorkflow addExaminantToWorkflow(Long id, ClientPersonModel personModel) {
+  public StopPointWorkflow addExaminantToWorkflow(Long id, StopPointClientPersonModel personModel) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
     if (stopPointWorkflow.getStatus() != WorkflowStatus.ADDED || stopPointWorkflow.getStatus() != WorkflowStatus.APPROVED) {
-      Person examinant = ClientPersonMapper.toEntity(personModel);
+      Person examinant = StopPointClientPersonMapper.toEntity(personModel);
       stopPointWorkflow.getExaminants().add(examinant);
       examinant.setStopPointWorkflow(stopPointWorkflow);
       return workflowRepository.save(stopPointWorkflow);
