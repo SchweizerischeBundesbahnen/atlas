@@ -28,7 +28,7 @@ import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-class LineWorkflowBuilderNotificationServiceTest {
+class LineWorkflowServiceTest {
 
  private LineWorkflowService service;
 
