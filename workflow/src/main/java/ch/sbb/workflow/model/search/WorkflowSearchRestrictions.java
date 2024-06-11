@@ -1,6 +1,8 @@
 package ch.sbb.workflow.model.search;
 
 import ch.sbb.atlas.searching.SpecificationBuilder;
+import ch.sbb.atlas.searching.specification.CreatedAtSpecification;
+import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.model.sepodi.WorkflowRequestParams;
 import lombok.Getter;
