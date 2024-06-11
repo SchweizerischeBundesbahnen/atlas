@@ -5,7 +5,7 @@ import ch.sbb.workflow.api.StopPointWorkflowApiV1;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
 import ch.sbb.workflow.model.search.WorkflowSearchRestrictions;
-import ch.sbb.workflow.model.sepodi.WorkflowRequestParams;
+import ch.sbb.workflow.model.sepodi.StopPointWorkflowRequestParams;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
@@ -33,10 +33,10 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   }
 
   @Override
-  public Container<ReadStopPointWorkflowModel> getStopPointWorkflows(Pageable pageable, WorkflowRequestParams workflowRequestParams) {
+  public Container<ReadStopPointWorkflowModel> getStopPointWorkflows(Pageable pageable, StopPointWorkflowRequestParams stopPointWorkflowRequestParams) {
     WorkflowSearchRestrictions workflowSearchRestrictions = WorkflowSearchRestrictions.builder()
             .pageable(pageable)
-            .workflowRequestParams(workflowRequestParams)
+            .stopPointWorkflowRequestParams(stopPointWorkflowRequestParams)
             .build();
     Page<StopPointWorkflow> workflows = service.getWorkflows(workflowSearchRestrictions);
 
