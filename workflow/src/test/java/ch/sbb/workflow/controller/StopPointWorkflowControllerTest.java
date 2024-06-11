@@ -45,6 +45,7 @@ import ch.sbb.workflow.workflow.OtpRepository;
 import ch.sbb.workflow.workflow.StopPointWorkflowRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -112,6 +113,74 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(1)))
         .andExpect(jsonPath("$[0].examinants", hasSize(3)));
+  }
+
+  @Test
+  void shouldGetWorkflowsWithFilter() throws Exception {
+    ClientPersonModel person = ClientPersonModel.builder()
+            .firstName("Marek")
+            .lastName("Hamsik")
+            .personFunction("Centrocampista")
+            .mail(MAIL_ADDRESS).build();
+    List<ClientPersonModel> clientPersonModels = new ArrayList<>();
+    clientPersonModels.add(person);
+
+    long versionId = 123456L;
+    String sloid = "ch:1:sloid:1234";
+    StopPointAddWorkflowModel workflowModel1 = StopPointAddWorkflowModel.builder()
+            .sloid(sloid)
+            .ccEmails(List.of(MAIL_ADDRESS))
+            .workflowComment("WF comment")
+            .examinants(clientPersonModels)
+            .designation("Test")
+            .localityName("BERN")
+            .validFrom(LocalDate.of(2020, 03, 01))
+            .createdAt(LocalDateTime.of(LocalDate.of(2020, 01, 01), LocalTime.of(15, 43, 22)))
+            .ccEmails(List.of("a@b.ch", "b@c.it"))
+            .versionId(versionId)
+            .build();
+
+    ClientPersonModel person2 = ClientPersonModel.builder()
+            .firstName("Marek")
+            .lastName("Hamsik")
+            .personFunction("Centrocampista")
+            .mail(MAIL_ADDRESS).build();
+    List<ClientPersonModel> clientPersonModels2 = new ArrayList<>();
+    clientPersonModels2.add(person2);
+
+    long versionId2 = 654321L;
+    String sloid2 = "ch:1:sloid:4321";
+    StopPointAddWorkflowModel workflowModel2 = StopPointAddWorkflowModel.builder()
+            .sloid(sloid2)
+            .ccEmails(List.of(MAIL_ADDRESS))
+            .workflowComment("Commentaros")
+            .examinants(clientPersonModels2)
+            .designation("Test")
+            .localityName("ZURICH")
+            .validFrom(LocalDate.of(2015, 03, 01))
+            .createdAt(LocalDateTime.of(LocalDate.of(2020, 1, 1), LocalTime.of(9, 26, 29)))
+            .ccEmails(List.of("a@b.ch", "b@c.it"))
+            .versionId(versionId2)
+            .build();
+
+    when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
+            .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
+
+    when(sePoDiClientService.updateStopPointStatusToInReview(sloid2, versionId2))
+            .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
+
+    controller.addStopPointWorkflow(workflowModel1);
+    controller.addStopPointWorkflow(workflowModel2);
+
+    mvc.perform(get("/v1/stop-point/workflows"
+            + "?status=ADDED"
+            + "&sloids=ch:1:sloid:1234"
+            + "&localityName=Bern"
+            + "&designation=Aargau Strasse"
+            + "&validFrom=2010-12-11"
+            ))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.objects", hasSize(1)));
   }
 
   @Test
