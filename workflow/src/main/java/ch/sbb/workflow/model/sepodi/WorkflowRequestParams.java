@@ -33,12 +33,12 @@ public class WorkflowRequestParams {
     private List<String> sloids = new ArrayList<>();
 
     @Parameter(description = "")
-    @Singular(ignoreNullCollections = true)
-    private List<String> designations = new ArrayList<>();
+    @Singular("designation")
+    private List<String> designation = new ArrayList<>();
 
     @Parameter(description = "")
-    @Singular("localities")
-    private List<String> localities = new ArrayList<>();
+    @Singular("localityName")
+    private List<String> localityName = new ArrayList<>();
 
     @Parameter(description = "")
     @Singular(ignoreNullCollections = true)
@@ -55,7 +55,7 @@ public class WorkflowRequestParams {
     private LocalDateTime createdAt;
 
     @Parameter(description = "")
-    @DateTimeFormat(pattern = AtlasApiConstants.DATE_TIME_FORMAT_PATTERN, fallbackPatterns = { AtlasApiConstants.DATE_TIME_FORMAT_PATTERN_WITH_T, AtlasApiConstants.ISO_DATE_TIME_FORMAT_PATTERN })
+    @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN, fallbackPatterns = { AtlasApiConstants.DATE_FORMAT_PATTERN_CH })
     private LocalDate validFrom;
 
 
