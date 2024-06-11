@@ -2,6 +2,7 @@ package ch.sbb.workflow.model.search;
 
 import ch.sbb.atlas.searching.SpecificationBuilder;
 import ch.sbb.atlas.searching.specification.CreatedAtSpecification;
+import ch.sbb.atlas.searching.specification.ValidFromAndCreatedAtSpecification;
 import ch.sbb.atlas.searching.specification.ValidOrEditionTimerangeSpecification;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.model.sepodi.WorkflowRequestParams;
@@ -31,8 +32,12 @@ public class WorkflowSearchRestrictions {
                 .and(specificationBuilder().inSpecification(workflowRequestParams.getWorkflowIds(), StopPointWorkflow.Fields.id))
                 .and(specificationBuilder().inSpecification(workflowRequestParams.getStatus(), StopPointWorkflow.Fields.status))
                 .and(specificationBuilder().inSpecification(workflowRequestParams.getSboids(), StopPointWorkflow.Fields.sboid))
-                .and(specificationBuilder().inSpecification(workflowRequestParams.getLocalities(), StopPointWorkflow.Fields.swissMunicipalityName))
-                .and(specificationBuilder().inSpecification(workflowRequestParams.getDesignations(), StopPointWorkflow.Fields.designationOfficial));
+                .and(specificationBuilder().inSpecification(workflowRequestParams.getLocalityName(), StopPointWorkflow.Fields.localityName))
+                .and(specificationBuilder().inSpecification(workflowRequestParams.getDesignation(), StopPointWorkflow.Fields.designationOfficial))
+                .and(new ValidFromAndCreatedAtSpecification<>(
+                        workflowRequestParams.getValidFrom(),
+                        workflowRequestParams.getCreatedAt()
+                ));
     }
 
     protected SpecificationBuilder<StopPointWorkflow> specificationBuilder() {
