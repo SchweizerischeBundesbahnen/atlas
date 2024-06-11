@@ -1,7 +1,7 @@
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AtlasFieldLengthValidator} from "../../../../core/validation/field-lengths/atlas-field-length-validator";
 import {AtlasCharsetsValidator} from "../../../../core/validation/charsets/atlas-charsets-validator";
-import {Client, ReadStopPointWorkflow} from "../../../../api";
+import {ReadStopPointWorkflow, StopPointPerson} from "../../../../api";
 
 export interface StopPointWorkflowDetailFormGroup {
   ccEmails: FormControl<Array<string> | null | undefined>;
@@ -13,6 +13,7 @@ export interface ExaminantFormGroup {
   firstName: FormControl<string | null | undefined>;
   lastName: FormControl<string | null | undefined>;
   personFunction: FormControl<string | null | undefined>;
+  organisation: FormControl<string | null | undefined>;
   mail: FormControl<string | null | undefined>;
 }
 
@@ -28,11 +29,12 @@ export class StopPointWorkflowDetailFormGroupBuilder {
     );
   }
 
-  static buildExaminantFormGroup(examinant?: Client): FormGroup<ExaminantFormGroup> {
+  static buildExaminantFormGroup(examinant?: StopPointPerson): FormGroup<ExaminantFormGroup> {
     return new FormGroup<ExaminantFormGroup>(
       {
         firstName: new FormControl(examinant?.firstName),
         lastName: new FormControl(examinant?.lastName),
+        organisation: new FormControl(examinant?.organisation, [Validators.required]),
         personFunction: new FormControl(examinant?.personFunction, [Validators.required]),
         mail: new FormControl(examinant?.mail, [Validators.required, AtlasCharsetsValidator.email])
       }
