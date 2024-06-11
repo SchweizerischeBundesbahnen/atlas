@@ -51,6 +51,10 @@
             text-align: justify;
         }
 
+        .ski-color {
+            color: #06348b
+        }
+
         .content-container {
             margin-top: 20px;
             margin-left: 20px;
@@ -65,9 +69,20 @@
             display: inline-block;
         }
 
-        .footer {
-            margin-top: 32px;
-            margin-left: 20px;
+        a:link {
+            text-decoration: none;
+        }
+
+        a:visited {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        a:active {
+            text-decoration: underline;
         }
 
         .mb-1 {
@@ -96,25 +111,105 @@
     </div>
     <div class='content-container'>
         <div>
-            Pour la version française voir ci-dessous.
-            </br>
-            Per la versione in lingua italiana vedi sotto.
-            <br/>
-            <span th:if="${properties.get(0).get('comment')}">
-                Bitte beachten Sie dazu die nachfolgende Bemerkung der prüfenden Person:
-                <br/>
-                [[${properties.get(0).get('comment')}]]
-            </span>
-            <br/>
-            <br/>
-            Durch einen Klick auf <a th:href="${properties.get(0).get('url')}" th:text="${properties.get(0).get('url')}"></a>
-            gelangen Sie direkt zur Anhorung <b>[[${properties.get(0).get('sloid')}]]</b> -
-            <b>[[${properties.get(0).get('endDate')}]].</b>
+            <i><a href="#french">Pour la version française voir ci-dessous.</a> / <a href="#italian">Per la versione in
+                lingua italiana vedi sotto.</a></i>
+            <br><br>
+            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+            <div id="german">
+                <span>Sehr geehrte Damen und Herren</span><br><br>
+                <span>Das Transportunternehmen SBOID [[${properties.get(0).get('sboid')}]] stellt den Antrag für die
+                    Umbenennung/Neueinführung der Haltestelle
+                    <b>[[${properties.get(0).get('designationOfficial')}]] SLOID [[${properties.get(0).get('sloid')}]]</b>.
+                    Sie dürfen im Rahmen der <a href="https://www.fedlex.admin.ch/eli/cc/2008/393/de#id-7">«Verordnung über
+                        geografische Namen (GeoNV)»</a> über den Namen abstimmen.
+                    Bitte beantworten Sie die Anhörung bis zum [[${properties.get(0).get('endDate')}]] wie folgt:
+                </span>
+                <ol>
+                    <li>Aufrufen der Anhörung mit folgendem Link: [[${properties.get(0).get('url')}]]</li>
+                    <li>Entscheidung bezüglich des Namens der Haltestelle treffen</li>
+                    <li>Klicken Sie auf <b>Pin-Code anfordern</b></li>
+                    <li>Sie erhalten ein neues Mail mit dem Pin-Code für die Abstimmung</li>
+                </ol>
+                <span>Bitte beantworten Sie die Anhörung in jedem Fall. Fehlende Antworten werden nach Ablauf der Frist als
+                    Einverständnis gewertet. </span><br>
+                <span>Weitere Informationen finden Sie unter
+                    <a href="https://www.öv-info.ch/de">https://www.öv-info.ch/de</a>
+                    in der Beschreibung oder im Benutzerhandbuch.
+                </span>
+                <div>
+                    <br>Freundliche Grüsse<br><br>
+                    Fachstelle atlas<br>
+                    <b>SKI - Systemaufgaben Kundeninformation</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>SBB AG</b><br>
+                    Infrastruktur, Fahrplan und Betrieb, Kundeninformation<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
+            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+            <div id="french">
+                <span>Mesdames et Messieurs</span><br><br>
+                <span>L'entreprise de transport SBOID [[${properties.get(0).get('sboid')}]] dépose une demande de changement de nom/d'introduction de l'arrêt
+                    <b>[[${properties.get(0).get('designationOfficial')}]] SLOID [[${properties.get(0).get('sloid')}]]</b>.
+                   Vous pouvez vous prononcer sur ce nom dans le cadre de l'
+                    <a href="https://www.fedlex.admin.ch/eli/cc/2008/393/fr">« Ordonnance sur les noms géographiques (ONGéo)»</a>.
+                     Veuillez répondre comme suit à l'audition jusqu'au [[${properties.get(0).get('endDate')}]]:
+                </span>
+                <ol>
+                    <li>appeler l'audition en utilisant le lien suivant: [[${properties.get(0).get('url')}]]</li>
+                    <li>prendre une décision concernant le nom de l'arrêt</li>
+                    <li>cliquer sur <b>Demander le code pin</b></li>
+                    <li>vous recevez un nouveau mail avec le code pin pour le vote</li>
+                </ol>
+                <span>Veuillez répondre à l'audition dans tous les cas. L'absence de réponse sera considérée comme un accord à l'expiration du délai.</span><br>
+                <span>Vous trouverez de plus amples informations sur
+                    <a href="https://www.tp-info.ch/fr">https://www.tp-info.ch/fr</a>
+                    dans la description ou dans le manuel d'utilisation.
+                </span>
+                <div>
+                    <br>Meilleures Salutations<br><br>
+                    Service spécialisé atlas<br>
+                    <b>SKI - Systemaufgaben Kundeninformation</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>CFF SA</b><br>
+                    Incrastructure – Horaire et Exploitation, Information à la clientèle<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
+
+            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+            <div id="italian">
+                <span>Gentile signore o signora </span><br><br>
+                <span>L'azienda di trasporti SBOID [[${properties.get(0).get('sboid')}]] ha presentato una richiesta di
+                    ridenominazione della fermata
+                    <b>[[${properties.get(0).get('designationOfficial')}]] SLOID [[${properties.get(0).get('sloid')}]]</b>.
+                    Potete votare sul nome nell'ambito dell'<a href="https://www.fedlex.admin.ch/eli/cc/2008/393/it">“Ordinanza
+                    sui nomi geografici (GeoNV)”</a>.
+                    Vi preghiamo di rispondere alla consultazione entro il [[${properties.get(0).get('endDate')}]] come segue:
+                </span>
+                <ol>
+                    <li>richiamare la consultazione con il seguente link: [[${properties.get(0).get('url')}]]</li>
+                    <li>prendere una decisione in merito al nome della fermata</li>
+                    <li>cliccare su <b>Richiedi codice pin</b></li>
+                    <li>riceverete una nuova e-mail con il codice pin per la votazione.</li>
+                </ol>
+                <span>BSi prega di rispondere alla consultazione in ogni caso. Le risposte mancanti saranno considerate come un consenso successivo alla scadenza.</span><br>
+                <span>Ulteriori informazioni sono disponibili sul sito
+                    <a href="https://www.tp-info.ch/it">https://www.tp-info.ch/it</a>
+                    nella descrizione o nel manuale d'uso.
+                </span>
+                <div>
+                    <br>Cordiali saluti<br><br>
+                    Servizio specializzato atlas<br>
+                    <b>SKI - Systemaufgaben Kundeninformation</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>FFS SA</b><br>
+                    Infrastrutture – Orario ed Esercizio, Informazione della clientela<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
+
         </div>
-    </div>
-    <div class='footer'>
-        Digitale Grüsse,<br/>
-        atlas
     </div>
 </div>
 </body>
