@@ -11,7 +11,37 @@
  */
 
 
-export interface InlineObject15 { 
-    file: Blob;
+/**
+ * List hearing examinants
+ */
+export interface StopPointPerson { 
+    /**
+     * Firstname
+     */
+    firstName?: string;
+    /**
+     * Second
+     */
+    lastName?: string;
+    /**
+     * Person Function
+     */
+    personFunction: string;
+    /**
+     * Object creation date
+     */
+    readonly creationDate?: string;
+    /**
+     * Last edition date
+     */
+    readonly editionDate?: string;
+    /**
+     * mail
+     */
+    mail: string;
+    /**
+     * Organisation
+     */
+    organisation: string;
 }
 
