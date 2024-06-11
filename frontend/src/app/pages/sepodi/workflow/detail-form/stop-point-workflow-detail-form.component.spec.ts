@@ -56,6 +56,7 @@ describe('StopPointWorkflowDetailFormComponent', () => {
     firstExaminant.controls.firstName.setValue('firstName');
     firstExaminant.controls.lastName.setValue('lastName');
     firstExaminant.controls.personFunction.setValue('personFunction');
+    firstExaminant.controls.organisation.setValue('organisation');
     firstExaminant.controls.mail.setValue('mail@sbb.ch');
 
     component.addExaminant();
