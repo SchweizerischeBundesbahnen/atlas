@@ -163,6 +163,7 @@ model/statementStatus.ts
 model/status.ts
 model/stepFreeAccessAttributeType.ts
 model/stopPointAddWorkflow.ts
+model/stopPointPerson.ts
 model/stopPointRejectWorkflow.ts
 model/stopPointRestartWorkflow.ts
 model/stopPointType.ts
