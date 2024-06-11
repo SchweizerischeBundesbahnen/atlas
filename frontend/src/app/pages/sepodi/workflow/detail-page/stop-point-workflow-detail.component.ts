@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ReadServicePointVersion, ReadStopPointWorkflow} from "../../../../api";
+import {ReadServicePointVersion, ReadStopPointWorkflow, Status} from "../../../../api";
 import {FormGroup} from "@angular/forms";
 import {
   StopPointWorkflowDetailFormGroup,
@@ -20,11 +20,16 @@ export class StopPointWorkflowDetailComponent implements OnInit {
   form!: FormGroup<StopPointWorkflowDetailFormGroup>;
   stopPoint!: ReadServicePointVersion;
   workflow!: ReadStopPointWorkflow;
+  oldDesignation?: string;
 
   ngOnInit() {
     const workflowData: StopPointWorkflowDetailData = this.route.snapshot.data.workflow;
     this.workflow = workflowData.workflow;
-    this.stopPoint = workflowData.version;
+
+    const indexOfVersionInReview = workflowData.servicePoint.findIndex(i=> i.id===this.workflow.versionId)!;
+    this.stopPoint = workflowData.servicePoint[indexOfVersionInReview];
+    const versionsBeforeInReview = workflowData.servicePoint.slice(0, indexOfVersionInReview);
+    this.oldDesignation = versionsBeforeInReview.filter(i => i.stopPoint && i.status === Status.Validated).map(i => i.designationOfficial).at(-1) ?? '-';
 
     this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(this.workflow);
     this.form.disable();

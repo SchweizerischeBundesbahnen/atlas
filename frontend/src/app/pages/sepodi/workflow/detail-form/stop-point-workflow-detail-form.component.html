@@ -8,34 +8,67 @@
     </span>
 </div>
 
-<div class="d-flex flex-row mb-3">
-  <div class="d-flex flex-column" data-cy="sloid">
-    <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.SLOID' | translate }}</div>
-    <div>{{ stopPoint.sloid }}</div>
-  </div>
-  <div class="d-flex flex-column ms-5" data-cy="number">
-    <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.DIDOK_CODE' | translate }}</div>
-    <div>{{ stopPoint.number | splitServicePointNumber }}</div>
-  </div>
-  <div class="d-flex flex-column ms-5" data-cy="business-organisation">
-    <div class="font-bold-base">
-      {{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION' | translate }}
+<div class="stop-point-info">
+  <div class="row mb-3">
+    <div class="col" data-cy="sloid">
+      <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.SLOID' | translate }}</div>
+      <div>{{ stopPoint.sloid }}</div>
     </div>
-    <div>{{ stopPoint.businessOrganisation | boDisplay | async }}</div>
+    <div class="col" data-cy="number">
+      <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.DIDOK_CODE' | translate }}</div>
+      <div>{{ stopPoint.number | splitServicePointNumber }}</div>
+    </div>
+    <div class="col" data-cy="business-organisation">
+      <div class="font-bold-base">
+        {{ 'BODI.BUSINESS_ORGANISATION.BUSINESS_ORGANISATION' | translate }}
+      </div>
+      <div>{{ stopPoint.businessOrganisation | boDisplay | async }}</div>
+    </div>
   </div>
-</div>
 
-<div class="d-flex flex-row mb-5">
-  <div class="d-flex flex-column" data-cy="new-designation-official">
-    <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.NEW_DESIGNATION_OFFICIAL' | translate }}</div>
-    <div>{{ stopPoint.designationOfficial }}</div>
-  </div>
-  @if (stopPoint.servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName) {
-    <div class="d-flex flex-column ms-5" data-cy="municipality">
-      <div class="font-bold-base">{{ 'SEPODI.GEOLOCATION.DISTRICT' | translate }}</div>
-      <div>{{ stopPoint.servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName }}</div>
+  @if (oldDesignation) {
+    <div class="row mb-3">
+      <div class="col" data-cy="old-designation-official">
+        <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.OLD_DESIGNATION_OFFICIAL' | translate }}</div>
+        <div>{{ oldDesignation }}</div>
+      </div>
     </div>
   }
+
+  @if (currentWorkflow) {
+    <div class="row mb-3">
+      <div class="col" data-cy="workflow-status">
+        <div class="font-bold-base">{{ 'WORKFLOW.STATUS_DETAIL' | translate }}</div>
+        <div>{{  'WORKFLOW.STATUS.' + currentWorkflow.status | translate}}</div>
+      </div>
+      <div class="col"></div>
+      <div class="col" data-cy="links">
+        <em class="bi bi-geo-alt-fill"></em>Karte:
+        <a (click)="goToSwissTopo()">Swisstopo</a> /
+        <a (click)="goToAtlasStopPoint()">atlas</a>
+      </div>
+    </div>
+  }
+
+  <div class="row mb-5">
+    <div class="col" data-cy="new-designation-official">
+      <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.NEW_DESIGNATION_OFFICIAL' | translate }}</div>
+      <div>{{ stopPoint.designationOfficial }}</div>
+    </div>
+    @if (stopPoint.servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName) {
+      <div class="col" data-cy="municipality">
+        <div class="font-bold-base">{{ 'SEPODI.GEOLOCATION.DISTRICT' | translate }}</div>
+        <div>{{ stopPoint.servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName }}</div>
+      </div>
+    }
+    <div class="col">
+      @if (currentWorkflow) {
+        <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.APPLICANT' | translate }}</div>
+        <app-user-detail-info [record]="currentWorkflow" [showEditor]="false"></app-user-detail-info>
+      }
+    </div>
+  </div>
+
 </div>
 
 <div class="d-flex flex-column col-12 mb-5">
@@ -71,7 +104,9 @@
         <div class="col pe-2">{{ 'WORKFLOW.PERSON.ORGANISATION'|translate }} *</div>
         <div class="col pe-2">{{ 'WORKFLOW.PERSON.FUNCTION'|translate }} </div>
         <div class="col">{{ 'WORKFLOW.PERSON.MAIL'|translate }} *</div>
-        <div class="icon-button-col"></div>
+        @if (form.enabled) {
+          <div class="icon-button-col"></div>
+        }
       </div>
     }
 
@@ -93,33 +128,36 @@
           <div class="col">
             <atlas-text-field [formGroup]="examinant" controlName="mail"></atlas-text-field>
           </div>
-          <div class="icon-button-col text-align-center">
-            <atlas-button
-              (buttonClicked)="removeExaminant(i)"
-              [disabled]="form.disabled"
-              buttonType="icon"
-            >
-              <ng-template #rightIcon>
-                <i
-                  class="bi bi-trash"
-                ></i>
-              </ng-template>
-            </atlas-button>
-          </div>
+          @if (form.enabled) {
+            <div class="icon-button-col text-align-center">
+              <atlas-button
+                (buttonClicked)="removeExaminant(i)"
+                [disabled]="form.disabled"
+                buttonType="icon"
+              >
+                <ng-template #rightIcon>
+                  <i
+                    class="bi bi-trash"
+                  ></i>
+                </ng-template>
+              </atlas-button>
+            </div>
+          }
         </div>
       </ng-container>
     </div>
   </div>
 
-  <atlas-button
-    (click)="addExaminant()"
-    [disabled]="form.disabled"
-    buttonDataCy="add-examinant"
-    buttonText="SEPODI.SERVICE_POINTS.WORKFLOW.ADD_EXAMINANT"
-    buttonType="defaultPrimary"
-    wrapperStyleClass="mt-3"
-  >
-  </atlas-button>
+  @if (form.enabled) {
+    <atlas-button
+      (click)="addExaminant()"
+      buttonDataCy="add-examinant"
+      buttonText="SEPODI.SERVICE_POINTS.WORKFLOW.ADD_EXAMINANT"
+      buttonType="defaultPrimary"
+      wrapperStyleClass="mt-3"
+    >
+    </atlas-button>
+  }
 </div>
 
 <div class="d-flex mt-5">
