@@ -129,6 +129,7 @@ export * from './statementStatus';
 export * from './status';
 export * from './stepFreeAccessAttributeType';
 export * from './stopPointAddWorkflow';
+export * from './stopPointPerson';
 export * from './stopPointRejectWorkflow';
 export * from './stopPointRestartWorkflow';
 export * from './stopPointType';

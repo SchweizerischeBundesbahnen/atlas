@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {Client, ReadServicePointVersion, StopPointAddWorkflow, StopPointWorkflowService} from "../../../../api";
+import {ReadServicePointVersion, StopPointAddWorkflow, StopPointPerson, StopPointWorkflowService} from "../../../../api";
 import {AddStopPointWorkflowDialogData} from "./add-stop-point-workflow-dialog-data";
 import {FormGroup} from "@angular/forms";
 import {
@@ -41,7 +41,7 @@ export class AddStopPointWorkflowComponent implements OnInit {
       const workflow = this.stopPointToWorkflowInfo(this.data.stopPoint);
       workflow.workflowComment = this.form.controls.workflowComment.value!;
       workflow.ccEmails = this.form.controls.ccEmails.value!;
-      workflow.examinants = this.form.controls.examinants.value.map(examinant => examinant as Client);
+      workflow.examinants = this.form.controls.examinants.value.map(examinant => examinant as StopPointPerson);
 
       this.form.disable();
       this.stopPointWorkflowService.addStopPointWorkflow(workflow).subscribe(createdWorkflow => {
