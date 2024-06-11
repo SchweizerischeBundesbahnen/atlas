@@ -11,7 +11,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,20 +37,20 @@ public class Person extends BaseWorkflowEntity {
   @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
   private Long id;
 
-  @NotBlank
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String firstName;
 
-  @NotBlank
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String lastName;
 
-  @NotBlank
   @Size(max = AtlasFieldLengths.LENGTH_50)
   private String function;
 
   @Size(max = AtlasFieldLengths.LENGTH_255)
   private String mail;
+
+  @Size(max = AtlasFieldLengths.LENGTH_255)
+  private String organisation;
 
   @ToString.Exclude
   @ManyToOne(fetch = FetchType.LAZY)
