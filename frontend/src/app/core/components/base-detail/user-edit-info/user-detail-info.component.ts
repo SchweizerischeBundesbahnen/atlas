@@ -14,6 +14,7 @@ import { map } from 'rxjs/operators';
 })
 export class UserDetailInfoComponent {
   @Input() short = false;
+  @Input() showEditor = true;
 
   private _record$: Observable<CreationEditionRecord | undefined> = of(undefined);
 

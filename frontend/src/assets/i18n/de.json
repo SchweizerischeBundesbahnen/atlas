@@ -990,7 +990,9 @@
         "COMMENT": "Begründung",
         "EXAMINANTS": "Empfänger",
         "EXAMINANTS_INFO": "Es ist mindestens eine Gemeinde einzutragen. In bestimmten Fällen, wie bei vorheriger Abklärung ausserhalb von atlas kann dieser Part leer bleiben. Kanton und Fachstelle werden automatisch hinzugefügt.",
-        "EXAMINANTS_SUBTITLE": "Wichtig: Hier müssen die Kontaktinformationen für die Anhörung ergänzt werden (Gemeinde zwingend, weitere Empfänger bei Bedarf).\nDie Kantonsempfänger und Fachstellen werden durch atlas automatisch ergänzt."
+        "EXAMINANTS_SUBTITLE": "Wichtig: Hier müssen die Kontaktinformationen für die Anhörung ergänzt werden (Gemeinde zwingend, weitere Empfänger bei Bedarf).\nDie Kantonsempfänger und Fachstellen werden durch atlas automatisch ergänzt.",
+        "OLD_DESIGNATION_OFFICIAL": "Alte offizielle Bezeichnung",
+        "APPLICANT": "Antragsteller"
       }
     },
     "TRAFFIC_POINT_ELEMENTS": {
