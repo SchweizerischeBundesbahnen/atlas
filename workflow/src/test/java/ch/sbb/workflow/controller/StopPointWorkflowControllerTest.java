@@ -599,9 +599,10 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     person.setStopPointWorkflow(workflow);
     workflowRepository.save(workflow);
 
-    ClientPersonModel examinant = ClientPersonModel.builder()
+    StopPointClientPersonModel examinant = StopPointClientPersonModel.builder()
         .firstName("***REMOVED***")
         .lastName("Fix")
+        .organisation("Org")
         .personFunction("YB-Fun")
         .mail(MAIL_ADDRESS).build();
 
