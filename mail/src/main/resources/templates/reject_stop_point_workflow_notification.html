@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang='en' xmlns='http://www.w3.org/1999/xhtml' xmlns:th='http://www.thymeleaf.org'>
+<head>
+    <title th:text="${properties.get(0).get('title')}"></title>
+    <meta charset='UTF-8'>
+    <style>
+        body {
+            background-color: #fafafa;
+            font-family: 'IBM Plex Sans', sans-serif;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .logo-container {
+            width: 12%;
+            float: left;
+        }
+
+        .logo {
+            margin: 35px 35px 35px 40px;
+            top: 32px;
+            left: 47px;
+            width: 45px;
+            height: 45px;
+            background-size: 23px 23px;
+        }
+
+        .logo-title {
+            color: #06348b;
+            position: absolute;
+            top: 83px;
+            left: 47px;
+            width: 45px;
+            height: 20px;
+            line-height: 20px;
+            font-size: large;
+            font-weight: bold;
+        }
+
+        .header-title {
+            font-size: large;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header-container {
+            width: 100%;
+            height: 100%;
+            float: left;
+            text-align: justify;
+        }
+
+        .content-container {
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+
+        .header-right {
+            float: left;
+            width: 79%;
+            padding-top: 132px;
+            font-weight: bold;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .footer {
+            margin-top: 32px;
+            margin-left: 20px;
+        }
+
+        .mb-1 {
+            margin-bottom: 48px;
+        }
+
+        .mail-container {
+            padding-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="mail-container">
+    <div class='header-container'>
+        <div class='logo-container'>
+            <div class='logo'>
+                <img src="logo-atlas.jpeg" th:src="'cid:' + ${logo}" th:width='45'/>
+                <div class='logo-title'>
+                    atlas
+                </div>
+            </div>
+        </div>
+        <div class='header-right mb-1'>
+            <span class='header-title' th:text="${properties.get(0).get('title')}"></span>
+        </div>
+    </div>
+    <div class='content-container'>
+        <div>
+            <a href="#french">Pour la version française voir ci-dessous.</a>
+            <br><br>
+            <a href="#italian">Per la versione in lingua italiana vedi sotto.</a>
+            <br><br>
+            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+            <div id="german">
+                <span>Sehr geehrte Damen und Herren</span><br><br>
+                <span>Ihr Antrag auf die Anhörung des neuen Haltestellennamens <b>[[${properties.get(0).get('sloid')}]],
+                    [[${properties.get(0).get('designationOfficial')}]]</b> wurde durch das BAV mit folgender Begründung
+                    zurückgewiesen:</span>
+                <span><br><br>
+                    [[${properties.get(0).get('comment')}]]
+                </span><br><br>
+                <span>Bitte nehmen Sie die nötigen Anpassungen in <b>atlas</b> vor und starten den Workflow neu.</span>
+                <span>Weitere Informationen finden Sie unter
+                    <a href="https://www.öv-info.ch/de">https://www.öv-info.ch/de</a>
+                    in den FAQ oder im Benutzerhandbuch.
+                </span>
+                <div>
+                    <br><br>Digitale Grüsse,<br>
+                    atlas<br><br>
+                    <b>SBB AG</b><br><br>
+                    Infrastruktur, Fahrplan und Betrieb, Kundeninformation<br>
+                    Hilfikerstrasse 3, 3000 Bern 65<br><br>
+                </div>
+            </div>
+            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+            <div id="french">
+                <span>Madame, Monsieur,</span><br><br>
+                <span>Votre demande d’audition pour le nouveau nom de station  <b>[[${properties.get(0).get('sloid')}]],
+                    [[${properties.get(0).get('designationOfficial')}]]</b> a été rejetée par l’OFT pour le motif suivant:</span>
+                <span><br><br>
+                    [[${properties.get(0).get('comment')}]]
+                </span><br><br>
+                <span>Nous vous prions de bien vouloir procéder aux adaptations nécessaires sous <b>atlas</b>, puis de recommencer
+                    le processus.</span>
+                <span>Pour de plus amples informations, reportez-vous au manuel de l’utilisateur ou à la FAQ sur le site
+                    <a href="https://www.tp-info.ch/fr">https://www.tp-info.ch/fr</a>.
+                </span>
+                <div>
+                    <br><br>Digitale Grüsse,<br>
+                    atlas<br><br>
+                    <b>CFF SA</b><br><br>
+                    Infastructure, Horaire et exploitation, Information à la clientele<br>
+                    Hilfikerstrasse 3, 3000 Bern 65<br><br>
+                </div>
+            </div>
+
+            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+            <div id="italian">
+                <span>Gentili signore ed egregi signori,</span><br><br>
+                <span>la vostra richiesta di audizione del nuovo nome della fermata <b>[[${properties.get(0).get('sloid')}]],
+                    [[${properties.get(0).get('designationOfficial')}]]</b> è stata respinta dall’UFT con la seguente motivazione:</span>
+                <span><br><br>
+                    [[${properties.get(0).get('comment')}]]
+                </span><br><br>
+                <span>Effettuare le modifiche necessarie in <b>atlas</b> e riavviare il workflow.</span>
+                <span>Ulteriori informazioni sono disponibili su
+                    <a href="https://www.tp-info.ch/it">https://www.tp-info.ch/it</a>
+                    nelle FAQ o nel manuale utente.
+                </span>
+                <div>
+                    <br><br>Saluti Digitali,<br>
+                    atlas<br><br>
+                    <b>FFS SA</b><br><br>
+                    Infrastruttura, Orario ed esercizio, Informazione della clientela<br>
+                    Hilfikerstrasse 3, 3000 Bern 65<br><br>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
