@@ -4,10 +4,11 @@ import {catchError, mergeMap, Observable, of} from 'rxjs';
 import {ReadServicePointVersion, ReadStopPointWorkflow, ServicePointsService, StopPointWorkflowService} from "../../../../api";
 import {Pages} from "../../../pages";
 import {map} from "rxjs/operators";
+import {SloidHelper} from "../../../../core/util/sloidHelper";
 
 export interface StopPointWorkflowDetailData {
   workflow: ReadStopPointWorkflow,
-  version: ReadServicePointVersion
+  servicePoint: ReadServicePointVersion[]
 }
 
 @Injectable({providedIn: 'root'})
@@ -31,10 +32,10 @@ export class StopPointWorkflowDetailResolver {
         }),
         mergeMap(workflow => {
           if (workflow) {
-            return this.servicePointService.getServicePointVersion(workflow.versionId).pipe(map(servicePointVersion => {
+            return this.servicePointService.getServicePointVersionsBySloid(workflow.sloid!).pipe(map(servicePoint => {
               return {
                 workflow: workflow,
-                version: servicePointVersion
+                servicePoint: servicePoint
               };
             }));
           }
