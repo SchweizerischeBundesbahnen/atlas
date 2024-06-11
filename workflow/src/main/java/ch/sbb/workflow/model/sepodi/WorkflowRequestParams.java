@@ -7,6 +7,8 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,9 +50,13 @@ public class WorkflowRequestParams {
     @Singular("stopPointValidFrom")
     private List<WorkflowStatus> stopPointValidFrom = new ArrayList<>();
 
-    @Parameter(description = ""
-            + ". Date format: " + AtlasApiConstants.DATE_FORMAT_PATTERN)
-    @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN)
-    @Singular("createdAt")
-    private List<WorkflowStatus> createdAt = new ArrayList<>();
+    @Parameter(description = "")
+    @DateTimeFormat(pattern = AtlasApiConstants.DATE_TIME_FORMAT_PATTERN, fallbackPatterns = { AtlasApiConstants.DATE_TIME_FORMAT_PATTERN_WITH_T, AtlasApiConstants.ISO_DATE_TIME_FORMAT_PATTERN })
+    private LocalDateTime createdAt;
+
+    @Parameter(description = "")
+    @DateTimeFormat(pattern = AtlasApiConstants.DATE_TIME_FORMAT_PATTERN, fallbackPatterns = { AtlasApiConstants.DATE_TIME_FORMAT_PATTERN_WITH_T, AtlasApiConstants.ISO_DATE_TIME_FORMAT_PATTERN })
+    private LocalDate validFrom;
+
+
 }
