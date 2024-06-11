@@ -14,6 +14,7 @@ public class StopPointClientPersonMapper {
         .lastName(person.getLastName())
         .personFunction(person.getFunction())
         .mail(person.getMail())
+        .organisation(person.getOrganisation())
         .creationDate(person.getCreationDate())
         .editionDate(person.getEditionDate())
         .build();
