@@ -111,8 +111,8 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
 
     mvc.perform(get("/v1/stop-point/workflows"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(1)))
-        .andExpect(jsonPath("$[0].examinants", hasSize(3)));
+        .andExpect(jsonPath("$.objects", hasSize(1)))
+        .andExpect(jsonPath("$.objects[0].examinants", hasSize(3)));
   }
 
   @Test
