@@ -18,7 +18,11 @@ public enum MailTemplateConfig {
       true),
   EXPORT_SERVCICE_POINT_ERROR_NOTIFICATION_TEMPLATE("export-service-point-error-notification", null, null, false, false,
       true),
-  WORKFLOW_NOTIFICATION_TEMPLATE("workflow_notification", null, null, true, false, true);
+  WORKFLOW_NOTIFICATION_TEMPLATE("workflow_notification", null, null, true, false, true),
+  START_STOP_POINT_WORKFLOW_EXAMINANT_NOTIFICATION_TEMPLATE("start_stop_point_workflow_examinant_notification", null, null, true,
+      false, true),
+  START_STOP_POINT_WORKFLOW_CC_NOTIFICATION_TEMPLATE("start_stop_point_workflow_cc_notification", null, null, true, false, true),
+  REJECT_STOP_POINT_WORKFLOW_NOTIFICATION_TEMPLATE("reject_stop_point_workflow_notification", null, null, true, false, true);
 
   private final String template;
   private final String subject;
@@ -51,6 +55,15 @@ public enum MailTemplateConfig {
     }
     if (MailType.EXPORT_SERVICE_POINT_ERROR_NOTIFICATION == mailType) {
       return EXPORT_SERVCICE_POINT_ERROR_NOTIFICATION_TEMPLATE;
+    }
+    if (MailType.START_STOP_POINT_WORKFLOW_EXAMINANT_NOTIFICATION == mailType) {
+      return START_STOP_POINT_WORKFLOW_EXAMINANT_NOTIFICATION_TEMPLATE;
+    }
+    if (MailType.START_STOP_POINT_WORKFLOW_CC_NOTIFICATION == mailType) {
+      return START_STOP_POINT_WORKFLOW_CC_NOTIFICATION_TEMPLATE;
+    }
+    if (MailType.REJECT_STOP_POINT_WORKFLOW_NOTIFICATION == mailType) {
+      return REJECT_STOP_POINT_WORKFLOW_NOTIFICATION_TEMPLATE;
     }
     throw new IllegalArgumentException("No configuration provided for: " + mailType.name());
   }
