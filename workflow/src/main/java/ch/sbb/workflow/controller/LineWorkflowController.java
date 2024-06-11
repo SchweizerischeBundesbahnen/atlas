@@ -7,7 +7,7 @@ import ch.sbb.workflow.api.LineWorkflowApiV1;
 import ch.sbb.workflow.entity.LineWorkflow;
 import ch.sbb.workflow.mapper.LineWorkflowMapper;
 import ch.sbb.workflow.mapper.WorkflowStartMapper;
-import ch.sbb.workflow.service.WorkflowService;
+import ch.sbb.workflow.service.lidi.LineWorkflowService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class LineWorkflowController implements LineWorkflowApiV1 {
 
-  private final WorkflowService service;
+  private final LineWorkflowService service;
 
   @Override
   public WorkflowModel getWorkflow(Long id) {

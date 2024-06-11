@@ -31,7 +31,7 @@ import ch.sbb.workflow.entity.JudgementType;
 import ch.sbb.workflow.entity.Otp;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
-import ch.sbb.workflow.kafka.WorkflowNotificationService;
+import ch.sbb.workflow.kafka.StopPointWorkflowNotificationService;
 import ch.sbb.workflow.mapper.ClientPersonMapper;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
@@ -74,7 +74,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   private SePoDiClientService sePoDiClientService;
 
   @MockBean
-  private WorkflowNotificationService notificationService;
+  private StopPointWorkflowNotificationService notificationService;
 
   @AfterEach
   void tearDown() {
