@@ -76,6 +76,7 @@ public class StopPointWorkflowService {
         servicePointVersionModel.getServicePointGeolocation().getSwissLocation().getLocalityMunicipality().getLocalityName());
     stopPointWorkflow.setDesignationOfficial(servicePointVersionModel.getDesignationOfficial());
     stopPointWorkflow.setStatus(WorkflowStatus.ADDED);
+    stopPointWorkflow.setValidFrom(servicePointVersionModel.getValidFrom());
     return workflowRepository.save(stopPointWorkflow);
   }
 
