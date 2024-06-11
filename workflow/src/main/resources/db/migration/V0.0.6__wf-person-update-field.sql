@@ -1,2 +1,2 @@
 ALTER TABLE person
-    ADD organisation VARCHAR(50);
+    ADD organisation VARCHAR(255);
