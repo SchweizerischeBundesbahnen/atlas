@@ -14,7 +14,7 @@ import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.exception.StopPointWorkflowAlreadyInAddedStatusException;
 import ch.sbb.workflow.helper.OtpHelper;
-import ch.sbb.workflow.kafka.WorkflowNotificationService;
+import ch.sbb.workflow.kafka.StopPointWorkflowNotificationService;
 import ch.sbb.workflow.mapper.ClientPersonMapper;
 import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
@@ -56,7 +56,7 @@ public class StopPointWorkflowService {
   private final OtpRepository otpRepository;
   private final SePoDiClientService sePoDiClientService;
   private final Examinants examinants;
-  private final WorkflowNotificationService notificationService;
+  private final StopPointWorkflowNotificationService notificationService;
 
   public StopPointWorkflow getWorkflow(Long id) {
     return workflowRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));

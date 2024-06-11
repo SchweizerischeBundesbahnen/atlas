@@ -13,21 +13,22 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 
 @IntegrationTest
 @EmbeddedKafka(topics = {"atlas.mail"})
-class LineWorkflowServiceTest {
+class LineWorkflowBuilderNotificationServiceTest {
 
   @Autowired
-  private LineWorkflowService lineWorkflowService;
+  private LineWorkflowBuilderNotificationService lineWorkflowBuilderNotificationService;
 
   @Test
   void buildWorkflowStartedNotification() {
-    MailNotification mailNotification = lineWorkflowService.buildWorkflowStartedMailNotification(LineWorkflow.builder()
-        .status(WorkflowStatus.STARTED)
-        .workflowComment("Wee need this workflow")
-        .swissId("ch:1:slnid:123")
-        .businessObjectId(1100L)
-        .description("Linie 1")
-        .client(Person.builder().firstName("Hai").lastName("Fisch").function("Schwimmer").mail("hai@meer.com").build())
-        .build());
+    MailNotification mailNotification = lineWorkflowBuilderNotificationService.buildWorkflowStartedMailNotification(
+        LineWorkflow.builder()
+            .status(WorkflowStatus.STARTED)
+            .workflowComment("Wee need this workflow")
+            .swissId("ch:1:slnid:123")
+            .businessObjectId(1100L)
+            .description("Linie 1")
+            .client(Person.builder().firstName("Hai").lastName("Fisch").function("Schwimmer").mail("hai@meer.com").build())
+            .build());
 
     assertThat(mailNotification.getFrom()).isEqualTo("no-reply-atlas@sbb.ch");
     assertThat(mailNotification.getSubject()).isEqualTo("Antrag zu ch:1:slnid:123 Linie 1 prüfen");
@@ -38,16 +39,18 @@ class LineWorkflowServiceTest {
 
   @Test
   void buildWorkflowCompletedNotification() {
-    MailNotification mailNotification = lineWorkflowService.buildWorkflowCompletedMailNotification(LineWorkflow.builder()
-        .status(WorkflowStatus.APPROVED)
-        .workflowComment("Wee need this workflow")
-        .swissId("ch:1:slnid:123")
-        .businessObjectId(1100L)
-        .description("Linie 1")
-        .checkComment("This is great")
-        .examinant(Person.builder().firstName("Mr").lastName("Crabbs").function("Dinerbesitzer").mail("crabbs@meer.com").build())
-        .client(Person.builder().firstName("Hai").lastName("Fisch").function("Schwimmer").mail("hai@meer.com").build())
-        .build());
+    MailNotification mailNotification = lineWorkflowBuilderNotificationService.buildWorkflowCompletedMailNotification(
+        LineWorkflow.builder()
+            .status(WorkflowStatus.APPROVED)
+            .workflowComment("Wee need this workflow")
+            .swissId("ch:1:slnid:123")
+            .businessObjectId(1100L)
+            .description("Linie 1")
+            .checkComment("This is great")
+            .examinant(
+                Person.builder().firstName("Mr").lastName("Crabbs").function("Dinerbesitzer").mail("crabbs@meer.com").build())
+            .client(Person.builder().firstName("Hai").lastName("Fisch").function("Schwimmer").mail("hai@meer.com").build())
+            .build());
 
     assertThat(mailNotification.getFrom()).isEqualTo("no-reply-atlas@sbb.ch");
     assertThat(mailNotification.getSubject()).isEqualTo("Antrag zu ch:1:slnid:123 Linie 1 genehmigt");

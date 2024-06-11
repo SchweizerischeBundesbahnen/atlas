@@ -17,7 +17,8 @@ import ch.sbb.atlas.workflow.model.WorkflowType;
 import ch.sbb.workflow.entity.LineWorkflow;
 import ch.sbb.workflow.exception.BusinessObjectCurrentlyInReviewException;
 import ch.sbb.workflow.exception.BusinessObjectCurrentlyNotInReviewException;
-import ch.sbb.workflow.kafka.WorkflowNotificationService;
+import ch.sbb.workflow.kafka.LineWorkflowNotificationService;
+import ch.sbb.workflow.service.lidi.LineWorkflowService;
 import ch.sbb.workflow.workflow.WorkflowRepository;
 import java.util.List;
 import java.util.Optional;
@@ -27,27 +28,27 @@ import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
- class LineWorkflowServiceTest {
+class LineWorkflowBuilderNotificationServiceTest {
 
-  private WorkflowService service;
+ private LineWorkflowService service;
 
-  @Mock
-  private WorkflowRepository repository;
+ @Mock
+ private WorkflowRepository repository;
 
-  @Mock
-  private WorkflowNotificationService notificationService;
-  @Mock
-  private LineWorkflowClient lineWorkflowClient;
+ @Mock
+ private LineWorkflowNotificationService notificationService;
+ @Mock
+ private LineWorkflowClient lineWorkflowClient;
 
-  @BeforeEach
-   void setUp() {
-    MockitoAnnotations.openMocks(this);
-    service = new WorkflowService(repository, notificationService, lineWorkflowClient);
-  }
+ @BeforeEach
+ void setUp() {
+  MockitoAnnotations.openMocks(this);
+  service = new LineWorkflowService(repository, notificationService, lineWorkflowClient);
+ }
 
-  @Test
-   void shouldCreateWorkflow() {
-    //given
+ @Test
+ void shouldCreateWorkflow() {
+  //given
     LineWorkflow lineWorkflow = LineWorkflow.builder()
         .id(123L)
         .businessObjectId(123L)
