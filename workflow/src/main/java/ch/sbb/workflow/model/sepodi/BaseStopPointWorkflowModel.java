@@ -2,7 +2,6 @@ package ch.sbb.workflow.model.sepodi;
 
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
@@ -44,7 +43,7 @@ public abstract class BaseStopPointWorkflowModel {
   private String workflowComment;
 
   @Schema(description = "List hearing examinants")
-  private List<@Valid ClientPersonModel> examinants;
+  private List<@Valid StopPointClientPersonModel> examinants;
 
   @Schema(description = "Workflow Status", accessMode = AccessMode.READ_ONLY)
   private WorkflowStatus status;
