@@ -22,6 +22,7 @@ import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.Examinants;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
+import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
 import ch.sbb.workflow.workflow.DecisionRepository;
@@ -261,11 +262,11 @@ public class StopPointWorkflowService {
 
   private StopPointWorkflow mapStopPointWorkflow(StopPointAddWorkflowModel workflowStartModel,
       ReadServicePointVersionModel servicePointVersionModel) {
-    ClientPersonModel examinantPersonByCanton =
+    StopPointClientPersonModel examinantPersonByCanton =
         examinants.getExaminantPersonByCanton(
             servicePointVersionModel.getServicePointGeolocation().getSwissLocation().getCanton());
-    ClientPersonModel examinantSpecialistOffice = examinants.getExaminantSpecialistOffice();
-    List<ClientPersonModel> personModels = new ArrayList<>();
+    StopPointClientPersonModel examinantSpecialistOffice = examinants.getExaminantSpecialistOffice();
+    List<StopPointClientPersonModel> personModels = new ArrayList<>();
     personModels.add(examinantSpecialistOffice);
     personModels.add(examinantPersonByCanton);
     return StopPointWorkflowMapper.toEntity(workflowStartModel, personModels);
