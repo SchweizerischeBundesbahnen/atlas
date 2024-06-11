@@ -22,12 +22,10 @@ public class PersonModel {
 
   @Schema(description = "Firstname", example = "John")
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
-  @NotBlank
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   private String firstName;
 
   @Schema(description = "Second", example = "Doe")
-  @NotBlank
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String lastName;
