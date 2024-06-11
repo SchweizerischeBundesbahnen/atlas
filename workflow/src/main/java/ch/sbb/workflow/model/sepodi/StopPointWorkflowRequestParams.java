@@ -18,13 +18,13 @@ import java.util.List;
 @AllArgsConstructor
 @SuperBuilder
 @ToString
-public class WorkflowRequestParams {
+public class StopPointWorkflowRequestParams {
 
-    @Parameter(description = "")
+    @Parameter(description = "Workflow id")
     @Singular(ignoreNullCollections = true)
     private List<Integer> workflowIds = new ArrayList<>();
 
-    @Parameter(description = "")
+    @Parameter(description = "Status")
     @Singular("status")
     private List<WorkflowStatus> status = new ArrayList<>();
 
@@ -32,29 +32,25 @@ public class WorkflowRequestParams {
     @Singular(ignoreNullCollections = true)
     private List<String> sloids = new ArrayList<>();
 
-    @Parameter(description = "")
+    @Parameter(description = "Designation")
     @Singular("designation")
     private List<String> designation = new ArrayList<>();
 
-    @Parameter(description = "")
+    @Parameter(description = "Locality Name")
     @Singular("localityName")
     private List<String> localityName = new ArrayList<>();
 
-    @Parameter(description = "")
+    @Parameter(description = "List of sboids")
     @Singular(ignoreNullCollections = true)
     private List<String> sboids = new ArrayList<>();
 
-    @Parameter(description = ""
-            + ". Date format: " + AtlasApiConstants.DATE_FORMAT_PATTERN)
-    @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN)
-    @Singular("stopPointValidFrom")
-    private List<WorkflowStatus> stopPointValidFrom = new ArrayList<>();
-
-    @Parameter(description = "")
+    @Parameter(description = "Workflow created at."
+            + " Date format: " + AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)
     @DateTimeFormat(pattern = AtlasApiConstants.DATE_TIME_FORMAT_PATTERN, fallbackPatterns = { AtlasApiConstants.DATE_TIME_FORMAT_PATTERN_WITH_T, AtlasApiConstants.ISO_DATE_TIME_FORMAT_PATTERN })
     private LocalDateTime createdAt;
 
-    @Parameter(description = "")
+    @Parameter(description = "Workflow valid from."
+            + " Date format: " + AtlasApiConstants.DATE_FORMAT_PATTERN)
     @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN, fallbackPatterns = { AtlasApiConstants.DATE_FORMAT_PATTERN_CH })
     private LocalDate validFrom;
 
