@@ -1,24 +1,28 @@
 <div class="d-flex flex-column col-12">
-  <div class="d-flex flex-row col-12">
-    <div class="flex-grow-1">
-      <atlas-text-field controlName="input"
-                        [fieldLabel]="fieldLabel"
-                        [infoIconTitle]="infoIconTitle"
-                        [infoIconLink]="infoIconLink"
-                        [required]="required"
-                        [fieldExamples]="fieldExamples"
-                        [formGroup]="_form"
-                        [placeholder]="this.showPlaceHolder ? this.placeHolderText  : ''"
-                        (keyup.enter)="addItem()">
-      </atlas-text-field>
+  @if (formGroup.enabled) {
+    <div class="d-flex flex-row col-12">
+      <div class="flex-grow-1">
+        <atlas-text-field controlName="input"
+                          [fieldLabel]="fieldLabel"
+                          [infoIconTitle]="infoIconTitle"
+                          [infoIconLink]="infoIconLink"
+                          [required]="required"
+                          [fieldExamples]="fieldExamples"
+                          [formGroup]="_form"
+                          [placeholder]="this.showPlaceHolder ? this.placeHolderText  : ''"
+                          (keyup.enter)="addItem()">
+        </atlas-text-field>
+      </div>
     </div>
-  </div>
-  <div class="d-flex">
-    <app-atlas-field-error
-      [form]="formGroup"
-      [controlName]="controlName"
-    ></app-atlas-field-error>
-  </div>
+    <div class="d-flex">
+      <app-atlas-field-error
+        [form]="formGroup"
+        [controlName]="controlName"
+      ></app-atlas-field-error>
+    </div>
+  } @else {
+    <span [ngClass]="required ? 'required-indicator' : ''" class="font-bold-lg mb-1">{{ fieldLabel | translate }}</span>
+  }
   <div class="d-flex flex-row">
     <mat-chip-set [disabled]="formGroup.disabled">
       <mat-chip
@@ -27,7 +31,7 @@
         class="font-bold-sm"
       >
         {{ value }}
-        <button matChipRemove>
+        <button matChipRemove *ngIf="formGroup.enabled">
           <i class="bi bi-x-circle-fill"></i>
         </button>
       </mat-chip>
