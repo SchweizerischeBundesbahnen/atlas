@@ -40,10 +40,10 @@ public abstract class BaseStopPointWorkflowModel {
   @Schema(description = "List of cc emails for status of hearing")
   private List<String> ccEmails;
 
-  @Schema(description = "")
+  @Schema(description = "Designation")
   private String designation;
 
-  @Schema(description = "")
+  @Schema(description = "Locality Name")
   private String localityName;
 
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
