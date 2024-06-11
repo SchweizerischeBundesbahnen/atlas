@@ -9,6 +9,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -47,5 +50,11 @@ public abstract class BaseStopPointWorkflowModel {
 
   @Schema(description = "Workflow Status", accessMode = AccessMode.READ_ONLY)
   private WorkflowStatus status;
+
+  @Schema(description = "Workflow created at")
+  private LocalDateTime createdAt;
+
+  @Schema(description = "Workflow valid from")
+  private LocalDate validFrom;
 
 }
