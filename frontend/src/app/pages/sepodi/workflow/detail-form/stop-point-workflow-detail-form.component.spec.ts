@@ -32,8 +32,8 @@ describe('StopPointWorkflowDetailFormComponent', () => {
       ],
       imports: [AppTestingModule, FormModule],
       providers: [
-        { provide: TranslatePipe },
-        { provide: BusinessOrganisationsService },
+        {provide: TranslatePipe},
+        {provide: BusinessOrganisationsService},
       ],
     }).compileComponents().then();
 
@@ -68,5 +68,19 @@ describe('StopPointWorkflowDetailFormComponent', () => {
   it('should remove examinant', () => {
     component.removeExaminant(0);
     expect(component.form.controls.examinants.length).toBe(0);
+  });
+
+  it('should go to swisstopo', () => {
+    spyOn(window, 'open');
+
+    component.goToSwissTopo();
+    expect(window.open).toHaveBeenCalledWith('https://map.geo.admin.ch/?lang=de&topic=ech&bgLayer=ch.swisstopo.pixelkarte-farbe&layers=ch.swisstopo.swissboundaries3d-gemeinde-flaeche.fill,ch.swisstopo-vd.ortschaftenverzeichnis_plz,ch.swisstopo.amtliches-strassenverzeichnis,ch.bav.haltestellen-oev&layers_opacity=1,0.75,0.85,1&layers_timestamp=2024,,,&E=2600783&N=1201099&zoom=10&layers_visibility=false,true,false,true&crosshair=marker&E=2600783&N=1201099', '_blank');
+  });
+
+  it('should go to atlas', () => {
+    spyOn(window, 'open');
+
+    component.goToAtlasStopPoint();
+    expect(window.open).toHaveBeenCalledWith('service-point-directory/service-points/8589008', '_blank');
   });
 });
