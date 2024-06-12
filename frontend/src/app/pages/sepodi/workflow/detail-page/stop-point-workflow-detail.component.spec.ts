@@ -14,17 +14,22 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {DetailPageContentComponent} from "../../../../core/components/detail-page-content/detail-page-content.component";
 import {DetailPageContainerComponent} from "../../../../core/components/detail-page-container/detail-page-container.component";
 import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
+import {AtlasSpacerComponent} from "../../../../core/components/spacer/atlas-spacer.component";
+import {StopPointWorkflowDetailData} from "./stop-point-workflow-detail-resolver.service";
+import {UserDetailInfoComponent} from "../../../../core/components/base-detail/user-edit-info/user-detail-info.component";
 
 const workflow:ReadStopPointWorkflow = {
-  versionId: 1,
+  versionId: 1000,
 };
+const workflowData: StopPointWorkflowDetailData={
+  workflow: workflow,
+  servicePoint: [BERN_WYLEREGG]
+}
+
 const activatedRoute = {
   snapshot: {
     data: {
-      workflow: {
-        workflow: workflow,
-        version: BERN_WYLEREGG
-      },
+      workflow: workflowData,
     },
   },
 };
@@ -45,6 +50,8 @@ describe('StopPointWorkflowDetailComponent', () => {
         DetailPageContentComponent,
         DetailPageContainerComponent,
         DetailFooterComponent,
+        AtlasSpacerComponent,
+        UserDetailInfoComponent,
       ],
       imports: [AppTestingModule, FormModule],
       providers: [
