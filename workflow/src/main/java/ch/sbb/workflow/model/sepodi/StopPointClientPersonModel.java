@@ -2,7 +2,7 @@ package ch.sbb.workflow.model.sepodi;
 
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.api.workflow.ClientPersonModel;
+import ch.sbb.atlas.api.workflow.BasePersonModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -19,12 +19,23 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @Schema(name = "StopPointPerson")
-public class StopPointClientPersonModel extends ClientPersonModel {
+public class StopPointClientPersonModel extends BasePersonModel {
 
   @Schema(description = "Organisation", example = "ZVV Zürcher Verkehrsverbund")
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotBlank
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   private String organisation;
+
+  @Schema(description = "Person Function", example = "Officer")
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
+  private String personFunction;
+
+  @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
+  @Schema(description = "mail", example = "mail@sbb.ch")
+  @NotBlank
+  private String mail;
 
 }
