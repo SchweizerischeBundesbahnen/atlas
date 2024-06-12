@@ -16,13 +16,13 @@ public class StopPointWorkflowMapper {
         .id(entity.getId())
         .sloid(entity.getSloid())
         .versionId(entity.getVersionId())
-        .designation(entity.getDesignationOfficial())
         .examinants(entity.getExaminants().stream().map(StopPointClientPersonMapper::toModel).toList())
+        .designationOfficial(entity.getDesignationOfficial())
         .ccEmails(entity.getCcEmails())
         .status(entity.getStatus())
         .workflowComment(entity.getWorkflowComment())
         .localityName(entity.getLocalityName())
-        .validFrom(entity.getValidFrom())
+        .versionValidFrom(entity.getVersionValidFrom())
         .createdAt(entity.getCreationDate())
         .build();
   }
