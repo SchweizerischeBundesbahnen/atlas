@@ -559,7 +559,8 @@
       "FIRSTNAME": "Prénom",
       "LASTNAME": "Nom de famille",
       "FUNCTION": "Fonction",
-      "MAIL": "Adresse e-mail"
+      "MAIL": "Adresse e-mail",
+      "ORGANISATION": "Organisation"
     },
     "STATUS_DETAIL": "Statut d'audience",
     "STATUS": {
