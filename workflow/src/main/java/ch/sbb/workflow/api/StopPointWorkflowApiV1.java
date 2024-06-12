@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 import org.springdoc.core.annotations.ParameterObject;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -35,8 +36,9 @@ public interface StopPointWorkflowApiV1 {
   @GetMapping("{id}")
   ReadStopPointWorkflowModel getStopPointWorkflow(@PathVariable Long id);
 
-  @GetMapping()
-  Container<ReadStopPointWorkflowModel> getStopPointWorkflows(@Parameter(hidden = true) @PageableDefault(sort = {StopPointWorkflow.Fields.sloid, StopPointWorkflow.Fields.validFrom}) Pageable pageable,
+  @GetMapping
+  @PageableAsQueryParam
+  Container<ReadStopPointWorkflowModel> getStopPointWorkflows(@Parameter(hidden = true) @PageableDefault(sort = {StopPointWorkflow.Fields.sloid, StopPointWorkflow.Fields.versionValidFrom}) Pageable pageable,
                                                               @ParameterObject StopPointWorkflowRequestParams stopPointWorkflowRequestParams);
 
   @PostMapping
