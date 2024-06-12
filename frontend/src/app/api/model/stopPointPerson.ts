@@ -24,10 +24,6 @@ export interface StopPointPerson {
      */
     lastName?: string;
     /**
-     * Person Function
-     */
-    personFunction: string;
-    /**
      * Object creation date
      */
     readonly creationDate?: string;
@@ -36,12 +32,16 @@ export interface StopPointPerson {
      */
     readonly editionDate?: string;
     /**
-     * mail
-     */
-    mail: string;
-    /**
      * Organisation
      */
     organisation: string;
+    /**
+     * Person Function
+     */
+    personFunction?: string;
+    /**
+     * mail
+     */
+    mail: string;
 }
 
