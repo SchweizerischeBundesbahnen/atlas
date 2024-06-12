@@ -26,13 +26,17 @@ export class StopPointWorkflowDetailComponent implements OnInit {
     const workflowData: StopPointWorkflowDetailData = this.route.snapshot.data.workflow;
     this.workflow = workflowData.workflow;
 
-    const indexOfVersionInReview = workflowData.servicePoint.findIndex(i=> i.id===this.workflow.versionId)!;
+    const indexOfVersionInReview = workflowData.servicePoint.findIndex(i => i.id === this.workflow.versionId)!;
     this.stopPoint = workflowData.servicePoint[indexOfVersionInReview];
-    const versionsBeforeInReview = workflowData.servicePoint.slice(0, indexOfVersionInReview);
-    this.oldDesignation = versionsBeforeInReview.filter(i => i.stopPoint && i.status === Status.Validated).map(i => i.designationOfficial).at(-1) ?? '-';
+    this.oldDesignation = this.getOldDesignation(workflowData.servicePoint, indexOfVersionInReview)
 
     this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(this.workflow);
     this.form.disable();
+  }
+
+  getOldDesignation(servicePoint: ReadServicePointVersion[], indexOfVersionInReview: number): string {
+    const versionsBeforeInReview = servicePoint.slice(0, indexOfVersionInReview);
+    return versionsBeforeInReview.filter(i => i.stopPoint && i.status === Status.Validated).map(i => i.designationOfficial).at(-1) ?? '-';
   }
 
 }
