@@ -33,6 +33,10 @@ public class StopPointWorkflowMapper {
         .versionId(model.getVersionId())
         .ccEmails(model.getCcEmails())
         .workflowComment(model.getWorkflowComment())
+        .designationOfficial(model.getDesignationOfficial())
+        .localityName(model.getLocalityName())
+        .versionValidFrom(model.getVersionValidFrom())
+        .status(model.getStatus())
         .build();
     model.getExaminants().addAll(examinants);
     stopPointWorkflow.setExaminants(
