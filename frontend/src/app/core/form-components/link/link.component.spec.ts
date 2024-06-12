@@ -1,6 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { LinkComponent } from './link.component';
+import {LinkComponent} from './link.component';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule, TranslatePipe} from "@ngx-translate/core";
+import {LinkIconComponent} from "../link-icon/link-icon.component";
 
 describe('LinkComponent', () => {
   let component: LinkComponent;
@@ -8,7 +10,11 @@ describe('LinkComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LinkComponent],
+      declarations: [LinkComponent, LinkIconComponent],
+      imports: [TranslateModule.forRoot({
+        loader: {provide: TranslateLoader, useClass: TranslateFakeLoader},
+      })],
+      providers: [TranslatePipe]
     }).compileComponents();
   });
 
