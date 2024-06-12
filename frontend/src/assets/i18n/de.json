@@ -559,7 +559,8 @@
       "FIRSTNAME": "Vorname",
       "LASTNAME": "Nachname",
       "FUNCTION": "Funktion",
-      "MAIL": "E-Mail Adresse"
+      "MAIL": "E-Mail Adresse",
+      "ORGANISATION": "Organisation"
     },
     "STATUS_DETAIL": "Anhörung Status",
     "STATUS": {

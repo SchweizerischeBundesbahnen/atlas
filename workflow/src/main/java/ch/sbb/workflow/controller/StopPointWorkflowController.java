@@ -1,6 +1,5 @@
 package ch.sbb.workflow.controller;
 
-import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.workflow.api.StopPointWorkflowApiV1;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
@@ -8,6 +7,7 @@ import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
 import ch.sbb.workflow.model.sepodi.ReadStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
+import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
 import ch.sbb.workflow.service.sepodi.StopPointWorkflowService;
@@ -53,7 +53,7 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   }
 
   @Override
-  public ReadStopPointWorkflowModel addExaminantToStopPointWorkflow(Long id, ClientPersonModel personModel) {
+  public ReadStopPointWorkflowModel addExaminantToStopPointWorkflow(Long id, StopPointClientPersonModel personModel) {
     return StopPointWorkflowMapper.toModel(service.addExaminantToWorkflow(id, personModel));
   }
 

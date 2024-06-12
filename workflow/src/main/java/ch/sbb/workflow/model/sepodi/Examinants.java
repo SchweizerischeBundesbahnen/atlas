@@ -1,6 +1,5 @@
 package ch.sbb.workflow.model.sepodi;
 
-import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import java.util.List;
 import lombok.Builder;
@@ -30,21 +29,23 @@ public class Examinants {
 
   private List<Canton> cantons;
 
-  public ClientPersonModel getExaminantPersonByCanton(SwissCanton canton) {
+  public StopPointClientPersonModel getExaminantPersonByCanton(SwissCanton canton) {
     Canton examinantByCanton = getExaminantByCanton(SwissCanton.fromAbbreviation(canton.getAbbreviation()));
-    return ClientPersonModel.builder()
+    return StopPointClientPersonModel.builder()
         .personFunction(examinantByCanton.getFunction())
         .firstName(examinantByCanton.getFirstname())
         .lastName(examinantByCanton.getLastname())
         .mail(getEmailByEnv(examinantByCanton.getEmail()))
+        .organisation(examinantByCanton.getOrganisation())
         .build();
   }
 
-  public ClientPersonModel getExaminantSpecialistOffice() {
-    return ClientPersonModel.builder()
+  public StopPointClientPersonModel getExaminantSpecialistOffice() {
+    return StopPointClientPersonModel.builder()
         .personFunction(specialistOffice.getFunction())
         .firstName(specialistOffice.getFirstname())
         .lastName(specialistOffice.getLastname())
+        .organisation(specialistOffice.getOrganisation())
         .mail(specialistOffice.getEmail())
         .build();
   }

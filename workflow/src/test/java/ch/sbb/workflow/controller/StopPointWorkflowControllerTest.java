@@ -36,6 +36,7 @@ import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
+import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
 import ch.sbb.workflow.service.sepodi.SePoDiClientService;
@@ -84,12 +85,12 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
 
   @Test
   void shouldGetWorkflows() throws Exception {
-    ClientPersonModel person = ClientPersonModel.builder()
+    StopPointClientPersonModel person = StopPointClientPersonModel.builder()
         .firstName("Marek")
         .lastName("Hamsik")
         .personFunction("Centrocampista")
         .mail(MAIL_ADDRESS).build();
-    List<ClientPersonModel> clientPersonModels = new ArrayList<>();
+    List<StopPointClientPersonModel> clientPersonModels = new ArrayList<>();
     clientPersonModels.add(person);
     long versionId = 123456L;
     String sloid = "ch:1:sloid:1234";
@@ -143,10 +144,11 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   @Test
   void shouldNotCreateWorkflowWhenWorkflowPersonNameHasWrongEncoding() throws Exception {
     //when
-    ClientPersonModel person = ClientPersonModel.builder()
+    StopPointClientPersonModel person = StopPointClientPersonModel.builder()
         .firstName("\uD83D\uDE00\uD83D\uDE01\uD83D")
         .lastName("Hamsik")
         .personFunction("Centrocampista")
+        .organisation("BAV")
         .mail(MAIL_ADDRESS).build();
     StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
         .sloid("ch:1:sloid:1234")
@@ -175,9 +177,9 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldNotCreateWorkflowWhenWorkflowPersonDataIsEmpty() throws Exception {
+  void shouldNotCreateWorkflowWhenWorkflowPersonMandatoryDataIsEmpty() throws Exception {
     //when
-    ClientPersonModel person = ClientPersonModel.builder().mail("a@b.ch").build();
+    StopPointClientPersonModel person = StopPointClientPersonModel.builder().build();
     StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
         .sloid("ch:1:sloid:1234")
         .ccEmails(List.of(MAIL_ADDRESS))
@@ -205,23 +207,17 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$.details[1].displayInfo.parameters[0].key", is("rejectedValue")))
         .andExpect(jsonPath("$.details[1].displayInfo.parameters[0].value", is("null")))
         .andExpect(jsonPath("$.details[1].displayInfo.parameters[1].key", is("cause")))
-        .andExpect(jsonPath("$.details[1].displayInfo.parameters[1].value", is("must not be blank")))
-        .andExpect(jsonPath("$.details[2].message", is("Value null rejected due to must not be blank")))
-        .andExpect(jsonPath("$.details[2].displayInfo.code", is("ERROR.CONSTRAINT")))
-        .andExpect(jsonPath("$.details[2].displayInfo.parameters[0].key", is("rejectedValue")))
-        .andExpect(jsonPath("$.details[2].displayInfo.parameters[0].value", is("null")))
-        .andExpect(jsonPath("$.details[2].displayInfo.parameters[1].key", is("cause")))
-        .andExpect(jsonPath("$.details[2].displayInfo.parameters[1].value", is("must not be blank")))
-    ;
+        .andExpect(jsonPath("$.details[1].displayInfo.parameters[1].value", is("must not be blank")));
   }
 
   @Test
   void shouldAddWorkflow() throws Exception {
     //when
-    ClientPersonModel person = ClientPersonModel.builder()
+    StopPointClientPersonModel person = StopPointClientPersonModel.builder()
         .firstName("Marek")
         .lastName("Hamsik")
         .personFunction("Centrocampista")
+        .organisation("BAV")
         .mail(MAIL_ADDRESS).build();
     long versionId = 123456L;
     String sloid = "ch:1:sloid:1234";
@@ -245,10 +241,11 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   @Test
   void shouldNotAddWorkflowWhenStopPointVersionIdNotFound() throws Exception {
     //when
-    ClientPersonModel person = ClientPersonModel.builder()
+    StopPointClientPersonModel person = StopPointClientPersonModel.builder()
         .firstName("Marek")
         .lastName("Hamsik")
         .personFunction("Centrocampista")
+        .organisation("BAV")
         .mail(MAIL_ADDRESS).build();
     long versionId = 123456L;
     String sloid = "ch:1:sloid:1234";
@@ -305,10 +302,11 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .build();
     workflowRepository.save(stopPointWorkflow);
 
-    ClientPersonModel personModel = ClientPersonModel.builder()
+    StopPointClientPersonModel personModel = StopPointClientPersonModel.builder()
         .firstName("Marek")
         .lastName("Hamsik")
         .personFunction("Centrocampista")
+        .organisation("BAV")
         .mail(MAIL_ADDRESS).build();
     StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
         .sloid(sloid)
@@ -338,10 +336,11 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   @Test
   void shouldNotCreateWorkflowWhenWorkflowWorkflowDescriptionHasWrongEncoding() throws Exception {
     //when
-    ClientPersonModel person = ClientPersonModel.builder()
+    StopPointClientPersonModel person = StopPointClientPersonModel.builder()
         .firstName("Marek")
         .lastName("Hamsik")
         .personFunction("Centrocampista")
+        .organisation("BAV")
         .mail(MAIL_ADDRESS).build();
     StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
         .sloid("ch:1:sloid:1234")
@@ -591,9 +590,10 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     person.setStopPointWorkflow(workflow);
     workflowRepository.save(workflow);
 
-    ClientPersonModel examinant = ClientPersonModel.builder()
+    StopPointClientPersonModel examinant = StopPointClientPersonModel.builder()
         .firstName("Luca")
         .lastName("Fix")
+        .organisation("Org")
         .personFunction("YB-Fun")
         .mail(MAIL_ADDRESS).build();
 
