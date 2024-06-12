@@ -6,6 +6,7 @@ import {AtlasFieldLengthValidator} from "../../../../core/validation/field-lengt
 import {StopPointWorkflowDetailFormGroup, StopPointWorkflowDetailFormGroupBuilder} from "./stop-point-workflow-detail-form-group";
 import {ValidationService} from "../../../../core/validation/validation.service";
 import {Pages} from "../../../pages";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'stop-point-workflow-detail-form',
@@ -35,8 +36,8 @@ export class StopPointWorkflowDetailFormComponent {
   }
 
   goToSwissTopo() {
-    const n = this.stopPoint.servicePointGeolocation!.lv95.north!;
-    const e = this.stopPoint.servicePointGeolocation!.lv95.east!;
+    const n = this.stopPoint.servicePointGeolocation!.lv95.north;
+    const e = this.stopPoint.servicePointGeolocation!.lv95.east;
     window.open(`https://map.geo.admin.ch/?lang=de&topic=ech&bgLayer=ch.swisstopo.pixelkarte-farbe&layers=ch.swisstopo.swissboundaries3d-gemeinde-flaeche.fill,ch.swisstopo-vd.ortschaftenverzeichnis_plz,ch.swisstopo.amtliches-strassenverzeichnis,ch.bav.haltestellen-oev&layers_opacity=1,0.75,0.85,1&layers_timestamp=2024,,,&E=${e}&N=${n}&zoom=10&layers_visibility=false,true,false,true&crosshair=marker&E=${e}&N=${n}`, "_blank");
   }
 
