@@ -29,6 +29,7 @@ import {
 import {AtlasClipboardComponent} from "../form-components/atlas-clipboard/atlas-clipboard.component";
 import {CdkCopyToClipboard} from "@angular/cdk/clipboard";
 import {BoDisplayPipe} from "../form-components/bo-select/bo-display.pipe";
+import {LinkComponent} from "../form-components/link/link.component";
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import {BoDisplayPipe} from "../form-components/bo-select/bo-display.pipe";
     DownloadIconComponent,
     UploadIconComponent,
     InfoIconComponent,
+    LinkComponent,
     LinkIconComponent,
     SearchSelectComponent,
     DialogCloseComponent,
@@ -71,6 +73,7 @@ import {BoDisplayPipe} from "../form-components/bo-select/bo-display.pipe";
     InfoIconComponent,
     SearchSelectComponent,
     DialogCloseComponent,
+    LinkComponent,
     LinkIconComponent,
     InfoLinkDirective,
     TextFieldComponent,

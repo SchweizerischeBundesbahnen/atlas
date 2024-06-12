@@ -1,3 +1,8 @@
+<h1 class="font-bold-2xl pt-5">
+  {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.STOP_POINT_INFO' | translate }}
+  <atlas-spacer [divider]="true" height="0"></atlas-spacer>
+</h1>
+
 <div class="mb-3">
     <span data-cy="version-range">
       {{ 'COMMON.VERSION_VALIDITY' | translate }}
@@ -25,49 +30,54 @@
       <div>{{ stopPoint.businessOrganisation | boDisplay | async }}</div>
     </div>
   </div>
+</div>
 
-  @if (oldDesignation) {
-    <div class="row mb-3">
-      <div class="col" data-cy="old-designation-official">
-        <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.OLD_DESIGNATION_OFFICIAL' | translate }}</div>
-        <div>{{ oldDesignation }}</div>
-      </div>
-    </div>
-  }
+<div class="workflow">
+  <h1 class="font-bold-2xl pt-5">
+    {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.PROPOSAL' | translate }}
+    <atlas-spacer [divider]="true" height="0"></atlas-spacer>
+  </h1>
 
   @if (currentWorkflow) {
     <div class="row mb-3">
       <div class="col" data-cy="workflow-status">
         <div class="font-bold-base">{{ 'WORKFLOW.STATUS_DETAIL' | translate }}</div>
-        <div>{{  'WORKFLOW.STATUS.' + currentWorkflow.status | translate}}</div>
-      </div>
-      <div class="col"></div>
-      <div class="col" data-cy="links">
-        <em class="bi bi-geo-alt-fill"></em>Karte:
-        <a (click)="goToSwissTopo()">Swisstopo</a> /
-        <a (click)="goToAtlasStopPoint()">atlas</a>
+        <div>{{ 'WORKFLOW.STATUS.' + currentWorkflow.status | translate }}</div>
       </div>
     </div>
   }
 
-  <div class="row mb-5">
+  <div class="row mb-3">
     <div class="col" data-cy="new-designation-official">
       <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.NEW_DESIGNATION_OFFICIAL' | translate }}</div>
       <div>{{ stopPoint.designationOfficial }}</div>
     </div>
-    @if (stopPoint.servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName) {
-      <div class="col" data-cy="municipality">
-        <div class="font-bold-base">{{ 'SEPODI.GEOLOCATION.DISTRICT' | translate }}</div>
-        <div>{{ stopPoint.servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName }}</div>
+    @if (oldDesignation) {
+      <div class="col-8" data-cy="old-designation-official">
+        <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.OLD_DESIGNATION_OFFICIAL' | translate }}</div>
+        <div>{{ oldDesignation }}</div>
       </div>
     }
-    <div class="col">
-      @if (currentWorkflow) {
-        <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.APPLICANT' | translate }}</div>
-        <app-user-detail-info [record]="currentWorkflow" [showEditor]="false"></app-user-detail-info>
-      }
-    </div>
   </div>
+
+  @if (currentWorkflow) {
+    <div class="row mb-5">
+      @if (stopPoint.servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName) {
+        <div class="col" data-cy="municipality">
+          <div class="font-bold-base">{{ 'SEPODI.GEOLOCATION.DISTRICT' | translate }}</div>
+          <div>{{ stopPoint.servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName }}</div>
+        </div>
+      }
+      <div class="col-8" data-cy="links">
+      <span class="font-bold-base">
+        <em class="bi bi-geo-alt-fill"></em>{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.MAP' | translate }}:
+      </span>
+        <atlas-link text="Swisstopo" (linkClicked)="goToSwissTopo()"></atlas-link>
+        /
+        <atlas-link text="atlas" (linkClicked)="goToAtlasStopPoint()"></atlas-link>
+      </div>
+    </div>
+  }
 
 </div>
 
@@ -171,3 +181,10 @@
                    controlName="ccEmails">
   </atlas-text-list>
 </div>
+
+@if (currentWorkflow) {
+  <div class="mt-5">
+    <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.APPLICANT' | translate }}</div>
+    <app-user-detail-info [record]="currentWorkflow" [showEditor]="false"></app-user-detail-info>
+  </div>
+}
