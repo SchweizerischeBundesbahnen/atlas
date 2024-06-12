@@ -40,8 +40,8 @@ public abstract class BaseStopPointWorkflowModel {
   @Schema(description = "List of cc emails for status of hearing")
   private List<String> ccEmails;
 
-  @Schema(description = "Designation")
-  private String designation;
+  @Schema(description = "Designation Official")
+  private String designationOfficial;
 
   @Schema(description = "Locality Name")
   private String localityName;
@@ -60,7 +60,7 @@ public abstract class BaseStopPointWorkflowModel {
   @Schema(description = "Workflow created at")
   private LocalDateTime createdAt;
 
-  @Schema(description = "Workflow valid from")
-  private LocalDate validFrom;
+  @Schema(description = "Service Point version valid from")
+  private LocalDate versionValidFrom;
 
 }
