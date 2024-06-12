@@ -2,7 +2,6 @@ package ch.sbb.workflow.model.sepodi;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,7 @@ class ExaminantsTest {
     examinants.setActiveProfile("prod");
 
     //when
-    ClientPersonModel result = examinants.getExaminantPersonByCanton(SwissCanton.BERN);
+    StopPointClientPersonModel result = examinants.getExaminantPersonByCanton(SwissCanton.BERN);
 
     //then
     assertThat(result).isNotNull();
@@ -35,7 +34,7 @@ class ExaminantsTest {
     examinants.setActiveProfile("local");
 
     //when
-    ClientPersonModel result = examinants.getExaminantPersonByCanton(SwissCanton.BERN);
+    StopPointClientPersonModel result = examinants.getExaminantPersonByCanton(SwissCanton.BERN);
 
     //then
     assertThat(result).isNotNull();
@@ -45,7 +44,7 @@ class ExaminantsTest {
   @Test
   void shouldGetExaminantSpecialistOffice() {
     //when
-    ClientPersonModel result = examinants.getExaminantSpecialistOffice();
+    StopPointClientPersonModel result = examinants.getExaminantSpecialistOffice();
 
     //then
     assertThat(result).isNotNull();

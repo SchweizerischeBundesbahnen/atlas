@@ -35,7 +35,7 @@ export class StopPointWorkflowDetailFormGroupBuilder {
         firstName: new FormControl(examinant?.firstName),
         lastName: new FormControl(examinant?.lastName),
         organisation: new FormControl(examinant?.organisation, [Validators.required]),
-        personFunction: new FormControl(examinant?.personFunction, [Validators.required]),
+        personFunction: new FormControl(examinant?.personFunction),
         mail: new FormControl(examinant?.mail, [Validators.required, AtlasCharsetsValidator.email])
       }
     );
