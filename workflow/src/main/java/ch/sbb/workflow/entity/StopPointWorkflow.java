@@ -96,7 +96,7 @@ public class StopPointWorkflow extends BaseWorkflowEntity {
   private LocalDate endDate;
 
   @Column(columnDefinition = "DATE")
-  private LocalDate validFrom;
+  private LocalDate versionValidFrom;
 
    public void setExaminants(Set<Person> examinants) {
     this.examinants =
