@@ -23,9 +23,9 @@ describe('StopPointWorkflowDetailResolver', () => {
   );
 
   const servicePointsService = jasmine.createSpyObj('servicePointsService', [
-    'getServicePointVersion',
+    'getServicePointVersionsBySloid',
   ]);
-  servicePointsService.getServicePointVersion.and.returnValue(of(BERN_WYLEREGG));
+  servicePointsService.getServicePointVersionsBySloid.and.returnValue(of([BERN_WYLEREGG]));
 
   let resolver: StopPointWorkflowDetailResolver;
 
@@ -54,7 +54,7 @@ describe('StopPointWorkflowDetailResolver', () => {
 
     resolvedVersion.subscribe((workflowData) => {
       expect(workflowData?.workflow.versionId).toBe(1);
-      expect(workflowData?.version.designationOfficial).toBe('Bern, Wyleregg');
+      expect(workflowData?.servicePoint[0].designationOfficial).toBe('Bern, Wyleregg');
     });
   });
 

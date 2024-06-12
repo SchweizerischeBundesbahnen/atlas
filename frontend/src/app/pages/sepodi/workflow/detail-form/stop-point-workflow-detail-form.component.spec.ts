@@ -10,6 +10,7 @@ import {BusinessOrganisationsService, ReadStopPointWorkflow} from "../../../../a
 import {TranslatePipe} from "@ngx-translate/core";
 import {StringListComponent} from "../../../../core/form-components/string-list/string-list.component";
 import {MockAtlasButtonComponent} from "../../../../app.testing.mocks";
+import {AtlasSpacerComponent} from "../../../../core/components/spacer/atlas-spacer.component";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
@@ -27,6 +28,7 @@ describe('StopPointWorkflowDetailFormComponent', () => {
         MockAtlasButtonComponent,
         DisplayDatePipe,
         SplitServicePointNumberPipe,
+        AtlasSpacerComponent,
       ],
       imports: [AppTestingModule, FormModule],
       providers: [
