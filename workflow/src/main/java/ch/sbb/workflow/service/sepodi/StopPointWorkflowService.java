@@ -18,7 +18,7 @@ import ch.sbb.workflow.kafka.WorkflowNotificationService;
 import ch.sbb.workflow.mapper.ClientPersonMapper;
 import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
-import ch.sbb.workflow.model.search.WorkflowSearchRestrictions;
+import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.Examinants;
@@ -60,7 +60,7 @@ public class StopPointWorkflowService {
     return workflowRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }
 
-  public Page<StopPointWorkflow> getWorkflows(WorkflowSearchRestrictions searchRestrictions) {
+  public Page<StopPointWorkflow> getWorkflows(StopPointWorkflowSearchRestrictions searchRestrictions) {
     return workflowRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
 
@@ -76,7 +76,7 @@ public class StopPointWorkflowService {
         servicePointVersionModel.getServicePointGeolocation().getSwissLocation().getLocalityMunicipality().getLocalityName());
     stopPointWorkflow.setDesignationOfficial(servicePointVersionModel.getDesignationOfficial());
     stopPointWorkflow.setStatus(WorkflowStatus.ADDED);
-    stopPointWorkflow.setValidFrom(servicePointVersionModel.getValidFrom());
+    stopPointWorkflow.setVersionValidFrom(servicePointVersionModel.getValidFrom());
     return workflowRepository.save(stopPointWorkflow);
   }
 
