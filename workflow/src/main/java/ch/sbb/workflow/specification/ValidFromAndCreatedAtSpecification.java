@@ -1,4 +1,4 @@
-package ch.sbb.atlas.searching.specification;
+package ch.sbb.workflow.specification;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -27,7 +27,7 @@ public class ValidFromAndCreatedAtSpecification<T> implements Specification<T> {
         List<Predicate> predicates = new ArrayList<>();
 
         if (validFrom != null) {
-            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("validFrom"), validFrom));
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("versionValidFrom"), validFrom));
         }
         if (createdAt != null) {
             predicates.add(criteriaBuilder.equal(root.get("creationDate"), createdAt));

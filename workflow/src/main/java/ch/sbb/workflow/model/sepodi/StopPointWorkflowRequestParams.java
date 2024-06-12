@@ -33,8 +33,8 @@ public class StopPointWorkflowRequestParams {
     private List<String> sloids = new ArrayList<>();
 
     @Parameter(description = "Designation")
-    @Singular("designation")
-    private List<String> designation = new ArrayList<>();
+    @Singular("designationOfficial")
+    private List<String> designationOfficial = new ArrayList<>();
 
     @Parameter(description = "Locality Name")
     @Singular("localityName")
@@ -49,10 +49,10 @@ public class StopPointWorkflowRequestParams {
     @DateTimeFormat(pattern = AtlasApiConstants.DATE_TIME_FORMAT_PATTERN, fallbackPatterns = { AtlasApiConstants.DATE_TIME_FORMAT_PATTERN_WITH_T, AtlasApiConstants.ISO_DATE_TIME_FORMAT_PATTERN })
     private LocalDateTime createdAt;
 
-    @Parameter(description = "Workflow valid from."
+    @Parameter(description = "Service Point version valid from."
             + " Date format: " + AtlasApiConstants.DATE_FORMAT_PATTERN)
     @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN, fallbackPatterns = { AtlasApiConstants.DATE_FORMAT_PATTERN_CH })
-    private LocalDate validFrom;
+    private LocalDate versionValidFrom;
 
 
 }
