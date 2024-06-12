@@ -24,10 +24,6 @@ export interface Client {
      */
     lastName?: string;
     /**
-     * Person Function
-     */
-    personFunction: string;
-    /**
      * Object creation date
      */
     readonly creationDate?: string;
@@ -35,6 +31,10 @@ export interface Client {
      * Last edition date
      */
     readonly editionDate?: string;
+    /**
+     * Person Function
+     */
+    personFunction: string;
     /**
      * mail
      */
