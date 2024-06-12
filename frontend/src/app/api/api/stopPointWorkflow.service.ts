@@ -17,12 +17,12 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { Client } from '../model/models';
 import { Decision } from '../model/models';
 import { EditStopPointWorkflow } from '../model/models';
 import { ErrorResponse } from '../model/models';
 import { ReadStopPointWorkflow } from '../model/models';
 import { StopPointAddWorkflow } from '../model/models';
+import { StopPointPerson } from '../model/models';
 import { StopPointRejectWorkflow } from '../model/models';
 import { StopPointRestartWorkflow } from '../model/models';
 
@@ -93,19 +93,19 @@ export class StopPointWorkflowService {
 
     /**
      * @param id 
-     * @param client 
+     * @param stopPointPerson 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public addExaminantToStopPointWorkflow(id: number, client: Client, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ReadStopPointWorkflow>;
-    public addExaminantToStopPointWorkflow(id: number, client: Client, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ReadStopPointWorkflow>>;
-    public addExaminantToStopPointWorkflow(id: number, client: Client, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ReadStopPointWorkflow>>;
-    public addExaminantToStopPointWorkflow(id: number, client: Client, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public addExaminantToStopPointWorkflow(id: number, stopPointPerson: StopPointPerson, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ReadStopPointWorkflow>;
+    public addExaminantToStopPointWorkflow(id: number, stopPointPerson: StopPointPerson, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ReadStopPointWorkflow>>;
+    public addExaminantToStopPointWorkflow(id: number, stopPointPerson: StopPointPerson, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ReadStopPointWorkflow>>;
+    public addExaminantToStopPointWorkflow(id: number, stopPointPerson: StopPointPerson, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling addExaminantToStopPointWorkflow.');
         }
-        if (client === null || client === undefined) {
-            throw new Error('Required parameter client was null or undefined when calling addExaminantToStopPointWorkflow.');
+        if (stopPointPerson === null || stopPointPerson === undefined) {
+            throw new Error('Required parameter stopPointPerson was null or undefined when calling addExaminantToStopPointWorkflow.');
         }
 
         let headers = this.defaultHeaders;
@@ -138,7 +138,7 @@ export class StopPointWorkflowService {
         }
 
         return this.httpClient.post<ReadStopPointWorkflow>(`${this.configuration.basePath}/workflow/v1/stop-point/workflows/add-examinant/${encodeURIComponent(String(id))}`,
-            client,
+            stopPointPerson,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,

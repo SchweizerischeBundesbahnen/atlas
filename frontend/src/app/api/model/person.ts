@@ -24,10 +24,6 @@ export interface Person {
      */
     lastName?: string;
     /**
-     * Person Function
-     */
-    personFunction: string;
-    /**
      * Object creation date
      */
     readonly creationDate?: string;
@@ -35,5 +31,9 @@ export interface Person {
      * Last edition date
      */
     readonly editionDate?: string;
+    /**
+     * Person Function
+     */
+    personFunction: string;
 }
 
