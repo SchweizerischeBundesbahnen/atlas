@@ -1,7 +1,6 @@
 package ch.sbb.workflow.mapper;
 
 import ch.sbb.workflow.entity.Person;
-import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import lombok.experimental.UtilityClass;
 
@@ -27,17 +26,6 @@ public class StopPointClientPersonMapper {
         .function(model.getPersonFunction())
         .organisation(model.getOrganisation())
         .mail(model.getMail())
-        .build();
-  }
-
-  public static Person toEntity(StopPointClientPersonModel model, StopPointWorkflow  stopPointWorkflow) {
-    return Person.builder()
-        .firstName(model.getFirstName())
-        .lastName(model.getLastName())
-        .function(model.getPersonFunction())
-        .organisation(model.getOrganisation())
-        .mail(model.getMail())
-        .stopPointWorkflow(stopPointWorkflow)
         .build();
   }
 
