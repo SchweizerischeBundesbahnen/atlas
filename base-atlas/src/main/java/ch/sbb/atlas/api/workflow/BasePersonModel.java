@@ -16,7 +16,6 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Data
 @SuperBuilder
-@Schema(name = "Person")
 public abstract class BasePersonModel {
 
   @Schema(description = "Firstname", example = "John")
