@@ -181,10 +181,3 @@
                    controlName="ccEmails">
   </atlas-text-list>
 </div>
-
-@if (currentWorkflow) {
-  <div class="mt-5">
-    <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.APPLICANT' | translate }}</div>
-    <app-user-detail-info [record]="currentWorkflow" [showEditor]="false"></app-user-detail-info>
-  </div>
-}
