@@ -18,11 +18,9 @@ public class StopPointWorkflowNotificationService {
             stopPointWorkflowBuilderNotificationService.buildWorkflowStartedExaminantMailNotification(
                 stopPointWorkflow);
         mailProducerService.produceMailNotification(startedExaminantMailNotification);
-        if (stopPointWorkflow.getCcEmails() != null && !stopPointWorkflow.getCcEmails().isEmpty()) {
-            MailNotification buildWorkflowStartedCCMailNotification =
-                stopPointWorkflowBuilderNotificationService.buildWorkflowStartedCCMailNotification(stopPointWorkflow);
+        MailNotification buildWorkflowStartedCCMailNotification =
+            stopPointWorkflowBuilderNotificationService.buildWorkflowStartedCCMailNotification(stopPointWorkflow);
             mailProducerService.produceMailNotification(buildWorkflowStartedCCMailNotification);
-        }
 
     }
 
