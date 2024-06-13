@@ -1,6 +1,6 @@
 include::../../../auto-rest-doc/src/test/resources/layout/common/ATLAS-HEAD.adoc[]
 
-= Workflow
+= Line Workflow
 
 == Get Line Workflows - Successfully
 
@@ -30,6 +30,7 @@ include::{snippets}/line-workflow-controller-test/should-not-create-workflow-whe
 
 include::{snippets}/line-workflow-controller-test/should-accept-workflow/atlas-doc.adoc[]
 
+= Stop Point Workflow
 
 == Get Stop Point Workflow - Successfully
 
