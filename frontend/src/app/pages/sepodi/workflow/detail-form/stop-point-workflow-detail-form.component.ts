@@ -6,7 +6,6 @@ import {AtlasFieldLengthValidator} from "../../../../core/validation/field-lengt
 import {StopPointWorkflowDetailFormGroup, StopPointWorkflowDetailFormGroupBuilder} from "./stop-point-workflow-detail-form-group";
 import {ValidationService} from "../../../../core/validation/validation.service";
 import {Pages} from "../../../pages";
-import {Router} from "@angular/router";
 
 @Component({
   selector: 'stop-point-workflow-detail-form',
