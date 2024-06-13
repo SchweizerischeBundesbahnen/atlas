@@ -1,7 +1,11 @@
 package ch.sbb.workflow.controller;
 
+import ch.sbb.atlas.api.model.Container;
 import ch.sbb.workflow.api.StopPointWorkflowApiV1;
+import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
+import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
+import ch.sbb.workflow.model.sepodi.StopPointWorkflowRequestParams;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
@@ -11,8 +15,9 @@ import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
 import ch.sbb.workflow.service.sepodi.StopPointWorkflowService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -28,8 +33,17 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   }
 
   @Override
-  public List<ReadStopPointWorkflowModel> getStopPointWorkflows() {
-    return service.getWorkflows().stream().map(StopPointWorkflowMapper::toModel).toList();
+  public Container<ReadStopPointWorkflowModel> getStopPointWorkflows(Pageable pageable, StopPointWorkflowRequestParams stopPointWorkflowRequestParams) {
+    StopPointWorkflowSearchRestrictions stopPointWorkflowSearchRestrictions = StopPointWorkflowSearchRestrictions.builder()
+            .pageable(pageable)
+            .stopPointWorkflowRequestParams(stopPointWorkflowRequestParams)
+            .build();
+    Page<StopPointWorkflow> workflows = service.getWorkflows(stopPointWorkflowSearchRestrictions);
+
+    return Container.<ReadStopPointWorkflowModel>builder()
+            .objects(workflows.stream().map(StopPointWorkflowMapper::toModel).toList())
+            .totalCount(workflows.getTotalElements())
+            .build();
   }
 
   @Override
