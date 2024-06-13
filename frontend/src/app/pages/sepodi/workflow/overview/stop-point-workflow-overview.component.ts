@@ -12,6 +12,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {TableService} from "../../../../core/components/table/table.service";
 import {TablePagination} from "../../../../core/components/table/table-pagination";
 import {addElementsToArrayWhenNotUndefined} from "../../../../core/util/arrays";
+import {TableFilterSingleSearch} from "../../../../core/components/table-filter/config/table-filter-single-search";
+import {AtlasCharsetsValidator} from "../../../../core/validation/charsets/atlas-charsets-validator";
 
 @Component({
   selector: 'stop-point-workflow-overview',
@@ -21,7 +23,7 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
 
   private readonly tableFilterConfigIntern = {
     search: new TableFilterChip(0, 'col-6'),
-    workflowIds: new TableFilterChip(0, 'col-6'),
+    workflowIds: new TableFilterSingleSearch(1, 'SEPODI.SERVICE_POINTS.WORKFLOW.ID','col-3', AtlasCharsetsValidator.numeric),
     status: new TableFilterMultiSelect(
       'WORKFLOW.STATUS.',
       'WORKFLOW.STATUS_DETAIL',
@@ -38,7 +40,7 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
         businessOrganisation: new FormControl(),
       })
     ),
-    locality: new TableFilterChip(0, 'col-6'),
+    locality: new TableFilterSingleSearch(1, 'SEPODI.GEOLOCATION.DISTRICT','col-3'),
   };
 
   tableFilterConfig!: TableFilter<unknown>[][];
@@ -75,11 +77,11 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
   getOverview(pagination: TablePagination) {
     this.stopPointWorkflowService.getStopPointWorkflows(
       this.tableService.filter.search.getActiveSearch(),
-      this.tableService.filter.workflowIds.getActiveSearch(),
+      [this.tableService.filter.workflowIds.getActiveSearch()],
       this.tableService.filter.status.getActiveSearch(),
       undefined,
       undefined,
-      this.tableService.filter.locality.getActiveSearch(),
+      [this.tableService.filter.locality.getActiveSearch()],
       this.tableService.filter.sboid.getActiveSearch(),
       undefined,
       undefined,
