@@ -110,6 +110,38 @@
         </div>
         <app-atlas-field-error [control]="dateSelect.formControl"></app-atlas-field-error>
       </div>
+
+      <div
+        *ngIf="filterConfig | instanceOf: TableFilterSingleSearchClass as singleSearch"
+        [class]="singleSearch.elementWidthCssClass"
+      >
+        <app-atlas-label-field [fieldLabel]="singleSearch.label"></app-atlas-label-field>
+        <div
+          [ngClass]="singleSearch.disabled ? 'disabled' : ''"
+          class="single-search"
+        >
+          <mat-chip-grid #chipList [disabled]="!!singleSearch.disabled">
+            <mat-chip-row
+              *ngIf="singleSearch.getActiveSearch()"
+              (removed)="singleSearch.setActiveSearch(); emitSearch()"
+              class="font-bold-sm"
+            >
+              {{ singleSearch.getActiveSearch() }}
+              <button matChipRemove>
+                <i class="bi bi-x-circle-fill"></i>
+              </button>
+            </mat-chip-row>
+            <input
+              [formControl]="singleSearch.formControl"
+              (matChipInputTokenEnd)="singleSearch.addSearchFromChipInputEvent($event); emitSearch()"
+              [matChipInputFor]="chipList"
+              attr.data-cy="table-filter-single-search-{{ rowIndex }}-{{ filterConfigIndex }}"
+              class="font-regular-base"
+            />
+          </mat-chip-grid>
+        </div>
+        <app-atlas-field-error [control]="singleSearch.formControl"></app-atlas-field-error>
+      </div>
     </ng-container>
   </div>
 </div>
