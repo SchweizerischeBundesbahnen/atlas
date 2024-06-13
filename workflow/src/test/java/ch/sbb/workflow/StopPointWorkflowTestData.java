@@ -1,15 +1,10 @@
 package ch.sbb.workflow;
 
-import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
-import lombok.experimental.UtilityClass;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class StopPointWorkflowTestData {
@@ -27,10 +22,6 @@ public class StopPointWorkflowTestData {
                 .ccEmails(List.of(MAIL_ADDRESS))
                 .workflowComment("WF comment")
                 .examinants(stopPointClientPersonModels)
-                .designationOfficial("Test")
-                .localityName("BERN")
-                .versionValidFrom(LocalDate.of(2020, 03, 01))
-                .createdAt(LocalDateTime.of(LocalDate.of(2020, 01, 01), LocalTime.of(15, 43, 22)))
                 .ccEmails(List.of("a@b.ch", "b@c.it"))
                 .versionId(versionId)
                 .build();
@@ -49,10 +40,6 @@ public class StopPointWorkflowTestData {
                 .ccEmails(List.of(MAIL_ADDRESS))
                 .workflowComment("Commentaros")
                 .examinants(clientPersonModels)
-                .designationOfficial("Test")
-                .localityName("ZURICH")
-                .versionValidFrom(LocalDate.of(2015, 03, 01))
-                .createdAt(LocalDateTime.of(LocalDate.of(2020, 1, 1), LocalTime.of(9, 26, 29)))
                 .ccEmails(List.of("a@b.ch", "b@c.it"))
                 .versionId(versionId)
                 .build();
