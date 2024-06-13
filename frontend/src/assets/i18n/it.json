@@ -990,7 +990,12 @@
         "COMMENT": "Motivo",
         "EXAMINANTS": "Ricevente",
         "EXAMINANTS_INFO": "È necessario inserire almeno un comune. In alcuni casi, come nel caso di chiarimenti preliminari al di fuori dell'atlante, questa parte può rimanere vuota. Il cantone e il centro specializzato vengono aggiunti automaticamente.",
-        "EXAMINANTS_SUBTITLE": "Importante: le informazioni di contatto per l'udienza devono essere aggiunte qui (comune obbligatorio, altri destinatari se richiesti).\nI destinatari cantonali e le agenzie specializzate vengono aggiunti automaticamente dall'atlante."
+        "EXAMINANTS_SUBTITLE": "Importante: le informazioni di contatto per l'udienza devono essere aggiunte qui (comune obbligatorio, altri destinatari se richiesti).\nI destinatari cantonali e le agenzie specializzate vengono aggiunti automaticamente dall'atlante.",
+        "OLD_DESIGNATION_OFFICIAL": "Vecchio nome ufficiale",
+        "APPLICANT": "Richiedente",
+        "STOP_POINT_INFO": "Informazioni di base sulla fermata",
+        "PROPOSAL": "Proposta",
+        "MAP": "Carta"
       }
     },
     "TRAFFIC_POINT_ELEMENTS": {

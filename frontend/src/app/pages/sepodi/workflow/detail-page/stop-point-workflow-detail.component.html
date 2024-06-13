@@ -1,11 +1,27 @@
 <atlas-detail-page-container>
   <atlas-detail-page-content>
     <h1 class="font-bold-4xl">
-      {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.WORKFLOW' | translate }}: {{ workflow.id }}
+      {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.WORKFLOW' | translate }} {{ workflow.id }}
     </h1>
-    <stop-point-workflow-detail-form [form]="form" [stopPoint]="stopPoint"></stop-point-workflow-detail-form>
+    <stop-point-workflow-detail-form [form]="form" [stopPoint]="stopPoint"
+                                     [oldDesignation]="oldDesignation"
+                                     [currentWorkflow]="workflow"></stop-point-workflow-detail-form>
+
+    <div class="mt-5">
+      <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.APPLICANT' | translate }}</div>
+      <app-user-detail-info [record]="workflow" [showEditor]="false"></app-user-detail-info>
+    </div>
   </atlas-detail-page-content>
 
   <atlas-detail-footer>
+    <atlas-button
+      backButton
+      [footerEdit]="form.enabled"
+      buttonDataCy="back-to-overview"
+      buttonText="COMMON.BACK_TO_OVERVIEW"
+      buttonType="whiteFooterNonEdit"
+      wrapperStyleClass="me-3"
+    >
+    </atlas-button>
   </atlas-detail-footer>
 </atlas-detail-page-container>
