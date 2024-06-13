@@ -65,16 +65,16 @@
       @if (stopPoint.servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName) {
         <div class="col" data-cy="municipality">
           <div class="font-bold-base">{{ 'SEPODI.GEOLOCATION.DISTRICT' | translate }}</div>
-          <div>{{ stopPoint.servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName }}</div>
+          <div>{{ stopPoint.servicePointGeolocation?.swissLocation.localityMunicipality.localityName }}</div>
         </div>
       }
       <div class="col-8" data-cy="links">
       <span class="font-bold-base">
         <em class="bi bi-geo-alt-fill"></em>{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.MAP' | translate }}:
       </span>
-        <atlas-link text="Swisstopo" (linkClicked)="goToSwissTopo()"></atlas-link>
+        <atlas-link label="Swisstopo" (linkClicked)="goToSwissTopo()"></atlas-link>
         /
-        <atlas-link text="atlas" (linkClicked)="goToAtlasStopPoint()"></atlas-link>
+        <atlas-link label="atlas" (linkClicked)="goToAtlasStopPoint()"></atlas-link>
       </div>
     </div>
   }
