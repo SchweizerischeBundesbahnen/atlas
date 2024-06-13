@@ -33,7 +33,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.CreationTimestamp;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -67,6 +66,10 @@ public class StopPointWorkflow extends BaseWorkflowEntity {
   @AtlasVersionableProperty
   private String localityName;
 
+  @Size(max = AtlasFieldLengths.LENGTH_255)
+  @AtlasVersionableProperty
+  private String applicantMail;
+
   @NotNull
   @Enumerated(EnumType.STRING)
   private WorkflowStatus status;
@@ -89,7 +92,6 @@ public class StopPointWorkflow extends BaseWorkflowEntity {
   @Size(max = AtlasFieldLengths.LENGTH_30)
   private String designationOfficial;
 
-  @CreationTimestamp
   @Column(columnDefinition = "DATE")
   private LocalDate startDate;
 

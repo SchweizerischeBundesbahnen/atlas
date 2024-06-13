@@ -48,7 +48,7 @@ public class StopPointWorkflowService {
 
   private static final String EXCEPTION_MSG = "Workflow status must be ADDED!!!(REPLACE ME WITH A CUSTOM EXCEPTION)";
   private static final String EXCEPTION_HEARING_MSG = "Workflow status must be HEARING!!!(REPLACE ME WITH A CUSTOM EXCEPTION)";
-  public static final int WORKFLOW_DURATION_IN_DAYS = 31;
+  private static final int WORKFLOW_DURATION_IN_DAYS = 31;
 
   private final StopPointWorkflowRepository workflowRepository;
   private final DecisionService decisionService;
