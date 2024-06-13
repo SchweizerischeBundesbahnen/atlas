@@ -18,7 +18,7 @@ public class ValidFromAndCreatedAtSpecification<T> implements Specification<T> {
 
     @Serial
     private static final long serialVersionUID = 1;
-    private final LocalDate validFrom;
+    private final LocalDate versionValidFrom;
     private final LocalDateTime createdAt;
 
 
@@ -26,8 +26,8 @@ public class ValidFromAndCreatedAtSpecification<T> implements Specification<T> {
     public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<>();
 
-        if (validFrom != null) {
-            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("versionValidFrom"), validFrom));
+        if (versionValidFrom != null) {
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("versionValidFrom"), versionValidFrom));
         }
         if (createdAt != null) {
             predicates.add(criteriaBuilder.equal(root.get("creationDate"), createdAt));
