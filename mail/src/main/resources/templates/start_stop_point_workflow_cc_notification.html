@@ -37,6 +37,10 @@
             font-weight: bold;
         }
 
+        .ski-color {
+            color: #06348b
+        }
+
         .header-title {
             font-size: large;
             text-align: center;
@@ -77,6 +81,13 @@
         .mail-container {
             padding-bottom: 30px;
         }
+
+        hr {
+            height: 2px;
+            border-width: 0;
+            color: gray;
+            background-color: gray;
+        }
     </style>
 </head>
 <body>
@@ -91,31 +102,86 @@
             </div>
         </div>
         <div class='header-right mb-1'>
-            <span class='header-title'>CC</span>
             <span class='header-title' th:text="${properties.get(0).get('title')}"></span>
         </div>
     </div>
     <div class='content-container'>
         <div>
-            Pour la version française voir ci-dessous.
-            </br>
-            Per la versione in lingua italiana vedi sotto.
-            <br/>
-            <span th:if="${properties.get(0).get('comment')}">
-                Bitte beachten Sie dazu die nachfolgende Bemerkung der prüfenden Person:
-                <br/>
-                [[${properties.get(0).get('comment')}]]
-            </span>
-            <br/>
-            <br/>
-            Durch einen Klick auf <a th:href="${properties.get(0).get('url')}" th:text="${properties.get(0).get('url')}"></a>
-            gelangen Sie direkt zur Anhorung <b>[[${properties.get(0).get('sloid')}]]</b> -
-            <b>[[${properties.get(0).get('endDate')}]].</b>
+            <i>Pour la version française voir ci-dessous. / Per la versione in lingua italiana vedi sotto.</i>
+            <br><br>
+            <hr>
+            <div>
+                <br><span>Sehr geehrte Damen und Herren</span><br><br>
+                <span>Ein Transportunternehmen stellt den Antrag für die Umbenennung/Neueinführung der Haltestelle
+                    <b>[[${properties.get(0).get('designationOfficial')}]], [[${properties.get(0).get('sloid')}]]</b>.
+                    Die Anhörung wurde gestartet und die involvierten Personen dürfen ab sofort den Namen
+                    der Haltestelle bewerten bis zum <b>[[${properties.get(0).get('endDate')}]]</b>.<br>
+                    Sie werden über alle relevanten Entwicklungen zur Anhörung informiert.
+                    Gerne dürfen Sie den Verlauf der Anhörung in [[${properties.get(0).get('url')}]] verfolgen.<br>
+                </span>
+                <span>Weitere Informationen finden Sie unter
+                    <a href="https://www.öv-info.ch/de">https://www.öv-info.ch/de</a>
+                    in der Beschreibung oder im Benutzerhandbuch.
+                </span>
+                <div>
+                    <br>Freundliche Grüsse<br><br>
+                    Fachstelle atlas<br>
+                    <b>SKI - Systemaufgaben Kundeninformation</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>SBB AG</b><br>
+                    Infrastruktur, Fahrplan und Betrieb, Kundeninformation<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <br><span>Mesdames et Messieurs</span><br><br>
+                <span>Une entreprise de transport a déposé une demande de changement de nom/d'introduction de l'arrêt
+                    <b>[[${properties.get(0).get('designationOfficial')}]], [[${properties.get(0).get('sloid')}]]</b>.
+                     L'audition a été lancée et les personnes involvées peuvent dès à présent évaluer le nom de l'arrêt
+                    jusqu'au <b>[[${properties.get(0).get('endDate')}]]</b>.<br>
+                    Vous serez informés de tous les événements pertinents relatifs à l'audition. N'hésitez pas à suivre
+                    le progrès de l'audition dans [[${properties.get(0).get('url')}]].<br>
+                </span>
+                <span>Vous trouverez de plus amples informations sur
+                    <a href="https://www.tp-info.ch/fr">https://www.tp-info.ch/fr</a>
+                    dans la description ou dans le manuel d'utilisation.
+                </span>
+                <div>
+                    <br>Meilleures Salutations<br><br>
+                    Service spécialisé atlas<br>
+                    <b>SKI - Systemaufgaben Kundeninformation</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>CFF SA</b><br>
+                    Incrastructure – Horaire et Exploitation, Information à la clientèle<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <br><span>Gentile signore o signora</span><br><br>
+                <span>Un'azienda di trasporti ha presentato una domanda per la ridenominazione/rilancio della fermata
+                    <b>[[${properties.get(0).get('designationOfficial')}]], [[${properties.get(0).get('sloid')}]]</b>.
+                    La consultazione è stata avviata e le persone coinvolte possono ora valutare il nome della fermata fino al
+                    <b>[[${properties.get(0).get('endDate')}]]</b>.<br>
+                    Sarete informati su tutti gli sviluppi relativi all'audizione. Siete invitati a seguire l'andamento
+                    dell'audizione su [[${properties.get(0).get('url')}]].<br>
+                </span>
+                <span>Ulteriori informazioni sono disponibili sul sito
+                    <a href="https://www.tp-info.ch/it">https://www.tp-info.ch/it</a>
+                    nella descrizione o nel manuale d'uso.
+                </span>
+                <div>
+                    <br>Cordiali saluti<br><br>
+                    Servizio specializzato atlas<br>
+                    <b>SKI - Systemaufgaben Kundeninformation</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>FFS SA</b><br>
+                    Infrastrutture – Orario ed Esercizio, Informazione della clientela<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class='footer'>
-        Digitale Grüsse,<br/>
-        atlas
     </div>
 </div>
 </body>
