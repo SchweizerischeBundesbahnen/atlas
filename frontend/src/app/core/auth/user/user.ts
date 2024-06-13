@@ -7,3 +7,8 @@ export interface User {
   isAdmin: boolean;
   permissions: Permission[];
 }
+
+export interface TokenUser extends User {
+  preferred_username: string;
+  roles: string[];
+}

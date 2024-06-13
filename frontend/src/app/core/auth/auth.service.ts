@@ -7,7 +7,7 @@ import {jwtDecode} from 'jwt-decode';
 import {Role} from './role';
 import {UserService} from "./user/user.service";
 import {PageService} from "../pages/page.service";
-import {User} from "./user/user";
+import {TokenUser, User} from "./user/user";
 
 @Injectable({
   providedIn: 'root',
@@ -82,9 +82,12 @@ export class AuthService {
   }
 
   userFromAccessToken(): User {
-    const decodedUser: User & { roles: string[] } = jwtDecode(this.oauthService.getAccessToken());
+    const decodedUser: TokenUser = jwtDecode(this.oauthService.getAccessToken());
     return {
-      ...decodedUser,
+      email: decodedUser.preferred_username,
+      name: decodedUser.name,
+      permissions: decodedUser.permissions,
+      sbbuid: decodedUser.sbbuid,
       isAdmin: decodedUser.roles.includes(Role.AtlasAdmin),
     }
   }

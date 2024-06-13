@@ -12,6 +12,7 @@ import {DetailHelperService} from "../../../../core/detail/detail-helper.service
 import {NotificationService} from "../../../../core/notification/notification.service";
 import {Router} from "@angular/router";
 import {Pages} from "../../../pages";
+import {UserService} from "../../../../core/auth/user/user.service";
 
 @Component({
   selector: 'app-workflow-dialog',
@@ -26,7 +27,8 @@ export class AddStopPointWorkflowComponent implements OnInit {
     private detailHelperService: DetailHelperService,
     private stopPointWorkflowService: StopPointWorkflowService,
     private notificationService: NotificationService,
-    private router: Router,
+    private userService: UserService,
+    private router: Router
   ) {
   }
 
@@ -55,6 +57,7 @@ export class AddStopPointWorkflowComponent implements OnInit {
 
   private stopPointToWorkflowInfo(stopPoint: ReadServicePointVersion): StopPointAddWorkflow {
     return {
+      applicantMail: this.userService!.currentUser!.email,
       versionId: stopPoint.id!,
       sloid: stopPoint.sloid!,
     }
