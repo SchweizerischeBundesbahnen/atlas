@@ -9,6 +9,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,6 +40,12 @@ public abstract class BaseStopPointWorkflowModel {
   @Schema(description = "List of cc emails for status of hearing")
   private List<String> ccEmails;
 
+  @Schema(description = "Designation Official")
+  private String designationOfficial;
+
+  @Schema(description = "Locality Name")
+  private String localityName;
+
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_1500)
   @Schema(description = "Hearing reasons")
@@ -47,5 +56,11 @@ public abstract class BaseStopPointWorkflowModel {
 
   @Schema(description = "Workflow Status", accessMode = AccessMode.READ_ONLY)
   private WorkflowStatus status;
+
+  @Schema(description = "Workflow created at")
+  private LocalDateTime createdAt;
+
+  @Schema(description = "Service Point version valid from")
+  private LocalDate versionValidFrom;
 
 }
