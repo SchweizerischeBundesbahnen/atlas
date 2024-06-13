@@ -38,14 +38,10 @@ public class StopPointWorkflowMapper {
         .ccEmails(model.getCcEmails())
         .applicantMail(model.getApplicantMail())
         .workflowComment(model.getWorkflowComment())
-        .designationOfficial(model.getDesignationOfficial())
-        .localityName(model.getLocalityName())
-        .versionValidFrom(model.getVersionValidFrom())
-        .status(model.getStatus())
         .build();
-    model.getExaminants().addAll(examinants);
+    examinants.addAll(model.getExaminants());
     stopPointWorkflow.setExaminants(
-        model.getExaminants().stream().map(StopPointClientPersonMapper::toEntity)
+        examinants.stream().map(StopPointClientPersonMapper::toEntity)
             .collect(Collectors.toSet()));
     return stopPointWorkflow;
   }
