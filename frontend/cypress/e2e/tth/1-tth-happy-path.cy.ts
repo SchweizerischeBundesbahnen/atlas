@@ -51,7 +51,11 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
 
   it('Step-6: Stellungnahmen erfassen', () => {
     CommonUtils.selectItemFromDropDown(DataCy.SELECT_TTH_CANTON_DROPDOWN, ' Tessin');
+
+    cy.intercept('GET', 'line-directory/v1/timetable-hearing/years?statusChoices=ACTIVE&statusChoices=PLANNED').as('loadYears');
     cy.get(DataCy.NEW_STATEMENT_BUTTON).click();
+    cy.wait('@loadYears').its('response.statusCode').should('eq', 200);
+
     CommonUtils.selectItemFromDropDown(DataCy.TTH_DETAIL_SELECT_YEAR, String(selectedHearingYear));
     CommonUtils.getClearType(DataCy.STATEMENT_STOP_PLACE, 'Wiesenbach');
     CommonUtils.getClearType(DataCy.STATEMENT_FIRTS_NAME, 'Khvicha');
@@ -102,7 +106,10 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
       DataCy.STATEMENT_JUSTIFICATION,
       'Campioni in Italia!!!Forza Napoli!!!',
     );
+
+    cy.intercept('PUT', 'line-directory/v2/timetable-hearing/statements/update-statement-status').as('updateStatus');
     cy.get(DataCy.DIALOG_CONFIRM_BUTTON).click();
+    cy.wait('@updateStatus').its('response.statusCode').should('eq', 200);
   });
 
   it('Step-9: Fahrplanjahr schliessen', () => {
