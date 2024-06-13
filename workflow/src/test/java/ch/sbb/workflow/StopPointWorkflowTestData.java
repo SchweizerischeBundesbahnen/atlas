@@ -2,6 +2,7 @@ package ch.sbb.workflow;
 
 import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
+import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import lombok.experimental.UtilityClass;
 
 import java.time.LocalDate;
@@ -16,8 +17,8 @@ public class StopPointWorkflowTestData {
     static final String MAIL_ADDRESS = "marek@hamsik.com";
 
     public static StopPointAddWorkflowModel getAddStopPointWorkflow1() {
-        List<ClientPersonModel> clientPersonModels = new ArrayList<>();
-        clientPersonModels.add(getClientPerson());
+        List<StopPointClientPersonModel> stopPointClientPersonModels = new ArrayList<>();
+        stopPointClientPersonModels.add(getClientPerson());
 
         long versionId = 123456L;
         String sloid = "ch:1:sloid:1234";
@@ -25,7 +26,7 @@ public class StopPointWorkflowTestData {
                 .sloid(sloid)
                 .ccEmails(List.of(MAIL_ADDRESS))
                 .workflowComment("WF comment")
-                .examinants(clientPersonModels)
+                .examinants(stopPointClientPersonModels)
                 .designationOfficial("Test")
                 .localityName("BERN")
                 .versionValidFrom(LocalDate.of(2020, 03, 01))
@@ -38,7 +39,7 @@ public class StopPointWorkflowTestData {
     }
 
     public static StopPointAddWorkflowModel getAddStopPointWorkflow2() {
-        List<ClientPersonModel> clientPersonModels = new ArrayList<>();
+        List<StopPointClientPersonModel> clientPersonModels = new ArrayList<>();
         clientPersonModels.add(getClientPerson());
 
         long versionId = 654321L;
@@ -60,13 +61,13 @@ public class StopPointWorkflowTestData {
     }
 
 
-    public static ClientPersonModel getClientPerson(){
-        ClientPersonModel person = ClientPersonModel.builder()
+    public static StopPointClientPersonModel getClientPerson(){
+        StopPointClientPersonModel person = StopPointClientPersonModel.builder()
                 .firstName("Marek")
                 .lastName("Hamsik")
                 .personFunction("Centrocampista")
+                .organisation("BAV")
                 .mail(MAIL_ADDRESS).build();
-
         return person;
     }
 }
