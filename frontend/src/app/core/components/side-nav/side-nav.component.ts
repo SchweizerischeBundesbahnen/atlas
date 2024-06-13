@@ -11,7 +11,9 @@ import {PageService} from "../../pages/page.service";
   styleUrls: ['./side-nav.component.scss'],
 })
 export class SideNavComponent {
-  activePageIndex = 0;
+  activePageIndex: number | null = 0;
+  activeSubPageIndex = 0;
+
   selectedPage: Page | null = null;
 
   constructor(private readonly router: Router, private pageService:PageService) {
@@ -19,7 +21,7 @@ export class SideNavComponent {
       .pipe(
         takeUntilDestroyed(),
         filter((event) => event instanceof NavigationEnd),
-        tap(() => (this.activePageIndex = this.getActivePageIndex(this.router.url))),
+        tap(() => (this.getActivePageIndex(this.router.url))),
       )
       .subscribe();
   }
@@ -28,16 +30,23 @@ export class SideNavComponent {
     return this.pageService.enabledPages;
   }
 
-  getActivePageIndex(currentUrl: string): number {
-    this.selectPage(currentUrl)
-
-    if (currentUrl === '/') {
-      return this.enabledPages.findIndex((value) => value.path.length === 0);
-    }
-    return this.enabledPages.findIndex(
-      (value) => value.path.length > 0 && currentUrl.includes(value.path),
-    );
+  getActivePageIndex(currentUrl: string): void {
+    this.selectPage(currentUrl);
+    this.enabledPages.forEach((page, index) => {
+      if (currentUrl.includes(page.path)) {
+        this.activePageIndex = index;
+        if (page.subpages) {
+          page.subpages.forEach((subPage, index) => {
+            if (currentUrl.includes(subPage.path)) {
+              this.activeSubPageIndex = index;
+              this.activePageIndex = null;
+            }
+          });
+        }
+      }
+    });
   }
+
   selectPage(currentUrl: string){
     this.enabledPages.forEach(value => {
       if(currentUrl.includes(value.path)){
