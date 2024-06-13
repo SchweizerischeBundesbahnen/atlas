@@ -30,6 +30,7 @@ export * from './containerReadReferencePointVersion';
 export * from './containerReadRelationVersion';
 export * from './containerReadServicePointVersion';
 export * from './containerReadStopPointVersion';
+export * from './containerReadStopPointWorkflow';
 export * from './containerReadToiletVersion';
 export * from './containerReadTrafficPointElementVersion';
 export * from './containerSubline';
