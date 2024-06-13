@@ -1,0 +1,20 @@
+<div class="ps-5 pt-5">
+  <div class="white-table-container-no-tabs">
+    <div class="table-heading font-bold-4xl color-gray-900 mb-5">
+      {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.WORKFLOWS' | translate }}
+    </div>
+
+    <app-table
+      data-cy="workflow-table"
+      [tableData]="stopPointWorkflows"
+      [totalCount]="totalCount$"
+      [tableColumns]="tableColumns"
+      [canEdit]="true"
+      [tableFilterConfig]="tableFilterConfig"
+      (editElementEvent)="edit($event)"
+      (tableChanged)="getOverview($event)"
+      (tableInitialized)="getOverview($event)"
+    ></app-table>
+    <router-outlet></router-outlet>
+  </div>
+</div>

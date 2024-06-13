@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.module.ts
 api/api.ts
@@ -64,6 +63,7 @@ model/containerReadReferencePointVersion.ts
 model/containerReadRelationVersion.ts
 model/containerReadServicePointVersion.ts
 model/containerReadStopPointVersion.ts
+model/containerReadStopPointWorkflow.ts
 model/containerReadToiletVersion.ts
 model/containerReadTrafficPointElementVersion.ts
 model/containerSubline.ts
