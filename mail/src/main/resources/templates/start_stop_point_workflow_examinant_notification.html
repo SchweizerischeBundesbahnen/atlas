@@ -92,6 +92,13 @@
         .mail-container {
             padding-bottom: 30px;
         }
+
+        hr {
+            height: 2px;
+            border-width: 0;
+            color: gray;
+            background-color: gray;
+        }
     </style>
 </head>
 <body>
@@ -111,17 +118,16 @@
     </div>
     <div class='content-container'>
         <div>
-            <i><a href="#french">Pour la version française voir ci-dessous.</a> / <a href="#italian">Per la versione in
-                lingua italiana vedi sotto.</a></i>
+            <i>Pour la version française voir ci-dessous. / Per la versione in lingua italiana vedi sotto.</i>
             <br><br>
-            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-            <div id="german">
-                <span>Sehr geehrte Damen und Herren</span><br><br>
-                <span>Das Transportunternehmen SBOID [[${properties.get(0).get('sboid')}]] stellt den Antrag für die
-                    Umbenennung/Neueinführung der Haltestelle
+            <hr>
+            <div>
+                <br><span>Sehr geehrte Damen und Herren</span><br><br>
+                <span>Ein Transportunternehmen stellt den Antrag für die Umbenennung/Neueinführung der Haltestelle
                     <b>[[${properties.get(0).get('designationOfficial')}]] SLOID [[${properties.get(0).get('sloid')}]]</b>.
-                    Sie dürfen im Rahmen der <a href="https://www.fedlex.admin.ch/eli/cc/2008/393/de#id-7">«Verordnung über
-                        geografische Namen (GeoNV)»</a> über den Namen abstimmen.
+                    Sie dürfen im Rahmen der
+                    <a href="https://www.fedlex.admin.ch/eli/cc/2008/393/de#id-7">«Verordnung über geografische Namen (GeoNV)»</a>
+                    über den Namen abstimmen.
                     Bitte beantworten Sie die Anhörung bis zum [[${properties.get(0).get('endDate')}]] wie folgt:
                 </span>
                 <ol>
@@ -146,10 +152,10 @@
                     Wylerstrasse 123/125, 3000 Bern<br><br>
                 </div>
             </div>
-            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-            <div id="french">
-                <span>Mesdames et Messieurs</span><br><br>
-                <span>L'entreprise de transport SBOID [[${properties.get(0).get('sboid')}]] dépose une demande de changement de nom/d'introduction de l'arrêt
+            <hr>
+            <div>
+                <br><span>Mesdames et Messieurs</span><br><br>
+                <span>Une entreprise de transport dépose une demande de changement de nom/d'introduction de l'arrêt
                     <b>[[${properties.get(0).get('designationOfficial')}]] SLOID [[${properties.get(0).get('sloid')}]]</b>.
                    Vous pouvez vous prononcer sur ce nom dans le cadre de l'
                     <a href="https://www.fedlex.admin.ch/eli/cc/2008/393/fr">« Ordonnance sur les noms géographiques (ONGéo)»</a>.
@@ -177,14 +183,13 @@
                 </div>
             </div>
 
-            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-            <div id="italian">
-                <span>Gentile signore o signora </span><br><br>
-                <span>L'azienda di trasporti SBOID [[${properties.get(0).get('sboid')}]] ha presentato una richiesta di
-                    ridenominazione della fermata
+            <hr>
+            <div>
+                <br><span>Gentile signore o signora </span><br><br>
+                <span>Un'azienda di trasporti ha presentato una richiesta di ridenominazione della fermata
                     <b>[[${properties.get(0).get('designationOfficial')}]] SLOID [[${properties.get(0).get('sloid')}]]</b>.
-                    Potete votare sul nome nell'ambito dell'<a href="https://www.fedlex.admin.ch/eli/cc/2008/393/it">“Ordinanza
-                    sui nomi geografici (GeoNV)”</a>.
+                    Potete votare sul nome nell'ambito dell'
+                    <a href="https://www.fedlex.admin.ch/eli/cc/2008/393/it">“Ordinanza sui nomi geografici (GeoNV)”</a>.
                     Vi preghiamo di rispondere alla consultazione entro il [[${properties.get(0).get('endDate')}]] come segue:
                 </span>
                 <ol>
@@ -193,7 +198,7 @@
                     <li>cliccare su <b>Richiedi codice pin</b></li>
                     <li>riceverete una nuova e-mail con il codice pin per la votazione.</li>
                 </ol>
-                <span>BSi prega di rispondere alla consultazione in ogni caso. Le risposte mancanti saranno considerate come un consenso successivo alla scadenza.</span><br>
+                <span>Si prega di rispondere alla consultazione in ogni caso. Le risposte mancanti saranno considerate come un consenso successivo alla scadenza.</span><br>
                 <span>Ulteriori informazioni sono disponibili sul sito
                     <a href="https://www.tp-info.ch/it">https://www.tp-info.ch/it</a>
                     nella descrizione o nel manuale d'uso.

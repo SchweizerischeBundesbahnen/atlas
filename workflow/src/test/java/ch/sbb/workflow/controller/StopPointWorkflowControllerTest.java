@@ -264,6 +264,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .sloid("ch:1:sloid:1234")
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
+        .applicantMail("a@b.ch")
         .examinants(List.of(person))
         .versionId(123456L)
         .build();
@@ -295,6 +296,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .examinants(List.of(person))
+        .applicantMail("a@s.ch")
         .versionId(123456L)
         .build();
 
@@ -336,6 +338,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .examinants(List.of(person))
+        .applicantMail("a@b.ch")
         .versionId(versionId)
         .build();
     when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
@@ -364,6 +367,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .examinants(List.of(person))
+        .applicantMail("a@b.ch")
         .versionId(versionId)
         .build();
     when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
@@ -423,6 +427,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .examinants(List.of(personModel))
+        .applicantMail("a@b.ch")
         .versionId(versionId)
         .build();
     when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
@@ -457,6 +462,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("\uD83D\uDE00\uD83D\uDE01\uD83D")
         .examinants(List.of(person))
+        .applicantMail("a@b.ch")
         .versionId(123456L)
         .build();
 
