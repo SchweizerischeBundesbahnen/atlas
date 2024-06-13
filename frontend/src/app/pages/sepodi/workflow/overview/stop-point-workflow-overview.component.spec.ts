@@ -2,8 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {StopPointWorkflowOverviewComponent} from './stop-point-workflow-overview.component';
 import {AppTestingModule} from "../../../../app.testing.module";
 import {FormModule} from "../../../../core/module/form.module";
-import {TableComponent} from "../../../../core/components/table/table.component";
-import {TableFilterComponent} from "../../../../core/components/table-filter/table-filter.component";
+import {MockTableComponent} from "../../../../app.testing.mocks";
 
 describe('StopPointWorkflowOverviewComponent', () => {
   let component: StopPointWorkflowOverviewComponent;
@@ -13,8 +12,7 @@ describe('StopPointWorkflowOverviewComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         StopPointWorkflowOverviewComponent,
-        TableComponent,
-        TableFilterComponent,
+        MockTableComponent
       ],
       imports: [AppTestingModule, FormModule],
     }).compileComponents().then();
