@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TableFilterChip} from "../../../../core/components/table-filter/config/table-filter-chip";
 import {TableFilterSearchSelect} from "../../../../core/components/table-filter/config/table-filter-search-select";
-import {BusinessOrganisation, ReadStopPointWorkflow, Status, StopPointWorkflowService, WorkflowStatus} from "../../../../api";
+import {BusinessOrganisation, ReadStopPointWorkflow, StopPointWorkflowService, WorkflowStatus} from "../../../../api";
 import {TableFilterSearchType} from "../../../../core/components/table-filter/config/table-filter-search-type";
 import {FormControl, FormGroup} from "@angular/forms";
 import {TableFilterMultiSelect} from "../../../../core/components/table-filter/config/table-filter-multiselect";
