@@ -4,14 +4,7 @@
   headingNew="LIDI.LINE.NEW"
 >
   <div class="workflow-link mb-3">
-    <a
-      (click)="navigateToSnapshot()"
-      *ngIf="isShowLineSnapshotHistory"
-      class="font-bold-base color-primary-400 mb-2"
-      target="_blank"
-      >{{ 'LIDI.LINE_VERSION_SNAPSHOT.NAVIGATE_TO_SNAPHOT' | translate }}
-      <link-icon></link-icon>
-    </a>
+    <atlas-link label="LIDI.LINE_VERSION_SNAPSHOT.NAVIGATE_TO_SNAPHOT" (linkClicked)="navigateToSnapshot()"></atlas-link>
   </div>
   <line-detail-form
     [boSboidRestriction]="getBoSboidRestriction()"
