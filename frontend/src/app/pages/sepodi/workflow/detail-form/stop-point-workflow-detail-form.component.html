@@ -65,7 +65,7 @@
       @if (stopPoint.servicePointGeolocation?.swissLocation?.localityMunicipality?.localityName) {
         <div class="col" data-cy="municipality">
           <div class="font-bold-base">{{ 'SEPODI.GEOLOCATION.DISTRICT' | translate }}</div>
-          <div>{{ stopPoint.servicePointGeolocation?.swissLocation.localityMunicipality.localityName }}</div>
+          <div>{{ stopPoint.servicePointGeolocation!.swissLocation!.localityMunicipality!.localityName }}</div>
         </div>
       }
       <div class="col-8" data-cy="links">
