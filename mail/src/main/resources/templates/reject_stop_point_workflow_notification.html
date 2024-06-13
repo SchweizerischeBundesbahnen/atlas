@@ -92,6 +92,13 @@
         .mail-container {
             padding-bottom: 30px;
         }
+
+        hr {
+            height: 2px;
+            border-width: 0;
+            color: gray;
+            background-color: gray;
+        }
     </style>
 </head>
 <body>
@@ -111,12 +118,11 @@
     </div>
     <div class='content-container'>
         <div>
-            <i><a href="#french">Pour la version française voir ci-dessous.</a> / <a href="#italian">Per la versione in
-                lingua italiana vedi sotto.</a></i>
+            <i>Pour la version française voir ci-dessous. / Per la versione in lingua italiana vedi sotto.</i>
             <br><br>
-            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-            <div id="german">
-                <span>Sehr geehrte Damen und Herren</span><br><br>
+            <hr>
+            <div>
+                <br><span>Sehr geehrte Damen und Herren</span><br><br>
                 <span>Der Antrag auf die Anhörung des neuen Haltestellennamens
                     <b>[[${properties.get(0).get('designationOfficial')}]], [[${properties.get(0).get('sloid')}]]</b>
                     wurde durch das Bundesamt für Verkehr (BAV) mit folgender Begründung zurückgewiesen:</span>
@@ -138,9 +144,9 @@
                     Wylerstrasse 123/125, 3000 Bern<br><br>
                 </div>
             </div>
-            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-            <div id="french">
-                <span>Chères Mesdames, chers Messieurs</span><br><br>
+            <hr>
+            <div>
+                <br><span>Chères Mesdames, chers Messieurs</span><br><br>
                 <span>La demande d'audition du nouveau nom d'arrêt
                     <b>[[${properties.get(0).get('designationOfficial')}]], [[${properties.get(0).get('sloid')}]]</b>
                     a été rejetée par l'OFT avec la motivation suivante: </span>
@@ -163,16 +169,16 @@
                 </div>
             </div>
 
-            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-            <div id="italian">
-                <span>Gentili signore ed egregi signori,</span><br><br>
+            <hr>
+            <div>
+                <br><span>Gentili signore ed egregi signori,</span><br><br>
                 <span>La richiesta di audizione per la nuova denominazione della fermata
                     <b>[[${properties.get(0).get('designationOfficial')}]], [[${properties.get(0).get('sloid')}]]</b>
                      è stata respinta dall'Ufficio federale dei trasporti (UFT) con la seguente motivazione:  </span>
                 <span><br><br>
                     [[${properties.get(0).get('comment')}]]
                 </span><br><br>
-                <span>Si prega di apportare le necessarie modifiche all’atlas e di riavviare il processo di consultazione.</span>
+                <span>Si prega di apportare le necessarie modifiche in atlas e di riavviare il processo di consultazione.</span>
                 <span>Ulteriori informazioni sono disponibili sul sito
                     <a href="https://www.tp-info.ch/it">https://www.tp-info.ch/it </a>
                     nella descrizione o nel manuale d'uso.

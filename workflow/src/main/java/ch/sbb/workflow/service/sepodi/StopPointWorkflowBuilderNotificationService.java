@@ -41,23 +41,26 @@ public class StopPointWorkflowBuilderNotificationService {
   }
 
   public MailNotification buildWorkflowStartedCCMailNotification(StopPointWorkflow stopPointWorkflow) {
+    List<String> ccMails = stopPointWorkflow.getCcEmails() != null ? stopPointWorkflow.getCcEmails() : new ArrayList<>();
+    ccMails.add(stopPointWorkflow.getApplicantMail());
     return MailNotification.builder()
         .from(from)
         .mailType(MailType.START_STOP_POINT_WORKFLOW_CC_NOTIFICATION)
         .subject(START_WORKFLOW_SUBJECT)
-        .to(stopPointWorkflow.getCcEmails())
+        .to(ccMails)
         .templateProperties(buildMailProperties(stopPointWorkflow, START_WORKFLOW_SUBJECT))
         .build();
   }
 
   public MailNotification buildWorkflowRejectExaminantMailNotification(StopPointWorkflow stopPointWorkflow) {
-    List<String> examinantMails = stopPointWorkflow.getExaminants().stream().map(Person::getMail).toList();
+    List<String> ccMails = stopPointWorkflow.getCcEmails();
+    ccMails.addAll(stopPointWorkflow.getExaminants().stream().map(Person::getMail).toList());
     return MailNotification.builder()
         .from(from)
         .mailType(MailType.REJECT_STOP_POINT_WORKFLOW_NOTIFICATION)
         .subject(REJECT_WORKFLOW_SUBJECT)
-        .to(examinantMails)
-        .cc(stopPointWorkflow.getCcEmails())
+        .to(List.of(stopPointWorkflow.getApplicantMail()))
+        .cc(ccMails)
         .templateProperties(buildMailProperties(stopPointWorkflow, REJECT_WORKFLOW_SUBJECT))
         .build();
   }
