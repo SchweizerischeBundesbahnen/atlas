@@ -30,6 +30,7 @@ import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
 import ch.sbb.workflow.workflow.DecisionRepository;
 import ch.sbb.workflow.workflow.OtpRepository;
 import ch.sbb.workflow.workflow.StopPointWorkflowRepository;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -47,6 +48,7 @@ public class StopPointWorkflowService {
 
   private static final String EXCEPTION_MSG = "Workflow status must be ADDED!!!(REPLACE ME WITH A CUSTOM EXCEPTION)";
   private static final String EXCEPTION_HEARING_MSG = "Workflow status must be HEARING!!!(REPLACE ME WITH A CUSTOM EXCEPTION)";
+  public static final int WORKFLOW_DURATION = 31;
 
   private final StopPointWorkflowRepository workflowRepository;
   private final DecisionService decisionService;
@@ -77,6 +79,7 @@ public class StopPointWorkflowService {
     stopPointWorkflow.setDesignationOfficial(servicePointVersionModel.getDesignationOfficial());
     stopPointWorkflow.setStatus(WorkflowStatus.ADDED);
     stopPointWorkflow.setVersionValidFrom(servicePointVersionModel.getValidFrom());
+    stopPointWorkflow.setEndDate(LocalDate.now().plusDays(WORKFLOW_DURATION));
     return workflowRepository.save(stopPointWorkflow);
   }
 
