@@ -24,6 +24,7 @@ import {DetailHelperService} from "../../../../core/detail/detail-helper.service
 import {of} from "rxjs";
 import {ReadStopPointWorkflow, StopPointWorkflowService} from "../../../../api";
 import {Router} from "@angular/router";
+import {AtlasSpacerComponent} from "../../../../core/components/spacer/atlas-spacer.component";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
@@ -67,6 +68,7 @@ describe('AddStopPointWorkflowComponent', () => {
         DetailPageContentComponent,
         DetailPageContainerComponent,
         DetailFooterComponent,
+        AtlasSpacerComponent,
       ],
       imports: [AppTestingModule, FormModule],
       providers: [
