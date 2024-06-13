@@ -2,30 +2,67 @@ include::../../../auto-rest-doc/src/test/resources/layout/common/ATLAS-HEAD.adoc
 
 = Workflow
 
-== Get Workflows - Successfully
+== Get Line Workflows - Successfully
 
-include::{snippets}/workflow-controller-test/should-get-workflows/atlas-doc.adoc[]
+include::{snippets}/line-workflow-controller-test/should-get-workflows/atlas-doc.adoc[]
 
-== Get Workflow By ID - Successfully
+== Get Line Workflow By ID - Successfully
 
-include::{snippets}/workflow-controller-test/should-get-workflow-by-id/atlas-doc.adoc[]
+include::{snippets}/line-workflow-controller-test/should-get-workflow-by-id/atlas-doc.adoc[]
 
-== Create Workflow - Successfully
+== Create Line Workflow - Successfully
 
-include::{snippets}/workflow-controller-test/should-create-workflow/atlas-doc.adoc[]
+include::{snippets}/line-workflow-controller-test/should-create-workflow/atlas-doc.adoc[]
 
-== Create Workflow - Unsuccessfully
+== Create Line Workflow - Unsuccessfully
 
-include::{snippets}/workflow-controller-test/should-not-create-workflow-when-workflow-type-is-null/atlas-doc.adoc[]
+include::{snippets}/line-workflow-controller-test/should-not-create-workflow-when-workflow-type-is-null/atlas-doc.adoc[]
 
-== Create Workflow - Unsuccessfully when Person Name has wrong encoding
+== Create Line Workflow - Unsuccessfully when Person Name has wrong encoding
 
-include::{snippets}/workflow-controller-test/should-not-create-workflow-when-workflow-person-name-has-wrong-encoding/atlas-doc.adoc[]
+include::{snippets}/line-workflow-controller-test/should-not-create-workflow-when-workflow-person-name-has-wrong-encoding/atlas-doc.adoc[]
 
-== Create Workflow - Unsuccessfully when Workflow description has wrong encoding
+== Create Line Workflow - Unsuccessfully when Workflow description has wrong encoding
 
-include::{snippets}/workflow-controller-test/should-not-create-workflow-when-workflow-person-name-has-wrong-encoding/atlas-doc.adoc[]
+include::{snippets}/line-workflow-controller-test/should-not-create-workflow-when-workflow-person-name-has-wrong-encoding/atlas-doc.adoc[]
 
-== Check Workflow - Accept the workflow
+== Check Line Workflow - Accept the workflow
 
-include::{snippets}/workflow-controller-test/should-accept-workflow/atlas-doc.adoc[]
+include::{snippets}/line-workflow-controller-test/should-accept-workflow/atlas-doc.adoc[]
+
+
+== Get Stop Point Workflow - Successfully
+
+include::{snippets}/stop-point-workflow-controller-test/should-get-workflows/atlas-doc.adoc[]
+
+== Get Stop Point Workflow by ID - Successfully
+
+include::{snippets}/stop-point-workflow-controller-test/should-get-workflow-by-id/atlas-doc.adoc[]
+
+== Get OTP Stop Point Workflow - Successfully
+
+include::{snippets}/stop-point-workflow-controller-test/should-get-otp-workflow/atlas-doc.adoc[]
+
+== Create Stop Point Workflow - Successfully
+
+include::{snippets}/stop-point-workflow-controller-test/should-add-workflow/atlas-doc.adoc[]
+
+== Create Stop Point Workflow - Unsuccessfully when Workflow already in status ADDED
+
+include::{snippets}/stop-point-workflow-controller-test/should-not-add-when-workflow-already-in-status-added/atlas-doc.adoc[]
+
+== Update Stop Point Workflow - Successfully
+
+include::{snippets}/stop-point-workflow-controller-test/should-edit-workflow/atlas-doc.adoc[]
+
+== Start Stop Point Workflow - Successfully
+
+include::{snippets}/stop-point-workflow-controller-test/should-start-workflow/atlas-doc.adoc[]
+
+== Cancel Stop Point Workflow - Successfully
+
+include::{snippets}/stop-point-workflow-controller-test/should-cancel-workflow/atlas-doc.adoc[]
+
+== Add Examinant to Stop Point Workflow - Successfully
+
+include::{snippets}/stop-point-workflow-controller-test/should-add-examinant-to-workflow/atlas-doc.adoc[]
