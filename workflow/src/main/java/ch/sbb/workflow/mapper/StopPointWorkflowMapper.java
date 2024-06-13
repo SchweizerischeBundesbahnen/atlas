@@ -36,6 +36,7 @@ public class StopPointWorkflowMapper {
         .sloid(model.getSloid())
         .versionId(model.getVersionId())
         .ccEmails(model.getCcEmails())
+        .applicantMail(model.getApplicantMail())
         .workflowComment(model.getWorkflowComment())
         .designationOfficial(model.getDesignationOfficial())
         .localityName(model.getLocalityName())
