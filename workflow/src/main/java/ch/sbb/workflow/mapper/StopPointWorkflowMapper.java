@@ -23,6 +23,8 @@ public class StopPointWorkflowMapper {
         .workflowComment(entity.getWorkflowComment())
         .localityName(entity.getLocalityName())
         .versionValidFrom(entity.getVersionValidFrom())
+        .startDate(entity.getStartDate())
+        .endDate(entity.getEndDate())
         .createdAt(entity.getCreationDate())
         .creationDate(entity.getCreationDate())
         .creator(entity.getCreator())

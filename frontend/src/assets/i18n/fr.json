@@ -569,7 +569,9 @@
       "REVISION": "en révision",
       "WORKFLOW": "en audience",
       "APPROVED": "approuvée",
-      "REJECTED": "refusée"
+      "REJECTED": "refusée",
+      "HEARING": "en audience",
+      "CANCELED": "démonté"
     },
     "NOTIFICATION": {
       "START": {
@@ -983,6 +985,7 @@
       "UPDATE_AFFECTS_VERSION_IN_REVIEW": "L'édition n'est pas possible en raison d'une consultation en cours de la version de {{validFrom}} à {{validTo}} au nom de l'arrêt. Les mutations ne peuvent être saisies à nouveau qu'après la clôture de l'audition.",
       "WORKFLOW": {
         "WORKFLOW": "Audition",
+        "WORKFLOWS": "Auditions",
         "NEW_DESIGNATION_OFFICIAL": "Nouvelle désignation officielle",
         "ADD_EXAMINANT": "Ajout de destinataires",
         "ADDITIONAL_MAIL_RECIPIENTS": "cc-mail pour le statut de l'audience",
@@ -995,7 +998,12 @@
         "APPLICANT": "Commanditaire",
         "STOP_POINT_INFO": "Informations de base sur l'arrêt",
         "PROPOSAL": "Proposition",
-        "MAP": "Carte"
+        "MAP": "Carte",
+        "ID": "ID",
+        "VERSION_VALID_FROM": "Arrêt valable à partir du",
+        "CREATION": "Saisie de l'audition",
+        "START": "Début de l'audition",
+        "END": "Fin de l'audition"
       }
     },
     "TRAFFIC_POINT_ELEMENTS": {
