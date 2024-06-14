@@ -86,3 +86,24 @@
     outline: 1px solid variables.$gray-400;
   }
 }
+
+.single-search {
+  @extend %atlas-outline;
+
+  input {
+    margin-top: 3px;
+  }
+
+  mat-chip-grid {
+    margin-left: 8px;
+    margin-top: 4px;
+
+    mat-chip-row {
+      margin: 1px 2px;
+
+      i {
+        font-size: 15px;
+      }
+    }
+  }
+}
