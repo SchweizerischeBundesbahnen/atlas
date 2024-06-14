@@ -20,6 +20,8 @@ import {UserDetailInfoComponent} from "../../../../core/components/base-detail/u
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1000,
+  sloid: 'ch:1:sloid:8000',
+  workflowComment: "No comment"
 };
 const workflowData: StopPointWorkflowDetailData = {
   workflow: workflow,
