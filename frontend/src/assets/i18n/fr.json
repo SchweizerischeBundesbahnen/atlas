@@ -544,7 +544,8 @@
       "ACCEPT": "Approuver",
       "REJECT": "Rejeter",
       "CANCEL": "Annuler l'audience",
-      "SKIP": "Passer l'audition"
+      "SKIP": "Passer l'audition",
+      "RESTART": "Redémarrer l'audience"
     },
     "START": {
       "COMMENT": "Motivation",
@@ -574,8 +575,11 @@
       "CANCELED": "démonté"
     },
     "NOTIFICATION": {
-      "START": {
+      "ADD": {
         "SUCCESS": "Votre demande a été transmise avec succès"
+      },
+      "START": {
+        "SUCCESS": "L'audition a été lancée avec succès"
       },
       "CHECK": {
         "ACCEPTED": "La demande a été approuvée avec succès.",
