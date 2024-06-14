@@ -20,6 +20,10 @@ import java.util.List;
 @ToString
 public class StopPointWorkflowRequestParams {
 
+    @Parameter(description = "Search string")
+    @Singular(ignoreNullCollections = true)
+    private List<String> searchCriterias = new ArrayList<>();
+
     @Parameter(description = "Workflow id")
     @Singular(ignoreNullCollections = true)
     private List<Integer> workflowIds = new ArrayList<>();

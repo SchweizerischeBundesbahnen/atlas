@@ -28,6 +28,7 @@ import { TableFilterSearchSelect } from './config/table-filter-search-select';
 import { TableFilterSearchType } from './config/table-filter-search-type';
 import { AtlasLabelFieldComponent } from '../../form-components/atlas-label-field/atlas-label-field.component';
 import { BusinessOrganisation, TimetableFieldNumber, TransportCompany } from '../../../api';
+import {TableFilterSingleSearch} from "./config/table-filter-single-search";
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
@@ -381,5 +382,29 @@ describe('TableFilterComponent', () => {
 
     expect(searchSelect.getActiveSearch()).toEqual({ number: 'Test' });
     expect(component.searchEvent.emit).toHaveBeenCalledOnceWith();
+  });
+
+  it('should set single search', () => {
+    const singleSearch = new TableFilterSingleSearch(1, 'SEPODI.GEOLOCATION.DISTRICT','col-3');
+    component.filterConfigurations = [[singleSearch]];
+    fixture.detectChanges();
+
+    const mockMatChipInputComponent: MockMatChipInputComponent = fixture.debugElement.query(
+      By.directive(MockMatChipInputComponent),
+    ).componentInstance;
+
+    spyOn(component.searchEvent, 'emit');
+    const chipInputClearSpy = jasmine.createSpy();
+    const matChipInputSpy = jasmine.createSpyObj('MatChipInputEvent', [], {
+      value: 'Test',
+      chipInput: {
+        clear: chipInputClearSpy,
+      },
+    });
+    mockMatChipInputComponent.matChipInputTokenEnd.emit(matChipInputSpy);
+
+    expect(singleSearch.getActiveSearch()).toEqual('Test');
+    expect(component.searchEvent.emit).toHaveBeenCalledOnceWith();
+    expect(chipInputClearSpy).toHaveBeenCalledOnceWith();
   });
 });
