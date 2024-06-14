@@ -29,6 +29,8 @@ import {UserService} from "../../../../core/auth/user/user.service";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
+  sloid: 'ch:1:sloid:8000',
+  workflowComment: "No comment"
 };
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 const notificationServiceSpy = jasmine.createSpyObj(['success']);
