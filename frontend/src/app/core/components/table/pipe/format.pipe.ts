@@ -11,7 +11,7 @@ export class FormatPipe implements PipeTransform {
   constructor(private readonly translatePipe: TranslatePipe) {}
 
   transform<T>(value: string | Date | undefined, column: TableColumn<T>): string {
-    if (value === undefined) {
+    if (value === undefined || value === null) {
       return '';
     }
     if (column.formatAsDate) {
