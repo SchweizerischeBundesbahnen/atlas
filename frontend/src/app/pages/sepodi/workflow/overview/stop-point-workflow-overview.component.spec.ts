@@ -9,6 +9,8 @@ import {Router} from "@angular/router";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1000,
+  sloid: 'ch:1:sloid:7000',
+  workflowComment: 'no comment!'
 };
 const container: ContainerReadStopPointWorkflow = {
   objects: [workflow],
