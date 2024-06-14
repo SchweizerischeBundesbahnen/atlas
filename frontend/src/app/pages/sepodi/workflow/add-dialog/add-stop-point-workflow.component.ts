@@ -16,6 +16,7 @@ import {Pages} from "../../../pages";
 @Component({
   selector: 'app-workflow-dialog',
   templateUrl: './add-stop-point-workflow.component.html',
+  styleUrls: ['./add-stop-point-workflow.component.scss']
 })
 export class AddStopPointWorkflowComponent implements OnInit {
 
