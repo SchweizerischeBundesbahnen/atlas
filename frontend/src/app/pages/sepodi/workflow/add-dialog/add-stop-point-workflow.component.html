@@ -4,12 +4,14 @@
   </button>
 </div>
 <div class="dialog" data-cy="dialog">
-  <div class="mb-2">
-    <span class="font-bold-4xl">{{ data.title | translate }}</span>
+  <div class="dialog-content">
+    <div class="mb-2">
+      <span class="font-bold-4xl">{{ data.title | translate }}</span>
+    </div>
+    <stop-point-workflow-detail-form [form]="form" [stopPoint]="data.stopPoint"></stop-point-workflow-detail-form>
   </div>
-  <stop-point-workflow-detail-form [form]="form" [stopPoint]="data.stopPoint"></stop-point-workflow-detail-form>
 
-  <mat-dialog-actions class="justify-content-end mt-5">
+  <mat-dialog-actions class="justify-content-center mt-5">
     <button (click)="cancel()" class="atlas-primary-btn me-3" data-cy="dialog-cancel-button">
       {{ data.cancelText ?? 'DIALOG.CANCEL' | translate }}
     </button>

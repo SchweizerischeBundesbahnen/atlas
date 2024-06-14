@@ -23,7 +23,7 @@ export class StopPointWorkflowDetailFormGroupBuilder {
     return new FormGroup<StopPointWorkflowDetailFormGroup>(
       {
         ccEmails: new FormControl(workflow?.ccEmails, [Validators.maxLength(10)]),
-        workflowComment: new FormControl(workflow?.workflowComment, [Validators.required, AtlasFieldLengthValidator.comments]),
+        workflowComment: new FormControl(workflow?.workflowComment, [Validators.required, Validators.minLength(2), AtlasFieldLengthValidator.comments]),
         examinants: new FormArray<FormGroup<ExaminantFormGroup>>(workflow?.examinants?.map(examinant => this.buildExaminantFormGroup(examinant)) ?? [this.buildExaminantFormGroup()]),
       }
     );
