@@ -569,7 +569,9 @@
       "REVISION": "In Revisione",
       "WORKFLOW": "In audizione",
       "APPROVED": "Approvato",
-      "REJECTED": "Respinto"
+      "REJECTED": "Respinto",
+      "HEARING": "In audizione",
+      "CANCELED": "Cancellato"
     },
     "NOTIFICATION": {
       "START": {
@@ -983,6 +985,7 @@
       "UPDATE_AFFECTS_VERSION_IN_REVIEW": "La modifica non è possibile a causa di una consultazione in corso della versione da {{validFrom}} a {{validTo}} per conto dell'arresto. I trasferimenti possono essere reinseriti solo dopo la chiusura dell'udienza.",
       "WORKFLOW": {
         "WORKFLOW": "Audizione",
+        "WORKFLOWS": "Audizioni",
         "NEW_DESIGNATION_OFFICIAL": "Nuova denominazione ufficiale",
         "ADD_EXAMINANT": "Aggiungere destinatari",
         "ADDITIONAL_MAIL_RECIPIENTS": "cc-e-mail per lo stato di avanzamento dell'udienza",
@@ -995,7 +998,12 @@
         "APPLICANT": "Richiedente",
         "STOP_POINT_INFO": "Informazioni di base sulla fermata",
         "PROPOSAL": "Proposta",
-        "MAP": "Carta"
+        "MAP": "Carta",
+        "ID": "ID",
+        "VERSION_VALID_FROM": "Fermata valida da",
+        "CREATION": "Registrazione dell'audizione",
+        "START": "Inizio audizione",
+        "END": "Fine dell'audizione"
       }
     },
     "TRAFFIC_POINT_ELEMENTS": {
