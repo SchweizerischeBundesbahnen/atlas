@@ -30,13 +30,14 @@ import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
 import ch.sbb.workflow.workflow.DecisionRepository;
 import ch.sbb.workflow.workflow.OtpRepository;
 import ch.sbb.workflow.workflow.StopPointWorkflowRepository;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,6 +48,7 @@ public class StopPointWorkflowService {
 
   private static final String EXCEPTION_MSG = "Workflow status must be ADDED!!!(REPLACE ME WITH A CUSTOM EXCEPTION)";
   private static final String EXCEPTION_HEARING_MSG = "Workflow status must be HEARING!!!(REPLACE ME WITH A CUSTOM EXCEPTION)";
+  public static final int WORKFLOW_DURATION_IN_DAYS = 31;
 
   private final StopPointWorkflowRepository workflowRepository;
   private final DecisionService decisionService;
@@ -88,6 +90,7 @@ public class StopPointWorkflowService {
     StopPointWorkflowStatusTransitionDecider.validateWorkflowStatusTransition(stopPointWorkflow.getStatus(),
         WorkflowStatus.HEARING);
     stopPointWorkflow.setStatus(WorkflowStatus.HEARING);
+    stopPointWorkflow.setEndDate(LocalDate.now().plusDays(WORKFLOW_DURATION_IN_DAYS));
     StopPointWorkflow workflow = workflowRepository.save(stopPointWorkflow);
     notificationService.sendStartStopPointWorkflowMail(workflow);
     return workflow;

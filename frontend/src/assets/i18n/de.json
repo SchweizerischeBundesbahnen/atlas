@@ -569,7 +569,9 @@
       "REVISION": "In Überarbeitung",
       "WORKFLOW": "In Anhörung",
       "APPROVED": "Genehmigt",
-      "REJECTED": "Abgelehnt"
+      "REJECTED": "Abgelehnt",
+      "HEARING": "In Anhörung",
+      "CANCELED": "Abgebrochen"
     },
     "NOTIFICATION": {
       "START": {
@@ -983,6 +985,7 @@
       "UPDATE_AFFECTS_VERSION_IN_REVIEW": "Das Editieren ist aufgrund einer laufenden Anhörung der Version vom {{validFrom}} bis {{validTo}} zum Haltestellennamen nicht möglich. Mutationen können erst nach Abschluss der Anhörung wieder erfasst werden.",
       "WORKFLOW": {
         "WORKFLOW": "Anhörung",
+        "WORKFLOWS": "Anhörungen",
         "NEW_DESIGNATION_OFFICIAL": "Neue offizielle Bezeichnung",
         "ADD_EXAMINANT": "Empfänger hinzufügen",
         "ADDITIONAL_MAIL_RECIPIENTS": "cc-Mail für Status der Anhörung",
@@ -995,7 +998,12 @@
         "APPLICANT": "Antragsteller",
         "STOP_POINT_INFO": "Basisinformationen zur Haltestelle",
         "PROPOSAL": "Antrag",
-        "MAP": "Karte"
+        "MAP": "Karte",
+        "ID": "ID",
+        "VERSION_VALID_FROM": "Haltestelle gültig ab",
+        "CREATION": "Erfassung Anhörung",
+        "START": "Start Anhörung",
+        "END": "Ende Anhörung"
       }
     },
     "TRAFFIC_POINT_ELEMENTS": {
