@@ -6,6 +6,7 @@ import { TableFilterSearchSelect } from './config/table-filter-search-select';
 import { TableFilterMultiSelect } from './config/table-filter-multiselect';
 import { TableFilterDateSelect } from './config/table-filter-date-select';
 import { TableFilter } from './config/table-filter';
+import {TableFilterSingleSearch} from "./config/table-filter-single-search";
 
 @Component({
   selector: 'app-table-filter',
@@ -20,6 +21,7 @@ export class TableFilterComponent<TFilterConfig> {
   public readonly TableFilterSearchSelectClass = TableFilterSearchSelect;
   public readonly TableFilterMultiSelectClass = TableFilterMultiSelect;
   public readonly TableFilterDateSelectClass = TableFilterDateSelect;
+  public readonly TableFilterSingleSearchClass = TableFilterSingleSearch;
 
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;

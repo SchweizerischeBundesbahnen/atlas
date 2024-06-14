@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Line } from './line';
+import { ReadStopPointWorkflow } from './readStopPointWorkflow';
 
 
-export interface ContainerLine { 
-    objects?: Array<Line>;
+export interface ContainerReadStopPointWorkflow { 
+    objects?: Array<ReadStopPointWorkflow>;
     totalCount?: number;
 }
 
