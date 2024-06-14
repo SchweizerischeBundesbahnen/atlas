@@ -544,7 +544,8 @@
       "ACCEPT": "Approva",
       "REJECT": "Rifiuto",
       "CANCEL": "Annullare audizione",
-      "SKIP": "Salatare l'audizione"
+      "SKIP": "Salatare l'audizione",
+      "RESTART": "Riavviare l'audizione"
     },
     "START": {
       "COMMENT": "Motivazione",
@@ -566,7 +567,7 @@
     "STATUS": {
       "ADDED": "Inizializzato",
       "STARTED": "Avviato",
-      "REVISION": "In Revisione",
+      "REVISION": "In revisione",
       "WORKFLOW": "In audizione",
       "APPROVED": "Approvato",
       "REJECTED": "Respinto",
@@ -574,8 +575,11 @@
       "CANCELED": "Cancellato"
     },
     "NOTIFICATION": {
-      "START": {
+      "ADD": {
         "SUCCESS": "La richiesta è stata inoltrata con successo."
+      },
+      "START": {
+        "SUCCESS": "La consultazione è stata avviata con successo"
       },
       "CHECK": {
         "ACCEPTED": "La domanda è stata approvata con successo.",

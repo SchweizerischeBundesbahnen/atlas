@@ -544,7 +544,8 @@
       "ACCEPT": "Genehmigen",
       "REJECT": "Zurückweisen",
       "CANCEL": "Anhörung abbrechen",
-      "SKIP": "Anhörung überspringen"
+      "SKIP": "Anhörung überspringen",
+      "RESTART": "Anhörung neustarten"
     },
     "START": {
       "COMMENT": "Begründung",
@@ -574,8 +575,11 @@
       "CANCELED": "Abgebrochen"
     },
     "NOTIFICATION": {
-      "START": {
+      "ADD": {
         "SUCCESS": "Ihr Antrag wurde erfolgreich übermittelt"
+      },
+      "START": {
+        "SUCCESS": "Die Anhörung wurde erfolgreich gestartet"
       },
       "CHECK": {
         "ACCEPTED": "Der Antrag wurde erfolgreich genehmigt.",
