@@ -122,11 +122,11 @@
         >
           <mat-chip-grid #chipList [disabled]="!!singleSearch.disabled">
             <mat-chip-row
-              *ngIf="singleSearch.getActiveSearch()"
+              *ngIf="singleSearch.getActiveSearch() as activeSearch"
               (removed)="singleSearch.setActiveSearch(); emitSearch()"
               class="font-bold-sm"
             >
-              {{ singleSearch.getActiveSearch() }}
+              {{ activeSearch }}
               <button matChipRemove>
                 <i class="bi bi-x-circle-fill"></i>
               </button>
