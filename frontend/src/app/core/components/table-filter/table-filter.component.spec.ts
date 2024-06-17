@@ -38,6 +38,7 @@ import {TableFilterSingleSearch} from "./config/table-filter-single-search";
 })
 class MockMatChipInputComponent {
   @Input() matChipInputFor: any;
+  @Input() formControl = new FormControl();
   @Output() matChipInputTokenEnd: EventEmitter<MatChipInputEvent> =
     new EventEmitter<MatChipInputEvent>();
 }
