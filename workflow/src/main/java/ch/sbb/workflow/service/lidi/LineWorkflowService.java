@@ -11,7 +11,7 @@ import ch.sbb.workflow.exception.BusinessObjectCurrentlyInReviewException;
 import ch.sbb.workflow.exception.BusinessObjectCurrentlyNotInReviewException;
 import ch.sbb.workflow.kafka.LineWorkflowNotificationService;
 import ch.sbb.workflow.mapper.PersonMapper;
-import ch.sbb.workflow.workflow.WorkflowRepository;
+import ch.sbb.workflow.repository.WorkflowRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
