@@ -110,8 +110,8 @@ public class StopPointWorkflowTransitionService {
     if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
       throw new IllegalStateException(EXCEPTION_HEARING_MSG);
     }
-    //String newDesignationOfficial = restartWorkflowModel.getNewDesignationOfficial();
-    //TODO: sePoDiClient.update(officialDesignation)
+    //TODO String newDesignationOfficial = restartWorkflowModel.getNewDesignationOfficial();
+    // sePoDiClient.update(officialDesignation)
 
     ClientPersonModel examinantBAVclientPersonModel = restartWorkflowModel.getExaminantBAVClient();
     Person examinantBAV = ClientPersonMapper.toEntity(examinantBAVclientPersonModel);

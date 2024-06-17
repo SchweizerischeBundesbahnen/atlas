@@ -7,6 +7,7 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.LineWorkflow;
 import ch.sbb.workflow.entity.Person;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.test.context.EmbeddedKafka;
@@ -32,9 +33,9 @@ class LineWorkflowBuilderNotificationServiceTest {
 
     assertThat(mailNotification.getFrom()).isEqualTo("no-reply-atlas@sbb.ch");
     assertThat(mailNotification.getSubject()).isEqualTo("Antrag zu ch:1:slnid:123 Linie 1 prüfen");
-    assertThat(mailNotification.getTemplateProperties().get(0).get("description")).isEqualTo("Linie 1");
-    assertThat(mailNotification.getTemplateProperties().get(0).get("url")).isEqualTo(
-        "http://localhost:4200/line-directory/lines/ch:1:slnid:123?id=1100");
+    Map<String, Object> properties = mailNotification.getTemplateProperties().get(0);
+    assertThat(properties).containsEntry("description", "Linie 1");
+    assertThat(properties).containsEntry("url", "http://localhost:4200/line-directory/lines/ch:1:slnid:123?id=1100");
   }
 
   @Test
@@ -54,8 +55,8 @@ class LineWorkflowBuilderNotificationServiceTest {
 
     assertThat(mailNotification.getFrom()).isEqualTo("no-reply-atlas@sbb.ch");
     assertThat(mailNotification.getSubject()).isEqualTo("Antrag zu ch:1:slnid:123 Linie 1 genehmigt");
-    assertThat(mailNotification.getTemplateProperties().get(0).get("description")).isEqualTo("Linie 1");
-    assertThat(mailNotification.getTemplateProperties().get(0).get("url")).isEqualTo(
-        "http://localhost:4200/line-directory/lines/ch:1:slnid:123?id=1100");
+    Map<String, Object> properties = mailNotification.getTemplateProperties().get(0);
+    assertThat(properties).containsEntry("description", "Linie 1");
+    assertThat(properties).containsEntry("url", "http://localhost:4200/line-directory/lines/ch:1:slnid:123?id=1100");
   }
 }
