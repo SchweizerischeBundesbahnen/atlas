@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DialogCloseComponent } from './dialog-close.component';
-import { MaterialModule } from '../../module/material.module';
+import {MaterialModule} from "../../../module/material.module";
 
 describe('DialogCloseComponent', () => {
   let component: DialogCloseComponent;

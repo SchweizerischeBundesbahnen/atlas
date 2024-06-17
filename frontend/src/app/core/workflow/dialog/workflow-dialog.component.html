@@ -1,9 +1,5 @@
-<div class="dialog-close-panel dialog-close-icon-container">
-  <button [mat-dialog-close]="false" class="close-icon-btn">
-    <em class="bi bi-x fs-2"></em>
-  </button>
-</div>
-<div class="dialog" data-cy="dialog">
+<atlas-dialog-close (clicked)="closeDialog()"></atlas-dialog-close>
+<atlas-dialog-content>
   <div class="mb-2">
     <span class="font-bold-4xl">{{ data.title | translate }}</span>
     <div *ngIf="workflowId">
@@ -26,20 +22,20 @@
       ></app-workflow-check-form>
     </div>
   </div>
+</atlas-dialog-content>
 
-  <mat-dialog-actions class="justify-content-end mt-5">
-    <button (click)="closeDialog()" class="atlas-primary-btn me-3" data-cy="dialog-cancel-button">
-      {{ data.cancelText ?? 'DIALOG.CANCEL' | translate }}
+<atlas-dialog-footer>
+  <button (click)="closeDialog()" class="atlas-primary-btn me-3" data-cy="dialog-cancel-button">
+    {{ data.cancelText ?? 'DIALOG.CANCEL' | translate }}
+  </button>
+  <ng-container *ngIf="!workflowId">
+    <button
+      (click)="startWorkflow()"
+      class="atlas-primary-btn primary-color-btn"
+      data-cy="dialog-confirm-button"
+      [disabled]="workflowStartFormGroup.disabled"
+    >
+      {{ data.confirmText ?? 'DIALOG.OK' | translate }}
     </button>
-    <ng-container *ngIf="!workflowId">
-      <button
-        (click)="startWorkflow()"
-        class="atlas-primary-btn primary-color-btn"
-        data-cy="dialog-confirm-button"
-        [disabled]="workflowStartFormGroup.disabled"
-      >
-        {{ data.confirmText ?? 'DIALOG.OK' | translate }}
-      </button>
-    </ng-container>
-  </mat-dialog-actions>
-</div>
+  </ng-container>
+</atlas-dialog-footer>

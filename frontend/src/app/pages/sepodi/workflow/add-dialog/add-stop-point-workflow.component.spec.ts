@@ -26,6 +26,9 @@ import {ReadStopPointWorkflow, StopPointWorkflowService} from "../../../../api";
 import {Router} from "@angular/router";
 import {AtlasSpacerComponent} from "../../../../core/components/spacer/atlas-spacer.component";
 import {UserService} from "../../../../core/auth/user/user.service";
+import {DialogFooterComponent} from "../../../../core/components/dialog/footer/dialog-footer.component";
+import {DialogContentComponent} from "../../../../core/components/dialog/content/dialog-content.component";
+import {DialogCloseComponent} from "../../../../core/components/dialog/close/dialog-close.component";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
@@ -72,6 +75,9 @@ describe('AddStopPointWorkflowComponent', () => {
         DetailPageContainerComponent,
         DetailFooterComponent,
         AtlasSpacerComponent,
+        DialogCloseComponent,
+        DialogFooterComponent,
+        DialogContentComponent,
       ],
       imports: [AppTestingModule, FormModule],
       providers: [
