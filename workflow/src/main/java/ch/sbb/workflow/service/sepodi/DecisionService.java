@@ -4,7 +4,7 @@ import ch.sbb.workflow.entity.Decision;
 import ch.sbb.workflow.entity.DecisionType;
 import ch.sbb.workflow.entity.JudgementType;
 import ch.sbb.workflow.entity.Person;
-import ch.sbb.workflow.workflow.DecisionRepository;
+import ch.sbb.workflow.repository.DecisionRepository;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,4 +29,7 @@ public class DecisionService {
     return decision;
   }
 
+  public void save(Decision decision) {
+    decisionRepository.save(decision);
+  }
 }

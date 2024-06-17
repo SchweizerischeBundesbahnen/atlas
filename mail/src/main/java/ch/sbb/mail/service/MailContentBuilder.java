@@ -129,7 +129,7 @@ public class MailContentBuilder {
     try (InputStream inputStream = LOGO_ATALAS_PATH_RESOURCE.getInputStream()) {
       return new ByteArrayResource(inputStream.readAllBytes());
     } catch (IOException e) {
-      throw new IllegalArgumentException("The given path resource is wrog!", e);
+      throw new IllegalArgumentException("The given path resource is wrong!", e);
     }
   }
 }

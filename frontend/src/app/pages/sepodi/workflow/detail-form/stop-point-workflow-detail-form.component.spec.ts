@@ -14,6 +14,8 @@ import {AtlasSpacerComponent} from "../../../../core/components/spacer/atlas-spa
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
+  sloid: 'ch:1:sloid:8000',
+  workflowComment: "No comment"
 };
 
 describe('StopPointWorkflowDetailFormComponent', () => {
