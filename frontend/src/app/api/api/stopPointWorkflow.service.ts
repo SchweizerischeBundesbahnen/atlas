@@ -381,10 +381,10 @@ export class StopPointWorkflowService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getStopPointWorkflows(searchCriterias?: Array<string>, workflowIds?: Array<number>, status?: Array<WorkflowStatus>, sloids?: Array<string>, designationOfficial?: Array<string>, localityName?: Array<string>, sboids?: Array<string>, createdAt?: string, versionValidFrom?: Date, page?: number, size?: number, sort?: Array<string>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ContainerReadStopPointWorkflow>;
-    public getStopPointWorkflows(searchCriterias?: Array<string>, workflowIds?: Array<number>, status?: Array<WorkflowStatus>, sloids?: Array<string>, designationOfficial?: Array<string>, localityName?: Array<string>, sboids?: Array<string>, createdAt?: string, versionValidFrom?: Date, page?: number, size?: number, sort?: Array<string>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ContainerReadStopPointWorkflow>>;
-    public getStopPointWorkflows(searchCriterias?: Array<string>, workflowIds?: Array<number>, status?: Array<WorkflowStatus>, sloids?: Array<string>, designationOfficial?: Array<string>, localityName?: Array<string>, sboids?: Array<string>, createdAt?: string, versionValidFrom?: Date, page?: number, size?: number, sort?: Array<string>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ContainerReadStopPointWorkflow>>;
-    public getStopPointWorkflows(searchCriterias?: Array<string>, workflowIds?: Array<number>, status?: Array<WorkflowStatus>, sloids?: Array<string>, designationOfficial?: Array<string>, localityName?: Array<string>, sboids?: Array<string>, createdAt?: string, versionValidFrom?: Date, page?: number, size?: number, sort?: Array<string>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public getStopPointWorkflows(searchCriterias?: Array<string>, workflowIds?: Array<number>, status?: Array<WorkflowStatus>, sloids?: Array<string>, designationOfficial?: Array<string>, localityName?: string, sboids?: Array<string>, createdAt?: string, versionValidFrom?: Date, page?: number, size?: number, sort?: Array<string>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<ContainerReadStopPointWorkflow>;
+    public getStopPointWorkflows(searchCriterias?: Array<string>, workflowIds?: Array<number>, status?: Array<WorkflowStatus>, sloids?: Array<string>, designationOfficial?: Array<string>, localityName?: string, sboids?: Array<string>, createdAt?: string, versionValidFrom?: Date, page?: number, size?: number, sort?: Array<string>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<ContainerReadStopPointWorkflow>>;
+    public getStopPointWorkflows(searchCriterias?: Array<string>, workflowIds?: Array<number>, status?: Array<WorkflowStatus>, sloids?: Array<string>, designationOfficial?: Array<string>, localityName?: string, sboids?: Array<string>, createdAt?: string, versionValidFrom?: Date, page?: number, size?: number, sort?: Array<string>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<ContainerReadStopPointWorkflow>>;
+    public getStopPointWorkflows(searchCriterias?: Array<string>, workflowIds?: Array<number>, status?: Array<WorkflowStatus>, sloids?: Array<string>, designationOfficial?: Array<string>, localityName?: string, sboids?: Array<string>, createdAt?: string, versionValidFrom?: Date, page?: number, size?: number, sort?: Array<string>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (searchCriterias) {
@@ -417,11 +417,9 @@ export class StopPointWorkflowService {
                   <any>element, 'designationOfficial');
             })
         }
-        if (localityName) {
-            localityName.forEach((element) => {
-                queryParameters = this.addToHttpParams(queryParameters,
-                  <any>element, 'localityName');
-            })
+        if (localityName !== undefined && localityName !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>localityName, 'localityName');
         }
         if (sboids) {
             sboids.forEach((element) => {
