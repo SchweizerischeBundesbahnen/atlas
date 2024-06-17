@@ -85,6 +85,7 @@ public class StopPointWorkflow extends BaseWorkflowEntity {
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   private String workflowComment;
 
+  @NotNull
   @Size(max = AtlasFieldLengths.LENGTH_30)
   private String designationOfficial;
 

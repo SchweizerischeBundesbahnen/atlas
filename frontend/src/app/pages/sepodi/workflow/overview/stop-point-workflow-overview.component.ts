@@ -24,7 +24,7 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
   private readonly tableFilterConfigIntern = {
     search: new TableFilterChip(0, 'col-6'),
     workflowIds: new TableFilterSingleSearch(1, 'SEPODI.SERVICE_POINTS.WORKFLOW.ID','col-3', AtlasCharsetsValidator.numeric),
-    status: new TableFilterMultiSelect(
+    workflowStatus: new TableFilterMultiSelect(
       'WORKFLOW.STATUS.',
       'WORKFLOW.STATUS_DETAIL',
       [WorkflowStatus.Added, WorkflowStatus.Hearing, WorkflowStatus.Approved, WorkflowStatus.Rejected, WorkflowStatus.Canceled],
@@ -40,7 +40,7 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
         businessOrganisation: new FormControl(),
       })
     ),
-    locality: new TableFilterSingleSearch(1, 'SEPODI.GEOLOCATION.DISTRICT','col-3'),
+    locality: new TableFilterSingleSearch(1, 'SEPODI.GEOLOCATION.DISTRICT','col-3 pb-5'),
   };
 
   tableFilterConfig!: TableFilter<unknown>[][];
@@ -78,11 +78,11 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
     this.stopPointWorkflowService.getStopPointWorkflows(
       this.tableService.filter.search.getActiveSearch(),
       [this.tableService.filter.workflowIds.getActiveSearch()],
-      this.tableService.filter.status.getActiveSearch(),
+      this.tableService.filter.workflowStatus.getActiveSearch(),
       undefined,
       undefined,
       [this.tableService.filter.locality.getActiveSearch()],
-      this.tableService.filter.sboid.getActiveSearch(),
+      [this.tableService.filter.sboid.getActiveSearch()?.sboid],
       undefined,
       undefined,
       pagination.page,
