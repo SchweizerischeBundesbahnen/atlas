@@ -42,6 +42,14 @@ class MailTemplateConfigTest {
   }
 
   @Test
+  void shouldReturnExportServicePointNotificationErrorNotification() {
+    //when
+    MailTemplateConfig result = getMailTemplateConfig(MailType.EXPORT_SERVICE_POINT_ERROR_NOTIFICATION);
+    //then
+    assertThat(result).isEqualTo(MailTemplateConfig.EXPORT_SERVCICE_POINT_ERROR_NOTIFICATION_TEMPLATE);
+  }
+
+  @Test
   void shouldReturnWorkflowNotification() {
     //when
     MailTemplateConfig result = getMailTemplateConfig(MailType.WORKFLOW_NOTIFICATION);

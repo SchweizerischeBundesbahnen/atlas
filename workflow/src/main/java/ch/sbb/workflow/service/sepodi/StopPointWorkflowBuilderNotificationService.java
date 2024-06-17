@@ -18,9 +18,9 @@ import org.springframework.stereotype.Service;
 public class StopPointWorkflowBuilderNotificationService {
 
   private static final String WORKFLOW_URL = "service-point-directory/workflows/";
-  private static final String START_WORKFLOW_SUBJECT = "Stationsnamen neue Anhörung / Nouvelle audition portant sur un nom de "
+  static final String START_WORKFLOW_SUBJECT = "Stationsnamen neue Anhörung / Nouvelle audition portant sur un nom de "
       + "station / Nome della stazione nuova audizione";
-  private static final String REJECT_WORKFLOW_SUBJECT = "Stationsname zurückgewiesen / Nom de station rejeté / Nome della "
+  static final String REJECT_WORKFLOW_SUBJECT = "Stationsname zurückgewiesen / Nom de station rejeté / Nome della "
       + "stazione respinto";
 
   @Value("${spring.profiles.active:local}")
@@ -52,7 +52,7 @@ public class StopPointWorkflowBuilderNotificationService {
         .build();
   }
 
-  public MailNotification buildWorkflowRejectExaminantMail(StopPointWorkflow stopPointWorkflow) {
+  public MailNotification buildWorkflowRejectMail(StopPointWorkflow stopPointWorkflow) {
     List<String> ccMails = stopPointWorkflow.getCcEmails();
     ccMails.addAll(stopPointWorkflow.getExaminants().stream().map(Person::getMail).toList());
     return MailNotification.builder()
