@@ -1,22 +1,17 @@
-<div class="dialog-close-panel dialog-close-icon-container">
-  <button [mat-dialog-close]="false" class="close-icon-btn">
-    <em class="bi bi-x fs-2"></em>
-  </button>
-</div>
-<div class="dialog" data-cy="dialog">
-  <div class="dialog-content">
-    <div class="mb-2">
-      <span class="font-bold-4xl">{{ data.title | translate }}</span>
-    </div>
-    <stop-point-workflow-detail-form [form]="form" [stopPoint]="data.stopPoint"></stop-point-workflow-detail-form>
-  </div>
+<atlas-dialog-close (clicked)="cancel()"></atlas-dialog-close>
 
-  <mat-dialog-actions class="justify-content-center mt-5">
-    <button (click)="cancel()" class="atlas-primary-btn me-3" data-cy="dialog-cancel-button">
-      {{ data.cancelText ?? 'DIALOG.CANCEL' | translate }}
-    </button>
-    <button (click)="addWorkflow()" class="atlas-primary-btn" data-cy="dialog-add-workflow-button">
-      {{ data.confirmText ?? 'DIALOG.OK' | translate }}
-    </button>
-  </mat-dialog-actions>
-</div>
+<atlas-dialog-content>
+  <div class="mb-2">
+    <span class="font-bold-4xl">{{ data.title | translate }}</span>
+  </div>
+  <stop-point-workflow-detail-form [form]="form" [stopPoint]="data.stopPoint"></stop-point-workflow-detail-form>
+</atlas-dialog-content>
+
+<atlas-dialog-footer>
+  <button (click)="cancel()" class="atlas-primary-btn me-3" data-cy="dialog-cancel-button">
+    {{ data.cancelText ?? 'DIALOG.CANCEL' | translate }}
+  </button>
+  <button (click)="addWorkflow()" class="atlas-primary-btn" data-cy="dialog-add-workflow-button">
+    {{ data.confirmText ?? 'DIALOG.OK' | translate }}
+  </button>
+</atlas-dialog-footer>
