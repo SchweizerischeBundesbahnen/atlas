@@ -1,0 +1,10 @@
+@use 'src/styles/variables';
+
+.dialog-close-panel {
+  width: 100%;
+  text-align: right;
+
+  .bi {
+    color: variables.$primary-400;
+  }
+}
