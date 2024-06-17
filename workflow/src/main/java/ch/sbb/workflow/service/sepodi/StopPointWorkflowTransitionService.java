@@ -14,7 +14,6 @@ import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.kafka.StopPointWorkflowNotificationService;
 import ch.sbb.workflow.mapper.ClientPersonMapper;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
-import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.Examinants;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
@@ -35,7 +34,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class StopPointWorkflowTransitionService {
 
-  private static final String EXCEPTION_MSG = "Workflow status must be ADDED!!!(REPLACE ME WITH A CUSTOM EXCEPTION)";
   private static final String EXCEPTION_HEARING_MSG = "Workflow status must be HEARING!!!(REPLACE ME WITH A CUSTOM EXCEPTION)";
   private static final int WORKFLOW_DURATION_IN_DAYS = 31;
 
@@ -85,16 +83,6 @@ public class StopPointWorkflowTransitionService {
     StopPointWorkflow workflow = stopPointWorkflowService.save(stopPointWorkflow);
     notificationService.sendRejectPointWorkflowMail(workflow);
     return stopPointWorkflow;
-  }
-
-  public StopPointWorkflow editWorkflow(Long id, EditStopPointWorkflowModel workflowModel) {
-    StopPointWorkflow stopPointWorkflow = stopPointWorkflowService.findStopPointWorkflow(id);
-    if (!stopPointWorkflow.getDesignationOfficial().equals(workflowModel.getDesignationOfficial())
-        && stopPointWorkflow.getStatus() != WorkflowStatus.ADDED) {
-      throw new IllegalStateException(EXCEPTION_MSG);
-    }
-    stopPointWorkflow.setWorkflowComment(workflowModel.getWorkflowComment());
-    return stopPointWorkflowService.save(stopPointWorkflow);
   }
 
   public StopPointWorkflow cancelWorkflow(Long id, StopPointRejectWorkflowModel stopPointCancelWorkflowModel) {
