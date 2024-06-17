@@ -1,5 +1,6 @@
 package ch.sbb.workflow.mapper;
 
+import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.model.sepodi.ReadStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
@@ -31,20 +32,24 @@ public class StopPointWorkflowMapper {
         .build();
   }
 
-  public static StopPointWorkflow toEntity(StopPointAddWorkflowModel model, List<StopPointClientPersonModel> examinants) {
+  public static StopPointWorkflow addStopPointWorkflowToEntity(StopPointAddWorkflowModel model,
+      ReadServicePointVersionModel servicePointVersionModel,
+      List<StopPointClientPersonModel> examinants) {
     StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
         .sloid(model.getSloid())
         .versionId(model.getVersionId())
         .ccEmails(model.getCcEmails())
+        .applicantMail(model.getApplicantMail())
         .workflowComment(model.getWorkflowComment())
-        .designationOfficial(model.getDesignationOfficial())
-        .localityName(model.getLocalityName())
-        .versionValidFrom(model.getVersionValidFrom())
-        .status(model.getStatus())
+        .sboid(servicePointVersionModel.getSloid())
+        .localityName(
+            servicePointVersionModel.getServicePointGeolocation().getSwissLocation().getLocalityMunicipality().getLocalityName())
+        .designationOfficial(servicePointVersionModel.getDesignationOfficial())
+        .versionValidFrom(servicePointVersionModel.getValidFrom())
         .build();
-    model.getExaminants().addAll(examinants);
+    examinants.addAll(model.getExaminants());
     stopPointWorkflow.setExaminants(
-        model.getExaminants().stream().map(StopPointClientPersonMapper::toEntity)
+        examinants.stream().map(StopPointClientPersonMapper::toEntity)
             .collect(Collectors.toSet()));
     return stopPointWorkflow;
   }

@@ -31,7 +31,7 @@ import ch.sbb.workflow.entity.JudgementType;
 import ch.sbb.workflow.entity.Otp;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
-import ch.sbb.workflow.kafka.WorkflowNotificationService;
+import ch.sbb.workflow.kafka.StopPointWorkflowNotificationService;
 import ch.sbb.workflow.mapper.ClientPersonMapper;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
@@ -40,10 +40,10 @@ import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
+import ch.sbb.workflow.repository.DecisionRepository;
+import ch.sbb.workflow.repository.OtpRepository;
+import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import ch.sbb.workflow.service.sepodi.SePoDiClientService;
-import ch.sbb.workflow.workflow.DecisionRepository;
-import ch.sbb.workflow.workflow.OtpRepository;
-import ch.sbb.workflow.workflow.StopPointWorkflowRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -74,7 +74,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   private SePoDiClientService sePoDiClientService;
 
   @MockBean
-  private WorkflowNotificationService notificationService;
+  private StopPointWorkflowNotificationService notificationService;
 
   @AfterEach
   void tearDown() {
@@ -87,7 +87,6 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   void shouldGetWorkflows() throws Exception {
 
     StopPointAddWorkflowModel workflowModel = StopPointWorkflowTestData.getAddStopPointWorkflow1();
-
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel.getSloid(), workflowModel.getVersionId()))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
@@ -106,19 +105,19 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
 
     controller.addStopPointWorkflow(workflowModel1);
     controller.addStopPointWorkflow(workflowModel2);
 
     mvc.perform(get("/v1/stop-point/workflows"
             + "?sloids=ch:1:sloid:1234"
-            ))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.objects", hasSize(1)));
+        ))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
   }
 
   @Test
@@ -127,19 +126,19 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
 
     controller.addStopPointWorkflow(workflowModel1);
     controller.addStopPointWorkflow(workflowModel2);
 
     mvc.perform(get("/v1/stop-point/workflows"
-                    + "?localityName=Bern"
-            ))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.objects", hasSize(1)));
+            + "?localityName=Bern"
+        ))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
   }
 
   @Test
@@ -148,19 +147,19 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
 
     controller.addStopPointWorkflow(workflowModel1);
     controller.addStopPointWorkflow(workflowModel2);
 
     mvc.perform(get("/v1/stop-point/workflows"
-                    + "?designationOfficial=Aargau Strasse"
-            ))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.objects", hasSize(1)));
+            + "?designationOfficial=Aargau Strasse"
+        ))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
   }
 
   @Test
@@ -169,19 +168,19 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
 
     controller.addStopPointWorkflow(workflowModel1);
     controller.addStopPointWorkflow(workflowModel2);
 
     mvc.perform(get("/v1/stop-point/workflows"
-                    + "?versionValidFrom=2010-12-11"
-            ))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.objects", hasSize(1)));
+            + "?versionValidFrom=2010-12-11"
+        ))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
   }
 
   @Test
@@ -190,40 +189,42 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
 
     controller.addStopPointWorkflow(workflowModel1);
     controller.addStopPointWorkflow(workflowModel2);
 
     mvc.perform(get("/v1/stop-point/workflows"
-                    + "?status=ADDED"
-            ))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.objects", hasSize(2)));
+            + "?status=ADDED"
+        ))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(2)));
   }
+
   @Test
   void shouldFindWorkflowsByFilterSboid() throws Exception {
     StopPointAddWorkflowModel workflowModel1 = StopPointWorkflowTestData.getAddStopPointWorkflow1();
     StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
 
     controller.addStopPointWorkflow(workflowModel1);
     controller.addStopPointWorkflow(workflowModel2);
 
     mvc.perform(get("/v1/stop-point/workflows"
-                    + "?sboid=ch:1:sboid:100900"
-            ))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.objects", hasSize(2)));
+            + "?sboid=ch:1:sboid:100900"
+        ))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(2)));
   }
+
   @Test
   void shouldGetWorkflowById() throws Exception {
     Person person = Person.builder()
@@ -264,6 +265,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .sloid("ch:1:sloid:1234")
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
+        .applicantMail("a@b.ch")
         .examinants(List.of(person))
         .versionId(123456L)
         .build();
@@ -295,6 +297,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .examinants(List.of(person))
+        .applicantMail("a@s.ch")
         .versionId(123456L)
         .build();
 
@@ -336,6 +339,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .examinants(List.of(person))
+        .applicantMail("a@b.ch")
         .versionId(versionId)
         .build();
     when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
@@ -364,6 +368,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .examinants(List.of(person))
+        .applicantMail("a@b.ch")
         .versionId(versionId)
         .build();
     when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
@@ -423,6 +428,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .examinants(List.of(personModel))
+        .applicantMail("a@b.ch")
         .versionId(versionId)
         .build();
     when(sePoDiClientService.updateStopPointStatusToInReview(sloid, versionId))
@@ -457,6 +463,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("\uD83D\uDE00\uD83D\uDE01\uD83D")
         .examinants(List.of(person))
+        .applicantMail("a@b.ch")
         .versionId(123456L)
         .build();
 
@@ -611,7 +618,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(decisionResult.getMotivation()).isEqualTo(stopPointRejectWorkflowModel.getMotivationComment());
     assertThat(decisionResult.getDecisionType()).isEqualTo(DecisionType.REJECTED);
 
-    verify(notificationService).sendRejectPointWorkflowMail(any(StopPointWorkflow.class));
+    verify(notificationService).sendRejectStopPointWorkflowMail(any(StopPointWorkflow.class));
   }
 
   @Test
@@ -1058,34 +1065,33 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .build();
   }
 
-
   private static ReadServicePointVersionModel getUpdateServicePointVersionModel2(Status status) {
     long versionId = 654321L;
     String sloid = "ch:1:sloid:4321";
     ServicePointGeolocationReadModel geolocationReadModel = ServicePointGeolocationReadModel.builder()
-            .swissLocation(SwissLocation.builder()
-                    .canton(SwissCanton.ZURICH)
-                    .localityMunicipality(LocalityMunicipalityModel.builder().localityName("Zürich").build())
-                    .build())
-            .build();
+        .swissLocation(SwissLocation.builder()
+            .canton(SwissCanton.ZURICH)
+            .localityMunicipality(LocalityMunicipalityModel.builder().localityName("Zürich").build())
+            .build())
+        .build();
     return ReadServicePointVersionModel.builder()
-            .designationLong("Designer")
-            .designationOfficial("Stroosse")
-            .abbreviation("ABC")
-            .id(versionId)
-            .sloid(sloid)
-            .freightServicePoint(false)
-            .sortCodeOfDestinationStation("39136")
-            .businessOrganisation("ch:1:sboid:100900")
-            .categories(List.of(Category.POINT_OF_SALE))
-            .status(status)
-            .servicePointGeolocation(geolocationReadModel)
-            .operatingPointRouteNetwork(true)
-            .meansOfTransport(List.of(MeanOfTransport.TRAIN))
-            .stopPointType(StopPointType.ON_REQUEST)
-            .validFrom(LocalDate.of(2008, 12, 11))
-            .validTo(LocalDate.of(2019, 8, 10))
-            .build();
+        .designationLong("Designer")
+        .designationOfficial("Stroosse")
+        .abbreviation("ABC")
+        .id(versionId)
+        .sloid(sloid)
+        .freightServicePoint(false)
+        .sortCodeOfDestinationStation("39136")
+        .businessOrganisation("ch:1:sboid:100900")
+        .categories(List.of(Category.POINT_OF_SALE))
+        .status(status)
+        .servicePointGeolocation(geolocationReadModel)
+        .operatingPointRouteNetwork(true)
+        .meansOfTransport(List.of(MeanOfTransport.TRAIN))
+        .stopPointType(StopPointType.ON_REQUEST)
+        .validFrom(LocalDate.of(2008, 12, 11))
+        .validTo(LocalDate.of(2019, 8, 10))
+        .build();
   }
 
 }

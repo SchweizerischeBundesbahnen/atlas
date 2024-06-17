@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {ReadServicePointVersion, StopPointAddWorkflow, StopPointPerson, StopPointWorkflowService} from "../../../../api";
+import {StopPointAddWorkflow, StopPointPerson, StopPointWorkflowService} from "../../../../api";
 import {AddStopPointWorkflowDialogData} from "./add-stop-point-workflow-dialog-data";
 import {FormGroup} from "@angular/forms";
 import {
@@ -12,6 +12,7 @@ import {DetailHelperService} from "../../../../core/detail/detail-helper.service
 import {NotificationService} from "../../../../core/notification/notification.service";
 import {Router} from "@angular/router";
 import {Pages} from "../../../pages";
+import {UserService} from "../../../../core/auth/user/user.service";
 
 @Component({
   selector: 'app-workflow-dialog',
@@ -26,7 +27,8 @@ export class AddStopPointWorkflowComponent implements OnInit {
     private detailHelperService: DetailHelperService,
     private stopPointWorkflowService: StopPointWorkflowService,
     private notificationService: NotificationService,
-    private router: Router,
+    private userService: UserService,
+    private router: Router
   ) {
   }
 
@@ -39,24 +41,20 @@ export class AddStopPointWorkflowComponent implements OnInit {
   addWorkflow() {
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
-      const workflow = this.stopPointToWorkflowInfo(this.data.stopPoint);
-      workflow.workflowComment = this.form.controls.workflowComment.value!;
-      workflow.ccEmails = this.form.controls.ccEmails.value!;
-      workflow.examinants = this.form.controls.examinants.value.map(examinant => examinant as StopPointPerson);
-
+      const workflow: StopPointAddWorkflow = {
+        applicantMail: this.userService.currentUser!.email,
+        versionId: this.data.stopPoint.id!,
+        sloid: this.data.stopPoint.sloid!,
+        workflowComment: this.form.controls.workflowComment.value!,
+        ccEmails: this.form.controls.ccEmails.value!,
+        examinants: this.form.controls.examinants.value.map(examinant => examinant as StopPointPerson)
+      }
       this.form.disable();
       this.stopPointWorkflowService.addStopPointWorkflow(workflow).subscribe(createdWorkflow => {
         this.notificationService.success('WORKFLOW.NOTIFICATION.START.SUCCESS');
         this.dialogRef.close();
         this.router.navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, createdWorkflow.id]).then();
       })
-    }
-  }
-
-  private stopPointToWorkflowInfo(stopPoint: ReadServicePointVersion): StopPointAddWorkflow {
-    return {
-      versionId: stopPoint.id!,
-      sloid: stopPoint.sloid!,
     }
   }
 

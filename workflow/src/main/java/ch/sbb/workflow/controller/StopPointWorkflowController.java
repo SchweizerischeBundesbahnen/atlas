@@ -5,7 +5,6 @@ import ch.sbb.workflow.api.StopPointWorkflowApiV1;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
-import ch.sbb.workflow.model.sepodi.StopPointWorkflowRequestParams;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
@@ -14,7 +13,9 @@ import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
+import ch.sbb.workflow.model.sepodi.StopPointWorkflowRequestParams;
 import ch.sbb.workflow.service.sepodi.StopPointWorkflowService;
+import ch.sbb.workflow.service.sepodi.StopPointWorkflowTransitionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
 
   private final StopPointWorkflowService service;
+  private final StopPointWorkflowTransitionService workflowTransitionService;
 
 
   @Override
@@ -48,17 +50,17 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
 
   @Override
   public ReadStopPointWorkflowModel addStopPointWorkflow(StopPointAddWorkflowModel workflowModel) {
-    return StopPointWorkflowMapper.toModel(service.addWorkflow(workflowModel));
+    return StopPointWorkflowMapper.toModel(workflowTransitionService.addWorkflow(workflowModel));
   }
 
   @Override
   public ReadStopPointWorkflowModel startStopPointWorkflow(Long id) {
-    return StopPointWorkflowMapper.toModel(service.startWorkflow(id));
+    return StopPointWorkflowMapper.toModel(workflowTransitionService.startWorkflow(id));
   }
 
   @Override
   public ReadStopPointWorkflowModel rejectStopPointWorkflow(Long id, StopPointRejectWorkflowModel workflowModel) {
-    return StopPointWorkflowMapper.toModel(service.rejectWorkflow(id, workflowModel));
+    return StopPointWorkflowMapper.toModel(workflowTransitionService.rejectWorkflow(id, workflowModel));
   }
 
   @Override
@@ -93,12 +95,12 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
 
   @Override
   public ReadStopPointWorkflowModel restartStopPointWorkflow(Long id, StopPointRestartWorkflowModel restartWorkflowModel) {
-    return StopPointWorkflowMapper.toModel(service.restartWorkflow(id,restartWorkflowModel));
+    return StopPointWorkflowMapper.toModel(workflowTransitionService.restartWorkflow(id, restartWorkflowModel));
   }
 
   @Override
   public ReadStopPointWorkflowModel cancelStopPointWorkflow(Long id, StopPointRejectWorkflowModel stopPointCancelWorkflowModel) {
-    return StopPointWorkflowMapper.toModel(service.cancelWorkflow(id,stopPointCancelWorkflowModel));
+    return StopPointWorkflowMapper.toModel(workflowTransitionService.cancelWorkflow(id, stopPointCancelWorkflowModel));
   }
 
 }

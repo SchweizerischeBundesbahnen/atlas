@@ -20,7 +20,7 @@ import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.WorkflowType;
 import ch.sbb.workflow.entity.LineWorkflow;
 import ch.sbb.workflow.entity.Person;
-import ch.sbb.workflow.workflow.WorkflowRepository;
+import ch.sbb.workflow.repository.WorkflowRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
