@@ -34,8 +34,9 @@ class LineWorkflowBuilderNotificationServiceTest {
     assertThat(mailNotification.getFrom()).isEqualTo("no-reply-atlas@sbb.ch");
     assertThat(mailNotification.getSubject()).isEqualTo("Antrag zu ch:1:slnid:123 Linie 1 prüfen");
     Map<String, Object> properties = mailNotification.getTemplateProperties().get(0);
-    assertThat(properties).containsEntry("description", "Linie 1");
-    assertThat(properties).containsEntry("url", "http://localhost:4200/line-directory/lines/ch:1:slnid:123?id=1100");
+    assertThat(properties)
+        .containsEntry("description", "Linie 1")
+        .containsEntry("url", "http://localhost:4200/line-directory/lines/ch:1:slnid:123?id=1100");
   }
 
   @Test
@@ -56,7 +57,8 @@ class LineWorkflowBuilderNotificationServiceTest {
     assertThat(mailNotification.getFrom()).isEqualTo("no-reply-atlas@sbb.ch");
     assertThat(mailNotification.getSubject()).isEqualTo("Antrag zu ch:1:slnid:123 Linie 1 genehmigt");
     Map<String, Object> properties = mailNotification.getTemplateProperties().get(0);
-    assertThat(properties).containsEntry("description", "Linie 1");
-    assertThat(properties).containsEntry("url", "http://localhost:4200/line-directory/lines/ch:1:slnid:123?id=1100");
+    assertThat(properties)
+        .containsEntry("description", "Linie 1")
+        .containsEntry("url", "http://localhost:4200/line-directory/lines/ch:1:slnid:123?id=1100");
   }
 }
