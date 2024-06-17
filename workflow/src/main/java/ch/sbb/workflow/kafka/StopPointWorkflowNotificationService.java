@@ -23,7 +23,7 @@ public class StopPointWorkflowNotificationService {
     }
 
     public void sendRejectPointWorkflowMail(StopPointWorkflow workflow) {
-        MailNotification mailNotification = builderNotificationService.buildWorkflowRejectExaminantMail(workflow);
+        MailNotification mailNotification = builderNotificationService.buildWorkflowRejectMail(workflow);
         mailProducerService.produceMailNotification(mailNotification);
     }
 }
