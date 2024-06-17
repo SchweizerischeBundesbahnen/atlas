@@ -42,11 +42,43 @@ class MailTemplateConfigTest {
   }
 
   @Test
-   void shouldReturnWorkflowNotification() {
+  void shouldReturnExportServicePointNotificationErrorNotification() {
+    //when
+    MailTemplateConfig result = getMailTemplateConfig(MailType.EXPORT_SERVICE_POINT_ERROR_NOTIFICATION);
+    //then
+    assertThat(result).isEqualTo(MailTemplateConfig.EXPORT_SERVCICE_POINT_ERROR_NOTIFICATION_TEMPLATE);
+  }
+
+  @Test
+  void shouldReturnWorkflowNotification() {
     //when
     MailTemplateConfig result = getMailTemplateConfig(MailType.WORKFLOW_NOTIFICATION);
     //then
     assertThat(result).isEqualTo(MailTemplateConfig.WORKFLOW_NOTIFICATION_TEMPLATE);
+  }
+
+  @Test
+  void shouldReturnStartStopPointWorkflowExaminantNotification() {
+    //when
+    MailTemplateConfig result = getMailTemplateConfig(MailType.START_STOP_POINT_WORKFLOW_EXAMINANT_NOTIFICATION);
+    //then
+    assertThat(result).isEqualTo(MailTemplateConfig.START_STOP_POINT_WORKFLOW_EXAMINANT_NOTIFICATION_TEMPLATE);
+  }
+
+  @Test
+  void shouldReturnStartStopPointWorkflowCCNotification() {
+    //when
+    MailTemplateConfig result = getMailTemplateConfig(MailType.START_STOP_POINT_WORKFLOW_CC_NOTIFICATION);
+    //then
+    assertThat(result).isEqualTo(MailTemplateConfig.START_STOP_POINT_WORKFLOW_CC_NOTIFICATION_TEMPLATE);
+  }
+
+  @Test
+  void shouldReturnRejectStopPointWorkflowNotification() {
+    //when
+    MailTemplateConfig result = getMailTemplateConfig(MailType.REJECT_STOP_POINT_WORKFLOW_NOTIFICATION);
+    //then
+    assertThat(result).isEqualTo(MailTemplateConfig.REJECT_STOP_POINT_WORKFLOW_NOTIFICATION_TEMPLATE);
   }
 
 }
