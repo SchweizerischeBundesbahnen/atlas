@@ -88,7 +88,6 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
 
     StopPointAddWorkflowModel workflowModel = StopPointWorkflowTestData.getAddStopPointWorkflow1();
 
-
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel.getSloid(), workflowModel.getVersionId()))
         .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
@@ -106,19 +105,19 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
 
     controller.addStopPointWorkflow(workflowModel1);
     controller.addStopPointWorkflow(workflowModel2);
 
     mvc.perform(get("/v1/stop-point/workflows"
             + "?sloids=ch:1:sloid:1234"
-            ))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.objects", hasSize(1)));
+        ))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
   }
 
   @Test
@@ -127,19 +126,19 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
 
     controller.addStopPointWorkflow(workflowModel1);
     controller.addStopPointWorkflow(workflowModel2);
 
     mvc.perform(get("/v1/stop-point/workflows"
-                    + "?localityName=Bern"
-            ))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.objects", hasSize(1)));
+            + "?localityName=Bern"
+        ))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
   }
 
   @Test
@@ -148,19 +147,19 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
 
     controller.addStopPointWorkflow(workflowModel1);
     controller.addStopPointWorkflow(workflowModel2);
 
     mvc.perform(get("/v1/stop-point/workflows"
-                    + "?designationOfficial=Aargau Strasse"
-            ))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.objects", hasSize(1)));
+            + "?designationOfficial=Aargau Strasse"
+        ))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
   }
 
   @Test
@@ -169,19 +168,19 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
 
     controller.addStopPointWorkflow(workflowModel1);
     controller.addStopPointWorkflow(workflowModel2);
 
     mvc.perform(get("/v1/stop-point/workflows"
-                    + "?versionValidFrom=2010-12-11"
-            ))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.objects", hasSize(1)));
+            + "?versionValidFrom=2010-12-11"
+        ))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)));
   }
 
   @Test
@@ -190,40 +189,42 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
 
     controller.addStopPointWorkflow(workflowModel1);
     controller.addStopPointWorkflow(workflowModel2);
 
     mvc.perform(get("/v1/stop-point/workflows"
-                    + "?status=ADDED"
-            ))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.objects", hasSize(2)));
+            + "?status=ADDED"
+        ))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(2)));
   }
+
   @Test
   void shouldFindWorkflowsByFilterSboid() throws Exception {
     StopPointAddWorkflowModel workflowModel1 = StopPointWorkflowTestData.getAddStopPointWorkflow1();
     StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel1.getSloid(), workflowModel1.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel2.getSloid(), workflowModel2.getVersionId()))
-            .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
+        .thenReturn(getUpdateServicePointVersionModel2(Status.IN_REVIEW));
 
     controller.addStopPointWorkflow(workflowModel1);
     controller.addStopPointWorkflow(workflowModel2);
 
     mvc.perform(get("/v1/stop-point/workflows"
-                    + "?sboid=ch:1:sboid:100900"
-            ))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.objects", hasSize(2)));
+            + "?sboid=ch:1:sboid:100900"
+        ))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(2)));
   }
+
   @Test
   void shouldGetWorkflowById() throws Exception {
     Person person = Person.builder()
@@ -1064,34 +1065,33 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .build();
   }
 
-
   private static ReadServicePointVersionModel getUpdateServicePointVersionModel2(Status status) {
     long versionId = 654321L;
     String sloid = "ch:1:sloid:4321";
     ServicePointGeolocationReadModel geolocationReadModel = ServicePointGeolocationReadModel.builder()
-            .swissLocation(SwissLocation.builder()
-                    .canton(SwissCanton.ZURICH)
-                    .localityMunicipality(LocalityMunicipalityModel.builder().localityName("Zürich").build())
-                    .build())
-            .build();
+        .swissLocation(SwissLocation.builder()
+            .canton(SwissCanton.ZURICH)
+            .localityMunicipality(LocalityMunicipalityModel.builder().localityName("Zürich").build())
+            .build())
+        .build();
     return ReadServicePointVersionModel.builder()
-            .designationLong("Designer")
-            .designationOfficial("Stroosse")
-            .abbreviation("ABC")
-            .id(versionId)
-            .sloid(sloid)
-            .freightServicePoint(false)
-            .sortCodeOfDestinationStation("39136")
-            .businessOrganisation("ch:1:sboid:100900")
-            .categories(List.of(Category.POINT_OF_SALE))
-            .status(status)
-            .servicePointGeolocation(geolocationReadModel)
-            .operatingPointRouteNetwork(true)
-            .meansOfTransport(List.of(MeanOfTransport.TRAIN))
-            .stopPointType(StopPointType.ON_REQUEST)
-            .validFrom(LocalDate.of(2008, 12, 11))
-            .validTo(LocalDate.of(2019, 8, 10))
-            .build();
+        .designationLong("Designer")
+        .designationOfficial("Stroosse")
+        .abbreviation("ABC")
+        .id(versionId)
+        .sloid(sloid)
+        .freightServicePoint(false)
+        .sortCodeOfDestinationStation("39136")
+        .businessOrganisation("ch:1:sboid:100900")
+        .categories(List.of(Category.POINT_OF_SALE))
+        .status(status)
+        .servicePointGeolocation(geolocationReadModel)
+        .operatingPointRouteNetwork(true)
+        .meansOfTransport(List.of(MeanOfTransport.TRAIN))
+        .stopPointType(StopPointType.ON_REQUEST)
+        .validFrom(LocalDate.of(2008, 12, 11))
+        .validTo(LocalDate.of(2019, 8, 10))
+        .build();
   }
 
 }
