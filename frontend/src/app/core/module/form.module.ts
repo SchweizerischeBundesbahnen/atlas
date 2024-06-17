@@ -9,7 +9,6 @@ import {DateIconComponent} from '../form-components/date-icon/date-icon.componen
 import {InfoIconComponent} from '../form-components/info-icon/info-icon.component';
 import {SearchSelectComponent} from '../form-components/search-select/search-select.component';
 import {BusinessOrganisationSelectComponent} from '../form-components/bo-select/business-organisation-select.component';
-import {DialogCloseComponent} from '../form-components/dialog-close/dialog-close.component';
 import {BoSelectionDisplayPipe} from '../form-components/bo-select/bo-selection-display.pipe';
 import {LinkIconComponent} from '../form-components/link-icon/link-icon.component';
 import {InfoLinkDirective} from '../form-components/info-icon/info-link.directive';
@@ -30,6 +29,7 @@ import {AtlasClipboardComponent} from "../form-components/atlas-clipboard/atlas-
 import {CdkCopyToClipboard} from "@angular/cdk/clipboard";
 import {BoDisplayPipe} from "../form-components/bo-select/bo-display.pipe";
 import {LinkComponent} from "../form-components/link/link.component";
+import {DialogCloseComponent} from "../components/dialog/close/dialog-close.component";
 
 @NgModule({
   declarations: [
