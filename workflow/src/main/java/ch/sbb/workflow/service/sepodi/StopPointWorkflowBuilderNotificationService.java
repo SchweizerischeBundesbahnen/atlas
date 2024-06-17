@@ -65,7 +65,7 @@ public class StopPointWorkflowBuilderNotificationService {
         .build();
   }
 
-  private List<Map<String, Object>> buildMailProperties(StopPointWorkflow stopPointWorkflow, String title) {
+  List<Map<String, Object>> buildMailProperties(StopPointWorkflow stopPointWorkflow, String title) {
     List<Map<String, Object>> mailProperties = new ArrayList<>();
     Map<String, Object> mailContentProperty = new HashMap<>();
     mailContentProperty.put("title", title);
