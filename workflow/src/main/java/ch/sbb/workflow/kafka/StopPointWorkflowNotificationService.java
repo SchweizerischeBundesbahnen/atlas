@@ -11,22 +11,19 @@ import org.springframework.stereotype.Service;
 public class StopPointWorkflowNotificationService {
 
     private final MailProducerService mailProducerService;
-    private final StopPointWorkflowBuilderNotificationService stopPointWorkflowBuilderNotificationService;
+    private final StopPointWorkflowBuilderNotificationService builderNotificationService;
 
     public void sendStartStopPointWorkflowMail(StopPointWorkflow stopPointWorkflow) {
         MailNotification startedExaminantMailNotification =
-            stopPointWorkflowBuilderNotificationService.buildWorkflowStartedExaminantMailNotification(
-                stopPointWorkflow);
+            builderNotificationService.buildWorkflowStartedExaminantMail(stopPointWorkflow);
         mailProducerService.produceMailNotification(startedExaminantMailNotification);
         MailNotification buildWorkflowStartedCCMailNotification =
-            stopPointWorkflowBuilderNotificationService.buildWorkflowStartedCCMailNotification(stopPointWorkflow);
-            mailProducerService.produceMailNotification(buildWorkflowStartedCCMailNotification);
-
+            builderNotificationService.buildWorkflowStartedCCMail(stopPointWorkflow);
+        mailProducerService.produceMailNotification(buildWorkflowStartedCCMailNotification);
     }
 
     public void sendRejectPointWorkflowMail(StopPointWorkflow workflow) {
-        MailNotification mailNotification = stopPointWorkflowBuilderNotificationService.buildWorkflowRejectExaminantMailNotification(
-            workflow);
+        MailNotification mailNotification = builderNotificationService.buildWorkflowRejectExaminantMail(workflow);
         mailProducerService.produceMailNotification(mailNotification);
     }
 }
