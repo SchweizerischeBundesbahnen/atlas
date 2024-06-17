@@ -38,6 +38,10 @@ public class SpecificationBuilder<T> {
     return new SingleStringSpecification<>(searchString, singleStringAttribute.getName());
   }
 
+  public Specification<T> singleStringSpecification(Optional<String> searchString, String column) {
+    return new SingleStringSpecification<>(searchString, column);
+  }
+
   public Specification<T> stringInSpecification(List<String> searchStrings, SingularAttribute<T, String> column) {
     return inSpecification(searchStrings, column.getName());
   }

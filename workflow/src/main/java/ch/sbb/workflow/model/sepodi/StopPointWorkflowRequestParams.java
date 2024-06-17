@@ -41,8 +41,7 @@ public class StopPointWorkflowRequestParams {
     private List<String> designationOfficial = new ArrayList<>();
 
     @Parameter(description = "Locality Name")
-    @Singular("localityName")
-    private List<String> localityName = new ArrayList<>();
+    private String localityName;
 
     @Parameter(description = "List of sboids")
     @Singular(ignoreNullCollections = true)
