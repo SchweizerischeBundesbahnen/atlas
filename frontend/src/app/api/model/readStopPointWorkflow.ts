@@ -56,14 +56,6 @@ export interface ReadStopPointWorkflow {
      */
     versionValidFrom?: Date;
     /**
-     * Object creation date
-     */
-    creationDate?: string;
-    /**
-     * User creator
-     */
-    creator?: string;
-    /**
      * Workflow start date
      */
     startDate?: Date;
@@ -71,5 +63,13 @@ export interface ReadStopPointWorkflow {
      * Workflow end date
      */
     endDate?: Date;
+    /**
+     * Object creation date
+     */
+    creationDate?: string;
+    /**
+     * User creator
+     */
+    creator?: string;
 }
 
