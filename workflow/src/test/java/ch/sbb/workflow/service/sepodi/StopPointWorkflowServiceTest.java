@@ -7,7 +7,7 @@ import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.model.sepodi.StopPointWorkflowRequestParams;
-import ch.sbb.workflow.workflow.StopPointWorkflowRepository;
+import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
