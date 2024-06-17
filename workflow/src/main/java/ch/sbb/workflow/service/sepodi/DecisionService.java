@@ -29,4 +29,7 @@ public class DecisionService {
     return decision;
   }
 
+  public void save(Decision decision) {
+    decisionRepository.save(decision);
+  }
 }
