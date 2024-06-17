@@ -81,7 +81,7 @@ public class StopPointWorkflowTransitionService {
     examinantBAV.setStopPointWorkflow(stopPointWorkflow);
     stopPointWorkflow.setStatus(REJECTED);
     StopPointWorkflow workflow = stopPointWorkflowService.save(stopPointWorkflow);
-    notificationService.sendRejectPointWorkflowMail(workflow);
+    notificationService.sendRejectStopPointWorkflowMail(workflow);
     return stopPointWorkflow;
   }
 
