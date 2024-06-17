@@ -42,7 +42,7 @@ export class AddStopPointWorkflowComponent implements OnInit {
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
       const workflow: StopPointAddWorkflow = {
-        applicantMail: this.userService!.currentUser!.email,
+        applicantMail: this.userService.currentUser!.email,
         versionId: this.data.stopPoint.id!,
         sloid: this.data.stopPoint.sloid!,
         workflowComment: this.form.controls.workflowComment.value!,

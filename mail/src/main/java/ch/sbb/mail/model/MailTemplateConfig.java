@@ -13,7 +13,7 @@ import static ch.sbb.atlas.kafka.model.mail.MailType.WORKFLOW_NOTIFICATION;
 
 import ch.sbb.atlas.kafka.model.mail.MailType;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,7 +44,7 @@ public enum MailTemplateConfig {
   private final boolean content;
   private final boolean templateProperties;
 
-  private static final Map<MailType, MailTemplateConfig> MAIL_TYPE_TEMPLATE_CONFIG = new HashMap<>();
+  private static final Map<MailType, MailTemplateConfig> MAIL_TYPE_TEMPLATE_CONFIG = new EnumMap<>(MailType.class);
 
   static {
     MAIL_TYPE_TEMPLATE_CONFIG.put(ATLAS_STANDARD, ATLAS_STANDARD_TEMPLATE);
