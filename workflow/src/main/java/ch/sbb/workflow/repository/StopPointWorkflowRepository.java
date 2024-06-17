@@ -1,4 +1,4 @@
-package ch.sbb.workflow.workflow;
+package ch.sbb.workflow.repository;
 
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.StopPointWorkflow;
