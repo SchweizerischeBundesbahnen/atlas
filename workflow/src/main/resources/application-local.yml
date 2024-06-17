@@ -84,6 +84,8 @@ mail:
       from: no-reply-atlas@sbb.ch
     atlas:
       business: TechSupport-ATLAS@sbb.ch
+    stop-point:
+      from: no-reply-atlas@sbb.ch
 atlas:
   client:
     gateway:
