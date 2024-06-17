@@ -80,18 +80,6 @@ describe('SideNavComponent', () => {
     );
   };
 
-  it('should select the correct page based on the current URL', () => {
-    const currentUrl = '/service-point-directory';
-    component.selectPage(currentUrl);
-    expect(component.selectedPage).toEqual(Pages.SEPODI);
-  });
-
-  it('should select Home if the URL does not match', () => {
-    const currentUrl = '/nonexistent';
-    component.selectPage(currentUrl);
-    expect(component.selectedPage).toEqual(Pages.HOME);
-  });
-
   it('should set activePageIndex correct', () => {
     const currentUrl = '/service-point-directory';
     component.getActivePageIndex(currentUrl);

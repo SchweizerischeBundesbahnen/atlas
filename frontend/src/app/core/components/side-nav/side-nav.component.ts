@@ -31,10 +31,10 @@ export class SideNavComponent {
   }
 
   getActivePageIndex(currentUrl: string): void {
-    this.selectPage(currentUrl);
     this.enabledPages.forEach((page, index) => {
       if (currentUrl.includes(page.path)) {
         this.activePageIndex = index;
+        this.selectedPage = page
         if (page.subpages) {
           page.subpages.forEach((subPage, index) => {
             if (currentUrl.includes(subPage.path)) {
@@ -45,13 +45,5 @@ export class SideNavComponent {
         }
       }
     });
-  }
-
-  selectPage(currentUrl: string){
-    this.enabledPages.forEach(value => {
-      if(currentUrl.includes(value.path)){
-        this.selectedPage = value
-      }
-    })
   }
 }
