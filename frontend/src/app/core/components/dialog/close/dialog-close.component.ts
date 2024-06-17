@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-dialog-close',
+  selector: 'atlas-dialog-close',
   templateUrl: './dialog-close.component.html',
   styleUrls: ['./dialog-close.component.scss'],
 })
