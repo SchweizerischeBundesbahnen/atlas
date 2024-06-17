@@ -1,102 +1,82 @@
 package ch.sbb.workflow.service.lidi;
 
-import ch.sbb.atlas.kafka.model.mail.MailNotification;
-import ch.sbb.atlas.kafka.model.mail.MailType;
+import ch.sbb.atlas.api.client.line.workflow.LineWorkflowClient;
+import ch.sbb.atlas.api.workflow.ExaminantWorkflowCheckModel;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.atlas.workflow.model.WorkflowEvent;
+import ch.sbb.atlas.workflow.model.WorkflowStatus;
+import ch.sbb.atlas.workflow.model.WorkflowType;
 import ch.sbb.workflow.entity.LineWorkflow;
-import ch.sbb.workflow.helper.AtlasFrontendBaseUrl;
-import java.util.ArrayList;
-import java.util.HashMap;
+import ch.sbb.workflow.exception.BusinessObjectCurrentlyInReviewException;
+import ch.sbb.workflow.exception.BusinessObjectCurrentlyNotInReviewException;
+import ch.sbb.workflow.kafka.LineWorkflowNotificationService;
+import ch.sbb.workflow.mapper.PersonMapper;
+import ch.sbb.workflow.repository.WorkflowRepository;
 import java.util.List;
-import java.util.Map;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@Component
+@RequiredArgsConstructor
+@Service
+@Transactional
 public class LineWorkflowService {
 
-    private static final String LINE_URL = "line-directory/lines/";
+  private final WorkflowRepository repository;
+  private final LineWorkflowNotificationService notificationService;
+  private final LineWorkflowClient lineWorkflowClient;
 
-    @Value("${spring.profiles.active:local}")
-    private String activeProfile;
-    @Value("${mail.workflow.line.receiver}")
-    private String workflowLineReceiver;
-
-    @Value("${mail.workflow.line.from}")
-    private String from;
-
-    @Value("${mail.workflow.atlas.business}")
-    private String atlasBusiness;
-
-    public MailNotification buildWorkflowStartedMailNotification(LineWorkflow lineWorkflow) {
-        return MailNotification.builder()
-                .from(from)
-                .mailType(MailType.WORKFLOW_NOTIFICATION)
-                .subject(buildSubject(lineWorkflow))
-                .to(List.of(workflowLineReceiver))
-                .cc(List.of(lineWorkflow.getClient().getMail()))
-                .templateProperties(buildMailProperties(lineWorkflow))
-                .build();
+  public LineWorkflow startWorkflow(LineWorkflow lineWorkflow) {
+    if (hasWorkflowInProgress(lineWorkflow.getBusinessObjectId())) {
+      throw new BusinessObjectCurrentlyInReviewException();
     }
-
-    public MailNotification buildWorkflowCompletedMailNotification(LineWorkflow lineWorkflow) {
-        return MailNotification.builder()
-                .from(from)
-                .mailType(MailType.WORKFLOW_NOTIFICATION)
-                .subject(buildSubject(lineWorkflow))
-                .to(List.of(lineWorkflow.getClient().getMail()))
-                .cc(List.of(atlasBusiness))
-                .templateProperties(buildMailProperties(lineWorkflow))
-                .build();
+    lineWorkflow.setStatus(WorkflowStatus.ADDED);
+    LineWorkflow entity = repository.save(lineWorkflow);
+    WorkflowStatus desiredWorkflowStatusByLidi = processWorkflowOnLidi(entity);
+    entity.setStatus(desiredWorkflowStatusByLidi);
+    if (entity.getStatus() == WorkflowStatus.STARTED) {
+      notificationService.sendEventToMail(entity);
     }
+    return entity;
+  }
 
-    private String buildSubject(LineWorkflow lineWorkflow) {
-        return "Antrag zu " + lineWorkflow.getSwissId() + " " + getWorkflowDescription(lineWorkflow) + " " + buildTranslatedStatus(
-            lineWorkflow);
+  public LineWorkflow getWorkflow(Long id) {
+    return repository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+  }
+
+  public List<LineWorkflow> getWorkflows() {
+    return repository.findAll();
+  }
+
+  public LineWorkflow examinantCheck(Long workflowId, ExaminantWorkflowCheckModel examinantWorkflowCheckModel) {
+    LineWorkflow lineWorkflow = getWorkflow(workflowId);
+    if (lineWorkflow.getStatus() != WorkflowStatus.STARTED) {
+      throw new BusinessObjectCurrentlyNotInReviewException();
     }
+    lineWorkflow.setCheckComment(examinantWorkflowCheckModel.getCheckComment());
+    lineWorkflow.setExaminant(PersonMapper.toEntity(examinantWorkflowCheckModel.getExaminant()));
+    lineWorkflow.setStatus(
+        examinantWorkflowCheckModel.isAccepted() ? WorkflowStatus.APPROVED : WorkflowStatus.REJECTED);
 
-    private String buildTranslatedStatus(LineWorkflow lineWorkflow) {
-        return switch (lineWorkflow.getStatus()) {
-            case STARTED -> "prüfen";
-            case APPROVED -> "genehmigt";
-            case REJECTED -> "zurückgewiesen";
-            default -> throw new IllegalArgumentException();
-        };
+    processWorkflowOnLidi(lineWorkflow);
+    notificationService.sendEventToMail(lineWorkflow);
+    return lineWorkflow;
+  }
+
+  WorkflowStatus processWorkflowOnLidi(LineWorkflow lineWorkflow) {
+    WorkflowEvent workflowEvent = WorkflowEvent.builder()
+        .workflowId(lineWorkflow.getId())
+        .businessObjectId(lineWorkflow.getBusinessObjectId())
+        .workflowStatus(lineWorkflow.getStatus())
+        .workflowType(lineWorkflow.getWorkflowType())
+        .build();
+    if (workflowEvent.getWorkflowType() == WorkflowType.LINE) {
+      return lineWorkflowClient.processWorkflow(workflowEvent);
     }
+    throw new UnsupportedOperationException();
+  }
 
-    private List<Map<String, Object>> buildMailProperties(LineWorkflow lineWorkflow) {
-        List<Map<String, Object>> mailProperties = new ArrayList<>();
-        Map<String, Object> mailContentProperty = new HashMap<>();
-        mailContentProperty.put("title", "Antrag für eine neue/geänderte Linie " + buildTranslatedStatus(lineWorkflow));
-        mailContentProperty.put("teaser", getTeaser(lineWorkflow));
-        mailContentProperty.put("swissId", lineWorkflow.getSwissId());
-        mailContentProperty.put("description", getWorkflowDescription(lineWorkflow));
-        mailContentProperty.put("checkComment", StringUtils.trimToNull(lineWorkflow.getCheckComment()));
-        mailContentProperty.put("url", getUrl(lineWorkflow));
-        mailProperties.add(mailContentProperty);
-        return mailProperties;
-    }
-
-    private String getTeaser(LineWorkflow lineWorkflow) {
-        return switch (lineWorkflow.getStatus()) {
-            case STARTED ->
-                    "Es wurde eine neue Linie bzw. eine Änderung an einer bestehenden Linie erfasst welche eine Freigabe erfordert.";
-            case APPROVED, REJECTED ->
-                    "Der von Ihnen gestellte Antrag für die " + lineWorkflow.getSwissId() + " " + getWorkflowDescription(
-                        lineWorkflow) + " wurde überprüft und " + buildTranslatedStatus(lineWorkflow) + ".";
-            default -> throw new IllegalArgumentException();
-        };
-    }
-
-    private String getUrl(LineWorkflow lineWorkflow) {
-        return AtlasFrontendBaseUrl.getUrl(activeProfile) + LINE_URL + lineWorkflow.getSwissId() + "?id=" + lineWorkflow.getBusinessObjectId();
-    }
-
-    private String getWorkflowDescription(LineWorkflow lineWorkflow){
-        if (StringUtils.isBlank(lineWorkflow.getDescription())) {
-            return "(Keine Linienbezeichnung)";
-        }
-        return lineWorkflow.getDescription();
-    }
-
+  private boolean hasWorkflowInProgress(Long businessObjectId) {
+    return !repository.findAllByBusinessObjectIdAndStatus(businessObjectId, WorkflowStatus.STARTED).isEmpty();
+  }
 }
