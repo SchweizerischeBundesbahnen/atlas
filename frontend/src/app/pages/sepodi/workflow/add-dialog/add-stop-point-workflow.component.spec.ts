@@ -7,7 +7,7 @@ import {WorkflowFormComponent} from "../../../../core/workflow/workflow-form/wor
 import {WorkflowCheckFormComponent} from "../../../../core/workflow/workflow-check-form/workflow-check-form.component";
 import {CommentComponent} from "../../../../core/form-components/comment/comment.component";
 import {ErrorNotificationComponent} from "../../../../core/notification/error/error-notification.component";
-import {MockAtlasButtonComponent} from "../../../../app.testing.mocks";
+import {adminUserServiceMock, MockAtlasButtonComponent} from "../../../../app.testing.mocks";
 import {AppTestingModule} from "../../../../app.testing.module";
 import {NotificationService} from "../../../../core/notification/notification.service";
 import {FormModule} from "../../../../core/module/form.module";
@@ -25,9 +25,12 @@ import {of} from "rxjs";
 import {ReadStopPointWorkflow, StopPointWorkflowService} from "../../../../api";
 import {Router} from "@angular/router";
 import {AtlasSpacerComponent} from "../../../../core/components/spacer/atlas-spacer.component";
+import {UserService} from "../../../../core/auth/user/user.service";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
+  sloid: 'ch:1:sloid:8000',
+  workflowComment: "No comment"
 };
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 const notificationServiceSpy = jasmine.createSpyObj(['success']);
@@ -80,6 +83,7 @@ describe('AddStopPointWorkflowComponent', () => {
         {provide: NotificationService, useValue: notificationServiceSpy},
         {provide: DetailHelperService, useValue: detailHelperService},
         {provide: StopPointWorkflowService, useValue: stopPointWorkflowService},
+        {provide: UserService, useValue: adminUserServiceMock},
         {provide: Router, useValue: router},
         {provide: TranslatePipe},
       ],

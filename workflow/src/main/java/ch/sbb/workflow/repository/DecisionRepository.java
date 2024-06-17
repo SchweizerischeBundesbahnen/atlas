@@ -1,4 +1,4 @@
-package ch.sbb.workflow.workflow;
+package ch.sbb.workflow.repository;
 
 import ch.sbb.workflow.entity.Decision;
 import org.springframework.data.jpa.repository.JpaRepository;

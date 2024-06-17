@@ -8,28 +8,28 @@ import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.atlas.workflow.model.WorkflowType;
 import ch.sbb.workflow.entity.LineWorkflow;
-import ch.sbb.workflow.service.lidi.LineWorkflowService;
+import ch.sbb.workflow.service.lidi.LineWorkflowBuilderNotificationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
- class LineWorkflowNotificationServiceTest {
+class LineLineWorkflowNotificationServiceTest {
 
-  private WorkflowNotificationService notificationService;
+ private LineWorkflowNotificationService notificationService;
 
-  @Mock
-  private MailProducerService mailProducerService;
+ @Mock
+ private MailProducerService mailProducerService;
 
-  @Mock
-  private LineWorkflowService lineWorkflowService;
+ @Mock
+ private LineWorkflowBuilderNotificationService lineWorkflowBuilderNotificationService;
 
-  @BeforeEach
+ @BeforeEach
    void setUp() {
-    MockitoAnnotations.openMocks(this);
-    notificationService = new WorkflowNotificationService(mailProducerService, lineWorkflowService);
-  }
+  MockitoAnnotations.openMocks(this);
+  notificationService = new LineWorkflowNotificationService(mailProducerService, lineWorkflowBuilderNotificationService);
+ }
 
   @Test
    void shouldSendEventToMail() {
@@ -39,7 +39,7 @@ import org.mockito.MockitoAnnotations;
         .status(WorkflowStatus.STARTED)
         .build();
     MailNotification mailNotification = MailNotification.builder().build();
-    when(lineWorkflowService.buildWorkflowStartedMailNotification(lineWorkflow)).thenReturn(mailNotification);
+   when(lineWorkflowBuilderNotificationService.buildWorkflowStartedMailNotification(lineWorkflow)).thenReturn(mailNotification);
 
     //when
     notificationService.sendEventToMail(lineWorkflow);
@@ -54,7 +54,7 @@ import org.mockito.MockitoAnnotations;
     LineWorkflow lineWorkflow = LineWorkflow.builder()
         .build();
     MailNotification mailNotification = MailNotification.builder().build();
-    when(lineWorkflowService.buildWorkflowStartedMailNotification(lineWorkflow)).thenReturn(mailNotification);
+   when(lineWorkflowBuilderNotificationService.buildWorkflowStartedMailNotification(lineWorkflow)).thenReturn(mailNotification);
     //when
     notificationService.sendEventToMail(lineWorkflow);
     //then
