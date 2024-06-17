@@ -29,7 +29,7 @@ public class StopPointWorkflowBuilderNotificationService {
   @Value("${mail.workflow.stop-point.from}")
   private String from;
 
-  public MailNotification buildWorkflowStartedExaminantMailNotification(StopPointWorkflow stopPointWorkflow) {
+  public MailNotification buildWorkflowStartedExaminantMail(StopPointWorkflow stopPointWorkflow) {
     List<String> examinantMails = stopPointWorkflow.getExaminants().stream().map(Person::getMail).toList();
     return MailNotification.builder()
         .from(from)
@@ -40,7 +40,7 @@ public class StopPointWorkflowBuilderNotificationService {
         .build();
   }
 
-  public MailNotification buildWorkflowStartedCCMailNotification(StopPointWorkflow stopPointWorkflow) {
+  public MailNotification buildWorkflowStartedCCMail(StopPointWorkflow stopPointWorkflow) {
     List<String> ccMails = stopPointWorkflow.getCcEmails() != null ? stopPointWorkflow.getCcEmails() : new ArrayList<>();
     ccMails.add(stopPointWorkflow.getApplicantMail());
     return MailNotification.builder()
@@ -52,7 +52,7 @@ public class StopPointWorkflowBuilderNotificationService {
         .build();
   }
 
-  public MailNotification buildWorkflowRejectExaminantMailNotification(StopPointWorkflow stopPointWorkflow) {
+  public MailNotification buildWorkflowRejectExaminantMail(StopPointWorkflow stopPointWorkflow) {
     List<String> ccMails = stopPointWorkflow.getCcEmails();
     ccMails.addAll(stopPointWorkflow.getExaminants().stream().map(Person::getMail).toList());
     return MailNotification.builder()
@@ -73,7 +73,6 @@ public class StopPointWorkflowBuilderNotificationService {
     mailContentProperty.put("sloid", stopPointWorkflow.getSloid());
     mailContentProperty.put("comment", stopPointWorkflow.getWorkflowComment());
     mailContentProperty.put("endDate", stopPointWorkflow.getEndDate());
-    mailContentProperty.put("sboid", stopPointWorkflow.getSboid());
     mailContentProperty.put("url", getUrl(stopPointWorkflow));
     mailProperties.add(mailContentProperty);
     return mailProperties;
