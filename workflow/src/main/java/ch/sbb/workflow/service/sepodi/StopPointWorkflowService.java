@@ -15,6 +15,7 @@ import ch.sbb.workflow.mapper.ClientPersonMapper;
 import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
+import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.workflow.DecisionRepository;
@@ -44,6 +45,16 @@ public class StopPointWorkflowService {
 
   public Page<StopPointWorkflow> getWorkflows(StopPointWorkflowSearchRestrictions searchRestrictions) {
     return workflowRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
+  }
+
+  public StopPointWorkflow editWorkflow(Long id, EditStopPointWorkflowModel workflowModel) {
+    StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
+    if (!stopPointWorkflow.getDesignationOfficial().equals(workflowModel.getDesignationOfficial())
+        && stopPointWorkflow.getStatus() != WorkflowStatus.ADDED) {
+      throw new IllegalStateException(EXCEPTION_MSG);
+    }
+    stopPointWorkflow.setWorkflowComment(workflowModel.getWorkflowComment());
+    return workflowRepository.save(stopPointWorkflow);
   }
 
   public StopPointWorkflow addExaminantToWorkflow(Long id, StopPointClientPersonModel personModel) {
