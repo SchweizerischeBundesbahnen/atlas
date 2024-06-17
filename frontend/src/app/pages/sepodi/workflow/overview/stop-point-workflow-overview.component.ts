@@ -81,7 +81,7 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
       this.tableService.filter.workflowStatus.getActiveSearch(),
       undefined,
       undefined,
-      [this.tableService.filter.locality.getActiveSearch()],
+      this.tableService.filter.locality.getActiveSearch(),
       [this.tableService.filter.sboid.getActiveSearch()?.sboid],
       undefined,
       undefined,
