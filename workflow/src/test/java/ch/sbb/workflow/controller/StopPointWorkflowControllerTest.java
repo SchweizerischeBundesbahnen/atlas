@@ -40,10 +40,10 @@ import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
+import ch.sbb.workflow.repository.DecisionRepository;
+import ch.sbb.workflow.repository.OtpRepository;
+import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import ch.sbb.workflow.service.sepodi.SePoDiClientService;
-import ch.sbb.workflow.workflow.DecisionRepository;
-import ch.sbb.workflow.workflow.OtpRepository;
-import ch.sbb.workflow.workflow.StopPointWorkflowRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -618,7 +618,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(decisionResult.getMotivation()).isEqualTo(stopPointRejectWorkflowModel.getMotivationComment());
     assertThat(decisionResult.getDecisionType()).isEqualTo(DecisionType.REJECTED);
 
-    verify(notificationService).sendRejectPointWorkflowMail(any(StopPointWorkflow.class));
+    verify(notificationService).sendRejectStopPointWorkflowMail(any(StopPointWorkflow.class));
   }
 
   @Test
