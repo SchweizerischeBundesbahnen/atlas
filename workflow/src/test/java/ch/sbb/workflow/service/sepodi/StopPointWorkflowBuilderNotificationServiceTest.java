@@ -94,7 +94,6 @@ class StopPointWorkflowBuilderNotificationServiceTest {
     //when
     List<Map<String, Object>> result = notificationService.buildMailProperties(stopPointWorkflow, REJECT_WORKFLOW_SUBJECT);
     //then
-    assertThat(result).isNotNull();
     assertThat(result).hasSize(1);
     Map<String, Object> properties = result.getFirst();
     assertThat(properties).hasSize(6).containsKeys("title", "designationOfficial", "sloid", "comment", "endDate", "url");
