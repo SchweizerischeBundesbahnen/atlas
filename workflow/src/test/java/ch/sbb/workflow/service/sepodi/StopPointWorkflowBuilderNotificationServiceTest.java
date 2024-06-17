@@ -15,6 +15,7 @@ import ch.sbb.workflow.entity.StopPointWorkflow;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -83,7 +84,20 @@ class StopPointWorkflowBuilderNotificationServiceTest {
     assertThat(result.getMailType()).isEqualTo(REJECT_STOP_POINT_WORKFLOW_NOTIFICATION);
     assertThat(result.getSubject()).isEqualTo(REJECT_WORKFLOW_SUBJECT);
     assertThat(result.getTo()).hasSize(1).contains("app@lica.ma");
-    assertThat(result.getCc()).hasSize(4).contains("a@b.ch","b@c.dh","p@a.ch","t@a.ch");
+    assertThat(result.getCc()).hasSize(4).contains("a@b.ch", "b@c.dh", "p@a.ch", "t@a.ch");
+  }
+
+  @Test
+  void shouldContainsBuildMailProperties() {
+    //given
+    StopPointWorkflow stopPointWorkflow = getStopPointWorkflow();
+    //when
+    List<Map<String, Object>> result = notificationService.buildMailProperties(stopPointWorkflow, REJECT_WORKFLOW_SUBJECT);
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result).hasSize(1);
+    Map<String, Object> properties = result.getFirst();
+    assertThat(properties).hasSize(6).containsKeys("title", "designationOfficial", "sloid", "comment", "endDate", "url");
   }
 
   private static StopPointWorkflow getStopPointWorkflow() {
