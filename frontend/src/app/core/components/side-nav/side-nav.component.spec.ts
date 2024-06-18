@@ -70,7 +70,7 @@ describe('SideNavComponent', () => {
   });
 
   const assertActiveNavItem = (pageTitle: string) => {
-    const navItems = fixture.debugElement.queryAll(By.css('div'));
+    const navItems = fixture.debugElement.queryAll(By.css('a'));
     const activeNavItemIndex = navItems.findIndex((item) =>
       Object.keys(item.classes).includes('route-active'),
     );
@@ -80,15 +80,22 @@ describe('SideNavComponent', () => {
     );
   };
 
-  it('should select the correct page based on the current URL', () => {
+  it('should set activePageIndex correct', () => {
     const currentUrl = '/service-point-directory';
-    component.selectPage(currentUrl);
-    expect(component.selectedPage).toEqual(Pages.SEPODI);
+    component.getActivePageIndex(currentUrl);
+    expect(component.activePageIndex).toBe(3);
   });
 
-  it('should select Home if the URL does not match', () => {
-    const currentUrl = '/nonexistent';
-    component.selectPage(currentUrl);
-    expect(component.selectedPage).toEqual(Pages.HOME);
+  it('should set activeSubPageIndex correct', () => {
+    const currentUrl = '/service-point-directory/workflows';
+    component.getActivePageIndex(currentUrl);
+    expect(component.activeSubPageIndex).toBe(0);
+    expect(component.activePageIndex).toBeNull();
+  });
+
+  it('should set index for unknown page to 0', () => {
+    component.getActivePageIndex('/unknown');
+    expect(component.activePageIndex).toBe(0);
+    expect(component.activeSubPageIndex).toBe(0);
   });
 });
