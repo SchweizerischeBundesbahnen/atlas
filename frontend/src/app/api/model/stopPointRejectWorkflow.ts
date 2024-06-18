@@ -9,11 +9,33 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Client } from './client';
 
 
 export interface StopPointRejectWorkflow { 
-    examinantBAVClient: Client;
+    /**
+     * Firstname
+     */
+    firstName?: string;
+    /**
+     * Second
+     */
+    lastName?: string;
+    /**
+     * Object creation date
+     */
+    readonly creationDate?: string;
+    /**
+     * Last edition date
+     */
+    readonly editionDate?: string;
+    /**
+     * Organisation
+     */
+    organisation: string;
+    /**
+     * mail
+     */
+    mail: string;
     /**
      * Reject motivation
      */
