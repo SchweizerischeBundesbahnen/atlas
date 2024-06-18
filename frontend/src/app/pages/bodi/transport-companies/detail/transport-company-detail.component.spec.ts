@@ -13,7 +13,6 @@ import {RelationComponent} from '../../../../core/components/relation/relation.c
 import moment from 'moment';
 import {Observable, of} from 'rxjs';
 import {CommentComponent} from '../../../../core/form-components/comment/comment.component';
-import {Component} from '@angular/core';
 import {adminPermissionServiceMock, MockAtlasButtonComponent} from '../../../../app.testing.mocks';
 import {TextFieldComponent} from '../../../../core/form-components/text-field/text-field.component';
 import {AtlasLabelFieldComponent} from '../../../../core/form-components/atlas-label-field/atlas-label-field.component';
@@ -76,12 +75,6 @@ let component: TransportCompanyDetailComponent;
 let fixture: ComponentFixture<TransportCompanyDetailComponent>;
 
 let boService: BusinessOrganisationsService;
-
-@Component({
-  selector: 'app-dialog-close',
-  template: '',
-})
-class MockDialogCloseComponent {}
 
 describe('TransportCompanyDetailComponent', () => {
   const mockData = [transportCompany, transportCompanyRelations];
@@ -235,7 +228,6 @@ function setupTestBed(data: (TransportCompany | TransportCompanyBoRelation[])[])
       RelationComponent,
       SearchSelectComponent,
       CommentComponent,
-      MockDialogCloseComponent,
       MockAtlasButtonComponent,
       TextFieldComponent,
       AtlasLabelFieldComponent,
