@@ -2,6 +2,7 @@ package ch.sbb.workflow.mapper;
 
 import ch.sbb.atlas.api.workflow.PersonModel;
 import ch.sbb.workflow.entity.Person;
+import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -22,6 +23,15 @@ public class PersonMapper {
         .firstName(model.getFirstName())
         .lastName(model.getLastName())
         .function(model.getPersonFunction())
+        .build();
+  }
+
+  public Person toPersonEntity(StopPointRejectWorkflowModel rejectWorkflowModel) {
+    return Person.builder()
+        .firstName(rejectWorkflowModel.getFirstName())
+        .lastName(rejectWorkflowModel.getLastName())
+        .mail(rejectWorkflowModel.getMail())
+        .organisation(rejectWorkflowModel.getOrganisation())
         .build();
   }
 
