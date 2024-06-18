@@ -35,6 +35,15 @@
         (buttonClicked)="startWF()"
       >
       </atlas-button>
+      <atlas-button
+        buttonDataCy="cancel-wf"
+        buttonText="WORKFLOW.BUTTON.REJECT"
+        buttonType="supervisorButton"
+        applicationType="SEPODI"
+        wrapperStyleClass="ms-3"
+        (buttonClicked)="rejectWF()"
+      >
+      </atlas-button>
     }
     @if (workflow.status === WorkflowStatus.Hearing) {
       <atlas-button
