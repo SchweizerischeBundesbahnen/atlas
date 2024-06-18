@@ -59,11 +59,12 @@ export class StopPointRejectWorkflowDialogComponent implements OnInit {
         StopPointRejectWorkflowFormGroupBuilder.buildStopPointRejectWorkflow(this.formGroup, this.email);
       this.formGroup.disable();
       this.stopPointWorkflowService.rejectStopPointWorkflow(this.data.workflowId, stopPointRejectWorkflow)
-        .subscribe((rejectedWorkflow) => {
+        .subscribe(() => {
           this.notificationService.success('WORKFLOW.NOTIFICATION.CHECK.REJECTED');
           this.dialogRef.close();
-          this.router.navigateByUrl('/', {skipLocationChange: true }).then(() =>{
-            this.router.navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, this.data.workflowId]).then(() =>{});
+          this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+            this.router.navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, this.data.workflowId]).then(() => {
+            });
           })
         })
     }
