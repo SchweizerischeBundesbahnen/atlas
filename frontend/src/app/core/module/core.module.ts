@@ -56,6 +56,8 @@ import { MeansOfTransportPickerComponent } from '../../pages/sepodi/means-of-tra
 import {DetailPageContentComponent} from "../components/detail-page-content/detail-page-content.component";
 import {StringListComponent} from "../form-components/string-list/string-list.component";
 import {OAuthCookieStorage} from "../cookies/oauth-cookie-storage";
+import {DialogContentComponent} from "../components/dialog/content/dialog-content.component";
+import {DialogFooterComponent} from "../components/dialog/footer/dialog-footer.component";
 
 const coreComponents = [
   WorkflowFormComponent,
@@ -65,6 +67,8 @@ const coreComponents = [
   BaseDetailComponent,
   DetailPageContainerComponent,
   DetailPageContentComponent,
+  DialogContentComponent,
+  DialogFooterComponent,
   DetailFooterComponent,
   UserDetailInfoComponent,
   AtlasButtonComponent,
