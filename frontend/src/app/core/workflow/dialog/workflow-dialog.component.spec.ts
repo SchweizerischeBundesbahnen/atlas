@@ -25,6 +25,9 @@ import {WorkflowFormComponent} from '../workflow-form/workflow-form.component';
 import {adminPermissionServiceMock, MockAtlasButtonComponent} from '../../../app.testing.mocks';
 import {PermissionService} from "../../auth/permission/permission.service";
 import WorkflowTypeEnum = WorkflowStart.WorkflowTypeEnum;
+import {DialogFooterComponent} from "../../components/dialog/footer/dialog-footer.component";
+import {DialogContentComponent} from "../../components/dialog/content/dialog-content.component";
+import {DialogCloseComponent} from "../../components/dialog/close/dialog-close.component";
 
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 const notificationServiceSpy = jasmine.createSpyObj(['success']);
@@ -150,6 +153,9 @@ function setupTestBed(workflowDialogData: WorkflowDialogData) {
       CommentComponent,
       ErrorNotificationComponent,
       MockAtlasButtonComponent,
+      DialogCloseComponent,
+      DialogFooterComponent,
+      DialogContentComponent,
     ],
     imports: [AppTestingModule, FormModule],
     providers: [
