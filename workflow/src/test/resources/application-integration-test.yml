@@ -72,7 +72,7 @@ examinants:
     firstname: "atlas"
     organisation: "SKI - Systemaufgaben Kundeninformation"
     email: "TechSupport-ATLAS@sbb.ch"
-    function: "Specialist Office"
+    function: "Fachstelle atlas"
   cantons:
     - abbreviation: "ZH"
       lastName: ""
