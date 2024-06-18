@@ -20,7 +20,7 @@ export class StopPointRejectWorkflowDialogService {
       title: 'WORKFLOW.BUTTON.REJECT',
       message: '',
       cancelText: 'DIALOG.CANCEL',
-      confirmText: 'WORKFLOW.BUTTON.SEND',
+      confirmText: 'WORKFLOW.BUTTON.REJECT',
       workflowId: workflowId
     };
 
