@@ -21,7 +21,7 @@ import {DetailFormComponent} from '../../../../core/leave-guard/leave-dirty-form
 import {ServicePointAbbreviationAllowList} from './service-point-abbreviation-allow-list';
 import {GeographyFormGroup, GeographyFormGroupBuilder,} from '../../geography/geography-form-group';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import { ValidityService } from '../../validity/validity.service';
+import {ValidityService} from '../../validity/validity.service';
 import {PermissionService} from "../../../../core/auth/permission/permission.service";
 import {AddStopPointWorkflowDialogService} from "../../workflow/add-dialog/add-stop-point-workflow-dialog.service";
 
@@ -133,12 +133,15 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   }
 
   private displayAndSelectServicePointOnMap() {
-    if (!this.mapService.mapInitialized.value) return;
-    if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
-      this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
-    }
-    this.mapService.centerOn(this.selectedVersion?.servicePointGeolocation?.wgs84);
-    this.mapService.displayCurrentCoordinates(this.selectedVersion?.servicePointGeolocation?.wgs84);
+    this.mapService.mapInitialized.subscribe((initialized) => {
+      if (initialized) {
+        if (this.mapService.map.getZoom() <= this.ZOOM_LEVEL_FOR_DETAIL) {
+          this.mapService.map.setZoom(this.ZOOM_LEVEL_FOR_DETAIL);
+        }
+        this.mapService.centerOn(this.selectedVersion?.servicePointGeolocation?.wgs84);
+        this.mapService.displayCurrentCoordinates(this.selectedVersion?.servicePointGeolocation?.wgs84);
+      }
+    });
   }
 
   toggleEdit() {

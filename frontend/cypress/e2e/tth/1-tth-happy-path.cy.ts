@@ -121,7 +121,10 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
   });
 
   it('Step-10: Archivierte Anhörungn kontrollieren', () => {
+    cy.intercept('GET', 'line-directory/v1/timetable-hearing/years?statusChoices=ARCHIVED').as('loadYears');
     TthUtils.changeTabToTTH('ARCHIVED');
+    cy.wait('@loadYears').its('response.statusCode').should('eq', 200);
+
     CommonUtils.selectItemFromDropDown(DataCy.TTH_SELECT_YEAR, String(selectedHearingYear));
     CommonUtils.assertNumberOfTableRows(DataCy.TTH_TABLE, 1);
   });
