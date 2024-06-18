@@ -56,7 +56,7 @@ public class Examinants {
         .firstName(specialistOffice.getFirstname())
         .lastName(specialistOffice.getLastname())
         .organisation(specialistOffice.getOrganisation())
-        .mail(specialistOffice.getEmail())
+        .mail(getEmailByEnv(specialistOffice.getEmail()))
         .build();
   }
 
