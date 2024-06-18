@@ -1,19 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  ReadServicePointVersion,
-  ReadStopPointWorkflow,
-  Status,
-  StopPointWorkflowService,
-  WorkflowStatus,
-} from '../../../../api';
-import { FormGroup } from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {ReadServicePointVersion, ReadStopPointWorkflow, Status, StopPointWorkflowService, WorkflowStatus,} from '../../../../api';
+import {FormGroup} from '@angular/forms';
 import {
   StopPointWorkflowDetailFormGroup,
   StopPointWorkflowDetailFormGroupBuilder,
 } from '../detail-form/stop-point-workflow-detail-form-group';
-import { ActivatedRoute } from '@angular/router';
-import { StopPointWorkflowDetailData } from './stop-point-workflow-detail-resolver.service';
-import { NotificationService } from '../../../../core/notification/notification.service';
+import {ActivatedRoute} from '@angular/router';
+import {StopPointWorkflowDetailData} from './stop-point-workflow-detail-resolver.service';
+import {NotificationService} from '../../../../core/notification/notification.service';
+import {
+  StopPointRejectWorkflowDialogService
+} from "../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog.service";
 
 @Component({
   selector: 'stop-point-workflow-detail',
@@ -26,6 +23,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private readonly stopPointWorkflowService: StopPointWorkflowService,
     private readonly notificationService: NotificationService,
+    private readonly stopPointRejectWorkflowService: StopPointRejectWorkflowDialogService
   ) {}
 
   form!: FormGroup<StopPointWorkflowDetailFormGroup>;
@@ -67,5 +65,9 @@ export class StopPointWorkflowDetailComponent implements OnInit {
         this.workflow = startedWF;
         this.notificationService.success('WORKFLOW.NOTIFICATION.START.SUCCESS');
       });
+  }
+
+  rejectWF() {
+    this.stopPointRejectWorkflowService.openDialog(this.workflow.id!)
   }
 }

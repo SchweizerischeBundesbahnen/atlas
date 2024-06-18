@@ -153,6 +153,6 @@ public class StopPointWorkflowService {
   }
 
   public StopPointWorkflow save(StopPointWorkflow stopPointWorkflow) {
-    return workflowRepository.save(stopPointWorkflow);
+    return workflowRepository.saveAndFlush(stopPointWorkflow);
   }
 }
