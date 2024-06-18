@@ -43,13 +43,25 @@ class ExaminantsTest {
   }
 
   @Test
-  void shouldGetExaminantSpecialistOffice() {
+  void shouldGetExaminantSpecialistOfficeNonProd() {
     //when
+    examinants.setActiveProfile("local");
     StopPointClientPersonModel result = examinants.getExaminantSpecialistOffice();
 
     //then
     assertThat(result).isNotNull();
     assertThat(result.getMail()).isEqualTo("TechSupport-ATLAS@sbb.ch");
+  }
+
+  @Test
+  void shouldGetExaminantSpecialistOfficeProd() {
+    //when
+    examinants.setActiveProfile("prod");
+    StopPointClientPersonModel result = examinants.getExaminantSpecialistOffice();
+
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getMail()).isEqualTo("atlas@sbb.ch");
   }
 
   @Test
