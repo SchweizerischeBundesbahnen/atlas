@@ -50,6 +50,7 @@ public class StopPointWorkflowService {
       throw new IllegalStateException(EXCEPTION_MSG);
     }
     stopPointWorkflow.setWorkflowComment(workflowModel.getWorkflowComment());
+    stopPointWorkflow.setDesignationOfficial(workflowModel.getDesignationOfficial());
     return save(stopPointWorkflow);
   }
 
