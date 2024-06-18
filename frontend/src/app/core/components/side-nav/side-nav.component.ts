@@ -34,7 +34,7 @@ export class SideNavComponent {
     this.enabledPages.forEach((page, index) => {
       if (currentUrl.includes(page.path)) {
         this.activePageIndex = index;
-        this.selectedPage = page
+        this.selectedPage = page;
         if (page.subpages) {
           page.subpages.forEach((subPage, index) => {
             if (currentUrl.includes(subPage.path)) {
