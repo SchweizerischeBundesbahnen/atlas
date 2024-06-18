@@ -1,0 +1,7 @@
+@use 'src/styles/variables' as variables;
+
+.detail-content {
+  color: variables.$black;
+  padding-left: 10px;
+  padding-right: 10px;
+}
