@@ -1,27 +1,22 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 
-import { UserAdministrationUserCreateComponent } from './user-administration-user-create.component';
-import { UserService } from '../../../service/user.service';
-import { BusinessOrganisationsService, User } from '../../../../../api';
-import { NotificationService } from '../../../../../core/notification/notification.service';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslatePipe,
-} from '@ngx-translate/core';
-import { of } from 'rxjs';
-import { Router } from '@angular/router';
-import { Component, Input } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { RouterTestingModule } from '@angular/router/testing';
-import { MaterialModule } from '../../../../../core/module/material.module';
-import { FormGroup } from '@angular/forms';
-import { UserPermissionManager } from '../../../service/user-permission-manager';
-import SpyObj = jasmine.SpyObj;
-import { DetailPageContainerComponent } from '../../../../../core/components/detail-page-container/detail-page-container.component';
-import { DetailFooterComponent } from '../../../../../core/components/detail-footer/detail-footer.component';
+import {UserAdministrationUserCreateComponent} from './user-administration-user-create.component';
+import {UserService} from '../../../service/user.service';
+import {BusinessOrganisationsService, User} from '../../../../../api';
+import {NotificationService} from '../../../../../core/notification/notification.service';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule, TranslatePipe,} from '@ngx-translate/core';
+import {of} from 'rxjs';
+import {Router} from '@angular/router';
+import {Component, Input} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {RouterTestingModule} from '@angular/router/testing';
+import {MaterialModule} from '../../../../../core/module/material.module';
+import {FormGroup} from '@angular/forms';
+import {UserPermissionManager} from '../../../service/user-permission-manager';
+import {DetailPageContainerComponent} from '../../../../../core/components/detail-page-container/detail-page-container.component';
+import {DetailFooterComponent} from '../../../../../core/components/detail-footer/detail-footer.component';
 import {DetailPageContentComponent} from "../../../../../core/components/detail-page-content/detail-page-content.component";
+import SpyObj = jasmine.SpyObj;
 
 @Component({
   selector: 'app-user-select',
@@ -30,12 +25,6 @@ import {DetailPageContentComponent} from "../../../../../core/components/detail-
 class MockUserSelectComponent {
   @Input() form?: FormGroup;
 }
-
-@Component({
-  selector: 'app-dialog-close',
-  template: '',
-})
-class MockDialogCloseComponent {}
 
 describe('UserAdministrationUserCreateComponent', () => {
   let component: UserAdministrationUserCreateComponent;
@@ -79,7 +68,6 @@ describe('UserAdministrationUserCreateComponent', () => {
       declarations: [
         UserAdministrationUserCreateComponent,
         MockUserSelectComponent,
-        MockDialogCloseComponent,
         DetailPageContainerComponent,
         DetailPageContentComponent,
         DetailFooterComponent,
