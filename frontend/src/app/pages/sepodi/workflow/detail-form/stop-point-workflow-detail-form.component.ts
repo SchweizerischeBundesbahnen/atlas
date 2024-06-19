@@ -6,6 +6,7 @@ import {AtlasFieldLengthValidator} from "../../../../core/validation/field-lengt
 import {StopPointWorkflowDetailFormGroup, StopPointWorkflowDetailFormGroupBuilder} from "./stop-point-workflow-detail-form-group";
 import {ValidationService} from "../../../../core/validation/validation.service";
 import {Pages} from "../../../pages";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'stop-point-workflow-detail-form',
@@ -21,6 +22,9 @@ export class StopPointWorkflowDetailFormComponent {
   @Input() oldDesignation?: string;
   @Input() form!: FormGroup<StopPointWorkflowDetailFormGroup>;
   @Input() currentWorkflow?: ReadStopPointWorkflow;
+
+  constructor(private router: Router) {
+  }
 
   addExaminant() {
     const examinantsControl = this.form.controls.examinants;
@@ -41,6 +45,13 @@ export class StopPointWorkflowDetailFormComponent {
   }
 
   goToAtlasStopPoint() {
-    window.open(Pages.SEPODI.path + '/' + Pages.SERVICE_POINTS.path + '/' + this.stopPoint?.number.number, "_blank");
+    this.router.navigate([
+      Pages.SEPODI.path,
+      Pages.SERVICE_POINTS.path,
+      this.stopPoint?.number.number], {
+      queryParams: {
+        id: this.stopPoint?.id,
+      }
+    }).then();
   }
 }
