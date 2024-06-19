@@ -7,6 +7,8 @@ import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
+import ch.sbb.workflow.model.sepodi.OtpRequestModel;
+import ch.sbb.workflow.model.sepodi.OtpVerificationModel;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
 import ch.sbb.workflow.model.sepodi.ReadStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
@@ -14,6 +16,7 @@ import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointWorkflowRequestParams;
+import ch.sbb.workflow.service.sepodi.StopPointWorkflowOtpService;
 import ch.sbb.workflow.service.sepodi.StopPointWorkflowService;
 import ch.sbb.workflow.service.sepodi.StopPointWorkflowTransitionService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
 
   private final StopPointWorkflowService service;
+  private final StopPointWorkflowOtpService otpService;
   private final StopPointWorkflowTransitionService workflowTransitionService;
 
 
@@ -79,12 +83,18 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   }
 
   @Override
-  public void obtainOtpForStopPointWorkflow(Long id, Long personId) {
-    service.obtainOtp(id,personId);
+  public void obtainOtp(Long id, OtpRequestModel otpRequest) {
+    otpService.obtainOtp(service.findStopPointWorkflow(id), otpRequest.getExaminantMail());
+  }
+
+  @Override
+  public boolean verifyOtp(Long id, OtpVerificationModel otpVerification) {
+    return otpService.isPinCodeValid(id, otpVerification);
   }
 
   @Override
   public void voteWorkflow(Long id, Long personId, DecisionModel decisionModel) {
+    otpService.validatePinCode(id, decisionModel);
     service.voteWorkFlow(id, personId,decisionModel);
   }
 
