@@ -1003,7 +1003,8 @@
         "VERSION_VALID_FROM": "Arrêt valable à partir du",
         "CREATION": "Saisie de l'audition",
         "START": "Début de l'audition",
-        "END": "Fin de l'audition"
+        "END": "Fin de l'audition",
+        "SEARCH": "SLOID - désignation officielle"
       }
     },
     "TRAFFIC_POINT_ELEMENTS": {
