@@ -55,6 +55,8 @@ public interface StopPointWorkflowApiV1 {
   ReadStopPointWorkflowModel startStopPointWorkflow(@PathVariable Long id);
 
   @PostMapping(path = "/edit/{id}")
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
+          + ".ApplicationType).SEPODI)")
   ReadStopPointWorkflowModel editStopPointWorkflow(@PathVariable Long id,
       @RequestBody @Valid EditStopPointWorkflowModel workflowModel);
 
