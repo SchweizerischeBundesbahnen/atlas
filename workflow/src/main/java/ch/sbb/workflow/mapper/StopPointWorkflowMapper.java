@@ -1,10 +1,12 @@
 package ch.sbb.workflow.mapper;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.model.sepodi.ReadStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
@@ -17,7 +19,10 @@ public class StopPointWorkflowMapper {
         .id(entity.getId())
         .sloid(entity.getSloid())
         .versionId(entity.getVersionId())
-        .examinants(entity.getExaminants().stream().map(StopPointClientPersonMapper::toModel).toList())
+        .examinants(entity.getExaminants().stream()
+            .sorted(Comparator.comparing(Person::getId))
+            .map(StopPointClientPersonMapper::toModel)
+            .toList())
         .designationOfficial(entity.getDesignationOfficial())
         .ccEmails(entity.getCcEmails())
         .status(entity.getStatus())

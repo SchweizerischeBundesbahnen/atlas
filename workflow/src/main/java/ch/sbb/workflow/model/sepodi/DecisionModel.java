@@ -9,17 +9,19 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @Schema(name = "Decision")
-public class DecisionModel {
+public class DecisionModel extends OtpVerificationModel {
 
-  @Schema(description = "Judgement", example = "true")
+  @Schema(description = "Judgement")
   @NotNull
   private JudgementType judgement;
 
@@ -27,7 +29,5 @@ public class DecisionModel {
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_1500)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String motivation;
-
-  private String pinCode;
 
 }
