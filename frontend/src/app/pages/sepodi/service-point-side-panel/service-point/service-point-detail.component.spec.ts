@@ -70,7 +70,7 @@ describe('ServicePointDetailComponent', () => {
   let component: ServicePointDetailComponent;
   let fixture: ComponentFixture<ServicePointDetailComponent>;
 
-  const activatedRouteMock = { parent: { data: of({ servicePoint: BERN }) } };
+  const activatedRouteMock = {parent: {data: of({servicePoint: BERN})}};
 
   let validityService: ValidityService;
 
@@ -98,13 +98,13 @@ describe('ServicePointDetailComponent', () => {
       imports: [AppTestingModule, FormsModule],
       providers: [
         ValidityService,
-        { provide: PermissionService, useValue: adminPermissionServiceMock },
-        { provide: ActivatedRoute, useValue: activatedRouteMock },
-        { provide: DialogService, useValue: dialogServiceSpy },
-        { provide: ServicePointsService, useValue: servicePointsServiceSpy },
-        { provide: NotificationService, useValue: notificationServiceSpy },
-        { provide: TranslatePipe },
-        { provide: MapService, useValue: mapServiceSpy },
+        {provide: PermissionService, useValue: adminPermissionServiceMock},
+        {provide: ActivatedRoute, useValue: activatedRouteMock},
+        {provide: DialogService, useValue: dialogServiceSpy},
+        {provide: ServicePointsService, useValue: servicePointsServiceSpy},
+        {provide: NotificationService, useValue: notificationServiceSpy},
+        {provide: TranslatePipe},
+        {provide: MapService, useValue: mapServiceSpy},
         {provide: AddStopPointWorkflowDialogService, useValue: addStopPointWorkflowDialogService},
       ],
     }).compileComponents();
@@ -239,7 +239,7 @@ describe('ServicePointDetailComponent', () => {
         designationOfficial: 'efgh',
         validFrom: new Date(1999, 0, 1),
         validTo: new Date(2002, 0, 1),
-        number: { number: 123457, numberShort: 32, uicCountryCode: 0, checkDigit: 0 },
+        number: {number: 123457, numberShort: 32, uicCountryCode: 0, checkDigit: 0},
         status: Status.Validated,
         country: Country.Switzerland,
       },
@@ -273,7 +273,7 @@ describe('ServicePointDetailComponent', () => {
         designationOfficial: 'efgh',
         validFrom: new Date(2020, 0, 1),
         validTo: new Date(2099, 0, 1),
-        number: { number: 123457, numberShort: 32, uicCountryCode: 0, checkDigit: 0 },
+        number: {number: 123457, numberShort: 32, uicCountryCode: 0, checkDigit: 0},
         status: Status.Validated,
         country: Country.Switzerland,
       },
