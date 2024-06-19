@@ -11,12 +11,15 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {StringListComponent} from "../../../../core/form-components/string-list/string-list.component";
 import {MockAtlasButtonComponent} from "../../../../app.testing.mocks";
 import {AtlasSpacerComponent} from "../../../../core/components/spacer/atlas-spacer.component";
+import {Router} from "@angular/router";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
   sloid: 'ch:1:sloid:8000',
   workflowComment: "No comment"
 };
+
+let router: Router;
 
 describe('StopPointWorkflowDetailFormComponent', () => {
   let component: StopPointWorkflowDetailFormComponent;
@@ -45,6 +48,7 @@ describe('StopPointWorkflowDetailFormComponent', () => {
     component.stopPoint = BERN_WYLEREGG;
     component.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(workflow);
     fixture.detectChanges();
+    router = TestBed.inject(Router);
   });
 
   it('should create', () => {
@@ -80,9 +84,9 @@ describe('StopPointWorkflowDetailFormComponent', () => {
   });
 
   it('should go to atlas', () => {
-    spyOn(window, 'open');
+    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
 
     component.goToAtlasStopPoint();
-    expect(window.open).toHaveBeenCalledWith('service-point-directory/service-points/8589008', '_blank');
+    expect(router.navigate).toHaveBeenCalled();
   });
 });
