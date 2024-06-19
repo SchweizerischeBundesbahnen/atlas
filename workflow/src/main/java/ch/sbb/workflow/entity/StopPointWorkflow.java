@@ -48,7 +48,7 @@ public class StopPointWorkflow extends BaseWorkflowEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = VERSION_SEQ)
-  @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 1000)
+  @SequenceGenerator(name = VERSION_SEQ, sequenceName = VERSION_SEQ, allocationSize = 1, initialValue = 6000)
   private Long id;
 
   @NotNull
