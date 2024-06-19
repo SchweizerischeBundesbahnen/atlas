@@ -18,6 +18,8 @@ import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -49,8 +51,15 @@ public class StopPointWorkflowService {
         && stopPointWorkflow.getStatus() != WorkflowStatus.ADDED) {
       throw new IllegalStateException(EXCEPTION_MSG);
     }
+
     stopPointWorkflow.setWorkflowComment(workflowModel.getWorkflowComment());
     stopPointWorkflow.setDesignationOfficial(workflowModel.getDesignationOfficial());
+
+    stopPointWorkflow.setExaminants(workflowModel.getExaminants()
+            .stream()
+            .map(StopPointClientPersonMapper::toEntity)
+            .collect(Collectors.toSet()));
+
     return save(stopPointWorkflow);
   }
 
