@@ -23,6 +23,7 @@ import { DecisionStepperComponent } from './decision/decision-stepper/decision-s
 import {Pages} from "../../../pages";
 import {DialogService} from "../../../../core/components/dialog/dialog.service";
 import {ValidationService} from "../../../../core/validation/validation.service";
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 @Component({
   selector: 'stop-point-workflow-detail',
@@ -40,7 +41,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
     private readonly notificationService: NotificationService,
     private readonly stopPointRejectWorkflowDialogService: StopPointRejectWorkflowDialogService,
     private dialogService: DialogService,
-
+    private permissionService: PermissionService
   ) {}
 
   public isFormEnabled$ = new BehaviorSubject<boolean>(false);
@@ -48,12 +49,17 @@ export class StopPointWorkflowDetailComponent implements OnInit {
   form!: FormGroup<StopPointWorkflowDetailFormGroup>;
   stopPoint!: ReadServicePointVersion;
   workflow!: ReadStopPointWorkflow;
+  initWorkflow!: ReadStopPointWorkflow;
   oldDesignation?: string;
+  isAtLeastSupervisor!: boolean;
   bavActionEnabled = environment.sepodiWorkflowBavActionEnabled;
 
   ngOnInit() {
     const workflowData: StopPointWorkflowDetailData = this.route.snapshot.data.workflow;
     this.workflow = workflowData.workflow;
+
+    this.initWorkflow = this.workflow;
+    this.isAtLeastSupervisor = this.permissionService.isAtLeastSupervisor(ApplicationType.Sepodi);
 
     const indexOfVersionInReview = workflowData.servicePoint.findIndex(
       (i) => i.id === this.workflow.versionId,
@@ -180,12 +186,12 @@ export class StopPointWorkflowDetailComponent implements OnInit {
         .then(() => {});
     });
   }
+
   toggleEdit() {
     if (this.form?.enabled) {
       this.showConfirmationDialog();
     } else {
       this.enableForm();
-
     }
   }
 
@@ -194,6 +200,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
       .pipe(take(1))
       .subscribe((confirmed) => {
         if (confirmed) {
+          this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(this.initWorkflow)
           this.disableForm();
         }
       });
@@ -222,9 +229,12 @@ export class StopPointWorkflowDetailComponent implements OnInit {
   save() {
     ValidationService.validateForm(this.form!);
     if (this.form?.valid) {
-      let updatedVersion: EditStopPointWorkflow = {
+      const updatedVersion: EditStopPointWorkflow = {
         designationOfficial: this.form.controls.designationOfficial.value!,
         workflowComment: this.form.controls.workflowComment.value!
+
+        //TODO: Examinants - add / delete
+        //TODO: E-Mail edit
       }
       this.update(this.workflow.id!, updatedVersion);
     }
@@ -234,8 +244,11 @@ export class StopPointWorkflowDetailComponent implements OnInit {
     this.stopPointWorkflowService.editStopPointWorkflow(id, stopPointWorkflow)
       .pipe(catchError(this.handleError))
       .subscribe((workflow) => {
-        console.log("test ", workflow)
+
         this.workflow = workflow;
+        this.initWorkflow = workflow;
+
+        //TODO Sucessmessage anpassen
         this.notificationService.success("Erfolgreich");
         this.disableForm();
       });
@@ -245,6 +258,4 @@ export class StopPointWorkflowDetailComponent implements OnInit {
     this.enableForm();
     return EMPTY;
   };
-
-  //TODO: Save designation Official in Sepodi
 }
