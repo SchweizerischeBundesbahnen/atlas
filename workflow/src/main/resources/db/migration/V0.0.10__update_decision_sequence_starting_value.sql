@@ -1,2 +1,1 @@
 ALTER SEQUENCE decision_seq RESTART WITH 130000;
-ALTER SEQUENCE stop_point_workflow_seq RESTART WITH 6000;
