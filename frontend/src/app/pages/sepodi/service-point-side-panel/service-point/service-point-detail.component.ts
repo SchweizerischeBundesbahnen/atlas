@@ -61,6 +61,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
     private permissionService: PermissionService,
     private validityService: ValidityService,
     private addStopPointWorkflowDialogService: AddStopPointWorkflowDialogService,
+    protected activatedRoute: ActivatedRoute
   ) {
     this.route.parent?.data.pipe(takeUntilDestroyed()).subscribe((next) => {
       this.servicePointVersions = next.servicePoint;
@@ -102,6 +103,10 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   }
 
   private initServicePoint() {
+    const queryParamId = this.activatedRoute?.snapshot?.queryParams?.id;
+    if (queryParamId) {
+      this.preferredId = Number(queryParamId);
+    }
     VersionsHandlingService.addVersionNumbers(this.servicePointVersions);
     this.showVersionSwitch = VersionsHandlingService.hasMultipleVersions(this.servicePointVersions);
 
