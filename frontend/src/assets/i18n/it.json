@@ -1003,7 +1003,8 @@
         "VERSION_VALID_FROM": "Fermata valida da",
         "CREATION": "Registrazione dell'audizione",
         "START": "Inizio audizione",
-        "END": "Fine dell'audizione"
+        "END": "Fine dell'audizione",
+        "SEARCH": "SLOID - denominazione ufficiale"
       }
     },
     "TRAFFIC_POINT_ELEMENTS": {
