@@ -6,7 +6,7 @@
         [class]="chipSearch.elementWidthCssClass"
         class="d-flex flex-column search-box"
       >
-        <app-atlas-label-field fieldLabel="COMMON.SEARCH.SEARCH_CRITERIA"></app-atlas-label-field>
+        <app-atlas-label-field [fieldLabel]="chipSearch.fieldLabel"></app-atlas-label-field>
         <div
           [ngClass]="chipSearch.disabled ? 'disabled' : ''"
           class="search-main-field mb-4"

@@ -3,6 +3,14 @@ import { TableFilter } from './table-filter';
 
 export class TableFilterChip extends TableFilter<string[]> {
   activeSearch: string[] = [];
+  fieldLabel = "COMMON.SEARCH.SEARCH_CRITERIA";
+
+  constructor(row: number, elementWidthCssClass: string, fieldLabel?: string) {
+    super(row, elementWidthCssClass);
+    if (fieldLabel) {
+      this.fieldLabel = fieldLabel;
+    }
+  }
 
   getActiveSearch(): string[] {
     return this.activeSearch;
