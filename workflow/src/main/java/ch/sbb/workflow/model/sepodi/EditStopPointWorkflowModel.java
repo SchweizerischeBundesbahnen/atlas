@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Set;
+
 @AllArgsConstructor
 @Data
 @Builder
@@ -26,6 +28,10 @@ public class EditStopPointWorkflowModel {
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_1500)
   @Schema(description = "Hearing reasons")
   private String workflowComment;
+
+
+  @Schema(description = "List hearing examinants")
+  private Set<StopPointClientPersonModel> examinants;
 
 
 }
