@@ -1003,7 +1003,8 @@
         "VERSION_VALID_FROM": "Haltestelle gültig ab",
         "CREATION": "Erfassung Anhörung",
         "START": "Start Anhörung",
-        "END": "Ende Anhörung"
+        "END": "Ende Anhörung",
+        "SEARCH": "SLOID - offizielle Bezeichnung"
       }
     },
     "TRAFFIC_POINT_ELEMENTS": {
