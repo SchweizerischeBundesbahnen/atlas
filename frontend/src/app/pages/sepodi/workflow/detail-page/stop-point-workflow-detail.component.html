@@ -37,7 +37,6 @@
       wrapperStyleClass="ms-3"
     >
     </atlas-button>
-    <!--    TODO: Sichtbar nur wenn im Editmodus -->
     <atlas-button
       [footerEdit]="(isFormEnabled$ | async) ?? false"
       (buttonClicked)="toggleEdit()"
@@ -47,7 +46,6 @@
       wrapperStyleClass="ms-3"
     >
     </atlas-button>
-    <!--    TODO: Sichtbar nur wenn im Editmodus -->
     <atlas-button
       (click)="save()"
       [footerEdit]="(isFormEnabled$ | async) ?? false"
