@@ -3,7 +3,7 @@ import {
   ApplicationType, EditStopPointWorkflow,
   ReadServicePointVersion,
   ReadStopPointWorkflow,
-  Status,
+  Status, StopPointPerson,
   StopPointWorkflowService,
   WorkflowStatus,
 } from '../../../../api';
@@ -231,10 +231,8 @@ export class StopPointWorkflowDetailComponent implements OnInit {
     if (this.form?.valid) {
       const updatedVersion: EditStopPointWorkflow = {
         designationOfficial: this.form.controls.designationOfficial.value!,
-        workflowComment: this.form.controls.workflowComment.value!
-
-        //TODO: Examinants - add / delete
-        //TODO: E-Mail edit
+        workflowComment: this.form.controls.workflowComment.value!,
+        examinants: this.form.controls.examinants.value.map(examinant => examinant as StopPointPerson)
       }
       this.update(this.workflow.id!, updatedVersion);
     }
