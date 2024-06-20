@@ -68,5 +68,13 @@
         </atlas-button>
       }
     }
+    <atlas-button
+      [footerEdit]="form.enabled"
+      buttonDataCy="decide-btn"
+      buttonText="WORKFLOW.BUTTON.DECIDE"
+      buttonType="whiteFooterNonEdit"
+      (buttonClicked)="openDecisionDialog()"
+    >
+    </atlas-button>
   </atlas-detail-footer>
 </atlas-detail-page-container>

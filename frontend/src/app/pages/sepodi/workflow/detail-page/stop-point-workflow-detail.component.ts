@@ -12,6 +12,8 @@ import {
   StopPointRejectWorkflowDialogService
 } from "../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog.service";
 import {environment} from "../../../../../environments/environment";
+import {MatDialog} from '@angular/material/dialog';
+import {DecisionDialogComponent} from './decision-dialog/decision-dialog.component';
 
 @Component({
   selector: 'stop-point-workflow-detail',
@@ -22,6 +24,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private readonly dialog: MatDialog,
     private readonly stopPointWorkflowService: StopPointWorkflowService,
     private readonly notificationService: NotificationService,
     private readonly stopPointRejectWorkflowDialogService: StopPointRejectWorkflowDialogService
@@ -71,5 +74,14 @@ export class StopPointWorkflowDetailComponent implements OnInit {
 
   rejectWorkflow() {
     this.stopPointRejectWorkflowDialogService.openDialog(this.workflow.id!)
+  }
+
+  openDecisionDialog() {
+    this.dialog.open(DecisionDialogComponent, {
+      data: {},
+      disableClose: true,
+      panelClass: 'atlas-dialog-panel',
+      backdropClass: 'atlas-dialog-backdrop',
+    });
   }
 }
