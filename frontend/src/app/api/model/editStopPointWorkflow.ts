@@ -9,9 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import {StopPointPerson} from "./stopPointPerson";
 
 
-export interface EditStopPointWorkflow { 
+export interface EditStopPointWorkflow {
     /**
      * Official designation of a location that must be used by all recipients
      */
@@ -20,5 +21,9 @@ export interface EditStopPointWorkflow {
      * Hearing reasons
      */
     workflowComment?: string;
+    /**
+     * List hearing examinants
+     */
+    examinants?: Array<StopPointPerson>;
 }
 
