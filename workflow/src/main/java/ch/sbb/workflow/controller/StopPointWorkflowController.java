@@ -101,7 +101,7 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
     Person examinant = otpService.getExaminantByMail(id, decisionModel.getExaminantMail());
     otpService.validatePinCode(examinant, decisionModel.getPinCode());
 
-    service.voteWorkFlow(id, personId,decisionModel);
+    service.voteWorkFlow(id, personId, decisionModel);
   }
 
   @Override

@@ -844,6 +844,10 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .motivation("Perfetto")
         .pinCode("12345")
         .examinantMail(MAIL_ADDRESS)
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .personFunction("Centrocampista")
+        .organisation("Napoli")
         .build();
 
     //given
