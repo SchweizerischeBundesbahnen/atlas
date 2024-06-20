@@ -10,6 +10,8 @@ import ch.sbb.workflow.exception.StopPointWorkflowPinCodeInvalidException;
 import ch.sbb.workflow.helper.OtpHelper;
 import ch.sbb.workflow.kafka.StopPointWorkflowNotificationService;
 import ch.sbb.workflow.repository.OtpRepository;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class StopPointWorkflowOtpService {
+
+  private static final int OTP_LIFESPAN_IN_MINUTES = 30;
 
   private final OtpRepository otpRepository;
   private final StopPointWorkflowService workflowService;
@@ -31,12 +35,22 @@ public class StopPointWorkflowOtpService {
     Person examinant = getExaminantByMail(stopPointWorkflow.getId(), examinantMail);
 
     String pinCode = OtpHelper.generatePinCode();
-    otpRepository.save(Otp.builder()
-        .person(examinant)
-        .code(OtpHelper.hashPinCode(pinCode))
-        .build());
+    savePinCode(examinant, pinCode);
 
     notificationService.sendPinCodeMail(stopPointWorkflow, examinantMail, pinCode);
+  }
+
+  private void savePinCode(Person examinant, String pinCode) {
+    Otp existingOtp = otpRepository.findByPersonId(examinant.getId());
+    if (existingOtp == null) {
+      otpRepository.save(Otp.builder()
+          .person(examinant)
+          .code(OtpHelper.hashPinCode(pinCode))
+          .build());
+    } else {
+      existingOtp.setCode(OtpHelper.hashPinCode(pinCode));
+      existingOtp.setCreationTime(LocalDateTime.now());
+    }
   }
 
   public void validatePinCode(Person person, String pinCode) {
@@ -47,7 +61,9 @@ public class StopPointWorkflowOtpService {
 
   private boolean isPinCodeValid(Person person, String pinCode) {
     Otp otp = otpRepository.findByPersonId(person.getId());
-    return otp.getCode().equals(OtpHelper.hashPinCode(pinCode));
+    boolean stillValid = ChronoUnit.MINUTES.between(otp.getCreationTime(), LocalDateTime.now()) <= OTP_LIFESPAN_IN_MINUTES;
+    boolean codeMatches = otp.getCode().equals(OtpHelper.hashPinCode(pinCode));
+    return stillValid && codeMatches;
   }
 
   public Person getExaminantByMail(Long workflowId, String examinantMail) {

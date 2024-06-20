@@ -81,4 +81,12 @@ class MailTemplateConfigTest {
     assertThat(result).isEqualTo(MailTemplateConfig.REJECT_STOP_POINT_WORKFLOW_NOTIFICATION_TEMPLATE);
   }
 
+  @Test
+  void shouldReturnStopPointWorkflowPincodeNotification() {
+    //when
+    MailTemplateConfig result = getMailTemplateConfig(MailType.STOP_POINT_WORKFLOW_PINCODE_NOTIFICATION);
+    //then
+    assertThat(result).isEqualTo(MailTemplateConfig.STOP_POINT_WORKFLOW_PINCODE_NOTIFICATION_TEMPLATE);
+  }
+
 }
