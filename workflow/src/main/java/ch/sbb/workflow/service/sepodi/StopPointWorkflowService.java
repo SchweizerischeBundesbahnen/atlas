@@ -82,6 +82,9 @@ public class StopPointWorkflowService {
     }
     Person examinant = stopPointWorkflow.getExaminants().stream().filter(p -> p.getId().equals(personId)).findFirst()
         .orElseThrow(() -> new IdNotFoundException(personId));
+
+    updateExaminantInformation(decisionModel, examinant);
+
     Decision decision = new Decision();
     decision.setDecisionType(DecisionType.VOTED);
     decision.setJudgement(decisionModel.getJudgement());
@@ -89,6 +92,13 @@ public class StopPointWorkflowService {
     decision.setMotivation(decisionModel.getMotivation());
     decision.setMotivationDate(LocalDateTime.now());
     decisionRepository.save(decision);
+  }
+
+  private static void updateExaminantInformation(DecisionModel decisionModel, Person examinant) {
+    examinant.setFirstName(decisionModel.getFirstName());
+    examinant.setLastName(decisionModel.getLastName());
+    examinant.setOrganisation(decisionModel.getOrganisation());
+    examinant.setFunction(decisionModel.getPersonFunction());
   }
 
   public void overrideVoteWorkflow(Long id, Long personId, OverrideDecisionModel decisionModel) {
