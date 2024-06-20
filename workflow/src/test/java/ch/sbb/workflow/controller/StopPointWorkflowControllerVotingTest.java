@@ -8,6 +8,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.Decision;
@@ -20,11 +21,13 @@ import ch.sbb.workflow.kafka.StopPointWorkflowNotificationService;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.OtpRequestModel;
 import ch.sbb.workflow.model.sepodi.OtpVerificationModel;
+import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.OtpRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,6 +41,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 class StopPointWorkflowControllerVotingTest {
 
   private static final String MAIL_ADDRESS = "marek@hamsik.com";
+  private static final ClientPersonModel OVERRIDER = ClientPersonModel.builder()
+      .firstName("Luca")
+      .lastName("Ammann")
+      .personFunction("YB Fanboy")
+      .mail("luca@yb.ch")
+      .build();
 
   @Autowired
   private StopPointWorkflowController controller;
@@ -139,10 +148,58 @@ class StopPointWorkflowControllerVotingTest {
         OtpVerificationModel.builder().examinantMail(MAIL_ADDRESS).pinCode(pincodeCaptor.getValue()).build());
 
     controller.voteWorkflow(workflowInHearing.getId(), verifiedExaminant.getId(),
-        DecisionModel.builder().judgement(JudgementType.YES).examinantMail(MAIL_ADDRESS).pinCode(pincodeCaptor.getValue()).build());
+        DecisionModel.builder().judgement(JudgementType.YES).examinantMail(MAIL_ADDRESS).pinCode(pincodeCaptor.getValue())
+            .build());
 
     Decision decision = decisionRepository.findDecisionByExaminantId(verifiedExaminant.getId());
     assertThat(decision.getJudgement()).isEqualTo(JudgementType.YES);
+  }
+
+  @Test
+  void shouldOverridePendingVoteCorrectly() {
+    //given
+    Person examinantToOverride = workflowInHearing.getExaminants().iterator().next();
+
+    Decision examinantDecision = decisionRepository.findDecisionByExaminantId(examinantToOverride.getId());
+    assertThat(examinantDecision).isNull();
+
+    // when
+    OverrideDecisionModel override = OverrideDecisionModel.builder()
+        .overrideExaminant(OVERRIDER)
+        .fotJudgement(JudgementType.NO)
+        .fotMotivation("Nein, Müll")
+        .build();
+
+    controller.overrideVoteWorkflow(workflowInHearing.getId(), examinantToOverride.getId(), override);
+
+    // then
+    examinantDecision = decisionRepository.findDecisionByExaminantId(examinantToOverride.getId());
+    assertThat(examinantDecision.getFotJudgement()).isEqualTo(JudgementType.NO);
+  }
+
+  @Test
+  void shouldOverrideExistingVoteCorrectly() {
+    // given
+    Person examinantToOverride = workflowInHearing.getExaminants().iterator().next();
+    Decision decision = Decision.builder()
+        .judgement(JudgementType.NO)
+        .motivation("Bad stuff")
+        .motivationDate(LocalDateTime.now())
+        .build();
+    decisionRepository.save(decision);
+
+    // when
+    OverrideDecisionModel override = OverrideDecisionModel.builder()
+        .overrideExaminant(OVERRIDER)
+        .fotJudgement(JudgementType.YES)
+        .fotMotivation("Good stuff")
+        .build();
+
+    controller.overrideVoteWorkflow(workflowInHearing.getId(), examinantToOverride.getId(), override);
+
+    // then
+    Decision examinantDecision = decisionRepository.findDecisionByExaminantId(examinantToOverride.getId());
+    assertThat(examinantDecision.getFotJudgement()).isEqualTo(JudgementType.YES);
   }
 
 }
