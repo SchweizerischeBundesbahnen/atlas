@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang='en' xmlns='http://www.w3.org/1999/xhtml' xmlns:th='http://www.thymeleaf.org'>
+<head>
+    <title th:text="${properties.get(0).get('title')}"></title>
+    <meta charset='UTF-8'>
+    <style>
+        body {
+            background-color: #fafafa;
+            font-family: 'IBM Plex Sans', sans-serif;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .logo-container {
+            width: 12%;
+            float: left;
+        }
+
+        .logo {
+            margin: 35px 35px 35px 40px;
+            top: 32px;
+            left: 47px;
+            width: 45px;
+            height: 45px;
+            background-size: 23px 23px;
+        }
+
+        .logo-title {
+            color: #06348b;
+            position: absolute;
+            top: 83px;
+            left: 47px;
+            width: 45px;
+            height: 20px;
+            line-height: 20px;
+            font-size: large;
+            font-weight: bold;
+        }
+
+        .ski-color {
+            color: #06348b
+        }
+
+        .header-title {
+            font-size: large;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header-container {
+            width: 100%;
+            height: 100%;
+            float: left;
+            text-align: justify;
+        }
+
+        .content-container {
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+
+        .header-right {
+            float: left;
+            width: 79%;
+            padding-top: 132px;
+            font-weight: bold;
+            text-align: center;
+            display: inline-block;
+        }
+
+        a:link {
+            text-decoration: none;
+        }
+
+        a:visited {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        a:active {
+            text-decoration: underline;
+        }
+
+        .mb-1 {
+            margin-bottom: 48px;
+        }
+
+        .mail-container {
+            padding-bottom: 30px;
+        }
+
+        hr {
+            height: 2px;
+            border-width: 0;
+            color: gray;
+            background-color: gray;
+        }
+
+        .pin-section {
+            margin: 30px 0;
+        }
+
+        .pin-section .pin {
+            padding: 10px;
+        }
+
+        .pin-section .pin span {
+            font-family: monospace;
+            padding: 10px;
+            background-color: #e9e9e9;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="mail-container">
+    <div class='header-container'>
+        <div class='logo-container'>
+            <div class='logo'>
+                <img src="logo-atlas.jpeg" th:src="'cid:' + ${logo}" th:width='45'/>
+                <div class='logo-title'>
+                    atlas
+                </div>
+            </div>
+        </div>
+        <div class='header-right mb-1'>
+            <span class='header-title' th:text="${properties.get(0).get('title')}"></span>
+        </div>
+    </div>
+    <div class='content-container'>
+        <div>
+            <i>Pour la version française voir ci-dessous. / Per la versione in lingua italiana vedi sotto.</i>
+            <br><br>
+            <hr>
+            <div>
+                <br><span>Sehr geehrte Damen und Herren</span><br><br>
+                <span>Ihr persönlicher PIN-Code für die Anhörung zu <b>[[${properties.get(0).get('designationOfficial')}]] -
+                    SLOID [[${properties.get(0).get('sloid')}]]</b> lautet:</span>
+
+                <div class="pin-section">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td align="center">
+                                <b>PIN-Code</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <div class="pin">
+                                    <span>[[${properties.get(0).get('pincode')}]]</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                Dieser PIN-Code ist für die nächsten 30 Minuten gültig.
+                <br>
+
+                <div>
+                    <br>Freundliche Grüsse<br><br>
+                    Fachstelle atlas<br>
+                    <b>SKI - Systemaufgaben Kundeninformation</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>SBB AG</b><br>
+                    Infrastruktur, Fahrplan und Betrieb, Kundeninformation<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <br><span>Chères Mesdames, chers Messieurs</span><br><br>
+                <span>Vous trouverez ci-après votre code PIN personnel pour l’audition <b>[[${properties.get(0).get('designationOfficial')}]] -
+                    SLOID [[${properties.get(0).get('sloid')}]]</b>:</span>
+
+                <div class="pin-section">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td align="center">
+                                <b>Code PIN</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <div class="pin">
+                                    <span>[[${properties.get(0).get('pincode')}]]</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                Ce code PIN est valable pour les 30 prochaines minutes.
+                <br>
+
+                <div>
+                    <br>Meilleures Salutations <br><br>
+                    Service spécialisé atlas <br>
+                    <b>SKI - Systemaufgaben Kundeninformation</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>CFF SA</b><br>
+                    Incrastructure – Horaire et Exploitation, Information à la clientèle<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
+
+            <hr>
+            <div>
+                <br><span>Gentili signore ed egregi signori,</span><br><br>
+                <span>il vostro codice PIN per l’audizione <b>[[${properties.get(0).get('designationOfficial')}]] -
+                    SLOID [[${properties.get(0).get('sloid')}]]</b> è:</span>
+
+                <div class="pin-section">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td align="center">
+                                <b>Codice PIN</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <div class="pin">
+                                    <span>[[${properties.get(0).get('pincode')}]]</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                Questo codice PIN è valido per i successivi 30 minuti.
+                <br>
+
+                <div>
+                    <br>Cordiali saluti<br><br>
+                    Servizio specializzato atlas<br>
+                    <b>SKI - Systemaufgaben Kundeninformation</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>FFS SA</b><br>
+                    Infrastrutture – Orario ed Esercizio, Informazione della clientela<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
