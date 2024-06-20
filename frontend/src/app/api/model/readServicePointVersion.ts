@@ -21,7 +21,7 @@ import { Country } from './country';
 import { OperatingPointTechnicalTimetableType } from './operatingPointTechnicalTimetableType';
 
 
-export interface ReadServicePointVersion { 
+export interface ReadServicePointVersion {
     /**
      * Object creation date
      */
@@ -106,9 +106,9 @@ export interface ReadServicePointVersion {
     servicePointGeolocation?: ServicePointGeolocation;
     country: Country;
     /**
-     * ServicePoint is FareStop
+     * ServicePoint is StopPoint
      */
-    fareStop?: boolean;
+    stopPoint?: boolean;
     /**
      * ServicePoint is BorderPoint
      */
@@ -118,16 +118,16 @@ export interface ReadServicePointVersion {
      */
     trafficPoint?: boolean;
     /**
-     * ServicePoint is OperatingPointKilometer
-     */
-    operatingPointKilometer?: boolean;
-    /**
-     * ServicePoint is StopPoint
-     */
-    stopPoint?: boolean;
-    /**
      * ServicePoint has a Geolocation
      */
     hasGeolocation?: boolean;
+    /**
+     * ServicePoint is FareStop
+     */
+    fareStop?: boolean;
+    /**
+     * ServicePoint is OperatingPointKilometer
+     */
+    operatingPointKilometer?: boolean;
 }
 
