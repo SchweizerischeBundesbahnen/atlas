@@ -2,7 +2,9 @@ package ch.sbb.workflow.controller;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.workflow.api.StopPointWorkflowApiV1;
+import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
+import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
@@ -88,13 +90,17 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   }
 
   @Override
-  public boolean verifyOtp(Long id, OtpVerificationModel otpVerification) {
-    return otpService.isPinCodeValid(id, otpVerification);
+  public StopPointClientPersonModel verifyOtp(Long id, OtpVerificationModel otpVerification) {
+    Person examinant = otpService.getExaminantByMail(id, otpVerification.getExaminantMail());
+    otpService.validatePinCode(examinant, otpVerification.getPinCode());
+    return StopPointClientPersonMapper.toModel(examinant);
   }
 
   @Override
   public void voteWorkflow(Long id, Long personId, DecisionModel decisionModel) {
-    otpService.validatePinCode(id, decisionModel);
+    Person examinant = otpService.getExaminantByMail(id, decisionModel.getExaminantMail());
+    otpService.validatePinCode(examinant, decisionModel.getPinCode());
+
     service.voteWorkFlow(id, personId,decisionModel);
   }
 

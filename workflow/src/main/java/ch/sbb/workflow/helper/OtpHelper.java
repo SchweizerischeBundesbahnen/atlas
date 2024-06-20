@@ -12,7 +12,7 @@ public class OtpHelper {
   private static final int ZERO = 0;
 
   public static String generatePinCode() {
-    return RandomStringUtils.random(COUNT, ZERO, ZERO, true, true, null, new SecureRandom());
+    return RandomStringUtils.random(COUNT, ZERO, ZERO, false, true, null, new SecureRandom());
   }
 
   public static String hashPinCode(String code) {
