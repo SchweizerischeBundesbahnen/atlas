@@ -44,7 +44,7 @@ public class Otp {
   private Person person;
 
   @CreationTimestamp
-  @Column(columnDefinition = "TIMESTAMP", updatable = false)
+  @Column(columnDefinition = "TIMESTAMP")
   private LocalDateTime creationTime;
 
 
