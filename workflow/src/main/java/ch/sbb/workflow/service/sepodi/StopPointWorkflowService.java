@@ -18,7 +18,6 @@ import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import java.time.LocalDateTime;
-import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -55,10 +54,17 @@ public class StopPointWorkflowService {
     stopPointWorkflow.setWorkflowComment(workflowModel.getWorkflowComment());
     stopPointWorkflow.setDesignationOfficial(workflowModel.getDesignationOfficial());
 
-    stopPointWorkflow.setExaminants(workflowModel.getExaminants()
-            .stream()
-            .map(StopPointClientPersonMapper::toEntity)
-            .collect(Collectors.toSet()));
+
+    if(workflowModel.getExaminants() != null){
+      stopPointWorkflow.getExaminants().clear();
+      workflowModel.getExaminants()
+              .stream()
+              .map(StopPointClientPersonMapper::toEntity)
+              .forEach(examinant -> {
+                examinant.setStopPointWorkflow(stopPointWorkflow);
+                stopPointWorkflow.getExaminants().add(examinant);
+              });
+    }
 
     return save(stopPointWorkflow);
   }
