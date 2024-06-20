@@ -94,7 +94,7 @@ public class StopPointWorkflowBuilderNotificationService {
 
   public MailNotification buildPinCodeMail(StopPointWorkflow stopPointWorkflow, String examinantMail, String pinCode) {
     List<Map<String, Object>> templateProperties = buildMailProperties(stopPointWorkflow, PINCODE_SUBJECT);
-    templateProperties.getFirst().put("pinCode", pinCode);
+    templateProperties.getFirst().put("pincode", pinCode);
     return MailNotification.builder()
         .from(from)
         .mailType(MailType.STOP_POINT_WORKFLOW_PINCODE_NOTIFICATION)
