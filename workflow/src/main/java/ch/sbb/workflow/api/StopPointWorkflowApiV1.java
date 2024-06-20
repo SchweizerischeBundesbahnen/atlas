@@ -71,11 +71,11 @@ public interface StopPointWorkflowApiV1 {
 
   @ResponseStatus(HttpStatus.ACCEPTED)
   @ApiResponses(value = {@ApiResponse(responseCode = "202")})
-  @PostMapping(path = "/obtain-otp/{id}/{personId}")
+  @PostMapping(path = "/obtain-otp/{id}")
   void obtainOtp(@PathVariable Long id, @RequestBody @Valid OtpRequestModel otpRequest);
 
   @PostMapping(path = "/verify-otp/{id}")
-  boolean verifyOtp(@PathVariable Long id, @RequestBody @Valid OtpVerificationModel otpVerification);
+  StopPointClientPersonModel verifyOtp(@PathVariable Long id, @RequestBody @Valid OtpVerificationModel otpVerification);
 
   @PostMapping(path = "/vote/{id}/{personId}")
   void voteWorkflow(@PathVariable Long id, @PathVariable Long personId, @RequestBody @Valid DecisionModel decisionModel);

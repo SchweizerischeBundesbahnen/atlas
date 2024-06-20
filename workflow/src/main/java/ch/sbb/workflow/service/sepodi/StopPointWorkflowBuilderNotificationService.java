@@ -8,6 +8,7 @@ import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.helper.AtlasFrontendBaseUrl;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,9 @@ public class StopPointWorkflowBuilderNotificationService {
       + "station / Nome della stazione nuova audizione";
   static final String REJECT_WORKFLOW_SUBJECT = "Stationsname zurückgewiesen / Nom de station rejeté / Nome della "
       + "stazione respinto";
+  static final String PINCODE_SUBJECT = """
+      Stationsnamen PIN-Code / Nom de station PIN-Code / Nome della stazione codice PIN
+      """;
 
   @Value("${spring.profiles.active:local}")
   private String activeProfile;
@@ -85,6 +89,19 @@ public class StopPointWorkflowBuilderNotificationService {
 
   private String getUrl(StopPointWorkflow stopPointWorkflow) {
     return AtlasFrontendBaseUrl.getUrl(activeProfile) + WORKFLOW_URL + stopPointWorkflow.getId();
+  }
+
+
+  public MailNotification buildPinCodeMail(StopPointWorkflow stopPointWorkflow, String examinantMail, String pinCode) {
+    List<Map<String, Object>> templateProperties = buildMailProperties(stopPointWorkflow, PINCODE_SUBJECT);
+    templateProperties.getFirst().put("pinCode", pinCode);
+    return MailNotification.builder()
+        .from(from)
+        .mailType(MailType.STOP_POINT_WORKFLOW_PINCODE_NOTIFICATION)
+        .subject(PINCODE_SUBJECT)
+        .to(Collections.singletonList(examinantMail))
+        .templateProperties(templateProperties)
+        .build();
   }
 
 }
