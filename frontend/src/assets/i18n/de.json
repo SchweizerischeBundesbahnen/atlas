@@ -545,7 +545,8 @@
       "REJECT": "Anhörung Zurückweisen",
       "CANCEL": "Anhörung abbrechen",
       "SKIP": "Anhörung überspringen",
-      "RESTART": "Anhörung neustarten"
+      "RESTART": "Anhörung neustarten",
+      "DECIDE": "Entscheiden"
     },
     "START": {
       "COMMENT": "Begründung",
@@ -592,6 +593,20 @@
     "ERROR": {
       "NOT_IN_REVIEW": "Die Anhörung für dieses Objekt ist zur Zeit nicht gestartet.",
       "ALREADY_IN_REVIEW": "Für dieses Objekt wurde bereits eine Anhörung gestartet."
+    },
+    "DECISION": {
+      "IDENTIFICATION": "Identifikation",
+      "PIN_CODE": "PIN-Code",
+      "DECISION": "Entscheid",
+      "MAIL_INFO": "Geben Sie zur Identifikation die E-Mail Adresse ein, auf welche Sie die Einladung zur Anhörung erhalten haben.",
+      "PIN_INFO": "Geben Sie zur Bestätigung der Berechtigung den PIN-Code ein, welchen Sie soeben per E-Mail erhalten haben.",
+      "NO_PIN_RECEIVED": "Keine E-Mail mit PIN-Code erhalten?",
+      "CHECK_YOUR_SPAM": "Prüfen Sie Ihren Spam-Ordner.",
+      "CLICK_TO_RESEND_MAIL": "Klicken Sie auf den folgenden Button um die E-Mail erneut zu erhalten.",
+      "DECISION_INFO": "Stimmen Sie dem neuen Stationsnamen zu oder lehnen Sie den Antrag ab?",
+      "SEND": "Absenden",
+      "ACCEPT": "Ja, ich stimme zu.",
+      "DECLINE": "Nein, ich lehne ab. Die Eingabe der Begründung ist notwendig."
     }
   },
   "TTH": {

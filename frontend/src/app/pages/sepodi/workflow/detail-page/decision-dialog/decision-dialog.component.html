@@ -1,0 +1,132 @@
+<atlas-dialog-close class="pe-2" (clicked)="cancel()"></atlas-dialog-close>
+
+<atlas-dialog-content>
+  <h1>Antrag beantworten</h1>
+  <mat-stepper [linear]="true" labelPosition="bottom" (selectionChange)="nextStep()" #stepper>
+    <!-- override done step icon -->
+    <ng-template matStepperIcon="done">
+      <i class="bi bi-check2-circle"></i>
+    </ng-template>
+    <mat-step
+      [stepControl]="mail"
+      [editable]="false"
+      [label]="'WORKFLOW.DECISION.IDENTIFICATION' | translate"
+    >
+      <form [formGroup]="mail">
+        <p>{{ 'WORKFLOW.DECISION.MAIL_INFO' | translate }}</p>
+        <atlas-text-field
+          [formGroup]="mail"
+          [required]="true"
+          controlName="mail"
+          fieldLabel="WORKFLOW.PERSON.MAIL"
+        >
+        </atlas-text-field>
+        <div class="d-flex justify-content-center">
+          <button class="atlas-primary-btn me-3" (click)="cancel()">
+            {{ 'COMMON.CANCEL' | translate }}
+          </button>
+          <button matStepperNext class="atlas-primary-btn">{{ 'DIALOG.OK' | translate }}</button>
+        </div>
+      </form>
+    </mat-step>
+    <!--    todo: mby translate label PIN-Code-->
+    <mat-step
+      [stepControl]="pin"
+      [editable]="false"
+      [label]="'WORKFLOW.DECISION.PIN_CODE' | translate"
+    >
+      <form [formGroup]="pin">
+        <p>{{ 'WORKFLOW.DECISION.PIN_INFO' | translate }}</p>
+        <atlas-text-field
+          [formGroup]="pin"
+          [required]="true"
+          controlName="pin"
+          fieldLabel="WORKFLOW.DECISION.PIN_CODE"
+        >
+        </atlas-text-field>
+        <p>{{ 'WORKFLOW.DECISION.NO_PIN_RECEIVED' | translate }}</p>
+        <ul>
+          <li>{{ 'WORKFLOW.DECISION.CHECK_YOUR_SPAM' | translate }}</li>
+          <li>
+            {{ 'WORKFLOW.DECISION.CLICK_TO_RESEND_MAIL' | translate }}
+            <button mat-button [disabled]="!resendMailActive" (click)="resendMail()">Resend</button>
+          </li>
+        </ul>
+        <div class="d-flex justify-content-center">
+          <button class="atlas-primary-btn me-3" (click)="cancel()">
+            {{ 'COMMON.CANCEL' | translate }}
+          </button>
+          <button matStepperNext class="atlas-primary-btn">{{ 'DIALOG.OK' | translate }}</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [label]="'WORKFLOW.DECISION.DECISION' | translate">
+      <form [formGroup]="decision">
+        <p>{{ 'WORKFLOW.DECISION.DECISION_INFO' | translate }}</p>
+        <div class="d-flex justify-content-between">
+          <atlas-text-field
+            [formGroup]="decision"
+            [required]="true"
+            class="col-5"
+            controlName="firstName"
+            fieldLabel="WORKFLOW.PERSON.FIRSTNAME"
+          >
+          </atlas-text-field>
+          <atlas-text-field
+            [formGroup]="decision"
+            [required]="true"
+            class="col-5"
+            controlName="lastName"
+            fieldLabel="WORKFLOW.PERSON.LASTNAME"
+          >
+          </atlas-text-field>
+        </div>
+        <div class="d-flex justify-content-between">
+          <atlas-text-field
+            [formGroup]="decision"
+            [required]="true"
+            class="col-5"
+            controlName="organisation"
+            fieldLabel="WORKFLOW.PERSON.ORGANISATION"
+          >
+          </atlas-text-field>
+          <atlas-text-field
+            [formGroup]="decision"
+            [required]="true"
+            class="col-5"
+            controlName="function"
+            fieldLabel="WORKFLOW.PERSON.FUNCTION"
+          >
+          </atlas-text-field>
+        </div>
+
+        <!-- todo: validate with error message -->
+        <mat-radio-group formControlName="decision" class="d-grid">
+          <mat-radio-button [value]="true">
+            {{ 'WORKFLOW.DECISION.ACCEPT' | translate }}
+          </mat-radio-button>
+          <mat-radio-button [value]="false">
+            {{ 'WORKFLOW.DECISION.DECLINE' | translate }}
+          </mat-radio-button>
+          <mat-error>test</mat-error>
+        </mat-radio-group>
+
+        <!--        todo: check and validate number of chars -->
+        <form-comment
+          [formGroup]="decision"
+          [label]="'SEPODI.SERVICE_POINTS.WORKFLOW.COMMENT' | translate"
+        ></form-comment>
+
+        <div class="d-flex justify-content-center">
+          <button class="atlas-primary-btn me-3" (click)="cancel()">
+            {{ 'COMMON.CANCEL' | translate }}
+          </button>
+          <button (click)="sendDecision()" class="atlas-primary-btn">
+            {{ 'WORKFLOW.DECISION.SEND' | translate }}
+          </button>
+        </div>
+      </form>
+    </mat-step>
+  </mat-stepper>
+</atlas-dialog-content>
