@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.workflow.entity.JudgementType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -29,5 +30,29 @@ public class DecisionModel extends OtpVerificationModel {
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_1500)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String motivation;
+
+  @Schema(description = "Firstname", example = "John")
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
+  @NotNull
+  private String firstName;
+
+  @Schema(description = "Second", example = "Doe")
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @NotNull
+  private String lastName;
+
+  @Schema(description = "Organisation", example = "ZVV Zürcher Verkehrsverbund")
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @NotBlank
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
+  private String organisation;
+
+  @Schema(description = "Person Function", example = "Officer")
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
+  @NotNull
+  private String personFunction;
 
 }
