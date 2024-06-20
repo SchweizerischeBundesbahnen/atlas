@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Set;
+import java.util.List;
 
 @AllArgsConstructor
 @Data
@@ -31,7 +31,7 @@ public class EditStopPointWorkflowModel {
 
 
   @Schema(description = "List hearing examinants")
-  private Set<StopPointClientPersonModel> examinants;
+  private List<StopPointClientPersonModel> examinants;
 
 
 }
