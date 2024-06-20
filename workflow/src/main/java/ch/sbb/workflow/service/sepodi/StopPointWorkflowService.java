@@ -7,6 +7,7 @@ import ch.sbb.workflow.entity.DecisionType;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.exception.StopPointWorkflowAlreadyInAddedStatusException;
+import ch.sbb.workflow.exception.StopPointWorkflowNotInHearingException;
 import ch.sbb.workflow.mapper.ClientPersonMapper;
 import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
@@ -78,7 +79,7 @@ public class StopPointWorkflowService {
   public void voteWorkFlow(Long id, Long personId, DecisionModel decisionModel) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
     if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
-      throw new IllegalStateException(EXCEPTION_HEARING_MSG);
+      throw new StopPointWorkflowNotInHearingException();
     }
     Person examinant = stopPointWorkflow.getExaminants().stream().filter(p -> p.getId().equals(personId)).findFirst()
         .orElseThrow(() -> new IdNotFoundException(personId));
@@ -104,7 +105,7 @@ public class StopPointWorkflowService {
   public void overrideVoteWorkflow(Long id, Long personId, OverrideDecisionModel decisionModel) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
     if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
-      throw new IllegalStateException(EXCEPTION_HEARING_MSG);
+      throw new StopPointWorkflowNotInHearingException();
     }
     Person examinant = stopPointWorkflow.getExaminants().stream().filter(p -> p.getId().equals(personId)).findFirst()
         .orElseThrow(() -> new IdNotFoundException(personId));
