@@ -86,6 +86,8 @@ export * from './meanOfTransport';
 export * from './operatingPointTechnicalTimetableType';
 export * from './operatingPointTrafficPointType';
 export * from './operatingPointType';
+export * from './otpRequest';
+export * from './otpVerification';
 export * from './pageableObject';
 export * from './parameter';
 export * from './parkingLotOverview';
