@@ -1,9 +1,16 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, EventEmitter, ViewChild } from '@angular/core';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { AtlasCharsetsValidator } from '../../../../../core/validation/charsets/atlas-charsets-validator';
@@ -12,6 +19,7 @@ import { FormModule } from '../../../../../core/module/form.module';
 import { CoreModule } from '../../../../../core/module/core.module';
 import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { take } from 'rxjs';
+import { AtlasFieldLengthValidator } from '../../../../../core/validation/field-lengths/atlas-field-length-validator';
 
 @Component({
   selector: 'sepodi-wf-decision-dialog',
@@ -33,6 +41,10 @@ import { take } from 'rxjs';
   styleUrl: './decision-dialog.component.scss',
 })
 export class DecisionDialogComponent {
+  @ViewChild('stepper') readonly stepper?: MatStepper;
+
+  readonly obtainOtp = new EventEmitter<AbstractControl>();
+
   readonly mail = this._formBuilder.group({
     mail: ['', [Validators.required, AtlasCharsetsValidator.email]],
   });
@@ -55,13 +67,24 @@ export class DecisionDialogComponent {
       lastName: ['', Validators.required],
       organisation: ['', Validators.required],
       function: ['', Validators.required],
-      decision: [undefined, Validators.required],
-      comment: [''],
+      decision: [null, Validators.required],
+      comment: ['', [AtlasFieldLengthValidator.comments]],
     },
     {
-      validators: [], // todo: validate comment(radio-value)
+      validators: DecisionDialogComponent.decisionCommentValidator,
     },
   );
+
+  private static decisionCommentValidator(control: AbstractControl): ValidationErrors | null {
+    if (control.value.decision === false && control.value.comment.length === 0) {
+      control.get('comment')?.setErrors({ decisionCommentRequired: true }); // todo: define translated error message
+    } else {
+      const errors: ValidationErrors | null = control.get('comment')!.errors;
+      delete errors?.decisionCommentRequired;
+      control.get('comment')?.setErrors(errors);
+    }
+    return null;
+  }
 
   resendMailActive = true;
 
@@ -71,8 +94,12 @@ export class DecisionDialogComponent {
     private readonly _dialogRef: MatDialogRef<DecisionDialogComponent>,
   ) {}
 
-  nextStep() {
-    console.log('next');
+  nextStep() {}
+
+  completeObtainOtpStep() {
+    if (this.mail.valid) {
+      this.obtainOtp.emit(this.mail.controls.mail);
+    }
   }
 
   resendMail() {
@@ -99,6 +126,8 @@ export class DecisionDialogComponent {
 
   sendDecision() {
     this.decision.markAllAsTouched();
-    console.log(this.decision.value);
+    if (this.decision.valid) {
+      console.log(this.decision.value);
+    }
   }
 }

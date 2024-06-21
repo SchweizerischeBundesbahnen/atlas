@@ -7,11 +7,7 @@
     <ng-template matStepperIcon="done">
       <i class="bi bi-check2-circle"></i>
     </ng-template>
-    <mat-step
-      [stepControl]="mail"
-      [editable]="false"
-      [label]="'WORKFLOW.DECISION.IDENTIFICATION' | translate"
-    >
+    <mat-step [editable]="false" [label]="'WORKFLOW.DECISION.IDENTIFICATION' | translate">
       <form [formGroup]="mail">
         <p>{{ 'WORKFLOW.DECISION.MAIL_INFO' | translate }}</p>
         <atlas-text-field
@@ -25,7 +21,9 @@
           <button class="atlas-primary-btn me-3" (click)="cancel()">
             {{ 'COMMON.CANCEL' | translate }}
           </button>
-          <button matStepperNext class="atlas-primary-btn">{{ 'DIALOG.OK' | translate }}</button>
+          <button (click)="completeObtainOtpStep()" class="atlas-primary-btn">
+            {{ 'DIALOG.OK' | translate }}
+          </button>
         </div>
       </form>
     </mat-step>
@@ -109,10 +107,9 @@
           <mat-radio-button [value]="false">
             {{ 'WORKFLOW.DECISION.DECLINE' | translate }}
           </mat-radio-button>
-          <mat-error>test</mat-error>
+          <app-atlas-field-error [form]="decision" controlName="decision"></app-atlas-field-error>
         </mat-radio-group>
 
-        <!--        todo: check and validate number of chars -->
         <form-comment
           [formGroup]="decision"
           [label]="'SEPODI.SERVICE_POINTS.WORKFLOW.COMMENT' | translate"

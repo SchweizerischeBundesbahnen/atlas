@@ -120,6 +120,8 @@ model/models.ts
 model/operatingPointTechnicalTimetableType.ts
 model/operatingPointTrafficPointType.ts
 model/operatingPointType.ts
+model/otpRequest.ts
+model/otpVerification.ts
 model/pageableObject.ts
 model/parameter.ts
 model/parkingLotOverview.ts
