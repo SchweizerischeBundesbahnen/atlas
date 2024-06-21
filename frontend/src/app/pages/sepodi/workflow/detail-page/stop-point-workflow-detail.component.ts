@@ -14,6 +14,7 @@ import {
 import {environment} from "../../../../../environments/environment";
 import {MatDialog} from '@angular/material/dialog';
 import {DecisionDialogComponent} from './decision-dialog/decision-dialog.component';
+import {take} from 'rxjs';
 
 @Component({
   selector: 'stop-point-workflow-detail',
@@ -27,7 +28,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
     private readonly dialog: MatDialog,
     private readonly stopPointWorkflowService: StopPointWorkflowService,
     private readonly notificationService: NotificationService,
-    private readonly stopPointRejectWorkflowDialogService: StopPointRejectWorkflowDialogService
+    private readonly stopPointRejectWorkflowDialogService: StopPointRejectWorkflowDialogService,
   ) {}
 
   form!: FormGroup<StopPointWorkflowDetailFormGroup>;
@@ -77,11 +78,29 @@ export class StopPointWorkflowDetailComponent implements OnInit {
   }
 
   openDecisionDialog() {
-    this.dialog.open(DecisionDialogComponent, {
+    const decisionDialogRef = this.dialog.open(DecisionDialogComponent, {
       data: {},
       disableClose: true,
       panelClass: 'atlas-dialog-panel',
       backdropClass: 'atlas-dialog-backdrop',
     });
+    const decisionDialogComponent = decisionDialogRef.componentInstance;
+
+    const subscription = decisionDialogComponent.obtainOtp.subscribe((mail) => {
+      this.stopPointWorkflowService
+        .obtainOtp(this.workflow.id!, {
+          examinantMail: mail.value,
+        })
+        .subscribe(() => {
+          decisionDialogComponent.stepper?.next();
+        });
+    });
+
+    decisionDialogRef
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe(() => {
+        subscription.unsubscribe();
+      });
   }
 }
