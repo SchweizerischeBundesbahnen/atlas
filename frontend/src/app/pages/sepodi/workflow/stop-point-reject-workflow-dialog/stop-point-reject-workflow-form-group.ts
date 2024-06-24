@@ -13,8 +13,8 @@ export class StopPointRejectWorkflowFormGroupBuilder {
 
   static initFormGroup(): FormGroup<StopPointRejectWorkflowFormGroup> {
     return new FormGroup<StopPointRejectWorkflowFormGroup>({
-      firstName: new FormControl(''),
-      lastName: new FormControl(''),
+      firstName: new FormControl('', [Validators.required, Validators.maxLength(50)]),
+      lastName: new FormControl('', [Validators.required, Validators.maxLength(50)]),
       organisation: new FormControl('', [Validators.required, Validators.maxLength(255)]),
       motivationComment: new FormControl('', [Validators.required, Validators.minLength(2), AtlasFieldLengthValidator.comments])
     })
