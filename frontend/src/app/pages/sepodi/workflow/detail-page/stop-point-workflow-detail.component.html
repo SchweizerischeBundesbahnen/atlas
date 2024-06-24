@@ -33,16 +33,16 @@
           buttonText="WORKFLOW.BUTTON.START"
           buttonType="supervisorButton"
           applicationType="SEPODI"
-          (buttonClicked)="startWF()"
+          (buttonClicked)="startWorkflow()"
         >
         </atlas-button>
         <atlas-button
-          buttonDataCy="cancel-wf"
+          buttonDataCy="reject-wf"
           buttonText="WORKFLOW.BUTTON.REJECT"
           buttonType="supervisorButton"
           applicationType="SEPODI"
           wrapperStyleClass="ms-3"
-          (buttonClicked)="rejectWF()"
+          (buttonClicked)="rejectWorkflow()"
         >
         </atlas-button>
       }

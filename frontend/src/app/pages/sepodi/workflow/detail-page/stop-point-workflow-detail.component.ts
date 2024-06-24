@@ -24,7 +24,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private readonly stopPointWorkflowService: StopPointWorkflowService,
     private readonly notificationService: NotificationService,
-    private readonly stopPointRejectWorkflowService: StopPointRejectWorkflowDialogService
+    private readonly stopPointRejectWorkflowDialogService: StopPointRejectWorkflowDialogService
   ) {}
 
   form!: FormGroup<StopPointWorkflowDetailFormGroup>;
@@ -60,7 +60,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
     );
   }
 
-  startWF() {
+  startWorkflow() {
     this.stopPointWorkflowService
       .startStopPointWorkflow(this.workflow.id!)
       .subscribe((startedWF) => {
@@ -69,7 +69,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
       });
   }
 
-  rejectWF() {
-    this.stopPointRejectWorkflowService.openDialog(this.workflow.id!)
+  rejectWorkflow() {
+    this.stopPointRejectWorkflowDialogService.openDialog(this.workflow.id!)
   }
 }
