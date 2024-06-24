@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -152,6 +153,40 @@ class StopPointWorkflowControllerVotingTest {
             .build());
 
     Decision decision = decisionRepository.findDecisionByExaminantId(verifiedExaminant.getId());
+    assertThat(decision.getJudgement()).isEqualTo(JudgementType.YES);
+  }
+
+  @Test
+  void shouldOverridePreviousVoteBySelfCorrectly() {
+    // First Vote: NO
+    controller.obtainOtp(workflowInHearing.getId(), OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build());
+    verify(notificationService, times(1)).sendPinCodeMail(any(), eq(MAIL_ADDRESS), pincodeCaptor.capture());
+
+    StopPointClientPersonModel verifiedExaminant = controller.verifyOtp(workflowInHearing.getId(),
+        OtpVerificationModel.builder().examinantMail(MAIL_ADDRESS).pinCode(pincodeCaptor.getValue()).build());
+
+    controller.voteWorkflow(workflowInHearing.getId(), verifiedExaminant.getId(),
+        DecisionModel.builder().judgement(JudgementType.NO).examinantMail(MAIL_ADDRESS).pinCode(pincodeCaptor.getValue())
+            .build());
+
+    Decision decision = decisionRepository.findDecisionByExaminantId(verifiedExaminant.getId());
+    assertThat(decision.getJudgement()).isEqualTo(JudgementType.NO);
+
+    // Prepare second vote
+    clearInvocations(notificationService);
+
+    // Second Vote: YES
+    controller.obtainOtp(workflowInHearing.getId(), OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build());
+    verify(notificationService, times(1)).sendPinCodeMail(any(), eq(MAIL_ADDRESS), pincodeCaptor.capture());
+
+    verifiedExaminant = controller.verifyOtp(workflowInHearing.getId(),
+        OtpVerificationModel.builder().examinantMail(MAIL_ADDRESS).pinCode(pincodeCaptor.getValue()).build());
+
+    controller.voteWorkflow(workflowInHearing.getId(), verifiedExaminant.getId(),
+        DecisionModel.builder().judgement(JudgementType.YES).examinantMail(MAIL_ADDRESS).pinCode(pincodeCaptor.getValue())
+            .build());
+
+    decision = decisionRepository.findDecisionByExaminantId(verifiedExaminant.getId());
     assertThat(decision.getJudgement()).isEqualTo(JudgementType.YES);
   }
 
