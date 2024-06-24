@@ -125,7 +125,6 @@ export class DecisionDialogComponent {
   sendDecision() {
     this.decision.markAllAsTouched();
     if (this.decision.valid) {
-      console.log(this.decision.value);
       const decision: Decision = {
         examinantMail: this.mail.controls.mail.value!,
         pinCode: this.pin.controls.pin.value!,
@@ -138,6 +137,8 @@ export class DecisionDialogComponent {
       }
       this.stopPointWorkflowService.voteWorkflow(this.data.workflow.id!, this.verifiedExaminant!.id!, decision).subscribe(() => {
         console.log("Vote successful!");
+        // Todo display success msg
+        this._dialogRef.close();
       });
     }
   }
@@ -148,6 +149,10 @@ export class DecisionDialogComponent {
       pinCode: this.pin.controls.pin.value!
     }).subscribe(examinant => {
       this.verifiedExaminant = examinant;
+      this.decision.controls.firstName.setValue(examinant.firstName!);
+      this.decision.controls.lastName.setValue(examinant.lastName!);
+      this.decision.controls.organisation.setValue(examinant.organisation!);
+      this.decision.controls.function.setValue(examinant.personFunction!);
     });
   }
 }
