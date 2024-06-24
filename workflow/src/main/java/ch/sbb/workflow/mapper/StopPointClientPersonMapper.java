@@ -9,6 +9,7 @@ public class StopPointClientPersonMapper {
 
   public static StopPointClientPersonModel toModel(Person person) {
     return StopPointClientPersonModel.builder()
+        .id(person.getId())
         .firstName(person.getFirstName())
         .lastName(person.getLastName())
         .personFunction(person.getFunction())

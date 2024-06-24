@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.api.lidi.enumaration.LineType;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.atlas.model.controller.WithMockJwtAuthentication;
+import ch.sbb.atlas.model.controller.WithAdminMockJwtAuthentication;
 import ch.sbb.line.directory.LineTestData;
 import ch.sbb.line.directory.entity.LineVersion;
 import java.time.LocalDate;
@@ -44,8 +44,8 @@ import org.springframework.transaction.annotation.Transactional;
     assertThat(result.getCreationDate()).isNotNull();
     assertThat(result.getEditionDate()).isNotNull();
 
-    assertThat(result.getCreator()).isEqualTo(WithMockJwtAuthentication.SBB_UID);
-    assertThat(result.getEditor()).isEqualTo(WithMockJwtAuthentication.SBB_UID);
+    assertThat(result.getCreator()).isEqualTo(WithAdminMockJwtAuthentication.SBB_UID);
+    assertThat(result.getEditor()).isEqualTo(WithAdminMockJwtAuthentication.SBB_UID);
   }
 
   @Test
