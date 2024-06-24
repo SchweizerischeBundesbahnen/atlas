@@ -1,25 +1,19 @@
-import { Component, EventEmitter, ViewChild } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormsModule,
-  ReactiveFormsModule,
-  ValidationErrors,
-  Validators,
-} from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatStepper, MatStepperModule } from '@angular/material/stepper';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatDialogClose, MatDialogRef } from '@angular/material/dialog';
-import { AtlasCharsetsValidator } from '../../../../../core/validation/charsets/atlas-charsets-validator';
-import { MatIconModule } from '@angular/material/icon';
-import { FormModule } from '../../../../../core/module/form.module';
-import { CoreModule } from '../../../../../core/module/core.module';
-import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import { take } from 'rxjs';
-import { AtlasFieldLengthValidator } from '../../../../../core/validation/field-lengths/atlas-field-length-validator';
+import {Component, EventEmitter, Inject, ViewChild} from '@angular/core';
+import {AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule, ValidationErrors, Validators,} from '@angular/forms';
+import {MatButtonModule} from '@angular/material/button';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatStepper, MatStepperModule} from '@angular/material/stepper';
+import {TranslateModule} from '@ngx-translate/core';
+import {MAT_DIALOG_DATA, MatDialogClose, MatDialogRef} from '@angular/material/dialog';
+import {AtlasCharsetsValidator} from '../../../../../core/validation/charsets/atlas-charsets-validator';
+import {MatIconModule} from '@angular/material/icon';
+import {FormModule} from '../../../../../core/module/form.module';
+import {CoreModule} from '../../../../../core/module/core.module';
+import {DialogService} from '../../../../../core/components/dialog/dialog.service';
+import {take} from 'rxjs';
+import {AtlasFieldLengthValidator} from '../../../../../core/validation/field-lengths/atlas-field-length-validator';
+import {Decision, JudgementType, ReadStopPointWorkflow, StopPointPerson, StopPointWorkflowService} from "../../../../../api";
 
 @Component({
   selector: 'sepodi-wf-decision-dialog',
@@ -87,11 +81,14 @@ export class DecisionDialogComponent {
   }
 
   resendMailActive = true;
+  verifiedExaminant?: StopPointPerson;
 
   constructor(
     private readonly _formBuilder: FormBuilder,
     private readonly _dialogService: DialogService,
     private readonly _dialogRef: MatDialogRef<DecisionDialogComponent>,
+    private readonly stopPointWorkflowService: StopPointWorkflowService,
+    @Inject(MAT_DIALOG_DATA) private data: { workflow: ReadStopPointWorkflow },
   ) {}
 
   nextStep() {}
@@ -99,6 +96,7 @@ export class DecisionDialogComponent {
   completeObtainOtpStep() {
     if (this.mail.valid) {
       this.obtainOtp.emit(this.mail.controls.mail);
+      this.verifiedExaminant = undefined;
     }
   }
 
@@ -128,6 +126,28 @@ export class DecisionDialogComponent {
     this.decision.markAllAsTouched();
     if (this.decision.valid) {
       console.log(this.decision.value);
+      const decision: Decision = {
+        examinantMail: this.mail.controls.mail.value!,
+        pinCode: this.pin.controls.pin.value!,
+        judgement: this.decision.controls.decision.value! ? JudgementType.Yes : JudgementType.No,
+        motivation: this.decision.controls.comment.value!,
+        firstName: this.decision.controls.firstName.value!,
+        lastName: this.decision.controls.lastName.value!,
+        organisation: this.decision.controls.organisation.value!,
+        personFunction: this.decision.controls.function.value!,
+      }
+      this.stopPointWorkflowService.voteWorkflow(this.data.workflow.id!, this.verifiedExaminant!.id!, decision).subscribe(() => {
+        console.log("Vote successful!");
+      });
     }
+  }
+
+  verifyPin() {
+    this.stopPointWorkflowService.verifyOtp(this.data.workflow.id!, {
+      examinantMail: this.mail.controls.mail.value!,
+      pinCode: this.pin.controls.pin.value!
+    }).subscribe(examinant => {
+      this.verifiedExaminant = examinant;
+    });
   }
 }
