@@ -5,32 +5,31 @@ import static ch.sbb.atlas.api.model.ErrorResponse.DisplayInfo.builder;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.model.ErrorResponse.Detail;
 import ch.sbb.atlas.model.exception.AtlasException;
-import ch.sbb.workflow.entity.LineWorkflow.Fields;
 import java.util.List;
 import java.util.TreeSet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
-public class BusinessObjectCurrentlyNotInReviewException extends AtlasException {
-
-  private static final String BUSINESS_OBJECT_IS_NOT_IN_REVIEW = "BusinessObject is not in review";
+public class StopPointWorkflowNotInHearingException extends AtlasException {
 
   @Override
   public ErrorResponse getErrorResponse() {
     return ErrorResponse.builder()
-        .status(HttpStatus.CONFLICT.value())
-        .message(BUSINESS_OBJECT_IS_NOT_IN_REVIEW)
-        .error(BUSINESS_OBJECT_IS_NOT_IN_REVIEW)
+        .status(HttpStatus.BAD_REQUEST.value())
+        .message("The stop point workflow is not in hearing")
+        .error("StopPoint Workflow error")
         .details(new TreeSet<>(getErrorDetails()))
         .build();
   }
 
   private List<Detail> getErrorDetails() {
     return List.of(Detail.builder()
-        .message(BUSINESS_OBJECT_IS_NOT_IN_REVIEW)
-        .field(Fields.businessObjectId)
-        .displayInfo(builder().code("WORKFLOW.ERROR.NOT_IN_REVIEW").build())
+        .message("Pin code not valid")
+        .field("workflowStatus")
+        .displayInfo(builder()
+            .code("WORKFLOW.ERROR.NOT_IN_HEARING")
+            .build())
         .build());
   }
 
