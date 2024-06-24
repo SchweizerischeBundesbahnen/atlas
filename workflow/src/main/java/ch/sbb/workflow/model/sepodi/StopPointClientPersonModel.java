@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.workflow.BasePersonModel;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -20,6 +21,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Schema(name = "StopPointPerson")
 public class StopPointClientPersonModel extends BasePersonModel {
+
+  @Schema(description = "Technical id", accessMode = AccessMode.READ_ONLY)
+  private Long id;
 
   @Schema(description = "Organisation", example = "ZVV Zürcher Verkehrsverbund")
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)

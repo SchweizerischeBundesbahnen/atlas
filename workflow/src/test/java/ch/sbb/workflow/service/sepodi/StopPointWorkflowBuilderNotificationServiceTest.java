@@ -3,6 +3,8 @@ package ch.sbb.workflow.service.sepodi;
 import static ch.sbb.atlas.kafka.model.mail.MailType.REJECT_STOP_POINT_WORKFLOW_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.START_STOP_POINT_WORKFLOW_CC_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.START_STOP_POINT_WORKFLOW_EXAMINANT_NOTIFICATION;
+import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_WORKFLOW_PINCODE_NOTIFICATION;
+import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.PINCODE_SUBJECT;
 import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.REJECT_WORKFLOW_SUBJECT;
 import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.START_WORKFLOW_SUBJECT;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -97,6 +99,21 @@ class StopPointWorkflowBuilderNotificationServiceTest {
     assertThat(result).hasSize(1);
     Map<String, Object> properties = result.getFirst();
     assertThat(properties).hasSize(6).containsKeys("title", "designationOfficial", "sloid", "comment", "endDate", "url");
+  }
+
+  @Test
+  void shouldBuildWorkflowPinCodeMail() {
+    //given
+    StopPointWorkflow stopPointWorkflow = getStopPointWorkflow();
+    //when
+    MailNotification result = notificationService.buildPinCodeMail(stopPointWorkflow, "luca@bayern.munchen", "648966");
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getMailType()).isEqualTo(STOP_POINT_WORKFLOW_PINCODE_NOTIFICATION);
+    assertThat(result.getSubject()).isEqualTo(PINCODE_SUBJECT);
+    assertThat(result.getTo()).hasSize(1).contains("luca@bayern.munchen");
+    assertThat(result.getCc()).isNull();
+    assertThat(result.getTemplateProperties().getFirst()).containsKeys("pincode");
   }
 
   private static StopPointWorkflow getStopPointWorkflow() {
