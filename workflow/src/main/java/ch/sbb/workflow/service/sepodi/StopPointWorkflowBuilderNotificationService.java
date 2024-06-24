@@ -62,7 +62,8 @@ public class StopPointWorkflowBuilderNotificationService {
   }
 
   public MailNotification buildWorkflowRejectMail(StopPointWorkflow stopPointWorkflow) {
-    List<String> ccMails = stopPointWorkflow.getCcEmails();
+    List<String> ccMails = new ArrayList<>();
+    ccMails.addAll(stopPointWorkflow.getCcEmails());
     ccMails.addAll(stopPointWorkflow.getExaminants().stream().map(Person::getMail).toList());
     return MailNotification.builder()
         .from(from)
@@ -81,7 +82,9 @@ public class StopPointWorkflowBuilderNotificationService {
     mailContentProperty.put("designationOfficial", stopPointWorkflow.getDesignationOfficial());
     mailContentProperty.put("sloid", stopPointWorkflow.getSloid());
     mailContentProperty.put("comment", stopPointWorkflow.getWorkflowComment());
-    mailContentProperty.put("endDate", DATE_FORMATTER.format(stopPointWorkflow.getEndDate()));
+    if (stopPointWorkflow.getEndDate() != null) {
+      mailContentProperty.put("endDate", DATE_FORMATTER.format(stopPointWorkflow.getEndDate()));
+    }
     mailContentProperty.put("url", getUrl(stopPointWorkflow));
     mailProperties.add(mailContentProperty);
     return mailProperties;
