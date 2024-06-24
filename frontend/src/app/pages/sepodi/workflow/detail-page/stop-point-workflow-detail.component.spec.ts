@@ -32,11 +32,13 @@ import {
 } from '../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog.service';
 import {MatDialog} from '@angular/material/dialog';
 import {EventEmitter} from "@angular/core";
+import {ValidationService} from "../../../../core/validation/validation.service";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1000,
   sloid: 'ch:1:sloid:8000',
-  workflowComment: 'No comment',
+  workflowComment: "No comment",
+  id: 1
 };
 const workflowData: StopPointWorkflowDetailData = {
   workflow: workflow,
@@ -59,7 +61,10 @@ const activatedRoute = {
     },
   },
 };
-
+const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
+const stopPointWorkflowServiceSpy = jasmine.createSpyObj('StopPointWorkflowService', [
+  'editStopPointWorkflow',
+]);
 describe('StopPointWorkflowDetailComponent', () => {
   let component: StopPointWorkflowDetailComponent;
   let fixture: ComponentFixture<StopPointWorkflowDetailComponent>;
@@ -88,9 +93,10 @@ describe('StopPointWorkflowDetailComponent', () => {
       imports: [AppTestingModule, FormModule],
       providers: [
         {provide: ActivatedRoute, useValue: activatedRoute},
-        {provide: StopPointWorkflowService, useValue: stopPointWorkflowService},
-        {provide: NotificationService, useValue: notificationServiceSpy},
         {provide: TranslatePipe},
+        { provide: StopPointWorkflowService, useValue: stopPointWorkflowServiceSpy },
+        { provide: NotificationService, useValue: notificationServiceSpy },
+        { provide: ValidationService, useClass: ValidationService },
         {
           provide: StopPointRejectWorkflowDialogService,
           useValue: stopPointRejectWorkflowDialogServiceSpy,
@@ -99,10 +105,8 @@ describe('StopPointWorkflowDetailComponent', () => {
           provide: MatDialog,
           useValue: dialogSpy,
         },
-      ],
-    })
-      .compileComponents()
-      .then();
+      ]
+    }).compileComponents().then();
 
     fixture = TestBed.createComponent(StopPointWorkflowDetailComponent);
     component = fixture.componentInstance;
@@ -175,6 +179,64 @@ describe('StopPointWorkflowDetailComponent', () => {
 
     const result = component.getOldDesignation(servicePoint, 1);
     expect(result).toBe('-');
+  });
+
+  it('should switch to edit mode', () => {
+    expect(component.form?.disabled).toBeTrue();
+
+    component.toggleEdit();
+    expect(component.form?.enabled).toBeTrue();
+  });
+
+  it('should stay in edit mode when confirmation canceled', () => {
+    // given
+    component.form?.enable();
+    expect(component.form?.enabled).toBeTrue();
+
+    component.form?.controls.designationOfficial.setValue('Basel beste Sport');
+    component.form?.markAsDirty();
+    expect(component.form?.dirty).toBeTrue();
+
+    dialogServiceSpy.confirm.and.returnValue(of(false));
+
+    // when & then
+    component.toggleEdit();
+    expect(component.form?.enabled).toBeTrue();
+  });
+
+  it('should validate the form and call update if form is valid', () => {
+    spyOn(ValidationService, 'validateForm').and.callThrough();
+
+    component.toggleEdit();
+    component.form.controls['designationOfficial'].setValue('Official Designation');
+    component.form.controls['workflowComment'].setValue('Some comment');
+    component.form.controls['examinants'].setValue([{
+      firstName: 'DIDOK',
+      lastName: 'MASTER',
+      personFunction: 'Chef',
+      mail: 'didok@chef.com',
+      organisation: 'SBB',
+      id: 1,
+      judgementIcon: "",
+      judgement: JudgementType.Yes
+    }]);
+
+    stopPointWorkflowServiceSpy.editStopPointWorkflow.and.returnValue(of({ id: 1 }));
+
+    component.save();
+
+    expect(stopPointWorkflowServiceSpy.editStopPointWorkflow).toHaveBeenCalledWith(component.workflow.id, {
+      designationOfficial: 'Official Designation',
+      workflowComment: 'Some comment',
+      examinants: [{
+
+        firstName: 'DIDOK',
+        lastName: 'MASTER',
+        personFunction: 'Chef',
+        mail: 'didok@chef.com',
+        organisation: 'SBB' }]
+    });
+    expect(notificationServiceSpy.success).toHaveBeenCalledWith('WORKFLOW.NOTIFICATION.EDIT.SUCCESS');
   });
 
   it('should startWorkflow', () => {
