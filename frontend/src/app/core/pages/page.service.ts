@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Pages} from "../../pages/pages";
 import {Page} from "../model/page";
-import {environment} from "../../../environments/environment";
 import {PermissionService} from "../auth/permission/permission.service";
 
 @Injectable({
@@ -31,14 +30,6 @@ export class PageService {
   }
 
   get enabledPages() {
-    return this.viewablePages.map(page => {
-      if (page === Pages.SEPODI && !environment.sepodiWorkflowEnabled) {
-        return {
-          ...page,
-          subpages: page.subpages!.filter(subpage => subpage.title !== 'PAGES.WORKFLOW.TITLE_HEADER')
-        };
-      }
-      return page;
-    });
+    return this.viewablePages;
   }
 }

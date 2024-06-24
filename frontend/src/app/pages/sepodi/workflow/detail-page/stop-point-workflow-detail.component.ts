@@ -11,6 +11,7 @@ import {NotificationService} from '../../../../core/notification/notification.se
 import {
   StopPointRejectWorkflowDialogService
 } from "../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog.service";
+import {environment} from "../../../../../environments/environment";
 
 @Component({
   selector: 'stop-point-workflow-detail',
@@ -30,6 +31,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
   stopPoint!: ReadServicePointVersion;
   workflow!: ReadStopPointWorkflow;
   oldDesignation?: string;
+  bavActionEnabled = environment.sepodiWorkflowBavActionEnabled;
 
   ngOnInit() {
     const workflowData: StopPointWorkflowDetailData = this.route.snapshot.data.workflow;
