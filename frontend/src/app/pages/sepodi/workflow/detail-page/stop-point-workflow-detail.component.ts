@@ -79,7 +79,9 @@ export class StopPointWorkflowDetailComponent implements OnInit {
 
   openDecisionDialog() {
     const decisionDialogRef = this.dialog.open(DecisionDialogComponent, {
-      data: {},
+      data: {
+        workflow: this.workflow
+      },
       disableClose: true,
       panelClass: 'atlas-dialog-panel',
       backdropClass: 'atlas-dialog-backdrop',
