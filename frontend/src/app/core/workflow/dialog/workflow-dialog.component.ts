@@ -134,7 +134,7 @@ export class WorkflowDialogComponent implements OnInit {
       this.workflowStartFormGroup.disable();
       this.workflowService.startWorkflow(workflowStart).subscribe(() => {
         this.closeDialog();
-        this.notificationService.success('WORKFLOW.NOTIFICATION.START.SUCCESS');
+        this.notificationService.success('WORKFLOW.NOTIFICATION.ADD.SUCCESS');
       });
     }
   }
