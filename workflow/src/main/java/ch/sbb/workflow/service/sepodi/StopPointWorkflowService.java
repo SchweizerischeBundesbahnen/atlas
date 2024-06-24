@@ -86,7 +86,10 @@ public class StopPointWorkflowService {
 
     updateExaminantInformation(decisionModel, examinant);
 
-    Decision decision = new Decision();
+    Decision decision = decisionRepository.findDecisionByExaminantId(examinant.getId());
+    if (decision == null) {
+      decision = new Decision();
+    }
     decision.setDecisionType(DecisionType.VOTED);
     decision.setJudgement(decisionModel.getJudgement());
     decision.setExaminant(examinant);
