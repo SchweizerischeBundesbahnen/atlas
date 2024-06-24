@@ -597,6 +597,9 @@
       },
       "VOTE": {
         "SUCCESS": "La decisione è stata salvata"
+      },
+      "EDIT": {
+        "SUCCESS": "L'udienza è stata salvata con successo."
       }
     },
     "ERROR": {
