@@ -26,45 +26,47 @@
       wrapperStyleClass="me-3"
     >
     </atlas-button>
-    @if (workflow.status === WorkflowStatus.Added) {
-      <atlas-button
-        buttonDataCy="start-wf"
-        buttonText="WORKFLOW.BUTTON.START"
-        buttonType="supervisorButton"
-        applicationType="SEPODI"
-        (buttonClicked)="startWF()"
-      >
-      </atlas-button>
-      <atlas-button
-        buttonDataCy="cancel-wf"
-        buttonText="WORKFLOW.BUTTON.REJECT"
-        buttonType="supervisorButton"
-        applicationType="SEPODI"
-        wrapperStyleClass="ms-3"
-        (buttonClicked)="rejectWF()"
-      >
-      </atlas-button>
-    }
-    @if (workflow.status === WorkflowStatus.Hearing) {
-      <atlas-button
-        buttonDataCy="cancel-wf"
-        buttonText="WORKFLOW.BUTTON.CANCEL"
-        buttonType="supervisorButton"
-        applicationType="SEPODI"
-        wrapperStyleClass="me-3"
-        (buttonClicked)="({})"
-      >
-        <!--        todo: buttonClicked action -->
-      </atlas-button>
-      <atlas-button
-        buttonDataCy="restart-wf"
-        buttonText="WORKFLOW.BUTTON.RESTART"
-        buttonType="supervisorButton"
-        applicationType="SEPODI"
-        (buttonClicked)="({})"
-      >
-        <!--        todo: buttonClicked action -->
-      </atlas-button>
+    @if(bavActionEnabled){
+      @if (workflow.status === WorkflowStatus.Added) {
+        <atlas-button
+          buttonDataCy="start-wf"
+          buttonText="WORKFLOW.BUTTON.START"
+          buttonType="supervisorButton"
+          applicationType="SEPODI"
+          (buttonClicked)="startWF()"
+        >
+        </atlas-button>
+        <atlas-button
+          buttonDataCy="cancel-wf"
+          buttonText="WORKFLOW.BUTTON.REJECT"
+          buttonType="supervisorButton"
+          applicationType="SEPODI"
+          wrapperStyleClass="ms-3"
+          (buttonClicked)="rejectWF()"
+        >
+        </atlas-button>
+      }
+      @if (workflow.status === WorkflowStatus.Hearing) {
+        <atlas-button
+          buttonDataCy="cancel-wf"
+          buttonText="WORKFLOW.BUTTON.CANCEL"
+          buttonType="supervisorButton"
+          applicationType="SEPODI"
+          wrapperStyleClass="me-3"
+          (buttonClicked)="({})"
+        >
+          <!--        todo: buttonClicked action -->
+        </atlas-button>
+        <atlas-button
+          buttonDataCy="restart-wf"
+          buttonText="WORKFLOW.BUTTON.RESTART"
+          buttonType="supervisorButton"
+          applicationType="SEPODI"
+          (buttonClicked)="({})"
+        >
+          <!--        todo: buttonClicked action -->
+        </atlas-button>
+      }
     }
   </atlas-detail-footer>
 </atlas-detail-page-container>
