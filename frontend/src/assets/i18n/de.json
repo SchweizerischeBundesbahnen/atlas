@@ -597,6 +597,9 @@
       },
       "VOTE": {
         "SUCCESS": "Die Entscheidung wurde gespeichert"
+      },
+      "EDIT": {
+        "SUCCESS": "Die Anhörung wurde erfolgreich gespeichert."
       }
     },
     "ERROR": {
