@@ -22,7 +22,7 @@ export class StopPointRejectWorkflowFormGroupBuilder {
 
   static buildStopPointRejectWorkflow(formGroup: FormGroup<StopPointRejectWorkflowFormGroup>, email: string | undefined): StopPointRejectWorkflow {
     return {
-      firstName: formGroup.controls["firstName"].value! ,
+      firstName: formGroup.controls["firstName"].value!,
       lastName: formGroup.controls["lastName"].value!,
       motivationComment: formGroup.controls["motivationComment"].value!,
       mail: email!,
