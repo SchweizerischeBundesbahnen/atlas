@@ -1,17 +1,22 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {StopPointAddWorkflow, StopPointPerson, StopPointWorkflowService} from "../../../../api";
-import {AddStopPointWorkflowDialogData} from "./add-stop-point-workflow-dialog-data";
-import {FormGroup} from "@angular/forms";
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+
+  StopPointAddWorkflow,
+  StopPointPerson,
+  StopPointWorkflowService,
+} from '../../../../api';
+import { AddStopPointWorkflowDialogData } from './add-stop-point-workflow-dialog-data';
+import { FormGroup } from '@angular/forms';
 import {
   StopPointWorkflowDetailFormGroup,
-  StopPointWorkflowDetailFormGroupBuilder
-} from "../detail-form/stop-point-workflow-detail-form-group";
-import {ValidationService} from "../../../../core/validation/validation.service";
-import {DetailHelperService} from "../../../../core/detail/detail-helper.service";
-import {NotificationService} from "../../../../core/notification/notification.service";
-import {Router} from "@angular/router";
-import {Pages} from "../../../pages";
+  StopPointWorkflowDetailFormGroupBuilder,
+} from '../detail-form/stop-point-workflow-detail-form-group';
+import { ValidationService } from '../../../../core/validation/validation.service';
+import { DetailHelperService } from '../../../../core/detail/detail-helper.service';
+import { NotificationService } from '../../../../core/notification/notification.service';
+import { Router } from '@angular/router';
+import { Pages } from '../../../pages';
 import {UserService} from "../../../../core/auth/user/user.service";
 
 @Component({
@@ -29,8 +34,7 @@ export class AddStopPointWorkflowComponent implements OnInit {
     private notificationService: NotificationService,
     private userService: UserService,
     private router: Router
-  ) {
-  }
+  ) {}
 
   form!: FormGroup<StopPointWorkflowDetailFormGroup>;
 
@@ -50,16 +54,16 @@ export class AddStopPointWorkflowComponent implements OnInit {
         examinants: this.form.controls.examinants.value.map(examinant => examinant as StopPointPerson)
       }
       this.form.disable();
-      this.stopPointWorkflowService.addStopPointWorkflow(workflow).subscribe(createdWorkflow => {
-        this.notificationService.success('WORKFLOW.NOTIFICATION.START.SUCCESS');
+      this.stopPointWorkflowService.addStopPointWorkflow(workflow).subscribe((createdWorkflow) => {
+        this.notificationService.success('WORKFLOW.NOTIFICATION.ADD.SUCCESS');
         this.dialogRef.close();
         this.router.navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, createdWorkflow.id]).then();
-      })
+      });
     }
   }
 
   cancel() {
-    this.detailHelperService.confirmLeaveDirtyForm(this.form).subscribe(confirmed => {
+    this.detailHelperService.confirmLeaveDirtyForm(this.form).subscribe((confirmed) => {
       if (confirmed) {
         this.dialogRef.close(true);
       }
