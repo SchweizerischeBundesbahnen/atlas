@@ -54,7 +54,7 @@
           <button class="atlas-primary-btn me-3" (click)="cancel()">
             {{ 'COMMON.CANCEL' | translate }}
           </button>
-          <button matStepperNext class="atlas-primary-btn">{{ 'DIALOG.OK' | translate }}</button>
+          <button matStepperNext (click)="verifyPin()" class="atlas-primary-btn">{{ 'DIALOG.OK' | translate }}</button>
         </div>
       </form>
     </mat-step>
