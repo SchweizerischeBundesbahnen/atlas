@@ -1,6 +1,6 @@
 package ch.sbb.atlas.model.controller;
 
-import ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockJwtAuthenticationFactory;
+import ch.sbb.atlas.model.controller.WithAdminMockJwtAuthentication.MockJwtAuthenticationFactory;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Collections;
@@ -16,7 +16,7 @@ import org.springframework.security.test.context.support.WithSecurityContextFact
 
 @Retention(RetentionPolicy.RUNTIME)
 @WithSecurityContext(factory = MockJwtAuthenticationFactory.class)
-public @interface WithMockJwtAuthentication {
+public @interface WithAdminMockJwtAuthentication {
 
   String SBB_UID = "e123456";
 
@@ -25,10 +25,10 @@ public @interface WithMockJwtAuthentication {
   String name() default "Rob Winch";
 
   class MockJwtAuthenticationFactory implements
-      WithSecurityContextFactory<WithMockJwtAuthentication> {
+      WithSecurityContextFactory<WithAdminMockJwtAuthentication> {
 
     @Override
-    public SecurityContext createSecurityContext(WithMockJwtAuthentication annotation) {
+    public SecurityContext createSecurityContext(WithAdminMockJwtAuthentication annotation) {
       SecurityContext context = SecurityContextHolder.createEmptyContext();
       Authentication authentication = new JwtAuthenticationToken(createJwt(annotation.sbbuid()),
           AuthorityUtils.createAuthorityList("ROLE_atlas-admin"));
