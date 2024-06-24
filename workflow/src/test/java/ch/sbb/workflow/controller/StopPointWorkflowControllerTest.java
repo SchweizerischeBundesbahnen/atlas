@@ -31,10 +31,12 @@ import ch.sbb.workflow.entity.JudgementType;
 import ch.sbb.workflow.entity.Otp;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
+import ch.sbb.workflow.helper.OtpHelper;
 import ch.sbb.workflow.kafka.StopPointWorkflowNotificationService;
 import ch.sbb.workflow.mapper.ClientPersonMapper;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
+import ch.sbb.workflow.model.sepodi.OtpRequestModel;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
@@ -744,7 +746,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .localityName("Biel/Bienne")
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
-        .status(WorkflowStatus.ADDED)
+        .status(WorkflowStatus.HEARING)
         .examinants(Set.of(person))
         .startDate(LocalDate.of(2000, 1, 1))
         .endDate(LocalDate.of(2000, 12, 31))
@@ -754,10 +756,13 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     person.setStopPointWorkflow(workflow);
     workflowRepository.save(workflow);
 
+    OtpRequestModel otpRequest = OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build();
+
     //given
-    mvc.perform(post("/v1/stop-point/workflows/obtain-otp/" + stopPointWorkflow.getId() + "/" + person.getId())
-            .contentType(contentType))
-        .andExpect(status().isOk());
+    mvc.perform(post("/v1/stop-point/workflows/obtain-otp/" + stopPointWorkflow.getId())
+            .contentType(contentType)
+        .content(mapper.writeValueAsString(otpRequest)))
+        .andExpect(status().isAccepted());
 
     Otp otpResult = otpRepository.findAll().stream().filter(otp -> otp.getPerson().getId().equals(person.getId())).findFirst()
         .orElse(null);
@@ -832,12 +837,17 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     person.setStopPointWorkflow(workflow);
     workflowRepository.saveAndFlush(workflow);
 
-    Otp otp = Otp.builder().code("12345").person(person).build();
+    Otp otp = Otp.builder().code(OtpHelper.hashPinCode("12345")).person(person).build();
     otpRepository.saveAndFlush(otp);
     DecisionModel decisionModel = DecisionModel.builder()
         .judgement(JudgementType.NO)
         .motivation("Perfetto")
         .pinCode("12345")
+        .examinantMail(MAIL_ADDRESS)
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .personFunction("Centrocampista")
+        .organisation("Napoli")
         .build();
 
     //given

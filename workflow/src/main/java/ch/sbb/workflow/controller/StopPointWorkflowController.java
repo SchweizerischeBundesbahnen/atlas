@@ -2,11 +2,15 @@ package ch.sbb.workflow.controller;
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.workflow.api.StopPointWorkflowApiV1;
+import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
+import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
+import ch.sbb.workflow.model.sepodi.OtpRequestModel;
+import ch.sbb.workflow.model.sepodi.OtpVerificationModel;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
 import ch.sbb.workflow.model.sepodi.ReadStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
@@ -14,6 +18,7 @@ import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointWorkflowRequestParams;
+import ch.sbb.workflow.service.sepodi.StopPointWorkflowOtpService;
 import ch.sbb.workflow.service.sepodi.StopPointWorkflowService;
 import ch.sbb.workflow.service.sepodi.StopPointWorkflowTransitionService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
 
   private final StopPointWorkflowService service;
+  private final StopPointWorkflowOtpService otpService;
   private final StopPointWorkflowTransitionService workflowTransitionService;
 
 
@@ -79,13 +85,23 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   }
 
   @Override
-  public void obtainOtpForStopPointWorkflow(Long id, Long personId) {
-    service.obtainOtp(id,personId);
+  public void obtainOtp(Long id, OtpRequestModel otpRequest) {
+    otpService.obtainOtp(service.findStopPointWorkflow(id), otpRequest.getExaminantMail());
+  }
+
+  @Override
+  public StopPointClientPersonModel verifyOtp(Long id, OtpVerificationModel otpVerification) {
+    Person examinant = otpService.getExaminantByMail(id, otpVerification.getExaminantMail());
+    otpService.validatePinCode(examinant, otpVerification.getPinCode());
+    return StopPointClientPersonMapper.toModel(examinant);
   }
 
   @Override
   public void voteWorkflow(Long id, Long personId, DecisionModel decisionModel) {
-    service.voteWorkFlow(id, personId,decisionModel);
+    Person examinant = otpService.getExaminantByMail(id, decisionModel.getExaminantMail());
+    otpService.validatePinCode(examinant, decisionModel.getPinCode());
+
+    service.voteWorkFlow(id, personId, decisionModel);
   }
 
   @Override
