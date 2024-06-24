@@ -16,7 +16,6 @@ import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.repository.DecisionRepository;
-import ch.sbb.workflow.repository.OtpRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
@@ -30,11 +29,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class StopPointWorkflowService {
 
   private static final String EXCEPTION_MSG = "Workflow status must be ADDED!!!(REPLACE ME WITH A CUSTOM EXCEPTION)";
-  private static final String EXCEPTION_HEARING_MSG = "Workflow status must be HEARING!!!(REPLACE ME WITH A CUSTOM EXCEPTION)";
 
   private final StopPointWorkflowRepository workflowRepository;
   private final DecisionRepository decisionRepository;
-  private final OtpRepository otpRepository;
 
   public StopPointWorkflow getWorkflow(Long id) {
     return workflowRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
