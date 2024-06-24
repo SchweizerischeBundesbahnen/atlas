@@ -206,7 +206,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
       });
   }
 
-  private disableForm(): void {
+  disableForm(): void {
     this.form?.disable({ emitEvent: false });
     this.isFormEnabled$.next(false);
   }
@@ -246,8 +246,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
         this.workflow = workflow;
         this.initWorkflow = workflow;
 
-        //TODO Sucessmessage anpassen
-        this.notificationService.success("Erfolgreich");
+        this.notificationService.success('WORKFLOW.NOTIFICATION.EDIT.SUCCESS');
         this.disableForm();
       });
   }

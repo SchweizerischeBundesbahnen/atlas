@@ -597,6 +597,9 @@
       },
       "VOTE": {
         "SUCCESS": "La décision a été enregistrée"
+      },
+      "EDIT": {
+        "SUCCESS": "L'audience a été enregistrée avec succès."
       }
     },
     "ERROR": {
