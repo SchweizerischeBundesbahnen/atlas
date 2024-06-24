@@ -33,7 +33,6 @@ import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.helper.OtpHelper;
 import ch.sbb.workflow.kafka.StopPointWorkflowNotificationService;
-import ch.sbb.workflow.mapper.ClientPersonMapper;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.OtpRequestModel;
@@ -588,15 +587,13 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .build();
     workflowRepository.save(stopPointWorkflow);
 
-    ClientPersonModel examinantBAV = ClientPersonModel.builder()
-        .firstName("Marek")
-        .lastName("Hamsik")
-        .personFunction("Centrocampista")
-        .mail(MAIL_ADDRESS).build();
-
     StopPointRejectWorkflowModel stopPointRejectWorkflowModel = StopPointRejectWorkflowModel.builder()
         .motivationComment("No Comment")
-        .examinantBAVClient(examinantBAV).build();
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .organisation("YB")
+        .mail(MAIL_ADDRESS)
+        .build();
 
     //given
     mvc.perform(post("/v1/stop-point/workflows/reject/" + stopPointWorkflow.getId())
@@ -616,7 +613,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .orElse(null);
     assertThat(decisionResult).isNotNull();
     Person examinant = decisionResult.getExaminant();
-    assertThat(examinant.getMail()).isEqualTo(ClientPersonMapper.toEntity(examinantBAV).getMail());
+    assertThat(examinant.getMail()).isEqualTo(MAIL_ADDRESS);
     assertThat(decisionResult.getMotivation()).isEqualTo(stopPointRejectWorkflowModel.getMotivationComment());
     assertThat(decisionResult.getDecisionType()).isEqualTo(DecisionType.REJECTED);
 
@@ -648,15 +645,12 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .build();
     workflowRepository.save(stopPointWorkflow);
 
-    ClientPersonModel examinantBAV = ClientPersonModel.builder()
-        .firstName("Marek")
-        .lastName("Hamsik")
-        .personFunction("Centrocampista")
-        .mail(MAIL_ADDRESS).build();
-
     StopPointRejectWorkflowModel stopPointCancelWorkflowModel = StopPointRejectWorkflowModel.builder()
         .motivationComment("I don't like it!")
-        .examinantBAVClient(examinantBAV)
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .organisation("YB")
+        .mail(MAIL_ADDRESS)
         .build();
 
     //given
@@ -677,7 +671,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .orElse(null);
     assertThat(decisionResult).isNotNull();
     Person examinant = decisionResult.getExaminant();
-    assertThat(examinant.getMail()).isEqualTo(ClientPersonMapper.toEntity(examinantBAV).getMail());
+    assertThat(examinant.getMail()).isEqualTo(MAIL_ADDRESS);
     assertThat(decisionResult.getMotivation()).isEqualTo(stopPointCancelWorkflowModel.getMotivationComment());
     assertThat(decisionResult.getDecisionType()).isEqualTo(DecisionType.CANCELED);
   }

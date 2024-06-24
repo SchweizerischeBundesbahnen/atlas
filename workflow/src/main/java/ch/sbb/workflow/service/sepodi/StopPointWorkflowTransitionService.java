@@ -13,6 +13,7 @@ import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.kafka.StopPointWorkflowNotificationService;
 import ch.sbb.workflow.mapper.ClientPersonMapper;
+import ch.sbb.workflow.mapper.PersonMapper;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
 import ch.sbb.workflow.model.sepodi.Examinants;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
@@ -72,11 +73,11 @@ public class StopPointWorkflowTransitionService {
   @PreAuthorize(
       "@countryAndBusinessOrganisationBasedUserAdministrationService."
           + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
-  public StopPointWorkflow rejectWorkflow(Long id, StopPointRejectWorkflowModel workflowModel) {
+  public StopPointWorkflow rejectWorkflow(Long id, StopPointRejectWorkflowModel rejectWorkflowModel) {
     StopPointWorkflow stopPointWorkflow = stopPointWorkflowService.findStopPointWorkflow(id);
     StopPointWorkflowStatusTransitionDecider.validateWorkflowStatusTransition(stopPointWorkflow.getStatus(), REJECTED);
-    Person examinantBAV = ClientPersonMapper.toEntity(workflowModel.getExaminantBAVClient());
-    decisionService.createRejectedDecision(examinantBAV, workflowModel.getMotivationComment());
+    Person examinantBAV = PersonMapper.toPersonEntity(rejectWorkflowModel);
+    decisionService.createRejectedDecision(examinantBAV, rejectWorkflowModel.getMotivationComment());
     sePoDiClientService.updateStoPointStatusToDraft(stopPointWorkflow);
     examinantBAV.setStopPointWorkflow(stopPointWorkflow);
     stopPointWorkflow.setStatus(REJECTED);
@@ -90,8 +91,7 @@ public class StopPointWorkflowTransitionService {
     if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
       throw new IllegalStateException(EXCEPTION_HEARING_MSG);
     }
-    ClientPersonModel examinantBAVclientPersonModel = stopPointCancelWorkflowModel.getExaminantBAVClient();
-    Person examinantBAV = ClientPersonMapper.toEntity(examinantBAVclientPersonModel);
+    Person examinantBAV = PersonMapper.toPersonEntity(stopPointCancelWorkflowModel);
     examinantBAV.setStopPointWorkflow(stopPointWorkflow);
     Decision decision = new Decision();
     decision.setJudgement(JudgementType.NO);
