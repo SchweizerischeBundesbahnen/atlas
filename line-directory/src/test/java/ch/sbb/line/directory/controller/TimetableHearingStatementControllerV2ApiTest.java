@@ -1,6 +1,6 @@
 package ch.sbb.line.directory.controller;
 
-import static ch.sbb.atlas.model.controller.WithMockJwtAuthentication.MockJwtAuthenticationFactory.createJwtWithoutSbbUid;
+import static ch.sbb.atlas.model.controller.WithAdminMockJwtAuthentication.MockJwtAuthenticationFactory.createJwtWithoutSbbUid;
 import static ch.sbb.line.directory.helper.PdfFiles.MULTIPART_FILES;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
