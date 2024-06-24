@@ -65,4 +65,8 @@ public class Person extends BaseWorkflowEntity {
     return this.mail;
   }
 
+  public String getUnredactedMail(){
+    return mail;
+  }
+
 }
