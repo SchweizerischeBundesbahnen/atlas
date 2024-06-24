@@ -11,6 +11,9 @@ import {TranslatePipe} from "@ngx-translate/core";
 import {of} from "rxjs";
 import {StopPointRejectWorkflowDialogData} from "./stop-point-reject-workflow-dialog-data";
 import {DetailHelperService} from "../../../../core/detail/detail-helper.service";
+import {DialogFooterComponent} from "../../../../core/components/dialog/footer/dialog-footer.component";
+import {DialogContentComponent} from "../../../../core/components/dialog/content/dialog-content.component";
+import {DialogCloseComponent} from "../../../../core/components/dialog/close/dialog-close.component";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
@@ -55,7 +58,12 @@ describe('StopPointRejectWorkflowDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [StopPointRejectWorkflowDialogComponent],
+      declarations: [
+        StopPointRejectWorkflowDialogComponent,
+        DialogFooterComponent,
+        DialogContentComponent,
+        DialogCloseComponent
+      ],
       imports: [AppTestingModule, FormModule],
       providers: [
         {
