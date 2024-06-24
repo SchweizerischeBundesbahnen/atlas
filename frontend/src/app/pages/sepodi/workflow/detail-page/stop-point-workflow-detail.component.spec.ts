@@ -4,7 +4,14 @@ import {AppTestingModule} from "../../../../app.testing.module";
 import {FormModule} from "../../../../core/module/form.module";
 import {ActivatedRoute} from "@angular/router";
 import {BERN_WYLEREGG} from "../../../../../test/data/service-point";
-import {Country, MeanOfTransport, ReadServicePointVersion, ReadStopPointWorkflow, Status} from "../../../../api";
+import {
+  Country,
+  MeanOfTransport,
+  ReadServicePointVersion,
+  ReadStopPointWorkflow,
+  Status,
+  StopPointWorkflowService
+} from "../../../../api";
 import {StopPointWorkflowDetailFormComponent} from "../detail-form/stop-point-workflow-detail-form.component";
 import {StringListComponent} from "../../../../core/form-components/string-list/string-list.component";
 import {MockAtlasButtonComponent} from "../../../../app.testing.mocks";
@@ -17,6 +24,8 @@ import {DetailFooterComponent} from "../../../../core/components/detail-footer/d
 import {AtlasSpacerComponent} from "../../../../core/components/spacer/atlas-spacer.component";
 import {StopPointWorkflowDetailData} from "./stop-point-workflow-detail-resolver.service";
 import {UserDetailInfoComponent} from "../../../../core/components/base-detail/user-edit-info/user-detail-info.component";
+import {of} from "rxjs";
+import {NotificationService} from "../../../../core/notification/notification.service";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1000,
@@ -27,6 +36,12 @@ const workflowData: StopPointWorkflowDetailData = {
   workflow: workflow,
   servicePoint: [BERN_WYLEREGG]
 }
+
+const stopPointWorkflowService = jasmine.createSpyObj({
+  startStopPointWorkflow: of(workflow),
+});
+
+const notificationServiceSpy = jasmine.createSpyObj(['success']);
 
 const activatedRoute = {
   snapshot: {
@@ -53,11 +68,13 @@ describe('StopPointWorkflowDetailComponent', () => {
         DetailPageContainerComponent,
         DetailFooterComponent,
         AtlasSpacerComponent,
-        UserDetailInfoComponent,
+        UserDetailInfoComponent
       ],
       imports: [AppTestingModule, FormModule],
       providers: [
         {provide: ActivatedRoute, useValue: activatedRoute},
+        {provide: StopPointWorkflowService, useValue: stopPointWorkflowService},
+        {provide: NotificationService, useValue: notificationServiceSpy},
         {provide: TranslatePipe}
       ]
     }).compileComponents().then();
@@ -133,6 +150,14 @@ describe('StopPointWorkflowDetailComponent', () => {
 
     const result = component.getOldDesignation(servicePoint, 1);
     expect(result).toBe('-')
+  });
+
+  it('should startWorkflow', () => {
+    component.startWorkflow();
+
+    expect(stopPointWorkflowService.startStopPointWorkflow).toHaveBeenCalled();
+    expect(notificationServiceSpy.success).toHaveBeenCalled();
+
   });
 
 });
