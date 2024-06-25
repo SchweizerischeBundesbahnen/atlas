@@ -1,8 +1,8 @@
 <atlas-dialog-close class="pe-2" (clicked)="cancel()"></atlas-dialog-close>
 
 <atlas-dialog-content>
-  <h1>Antrag beantworten</h1>
-  <mat-stepper [linear]="true" labelPosition="bottom" (selectionChange)="nextStep()" #stepper>
+  <h1>{{ 'WORKFLOW.DECISION.DIALOG_TITLE' | translate }}</h1>
+  <mat-stepper [linear]="true" labelPosition="bottom" #stepper>
     <!-- override done step icon -->
     <ng-template matStepperIcon="done">
       <i class="bi bi-check2-circle"></i>
@@ -27,7 +27,7 @@
         </div>
       </form>
     </mat-step>
-    <!--    todo: mby translate label PIN-Code-->
+
     <mat-step
       [stepControl]="pin"
       [editable]="false"
@@ -54,7 +54,9 @@
           <button class="atlas-primary-btn me-3" (click)="cancel()">
             {{ 'COMMON.CANCEL' | translate }}
           </button>
-          <button matStepperNext (click)="verifyPin()" class="atlas-primary-btn">{{ 'DIALOG.OK' | translate }}</button>
+          <button (click)="completeVerifyPinStep()" class="atlas-primary-btn">
+            {{ 'DIALOG.OK' | translate }}
+          </button>
         </div>
       </form>
     </mat-step>
@@ -99,7 +101,6 @@
           </atlas-text-field>
         </div>
 
-        <!-- todo: validate with error message -->
         <mat-radio-group formControlName="decision" class="d-grid">
           <mat-radio-button [value]="true">
             {{ 'WORKFLOW.DECISION.ACCEPT' | translate }}
@@ -119,7 +120,7 @@
           <button class="atlas-primary-btn me-3" (click)="cancel()">
             {{ 'COMMON.CANCEL' | translate }}
           </button>
-          <button (click)="sendDecision()" class="atlas-primary-btn">
+          <button (click)="completeDecision()" class="atlas-primary-btn">
             {{ 'WORKFLOW.DECISION.SEND' | translate }}
           </button>
         </div>

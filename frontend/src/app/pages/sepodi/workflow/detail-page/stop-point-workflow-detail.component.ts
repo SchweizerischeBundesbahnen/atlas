@@ -1,20 +1,27 @@
-import {Component, OnInit} from '@angular/core';
-import {ReadServicePointVersion, ReadStopPointWorkflow, Status, StopPointWorkflowService, WorkflowStatus,} from '../../../../api';
-import {FormGroup} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import {
+  ApplicationType,
+  JudgementType,
+  ReadServicePointVersion,
+  ReadStopPointWorkflow,
+  Status,
+  StopPointWorkflowService,
+  WorkflowStatus,
+} from '../../../../api';
+import { FormGroup } from '@angular/forms';
 import {
   StopPointWorkflowDetailFormGroup,
   StopPointWorkflowDetailFormGroupBuilder,
 } from '../detail-form/stop-point-workflow-detail-form-group';
-import {ActivatedRoute} from '@angular/router';
-import {StopPointWorkflowDetailData} from './stop-point-workflow-detail-resolver.service';
-import {NotificationService} from '../../../../core/notification/notification.service';
-import {
-  StopPointRejectWorkflowDialogService
-} from "../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog.service";
-import {environment} from "../../../../../environments/environment";
-import {MatDialog} from '@angular/material/dialog';
-import {DecisionDialogComponent} from './decision-dialog/decision-dialog.component';
-import {take} from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { StopPointWorkflowDetailData } from './stop-point-workflow-detail-resolver.service';
+import { NotificationService } from '../../../../core/notification/notification.service';
+import { StopPointRejectWorkflowDialogService } from '../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog.service';
+import { environment } from '../../../../../environments/environment';
+import { MatDialog } from '@angular/material/dialog';
+import { DecisionDialogComponent } from './decision-dialog/decision-dialog.component';
+import { take } from 'rxjs';
+import { PermissionService } from '../../../../core/auth/permission/permission.service';
 
 @Component({
   selector: 'stop-point-workflow-detail',
@@ -22,6 +29,7 @@ import {take} from 'rxjs';
 })
 export class StopPointWorkflowDetailComponent implements OnInit {
   protected readonly WorkflowStatus = WorkflowStatus;
+  protected readonly ApplicationType = ApplicationType;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,6 +37,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
     private readonly stopPointWorkflowService: StopPointWorkflowService,
     private readonly notificationService: NotificationService,
     private readonly stopPointRejectWorkflowDialogService: StopPointRejectWorkflowDialogService,
+    protected readonly permissionService: PermissionService,
   ) {}
 
   form!: FormGroup<StopPointWorkflowDetailFormGroup>;
@@ -74,13 +83,13 @@ export class StopPointWorkflowDetailComponent implements OnInit {
   }
 
   rejectWorkflow() {
-    this.stopPointRejectWorkflowDialogService.openDialog(this.workflow.id!)
+    this.stopPointRejectWorkflowDialogService.openDialog(this.workflow.id!);
   }
 
   openDecisionDialog() {
     const decisionDialogRef = this.dialog.open(DecisionDialogComponent, {
       data: {
-        workflow: this.workflow
+        workflow: this.workflow,
       },
       disableClose: true,
       panelClass: 'atlas-dialog-panel',
@@ -88,21 +97,61 @@ export class StopPointWorkflowDetailComponent implements OnInit {
     });
     const decisionDialogComponent = decisionDialogRef.componentInstance;
 
-    const subscription = decisionDialogComponent.obtainOtp.subscribe((mail) => {
+    const obtainOtpSubscription = decisionDialogComponent.obtainOtp.subscribe((stepData) => {
       this.stopPointWorkflowService
         .obtainOtp(this.workflow.id!, {
-          examinantMail: mail.value,
+          examinantMail: stepData.mail.value,
         })
         .subscribe(() => {
-          decisionDialogComponent.stepper?.next();
+          stepData.continue();
         });
     });
+
+    const verifyPinSubscription = decisionDialogComponent.verifyPin.subscribe((stepData) => {
+      this.stopPointWorkflowService
+        .verifyOtp(this.workflow.id!, {
+          examinantMail: stepData.mail.value,
+          pinCode: stepData.pin.value,
+        })
+        .subscribe((examinant) => {
+          stepData.continue(examinant);
+        });
+    });
+
+    const sendDecisionSubscription = decisionDialogComponent.sendDecision.subscribe((stepData) => {
+      this.stopPointWorkflowService
+        .voteWorkflow(this.workflow.id!, stepData.verifiedExaminant.id!, {
+          examinantMail: stepData.mail.value,
+          pinCode: stepData.pin.value,
+          judgement: stepData.decision.controls.decision.value
+            ? JudgementType.Yes
+            : JudgementType.No,
+          motivation: stepData.decision.controls.comment.value,
+          firstName: stepData.decision.controls.firstName.value,
+          lastName: stepData.decision.controls.lastName.value,
+          organisation: stepData.decision.controls.organisation.value,
+          personFunction: stepData.decision.controls.function.value,
+        })
+        .subscribe(() => {
+          decisionDialogRef.close();
+          this.notificationService.success('WORKFLOW.NOTIFICATION.VOTE.SUCCESS');
+        });
+      // todo: check if it works with empty motivation and judgement YES in backend
+    });
+
+    // todo: translate error messages and other languages
 
     decisionDialogRef
       .afterClosed()
       .pipe(take(1))
       .subscribe(() => {
-        subscription.unsubscribe();
+        obtainOtpSubscription.unsubscribe();
+        verifyPinSubscription.unsubscribe();
+        sendDecisionSubscription.unsubscribe();
       });
+  }
+
+  handleBavOverride(examinantIdx: number) {
+    console.log('handle bav override of examinant: ' + examinantIdx);
   }
 }
