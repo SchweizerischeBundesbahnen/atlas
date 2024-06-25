@@ -3,6 +3,7 @@ package ch.sbb.workflow.model.sepodi;
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.api.workflow.BasePersonModel;
+import ch.sbb.workflow.entity.JudgementType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.validation.constraints.NotBlank;
@@ -24,6 +25,9 @@ public class StopPointClientPersonModel extends BasePersonModel {
 
   @Schema(description = "Technical id", accessMode = AccessMode.READ_ONLY)
   private Long id;
+
+  @Schema(description = "Current judgement of the person regarding the workflow", accessMode = AccessMode.READ_ONLY)
+  private JudgementType judgement;
 
   @Schema(description = "Organisation", example = "ZVV Zürcher Verkehrsverbund")
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
