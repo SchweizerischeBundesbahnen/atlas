@@ -73,7 +73,18 @@ class StopPointWorkflowServiceTest {
   }
   @Test
   void testEditWorkflow_Success() {
-    Long id = 4581L;
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+            .sloid("ch:1:sloid:8000")
+            .sboid("ch:1:sboid:10")
+            .status(WorkflowStatus.ADDED)
+            .designationOfficial("Heimsiswil Zentrum")
+            .versionId(1L)
+            .localityName("Heimiswil")
+            .build();
+
+    StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
+    Long id = saved.getId();
+
     EditStopPointWorkflowModel workflowModel = EditStopPointWorkflowModel.builder()
             .workflowComment("New Comment")
             .designationOfficial("New Official")
