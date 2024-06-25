@@ -39,7 +39,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @ToString
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @FieldNameConstants
 @Entity(name = "stop_point_workflow")
 public class StopPointWorkflow extends BaseWorkflowEntity {
