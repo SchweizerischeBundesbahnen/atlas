@@ -50,6 +50,7 @@ const stopPointWorkflowService = jasmine.createSpyObj('stopPointWorkflowService'
   obtainOtp: of(),
   verifyOtp: of(),
   voteWorkflow: of(),
+  editStopPointWorkflow: jasmine.createSpy('editStopPointWorkflow'),
 });
 
 const notificationServiceSpy = jasmine.createSpyObj(['success']);
@@ -62,9 +63,7 @@ const activatedRoute = {
   },
 };
 const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
-const stopPointWorkflowServiceSpy = jasmine.createSpyObj('StopPointWorkflowService', [
-  'editStopPointWorkflow',
-]);
+
 describe('StopPointWorkflowDetailComponent', () => {
   let component: StopPointWorkflowDetailComponent;
   let fixture: ComponentFixture<StopPointWorkflowDetailComponent>;
@@ -94,7 +93,7 @@ describe('StopPointWorkflowDetailComponent', () => {
       providers: [
         {provide: ActivatedRoute, useValue: activatedRoute},
         {provide: TranslatePipe},
-        { provide: StopPointWorkflowService, useValue: stopPointWorkflowServiceSpy },
+        { provide: StopPointWorkflowService, useValue: stopPointWorkflowService },
         { provide: NotificationService, useValue: notificationServiceSpy },
         { provide: ValidationService, useClass: ValidationService },
         {
@@ -221,11 +220,11 @@ describe('StopPointWorkflowDetailComponent', () => {
       judgement: JudgementType.Yes
     }]);
 
-    stopPointWorkflowServiceSpy.editStopPointWorkflow.and.returnValue(of({ id: 1 }));
+    stopPointWorkflowService.editStopPointWorkflow.and.returnValue(of({ id: 1 }));
 
     component.save();
 
-    expect(stopPointWorkflowServiceSpy.editStopPointWorkflow).toHaveBeenCalledWith(component.workflow.id, {
+    expect(stopPointWorkflowService.editStopPointWorkflow).toHaveBeenCalledWith(component.workflow.id, {
       designationOfficial: 'Official Designation',
       workflowComment: 'Some comment',
       examinants: [{
