@@ -1,16 +1,17 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ApplicationType, ReadServicePointVersion, ReadStopPointWorkflow } from '../../../../api';
-import { ControlContainer, FormGroup, NgForm } from '@angular/forms';
-import { AtlasCharsetsValidator } from '../../../../core/validation/charsets/atlas-charsets-validator';
-import { AtlasFieldLengthValidator } from '../../../../core/validation/field-lengths/atlas-field-length-validator';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {ApplicationType, ReadServicePointVersion, ReadStopPointWorkflow, WorkflowStatus} from '../../../../api';
+import {ControlContainer, FormGroup, NgForm} from '@angular/forms';
+import {AtlasCharsetsValidator} from '../../../../core/validation/charsets/atlas-charsets-validator';
+import {AtlasFieldLengthValidator} from '../../../../core/validation/field-lengths/atlas-field-length-validator';
 import {
   StopPointWorkflowDetailFormGroup,
   StopPointWorkflowDetailFormGroupBuilder,
 } from './stop-point-workflow-detail-form-group';
-import { ValidationService } from '../../../../core/validation/validation.service';
-import { Pages } from '../../../pages';
-import { Router } from '@angular/router';
-import { PermissionService } from '../../../../core/auth/permission/permission.service';
+import {ValidationService} from '../../../../core/validation/validation.service';
+import {Pages} from '../../../pages';
+import {Router} from '@angular/router';
+import {PermissionService} from '../../../../core/auth/permission/permission.service';
+import {DecisionDetailDialogService} from "../detail-page/decision-detail/decision-detail-dialog.service";
 
 @Component({
   selector: 'stop-point-workflow-detail-form',
@@ -20,6 +21,7 @@ import { PermissionService } from '../../../../core/auth/permission/permission.s
 })
 export class StopPointWorkflowDetailFormComponent {
   protected readonly ApplicationType = ApplicationType;
+  readonly WorkflowStatus = WorkflowStatus;
   readonly emailValidator = [AtlasCharsetsValidator.email, AtlasFieldLengthValidator.length_100];
 
   @Input() stopPoint!: ReadServicePointVersion;
@@ -31,7 +33,8 @@ export class StopPointWorkflowDetailFormComponent {
   constructor(
     private router: Router,
     protected readonly permissionService: PermissionService,
-  ) {}
+    private decisionDetailDialogService: DecisionDetailDialogService) {
+  }
 
   addExaminant() {
     const examinantsControl = this.form.controls.examinants;
@@ -63,5 +66,10 @@ export class StopPointWorkflowDetailFormComponent {
       }
     }));
     window.open(url, '_blank');
+  }
+
+  openDecision(index: number) {
+    const examinantId = this.form.controls.examinants.at(index).controls.id.value!
+    this.decisionDetailDialogService.openDialog(this.currentWorkflow!.id!, examinantId);
   }
 }
