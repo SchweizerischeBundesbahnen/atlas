@@ -7,6 +7,7 @@ import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.OtpRequestModel;
 import ch.sbb.workflow.model.sepodi.OtpVerificationModel;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
+import ch.sbb.workflow.model.sepodi.ReadDecisionModel;
 import ch.sbb.workflow.model.sepodi.ReadStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
@@ -77,7 +78,10 @@ public interface StopPointWorkflowApiV1 {
   @PostMapping(path = "/verify-otp/{id}")
   StopPointClientPersonModel verifyOtp(@PathVariable Long id, @RequestBody @Valid OtpVerificationModel otpVerification);
 
-  @PostMapping(path = "/vote/{id}/{personId}")
+  @PostMapping(path = "/decisions/{personId}")
+  ReadDecisionModel getDecision(@PathVariable Long personId);
+
+  @GetMapping(path = "/vote/{id}/{personId}")
   void voteWorkflow(@PathVariable Long id, @PathVariable Long personId, @RequestBody @Valid DecisionModel decisionModel);
 
   @PreAuthorize("""

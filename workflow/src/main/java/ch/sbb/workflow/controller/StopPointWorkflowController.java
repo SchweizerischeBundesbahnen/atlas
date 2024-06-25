@@ -5,6 +5,7 @@ import ch.sbb.workflow.api.StopPointWorkflowApiV1;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
+import ch.sbb.workflow.mapper.StopPointWorkflowDecisionMapper;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
@@ -12,6 +13,7 @@ import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.OtpRequestModel;
 import ch.sbb.workflow.model.sepodi.OtpVerificationModel;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
+import ch.sbb.workflow.model.sepodi.ReadDecisionModel;
 import ch.sbb.workflow.model.sepodi.ReadStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
@@ -98,6 +100,11 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
     Person examinant = otpService.getExaminantByMail(id, otpVerification.getExaminantMail());
     otpService.validatePinCode(examinant, otpVerification.getPinCode());
     return StopPointClientPersonMapper.toModel(examinant);
+  }
+
+  @Override
+  public ReadDecisionModel getDecision(Long personId) {
+    return StopPointWorkflowDecisionMapper.toModel(decisionService.getDecision(personId));
   }
 
   @Override
