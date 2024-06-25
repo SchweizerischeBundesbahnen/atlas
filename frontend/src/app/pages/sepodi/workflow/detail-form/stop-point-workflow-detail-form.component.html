@@ -123,6 +123,9 @@
         </div>
         <div class="col pe-2">{{ 'WORKFLOW.PERSON.FUNCTION' | translate }}</div>
         <div class="col required-indicator">{{ 'WORKFLOW.PERSON.MAIL' | translate }}</div>
+        @if (currentWorkflow?.status !== WorkflowStatus.Added && form.disabled){
+          <div class="decision-icon-col pe-2">{{ 'WORKFLOW.PERSON.JUDGEMENT'|translate }}</div>
+        }
         @if (form.enabled) {
           <div class="icon-button-col"></div>
         }
@@ -157,6 +160,22 @@
           <div class="col">
             <atlas-text-field [formGroup]="examinant" controlName="mail"></atlas-text-field>
           </div>
+          @if (currentWorkflow?.status !== WorkflowStatus.Added && form.disabled) {
+            <div class="decision-icon-col pe-2">
+              <atlas-button
+                (buttonClicked)="openDecision(i)"
+                buttonType="icon"
+                wrapperStyleClass="pt-1"
+                buttonStyleClass="bordered-btn px-2 py-1"
+              >
+                <ng-template #rightIcon>
+                  <i
+                    class="bi {{ examinant.controls.judgementIcon.value }}"
+                  ></i>
+                </ng-template>
+              </atlas-button>
+            </div>
+          }
           @if (form.enabled) {
             <div class="icon-button-col text-align-center">
               <atlas-button

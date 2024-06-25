@@ -23,6 +23,7 @@ import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.OtpRequestModel;
 import ch.sbb.workflow.model.sepodi.OtpVerificationModel;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
+import ch.sbb.workflow.model.sepodi.ReadStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.OtpRepository;
@@ -142,18 +143,29 @@ class StopPointWorkflowControllerVotingTest {
 
   @Test
   void shouldObtainOtpViaMailAndVoteCorrectly() {
+    // Read workflow details
+    ReadStopPointWorkflowModel stopPointWorkflow = controller.getStopPointWorkflow(workflowInHearing.getId());
+    assertThat(stopPointWorkflow.getExaminants().getFirst().getJudgement()).isNull();
+
+    // Obtain OTP
     controller.obtainOtp(workflowInHearing.getId(), OtpRequestModel.builder().examinantMail(MAIL_ADDRESS).build());
     verify(notificationService, times(1)).sendPinCodeMail(any(), eq(MAIL_ADDRESS), pincodeCaptor.capture());
 
+    // Verify examinant
     StopPointClientPersonModel verifiedExaminant = controller.verifyOtp(workflowInHearing.getId(),
         OtpVerificationModel.builder().examinantMail(MAIL_ADDRESS).pinCode(pincodeCaptor.getValue()).build());
 
+    // Vote
     controller.voteWorkflow(workflowInHearing.getId(), verifiedExaminant.getId(),
         DecisionModel.builder().judgement(JudgementType.YES).examinantMail(MAIL_ADDRESS).pinCode(pincodeCaptor.getValue())
             .build());
 
+    // Verify correct handling
     Decision decision = decisionRepository.findDecisionByExaminantId(verifiedExaminant.getId());
     assertThat(decision.getJudgement()).isEqualTo(JudgementType.YES);
+
+    stopPointWorkflow = controller.getStopPointWorkflow(workflowInHearing.getId());
+    assertThat(stopPointWorkflow.getExaminants().getFirst().getJudgement()).isEqualTo(JudgementType.YES);
   }
 
   @Test
