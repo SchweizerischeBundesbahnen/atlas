@@ -42,7 +42,7 @@ export class DecisionDetailDialogComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.stopPointWorkflowService.getStopPointWorkflow(this.decisionDetailDialogData.workflowId);
+    this.stopPointWorkflowService.getDecision(this.decisionDetailDialogData.examinantId).subscribe(decision => console.log(decision));
   }
 
   close() {

@@ -8,14 +8,17 @@ import lombok.experimental.UtilityClass;
 public class StopPointWorkflowDecisionMapper {
 
   public static ReadDecisionModel toModel(Decision entity) {
-    return ReadDecisionModel.builder()
+    ReadDecisionModel readDecisionModel = ReadDecisionModel.builder()
         .judgement(entity.getJudgement())
         .motivation(entity.getMotivation())
         .examinant(StopPointClientPersonMapper.toModel(entity.getExaminant()))
         .fotJudgement(entity.getFotJudgement())
         .fotMotivation(entity.getFotMotivation())
-        .fotOverrider(StopPointClientPersonMapper.toModel(entity.getFotOverrider()))
         .build();
+    if (entity.getFotOverrider() != null) {
+      readDecisionModel.setFotOverrider(StopPointClientPersonMapper.toModel(entity.getFotOverrider()));
+    }
+    return readDecisionModel;
   }
 
 }
