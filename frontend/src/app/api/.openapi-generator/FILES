@@ -136,6 +136,7 @@ model/platformVersion.ts
 model/prmBatchExportFileName.ts
 model/prmExportType.ts
 model/readContactPointVersion.ts
+model/readDecision.ts
 model/readLoadingPointVersion.ts
 model/readParkingLotVersion.ts
 model/readPlatformVersion.ts
