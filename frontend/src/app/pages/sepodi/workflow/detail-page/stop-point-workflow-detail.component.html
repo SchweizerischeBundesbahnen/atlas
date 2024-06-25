@@ -26,17 +26,17 @@
       wrapperStyleClass="me-3"
     >
     </atlas-button>
-    <!--    TODO: Sichtbar nur für Supervisoren -->
-    <atlas-button
-      *ngIf="isAtLeastSupervisor"
-      [footerEdit]="form.disabled"
-      (buttonClicked)="toggleEdit()"
-      buttonDataCy="edit"
-      buttonText="COMMON.EDIT"
-      buttonType="whiteFooterEdit"
-      wrapperStyleClass="ms-3"
-    >
-    </atlas-button>
+    @if (isAtLeastSupervisor){
+      <atlas-button
+        [footerEdit]="form.disabled"
+        (buttonClicked)="toggleEdit()"
+        buttonDataCy="edit"
+        buttonText="COMMON.EDIT"
+        buttonType="whiteFooterEdit"
+        wrapperStyleClass="ms-3"
+      >
+      </atlas-button>
+    }
     <atlas-button
       [footerEdit]="(isFormEnabled$ | async) ?? false"
       (buttonClicked)="toggleEdit()"
