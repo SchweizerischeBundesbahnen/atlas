@@ -143,7 +143,9 @@
     "CONFIRM_BO_TRANSFER_TITLE": "Hinweis",
     "CONFIRM_BO_TRANSFER": "Durch die Änderung der Geschäftsorganisation verlieren Sie die Berechtigung für die Bearbeitung des Objektes ab dem Mutationszeitpunkt.",
     "CONFIRM_VALIDITY_HAS_NOT_CHANGED_TITLE": "Achtung: Gültigkeit wurde nicht verändert!",
-    "CONFIRM_VALIDITY_HAS_NOT_CHANGED": "Sind Sie Sicher, dass Sie die Änderung ohne Anpassung der Gültigkeit vornehmen möchten? Falls die Änderung nicht für den ganzen Zeitraum dieser Version gilt, passen Sie bitte das \"gültig von\" oder \"gültig bis\" Datum an."
+    "CONFIRM_VALIDITY_HAS_NOT_CHANGED": "Sind Sie Sicher, dass Sie die Änderung ohne Anpassung der Gültigkeit vornehmen möchten? Falls die Änderung nicht für den ganzen Zeitraum dieser Version gilt, passen Sie bitte das \"gültig von\" oder \"gültig bis\" Datum an.",
+    "CANCEL_DECISION_TITLE": "Entscheidung abbrechen?",
+    "CANCEL_DECISION": "Sie verlieren den aktuellen Fortschritt und müssen beim nächsten Mal wieder neu beginnen."
   },
   "SW_DIALOG": {
     "UPDATE_TITLE": "Neue Version verfügbar",
@@ -239,7 +241,8 @@
     "MEANSOFTRANSPORTWRONGCOMBINATION": "Diese Verkehrsmittelkombination ist nicht zulässig.",
     "DECIMAL_NUMBER": "Geben Sie eine Dezimalzahl mit maximal {{maxDecimalDigits}} Nachkommastellen ein.",
     "INTEGER_WITH_FRACTION": "Geben Sie eine Dezimalzahl mit maximal {{maxDecimalDigits}} Ziffern und mit maximal {{maxFractionDigits}} Nachkommastellen ein.",
-    "COLON_SEPERATED_SID4PT": "Verwenden Sie den SID4PT Zeichensatz (-._0-9a-zA-Z) mit genau {{numbersWithColons}} trennenden Doppelpunkten."
+    "COLON_SEPERATED_SID4PT": "Verwenden Sie den SID4PT Zeichensatz (-._0-9a-zA-Z) mit genau {{numbersWithColons}} trennenden Doppelpunkten.",
+    "DECISION_COMMENT_REQUIRED": "Begründung ist notwendig"
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Geschäftsorganisationen und Applikationen",
@@ -588,6 +591,9 @@
       },
       "SKIP": {
         "SUCCESS": "Die Anhörung wurde erfolgreich übersprungen."
+      },
+      "VOTE": {
+        "SUCCESS": "Die Entscheidung wurde gespeichert"
       }
     },
     "ERROR": {
@@ -595,6 +601,7 @@
       "ALREADY_IN_REVIEW": "Für dieses Objekt wurde bereits eine Anhörung gestartet."
     },
     "DECISION": {
+      "DIALOG_TITLE": "Antrag beantworten",
       "IDENTIFICATION": "Identifikation",
       "PIN_CODE": "PIN-Code",
       "DECISION": "Entscheid",
