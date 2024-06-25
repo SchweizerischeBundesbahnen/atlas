@@ -565,7 +565,8 @@
       "LASTNAME": "Nachname",
       "FUNCTION": "Funktion",
       "MAIL": "E-Mail Adresse",
-      "ORGANISATION": "Organisation"
+      "ORGANISATION": "Organisation",
+      "JUDGEMENT": "Entscheid"
     },
     "STATUS_DETAIL": "Anhörung Status",
     "STATUS": {
