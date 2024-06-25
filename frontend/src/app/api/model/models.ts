@@ -102,6 +102,7 @@ export * from './platformVersion';
 export * from './prmBatchExportFileName';
 export * from './prmExportType';
 export * from './readContactPointVersion';
+export * from './readDecision';
 export * from './readLoadingPointVersion';
 export * from './readParkingLotVersion';
 export * from './readPlatformVersion';
