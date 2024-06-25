@@ -81,10 +81,10 @@ class StopPointWorkflowServiceTest {
 
     workflowService.editWorkflow(id, workflowModel);
 
-    StopPointWorkflow test = workflowRepository.findById(id).get();
+    StopPointWorkflow foundWorkflow = workflowRepository.findById(id).get();
 
-    assertEquals("New Official", test.getDesignationOfficial());
-    assertEquals("New Comment", test.getWorkflowComment());
+    assertEquals("New Official", foundWorkflow.getDesignationOfficial());
+    assertEquals("New Comment", foundWorkflow.getWorkflowComment());
   }
 
   @Test
@@ -98,9 +98,9 @@ class StopPointWorkflowServiceTest {
             .localityName("Heimiswil")
             .build();
 
-    workflowRepository.save(stopPointWorkflow);
+    StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
+    Long id = saved.getId();
 
-    Long id = 4582L;
     EditStopPointWorkflowModel workflowModel = EditStopPointWorkflowModel.builder()
             .workflowComment("New Comment")
             .designationOfficial("New Official")
@@ -113,7 +113,6 @@ class StopPointWorkflowServiceTest {
 
   @Test
   void testEditWorkflow_UpdateExaminants() {
-    Long id = 4581L;
     Person person = Person.builder()
             .firstName("Marek")
             .lastName("Hamsik")
@@ -123,6 +122,18 @@ class StopPointWorkflowServiceTest {
     List<Person> examinant = new ArrayList<>();
     examinant.add(person);
 
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+            .sloid("ch:1:sloid:8000")
+            .sboid("ch:1:sboid:10")
+            .status(WorkflowStatus.ADDED)
+            .designationOfficial("Heimsiswil Zentrum")
+            .versionId(1L)
+            .localityName("Heimiswil")
+            .build();
+
+    StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
+    Long id = saved.getId();
+
     EditStopPointWorkflowModel workflowModel = EditStopPointWorkflowModel.builder()
             .workflowComment("New Comment")
             .designationOfficial("New Official")
@@ -131,11 +142,11 @@ class StopPointWorkflowServiceTest {
 
     workflowService.editWorkflow(id, workflowModel);
 
-    StopPointWorkflow stopPointWorkflow = workflowRepository.findById(4581L).get();
+    StopPointWorkflow stopPointWorkflowInDb = workflowRepository.findById(id).get();
 
 
-    assertFalse(stopPointWorkflow.getExaminants().isEmpty());
-    assertThat(stopPointWorkflow.getExaminants()).hasSize(1);
+    assertFalse(stopPointWorkflowInDb.getExaminants().isEmpty());
+    assertThat(stopPointWorkflowInDb.getExaminants()).hasSize(1);
   }
 
   @Test
@@ -156,9 +167,9 @@ class StopPointWorkflowServiceTest {
             .localityName("Heimiswil")
             .build();
 
-    workflowRepository.save(stopPointWorkflow);
+    StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
+    Long id = saved.getId();
 
-    Long id = 4582L;
     person.setMail("neueMail@mail.neu");
     List<Person> examinant = new ArrayList<>();
     examinant.add(person);
@@ -170,7 +181,7 @@ class StopPointWorkflowServiceTest {
             .build();
 
     workflowService.editWorkflow(id, workflowModel);
-    StopPointWorkflow stopPointWorkflow1 = workflowRepository.findById(4582L).get();
+    StopPointWorkflow stopPointWorkflow1 = workflowRepository.findById(id).get();
     assertFalse(stopPointWorkflow1.getExaminants().isEmpty());
     assertThat(stopPointWorkflow1.getExaminants()).extracting("mail").contains("neueMail@mail.neu");
   }
