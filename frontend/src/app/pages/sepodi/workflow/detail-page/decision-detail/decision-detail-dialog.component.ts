@@ -1,4 +1,4 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {FormsModule, ReactiveFormsModule,} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -32,7 +32,7 @@ import {DecisionDetailDialogData} from "./decision-detail-dialog.service";
   templateUrl: './decision-detail-dialog.component.html',
   styleUrl: './decision-detail-dialog.component.scss',
 })
-export class DecisionDetailDialogComponent {
+export class DecisionDetailDialogComponent implements OnInit {
 
   constructor(
     private dialogService: DialogService,
@@ -40,6 +40,10 @@ export class DecisionDetailDialogComponent {
     private stopPointWorkflowService: StopPointWorkflowService,
     @Inject(MAT_DIALOG_DATA) private decisionDetailDialogData: DecisionDetailDialogData,
   ) {}
+
+  ngOnInit() {
+    this.stopPointWorkflowService.getStopPointWorkflow(this.decisionDetailDialogData.workflowId);
+  }
 
   close() {
     this.dialogRef.close();
