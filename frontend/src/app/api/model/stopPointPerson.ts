@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { JudgementType } from './judgementType';
 
 
 /**
@@ -35,6 +36,7 @@ export interface StopPointPerson {
      * Technical id
      */
     readonly id?: number;
+    judgement?: JudgementType;
     /**
      * Organisation
      */
