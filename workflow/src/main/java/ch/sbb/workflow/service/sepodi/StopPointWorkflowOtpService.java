@@ -67,9 +67,9 @@ public class StopPointWorkflowOtpService {
   }
 
   public Person getExaminantByMail(Long workflowId, String examinantMail) {
-    return workflowService.findStopPointWorkflow(workflowId)
+    return workflowService.getUnredactedWorkflowById(workflowId)
         .getExaminants().stream()
-        .filter(i -> i.getUnredactedMail().equals(examinantMail))
+        .filter(i -> i.getMail().equals(examinantMail))
         .findFirst().orElseThrow(StopPointWorkflowExaminantNotFoundException::new);
   }
 
