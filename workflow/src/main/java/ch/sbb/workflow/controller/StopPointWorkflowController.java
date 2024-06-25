@@ -86,7 +86,7 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
 
   @Override
   public void obtainOtp(Long id, OtpRequestModel otpRequest) {
-    otpService.obtainOtp(service.findStopPointWorkflow(id), otpRequest.getExaminantMail());
+    otpService.obtainOtp(service.getUnredactedWorkflowById(id), otpRequest.getExaminantMail());
   }
 
   @Override
