@@ -48,7 +48,7 @@ public class StopPointWorkflowService {
       throw new IllegalStateException(EXCEPTION_MSG);
     }
     stopPointWorkflow.setWorkflowComment(workflowModel.getWorkflowComment());
-    return workflowRepository.save(stopPointWorkflow);
+    return save(stopPointWorkflow);
   }
 
   public StopPointWorkflow addExaminantToWorkflow(Long id, StopPointClientPersonModel personModel) {
@@ -57,7 +57,7 @@ public class StopPointWorkflowService {
       Person examinant = StopPointClientPersonMapper.toEntity(personModel);
       stopPointWorkflow.getExaminants().add(examinant);
       examinant.setStopPointWorkflow(stopPointWorkflow);
-      return workflowRepository.save(stopPointWorkflow);
+      return save(stopPointWorkflow);
     }
     throw new IllegalStateException(EXCEPTION_MSG);
   }
@@ -68,13 +68,13 @@ public class StopPointWorkflowService {
       Person person = stopPointWorkflow.getExaminants().stream().filter(p -> p.getId().equals(personId)).findFirst()
           .orElseThrow(() -> new IdNotFoundException(personId));
       stopPointWorkflow.getExaminants().remove(person);
-      return workflowRepository.save(stopPointWorkflow);
+      return save(stopPointWorkflow);
     }
     throw new IllegalStateException(EXCEPTION_MSG);
   }
 
   public void voteWorkFlow(Long id, Long personId, DecisionModel decisionModel) {
-    StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
+    StopPointWorkflow stopPointWorkflow = getUnredactedWorkflowById(id);
     if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
       throw new StopPointWorkflowNotInHearingException();
     }
@@ -135,5 +135,9 @@ public class StopPointWorkflowService {
 
   public StopPointWorkflow save(StopPointWorkflow stopPointWorkflow) {
     return workflowRepository.saveAndFlush(stopPointWorkflow);
+  }
+
+  public StopPointWorkflow getUnredactedWorkflowById(Long workflowId) {
+    return workflowRepository.getUnredactedWorkflowById(workflowId);
   }
 }
