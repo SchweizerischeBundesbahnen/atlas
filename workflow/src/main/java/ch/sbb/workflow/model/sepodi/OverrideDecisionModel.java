@@ -3,7 +3,9 @@ package ch.sbb.workflow.model.sepodi;
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.workflow.entity.JudgementType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -39,5 +41,11 @@ public class OverrideDecisionModel {
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_1500)
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   private String fotMotivation;
+
+  @JsonIgnore
+  @AssertTrue(message = "Motivation must not be null if Judgement is NO")
+  public boolean isMotivationNeeded() {
+    return fotJudgement != JudgementType.NO || fotMotivation != null;
+  }
 
 }
