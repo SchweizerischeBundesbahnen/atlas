@@ -11,7 +11,6 @@ import {FormModule} from "../../../../../../core/module/form.module";
 import {CoreModule} from "../../../../../../core/module/core.module";
 import {
   ApplicationType,
-  Decision,
   JudgementType,
   OverrideDecision,
   ReadDecision,
@@ -63,7 +62,8 @@ export class DecisionOverrideComponent implements OnInit {
   }
 
   saveOverride(){
-    this.stopPointWorkflowService.overrideVoteWorkflow(this.workflowId, this.examinantId, {} as OverrideDecision).subscribe(() => {
+    const overrideDecision: OverrideDecision = this.formGroup.value as OverrideDecision
+    this.stopPointWorkflowService.overrideVoteWorkflow(this.workflowId, this.examinantId, overrideDecision).subscribe(() => {
 // success
     });
   }
