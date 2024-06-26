@@ -9,7 +9,14 @@ import {MatDialogClose} from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
 import {FormModule} from "../../../../../../core/module/form.module";
 import {CoreModule} from "../../../../../../core/module/core.module";
-import {ApplicationType, Decision, JudgementType, ReadDecision, StopPointWorkflowService} from "../../../../../../api";
+import {
+  ApplicationType,
+  Decision,
+  JudgementType,
+  OverrideDecision,
+  ReadDecision,
+  StopPointWorkflowService
+} from "../../../../../../api";
 import {PermissionService} from "../../../../../../core/auth/permission/permission.service";
 import {DecisionOverrideFormGroup, DecisionOverrideFormGroupBuilder} from "./decision-override-form-group";
 
@@ -56,7 +63,7 @@ export class DecisionOverrideComponent implements OnInit {
   }
 
   saveOverride(){
-    this.stopPointWorkflowService.overrideVoteWorkflow(this.workflowId, this.examinantId, {} as Decision).subscribe(() => {
+    this.stopPointWorkflowService.overrideVoteWorkflow(this.workflowId, this.examinantId, {} as OverrideDecision).subscribe(() => {
 // success
     });
   }

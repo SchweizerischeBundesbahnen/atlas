@@ -23,6 +23,7 @@ import { EditStopPointWorkflow } from '../model/models';
 import { ErrorResponse } from '../model/models';
 import { OtpRequest } from '../model/models';
 import { OtpVerification } from '../model/models';
+import { OverrideDecision } from '../model/models';
 import { ReadDecision } from '../model/models';
 import { ReadStopPointWorkflow } from '../model/models';
 import { StopPointAddWorkflow } from '../model/models';
@@ -591,22 +592,22 @@ export class StopPointWorkflowService {
     /**
      * @param id 
      * @param personId 
-     * @param decision 
+     * @param overrideDecision 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public overrideVoteWorkflow(id: number, personId: number, decision: Decision, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<any>;
-    public overrideVoteWorkflow(id: number, personId: number, decision: Decision, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<any>>;
-    public overrideVoteWorkflow(id: number, personId: number, decision: Decision, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<any>>;
-    public overrideVoteWorkflow(id: number, personId: number, decision: Decision, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public overrideVoteWorkflow(id: number, personId: number, overrideDecision: OverrideDecision, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<any>;
+    public overrideVoteWorkflow(id: number, personId: number, overrideDecision: OverrideDecision, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<any>>;
+    public overrideVoteWorkflow(id: number, personId: number, overrideDecision: OverrideDecision, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<any>>;
+    public overrideVoteWorkflow(id: number, personId: number, overrideDecision: OverrideDecision, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling overrideVoteWorkflow.');
         }
         if (personId === null || personId === undefined) {
             throw new Error('Required parameter personId was null or undefined when calling overrideVoteWorkflow.');
         }
-        if (decision === null || decision === undefined) {
-            throw new Error('Required parameter decision was null or undefined when calling overrideVoteWorkflow.');
+        if (overrideDecision === null || overrideDecision === undefined) {
+            throw new Error('Required parameter overrideDecision was null or undefined when calling overrideVoteWorkflow.');
         }
 
         let headers = this.defaultHeaders;
@@ -639,7 +640,7 @@ export class StopPointWorkflowService {
         }
 
         return this.httpClient.post<any>(`${this.configuration.basePath}/workflow/v1/stop-point/workflows/override-vote/${encodeURIComponent(String(id))}/${encodeURIComponent(String(personId))}`,
-            decision,
+            overrideDecision,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -921,28 +922,22 @@ export class StopPointWorkflowService {
     /**
      * @param id 
      * @param personId 
-     * @param decisionModel 
+     * @param decision 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public voteWorkflow(id: number, personId: number, decisionModel: Decision, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<any>;
-    public voteWorkflow(id: number, personId: number, decisionModel: Decision, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<any>>;
-    public voteWorkflow(id: number, personId: number, decisionModel: Decision, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<any>>;
-    public voteWorkflow(id: number, personId: number, decisionModel: Decision, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+    public voteWorkflow(id: number, personId: number, decision: Decision, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<any>;
+    public voteWorkflow(id: number, personId: number, decision: Decision, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<any>>;
+    public voteWorkflow(id: number, personId: number, decision: Decision, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<any>>;
+    public voteWorkflow(id: number, personId: number, decision: Decision, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling voteWorkflow.');
         }
         if (personId === null || personId === undefined) {
             throw new Error('Required parameter personId was null or undefined when calling voteWorkflow.');
         }
-        if (decisionModel === null || decisionModel === undefined) {
-            throw new Error('Required parameter decisionModel was null or undefined when calling voteWorkflow.');
-        }
-
-        let queryParameters = new HttpParams({encoder: this.encoder});
-        if (decisionModel !== undefined && decisionModel !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>decisionModel, 'decisionModel');
+        if (decision === null || decision === undefined) {
+            throw new Error('Required parameter decision was null or undefined when calling voteWorkflow.');
         }
 
         let headers = this.defaultHeaders;
@@ -960,14 +955,23 @@ export class StopPointWorkflowService {
         }
 
 
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
         let responseType_: 'text' | 'json' = 'json';
         if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<any>(`${this.configuration.basePath}/workflow/v1/stop-point/workflows/vote/${encodeURIComponent(String(id))}/${encodeURIComponent(String(personId))}`,
+        return this.httpClient.post<any>(`${this.configuration.basePath}/workflow/v1/stop-point/workflows/vote/${encodeURIComponent(String(id))}/${encodeURIComponent(String(personId))}`,
+            decision,
             {
-                params: queryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

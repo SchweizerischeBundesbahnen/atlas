@@ -122,6 +122,7 @@ model/operatingPointTrafficPointType.ts
 model/operatingPointType.ts
 model/otpRequest.ts
 model/otpVerification.ts
+model/overrideDecision.ts
 model/pageableObject.ts
 model/parameter.ts
 model/parkingLotOverview.ts
