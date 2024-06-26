@@ -8,7 +8,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StopPointWorkflowRepository extends JpaRepository<StopPointWorkflow, Long>, JpaSpecificationExecutor<StopPointWorkflow> {
+public interface StopPointWorkflowRepository extends JpaRepository<StopPointWorkflow, Long>,
+    JpaSpecificationExecutor<StopPointWorkflow> {
 
   List<StopPointWorkflow> findAllByVersionIdAndStatus(Long businessObjectId, WorkflowStatus status);
 
