@@ -2,6 +2,7 @@ package ch.sbb.workflow.service.sepodi;
 
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
+import ch.sbb.workflow.aop.Redacted;
 import ch.sbb.workflow.entity.Decision;
 import ch.sbb.workflow.entity.DecisionType;
 import ch.sbb.workflow.entity.Person;
@@ -33,10 +34,12 @@ public class StopPointWorkflowService {
   private final StopPointWorkflowRepository workflowRepository;
   private final DecisionRepository decisionRepository;
 
+  @Redacted(redactedClassType = StopPointWorkflow.class)
   public StopPointWorkflow getWorkflow(Long id) {
     return workflowRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }
 
+  @Redacted(redactedClassType = StopPointWorkflow.class)
   public Page<StopPointWorkflow> getWorkflows(StopPointWorkflowSearchRestrictions searchRestrictions) {
     return workflowRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
@@ -74,7 +77,7 @@ public class StopPointWorkflowService {
   }
 
   public void voteWorkFlow(Long id, Long personId, DecisionModel decisionModel) {
-    StopPointWorkflow stopPointWorkflow = getUnredactedWorkflowById(id);
+    StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
     if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
       throw new StopPointWorkflowNotInHearingException();
     }
@@ -137,7 +140,4 @@ public class StopPointWorkflowService {
     return workflowRepository.saveAndFlush(stopPointWorkflow);
   }
 
-  public StopPointWorkflow getUnredactedWorkflowById(Long workflowId) {
-    return workflowRepository.getUnredactedWorkflowById(workflowId);
-  }
 }
