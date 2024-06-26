@@ -13,8 +13,8 @@ export interface DecisionOverrideFormGroup {
 export class DecisionOverrideFormGroupBuilder {
   static buildFormGroup(existingDecision?: ReadDecision) {
     return new FormGroup<DecisionOverrideFormGroup>({
-      firstName: new FormControl(existingDecision?.fotOverrider?.firstName, [Validators.required]),
-      lastName: new FormControl(existingDecision?.fotOverrider?.lastName, [Validators.required]),
+      firstName: new FormControl(existingDecision?.fotOverrider?.firstName, [Validators.required, AtlasFieldLengthValidator.length_50, AtlasCharsetsValidator.iso88591]),
+      lastName: new FormControl(existingDecision?.fotOverrider?.lastName, [Validators.required, AtlasFieldLengthValidator.length_50, AtlasCharsetsValidator.iso88591]),
       fotJudgement: new FormControl(existingDecision?.fotJudgement, [Validators.required]),
       fotMotivation: new FormControl(existingDecision?.fotMotivation, [AtlasFieldLengthValidator.comments, AtlasCharsetsValidator.iso88591]),
     });

@@ -56,8 +56,10 @@
       [label]="'SEPODI.SERVICE_POINTS.WORKFLOW.COMMENT' | translate"
     ></form-comment>
     <!-- Copy Pasta End approved by Luca -->
-    <decision-override [examinantId]="decisionDetailDialogData.examinant.controls.id.value!"
-                       [existingDecision]="existingDecision"></decision-override>
+    <decision-override
+      [workflowId]="decisionDetailDialogData.workflowId"
+      [examinantId]="decisionDetailDialogData.examinant.controls.id.value!"
+      [existingDecision]="existingDecision"></decision-override>
   </form>
 </atlas-dialog-content>
 <atlas-dialog-footer>
