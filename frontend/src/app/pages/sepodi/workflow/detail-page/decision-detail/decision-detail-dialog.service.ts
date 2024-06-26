@@ -4,10 +4,12 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {DecisionDetailDialogComponent} from "./decision-detail-dialog.component";
 import {DialogData} from "../../../../../core/components/dialog/dialog.data";
+import {FormGroup} from "@angular/forms";
+import {ExaminantFormGroup} from "../../detail-form/stop-point-workflow-detail-form-group";
 
 export interface DecisionDetailDialogData extends DialogData {
   workflowId: number;
-  examinantId: number;
+  examinant: FormGroup<ExaminantFormGroup>;
 }
 
 @Injectable({providedIn: 'root'})
@@ -17,14 +19,14 @@ export class DecisionDetailDialogService {
   constructor(private dialog: MatDialog) {
   }
 
-  openDialog(workflowId: number, examinantId: number): Observable<boolean> {
+  openDialog(workflowId: number, examinant: FormGroup<ExaminantFormGroup>): Observable<boolean> {
     const dialogData: DecisionDetailDialogData = {
       title: 'WORKFLOW.BUTTON.ADD',
       message: '',
       cancelText: 'DIALOG.CANCEL',
       confirmText: 'WORKFLOW.BUTTON.SEND',
       workflowId: workflowId,
-      examinantId: examinantId,
+      examinant: examinant,
     };
 
     return this.open(dialogData);
