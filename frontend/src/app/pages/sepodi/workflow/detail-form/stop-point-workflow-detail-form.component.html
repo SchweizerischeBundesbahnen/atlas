@@ -129,10 +129,6 @@
         @if (form.enabled) {
           <div class="icon-button-col"></div>
         }
-        @if (permissionService.isAtLeastSupervisor(ApplicationType.Sepodi)) {
-          <!-- todo -->
-          <div class="col-1">Actions</div>
-        }
       </div>
     }
 
@@ -187,11 +183,6 @@
                   <i class="bi bi-trash"></i>
                 </ng-template>
               </atlas-button>
-            </div>
-          }
-          @if (permissionService.isAtLeastSupervisor(ApplicationType.Sepodi)) {
-            <div class="col-1">
-              <i class="bi bi-person-check cursor-pointer" (click)="bavOverrideAction.emit(i)"></i>
             </div>
           }
         </div>
