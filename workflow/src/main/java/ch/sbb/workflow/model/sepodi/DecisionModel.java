@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.workflow.entity.JudgementType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -54,5 +55,13 @@ public class DecisionModel extends OtpVerificationModel {
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @NotNull
   private String personFunction;
+
+  @AssertTrue(message = "Motivation must not be null if Judgement is NO")
+  private boolean motivationNeeded() {
+    if (judgement == JudgementType.NO) { // todo: can it be null? => TEST
+      return motivation != null;
+    }
+    return true;
+  }
 
 }

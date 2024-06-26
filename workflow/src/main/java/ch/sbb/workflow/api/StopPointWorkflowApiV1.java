@@ -81,7 +81,7 @@ public interface StopPointWorkflowApiV1 {
   @PostMapping(path = "/decisions/{personId}")
   ReadDecisionModel getDecision(@PathVariable Long personId);
 
-  @GetMapping(path = "/vote/{id}/{personId}")
+  @PostMapping(path = "/vote/{id}/{personId}")
   void voteWorkflow(@PathVariable Long id, @PathVariable Long personId, @RequestBody @Valid DecisionModel decisionModel);
 
   @PreAuthorize("""
