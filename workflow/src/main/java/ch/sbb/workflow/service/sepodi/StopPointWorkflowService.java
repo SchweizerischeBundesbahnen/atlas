@@ -2,6 +2,7 @@ package ch.sbb.workflow.service.sepodi;
 
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
+import ch.sbb.workflow.aop.Redacted;
 import ch.sbb.workflow.entity.Decision;
 import ch.sbb.workflow.entity.DecisionType;
 import ch.sbb.workflow.entity.Person;
@@ -33,10 +34,12 @@ public class StopPointWorkflowService {
   private final StopPointWorkflowRepository workflowRepository;
   private final DecisionRepository decisionRepository;
 
+  @Redacted(redactedClassType = StopPointWorkflow.class)
   public StopPointWorkflow getWorkflow(Long id) {
     return workflowRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }
 
+  @Redacted(redactedClassType = StopPointWorkflow.class)
   public Page<StopPointWorkflow> getWorkflows(StopPointWorkflowSearchRestrictions searchRestrictions) {
     return workflowRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
   }
@@ -48,7 +51,7 @@ public class StopPointWorkflowService {
       throw new IllegalStateException(EXCEPTION_MSG);
     }
     stopPointWorkflow.setWorkflowComment(workflowModel.getWorkflowComment());
-    return workflowRepository.save(stopPointWorkflow);
+    return save(stopPointWorkflow);
   }
 
   public StopPointWorkflow addExaminantToWorkflow(Long id, StopPointClientPersonModel personModel) {
@@ -57,7 +60,7 @@ public class StopPointWorkflowService {
       Person examinant = StopPointClientPersonMapper.toEntity(personModel);
       stopPointWorkflow.getExaminants().add(examinant);
       examinant.setStopPointWorkflow(stopPointWorkflow);
-      return workflowRepository.save(stopPointWorkflow);
+      return save(stopPointWorkflow);
     }
     throw new IllegalStateException(EXCEPTION_MSG);
   }
@@ -68,7 +71,7 @@ public class StopPointWorkflowService {
       Person person = stopPointWorkflow.getExaminants().stream().filter(p -> p.getId().equals(personId)).findFirst()
           .orElseThrow(() -> new IdNotFoundException(personId));
       stopPointWorkflow.getExaminants().remove(person);
-      return workflowRepository.save(stopPointWorkflow);
+      return save(stopPointWorkflow);
     }
     throw new IllegalStateException(EXCEPTION_MSG);
   }
@@ -136,4 +139,5 @@ public class StopPointWorkflowService {
   public StopPointWorkflow save(StopPointWorkflow stopPointWorkflow) {
     return workflowRepository.saveAndFlush(stopPointWorkflow);
   }
+
 }
