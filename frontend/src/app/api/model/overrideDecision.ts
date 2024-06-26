@@ -9,15 +9,22 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { JudgementType } from './judgementType';
 
 
-/**
- * Current judgement of the person regarding the workflow
- */
-export type JudgementType = 'YES' | 'NO';
-
-export const JudgementType = {
-    Yes: 'YES' as JudgementType,
-    No: 'NO' as JudgementType
-};
+export interface OverrideDecision { 
+    /**
+     * Firstname
+     */
+    firstName: string;
+    /**
+     * Second
+     */
+    lastName: string;
+    fotJudgement: JudgementType;
+    /**
+     * Motivation
+     */
+    fotMotivation?: string;
+}
 

@@ -9,7 +9,6 @@ import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.Decision;
@@ -43,12 +42,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 class StopPointWorkflowControllerVotingTest {
 
   private static final String MAIL_ADDRESS = "marek@hamsik.com";
-  private static final ClientPersonModel OVERRIDER = ClientPersonModel.builder()
-      .firstName("Luca")
-      .lastName("Ammann")
-      .personFunction("YB Fanboy")
-      .mail("luca@yb.ch")
-      .build();
 
   @Autowired
   private StopPointWorkflowController controller;
@@ -212,7 +205,8 @@ class StopPointWorkflowControllerVotingTest {
 
     // when
     OverrideDecisionModel override = OverrideDecisionModel.builder()
-        .overrideExaminant(OVERRIDER)
+        .firstName("Luca")
+        .lastName("Ammann")
         .fotJudgement(JudgementType.NO)
         .fotMotivation("Nein, Müll")
         .build();
@@ -237,7 +231,8 @@ class StopPointWorkflowControllerVotingTest {
 
     // when
     OverrideDecisionModel override = OverrideDecisionModel.builder()
-        .overrideExaminant(OVERRIDER)
+        .firstName("Luca")
+        .lastName("Ammann")
         .fotJudgement(JudgementType.YES)
         .fotMotivation("Good stuff")
         .build();
