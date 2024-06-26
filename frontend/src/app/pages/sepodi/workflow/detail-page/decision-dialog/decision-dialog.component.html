@@ -7,7 +7,11 @@
     <ng-template matStepperIcon="done">
       <i class="bi bi-check2-circle"></i>
     </ng-template>
-    <mat-step [editable]="false" [label]="'WORKFLOW.DECISION.IDENTIFICATION' | translate">
+    <mat-step
+      [completed]="false"
+      [editable]="false"
+      [label]="'WORKFLOW.DECISION.IDENTIFICATION' | translate"
+    >
       <form [formGroup]="mail">
         <p>{{ 'WORKFLOW.DECISION.MAIL_INFO' | translate }}</p>
         <atlas-text-field
@@ -29,7 +33,7 @@
     </mat-step>
 
     <mat-step
-      [stepControl]="pin"
+      [completed]="false"
       [editable]="false"
       [label]="'WORKFLOW.DECISION.PIN_CODE' | translate"
     >
@@ -47,7 +51,9 @@
           <li>{{ 'WORKFLOW.DECISION.CHECK_YOUR_SPAM' | translate }}</li>
           <li>
             {{ 'WORKFLOW.DECISION.CLICK_TO_RESEND_MAIL' | translate }}
-            <button mat-button [disabled]="!resendMailActive" (click)="resendMail()">Resend</button>
+            <button mat-button [disabled]="!resendMailActive" (click)="resendMail()">
+              {{ 'WORKFLOW.DECISION.RESEND' | translate }}
+            </button>
           </li>
         </ul>
         <div class="d-flex justify-content-center">
@@ -101,7 +107,7 @@
           </atlas-text-field>
         </div>
 
-        <mat-radio-group formControlName="decision" class="d-grid">
+        <mat-radio-group formControlName="decision" class="d-grid mb-3">
           <mat-radio-button [value]="true">
             {{ 'WORKFLOW.DECISION.ACCEPT' | translate }}
           </mat-radio-button>
@@ -116,7 +122,7 @@
           [label]="'SEPODI.SERVICE_POINTS.WORKFLOW.COMMENT' | translate"
         ></form-comment>
 
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center mt-4">
           <button class="atlas-primary-btn me-3" (click)="cancel()">
             {{ 'COMMON.CANCEL' | translate }}
           </button>
@@ -128,3 +134,5 @@
     </mat-step>
   </mat-stepper>
 </atlas-dialog-content>
+
+<app-loading-spinner [isLoading]="loading"></app-loading-spinner>
