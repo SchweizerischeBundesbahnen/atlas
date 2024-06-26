@@ -16,6 +16,7 @@ export interface ExaminantFormGroup {
   organisation: FormControl<string | null | undefined>;
   mail: FormControl<string | null | undefined>;
   judgementIcon: FormControl<string | null | undefined>;
+  judgement: FormControl<JudgementType | null | undefined>;
   id: FormControl<number| null| undefined>;
 }
 
@@ -41,6 +42,7 @@ export class StopPointWorkflowDetailFormGroupBuilder {
         personFunction: new FormControl(examinant?.personFunction),
         mail: new FormControl(examinant?.mail, [Validators.required, AtlasCharsetsValidator.email]),
         judgementIcon: new FormControl(this.buildJudgementIcon(examinant?.judgement)),
+        judgement: new FormControl(examinant?.judgement),
       }
     );
   }

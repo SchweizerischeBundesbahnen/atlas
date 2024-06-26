@@ -1,5 +1,3 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {FormsModule, ReactiveFormsModule,} from '@angular/forms';
 import {Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators,} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
@@ -12,8 +10,6 @@ import {MatIconModule} from '@angular/material/icon';
 import {FormModule} from '../../../../../core/module/form.module';
 import {CoreModule} from '../../../../../core/module/core.module';
 import {DialogService} from '../../../../../core/components/dialog/dialog.service';
-import {StopPointWorkflowService} from "../../../../../api";
-import {DecisionDetailDialogData} from "./decision-detail-dialog.service";
 import {JudgementType, ReadDecision, StopPointWorkflowService} from "../../../../../api";
 import {DecisionDetailDialogData} from "./decision-detail-dialog.service";
 import {AtlasFieldLengthValidator} from "../../../../../core/validation/field-lengths/atlas-field-length-validator";
