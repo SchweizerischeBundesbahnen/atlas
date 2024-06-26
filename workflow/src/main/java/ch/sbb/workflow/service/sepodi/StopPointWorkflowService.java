@@ -9,7 +9,6 @@ import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.exception.StopPointWorkflowAlreadyInAddedStatusException;
 import ch.sbb.workflow.exception.StopPointWorkflowNotInHearingException;
-import ch.sbb.workflow.mapper.ClientPersonMapper;
 import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
@@ -120,7 +119,10 @@ public class StopPointWorkflowService {
     decision.setFotMotivationDate(LocalDateTime.now());
     decision.setFotMotivation(decisionModel.getFotMotivation());
     decision.setFotJudgement(decisionModel.getFotJudgement());
-    Person fotOverrider = ClientPersonMapper.toEntity(decisionModel.getOverrideExaminant());
+    Person fotOverrider = Person.builder()
+        .firstName(decisionModel.getFirstName())
+        .lastName(decisionModel.getLastName())
+        .build();
     decision.setFotOverrider(fotOverrider);
     decisionRepository.save(decision);
   }
