@@ -614,7 +614,9 @@
       "DECISION_INFO": "Stimmen Sie dem neuen Stationsnamen zu oder lehnen Sie den Antrag ab?",
       "SEND": "Absenden",
       "ACCEPT": "Ja, ich stimme zu.",
-      "DECLINE": "Nein, ich lehne ab. Die Eingabe der Begründung ist notwendig."
+      "DECLINE": "Nein, ich lehne ab. Die Eingabe der Begründung ist notwendig.",
+      "OVERRIDE_ACCEPT": "Ja. Dieser Entscheid wird mit ja angenommen.",
+      "OVERRIDE_DECLINE": "Nein. Dieser Entscheid wird als nein gewertet. Die Eingabe der Begründung ist notwendig."
     }
   },
   "TTH": {
@@ -1032,7 +1034,8 @@
         "CREATION": "Erfassung Anhörung",
         "START": "Start Anhörung",
         "END": "Ende Anhörung",
-        "SEARCH": "SLOID - offizielle Bezeichnung"
+        "SEARCH": "SLOID - offizielle Bezeichnung",
+        "OVERRIDE_TITLE": "Beurteilung durch BAV"
       }
     },
     "TRAFFIC_POINT_ELEMENTS": {

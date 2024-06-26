@@ -2,7 +2,6 @@ package ch.sbb.workflow.model.sepodi;
 
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
-import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.workflow.entity.JudgementType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -17,12 +16,20 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Data
 @SuperBuilder
-@Schema(name = "Decision")
+@Schema(name = "OverrideDecision")
 public class OverrideDecisionModel {
 
-  @Schema(description = "Override Examinant")
+  @Schema(description = "Firstname", example = "John")
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @NotNull
-  private ClientPersonModel overrideExaminant;
+  private String firstName;
+
+  @Schema(description = "Second", example = "Doe")
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @NotNull
+  private String lastName;
 
   @Schema(description = "BAV Judgement", example = "true")
   @NotNull
