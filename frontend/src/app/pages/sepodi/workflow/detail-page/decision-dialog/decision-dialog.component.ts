@@ -1,4 +1,4 @@
-import { Component, EventEmitter, ViewChild } from '@angular/core';
+import { Component, EventEmitter, NgZone, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -48,12 +48,14 @@ export class DecisionDialogComponent {
   readonly obtainOtp = new EventEmitter<{
     mail: AbstractControl;
     continue: () => void;
+    swapLoading: () => void;
   }>();
 
   readonly verifyPin = new EventEmitter<{
     mail: AbstractControl;
     pin: AbstractControl;
     continue: (examinant: StopPointPerson) => void;
+    swapLoading: () => void;
   }>();
 
   readonly sendDecision = new EventEmitter<{
@@ -61,6 +63,7 @@ export class DecisionDialogComponent {
     pin: AbstractControl;
     decision: FormGroup;
     verifiedExaminant: StopPointPerson;
+    swapLoading: () => void;
   }>();
 
   readonly mail = this._formBuilder.group({
@@ -86,7 +89,7 @@ export class DecisionDialogComponent {
       organisation: ['', Validators.required],
       function: ['', Validators.required],
       decision: [null, Validators.required],
-      comment: ['', [AtlasFieldLengthValidator.comments]],
+      comment: [null, [AtlasFieldLengthValidator.comments]],
     },
     {
       validators: DecisionDialogComponent.decisionCommentValidator,
@@ -94,7 +97,10 @@ export class DecisionDialogComponent {
   );
 
   private static decisionCommentValidator(control: AbstractControl): ValidationErrors | null {
-    if (control.value.decision === false && control.value.comment.length === 0) {
+    if (
+      control.value.decision === false &&
+      (!control.value.comment || control.value.comment.length === 0)
+    ) {
       control.get('comment')?.setErrors({ decision_comment_required: true });
     } else {
       const errors: ValidationErrors | null = control.get('comment')!.errors;
@@ -104,8 +110,13 @@ export class DecisionDialogComponent {
     return null;
   }
 
+  loading = false;
+  private _swapLoading() {
+    this.loading = !this.loading;
+  }
+
   resendMailActive = true;
-  verifiedExaminant?: StopPointPerson;
+  private _verifiedExaminant?: StopPointPerson;
 
   constructor(
     private readonly _formBuilder: FormBuilder,
@@ -113,12 +124,17 @@ export class DecisionDialogComponent {
     private readonly _dialogRef: MatDialogRef<DecisionDialogComponent>,
   ) {}
 
-  // todo: add loading indicator after emits and disable continue btn
   completeObtainOtpStep() {
     this.mail.markAllAsTouched();
     if (this.mail.valid) {
-      this.obtainOtp.emit({ mail: this.mail.controls.mail, continue: () => this.stepper?.next() });
-      this.verifiedExaminant = undefined;
+      this.obtainOtp.emit({
+        mail: this.mail.controls.mail,
+        continue: () => {
+          this._stepNext();
+        },
+        swapLoading: () => this._swapLoading(),
+      });
+      this._verifiedExaminant = undefined;
     }
   }
 
@@ -129,14 +145,24 @@ export class DecisionDialogComponent {
         mail: this.mail.controls.mail,
         pin: this.pin.controls.pin,
         continue: (examinant) => {
-          this.verifiedExaminant = examinant;
+          this._verifiedExaminant = examinant;
           this.decision.controls.firstName.setValue(examinant.firstName ?? null);
           this.decision.controls.lastName.setValue(examinant.lastName ?? null);
           this.decision.controls.organisation.setValue(examinant.organisation);
           this.decision.controls.function.setValue(examinant.personFunction ?? null);
-          this.stepper?.next();
+          this._stepNext();
         },
+        swapLoading: () => this._swapLoading(),
       });
+    }
+  }
+
+  private _stepNext() {
+    if (this.stepper?.selected) {
+      this.stepper.selected.completed = true;
+      this.stepper.next();
+    } else {
+      throw 'Step must be selected at this stage';
     }
   }
 
@@ -147,17 +173,23 @@ export class DecisionDialogComponent {
         mail: this.mail.controls.mail,
         pin: this.pin.controls.pin,
         decision: this.decision,
-        verifiedExaminant: this.verifiedExaminant!,
+        verifiedExaminant: this._verifiedExaminant!,
+        swapLoading: () => this._swapLoading(),
       });
     }
   }
 
   resendMail() {
-    // todo: emit obtainOtp
-    this.resendMailActive = false;
-    setTimeout(() => {
-      this.resendMailActive = true;
-    }, 10_000);
+    this.obtainOtp.emit({
+      mail: this.mail.controls.mail,
+      continue: () => {
+        this.resendMailActive = false;
+        setTimeout(() => {
+          this.resendMailActive = true;
+        }, 10_000);
+      },
+      swapLoading: () => this._swapLoading(),
+    });
   }
 
   cancel() {

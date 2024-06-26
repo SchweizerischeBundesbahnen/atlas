@@ -599,7 +599,9 @@
     },
     "ERROR": {
       "NOT_IN_REVIEW": "Die Anhörung für dieses Objekt ist zur Zeit nicht gestartet.",
-      "ALREADY_IN_REVIEW": "Für dieses Objekt wurde bereits eine Anhörung gestartet."
+      "ALREADY_IN_REVIEW": "Für dieses Objekt wurde bereits eine Anhörung gestartet.",
+      "EXAMINANT_MAIL_NOT_FOUND": "Die eingetragene E-Mail Adresse wurde unter den Empfängern nicht gefunden.",
+      "PIN_CODE_INVALID": "Der eingetragene PIN-Code ist nicht korrekt."
     },
     "DECISION": {
       "DIALOG_TITLE": "Antrag beantworten",
@@ -611,6 +613,7 @@
       "NO_PIN_RECEIVED": "Keine E-Mail mit PIN-Code erhalten?",
       "CHECK_YOUR_SPAM": "Prüfen Sie Ihren Spam-Ordner.",
       "CLICK_TO_RESEND_MAIL": "Klicken Sie auf den folgenden Button um die E-Mail erneut zu erhalten.",
+      "RESEND": "Erneut senden",
       "DECISION_INFO": "Stimmen Sie dem neuen Stationsnamen zu oder lehnen Sie den Antrag ab?",
       "SEND": "Absenden",
       "ACCEPT": "Ja, ich stimme zu.",
