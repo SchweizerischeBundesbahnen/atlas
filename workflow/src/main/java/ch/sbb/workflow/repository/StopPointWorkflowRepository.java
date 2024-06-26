@@ -1,6 +1,5 @@
 package ch.sbb.workflow.repository;
 
-import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import java.util.List;
@@ -13,8 +12,5 @@ public interface StopPointWorkflowRepository extends JpaRepository<StopPointWork
     JpaSpecificationExecutor<StopPointWorkflow> {
 
   List<StopPointWorkflow> findAllByVersionIdAndStatus(Long businessObjectId, WorkflowStatus status);
- 
-  default StopPointWorkflow getUnredactedWorkflowById(Long id) {
-    return findById(id).orElseThrow(() -> new IdNotFoundException(id));
-  }
+
 }
