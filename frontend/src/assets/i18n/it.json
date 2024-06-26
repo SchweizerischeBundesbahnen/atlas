@@ -143,7 +143,9 @@
     "CONFIRM_BO_TRANSFER_TITLE": "Nota",
     "CONFIRM_BO_TRANSFER": "Modificando l'organizzazione aziendale, si perde l'autorizzazione a modificare l'oggetto a partire dalla data di mutazione.",
     "CONFIRM_VALIDITY_HAS_NOT_CHANGED_TITLE": "Attenzione: La validità non è stata modificata!",
-    "CONFIRM_VALIDITY_HAS_NOT_CHANGED": "Siete sicuri di voler apportare la modifica senza regolare la validità? Se la modifica non si applica all'intero periodo di questa versione, modificare la data \"valida da\" o \"valida fino al\"."
+    "CONFIRM_VALIDITY_HAS_NOT_CHANGED": "Siete sicuri di voler apportare la modifica senza regolare la validità? Se la modifica non si applica all'intero periodo di questa versione, modificare la data \"valida da\" o \"valida fino al\".",
+    "CANCEL_DECISION_TITLE": "Annullare la decisione?",
+    "CANCEL_DECISION": "Si perde l'avanzamento attuale e si deve ricominciare la volta successiva."
   },
   "SW_DIALOG": {
     "UPDATE_TITLE": "Nuova versione disponibile.",
@@ -239,7 +241,8 @@
     "MEANSOFTRANSPORTWRONGCOMBINATION": "Questa combinazione di mezzi di trasporto non è consentita",
     "DECIMAL_NUMBER": "Inserire un numero decimale con un massimo di {{maxDecimalDigits}} cifre decimali.",
     "INTEGER_WITH_FRACTION": "Inserire un numero decimale composto da un massimo di {{maxDecimalDigits}} cifre e con un massimo di {{maxFractionDigits}} cifre decimali.",
-    "COLON_SEPERATED_SID4PT": "Utilizzare i caratteri SID4PT (-._0-9a-zA-Z) con esattamente {{numbersWithColons}} due punti."
+    "COLON_SEPERATED_SID4PT": "Utilizzare i caratteri SID4PT (-._0-9a-zA-Z) con esattamente {{numbersWithColons}} due punti.",
+    "DECISION_COMMENT_REQUIRED": "La giustificazione è necessaria"
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organizzazioni aziendali e Applicazioni",
@@ -545,7 +548,8 @@
       "REJECT": "Rifiuto",
       "CANCEL": "Annullare audizione",
       "SKIP": "Salatare l'audizione",
-      "RESTART": "Riavviare l'audizione"
+      "RESTART": "Riavviare l'audizione",
+      "DECIDE": "Decidere"
     },
     "START": {
       "COMMENT": "Motivazione",
@@ -561,7 +565,8 @@
       "LASTNAME": "Cognome",
       "FUNCTION": "Funzione",
       "MAIL": "Indirizzo E-Mail",
-      "ORGANISATION": "Organizzazione"
+      "ORGANISATION": "Organizzazione",
+      "JUDGEMENT": "Decisione"
     },
     "STATUS_DETAIL": "Stato dell'audizione",
     "STATUS": {
@@ -587,11 +592,16 @@
       },
       "SKIP": {
         "SUCCESS": "L'udienza è stata saltata con successo."
+      },
+      "VOTE": {
+        "SUCCESS": "La decisione è stata salvata"
       }
     },
     "ERROR": {
       "NOT_IN_REVIEW": "L'udienza per questa proprietà non è ancora iniziata.",
-      "ALREADY_IN_REVIEW": "Per questa proprietà è già stata avviata una consultazione."
+      "ALREADY_IN_REVIEW": "Per questa proprietà è già stata avviata una consultazione.",
+      "EXAMINANT_MAIL_NOT_FOUND": "L'indirizzo e-mail inserito non è stato trovato tra i destinatari.",
+      "PIN_CODE_INVALID": "Il codice PIN inserito non è corretto."
     }
   },
   "TTH": {

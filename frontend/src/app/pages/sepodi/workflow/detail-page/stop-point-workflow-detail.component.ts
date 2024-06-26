@@ -98,27 +98,38 @@ export class StopPointWorkflowDetailComponent implements OnInit {
     const decisionDialogComponent = decisionDialogRef.componentInstance;
 
     const obtainOtpSubscription = decisionDialogComponent.obtainOtp.subscribe((stepData) => {
+      stepData.swapLoading();
       this.stopPointWorkflowService
         .obtainOtp(this.workflow.id!, {
           examinantMail: stepData.mail.value,
         })
-        .subscribe(() => {
-          stepData.continue();
+        .subscribe({
+          next: () => {
+            stepData.swapLoading();
+            stepData.continue();
+          },
+          error: () => stepData.swapLoading(),
         });
     });
 
     const verifyPinSubscription = decisionDialogComponent.verifyPin.subscribe((stepData) => {
+      stepData.swapLoading();
       this.stopPointWorkflowService
         .verifyOtp(this.workflow.id!, {
           examinantMail: stepData.mail.value,
           pinCode: stepData.pin.value,
         })
-        .subscribe((examinant) => {
-          stepData.continue(examinant);
+        .subscribe({
+          next: (examinant) => {
+            stepData.swapLoading();
+            stepData.continue(examinant);
+          },
+          error: () => stepData.swapLoading(),
         });
     });
 
     const sendDecisionSubscription = decisionDialogComponent.sendDecision.subscribe((stepData) => {
+      stepData.swapLoading();
       this.stopPointWorkflowService
         .voteWorkflow(this.workflow.id!, stepData.verifiedExaminant.id!, {
           examinantMail: stepData.mail.value,
@@ -126,20 +137,25 @@ export class StopPointWorkflowDetailComponent implements OnInit {
           judgement: stepData.decision.controls.decision.value
             ? JudgementType.Yes
             : JudgementType.No,
-          motivation: stepData.decision.controls.comment.value,
+          motivation:
+            stepData.decision.controls.comment.value?.length === 0
+              ? undefined
+              : stepData.decision.controls.comment.value,
           firstName: stepData.decision.controls.firstName.value,
           lastName: stepData.decision.controls.lastName.value,
           organisation: stepData.decision.controls.organisation.value,
           personFunction: stepData.decision.controls.function.value,
         })
-        .subscribe(() => {
-          decisionDialogRef.close();
-          this.notificationService.success('WORKFLOW.NOTIFICATION.VOTE.SUCCESS');
+        .subscribe({
+          next: () => {
+            decisionDialogRef.close();
+            this.notificationService.success('WORKFLOW.NOTIFICATION.VOTE.SUCCESS');
+          },
+          error: () => stepData.swapLoading(),
         });
-      // todo: check if it works with empty motivation and judgement YES in backend
     });
 
-    // todo: translate error messages and other languages
+    // todo: translations (question marks with/without space?)
 
     decisionDialogRef
       .afterClosed()
