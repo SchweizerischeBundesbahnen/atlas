@@ -1,5 +1,75 @@
 <atlas-dialog-close class="pe-2" (clicked)="close()"></atlas-dialog-close>
 
 <atlas-dialog-content>
-  detail of dialog
+  <div class="font-bold-4xl mb-3">{{ 'WORKFLOW.PERSON.JUDGEMENT'|translate }}</div>
+  <!-- Copy Pasta approved by Luca -->
+  <form [formGroup]="decisionForm">
+    <div class="d-flex justify-content-between">
+      <atlas-text-field
+        [formGroup]="decisionForm"
+        [required]="true"
+        class="col-5"
+        controlName="firstName"
+        fieldLabel="WORKFLOW.PERSON.FIRSTNAME"
+      >
+      </atlas-text-field>
+      <atlas-text-field
+        [formGroup]="decisionForm"
+        [required]="true"
+        class="col-5"
+        controlName="lastName"
+        fieldLabel="WORKFLOW.PERSON.LASTNAME"
+      >
+      </atlas-text-field>
+    </div>
+    <div class="d-flex justify-content-between">
+      <atlas-text-field
+        [formGroup]="decisionForm"
+        [required]="true"
+        class="col-5"
+        controlName="organisation"
+        fieldLabel="WORKFLOW.PERSON.ORGANISATION"
+      >
+      </atlas-text-field>
+      <atlas-text-field
+        [formGroup]="decisionForm"
+        [required]="true"
+        class="col-5"
+        controlName="function"
+        fieldLabel="WORKFLOW.PERSON.FUNCTION"
+      >
+      </atlas-text-field>
+    </div>
+
+    <mat-radio-group formControlName="decision" class="d-grid">
+      <mat-radio-button [value]="true">
+        {{ 'WORKFLOW.DECISION.ACCEPT' | translate }}
+      </mat-radio-button>
+      <mat-radio-button [value]="false">
+        {{ 'WORKFLOW.DECISION.DECLINE' | translate }}
+      </mat-radio-button>
+      <app-atlas-field-error [form]="decisionForm" controlName="decision"></app-atlas-field-error>
+    </mat-radio-group>
+
+    <form-comment
+      [formGroup]="decisionForm"
+      [label]="'SEPODI.SERVICE_POINTS.WORKFLOW.COMMENT' | translate"
+    ></form-comment>
+    <!-- Copy Pasta End approved by Luca -->
+    <decision-override [examinantId]="decisionDetailDialogData.examinant.controls.id.value!"
+                       [existingDecision]="existingDecision"></decision-override>
+  </form>
 </atlas-dialog-content>
+<atlas-dialog-footer>
+  <button (click)="close()" class="atlas-primary-btn me-3" data-cy="dialog-close-button">
+    {{ 'DIALOG.CANCEL' | translate }}
+  </button>
+  <atlas-button
+    buttonDataCy="override-decision"
+    buttonText="WORKFLOW.BUTTON.START"
+    buttonType="supervisorButton"
+    applicationType="SEPODI"
+    (buttonClicked)="overrideDecision()"
+  >
+  </atlas-button>
+</atlas-dialog-footer>
