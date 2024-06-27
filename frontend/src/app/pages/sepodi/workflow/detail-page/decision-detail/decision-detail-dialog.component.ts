@@ -14,9 +14,6 @@ import {DecisionDetailDialogData} from "./decision-detail-dialog.service";
 import {DecisionOverrideComponent} from "./override/decision-override.component";
 import {DecisionFormComponent} from "../decision-form/decision-form.component";
 import {DecisionFormGroupBuilder} from "../decision-form/decision-form-group";
-import {NotificationService} from "../../../../../core/notification/notification.service";
-import {Pages} from "../../../../pages";
-import {Router} from "@angular/router";
 
 @Component({
   selector: 'decision-detail-dialog',
@@ -49,8 +46,6 @@ export class DecisionDetailDialogComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<DecisionDetailDialogComponent>,
     private stopPointWorkflowService: StopPointWorkflowService,
-    private notificationService: NotificationService,
-    private router: Router,
     @Inject(MAT_DIALOG_DATA) protected decisionDetailDialogData: DecisionDetailDialogData,
   ) {
   }
@@ -76,13 +71,6 @@ export class DecisionDetailDialogComponent implements OnInit {
   }
 
   overrideDecision() {
-    this.decisionOverrideComponent.saveOverride().subscribe(() => {
-      this.notificationService.success('WORKFLOW.NOTIFICATION.VOTE.SUCCESS');
-      this.dialogRef.close();
-      this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-        this.router.navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, this.decisionDetailDialogData.workflowId]).then(() => {
-        });
-      });
-    });
+    this.decisionOverrideComponent.saveOverride();
   }
 }
