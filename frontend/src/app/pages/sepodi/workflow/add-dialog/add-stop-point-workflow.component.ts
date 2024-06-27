@@ -8,16 +8,16 @@ import {
 } from '../../../../api';
 import { AddStopPointWorkflowDialogData } from './add-stop-point-workflow-dialog-data';
 import { FormGroup } from '@angular/forms';
-import {
-  StopPointWorkflowDetailFormGroup,
-  StopPointWorkflowDetailFormGroupBuilder,
-} from '../detail-form/stop-point-workflow-detail-form-group';
 import { ValidationService } from '../../../../core/validation/validation.service';
 import { DetailHelperService } from '../../../../core/detail/detail-helper.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { Router } from '@angular/router';
 import { Pages } from '../../../pages';
 import {UserService} from "../../../../core/auth/user/user.service";
+import {
+  StopPointWorkflowDetailFormGroup,
+  StopPointWorkflowDetailFormGroupBuilder
+} from "../detail-page/detail-form/stop-point-workflow-detail-form-group";
 
 @Component({
   selector: 'app-workflow-dialog',
