@@ -8,19 +8,19 @@ import {
   WorkflowStatus,
 } from '../../../../api';
 import { FormGroup } from '@angular/forms';
-import {
-  StopPointWorkflowDetailFormGroup,
-  StopPointWorkflowDetailFormGroupBuilder,
-} from '../detail-form/stop-point-workflow-detail-form-group';
 import { ActivatedRoute } from '@angular/router';
 import { StopPointWorkflowDetailData } from './stop-point-workflow-detail-resolver.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { StopPointRejectWorkflowDialogService } from '../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog.service';
 import { environment } from '../../../../../environments/environment';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { DecisionDialogComponent } from './decision-dialog/decision-dialog.component';
 import { take } from 'rxjs';
 import { PermissionService } from '../../../../core/auth/permission/permission.service';
+import {
+  StopPointWorkflowDetailFormGroup,
+  StopPointWorkflowDetailFormGroupBuilder,
+} from './detail-form/stop-point-workflow-detail-form-group';
+import { DecisionStepperComponent } from './decision/decision-stepper/decision-stepper.component';
 
 @Component({
   selector: 'stop-point-workflow-detail',
@@ -86,7 +86,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
   }
 
   openDecisionDialog() {
-    const decisionDialogRef = this.dialog.open(DecisionDialogComponent, {
+    const decisionDialogRef = this.dialog.open(DecisionStepperComponent, {
       disableClose: true,
       panelClass: 'atlas-dialog-panel',
       backdropClass: 'atlas-dialog-backdrop',
@@ -108,7 +108,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
       });
   }
 
-  private _registerObtainOtpHandler(decisionDialogComponent: DecisionDialogComponent) {
+  private _registerObtainOtpHandler(decisionDialogComponent: DecisionStepperComponent) {
     return decisionDialogComponent.obtainOtp.subscribe((stepData) => {
       stepData.swapLoading();
       this.stopPointWorkflowService
@@ -125,7 +125,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
     });
   }
 
-  private _registerVerifyPinHandler(decisionDialogComponent: DecisionDialogComponent) {
+  private _registerVerifyPinHandler(decisionDialogComponent: DecisionStepperComponent) {
     return decisionDialogComponent.verifyPin.subscribe((stepData) => {
       stepData.swapLoading();
       this.stopPointWorkflowService
@@ -144,8 +144,8 @@ export class StopPointWorkflowDetailComponent implements OnInit {
   }
 
   private _registerSendDecisionHandler(
-    decisionDialogComponent: DecisionDialogComponent,
-    decisionDialogRef: MatDialogRef<DecisionDialogComponent>,
+    decisionDialogComponent: DecisionStepperComponent,
+    decisionDialogRef: MatDialogRef<DecisionStepperComponent>,
   ) {
     return decisionDialogComponent.sendDecision.subscribe((stepData) => {
       stepData.swapLoading();

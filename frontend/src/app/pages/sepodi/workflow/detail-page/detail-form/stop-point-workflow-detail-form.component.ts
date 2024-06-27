@@ -1,16 +1,16 @@
-import {Component, Input} from '@angular/core';
-import {ReadServicePointVersion, ReadStopPointWorkflow, WorkflowStatus} from '../../../../api';
-import {ControlContainer, FormGroup, NgForm} from '@angular/forms';
-import {AtlasCharsetsValidator} from '../../../../core/validation/charsets/atlas-charsets-validator';
-import {AtlasFieldLengthValidator} from '../../../../core/validation/field-lengths/atlas-field-length-validator';
+import { Component, Input } from '@angular/core';
+import { ControlContainer, FormGroup, NgForm } from '@angular/forms';
 import {
   StopPointWorkflowDetailFormGroup,
   StopPointWorkflowDetailFormGroupBuilder,
 } from './stop-point-workflow-detail-form-group';
-import {ValidationService} from '../../../../core/validation/validation.service';
-import {Pages} from '../../../pages';
-import {Router} from '@angular/router';
-import {DecisionDetailDialogService} from '../detail-page/decision-detail/decision-detail-dialog.service';
+import { Router } from '@angular/router';
+import { ReadServicePointVersion, ReadStopPointWorkflow, WorkflowStatus } from 'src/app/api';
+import { AtlasCharsetsValidator } from 'src/app/core/validation/charsets/atlas-charsets-validator';
+import { AtlasFieldLengthValidator } from 'src/app/core/validation/field-lengths/atlas-field-length-validator';
+import { DecisionDetailDialogService } from '../decision/decision-detail/decision-detail-dialog.service';
+import { ValidationService } from 'src/app/core/validation/validation.service';
+import { Pages } from 'src/app/pages/pages';
 
 @Component({
   selector: 'stop-point-workflow-detail-form',
