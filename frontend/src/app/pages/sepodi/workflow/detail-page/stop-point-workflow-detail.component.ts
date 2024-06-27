@@ -1,27 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   ApplicationType,
-  JudgementType,
   ReadServicePointVersion,
   ReadStopPointWorkflow,
   Status,
   StopPointWorkflowService,
   WorkflowStatus,
 } from '../../../../api';
-import { FormGroup } from '@angular/forms';
+import {FormGroup} from '@angular/forms';
 import {
   StopPointWorkflowDetailFormGroup,
   StopPointWorkflowDetailFormGroupBuilder,
 } from '../detail-form/stop-point-workflow-detail-form-group';
-import { ActivatedRoute } from '@angular/router';
-import { StopPointWorkflowDetailData } from './stop-point-workflow-detail-resolver.service';
-import { NotificationService } from '../../../../core/notification/notification.service';
-import { StopPointRejectWorkflowDialogService } from '../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog.service';
-import { environment } from '../../../../../environments/environment';
-import { MatDialog } from '@angular/material/dialog';
-import { DecisionDialogComponent } from './decision-dialog/decision-dialog.component';
-import { take } from 'rxjs';
-import { PermissionService } from '../../../../core/auth/permission/permission.service';
+import {ActivatedRoute} from '@angular/router';
+import {StopPointWorkflowDetailData} from './stop-point-workflow-detail-resolver.service';
+import {NotificationService} from '../../../../core/notification/notification.service';
+import {
+  StopPointRejectWorkflowDialogService
+} from '../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog.service';
+import {environment} from '../../../../../environments/environment';
+import {MatDialog} from '@angular/material/dialog';
+import {DecisionDialogComponent} from './decision-dialog/decision-dialog.component';
+import {take} from 'rxjs';
+import {PermissionService} from '../../../../core/auth/permission/permission.service';
 
 @Component({
   selector: 'stop-point-workflow-detail',
@@ -134,17 +135,15 @@ export class StopPointWorkflowDetailComponent implements OnInit {
         .voteWorkflow(this.workflow.id!, stepData.verifiedExaminant.id!, {
           examinantMail: stepData.mail.value,
           pinCode: stepData.pin.value,
-          judgement: stepData.decision.controls.decision.value
-            ? JudgementType.Yes
-            : JudgementType.No,
+          judgement: stepData.decision.controls.judgement.value!,
           motivation:
-            stepData.decision.controls.comment.value?.length === 0
+            stepData.decision.controls.motivation.value?.length === 0
               ? undefined
-              : stepData.decision.controls.comment.value,
-          firstName: stepData.decision.controls.firstName.value,
-          lastName: stepData.decision.controls.lastName.value,
-          organisation: stepData.decision.controls.organisation.value,
-          personFunction: stepData.decision.controls.function.value,
+              : stepData.decision.controls.motivation.value!,
+          firstName: stepData.decision.controls.firstName.value!,
+          lastName: stepData.decision.controls.lastName.value!,
+          organisation: stepData.decision.controls.organisation.value!,
+          personFunction: stepData.decision.controls.personFunction.value!,
         })
         .subscribe({
           next: () => {

@@ -68,69 +68,17 @@
     </mat-step>
 
     <mat-step [label]="'WORKFLOW.DECISION.DECISION' | translate">
-      <form [formGroup]="decision">
-        <p>{{ 'WORKFLOW.DECISION.DECISION_INFO' | translate }}</p>
-        <div class="d-flex justify-content-between">
-          <atlas-text-field
-            [formGroup]="decision"
-            [required]="true"
-            class="col-5"
-            controlName="firstName"
-            fieldLabel="WORKFLOW.PERSON.FIRSTNAME"
-          >
-          </atlas-text-field>
-          <atlas-text-field
-            [formGroup]="decision"
-            [required]="true"
-            class="col-5"
-            controlName="lastName"
-            fieldLabel="WORKFLOW.PERSON.LASTNAME"
-          >
-          </atlas-text-field>
-        </div>
-        <div class="d-flex justify-content-between">
-          <atlas-text-field
-            [formGroup]="decision"
-            [required]="true"
-            class="col-5"
-            controlName="organisation"
-            fieldLabel="WORKFLOW.PERSON.ORGANISATION"
-          >
-          </atlas-text-field>
-          <atlas-text-field
-            [formGroup]="decision"
-            [required]="true"
-            class="col-5"
-            controlName="function"
-            fieldLabel="WORKFLOW.PERSON.FUNCTION"
-          >
-          </atlas-text-field>
-        </div>
 
-        <mat-radio-group formControlName="decision" class="d-grid mb-3">
-          <mat-radio-button [value]="true">
-            {{ 'WORKFLOW.DECISION.ACCEPT' | translate }}
-          </mat-radio-button>
-          <mat-radio-button [value]="false">
-            {{ 'WORKFLOW.DECISION.DECLINE' | translate }}
-          </mat-radio-button>
-          <app-atlas-field-error [form]="decision" controlName="decision"></app-atlas-field-error>
-        </mat-radio-group>
+      <decision-form [formGroup]="decision"></decision-form>
 
-        <form-comment
-          [formGroup]="decision"
-          [label]="'SEPODI.SERVICE_POINTS.WORKFLOW.COMMENT' | translate"
-        ></form-comment>
-
-        <div class="d-flex justify-content-center mt-4">
-          <button class="atlas-primary-btn me-3" (click)="cancel()">
-            {{ 'COMMON.CANCEL' | translate }}
-          </button>
-          <button (click)="completeDecision()" class="atlas-primary-btn">
-            {{ 'WORKFLOW.DECISION.SEND' | translate }}
-          </button>
-        </div>
-      </form>
+      <div class="d-flex justify-content-center mt-4">
+        <button class="atlas-primary-btn me-3" (click)="cancel()">
+          {{ 'COMMON.CANCEL' | translate }}
+        </button>
+        <button (click)="completeDecision()" class="atlas-primary-btn">
+          {{ 'WORKFLOW.DECISION.SEND' | translate }}
+        </button>
+      </div>
     </mat-step>
   </mat-stepper>
 </atlas-dialog-content>
