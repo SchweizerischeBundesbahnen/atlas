@@ -143,8 +143,8 @@
     "CONFIRM_BO_TRANSFER_TITLE": "Remarque",
     "CONFIRM_BO_TRANSFER": "La modification de l'organisation commerciale vous fait perdre l'autorisation de traiter l'objet à partir du moment de la mutation.",
     "CONFIRM_VALIDITY_HAS_NOT_CHANGED_TITLE": "Attention : La validité n'a pas été modifiée!",
-    "CONFIRM_VALIDITY_HAS_NOT_CHANGED": "Êtes-vous sûr de vouloir effectuer la modification sans adapter la validité ? Si la modification ne s'applique pas à toute la période de cette version, veuillez adapter la date \"valable du\" ou \"valable au\".",
-    "CANCEL_DECISION_TITLE": "Annuler la décision ?",
+    "CONFIRM_VALIDITY_HAS_NOT_CHANGED": "Êtes-vous sûr de vouloir effectuer la modification sans adapter la validité? Si la modification ne s'applique pas à toute la période de cette version, veuillez adapter la date \"valable du\" ou \"valable au\".",
+    "CANCEL_DECISION_TITLE": "Annuler la décision?",
     "CANCEL_DECISION": "Vous perdez votre progression actuelle et devez recommencer la prochaine fois."
   },
   "SW_DIALOG": {
@@ -610,14 +610,16 @@
       "DECISION": "Décision",
       "MAIL_INFO": "Pour vous identifier, saisissez l'adresse e-mail sur laquelle vous avez reçu l'invitation à l'audition.",
       "PIN_INFO": "Pour confirmer l'autorisation, saisissez le code PIN que vous venez de recevoir par e-mail.",
-      "NO_PIN_RECEIVED": "Vous n'avez pas reçu d'e-mail avec votre code PIN ?",
+      "NO_PIN_RECEIVED": "Vous n'avez pas reçu d'e-mail avec votre code PIN?",
       "CHECK_YOUR_SPAM": "Vérifiez votre dossier de courrier indésirable.",
       "CLICK_TO_RESEND_MAIL": "Cliquez sur le bouton suivant pour recevoir à nouveau l'e-mail.",
       "RESEND": "Envoyer à nouveau.",
       "DECISION_INFO": "Approuvez-vous le nouveau nom de la station ou refusez-vous la demande?",
       "SEND": "Envoyer",
       "ACCEPT": "Oui, je suis d'accord.",
-      "DECLINE": "Non, je refuse. La saisie de la justification est nécessaire."
+      "DECLINE": "Non, je refuse. La saisie de la justification est nécessaire.",
+      "OVERRIDE_ACCEPT": "Oui. Cette décision est approuvée par un \"oui\".",
+      "OVERRIDE_DECLINE": "Non. Cette décision est considérée comme un \"non\". La saisie de la justification est nécessaire."
     }
   },
   "TTH": {
@@ -634,7 +636,7 @@
     "DUPLICATE": {
       "DIALOG": {
         "TITLE": "Créer un duplicata",
-        "MESSAGE": "Vous voulez vraiment dupliquer cette prise de position ?",
+        "MESSAGE": "Vous voulez vraiment dupliquer cette prise de position?",
         "CONFIRM": "Créer un duplicata",
         "CANCEL": "Rompre"
       }
@@ -879,7 +881,7 @@
     },
     "CLOSE_TIMETABLE_HEARING": {
       "POPUP_TITLE": "Clôture de l'année horaire",
-      "CONFIRMATION_MESSAGE": "Vous souhaitez fermer l'année horaire ? Cette action ne peut pas être annulée. Lors de la clôture de l'année d'horaire, les prises de position sont déplacées:",
+      "CONFIRMATION_MESSAGE": "Vous souhaitez fermer l'année horaire? Cette action ne peut pas être annulée. Lors de la clôture de l'année d'horaire, les prises de position sont déplacées:",
       "MOVEMENTS_TO_ARCHIVED": "\"acceptée\", \"rejeté\", \"prise de connaissance\", \"partiellement acceptée\" ou \"Saisie des erreurs\" → archives",
       "MOVEMENTS_TO_NEXT_YEAR": "\"arriver\", \"À l'étude\" ou \"Retardé\" → l'année d'horaire suivante",
       "MOVEMENTS_TO_DELETED": "\"Spam-Mail\" → irrévocablement supprimé",
@@ -1035,7 +1037,8 @@
         "CREATION": "Saisie de l'audition",
         "START": "Début de l'audition",
         "END": "Fin de l'audition",
-        "SEARCH": "SLOID - désignation officielle"
+        "SEARCH": "SLOID - désignation officielle",
+        "OVERRIDE_TITLE": "Évaluation par l'OFT"
       }
     },
     "TRAFFIC_POINT_ELEMENTS": {
@@ -1188,7 +1191,7 @@
         "EDIT_SUCCESS": "L'arrêt a été enregistré avec succès."
       },
       "DIALOG": {
-        "RECORDING_VARIANT_CHANGES": "Changer de moyen de transport ?",
+        "RECORDING_VARIANT_CHANGES": "Changer de moyen de transport?",
         "CONFIRM_RECORDING_VARIANT_CHANGES": "Si vous changez de moyen de transport, la variante de saisie change et les données déjà saisies sont supprimées."
       },
       "DETAILS": "Indication de l'arrêt",

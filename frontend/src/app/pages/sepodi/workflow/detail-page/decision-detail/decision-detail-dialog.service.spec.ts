@@ -1,9 +1,10 @@
-import {MatDialog} from '@angular/material/dialog';
-import {of} from 'rxjs';
-import {TestBed} from '@angular/core/testing';
-import {TranslateModule} from '@ngx-translate/core';
-import {DecisionDetailDialogService,} from './decision-detail-dialog.service';
-import {BERN_WYLEREGG} from "../../../../../test/data/service-point";
+import { MatDialog } from '@angular/material/dialog';
+import { of } from 'rxjs';
+import { TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { DecisionDetailDialogService } from './decision-detail-dialog.service';
+import { FormGroup } from '@angular/forms';
+import { ExaminantFormGroup } from '../../detail-form/stop-point-workflow-detail-form-group';
 
 describe('DecisionDetailDialogService', () => {
   let service: DecisionDetailDialogService;
@@ -21,11 +22,11 @@ describe('DecisionDetailDialogService', () => {
   it('should open new workflow', () => {
     dialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
+    // todo: finish test
     service
-      .openDialog(BERN_WYLEREGG)
+      .openDialog(1, new FormGroup({} as ExaminantFormGroup))
       .subscribe((result) => expect(result).toBeTrue());
 
     expect(dialogSpy.open).toHaveBeenCalled();
   });
-
 });
