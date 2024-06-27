@@ -1,0 +1,55 @@
+<form [formGroup]="formGroup">
+  <p>{{ 'WORKFLOW.DECISION.DECISION_INFO' | translate }}</p>
+  <div class="d-flex justify-content-between">
+    <atlas-text-field
+      [formGroup]="formGroup"
+      [required]="true"
+      class="col-5"
+      controlName="firstName"
+      fieldLabel="WORKFLOW.PERSON.FIRSTNAME"
+    >
+    </atlas-text-field>
+    <atlas-text-field
+      [formGroup]="formGroup"
+      [required]="true"
+      class="col-5"
+      controlName="lastName"
+      fieldLabel="WORKFLOW.PERSON.LASTNAME"
+    >
+    </atlas-text-field>
+  </div>
+  <div class="d-flex justify-content-between">
+    <atlas-text-field
+      [formGroup]="formGroup"
+      [required]="true"
+      class="col-5"
+      controlName="organisation"
+      fieldLabel="WORKFLOW.PERSON.ORGANISATION"
+    >
+    </atlas-text-field>
+    <atlas-text-field
+      [formGroup]="formGroup"
+      [required]="true"
+      class="col-5"
+      controlName="personFunction"
+      fieldLabel="WORKFLOW.PERSON.FUNCTION"
+    >
+    </atlas-text-field>
+  </div>
+
+  <mat-radio-group formControlName="judgement" class="d-grid mb-3">
+    <mat-radio-button [value]="JudgementType.Yes">
+      {{ 'WORKFLOW.DECISION.ACCEPT' | translate }}
+    </mat-radio-button>
+    <mat-radio-button [value]="JudgementType.No">
+      {{ 'WORKFLOW.DECISION.DECLINE' | translate }}
+    </mat-radio-button>
+    <app-atlas-field-error [form]="formGroup" controlName="decision"></app-atlas-field-error>
+  </mat-radio-group>
+
+  <form-comment
+    [formGroup]="formGroup"
+    [label]="'SEPODI.SERVICE_POINTS.WORKFLOW.COMMENT' | translate"
+    controlName="motivation"
+  ></form-comment>
+</form>
