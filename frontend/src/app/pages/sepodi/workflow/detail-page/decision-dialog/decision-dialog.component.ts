@@ -86,20 +86,6 @@ export class DecisionDialogComponent {
 
   decision = DecisionFormGroupBuilder.buildFormGroup();
 
-  static decisionCommentValidator(control: AbstractControl): ValidationErrors | null {
-    if (
-      control.value.decision === false &&
-      (!control.value.comment || control.value.comment.length === 0)
-    ) {
-      control.get('motivation')?.setErrors({ decision_comment_required: true });
-    } else {
-      const errors: ValidationErrors | null = control.get('motivation')!.errors;
-      delete errors?.decision_comment_required;
-      control.get('motivation')?.setErrors(errors);
-    }
-    return null;
-  }
-
   loading = false;
   private _swapLoading() {
     this.loading = !this.loading;
