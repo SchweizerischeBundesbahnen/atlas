@@ -549,7 +549,8 @@
       "CANCEL": "Annuler l'audience",
       "SKIP": "Passer l'audition",
       "RESTART": "Redémarrer l'audience",
-      "DECIDE": "Décider"
+      "DECIDE": "Décider",
+      "OVERRIDE": "Passer outre la décision"
     },
     "START": {
       "COMMENT": "Motivation",
@@ -1038,7 +1039,8 @@
         "START": "Début de l'audition",
         "END": "Fin de l'audition",
         "SEARCH": "SLOID - désignation officielle",
-        "OVERRIDE_TITLE": "Évaluation par l'OFT"
+        "OVERRIDE_TITLE": "Évaluation par l'OFT",
+        "OVERRIDE_HAPPENED_INFO": "L'Office fédéral des transports (OFT) a procédé à une évaluation. L'évaluation de l'OFT s'applique (voir ci-dessous)."
       }
     },
     "TRAFFIC_POINT_ELEMENTS": {
