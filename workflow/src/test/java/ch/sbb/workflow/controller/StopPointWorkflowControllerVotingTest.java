@@ -22,6 +22,7 @@ import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.OtpRequestModel;
 import ch.sbb.workflow.model.sepodi.OtpVerificationModel;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
+import ch.sbb.workflow.model.sepodi.ReadDecisionModel;
 import ch.sbb.workflow.model.sepodi.ReadStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.repository.DecisionRepository;
@@ -242,6 +243,10 @@ class StopPointWorkflowControllerVotingTest {
     // then
     Decision examinantDecision = decisionRepository.findDecisionByExaminantId(examinantToOverride.getId());
     assertThat(examinantDecision.getFotJudgement()).isEqualTo(JudgementType.YES);
+
+    ReadDecisionModel decisionModel = controller.getDecision(examinantToOverride.getId());
+    assertThat(decisionModel.getJudgement()).isEqualTo(JudgementType.NO);
+    assertThat(decisionModel.getFotJudgement()).isEqualTo(JudgementType.YES);
   }
 
 }
