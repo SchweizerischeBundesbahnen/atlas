@@ -1,20 +1,26 @@
-import {Component, EventEmitter, ViewChild} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators,} from '@angular/forms';
-import {MatButtonModule} from '@angular/material/button';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatStepper, MatStepperModule} from '@angular/material/stepper';
-import {TranslateModule} from '@ngx-translate/core';
-import {MatDialogClose, MatDialogRef} from '@angular/material/dialog';
-import {AtlasCharsetsValidator} from '../../../../../core/validation/charsets/atlas-charsets-validator';
-import {MatIconModule} from '@angular/material/icon';
-import {FormModule} from '../../../../../core/module/form.module';
-import {CoreModule} from '../../../../../core/module/core.module';
-import {DialogService} from '../../../../../core/components/dialog/dialog.service';
-import {take} from 'rxjs';
-import {StopPointPerson} from '../../../../../api';
-import {DecisionFormGroup, DecisionFormGroupBuilder} from "../decision-form/decision-form-group";
-import {DecisionFormComponent} from "../decision-form/decision-form.component";
+import { Component, EventEmitter, ViewChild } from '@angular/core';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatStepper, MatStepperModule } from '@angular/material/stepper';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDialogClose, MatDialogRef } from '@angular/material/dialog';
+import { AtlasCharsetsValidator } from '../../../../../core/validation/charsets/atlas-charsets-validator';
+import { MatIconModule } from '@angular/material/icon';
+import { FormModule } from '../../../../../core/module/form.module';
+import { CoreModule } from '../../../../../core/module/core.module';
+import { DialogService } from '../../../../../core/components/dialog/dialog.service';
+import { take } from 'rxjs';
+import { Decision, StopPointPerson } from '../../../../../api';
+import { DecisionFormGroupBuilder } from '../decision-form/decision-form-group';
+import { DecisionFormComponent } from '../decision-form/decision-form.component';
 
 @Component({
   selector: 'sepodi-wf-decision-dialog',
@@ -34,7 +40,6 @@ import {DecisionFormComponent} from "../decision-form/decision-form.component";
     DecisionFormComponent,
   ],
   templateUrl: './decision-dialog.component.html',
-  styleUrl: './decision-dialog.component.scss',
 })
 export class DecisionDialogComponent {
   @ViewChild('stepper') readonly stepper?: MatStepper;
@@ -53,9 +58,7 @@ export class DecisionDialogComponent {
   }>();
 
   readonly sendDecision = new EventEmitter<{
-    mail: AbstractControl;
-    pin: AbstractControl;
-    decision: FormGroup<DecisionFormGroup>;
+    decision: Decision;
     verifiedExaminant: StopPointPerson;
     swapLoading: () => void;
   }>();
@@ -76,7 +79,7 @@ export class DecisionDialogComponent {
     ],
   });
 
-  decision = DecisionFormGroupBuilder.buildFormGroup();
+  readonly decision = DecisionFormGroupBuilder.buildFormGroup();
 
   loading = false;
   private _swapLoading() {
@@ -138,9 +141,19 @@ export class DecisionDialogComponent {
     this.decision.markAllAsTouched();
     if (this.decision.valid) {
       this.sendDecision.emit({
-        mail: this.mail.controls.mail,
-        pin: this.pin.controls.pin,
-        decision: this.decision,
+        decision: {
+          examinantMail: this.mail.controls.mail.value!,
+          pinCode: this.pin.controls.pin.value!,
+          judgement: this.decision.controls.judgement.value!,
+          motivation:
+            this.decision.controls.motivation.value?.length === 0
+              ? undefined
+              : this.decision.controls.motivation.value!,
+          firstName: this.decision.controls.firstName.value!,
+          lastName: this.decision.controls.lastName.value!,
+          organisation: this.decision.controls.organisation.value!,
+          personFunction: this.decision.controls.personFunction.value!,
+        },
         verifiedExaminant: this._verifiedExaminant!,
         swapLoading: () => this._swapLoading(),
       });
@@ -161,6 +174,10 @@ export class DecisionDialogComponent {
   }
 
   cancel() {
+    if (this.stepper?.selectedIndex === 0) {
+      this._dialogRef.close();
+      return;
+    }
     this._dialogService
       .confirm({
         title: 'DIALOG.CANCEL_DECISION_TITLE',

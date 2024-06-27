@@ -73,8 +73,7 @@
     </mat-step>
 
     <mat-step [label]="'WORKFLOW.DECISION.DECISION' | translate">
-
-      <decision-form [formGroup]="decision"></decision-form>
+      <decision-form [form]="decision"></decision-form>
 
       <div class="d-flex justify-content-center mt-4">
         <button class="atlas-primary-btn me-3" (click)="cancel()">
