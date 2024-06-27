@@ -549,7 +549,8 @@
       "CANCEL": "Annullare audizione",
       "SKIP": "Salatare l'audizione",
       "RESTART": "Riavviare l'audizione",
-      "DECIDE": "Decidere"
+      "DECIDE": "Decidere",
+      "OVERRIDE": "Annullamento della decisione"
     },
     "START": {
       "COMMENT": "Motivazione",
@@ -1038,7 +1039,8 @@
         "START": "Inizio audizione",
         "END": "Fine dell'audizione",
         "SEARCH": "SLOID - denominazione ufficiale",
-        "OVERRIDE_TITLE": "Valutazione da parte di BAV"
+        "OVERRIDE_TITLE": "Valutazione da parte di BAV",
+        "OVERRIDE_HAPPENED_INFO": "L'Ufficio federale dei trasporti (UFT) ha effettuato una valutazione. Si applica la valutazione dell'UFT (vedi sotto)."
       }
     },
     "TRAFFIC_POINT_ELEMENTS": {
