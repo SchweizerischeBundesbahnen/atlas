@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {FormGroup, FormsModule, ReactiveFormsModule,} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -9,13 +9,7 @@ import {MatDialogClose} from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
 import {FormModule} from "../../../../../../core/module/form.module";
 import {CoreModule} from "../../../../../../core/module/core.module";
-import {
-  ApplicationType,
-  JudgementType,
-  OverrideDecision,
-  ReadDecision,
-  StopPointWorkflowService
-} from "../../../../../../api";
+import {ApplicationType, JudgementType, OverrideDecision, ReadDecision, StopPointWorkflowService} from "../../../../../../api";
 import {PermissionService} from "../../../../../../core/auth/permission/permission.service";
 import {DecisionOverrideFormGroup, DecisionOverrideFormGroupBuilder} from "./decision-override-form-group";
 
@@ -37,7 +31,7 @@ import {DecisionOverrideFormGroup, DecisionOverrideFormGroupBuilder} from "./dec
   ],
   templateUrl: './decision-override.component.html',
 })
-export class DecisionOverrideComponent implements OnInit {
+export class DecisionOverrideComponent implements OnInit, OnChanges {
 
   protected readonly JudgementType = JudgementType;
 
@@ -46,14 +40,23 @@ export class DecisionOverrideComponent implements OnInit {
   @Input() existingDecision?: ReadDecision;
 
   isSepodiSupervisor = false;
-  formGroup!:FormGroup<DecisionOverrideFormGroup>;
+  formGroup!: FormGroup<DecisionOverrideFormGroup>;
 
   constructor(
     private stopPointWorkflowService: StopPointWorkflowService,
     private permissionService: PermissionService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
+    this.init();
+  }
+
+  ngOnChanges() {
+    this.init();
+  }
+
+  private init() {
     this.formGroup = DecisionOverrideFormGroupBuilder.buildFormGroup(this.existingDecision);
     this.isSepodiSupervisor = this.permissionService.isAtLeastSupervisor(ApplicationType.Sepodi);
     if (!this.isSepodiSupervisor) {
@@ -61,11 +64,9 @@ export class DecisionOverrideComponent implements OnInit {
     }
   }
 
-  saveOverride(){
+  saveOverride() {
     const overrideDecision: OverrideDecision = this.formGroup.value as OverrideDecision
-    this.stopPointWorkflowService.overrideVoteWorkflow(this.workflowId, this.examinantId, overrideDecision).subscribe(() => {
-// success
-    });
+    return this.stopPointWorkflowService.overrideVoteWorkflow(this.workflowId, this.examinantId, overrideDecision);
   }
 
 }
