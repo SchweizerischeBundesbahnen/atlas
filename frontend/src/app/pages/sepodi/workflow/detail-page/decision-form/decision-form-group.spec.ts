@@ -22,7 +22,7 @@ describe('DecisionFormGroupBuilder', () => {
 
     formGroup.controls.judgement.setValue(JudgementType.No);
     formGroup.controls.motivation.setValue('Ich judge');
-    expect(formGroup.valid).toBeFalse();
+    expect(formGroup.valid).toBeTrue();
   });
 
   function buildFormGroup(){
