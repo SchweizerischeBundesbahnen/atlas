@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DecisionFormComponent } from './decision-form.component';
 
-describe('DecisionDialogComponent', () => {
+describe('DecisionFormComponent', () => {
   let component: DecisionFormComponent;
   let fixture: ComponentFixture<DecisionFormComponent>;
 

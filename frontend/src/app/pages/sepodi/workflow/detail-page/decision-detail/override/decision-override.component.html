@@ -1,7 +1,6 @@
 @if (existingDecision?.fotJudgement || isSepodiSupervisor) {
   <div class="override-section" [formGroup]="formGroup">
     <div class="font-bold-4xl mt-5">{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.OVERRIDE_TITLE'|translate }}</div>
-    <atlas-spacer [divider]="true" height="0"></atlas-spacer>
 
     <div class="mt-3 d-flex justify-content-between">
       <atlas-text-field
