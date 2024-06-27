@@ -27,7 +27,6 @@ import {JudgementType} from "../../../../../api";
     CoreModule,
   ],
   templateUrl: './decision-form.component.html',
-  styleUrl: './decision-form.component.scss',
   viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
 })
 export class DecisionFormComponent {
