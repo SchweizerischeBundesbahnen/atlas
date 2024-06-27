@@ -618,8 +618,8 @@
       "SEND": "Absenden",
       "ACCEPT": "Ja, ich stimme zu.",
       "DECLINE": "Nein, ich lehne ab. Die Eingabe der Begründung ist notwendig.",
-      "OVERRIDE_ACCEPT": "Ja. Dieser Entscheid wird mit ja angenommen.",
-      "OVERRIDE_DECLINE": "Nein. Dieser Entscheid wird als nein gewertet. Die Eingabe der Begründung ist notwendig."
+      "OVERRIDE_ACCEPT": "Ja. Dieser Entscheid wird mit \"ja\" angenommen.",
+      "OVERRIDE_DECLINE": "Nein. Dieser Entscheid wird als \"nein\" gewertet. Die Eingabe der Begründung ist notwendig."
     }
   },
   "TTH": {

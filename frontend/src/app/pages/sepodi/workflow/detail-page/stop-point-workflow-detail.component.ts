@@ -154,8 +154,6 @@ export class StopPointWorkflowDetailComponent implements OnInit {
         });
     });
 
-    // todo: translations (question marks with/without space?)
-
     decisionDialogRef
       .afterClosed()
       .pipe(take(1))
@@ -164,9 +162,5 @@ export class StopPointWorkflowDetailComponent implements OnInit {
         verifyPinSubscription.unsubscribe();
         sendDecisionSubscription.unsubscribe();
       });
-  }
-
-  handleBavOverride(examinantIdx: number) {
-    console.log('handle bav override of examinant: ' + examinantIdx);
   }
 }

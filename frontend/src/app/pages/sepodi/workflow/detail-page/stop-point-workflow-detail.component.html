@@ -8,7 +8,6 @@
       [stopPoint]="stopPoint"
       [oldDesignation]="oldDesignation"
       [currentWorkflow]="workflow"
-      (bavOverrideAction)="handleBavOverride($event)"
     ></stop-point-workflow-detail-form>
 
     <div class="mt-5">
@@ -68,16 +67,14 @@
         >
           <!--        todo: buttonClicked action -->
         </atlas-button>
-        @if (!permissionService.isAtLeastSupervisor(ApplicationType.Sepodi)) {
-          <atlas-button
-            [footerEdit]="form.enabled"
-            buttonDataCy="decide-btn"
-            buttonText="WORKFLOW.BUTTON.DECIDE"
-            buttonType="whiteFooterNonEdit"
-            (buttonClicked)="openDecisionDialog()"
-          >
-          </atlas-button>
-        }
+        <atlas-button
+          [footerEdit]="form.enabled"
+          buttonDataCy="decide-btn"
+          buttonText="WORKFLOW.BUTTON.DECIDE"
+          buttonType="whiteFooterNonEdit"
+          (buttonClicked)="openDecisionDialog()"
+        >
+        </atlas-button>
       }
     }
   </atlas-detail-footer>

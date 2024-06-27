@@ -51,7 +51,12 @@
           <li>{{ 'WORKFLOW.DECISION.CHECK_YOUR_SPAM' | translate }}</li>
           <li>
             {{ 'WORKFLOW.DECISION.CLICK_TO_RESEND_MAIL' | translate }}
-            <button mat-button [disabled]="!resendMailActive" (click)="resendMail()">
+            <button
+              class="color-primary-500"
+              mat-button
+              [disabled]="!resendMailActive"
+              (click)="resendMail()"
+            >
               {{ 'WORKFLOW.DECISION.RESEND' | translate }}
             </button>
           </li>
