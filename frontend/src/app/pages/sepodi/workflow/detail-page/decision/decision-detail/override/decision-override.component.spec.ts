@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DecisionOverrideComponent } from './decision-override.component';
-import {AppTestingModule} from "../../../../../../app.testing.module";
+import {AppTestingModule} from "../../../../../../../app.testing.module";
 
 describe('DecisionOverrideComponent', () => {
   let component: DecisionOverrideComponent;
