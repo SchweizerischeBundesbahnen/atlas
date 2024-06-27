@@ -1,15 +1,17 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
-
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.exception.UpdateMergesInReviewVersionsException;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSearchVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import lombok.Getter;
@@ -133,17 +135,46 @@ public class ServicePointService {
     List<ServicePointVersion> existingDbVersions = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, existingDbVersions);
+    List<ServicePointVersion> existingDbVersionInReview = new ArrayList<>(existingDbVersions.stream()
+        .filter(servicePointVersion -> Status.IN_REVIEW == servicePointVersion.getStatus()).toList());
 
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
         version -> save(version, Optional.of(currentVersion), currentVersions),
         new ApplyVersioningDeleteByIdLongConsumer(servicePointVersionRepository));
 
-    List<ServicePointVersion> afterUpdateServicePoint = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
+    List<ServicePointVersion> afterUpdateServicePoint = validateNoMergeAffectVersionInReview(
+        currentVersion, existingDbVersionInReview);
+
     servicePointTerminationService.checkTerminationAllowed(currentVersions, afterUpdateServicePoint);
     return currentVersion;
   }
 
-  private void save(ServicePointVersion servicePointVersion,
+  private List<ServicePointVersion> validateNoMergeAffectVersionInReview(ServicePointVersion currentVersion,
+      List<ServicePointVersion> existingDbVersionInReview) {
+    List<ServicePointVersion> afterUpdateServicePoint = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
+
+    List<ServicePointVersion> afterUpdateServicePointInReview = new ArrayList<>(afterUpdateServicePoint.stream()
+        .filter(servicePointVersion -> Status.IN_REVIEW == servicePointVersion.getStatus()).toList());
+
+    if (!existingDbVersionInReview.isEmpty()) {
+      if (existingDbVersionInReview.size() != afterUpdateServicePointInReview.size()) {
+        throw new UpdateMergesInReviewVersionsException(afterUpdateServicePointInReview);
+      }
+      existingDbVersionInReview.sort(Comparator.comparing(ServicePointVersion::getValidFrom));
+      afterUpdateServicePointInReview.sort(Comparator.comparing(ServicePointVersion::getValidFrom));
+      for (int i = 0; i < existingDbVersionInReview.size(); i++) {
+        ServicePointVersion existingVersion = existingDbVersionInReview.get(i);
+        ServicePointVersion afterVersion = afterUpdateServicePointInReview.get(i);
+        if (!existingVersion.getValidFrom().equals(afterVersion.getValidFrom()) ||
+            !existingVersion.getValidTo().equals(afterVersion.getValidTo())) {
+          throw new UpdateMergesInReviewVersionsException(afterUpdateServicePointInReview);
+        }
+      }
+    }
+    return afterUpdateServicePoint;
+  }
+
+  void save(ServicePointVersion servicePointVersion,
       Optional<ServicePointVersion> currentVersion,
       List<ServicePointVersion> currentVersions) {
     preSaveChecks(servicePointVersion, currentVersion, currentVersions);
