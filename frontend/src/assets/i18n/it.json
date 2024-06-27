@@ -602,6 +602,24 @@
       "ALREADY_IN_REVIEW": "Per questa proprietà è già stata avviata una consultazione.",
       "EXAMINANT_MAIL_NOT_FOUND": "L'indirizzo e-mail inserito non è stato trovato tra i destinatari.",
       "PIN_CODE_INVALID": "Il codice PIN inserito non è corretto."
+    },
+    "DECISION": {
+      "DIALOG_TITLE": "Richiesta di risposta",
+      "IDENTIFICATION": "Identificazione",
+      "PIN_CODE": "Codice PIN",
+      "DECISION": "Decisione",
+      "MAIL_INFO": "A scopo di identificazione, inserire l'indirizzo e-mail al quale si è ricevuto l'invito all'audizione.",
+      "PIN_INFO": "Per confermare l'autorizzazione, inserire il codice PIN appena ricevuto per e-mail.",
+      "NO_PIN_RECEIVED": "Non avete ricevuto un'e-mail con il codice PIN?",
+      "CHECK_YOUR_SPAM": "Controllare la cartella spam.",
+      "CLICK_TO_RESEND_MAIL": "Fare clic sul seguente pulsante per ricevere nuovamente l'e-mail.",
+      "RESEND": "Ripeti l'invio",
+      "DECISION_INFO": "Siete d'accordo o meno con il nome della nuova stazione?",
+      "SEND": "Spedire",
+      "ACCEPT": "Sì, sono d'accordo.",
+      "DECLINE": "No, mi rifiuto. È necessario inserire le motivazioni.",
+      "OVERRIDE_ACCEPT": "Sì. Questa decisione è stata approvata con un voto \"sì\".",
+      "OVERRIDE_DECLINE": "No. Questa decisione è considerata un \"no\". È necessario inserire le motivazioni."
     }
   },
   "TTH": {
@@ -1019,7 +1037,8 @@
         "CREATION": "Registrazione dell'audizione",
         "START": "Inizio audizione",
         "END": "Fine dell'audizione",
-        "SEARCH": "SLOID - denominazione ufficiale"
+        "SEARCH": "SLOID - denominazione ufficiale",
+        "OVERRIDE_TITLE": "Valutazione da parte di BAV"
       }
     },
     "TRAFFIC_POINT_ELEMENTS": {
