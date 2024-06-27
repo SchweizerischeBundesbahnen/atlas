@@ -9,7 +9,6 @@ import {MAT_DIALOG_DATA, MatDialogClose, MatDialogRef} from '@angular/material/d
 import {MatIconModule} from '@angular/material/icon';
 import {FormModule} from '../../../../../core/module/form.module';
 import {CoreModule} from '../../../../../core/module/core.module';
-import {DialogService} from '../../../../../core/components/dialog/dialog.service';
 import {ReadDecision, StopPointWorkflowService} from "../../../../../api";
 import {DecisionDetailDialogData} from "./decision-detail-dialog.service";
 import {DecisionOverrideComponent} from "./override/decision-override.component";
@@ -45,7 +44,6 @@ export class DecisionDetailDialogComponent implements OnInit {
   decisionForm = DecisionFormGroupBuilder.buildFormGroup();
 
   constructor(
-    private dialogService: DialogService,
     private dialogRef: MatDialogRef<DecisionDetailDialogComponent>,
     private stopPointWorkflowService: StopPointWorkflowService,
     @Inject(MAT_DIALOG_DATA) protected decisionDetailDialogData: DecisionDetailDialogData,
