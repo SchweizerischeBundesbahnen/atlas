@@ -1,8 +1,7 @@
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {JudgementType, ReadDecision} from "../../../../../api";
 import {AtlasFieldLengthValidator} from "../../../../../core/validation/field-lengths/atlas-field-length-validator";
 import {AtlasCharsetsValidator} from "../../../../../core/validation/charsets/atlas-charsets-validator";
-import {DecisionDialogComponent} from "../decision-dialog/decision-dialog.component";
 
 export interface DecisionFormGroup {
   firstName: FormControl<string | null | undefined>;
@@ -25,7 +24,26 @@ export class DecisionFormGroupBuilder {
         motivation: new FormControl(existingDecision?.motivation, [AtlasFieldLengthValidator.comments, AtlasCharsetsValidator.iso88591]),
       },
       {
-        validators: DecisionDialogComponent.decisionCommentValidator,
+        validators: DecisionFormGroupBuilder.conditionallyRequired("judgement","motivation"),
       });
   }
+
+
+  static conditionallyRequired(judgementField: string, requiredField: string): ValidatorFn {
+    return (c: AbstractControl): { [key: string]: boolean } | null => {
+      const judgement = c.get(judgementField)!;
+      const required = c.get(requiredField)!;
+
+      if (judgement.value === JudgementType.No && !required.value) {
+        required.setErrors({decision_comment_required: true});
+      } else {
+        const errors = required.errors;
+        delete errors?.decision_comment_required;
+        required.setErrors(errors && Object.keys(errors).length === 0 ? null : errors);
+      }
+
+      return null;
+    };
+  }
+
 }
