@@ -19,9 +19,9 @@ export class DecisionFormGroupBuilder {
     return new FormGroup<DecisionFormGroup>({
         firstName: new FormControl(existingDecision?.examinant?.firstName, [Validators.required, AtlasFieldLengthValidator.length_50, AtlasCharsetsValidator.iso88591]),
         lastName: new FormControl(existingDecision?.examinant?.lastName, [Validators.required, AtlasFieldLengthValidator.length_50, AtlasCharsetsValidator.iso88591]),
-        organisation: new FormControl(existingDecision?.examinant?.organisation, [Validators.required]),
-        personFunction: new FormControl(existingDecision?.examinant?.personFunction, [AtlasFieldLengthValidator.comments, AtlasCharsetsValidator.iso88591]),
-        judgement: new FormControl(existingDecision?.judgement, [AtlasFieldLengthValidator.comments, AtlasCharsetsValidator.iso88591]),
+        organisation: new FormControl(existingDecision?.examinant?.organisation, [Validators.required, AtlasFieldLengthValidator.length_50, AtlasCharsetsValidator.iso88591]),
+        personFunction: new FormControl(existingDecision?.examinant?.personFunction, [AtlasFieldLengthValidator.comments, AtlasFieldLengthValidator.length_50, AtlasCharsetsValidator.iso88591]),
+        judgement: new FormControl(existingDecision?.judgement, [Validators.required]),
         motivation: new FormControl(existingDecision?.motivation, [AtlasFieldLengthValidator.comments, AtlasCharsetsValidator.iso88591]),
       },
       {
