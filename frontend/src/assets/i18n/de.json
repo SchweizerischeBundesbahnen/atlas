@@ -549,7 +549,8 @@
       "CANCEL": "Anhörung abbrechen",
       "SKIP": "Anhörung überspringen",
       "RESTART": "Anhörung neustarten",
-      "DECIDE": "Entscheiden"
+      "DECIDE": "Entscheiden",
+      "OVERRIDE": "Entscheidung überstimmen"
     },
     "START": {
       "COMMENT": "Begründung",
@@ -1038,7 +1039,8 @@
         "START": "Start Anhörung",
         "END": "Ende Anhörung",
         "SEARCH": "SLOID - offizielle Bezeichnung",
-        "OVERRIDE_TITLE": "Beurteilung durch BAV"
+        "OVERRIDE_TITLE": "Beurteilung durch BAV",
+        "OVERRIDE_HAPPENED_INFO": "Das Bundesamt für Verkehr (BAV) hat eine Beurteilung vorgenommen. Es gilt die Beurteilung des BAV (siehe unten)."
       }
     },
     "TRAFFIC_POINT_ELEMENTS": {
