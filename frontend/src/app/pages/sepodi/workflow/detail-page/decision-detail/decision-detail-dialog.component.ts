@@ -14,6 +14,9 @@ import {DecisionDetailDialogData} from "./decision-detail-dialog.service";
 import {DecisionOverrideComponent} from "./override/decision-override.component";
 import {DecisionFormComponent} from "../decision-form/decision-form.component";
 import {DecisionFormGroupBuilder} from "../decision-form/decision-form-group";
+import {NotificationService} from "../../../../../core/notification/notification.service";
+import {Pages} from "../../../../pages";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'decision-detail-dialog',
@@ -38,7 +41,7 @@ import {DecisionFormGroupBuilder} from "../decision-form/decision-form-group";
 })
 export class DecisionDetailDialogComponent implements OnInit {
 
-  @ViewChild(DecisionOverrideComponent) decisionOverrideComponent!:DecisionOverrideComponent;
+  @ViewChild(DecisionOverrideComponent) decisionOverrideComponent!: DecisionOverrideComponent;
 
   existingDecision!: ReadDecision;
   decisionForm = DecisionFormGroupBuilder.buildFormGroup();
@@ -46,8 +49,11 @@ export class DecisionDetailDialogComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<DecisionDetailDialogComponent>,
     private stopPointWorkflowService: StopPointWorkflowService,
+    private notificationService: NotificationService,
+    private router: Router,
     @Inject(MAT_DIALOG_DATA) protected decisionDetailDialogData: DecisionDetailDialogData,
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.decisionForm.patchValue(this.decisionDetailDialogData.examinant.value);
@@ -61,11 +67,22 @@ export class DecisionDetailDialogComponent implements OnInit {
     this.decisionForm.disable();
   }
 
+  get hasOverride() {
+    return !!this.existingDecision?.fotJudgement;
+  }
+
   close() {
     this.dialogRef.close();
   }
 
   overrideDecision() {
-    this.decisionOverrideComponent.saveOverride();
+    this.decisionOverrideComponent.saveOverride().subscribe(() => {
+      this.notificationService.success('WORKFLOW.NOTIFICATION.VOTE.SUCCESS');
+      this.dialogRef.close();
+      this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+        this.router.navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, this.decisionDetailDialogData.workflowId]).then(() => {
+        });
+      });
+    });
   }
 }
