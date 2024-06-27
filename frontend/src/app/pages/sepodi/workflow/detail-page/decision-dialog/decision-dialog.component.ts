@@ -1,4 +1,4 @@
-import { Component, EventEmitter, NgZone, ViewChild } from '@angular/core';
+import {Component, EventEmitter, ViewChild} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -8,20 +8,21 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatStepper, MatStepperModule } from '@angular/material/stepper';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatDialogClose, MatDialogRef } from '@angular/material/dialog';
-import { AtlasCharsetsValidator } from '../../../../../core/validation/charsets/atlas-charsets-validator';
-import { MatIconModule } from '@angular/material/icon';
-import { FormModule } from '../../../../../core/module/form.module';
-import { CoreModule } from '../../../../../core/module/core.module';
-import { DialogService } from '../../../../../core/components/dialog/dialog.service';
-import { take } from 'rxjs';
-import { AtlasFieldLengthValidator } from '../../../../../core/validation/field-lengths/atlas-field-length-validator';
-import { StopPointPerson } from '../../../../../api';
+import {MatButtonModule} from '@angular/material/button';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatStepper, MatStepperModule} from '@angular/material/stepper';
+import {TranslateModule} from '@ngx-translate/core';
+import {MatDialogClose, MatDialogRef} from '@angular/material/dialog';
+import {AtlasCharsetsValidator} from '../../../../../core/validation/charsets/atlas-charsets-validator';
+import {MatIconModule} from '@angular/material/icon';
+import {FormModule} from '../../../../../core/module/form.module';
+import {CoreModule} from '../../../../../core/module/core.module';
+import {DialogService} from '../../../../../core/components/dialog/dialog.service';
+import {take} from 'rxjs';
+import {StopPointPerson} from '../../../../../api';
+import {DecisionFormGroup, DecisionFormGroupBuilder} from "../decision-form/decision-form-group";
+import {DecisionFormComponent} from "../decision-form/decision-form.component";
 
 @Component({
   selector: 'sepodi-wf-decision-dialog',
@@ -38,6 +39,7 @@ import { StopPointPerson } from '../../../../../api';
     TranslateModule,
     FormModule,
     CoreModule,
+    DecisionFormComponent,
   ],
   templateUrl: './decision-dialog.component.html',
   styleUrl: './decision-dialog.component.scss',
@@ -61,7 +63,7 @@ export class DecisionDialogComponent {
   readonly sendDecision = new EventEmitter<{
     mail: AbstractControl;
     pin: AbstractControl;
-    decision: FormGroup;
+    decision: FormGroup<DecisionFormGroup>;
     verifiedExaminant: StopPointPerson;
     swapLoading: () => void;
   }>();
@@ -82,30 +84,18 @@ export class DecisionDialogComponent {
     ],
   });
 
-  readonly decision = this._formBuilder.group(
-    {
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      organisation: ['', Validators.required],
-      function: ['', Validators.required],
-      decision: [null, Validators.required],
-      comment: [null, [AtlasFieldLengthValidator.comments]],
-    },
-    {
-      validators: DecisionDialogComponent.decisionCommentValidator,
-    },
-  );
+  decision = DecisionFormGroupBuilder.buildFormGroup();
 
-  private static decisionCommentValidator(control: AbstractControl): ValidationErrors | null {
+  static decisionCommentValidator(control: AbstractControl): ValidationErrors | null {
     if (
       control.value.decision === false &&
       (!control.value.comment || control.value.comment.length === 0)
     ) {
-      control.get('comment')?.setErrors({ decision_comment_required: true });
+      control.get('motivation')?.setErrors({ decision_comment_required: true });
     } else {
-      const errors: ValidationErrors | null = control.get('comment')!.errors;
+      const errors: ValidationErrors | null = control.get('motivation')!.errors;
       delete errors?.decision_comment_required;
-      control.get('comment')?.setErrors(errors);
+      control.get('motivation')?.setErrors(errors);
     }
     return null;
   }
@@ -149,7 +139,7 @@ export class DecisionDialogComponent {
           this.decision.controls.firstName.setValue(examinant.firstName ?? null);
           this.decision.controls.lastName.setValue(examinant.lastName ?? null);
           this.decision.controls.organisation.setValue(examinant.organisation);
-          this.decision.controls.function.setValue(examinant.personFunction ?? null);
+          this.decision.controls.personFunction.setValue(examinant.personFunction ?? null);
           this._stepNext();
         },
         swapLoading: () => this._swapLoading(),
