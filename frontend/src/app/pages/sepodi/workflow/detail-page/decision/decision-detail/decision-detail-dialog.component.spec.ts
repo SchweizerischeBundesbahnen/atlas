@@ -2,9 +2,9 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {DecisionDetailDialogComponent} from './decision-detail-dialog.component';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {AppTestingModule} from "../../../../../app.testing.module";
 import {DecisionDetailDialogData} from "./decision-detail-dialog.service";
 import {StopPointWorkflowDetailFormGroupBuilder} from "../../detail-form/stop-point-workflow-detail-form-group";
+import {AppTestingModule} from "../../../../../../app.testing.module";
 
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 const dialogData: DecisionDetailDialogData = {
