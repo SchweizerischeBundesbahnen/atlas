@@ -12,7 +12,6 @@ import {
   Status,
   StopPointWorkflowService
 } from "../../../../api";
-import {StopPointWorkflowDetailFormComponent} from "../detail-form/stop-point-workflow-detail-form.component";
 import {StringListComponent} from "../../../../core/form-components/string-list/string-list.component";
 import {MockAtlasButtonComponent} from "../../../../app.testing.mocks";
 import {DisplayDatePipe} from "../../../../core/pipe/display-date.pipe";
@@ -26,6 +25,7 @@ import {StopPointWorkflowDetailData} from "./stop-point-workflow-detail-resolver
 import {UserDetailInfoComponent} from "../../../../core/components/base-detail/user-edit-info/user-detail-info.component";
 import {of} from "rxjs";
 import {NotificationService} from "../../../../core/notification/notification.service";
+import {StopPointWorkflowDetailFormComponent} from "./detail-form/stop-point-workflow-detail-form.component";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1000,

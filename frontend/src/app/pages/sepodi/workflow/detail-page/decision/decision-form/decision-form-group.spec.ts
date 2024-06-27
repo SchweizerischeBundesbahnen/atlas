@@ -1,5 +1,5 @@
 import {DecisionFormGroupBuilder} from "./decision-form-group";
-import {JudgementType} from "../../../../../api";
+import {JudgementType} from "../../../../../../api";
 
 describe('DecisionFormGroupBuilder', () => {
 

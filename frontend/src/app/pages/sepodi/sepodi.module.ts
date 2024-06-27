@@ -24,12 +24,12 @@ import {TrafficPointElementsDetailComponent} from './traffic-point-elements/traf
 import {LoadingPointsDetailComponent} from './loading-points/loading-points-detail.component';
 import {FotCommentDetailComponent} from './service-point-side-panel/comment/fot-comment-detail.component';
 import {AddStopPointWorkflowComponent} from "./workflow/add-dialog/add-stop-point-workflow.component";
-import {StopPointWorkflowDetailFormComponent} from "./workflow/detail-form/stop-point-workflow-detail-form.component";
 import {StopPointWorkflowDetailComponent} from "./workflow/detail-page/stop-point-workflow-detail.component";
 import {StopPointWorkflowOverviewComponent} from "./workflow/overview/stop-point-workflow-overview.component";
 import {
   StopPointRejectWorkflowDialogComponent
 } from "./workflow/stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog.component";
+import {StopPointWorkflowDetailFormComponent} from "./workflow/detail-page/detail-form/stop-point-workflow-detail-form.component";
 
 @NgModule({
   declarations: [
