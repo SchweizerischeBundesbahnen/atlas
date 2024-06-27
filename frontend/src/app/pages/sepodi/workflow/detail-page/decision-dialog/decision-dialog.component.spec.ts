@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DecisionDialogComponent } from './decision-dialog.component';
+import {AppTestingModule} from "../../../../../app.testing.module";
+import {MatDialogRef} from "@angular/material/dialog";
+
+const dialogRefSpy = jasmine.createSpyObj(['close']);
 
 describe('DecisionDialogComponent', () => {
   let component: DecisionDialogComponent;
@@ -8,7 +12,8 @@ describe('DecisionDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DecisionDialogComponent]
+      imports: [DecisionDialogComponent, AppTestingModule],
+      providers:[{provide: MatDialogRef, useValue: dialogRefSpy}]
     })
     .compileComponents();
 

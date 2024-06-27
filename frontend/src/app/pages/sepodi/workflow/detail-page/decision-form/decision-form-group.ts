@@ -1,4 +1,4 @@
-import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
+import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
 import {JudgementType, ReadDecision} from "../../../../../api";
 import {AtlasFieldLengthValidator} from "../../../../../core/validation/field-lengths/atlas-field-length-validator";
 import {AtlasCharsetsValidator} from "../../../../../core/validation/charsets/atlas-charsets-validator";
