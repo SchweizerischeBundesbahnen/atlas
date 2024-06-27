@@ -1,4 +1,4 @@
-<form [formGroup]="formGroup">
+<form [formGroup]="form">
   @if (hasOverride) {
     <mat-chip-listbox>
       <mat-chip>
@@ -14,7 +14,7 @@
 
   <div class="d-flex justify-content-between mt-2">
     <atlas-text-field
-      [formGroup]="formGroup"
+      [formGroup]="form"
       [required]="true"
       class="col-5"
       controlName="firstName"
@@ -22,7 +22,7 @@
     >
     </atlas-text-field>
     <atlas-text-field
-      [formGroup]="formGroup"
+      [formGroup]="form"
       [required]="true"
       class="col-5"
       controlName="lastName"
@@ -32,7 +32,7 @@
   </div>
   <div class="d-flex justify-content-between mb-3">
     <atlas-text-field
-      [formGroup]="formGroup"
+      [formGroup]="form"
       [required]="true"
       class="col-5"
       controlName="organisation"
@@ -40,7 +40,7 @@
     >
     </atlas-text-field>
     <atlas-text-field
-      [formGroup]="formGroup"
+      [formGroup]="form"
       [required]="true"
       class="col-5"
       controlName="personFunction"
@@ -57,11 +57,11 @@
     <mat-radio-button [value]="JudgementType.No">
       {{ 'WORKFLOW.DECISION.DECLINE' | translate }}
     </mat-radio-button>
-    <app-atlas-field-error [form]="formGroup" controlName="judgement"></app-atlas-field-error>
+    <app-atlas-field-error [form]="form" controlName="judgement"></app-atlas-field-error>
   </mat-radio-group>
 
   <form-comment
-    [formGroup]="formGroup"
+    [formGroup]="form"
     [label]="'SEPODI.SERVICE_POINTS.WORKFLOW.COMMENT' | translate"
     controlName="motivation"
   ></form-comment>
