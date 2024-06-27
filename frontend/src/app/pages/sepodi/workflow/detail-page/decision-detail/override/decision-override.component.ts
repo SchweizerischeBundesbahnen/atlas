@@ -5,13 +5,17 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatStepperModule} from '@angular/material/stepper';
 import {TranslateModule} from '@ngx-translate/core';
-import {MatDialogClose} from '@angular/material/dialog';
+import {MatDialogClose, MatDialogRef} from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
 import {FormModule} from "../../../../../../core/module/form.module";
 import {CoreModule} from "../../../../../../core/module/core.module";
 import {ApplicationType, JudgementType, OverrideDecision, ReadDecision, StopPointWorkflowService} from "../../../../../../api";
 import {PermissionService} from "../../../../../../core/auth/permission/permission.service";
 import {DecisionOverrideFormGroup, DecisionOverrideFormGroupBuilder} from "./decision-override-form-group";
+import {Pages} from "../../../../../pages";
+import {NotificationService} from "../../../../../../core/notification/notification.service";
+import {Router} from "@angular/router";
+import {DecisionDetailDialogComponent} from "../decision-detail-dialog.component";
 
 @Component({
   selector: 'decision-override',
@@ -44,7 +48,10 @@ export class DecisionOverrideComponent implements OnInit, OnChanges {
 
   constructor(
     private stopPointWorkflowService: StopPointWorkflowService,
-    private permissionService: PermissionService
+    private permissionService: PermissionService,
+    private notificationService: NotificationService,
+    private matDialogRef: MatDialogRef<DecisionDetailDialogComponent>,
+    private router: Router,
   ) {
   }
 
@@ -65,8 +72,18 @@ export class DecisionOverrideComponent implements OnInit, OnChanges {
   }
 
   saveOverride() {
-    const overrideDecision: OverrideDecision = this.formGroup.value as OverrideDecision
-    return this.stopPointWorkflowService.overrideVoteWorkflow(this.workflowId, this.examinantId, overrideDecision);
+    if (this.formGroup.valid) {
+      const overrideDecision: OverrideDecision = this.formGroup.value as OverrideDecision;
+      overrideDecision.fotMotivation = overrideDecision.fotMotivation?.length === 0 ? undefined : overrideDecision.fotMotivation;
+      this.stopPointWorkflowService.overrideVoteWorkflow(this.workflowId, this.examinantId, overrideDecision).subscribe(() => {
+        this.notificationService.success('WORKFLOW.NOTIFICATION.VOTE.SUCCESS');
+        this.matDialogRef.close();
+        this.router.navigateByUrl('/').then(() => {
+          this.router.navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, this.workflowId]).then(() => {
+          });
+        });
+      });
+    }
   }
 
 }
