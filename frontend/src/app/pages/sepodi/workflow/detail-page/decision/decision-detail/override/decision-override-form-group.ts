@@ -1,8 +1,8 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { JudgementType, ReadDecision } from '../../../../../../api';
-import { AtlasFieldLengthValidator } from '../../../../../../core/validation/field-lengths/atlas-field-length-validator';
-import { AtlasCharsetsValidator } from '../../../../../../core/validation/charsets/atlas-charsets-validator';
 import { DecisionFormGroupBuilder } from '../../decision-form/decision-form-group';
+import { JudgementType, ReadDecision } from 'src/app/api';
+import { AtlasFieldLengthValidator } from 'src/app/core/validation/field-lengths/atlas-field-length-validator';
+import { AtlasCharsetsValidator } from 'src/app/core/validation/charsets/atlas-charsets-validator';
 
 export interface DecisionOverrideFormGroup {
   firstName: FormControl<string | null | undefined>;

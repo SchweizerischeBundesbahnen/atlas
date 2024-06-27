@@ -12,18 +12,18 @@ import { MatInputModule } from '@angular/material/input';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogClose, MatDialogRef } from '@angular/material/dialog';
-import { AtlasCharsetsValidator } from '../../../../../core/validation/charsets/atlas-charsets-validator';
 import { MatIconModule } from '@angular/material/icon';
-import { FormModule } from '../../../../../core/module/form.module';
-import { CoreModule } from '../../../../../core/module/core.module';
-import { DialogService } from '../../../../../core/components/dialog/dialog.service';
 import { take } from 'rxjs';
-import { Decision, StopPointPerson } from '../../../../../api';
 import { DecisionFormGroupBuilder } from '../decision-form/decision-form-group';
 import { DecisionFormComponent } from '../decision-form/decision-form.component';
+import { FormModule } from 'src/app/core/module/form.module';
+import { CoreModule } from 'src/app/core/module/core.module';
+import { Decision, StopPointPerson } from 'src/app/api';
+import { AtlasCharsetsValidator } from 'src/app/core/validation/charsets/atlas-charsets-validator';
+import { DialogService } from 'src/app/core/components/dialog/dialog.service';
 
 @Component({
-  selector: 'sepodi-wf-decision-dialog',
+  selector: 'sepodi-wf-decision-stepper',
   standalone: true,
   imports: [
     MatButtonModule,
@@ -39,9 +39,9 @@ import { DecisionFormComponent } from '../decision-form/decision-form.component'
     CoreModule,
     DecisionFormComponent,
   ],
-  templateUrl: './decision-dialog.component.html',
+  templateUrl: './decision-stepper.component.html',
 })
-export class DecisionDialogComponent {
+export class DecisionStepperComponent {
   @ViewChild('stepper') readonly stepper?: MatStepper;
 
   readonly obtainOtp = new EventEmitter<{
@@ -92,7 +92,7 @@ export class DecisionDialogComponent {
   constructor(
     private readonly _formBuilder: FormBuilder,
     private readonly _dialogService: DialogService,
-    private readonly _dialogRef: MatDialogRef<DecisionDialogComponent>,
+    private readonly _dialogRef: MatDialogRef<DecisionStepperComponent>,
   ) {}
 
   completeObtainOtpStep() {

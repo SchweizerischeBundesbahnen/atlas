@@ -7,13 +7,13 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { TranslateModule } from '@ngx-translate/core';
 import { MAT_DIALOG_DATA, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { FormModule } from '../../../../../core/module/form.module';
-import { CoreModule } from '../../../../../core/module/core.module';
-import { ReadDecision, StopPointWorkflowService } from '../../../../../api';
 import { DecisionDetailDialogData } from './decision-detail-dialog.service';
 import { DecisionOverrideComponent } from './override/decision-override.component';
 import { DecisionFormComponent } from '../decision-form/decision-form.component';
 import { DecisionFormGroupBuilder } from '../decision-form/decision-form-group';
+import { FormModule } from 'src/app/core/module/form.module';
+import { CoreModule } from 'src/app/core/module/core.module';
+import { ReadDecision, StopPointWorkflowService } from 'src/app/api';
 
 @Component({
   selector: 'decision-detail-dialog',
@@ -45,8 +45,7 @@ export class DecisionDetailDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<DecisionDetailDialogComponent>,
     private stopPointWorkflowService: StopPointWorkflowService,
     @Inject(MAT_DIALOG_DATA) protected decisionDetailDialogData: DecisionDetailDialogData,
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.decisionForm.patchValue(this.decisionDetailDialogData.examinant.value);
