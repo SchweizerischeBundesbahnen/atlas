@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DecisionFormComponent } from './decision-form.component';
-import { AppTestingModule } from '../../../../../app.testing.module';
 import { DecisionFormGroupBuilder } from './decision-form-group';
+import {AppTestingModule} from "../../../../../../app.testing.module";
 
 describe('DecisionFormComponent', () => {
   let component: DecisionFormComponent;

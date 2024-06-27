@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DecisionStepperComponent } from './decision-stepper.component';
-import {AppTestingModule} from "../../../../../app.testing.module";
 import {MatDialogRef} from "@angular/material/dialog";
+import {AppTestingModule} from "../../../../../../app.testing.module";
 
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 
