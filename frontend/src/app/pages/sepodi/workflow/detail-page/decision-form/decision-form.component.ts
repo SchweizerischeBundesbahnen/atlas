@@ -27,11 +27,13 @@ import {JudgementType} from "../../../../../api";
     CoreModule,
   ],
   templateUrl: './decision-form.component.html',
-  viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
+  styleUrls: ['decision-form.component.scss'],
+  viewProviders: [{provide: ControlContainer, useExisting: NgForm}],
 })
 export class DecisionFormComponent {
 
   protected readonly JudgementType = JudgementType;
 
   @Input() formGroup!: FormGroup<DecisionFormGroup>;
+  @Input() hasOverride = false;
 }

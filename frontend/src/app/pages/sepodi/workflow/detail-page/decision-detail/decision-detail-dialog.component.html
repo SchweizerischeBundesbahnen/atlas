@@ -1,8 +1,8 @@
 <atlas-dialog-close class="pe-2" (clicked)="close()"></atlas-dialog-close>
 
 <atlas-dialog-content>
-  <div class="font-bold-4xl mb-3">{{ 'WORKFLOW.PERSON.JUDGEMENT'|translate }}</div>
-    <decision-form [formGroup]="decisionForm"></decision-form>
+  <div class="font-bold-4xl mb-1">{{ 'WORKFLOW.PERSON.JUDGEMENT'|translate }}</div>
+    <decision-form [formGroup]="decisionForm" [hasOverride]="hasOverride"></decision-form>
     <decision-override
       [workflowId]="decisionDetailDialogData.workflowId"
       [examinantId]="decisionDetailDialogData.examinant.controls.id.value!"
@@ -10,11 +10,11 @@
 </atlas-dialog-content>
 <atlas-dialog-footer>
   <button (click)="close()" class="atlas-primary-btn me-3" data-cy="dialog-close-button">
-    {{ 'DIALOG.CANCEL' | translate }}
+    {{ 'COMMON.BACK' | translate }}
   </button>
   <atlas-button
     buttonDataCy="override-decision"
-    buttonText="WORKFLOW.BUTTON.START"
+    buttonText="WORKFLOW.BUTTON.OVERRIDE"
     buttonType="supervisorButton"
     applicationType="SEPODI"
     (buttonClicked)="overrideDecision()"
