@@ -115,7 +115,7 @@ export class DecisionStepperComponent {
       this.stepper.selected.completed = true;
       this.stepper.next();
     } else {
-      throw 'Step must be selected at this stage';
+      throw new Error('Step must be selected at this stage');
     }
   }
 
