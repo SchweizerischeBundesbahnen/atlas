@@ -104,7 +104,7 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
 
   @Override
   public ReadDecisionModel getDecision(Long personId) {
-    return StopPointWorkflowDecisionMapper.toModel(decisionService.getDecision(personId));
+    return StopPointWorkflowDecisionMapper.toModel(decisionService.getDecisionByExaminantId(personId));
   }
 
   @Override
