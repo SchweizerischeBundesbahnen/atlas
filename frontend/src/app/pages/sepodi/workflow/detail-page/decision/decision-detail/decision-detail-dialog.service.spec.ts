@@ -1,9 +1,8 @@
 import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { DecisionDetailDialogService } from './decision-detail-dialog.service';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ExaminantFormGroup } from '../../detail-form/stop-point-workflow-detail-form-group';
 
 describe('DecisionDetailDialogService', () => {
@@ -13,20 +12,32 @@ describe('DecisionDetailDialogService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
       providers: [{ provide: MatDialog, useValue: dialogSpy }],
     });
     service = TestBed.inject(DecisionDetailDialogService);
   });
 
-  it('should open new workflow', () => {
+  it('should open dialog', (done) => {
     dialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-    // todo: finish test
     service
-      .openDialog(1, new FormGroup({} as ExaminantFormGroup))
-      .subscribe((result) => expect(result).toBeTrue());
-
-    expect(dialogSpy.open).toHaveBeenCalled();
+      .openDialog(
+        1,
+        new FormGroup<ExaminantFormGroup>({
+          mail: new FormControl(''),
+          firstName: new FormControl(''),
+          lastName: new FormControl(''),
+          judgementIcon: new FormControl(''),
+          organisation: new FormControl(''),
+          personFunction: new FormControl(''),
+          judgement: new FormControl('YES'),
+          id: new FormControl(1),
+        }),
+      )
+      .subscribe((result) => {
+        expect(result).toBeTrue();
+        expect(dialogSpy.open).toHaveBeenCalled();
+        done();
+      });
   });
 });
