@@ -6,13 +6,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatStepper, MatStepperModule } from '@angular/material/stepper';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatDialogClose, MatDialogRef } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
+import { MatStepper } from '@angular/material/stepper';
+import { MatDialogRef } from '@angular/material/dialog';
 import { take } from 'rxjs';
 import { DecisionFormGroupBuilder } from '../decision-form/decision-form-group';
 import { DecisionFormComponent } from '../decision-form/decision-form.component';
@@ -25,20 +20,7 @@ import { DialogService } from 'src/app/core/components/dialog/dialog.service';
 @Component({
   selector: 'sepodi-wf-decision-stepper',
   standalone: true,
-  imports: [
-    MatButtonModule,
-    MatStepperModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDialogClose,
-    MatIconModule,
-    FormsModule,
-    ReactiveFormsModule,
-    TranslateModule,
-    FormModule,
-    CoreModule,
-    DecisionFormComponent,
-  ],
+  imports: [FormsModule, ReactiveFormsModule, FormModule, CoreModule, DecisionFormComponent],
   templateUrl: './decision-stepper.component.html',
 })
 export class DecisionStepperComponent {
