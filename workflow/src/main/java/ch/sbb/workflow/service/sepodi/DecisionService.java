@@ -20,7 +20,7 @@ public class DecisionService {
 
   private final DecisionRepository decisionRepository;
 
-  public Decision createRejectedDecision(Person examinant, String motivation){
+  public void createRejectedDecision(Person examinant, String motivation){
     Decision decision = Decision.builder()
         .judgement(JudgementType.NO)
         .decisionType(DecisionType.REJECTED)
@@ -28,7 +28,7 @@ public class DecisionService {
         .motivation(motivation)
         .motivationDate(LocalDateTime.now())
         .build();
-    return decisionRepository.save(decision);
+    decisionRepository.save(decision);
   }
 
   public void save(Decision decision) {
@@ -48,7 +48,7 @@ public class DecisionService {
     });
   }
 
-  public Decision getDecision(Long personId) {
+  public Decision getDecisionByExaminantId(Long personId) {
     Decision decision = decisionRepository.findDecisionByExaminantId(personId);
     if (decision == null) {
       throw new IdNotFoundException(personId);
