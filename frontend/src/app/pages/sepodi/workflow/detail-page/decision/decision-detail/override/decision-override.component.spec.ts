@@ -6,10 +6,13 @@ import {JudgementType, StopPointWorkflowService} from "../../../../../../../api"
 import {of} from "rxjs";
 import {PermissionService} from "../../../../../../../core/auth/permission/permission.service";
 import {adminPermissionServiceMock} from "../../../../../../../app.testing.mocks";
+import {NotificationService} from "../../../../../../../core/notification/notification.service";
 
 const stopPointWorkflowService = jasmine.createSpyObj('stopPointWorkflowService', {
-  overrideVoteWorkflow: of()
+  overrideVoteWorkflow: of({}),
 });
+
+const notificationService = jasmine.createSpyObj('notificationService', ['success']);
 
 describe('DecisionOverrideComponent', () => {
   let component: DecisionOverrideComponent;
@@ -21,6 +24,7 @@ describe('DecisionOverrideComponent', () => {
       providers: [
         {provide: StopPointWorkflowService, useValue: stopPointWorkflowService},
         {provide: PermissionService, useValue: adminPermissionServiceMock},
+        {provide: NotificationService, useValue: notificationService},
       ]
     })
       .compileComponents();
@@ -51,5 +55,7 @@ describe('DecisionOverrideComponent', () => {
       fotJudgement: JudgementType.Yes,
       fotMotivation: null
     });
+
+    expect(notificationService.success).toHaveBeenCalled()
   });
 });
