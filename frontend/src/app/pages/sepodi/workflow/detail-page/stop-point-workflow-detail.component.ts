@@ -15,7 +15,6 @@ import { StopPointRejectWorkflowDialogService } from '../stop-point-reject-workf
 import { environment } from '../../../../../environments/environment';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { take } from 'rxjs';
-import { PermissionService } from '../../../../core/auth/permission/permission.service';
 import {
   StopPointWorkflowDetailFormGroup,
   StopPointWorkflowDetailFormGroupBuilder,
@@ -36,7 +35,6 @@ export class StopPointWorkflowDetailComponent implements OnInit {
     private readonly stopPointWorkflowService: StopPointWorkflowService,
     private readonly notificationService: NotificationService,
     private readonly stopPointRejectWorkflowDialogService: StopPointRejectWorkflowDialogService,
-    protected readonly permissionService: PermissionService,
   ) {}
 
   form!: FormGroup<StopPointWorkflowDetailFormGroup>;
