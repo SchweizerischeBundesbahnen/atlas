@@ -143,7 +143,9 @@
     "CONFIRM_BO_TRANSFER_TITLE": "Hinweis",
     "CONFIRM_BO_TRANSFER": "Durch die Änderung der Geschäftsorganisation verlieren Sie die Berechtigung für die Bearbeitung des Objektes ab dem Mutationszeitpunkt.",
     "CONFIRM_VALIDITY_HAS_NOT_CHANGED_TITLE": "Achtung: Gültigkeit wurde nicht verändert!",
-    "CONFIRM_VALIDITY_HAS_NOT_CHANGED": "Sind Sie Sicher, dass Sie die Änderung ohne Anpassung der Gültigkeit vornehmen möchten? Falls die Änderung nicht für den ganzen Zeitraum dieser Version gilt, passen Sie bitte das \"gültig von\" oder \"gültig bis\" Datum an."
+    "CONFIRM_VALIDITY_HAS_NOT_CHANGED": "Sind Sie Sicher, dass Sie die Änderung ohne Anpassung der Gültigkeit vornehmen möchten? Falls die Änderung nicht für den ganzen Zeitraum dieser Version gilt, passen Sie bitte das \"gültig von\" oder \"gültig bis\" Datum an.",
+    "CANCEL_DECISION_TITLE": "Entscheidung abbrechen?",
+    "CANCEL_DECISION": "Sie verlieren den aktuellen Fortschritt und müssen beim nächsten Mal wieder neu beginnen."
   },
   "SW_DIALOG": {
     "UPDATE_TITLE": "Neue Version verfügbar",
@@ -239,7 +241,8 @@
     "MEANSOFTRANSPORTWRONGCOMBINATION": "Diese Verkehrsmittelkombination ist nicht zulässig.",
     "DECIMAL_NUMBER": "Geben Sie eine Dezimalzahl mit maximal {{maxDecimalDigits}} Nachkommastellen ein.",
     "INTEGER_WITH_FRACTION": "Geben Sie eine Dezimalzahl mit maximal {{maxDecimalDigits}} Ziffern und mit maximal {{maxFractionDigits}} Nachkommastellen ein.",
-    "COLON_SEPERATED_SID4PT": "Verwenden Sie den SID4PT Zeichensatz (-._0-9a-zA-Z) mit genau {{numbersWithColons}} trennenden Doppelpunkten."
+    "COLON_SEPERATED_SID4PT": "Verwenden Sie den SID4PT Zeichensatz (-._0-9a-zA-Z) mit genau {{numbersWithColons}} trennenden Doppelpunkten.",
+    "DECISION_COMMENT_REQUIRED": "Begründung ist notwendig"
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Geschäftsorganisationen und Applikationen",
@@ -545,7 +548,9 @@
       "REJECT": "Anhörung Zurückweisen",
       "CANCEL": "Anhörung abbrechen",
       "SKIP": "Anhörung überspringen",
-      "RESTART": "Anhörung neustarten"
+      "RESTART": "Anhörung neustarten",
+      "DECIDE": "Entscheiden",
+      "OVERRIDE": "Entscheidung überstimmen"
     },
     "START": {
       "COMMENT": "Begründung",
@@ -561,7 +566,8 @@
       "LASTNAME": "Nachname",
       "FUNCTION": "Funktion",
       "MAIL": "E-Mail Adresse",
-      "ORGANISATION": "Organisation"
+      "ORGANISATION": "Organisation",
+      "JUDGEMENT": "Entscheid"
     },
     "STATUS_DETAIL": "Anhörung Status",
     "STATUS": {
@@ -587,11 +593,34 @@
       },
       "SKIP": {
         "SUCCESS": "Die Anhörung wurde erfolgreich übersprungen."
+      },
+      "VOTE": {
+        "SUCCESS": "Die Entscheidung wurde gespeichert"
       }
     },
     "ERROR": {
       "NOT_IN_REVIEW": "Die Anhörung für dieses Objekt ist zur Zeit nicht gestartet.",
-      "ALREADY_IN_REVIEW": "Für dieses Objekt wurde bereits eine Anhörung gestartet."
+      "ALREADY_IN_REVIEW": "Für dieses Objekt wurde bereits eine Anhörung gestartet.",
+      "EXAMINANT_MAIL_NOT_FOUND": "Die eingetragene E-Mail Adresse wurde unter den Empfängern nicht gefunden.",
+      "PIN_CODE_INVALID": "Der eingetragene PIN-Code ist nicht korrekt."
+    },
+    "DECISION": {
+      "DIALOG_TITLE": "Antrag beantworten",
+      "IDENTIFICATION": "Identifikation",
+      "PIN_CODE": "PIN-Code",
+      "DECISION": "Entscheid",
+      "MAIL_INFO": "Geben Sie zur Identifikation die E-Mail Adresse ein, auf welche Sie die Einladung zur Anhörung erhalten haben.",
+      "PIN_INFO": "Geben Sie zur Bestätigung der Berechtigung den PIN-Code ein, welchen Sie soeben per E-Mail erhalten haben.",
+      "NO_PIN_RECEIVED": "Keine E-Mail mit PIN-Code erhalten?",
+      "CHECK_YOUR_SPAM": "Prüfen Sie Ihren Spam-Ordner.",
+      "CLICK_TO_RESEND_MAIL": "Klicken Sie auf den folgenden Button um die E-Mail erneut zu erhalten.",
+      "RESEND": "Erneut senden",
+      "DECISION_INFO": "Stimmen Sie dem neuen Stationsnamen zu oder lehnen Sie den Antrag ab?",
+      "SEND": "Absenden",
+      "ACCEPT": "Ja, ich stimme zu.",
+      "DECLINE": "Nein, ich lehne ab. Die Eingabe der Begründung ist notwendig.",
+      "OVERRIDE_ACCEPT": "Ja. Dieser Entscheid wird mit \"ja\" angenommen.",
+      "OVERRIDE_DECLINE": "Nein. Dieser Entscheid wird als \"nein\" gewertet. Die Eingabe der Begründung ist notwendig."
     }
   },
   "TTH": {
@@ -1009,7 +1038,9 @@
         "CREATION": "Erfassung Anhörung",
         "START": "Start Anhörung",
         "END": "Ende Anhörung",
-        "SEARCH": "SLOID - offizielle Bezeichnung"
+        "SEARCH": "SLOID - offizielle Bezeichnung",
+        "OVERRIDE_TITLE": "Beurteilung durch BAV",
+        "OVERRIDE_HAPPENED_INFO": "Das Bundesamt für Verkehr (BAV) hat eine Beurteilung vorgenommen. Es gilt die Beurteilung des BAV (siehe unten)."
       }
     },
     "TRAFFIC_POINT_ELEMENTS": {

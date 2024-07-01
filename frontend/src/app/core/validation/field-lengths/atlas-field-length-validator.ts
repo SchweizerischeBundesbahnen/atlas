@@ -1,4 +1,4 @@
-import {AbstractControl, ValidationErrors, Validators} from '@angular/forms';
+import { AbstractControl, ValidationErrors, Validators } from '@angular/forms';
 
 export class AtlasFieldLengthValidator {
   static length_10(control: AbstractControl): ValidationErrors | null {
@@ -33,7 +33,7 @@ export class AtlasFieldLengthValidator {
     return AtlasFieldLengthValidator.maxLength(5000, control);
   }
 
-  private static maxLength(lenght: number, control: AbstractControl) {
-    return Validators.maxLength(lenght)(control);
+  private static maxLength(length: number, control: AbstractControl) {
+    return Validators.maxLength(length)(control);
   }
 }

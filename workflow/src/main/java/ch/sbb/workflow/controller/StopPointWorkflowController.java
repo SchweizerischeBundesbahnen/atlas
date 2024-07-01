@@ -5,6 +5,7 @@ import ch.sbb.workflow.api.StopPointWorkflowApiV1;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
+import ch.sbb.workflow.mapper.StopPointWorkflowDecisionMapper;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
@@ -12,12 +13,14 @@ import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.OtpRequestModel;
 import ch.sbb.workflow.model.sepodi.OtpVerificationModel;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
+import ch.sbb.workflow.model.sepodi.ReadDecisionModel;
 import ch.sbb.workflow.model.sepodi.ReadStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointWorkflowRequestParams;
+import ch.sbb.workflow.service.sepodi.DecisionService;
 import ch.sbb.workflow.service.sepodi.StopPointWorkflowOtpService;
 import ch.sbb.workflow.service.sepodi.StopPointWorkflowService;
 import ch.sbb.workflow.service.sepodi.StopPointWorkflowTransitionService;
@@ -32,12 +35,15 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
 
   private final StopPointWorkflowService service;
   private final StopPointWorkflowOtpService otpService;
+  private final DecisionService decisionService;
   private final StopPointWorkflowTransitionService workflowTransitionService;
 
 
   @Override
   public ReadStopPointWorkflowModel getStopPointWorkflow(Long id) {
-    return StopPointWorkflowMapper.toModel(service.getWorkflow(id));
+    ReadStopPointWorkflowModel stopPointWorkflowModel = StopPointWorkflowMapper.toModel(service.getWorkflow(id));
+    decisionService.addJudgementsToExaminants(stopPointWorkflowModel.getExaminants());
+    return stopPointWorkflowModel;
   }
 
   @Override
@@ -94,6 +100,11 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
     Person examinant = otpService.getExaminantByMail(id, otpVerification.getExaminantMail());
     otpService.validatePinCode(examinant, otpVerification.getPinCode());
     return StopPointClientPersonMapper.toModel(examinant);
+  }
+
+  @Override
+  public ReadDecisionModel getDecision(Long personId) {
+    return StopPointWorkflowDecisionMapper.toModel(decisionService.getDecisionByExaminantId(personId));
   }
 
   @Override
