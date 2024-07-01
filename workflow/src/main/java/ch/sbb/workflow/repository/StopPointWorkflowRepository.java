@@ -15,7 +15,7 @@ public interface StopPointWorkflowRepository extends JpaRepository<StopPointWork
   List<StopPointWorkflow> findAllByVersionIdAndStatus(Long businessObjectId, WorkflowStatus status);
 
   @Query(value = """
-      select * from stop_point_workflow spw
+      select spw.* from stop_point_workflow spw
       join person on spw.id = person.stop_point_workflow_id
       join decision d on person.id = d.examinant_id
       where d.id = :decisionId
