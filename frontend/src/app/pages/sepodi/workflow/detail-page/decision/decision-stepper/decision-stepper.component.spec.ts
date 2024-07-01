@@ -1,7 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DecisionStepperComponent } from './decision-stepper.component';
-import {MatDialogClose, MatDialogRef} from '@angular/material/dialog';
-import { AppTestingModule } from '../../../../../../app.testing.module';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {DecisionStepperComponent} from './decision-stepper.component';
+import {MatDialogRef} from '@angular/material/dialog';
+import {AppTestingModule} from '../../../../../../app.testing.module';
 import {DecisionFormComponent} from "../decision-form/decision-form.component";
 import {CommentComponent} from "../../../../../../core/form-components/comment/comment.component";
 import {AtlasFieldErrorComponent} from "../../../../../../core/form-components/atlas-field-error/atlas-field-error.component";
