@@ -13,7 +13,6 @@ import {NotificationService} from "../../../../core/notification/notification.se
 import {FormModule} from "../../../../core/module/form.module";
 import {AddStopPointWorkflowDialogData} from "./add-stop-point-workflow-dialog-data";
 import {BERN_WYLEREGG} from "../../../../../test/data/service-point";
-import {StopPointWorkflowDetailFormComponent} from "../detail-form/stop-point-workflow-detail-form.component";
 import {StringListComponent} from "../../../../core/form-components/string-list/string-list.component";
 import {DisplayDatePipe} from "../../../../core/pipe/display-date.pipe";
 import {SplitServicePointNumberPipe} from "../../../../core/search-service-point/split-service-point-number.pipe";
@@ -29,6 +28,7 @@ import {UserService} from "../../../../core/auth/user/user.service";
 import {DialogFooterComponent} from "../../../../core/components/dialog/footer/dialog-footer.component";
 import {DialogContentComponent} from "../../../../core/components/dialog/content/dialog-content.component";
 import {DialogCloseComponent} from "../../../../core/components/dialog/close/dialog-close.component";
+import {StopPointWorkflowDetailFormComponent} from "../detail-page/detail-form/stop-point-workflow-detail-form.component";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,

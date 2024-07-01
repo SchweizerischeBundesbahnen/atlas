@@ -3,7 +3,9 @@ package ch.sbb.workflow.model.sepodi;
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.workflow.entity.JudgementType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -54,5 +56,11 @@ public class DecisionModel extends OtpVerificationModel {
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
   @NotNull
   private String personFunction;
+
+  @JsonIgnore
+  @AssertTrue(message = "Motivation must not be null if Judgement is NO")
+  public boolean isMotivationNeeded() {
+    return judgement != JudgementType.NO || motivation != null;
+  }
 
 }

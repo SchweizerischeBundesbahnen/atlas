@@ -9,7 +9,6 @@ import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.exception.StopPointWorkflowAlreadyInAddedStatusException;
 import ch.sbb.workflow.exception.StopPointWorkflowNotInHearingException;
-import ch.sbb.workflow.mapper.ClientPersonMapper;
 import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
@@ -86,7 +85,10 @@ public class StopPointWorkflowService {
 
     updateExaminantInformation(decisionModel, examinant);
 
-    Decision decision = new Decision();
+    Decision decision = decisionRepository.findDecisionByExaminantId(examinant.getId());
+    if (decision == null) {
+      decision = new Decision();
+    }
     decision.setDecisionType(DecisionType.VOTED);
     decision.setJudgement(decisionModel.getJudgement());
     decision.setExaminant(examinant);
@@ -117,7 +119,10 @@ public class StopPointWorkflowService {
     decision.setFotMotivationDate(LocalDateTime.now());
     decision.setFotMotivation(decisionModel.getFotMotivation());
     decision.setFotJudgement(decisionModel.getFotJudgement());
-    Person fotOverrider = ClientPersonMapper.toEntity(decisionModel.getOverrideExaminant());
+    Person fotOverrider = Person.builder()
+        .firstName(decisionModel.getFirstName())
+        .lastName(decisionModel.getLastName())
+        .build();
     decision.setFotOverrider(fotOverrider);
     decisionRepository.save(decision);
   }
@@ -130,10 +135,6 @@ public class StopPointWorkflowService {
     if (!workflowRepository.findAllByVersionIdAndStatus(versionId, WorkflowStatus.ADDED).isEmpty()) {
       throw new StopPointWorkflowAlreadyInAddedStatusException();
     }
-  }
-
-  private boolean hasWorkflowHearing(Long businessObjectId) {
-    return !workflowRepository.findAllByVersionIdAndStatus(businessObjectId, WorkflowStatus.HEARING).isEmpty();
   }
 
   public StopPointWorkflow save(StopPointWorkflow stopPointWorkflow) {
