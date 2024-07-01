@@ -1,17 +1,26 @@
-import {Component, OnInit} from '@angular/core';
-import {ReadServicePointVersion, ReadStopPointWorkflow, Status, StopPointWorkflowService, WorkflowStatus,} from '../../../../api';
-import {FormGroup} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import {
+  ApplicationType,
+  ReadServicePointVersion,
+  ReadStopPointWorkflow,
+  Status,
+  StopPointWorkflowService,
+  WorkflowStatus,
+} from '../../../../api';
+import { FormGroup } from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import { StopPointWorkflowDetailData } from './stop-point-workflow-detail-resolver.service';
+import { NotificationService } from '../../../../core/notification/notification.service';
+import { StopPointRejectWorkflowDialogService } from '../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog.service';
+import { environment } from '../../../../../environments/environment';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { take } from 'rxjs';
 import {
   StopPointWorkflowDetailFormGroup,
   StopPointWorkflowDetailFormGroupBuilder,
-} from '../detail-form/stop-point-workflow-detail-form-group';
-import {ActivatedRoute} from '@angular/router';
-import {StopPointWorkflowDetailData} from './stop-point-workflow-detail-resolver.service';
-import {NotificationService} from '../../../../core/notification/notification.service';
-import {
-  StopPointRejectWorkflowDialogService
-} from "../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog.service";
-import {environment} from "../../../../../environments/environment";
+} from './detail-form/stop-point-workflow-detail-form-group';
+import { DecisionStepperComponent } from './decision/decision-stepper/decision-stepper.component';
+import {Pages} from "../../../pages";
 
 @Component({
   selector: 'stop-point-workflow-detail',
@@ -19,12 +28,15 @@ import {environment} from "../../../../../environments/environment";
 })
 export class StopPointWorkflowDetailComponent implements OnInit {
   protected readonly WorkflowStatus = WorkflowStatus;
+  protected readonly ApplicationType = ApplicationType;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
+    private readonly dialog: MatDialog,
     private readonly stopPointWorkflowService: StopPointWorkflowService,
     private readonly notificationService: NotificationService,
-    private readonly stopPointRejectWorkflowDialogService: StopPointRejectWorkflowDialogService
+    private readonly stopPointRejectWorkflowDialogService: StopPointRejectWorkflowDialogService,
   ) {}
 
   form!: FormGroup<StopPointWorkflowDetailFormGroup>;
@@ -70,6 +82,87 @@ export class StopPointWorkflowDetailComponent implements OnInit {
   }
 
   rejectWorkflow() {
-    this.stopPointRejectWorkflowDialogService.openDialog(this.workflow.id!)
+    this.stopPointRejectWorkflowDialogService.openDialog(this.workflow.id!);
+  }
+
+  openDecisionDialog() {
+    const decisionDialogRef = this.dialog.open(DecisionStepperComponent, {
+      disableClose: true,
+      panelClass: 'atlas-dialog-panel',
+      backdropClass: 'atlas-dialog-backdrop',
+    });
+    const decisionDialogComponent = decisionDialogRef.componentInstance;
+    const obtainOtpSubscription = this._registerObtainOtpHandler(decisionDialogComponent);
+    const verifyPinSubscription = this._registerVerifyPinHandler(decisionDialogComponent);
+    const sendDecisionSubscription = this._registerSendDecisionHandler(
+      decisionDialogComponent,
+      decisionDialogRef,
+    );
+    decisionDialogRef
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe(() => {
+        obtainOtpSubscription.unsubscribe();
+        verifyPinSubscription.unsubscribe();
+        sendDecisionSubscription.unsubscribe();
+      });
+  }
+
+  private _registerObtainOtpHandler(decisionDialogComponent: DecisionStepperComponent) {
+    return decisionDialogComponent.obtainOtp.subscribe((stepData) => {
+      stepData.swapLoading();
+      this.stopPointWorkflowService
+        .obtainOtp(this.workflow.id!, {
+          examinantMail: stepData.mail.value,
+        })
+        .subscribe({
+          next: () => {
+            stepData.swapLoading();
+            stepData.continue();
+          },
+          error: () => stepData.swapLoading(),
+        });
+    });
+  }
+
+  private _registerVerifyPinHandler(decisionDialogComponent: DecisionStepperComponent) {
+    return decisionDialogComponent.verifyPin.subscribe((stepData) => {
+      stepData.swapLoading();
+      this.stopPointWorkflowService
+        .verifyOtp(this.workflow.id!, {
+          examinantMail: stepData.mail.value,
+          pinCode: stepData.pin.value,
+        })
+        .subscribe({
+          next: (examinant) => {
+            stepData.swapLoading();
+            stepData.continue(examinant);
+          },
+          error: () => stepData.swapLoading(),
+        });
+    });
+  }
+
+  private _registerSendDecisionHandler(
+    decisionDialogComponent: DecisionStepperComponent,
+    decisionDialogRef: MatDialogRef<DecisionStepperComponent>,
+  ) {
+    return decisionDialogComponent.sendDecision.subscribe((stepData) => {
+      stepData.swapLoading();
+      this.stopPointWorkflowService
+        .voteWorkflow(this.workflow.id!, stepData.verifiedExaminant.id!, stepData.decision)
+        .subscribe({
+          next: () => {
+            decisionDialogRef.close();
+            this.notificationService.success('WORKFLOW.NOTIFICATION.VOTE.SUCCESS');
+            this.router.navigateByUrl('/').then(() => {
+                this.router
+                  .navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, this.workflow.id])
+                  .then(() => {});
+            });
+          },
+          error: () => stepData.swapLoading(),
+        });
+    });
   }
 }

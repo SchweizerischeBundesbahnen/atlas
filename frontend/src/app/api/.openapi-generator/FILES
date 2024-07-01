@@ -120,6 +120,9 @@ model/models.ts
 model/operatingPointTechnicalTimetableType.ts
 model/operatingPointTrafficPointType.ts
 model/operatingPointType.ts
+model/otpRequest.ts
+model/otpVerification.ts
+model/overrideDecision.ts
 model/pageableObject.ts
 model/parameter.ts
 model/parkingLotOverview.ts
@@ -134,6 +137,7 @@ model/platformVersion.ts
 model/prmBatchExportFileName.ts
 model/prmExportType.ts
 model/readContactPointVersion.ts
+model/readDecision.ts
 model/readLoadingPointVersion.ts
 model/readParkingLotVersion.ts
 model/readPlatformVersion.ts

@@ -1,6 +1,7 @@
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AtlasFieldLengthValidator} from "../../../../core/validation/field-lengths/atlas-field-length-validator";
 import {StopPointRejectWorkflow} from "../../../../api";
+import {AtlasCharsetsValidator} from "../../../../core/validation/charsets/atlas-charsets-validator";
 
 export interface StopPointRejectWorkflowFormGroup {
   firstName: FormControl<string | null | undefined>;
@@ -13,16 +14,16 @@ export class StopPointRejectWorkflowFormGroupBuilder {
 
   static initFormGroup(): FormGroup<StopPointRejectWorkflowFormGroup> {
     return new FormGroup<StopPointRejectWorkflowFormGroup>({
-      firstName: new FormControl('', [Validators.required, Validators.maxLength(50)]),
-      lastName: new FormControl('', [Validators.required, Validators.maxLength(50)]),
-      organisation: new FormControl('', [Validators.required, Validators.maxLength(255)]),
-      motivationComment: new FormControl('', [Validators.required, Validators.minLength(2), AtlasFieldLengthValidator.comments])
+      firstName: new FormControl('', [Validators.required, Validators.maxLength(50), AtlasCharsetsValidator.iso88591]),
+      lastName: new FormControl('', [Validators.required, Validators.maxLength(50), AtlasCharsetsValidator.iso88591]),
+      organisation: new FormControl('', [Validators.required, Validators.maxLength(255), AtlasCharsetsValidator.iso88591]),
+      motivationComment: new FormControl('', [Validators.required, Validators.minLength(2), AtlasFieldLengthValidator.comments, AtlasCharsetsValidator.iso88591])
     })
   }
 
   static buildStopPointRejectWorkflow(formGroup: FormGroup<StopPointRejectWorkflowFormGroup>, email: string | undefined): StopPointRejectWorkflow {
     return {
-      firstName: formGroup.controls["firstName"].value! ,
+      firstName: formGroup.controls["firstName"].value!,
       lastName: formGroup.controls["lastName"].value!,
       motivationComment: formGroup.controls["motivationComment"].value!,
       mail: email!,
