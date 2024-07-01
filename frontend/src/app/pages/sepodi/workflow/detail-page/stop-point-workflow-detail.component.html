@@ -26,7 +26,7 @@
       wrapperStyleClass="me-3"
     >
     </atlas-button>
-    @if(bavActionEnabled){
+    @if (bavActionEnabled) {
       @if (workflow.status === WorkflowStatus.Added) {
         <atlas-button
           buttonDataCy="start-wf"
@@ -61,10 +61,19 @@
           buttonDataCy="restart-wf"
           buttonText="WORKFLOW.BUTTON.RESTART"
           buttonType="supervisorButton"
+          wrapperStyleClass="me-3"
           applicationType="SEPODI"
           (buttonClicked)="({})"
         >
           <!--        todo: buttonClicked action -->
+        </atlas-button>
+        <atlas-button
+          [footerEdit]="form.enabled"
+          buttonDataCy="decide-btn"
+          buttonText="WORKFLOW.BUTTON.DECIDE"
+          buttonType="whiteFooterNonEdit"
+          (buttonClicked)="openDecisionDialog()"
+        >
         </atlas-button>
       }
     }
