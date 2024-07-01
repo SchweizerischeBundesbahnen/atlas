@@ -84,9 +84,13 @@ describe('StopPointWorkflowDetailFormComponent', () => {
   });
 
   it('should go to atlas', () => {
-    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
+    const url = 'http://localhost:4200/service-point-directory/service-points/8500039/service-point?id=1085';
+    spyOn(window, 'open');
+    spyOn(router, 'serializeUrl').and.returnValue(url);
 
     component.goToAtlasStopPoint();
-    expect(router.navigate).toHaveBeenCalled();
+    expect(router.serializeUrl).toHaveBeenCalled();
+    expect(window.open).toHaveBeenCalledWith(url, '_blank');
+
   });
 });
