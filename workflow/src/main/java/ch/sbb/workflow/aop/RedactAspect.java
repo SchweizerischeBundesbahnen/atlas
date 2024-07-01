@@ -94,8 +94,10 @@ public class RedactAspect {
   private Decision redactDecisionSensitiveData(Decision decision) {
     StopPointWorkflow workflow = stopPointWorkflowRepository.findByDecisionId(decision.getId());
     if (!showConfidentialData(workflow.getSboid())) {
-      decision.setExaminant(redactPerson(decision.getExaminant()));
-      decision.setFotOverrider(redactPerson(decision.getFotOverrider()));
+      return decision.toBuilder()
+          .examinant(redactPerson(decision.getExaminant()))
+          .fotOverrider(redactPerson(decision.getFotOverrider()))
+          .build();
     }
     return decision;
   }
