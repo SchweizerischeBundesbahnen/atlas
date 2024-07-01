@@ -137,10 +137,6 @@ public class StopPointWorkflowService {
     }
   }
 
-  private boolean hasWorkflowHearing(Long businessObjectId) {
-    return !workflowRepository.findAllByVersionIdAndStatus(businessObjectId, WorkflowStatus.HEARING).isEmpty();
-  }
-
   public StopPointWorkflow save(StopPointWorkflow stopPointWorkflow) {
     return workflowRepository.saveAndFlush(stopPointWorkflow);
   }
