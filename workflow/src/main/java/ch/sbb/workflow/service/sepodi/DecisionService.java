@@ -1,6 +1,7 @@
 package ch.sbb.workflow.service.sepodi;
 
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
+import ch.sbb.workflow.aop.Redacted;
 import ch.sbb.workflow.entity.Decision;
 import ch.sbb.workflow.entity.DecisionType;
 import ch.sbb.workflow.entity.JudgementType;
@@ -48,6 +49,7 @@ public class DecisionService {
     });
   }
 
+  @Redacted(redactedClassType = Decision.class)
   public Decision getDecisionByExaminantId(Long personId) {
     Decision decision = decisionRepository.findDecisionByExaminantId(personId);
     if (decision == null) {
