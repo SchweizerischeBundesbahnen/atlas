@@ -1,26 +1,15 @@
-import { Component, EventEmitter, ViewChild } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { MatStepper } from '@angular/material/stepper';
-import { MatDialogRef } from '@angular/material/dialog';
-import { take } from 'rxjs';
-import { DecisionFormGroupBuilder } from '../decision-form/decision-form-group';
-import { DecisionFormComponent } from '../decision-form/decision-form.component';
-import { FormModule } from 'src/app/core/module/form.module';
-import { CoreModule } from 'src/app/core/module/core.module';
-import { Decision, StopPointPerson } from 'src/app/api';
-import { AtlasCharsetsValidator } from 'src/app/core/validation/charsets/atlas-charsets-validator';
-import { DialogService } from 'src/app/core/components/dialog/dialog.service';
+import {Component, EventEmitter, ViewChild} from '@angular/core';
+import {AbstractControl, FormBuilder, Validators,} from '@angular/forms';
+import {MatStepper} from '@angular/material/stepper';
+import {MatDialogRef} from '@angular/material/dialog';
+import {take} from 'rxjs';
+import {DecisionFormGroupBuilder} from '../decision-form/decision-form-group';
+import {Decision, StopPointPerson} from 'src/app/api';
+import {AtlasCharsetsValidator} from 'src/app/core/validation/charsets/atlas-charsets-validator';
+import {DialogService} from 'src/app/core/components/dialog/dialog.service';
 
 @Component({
   selector: 'sepodi-wf-decision-stepper',
-  standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, FormModule, CoreModule, DecisionFormComponent],
   templateUrl: './decision-stepper.component.html',
 })
 export class DecisionStepperComponent {

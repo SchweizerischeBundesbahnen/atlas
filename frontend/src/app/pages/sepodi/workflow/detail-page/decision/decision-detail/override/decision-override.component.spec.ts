@@ -7,6 +7,10 @@ import {of} from "rxjs";
 import {PermissionService} from "../../../../../../../core/auth/permission/permission.service";
 import {adminPermissionServiceMock} from "../../../../../../../app.testing.mocks";
 import {NotificationService} from "../../../../../../../core/notification/notification.service";
+import {CommentComponent} from "../../../../../../../core/form-components/comment/comment.component";
+import {AtlasFieldErrorComponent} from "../../../../../../../core/form-components/atlas-field-error/atlas-field-error.component";
+import {TextFieldComponent} from "../../../../../../../core/form-components/text-field/text-field.component";
+import {AtlasLabelFieldComponent} from "../../../../../../../core/form-components/atlas-label-field/atlas-label-field.component";
 
 const stopPointWorkflowService = jasmine.createSpyObj('stopPointWorkflowService', {
   overrideVoteWorkflow: of({}),
@@ -20,7 +24,14 @@ describe('DecisionOverrideComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DecisionOverrideComponent, AppTestingModule],
+      declarations:[
+        DecisionOverrideComponent,
+        CommentComponent,
+        AtlasFieldErrorComponent,
+        TextFieldComponent,
+        AtlasLabelFieldComponent,
+      ],
+      imports: [AppTestingModule],
       providers: [
         {provide: StopPointWorkflowService, useValue: stopPointWorkflowService},
         {provide: PermissionService, useValue: adminPermissionServiceMock},
