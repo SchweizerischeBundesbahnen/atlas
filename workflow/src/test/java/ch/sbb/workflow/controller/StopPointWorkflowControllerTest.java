@@ -940,13 +940,9 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     person.setStopPointWorkflow(workflow);
     workflowRepository.saveAndFlush(workflow);
 
-    ClientPersonModel overrider = ClientPersonModel.builder()
+    OverrideDecisionModel overrideDecisionModel = OverrideDecisionModel.builder()
         .firstName("Luca")
         .lastName("Fix")
-        .personFunction("YB-Fun")
-        .mail(MAIL_ADDRESS).build();
-    OverrideDecisionModel overrideDecisionModel = OverrideDecisionModel.builder()
-        .overrideExaminant(overrider)
         .fotJudgement(JudgementType.NO)
         .fotMotivation("Ja save")
         .build();
@@ -967,8 +963,6 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(decisionByExaminantId).isNotNull();
     assertThat(decisionByExaminantId.getFotMotivation()).isEqualTo(overrideDecisionModel.getFotMotivation());
     assertThat(decisionByExaminantId.getFotJudgement()).isEqualTo(overrideDecisionModel.getFotJudgement());
-    assertThat(decisionByExaminantId.getFotOverrider().getMail()).isEqualTo(
-        overrideDecisionModel.getOverrideExaminant().getMail());
   }
 
   @Test
@@ -1008,13 +1002,9 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     decisionRepository.save(decision);
     decision.setExaminant(person);
     decisionRepository.save(decision);
-    ClientPersonModel overrider = ClientPersonModel.builder()
+    OverrideDecisionModel overrideDecisionModel = OverrideDecisionModel.builder()
         .firstName("Luca")
         .lastName("Fix")
-        .personFunction("YB-Fun")
-        .mail(MAIL_ADDRESS).build();
-    OverrideDecisionModel overrideDecisionModel = OverrideDecisionModel.builder()
-        .overrideExaminant(overrider)
         .fotJudgement(JudgementType.NO)
         .fotMotivation("Ja save")
         .build();
@@ -1036,8 +1026,6 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(decisionByExaminantId.getJudgement()).isEqualTo(decision.getJudgement());
     assertThat(decisionByExaminantId.getFotMotivation()).isEqualTo(overrideDecisionModel.getFotMotivation());
     assertThat(decisionByExaminantId.getFotJudgement()).isEqualTo(overrideDecisionModel.getFotJudgement());
-    assertThat(decisionByExaminantId.getFotOverrider().getMail()).isEqualTo(
-        overrideDecisionModel.getOverrideExaminant().getMail());
   }
 
   private static ReadServicePointVersionModel getUpdateServicePointVersionModel(Status status) {

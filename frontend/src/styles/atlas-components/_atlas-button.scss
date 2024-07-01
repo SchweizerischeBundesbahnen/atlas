@@ -28,6 +28,10 @@ button.footer-btn {
 
 .atlas-primary-btn {
   padding: 1rem 1.875rem;
+  @extend .bordered-btn;
+}
+
+.bordered-btn {
   border: 2px solid variables.$primary-500;
   border-radius: 28px;
   background-color: variables.$white;

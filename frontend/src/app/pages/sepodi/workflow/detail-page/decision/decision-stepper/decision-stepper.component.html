@@ -1,0 +1,90 @@
+<atlas-dialog-close class="pe-2" (clicked)="cancel()"></atlas-dialog-close>
+
+<atlas-dialog-content>
+  <h1>{{ 'WORKFLOW.DECISION.DIALOG_TITLE' | translate }}</h1>
+  <mat-stepper [linear]="true" labelPosition="bottom" #stepper>
+    <!-- override done step icon -->
+    <ng-template matStepperIcon="done">
+      <i class="bi bi-check2-circle"></i>
+    </ng-template>
+    <mat-step
+      [completed]="false"
+      [editable]="false"
+      [label]="'WORKFLOW.DECISION.IDENTIFICATION' | translate"
+    >
+      <form [formGroup]="mail">
+        <p>{{ 'WORKFLOW.DECISION.MAIL_INFO' | translate }}</p>
+        <atlas-text-field
+          [formGroup]="mail"
+          [required]="true"
+          controlName="mail"
+          fieldLabel="WORKFLOW.PERSON.MAIL"
+        >
+        </atlas-text-field>
+        <div class="d-flex justify-content-center">
+          <button class="atlas-primary-btn me-3" (click)="cancel()">
+            {{ 'COMMON.CANCEL' | translate }}
+          </button>
+          <button (click)="completeObtainOtpStep()" class="atlas-primary-btn">
+            {{ 'DIALOG.OK' | translate }}
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step
+      [completed]="false"
+      [editable]="false"
+      [label]="'WORKFLOW.DECISION.PIN_CODE' | translate"
+    >
+      <form [formGroup]="pin">
+        <p>{{ 'WORKFLOW.DECISION.PIN_INFO' | translate }}</p>
+        <atlas-text-field
+          [formGroup]="pin"
+          [required]="true"
+          controlName="pin"
+          fieldLabel="WORKFLOW.DECISION.PIN_CODE"
+        >
+        </atlas-text-field>
+        <p>{{ 'WORKFLOW.DECISION.NO_PIN_RECEIVED' | translate }}</p>
+        <ul>
+          <li>{{ 'WORKFLOW.DECISION.CHECK_YOUR_SPAM' | translate }}</li>
+          <li>
+            {{ 'WORKFLOW.DECISION.CLICK_TO_RESEND_MAIL' | translate }}
+            <button
+              class="color-primary-500"
+              mat-button
+              [disabled]="!resendMailActive"
+              (click)="resendMail()"
+            >
+              {{ 'WORKFLOW.DECISION.RESEND' | translate }}
+            </button>
+          </li>
+        </ul>
+        <div class="d-flex justify-content-center">
+          <button class="atlas-primary-btn me-3" (click)="cancel()">
+            {{ 'COMMON.CANCEL' | translate }}
+          </button>
+          <button (click)="completeVerifyPinStep()" class="atlas-primary-btn">
+            {{ 'DIALOG.OK' | translate }}
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [label]="'WORKFLOW.DECISION.DECISION' | translate">
+      <decision-form [form]="decision"></decision-form>
+
+      <div class="d-flex justify-content-center mt-4">
+        <button class="atlas-primary-btn me-3" (click)="cancel()">
+          {{ 'COMMON.CANCEL' | translate }}
+        </button>
+        <button (click)="completeDecision()" class="atlas-primary-btn">
+          {{ 'WORKFLOW.DECISION.SEND' | translate }}
+        </button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</atlas-dialog-content>
+
+<app-loading-spinner [isLoading]="loading"></app-loading-spinner>
