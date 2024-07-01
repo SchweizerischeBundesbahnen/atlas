@@ -1,9 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DecisionStepperComponent } from './decision-stepper.component';
-import { MatDialogRef } from '@angular/material/dialog';
+import {MatDialogClose, MatDialogRef} from '@angular/material/dialog';
 import { AppTestingModule } from '../../../../../../app.testing.module';
+import {DecisionFormComponent} from "../decision-form/decision-form.component";
+import {CommentComponent} from "../../../../../../core/form-components/comment/comment.component";
+import {AtlasFieldErrorComponent} from "../../../../../../core/form-components/atlas-field-error/atlas-field-error.component";
+import {TextFieldComponent} from "../../../../../../core/form-components/text-field/text-field.component";
+import {AtlasLabelFieldComponent} from "../../../../../../core/form-components/atlas-label-field/atlas-label-field.component";
+import {LoadingSpinnerComponent} from "../../../../../../core/components/loading-spinner/loading-spinner.component";
+import {DialogContentComponent} from "../../../../../../core/components/dialog/content/dialog-content.component";
+import {DialogCloseComponent} from "../../../../../../core/components/dialog/close/dialog-close.component";
 
-describe('DecisionDialogComponent', () => {
+describe('DecisionStepperComponent', () => {
   let component: DecisionStepperComponent;
   let fixture: ComponentFixture<DecisionStepperComponent>;
 
@@ -13,8 +21,19 @@ describe('DecisionDialogComponent', () => {
     dialogRefSpy = jasmine.createSpyObj(['close']);
 
     await TestBed.configureTestingModule({
-      imports: [DecisionStepperComponent, AppTestingModule],
-      providers: [{ provide: MatDialogRef, useValue: dialogRefSpy }],
+      declarations: [
+        DecisionStepperComponent,
+        DecisionFormComponent,
+        CommentComponent,
+        AtlasFieldErrorComponent,
+        TextFieldComponent,
+        AtlasLabelFieldComponent,
+        LoadingSpinnerComponent,
+        DialogContentComponent,
+        DialogCloseComponent,
+      ],
+      imports: [AppTestingModule],
+      providers: [{provide: MatDialogRef, useValue: dialogRefSpy}],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DecisionStepperComponent);
