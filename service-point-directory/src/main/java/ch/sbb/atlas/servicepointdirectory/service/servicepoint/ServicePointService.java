@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedWhenVersionInReviewException;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSearchVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
@@ -83,6 +84,12 @@ public class ServicePointService {
   public List<ServicePointVersion> revokeServicePoint(ServicePointNumber servicePointNumber) {
     List<ServicePointVersion> servicePointVersions = servicePointVersionRepository.findAllByNumberOrderByValidFrom(
         servicePointNumber);
+    long inReviewCount = servicePointVersions.stream()
+        .filter(servicePointVersion -> servicePointVersion.getStatus() == Status.IN_REVIEW)
+        .count();
+    if (inReviewCount > 0) {
+      throw new TerminationNotAllowedWhenVersionInReviewException(servicePointNumber);
+    }
     servicePointVersions.forEach(servicePointVersion -> servicePointVersion.setStatus(Status.REVOKED));
     return servicePointVersions;
   }
