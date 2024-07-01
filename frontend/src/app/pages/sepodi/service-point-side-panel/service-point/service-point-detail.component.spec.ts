@@ -156,6 +156,8 @@ describe('ServicePointDetailComponent', () => {
 
     component.initShowRevokeButton(version);
     expect(component.showRevokeButton).toBeFalsy();
+    component.servicePointVersions = [];
+    fixture.detectChanges()
   });
 
   it('should not show revoke button when status in revoked', () => {
@@ -177,6 +179,8 @@ describe('ServicePointDetailComponent', () => {
 
     component.initShowRevokeButton(version);
     expect(component.showRevokeButton).toBeFalsy();
+    component.servicePointVersions = [];
+    fixture.detectChanges()
   });
 
   it('should show revoke button', () => {
@@ -194,10 +198,14 @@ describe('ServicePointDetailComponent', () => {
       status: 'VALIDATED',
       country: Country.Switzerland
     };
+    component.servicePointVersions = [];
     component.servicePointVersions.push(version);
 
+    fixture.detectChanges()
     component.initShowRevokeButton(version);
     expect(component.showRevokeButton).toBeTrue();
+    component.servicePointVersions = [];
+    fixture.detectChanges()
   });
 
   it('should switch to readonly mode when not dirty without confirmation', () => {
