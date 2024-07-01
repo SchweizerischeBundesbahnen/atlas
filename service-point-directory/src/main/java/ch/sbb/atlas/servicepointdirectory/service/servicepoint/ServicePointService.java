@@ -84,10 +84,9 @@ public class ServicePointService {
   public List<ServicePointVersion> revokeServicePoint(ServicePointNumber servicePointNumber) {
     List<ServicePointVersion> servicePointVersions = servicePointVersionRepository.findAllByNumberOrderByValidFrom(
         servicePointNumber);
-    long inReviewCount = servicePointVersions.stream()
-        .filter(servicePointVersion -> servicePointVersion.getStatus() == Status.IN_REVIEW)
-        .count();
-    if (inReviewCount > 0) {
+    boolean hasVersionInReview = servicePointVersions.stream()
+        .anyMatch(servicePointVersion -> servicePointVersion.getStatus() == Status.IN_REVIEW);
+    if (hasVersionInReview) {
       throw new TerminationNotAllowedWhenVersionInReviewException(servicePointNumber);
     }
     servicePointVersions.forEach(servicePointVersion -> servicePointVersion.setStatus(Status.REVOKED));

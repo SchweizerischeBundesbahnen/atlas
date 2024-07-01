@@ -47,6 +47,16 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
 
   isSwitchVersionDisabled = false;
 
+  _showRevokeButton = false;
+
+  get showRevokeButton(): boolean {
+    return this._showRevokeButton;
+  }
+
+  set showRevokeButton(show: boolean) {
+    this._showRevokeButton = show;
+  }
+
   public isFormEnabled$ = new BehaviorSubject<boolean>(false);
   private readonly ZOOM_LEVEL_FOR_DETAIL = 14;
   private _savedGeographyForm?: FormGroup<GeographyFormGroup>;
@@ -127,6 +137,7 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
   }
 
   public initSelectedVersion(version: ReadServicePointVersion) {
+    this.initShowRevokeButton(version);
     this.form = ServicePointFormGroupBuilder.buildFormGroup(version);
     this.disableForm();
     this.isSwitchVersionDisabled = false;
@@ -135,6 +146,10 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
     this.isSelectedVersionHighDate(this.servicePointVersions, version);
     this.checkIfAbbreviationIsAllowed();
     this.hasAbbreviation = !!this.form.controls.abbreviation.value;
+  }
+
+  initShowRevokeButton(version: ReadServicePointVersion) {
+    this.showRevokeButton = !(this.servicePointVersions.map(value => value.status).includes("IN_REVIEW") || version.status === "REVOKED");
   }
 
   private displayAndSelectServicePointOnMap() {
