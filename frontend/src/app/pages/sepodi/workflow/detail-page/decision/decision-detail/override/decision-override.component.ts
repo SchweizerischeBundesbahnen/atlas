@@ -1,48 +1,17 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatStepperModule } from '@angular/material/stepper';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatDialogClose, MatDialogRef } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import {
-  DecisionOverrideFormGroup,
-  DecisionOverrideFormGroupBuilder,
-} from './decision-override-form-group';
-import { Router } from '@angular/router';
-import { DecisionDetailDialogComponent } from '../decision-detail-dialog.component';
-import { FormModule } from 'src/app/core/module/form.module';
-import { CoreModule } from 'src/app/core/module/core.module';
-import {
-  JudgementType,
-  StopPointWorkflowService,
-  ReadDecision,
-  OverrideDecision,
-  ApplicationType,
-} from 'src/app/api';
-import { NotificationService } from 'src/app/core/notification/notification.service';
-import { PermissionService } from 'src/app/core/auth/permission/permission.service';
-import { Pages } from 'src/app/pages/pages';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {FormGroup} from '@angular/forms';
+import {MatDialogRef} from '@angular/material/dialog';
+import {DecisionOverrideFormGroup, DecisionOverrideFormGroupBuilder,} from './decision-override-form-group';
+import {Router} from '@angular/router';
+import {DecisionDetailDialogComponent} from '../decision-detail-dialog.component';
+import {ApplicationType, JudgementType, OverrideDecision, ReadDecision, StopPointWorkflowService,} from 'src/app/api';
+import {NotificationService} from 'src/app/core/notification/notification.service';
+import {PermissionService} from 'src/app/core/auth/permission/permission.service';
+import {Pages} from 'src/app/pages/pages';
 import {ValidationService} from "../../../../../../../core/validation/validation.service";
 
 @Component({
   selector: 'decision-override',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatStepperModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    TranslateModule,
-    MatDialogClose,
-    MatIconModule,
-    FormModule,
-    CoreModule,
-  ],
   templateUrl: './decision-override.component.html',
 })
 export class DecisionOverrideComponent implements OnInit, OnChanges {
@@ -68,6 +37,7 @@ export class DecisionOverrideComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+    // To load async loaded existingDecision
     this.init();
   }
 

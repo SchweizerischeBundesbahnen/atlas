@@ -7,6 +7,17 @@ import {StopPointWorkflowDetailFormGroupBuilder} from "../../detail-form/stop-po
 import {AppTestingModule} from "../../../../../../app.testing.module";
 import {of} from "rxjs";
 import {JudgementType, ReadDecision, StopPointWorkflowService} from "../../../../../../api";
+import {DecisionFormComponent} from "../decision-form/decision-form.component";
+import {CommentComponent} from "../../../../../../core/form-components/comment/comment.component";
+import {AtlasFieldErrorComponent} from "../../../../../../core/form-components/atlas-field-error/atlas-field-error.component";
+import {TextFieldComponent} from "../../../../../../core/form-components/text-field/text-field.component";
+import {AtlasLabelFieldComponent} from "../../../../../../core/form-components/atlas-label-field/atlas-label-field.component";
+import {LoadingSpinnerComponent} from "../../../../../../core/components/loading-spinner/loading-spinner.component";
+import {DialogContentComponent} from "../../../../../../core/components/dialog/content/dialog-content.component";
+import {DialogCloseComponent} from "../../../../../../core/components/dialog/close/dialog-close.component";
+import {DecisionOverrideComponent} from "./override/decision-override.component";
+import {DialogFooterComponent} from "../../../../../../core/components/dialog/footer/dialog-footer.component";
+import {MockAtlasButtonComponent} from "../../../../../../app.testing.mocks";
 
 const dialogRefSpy = jasmine.createSpyObj(['close']);
 const dialogData: DecisionDetailDialogData = {
@@ -41,7 +52,21 @@ describe('DecisionDetailDialogComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [DecisionDetailDialogComponent, AppTestingModule],
+      declarations:[
+        DecisionDetailDialogComponent,
+        DecisionOverrideComponent,
+        DecisionFormComponent,
+        CommentComponent,
+        AtlasFieldErrorComponent,
+        TextFieldComponent,
+        AtlasLabelFieldComponent,
+        LoadingSpinnerComponent,
+        DialogContentComponent,
+        DialogCloseComponent,
+        DialogFooterComponent,
+        MockAtlasButtonComponent,
+      ],
+      imports: [AppTestingModule],
       providers: [
         {provide: MatDialogRef, useValue: dialogRefSpy},
         {provide: MAT_DIALOG_DATA, useValue: dialogData},
