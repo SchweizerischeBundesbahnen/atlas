@@ -84,6 +84,9 @@ public class RedactAspect {
   }
 
   private Person redactPerson(Person person) {
+    if (person == null) {
+      return null;
+    }
     return person.toBuilder()
         .mail(StringHelper.redactString(person.getMail()))
         .firstName(StringHelper.redactString(person.getFirstName()))
