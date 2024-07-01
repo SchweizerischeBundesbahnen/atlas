@@ -1,31 +1,10 @@
-import { Component, Input } from '@angular/core';
-import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatDialogClose } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { DecisionFormGroup } from './decision-form-group';
-import { FormModule } from 'src/app/core/module/form.module';
-import { CoreModule } from 'src/app/core/module/core.module';
-import { JudgementType } from 'src/app/api';
+import {Component, Input} from '@angular/core';
+import {FormGroup} from '@angular/forms';
+import {DecisionFormGroup} from './decision-form-group';
+import {JudgementType} from 'src/app/api';
 
 @Component({
   selector: 'decision-form',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    TranslateModule,
-    MatDialogClose,
-    MatIconModule,
-    FormModule,
-    CoreModule,
-  ],
   templateUrl: './decision-form.component.html',
   styleUrls: ['decision-form.component.scss'],
 })
