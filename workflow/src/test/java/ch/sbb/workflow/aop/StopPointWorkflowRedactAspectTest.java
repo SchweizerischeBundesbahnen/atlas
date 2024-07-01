@@ -1,6 +1,7 @@
 package ch.sbb.workflow.aop;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
@@ -9,9 +10,13 @@ import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.user.administration.security.service.BusinessOrganisationBasedUserAdministrationService;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
+import ch.sbb.workflow.entity.Decision;
+import ch.sbb.workflow.entity.JudgementType;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
+import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -37,10 +42,13 @@ class StopPointWorkflowRedactAspectTest {
   @Mock
   private BusinessOrganisationBasedUserAdministrationService businessOrganisationBasedUserAdministrationService;
 
+  @Mock
+  private StopPointWorkflowRepository stopPointWorkflowRepository;
+
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    redactAspect = new RedactAspect(businessOrganisationBasedUserAdministrationService);
+    redactAspect = new RedactAspect(businessOrganisationBasedUserAdministrationService, stopPointWorkflowRepository);
   }
 
   @Test
@@ -286,6 +294,98 @@ class StopPointWorkflowRedactAspectTest {
         .endDate(LocalDate.of(2000, 12, 31))
         .versionId(2L)
         .status(WorkflowStatus.ADDED)
+        .build();
+  }
+
+  @Test
+  void shouldRedactDecision() throws Throwable {
+    //given
+    Authentication authentication = Mockito.mock(Authentication.class);
+    Jwt jwt = Mockito.mock(Jwt.class);
+    when(jwt.getClaim(Role.ROLES_JWT_KEY)).thenReturn(List.of("Role1"));
+    when(authentication.getPrincipal()).thenReturn(jwt);
+
+    SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+    when(securityContext.getAuthentication()).thenReturn(authentication);
+    SecurityContextHolder.setContext(securityContext);
+
+    doReturn(getStopPointWorkflow()).when(stopPointWorkflowRepository).findByDecisionId(any());
+
+    doReturn(false).when(businessOrganisationBasedUserAdministrationService).hasUserPermissionsForBusinessOrganisation(SBOID,
+        ApplicationType.SEPODI);
+    doReturn(getDecision()).when(joinPoint).proceed();
+
+    //when
+    Object result = redactAspect.redact(joinPoint);
+    //then
+    assertThat(result).isNotNull();
+    Decision decisionResult = (Decision) result;
+    Person examinant = decisionResult.getExaminant();
+    assertThat(examinant.getMail()).isEqualTo("b*****");
+    assertThat(examinant.getFirstName()).isEqualTo("D*****");
+    assertThat(examinant.getLastName()).isEqualTo("D*****");
+
+    Person overrider = decisionResult.getFotOverrider();
+    assertThat(overrider.getMail()).isEqualTo("j*****");
+    assertThat(overrider.getFirstName()).isEqualTo("J*****");
+    assertThat(overrider.getLastName()).isEqualTo("B*****");
+  }
+
+  @Test
+  void shouldNotRedactDecision() throws Throwable {
+    //given
+    Authentication authentication = Mockito.mock(Authentication.class);
+    Jwt jwt = Mockito.mock(Jwt.class);
+    when(jwt.getClaim(Role.ROLES_JWT_KEY)).thenReturn(List.of("Role1"));
+    when(authentication.getPrincipal()).thenReturn(jwt);
+
+    SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+    when(securityContext.getAuthentication()).thenReturn(authentication);
+    SecurityContextHolder.setContext(securityContext);
+
+    doReturn(getStopPointWorkflow()).when(stopPointWorkflowRepository).findByDecisionId(any());
+
+    doReturn(true).when(businessOrganisationBasedUserAdministrationService).hasUserPermissionsForBusinessOrganisation(SBOID,
+        ApplicationType.SEPODI);
+    doReturn(getDecision()).when(joinPoint).proceed();
+
+    //when
+    Object result = redactAspect.redact(joinPoint);
+    //then
+    assertThat(result).isNotNull();
+    Decision decisionResult = (Decision) result;
+    Person examinant = decisionResult.getExaminant();
+    assertThat(examinant.getMail()).isEqualTo("bro@gym.cc");
+    assertThat(examinant.getFirstName()).isEqualTo("Danu");
+    assertThat(examinant.getLastName()).isEqualTo("Djukic");
+
+    Person overrider = decisionResult.getFotOverrider();
+    assertThat(overrider.getMail()).isEqualTo("judiv@sbb.ch");
+    assertThat(overrider.getFirstName()).isEqualTo("Judith");
+    assertThat(overrider.getLastName()).isEqualTo("Brootwurscht");
+  }
+
+  private Decision getDecision(){
+    Person daniel = Person.builder()
+        .firstName("Danu")
+        .lastName("Djukic")
+        .function("Gymbro")
+        .mail("bro@gym.cc")
+        .build();
+    Person judith = Person.builder()
+        .firstName("Judith")
+        .lastName("Brootwurscht")
+        .function("atlas")
+        .mail("judiv@sbb.ch")
+        .build();
+    return Decision.builder()
+        .judgement(JudgementType.YES)
+        .motivation("Good Name!")
+        .motivationDate(LocalDateTime.now())
+        .examinant(daniel)
+        .fotJudgement(JudgementType.NO)
+        .fotMotivation("No, is no!")
+        .fotOverrider(judith)
         .build();
   }
 
