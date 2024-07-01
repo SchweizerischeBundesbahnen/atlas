@@ -17,6 +17,16 @@ class StringHelperTest {
   }
 
   @Test
+  void shouldRedactSingleCharString(){
+    //given
+    String string = "l";
+    //when
+    String result = StringHelper.redactString(string);
+    //then
+    assertThat(result).isNotNull().isEqualTo("l*****");
+  }
+
+  @Test
   void shouldNotRedactStringWhenStringIsNull(){
     //given
     //when
