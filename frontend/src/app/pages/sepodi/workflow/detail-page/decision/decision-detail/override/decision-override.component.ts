@@ -25,6 +25,7 @@ import {
 import { NotificationService } from 'src/app/core/notification/notification.service';
 import { PermissionService } from 'src/app/core/auth/permission/permission.service';
 import { Pages } from 'src/app/pages/pages';
+import {ValidationService} from "../../../../../../../core/validation/validation.service";
 
 @Component({
   selector: 'decision-override',
@@ -79,6 +80,7 @@ export class DecisionOverrideComponent implements OnInit, OnChanges {
   }
 
   saveOverride() {
+    ValidationService.validateForm(this.formGroup);
     if (this.formGroup.valid) {
       const overrideDecision: OverrideDecision = this.formGroup.value as OverrideDecision;
       overrideDecision.fotMotivation =
