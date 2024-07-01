@@ -127,7 +127,7 @@
   <atlas-button
     (buttonClicked)="revoke()"
     [applicationType]="'SEPODI'"
-    [hidden]="selectedVersion?.status === 'REVOKED'"
+    [hidden]="!showRevokeButton"
     [disabled]="isSwitchVersionDisabled"
     buttonDataCy="revoke-item"
     buttonText="COMMON.REVOKE"
