@@ -137,6 +137,77 @@ describe('ServicePointDetailComponent', () => {
     expect(component.form?.enabled).toBeTrue();
   });
 
+  it('should not show revoke button when status in review', () => {
+    const version: ReadServicePointVersion = {
+      businessOrganisation: 'ch:1:sboid:100016',
+      designationOfficial: 'abcd',
+      validFrom: new Date(2020 - 10 - 1),
+      validTo: new Date(2099 - 10 - 1),
+      number: {
+        number: 123456,
+        numberShort: 31,
+        uicCountryCode: 0,
+        checkDigit: 0,
+      },
+      status: 'IN_REVIEW',
+      country: Country.Switzerland
+    };
+    component.servicePointVersions.push(version);
+
+    component.initShowRevokeButton(version);
+    expect(component.showRevokeButton).toBeFalsy();
+    component.servicePointVersions = [];
+    fixture.detectChanges()
+  });
+
+  it('should not show revoke button when status in revoked', () => {
+    const version: ReadServicePointVersion = {
+      businessOrganisation: 'ch:1:sboid:100016',
+      designationOfficial: 'abcd',
+      validFrom: new Date(2020 - 10 - 1),
+      validTo: new Date(2099 - 10 - 1),
+      number: {
+        number: 123456,
+        numberShort: 31,
+        uicCountryCode: 0,
+        checkDigit: 0,
+      },
+      status: 'REVOKED',
+      country: Country.Switzerland
+    };
+    component.servicePointVersions.push(version);
+
+    component.initShowRevokeButton(version);
+    expect(component.showRevokeButton).toBeFalsy();
+    component.servicePointVersions = [];
+    fixture.detectChanges()
+  });
+
+  it('should show revoke button', () => {
+    const version: ReadServicePointVersion = {
+      businessOrganisation: 'ch:1:sboid:100016',
+      designationOfficial: 'abcd',
+      validFrom: new Date(2020 - 10 - 1),
+      validTo: new Date(2099 - 10 - 1),
+      number: {
+        number: 123456,
+        numberShort: 31,
+        uicCountryCode: 0,
+        checkDigit: 0,
+      },
+      status: 'VALIDATED',
+      country: Country.Switzerland
+    };
+    component.servicePointVersions = [];
+    component.servicePointVersions.push(version);
+
+    fixture.detectChanges()
+    component.initShowRevokeButton(version);
+    expect(component.showRevokeButton).toBeTrue();
+    component.servicePointVersions = [];
+    fixture.detectChanges()
+  });
+
   it('should switch to readonly mode when not dirty without confirmation', () => {
     component.form?.enable();
 
