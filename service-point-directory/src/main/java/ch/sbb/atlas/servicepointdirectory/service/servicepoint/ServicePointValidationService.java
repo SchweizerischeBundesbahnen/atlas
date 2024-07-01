@@ -14,13 +14,12 @@ import ch.sbb.atlas.servicepointdirectory.exception.ServicePointDesignationOffic
 import ch.sbb.atlas.servicepointdirectory.exception.UpdateAffectsInReviewVersionException;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Objects;
 
 @Service
 @Slf4j
@@ -132,6 +131,37 @@ public class ServicePointValidationService {
           affectedVersions
       );
     }
+  }
+
+  public List<ServicePointVersion> validateNoMergeAffectVersionInReview(ServicePointVersion currentVersion,
+      List<ServicePointVersion> existingDbVersionInReview) {
+    List<ServicePointVersion> afterUpdateServicePoint = servicePointVersionRepository.findAllByNumberOrderByValidFrom(
+        currentVersion.getNumber());
+
+    List<ServicePointVersion> afterUpdateServicePointInReview = servicePointVersionRepository.findAllByNumberOrderByValidFrom(
+            currentVersion.getNumber()).stream()
+        .filter(servicePointVersion -> Status.IN_REVIEW == servicePointVersion.getStatus()).toList();
+    
+    if (!existingDbVersionInReview.isEmpty()) {
+      if (existingDbVersionInReview.size() != afterUpdateServicePointInReview.size()) {
+        throw new UpdateAffectsInReviewVersionException(
+            existingDbVersionInReview.getFirst().getValidFrom(),
+            existingDbVersionInReview.getLast().getValidTo(),
+            existingDbVersionInReview);
+      }
+      for (int i = 0; i < existingDbVersionInReview.size(); i++) {
+        ServicePointVersion existingVersion = existingDbVersionInReview.get(i);
+        ServicePointVersion afterVersion = afterUpdateServicePointInReview.get(i);
+        if (!existingVersion.getValidFrom().equals(afterVersion.getValidFrom()) ||
+            !existingVersion.getValidTo().equals(afterVersion.getValidTo())) {
+          throw new UpdateAffectsInReviewVersionException(
+              afterUpdateServicePointInReview.getFirst().getValidFrom(),
+              afterUpdateServicePointInReview.getLast().getValidTo(),
+              afterUpdateServicePointInReview);
+        }
+      }
+    }
+    return afterUpdateServicePoint;
   }
 
   @RequiredArgsConstructor
