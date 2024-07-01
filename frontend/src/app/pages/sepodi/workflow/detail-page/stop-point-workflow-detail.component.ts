@@ -8,7 +8,7 @@ import {
   WorkflowStatus,
 } from '../../../../api';
 import { FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { StopPointWorkflowDetailData } from './stop-point-workflow-detail-resolver.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { StopPointRejectWorkflowDialogService } from '../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog.service';
@@ -20,6 +20,7 @@ import {
   StopPointWorkflowDetailFormGroupBuilder,
 } from './detail-form/stop-point-workflow-detail-form-group';
 import { DecisionStepperComponent } from './decision/decision-stepper/decision-stepper.component';
+import {Pages} from "../../../pages";
 
 @Component({
   selector: 'stop-point-workflow-detail',
@@ -31,6 +32,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private readonly dialog: MatDialog,
     private readonly stopPointWorkflowService: StopPointWorkflowService,
     private readonly notificationService: NotificationService,
@@ -153,6 +155,11 @@ export class StopPointWorkflowDetailComponent implements OnInit {
           next: () => {
             decisionDialogRef.close();
             this.notificationService.success('WORKFLOW.NOTIFICATION.VOTE.SUCCESS');
+            this.router.navigateByUrl('/').then(() => {
+                this.router
+                  .navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, this.workflow.id])
+                  .then(() => {});
+            });
           },
           error: () => stepData.swapLoading(),
         });
