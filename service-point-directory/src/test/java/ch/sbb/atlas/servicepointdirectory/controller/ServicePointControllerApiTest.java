@@ -376,6 +376,32 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldNotRevokeWhenOneOrMoreVersionsAreInReview() throws Exception {
+    CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    UpdateServicePointVersionModel createServicePointVersionModel1 = ServicePointTestData.getAargauServicePointVersionModel();
+    createServicePointVersionModel1.setMeansOfTransport(List.of(MeanOfTransport.BUS));
+    createServicePointVersionModel1.setValidFrom(LocalDate.of(2019, 8, 11));
+    createServicePointVersionModel1.setValidTo(LocalDate.of(2020, 8, 10));
+
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+        aargauServicePointVersionModel);
+
+    Long id = servicePointVersionModel.getId();
+    createServicePointVersionModel1.setEtagVersion(servicePointVersionModel.getEtagVersion());
+    servicePointController.updateServicePoint(id, createServicePointVersionModel1);
+    servicePointController.updateServicePointStatus(servicePointVersionModel.getSloid(), servicePointVersionModel.getId(),
+        Status.IN_REVIEW);
+
+    Integer number = servicePointVersionModel.getNumber().getNumber();
+
+    mvc.perform(post("/v1/service-points/" + number + "/revoke"))
+        .andExpect(status().isForbidden())
+        .andExpect(
+            jsonPath("$.error",
+                is("Termination not allowed")));
+  }
+
+  @Test
   void shouldVerifyDesignationOfficialDesignationLongCanBeReusedAfterStatusRevoked() throws Exception {
     repository.deleteAll();
     CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
