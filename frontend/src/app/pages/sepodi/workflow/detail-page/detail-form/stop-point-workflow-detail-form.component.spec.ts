@@ -1,17 +1,17 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
-import {AppTestingModule} from "../../../../app.testing.module";
-import {FormModule} from "../../../../core/module/form.module";
-import {StopPointWorkflowDetailFormComponent} from "./stop-point-workflow-detail-form.component";
-import {DisplayDatePipe} from "../../../../core/pipe/display-date.pipe";
-import {SplitServicePointNumberPipe} from "../../../../core/search-service-point/split-service-point-number.pipe";
-import {BERN_WYLEREGG} from "../../../../../test/data/service-point";
-import {StopPointWorkflowDetailFormGroupBuilder} from "./stop-point-workflow-detail-form-group";
-import {BusinessOrganisationsService, ReadStopPointWorkflow} from "../../../../api";
-import {TranslatePipe} from "@ngx-translate/core";
-import {StringListComponent} from "../../../../core/form-components/string-list/string-list.component";
-import {MockAtlasButtonComponent} from "../../../../app.testing.mocks";
-import {AtlasSpacerComponent} from "../../../../core/components/spacer/atlas-spacer.component";
 import {Router} from "@angular/router";
+import {BusinessOrganisationsService, ReadStopPointWorkflow} from "../../../../../api";
+import {StopPointWorkflowDetailFormComponent} from "./stop-point-workflow-detail-form.component";
+import {StringListComponent} from "../../../../../core/form-components/string-list/string-list.component";
+import {MockAtlasButtonComponent} from "../../../../../app.testing.mocks";
+import {DisplayDatePipe} from "../../../../../core/pipe/display-date.pipe";
+import {SplitServicePointNumberPipe} from "../../../../../core/search-service-point/split-service-point-number.pipe";
+import {AtlasSpacerComponent} from "../../../../../core/components/spacer/atlas-spacer.component";
+import {AppTestingModule} from "../../../../../app.testing.module";
+import {TranslatePipe} from "@ngx-translate/core";
+import {BERN_WYLEREGG} from "../../../../../../test/data/service-point";
+import {StopPointWorkflowDetailFormGroupBuilder} from "./stop-point-workflow-detail-form-group";
+import {FormModule} from "../../../../../core/module/form.module";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,

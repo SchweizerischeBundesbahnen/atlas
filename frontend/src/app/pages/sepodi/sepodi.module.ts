@@ -24,12 +24,16 @@ import {TrafficPointElementsDetailComponent} from './traffic-point-elements/traf
 import {LoadingPointsDetailComponent} from './loading-points/loading-points-detail.component';
 import {FotCommentDetailComponent} from './service-point-side-panel/comment/fot-comment-detail.component';
 import {AddStopPointWorkflowComponent} from "./workflow/add-dialog/add-stop-point-workflow.component";
-import {StopPointWorkflowDetailFormComponent} from "./workflow/detail-form/stop-point-workflow-detail-form.component";
 import {StopPointWorkflowDetailComponent} from "./workflow/detail-page/stop-point-workflow-detail.component";
 import {StopPointWorkflowOverviewComponent} from "./workflow/overview/stop-point-workflow-overview.component";
 import {
   StopPointRejectWorkflowDialogComponent
 } from "./workflow/stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog.component";
+import {StopPointWorkflowDetailFormComponent} from "./workflow/detail-page/detail-form/stop-point-workflow-detail-form.component";
+import {DecisionFormComponent} from "./workflow/detail-page/decision/decision-form/decision-form.component";
+import {DecisionOverrideComponent} from "./workflow/detail-page/decision/decision-detail/override/decision-override.component";
+import {DecisionStepperComponent} from "./workflow/detail-page/decision/decision-stepper/decision-stepper.component";
+import {DecisionDetailDialogComponent} from "./workflow/detail-page/decision/decision-detail/decision-detail-dialog.component";
 
 @NgModule({
   declarations: [
@@ -50,7 +54,11 @@ import {
     StopPointWorkflowDetailFormComponent,
     StopPointWorkflowDetailComponent,
     StopPointWorkflowOverviewComponent,
-    StopPointRejectWorkflowDialogComponent
+    StopPointRejectWorkflowDialogComponent,
+    DecisionFormComponent,
+    DecisionOverrideComponent,
+    DecisionStepperComponent,
+    DecisionDetailDialogComponent,
   ],
     imports: [CoreModule, FormModule, FormsModule, SepodiRoutingModule],
 })
