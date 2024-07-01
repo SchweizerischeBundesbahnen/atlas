@@ -145,7 +145,7 @@
     "CONFIRM_VALIDITY_HAS_NOT_CHANGED_TITLE": "Attenzione: La validità non è stata modificata!",
     "CONFIRM_VALIDITY_HAS_NOT_CHANGED": "Siete sicuri di voler apportare la modifica senza regolare la validità? Se la modifica non si applica all'intero periodo di questa versione, modificare la data \"valida da\" o \"valida fino al\".",
     "CANCEL_DECISION_TITLE": "Annullare la decisione?",
-    "CANCEL_DECISION": "Si perde l'avanzamento attuale e si deve ricominciare la volta successiva."
+    "CANCEL_DECISION": "L'avanzamento attuale sarà perso e bisognerà iniziare l'intero processo."
   },
   "SW_DIALOG": {
     "UPDATE_TITLE": "Nuova versione disponibile.",
@@ -1039,7 +1039,7 @@
         "START": "Inizio audizione",
         "END": "Fine dell'audizione",
         "SEARCH": "SLOID - denominazione ufficiale",
-        "OVERRIDE_TITLE": "Valutazione da parte di BAV",
+        "OVERRIDE_TITLE": "Valutazione da parte di UFT",
         "OVERRIDE_HAPPENED_INFO": "L'Ufficio federale dei trasporti (UFT) ha effettuato una valutazione. Si applica la valutazione dell'UFT (vedi sotto)."
       }
     },
