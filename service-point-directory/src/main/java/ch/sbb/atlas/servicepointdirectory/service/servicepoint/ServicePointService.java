@@ -1,9 +1,9 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
-
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
+import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedWhenVersionInReviewException;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSearchVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
@@ -84,6 +84,11 @@ public class ServicePointService {
   public List<ServicePointVersion> revokeServicePoint(ServicePointNumber servicePointNumber) {
     List<ServicePointVersion> servicePointVersions = servicePointVersionRepository.findAllByNumberOrderByValidFrom(
         servicePointNumber);
+    boolean hasVersionInReview = servicePointVersions.stream()
+        .anyMatch(servicePointVersion -> servicePointVersion.getStatus() == Status.IN_REVIEW);
+    if (hasVersionInReview) {
+      throw new TerminationNotAllowedWhenVersionInReviewException(servicePointNumber);
+    }
     servicePointVersions.forEach(servicePointVersion -> servicePointVersion.setStatus(Status.REVOKED));
     return servicePointVersions;
   }
@@ -133,17 +138,21 @@ public class ServicePointService {
     List<ServicePointVersion> existingDbVersions = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
     List<VersionedObject> versionedObjects = versionableService.versioningObjectsDeletingNullProperties(currentVersion,
         editedVersion, existingDbVersions);
+    List<ServicePointVersion> existingDbVersionInReview = existingDbVersions.stream()
+        .filter(servicePointVersion -> Status.IN_REVIEW == servicePointVersion.getStatus()).toList();
 
     versionableService.applyVersioning(ServicePointVersion.class, versionedObjects,
         version -> save(version, Optional.of(currentVersion), currentVersions),
         new ApplyVersioningDeleteByIdLongConsumer(servicePointVersionRepository));
 
-    List<ServicePointVersion> afterUpdateServicePoint = findAllByNumberOrderByValidFrom(currentVersion.getNumber());
+    List<ServicePointVersion> afterUpdateServicePoint = servicePointValidationService.validateNoMergeAffectVersionInReview(
+        currentVersion, existingDbVersionInReview);
+
     servicePointTerminationService.checkTerminationAllowed(currentVersions, afterUpdateServicePoint);
     return currentVersion;
   }
 
-  private void save(ServicePointVersion servicePointVersion,
+  void save(ServicePointVersion servicePointVersion,
       Optional<ServicePointVersion> currentVersion,
       List<ServicePointVersion> currentVersions) {
     preSaveChecks(servicePointVersion, currentVersion, currentVersions);
@@ -168,6 +177,5 @@ public class ServicePointService {
     servicePointVersionRepository.save(servicePointVersion);
     return servicePointVersion;
   }
-
 
 }

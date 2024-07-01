@@ -24,6 +24,7 @@ import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel.Fields;
+import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationCreateModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
@@ -372,6 +373,32 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[1].status", is(Status.REVOKED.toString())));
 
     verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
+  }
+
+  @Test
+  void shouldNotRevokeWhenOneOrMoreVersionsAreInReview() throws Exception {
+    CreateServicePointVersionModel aargauServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    UpdateServicePointVersionModel createServicePointVersionModel1 = ServicePointTestData.getAargauServicePointVersionModel();
+    createServicePointVersionModel1.setMeansOfTransport(List.of(MeanOfTransport.BUS));
+    createServicePointVersionModel1.setValidFrom(LocalDate.of(2019, 8, 11));
+    createServicePointVersionModel1.setValidTo(LocalDate.of(2020, 8, 10));
+
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+        aargauServicePointVersionModel);
+
+    Long id = servicePointVersionModel.getId();
+    createServicePointVersionModel1.setEtagVersion(servicePointVersionModel.getEtagVersion());
+    servicePointController.updateServicePoint(id, createServicePointVersionModel1);
+    servicePointController.updateServicePointStatus(servicePointVersionModel.getSloid(), servicePointVersionModel.getId(),
+        Status.IN_REVIEW);
+
+    Integer number = servicePointVersionModel.getNumber().getNumber();
+
+    mvc.perform(post("/v1/service-points/" + number + "/revoke"))
+        .andExpect(status().isForbidden())
+        .andExpect(
+            jsonPath("$.error",
+                is("Termination not allowed")));
   }
 
   @Test
@@ -1287,6 +1314,174 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
             .content(mapper.writeValueAsString(buchsiServicePoint)))
         .andExpect(status().isForbidden());
     verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
+  }
+
+  @Test
+  void shouldNotUpdateWhenOneVersionInReviewIsGoingToBeMergedLeft() throws Exception {
+    //given
+    repository.deleteAll();
+    //Create 1st Version
+    ServicePointGeolocationCreateModel servicePointGeolocationCreateModel =
+        ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation());
+    CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPoint1.setValidFrom(LocalDate.of(2000, 1, 1));
+    stopPoint1.setValidTo(LocalDate.of(2001, 12, 31));
+    stopPoint1.setDesignationOfficial("Bern");
+    stopPoint1.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    ReadServicePointVersionModel servicePointVersionModel =
+        servicePointController.createServicePoint(stopPoint1);
+    Long id = servicePointVersionModel.getId();
+
+    //Create 2nd version
+    UpdateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPoint2.setValidFrom(LocalDate.of(2001, 1, 1));
+    stopPoint2.setValidTo(LocalDate.of(2002, 12, 31));
+    stopPoint2.setDesignationOfficial("Bern1");
+    stopPoint2.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    stopPoint2.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
+
+    List<ReadServicePointVersionModel> servicePointVersionModel2 = servicePointController.updateServicePoint(id,
+        stopPoint2);
+    Long id2 = servicePointVersionModel2.get(1).getId();
+
+    //1st version is now in hearing => status = IN_REVIEW
+    servicePointController.updateServicePointStatus(servicePointVersionModel.getSloid(), servicePointVersionModel.getId(),
+        Status.IN_REVIEW);
+
+    //when
+    //Try to update 2nd version with designationOfficial Bern == to 1st version. This should results in a merge
+    UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPoint3.setValidFrom(LocalDate.of(2001, 1, 1));
+    stopPoint3.setValidTo(LocalDate.of(2002, 12, 31));
+    stopPoint3.setDesignationOfficial("Bern");
+    stopPoint3.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id2).getEtagVersion());
+
+    mvc.perform(put("/v1/service-points/" + id2)
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(stopPoint3)))
+        .andExpect(status().isConflict())
+        .andExpect(
+            jsonPath("$.error",
+                is("Update affects one or more versions that have status: IN_REVIEW.")));
+  }
+
+  @Test
+  void shouldNotUpdateWhenOneVersionInReviewIsGoingToBeMergedRight() throws Exception {
+    //given
+    repository.deleteAll();
+    //Create 1st Version
+    ServicePointGeolocationCreateModel servicePointGeolocationCreateModel =
+        ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation());
+    CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPoint1.setValidFrom(LocalDate.of(2000, 1, 1));
+    stopPoint1.setValidTo(LocalDate.of(2001, 12, 31));
+    stopPoint1.setDesignationOfficial("Bern");
+    stopPoint1.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    ReadServicePointVersionModel servicePointVersionModel =
+        servicePointController.createServicePoint(stopPoint1);
+    Long id = servicePointVersionModel.getId();
+
+    //Create 2nd version
+    UpdateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPoint2.setValidFrom(LocalDate.of(2001, 1, 1));
+    stopPoint2.setValidTo(LocalDate.of(2002, 12, 31));
+    stopPoint2.setDesignationOfficial("Bern1");
+    stopPoint2.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    stopPoint2.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
+
+    List<ReadServicePointVersionModel> servicePointVersionModel2 = servicePointController.updateServicePoint(id,
+        stopPoint2);
+    Long id2 = servicePointVersionModel2.get(1).getId();
+
+    //2nd version is now in hearing => status = IN_REVIEW
+    servicePointController.updateServicePointStatus(servicePointVersionModel2.get(1).getSloid(),
+        servicePointVersionModel2.get(1).getId(),
+        Status.IN_REVIEW);
+
+    //when
+    //Try to update 2nd version with designationOfficial Bern == to 1st version. This should results in a merge
+    UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPoint3.setValidFrom(LocalDate.of(2000, 1, 1));
+    stopPoint3.setValidTo(LocalDate.of(2000, 12, 31));
+    stopPoint3.setDesignationOfficial("Bern1");
+    stopPoint3.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
+
+    //when && then
+    mvc.perform(put("/v1/service-points/" + id)
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(stopPoint3)))
+        .andExpect(status().isConflict())
+        .andExpect(
+            jsonPath("$.error",
+                is("Update affects one or more versions that have status: IN_REVIEW.")));
+  }
+
+  @Test
+  void shouldNotUpdateWhenTwoVersionInReviewIsGoingToBeMerged() throws Exception {
+    //given
+    repository.deleteAll();
+    //Create 1st Version
+    ServicePointGeolocationCreateModel servicePointGeolocationCreateModel =
+        ServicePointGeolocationMapper.toCreateModel(ServicePointTestData.getAargauServicePointGeolocation());
+    CreateServicePointVersionModel stopPoint1 = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPoint1.setValidFrom(LocalDate.of(2000, 1, 1));
+    stopPoint1.setValidTo(LocalDate.of(2001, 12, 31));
+    stopPoint1.setDesignationOfficial("Bern");
+    stopPoint1.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    ReadServicePointVersionModel servicePointVersionModel =
+        servicePointController.createServicePoint(stopPoint1);
+    Long id = servicePointVersionModel.getId();
+
+    //Create 2nd version
+    UpdateServicePointVersionModel stopPoint2 = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPoint2.setValidFrom(LocalDate.of(2001, 1, 1));
+    stopPoint2.setValidTo(LocalDate.of(2001, 12, 31));
+    stopPoint2.setDesignationOfficial("Bern1");
+    stopPoint2.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    stopPoint2.setEtagVersion(servicePointController.getServicePointVersion(id).getEtagVersion());
+
+    List<ReadServicePointVersionModel> servicePointVersionModel2 = servicePointController.updateServicePoint(id,
+        stopPoint2);
+    Long id2 = servicePointVersionModel2.get(1).getId();
+
+    //Create 3rd version
+    UpdateServicePointVersionModel stopPoint3 = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPoint3.setValidFrom(LocalDate.of(2002, 1, 1));
+    stopPoint3.setValidTo(LocalDate.of(2002, 12, 31));
+    stopPoint3.setDesignationOfficial("Bern");
+    stopPoint3.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    stopPoint3.setEtagVersion(servicePointController.getServicePointVersion(id2).getEtagVersion());
+
+    List<ReadServicePointVersionModel> servicePointVersionModel3 = servicePointController.updateServicePoint(id,
+        stopPoint3);
+
+    //1st version is now in hearing => status = IN_REVIEW
+    servicePointController.updateServicePointStatus(servicePointVersionModel.getSloid(), servicePointVersionModel.getId(),
+        Status.IN_REVIEW);
+    //3rd version is now in hearing => status = IN_REVIEW
+    servicePointController.updateServicePointStatus(servicePointVersionModel3.get(2).getSloid(),
+        servicePointVersionModel3.get(2).getId(), Status.IN_REVIEW);
+
+    //when
+    //Try to update 2nd version with designationOfficial Bern == to 1st version. This should results in a merge
+    UpdateServicePointVersionModel stopPoint4 = ServicePointTestData.getAargauServicePointVersionModel();
+    stopPoint4.setValidFrom(LocalDate.of(2001, 1, 1));
+    stopPoint4.setValidTo(LocalDate.of(2001, 12, 31));
+    stopPoint4.setDesignationOfficial("Bern");
+    stopPoint4.setServicePointGeolocation(servicePointGeolocationCreateModel);
+    stopPoint4.setEtagVersion(servicePointController.getServicePointVersion(id2).getEtagVersion());
+
+    //when && then
+    mvc.perform(put("/v1/service-points/" + id2)
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(stopPoint4)))
+        .andExpect(status().isConflict())
+        .andExpect(
+            jsonPath("$.error",
+                is("Update affects one or more versions that have status: IN_REVIEW.")));
+
   }
 
 }
