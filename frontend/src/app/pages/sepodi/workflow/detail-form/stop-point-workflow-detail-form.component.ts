@@ -45,13 +45,13 @@ export class StopPointWorkflowDetailFormComponent {
   }
 
   goToAtlasStopPoint() {
-    this.router.navigate([
-      Pages.SEPODI.path,
+    const url = this.router.serializeUrl(this.router.createUrlTree([Pages.SEPODI.path,
       Pages.SERVICE_POINTS.path,
       this.stopPoint?.number.number], {
       queryParams: {
-        id: this.stopPoint?.id,
+        id: this.stopPoint?.id
       }
-    }).then();
+    }));
+    window.open(url, '_blank');
   }
 }
