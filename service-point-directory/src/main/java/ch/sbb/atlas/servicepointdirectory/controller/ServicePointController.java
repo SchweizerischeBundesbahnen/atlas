@@ -2,11 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
-import ch.sbb.atlas.api.servicepoint.GeoReference;
-import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
-import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
-import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.*;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.location.SloidHelper;
 import ch.sbb.atlas.model.Status;
@@ -173,34 +169,45 @@ public class ServicePointController implements ServicePointApiV1 {
     return ServicePointVersionMapper.toModel(validatedServicePointVersion);
   }
 
+
   @Override
-  public List<ReadServicePointVersionModel> updateServicePoint(Long id,
-      UpdateServicePointVersionModel updateServicePointVersionModel) {
-    ServicePointVersion servicePointVersionToUpdate = servicePointService.findById(id)
-        .orElseThrow(() -> new IdNotFoundException(id));
+  public List<ReadServicePointVersionModel> updateServicePoint(Long id, UpdateServicePointVersionModel updateServicePointVersionModel) {
+    ServicePointVersion servicePointVersionToUpdate = getServicePointVersionById(id);
 
     checkIfServicePointStatusRevoked(servicePointVersionToUpdate);
     checkIfServicePointStatusInReview(servicePointVersionToUpdate, updateServicePointVersionModel);
 
     List<ServicePointVersion> currentVersions = servicePointService.findAllByNumberOrderByValidFrom(
-        servicePointVersionToUpdate.getNumber());
+            servicePointVersionToUpdate.getNumber());
 
     servicePointValidationService.checkNotAffectingInReviewVersions(currentVersions, updateServicePointVersionModel);
 
     ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(updateServicePointVersionModel,
-        servicePointVersionToUpdate.getNumber());
+            servicePointVersionToUpdate.getNumber());
 
     addGeoReferenceInformation(editedVersion);
 
-    servicePointService.update(servicePointVersionToUpdate, editedVersion, currentVersions);
+    return updateAndPublish(servicePointVersionToUpdate, editedVersion, currentVersions);
+  }
 
-    List<ServicePointVersion> servicePoint = servicePointService.findAllByNumberOrderByValidFrom(
-        servicePointVersionToUpdate.getNumber());
-    servicePointDistributor.publishServicePointsWithNumbers(servicePointVersionToUpdate.getNumber());
-    return servicePoint
-        .stream()
-        .map(ServicePointVersionMapper::toModel)
-        .toList();
+  @Override
+  public ReadServicePointVersionModel updateDesingationOfficialServicePoint(Long id, UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel) {
+    ServicePointVersion servicePointVersionToUpdate = getServicePointVersionById(id);
+
+    UpdateServicePointVersionModel updateServicePointVersionModel = ServicePointVersionMapper.toUpdateEntity(servicePointVersionToUpdate, updateDesignationOfficialServicePointModel);
+
+    List<ServicePointVersion> currentVersions = servicePointService.findAllByNumberOrderByValidFrom(
+            servicePointVersionToUpdate.getNumber());
+
+    ServicePointVersion editedVersion = ServicePointVersionMapper.toEntity(updateServicePointVersionModel,
+            servicePointVersionToUpdate.getNumber());
+
+    List<ReadServicePointVersionModel> updatedServicePoints = updateAndPublish(servicePointVersionToUpdate, editedVersion, currentVersions);
+
+    return updatedServicePoints
+            .stream()
+            .reduce((first, second) -> second)
+            .orElse(null);
   }
 
   @Override
@@ -277,4 +284,21 @@ public class ServicePointController implements ServicePointApiV1 {
     }
   }
 
+  private ServicePointVersion getServicePointVersionById(Long id) {
+    return servicePointService.findById(id)
+            .orElseThrow(() -> new IdNotFoundException(id));
+  }
+
+  private List<ReadServicePointVersionModel> updateAndPublish(ServicePointVersion servicePointVersionToUpdate, ServicePointVersion editedVersion, List<ServicePointVersion> currentVersions) {
+    servicePointService.update(servicePointVersionToUpdate, editedVersion, currentVersions);
+
+    List<ServicePointVersion> servicePoint = servicePointService.findAllByNumberOrderByValidFrom(
+            servicePointVersionToUpdate.getNumber());
+    servicePointDistributor.publishServicePointsWithNumbers(servicePointVersionToUpdate.getNumber());
+
+    return servicePoint
+            .stream()
+            .map(ServicePointVersionMapper::toModel)
+            .toList();
+  }
 }
