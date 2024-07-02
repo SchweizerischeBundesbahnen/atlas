@@ -6,6 +6,7 @@ import { AtlasFieldLengthValidator } from 'src/app/core/validation/field-lengths
 export interface StopPointWorkflowDetailFormGroup {
   ccEmails: FormControl<Array<string> | null | undefined>;
   workflowComment: FormControl<string | null | undefined>;
+  designationOfficial: FormControl<string | null | undefined>;
   examinants: FormArray<FormGroup<ExaminantFormGroup>>;
 }
 
@@ -32,6 +33,10 @@ export class StopPointWorkflowDetailFormGroupBuilder {
         AtlasFieldLengthValidator.comments,
         AtlasCharsetsValidator.iso88591,
       ]),
+      designationOfficial: new FormControl(workflow?.designationOfficial, [Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(100),
+        AtlasCharsetsValidator.iso88591]),
       examinants: new FormArray<FormGroup<ExaminantFormGroup>>(
         workflow?.examinants?.map((examinant) => this.buildExaminantFormGroup(examinant)) ?? [
           this.buildExaminantFormGroup(),
