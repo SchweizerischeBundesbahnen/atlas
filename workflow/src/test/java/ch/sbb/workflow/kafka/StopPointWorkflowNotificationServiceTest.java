@@ -1,6 +1,5 @@
 package ch.sbb.workflow.kafka;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -39,6 +38,14 @@ class StopPointWorkflowNotificationServiceTest {
     stopPointWorkflowNotificationService.sendPinCodeMail(new StopPointWorkflow(), "to@here.ch", "45646");
 
     verify(builderNotificationService).buildPinCodeMail(any(), eq("to@here.ch"), eq("45646"));
+    verify(mailProducerService).produceMailNotification(any());
+  }
+
+  @Test
+  void shouldSendApprovedMailViaKafka() {
+    stopPointWorkflowNotificationService.sendApprovedStopPointWorkflowMail(new StopPointWorkflow());
+
+    verify(builderNotificationService).buildWorkflowApprovedMail(any());
     verify(mailProducerService).produceMailNotification(any());
   }
 }

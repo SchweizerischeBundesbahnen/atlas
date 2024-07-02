@@ -24,9 +24,9 @@ public class StopPointWorkflowProgressDecider {
       if (decisions.values().stream().allMatch(i -> i.orElseThrow().getWeightedJudgement() == JudgementType.YES)) {
         return Optional.of(WorkflowStatus.APPROVED);
       }
-      if (decisions.values().stream().anyMatch(i -> i.orElseThrow().getFotJudgement() == JudgementType.NO)) {
-        return Optional.of(WorkflowStatus.REJECTED);
-      }
+    }
+    if (decisions.values().stream().filter(Optional::isPresent).anyMatch(i -> i.orElseThrow().getFotJudgement() == JudgementType.NO)) {
+      return Optional.of(WorkflowStatus.REJECTED);
     }
     return Optional.empty();
   }
