@@ -68,4 +68,12 @@ public class Decision extends BaseWorkflowEntity {
   @Column(columnDefinition = "TIMESTAMP")
   private LocalDateTime fotMotivationDate;
 
+  public JudgementType getWeightedJudgement() {
+    if (fotJudgement == null) {
+      return judgement;
+    } else {
+      return fotJudgement;
+    }
+  }
+
 }
