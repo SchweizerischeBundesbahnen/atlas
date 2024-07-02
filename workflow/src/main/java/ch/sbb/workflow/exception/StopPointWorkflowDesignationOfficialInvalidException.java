@@ -28,11 +28,9 @@ public class StopPointWorkflowDesignationOfficialInvalidException extends AtlasE
 
     private List<ErrorResponse.Detail> getErrorDetails() {
         return List.of(ErrorResponse.Detail.builder()
-                .message("Wrong status")
-                .field(StopPointWorkflow.Fields.status)
+                .message("Designation Official must not be emtpy")
                 .displayInfo(builder()
-                        //TODO:
-                        .code("Fehler")
+                        .code("WORKFLOW.ERROR.DESIGNATION_OFFICIAL_NOT_EMPTY")
                         .build())
                 .build());
     }
