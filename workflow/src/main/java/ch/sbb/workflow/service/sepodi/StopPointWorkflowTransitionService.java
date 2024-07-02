@@ -23,8 +23,12 @@ import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -150,6 +154,34 @@ public class StopPointWorkflowTransitionService {
     SwissCanton swissCanton = servicePointVersionModel.getServicePointGeolocation().getSwissLocation().getCanton();
     List<StopPointClientPersonModel> personModels = examinants.getExaminants(swissCanton);
     return StopPointWorkflowMapper.addStopPointWorkflowToEntity(workflowStartModel, servicePointVersionModel, personModels);
+  }
+
+  public void progressWorkflowWithNewDecision(Long workflowId) {
+    StopPointWorkflow workflow = stopPointWorkflowService.getWorkflow(workflowId);
+    StopPointWorkflowProgressDecider stopPointWorkflowProgressDecider = buildProgressDecider(workflow);
+
+    stopPointWorkflowProgressDecider.calculateNewWorkflowStatus().ifPresent(newStatus -> {
+      if (newStatus == WorkflowStatus.APPROVED) {
+        sePoDiClientService.updateStoPointStatusToValidated(workflow);
+        notificationService.sendApprovedStopPointWorkflowMail(workflow);
+      }
+      if (newStatus == WorkflowStatus.REJECTED) {
+        sePoDiClientService.updateStoPointStatusToDraft(workflow);
+        // TODO: send mail Anhörung Abbruch / zurückgewiesen same as in cancel
+      }
+      workflow.setStatus(newStatus);
+    });
+  }
+
+  private StopPointWorkflowProgressDecider buildProgressDecider(StopPointWorkflow workflow) {
+    Set<Person> examinants = workflow.getExaminants();
+
+    Map<Person, Optional<Decision>> decisions = new HashMap<>();
+    examinants.forEach(examinant -> {
+      Optional<Decision> decisionByExaminantId = decisionService.findDecisionByExaminantId(examinant.getId());
+      decisions.put(examinant, decisionByExaminantId);
+    });
+    return new StopPointWorkflowProgressDecider(decisions);
   }
 
 }
