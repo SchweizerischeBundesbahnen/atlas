@@ -1,6 +1,8 @@
 package ch.sbb.atlas.servicepointdirectory.mapper;
 
+import ch.sbb.atlas.api.servicepoint.GeolocationBaseCreateModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
@@ -91,6 +93,44 @@ public class ServicePointVersionMapper {
     servicePointVersion.setCountry(servicePointNumber.getCountry());
 
     return servicePointVersion;
+  }
+
+  public static UpdateServicePointVersionModel toUpdateEntity(ServicePointVersion servicePointVersion, UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel) {
+    UpdateServicePointVersionModel updateServicePointVersionModel = UpdateServicePointVersionModel.builder()
+        .id(servicePointVersion.getId())
+        .designationLong(servicePointVersion.getDesignationLong())
+        .designationOfficial(updateDesignationOfficialServicePointModel.getDesignationOfficial())
+        .abbreviation(servicePointVersion.getAbbreviation())
+        .sortCodeOfDestinationStation(servicePointVersion.getSortCodeOfDestinationStation())
+        .businessOrganisation(servicePointVersion.getBusinessOrganisation())
+        .operatingPointType(servicePointVersion.getOperatingPointType())
+        .stopPointType(servicePointVersion.getStopPointType())
+        .operatingPointKilometerMasterNumber(servicePointVersion.getOperatingPointKilometerMaster() != null && servicePointVersion.getOperatingPointKilometerMaster().getNumber() != null ?
+              servicePointVersion.getOperatingPointKilometerMaster().getNumber() : null)
+        .operatingPointRouteNetwork(servicePointVersion.isOperatingPointRouteNetwork())
+        .validFrom(servicePointVersion.getValidFrom())
+        .validTo(servicePointVersion.getValidTo())
+        .freightServicePoint(servicePointVersion.isFreightServicePoint())
+        .operatingPointType(servicePointVersion.getOperatingPointType())
+        .operatingPointTechnicalTimetableType(servicePointVersion.getOperatingPointTechnicalTimetableType())
+        .operatingPointTrafficPointType(servicePointVersion.getOperatingPointTrafficPointType())
+        .categories(servicePointVersion.getCategories().stream().toList())
+        .meansOfTransport(servicePointVersion.getMeansOfTransport().stream().toList())
+        .servicePointGeolocation(
+            GeolocationBaseCreateModel.builder()
+                            .north(servicePointVersion.getServicePointGeolocation().getNorth())
+                            .east(servicePointVersion.getServicePointGeolocation().getEast())
+                            .spatialReference(servicePointVersion.getServicePointGeolocation().getSpatialReference())
+                            .build()
+            )
+        .etagVersion(servicePointVersion.getVersion())
+        .editor(servicePointVersion.getEditor())
+        .editionDate(servicePointVersion.getEditionDate())
+        .creator(servicePointVersion.getCreator())
+        .creationDate(servicePointVersion.getCreationDate())
+        .build();
+
+    return updateServicePointVersionModel;
   }
 
   private static List<MeanOfTransport> getMeansOfTransportSorted(ServicePointVersion servicePointVersion) {

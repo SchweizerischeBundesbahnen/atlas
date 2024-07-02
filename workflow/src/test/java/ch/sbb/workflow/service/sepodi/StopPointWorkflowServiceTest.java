@@ -87,14 +87,14 @@ class StopPointWorkflowServiceTest {
 
     EditStopPointWorkflowModel workflowModel = EditStopPointWorkflowModel.builder()
             .workflowComment("New Comment")
-            .designationOfficial("New Official")
+            .designationOfficial("Heimsiswil Zentrum")
             .build();
 
     workflowService.editWorkflow(id, workflowModel);
 
     StopPointWorkflow foundWorkflow = workflowRepository.findById(id).get();
 
-    assertEquals("New Official", foundWorkflow.getDesignationOfficial());
+    assertEquals("Heimsiswil Zentrum", foundWorkflow.getDesignationOfficial());
     assertEquals("New Comment", foundWorkflow.getWorkflowComment());
   }
 
@@ -114,7 +114,7 @@ class StopPointWorkflowServiceTest {
 
     EditStopPointWorkflowModel workflowModel = EditStopPointWorkflowModel.builder()
             .workflowComment("New Comment")
-            .designationOfficial("New Official")
+            .designationOfficial("Heimsiswil Zentrum")
             .build();
 
     assertThrows(IllegalStateException.class, () -> {
@@ -147,7 +147,7 @@ class StopPointWorkflowServiceTest {
 
     EditStopPointWorkflowModel workflowModel = EditStopPointWorkflowModel.builder()
             .workflowComment("New Comment")
-            .designationOfficial("New Official")
+            .designationOfficial("Heimsiswil Zentrum")
             .examinants(examinant.stream().map(StopPointClientPersonMapper::toModel).toList())
             .build();
 
@@ -187,7 +187,7 @@ class StopPointWorkflowServiceTest {
 
     EditStopPointWorkflowModel workflowModel = EditStopPointWorkflowModel.builder()
             .workflowComment("test")
-            .designationOfficial("test")
+            .designationOfficial("Heimsiswil Zentrum")
             .examinants(examinant.stream().map(StopPointClientPersonMapper::toModel).toList())
             .build();
 
