@@ -13,12 +13,14 @@
   <button (click)="close()" class="atlas-primary-btn me-3" data-cy="dialog-close-button">
     {{ 'COMMON.BACK' | translate }}
   </button>
-  <atlas-button
-    buttonDataCy="override-decision"
-    buttonText="WORKFLOW.BUTTON.OVERRIDE"
-    buttonType="supervisorButton"
-    applicationType="SEPODI"
-    (buttonClicked)="overrideDecision()"
-  >
-  </atlas-button>
+  @if (decisionDetailDialogData.workflosStatus === WorkflowStatus.Hearing) {
+    <atlas-button
+      buttonDataCy="override-decision"
+      buttonText="WORKFLOW.BUTTON.OVERRIDE"
+      buttonType="supervisorButton"
+      applicationType="SEPODI"
+      (buttonClicked)="overrideDecision()"
+    >
+    </atlas-button>
+  }
 </atlas-dialog-footer>
