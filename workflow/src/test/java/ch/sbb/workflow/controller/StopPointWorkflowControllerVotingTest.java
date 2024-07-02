@@ -98,6 +98,7 @@ class StopPointWorkflowControllerVotingTest {
         .status(WorkflowStatus.HEARING)
         .build();
     marek.setStopPointWorkflow(workflow);
+    judith.setStopPointWorkflow(workflow);
 
     workflowInHearing = workflowRepository.save(workflow);
   }
@@ -166,7 +167,7 @@ class StopPointWorkflowControllerVotingTest {
     assertThat(decision.getJudgement()).isEqualTo(JudgementType.YES);
 
     stopPointWorkflow = controller.getStopPointWorkflow(workflowInHearing.getId());
-    assertThat(stopPointWorkflow.getExaminants().getFirst().getJudgement()).isEqualTo(JudgementType.YES);
+    assertThat(stopPointWorkflow.getExaminants().stream().filter(i -> i.getMail().equals(MAIL_ADDRESS)).findFirst().orElseThrow().getJudgement()).isEqualTo(JudgementType.YES);
   }
 
   @Test
@@ -229,7 +230,8 @@ class StopPointWorkflowControllerVotingTest {
   @Test
   void shouldOverrideExistingVoteCorrectly() {
     // given
-    Person examinantToOverride = workflowInHearing.getExaminants().iterator().next();
+    Person examinantToOverride =
+        workflowInHearing.getExaminants().stream().filter(i -> i.getMail().equals(MAIL_ADDRESS)).findFirst().orElseThrow();
     Decision decision = Decision.builder()
         .judgement(JudgementType.NO)
         .motivation("Bad stuff")
