@@ -6,10 +6,7 @@ import static ch.sbb.atlas.model.ResponseCodeDescription.VERSIONING_NOT_IMPLEMEN
 
 import ch.sbb.atlas.api.model.Container;
 import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
-import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
-import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
-import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.*;
 import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
@@ -97,6 +94,12 @@ public interface ServicePointApiV1 {
   List<ReadServicePointVersionModel> updateServicePoint(
       @PathVariable Long id,
       @RequestBody @Valid UpdateServicePointVersionModel servicePointVersionModel
+  );
+
+  @PutMapping(path = "/update-designation-official/{id}")
+  ReadServicePointVersionModel updateDesingationOfficialServicePoint(
+          @PathVariable Long id,
+          @RequestBody @Valid UpdateDesignationOfficialServicePointModel updateServicePointVersionModel
   );
 
   @PutMapping(path = "/status/{sloid}/{id}")

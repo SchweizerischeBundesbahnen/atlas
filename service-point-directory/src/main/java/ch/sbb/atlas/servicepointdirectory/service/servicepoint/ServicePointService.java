@@ -81,6 +81,10 @@ public class ServicePointService {
     return servicePointVersionRepository.findById(id);
   }
 
+  public Optional<ServicePointVersion> findBySloid(String sloid) {
+    return servicePointVersionRepository.findBySloid(sloid);
+  }
+
   public List<ServicePointVersion> revokeServicePoint(ServicePointNumber servicePointNumber) {
     List<ServicePointVersion> servicePointVersions = servicePointVersionRepository.findAllByNumberOrderByValidFrom(
         servicePointNumber);
