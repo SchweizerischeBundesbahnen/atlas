@@ -52,6 +52,7 @@ const stopPointWorkflowService = jasmine.createSpyObj('stopPointWorkflowService'
   voteWorkflow: of(),
   editStopPointWorkflow: jasmine.createSpy('editStopPointWorkflow'),
 });
+const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
 
 const notificationServiceSpy = jasmine.createSpyObj(['success']);
 
@@ -62,7 +63,6 @@ const activatedRoute = {
     },
   },
 };
-const dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
 
 describe('StopPointWorkflowDetailComponent', () => {
   let component: StopPointWorkflowDetailComponent;
@@ -70,6 +70,7 @@ describe('StopPointWorkflowDetailComponent', () => {
 
   let stopPointRejectWorkflowDialogServiceSpy: StopPointRejectWorkflowDialogService;
   let dialogSpy = jasmine.createSpyObj(['open']);
+  //const dialogServiceSpy = jasmine.createSpyObj(['confirm']);
 
   beforeEach(async () => {
     stopPointRejectWorkflowDialogServiceSpy = jasmine.createSpyObj(['openDialog']);
@@ -233,7 +234,11 @@ describe('StopPointWorkflowDetailComponent', () => {
         lastName: 'MASTER',
         personFunction: 'Chef',
         mail: 'didok@chef.com',
-        organisation: 'SBB' }]
+        organisation: 'SBB',
+        id: 1,
+        judgementIcon: "",
+        judgement: JudgementType.Yes
+      }]
     });
     expect(notificationServiceSpy.success).toHaveBeenCalledWith('WORKFLOW.NOTIFICATION.EDIT.SUCCESS');
   });
