@@ -1,10 +1,12 @@
 package ch.sbb.workflow.service.sepodi;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.exception.SePoDiClientWrongStatusReturnedException;
+import ch.sbb.workflow.exception.StopPointWorkflowDesignationOfficialInvalidException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,4 +44,16 @@ public class SePoDiClientService {
     }
   }
 
+  public ReadServicePointVersionModel updateDesignationOfficialServicePoint(StopPointWorkflow stopPointWorkflow) {
+    if(stopPointWorkflow.getDesignationOfficial() == null || stopPointWorkflow.getDesignationOfficial().isEmpty()){
+      throw new StopPointWorkflowDesignationOfficialInvalidException();
+    }
+
+    UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel = UpdateDesignationOfficialServicePointModel
+            .builder()
+            .designationOfficial(stopPointWorkflow.getDesignationOfficial())
+            .build();
+
+    return sePoDiClient.updateServicePointDesignationOfficial(stopPointWorkflow.getVersionId(), updateDesignationOfficialServicePointModel);
+  }
 }

@@ -33,6 +33,8 @@ public class StopPointWorkflowService {
 
   private final StopPointWorkflowRepository workflowRepository;
   private final DecisionRepository decisionRepository;
+  private final SePoDiClientService sePoDiClientService;
+
 
   @Redacted(redactedClassType = StopPointWorkflow.class)
   public StopPointWorkflow getWorkflow(Long id) {
@@ -46,14 +48,17 @@ public class StopPointWorkflowService {
 
   public StopPointWorkflow editWorkflow(Long id, EditStopPointWorkflowModel workflowModel) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
-    if (!stopPointWorkflow.getDesignationOfficial().equals(workflowModel.getDesignationOfficial())
-        && stopPointWorkflow.getStatus() != WorkflowStatus.ADDED) {
+
+    if (stopPointWorkflow.getStatus() != WorkflowStatus.ADDED) {
       throw new IllegalStateException(EXCEPTION_MSG);
     }
 
-    stopPointWorkflow.setWorkflowComment(workflowModel.getWorkflowComment());
-    stopPointWorkflow.setDesignationOfficial(workflowModel.getDesignationOfficial());
+    if(!stopPointWorkflow.getDesignationOfficial().equals(workflowModel.getDesignationOfficial())){
+      stopPointWorkflow.setDesignationOfficial(workflowModel.getDesignationOfficial());
+      sePoDiClientService.updateDesignationOfficialServicePoint(stopPointWorkflow);
+    }
 
+    stopPointWorkflow.setWorkflowComment(workflowModel.getWorkflowComment());
 
     if(workflowModel.getExaminants() != null){
       stopPointWorkflow.getExaminants().clear();
@@ -65,7 +70,6 @@ public class StopPointWorkflowService {
                 stopPointWorkflow.getExaminants().add(examinant);
               });
     }
-
     return save(stopPointWorkflow);
   }
 
@@ -156,5 +160,4 @@ public class StopPointWorkflowService {
   public StopPointWorkflow save(StopPointWorkflow stopPointWorkflow) {
     return workflowRepository.saveAndFlush(stopPointWorkflow);
   }
-
 }
