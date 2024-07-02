@@ -31,4 +31,9 @@ public class StopPointWorkflowNotificationService {
         MailNotification mailNotification = builderNotificationService.buildPinCodeMail(workflow, examinantMail, pinCode);
         mailProducerService.produceMailNotification(mailNotification);
     }
+
+    public void sendApprovedStopPointWorkflowMail(StopPointWorkflow workflow) {
+        MailNotification mailNotification = builderNotificationService.buildWorkflowApprovedMail(workflow);
+        mailProducerService.produceMailNotification(mailNotification);
+    }
 }
