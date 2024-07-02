@@ -6,6 +6,7 @@ import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -80,6 +81,8 @@ public interface ServicePointVersionRepository extends JpaRepository<ServicePoin
   List<ServicePointVersion> findServicePointVersionByAbbreviation(String abbreviation);
 
   List<ServicePointVersion> findBySloidOrderByValidFrom(String sloid);
+
+  Optional<ServicePointVersion> findBySloid(String sloid);
 
   List<ServicePointVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndDesignationLongIgnoreCase(
       LocalDate validFrom, LocalDate validTo, String designationLong);

@@ -20,9 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
-import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
-import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
+import ch.sbb.atlas.api.servicepoint.*;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel.Fields;
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationCreateModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
@@ -55,6 +53,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import org.hibernate.sql.Update;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -911,6 +911,23 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[2].servicePointGeolocation.wgs84.north", is(46.96096808019)))
         .andExpect(jsonPath("$[2].servicePointGeolocation.wgs84.east", is(7.44891972221)));
     verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
+  }
+
+  @Test
+  void shouldUpdateServicePointDesignationOfficial() throws Exception {
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+        ServicePointTestData.getAargauServicePointVersionModel());
+    Long id = servicePointVersionModel.getId();
+
+    UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel = UpdateDesignationOfficialServicePointModel.builder()
+                    .designationOfficial("test")
+                    .build();
+
+    mvc.perform(put("/v1/service-points/update-designation-official/" + id)
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(updateDesignationOfficialServicePointModel)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.designationOfficial", is("test")));
   }
 
   @Test
