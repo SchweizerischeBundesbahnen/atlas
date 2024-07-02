@@ -218,7 +218,7 @@ class StopPointWorkflowControllerVotingTest {
     OverrideDecisionModel override = OverrideDecisionModel.builder()
         .firstName("Luca")
         .lastName("Ammann")
-        .fotJudgement(JudgementType.NO)
+        .fotJudgement(JudgementType.YES)
         .fotMotivation("Nein, Müll")
         .build();
 
@@ -226,7 +226,7 @@ class StopPointWorkflowControllerVotingTest {
 
     // then
     examinantDecision = decisionRepository.findDecisionByExaminantId(examinantToOverride.getId());
-    assertThat(examinantDecision.getFotJudgement()).isEqualTo(JudgementType.NO);
+    assertThat(examinantDecision.getFotJudgement()).isEqualTo(JudgementType.YES);
   }
 
   @Test
