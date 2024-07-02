@@ -4,7 +4,7 @@ import {FormGroup} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {StopPointRejectWorkflowDialogData} from "./stop-point-reject-workflow-dialog-data";
 import {NotificationService} from "../../../../core/notification/notification.service";
-import {StopPointWorkflowService, UserAdministrationService} from "../../../../api";
+import {StopPointRejectWorkflow, StopPointWorkflowService, UserAdministrationService} from "../../../../api";
 import {ValidationService} from "../../../../core/validation/validation.service";
 import {Pages} from "../../../pages";
 import {Router} from "@angular/router";
@@ -59,15 +59,39 @@ export class StopPointRejectWorkflowDialogComponent implements OnInit {
       const stopPointRejectWorkflow =
         StopPointRejectWorkflowFormGroupBuilder.buildStopPointRejectWorkflow(this.formGroup, this.email);
       this.formGroup.disable();
-      this.stopPointWorkflowService.rejectStopPointWorkflow(this.data.workflowId, stopPointRejectWorkflow)
-        .subscribe(() => {
-          this.notificationService.success('WORKFLOW.NOTIFICATION.CHECK.REJECTED');
-          this.dialogRef.close();
-          this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-            this.router.navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, this.data.workflowId]).then(() => {
-            });
-          })
-        })
+      if (this.data.rejectType === "REJECT") {
+        this.doReject(stopPointRejectWorkflow);
+      }
+      if (this.data.rejectType === "CANCEL") {
+        this.doCancel(stopPointRejectWorkflow);
+      }
     }
+  }
+
+  private doCancel(stopPointRejectWorkflow: StopPointRejectWorkflow) {
+    this.stopPointWorkflowService.cancelStopPointWorkflow(this.data.workflowId, stopPointRejectWorkflow)
+      .subscribe(() => {
+        this.notificationService.success('WORKFLOW.NOTIFICATION.CHECK.CANCELLED');
+        this.dialogRef.close();
+        this.navigateToWorkflow();
+      })
+  }
+
+
+  private doReject(stopPointRejectWorkflow: StopPointRejectWorkflow) {
+    this.stopPointWorkflowService.rejectStopPointWorkflow(this.data.workflowId, stopPointRejectWorkflow)
+      .subscribe(() => {
+        this.notificationService.success('WORKFLOW.NOTIFICATION.CHECK.REJECTED');
+        this.dialogRef.close();
+        this.navigateToWorkflow();
+      })
+  }
+
+
+  private navigateToWorkflow() {
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+      this.router.navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, this.data.workflowId]).then(() => {
+      });
+    })
   }
 }

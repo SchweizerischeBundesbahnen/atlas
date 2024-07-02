@@ -82,7 +82,11 @@ export class StopPointWorkflowDetailComponent implements OnInit {
   }
 
   rejectWorkflow() {
-    this.stopPointRejectWorkflowDialogService.openDialog(this.workflow.id!);
+    this.stopPointRejectWorkflowDialogService.openDialog(this.workflow.id!, "REJECT")
+  }
+
+  cancelWorkflow() {
+    this.stopPointRejectWorkflowDialogService.openDialog(this.workflow.id!, "CANCEL");
   }
 
   openDecisionDialog() {

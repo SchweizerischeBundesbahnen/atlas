@@ -23,12 +23,14 @@ const workflow: ReadStopPointWorkflow = {
 const notificationServiceSpy = jasmine.createSpyObj(['success']);
 const stopPointWorkflowService = jasmine.createSpyObj({
   rejectStopPointWorkflow: of(workflow),
+  cancelStopPointWorkflow: of(workflow),
 });
 
 const workflowDialogData: StopPointRejectWorkflowDialogData = {
   title: '',
   message: '',
-  workflowId: 123
+  workflowId: 123,
+  rejectType: "CANCEL"
 }
 const router = jasmine.createSpyObj({
   navigate: Promise.resolve(),
@@ -51,6 +53,14 @@ const userAdministrationServiceMock = jasmine.createSpyObj(UserAdministrationSer
 });
 
 const dialogRefSpy = jasmine.createSpyObj(['close']);
+
+function formGroup(component: StopPointRejectWorkflowDialogComponent) {
+  const formGroup = component.formGroup;
+  formGroup.controls.firstName.setValue('firstName');
+  formGroup.controls.lastName.setValue('lastName');
+  formGroup.controls.organisation.setValue('organisation');
+  formGroup.controls.motivationComment.setValue('juva merda');
+}
 
 describe('StopPointRejectWorkflowDialogComponent', () => {
   let component: StopPointRejectWorkflowDialogComponent;
@@ -98,14 +108,20 @@ describe('StopPointRejectWorkflowDialogComponent', () => {
   });
 
   it('should reject workflow via service', () => {
-    const formGroup = component.formGroup;
-    formGroup.controls.firstName.setValue('firstName');
-    formGroup.controls.lastName.setValue('lastName');
-    formGroup.controls.organisation.setValue('organisation');
-    formGroup.controls.motivationComment.setValue('juva merda');
+    workflowDialogData.rejectType = "CANCEL";
+    formGroup(component);
     fixture.detectChanges()
+    component.rejectWorkflow()
 
+    expect(stopPointWorkflowService.cancelStopPointWorkflow).toHaveBeenCalled();
+    expect(notificationServiceSpy.success).toHaveBeenCalled();
+    expect(dialogRefSpy.close).toHaveBeenCalled();
+  });
 
+  it('should cancel workflow via service', () => {
+    workflowDialogData.rejectType = "REJECT";
+    formGroup(component);
+    fixture.detectChanges()
     component.rejectWorkflow()
 
     expect(stopPointWorkflowService.rejectStopPointWorkflow).toHaveBeenCalled();
