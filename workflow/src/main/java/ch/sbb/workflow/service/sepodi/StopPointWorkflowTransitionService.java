@@ -90,11 +90,15 @@ public class StopPointWorkflowTransitionService {
     return stopPointWorkflow;
   }
 
+  @PreAuthorize(
+      "@countryAndBusinessOrganisationBasedUserAdministrationService."
+          + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   public StopPointWorkflow cancelWorkflow(Long id, StopPointRejectWorkflowModel stopPointCancelWorkflowModel) {
     StopPointWorkflow stopPointWorkflow = stopPointWorkflowService.findStopPointWorkflow(id);
     if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
       throw new IllegalStateException(EXCEPTION_HEARING_MSG);
     }
+    sePoDiClientService.updateStoPointStatusToDraft(stopPointWorkflow);
     Person examinantBAV = PersonMapper.toPersonEntity(stopPointCancelWorkflowModel);
     examinantBAV.setStopPointWorkflow(stopPointWorkflow);
     Decision decision = new Decision();
