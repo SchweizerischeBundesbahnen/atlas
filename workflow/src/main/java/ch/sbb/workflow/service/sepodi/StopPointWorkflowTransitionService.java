@@ -28,7 +28,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -174,10 +173,8 @@ public class StopPointWorkflowTransitionService {
   }
 
   private StopPointWorkflowProgressDecider buildProgressDecider(StopPointWorkflow workflow) {
-    Set<Person> examinants = workflow.getExaminants();
-
     Map<Person, Optional<Decision>> decisions = new HashMap<>();
-    examinants.forEach(examinant -> {
+    workflow.getExaminants().forEach(examinant -> {
       Optional<Decision> decisionByExaminantId = decisionService.findDecisionByExaminantId(examinant.getId());
       decisions.put(examinant, decisionByExaminantId);
     });
