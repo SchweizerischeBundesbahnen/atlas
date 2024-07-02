@@ -23,7 +23,7 @@ class StopPointWorkflowProgressDeciderTest {
     StopPointWorkflowProgressDecider stopPointWorkflowProgressDecider = new StopPointWorkflowProgressDecider(decisions);
 
     assertThat(stopPointWorkflowProgressDecider.areAllDecisionsMade()).isFalse();
-    assertThat(stopPointWorkflowProgressDecider.calculateNewWorkflowStatus()).isEqualTo(Optional.empty());
+    assertThat(stopPointWorkflowProgressDecider.calculateNewWorkflowStatus()).isEmpty();
   }
 
   @Test
@@ -46,7 +46,7 @@ class StopPointWorkflowProgressDeciderTest {
     StopPointWorkflowProgressDecider stopPointWorkflowProgressDecider = new StopPointWorkflowProgressDecider(decisions);
 
     assertThat(stopPointWorkflowProgressDecider.areAllDecisionsMade()).isTrue();
-    assertThat(stopPointWorkflowProgressDecider.calculateNewWorkflowStatus()).isEqualTo(Optional.empty());
+    assertThat(stopPointWorkflowProgressDecider.calculateNewWorkflowStatus()).isEmpty();
   }
 
   @Test
@@ -69,7 +69,7 @@ class StopPointWorkflowProgressDeciderTest {
     StopPointWorkflowProgressDecider stopPointWorkflowProgressDecider = new StopPointWorkflowProgressDecider(decisions);
 
     assertThat(stopPointWorkflowProgressDecider.areAllDecisionsMade()).isTrue();
-    assertThat(stopPointWorkflowProgressDecider.calculateNewWorkflowStatus()).isEqualTo(Optional.empty());
+    assertThat(stopPointWorkflowProgressDecider.calculateNewWorkflowStatus()).isEmpty();
   }
 
   @Test
@@ -80,6 +80,18 @@ class StopPointWorkflowProgressDeciderTest {
     StopPointWorkflowProgressDecider stopPointWorkflowProgressDecider = new StopPointWorkflowProgressDecider(decisions);
 
     assertThat(stopPointWorkflowProgressDecider.areAllDecisionsMade()).isTrue();
+    assertThat(stopPointWorkflowProgressDecider.calculateNewWorkflowStatus()).isEqualTo(Optional.of(WorkflowStatus.REJECTED));
+  }
+
+  @Test
+  void shouldRejectWorkflowIfBavSaysNoWithoutWaitingForAll() {
+    Map<Person, Optional<Decision>> decisions = new HashMap<>();
+    decisions.put(JULY, Optional.empty());
+    decisions.put(AUGUST, Optional.of(Decision.builder().judgement(JudgementType.NO).fotJudgement(JudgementType.NO).build()));
+
+    StopPointWorkflowProgressDecider stopPointWorkflowProgressDecider = new StopPointWorkflowProgressDecider(decisions);
+
+    assertThat(stopPointWorkflowProgressDecider.areAllDecisionsMade()).isFalse();
     assertThat(stopPointWorkflowProgressDecider.calculateNewWorkflowStatus()).isEqualTo(Optional.of(WorkflowStatus.REJECTED));
   }
 
