@@ -28,6 +28,9 @@ public class StopPointWorkflowBuilderNotificationService {
   static final String PINCODE_SUBJECT = """
       Stationsnamen PIN-Code / Nom de station PIN-Code / Nome della stazione codice PIN
       """;
+  static final String APPROVED_WORKFLOW_SUBJECT = """
+      Stationsnamen Anhörung abgeschlossen / Nom de station audition terminée / Audizione nome della stazione conclusa
+      """;
 
   @Value("${spring.profiles.active:local}")
   private String activeProfile;
@@ -107,4 +110,16 @@ public class StopPointWorkflowBuilderNotificationService {
         .build();
   }
 
+  public MailNotification buildWorkflowApprovedMail(StopPointWorkflow stopPointWorkflow) {
+    List<String> recipients = new ArrayList<>(List.of(stopPointWorkflow.getApplicantMail()));
+    recipients.addAll(stopPointWorkflow.getExaminants().stream().map(Person::getMail).toList());
+    return MailNotification.builder()
+        .from(from)
+        .mailType(MailType.APPROVED_STOP_POINT_WORKFLOW_NOTIFICATION)
+        .subject(APPROVED_WORKFLOW_SUBJECT)
+        .to(recipients)
+        .cc(stopPointWorkflow.getCcEmails())
+        .templateProperties(buildMailProperties(stopPointWorkflow, APPROVED_WORKFLOW_SUBJECT))
+        .build();
+  }
 }
