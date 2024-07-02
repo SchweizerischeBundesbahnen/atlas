@@ -1,32 +1,38 @@
 <div class="d-flex flex-column col-12">
   @if (formGroup.enabled) {
     <div class="d-flex flex-row col-12">
-      <div class="flex-grow-1">
-        <atlas-text-field controlName="input"
-                          [fieldLabel]="fieldLabel"
-                          [infoIconTitle]="infoIconTitle"
-                          [infoIconLink]="infoIconLink"
-                          [required]="required"
-                          [fieldExamples]="fieldExamples"
-                          [formGroup]="_form"
-                          [placeholder]="this.showPlaceHolder ? this.placeHolderText  : ''"
-                          (keyup.enter)="addItem()">
+      <div class="d-flex flex-grow-1">
+        <atlas-text-field
+          controlName="input"
+          [fieldLabel]="fieldLabel"
+          [infoIconTitle]="infoIconTitle"
+          [infoIconLink]="infoIconLink"
+          [required]="required"
+          [fieldExamples]="fieldExamples"
+          [formGroup]="_form"
+          [placeholder]="this.showPlaceHolder ? this.placeHolderText : ''"
+          (keyup.enter)="addItem()"
+        >
+          <i
+            style="font-size: 1.5rem"
+            class="bi bi-plus-lg cursor-pointer color-primary-500"
+            (click)="addItem()"
+          ></i>
         </atlas-text-field>
       </div>
     </div>
     <div class="d-flex">
-      <app-atlas-field-error
-        [form]="formGroup"
-        [controlName]="controlName"
-      ></app-atlas-field-error>
+      <app-atlas-field-error [form]="formGroup" [controlName]="controlName"></app-atlas-field-error>
     </div>
   } @else {
-    <span [ngClass]="required ? 'required-indicator' : ''" class="font-bold-lg mb-1">{{ fieldLabel | translate }}</span>
+    <span [ngClass]="required ? 'required-indicator' : ''" class="font-bold-lg mb-1">{{
+      fieldLabel | translate
+    }}</span>
   }
   <div class="d-flex flex-row">
     <mat-chip-set [disabled]="formGroup.disabled">
       <mat-chip
-        *ngFor="let value of _strings;let i=index"
+        *ngFor="let value of _strings; let i = index"
         (removed)="removeItem(i)"
         class="font-bold-sm"
       >
