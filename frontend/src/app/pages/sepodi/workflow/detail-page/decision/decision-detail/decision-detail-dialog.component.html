@@ -13,7 +13,7 @@
   <button (click)="close()" class="atlas-primary-btn me-3" data-cy="dialog-close-button">
     {{ 'COMMON.BACK' | translate }}
   </button>
-  @if (decisionDetailDialogData.workflosStatus === WorkflowStatus.Hearing) {
+  @if (decisionDetailDialogData.workflowStatus === WorkflowStatus.Hearing) {
     <atlas-button
       buttonDataCy="override-decision"
       buttonText="WORKFLOW.BUTTON.OVERRIDE"

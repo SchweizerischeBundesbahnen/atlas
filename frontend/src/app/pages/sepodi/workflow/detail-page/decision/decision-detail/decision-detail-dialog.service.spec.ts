@@ -4,6 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { DecisionDetailDialogService } from './decision-detail-dialog.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ExaminantFormGroup } from '../../detail-form/stop-point-workflow-detail-form-group';
+import {WorkflowStatus} from "../../../../../../api";
 
 describe('DecisionDetailDialogService', () => {
   let service: DecisionDetailDialogService;
@@ -23,6 +24,7 @@ describe('DecisionDetailDialogService', () => {
     service
       .openDialog(
         1,
+        WorkflowStatus.Hearing,
         new FormGroup<ExaminantFormGroup>({
           mail: new FormControl(''),
           firstName: new FormControl(''),
