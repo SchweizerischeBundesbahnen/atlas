@@ -6,7 +6,7 @@ import {DecisionDetailDialogData} from "./decision-detail-dialog.service";
 import {StopPointWorkflowDetailFormGroupBuilder} from "../../detail-form/stop-point-workflow-detail-form-group";
 import {AppTestingModule} from "../../../../../../app.testing.module";
 import {of} from "rxjs";
-import {JudgementType, ReadDecision, StopPointWorkflowService} from "../../../../../../api";
+import {JudgementType, ReadDecision, StopPointWorkflowService, WorkflowStatus} from "../../../../../../api";
 import {DecisionFormComponent} from "../decision-form/decision-form.component";
 import {CommentComponent} from "../../../../../../core/form-components/comment/comment.component";
 import {AtlasFieldErrorComponent} from "../../../../../../core/form-components/atlas-field-error/atlas-field-error.component";
@@ -24,6 +24,7 @@ const dialogData: DecisionDetailDialogData = {
   title: '',
   message: '',
   workflowId: 123,
+  workflowStatus: WorkflowStatus.Hearing,
   examinant: StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup()
 }
 
@@ -31,6 +32,7 @@ const dialogDataWithExisitingExaminant: DecisionDetailDialogData = {
   title: '',
   message: '',
   workflowId: 123,
+  workflowStatus: WorkflowStatus.Hearing,
   examinant: StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup({
     judgement: JudgementType.Yes,
     organisation: 'Stadt Bern',

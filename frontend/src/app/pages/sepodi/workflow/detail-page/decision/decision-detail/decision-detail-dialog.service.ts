@@ -10,7 +10,7 @@ import {WorkflowStatus} from "../../../../../../api";
 
 export interface DecisionDetailDialogData extends DialogData {
   workflowId: number;
-  workflosStatus: WorkflowStatus,
+  workflowStatus: WorkflowStatus,
   examinant: FormGroup<ExaminantFormGroup>;
 }
 
@@ -20,14 +20,14 @@ export class DecisionDetailDialogService {
 
   constructor(private dialog: MatDialog) {}
 
-  openDialog(workflowId: number, workflosStatus: WorkflowStatus, examinant: FormGroup<ExaminantFormGroup>): Observable<boolean> {
+  openDialog(workflowId: number, workflowStatus: WorkflowStatus, examinant: FormGroup<ExaminantFormGroup>): Observable<boolean> {
     const dialogData: DecisionDetailDialogData = {
       title: 'WORKFLOW.BUTTON.ADD',
       message: '',
       cancelText: 'DIALOG.CANCEL',
       confirmText: 'WORKFLOW.BUTTON.SEND',
       workflowId: workflowId,
-      workflosStatus: workflosStatus,
+      workflowStatus: workflowStatus,
       examinant: examinant,
     };
 
