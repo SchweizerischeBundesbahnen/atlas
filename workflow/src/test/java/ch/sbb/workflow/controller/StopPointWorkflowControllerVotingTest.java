@@ -75,24 +75,29 @@ class StopPointWorkflowControllerVotingTest {
 
   @BeforeEach
   void setUp() {
-    Person person = Person.builder()
+    Person marek = Person.builder()
         .firstName("Marek")
         .lastName("Hamsik")
         .function("Centrocampista")
         .mail(MAIL_ADDRESS).build();
+    Person judith = Person.builder()
+        .firstName("Judith")
+        .lastName("Bollhalder")
+        .function("Fachstelle")
+        .mail("judith.bollhalder@sbb.ch").build();
     StopPointWorkflow workflow = StopPointWorkflow.builder()
         .sloid("ch:1:sloid:1234")
         .sboid("ch:1:sboid:666")
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
         .localityName("Biel/Bienne")
         .workflowComment("WF comment")
-        .examinants(Set.of(person))
+        .examinants(Set.of(marek, judith))
         .startDate(LocalDate.of(2000, 1, 1))
         .endDate(LocalDate.of(2000, 12, 31))
         .versionId(123456L)
         .status(WorkflowStatus.HEARING)
         .build();
-    person.setStopPointWorkflow(workflow);
+    marek.setStopPointWorkflow(workflow);
 
     workflowInHearing = workflowRepository.save(workflow);
   }
