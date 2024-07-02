@@ -6,9 +6,11 @@ import { DecisionDetailDialogComponent } from './decision-detail-dialog.componen
 import { FormGroup } from '@angular/forms';
 import { ExaminantFormGroup } from '../../detail-form/stop-point-workflow-detail-form-group';
 import { DialogData } from 'src/app/core/components/dialog/dialog.data';
+import {WorkflowStatus} from "../../../../../../api";
 
 export interface DecisionDetailDialogData extends DialogData {
   workflowId: number;
+  workflosStatus: WorkflowStatus,
   examinant: FormGroup<ExaminantFormGroup>;
 }
 
@@ -18,13 +20,14 @@ export class DecisionDetailDialogService {
 
   constructor(private dialog: MatDialog) {}
 
-  openDialog(workflowId: number, examinant: FormGroup<ExaminantFormGroup>): Observable<boolean> {
+  openDialog(workflowId: number, workflosStatus: WorkflowStatus, examinant: FormGroup<ExaminantFormGroup>): Observable<boolean> {
     const dialogData: DecisionDetailDialogData = {
       title: 'WORKFLOW.BUTTON.ADD',
       message: '',
       cancelText: 'DIALOG.CANCEL',
       confirmText: 'WORKFLOW.BUTTON.SEND',
       workflowId: workflowId,
+      workflosStatus: workflosStatus,
       examinant: examinant,
     };
 
