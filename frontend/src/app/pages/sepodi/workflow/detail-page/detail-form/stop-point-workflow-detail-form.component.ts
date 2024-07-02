@@ -66,6 +66,6 @@ export class StopPointWorkflowDetailFormComponent {
 
   openDecision(index: number) {
     const examinant = this.form.controls.examinants.at(index);
-    this.decisionDetailDialogService.openDialog(this.currentWorkflow!.id!, examinant);
+    this.decisionDetailDialogService.openDialog(this.currentWorkflow!.id!, this.currentWorkflow!.status!, examinant);
   }
 }
