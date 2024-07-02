@@ -607,6 +607,7 @@
       "ALREADY_IN_REVIEW": "Une consultation a déjà été lancée pour cet objet.",
       "EXAMINANT_MAIL_NOT_FOUND": "L'adresse e-mail saisie n'a pas été trouvée parmi les destinataires.",
       "PIN_CODE_INVALID": "Le code PIN saisi n'est pas correct.",
+      "DESIGNATION_OFFICIAL_NOT_EMPTY": "La désignation officielle ne doit pas être vide.",
       "WRONG_CHANGING_STATUS": "Les données affichées ont été traitées entre-temps. Veuillez recharger votre browser (F5)."
     },
     "DECISION": {

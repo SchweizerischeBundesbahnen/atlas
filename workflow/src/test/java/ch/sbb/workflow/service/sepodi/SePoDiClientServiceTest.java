@@ -158,6 +158,7 @@ class SePoDiClientServiceTest {
             .build();
     doReturn(updateServicePointVersionModel).when(sePoDiClient).updateServicePointDesignationOfficial(versionId, updateDesignationOfficialServicePointModel);
 
+    stopPointWorkflow.setDesignationOfficial(null);
     //when && then
     assertThrows(StopPointWorkflowDesignationOfficialInvalidException.class, () -> service.updateDesignationOfficialServicePoint(stopPointWorkflow));
 
