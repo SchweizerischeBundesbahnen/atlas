@@ -35,7 +35,7 @@ export class StopPointWorkflowDetailFormGroupBuilder {
       ]),
       designationOfficial: new FormControl(workflow?.designationOfficial, [Validators.required,
         Validators.minLength(2),
-        Validators.maxLength(100),
+        Validators.maxLength(30),
         AtlasCharsetsValidator.iso88591]),
       examinants: new FormArray<FormGroup<ExaminantFormGroup>>(
         workflow?.examinants?.map((examinant) => this.buildExaminantFormGroup(examinant)) ?? [
