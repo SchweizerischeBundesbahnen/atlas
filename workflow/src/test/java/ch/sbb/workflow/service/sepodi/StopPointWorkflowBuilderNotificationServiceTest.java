@@ -4,6 +4,7 @@ import static ch.sbb.atlas.kafka.model.mail.MailType.REJECT_STOP_POINT_WORKFLOW_
 import static ch.sbb.atlas.kafka.model.mail.MailType.START_STOP_POINT_WORKFLOW_CC_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.START_STOP_POINT_WORKFLOW_EXAMINANT_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_WORKFLOW_PINCODE_NOTIFICATION;
+import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.APPROVED_WORKFLOW_SUBJECT;
 import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.PINCODE_SUBJECT;
 import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.REJECT_WORKFLOW_SUBJECT;
 import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.START_WORKFLOW_SUBJECT;
@@ -12,6 +13,7 @@ import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
+import ch.sbb.atlas.kafka.model.mail.MailType;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import java.time.LocalDate;
@@ -114,6 +116,20 @@ class StopPointWorkflowBuilderNotificationServiceTest {
     assertThat(result.getTo()).hasSize(1).contains("luca@bayern.munchen");
     assertThat(result.getCc()).isNull();
     assertThat(result.getTemplateProperties().getFirst()).containsKeys("pincode");
+  }
+
+  @Test
+  void shouldBuildWorkflowApprovedMail() {
+    //given
+    StopPointWorkflow stopPointWorkflow = getStopPointWorkflow();
+    //when
+    MailNotification result = notificationService.buildWorkflowApprovedMail(stopPointWorkflow);
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getMailType()).isEqualTo(MailType.APPROVED_STOP_POINT_WORKFLOW_NOTIFICATION);
+    assertThat(result.getSubject()).isEqualTo(APPROVED_WORKFLOW_SUBJECT);
+    assertThat(result.getTo()).hasSize(3);
+    assertThat(result.getCc()).hasSize(2);
   }
 
   private static StopPointWorkflow getStopPointWorkflow() {
