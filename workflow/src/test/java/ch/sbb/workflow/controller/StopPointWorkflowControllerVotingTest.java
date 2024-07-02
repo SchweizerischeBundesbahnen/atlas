@@ -167,7 +167,8 @@ class StopPointWorkflowControllerVotingTest {
     assertThat(decision.getJudgement()).isEqualTo(JudgementType.YES);
 
     stopPointWorkflow = controller.getStopPointWorkflow(workflowInHearing.getId());
-    assertThat(stopPointWorkflow.getExaminants().stream().filter(i -> i.getMail().equals(MAIL_ADDRESS)).findFirst().orElseThrow().getJudgement()).isEqualTo(JudgementType.YES);
+    assertThat(stopPointWorkflow.getExaminants().stream().filter(i -> i.getMail().equals(MAIL_ADDRESS)).findFirst().orElseThrow()
+        .getJudgement()).isEqualTo(JudgementType.YES);
   }
 
   @Test
@@ -207,7 +208,8 @@ class StopPointWorkflowControllerVotingTest {
   @Test
   void shouldOverridePendingVoteCorrectly() {
     //given
-    Person examinantToOverride = workflowInHearing.getExaminants().iterator().next();
+    Person examinantToOverride = workflowInHearing.getExaminants().stream().filter(i -> i.getMail().equals(MAIL_ADDRESS))
+        .findFirst().orElseThrow();
 
     Decision examinantDecision = decisionRepository.findDecisionByExaminantId(examinantToOverride.getId());
     assertThat(examinantDecision).isNull();
