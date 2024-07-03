@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang='en' xmlns='http://www.w3.org/1999/xhtml' xmlns:th='http://www.thymeleaf.org'>
+<head>
+    <title th:text="${properties.get(0).get('title')}"></title>
+    <meta charset='UTF-8'>
+    <style>
+        body {
+            background-color: #fafafa;
+            font-family: 'IBM Plex Sans', sans-serif;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .logo-container {
+            width: 12%;
+            float: left;
+        }
+
+        .logo {
+            margin: 35px 35px 35px 40px;
+            top: 32px;
+            left: 47px;
+            width: 45px;
+            height: 45px;
+            background-size: 23px 23px;
+        }
+
+        .logo-title {
+            color: #06348b;
+            position: absolute;
+            top: 83px;
+            left: 47px;
+            width: 45px;
+            height: 20px;
+            line-height: 20px;
+            font-size: large;
+            font-weight: bold;
+        }
+
+        .ski-color {
+            color: #06348b
+        }
+
+        .header-title {
+            font-size: large;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header-container {
+            width: 100%;
+            height: 100%;
+            float: left;
+            text-align: justify;
+        }
+
+        .content-container {
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+
+        .header-right {
+            float: left;
+            width: 79%;
+            padding-top: 132px;
+            font-weight: bold;
+            text-align: center;
+            display: inline-block;
+        }
+
+        a:link {
+            text-decoration: none;
+        }
+
+        a:visited {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        a:active {
+            text-decoration: underline;
+        }
+
+        .mb-1 {
+            margin-bottom: 48px;
+        }
+
+        .mail-container {
+            padding-bottom: 30px;
+        }
+
+        hr {
+            height: 2px;
+            border-width: 0;
+            color: gray;
+            background-color: gray;
+        }
+    </style>
+</head>
+<body>
+<div class="mail-container">
+    <div class='header-container'>
+        <div class='logo-container'>
+            <div class='logo'>
+                <img src="logo-atlas.jpeg" th:src="'cid:' + ${logo}" th:width='45'/>
+                <div class='logo-title'>
+                    atlas
+                </div>
+            </div>
+        </div>
+        <div class='header-right mb-1'>
+            <span class='header-title' th:text="${properties.get(0).get('title')}"></span>
+        </div>
+    </div>
+    <div class='content-container'>
+        <div>
+            <i>Pour la version française voir ci-dessous. / Per la versione in lingua italiana vedi sotto.</i>
+            <br><br>
+            <hr>
+            <div>
+                <br><span>Sehr geehrte Damen und Herren</span><br><br>
+                <span>
+                    Die Anhörung des neuen Haltestellennamens
+                    <b>[[${properties.get(0).get('designationOfficial')}]], [[${properties.get(0).get('sloid')}]]</b>
+                    wurde abgebrochen. Das Bundesamt für Verkehr hat folgende Begründung erfasst:
+                </span>
+                <span><br><br>
+                    [[${properties.get(0).get('comment')}]]
+                </span><br><br>
+                <span>Die Beantwortung der Anhörung ist somit nicht mehr erforderlich. Weitere Details zur Anhörung können in
+                    atlas eingesehen werden: [[${properties.get(0).get('url')}]]</span>
+                <br><br>
+
+                <div>
+                    <br>Freundliche Grüsse<br><br>
+                    Fachstelle atlas<br>
+                    <b>SKI - Systemaufgaben Kundeninformation</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>SBB AG</b><br>
+                    Infrastruktur, Fahrplan und Betrieb, Kundeninformation<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <br><span>Chères Mesdames, chers Messieurs</span><br><br>
+                <span>
+                    L'audition du nouveau nom de l'arrêt
+                    <b>[[${properties.get(0).get('designationOfficial')}]], [[${properties.get(0).get('sloid')}]]</b>
+                     a été avortée. L'Office fédéral des transports a saisi la justification suivante:
+                </span>
+                <span><br><br>
+                    [[${properties.get(0).get('comment')}]]
+                </span><br><br>
+                <span>Il n'est donc plus nécessaire de répondre à l'audition. De plus amples détails sur l'audition peuvent être consultés dans:
+                    [[${properties.get(0).get('url')}]]</span>
+                <br><br>
+                <div>
+                    <br>Meilleures Salutations <br><br>
+                    Service spécialisé atlas <br>
+                    <b>SKI - Systemaufgaben Kundeninformation</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>CFF SA</b><br>
+                    Incrastructure – Horaire et Exploitation, Information à la clientèle<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
+
+            <hr>
+            <div>
+                <br><span>Gentili signore ed egregi signori,</span><br><br>
+                <span>
+                    La consultazione per il nuovo nome della fermata
+                    <b>[[${properties.get(0).get('designationOfficial')}]], [[${properties.get(0).get('sloid')}]]</b>
+                    è stata cancellata. L'Ufficio federale dei trasporti ha fornito la seguente motivazione:
+                </span>
+                <span><br><br>
+                    [[${properties.get(0).get('comment')}]]
+                </span><br><br>
+                <span>Non è quindi più necessario rispondere all'audizione. Ulteriori dettagli sull'audizione sono disponibili su
+                    [[${properties.get(0).get('url')}]]</span>
+                <br><br>
+                <div>
+                    <br>Cordiali saluti<br><br>
+                    Servizio specializzato atlas<br>
+                    <b>SKI - Systemaufgaben Kundeninformation</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>FFS SA</b><br>
+                    Infrastrutture – Orario ed Esercizio, Informazione della clientela<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
