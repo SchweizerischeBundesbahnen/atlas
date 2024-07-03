@@ -22,8 +22,8 @@ public class StopPointWorkflowNotificationService {
         mailProducerService.produceMailNotification(buildWorkflowStartedCCMailNotification);
     }
 
-    public void sendRejectStopPointWorkflowMail(StopPointWorkflow workflow) {
-        MailNotification mailNotification = builderNotificationService.buildWorkflowRejectMail(workflow);
+    public void sendRejectStopPointWorkflowMail(StopPointWorkflow workflow, String rejectComment) {
+        MailNotification mailNotification = builderNotificationService.buildWorkflowRejectMail(workflow, rejectComment);
         mailProducerService.produceMailNotification(mailNotification);
     }
 
@@ -34,6 +34,11 @@ public class StopPointWorkflowNotificationService {
 
     public void sendApprovedStopPointWorkflowMail(StopPointWorkflow workflow) {
         MailNotification mailNotification = builderNotificationService.buildWorkflowApprovedMail(workflow);
+        mailProducerService.produceMailNotification(mailNotification);
+    }
+
+    public void sendCanceledStopPointWorkflowMail(StopPointWorkflow workflow, String cancelComment) {
+        MailNotification mailNotification = builderNotificationService.buildWorkflowCanceledMail(workflow, cancelComment);
         mailProducerService.produceMailNotification(mailNotification);
     }
 }
