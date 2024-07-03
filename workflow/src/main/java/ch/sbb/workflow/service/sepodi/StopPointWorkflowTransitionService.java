@@ -110,6 +110,7 @@ public class StopPointWorkflowTransitionService {
     decisionService.save(decision);
 
     stopPointWorkflow.setEndDate(LocalDate.now());
+    //todo sendNotification
     stopPointWorkflow.setStatus(WorkflowStatus.CANCELED);
     return stopPointWorkflow;
   }
