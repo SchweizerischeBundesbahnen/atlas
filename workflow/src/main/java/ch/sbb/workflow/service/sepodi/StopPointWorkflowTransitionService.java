@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,9 +58,6 @@ public class StopPointWorkflowTransitionService {
     return stopPointWorkflowService.save(stopPointWorkflow);
   }
 
-  @PreAuthorize(
-      "@countryAndBusinessOrganisationBasedUserAdministrationService."
-          + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   public StopPointWorkflow startWorkflow(Long id) {
     StopPointWorkflow stopPointWorkflow = stopPointWorkflowService.findStopPointWorkflow(id);
     StopPointWorkflowStatusTransitionDecider.validateWorkflowStatusTransition(stopPointWorkflow.getStatus(),
@@ -74,15 +70,12 @@ public class StopPointWorkflowTransitionService {
     return workflow;
   }
 
-  @PreAuthorize(
-      "@countryAndBusinessOrganisationBasedUserAdministrationService."
-          + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   public StopPointWorkflow rejectWorkflow(Long id, StopPointRejectWorkflowModel rejectWorkflowModel) {
     StopPointWorkflow stopPointWorkflow = stopPointWorkflowService.findStopPointWorkflow(id);
     StopPointWorkflowStatusTransitionDecider.validateWorkflowStatusTransition(stopPointWorkflow.getStatus(), REJECTED);
     Person examinantBAV = PersonMapper.toPersonEntity(rejectWorkflowModel);
     decisionService.createRejectedDecision(examinantBAV, rejectWorkflowModel.getMotivationComment());
-    sePoDiClientService.updateStoPointStatusToDraft(stopPointWorkflow);
+    sePoDiClientService.updateStopPointStatusToDraft(stopPointWorkflow);
     examinantBAV.setStopPointWorkflow(stopPointWorkflow);
     stopPointWorkflow.setStatus(REJECTED);
     StopPointWorkflow workflow = stopPointWorkflowService.save(stopPointWorkflow);
@@ -95,6 +88,7 @@ public class StopPointWorkflowTransitionService {
     if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
       throw new IllegalStateException(EXCEPTION_HEARING_MSG);
     }
+    sePoDiClientService.updateStopPointStatusToDraft(stopPointWorkflow);
     Person examinantBAV = PersonMapper.toPersonEntity(stopPointCancelWorkflowModel);
     examinantBAV.setStopPointWorkflow(stopPointWorkflow);
     Decision decision = new Decision();
@@ -106,6 +100,7 @@ public class StopPointWorkflowTransitionService {
     decisionService.save(decision);
 
     stopPointWorkflow.setEndDate(LocalDate.now());
+    notificationService.sendCanceledStopPointWorkflowMail(stopPointWorkflow, stopPointCancelWorkflowModel.getMotivationComment());
     stopPointWorkflow.setStatus(WorkflowStatus.CANCELED);
     return stopPointWorkflow;
   }
@@ -168,7 +163,7 @@ public class StopPointWorkflowTransitionService {
         notificationService.sendApprovedStopPointWorkflowMail(workflow);
       }
       if (newStatus == WorkflowStatus.REJECTED) {
-        sePoDiClientService.updateStoPointStatusToDraft(workflow);
+        sePoDiClientService.updateStopPointStatusToDraft(workflow);
         notificationService.sendCanceledStopPointWorkflowMail(workflow, stopPointWorkflowProgressDecider.getRejectComment());
       }
       workflow.setEndDate(LocalDate.now());

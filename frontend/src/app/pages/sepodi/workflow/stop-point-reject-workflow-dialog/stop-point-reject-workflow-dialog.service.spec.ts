@@ -13,7 +13,7 @@ describe('StopPointRejectWorkflowDialogService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot()],
-      providers: [{ provide: MatDialog, useValue: dialogSpy }],
+      providers: [{provide: MatDialog, useValue: dialogSpy}],
     });
     service = TestBed.inject(StopPointRejectWorkflowDialogService);
   });
@@ -22,13 +22,34 @@ describe('StopPointRejectWorkflowDialogService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should open new workflow', () => {
-    dialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+  it('should open new Cancel workflow', () => {
+    dialogSpy.open.and.returnValue({afterClosed: () => of(true)});
 
     service
-      .openDialog(123)
+      .openDialog(123, 'CANCEL')
       .subscribe((result) => expect(result).toBeTrue());
 
     expect(dialogSpy.open).toHaveBeenCalled();
   });
+
+  it('should open new Reject workflow', () => {
+    dialogSpy.open.and.returnValue({afterClosed: () => of(true)});
+
+    service
+      .openDialog(123, 'REJECT')
+      .subscribe((result) => expect(result).toBeTrue());
+
+    expect(dialogSpy.open).toHaveBeenCalled();
+  });
+
+  it('should return Cancel Title', () => {
+    const result = service.getTitle("CANCEL");
+    expect(result).toBe('WORKFLOW.BUTTON.CANCEL');
+  });
+
+  it('should return new Reject Title', () => {
+    const result = service.getTitle("REJECT");
+    expect(result).toBe('WORKFLOW.BUTTON.REJECT');
+  });
+
 });
