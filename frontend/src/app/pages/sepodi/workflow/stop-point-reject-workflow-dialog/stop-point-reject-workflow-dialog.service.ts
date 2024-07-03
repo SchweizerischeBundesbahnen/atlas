@@ -3,7 +3,7 @@ import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {StopPointRejectWorkflowDialogComponent} from "./stop-point-reject-workflow-dialog.component";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
-import {StopPointRejectWorkflowDialogData} from "./stop-point-reject-workflow-dialog-data";
+import {RejectType, StopPointRejectWorkflowDialogData} from "./stop-point-reject-workflow-dialog-data";
 
 @Injectable({
   providedIn: 'root'
@@ -15,16 +15,26 @@ export class StopPointRejectWorkflowDialogService {
   constructor(private dialog: MatDialog) {
   }
 
-  openDialog(workflowId: number): Observable<boolean> {
+  openDialog(workflowId: number, rejectType: RejectType): Observable<boolean> {
     const dialogData: StopPointRejectWorkflowDialogData = {
-      title: 'WORKFLOW.BUTTON.REJECT',
+      title: this.getTitle(rejectType),
       message: '',
       cancelText: 'DIALOG.CANCEL',
-      confirmText: 'WORKFLOW.BUTTON.REJECT',
-      workflowId: workflowId
+      confirmText: this.getTitle(rejectType),
+      workflowId: workflowId,
+      rejectType: rejectType
     };
-
     return this.open(dialogData);
+  }
+
+  getTitle(rejectType: RejectType): string {
+    if (rejectType === "REJECT") {
+      return 'WORKFLOW.BUTTON.REJECT';
+    }
+    if (rejectType === "CANCEL") {
+      return 'WORKFLOW.BUTTON.CANCEL';
+    }
+    throw Error('The given type does not exist!')
   }
 
   private open(dialogData: StopPointRejectWorkflowDialogData) {
