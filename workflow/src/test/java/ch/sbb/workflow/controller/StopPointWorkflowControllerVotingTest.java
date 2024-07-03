@@ -75,24 +75,30 @@ class StopPointWorkflowControllerVotingTest {
 
   @BeforeEach
   void setUp() {
-    Person person = Person.builder()
+    Person marek = Person.builder()
         .firstName("Marek")
         .lastName("Hamsik")
         .function("Centrocampista")
         .mail(MAIL_ADDRESS).build();
+    Person judith = Person.builder()
+        .firstName("Judith")
+        .lastName("Bollhalder")
+        .function("Fachstelle")
+        .mail("judith.bollhalder@sbb.ch").build();
     StopPointWorkflow workflow = StopPointWorkflow.builder()
         .sloid("ch:1:sloid:1234")
         .sboid("ch:1:sboid:666")
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
         .localityName("Biel/Bienne")
         .workflowComment("WF comment")
-        .examinants(Set.of(person))
+        .examinants(Set.of(marek, judith))
         .startDate(LocalDate.of(2000, 1, 1))
         .endDate(LocalDate.of(2000, 12, 31))
         .versionId(123456L)
         .status(WorkflowStatus.HEARING)
         .build();
-    person.setStopPointWorkflow(workflow);
+    marek.setStopPointWorkflow(workflow);
+    judith.setStopPointWorkflow(workflow);
 
     workflowInHearing = workflowRepository.save(workflow);
   }
@@ -161,7 +167,8 @@ class StopPointWorkflowControllerVotingTest {
     assertThat(decision.getJudgement()).isEqualTo(JudgementType.YES);
 
     stopPointWorkflow = controller.getStopPointWorkflow(workflowInHearing.getId());
-    assertThat(stopPointWorkflow.getExaminants().getFirst().getJudgement()).isEqualTo(JudgementType.YES);
+    assertThat(stopPointWorkflow.getExaminants().stream().filter(i -> i.getMail().equals(MAIL_ADDRESS)).findFirst().orElseThrow()
+        .getJudgement()).isEqualTo(JudgementType.YES);
   }
 
   @Test
@@ -201,7 +208,8 @@ class StopPointWorkflowControllerVotingTest {
   @Test
   void shouldOverridePendingVoteCorrectly() {
     //given
-    Person examinantToOverride = workflowInHearing.getExaminants().iterator().next();
+    Person examinantToOverride = workflowInHearing.getExaminants().stream().filter(i -> i.getMail().equals(MAIL_ADDRESS))
+        .findFirst().orElseThrow();
 
     Decision examinantDecision = decisionRepository.findDecisionByExaminantId(examinantToOverride.getId());
     assertThat(examinantDecision).isNull();
@@ -210,7 +218,7 @@ class StopPointWorkflowControllerVotingTest {
     OverrideDecisionModel override = OverrideDecisionModel.builder()
         .firstName("Luca")
         .lastName("Ammann")
-        .fotJudgement(JudgementType.NO)
+        .fotJudgement(JudgementType.YES)
         .fotMotivation("Nein, Müll")
         .build();
 
@@ -218,13 +226,14 @@ class StopPointWorkflowControllerVotingTest {
 
     // then
     examinantDecision = decisionRepository.findDecisionByExaminantId(examinantToOverride.getId());
-    assertThat(examinantDecision.getFotJudgement()).isEqualTo(JudgementType.NO);
+    assertThat(examinantDecision.getFotJudgement()).isEqualTo(JudgementType.YES);
   }
 
   @Test
   void shouldOverrideExistingVoteCorrectly() {
     // given
-    Person examinantToOverride = workflowInHearing.getExaminants().iterator().next();
+    Person examinantToOverride =
+        workflowInHearing.getExaminants().stream().filter(i -> i.getMail().equals(MAIL_ADDRESS)).findFirst().orElseThrow();
     Decision decision = Decision.builder()
         .judgement(JudgementType.NO)
         .motivation("Bad stuff")
