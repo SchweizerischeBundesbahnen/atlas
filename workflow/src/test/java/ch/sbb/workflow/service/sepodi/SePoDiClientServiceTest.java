@@ -83,7 +83,7 @@ class SePoDiClientServiceTest {
     doReturn(updateServicePointVersionModel).when(sePoDiClient).postServicePointsStatusUpdate(stopPointWorkflow.getSloid(),
         stopPointWorkflow.getVersionId(), Status.DRAFT);
     //when && then
-    assertThrows(SePoDiClientWrongStatusReturnedException.class, () -> service.updateStoPointStatusToDraft(stopPointWorkflow));
+    assertThrows(SePoDiClientWrongStatusReturnedException.class, () -> service.updateStopPointStatusToDraft(stopPointWorkflow));
   }
 
   @Test
