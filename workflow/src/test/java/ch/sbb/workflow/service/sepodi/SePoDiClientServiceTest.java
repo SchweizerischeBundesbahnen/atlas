@@ -99,4 +99,16 @@ class SePoDiClientServiceTest {
         () -> service.updateStopPointStatusToInReview(stopPointWorkflow.getSloid(), stopPointWorkflow.getVersionId()));
   }
 
+  @Test
+  void shouldNotUpdateStatusToValidated() {
+    //given
+    ReadServicePointVersionModel updateServicePointVersionModel = ReadServicePointVersionModel.builder().status(Status.REVOKED)
+        .build();
+    doReturn(updateServicePointVersionModel).when(sePoDiClient).postServicePointsStatusUpdate(stopPointWorkflow.getSloid(),
+        stopPointWorkflow.getVersionId(), Status.VALIDATED);
+    //when && then
+    assertThrows(SePoDiClientWrongStatusReturnedException.class,
+        () -> service.updateStoPointStatusToValidated(stopPointWorkflow));
+  }
+
 }
