@@ -1,6 +1,7 @@
 package ch.sbb.workflow.service.sepodi;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -130,6 +131,7 @@ class StopPointWorkflowTransitionServiceTest {
         .judgement(JudgementType.NO)
         .decisionType(DecisionType.VOTED)
         .fotJudgement(JudgementType.NO)
+        .fotMotivation("No is no!")
         .examinant(marek)
         .fotOverrider(judith)
         .build();
@@ -137,8 +139,8 @@ class StopPointWorkflowTransitionServiceTest {
 
     stopPointWorkflowTransitionService.progressWorkflowWithNewDecision(workflowInHearing.getId());
 
-    verify(sePoDiClientService).updateStoPointStatusToDraft(ArgumentMatchers.any());
-    // TODO: verify send mail Anhörung Abbruch / zurückgewiesen same as in cancel
+    verify(sePoDiClientService).updateStoPointStatusToDraft(any());
+    verify(notificationService).sendCanceledStopPointWorkflowMail(any(), any());
 
     workflowInHearing = workflowRepository.findById(workflowInHearing.getId()).orElseThrow();
     assertThat(workflowInHearing.getStatus()).isEqualTo(WorkflowStatus.REJECTED);
