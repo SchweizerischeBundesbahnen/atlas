@@ -163,7 +163,7 @@ public class StopPointWorkflowTransitionService {
         notificationService.sendApprovedStopPointWorkflowMail(workflow);
       }
       if (newStatus == WorkflowStatus.REJECTED) {
-        sePoDiClientService.updateStoPointStatusToDraft(workflow);
+        sePoDiClientService.updateStopPointStatusToDraft(workflow);
         notificationService.sendCanceledStopPointWorkflowMail(workflow, stopPointWorkflowProgressDecider.getRejectComment());
       }
       workflow.setEndDate(LocalDate.now());
