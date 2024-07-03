@@ -25,7 +25,7 @@ public class SePoDiClientService {
     return updateServicePointVersionModel;
   }
 
-  public ReadServicePointVersionModel updateStoPointStatusToDraft(StopPointWorkflow stopPointWorkflow) {
+  public ReadServicePointVersionModel updateStopPointStatusToDraft(StopPointWorkflow stopPointWorkflow) {
     ReadServicePointVersionModel updateServicePointVersionModel = sePoDiClient.postServicePointsStatusUpdate(
         stopPointWorkflow.getSloid(), stopPointWorkflow.getVersionId(), Status.DRAFT);
     if (updateServicePointVersionModel != null && Status.DRAFT != updateServicePointVersionModel.getStatus()) {
