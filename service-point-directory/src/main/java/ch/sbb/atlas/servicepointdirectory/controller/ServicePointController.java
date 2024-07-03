@@ -206,7 +206,7 @@ public class ServicePointController implements ServicePointApiV1 {
 
     return updatedServicePoints
             .stream()
-            .reduce((first, second) -> second)
+            .reduce((first, last) -> last)
             .orElse(null);
   }
 
