@@ -29,21 +29,22 @@ import {DialogFooterComponent} from "../../../../core/components/dialog/footer/d
 import {DialogContentComponent} from "../../../../core/components/dialog/content/dialog-content.component";
 import {DialogCloseComponent} from "../../../../core/components/dialog/close/dialog-close.component";
 import {StopPointWorkflowDetailFormComponent} from "../detail-page/detail-form/stop-point-workflow-detail-form.component";
+import {ValidationService} from "../../../../core/validation/validation.service";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
   sloid: 'ch:1:sloid:8000',
   workflowComment: "No comment"
 };
-const dialogRefSpy = jasmine.createSpyObj(['close']);
-const notificationServiceSpy = jasmine.createSpyObj(['success']);
+const dialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+const notificationServiceSpy = jasmine.createSpyObj('NotificationService', ['success']);
 const router = jasmine.createSpyObj({
   navigate: Promise.resolve(),
 });
 const detailHelperService = jasmine.createSpyObj({
   confirmLeaveDirtyForm: of(true),
 });
-const stopPointWorkflowService = jasmine.createSpyObj({
+const stopPointWorkflowService = jasmine.createSpyObj('StopPointWorkflowService', {
   addStopPointWorkflow: of(workflow),
 });
 
@@ -114,6 +115,8 @@ describe('AddStopPointWorkflowComponent', () => {
   });
 
   it('should add workflow via service', () => {
+    spyOn(ValidationService, 'validateForm').and.callThrough();
+
     const firstExaminant = component.form.controls.examinants.at(0);
     firstExaminant.controls.firstName.setValue('firstName');
     firstExaminant.controls.lastName.setValue('lastName');
@@ -122,6 +125,7 @@ describe('AddStopPointWorkflowComponent', () => {
     firstExaminant.controls.mail.setValue('mail@sbb.ch');
 
     component.form.controls.workflowComment.setValue('YB isch wida Meista');
+    component.form.controls.designationOfficial.setValue('Meiiiista');
 
     component.addWorkflow();
 
