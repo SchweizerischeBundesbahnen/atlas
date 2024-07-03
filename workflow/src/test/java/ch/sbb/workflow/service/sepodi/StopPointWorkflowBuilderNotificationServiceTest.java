@@ -82,7 +82,7 @@ class StopPointWorkflowBuilderNotificationServiceTest {
     //given
     StopPointWorkflow stopPointWorkflow = getStopPointWorkflow();
     //when
-    MailNotification result = notificationService.buildWorkflowRejectMail(stopPointWorkflow);
+    MailNotification result = notificationService.buildWorkflowRejectMail(stopPointWorkflow, "reject comment");
     //then
     assertThat(result).isNotNull();
     assertThat(result.getMailType()).isEqualTo(REJECT_STOP_POINT_WORKFLOW_NOTIFICATION);
