@@ -25,10 +25,20 @@ public class StopPointWorkflowProgressDecider {
         return Optional.of(WorkflowStatus.APPROVED);
       }
     }
-    if (decisions.values().stream().filter(Optional::isPresent).anyMatch(i -> i.orElseThrow().getFotJudgement() == JudgementType.NO)) {
+    if (decisions.values().stream()
+        .filter(Optional::isPresent).map(Optional::get)
+        .anyMatch(i -> i.getFotJudgement() == JudgementType.NO)) {
       return Optional.of(WorkflowStatus.REJECTED);
     }
     return Optional.empty();
   }
 
+  public String getRejectComment() {
+    return decisions.values().stream()
+        .filter(Optional::isPresent)
+        .map(Optional::get)
+        .filter(i -> i.getFotJudgement() == JudgementType.NO)
+        .map(Decision::getFotMotivation)
+        .findFirst().orElseThrow();
+  }
 }

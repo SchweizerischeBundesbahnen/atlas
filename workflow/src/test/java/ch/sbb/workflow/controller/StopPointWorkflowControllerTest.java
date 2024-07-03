@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -617,7 +618,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(decisionResult.getMotivation()).isEqualTo(stopPointRejectWorkflowModel.getMotivationComment());
     assertThat(decisionResult.getDecisionType()).isEqualTo(DecisionType.REJECTED);
 
-    verify(notificationService).sendRejectStopPointWorkflowMail(any(StopPointWorkflow.class));
+    verify(notificationService).sendRejectStopPointWorkflowMail(any(StopPointWorkflow.class), anyString());
   }
 
   @Test
