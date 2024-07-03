@@ -3,13 +3,16 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {DecisionDetailDialogData} from './decision-detail-dialog.service';
 import {DecisionOverrideComponent} from './override/decision-override.component';
 import {DecisionFormGroupBuilder} from '../decision-form/decision-form-group';
-import {ReadDecision, StopPointWorkflowService} from 'src/app/api';
+import {ReadDecision, StopPointWorkflowService, WorkflowStatus} from 'src/app/api';
 
 @Component({
   selector: 'decision-detail-dialog',
   templateUrl: './decision-detail-dialog.component.html',
 })
 export class DecisionDetailDialogComponent implements OnInit {
+
+  protected readonly WorkflowStatus = WorkflowStatus;
+
   @ViewChild(DecisionOverrideComponent) decisionOverrideComponent!: DecisionOverrideComponent;
 
   existingDecision!: ReadDecision;
