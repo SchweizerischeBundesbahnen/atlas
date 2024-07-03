@@ -86,4 +86,29 @@ class SePoDiClientServiceTest {
     assertThrows(SePoDiClientWrongStatusReturnedException.class, () -> service.updateStoPointStatusToDraft(stopPointWorkflow));
   }
 
+  @Test
+  void shouldUpdateStatusToValidated() {
+    //given
+    ReadServicePointVersionModel updateServicePointVersionModel = ReadServicePointVersionModel.builder().status(Status.VALIDATED)
+        .build();
+    doReturn(updateServicePointVersionModel).when(sePoDiClient)
+        .postServicePointsStatusUpdate("ch:1:sloid:8000", 1L, Status.VALIDATED);
+
+    //when && then
+    assertDoesNotThrow(
+        () -> service.updateStopPointStatusToInReview(stopPointWorkflow.getSloid(), stopPointWorkflow.getVersionId()));
+  }
+
+  @Test
+  void shouldNotUpdateStatusToValidated() {
+    //given
+    ReadServicePointVersionModel updateServicePointVersionModel = ReadServicePointVersionModel.builder().status(Status.REVOKED)
+        .build();
+    doReturn(updateServicePointVersionModel).when(sePoDiClient).postServicePointsStatusUpdate(stopPointWorkflow.getSloid(),
+        stopPointWorkflow.getVersionId(), Status.VALIDATED);
+    //when && then
+    assertThrows(SePoDiClientWrongStatusReturnedException.class,
+        () -> service.updateStoPointStatusToValidated(stopPointWorkflow));
+  }
+
 }
