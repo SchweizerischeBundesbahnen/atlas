@@ -5,7 +5,8 @@ import {FormModule} from '../../../../core/module/form.module';
 import {ActivatedRoute} from '@angular/router';
 import {BERN_WYLEREGG} from '../../../../../test/data/service-point';
 import {
-  Country, JudgementType,
+  Country,
+  JudgementType,
   MeanOfTransport,
   ReadServicePointVersion,
   ReadStopPointWorkflow,
@@ -185,6 +186,12 @@ describe('StopPointWorkflowDetailComponent', () => {
 
   it('should reject workflow', () => {
     component.rejectWorkflow();
+
+    expect(stopPointRejectWorkflowDialogServiceSpy.openDialog).toHaveBeenCalledTimes(1);
+  });
+
+  it('should cancel workflow', () => {
+    component.cancelWorkflow();
 
     expect(stopPointRejectWorkflowDialogServiceSpy.openDialog).toHaveBeenCalledTimes(1);
   });
