@@ -48,4 +48,12 @@ class StopPointWorkflowNotificationServiceTest {
     verify(builderNotificationService).buildWorkflowApprovedMail(any());
     verify(mailProducerService).produceMailNotification(any());
   }
+
+  @Test
+  void shouldSendCancelMailViaKafka() {
+    stopPointWorkflowNotificationService.sendCanceledStopPointWorkflowMail(new StopPointWorkflow(), "cancel it");
+
+    verify(builderNotificationService).buildWorkflowCanceledMail(any(), eq("cancel it"));
+    verify(mailProducerService).produceMailNotification(any());
+  }
 }
