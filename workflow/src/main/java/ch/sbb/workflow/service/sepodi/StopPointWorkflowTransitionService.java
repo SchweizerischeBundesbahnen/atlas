@@ -67,6 +67,7 @@ public class StopPointWorkflowTransitionService {
     StopPointWorkflowStatusTransitionDecider.validateWorkflowStatusTransition(stopPointWorkflow.getStatus(),
         WorkflowStatus.HEARING);
     stopPointWorkflow.setStatus(WorkflowStatus.HEARING);
+    stopPointWorkflow.setStartDate(LocalDate.now());
     stopPointWorkflow.setEndDate(LocalDate.now().plusDays(WORKFLOW_DURATION_IN_DAYS));
     StopPointWorkflow workflow = stopPointWorkflowService.save(stopPointWorkflow);
     notificationService.sendStartStopPointWorkflowMail(workflow);
@@ -104,6 +105,7 @@ public class StopPointWorkflowTransitionService {
     decision.setMotivationDate(LocalDateTime.now());
     decisionService.save(decision);
 
+    stopPointWorkflow.setEndDate(LocalDate.now());
     stopPointWorkflow.setStatus(WorkflowStatus.CANCELED);
     return stopPointWorkflow;
   }
@@ -142,6 +144,7 @@ public class StopPointWorkflowTransitionService {
         .build();
     stopPointWorkflowService.save(newStopPointWorkflow);
     //update current workflow
+    stopPointWorkflow.setEndDate(LocalDate.now());
     stopPointWorkflow.setStatus(REJECTED);
     stopPointWorkflow.setFollowUpWorkflow(newStopPointWorkflow);
     stopPointWorkflowService.save(stopPointWorkflow);
@@ -168,6 +171,7 @@ public class StopPointWorkflowTransitionService {
         sePoDiClientService.updateStoPointStatusToDraft(workflow);
         notificationService.sendCanceledStopPointWorkflowMail(workflow, stopPointWorkflowProgressDecider.getRejectComment());
       }
+      workflow.setEndDate(LocalDate.now());
       workflow.setStatus(newStatus);
     });
   }
