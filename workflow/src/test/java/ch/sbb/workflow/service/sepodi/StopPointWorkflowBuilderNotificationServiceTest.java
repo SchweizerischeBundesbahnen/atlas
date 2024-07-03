@@ -5,6 +5,7 @@ import static ch.sbb.atlas.kafka.model.mail.MailType.START_STOP_POINT_WORKFLOW_C
 import static ch.sbb.atlas.kafka.model.mail.MailType.START_STOP_POINT_WORKFLOW_EXAMINANT_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_WORKFLOW_PINCODE_NOTIFICATION;
 import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.APPROVED_WORKFLOW_SUBJECT;
+import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.CANCEL_WORKFLOW_SUBJECT;
 import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.PINCODE_SUBJECT;
 import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.REJECT_WORKFLOW_SUBJECT;
 import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.START_WORKFLOW_SUBJECT;
@@ -128,6 +129,20 @@ class StopPointWorkflowBuilderNotificationServiceTest {
     assertThat(result).isNotNull();
     assertThat(result.getMailType()).isEqualTo(MailType.APPROVED_STOP_POINT_WORKFLOW_NOTIFICATION);
     assertThat(result.getSubject()).isEqualTo(APPROVED_WORKFLOW_SUBJECT);
+    assertThat(result.getTo()).hasSize(3);
+    assertThat(result.getCc()).hasSize(2);
+  }
+
+  @Test
+  void shouldBuildWorkflowCancelMail() {
+    //given
+    StopPointWorkflow stopPointWorkflow = getStopPointWorkflow();
+    //when
+    MailNotification result = notificationService.buildWorkflowCanceledMail(stopPointWorkflow, "cancel");
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getMailType()).isEqualTo(MailType.CANCEL_STOP_POINT_WORKFLOW_NOTIFICATION);
+    assertThat(result.getSubject()).isEqualTo(CANCEL_WORKFLOW_SUBJECT);
     assertThat(result.getTo()).hasSize(3);
     assertThat(result.getCc()).hasSize(2);
   }
