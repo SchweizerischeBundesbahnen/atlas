@@ -23,8 +23,11 @@ import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -64,6 +67,7 @@ public class StopPointWorkflowTransitionService {
     StopPointWorkflowStatusTransitionDecider.validateWorkflowStatusTransition(stopPointWorkflow.getStatus(),
         WorkflowStatus.HEARING);
     stopPointWorkflow.setStatus(WorkflowStatus.HEARING);
+    stopPointWorkflow.setStartDate(LocalDate.now());
     stopPointWorkflow.setEndDate(LocalDate.now().plusDays(WORKFLOW_DURATION_IN_DAYS));
     StopPointWorkflow workflow = stopPointWorkflowService.save(stopPointWorkflow);
     notificationService.sendStartStopPointWorkflowMail(workflow);
@@ -82,7 +86,7 @@ public class StopPointWorkflowTransitionService {
     examinantBAV.setStopPointWorkflow(stopPointWorkflow);
     stopPointWorkflow.setStatus(REJECTED);
     StopPointWorkflow workflow = stopPointWorkflowService.save(stopPointWorkflow);
-    notificationService.sendRejectStopPointWorkflowMail(workflow);
+    notificationService.sendRejectStopPointWorkflowMail(workflow, rejectWorkflowModel.getMotivationComment());
     return stopPointWorkflow;
   }
 
@@ -101,6 +105,7 @@ public class StopPointWorkflowTransitionService {
     decision.setMotivationDate(LocalDateTime.now());
     decisionService.save(decision);
 
+    stopPointWorkflow.setEndDate(LocalDate.now());
     stopPointWorkflow.setStatus(WorkflowStatus.CANCELED);
     return stopPointWorkflow;
   }
@@ -139,6 +144,7 @@ public class StopPointWorkflowTransitionService {
         .build();
     stopPointWorkflowService.save(newStopPointWorkflow);
     //update current workflow
+    stopPointWorkflow.setEndDate(LocalDate.now());
     stopPointWorkflow.setStatus(REJECTED);
     stopPointWorkflow.setFollowUpWorkflow(newStopPointWorkflow);
     stopPointWorkflowService.save(stopPointWorkflow);
@@ -150,6 +156,33 @@ public class StopPointWorkflowTransitionService {
     SwissCanton swissCanton = servicePointVersionModel.getServicePointGeolocation().getSwissLocation().getCanton();
     List<StopPointClientPersonModel> personModels = examinants.getExaminants(swissCanton);
     return StopPointWorkflowMapper.addStopPointWorkflowToEntity(workflowStartModel, servicePointVersionModel, personModels);
+  }
+
+  public void progressWorkflowWithNewDecision(Long workflowId) {
+    StopPointWorkflow workflow = stopPointWorkflowService.getWorkflow(workflowId);
+    StopPointWorkflowProgressDecider stopPointWorkflowProgressDecider = buildProgressDecider(workflow);
+
+    stopPointWorkflowProgressDecider.calculateNewWorkflowStatus().ifPresent(newStatus -> {
+      if (newStatus == WorkflowStatus.APPROVED) {
+        sePoDiClientService.updateStoPointStatusToValidated(workflow);
+        notificationService.sendApprovedStopPointWorkflowMail(workflow);
+      }
+      if (newStatus == WorkflowStatus.REJECTED) {
+        sePoDiClientService.updateStoPointStatusToDraft(workflow);
+        notificationService.sendCanceledStopPointWorkflowMail(workflow, stopPointWorkflowProgressDecider.getRejectComment());
+      }
+      workflow.setEndDate(LocalDate.now());
+      workflow.setStatus(newStatus);
+    });
+  }
+
+  private StopPointWorkflowProgressDecider buildProgressDecider(StopPointWorkflow workflow) {
+    Map<Person, Optional<Decision>> decisions = new HashMap<>();
+    workflow.getExaminants().forEach(examinant -> {
+      Optional<Decision> decisionByExaminantId = decisionService.findDecisionByExaminantId(examinant.getId());
+      decisions.put(examinant, decisionByExaminantId);
+    });
+    return new StopPointWorkflowProgressDecider(decisions);
   }
 
 }

@@ -28,6 +28,12 @@ public class StopPointWorkflowBuilderNotificationService {
   static final String PINCODE_SUBJECT = """
       Stationsnamen PIN-Code / Nom de station PIN-Code / Nome della stazione codice PIN
       """;
+  static final String APPROVED_WORKFLOW_SUBJECT = """
+      Stationsnamen Anhörung abgeschlossen / Nom de station audition terminée / Audizione nome della stazione conclusa
+      """;
+  static final String CANCEL_WORKFLOW_SUBJECT = """
+      Anhörung abgebrochen / Audition du nom de la station annulée / Audizione del nome della stazione cancellata
+      """;
 
   @Value("${spring.profiles.active:local}")
   private String activeProfile;
@@ -61,17 +67,19 @@ public class StopPointWorkflowBuilderNotificationService {
         .build();
   }
 
-  public MailNotification buildWorkflowRejectMail(StopPointWorkflow stopPointWorkflow) {
+  public MailNotification buildWorkflowRejectMail(StopPointWorkflow stopPointWorkflow, String rejectComment) {
     List<String> ccMails = new ArrayList<>();
     ccMails.addAll(stopPointWorkflow.getCcEmails());
     ccMails.addAll(stopPointWorkflow.getExaminants().stream().map(Person::getMail).toList());
+    List<Map<String, Object>> templateProperties = buildMailProperties(stopPointWorkflow, REJECT_WORKFLOW_SUBJECT);
+    templateProperties.getFirst().put("comment", rejectComment);
     return MailNotification.builder()
         .from(from)
         .mailType(MailType.REJECT_STOP_POINT_WORKFLOW_NOTIFICATION)
         .subject(REJECT_WORKFLOW_SUBJECT)
         .to(List.of(stopPointWorkflow.getApplicantMail()))
         .cc(ccMails)
-        .templateProperties(buildMailProperties(stopPointWorkflow, REJECT_WORKFLOW_SUBJECT))
+        .templateProperties(templateProperties)
         .build();
   }
 
@@ -107,4 +115,31 @@ public class StopPointWorkflowBuilderNotificationService {
         .build();
   }
 
+  public MailNotification buildWorkflowApprovedMail(StopPointWorkflow stopPointWorkflow) {
+    List<String> recipients = new ArrayList<>(List.of(stopPointWorkflow.getApplicantMail()));
+    recipients.addAll(stopPointWorkflow.getExaminants().stream().map(Person::getMail).toList());
+    return MailNotification.builder()
+        .from(from)
+        .mailType(MailType.APPROVED_STOP_POINT_WORKFLOW_NOTIFICATION)
+        .subject(APPROVED_WORKFLOW_SUBJECT)
+        .to(recipients)
+        .cc(stopPointWorkflow.getCcEmails())
+        .templateProperties(buildMailProperties(stopPointWorkflow, APPROVED_WORKFLOW_SUBJECT))
+        .build();
+  }
+
+  public MailNotification buildWorkflowCanceledMail(StopPointWorkflow stopPointWorkflow, String cancelComment) {
+    List<String> recipients = new ArrayList<>(List.of(stopPointWorkflow.getApplicantMail()));
+    recipients.addAll(stopPointWorkflow.getExaminants().stream().map(Person::getMail).toList());
+    List<Map<String, Object>> templateProperties = buildMailProperties(stopPointWorkflow, CANCEL_WORKFLOW_SUBJECT);
+    templateProperties.getFirst().put("comment", cancelComment);
+    return MailNotification.builder()
+        .from(from)
+        .mailType(MailType.CANCEL_STOP_POINT_WORKFLOW_NOTIFICATION)
+        .subject(CANCEL_WORKFLOW_SUBJECT)
+        .to(recipients)
+        .cc(stopPointWorkflow.getCcEmails())
+        .templateProperties(templateProperties)
+        .build();
+  }
 }

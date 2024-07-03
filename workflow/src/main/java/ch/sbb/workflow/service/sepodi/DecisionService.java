@@ -10,6 +10,7 @@ import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.repository.DecisionRepository;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,11 +41,7 @@ public class DecisionService {
     examinants.forEach(examinant -> {
       Decision decision = decisionRepository.findDecisionByExaminantId(examinant.getId());
       if (decision != null) {
-        if (decision.getFotJudgement() == null) {
-          examinant.setJudgement(decision.getJudgement());
-        } else {
-          examinant.setJudgement(decision.getFotJudgement());
-        }
+        examinant.setJudgement(decision.getWeightedJudgement());
       }
     });
   }
@@ -56,5 +53,9 @@ public class DecisionService {
       throw new IdNotFoundException(personId);
     }
     return decision;
+  }
+
+  public Optional<Decision> findDecisionByExaminantId(Long examinantId) {
+    return Optional.ofNullable(decisionRepository.findDecisionByExaminantId(examinantId));
   }
 }
