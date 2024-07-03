@@ -71,7 +71,7 @@ export class StopPointRejectWorkflowDialogComponent implements OnInit {
   private doCancel(stopPointRejectWorkflow: StopPointRejectWorkflow) {
     this.stopPointWorkflowService.cancelStopPointWorkflow(this.data.workflowId, stopPointRejectWorkflow)
       .subscribe(() => {
-        this.notificationService.success('WORKFLOW.NOTIFICATION.CHECK.CANCELLED');
+        this.notificationService.success('WORKFLOW.NOTIFICATION.CHECK.CANCELED');
         this.dialogRef.close();
         this.navigateToWorkflow();
       })
