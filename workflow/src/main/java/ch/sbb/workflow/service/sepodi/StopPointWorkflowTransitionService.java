@@ -85,7 +85,7 @@ public class StopPointWorkflowTransitionService {
     examinantBAV.setStopPointWorkflow(stopPointWorkflow);
     stopPointWorkflow.setStatus(REJECTED);
     StopPointWorkflow workflow = stopPointWorkflowService.save(stopPointWorkflow);
-    notificationService.sendRejectStopPointWorkflowMail(workflow);
+    notificationService.sendRejectStopPointWorkflowMail(workflow, rejectWorkflowModel.getMotivationComment());
     return stopPointWorkflow;
   }
 
@@ -166,7 +166,7 @@ public class StopPointWorkflowTransitionService {
       }
       if (newStatus == WorkflowStatus.REJECTED) {
         sePoDiClientService.updateStoPointStatusToDraft(workflow);
-        // TODO: send mail Anhörung Abbruch / zurückgewiesen same as in cancel
+        notificationService.sendCanceledStopPointWorkflowMail(workflow, stopPointWorkflowProgressDecider.getRejectComment());
       }
       workflow.setStatus(newStatus);
     });
