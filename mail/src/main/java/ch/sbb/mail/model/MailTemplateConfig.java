@@ -41,7 +41,7 @@ public enum MailTemplateConfig {
   REJECT_STOP_POINT_WORKFLOW_NOTIFICATION_TEMPLATE("reject_stop_point_workflow_notification", null, null, true, false, true),
   STOP_POINT_WORKFLOW_PINCODE_NOTIFICATION_TEMPLATE("stop_point_workflow_pincode_notification", null, null, true, false, true),
   APPROVED_STOP_POINT_WORKFLOW_NOTIFICATION_TEMPLATE("approved_stop_point_workflow_notification", null, null, true, false, true),
-  CANCEL_STOP_POINT_WORKFLOW_NOTIFICATION_TEMPLATE("cancel_stop_point_workflow_notification", null, null, true, false, true),
+  CANCEL_STOP_POINT_WORKFLOW_NOTIFICATION_TEMPLATE("reject_and_cancel_stop_point_workflow_notification", null, null, true, false, true),
 
   ;
 
