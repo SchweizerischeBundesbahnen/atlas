@@ -33,6 +33,7 @@ import {
 import {MatDialog} from '@angular/material/dialog';
 import {EventEmitter} from "@angular/core";
 import {ValidationService} from "../../../../core/validation/validation.service";
+import {DialogService} from "../../../../core/components/dialog/dialog.service";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1000,
@@ -69,8 +70,7 @@ describe('StopPointWorkflowDetailComponent', () => {
   let fixture: ComponentFixture<StopPointWorkflowDetailComponent>;
 
   let stopPointRejectWorkflowDialogServiceSpy: StopPointRejectWorkflowDialogService;
-  let dialogSpy = jasmine.createSpyObj(['open']);
-  //const dialogServiceSpy = jasmine.createSpyObj(['confirm']);
+  let dialogSpy = jasmine.createSpyObj(['open', 'afterClosed']);
 
   beforeEach(async () => {
     stopPointRejectWorkflowDialogServiceSpy = jasmine.createSpyObj(['openDialog']);
@@ -94,6 +94,7 @@ describe('StopPointWorkflowDetailComponent', () => {
       providers: [
         {provide: ActivatedRoute, useValue: activatedRoute},
         {provide: TranslatePipe},
+        { provide: DialogService, useValue: dialogServiceSpy },
         { provide: StopPointWorkflowService, useValue: stopPointWorkflowService },
         { provide: NotificationService, useValue: notificationServiceSpy },
         { provide: ValidationService, useClass: ValidationService },
