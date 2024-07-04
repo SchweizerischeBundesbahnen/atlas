@@ -14,7 +14,6 @@ class MailTemplateConfigTest {
     //when
     assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(
         () -> getMailTemplateConfig(null));
-
   }
 
   @Test
