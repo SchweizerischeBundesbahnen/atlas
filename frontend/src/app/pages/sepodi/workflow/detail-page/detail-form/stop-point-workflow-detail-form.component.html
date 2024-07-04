@@ -56,10 +56,6 @@
       @if (form.enabled){
         <atlas-text-field [formGroup]="form" controlName="designationOfficial"></atlas-text-field>
       }
-      <div class="font-bold-base">
-        {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.NEW_DESIGNATION_OFFICIAL' | translate }}
-      </div>
-      <div>{{ stopPoint.designationOfficial }}</div>
     </div>
 
     @if (oldDesignation) {
