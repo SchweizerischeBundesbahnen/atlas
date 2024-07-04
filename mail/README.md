@@ -53,12 +53,9 @@ in the Integration tests.
 
 ## Development
 
-### REST API
+### Communication with MailService
 
-The MailService provides a REST API to communicate with him. The [postman collection](postman/MailService.postman_collection.json)
-defines some REST Call example.
-
-:warning: The REST API will be deleted when ATLAS will integrate Kafka for the Service to Service cominication. :warning:
+The MailService uses Kafka for the Service to Service communication.
 
 ### Thymeleaf Template
 
