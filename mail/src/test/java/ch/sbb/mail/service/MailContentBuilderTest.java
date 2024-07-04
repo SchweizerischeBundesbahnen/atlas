@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.thymeleaf.TemplateEngine;
 
- class MailContentBuilderTest {
+class MailContentBuilderTest {
 
   @Mock
   private TemplateEngine templateEngine;
@@ -136,8 +136,8 @@ import org.thymeleaf.TemplateEngine;
     assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(
         () ->  mailContentBuilder.getSubject(MailTemplateConfig.ATLAS_STANDARD_TEMPLATE,
         mailNotification));
-
   }
+
   @Test
    void shouldGetFromFromMailNotification(){
     //given
