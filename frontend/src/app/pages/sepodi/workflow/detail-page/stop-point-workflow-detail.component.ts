@@ -8,12 +8,12 @@ import {
   WorkflowStatus,
 } from '../../../../api';
 import { FormGroup } from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { StopPointWorkflowDetailData } from './stop-point-workflow-detail-resolver.service';
 import { NotificationService } from '../../../../core/notification/notification.service';
 import { StopPointRejectWorkflowDialogService } from '../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog.service';
 import { environment } from '../../../../../environments/environment';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import {BehaviorSubject, catchError, EMPTY, Observable, of, take} from 'rxjs';
 import {
   StopPointWorkflowDetailFormGroup,
@@ -95,96 +95,35 @@ export class StopPointWorkflowDetailComponent implements OnInit {
   }
 
   rejectWorkflow() {
-    this.stopPointRejectWorkflowDialogService.openDialog(this.workflow.id!, "REJECT")
+    this.stopPointRejectWorkflowDialogService.openDialog(this.workflow.id!, 'REJECT');
   }
 
   cancelWorkflow() {
-    this.stopPointRejectWorkflowDialogService.openDialog(this.workflow.id!, "CANCEL");
+    this.stopPointRejectWorkflowDialogService.openDialog(this.workflow.id!, 'CANCEL');
   }
 
   openDecisionDialog() {
     const decisionDialogRef = this.dialog.open(DecisionStepperComponent, {
+      data: this.workflow.id,
       disableClose: true,
       panelClass: 'atlas-dialog-panel',
       backdropClass: 'atlas-dialog-backdrop',
     });
-    const decisionDialogComponent = decisionDialogRef.componentInstance;
-    const obtainOtpSubscription = this._registerObtainOtpHandler(decisionDialogComponent);
-    const verifyPinSubscription = this._registerVerifyPinHandler(decisionDialogComponent);
-    const sendDecisionSubscription = this._registerSendDecisionHandler(
-      decisionDialogComponent,
-      decisionDialogRef,
-    );
     decisionDialogRef
       .afterClosed()
       .pipe(take(1))
-      .subscribe(() => {
-        obtainOtpSubscription.unsubscribe();
-        verifyPinSubscription.unsubscribe();
-        sendDecisionSubscription.unsubscribe();
+      .subscribe((reload) => {
+        if (reload) {
+          this.router
+            .navigate([], {
+              relativeTo: this.route,
+            })
+            .then(() => {
+              this.notificationService.success('WORKFLOW.NOTIFICATION.VOTE.SUCCESS');
+              this.ngOnInit();
+            });
+        }
       });
-  }
-
-  private _registerObtainOtpHandler(decisionDialogComponent: DecisionStepperComponent) {
-    return decisionDialogComponent.obtainOtp.subscribe((stepData) => {
-      stepData.swapLoading();
-      this.stopPointWorkflowService
-        .obtainOtp(this.workflow.id!, {
-          examinantMail: stepData.mail.value,
-        })
-        .subscribe({
-          next: () => {
-            stepData.swapLoading();
-            stepData.continue();
-          },
-          error: () => stepData.swapLoading(),
-        });
-    });
-  }
-
-  private _registerVerifyPinHandler(decisionDialogComponent: DecisionStepperComponent) {
-    return decisionDialogComponent.verifyPin.subscribe((stepData) => {
-      stepData.swapLoading();
-      this.stopPointWorkflowService
-        .verifyOtp(this.workflow.id!, {
-          examinantMail: stepData.mail.value,
-          pinCode: stepData.pin.value,
-        })
-        .subscribe({
-          next: (examinant) => {
-            stepData.swapLoading();
-            stepData.continue(examinant);
-          },
-          error: () => stepData.swapLoading(),
-        });
-    });
-  }
-
-  private _registerSendDecisionHandler(
-    decisionDialogComponent: DecisionStepperComponent,
-    decisionDialogRef: MatDialogRef<DecisionStepperComponent>,
-  ) {
-    return decisionDialogComponent.sendDecision.subscribe((stepData) => {
-      stepData.swapLoading();
-      this.stopPointWorkflowService
-        .voteWorkflow(this.workflow.id!, stepData.verifiedExaminant.id!, stepData.decision)
-        .subscribe({
-          next: () => {
-            decisionDialogRef.close();
-            this.notificationService.success('WORKFLOW.NOTIFICATION.VOTE.SUCCESS');
-            this.reloadDetail();
-          },
-          error: () => stepData.swapLoading(),
-        });
-    });
-  }
-
-  private reloadDetail(){
-    this.router.navigateByUrl('/').then(() => {
-      this.router
-        .navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, this.workflow.id])
-        .then(() => {});
-    });
   }
 
   toggleEdit() {
