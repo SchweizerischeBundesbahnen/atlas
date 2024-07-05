@@ -1,12 +1,13 @@
-import {Component, EventEmitter, ViewChild} from '@angular/core';
-import {AbstractControl, FormBuilder, Validators,} from '@angular/forms';
-import {MatStepper} from '@angular/material/stepper';
-import {MatDialogRef} from '@angular/material/dialog';
-import {take} from 'rxjs';
-import {DecisionFormGroupBuilder} from '../decision-form/decision-form-group';
-import {Decision, StopPointPerson} from 'src/app/api';
-import {AtlasCharsetsValidator} from 'src/app/core/validation/charsets/atlas-charsets-validator';
-import {DialogService} from 'src/app/core/components/dialog/dialog.service';
+import { ChangeDetectorRef, Component, Inject, ViewChild } from '@angular/core';
+import { MatStepper } from '@angular/material/stepper';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { catchError, EMPTY, Observable, of, share, take } from 'rxjs';
+import { DecisionFormGroupBuilder } from '../decision-form/decision-form-group';
+import { StopPointPerson, StopPointWorkflowService } from 'src/app/api';
+import { AtlasCharsetsValidator } from 'src/app/core/validation/charsets/atlas-charsets-validator';
+import { DialogService } from 'src/app/core/components/dialog/dialog.service';
+import { map } from 'rxjs/operators';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'sepodi-wf-decision-stepper',
@@ -15,24 +16,9 @@ import {DialogService} from 'src/app/core/components/dialog/dialog.service';
 export class DecisionStepperComponent {
   @ViewChild('stepper') readonly stepper?: MatStepper;
 
-  readonly obtainOtp = new EventEmitter<{
-    mail: AbstractControl;
-    continue: () => void;
-    swapLoading: () => void;
-  }>();
-
-  readonly verifyPin = new EventEmitter<{
-    mail: AbstractControl;
-    pin: AbstractControl;
-    continue: (examinant: StopPointPerson) => void;
-    swapLoading: () => void;
-  }>();
-
-  readonly sendDecision = new EventEmitter<{
-    decision: Decision;
-    verifiedExaminant: StopPointPerson;
-    swapLoading: () => void;
-  }>();
+  isStepOneCompl$: Observable<boolean> = of();
+  isStepTwoCompl$: Observable<boolean> = of();
+  isStepThreeCompl$: Observable<boolean> = of();
 
   readonly mail = this._formBuilder.group({
     mail: ['', [Validators.required, AtlasCharsetsValidator.email]],
@@ -64,55 +50,83 @@ export class DecisionStepperComponent {
     private readonly _formBuilder: FormBuilder,
     private readonly _dialogService: DialogService,
     private readonly _dialogRef: MatDialogRef<DecisionStepperComponent>,
+    private readonly _spWfService: StopPointWorkflowService,
+    @Inject(MAT_DIALOG_DATA) private readonly _workflowId: number,
+    private readonly cd: ChangeDetectorRef,
   ) {}
 
   completeObtainOtpStep() {
     this.mail.markAllAsTouched();
     if (this.mail.valid) {
-      this.obtainOtp.emit({
-        mail: this.mail.controls.mail,
-        continue: () => {
-          this._stepNext();
-        },
-        swapLoading: () => this._swapLoading(),
-      });
-      this._verifiedExaminant = undefined;
+      this._swapLoading();
+      this.isStepOneCompl$ = this._spWfService
+        .obtainOtp(this._workflowId, {
+          examinantMail: this.mail.controls.mail.value!,
+        })
+        .pipe(
+          map(() => {
+            return true;
+          }),
+          catchError(() => {
+            this._swapLoading();
+            return EMPTY;
+          }),
+          share(),
+        );
+
+      this.isStepTwoCompl$ = this.isStepOneCompl$.pipe(
+        map(() => {
+          this.cd.detectChanges();
+          this.stepper?.next();
+          this._swapLoading();
+          return false;
+        }),
+      );
     }
   }
 
   completeVerifyPinStep() {
     this.pin.markAllAsTouched();
     if (this.pin.valid) {
-      this.verifyPin.emit({
-        mail: this.mail.controls.mail,
-        pin: this.pin.controls.pin,
-        continue: (examinant) => {
-          this._verifiedExaminant = examinant;
-          this.decision.controls.firstName.setValue(examinant.firstName ?? null);
-          this.decision.controls.lastName.setValue(examinant.lastName ?? null);
-          this.decision.controls.organisation.setValue(examinant.organisation);
-          this.decision.controls.personFunction.setValue(examinant.personFunction ?? null);
-          this._stepNext();
-        },
-        swapLoading: () => this._swapLoading(),
-      });
-    }
-  }
+      this._swapLoading();
+      this.isStepTwoCompl$ = this._spWfService
+        .verifyOtp(this._workflowId, {
+          examinantMail: this.mail.controls.mail.value!,
+          pinCode: this.pin.controls.pin.value!,
+        })
+        .pipe(
+          map((examinant) => {
+            this._verifiedExaminant = examinant;
+            this.decision.controls.firstName.setValue(examinant.firstName ?? null);
+            this.decision.controls.lastName.setValue(examinant.lastName ?? null);
+            this.decision.controls.organisation.setValue(examinant.organisation);
+            this.decision.controls.personFunction.setValue(examinant.personFunction ?? null);
+            return true;
+          }),
+          catchError(() => {
+            this._swapLoading();
+            return EMPTY;
+          }),
+          share(),
+        );
 
-  private _stepNext() {
-    if (this.stepper?.selected) {
-      this.stepper.selected.completed = true;
-      this.stepper.next();
-    } else {
-      throw new Error('Step must be selected at this stage');
+      this.isStepThreeCompl$ = this.isStepTwoCompl$.pipe(
+        map(() => {
+          this.cd.detectChanges();
+          this.stepper?.next();
+          this._swapLoading();
+          return false;
+        }),
+      );
     }
   }
 
   completeDecision() {
     this.decision.markAllAsTouched();
     if (this.decision.valid) {
-      this.sendDecision.emit({
-        decision: {
+      this._swapLoading();
+      this.isStepThreeCompl$ = this._spWfService
+        .voteWorkflow(this._workflowId, this._verifiedExaminant!.id!, {
           examinantMail: this.mail.controls.mail.value!,
           pinCode: this.pin.controls.pin.value!,
           judgement: this.decision.controls.judgement.value!,
@@ -124,24 +138,40 @@ export class DecisionStepperComponent {
           lastName: this.decision.controls.lastName.value!,
           organisation: this.decision.controls.organisation.value!,
           personFunction: this.decision.controls.personFunction.value!,
-        },
-        verifiedExaminant: this._verifiedExaminant!,
-        swapLoading: () => this._swapLoading(),
-      });
+        })
+        .pipe(
+          map(() => {
+            this._dialogRef.close(true);
+            return true;
+          }),
+          catchError(() => {
+            this._swapLoading();
+            return EMPTY;
+          }),
+        );
     }
   }
 
   resendMail() {
-    this.obtainOtp.emit({
-      mail: this.mail.controls.mail,
-      continue: () => {
-        this.resendMailActive = false;
-        setTimeout(() => {
-          this.resendMailActive = true;
-        }, 10_000);
-      },
-      swapLoading: () => this._swapLoading(),
-    });
+    this._swapLoading();
+    this.isStepTwoCompl$ = this._spWfService
+      .obtainOtp(this._workflowId, {
+        examinantMail: this.mail.controls.mail.value!,
+      })
+      .pipe(
+        map(() => {
+          this.resendMailActive = false;
+          setTimeout(() => {
+            this.resendMailActive = true;
+          }, 10_000);
+          this._swapLoading();
+          return false;
+        }),
+        catchError(() => {
+          this._swapLoading();
+          return EMPTY;
+        }),
+      );
   }
 
   cancel() {
