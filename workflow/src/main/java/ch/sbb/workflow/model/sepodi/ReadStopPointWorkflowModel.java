@@ -29,6 +29,12 @@ public class ReadStopPointWorkflowModel extends BaseStopPointWorkflowModel {
   @Schema(description = "Service Point version valid from")
   private LocalDate versionValidFrom;
 
+  @Schema(description = "Service Point version valid to")
+  private LocalDate versionValidTo;
+
+  @Schema(description = "Service Point version SBOID")
+  private String sboid;
+
   @Schema(description = "Workflow created at")
   private LocalDateTime createdAt;
 
