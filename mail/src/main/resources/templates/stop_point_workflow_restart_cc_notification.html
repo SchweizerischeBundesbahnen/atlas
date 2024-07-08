@@ -37,6 +37,10 @@
             font-weight: bold;
         }
 
+        .ski-color {
+            color: #06348b
+        }
+
         .header-title {
             font-size: large;
             text-align: center;
@@ -49,10 +53,6 @@
             height: 100%;
             float: left;
             text-align: justify;
-        }
-
-        .ski-color {
-            color: #06348b
         }
 
         .content-container {
@@ -69,20 +69,9 @@
             display: inline-block;
         }
 
-        a:link {
-            text-decoration: none;
-        }
-
-        a:visited {
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        a:active {
-            text-decoration: underline;
+        .footer {
+            margin-top: 32px;
+            margin-left: 20px;
         }
 
         .mb-1 {
@@ -126,21 +115,16 @@
                 <span>Der Stationsname aus dem ursprünglichen Antrag für die Umbenennung/Neueinführung der Haltestelle
                     <b>[[${properties.get(0).get('designationOfficial')}]] SLOID [[${properties.get(0).get('sloid')}]]</b> wurde
                     durch das Bundesamt für Verkehr (BAV) in
-                    <b>[[${properties.get(0).get('newDesignationOfficial')}]]</b>
-                    geändert. Die ursprüngliche Anhörung wurde beendet und mit dem neuen Stationsnamen eine neue Anhörung
-                    gestartet mit folgender Begründung:<br><br>
-                    <b>[[${properties.get(0).get('workflowComment')}]]</b>
-                    Bitte beantworten Sie die Anhörung bis zum [[${properties.get(0).get('endDate')}]] wie folgt:
+                    <b>[[${properties.get(0).get('newDesignationOfficial')}]]</b> geändert.
+                    Die ursprüngliche Anhörung wurde beendet mit folgender Begründung:<br><br>
+                    <b>[[${properties.get(0).get('workflowComment')}]]</b><br><br>
+
+                    Die neue Anhörung wurde gestartet und die involvierten Personen dürfen ab sofort den Namen der Haltestelle
+                    bewerten bis zum
+                    <b>[[${properties.get(0).get('endDate')}]]</b>.<br><br>
+                    Sie werden über alle relevanten Entwicklungen zur Anhörung informiert.
+                    Gerne dürfen Sie den Verlauf der Anhörung in [[${properties.get(0).get('url')}]] verfolgen.<br><br>
                 </span>
-                <ol>
-                    <li>Aufrufen der Anhörung mit folgendem Link: [[${properties.get(0).get('url')}]]</li>
-                    <li>Entscheidung bezüglich des Namens der Haltestelle treffen</li>
-                    <li>Klicken Sie auf <b>Enscheiden</b></li>
-                    <li>Geben Sie anschliessend die Mail-Adresse an, auf welche Sie diese Einladung erhalten haben</li>
-                    <li>Sie erhalten ein neues Mail mit dem PIN-Code für die Abstimmung</li>
-                </ol>
-                <span>Bitte beantworten Sie die Anhörung in jedem Fall. Fehlende Antworten werden nach Ablauf der Frist als
-                    Einverständnis gewertet. </span><br>
                 <span>Weitere Informationen finden Sie unter
                     <a href="https://www.öv-info.ch/de">https://www.öv-info.ch/de</a>
                     in der Beschreibung oder im Benutzerhandbuch.
@@ -158,24 +142,18 @@
             <hr>
             <div>
                 <br><span>Mesdames et Messieurs</span><br><br>
-                <span>Le nom de la station de la demande initiale pour le changement de nom/l'introduction d'une nouvelle station
-                    <b>[[${properties.get(0).get('designationOfficial')}]] SLOID [[${properties.get(0).get('sloid')}]]</b>
-                    a été modifié par l'Office fédéral des transports (OFT) en
-                    <b>[[${properties.get(0).get('newDesignationOfficial')}]]</b>.
-                    L'audition initiale a pris fin et une nouvelle audition a été lancée avec le nouveau nom de la station,
-                    avec la justification suivante:<br><br>
-                    <b>[[${properties.get(0).get('workflowComment')}]]</b>.
-                     Veuillez répondre à la nouvelle consultation jusqu'au [[${properties.get(0).get('endDate')}]] comme suit:
+                <span>Le nom de la station de la demande initiale pour le changement de nom/l'introduction d'une nouvelle station à
+                    <b>[[${properties.get(0).get('designationOfficial')}]] SLOID [[${properties.get(0).get('sloid')}]]</b>.
+                     a été modifié par l'Office fédéral des transports (OFT) en
+                    <b>[[${properties.get(0).get('newDesignationOfficial')}]]</b>. L'audition initiale a pris fin avec la
+                    justification suivante:<br><br>
+                    <b>[[${properties.get(0).get('workflowComment')}]]</b><br><br>
+                    La nouvelle audition a été lancée et les personnes impliquées peuvent dès à présent évaluer le nom de
+                    l'arrêt jusqu'au
+                    <b>[[${properties.get(0).get('endDate')}]]</b>.<br><br>
+                    Vous serez informés de tous les événements pertinents relatifs à l'audition. N'hésitez pas à suivre
+                    le progrès de l'audition dans [[${properties.get(0).get('url')}]].<br><br>
                 </span>
-                <ol>
-                    <li>appeler l'audition en utilisant le lien suivant: [[${properties.get(0).get('url')}]]</li>
-                    <li>prendre une décision concernant le nom de l'arrêt</li>
-                    <li>cliquer sur <b>Décider</b></li>
-                    <li>indiquez ensuite l'adresse e-mail sur laquelle vous avez reçu cette invitation</li>
-                    <li>vous recevez un nouveau mail avec le code PIN pour le vote</li>
-                </ol>
-                <span>Veuillez répondre à l'audition dans tous les cas.
-                    L'absence de réponse sera considérée comme un accord à l'expiration du délai.</span><br>
                 <span>Vous trouverez de plus amples informations sur
                     <a href="https://www.tp-info.ch/fr">https://www.tp-info.ch/fr</a>
                     dans la description ou dans le manuel d'utilisation.
@@ -190,28 +168,21 @@
                     Wylerstrasse 123/125, 3000 Bern<br><br>
                 </div>
             </div>
-
             <hr>
             <div>
-                <br><span>Gentile signore o signora </span><br><br>
-                <span>Il nome della stazione, che figurava nella domanda originaria di rinominazione/reintroduzione della fermata
-                    <b>[[${properties.get(0).get('designationOfficial')}]] SLOID [[${properties.get(0).get('sloid')}]]</b>,
-                    è stato modificato in
+                <br><span>Gentile signore o signora</span><br><br>
+                <span>Il nome della stazione, contenuto nella domanda originaria di ridenominazione/reintroduzione della fermata
+                    <b>[[${properties.get(0).get('designationOfficial')}]] SLOID [[${properties.get(0).get('sloid')}]]</b>, è stato
+                    modificato in
                     <b>[[${properties.get(0).get('newDesignationOfficial')}]]</b>
-                     dall'Ufficio federale dei trasporti (UFT). L’audizione originaria è stata chiusa e ne è stata avviata una
-                    nuova con il nuovo nome della stazione, con la seguente motivazione:<br><br>
-                    <b>[[${properties.get(0).get('workflowComment')}]]</b>
-                    Si prega di rispondere alla nuova audizione entro il [[${properties.get(0).get('endDate')}]] come segue:
+                    dall'Ufficio federale dei trasporti (UFT). L'audizione originaria è stata chiusa con la seguente motivazione:<br><br>
+                    <b>[[${properties.get(0).get('workflowComment')}]]</b><br><br>
+                    È stata avviata una nuova consultazione e le persone interessate possono ora valutare il nome della fermata
+                    fino al
+                    <b>[[${properties.get(0).get('endDate')}]]</b>.<br>
+                    Sarete informati su tutti gli sviluppi relativi all'audizione. Siete invitati a seguire l'andamento
+                    dell'audizione su [[${properties.get(0).get('url')}]].<br><br>
                 </span>
-                <ol>
-                    <li>richiamare la consultazione con il seguente link: [[${properties.get(0).get('url')}]]</li>
-                    <li>prendere una decisione in merito al nome della fermata</li>
-                    <li>cliccare su <b>Decidere</b></li>
-                    <li>inserire l'indirizzo e-mail al quale si è ricevuto l'invito</li>
-                    <li>riceverete una nuova e-mail con il codice PIN per la votazione</li>
-                </ol>
-                <span>Si prega di rispondere alla consultazione in ogni caso. Le risposte mancanti saranno considerate come
-                    un consenso successivo alla scadenza.</span><br>
                 <span>Ulteriori informazioni sono disponibili sul sito
                     <a href="https://www.tp-info.ch/it">https://www.tp-info.ch/it</a>
                     nella descrizione o nel manuale d'uso.
@@ -226,7 +197,6 @@
                     Wylerstrasse 123/125, 3000 Bern<br><br>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
