@@ -12,6 +12,7 @@ import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSearchVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.versioning.service.VersionableService;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -46,12 +47,16 @@ class ServicePointServiceTest {
   @Mock
   private ServicePointStatusDecider servicePointStatusDecider;
 
+  @Mock
+   private ServicePointDistributor servicePointDistributor;
+
+
   @BeforeEach
   void initMocksAndService() {
     MockitoAnnotations.openMocks(this);
     servicePointService = new ServicePointService(servicePointVersionRepositoryMock, versionableServiceMock,
         servicePointValidationService, servicePointSearchVersionRepository, servicePointTerminationService,
-        servicePointStatusDecider);
+        servicePointStatusDecider, servicePointDistributor);
   }
 
   @Test
