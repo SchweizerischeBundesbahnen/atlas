@@ -123,7 +123,8 @@
                     bewerten bis zum
                     <b>[[${properties.get(0).get('endDate')}]]</b>.<br><br>
                     Sie werden über alle relevanten Entwicklungen zur Anhörung informiert.
-                    Gerne dürfen Sie den Verlauf der Anhörung in [[${properties.get(0).get('url')}]] verfolgen.<br><br>
+                    Gerne dürfen Sie den Verlauf der Anhörung in
+                    <a th:href="${properties.get(0).get('url')}">[[${properties.get(0).get('url')}]]</a> verfolgen.<br>
                 </span>
                 <span>Weitere Informationen finden Sie unter
                     <a href="https://www.öv-info.ch/de">https://www.öv-info.ch/de</a>
@@ -152,7 +153,7 @@
                     l'arrêt jusqu'au
                     <b>[[${properties.get(0).get('endDate')}]]</b>.<br><br>
                     Vous serez informés de tous les événements pertinents relatifs à l'audition. N'hésitez pas à suivre
-                    le progrès de l'audition dans [[${properties.get(0).get('url')}]].<br><br>
+                    le progrès de l'audition dans <a th:href="${properties.get(0).get('url')}">[[${properties.get(0).get('url')}]]</a>.<br>
                 </span>
                 <span>Vous trouverez de plus amples informations sur
                     <a href="https://www.tp-info.ch/fr">https://www.tp-info.ch/fr</a>
@@ -181,7 +182,7 @@
                     fino al
                     <b>[[${properties.get(0).get('endDate')}]]</b>.<br>
                     Sarete informati su tutti gli sviluppi relativi all'audizione. Siete invitati a seguire l'andamento
-                    dell'audizione su [[${properties.get(0).get('url')}]].<br><br>
+                    dell'audizione su <a th:href="${properties.get(0).get('url')}">[[${properties.get(0).get('url')}]]</a>.<br>
                 </span>
                 <span>Ulteriori informazioni sono disponibili sul sito
                     <a href="https://www.tp-info.ch/it">https://www.tp-info.ch/it</a>
