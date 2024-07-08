@@ -8,6 +8,7 @@ export interface StopPointRejectWorkflowFormGroup {
   lastName: FormControl<string | null | undefined>;
   organisation: FormControl<string | null | undefined>;
   motivationComment: FormControl<string | null | undefined>;
+  mail: FormControl<string | null | undefined>;
 }
 
 export class StopPointRejectWorkflowFormGroupBuilder {
@@ -17,17 +18,18 @@ export class StopPointRejectWorkflowFormGroupBuilder {
       firstName: new FormControl('', [Validators.required, Validators.maxLength(50), AtlasCharsetsValidator.iso88591]),
       lastName: new FormControl('', [Validators.required, Validators.maxLength(50), AtlasCharsetsValidator.iso88591]),
       organisation: new FormControl('', [Validators.required, Validators.maxLength(255), AtlasCharsetsValidator.iso88591]),
-      motivationComment: new FormControl('', [Validators.required, Validators.minLength(2), AtlasFieldLengthValidator.comments, AtlasCharsetsValidator.iso88591])
+      motivationComment: new FormControl('', [Validators.required, Validators.minLength(2), AtlasFieldLengthValidator.comments, AtlasCharsetsValidator.iso88591]),
+      mail: new FormControl('', [Validators.required, AtlasCharsetsValidator.email]),
     })
   }
 
-  static buildStopPointRejectWorkflow(formGroup: FormGroup<StopPointRejectWorkflowFormGroup>, email: string | undefined): StopPointRejectWorkflow {
+  static buildStopPointRejectWorkflow(formGroup: FormGroup<StopPointRejectWorkflowFormGroup>): StopPointRejectWorkflow {
     return {
-      firstName: formGroup.controls["firstName"].value!,
-      lastName: formGroup.controls["lastName"].value!,
-      motivationComment: formGroup.controls["motivationComment"].value!,
-      mail: email!,
-      organisation: formGroup.controls["organisation"].value!,
+      firstName: formGroup.controls.firstName.value!,
+      lastName: formGroup.controls.lastName.value!,
+      motivationComment: formGroup.controls.motivationComment.value!,
+      mail: formGroup.controls.mail.value!,
+      organisation: formGroup.controls.organisation.value!,
     }
   }
 
