@@ -37,7 +37,7 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   ngOnInit() {
     if (!this.stopPoint && this.currentWorkflow) {
       this.stopPoint = {
-        sloid: this.currentWorkflow.sloid!,
+        sloid: this.currentWorkflow.sloid,
         businessOrganisation: this.currentWorkflow.sboid!,
         validFrom: this.currentWorkflow.versionValidFrom!,
         validTo: this.currentWorkflow.versionValidTo!,
@@ -45,7 +45,7 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
         country: Country.Switzerland,
         status: Status.InReview,
         number:{
-          number: SloidHelper.servicePointSloidToNumber(this.currentWorkflow.sloid!),
+          number: SloidHelper.servicePointSloidToNumber(this.currentWorkflow.sloid),
           checkDigit: 1,
           numberShort: 1,
           uicCountryCode: 85
@@ -67,8 +67,8 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   }
 
   goToSwissTopo() {
-    const n = this.stopPoint!.servicePointGeolocation!.lv95.north;
-    const e = this.stopPoint!.servicePointGeolocation!.lv95.east;
+    const n = this.stopPoint.servicePointGeolocation!.lv95.north;
+    const e = this.stopPoint.servicePointGeolocation!.lv95.east;
     window.open(
       `https://map.geo.admin.ch/?lang=de&topic=ech&bgLayer=ch.swisstopo.pixelkarte-farbe&layers=ch.swisstopo.swissboundaries3d-gemeinde-flaeche.fill,ch.swisstopo-vd.ortschaftenverzeichnis_plz,ch.swisstopo.amtliches-strassenverzeichnis,ch.bav.haltestellen-oev&layers_opacity=1,0.75,0.85,1&layers_timestamp=2024,,,&E=${e}&N=${n}&zoom=10&layers_visibility=false,true,false,true&crosshair=marker&E=${e}&N=${n}`,
       '_blank',
