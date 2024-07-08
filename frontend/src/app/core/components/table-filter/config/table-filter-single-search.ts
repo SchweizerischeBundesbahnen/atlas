@@ -32,6 +32,7 @@ export class TableFilterSingleSearch extends TableFilter<string | undefined> {
         this.activeSearch = value;
       }
       event.chipInput.clear();
+      this.formControl.reset();
     }
   }
 
