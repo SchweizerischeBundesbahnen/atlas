@@ -115,18 +115,18 @@
                 <span>Der Stationsname aus dem ursprünglichen Antrag für die Umbenennung/Neueinführung der Haltestelle
                     <b>[[${properties.get(0).get('designationOfficial')}]] SLOID [[${properties.get(0).get('sloid')}]]</b> wurde
                     durch das Bundesamt für Verkehr (BAV) in
-                    <b>[[${properties.get(0).get('newDesignationOfficial')}]]</b> geändert.
+                    <b>[[${properties.get(0).get('designationOfficial')}]]</b> geändert.
                     Die ursprüngliche Anhörung wurde beendet mit folgender Begründung:<br><br>
-                    <b>[[${properties.get(0).get('workflowComment')}]]</b><br><br>
+                    [[${properties.get(0).get('workflowComment')}]]<br><br>
 
                     Die neue Anhörung wurde gestartet und die involvierten Personen dürfen ab sofort den Namen der Haltestelle
                     bewerten bis zum
                     <b>[[${properties.get(0).get('endDate')}]]</b>.<br><br>
                     Sie werden über alle relevanten Entwicklungen zur Anhörung informiert.
                     Gerne dürfen Sie den Verlauf der Anhörung in
-                    <a th:href="${properties.get(0).get('url')}">[[${properties.get(0).get('url')}]]</a> verfolgen.<br>
+                    <a th:href="${properties.get(0).get('url')}">[[${properties.get(0).get('url')}]]</a> verfolgen.<br><br>
                 </span>
-                <span>Weitere Informationen finden Sie unter
+                <span>Weitere Informationen zum Prozess finden Sie unter
                     <a href="https://www.öv-info.ch/de">https://www.öv-info.ch/de</a>
                     in der Beschreibung oder im Benutzerhandbuch.
                 </span>
@@ -144,16 +144,17 @@
             <div>
                 <br><span>Mesdames et Messieurs</span><br><br>
                 <span>Le nom de la station de la demande initiale pour le changement de nom/l'introduction d'une nouvelle station à
-                    <b>[[${properties.get(0).get('designationOfficial')}]] SLOID [[${properties.get(0).get('sloid')}]]</b>.
+                    <b>[[${properties.get(0).get('designationOfficial')}]] SLOID [[${properties.get(0).get('sloid')}]]</b>
                      a été modifié par l'Office fédéral des transports (OFT) en
-                    <b>[[${properties.get(0).get('newDesignationOfficial')}]]</b>. L'audition initiale a pris fin avec la
+                    <b>[[${properties.get(0).get('designationOfficial')}]]</b>. L'audition initiale a pris fin avec la
                     justification suivante:<br><br>
-                    <b>[[${properties.get(0).get('workflowComment')}]]</b><br><br>
+                    [[${properties.get(0).get('workflowComment')}]]<br><br>
                     La nouvelle audition a été lancée et les personnes impliquées peuvent dès à présent évaluer le nom de
                     l'arrêt jusqu'au
                     <b>[[${properties.get(0).get('endDate')}]]</b>.<br><br>
                     Vous serez informés de tous les événements pertinents relatifs à l'audition. N'hésitez pas à suivre
-                    le progrès de l'audition dans <a th:href="${properties.get(0).get('url')}">[[${properties.get(0).get('url')}]]</a>.<br>
+                    le progrès de l'audition dans
+                    <a th:href="${properties.get(0).get('url')}">[[${properties.get(0).get('url')}]]</a>.<br><br>
                 </span>
                 <span>Vous trouverez de plus amples informations sur
                     <a href="https://www.tp-info.ch/fr">https://www.tp-info.ch/fr</a>
@@ -175,14 +176,15 @@
                 <span>Il nome della stazione, contenuto nella domanda originaria di ridenominazione/reintroduzione della fermata
                     <b>[[${properties.get(0).get('designationOfficial')}]] SLOID [[${properties.get(0).get('sloid')}]]</b>, è stato
                     modificato in
-                    <b>[[${properties.get(0).get('newDesignationOfficial')}]]</b>
+                    <b>[[${properties.get(0).get('designationOfficial')}]]</b>
                     dall'Ufficio federale dei trasporti (UFT). L'audizione originaria è stata chiusa con la seguente motivazione:<br><br>
-                    <b>[[${properties.get(0).get('workflowComment')}]]</b><br><br>
+                    [[${properties.get(0).get('workflowComment')}]]<br><br>
                     È stata avviata una nuova consultazione e le persone interessate possono ora valutare il nome della fermata
                     fino al
-                    <b>[[${properties.get(0).get('endDate')}]]</b>.<br>
+                    <b>[[${properties.get(0).get('endDate')}]]</b>.<br><br>
                     Sarete informati su tutti gli sviluppi relativi all'audizione. Siete invitati a seguire l'andamento
-                    dell'audizione su <a th:href="${properties.get(0).get('url')}">[[${properties.get(0).get('url')}]]</a>.<br>
+                    dell'audizione su
+                    <a th:href="${properties.get(0).get('url')}">[[${properties.get(0).get('url')}]]</a>.<br><br>
                 </span>
                 <span>Ulteriori informazioni sono disponibili sul sito
                     <a href="https://www.tp-info.ch/it">https://www.tp-info.ch/it</a>
