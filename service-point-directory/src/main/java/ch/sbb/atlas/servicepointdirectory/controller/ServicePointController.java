@@ -192,24 +192,13 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public ReadServicePointVersionModel updateDesingationOfficialServicePoint(Long id, UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel) {
-    ServicePointVersion servicePointVersionToUpdate = getServicePointVersionById(id);
 
-    List<ServicePointVersion> currentVersions = servicePointService.findAllByNumberOrderByValidFrom(
-            servicePointVersionToUpdate.getNumber());
-
-    ServicePointVersion versionToUpdate = currentVersions.stream()
-            .filter(version -> servicePointVersionToUpdate.getId().equals(version.getId()))
-            .findFirst()
-            .orElseThrow(() -> new IdNotFoundException(servicePointVersionToUpdate.getId()));
-
-    versionToUpdate.setDesignationOfficial(updateDesignationOfficialServicePointModel.getDesignationOfficial());
-
-    List<ReadServicePointVersionModel> updatedServicePoints = updateAndPublish(servicePointVersionToUpdate, versionToUpdate, currentVersions);
+    List<ReadServicePointVersionModel> updatedServicePoints = servicePointService.updateDesignationOfficial(id, updateDesignationOfficialServicePointModel);
 
     return updatedServicePoints.stream()
-            .filter(servicePoint -> servicePoint.getId().equals(versionToUpdate.getId()))
+            .filter(servicePoint -> servicePoint.getId().equals(id))
             .findFirst()
-            .orElseThrow(() -> new IdNotFoundException(versionToUpdate.getId()));
+            .orElseThrow(() -> new IdNotFoundException(id));
   }
 
   @Override
