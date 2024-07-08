@@ -20,9 +20,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.ErrorResponse;
-import ch.sbb.atlas.api.servicepoint.*;
+import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel.Fields;
+import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationCreateModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
