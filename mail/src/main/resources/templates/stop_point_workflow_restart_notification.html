@@ -133,7 +133,8 @@
                     Bitte beantworten Sie die Anhörung bis zum [[${properties.get(0).get('endDate')}]] wie folgt:
                 </span>
                 <ol>
-                    <li>Aufrufen der Anhörung mit folgendem Link: [[${properties.get(0).get('url')}]]</li>
+                    <li>Aufrufen der Anhörung mit folgendem Link:
+                        <a th:href="${properties.get(0).get('url')}">[[${properties.get(0).get('url')}]]</a></li>
                     <li>Entscheidung bezüglich des Namens der Haltestelle treffen</li>
                     <li>Klicken Sie auf <b>Enscheiden</b></li>
                     <li>Geben Sie anschliessend die Mail-Adresse an, auf welche Sie diese Einladung erhalten haben</li>
@@ -168,7 +169,8 @@
                      Veuillez répondre à la nouvelle consultation jusqu'au [[${properties.get(0).get('endDate')}]] comme suit:
                 </span>
                 <ol>
-                    <li>appeler l'audition en utilisant le lien suivant: [[${properties.get(0).get('url')}]]</li>
+                    <li>appeler l'audition en utilisant le lien suivant:
+                        <a th:href="${properties.get(0).get('url')}">[[${properties.get(0).get('url')}]]</a></li>
                     <li>prendre une décision concernant le nom de l'arrêt</li>
                     <li>cliquer sur <b>Décider</b></li>
                     <li>indiquez ensuite l'adresse e-mail sur laquelle vous avez reçu cette invitation</li>
@@ -204,7 +206,8 @@
                     Si prega di rispondere alla nuova audizione entro il [[${properties.get(0).get('endDate')}]] come segue:
                 </span>
                 <ol>
-                    <li>richiamare la consultazione con il seguente link: [[${properties.get(0).get('url')}]]</li>
+                    <li>richiamare la consultazione con il seguente link:
+                        <a th:href="${properties.get(0).get('url')}">[[${properties.get(0).get('url')}]]</a></li>
                     <li>prendere una decisione in merito al nome della fermata</li>
                     <li>cliccare su <b>Decidere</b></li>
                     <li>inserire l'indirizzo e-mail al quale si è ricevuto l'invito</li>
