@@ -78,6 +78,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
       .subscribe((startedWF) => {
         this.workflow = startedWF;
         this.notificationService.success('WORKFLOW.NOTIFICATION.START.SUCCESS');
+        this.reloadDetail();
       });
   }
 
@@ -159,14 +160,18 @@ export class StopPointWorkflowDetailComponent implements OnInit {
           next: () => {
             decisionDialogRef.close();
             this.notificationService.success('WORKFLOW.NOTIFICATION.VOTE.SUCCESS');
-            this.router.navigateByUrl('/').then(() => {
-                this.router
-                  .navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, this.workflow.id])
-                  .then(() => {});
-            });
+            this.reloadDetail();
           },
           error: () => stepData.swapLoading(),
         });
+    });
+  }
+
+  private reloadDetail(){
+    this.router.navigateByUrl('/').then(() => {
+      this.router
+        .navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, this.workflow.id])
+        .then(() => {});
     });
   }
 }
