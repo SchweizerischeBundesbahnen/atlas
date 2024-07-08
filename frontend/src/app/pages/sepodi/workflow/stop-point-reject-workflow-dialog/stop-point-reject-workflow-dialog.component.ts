@@ -18,7 +18,6 @@ import {DetailHelperService} from "../../../../core/detail/detail-helper.service
 export class StopPointRejectWorkflowDialogComponent implements OnInit {
 
   formGroup!: FormGroup<StopPointRejectWorkflowFormGroup>;
-  email!: string;
 
   constructor(
     public dialogRef: MatDialogRef<StopPointRejectWorkflowDialogComponent>,
@@ -41,7 +40,7 @@ export class StopPointRejectWorkflowDialogComponent implements OnInit {
     this.userAdministrationService.getCurrentUser().subscribe((user) => {
       this.formGroup.controls.firstName.setValue(user.firstName);
       this.formGroup.controls.lastName.setValue(user.lastName);
-      this.email = user.mail!;
+      this.formGroup.controls.mail.setValue(user.mail!);
     });
   }
 
@@ -57,7 +56,7 @@ export class StopPointRejectWorkflowDialogComponent implements OnInit {
     ValidationService.validateForm(this.formGroup);
     if (this.formGroup.valid) {
       const stopPointRejectWorkflow =
-        StopPointRejectWorkflowFormGroupBuilder.buildStopPointRejectWorkflow(this.formGroup, this.email);
+        StopPointRejectWorkflowFormGroupBuilder.buildStopPointRejectWorkflow(this.formGroup);
       this.formGroup.disable();
       if (this.data.rejectType === "REJECT") {
         this.doReject(stopPointRejectWorkflow);
