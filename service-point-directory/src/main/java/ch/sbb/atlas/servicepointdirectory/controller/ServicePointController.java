@@ -2,7 +2,12 @@ package ch.sbb.atlas.servicepointdirectory.controller;
 
 import ch.sbb.atlas.api.location.SloidType;
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.atlas.api.servicepoint.*;
+import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.GeoReference;
+import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
+import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
+import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.location.LocationService;
 import ch.sbb.atlas.location.SloidHelper;
 import ch.sbb.atlas.model.Status;
@@ -50,7 +55,7 @@ public class ServicePointController implements ServicePointApiV1 {
 
   @Override
   public Container<ReadServicePointVersionModel> getServicePoints(Pageable pageable,
-      ServicePointRequestParams servicePointRequestParams) {
+                                                                  ServicePointRequestParams servicePointRequestParams) {
     log.info("Loading ServicePointVersions with pageable={} and servicePointRequestParams={}", pageable,
         servicePointRequestParams);
     ServicePointSearchRestrictions searchRestrictions = ServicePointSearchRestrictions.builder()
