@@ -46,7 +46,8 @@ public class ServicePointStatusDecider {
             return getStatusFromCurrentVersion(currentVersion);
         }
         if (hasNameChanged(newServicePointVersion, currentVersion)
-            && hasVersionOnTheSameTimeslotWithDifferentName(newServicePointVersion, servicePointVersions)) {
+            && hasVersionOnTheSameTimeslotWithDifferentName(newServicePointVersion, servicePointVersions)
+            && currentVersion.getStatus() != Status.IN_REVIEW){
             logMessage(currentVersion, newServicePointVersion, "Deciding on ServicePoint.Status "
                 + "when update scenario where currentServicePointVersion={}, and newServicePointVersion={}.");
             return calculateStatusAccordingToStatusDecisionAlgorithm(newServicePointVersion);
