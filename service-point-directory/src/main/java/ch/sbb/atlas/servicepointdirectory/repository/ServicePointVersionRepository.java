@@ -82,8 +82,6 @@ public interface ServicePointVersionRepository extends JpaRepository<ServicePoin
 
   List<ServicePointVersion> findBySloidOrderByValidFrom(String sloid);
 
-  Optional<ServicePointVersion> findBySloid(String sloid);
-
   List<ServicePointVersion> findAllByValidToGreaterThanEqualAndValidFromLessThanEqualAndDesignationLongIgnoreCase(
       LocalDate validFrom, LocalDate validTo, String designationLong);
 
