@@ -61,7 +61,7 @@ public class RedactAspect {
   }
 
   private StopPointWorkflow redactStopPointWorkflowSensitiveData(StopPointWorkflow stopPointWorkflow) {
-    if (!showConfidentialData(stopPointWorkflow.getSboid())) {
+    if (redactData(stopPointWorkflow.getSboid())) {
       return redactData(stopPointWorkflow);
     }
     return stopPointWorkflow;
@@ -69,7 +69,7 @@ public class RedactAspect {
 
   private Page<StopPointWorkflow> redactStopPointPageSensitiveData(Page<StopPointWorkflow> page) {
     List<StopPointWorkflow> redactedPage = page.getContent().stream().map(this::redactStopPointWorkflowSensitiveData).toList();
-    return new PageImpl<>(redactedPage, page.getPageable(), page.getTotalPages());
+    return new PageImpl<>(redactedPage, page.getPageable(), page.getTotalElements());
   }
 
   private StopPointWorkflow redactData(StopPointWorkflow stopPointWorkflow) {
@@ -96,7 +96,7 @@ public class RedactAspect {
 
   private Decision redactDecisionSensitiveData(Decision decision) {
     StopPointWorkflow workflow = stopPointWorkflowRepository.findByDecisionId(decision.getId());
-    if (!showConfidentialData(workflow.getSboid())) {
+    if (redactData(workflow.getSboid())) {
       return decision.toBuilder()
           .examinant(redactPerson(decision.getExaminant()))
           .fotOverrider(redactPerson(decision.getFotOverrider()))
@@ -105,11 +105,11 @@ public class RedactAspect {
     return decision;
   }
 
-  private boolean showConfidentialData(String sboid) {
+  private boolean redactData(String sboid) {
     boolean hasPermission = businessOrganisationBasedUserAdministrationService.hasUserPermissionsForBusinessOrganisation(sboid,
         ApplicationType.SEPODI);
     boolean isUnauthorized = UserService.hasUnauthorizedRole();
-    return hasPermission && !isUnauthorized;
+    return !hasPermission || isUnauthorized;
   }
 
 }
