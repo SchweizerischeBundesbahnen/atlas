@@ -120,7 +120,7 @@
           [ngClass]="singleSearch.disabled ? 'disabled' : ''"
           class="single-search"
         >
-          <mat-chip-grid #chipList [disabled]="!!singleSearch.disabled">
+          <mat-chip-grid #singleSearchChipList [disabled]="!!singleSearch.disabled">
             <mat-chip-row
               *ngIf="singleSearch.getActiveSearch() as activeSearch"
               (removed)="singleSearch.setActiveSearch(); emitSearch()"
@@ -134,7 +134,7 @@
             <input
               [formControl]="singleSearch.formControl"
               (matChipInputTokenEnd)="singleSearch.addSearchFromChipInputEvent($event); emitSearch()"
-              [matChipInputFor]="chipList"
+              [matChipInputFor]="singleSearchChipList"
               attr.data-cy="table-filter-single-search-{{ rowIndex }}-{{ filterConfigIndex }}"
               class="font-regular-base"
             />
