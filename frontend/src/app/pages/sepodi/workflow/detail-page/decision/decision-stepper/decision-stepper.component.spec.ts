@@ -1,24 +1,28 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {DecisionStepperComponent} from './decision-stepper.component';
-import {MatDialogRef} from '@angular/material/dialog';
-import {AppTestingModule} from '../../../../../../app.testing.module';
-import {DecisionFormComponent} from "../decision-form/decision-form.component";
-import {CommentComponent} from "../../../../../../core/form-components/comment/comment.component";
-import {AtlasFieldErrorComponent} from "../../../../../../core/form-components/atlas-field-error/atlas-field-error.component";
-import {TextFieldComponent} from "../../../../../../core/form-components/text-field/text-field.component";
-import {AtlasLabelFieldComponent} from "../../../../../../core/form-components/atlas-label-field/atlas-label-field.component";
-import {LoadingSpinnerComponent} from "../../../../../../core/components/loading-spinner/loading-spinner.component";
-import {DialogContentComponent} from "../../../../../../core/components/dialog/content/dialog-content.component";
-import {DialogCloseComponent} from "../../../../../../core/components/dialog/close/dialog-close.component";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DecisionStepperComponent } from './decision-stepper.component';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AppTestingModule } from '../../../../../../app.testing.module';
+import { DecisionFormComponent } from '../decision-form/decision-form.component';
+import { CommentComponent } from '../../../../../../core/form-components/comment/comment.component';
+import { AtlasFieldErrorComponent } from '../../../../../../core/form-components/atlas-field-error/atlas-field-error.component';
+import { TextFieldComponent } from '../../../../../../core/form-components/text-field/text-field.component';
+import { AtlasLabelFieldComponent } from '../../../../../../core/form-components/atlas-label-field/atlas-label-field.component';
+import { LoadingSpinnerComponent } from '../../../../../../core/components/loading-spinner/loading-spinner.component';
+import { DialogContentComponent } from '../../../../../../core/components/dialog/content/dialog-content.component';
+import { DialogCloseComponent } from '../../../../../../core/components/dialog/close/dialog-close.component';
+import { StopPointWorkflowService } from '../../../../../../api';
+import { of } from 'rxjs';
 
 describe('DecisionStepperComponent', () => {
   let component: DecisionStepperComponent;
   let fixture: ComponentFixture<DecisionStepperComponent>;
 
   let dialogRefSpy = jasmine.createSpyObj(['close']);
+  let spWfServiceSpy = jasmine.createSpyObj(['obtainOtp', 'verifyOtp', 'voteWorkflow']);
 
   beforeEach(async () => {
     dialogRefSpy = jasmine.createSpyObj(['close']);
+    spWfServiceSpy = jasmine.createSpyObj(['obtainOtp', 'verifyOtp', 'voteWorkflow']);
 
     await TestBed.configureTestingModule({
       declarations: [
@@ -33,7 +37,17 @@ describe('DecisionStepperComponent', () => {
         DialogCloseComponent,
       ],
       imports: [AppTestingModule],
-      providers: [{provide: MatDialogRef, useValue: dialogRefSpy}],
+      providers: [
+        { provide: MatDialogRef, useValue: dialogRefSpy },
+        {
+          provide: StopPointWorkflowService,
+          useValue: spWfServiceSpy,
+        },
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: 1,
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DecisionStepperComponent);
@@ -45,65 +59,85 @@ describe('DecisionStepperComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should complete obtain otp step', (done) => {
-    component.mail.controls.mail.setValue('techsupport@atlas.ch');
-    component.obtainOtp.subscribe((stepData) => {
-      expect(stepData.mail.value).toEqual('techsupport@atlas.ch');
-      expect(stepData.continue).toBeDefined();
-      expect(stepData.swapLoading).toBeDefined();
-      done();
-    });
+  describe('stepper', () => {
+    function testObtainOtpStep() {
+      component.mail.controls.mail.setValue('techsupport@atlas.ch');
+      spWfServiceSpy.obtainOtp.and.returnValue(of('valid'));
 
-    component.completeObtainOtpStep();
-  });
+      component.completeObtainOtpStep();
 
-  it('should complete verify pin step', (done) => {
-    component.pin.controls.pin.setValue('234313');
-    component.verifyPin.subscribe((stepData) => {
-      expect(stepData.mail.value).toEqual('');
-      expect(stepData.pin.value).toEqual('234313');
-      expect(stepData.continue).toBeDefined();
-      expect(stepData.swapLoading).toBeDefined();
-      done();
-    });
-    component.completeVerifyPinStep();
-  });
+      fixture.detectChanges();
 
-  it('should complete decision', (done) => {
-    component.decision.setValue({
-      firstName: 'atlas',
-      lastName: 'atlas',
-      organisation: 'test',
-      personFunction: 'chef',
-      judgement: 'YES',
-      motivation: 'cool',
-    });
-    component.sendDecision.subscribe((stepData) => {
-      expect(stepData.decision).toEqual({
-        examinantMail: '',
-        pinCode: '',
+      expect(spWfServiceSpy.obtainOtp).toHaveBeenCalledOnceWith(1, {
+        examinantMail: 'techsupport@atlas.ch',
+      });
+      expect(component.stepper?.selectedIndex).toEqual(1);
+      expect(component.stepper?.selected?.completed).toBeFalse();
+    }
+
+    function testVerifyPinStep() {
+      component.pin.controls.pin.setValue('234313');
+      spWfServiceSpy.verifyOtp.and.returnValue(
+        of({
+          id: 50,
+          firstName: 'first',
+          lastName: 'last',
+          organisation: 'sbb',
+          personFunction: 'chef',
+        }),
+      );
+
+      component.completeVerifyPinStep();
+      fixture.detectChanges();
+
+      expect(spWfServiceSpy.verifyOtp).toHaveBeenCalledOnceWith(1, {
+        examinantMail: 'techsupport@atlas.ch',
+        pinCode: '234313',
+      });
+      expect(component.stepper?.selectedIndex).toEqual(2);
+      expect(component.stepper?.selected?.completed).toBeFalse();
+    }
+
+    function testCompleteStep() {
+      component.decision.patchValue({
         judgement: 'YES',
         motivation: 'cool',
-        firstName: 'atlas',
-        lastName: 'atlas',
-        organisation: 'test',
+      });
+      spWfServiceSpy.voteWorkflow.and.returnValue(of('voted'));
+
+      component.completeDecision();
+      fixture.detectChanges();
+
+      expect(spWfServiceSpy.voteWorkflow).toHaveBeenCalledOnceWith(1, 50, {
+        examinantMail: 'techsupport@atlas.ch',
+        pinCode: '234313',
+        judgement: 'YES',
+        motivation: 'cool',
+        firstName: 'first',
+        lastName: 'last',
+        organisation: 'sbb',
         personFunction: 'chef',
       });
-      expect(stepData.verifiedExaminant).toBeUndefined();
-      expect(stepData.swapLoading).toBeDefined();
-      done();
+      expect(dialogRefSpy.close).toHaveBeenCalledOnceWith(true);
+      expect(component.stepper?.selected?.completed).toBeTrue();
+    }
+
+    it('happy path', () => {
+      testObtainOtpStep();
+      testVerifyPinStep();
+      testCompleteStep();
     });
-    component.completeDecision();
   });
 
-  it('should resend mail', (done) => {
-    component.obtainOtp.subscribe((stepData) => {
-      expect(stepData.mail.value).toEqual('');
-      expect(stepData.continue).toBeDefined();
-      expect(stepData.swapLoading).toBeDefined();
-      done();
-    });
+  it('should resend mail', () => {
+    component.mail.controls.mail.setValue('resend@sbb.ch');
+    spWfServiceSpy.obtainOtp.and.returnValue(of('valid'));
+
     component.resendMail();
+
+    expect(spWfServiceSpy.obtainOtp).toHaveBeenCalledOnceWith(1, {
+      examinantMail: 'resend@sbb.ch',
+    });
   });
 
   it('should cancel (close dialog immediately) on step 1', () => {
