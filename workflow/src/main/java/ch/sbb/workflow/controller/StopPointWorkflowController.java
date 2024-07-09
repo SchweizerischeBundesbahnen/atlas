@@ -91,16 +91,6 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   }
 
   @Override
-  public ReadStopPointWorkflowModel addExaminantToStopPointWorkflow(Long id, StopPointClientPersonModel personModel) {
-    return StopPointWorkflowMapper.toModel(service.addExaminantToWorkflow(id, personModel));
-  }
-
-  @Override
-  public ReadStopPointWorkflowModel removeExaminantFromStopPointWorkflow(Long id, Long personId) {
-    return StopPointWorkflowMapper.toModel(service.removeExaminantToWorkflow(id,personId));
-  }
-
-  @Override
   public void obtainOtp(Long id, OtpRequestModel otpRequest) {
     otpService.obtainOtp(service.findStopPointWorkflow(id), otpRequest.getExaminantMail());
   }
