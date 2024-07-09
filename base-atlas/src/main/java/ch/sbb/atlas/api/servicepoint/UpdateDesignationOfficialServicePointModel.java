@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @FieldNameConstants
-@Schema(name = "UpdateDesignationOfficialServicePointVersion")
+@Schema(name = "UpdateDesignationOfficialServicePoint")
 public class UpdateDesignationOfficialServicePointModel {
 
     @NotNull

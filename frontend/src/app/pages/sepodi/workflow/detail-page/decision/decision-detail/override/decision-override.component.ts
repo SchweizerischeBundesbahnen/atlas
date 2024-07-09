@@ -55,6 +55,7 @@ export class DecisionOverrideComponent implements OnInit, OnChanges {
       const overrideDecision: OverrideDecision = this.formGroup.value as OverrideDecision;
       overrideDecision.fotMotivation =
         overrideDecision.fotMotivation?.length === 0 ? undefined : overrideDecision.fotMotivation;
+      this.formGroup.disable();
       this.stopPointWorkflowService
         .overrideVoteWorkflow(this.workflowId, this.examinantId, overrideDecision)
         .subscribe(() => {
@@ -63,7 +64,8 @@ export class DecisionOverrideComponent implements OnInit, OnChanges {
           this.router.navigateByUrl('/').then(() => {
             this.router
               .navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, this.workflowId])
-              .then(() => {});
+              .then(() => {
+              });
           });
         });
     }
