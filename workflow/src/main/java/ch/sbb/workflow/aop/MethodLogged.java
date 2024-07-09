@@ -8,5 +8,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MethodLogged {
-
+//  String workflowType() default "GENERAL";
+//  boolean critical() default true;
+  String workflowType();
+  boolean critical();
 }
