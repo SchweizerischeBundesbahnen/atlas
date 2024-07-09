@@ -26,6 +26,7 @@ import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel.Fields;
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationCreateModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.business.organisation.service.SharedBusinessOrganisationService;
 import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
@@ -55,6 +56,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -911,6 +913,85 @@ class ServicePointControllerApiTest extends BaseControllerApiTest {
         .andExpect(jsonPath("$[2].servicePointGeolocation.wgs84.north", is(46.96096808019)))
         .andExpect(jsonPath("$[2].servicePointGeolocation.wgs84.east", is(7.44891972221)));
     verify(locationService, times(1)).generateSloid(SloidType.SERVICE_POINT, Country.SWITZERLAND);
+  }
+
+  @Test
+  void shouldUpdateServicePointDesignationOfficial() throws Exception {
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+        ServicePointTestData.getAargauServicePointVersionModel());
+    Long id = servicePointVersionModel.getId();
+
+    UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel = UpdateDesignationOfficialServicePointModel.builder()
+                    .designationOfficial("test")
+                    .build();
+
+    mvc.perform(put("/v1/service-points/update-designation-official/" + id)
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(updateDesignationOfficialServicePointModel)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.designationOfficial", is("test")));
+  }
+
+  @Test
+  void shouldNotUpdateServicePointOnEmptyDesignationOfficial() throws Exception {
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+            ServicePointTestData.getAargauServicePointVersionModel());
+    Long id = servicePointVersionModel.getId();
+
+
+    UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel = UpdateDesignationOfficialServicePointModel.builder()
+            .designationOfficial("")
+            .build();
+
+    mvc.perform(put("/v1/service-points/update-designation-official/" + id)
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(updateDesignationOfficialServicePointModel)))
+            .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void shouldNotMergeServicePointVersionOnUpdateDesingationOfficial() throws Exception {
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+            ServicePointTestData.getAargauServicePointVersionModel());
+
+    UpdateServicePointVersionModel updateServicePointVersionModel = ServicePointTestData.getAargauServicePointVersionModel();
+    updateServicePointVersionModel.setDesignationOfficial("Aargau Strasse 1");
+    updateServicePointVersionModel.setValidFrom(LocalDate.of(2019, 8, 11));
+    updateServicePointVersionModel.setValidTo(LocalDate.of(2020, 8, 11));
+    updateServicePointVersionModel.setEtagVersion(0);
+
+    List<ReadServicePointVersionModel> list = servicePointController.updateServicePoint(servicePointVersionModel.getId(), updateServicePointVersionModel);
+
+    Long id = list.get(list.size() - 1).getId();
+    String sloid = list.get(list.size() - 1).getSloid();
+
+    servicePointController.updateServicePointStatus(sloid, id, Status.IN_REVIEW);
+
+    UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel = UpdateDesignationOfficialServicePointModel.builder()
+            .designationOfficial("Aargau Strasse")
+            .build();
+
+    mvc.perform(put("/v1/service-points/update-designation-official/" + id)
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(updateDesignationOfficialServicePointModel)))
+            .andExpect(status().isConflict());
+  }
+
+  @Test
+  void shouldNotUpdateServicePointOnLongDesignationOfficial() throws Exception {
+    ReadServicePointVersionModel servicePointVersionModel = servicePointController.createServicePoint(
+            ServicePointTestData.getAargauServicePointVersionModel());
+    Long id = servicePointVersionModel.getId();
+
+
+    UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel = UpdateDesignationOfficialServicePointModel.builder()
+            .designationOfficial("DASISTEINEVIELZULANGEDESIGNATIONOFFICIAL")
+            .build();
+
+    mvc.perform(put("/v1/service-points/update-designation-official/" + id)
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(updateDesignationOfficialServicePointModel)))
+            .andExpect(status().isBadRequest());
   }
 
   @Test

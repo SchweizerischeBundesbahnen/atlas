@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  ApplicationType,
+  ApplicationType, EditStopPointWorkflow,
   ReadServicePointVersion,
   ReadStopPointWorkflow,
-  Status,
+  Status, StopPointPerson,
   StopPointWorkflowService,
   WorkflowStatus,
 } from '../../../../api';
@@ -14,13 +14,16 @@ import { NotificationService } from '../../../../core/notification/notification.
 import { StopPointRejectWorkflowDialogService } from '../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog.service';
 import { environment } from '../../../../../environments/environment';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { take } from 'rxjs';
+import {BehaviorSubject, catchError, EMPTY, Observable, of, take} from 'rxjs';
 import {
   StopPointWorkflowDetailFormGroup,
   StopPointWorkflowDetailFormGroupBuilder,
 } from './detail-form/stop-point-workflow-detail-form-group';
 import { DecisionStepperComponent } from './decision/decision-stepper/decision-stepper.component';
 import {Pages} from "../../../pages";
+import {DialogService} from "../../../../core/components/dialog/dialog.service";
+import {ValidationService} from "../../../../core/validation/validation.service";
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 @Component({
   selector: 'stop-point-workflow-detail',
@@ -37,17 +40,26 @@ export class StopPointWorkflowDetailComponent implements OnInit {
     private readonly stopPointWorkflowService: StopPointWorkflowService,
     private readonly notificationService: NotificationService,
     private readonly stopPointRejectWorkflowDialogService: StopPointRejectWorkflowDialogService,
+    private dialogService: DialogService,
+    private permissionService: PermissionService
   ) {}
+
+  public isFormEnabled$ = new BehaviorSubject<boolean>(false);
 
   form!: FormGroup<StopPointWorkflowDetailFormGroup>;
   stopPoint!: ReadServicePointVersion;
   workflow!: ReadStopPointWorkflow;
+  initWorkflow!: ReadStopPointWorkflow;
   oldDesignation?: string;
+  isAtLeastSupervisor!: boolean;
   bavActionEnabled = environment.sepodiWorkflowBavActionEnabled;
 
   ngOnInit() {
     const workflowData: StopPointWorkflowDetailData = this.route.snapshot.data.workflow;
     this.workflow = workflowData.workflow;
+
+    this.initWorkflow = this.workflow;
+    this.isAtLeastSupervisor = this.permissionService.isAtLeastSupervisor(ApplicationType.Sepodi);
 
     const indexOfVersionInReview = workflowData.servicePoint.findIndex(
       (i) => i.id === this.workflow.versionId,
@@ -174,4 +186,73 @@ export class StopPointWorkflowDetailComponent implements OnInit {
         .then(() => {});
     });
   }
+
+  toggleEdit() {
+    if (this.form?.enabled) {
+      this.showConfirmationDialog();
+    } else {
+      this.enableForm();
+    }
+  }
+
+  showConfirmationDialog() {
+    this.confirmLeave()
+      .pipe(take(1))
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(this.initWorkflow)
+          this.disableForm();
+        }
+      });
+  }
+
+  disableForm(): void {
+    this.form?.disable({ emitEvent: false });
+    this.isFormEnabled$.next(false);
+  }
+
+  private enableForm(): void {
+    this.form?.enable({ emitEvent: false });
+    this.isFormEnabled$.next(true);
+  }
+
+  confirmLeave(): Observable<boolean> {
+    if (this.form?.dirty) {
+      return this.dialogService.confirm({
+        title: 'DIALOG.DISCARD_CHANGES_TITLE',
+        message: 'DIALOG.LEAVE_SITE',
+      });
+    }
+    return of(true);
+  }
+
+  save() {
+    ValidationService.validateForm(this.form!);
+    if (this.form?.valid) {
+      const updatedVersion: EditStopPointWorkflow = {
+        designationOfficial: this.form.controls.designationOfficial.value!,
+        workflowComment: this.form.controls.workflowComment.value!,
+        examinants: this.form.controls.examinants.value.map(examinant => examinant as StopPointPerson)
+      }
+      this.update(this.workflow.id!, updatedVersion);
+    }
+  }
+
+  update(id: number, stopPointWorkflow: EditStopPointWorkflow ){
+    this.stopPointWorkflowService.editStopPointWorkflow(id, stopPointWorkflow)
+      .pipe(catchError(this.handleError))
+      .subscribe((workflow) => {
+
+        this.workflow = workflow;
+        this.initWorkflow = workflow;
+
+        this.notificationService.success('WORKFLOW.NOTIFICATION.EDIT.SUCCESS');
+        this.disableForm();
+      });
+  }
+
+  private handleError = () => {
+    this.enableForm();
+    return EMPTY;
+  };
 }
