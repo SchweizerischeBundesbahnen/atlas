@@ -597,6 +597,9 @@
       },
       "VOTE": {
         "SUCCESS": "La décision a été enregistrée"
+      },
+      "EDIT": {
+        "SUCCESS": "L'audience a été enregistrée avec succès."
       }
     },
     "ERROR": {
@@ -604,7 +607,8 @@
       "ALREADY_IN_REVIEW": "Une consultation a déjà été lancée pour cet objet.",
       "EXAMINANT_MAIL_NOT_FOUND": "L'adresse e-mail saisie n'a pas été trouvée parmi les destinataires.",
       "PIN_CODE_INVALID": "Le code PIN saisi n'est pas correct.",
-      "WRONG_CHANGING_STATUS": "Les données affichées ont été traitées entre-temps. Veuillez recharger votre browser (F5)."
+      "WRONG_CHANGING_STATUS": "Les données affichées ont été traitées entre-temps. Veuillez recharger votre browser (F5).",
+      "WORKFLOW_STATUS_MUST_BE_ADDED": "Le statut de l'audience doit être 'Saisi'."
     },
     "DECISION": {
       "DIALOG_TITLE": "Répondre à la demande",

@@ -49,11 +49,15 @@
 
   <div class="row mb-3">
     <div class="col" data-cy="new-designation-official">
-      <div class="font-bold-base">
-        {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.NEW_DESIGNATION_OFFICIAL' | translate }}
-      </div>
-      <div>{{ stopPoint.designationOfficial }}</div>
+      <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.NEW_DESIGNATION_OFFICIAL' | translate }}</div>
+      @if (!form.enabled){
+        <div>{{ currentWorkflow?.designationOfficial }}</div>
+      }
+      @if (form.enabled){
+        <atlas-text-field [formGroup]="form" controlName="designationOfficial"></atlas-text-field>
+      }
     </div>
+
     @if (oldDesignation) {
       <div class="col-8" data-cy="old-designation-official">
         <div class="font-bold-base">
