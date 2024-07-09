@@ -64,9 +64,7 @@ export class DecisionStepperComponent {
           examinantMail: this.mail.controls.mail.value!,
         })
         .pipe(
-          map(() => {
-            return true;
-          }),
+          map(() => true),
           catchError(() => {
             this._swapLoading();
             return EMPTY;
