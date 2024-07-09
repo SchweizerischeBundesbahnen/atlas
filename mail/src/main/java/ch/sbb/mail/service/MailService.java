@@ -28,9 +28,9 @@ public class MailService {
         mailContentBuilder.prepareMessageHelper(mailNotification, mimeMessage);
     try {
       emailMailSender.send(mimeMessagePreparator);
-      log.info(format("Mail sent: %s ", mailNotification));
+      log.info("Mail with subject {} sent to {}", mailNotification.getSubject(), mailNotification.getTo());
     } catch (MailException e) {
-      log.error("Mail {} not sent. {}", mailNotification, e.getLocalizedMessage());
+      log.error("Mail {} not sent.", mailNotification, e);
     }
   }
 
@@ -42,9 +42,9 @@ public class MailService {
     mailMessage.setText(mailNotification.getContent());
     try {
       emailMailSender.send(mailMessage);
-      log.info(format("Mail sent: %s ", mailNotification));
+      log.info("Simple Mail with subject {} sent to {}", mailNotification.getSubject(), mailNotification.getTo());
     } catch (MailException e) {
-      log.error("Mail {} not sent. {}", mailNotification, e.getLocalizedMessage());
+      log.error("Simple Mail {} not sent.", mailNotification, e);
       throw new MailSendException(e.getLocalizedMessage());
     }
   }
