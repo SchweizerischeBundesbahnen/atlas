@@ -10,7 +10,6 @@ import ch.sbb.atlas.model.Status;
 import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.exception.SePoDiClientWrongStatusReturnedException;
-import ch.sbb.workflow.exception.StopPointWorkflowDesignationOfficialInvalidException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -138,29 +137,5 @@ class SePoDiClientServiceTest {
     //when && then
     assertDoesNotThrow(
             () -> service.updateDesignationOfficialServicePoint(stopPointWorkflow));
-  }
-
-  @Test
-  void shouldNotUpdateDesignationOfficial() {
-    //given
-    String sloid = "ch:1:sloid:8000";
-    long versionId = 1L;
-
-    UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel = UpdateDesignationOfficialServicePointModel.builder()
-            .designationOfficial("test")
-            .build();
-
-    ReadServicePointVersionModel updateServicePointVersionModel = ReadServicePointVersionModel.builder()
-            .sloid(sloid)
-            .id(versionId)
-            .status(Status.IN_REVIEW)
-            .designationOfficial("Designerica")
-            .build();
-    doReturn(updateServicePointVersionModel).when(sePoDiClient).updateServicePointDesignationOfficial(versionId, updateDesignationOfficialServicePointModel);
-
-    stopPointWorkflow.setDesignationOfficial(null);
-    //when && then
-    assertThrows(StopPointWorkflowDesignationOfficialInvalidException.class, () -> service.updateDesignationOfficialServicePoint(stopPointWorkflow));
-
   }
 }

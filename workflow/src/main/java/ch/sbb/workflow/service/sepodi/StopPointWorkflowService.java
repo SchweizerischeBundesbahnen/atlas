@@ -9,6 +9,7 @@ import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.exception.StopPointWorkflowAlreadyInAddedStatusException;
 import ch.sbb.workflow.exception.StopPointWorkflowNotInHearingException;
+import ch.sbb.workflow.exception.StopPointWorkflowStatusMustBeAddedException;
 import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
@@ -29,8 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class StopPointWorkflowService {
 
-  private static final String EXCEPTION_MSG = "Workflow status must be ADDED!!!(REPLACE ME WITH A CUSTOM EXCEPTION)";
-
   private final StopPointWorkflowRepository workflowRepository;
   private final DecisionRepository decisionRepository;
   private final SePoDiClientService sePoDiClientService;
@@ -50,7 +49,7 @@ public class StopPointWorkflowService {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
 
     if (stopPointWorkflow.getStatus() != WorkflowStatus.ADDED) {
-      throw new IllegalStateException(EXCEPTION_MSG);
+      throw new StopPointWorkflowStatusMustBeAddedException();
     }
 
     if(!stopPointWorkflow.getDesignationOfficial().equals(workflowModel.getDesignationOfficial())){
@@ -81,7 +80,7 @@ public class StopPointWorkflowService {
       examinant.setStopPointWorkflow(stopPointWorkflow);
       return save(stopPointWorkflow);
     }
-    throw new IllegalStateException(EXCEPTION_MSG);
+    throw new StopPointWorkflowStatusMustBeAddedException();
   }
 
   public StopPointWorkflow removeExaminantToWorkflow(Long id, Long personId) {
@@ -92,7 +91,7 @@ public class StopPointWorkflowService {
       stopPointWorkflow.getExaminants().remove(person);
       return save(stopPointWorkflow);
     }
-    throw new IllegalStateException(EXCEPTION_MSG);
+    throw new StopPointWorkflowStatusMustBeAddedException();
   }
 
   public void voteWorkFlow(Long id, Long personId, DecisionModel decisionModel) {
