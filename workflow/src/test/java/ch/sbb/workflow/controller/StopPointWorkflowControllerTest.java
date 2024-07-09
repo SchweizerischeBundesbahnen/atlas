@@ -34,6 +34,8 @@ import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.helper.OtpHelper;
 import ch.sbb.workflow.kafka.StopPointWorkflowNotificationService;
+import ch.sbb.workflow.mapper.ClientPersonMapper;
+import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.OtpRequestModel;
@@ -48,6 +50,7 @@ import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import ch.sbb.workflow.service.sepodi.SePoDiClientService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -543,10 +546,16 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .endDate(LocalDate.of(2000, 12, 31))
         .versionId(versionId)
         .build();
+    person.setStopPointWorkflow(stopPointWorkflow);
     workflowRepository.save(stopPointWorkflow);
+
+    List<Person> examinant = new ArrayList<>();
+    examinant.addAll(stopPointWorkflow.getExaminants());
+
     EditStopPointWorkflowModel editStopPointWorkflowModel = EditStopPointWorkflowModel.builder()
         .workflowComment("New Comment")
         .designationOfficial("Bern")
+        .examinants(examinant.stream().map(StopPointClientPersonMapper::toModel).toList())
         .build();
 
     //given
