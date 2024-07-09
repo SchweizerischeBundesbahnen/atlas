@@ -3,6 +3,7 @@ package ch.sbb.workflow.service.sepodi;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.workflow.client.SePoDiAdminClient;
 import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.exception.SePoDiClientWrongStatusReturnedException;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SePoDiClientService {
 
   private final SePoDiClient sePoDiClient;
+  private final SePoDiAdminClient sePoDiAdminClient;
 
   public ReadServicePointVersionModel updateStopPointStatusToInReview(String sloid, Long id) {
     ReadServicePointVersionModel updateServicePointVersionModel = sePoDiClient.postServicePointsStatusUpdate(
@@ -35,8 +37,8 @@ public class SePoDiClientService {
     return updateServicePointVersionModel;
   }
 
-  public void updateStoPointStatusToValidated(StopPointWorkflow stopPointWorkflow) {
-    ReadServicePointVersionModel updateServicePointVersionModel = sePoDiClient.postServicePointsStatusUpdate(
+  public void updateStopPointStatusToValidatedAsAdmin(StopPointWorkflow stopPointWorkflow) {
+    ReadServicePointVersionModel updateServicePointVersionModel = sePoDiAdminClient.postServicePointsStatusUpdate(
         stopPointWorkflow.getSloid(), stopPointWorkflow.getVersionId(), Status.VALIDATED);
     if (updateServicePointVersionModel != null && Status.VALIDATED != updateServicePointVersionModel.getStatus()) {
       throw new SePoDiClientWrongStatusReturnedException(Status.VALIDATED, updateServicePointVersionModel.getStatus());
