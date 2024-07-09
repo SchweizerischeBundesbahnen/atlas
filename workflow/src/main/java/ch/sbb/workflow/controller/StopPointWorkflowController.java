@@ -83,8 +83,8 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   }
 
   @PreAuthorize(
-      "@countryAndBusinessOrganisationBasedUserAdministrationService."
-          + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
+          "@countryAndBusinessOrganisationBasedUserAdministrationService."
+                  + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   @Override
   public ReadStopPointWorkflowModel editStopPointWorkflow(Long id, EditStopPointWorkflowModel workflowModel) {
     return StopPointWorkflowMapper.toModel(service.editWorkflow(id, workflowModel));

@@ -9,6 +9,7 @@ import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.exception.StopPointWorkflowAlreadyInAddedStatusException;
 import ch.sbb.workflow.exception.StopPointWorkflowNotInHearingException;
+import ch.sbb.workflow.exception.StopPointWorkflowStatusMustBeAddedException;
 import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
@@ -18,6 +19,7 @@ import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import java.time.LocalDateTime;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -28,10 +30,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class StopPointWorkflowService {
 
-  private static final String EXCEPTION_MSG = "Workflow status must be ADDED!!!(REPLACE ME WITH A CUSTOM EXCEPTION)";
-
   private final StopPointWorkflowRepository workflowRepository;
   private final DecisionRepository decisionRepository;
+  private final SePoDiClientService sePoDiClientService;
+
 
   @Redacted(redactedClassType = StopPointWorkflow.class)
   public StopPointWorkflow getWorkflow(Long id) {
@@ -45,11 +47,28 @@ public class StopPointWorkflowService {
 
   public StopPointWorkflow editWorkflow(Long id, EditStopPointWorkflowModel workflowModel) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
-    if (!stopPointWorkflow.getDesignationOfficial().equals(workflowModel.getDesignationOfficial())
-        && stopPointWorkflow.getStatus() != WorkflowStatus.ADDED) {
-      throw new IllegalStateException(EXCEPTION_MSG);
+
+    if (stopPointWorkflow.getStatus() != WorkflowStatus.ADDED) {
+      throw new StopPointWorkflowStatusMustBeAddedException();
     }
+
+    if(!stopPointWorkflow.getDesignationOfficial().equals(workflowModel.getDesignationOfficial())){
+      stopPointWorkflow.setDesignationOfficial(workflowModel.getDesignationOfficial());
+      sePoDiClientService.updateDesignationOfficialServicePoint(stopPointWorkflow);
+    }
+
     stopPointWorkflow.setWorkflowComment(workflowModel.getWorkflowComment());
+
+    if(workflowModel.getExaminants() != null){
+      stopPointWorkflow.getExaminants().clear();
+      workflowModel.getExaminants()
+              .stream()
+              .map(StopPointClientPersonMapper::toEntity)
+              .forEach(examinant -> {
+                examinant.setStopPointWorkflow(stopPointWorkflow);
+                stopPointWorkflow.getExaminants().add(examinant);
+              });
+    }
     return save(stopPointWorkflow);
   }
 
@@ -61,7 +80,7 @@ public class StopPointWorkflowService {
       examinant.setStopPointWorkflow(stopPointWorkflow);
       return save(stopPointWorkflow);
     }
-    throw new IllegalStateException(EXCEPTION_MSG);
+    throw new StopPointWorkflowStatusMustBeAddedException();
   }
 
   public StopPointWorkflow removeExaminantToWorkflow(Long id, Long personId) {
@@ -72,7 +91,7 @@ public class StopPointWorkflowService {
       stopPointWorkflow.getExaminants().remove(person);
       return save(stopPointWorkflow);
     }
-    throw new IllegalStateException(EXCEPTION_MSG);
+    throw new StopPointWorkflowStatusMustBeAddedException();
   }
 
   public void voteWorkFlow(Long id, Long personId, DecisionModel decisionModel) {
@@ -140,5 +159,4 @@ public class StopPointWorkflowService {
   public StopPointWorkflow save(StopPointWorkflow stopPointWorkflow) {
     return workflowRepository.saveAndFlush(stopPointWorkflow);
   }
-
 }

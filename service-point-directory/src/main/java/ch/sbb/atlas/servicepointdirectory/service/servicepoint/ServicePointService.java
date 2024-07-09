@@ -1,12 +1,17 @@
 package ch.sbb.atlas.servicepointdirectory.service.servicepoint;
 
+import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.exception.NotFoundException;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;
 import ch.sbb.atlas.servicepointdirectory.exception.TerminationNotAllowedWhenVersionInReviewException;
+import ch.sbb.atlas.servicepointdirectory.mapper.ServicePointVersionMapper;
 import ch.sbb.atlas.servicepointdirectory.model.search.ServicePointSearchRestrictions;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointSearchVersionRepository;
 import ch.sbb.atlas.servicepointdirectory.repository.ServicePointVersionRepository;
+import ch.sbb.atlas.servicepointdirectory.service.ServicePointDistributor;
 import ch.sbb.atlas.versioning.consumer.ApplyVersioningDeleteByIdLongConsumer;
 import ch.sbb.atlas.versioning.model.VersionedObject;
 import ch.sbb.atlas.versioning.service.VersionableService;
@@ -36,6 +41,8 @@ public class ServicePointService {
   private final ServicePointSearchVersionRepository servicePointSearchVersionRepository;
   private final ServicePointTerminationService servicePointTerminationService;
   private final ServicePointStatusDecider servicePointStatusDecider;
+  private final ServicePointDistributor servicePointDistributor;
+
 
   public List<ServicePointSearchResult> searchServicePointVersion(String value) {
     List<ServicePointSearchResult> servicePointSearchResults = servicePointSearchVersionRepository.searchServicePoints(value);
@@ -164,6 +171,32 @@ public class ServicePointService {
       return servicePointSearchResults.subList(0, SEARCH_RESULT_SIZE);
     }
     return servicePointSearchResults;
+  }
+
+  public List<ReadServicePointVersionModel> updateDesignationOfficial(Long id, UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel) {
+
+    ServicePointVersion servicePointVersionToUpdate = findById(id).orElseThrow(() -> new NotFoundException.IdNotFoundException(id));
+
+    List<ServicePointVersion> currentVersions = findAllByNumberOrderByValidFrom(servicePointVersionToUpdate.getNumber());
+
+    ServicePointVersion editedVersion = currentVersions.stream()
+            .filter(version -> servicePointVersionToUpdate.getId().equals(version.getId()))
+            .findFirst()
+            .orElseThrow(() -> new NotFoundException.IdNotFoundException(servicePointVersionToUpdate.getId()))
+            .toBuilder().designationOfficial(updateDesignationOfficialServicePointModel.getDesignationOfficial())
+            .build();
+
+    updateServicePointVersion(servicePointVersionToUpdate, editedVersion, currentVersions);
+
+    List<ServicePointVersion> servicePoint = findAllByNumberOrderByValidFrom(
+            servicePointVersionToUpdate.getNumber());
+    servicePointDistributor.publishServicePointsWithNumbers(servicePointVersionToUpdate.getNumber());
+
+    return servicePoint
+            .stream()
+            .map(ServicePointVersionMapper::toModel)
+            .toList();
+
   }
 
   @PreAuthorize(

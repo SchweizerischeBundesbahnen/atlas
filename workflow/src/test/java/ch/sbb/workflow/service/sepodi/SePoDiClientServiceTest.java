@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doReturn;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
+import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.StopPointWorkflow;
@@ -23,7 +24,11 @@ class SePoDiClientServiceTest {
   @Mock
   private SePoDiClient sePoDiClient;
 
-  private StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder().sloid("ch:1:sloid:8000").versionId(1L).build();
+  private StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder().sloid("ch:1:sloid:8000")
+          .versionId(1L)
+          .id(1L)
+          .designationOfficial("test")
+          .build();
 
   @BeforeEach
   void setUp() {
@@ -111,4 +116,26 @@ class SePoDiClientServiceTest {
         () -> service.updateStoPointStatusToValidated(stopPointWorkflow));
   }
 
+  @Test
+  void shouldUpdateDesignationOfficial() {
+    //given
+    String sloid = "ch:1:sloid:8000";
+    long versionId = 1L;
+
+    UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel = UpdateDesignationOfficialServicePointModel.builder()
+            .designationOfficial("test")
+            .build();
+
+    ReadServicePointVersionModel updateServicePointVersionModel = ReadServicePointVersionModel.builder()
+            .sloid(sloid)
+            .id(versionId)
+            .status(Status.IN_REVIEW)
+            .designationOfficial("Designerica")
+            .build();
+    doReturn(updateServicePointVersionModel).when(sePoDiClient).updateServicePointDesignationOfficial(versionId, updateDesignationOfficialServicePointModel);
+
+    //when && then
+    assertDoesNotThrow(
+            () -> service.updateDesignationOfficialServicePoint(stopPointWorkflow));
+  }
 }
