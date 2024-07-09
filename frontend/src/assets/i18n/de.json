@@ -607,8 +607,8 @@
       "ALREADY_IN_REVIEW": "Für dieses Objekt wurde bereits eine Anhörung gestartet.",
       "EXAMINANT_MAIL_NOT_FOUND": "Die eingetragene E-Mail Adresse wurde unter den Empfängern nicht gefunden.",
       "PIN_CODE_INVALID": "Der eingetragene PIN-Code ist nicht korrekt.",
-      "DESIGNATION_OFFICIAL_NOT_EMPTY": "Offizielle Bezeichnung darf nicht leer sein",
-      "WRONG_CHANGING_STATUS": "Die angezeigten Daten wurden inzwischen bearbeitet. Bitte laden Sie ihren Browser neu (F5)."
+      "WRONG_CHANGING_STATUS": "Die angezeigten Daten wurden inzwischen bearbeitet. Bitte laden Sie ihren Browser neu (F5).",
+      "WORKFLOW_STATUS_MUST_BE_ADDED": "Workflow Status muss 'Erfasst' sein."
     },
     "DECISION": {
       "DIALOG_TITLE": "Antrag beantworten",
