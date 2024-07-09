@@ -20,6 +20,9 @@
         placeholder="{{ placeholder | translate }}"
         [attr.data-cy]="controlName"
       />
+      <div class="icon-content-wrapper">
+        <ng-content></ng-content>
+      </div>
       <ng-container
         #customChildInputPostfixTemplate
         *ngTemplateOutlet="customChildInputPostfixTemplate"
