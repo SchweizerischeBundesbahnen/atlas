@@ -63,7 +63,3 @@ include::{snippets}/stop-point-workflow-controller-test/should-start-workflow/at
 == Cancel Stop Point Workflow - Successfully
 
 include::{snippets}/stop-point-workflow-controller-test/should-cancel-workflow/atlas-doc.adoc[]
-
-== Add Examinant to Stop Point Workflow - Successfully
-
-include::{snippets}/stop-point-workflow-controller-test/should-add-examinant-to-workflow/atlas-doc.adoc[]
