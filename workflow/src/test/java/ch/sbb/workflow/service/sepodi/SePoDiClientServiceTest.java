@@ -2,11 +2,15 @@ package ch.sbb.workflow.service.sepodi;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.workflow.client.SePoDiAdminClient;
 import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.exception.SePoDiClientWrongStatusReturnedException;
@@ -24,16 +28,20 @@ class SePoDiClientServiceTest {
   @Mock
   private SePoDiClient sePoDiClient;
 
-  private StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder().sloid("ch:1:sloid:8000")
+  @Mock
+  private SePoDiAdminClient sePoDiAdminClient;
+
+  private final StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder().sloid("ch:1:sloid:8000")
           .versionId(1L)
           .id(1L)
           .designationOfficial("test")
           .build();
 
+
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    service = new SePoDiClientService(sePoDiClient);
+    service = new SePoDiClientService(sePoDiClient, sePoDiAdminClient);
   }
 
   @Test
@@ -96,12 +104,13 @@ class SePoDiClientServiceTest {
     //given
     ReadServicePointVersionModel updateServicePointVersionModel = ReadServicePointVersionModel.builder().status(Status.VALIDATED)
         .build();
-    doReturn(updateServicePointVersionModel).when(sePoDiClient)
+    doReturn(updateServicePointVersionModel).when(sePoDiAdminClient)
         .postServicePointsStatusUpdate("ch:1:sloid:8000", 1L, Status.VALIDATED);
 
     //when && then
     assertDoesNotThrow(
-        () -> service.updateStopPointStatusToInReview(stopPointWorkflow.getSloid(), stopPointWorkflow.getVersionId()));
+        () -> service.updateStopPointStatusToValidatedAsAdmin(stopPointWorkflow));
+    verify(sePoDiAdminClient).postServicePointsStatusUpdate(any(), any(), eq(Status.VALIDATED));
   }
 
   @Test
@@ -109,11 +118,12 @@ class SePoDiClientServiceTest {
     //given
     ReadServicePointVersionModel updateServicePointVersionModel = ReadServicePointVersionModel.builder().status(Status.REVOKED)
         .build();
-    doReturn(updateServicePointVersionModel).when(sePoDiClient).postServicePointsStatusUpdate(stopPointWorkflow.getSloid(),
+    doReturn(updateServicePointVersionModel).when(sePoDiAdminClient).postServicePointsStatusUpdate(stopPointWorkflow.getSloid(),
         stopPointWorkflow.getVersionId(), Status.VALIDATED);
     //when && then
     assertThrows(SePoDiClientWrongStatusReturnedException.class,
-        () -> service.updateStoPointStatusToValidated(stopPointWorkflow));
+        () -> service.updateStopPointStatusToValidatedAsAdmin(stopPointWorkflow));
+    verify(sePoDiAdminClient).postServicePointsStatusUpdate(any(), any(), eq(Status.VALIDATED));
   }
 
   @Test
