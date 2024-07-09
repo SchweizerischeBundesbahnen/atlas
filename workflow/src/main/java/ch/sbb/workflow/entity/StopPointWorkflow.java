@@ -101,6 +101,9 @@ public class StopPointWorkflow extends BaseWorkflowEntity {
   @Column(columnDefinition = "DATE")
   private LocalDate versionValidFrom;
 
+  @Column(columnDefinition = "DATE")
+  private LocalDate versionValidTo;
+
    public void setExaminants(Set<Person> examinants) {
     this.examinants =
         examinants.stream().peek(examinant -> examinant.setStopPointWorkflow(this)).collect(toSet());

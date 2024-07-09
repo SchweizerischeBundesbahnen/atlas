@@ -62,13 +62,6 @@ public interface StopPointWorkflowApiV1 {
   ReadStopPointWorkflowModel rejectStopPointWorkflow(@PathVariable Long id,
       @RequestBody @Valid StopPointRejectWorkflowModel workflowModel);
 
-  @PostMapping(path = "/add-examinant/{id}")
-  ReadStopPointWorkflowModel addExaminantToStopPointWorkflow(@PathVariable Long id,
-      @RequestBody @Valid StopPointClientPersonModel personModel);
-
-  @PostMapping(path = "/remove-examinant/{id}/{personId}")
-  ReadStopPointWorkflowModel removeExaminantFromStopPointWorkflow(@PathVariable Long id, @PathVariable Long personId);
-
   @ResponseStatus(HttpStatus.ACCEPTED)
   @ApiResponses(value = {@ApiResponse(responseCode = "202")})
   @PostMapping(path = "/obtain-otp/{id}")

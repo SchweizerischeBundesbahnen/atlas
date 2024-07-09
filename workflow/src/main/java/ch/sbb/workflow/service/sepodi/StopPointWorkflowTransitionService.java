@@ -154,12 +154,12 @@ public class StopPointWorkflowTransitionService {
   }
 
   public void progressWorkflowWithNewDecision(Long workflowId) {
-    StopPointWorkflow workflow = stopPointWorkflowService.getWorkflow(workflowId);
+    StopPointWorkflow workflow = stopPointWorkflowService.getUnredactedWorkflow(workflowId);
     StopPointWorkflowProgressDecider stopPointWorkflowProgressDecider = buildProgressDecider(workflow);
 
     stopPointWorkflowProgressDecider.calculateNewWorkflowStatus().ifPresent(newStatus -> {
       if (newStatus == WorkflowStatus.APPROVED) {
-        sePoDiClientService.updateStoPointStatusToValidated(workflow);
+        sePoDiClientService.updateStopPointStatusToValidatedAsAdmin(workflow);
         notificationService.sendApprovedStopPointWorkflowMail(workflow);
       }
       if (newStatus == WorkflowStatus.REJECTED) {
