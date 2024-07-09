@@ -53,27 +53,45 @@ const activatedRoute = {
   },
 };
 
+function getSpWfServiceSpy() {
+  return jasmine.createSpyObj('StopPointWorkflowService', {
+    startStopPointWorkflow: of(workflow),
+    editStopPointWorkflow: jasmine.createSpy('editStopPointWorkflow'),
+  });
+}
+
+function getNotificationServiceSpy() {
+  return jasmine.createSpyObj(['success']);
+}
+
+function getDialogServiceSpy() {
+  return jasmine.createSpyObj('DialogService', ['confirm']);
+}
+
+function getDialogSpy() {
+  return jasmine.createSpyObj(['open']);
+}
+
+function getStopPointRejectWorkflowDialogServiceSpy() {
+  return jasmine.createSpyObj(['openDialog']);
+}
+
 describe('StopPointWorkflowDetailComponent', () => {
   let component: StopPointWorkflowDetailComponent;
   let fixture: ComponentFixture<StopPointWorkflowDetailComponent>;
 
-  let stopPointRejectWorkflowDialogServiceSpy: StopPointRejectWorkflowDialogService;
-  let dialogSpy = jasmine.createSpyObj(['open', 'afterClosed']);
-  let spWfServiceSpy = jasmine.createSpyObj('StopPointWorkflowService', {
-    startStopPointWorkflow: of(workflow),
-    editStopPointWorkflow: jasmine.createSpy('editStopPointWorkflow'),
-  });
-  let notificationServiceSpy = jasmine.createSpyObj(['success']);
-  let dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
+  let stopPointRejectWorkflowDialogServiceSpy = getStopPointRejectWorkflowDialogServiceSpy();
+  let dialogSpy = getDialogSpy();
+  let spWfServiceSpy = getSpWfServiceSpy();
+  let notificationServiceSpy = getNotificationServiceSpy();
+  let dialogServiceSpy = getDialogServiceSpy();
 
   beforeEach(async () => {
-    stopPointRejectWorkflowDialogServiceSpy = jasmine.createSpyObj(['openDialog']);
-    dialogSpy = jasmine.createSpyObj(['open']);
-    spWfServiceSpy = jasmine.createSpyObj('StopPointWorkflowService', {
-      startStopPointWorkflow: of(workflow),
-    });
-    notificationServiceSpy = jasmine.createSpyObj(['success']);
-    dialogServiceSpy = jasmine.createSpyObj('DialogService', ['confirm']);
+    stopPointRejectWorkflowDialogServiceSpy = getStopPointRejectWorkflowDialogServiceSpy();
+    dialogSpy = getDialogSpy();
+    spWfServiceSpy = getSpWfServiceSpy();
+    notificationServiceSpy = getNotificationServiceSpy();
+    dialogServiceSpy = getDialogServiceSpy();
 
     TestBed.configureTestingModule({
       declarations: [
