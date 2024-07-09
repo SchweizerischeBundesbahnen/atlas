@@ -15,11 +15,9 @@ import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
-import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import java.time.LocalDateTime;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -37,6 +35,10 @@ public class StopPointWorkflowService {
 
   @Redacted(redactedClassType = StopPointWorkflow.class)
   public StopPointWorkflow getWorkflow(Long id) {
+    return workflowRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+  }
+
+  public StopPointWorkflow getUnredactedWorkflow(Long id) {
     return workflowRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }
 
@@ -70,28 +72,6 @@ public class StopPointWorkflowService {
               });
     }
     return save(stopPointWorkflow);
-  }
-
-  public StopPointWorkflow addExaminantToWorkflow(Long id, StopPointClientPersonModel personModel) {
-    StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
-    if (stopPointWorkflow.getStatus() != WorkflowStatus.ADDED || stopPointWorkflow.getStatus() != WorkflowStatus.APPROVED) {
-      Person examinant = StopPointClientPersonMapper.toEntity(personModel);
-      stopPointWorkflow.getExaminants().add(examinant);
-      examinant.setStopPointWorkflow(stopPointWorkflow);
-      return save(stopPointWorkflow);
-    }
-    throw new StopPointWorkflowStatusMustBeAddedException();
-  }
-
-  public StopPointWorkflow removeExaminantToWorkflow(Long id, Long personId) {
-    StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
-    if (stopPointWorkflow.getStatus() != WorkflowStatus.ADDED || stopPointWorkflow.getStatus() != WorkflowStatus.APPROVED) {
-      Person person = stopPointWorkflow.getExaminants().stream().filter(p -> p.getId().equals(personId)).findFirst()
-          .orElseThrow(() -> new IdNotFoundException(personId));
-      stopPointWorkflow.getExaminants().remove(person);
-      return save(stopPointWorkflow);
-    }
-    throw new StopPointWorkflowStatusMustBeAddedException();
   }
 
   public void voteWorkFlow(Long id, Long personId, DecisionModel decisionModel) {

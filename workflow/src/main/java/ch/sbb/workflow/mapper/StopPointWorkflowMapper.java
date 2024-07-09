@@ -29,6 +29,8 @@ public class StopPointWorkflowMapper {
         .workflowComment(entity.getWorkflowComment())
         .localityName(entity.getLocalityName())
         .versionValidFrom(entity.getVersionValidFrom())
+        .versionValidTo(entity.getVersionValidTo())
+        .sboid(entity.getSboid())
         .startDate(entity.getStartDate())
         .endDate(entity.getEndDate())
         .createdAt(entity.getCreationDate())
@@ -51,6 +53,7 @@ public class StopPointWorkflowMapper {
             servicePointVersionModel.getServicePointGeolocation().getSwissLocation().getLocalityMunicipality().getLocalityName())
         .designationOfficial(servicePointVersionModel.getDesignationOfficial())
         .versionValidFrom(servicePointVersionModel.getValidFrom())
+        .versionValidTo(servicePointVersionModel.getValidTo())
         .build();
     examinants.addAll(model.getExaminants());
     stopPointWorkflow.setExaminants(
