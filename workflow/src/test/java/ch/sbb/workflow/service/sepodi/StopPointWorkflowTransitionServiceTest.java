@@ -118,7 +118,7 @@ class StopPointWorkflowTransitionServiceTest {
 
     stopPointWorkflowTransitionService.progressWorkflowWithNewDecision(workflowInHearing.getId());
 
-    verify(sePoDiClientService).updateStoPointStatusToValidated(ArgumentMatchers.any());
+    verify(sePoDiClientService).updateStopPointStatusToValidatedAsAdmin(ArgumentMatchers.any());
     verify(notificationService).sendApprovedStopPointWorkflowMail(ArgumentMatchers.any());
 
     workflowInHearing = workflowRepository.findById(workflowInHearing.getId()).orElseThrow();
