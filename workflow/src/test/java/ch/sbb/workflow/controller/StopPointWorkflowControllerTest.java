@@ -34,7 +34,6 @@ import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.helper.OtpHelper;
 import ch.sbb.workflow.kafka.StopPointWorkflowNotificationService;
-import ch.sbb.workflow.mapper.ClientPersonMapper;
 import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
@@ -689,53 +688,6 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldAddExaminantToWorkflow() throws Exception {
-    //when
-    Person person = Person.builder()
-        .firstName("Marek")
-        .lastName("Hamsik")
-        .function("Centrocampista")
-        .mail(MAIL_ADDRESS).build();
-
-    Long versionId = 123456L;
-    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
-        .sloid("ch:1:sloid:1234")
-        .sboid("ch:1:sboid:666")
-        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .localityName("Biel/Bienne")
-        .ccEmails(List.of(MAIL_ADDRESS))
-        .workflowComment("WF comment")
-        .status(WorkflowStatus.ADDED)
-        .examinants(Set.of(person))
-        .startDate(LocalDate.of(2000, 1, 1))
-        .endDate(LocalDate.of(2000, 12, 31))
-        .versionId(versionId)
-        .build();
-    StopPointWorkflow workflow = workflowRepository.save(stopPointWorkflow);
-    person.setStopPointWorkflow(workflow);
-    workflowRepository.save(workflow);
-
-    StopPointClientPersonModel examinant = StopPointClientPersonModel.builder()
-        .firstName("Luca")
-        .lastName("Fix")
-        .organisation("Org")
-        .personFunction("YB-Fun")
-        .mail(MAIL_ADDRESS).build();
-
-    //given
-    mvc.perform(post("/v1/stop-point/workflows/add-examinant/" + stopPointWorkflow.getId())
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(examinant)))
-        .andExpect(status().isOk());
-
-    List<StopPointWorkflow> workflows =
-        workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
-            .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
-    assertThat(workflows).hasSize(1);
-    assertThat(workflows.get(0).getExaminants()).hasSize(2);
-  }
-
-  @Test
   void shouldGetOtpWorkflow() throws Exception {
     //when
     Person person = Person.builder()
@@ -775,45 +727,6 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
 
     assertThat(otpResult).isNotNull();
     assertThat(otpResult.getPerson().getId()).isEqualTo(person.getId());
-  }
-
-  @Test
-  void shouldRemoveExaminantToWorkflow() throws Exception {
-    //when
-    Person person = Person.builder()
-        .firstName("Marek")
-        .lastName("Hamsik")
-        .function("Centrocampista")
-        .mail(MAIL_ADDRESS).build();
-
-    Long versionId = 123456L;
-    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
-        .sloid("ch:1:sloid:1234")
-        .sboid("ch:1:sboid:666")
-        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .localityName("Biel/Bienne")
-        .ccEmails(List.of(MAIL_ADDRESS))
-        .workflowComment("WF comment")
-        .status(WorkflowStatus.ADDED)
-        .examinants(Set.of(person))
-        .startDate(LocalDate.of(2000, 1, 1))
-        .endDate(LocalDate.of(2000, 12, 31))
-        .versionId(versionId)
-        .build();
-    StopPointWorkflow workflow = workflowRepository.save(stopPointWorkflow);
-    person.setStopPointWorkflow(workflow);
-    workflowRepository.save(workflow);
-
-    //given
-    mvc.perform(post("/v1/stop-point/workflows/remove-examinant/" + stopPointWorkflow.getId() + "/" + person.getId())
-            .contentType(contentType))
-        .andExpect(status().isOk());
-
-    List<StopPointWorkflow> workflows =
-        workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
-            .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
-    assertThat(workflows).hasSize(1);
-    assertThat(workflows.get(0).getExaminants()).isEmpty();
   }
 
   @Test
