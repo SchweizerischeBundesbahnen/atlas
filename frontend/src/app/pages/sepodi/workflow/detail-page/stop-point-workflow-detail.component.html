@@ -26,6 +26,37 @@
       wrapperStyleClass="me-3"
     >
     </atlas-button>
+    @if (isAtLeastSupervisor && workflow.status === WorkflowStatus.Added){
+      <atlas-button
+        [footerEdit]="form.disabled"
+        (buttonClicked)="toggleEdit()"
+        buttonDataCy="edit"
+        buttonText="COMMON.EDIT"
+        buttonType="whiteFooterEdit"
+        wrapperStyleClass="me-3"
+      >
+      </atlas-button>
+    }
+    <atlas-button
+      [footerEdit]="(isFormEnabled$ | async) ?? false"
+      (buttonClicked)="toggleEdit()"
+      buttonDataCy="cancel"
+      buttonText="COMMON.CANCEL"
+      buttonType="whiteFooterEdit"
+      wrapperStyleClass="me-3"
+    >
+    </atlas-button>
+    <atlas-button
+      (click)="save()"
+      [footerEdit]="(isFormEnabled$ | async) ?? false"
+      [disabled]="!form.dirty"
+      [submitButton]="true"
+      buttonDataCy="save-item"
+      buttonText="COMMON.SAVE"
+      buttonType="whiteFooterEdit"
+      wrapperStyleClass="me-3"
+    >
+    </atlas-button>
     @if (bavActionEnabled) {
       @if (workflow.status === WorkflowStatus.Added) {
         <atlas-button
