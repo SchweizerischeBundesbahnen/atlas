@@ -3,15 +3,17 @@
   <atlas-spacer [divider]="true" height="0"></atlas-spacer>
 </h1>
 
-<div class="mb-3">
-  <span data-cy="version-range">
-    {{ 'COMMON.VERSION_VALIDITY' | translate }}
-    {{ 'COMMON.FROM' | translate }}
-    {{ stopPoint.validFrom | displayDate }}
-    {{ 'COMMON.TO' | translate }}
-    {{ stopPoint.validTo | displayDate }}
-  </span>
-</div>
+@if (stopPoint.validFrom && stopPoint.validTo) {
+  <div class="mb-3">
+    <span data-cy="version-range">
+      {{ 'COMMON.VERSION_VALIDITY' | translate }}
+      {{ 'COMMON.FROM' | translate }}
+      {{ stopPoint.validFrom | displayDate }}
+      {{ 'COMMON.TO' | translate }}
+      {{ stopPoint.validTo | displayDate }}
+    </span>
+  </div>
+}
 
 <div class="stop-point-info">
   <div class="row mb-3">
@@ -85,8 +87,10 @@
           <em class="bi bi-geo-alt-fill"></em
           >{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.MAP' | translate }}:
         </span>
-        <atlas-link label="Swisstopo" (linkClicked)="goToSwissTopo()"></atlas-link>
-        /
+        @if (this.stopPoint.servicePointGeolocation?.lv95) {
+          <atlas-link label="Swisstopo" (linkClicked)="goToSwissTopo()"></atlas-link>
+          /
+        }
         <atlas-link label="atlas" (linkClicked)="goToAtlasStopPoint()"></atlas-link>
       </div>
     </div>
