@@ -161,6 +161,7 @@ export * from './transportCompany';
 export * from './transportCompanyBoRelation';
 export * from './transportCompanyRelation';
 export * from './transportCompanyStatus';
+export * from './updateDesignationOfficialServicePoint';
 export * from './updateHearingCanton';
 export * from './updateHearingStatementStatus';
 export * from './updateServicePointVersion';
