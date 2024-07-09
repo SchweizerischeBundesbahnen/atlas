@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+/**
+ * Uses backend client credentials with admin role
+ */
 @FeignClient(name = "sepodiAdminClient", url = "${atlas.client.gateway.url}", configuration = AtlasAdminFeignConfig.class)
 public interface SePoDiAdminClient {
 
