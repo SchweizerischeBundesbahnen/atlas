@@ -9,6 +9,7 @@ import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointFotCommentModel;
+import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.api.servicepoint.UpdateServicePointVersionModel;
 import ch.sbb.atlas.configuration.Role;
 import ch.sbb.atlas.model.Status;
@@ -97,6 +98,14 @@ public interface ServicePointApiV1 {
   List<ReadServicePointVersionModel> updateServicePoint(
       @PathVariable Long id,
       @RequestBody @Valid UpdateServicePointVersionModel servicePointVersionModel
+  );
+
+  @PreAuthorize("@businessOrganisationBasedUserAdministrationService.isAtLeastSupervisor(T(ch.sbb.atlas.kafka.model.user.admin"
+          + ".ApplicationType).SEPODI)")
+  @PutMapping(path = "/update-designation-official/{id}")
+  ReadServicePointVersionModel updateDesingationOfficialServicePoint(
+          @PathVariable Long id,
+          @RequestBody @Valid UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel
   );
 
   @PutMapping(path = "/status/{sloid}/{id}")

@@ -61,7 +61,7 @@ import org.apache.commons.lang3.StringUtils;
 @Getter
 @Setter
 @ToString
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @FieldNameConstants
 @Entity(name = "service_point_version")
 @AtlasVersionable
