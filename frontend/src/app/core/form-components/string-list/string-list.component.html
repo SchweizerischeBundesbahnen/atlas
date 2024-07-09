@@ -30,6 +30,9 @@
     }}</span>
   }
   <div class="d-flex flex-row">
+    @if (_strings.length === 0 && formGroup.disabled) {
+      -
+    }
     <mat-chip-set [disabled]="formGroup.disabled">
       <mat-chip
         *ngFor="let value of _strings; let i = index"
