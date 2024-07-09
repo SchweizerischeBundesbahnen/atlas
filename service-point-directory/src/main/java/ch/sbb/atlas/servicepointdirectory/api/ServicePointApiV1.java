@@ -105,7 +105,7 @@ public interface ServicePointApiV1 {
   @PutMapping(path = "/update-designation-official/{id}")
   ReadServicePointVersionModel updateDesingationOfficialServicePoint(
           @PathVariable Long id,
-          @RequestBody @Valid UpdateDesignationOfficialServicePointModel updateServicePointVersionModel
+          @RequestBody @Valid UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel
   );
 
   @PutMapping(path = "/status/{sloid}/{id}")

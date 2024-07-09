@@ -7,6 +7,7 @@ import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
+import ch.sbb.workflow.exception.StopPointWorkflowStatusMustBeAddedException;
 import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
@@ -99,7 +100,7 @@ class StopPointWorkflowServiceTest {
   }
 
   @Test
-  void testEditWorkflow_ThrowsIllegalStateException() {
+  void testEditWorkflow_StopPointWorkflowStatusMustBeAddedException() {
     StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
             .sloid("ch:1:sloid:8000")
             .sboid("ch:1:sboid:10")
@@ -117,7 +118,7 @@ class StopPointWorkflowServiceTest {
             .designationOfficial("Heimsiswil Zentrum")
             .build();
 
-    assertThrows(IllegalStateException.class, () -> {
+    assertThrows(StopPointWorkflowStatusMustBeAddedException.class, () -> {
       workflowService.editWorkflow(id, workflowModel);
     });
   }
