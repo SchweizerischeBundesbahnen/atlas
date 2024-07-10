@@ -46,6 +46,20 @@
         <div class="font-bold-base">{{ 'WORKFLOW.STATUS_DETAIL' | translate }}</div>
         <div>{{ 'WORKFLOW.STATUS.' + currentWorkflow.status | translate }}</div>
       </div>
+      @if (specialDecision) {
+        <atlas-button
+          (buttonClicked)="openStatusDecision()"
+          buttonType="icon"
+          wrapperStyleClass="pt-1"
+          buttonStyleClass="bordered-btn px-2 py-1"
+        >
+          <ng-template #rightIcon>
+            <i
+              class="bi bi-x-lg"
+            ></i>
+          </ng-template>
+        </atlas-button>
+      }
     </div>
   }
 
