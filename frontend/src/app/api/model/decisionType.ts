@@ -9,11 +9,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Line } from './line';
 
 
-export interface ContainerLine { 
-    objects?: Array<Line>;
-    totalCount?: number;
-}
+/**
+ * Decision Type
+ */
+export type DecisionType = 'VOTED' | 'REJECTED' | 'RESTARTED' | 'CANCELED';
+
+export const DecisionType = {
+    Voted: 'VOTED' as DecisionType,
+    Rejected: 'REJECTED' as DecisionType,
+    Restarted: 'RESTARTED' as DecisionType,
+    Canceled: 'CANCELED' as DecisionType
+};
 
