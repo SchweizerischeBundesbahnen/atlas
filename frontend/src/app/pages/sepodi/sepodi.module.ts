@@ -26,6 +26,7 @@ import { DecisionOverrideComponent } from './workflow/detail-page/decision/decis
 import { DecisionStepperComponent } from './workflow/detail-page/decision/decision-stepper/decision-stepper.component';
 import { DecisionDetailDialogComponent } from './workflow/detail-page/decision/decision-detail/decision-detail-dialog.component';
 import { FormsModule } from '@angular/forms';
+import { StopPointRestartWorkflowDialogComponent } from "./workflow/stop-point-restart-workflow-dialog/stop-point-restart-workflow-dialog.component";
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { FormsModule } from '@angular/forms';
     DecisionOverrideComponent,
     DecisionStepperComponent,
     DecisionDetailDialogComponent,
+    StopPointRestartWorkflowDialogComponent,
   ],
   imports: [CoreModule, FormModule, FormsModule, SepodiRoutingModule],
 })
