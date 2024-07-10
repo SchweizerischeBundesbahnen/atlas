@@ -608,7 +608,8 @@
       "EXAMINANT_MAIL_NOT_FOUND": "L'indirizzo e-mail inserito non è stato trovato tra i destinatari.",
       "PIN_CODE_INVALID": "Il codice PIN inserito non è corretto.",
       "WRONG_CHANGING_STATUS": "I dati visualizzati sono stati modificati nel frattempo. Ricarichi il browser (F5).",
-      "WORKFLOW_STATUS_MUST_BE_ADDED": "Lo stato dell'audizione deve essere 'Inizializzato'."
+      "WORKFLOW_STATUS_MUST_BE_ADDED": "Lo stato dell'audizione deve essere 'Inizializzato'.",
+      "NOT_IN_HEARING": "L'audizione in corso non ha più lo stato \"In audizione\"."
     },
     "DECISION": {
       "DIALOG_TITLE": "Richiesta di risposta",
@@ -625,8 +626,8 @@
       "SEND": "Spedire",
       "ACCEPT": "Sì, sono d'accordo.",
       "DECLINE": "No, mi rifiuto. È necessario inserire le motivazioni.",
-      "OVERRIDE_ACCEPT": "Sì. Questa decisione è stata approvata con un voto \"sì\".",
-      "OVERRIDE_DECLINE": "No. Questa decisione è considerata un \"no\". È necessario inserire le motivazioni."
+      "OVERRIDE_ACCEPT": "Questa decisione è considerata con \"sì\".",
+      "OVERRIDE_DECLINE": "Questa decisione è considerata con \"no\"."
     }
   },
   "TTH": {
