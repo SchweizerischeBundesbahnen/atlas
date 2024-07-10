@@ -114,7 +114,7 @@ public interface TimetableHearingStatementApiV2 {
   void deleteStatementDocument(@PathVariable Long id, @PathVariable String filename);
 
   @ResponseStatus(HttpStatus.CREATED)
-  @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+  @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @PreAuthorize("@cantonBasedUserAdministrationService"
       + ".isAtLeastWriter(T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).TIMETABLE_HEARING, #statement)")
   TimetableHearingStatementModelV2 createStatement(
@@ -131,7 +131,7 @@ public interface TimetableHearingStatementApiV2 {
       @RequestPart(required = false) List<MultipartFile> documents);
 
   @ResponseStatus(HttpStatus.OK)
-  @PutMapping(path = "{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+  @PutMapping(path = "{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "412", description = ENTITY_ALREADY_UPDATED, content =
       @Content(schema = @Schema(implementation = ErrorResponse.class))),
