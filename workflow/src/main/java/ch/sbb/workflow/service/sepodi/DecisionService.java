@@ -42,6 +42,7 @@ public class DecisionService {
       Decision decision = decisionRepository.findDecisionByExaminantId(examinant.getId());
       if (decision != null) {
         examinant.setJudgement(decision.getWeightedJudgement());
+        examinant.setDecisionType(decision.getDecisionType());
       }
     });
   }
