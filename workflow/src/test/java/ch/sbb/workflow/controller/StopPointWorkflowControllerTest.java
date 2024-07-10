@@ -26,6 +26,7 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.StopPointWorkflowTestData;
+import ch.sbb.workflow.aop.LoggingAspect;
 import ch.sbb.workflow.entity.Decision;
 import ch.sbb.workflow.entity.DecisionType;
 import ch.sbb.workflow.entity.JudgementType;
@@ -80,16 +81,8 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   @MockBean
   private StopPointWorkflowNotificationService notificationService;
 
-//  @MockBean
-//  private Logger logger;
-//
-//  @Autowired
-//  private LoggingAspect loggingAspect;
-//
-//  @BeforeEach
-//  void setUp() {
-//    loggingAspect.setLogger(logger);
-//  }
+  @Autowired
+  private LoggingAspect loggingAspect;
 
   @AfterEach
   void tearDown() {
