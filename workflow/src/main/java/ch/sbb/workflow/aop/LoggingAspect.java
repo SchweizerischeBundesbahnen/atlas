@@ -4,24 +4,23 @@ import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.slf4j.MDC.MDCCloseable;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
+@Slf4j
 public class LoggingAspect {
 
-  private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
   public static final String workflowTypeVoteWorkflow = "VOTE_WORKFLOW";
   public static final String workflowTypeOverrideVoteWorkflow = "OVERRIDE_VOTE_WORKFLOW";
-  private static final String ERROR_MARKER = "CRITICAL_WORKFLOW_ERROR";
+  public static final String ERROR_MARKER = "CRITICAL_WORKFLOW_ERROR";
 
   private final ObjectMapper objectMapper;
 
@@ -45,7 +44,7 @@ public class LoggingAspect {
     } catch (Exception e) {
       Map<String, Object> errorDetails = buildErrorDetails(className, methodName, workflowType, isCritical, joinPoint.getArgs(), e);
       String jsonErrorDetails = objectMapper.writeValueAsString(errorDetails);
-      logger.error("{}: {}", ERROR_MARKER, jsonErrorDetails, e);
+      log.error("{}: {}", ERROR_MARKER, jsonErrorDetails, e);
       throw e;
     }
   }
@@ -74,7 +73,6 @@ public class LoggingAspect {
         default -> {}
       }
     }
-
     return details;
   }
 
