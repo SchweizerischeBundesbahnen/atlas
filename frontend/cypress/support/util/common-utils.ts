@@ -31,7 +31,9 @@ export default class CommonUtils {
   }
 
   static clickFirstRowInTable(selector: string) {
-    cy.get(selector + ' table tbody tr').click({ force: true });
+    cy.get(selector + ' table tbody tr')
+      .first()
+      .click();
   }
 
   static assertNumberOfTableRows(selector: string, numberOfRows: number) {
@@ -194,8 +196,7 @@ export default class CommonUtils {
   }
 
   static selectFirstItemFromDropDown(selector: string) {
-    cy.get(selector).should('be.visible');
-    cy.get(selector).first().click();
+    cy.get(selector).should('be.visible').first().click();
     // simulate click event on the drop down item (mat-option)
     CommonUtils.chooseMatOptionByText(undefined);
   }

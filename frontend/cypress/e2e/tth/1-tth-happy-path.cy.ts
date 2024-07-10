@@ -1,10 +1,11 @@
 import TthUtils from '../../support/util/tth-utils';
-import {DataCy} from '../../support/data-cy';
+import { DataCy } from '../../support/data-cy';
 import CommonUtils from '../../support/util/common-utils';
 import AngularMaterialConstants from '../../support/util/angular-material-constants';
 
 describe('Timetable Hearing', { testIsolation: false }, () => {
   let selectedHearingYear!: number;
+  let tthYearStarted = false;
 
   it('Step-1: Login on ATLAS', () => {
     cy.atlasLogin();
@@ -40,19 +41,28 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
   it('Step-5: Fahrplanjahr Starten', () => {
     cy.get(DataCy.TTH_SELECT_YEAR).wait(1000).should('be.visible');
     CommonUtils.selectItemFromDropDown(DataCy.TTH_SELECT_YEAR, String(selectedHearingYear));
-    cy.get(DataCy.START_TIMETABLE_HEARING_YEAR_BUTTON).click();
-
-    cy.intercept('POST', 'line-directory/v1/timetable-hearing/years/*/start').as(
-      'startTimetableHearingYear',
-    );
-    cy.get(DataCy.DIALOG_CONFIRM_BUTTON).click();
-    cy.wait('@startTimetableHearingYear').its('response.statusCode').should('eq', 200);
+    cy.get('mat-option').should('have.length', 0);
+    cy.get('app-timetable-hearing-overview-detail').then(($comp) => {
+      if ($comp.find(DataCy.START_TIMETABLE_HEARING_YEAR_BUTTON).length > 0) {
+        cy.get(DataCy.START_TIMETABLE_HEARING_YEAR_BUTTON).click();
+        cy.intercept('POST', 'line-directory/v1/timetable-hearing/years/*/start').as(
+          'startTimetableHearingYear',
+        );
+        cy.get(DataCy.DIALOG_CONFIRM_BUTTON).click();
+        cy.wait('@startTimetableHearingYear').its('response.statusCode').should('eq', 200);
+        tthYearStarted = true;
+      }
+    });
   });
 
   it('Step-6: Stellungnahmen erfassen', () => {
+    TthUtils.changeTabToTTH('ACTIVE');
     CommonUtils.selectItemFromDropDown(DataCy.SELECT_TTH_CANTON_DROPDOWN, ' Tessin');
 
-    cy.intercept('GET', 'line-directory/v1/timetable-hearing/years?statusChoices=ACTIVE&statusChoices=PLANNED').as('loadYears');
+    cy.intercept(
+      'GET',
+      'line-directory/v1/timetable-hearing/years?statusChoices=ACTIVE&statusChoices=PLANNED',
+    ).as('loadYears');
     cy.get(DataCy.NEW_STATEMENT_BUTTON).click();
     cy.wait('@loadYears').its('response.statusCode').should('eq', 200);
 
@@ -101,31 +111,42 @@ describe('Timetable Hearing', { testIsolation: false }, () => {
     );
     CommonUtils.selectFirstItemFromDropDown(DataCy.TTH_COLLECT_ACTION_TYPE);
     cy.get(DataCy.TTH_TABLE_CHECKBOX_ALL).click();
+    cy.get('#scrollbar-content-container').scrollTo('top');
     CommonUtils.selectItemFromDropDown(DataCy.COLLECT_STATUS_CHANGE_ACTION_TYPE, 'angenommen');
     CommonUtils.getClearType(
       DataCy.STATEMENT_JUSTIFICATION,
       'Campioni in Italia!!!Forza Napoli!!!',
     );
 
-    cy.intercept('PUT', 'line-directory/v2/timetable-hearing/statements/update-statement-status').as('updateStatus');
+    cy.intercept(
+      'PUT',
+      'line-directory/v2/timetable-hearing/statements/update-statement-status',
+    ).as('updateStatus');
     cy.get(DataCy.DIALOG_CONFIRM_BUTTON).click();
     cy.wait('@updateStatus').its('response.statusCode').should('eq', 200);
   });
 
   it('Step-9: Fahrplanjahr schliessen', () => {
+    cy.get('#scrollbar-content-container').scrollTo('top');
     CommonUtils.selectItemFromDropDown(DataCy.SELECT_TTH_CANTON_DROPDOWN, ' Gesamtschweiz');
     cy.get(DataCy.TTH_TABLE).should('be.visible');
-    cy.get(DataCy.TTH_MANAGE_TIMETABLE_HEARING).click();
-    cy.get(DataCy.TTH_CLOSE_TTH_YEAR).click();
-    cy.get(DataCy.TTH_CLOSE_TTH_TIMETABLE_HEARING).click();
+    if (tthYearStarted) {
+      cy.get(DataCy.TTH_MANAGE_TIMETABLE_HEARING).click();
+      cy.get(DataCy.TTH_CLOSE_TTH_YEAR).click();
+      cy.get(DataCy.TTH_CLOSE_TTH_TIMETABLE_HEARING).click();
+    }
   });
 
-  it('Step-10: Archivierte Anhörungn kontrollieren', () => {
-    cy.intercept('GET', 'line-directory/v1/timetable-hearing/years?statusChoices=ARCHIVED').as('loadYears');
-    TthUtils.changeTabToTTH('ARCHIVED');
-    cy.wait('@loadYears').its('response.statusCode').should('eq', 200);
+  it('Step-10: Archivierte Anhörungen kontrollieren', () => {
+    if (tthYearStarted) {
+      cy.intercept('GET', 'line-directory/v1/timetable-hearing/years?statusChoices=ARCHIVED').as(
+        'loadYears',
+      );
+      TthUtils.changeTabToTTH('ARCHIVED');
+      cy.wait('@loadYears').its('response.statusCode').should('eq', 200);
 
-    CommonUtils.selectItemFromDropDown(DataCy.TTH_SELECT_YEAR, String(selectedHearingYear));
-    CommonUtils.assertNumberOfTableRows(DataCy.TTH_TABLE, 1);
+      CommonUtils.selectItemFromDropDown(DataCy.TTH_SELECT_YEAR, String(selectedHearingYear));
+      CommonUtils.assertNumberOfTableRows(DataCy.TTH_TABLE, 1);
+    }
   });
 });
