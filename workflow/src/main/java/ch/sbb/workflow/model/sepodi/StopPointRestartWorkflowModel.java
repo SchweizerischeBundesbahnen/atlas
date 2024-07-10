@@ -2,8 +2,10 @@ package ch.sbb.workflow.model.sepodi;
 
 import ch.sbb.atlas.api.AtlasCharacterSetsRegex;
 import ch.sbb.atlas.api.AtlasFieldLengths;
+import ch.sbb.atlas.api.workflow.BasePersonModel;
 import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -17,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @Schema(name = "StopPointRestartWorkflow")
-public class StopPointRestartWorkflowModel {
+public class StopPointRestartWorkflowModel extends BasePersonModel {
 
   @Schema(description = "BAV Examinant Client")
   @NotNull
@@ -34,4 +36,9 @@ public class StopPointRestartWorkflowModel {
       , example = "Biel/Bienne Bözingenfeld/Champ", maxLength = 30)
   private String newDesignationOfficial;
 
+  @Schema(description = "Organisation", example = "ZVV Zürcher Verkehrsverbund")
+  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @NotBlank
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
+  private String organisation;
 }
