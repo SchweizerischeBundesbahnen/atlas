@@ -80,6 +80,17 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   @MockBean
   private StopPointWorkflowNotificationService notificationService;
 
+//  @MockBean
+//  private Logger logger;
+//
+//  @Autowired
+//  private LoggingAspect loggingAspect;
+//
+//  @BeforeEach
+//  void setUp() {
+//    loggingAspect.setLogger(logger);
+//  }
+
   @AfterEach
   void tearDown() {
     otpRepository.deleteAll();
@@ -685,6 +696,57 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(decisionResult.getDecisionType()).isEqualTo(DecisionType.CANCELED);
     stopPointWorkflow.setStatus(WorkflowStatus.CANCELED);
     verify(sePoDiClientService).updateStopPointStatusToDraft(any(StopPointWorkflow.class));
+  }
+
+  @Test
+  void shouldCancelWorkflowWithLoggingAspect() throws Exception {
+    //when
+    Person person = Person.builder()
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .function("Centrocampista")
+        .mail(MAIL_ADDRESS).build();
+
+    Long versionId = 123456L;
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:1234")
+        .sboid("ch:1:sboid:666")
+        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
+        .localityName("Biel/Bienne")
+        .ccEmails(List.of(MAIL_ADDRESS))
+        .workflowComment("WF comment")
+        .status(WorkflowStatus.HEARING)
+        .examinants(Set.of(person))
+        .startDate(LocalDate.of(2000, 1, 1))
+        .endDate(LocalDate.of(2000, 12, 31))
+        .versionId(versionId)
+        .build();
+    workflowRepository.save(stopPointWorkflow);
+
+    StopPointRejectWorkflowModel stopPointCancelWorkflowModel = StopPointRejectWorkflowModel.builder()
+        .motivationComment("I don't like it!")
+        .firstName("Marek")
+        .lastName("Hamsik")
+        .organisation("YB")
+        .mail(MAIL_ADDRESS)
+        .build();
+
+    //given
+    mvc.perform(post("/v1/stop-point/workflows/cancel/" + stopPointWorkflow.getId() + 1)
+            .contentType(contentType)
+            .content(mapper.writeValueAsString(stopPointCancelWorkflowModel)))
+        .andExpect(status().isNotFound());
+
+    List<StopPointWorkflow> workflows =
+        workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
+            .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
+    assertThat(workflows).hasSize(1);
+    assertThat(workflows.get(0).getStatus()).isEqualTo(WorkflowStatus.HEARING);
+
+    Decision decisionResult = decisionRepository.findAll().stream()
+        .filter(decision -> decision.getExaminant().getStopPointWorkflow().getId().equals(stopPointWorkflow.getId())).findFirst()
+        .orElse(null);
+    assertThat(decisionResult).isNull();
   }
 
   @Test
