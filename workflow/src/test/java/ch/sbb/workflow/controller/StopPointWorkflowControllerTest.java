@@ -12,6 +12,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import ch.sbb.atlas.api.servicepoint.LocalityMunicipalityModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationReadModel;
@@ -55,7 +58,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -83,6 +88,16 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
 
   @Autowired
   private LoggingAspect loggingAspect;
+
+  private ListAppender<ILoggingEvent> listAppender;
+
+  @BeforeEach
+  public void setUp() {
+    listAppender = new ListAppender<>();
+    Logger logger = (Logger) LoggerFactory.getLogger(LoggingAspect.class);
+    listAppender.start();
+    logger.addAppender(listAppender);
+  }
 
   @AfterEach
   void tearDown() {
@@ -358,6 +373,13 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .contentType(contentType)
         .content(mapper.writeValueAsString(workflowModel))
     ).andExpect(status().isCreated());
+
+
+    boolean logFound = listAppender.list.stream()
+        .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
+            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + StopPointWorkflowController.addWorkflow + "\"") &&
+            event.getFormattedMessage().contains("\"isCritical\":true"));
+    assertThat(logFound).isFalse();
   }
 
   @Test
@@ -631,6 +653,12 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(decisionResult.getDecisionType()).isEqualTo(DecisionType.REJECTED);
 
     verify(notificationService).sendRejectStopPointWorkflowMail(any(StopPointWorkflow.class), anyString());
+
+    boolean logFound = listAppender.list.stream()
+        .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
+            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + StopPointWorkflowController.rejectWorkflow + "\"") &&
+            event.getFormattedMessage().contains("\"isCritical\":true"));
+    assertThat(logFound).isFalse();
   }
 
   @Test
@@ -689,57 +717,12 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(decisionResult.getDecisionType()).isEqualTo(DecisionType.CANCELED);
     stopPointWorkflow.setStatus(WorkflowStatus.CANCELED);
     verify(sePoDiClientService).updateStopPointStatusToDraft(any(StopPointWorkflow.class));
-  }
 
-  @Test
-  void shouldCancelWorkflowWithLoggingAspect() throws Exception {
-    //when
-    Person person = Person.builder()
-        .firstName("Marek")
-        .lastName("Hamsik")
-        .function("Centrocampista")
-        .mail(MAIL_ADDRESS).build();
-
-    Long versionId = 123456L;
-    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
-        .sloid("ch:1:sloid:1234")
-        .sboid("ch:1:sboid:666")
-        .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
-        .localityName("Biel/Bienne")
-        .ccEmails(List.of(MAIL_ADDRESS))
-        .workflowComment("WF comment")
-        .status(WorkflowStatus.HEARING)
-        .examinants(Set.of(person))
-        .startDate(LocalDate.of(2000, 1, 1))
-        .endDate(LocalDate.of(2000, 12, 31))
-        .versionId(versionId)
-        .build();
-    workflowRepository.save(stopPointWorkflow);
-
-    StopPointRejectWorkflowModel stopPointCancelWorkflowModel = StopPointRejectWorkflowModel.builder()
-        .motivationComment("I don't like it!")
-        .firstName("Marek")
-        .lastName("Hamsik")
-        .organisation("YB")
-        .mail(MAIL_ADDRESS)
-        .build();
-
-    //given
-    mvc.perform(post("/v1/stop-point/workflows/cancel/" + stopPointWorkflow.getId() + 1)
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(stopPointCancelWorkflowModel)))
-        .andExpect(status().isNotFound());
-
-    List<StopPointWorkflow> workflows =
-        workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
-            .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
-    assertThat(workflows).hasSize(1);
-    assertThat(workflows.get(0).getStatus()).isEqualTo(WorkflowStatus.HEARING);
-
-    Decision decisionResult = decisionRepository.findAll().stream()
-        .filter(decision -> decision.getExaminant().getStopPointWorkflow().getId().equals(stopPointWorkflow.getId())).findFirst()
-        .orElse(null);
-    assertThat(decisionResult).isNull();
+    boolean logFound = listAppender.list.stream()
+        .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
+            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + StopPointWorkflowController.cancelWorkflow + "\"") &&
+            event.getFormattedMessage().contains("\"isCritical\":true"));
+    assertThat(logFound).isFalse();
   }
 
   @Test
@@ -1009,7 +992,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(decisionByExaminantId.getFotJudgement()).isEqualTo(overrideDecisionModel.getFotJudgement());
   }
 
-  private static ReadServicePointVersionModel getUpdateServicePointVersionModel(Status status) {
+  static ReadServicePointVersionModel getUpdateServicePointVersionModel(Status status) {
     long versionId = 123456L;
     String sloid = "ch:1:sloid:1234";
     ServicePointGeolocationReadModel geolocationReadModel = ServicePointGeolocationReadModel.builder()
