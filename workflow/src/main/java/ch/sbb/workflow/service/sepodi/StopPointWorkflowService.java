@@ -38,10 +38,6 @@ public class StopPointWorkflowService {
     return workflowRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }
 
-  public StopPointWorkflow getUnredactedWorkflow(Long id) {
-    return workflowRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
-  }
-
   @Redacted(redactedClassType = StopPointWorkflow.class)
   public Page<StopPointWorkflow> getWorkflows(StopPointWorkflowSearchRestrictions searchRestrictions) {
     return workflowRepository.findAll(searchRestrictions.getSpecification(), searchRestrictions.getPageable());
@@ -121,6 +117,7 @@ public class StopPointWorkflowService {
     Person fotOverrider = Person.builder()
         .firstName(decisionModel.getFirstName())
         .lastName(decisionModel.getLastName())
+        .stopPointWorkflow(stopPointWorkflow)
         .build();
     decision.setFotOverrider(fotOverrider);
     decisionRepository.save(decision);
