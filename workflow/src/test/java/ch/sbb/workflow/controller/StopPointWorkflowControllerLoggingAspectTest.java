@@ -14,13 +14,11 @@ import ch.sbb.workflow.entity.Decision;
 import ch.sbb.workflow.entity.JudgementType;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
-import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
 import ch.sbb.workflow.repository.DecisionRepository;
-import ch.sbb.workflow.repository.OtpRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import ch.sbb.workflow.service.sepodi.SePoDiClientService;
 import java.time.LocalDate;
@@ -44,19 +42,7 @@ public class StopPointWorkflowControllerLoggingAspectTest extends BaseController
   private DecisionRepository decisionRepository;
 
   @Autowired
-  private OtpRepository otpRepository;
-
-  @Autowired
   private SePoDiClientService sePoDiClientService;
-
-//  @MockBean
-//  private StopPointWorkflowNotificationService notificationService;
-//
-//  @Captor
-//  private ArgumentCaptor<String> pincodeCaptor;
-
-  @Autowired
-  private LoggingAspect loggingAspect;
 
   private ListAppender<ILoggingEvent> listAppender;
 
@@ -102,14 +88,13 @@ public class StopPointWorkflowControllerLoggingAspectTest extends BaseController
 
   @AfterEach
   void tearDown() {
-    otpRepository.deleteAll();
     decisionRepository.deleteAll();
     workflowRepository.deleteAll();
   }
 
   @Test
   void shouldAddWorkflowLoggingAspect() throws Exception {
-    //when
+    // given
     StopPointClientPersonModel person = StopPointClientPersonModel.builder()
         .firstName("Marek")
         .lastName("Hamsik")
@@ -118,7 +103,6 @@ public class StopPointWorkflowControllerLoggingAspectTest extends BaseController
         .mail(MAIL_ADDRESS).build();
     long versionId = 123456L;
     String sloid = "ch:1:sloid:1234";
-//    String fakeSloid = "ch:1:sloid:12345";
     StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
         .sloid(sloid)
         .ccEmails(List.of(MAIL_ADDRESS))
@@ -127,15 +111,12 @@ public class StopPointWorkflowControllerLoggingAspectTest extends BaseController
         .applicantMail("a@b.ch")
         .versionId(versionId)
         .build();
-//    when(sePoDiClientService.updateStopPointStatusToInReview(fakeSloid, versionId))
-//        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
-    //given
+    // when & then
     mvc.perform(post("/v1/stop-point/workflows")
         .contentType(contentType)
         .content(mapper.writeValueAsString(workflowModel))
     ).andExpect(status().is5xxServerError());
-
 
     boolean logFound = listAppender.list.stream()
         .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
@@ -147,7 +128,7 @@ public class StopPointWorkflowControllerLoggingAspectTest extends BaseController
   @Test
   void shouldRejectWorkflowLoggingAspect() throws Exception {
     workflowRepository.deleteAll();
-    //when
+    // given
     Person person = Person.builder()
         .firstName("Marek")
         .lastName("Hamsik")
@@ -178,7 +159,7 @@ public class StopPointWorkflowControllerLoggingAspectTest extends BaseController
         .mail(MAIL_ADDRESS)
         .build();
 
-    //given
+    // when & then
     mvc.perform(post("/v1/stop-point/workflows/reject/" + stopPointWorkflow.getId() + 1)
             .contentType(contentType)
             .content(mapper.writeValueAsString(stopPointRejectWorkflowModel)))
@@ -205,7 +186,7 @@ public class StopPointWorkflowControllerLoggingAspectTest extends BaseController
   @Test
   void shouldCancelWorkflowWithLoggingAspect() throws Exception {
     workflowRepository.deleteAll();
-    //when
+    // given
     Person person = Person.builder()
         .firstName("Marek")
         .lastName("Hamsik")
@@ -236,7 +217,7 @@ public class StopPointWorkflowControllerLoggingAspectTest extends BaseController
         .mail(MAIL_ADDRESS)
         .build();
 
-    //given
+    // when & then
     mvc.perform(post("/v1/stop-point/workflows/cancel/" + stopPointWorkflow.getId() + 1)
             .contentType(contentType)
             .content(mapper.writeValueAsString(stopPointCancelWorkflowModel)))
@@ -262,14 +243,13 @@ public class StopPointWorkflowControllerLoggingAspectTest extends BaseController
 
   @Test
   void shouldOverridePendingVoteCorrectlyLoggingAspect() throws Exception {
-    //given
+    // given
     Person examinantToOverride = workflowInHearing.getExaminants().stream().filter(i -> i.getMail().equals(MAIL_ADDRESS))
         .findFirst().orElseThrow();
 
     Decision examinantDecision = decisionRepository.findDecisionByExaminantId(examinantToOverride.getId());
     assertThat(examinantDecision).isNull();
 
-    // when
     OverrideDecisionModel override = OverrideDecisionModel.builder()
         .firstName("Luca")
         .lastName("Ammann")
@@ -277,7 +257,7 @@ public class StopPointWorkflowControllerLoggingAspectTest extends BaseController
         .fotMotivation("Nein, Müll")
         .build();
 
-    //given
+    // when & then
     mvc.perform(post("/v1/stop-point/workflows/override-vote/" + workflowInHearing.getId() + 1 + "/" + examinantToOverride.getId())
             .contentType(contentType)
             .content(mapper.writeValueAsString(override)))
@@ -286,22 +266,6 @@ public class StopPointWorkflowControllerLoggingAspectTest extends BaseController
     boolean logFound = listAppender.list.stream()
         .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
             event.getFormattedMessage().contains("\"workflowType\":" + "\"" + LoggingAspect.workflowTypeOverrideVoteWorkflow + "\"") &&
-            event.getFormattedMessage().contains("\"isCritical\":true"));
-    assertThat(logFound).isTrue();
-  }
-
-//  @Test
-  void shouldObtainOtpViaMailAndVoteCorrectlyLoggingAspect() throws Exception {
-
-    mvc.perform(post("/v1/stop-point/workflows/vote/" + workflowInHearing.getId() + "/" + 123)
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(DecisionModel.builder().judgement(JudgementType.YES).examinantMail(MAIL_ADDRESS).pinCode("123")
-                .build())))
-        .andExpect(status().is4xxClientError());
-
-    boolean logFound = listAppender.list.stream()
-        .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
-            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + LoggingAspect.workflowTypeVoteWorkflow + "\"") &&
             event.getFormattedMessage().contains("\"isCritical\":true"));
     assertThat(logFound).isTrue();
   }

@@ -86,9 +86,6 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   @MockBean
   private StopPointWorkflowNotificationService notificationService;
 
-  @Autowired
-  private LoggingAspect loggingAspect;
-
   private ListAppender<ILoggingEvent> listAppender;
 
   @BeforeEach
