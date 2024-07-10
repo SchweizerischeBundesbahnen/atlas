@@ -6,7 +6,7 @@ import {DecisionDetailDialogData} from "./decision-detail-dialog.service";
 import {StopPointWorkflowDetailFormGroupBuilder} from "../../detail-form/stop-point-workflow-detail-form-group";
 import {AppTestingModule} from "../../../../../../app.testing.module";
 import {of} from "rxjs";
-import {JudgementType, ReadDecision, StopPointWorkflowService, WorkflowStatus} from "../../../../../../api";
+import {DecisionType, JudgementType, ReadDecision, StopPointWorkflowService, WorkflowStatus} from "../../../../../../api";
 import {DecisionFormComponent} from "../decision-form/decision-form.component";
 import {CommentComponent} from "../../../../../../core/form-components/comment/comment.component";
 import {AtlasFieldErrorComponent} from "../../../../../../core/form-components/atlas-field-error/atlas-field-error.component";
@@ -37,6 +37,19 @@ const dialogDataWithExisitingExaminant: DecisionDetailDialogData = {
     judgement: JudgementType.Yes,
     organisation: 'Stadt Bern',
     mail: 'stadt@bern.be'
+  })
+}
+
+const dialogDataWithSpecialDecision: DecisionDetailDialogData = {
+  title: '',
+  message: '',
+  workflowId: 123,
+  workflowStatus: WorkflowStatus.Canceled,
+  examinant: StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup({
+    judgement: JudgementType.No,
+    organisation: 'BAV',
+    mail: 'bav@bern.be',
+    decisionType: DecisionType.Canceled
   })
 }
 
@@ -113,6 +126,25 @@ describe('DecisionDetailDialogComponent', () => {
 
       expect(component.existingDecision).toBeDefined();
       expect(component.decisionForm.controls.judgement.value).toEqual(JudgementType.Yes);
+    });
+  });
+
+  describe('with cancel decision', () => {
+    beforeEach(() => {
+      TestBed.overrideProvider(MAT_DIALOG_DATA, {useValue: dialogDataWithSpecialDecision});
+      fixture = TestBed.createComponent(DecisionDetailDialogComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+
+    it('should init', () => {
+      expect(component).toBeTruthy();
+
+      expect(stopPointWorkflowService.getDecision).toHaveBeenCalled();
+
+      expect(component.existingDecision).toBeDefined();
+      expect(component.title).toEqual("WORKFLOW.STATUS.CANCELED");
+      expect(component.specialDecision).toBeTrue();
     });
   });
 });
