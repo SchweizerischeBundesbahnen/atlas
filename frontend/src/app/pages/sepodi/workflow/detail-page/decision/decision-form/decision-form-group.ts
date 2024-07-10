@@ -31,7 +31,7 @@ export class DecisionFormGroupBuilder {
         ]),
         organisation: new FormControl(existingDecision?.examinant?.organisation, [
           Validators.required,
-          AtlasFieldLengthValidator.length_50,
+          AtlasFieldLengthValidator.length_255,
           AtlasCharsetsValidator.iso88591,
         ]),
         personFunction: new FormControl(existingDecision?.examinant?.personFunction, [
