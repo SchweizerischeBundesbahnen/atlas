@@ -608,7 +608,8 @@
       "EXAMINANT_MAIL_NOT_FOUND": "L'adresse e-mail saisie n'a pas été trouvée parmi les destinataires.",
       "PIN_CODE_INVALID": "Le code PIN saisi n'est pas correct.",
       "WRONG_CHANGING_STATUS": "Les données affichées ont été traitées entre-temps. Veuillez recharger votre browser (F5).",
-      "WORKFLOW_STATUS_MUST_BE_ADDED": "Le statut de l'audition doit être 'Saisi'."
+      "WORKFLOW_STATUS_MUST_BE_ADDED": "Le statut de l'audition doit être 'Saisi'.",
+      "NOT_IN_HEARING": "L'audition en cours n'a plus le statut 'En audition'."
     },
     "DECISION": {
       "DIALOG_TITLE": "Répondre à la demande",
@@ -625,8 +626,8 @@
       "SEND": "Envoyer",
       "ACCEPT": "Oui, je suis d'accord.",
       "DECLINE": "Non, je refuse. La saisie de la justification est nécessaire.",
-      "OVERRIDE_ACCEPT": "Oui. Cette décision est approuvée par un \"oui\".",
-      "OVERRIDE_DECLINE": "Non. Cette décision est considérée comme un \"non\". La saisie de la justification est nécessaire."
+      "OVERRIDE_ACCEPT": "Cette décision est approuvée par un \"oui\".",
+      "OVERRIDE_DECLINE": "Cette décision est considérée comme un \"non\"."
     }
   },
   "TTH": {

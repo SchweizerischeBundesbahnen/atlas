@@ -20,6 +20,7 @@ export class DecisionOverrideComponent implements OnInit, OnChanges {
   @Input() workflowId!: number;
   @Input() examinantId!: number;
   @Input() existingDecision?: ReadDecision;
+  @Input() enabled= true;
 
   isSepodiSupervisor = false;
   formGroup!: FormGroup<DecisionOverrideFormGroup>;
@@ -44,8 +45,9 @@ export class DecisionOverrideComponent implements OnInit, OnChanges {
   private init() {
     this.formGroup = DecisionOverrideFormGroupBuilder.buildFormGroup(this.existingDecision);
     this.isSepodiSupervisor = this.permissionService.isAtLeastSupervisor(ApplicationType.Sepodi);
-    if (!this.isSepodiSupervisor) {
-      this.formGroup.disable();
+    this.formGroup.disable();
+    if (this.enabled && this.isSepodiSupervisor) {
+      this.formGroup.enable();
     }
   }
 
