@@ -1,11 +1,12 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ControlContainer, FormGroup, NgForm} from '@angular/forms';
 import {
+  SPECIAL_DECISION_TYPES,
   StopPointWorkflowDetailFormGroup,
   StopPointWorkflowDetailFormGroupBuilder,
 } from './stop-point-workflow-detail-form-group';
 import {Router} from '@angular/router';
-import {Country, ReadServicePointVersion, ReadStopPointWorkflow, Status, WorkflowStatus} from 'src/app/api';
+import {Country, ReadServicePointVersion, ReadStopPointWorkflow, Status, StopPointPerson, WorkflowStatus} from 'src/app/api';
 import {AtlasCharsetsValidator} from 'src/app/core/validation/charsets/atlas-charsets-validator';
 import {AtlasFieldLengthValidator} from 'src/app/core/validation/field-lengths/atlas-field-length-validator';
 import {DecisionDetailDialogService} from '../decision/decision-detail/decision-detail-dialog.service';
@@ -27,6 +28,8 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   @Input() oldDesignation?: string;
   @Input() form!: FormGroup<StopPointWorkflowDetailFormGroup>;
   @Input() currentWorkflow?: ReadStopPointWorkflow;
+
+  specialDecision?: StopPointPerson;
 
   constructor(
     private router: Router,
@@ -51,6 +54,9 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
           uicCountryCode: 85
         },
       }
+    }
+    if(this.currentWorkflow){
+      this.specialDecision = this.currentWorkflow!.examinants?.find(examinant => SPECIAL_DECISION_TYPES.includes(examinant.decisionType!));
     }
   }
 
@@ -91,4 +97,7 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
     this.decisionDetailDialogService.openDialog(this.currentWorkflow!.id!, this.currentWorkflow!.status!, examinant);
   }
 
+  openStatusDecision() {
+    this.decisionDetailDialogService.openDialog(this.currentWorkflow!.id!, this.currentWorkflow!.status!, StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(this.specialDecision));
+  }
 }
