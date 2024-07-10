@@ -3,7 +3,6 @@
 %atlas-outline {
   outline: 1px solid variables.$primary-400;
   border-radius: 5px;
-  padding-left: 10px;
 
   &:focus-within,
   &:hover {
@@ -16,6 +15,7 @@
   @extend %atlas-outline;
   background-color: variables.$gray-50;
   min-height: 50px;
+  padding-left: 10px;
 
   input {
     margin-left: 8px;
@@ -52,6 +52,7 @@
 
 .search-date-field {
   @extend %atlas-outline;
+  padding-left: 10px;
   display: flex;
   height: 34px;
   width: 100%;
@@ -89,9 +90,11 @@
 
 .single-search {
   @extend %atlas-outline;
+  padding-left: 2px;
 
   input {
-    margin-top: 3px;
+    margin-top: 2px;
+    margin-bottom: 1px;
   }
 
   mat-chip-grid {
