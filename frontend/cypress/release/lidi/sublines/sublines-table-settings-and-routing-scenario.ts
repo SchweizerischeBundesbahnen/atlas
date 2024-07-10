@@ -113,7 +113,9 @@ describe('Sublines: TableSettings and Routing', { testIsolation: false }, () => 
 
     // Search still present after edit
     assertAllTableFiltersAreFilled();
+
     // Change is already visible in table
+    CommonUtils.assertNumberOfTableRows(DataCy.LIDI_SUBLINES, 1);
     cy.get(DataCy.LIDI_SUBLINES + ' .cdk-column-swissSublineNumber').contains(newCHTLNR);
   });
 

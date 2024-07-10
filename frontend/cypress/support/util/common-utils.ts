@@ -319,7 +319,7 @@ export default class CommonUtils {
       .should('be.enabled')
       .type(value, { delay: 0, force: true })
       .wait('@searchIntercept')
-      .wait(100);
+      .wait(200);
     cy.get(selector).type('{enter}');
   }
 
