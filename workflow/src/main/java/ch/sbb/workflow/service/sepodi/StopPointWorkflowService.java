@@ -117,7 +117,6 @@ public class StopPointWorkflowService {
     Person fotOverrider = Person.builder()
         .firstName(decisionModel.getFirstName())
         .lastName(decisionModel.getLastName())
-        .stopPointWorkflow(stopPointWorkflow)
         .build();
     decision.setFotOverrider(fotOverrider);
     decisionRepository.save(decision);
