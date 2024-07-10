@@ -154,7 +154,7 @@ public class StopPointWorkflowTransitionService {
   }
 
   public void progressWorkflowWithNewDecision(Long workflowId) {
-    StopPointWorkflow workflow = stopPointWorkflowService.getUnredactedWorkflow(workflowId);
+    StopPointWorkflow workflow = stopPointWorkflowService.findStopPointWorkflow(workflowId);
     StopPointWorkflowProgressDecider stopPointWorkflowProgressDecider = buildProgressDecider(workflow);
 
     stopPointWorkflowProgressDecider.calculateNewWorkflowStatus().ifPresent(newStatus -> {
