@@ -287,7 +287,7 @@ describe('StopPointWorkflowDetailComponent', () => {
     expect(stopPointRejectWorkflowDialogServiceSpy.openDialog).toHaveBeenCalledTimes(1);
   });
 
-  it('should open decision dialog', () => {
+  it('should open decision dialog and cancel', () => {
     dialogSpy.open.and.returnValue({
       afterClosed: () => of(false),
     });
@@ -301,4 +301,16 @@ describe('StopPointWorkflowDetailComponent', () => {
       backdropClass: 'atlas-dialog-backdrop',
     });
   });
+
+  it('should open decision dialog and complete', fakeAsync(() => {
+    dialogSpy.open.and.returnValue({
+      afterClosed: () => of(true),
+    });
+
+    component.openDecisionDialog();
+    tick();
+    expect(notificationServiceSpy.success).toHaveBeenCalledOnceWith(
+      'WORKFLOW.NOTIFICATION.VOTE.SUCCESS',
+    );
+  }));
 });
