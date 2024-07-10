@@ -8,6 +8,7 @@
       [workflowId]="decisionDetailDialogData.workflowId"
       [examinantId]="decisionDetailDialogData.examinant.controls.id.value!"
       [existingDecision]="existingDecision"
+      [enabled]="decisionDetailDialogData.workflowStatus === WorkflowStatus.Hearing"
     ></decision-override>
   }
 </atlas-dialog-content>
