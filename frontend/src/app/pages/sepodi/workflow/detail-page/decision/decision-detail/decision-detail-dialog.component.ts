@@ -4,6 +4,7 @@ import {DecisionDetailDialogData} from './decision-detail-dialog.service';
 import {DecisionOverrideComponent} from './override/decision-override.component';
 import {DecisionFormGroupBuilder} from '../decision-form/decision-form-group';
 import {ReadDecision, StopPointWorkflowService, WorkflowStatus} from 'src/app/api';
+import {SPECIAL_DECISION_TYPES} from "../../detail-form/stop-point-workflow-detail-form-group";
 
 @Component({
   selector: 'decision-detail-dialog',
@@ -17,6 +18,8 @@ export class DecisionDetailDialogComponent implements OnInit {
 
   existingDecision!: ReadDecision;
   decisionForm = DecisionFormGroupBuilder.buildFormGroup();
+  title = 'WORKFLOW.PERSON.JUDGEMENT';
+  specialDecision = false;
 
   constructor(
     private dialogRef: MatDialogRef<DecisionDetailDialogComponent>,
@@ -25,6 +28,10 @@ export class DecisionDetailDialogComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    if (SPECIAL_DECISION_TYPES.includes(this.decisionDetailDialogData.examinant.value.decisionType!)) {
+      this.specialDecision = true;
+      this.title = 'WORKFLOW.STATUS.' + this.decisionDetailDialogData.workflowStatus;
+    }
     this.decisionForm.patchValue(this.decisionDetailDialogData.examinant.value);
     if (this.decisionDetailDialogData.examinant.controls.judgement.value) {
       this.stopPointWorkflowService
