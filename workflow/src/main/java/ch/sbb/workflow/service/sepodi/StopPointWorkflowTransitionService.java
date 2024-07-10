@@ -72,21 +72,22 @@ public class StopPointWorkflowTransitionService {
     return workflow;
   }
 
-  @MethodLogged(workflowType = "ADD_WORKFLOW", critical = true)
+  @MethodLogged(workflowType = "REJECT_WORKFLOW", critical = true)
   public StopPointWorkflow rejectWorkflow(Long id, StopPointRejectWorkflowModel rejectWorkflowModel) {
     StopPointWorkflow stopPointWorkflow = stopPointWorkflowService.findStopPointWorkflow(id);
     StopPointWorkflowStatusTransitionDecider.validateWorkflowStatusTransition(stopPointWorkflow.getStatus(), REJECTED);
     Person examinantBAV = PersonMapper.toPersonEntity(rejectWorkflowModel);
-    decisionService.createRejectedDecision(examinantBAV, rejectWorkflowModel.getMotivationComment());
     sePoDiClientService.updateStopPointStatusToDraft(stopPointWorkflow);
+    decisionService.createRejectedDecision(examinantBAV, rejectWorkflowModel.getMotivationComment());
     examinantBAV.setStopPointWorkflow(stopPointWorkflow);
     stopPointWorkflow.setStatus(REJECTED);
     StopPointWorkflow workflow = stopPointWorkflowService.save(stopPointWorkflow);
     notificationService.sendRejectStopPointWorkflowMail(workflow, rejectWorkflowModel.getMotivationComment());
+    // TODO: Emails are sent although status is not successfully updated, fix it
     return stopPointWorkflow;
   }
 
-  @MethodLogged(workflowType = "ADD_WORKFLOW", critical = true)
+//  @MethodLogged(workflowType = "CANCEL_WORKFLOW", critical = true)
   public StopPointWorkflow cancelWorkflow(Long id, StopPointRejectWorkflowModel stopPointCancelWorkflowModel) {
     StopPointWorkflow stopPointWorkflow = stopPointWorkflowService.findStopPointWorkflow(id);
     if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
@@ -104,8 +105,9 @@ public class StopPointWorkflowTransitionService {
     decisionService.save(decision);
 
     stopPointWorkflow.setEndDate(LocalDate.now());
-    notificationService.sendCanceledStopPointWorkflowMail(stopPointWorkflow, stopPointCancelWorkflowModel.getMotivationComment());
     stopPointWorkflow.setStatus(WorkflowStatus.CANCELED);
+    // TODO: Emails are sent although status is not successfully updated, fix it
+    notificationService.sendCanceledStopPointWorkflowMail(stopPointWorkflow, stopPointCancelWorkflowModel.getMotivationComment());
     return stopPointWorkflow;
   }
 
@@ -158,7 +160,7 @@ public class StopPointWorkflowTransitionService {
     return StopPointWorkflowMapper.addStopPointWorkflowToEntity(workflowStartModel, servicePointVersionModel, personModels);
   }
 
-  @MethodLogged(workflowType = "ADD_WORKFLOW", critical = true)
+  @MethodLogged(workflowType = "DECIDE_WORKFLOW", critical = true)
   public void progressWorkflowWithNewDecision(Long workflowId) {
     StopPointWorkflow workflow = stopPointWorkflowService.findStopPointWorkflow(workflowId);
     StopPointWorkflowProgressDecider stopPointWorkflowProgressDecider = buildProgressDecider(workflow);
@@ -174,6 +176,7 @@ public class StopPointWorkflowTransitionService {
       }
       workflow.setEndDate(LocalDate.now());
       workflow.setStatus(newStatus);
+      // TODO: Emails are sent although status is not successfully updated, fix it
     });
   }
 
