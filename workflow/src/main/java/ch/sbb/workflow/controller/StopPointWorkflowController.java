@@ -40,7 +40,9 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   private final StopPointWorkflowOtpService otpService;
   private final DecisionService decisionService;
   private final StopPointWorkflowTransitionService workflowTransitionService;
-
+  public static final String cancelWorkflow = "CANCEL_WORKFLOW";
+  public static final String rejectWorkflow = "REJECT_WORKFLOW";
+  public static final String addWorkflow = "ADD_WORKFLOW";
 
   @Override
   public ReadStopPointWorkflowModel getStopPointWorkflow(Long id) {
@@ -64,7 +66,7 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   }
 
   @Override
-  @MethodLogged(workflowType = "ADD_WORKFLOW", critical = true)
+  @MethodLogged(workflowType = addWorkflow, critical = true)
   public ReadStopPointWorkflowModel addStopPointWorkflow(StopPointAddWorkflowModel workflowModel) {
     return StopPointWorkflowMapper.toModel(workflowTransitionService.addWorkflow(workflowModel));
   }
@@ -81,7 +83,7 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
       "@countryAndBusinessOrganisationBasedUserAdministrationService."
           + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   @Override
-  @MethodLogged(workflowType = "REJECT_WORKFLOW", critical = true)
+  @MethodLogged(workflowType = rejectWorkflow, critical = true)
   public ReadStopPointWorkflowModel rejectStopPointWorkflow(Long id, StopPointRejectWorkflowModel workflowModel) {
     return StopPointWorkflowMapper.toModel(workflowTransitionService.rejectWorkflow(id, workflowModel));
   }
@@ -143,7 +145,7 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
       "@countryAndBusinessOrganisationBasedUserAdministrationService."
           + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   @Override
-  @MethodLogged(workflowType = "CANCEL_WORKFLOW", critical = true)
+  @MethodLogged(workflowType = cancelWorkflow, critical = true)
   public ReadStopPointWorkflowModel cancelStopPointWorkflow(Long id, StopPointRejectWorkflowModel stopPointCancelWorkflowModel) {
     return StopPointWorkflowMapper.toModel(workflowTransitionService.cancelWorkflow(id, stopPointCancelWorkflowModel));
   }
