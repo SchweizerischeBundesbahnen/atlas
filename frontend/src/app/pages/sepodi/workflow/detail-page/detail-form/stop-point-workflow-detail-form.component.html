@@ -131,9 +131,11 @@
         infoTitle="{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.EXAMINANTS_INFO' | translate }}"
       ></form-info-icon>
     </div>
-    <div class="translated-paragraph">
-      {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.EXAMINANTS_SUBTITLE' | translate }}
-    </div>
+    @if (form.enabled) {
+      <div class="translated-paragraph">
+        {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.EXAMINANTS_SUBTITLE' | translate }}
+      </div>
+    }
   </div>
 
   <div class="examinant-table">
