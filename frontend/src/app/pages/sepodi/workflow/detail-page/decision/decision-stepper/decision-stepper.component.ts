@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Inject, ViewChild } from '@angular/core';
 import { MatStepper } from '@angular/material/stepper';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { catchError, EMPTY, Observable, of, share, take } from 'rxjs';
+import { catchError, EMPTY, Observable, of, shareReplay, take } from 'rxjs';
 import { DecisionFormGroupBuilder } from '../decision-form/decision-form-group';
 import { StopPointPerson, StopPointWorkflowService } from 'src/app/api';
 import { AtlasCharsetsValidator } from 'src/app/core/validation/charsets/atlas-charsets-validator';
@@ -69,7 +69,7 @@ export class DecisionStepperComponent {
             this._swapLoading();
             return EMPTY;
           }),
-          share(),
+          shareReplay(1),
         );
 
       this.isStepTwoCompl$ = this.isStepOneCompl$.pipe(
@@ -105,7 +105,7 @@ export class DecisionStepperComponent {
             this._swapLoading();
             return EMPTY;
           }),
-          share(),
+          shareReplay(1),
         );
 
       this.isStepThreeCompl$ = this.isStepTwoCompl$.pipe(
