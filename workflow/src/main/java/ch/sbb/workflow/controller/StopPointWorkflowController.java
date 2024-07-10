@@ -64,6 +64,7 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   }
 
   @Override
+  @MethodLogged(workflowType = "ADD_WORKFLOW", critical = true)
   public ReadStopPointWorkflowModel addStopPointWorkflow(StopPointAddWorkflowModel workflowModel) {
     return StopPointWorkflowMapper.toModel(workflowTransitionService.addWorkflow(workflowModel));
   }
@@ -80,6 +81,7 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
       "@countryAndBusinessOrganisationBasedUserAdministrationService."
           + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   @Override
+  @MethodLogged(workflowType = "REJECT_WORKFLOW", critical = true)
   public ReadStopPointWorkflowModel rejectStopPointWorkflow(Long id, StopPointRejectWorkflowModel workflowModel) {
     return StopPointWorkflowMapper.toModel(workflowTransitionService.rejectWorkflow(id, workflowModel));
   }

@@ -6,7 +6,6 @@ import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
-import ch.sbb.workflow.aop.MethodLogged;
 import ch.sbb.workflow.entity.Decision;
 import ch.sbb.workflow.entity.DecisionType;
 import ch.sbb.workflow.entity.JudgementType;
@@ -50,7 +49,6 @@ public class StopPointWorkflowTransitionService {
   /**
    * Authorization for this method is delegated to ServicePointService#update()
    */
-  @MethodLogged(workflowType = "ADD_WORKFLOW", critical = true)
   public StopPointWorkflow addWorkflow(StopPointAddWorkflowModel stopPointAddWorkflowModel) {
     stopPointWorkflowService.checkHasWorkflowAdded(stopPointAddWorkflowModel.getVersionId());
     ReadServicePointVersionModel servicePointVersionModel = sePoDiClientService.updateStopPointStatusToInReview(
@@ -72,7 +70,6 @@ public class StopPointWorkflowTransitionService {
     return workflow;
   }
 
-  @MethodLogged(workflowType = "REJECT_WORKFLOW", critical = true)
   public StopPointWorkflow rejectWorkflow(Long id, StopPointRejectWorkflowModel rejectWorkflowModel) {
     StopPointWorkflow stopPointWorkflow = stopPointWorkflowService.findStopPointWorkflow(id);
     StopPointWorkflowStatusTransitionDecider.validateWorkflowStatusTransition(stopPointWorkflow.getStatus(), REJECTED);
@@ -83,11 +80,9 @@ public class StopPointWorkflowTransitionService {
     stopPointWorkflow.setStatus(REJECTED);
     StopPointWorkflow workflow = stopPointWorkflowService.save(stopPointWorkflow);
     notificationService.sendRejectStopPointWorkflowMail(workflow, rejectWorkflowModel.getMotivationComment());
-    // TODO: Emails are sent although status is not successfully updated, fix it
     return stopPointWorkflow;
   }
 
-//  @MethodLogged(workflowType = "CANCEL_WORKFLOW", critical = true)
   public StopPointWorkflow cancelWorkflow(Long id, StopPointRejectWorkflowModel stopPointCancelWorkflowModel) {
     StopPointWorkflow stopPointWorkflow = stopPointWorkflowService.findStopPointWorkflow(id);
     if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
@@ -106,7 +101,6 @@ public class StopPointWorkflowTransitionService {
 
     stopPointWorkflow.setEndDate(LocalDate.now());
     stopPointWorkflow.setStatus(WorkflowStatus.CANCELED);
-    // TODO: Emails are sent although status is not successfully updated, fix it
     notificationService.sendCanceledStopPointWorkflowMail(stopPointWorkflow, stopPointCancelWorkflowModel.getMotivationComment());
     return stopPointWorkflow;
   }
@@ -160,7 +154,6 @@ public class StopPointWorkflowTransitionService {
     return StopPointWorkflowMapper.addStopPointWorkflowToEntity(workflowStartModel, servicePointVersionModel, personModels);
   }
 
-  @MethodLogged(workflowType = "DECIDE_WORKFLOW", critical = true)
   public void progressWorkflowWithNewDecision(Long workflowId) {
     StopPointWorkflow workflow = stopPointWorkflowService.findStopPointWorkflow(workflowId);
     StopPointWorkflowProgressDecider stopPointWorkflowProgressDecider = buildProgressDecider(workflow);
@@ -176,7 +169,6 @@ public class StopPointWorkflowTransitionService {
       }
       workflow.setEndDate(LocalDate.now());
       workflow.setStatus(newStatus);
-      // TODO: Emails are sent although status is not successfully updated, fix it
     });
   }
 
