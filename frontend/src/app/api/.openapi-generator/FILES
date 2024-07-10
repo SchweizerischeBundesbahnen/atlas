@@ -80,6 +80,7 @@ model/createLoadingPointVersion.ts
 model/createServicePointVersion.ts
 model/createTrafficPointElementVersion.ts
 model/decision.ts
+model/decisionType.ts
 model/displayInfo.ts
 model/district.ts
 model/editStopPointWorkflow.ts
