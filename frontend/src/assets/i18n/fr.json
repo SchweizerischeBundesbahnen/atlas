@@ -424,7 +424,7 @@
       "DETAIL_WORKFLOW_INFORMATION": "Informations sur les auditions",
       "DETAIL_LINE_SNAPSHOT": "Détails des lignes historiques",
       "NAVIGATE_TO_VERSION": "Accéder à la vue détaillée de la ligne",
-      "NAVIGATE_TO_SNAPHOT": "Accéder à la liste de toutes les audiences de cette ligne",
+      "NAVIGATE_TO_SNAPHOT": "Accéder à la liste de toutes les auditions de cette ligne",
       "TAB_HEADER": "Lignes auditions",
       "TABLE_HEADER": "Lignes auditions",
       "TABLE": {
@@ -538,22 +538,22 @@
     "DELETE_SUCCESS_MSG": "La suppression du raccourci sélectionné a réussi."
   },
   "WORKFLOW": {
-    "TITLE": "Audience",
+    "TITLE": "Audition",
     "BUTTON": {
-      "ADD": "Saisir une audience",
+      "ADD": "Saisir une audition",
       "SEND": "Envoi de la demande",
-      "OPEN": "Consulter l'audience",
-      "START": "Lancer l'audience",
+      "OPEN": "Consulter l'audition",
+      "START": "Lancer l'audition",
       "ACCEPT": "Approuver",
       "REJECT": "Rejeter",
-      "CANCEL": "Annuler l'audience",
+      "CANCEL": "Annuler l'audition",
       "SKIP": "Passer l'audition",
-      "RESTART": "Redémarrer l'audience",
+      "RESTART": "Redémarrer l'audition",
       "DECIDE": "Décider",
       "OVERRIDE": "Passer outre la décision"
     },
     "START": {
-      "COMMENT": "Motivation",
+      "COMMENT": "Justification",
       "KEY_DATA": "Demandeur"
     },
     "CHECK": {
@@ -569,16 +569,16 @@
       "ORGANISATION": "Organisation",
       "JUDGEMENT": "Décision"
     },
-    "STATUS_DETAIL": "Statut d'audience",
+    "STATUS_DETAIL": "Statut d'audition",
     "STATUS": {
       "ADDED": "saisie",
       "STARTED": "lancée",
       "REVISION": "en révision",
-      "WORKFLOW": "en audience",
+      "WORKFLOW": "en audition",
       "APPROVED": "approuvée",
       "REJECTED": "refusée",
-      "HEARING": "en audience",
-      "CANCELED": "démonté"
+      "HEARING": "en audition",
+      "CANCELED": "annulé"
     },
     "NOTIFICATION": {
       "ADD": {
@@ -599,16 +599,16 @@
         "SUCCESS": "La décision a été enregistrée"
       },
       "EDIT": {
-        "SUCCESS": "L'audience a été enregistrée avec succès."
+        "SUCCESS": "L'audition a été enregistrée avec succès."
       }
     },
     "ERROR": {
-      "NOT_IN_REVIEW": "L'audience pour cet objet n'est pas lancée pour le moment.",
+      "NOT_IN_REVIEW": "L'audition pour cet objet n'est pas lancée pour le moment.",
       "ALREADY_IN_REVIEW": "Une consultation a déjà été lancée pour cet objet.",
       "EXAMINANT_MAIL_NOT_FOUND": "L'adresse e-mail saisie n'a pas été trouvée parmi les destinataires.",
       "PIN_CODE_INVALID": "Le code PIN saisi n'est pas correct.",
       "WRONG_CHANGING_STATUS": "Les données affichées ont été traitées entre-temps. Veuillez recharger votre browser (F5).",
-      "WORKFLOW_STATUS_MUST_BE_ADDED": "Le statut de l'audience doit être 'Saisi'."
+      "WORKFLOW_STATUS_MUST_BE_ADDED": "Le statut de l'audition doit être 'Saisi'."
     },
     "DECISION": {
       "DIALOG_TITLE": "Répondre à la demande",
@@ -694,15 +694,15 @@
     },
     "NEW_YEAR": {
       "DIALOG": {
-        "NEW_PLAN_TIMETABLE": "Créer un nouvel horaire d'audience",
+        "NEW_PLAN_TIMETABLE": "Créer un nouvel horaire d'audition",
         "PLAN_INFO": "Calendrier consultation année",
         "PLAN_DROPDOWN_TITLE": "Calendrier",
         "PLAN_DROPDOWN_DESCRIPTION": "Sélectionner l'année",
         "HEARING_FROM": "Audition de",
-        "HEARING_FROM_INFO": "Calendrier audience de",
+        "HEARING_FROM_INFO": "Calendrier audition de",
         "HEARING_FROM_EXAMPLE": "01.01.2023.",
-        "HEARING_UNTIL": "Audience jusqu'à",
-        "HEARING_UNTIL_INFO": "Calendrier audience jusqu'au",
+        "HEARING_UNTIL": "Audition jusqu'à",
+        "HEARING_UNTIL_INFO": "Calendrier audition jusqu'au",
         "HEARING_UNTIL_EXAMPLE": "31.12.2023.",
         "SAVE": "Sauvegarder",
         "NOTIFICATION_SUCCESS": "Consultation des horaires enregistrée avec succès"
@@ -1028,23 +1028,23 @@
         "WORKFLOWS": "Auditions",
         "NEW_DESIGNATION_OFFICIAL": "Nouvelle désignation officielle",
         "ADD_EXAMINANT": "Ajout de destinataires",
-        "ADDITIONAL_MAIL_RECIPIENTS": "cc-mail pour le statut de l'audience",
+        "ADDITIONAL_MAIL_RECIPIENTS": "cc-mail pour le statut de l'audition",
         "ADDITIONAL_MAIL_RECIPIENTS_INFO": "Il est possible d'ajouter des adresses e-mail supplémentaires. Ceux-ci seront également informés du déroulement de l'audition.",
         "COMMENT": "Fondation",
-        "EXAMINANTS": "Récepteur",
+        "EXAMINANTS": "Destinataires",
         "EXAMINANTS_INFO": "Au moins une commune doit être inscrite. Dans certains cas, comme lors d'une clarification préalable en dehors d'atlas, cette partie peut rester vide. Le canton et le service spécialisé sont automatiquement ajoutés.",
         "EXAMINANTS_SUBTITLE": "Important : les informations de contact pour l'audition doivent être complétées ici (commune obligatoire, autres destinataires si nécessaire).\nLes destinataires cantonaux et les services spécialisés sont automatiquement complétés par atlas.",
         "OLD_DESIGNATION_OFFICIAL": "Ancienne dénomination officielle",
         "APPLICANT": "Commanditaire",
         "STOP_POINT_INFO": "Informations de base sur l'arrêt",
-        "PROPOSAL": "Proposition",
+        "PROPOSAL": "Requête",
         "MAP": "Carte",
         "ID": "ID",
         "VERSION_VALID_FROM": "Arrêt valable à partir du",
         "CREATION": "Saisie de l'audition",
         "START": "Début de l'audition",
         "END": "Fin de l'audition",
-        "SEARCH": "SLOID - désignation officielle",
+        "SEARCH": "SLOID - Désignation officielle",
         "OVERRIDE_TITLE": "Évaluation par l'OFT",
         "OVERRIDE_HAPPENED_INFO": "L'Office fédéral des transports (OFT) a procédé à une évaluation. L'évaluation de l'OFT s'applique (voir ci-dessous)."
       }
