@@ -11,7 +11,7 @@ import { LoadingSpinnerComponent } from '../../../../../../core/components/loadi
 import { DialogContentComponent } from '../../../../../../core/components/dialog/content/dialog-content.component';
 import { DialogCloseComponent } from '../../../../../../core/components/dialog/close/dialog-close.component';
 import { StopPointWorkflowService } from '../../../../../../api';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 describe('DecisionStepperComponent', () => {
   let component: DecisionStepperComponent;
@@ -129,15 +129,113 @@ describe('DecisionStepperComponent', () => {
     });
   });
 
+  it('should handle error on obtain otp step', () => {
+    component.mail.controls.mail.setValue('techsupport@atlas.ch');
+    spWfServiceSpy.obtainOtp.and.returnValue(throwError(() => 'mail not found'));
+
+    component.completeObtainOtpStep();
+    fixture.detectChanges();
+
+    expect(spWfServiceSpy.obtainOtp).toHaveBeenCalledOnceWith(1, {
+      examinantMail: 'techsupport@atlas.ch',
+    });
+    expect(component.loading).toBeFalse();
+    expect(component.stepper?.selectedIndex).toEqual(0);
+    expect(component.stepper?.selected?.completed).toBeFalse();
+  });
+
+  it('should handle error on verify pin step', () => {
+    component.isStepOneCompl$ = of(true);
+    fixture.detectChanges();
+    component.stepper?.next();
+
+    component.pin.controls.pin.setValue('234313');
+    spWfServiceSpy.verifyOtp.and.returnValue(throwError(() => 'bad pin'));
+
+    component.completeVerifyPinStep();
+    fixture.detectChanges();
+
+    expect(spWfServiceSpy.verifyOtp).toHaveBeenCalledOnceWith(1, {
+      examinantMail: '',
+      pinCode: '234313',
+    });
+    expect(component.loading).toBeFalse();
+    expect(component.stepper?.selectedIndex).toEqual(1);
+    expect(component.stepper?.selected?.completed).toBeFalse();
+  });
+
+  it('should handle error on complete decision', () => {
+    component.isStepOneCompl$ = of(true);
+    component.isStepTwoCompl$ = of(true);
+    fixture.detectChanges();
+    component.stepper?.next();
+    component.stepper?.next();
+
+    component['_verifiedExaminant'] = {
+      id: 50,
+      organisation: 'sbb',
+      mail: 'atlas@sbb.ch',
+    };
+    component.decision.setValue({
+      judgement: 'YES',
+      motivation: 'cool',
+      firstName: 'first',
+      lastName: 'last',
+      organisation: 'sbb',
+      personFunction: 'chef',
+    });
+    spWfServiceSpy.voteWorkflow.and.returnValue(throwError(() => 'bad vote'));
+
+    component.completeDecision();
+    fixture.detectChanges();
+
+    expect(spWfServiceSpy.voteWorkflow).toHaveBeenCalledOnceWith(1, 50, {
+      examinantMail: '',
+      pinCode: '',
+      judgement: 'YES',
+      motivation: 'cool',
+      firstName: 'first',
+      lastName: 'last',
+      organisation: 'sbb',
+      personFunction: 'chef',
+    });
+    expect(component.loading).toBeFalse();
+    expect(dialogRefSpy.close).not.toHaveBeenCalled();
+    expect(component.stepper?.selected?.completed).toBeFalse();
+  });
+
   it('should resend mail', () => {
     component.mail.controls.mail.setValue('resend@sbb.ch');
     spWfServiceSpy.obtainOtp.and.returnValue(of('valid'));
+    component.isStepOneCompl$ = of(true);
+    fixture.detectChanges();
+    component.stepper?.next();
 
     component.resendMail();
+    fixture.detectChanges();
 
     expect(spWfServiceSpy.obtainOtp).toHaveBeenCalledOnceWith(1, {
       examinantMail: 'resend@sbb.ch',
     });
+    expect(component.loading).toBeFalse();
+    expect(component.stepper?.selected?.completed).toBeFalse();
+  });
+
+  it('should handle error on resend mail', () => {
+    component.mail.controls.mail.setValue('resend@sbb.ch');
+    spWfServiceSpy.obtainOtp.and.returnValue(throwError(() => 'bad mail'));
+    component.isStepOneCompl$ = of(true);
+    fixture.detectChanges();
+    component.stepper?.next();
+
+    component.resendMail();
+    fixture.detectChanges();
+
+    expect(spWfServiceSpy.obtainOtp).toHaveBeenCalledOnceWith(1, {
+      examinantMail: 'resend@sbb.ch',
+    });
+    expect(component.loading).toBeFalse();
+    expect(component.stepper?.selected?.completed).toBeFalse();
   });
 
   it('should cancel (close dialog immediately) on step 1', () => {
