@@ -71,9 +71,6 @@ class StopPointWorkflowControllerVotingTest {
 
   private StopPointWorkflow workflowInHearing;
 
-  @Autowired
-  private LoggingAspect loggingAspect;
-
   private ListAppender<ILoggingEvent> listAppender;
 
   @AfterEach
