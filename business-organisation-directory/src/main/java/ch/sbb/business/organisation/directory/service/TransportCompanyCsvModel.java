@@ -25,8 +25,8 @@ public class TransportCompanyCsvModel {
   @JsonProperty("Initialen")
   private String abbreviation;
 
-  @JsonProperty("Amtl. Bezeichnung")
-  private String description;
+  @JsonProperty("Namenszusatz")
+  private String nameaffix;
 
   @JsonProperty("HR-Name/Körperschaft")
   private String businessRegisterName;
@@ -54,7 +54,7 @@ public class TransportCompanyCsvModel {
                            .id(getId())
                            .number(getNumber())
                            .abbreviation(getAbbreviation())
-                           .description(getDescription())
+                           .description(getNameaffix())
                            .businessRegisterName(getBusinessRegisterName())
                            .transportCompanyStatus(
                                getTransportCompanyStatus().toTransportCompanyStatus())
