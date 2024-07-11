@@ -1,13 +1,13 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-
-import {FormModule} from '../../module/form.module';
-import {TranslateFakeLoader, TranslateLoader, TranslateModule, TranslatePipe,} from '@ngx-translate/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {InfoIconComponent} from '../info-icon/info-icon.component';
-import {StringListComponent} from "./string-list.component";
-import {TextFieldComponent} from "../text-field/text-field.component";
-import {MockAtlasButtonComponent} from "../../../app.testing.mocks";
-import {MatChipsModule} from "@angular/material/chips";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { StringListComponent } from './string-list.component';
+import { TextFieldComponent } from '../text-field/text-field.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import {
+  MockAtlasFieldErrorComponent,
+  MockAtlasLabelFieldComponent,
+} from '../../../app.testing.mocks';
 
 describe('StringListComponent', () => {
   let component: StringListComponent;
@@ -15,15 +15,19 @@ describe('StringListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [StringListComponent, MockAtlasButtonComponent, TextFieldComponent, InfoIconComponent],
+      declarations: [
+        StringListComponent,
+        TextFieldComponent,
+        MockAtlasFieldErrorComponent,
+        MockAtlasLabelFieldComponent,
+      ],
       imports: [
-        FormModule,
+        ReactiveFormsModule,
         MatChipsModule,
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader },
         }),
       ],
-      providers: [{ provide: TranslatePipe }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(StringListComponent);

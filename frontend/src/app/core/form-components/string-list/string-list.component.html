@@ -3,14 +3,14 @@
     <div class="d-flex flex-row col-12">
       <div class="d-flex flex-grow-1">
         <atlas-text-field
-          controlName="input"
+          [controlName]="inputCtrlName!"
+          [formGroup]="formGroup"
           [fieldLabel]="fieldLabel"
           [infoIconTitle]="infoIconTitle"
           [infoIconLink]="infoIconLink"
           [required]="required"
           [fieldExamples]="fieldExamples"
-          [formGroup]="_form"
-          [placeholder]="this.showPlaceHolder ? this.placeHolderText : ''"
+          [placeholder]="(showPlaceHolder$ | async) ? placeHolderText : ''"
           (keyup.enter)="addItem()"
         >
           <i
@@ -30,12 +30,12 @@
     }}</span>
   }
   <div class="d-flex flex-row">
-    @if (_strings.length === 0 && formGroup.disabled) {
+    @if (strListCtrl.value.length === 0 && formGroup.disabled) {
       -
     }
     <mat-chip-set [disabled]="formGroup.disabled">
       <mat-chip
-        *ngFor="let value of _strings; let i = index"
+        *ngFor="let value of strListCtrl.value; let i = index"
         (removed)="removeItem(i)"
         class="font-bold-sm"
       >

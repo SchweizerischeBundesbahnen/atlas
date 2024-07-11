@@ -29,9 +29,11 @@ public class EditStopPointWorkflowModel {
   @Schema(description = "Hearing reasons")
   private String workflowComment;
 
-
   @Schema(description = "List hearing examinants")
   private List<StopPointClientPersonModel> examinants;
 
+  @Size(max = AtlasFieldLengths.LENGTH_10)
+  @Schema(description = "List of cc emails for status of hearing")
+  private List<String> ccEmails;
 
 }
