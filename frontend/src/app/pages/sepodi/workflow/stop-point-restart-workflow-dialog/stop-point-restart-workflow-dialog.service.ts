@@ -21,10 +21,10 @@ export class StopPointRestartWorkflowDialogService {
 
   openDialog(workflowId: number, rejectType: RejectType): Observable<boolean> {
     const dialogData: StopPointRejectWorkflowDialogData = {
-      title: this.getTitle(rejectType),
+      title: 'this.getTitle(rejectType)',
       message: '',
       cancelText: 'DIALOG.CANCEL',
-      confirmText: this.getTitle(rejectType),
+      confirmText: 'this.getTitle(rejectType)',
       workflowId: workflowId,
       rejectType: rejectType
     };
@@ -32,7 +32,7 @@ export class StopPointRestartWorkflowDialogService {
   }
 
   private open(dialogData: StopPointRejectWorkflowDialogData) {
-    this.dialogRef = this.dialog.open(StopPointRejectWorkflowDialogComponent, {
+    this.dialogRef = this.dialog.open(StopPointRestartWorkflowDialogComponent, {
       data: dialogData,
       minWidth: '50vw',
       disableClose: true,
