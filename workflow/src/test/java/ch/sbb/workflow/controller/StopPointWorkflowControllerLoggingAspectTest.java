@@ -1,6 +1,8 @@
 package ch.sbb.workflow.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -8,6 +10,7 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.aop.LoggingAspect;
 import ch.sbb.workflow.entity.Decision;
@@ -21,15 +24,20 @@ import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
 import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import ch.sbb.workflow.service.sepodi.SePoDiClientService;
+import ch.sbb.workflow.service.sepodi.StopPointWorkflowProgressDecider;
+import ch.sbb.workflow.service.sepodi.StopPointWorkflowTransitionService;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 public class StopPointWorkflowControllerLoggingAspectTest extends BaseControllerApiTest {
 
@@ -42,7 +50,13 @@ public class StopPointWorkflowControllerLoggingAspectTest extends BaseController
   private DecisionRepository decisionRepository;
 
   @Autowired
+  private StopPointWorkflowTransitionService stopPointWorkflowTransitionService;
+
+  @Autowired
   private SePoDiClientService sePoDiClientService;
+
+  @MockBean
+  private StopPointWorkflowProgressDecider stopPointWorkflowProgressDecider;
 
   private ListAppender<ILoggingEvent> listAppender;
 
@@ -53,6 +67,7 @@ public class StopPointWorkflowControllerLoggingAspectTest extends BaseController
 
   @BeforeEach
   public void setUp() {
+    MockitoAnnotations.openMocks(this);
     listAppender = new ListAppender<>();
     Logger logger = (Logger) LoggerFactory.getLogger(LoggingAspect.class);
     listAppender.start();
@@ -120,7 +135,8 @@ public class StopPointWorkflowControllerLoggingAspectTest extends BaseController
 
     boolean logFound = listAppender.list.stream()
         .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
-            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + StopPointWorkflowController.addWorkflow + "\"") &&
+            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + StopPointWorkflowTransitionService.addWorkflow +
+                "\"") &&
             event.getFormattedMessage().contains("\"isCritical\":true"));
     assertThat(logFound).isTrue();
   }
@@ -178,7 +194,7 @@ public class StopPointWorkflowControllerLoggingAspectTest extends BaseController
 
     boolean logFound = listAppender.list.stream()
         .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
-            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + StopPointWorkflowController.rejectWorkflow + "\"") &&
+            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + StopPointWorkflowTransitionService.rejectWorkflow + "\"") &&
             event.getFormattedMessage().contains("\"isCritical\":true"));
     assertThat(logFound).isTrue();
   }
@@ -236,7 +252,7 @@ public class StopPointWorkflowControllerLoggingAspectTest extends BaseController
 
     boolean logFound = listAppender.list.stream()
         .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
-            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + StopPointWorkflowController.cancelWorkflow + "\"") &&
+            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + StopPointWorkflowTransitionService.cancelWorkflow + "\"") &&
             event.getFormattedMessage().contains("\"isCritical\":true"));
     assertThat(logFound).isTrue();
   }
@@ -257,15 +273,23 @@ public class StopPointWorkflowControllerLoggingAspectTest extends BaseController
         .fotMotivation("Nein, Müll")
         .build();
 
-    // when & then
-    mvc.perform(post("/v1/stop-point/workflows/override-vote/" + workflowInHearing.getId() + 1 + "/" + examinantToOverride.getId())
-            .contentType(contentType)
-            .content(mapper.writeValueAsString(override)))
-        .andExpect(status().isNotFound());
+    when(stopPointWorkflowProgressDecider.calculateNewWorkflowStatus())
+        .thenReturn(Optional.of(WorkflowStatus.REJECTED));
+
+    assertThrows(IdNotFoundException.class,
+        () -> stopPointWorkflowTransitionService.progressWorkflowWithNewDecision(workflowInHearing.getId() + 1));
+
+//    // when & then
+//    mvc.perform(post("/v1/stop-point/workflows/override-vote/" + workflowInHearing.getId() + "/" + examinantToOverride.getId())
+//            .contentType(contentType)
+//            .content(mapper.writeValueAsString(override)))
+//        .andExpect(status().isNotFound());
+
+
 
     boolean logFound = listAppender.list.stream()
         .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
-            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + LoggingAspect.workflowTypeOverrideVoteWorkflow + "\"") &&
+            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + LoggingAspect.workflowTypeVoteWorkflow + "\"") &&
             event.getFormattedMessage().contains("\"isCritical\":true"));
     assertThat(logFound).isTrue();
   }
