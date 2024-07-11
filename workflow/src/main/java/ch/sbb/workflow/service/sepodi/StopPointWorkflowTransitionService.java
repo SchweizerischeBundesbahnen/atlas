@@ -163,7 +163,7 @@ public class StopPointWorkflowTransitionService {
     return StopPointWorkflowMapper.addStopPointWorkflowToEntity(workflowStartModel, servicePointVersionModel, personModels);
   }
 
-  @MethodLogged(workflowType = LoggingAspect.workflowTypeVoteWorkflow, critical = true)
+  @MethodLogged(workflowType = LoggingAspect.WORKFLOW_TYPE_VOTE_WORKFLOW, critical = true)
   public void progressWorkflowWithNewDecision(Long workflowId) {
     StopPointWorkflow workflow = stopPointWorkflowService.findStopPointWorkflow(workflowId);
     StopPointWorkflowProgressDecider stopPointWorkflowProgressDecider = buildProgressDecider(workflow);
