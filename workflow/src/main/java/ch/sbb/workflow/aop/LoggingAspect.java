@@ -18,8 +18,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class LoggingAspect {
 
-  public static final String workflowTypeVoteWorkflow = "VOTE_WORKFLOW";
-  public static final String workflowTypeOverrideVoteWorkflow = "OVERRIDE_VOTE_WORKFLOW";
+  public static final String WORKFLOW_TYPE_VOTE_WORKFLOW = "VOTE_WORKFLOW";
   public static final String ERROR_MARKER = "CRITICAL_WORKFLOW_ERROR";
 
   private final ObjectMapper objectMapper;
@@ -66,11 +65,13 @@ public class LoggingAspect {
           details.put("sloid", model.getSloid());
         }
         case Long id -> {
-          if (!workflowType.equals(workflowTypeVoteWorkflow) && !workflowType.equals(workflowTypeOverrideVoteWorkflow)) {
+          if (!workflowType.equals(WORKFLOW_TYPE_VOTE_WORKFLOW)) {
             details.put("workflowId", id);
           }
         }
-        default -> {}
+        default -> {
+          log.warn("Unexpected value: " + arg);
+        }
       }
     }
     return details;
