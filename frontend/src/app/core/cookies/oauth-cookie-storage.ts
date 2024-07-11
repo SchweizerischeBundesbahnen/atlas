@@ -15,7 +15,11 @@ export class OAuthCookieStorage extends OAuthStorage {
   }
 
   removeItem(key: string): void {
-    this.cookieService.delete(key);
+    this.cookieService.set(key, "", {
+      sameSite: 'Strict',
+      secure: true,
+      expires: -1
+    });
   }
 
   setItem(key: string, data: string): void {
