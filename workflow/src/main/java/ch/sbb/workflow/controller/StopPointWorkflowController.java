@@ -1,8 +1,6 @@
 package ch.sbb.workflow.controller;
 
 import ch.sbb.atlas.api.model.Container;
-import ch.sbb.workflow.aop.LoggingAspect;
-import ch.sbb.workflow.aop.MethodLogged;
 import ch.sbb.workflow.api.StopPointWorkflowApiV1;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
@@ -40,9 +38,6 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   private final StopPointWorkflowOtpService otpService;
   private final DecisionService decisionService;
   private final StopPointWorkflowTransitionService workflowTransitionService;
-  public static final String cancelWorkflow = "CANCEL_WORKFLOW";
-  public static final String rejectWorkflow = "REJECT_WORKFLOW";
-  public static final String addWorkflow = "ADD_WORKFLOW";
 
   @Override
   public ReadStopPointWorkflowModel getStopPointWorkflow(Long id) {
@@ -66,7 +61,6 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   }
 
   @Override
-  @MethodLogged(workflowType = addWorkflow, critical = true)
   public ReadStopPointWorkflowModel addStopPointWorkflow(StopPointAddWorkflowModel workflowModel) {
     return StopPointWorkflowMapper.toModel(workflowTransitionService.addWorkflow(workflowModel));
   }
@@ -83,7 +77,6 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
       "@countryAndBusinessOrganisationBasedUserAdministrationService."
           + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   @Override
-  @MethodLogged(workflowType = rejectWorkflow, critical = true)
   public ReadStopPointWorkflowModel rejectStopPointWorkflow(Long id, StopPointRejectWorkflowModel workflowModel) {
     return StopPointWorkflowMapper.toModel(workflowTransitionService.rejectWorkflow(id, workflowModel));
   }
@@ -114,7 +107,6 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   }
 
   @Override
-  @MethodLogged(workflowType = LoggingAspect.workflowTypeVoteWorkflow, critical = true)
   public void voteWorkflow(Long id, Long personId, DecisionModel decisionModel) {
     Person examinant = otpService.getExaminantByMail(id, decisionModel.getExaminantMail());
     otpService.validatePinCode(examinant, decisionModel.getPinCode());
@@ -127,7 +119,6 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
       "@countryAndBusinessOrganisationBasedUserAdministrationService."
           + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   @Override
-  @MethodLogged(workflowType = LoggingAspect.workflowTypeOverrideVoteWorkflow, critical = true)
   public void overrideVoteWorkflow(Long id, Long personId, OverrideDecisionModel decisionModel) {
     service.overrideVoteWorkflow(id, personId,decisionModel);
     workflowTransitionService.progressWorkflowWithNewDecision(id);
@@ -145,7 +136,6 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
       "@countryAndBusinessOrganisationBasedUserAdministrationService."
           + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   @Override
-  @MethodLogged(workflowType = cancelWorkflow, critical = true)
   public ReadStopPointWorkflowModel cancelStopPointWorkflow(Long id, StopPointRejectWorkflowModel stopPointCancelWorkflowModel) {
     return StopPointWorkflowMapper.toModel(workflowTransitionService.cancelWorkflow(id, stopPointCancelWorkflowModel));
   }

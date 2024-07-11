@@ -6,6 +6,7 @@ import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.model.sepodi.ReadStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,7 +46,8 @@ public class StopPointWorkflowMapper {
     StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
         .sloid(model.getSloid())
         .versionId(model.getVersionId())
-        .ccEmails(model.getCcEmails())
+        .ccEmails(new ArrayList<>(model.getCcEmails()))
+//        .ccEmails(model.getCcEmails())
         .applicantMail(model.getApplicantMail())
         .workflowComment(model.getWorkflowComment())
         .sboid(servicePointVersionModel.getBusinessOrganisation())
