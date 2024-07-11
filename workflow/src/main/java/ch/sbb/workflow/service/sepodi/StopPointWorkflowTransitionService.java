@@ -119,12 +119,12 @@ public class StopPointWorkflowTransitionService {
     //TODO String newDesignationOfficial = restartWorkflowModel.getNewDesignationOfficial();
     // sePoDiClient.update(officialDesignation)
 
-    ClientPersonModel examinantBAVclientPersonModel = restartWorkflowModel.getExaminantBAVClient();
-    Person examinantBAV = ClientPersonMapper.toEntity(examinantBAVclientPersonModel);
-    examinantBAV.setStopPointWorkflow(stopPointWorkflow);
+    //ClientPersonModel examinantBAVclientPersonModel = restartWorkflowModel.getExaminantBAVClient();
+    //Person examinantBAV = ClientPersonMapper.toEntity(examinantBAVclientPersonModel);
+    //examinantBAV.setStopPointWorkflow(stopPointWorkflow);
     Decision decision = new Decision();
     decision.setDecisionType(DecisionType.RESTARTED);
-    decision.setExaminant(examinantBAV);
+    //decision.setExaminant(examinantBAV);
     decision.setMotivation(restartWorkflowModel.getMotivationComment());
     decision.setMotivationDate(LocalDateTime.now());
     decisionService.save(decision);
@@ -132,7 +132,7 @@ public class StopPointWorkflowTransitionService {
     //create new Workflow
     StopPointWorkflow newStopPointWorkflow = StopPointWorkflow.builder()
         .workflowComment(restartWorkflowModel.getMotivationComment())
-        .designationOfficial(restartWorkflowModel.getNewDesignationOfficial())
+        .designationOfficial(restartWorkflowModel.getDesignationOfficial())
         .status(WorkflowStatus.ADDED)
         .examinants(new HashSet<>(stopPointWorkflow.getExaminants()))
         .ccEmails(new ArrayList<>(stopPointWorkflow.getCcEmails()))

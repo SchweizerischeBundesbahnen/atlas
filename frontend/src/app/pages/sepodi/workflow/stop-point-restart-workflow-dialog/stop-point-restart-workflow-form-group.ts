@@ -1,10 +1,7 @@
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AtlasCharsetsValidator} from "../../../../core/validation/charsets/atlas-charsets-validator";
 import {AtlasFieldLengthValidator} from "../../../../core/validation/field-lengths/atlas-field-length-validator";
-import {StopPointRejectWorkflow} from "../../../../api";
-import {
-  StopPointRejectWorkflowFormGroup
-} from "../stop-point-reject-workflow-dialog/stop-point-reject-workflow-form-group";
+import { StopPointRestartWorkflow} from "../../../../api";
 
 export interface StopPointRestartWorkflowFormGroup {
   firstName: FormControl<string | null | undefined>;
@@ -14,7 +11,7 @@ export interface StopPointRestartWorkflowFormGroup {
   mail: FormControl<string | null | undefined>;
   designationOfficial: FormControl<string | null | undefined>
 }
-export class StopPointRestartWorkflowFormGroup {
+export class StopPointRestartWorkflowFormGroupBuilder {
 
   static initFormGroup(): FormGroup<StopPointRestartWorkflowFormGroup> {
     return new FormGroup<StopPointRestartWorkflowFormGroup>({
@@ -27,13 +24,14 @@ export class StopPointRestartWorkflowFormGroup {
     })
   }
 
-  static buildStopPointRejectWorkflow(formGroup: FormGroup<StopPointRestartWorkflowFormGroup>): StopPointRejectWorkflow {
+  static buildStopPointRestartWorkflow(formGroup: FormGroup<StopPointRestartWorkflowFormGroup>): StopPointRestartWorkflow {
     return {
-      firstName: formGroup.controls.firstName.value!,
+      examinantBAVClient: formGroup.controls.firstName.value!,
       lastName: formGroup.controls.lastName.value!,
       motivationComment: formGroup.controls.motivationComment.value!,
       mail: formGroup.controls.mail.value!,
       organisation: formGroup.controls.organisation.value!,
+      designationOfficial: formGroup.controls.designationOfficial.value!,
     }
   }
 }
