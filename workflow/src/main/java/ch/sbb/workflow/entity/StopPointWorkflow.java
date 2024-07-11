@@ -23,7 +23,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -84,7 +83,7 @@ public class StopPointWorkflow extends BaseWorkflowEntity {
 
   @Size(max = AtlasFieldLengths.LENGTH_10)
   @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
-  private List<String> ccEmails = new ArrayList<>();
+  private List<String> ccEmails;
 
   @Size(max = AtlasFieldLengths.LENGTH_1500)
   private String workflowComment;
