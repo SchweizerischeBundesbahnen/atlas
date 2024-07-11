@@ -58,7 +58,7 @@
     >
     </atlas-button>
     @if (bavActionEnabled) {
-      @if (workflow.status === WorkflowStatus.Added) {
+      @if (workflow.status === WorkflowStatus.Added && form.disabled) {
         <atlas-button
           buttonDataCy="start-wf"
           buttonText="WORKFLOW.BUTTON.START"
