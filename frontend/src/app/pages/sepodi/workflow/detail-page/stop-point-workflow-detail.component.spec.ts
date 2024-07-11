@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync,TestBed , tick} from '@angular/core/testing';
 import { StopPointWorkflowDetailComponent } from './stop-point-workflow-detail.component';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { FormModule } from '../../../../core/module/form.module';
@@ -230,23 +230,27 @@ describe('StopPointWorkflowDetailComponent', () => {
     component.toggleEdit();
     component.form.controls['designationOfficial'].setValue('Official Designation');
     component.form.controls['workflowComment'].setValue('Some comment');
-    component.form.controls['examinants'].setValue([{
-      firstName: 'DIDOK',
-      lastName: 'MASTER',
-      personFunction: 'Chef',
-      mail: 'didok@chef.com',
-      organisation: 'SBB',
-      id: 1,
-      judgementIcon: "",
-      judgement: JudgementType.Yes,
+    component.form.controls['examinants'].setValue([
+      {
+        firstName: 'DIDOK',
+        lastName: 'MASTER',
+        personFunction: 'Chef',
+        mail: 'didok@chef.com',
+        organisation: 'SBB',
+        id: 1,
+        judgementIcon: '',
+        judgement: JudgementType.Yes,
       decisionType: DecisionType.Voted,
-    }]);
+    },
+    ]);
+    component.form.controls['ccEmails'].setValue(['test@atlas.ch']);
 
     spWfServiceSpy.editStopPointWorkflow.and.returnValue(of({ id: 1 }));
 
     component.save();
 
     expect(spWfServiceSpy.editStopPointWorkflow).toHaveBeenCalledWith(component.workflow.id, {
+      ccEmails: ['test@atlas.ch'],
       designationOfficial: 'Official Designation',
       workflowComment: 'Some comment',
       examinants: [{
