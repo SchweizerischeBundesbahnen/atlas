@@ -5,7 +5,7 @@ import {FormModule} from '../../../../core/module/form.module';
 import {ActivatedRoute} from '@angular/router';
 import {BERN_WYLEREGG} from '../../../../../test/data/service-point';
 import {
-  Country,
+  Country, DecisionType,
   JudgementType,
   MeanOfTransport,
   ReadServicePointVersion,
@@ -219,7 +219,8 @@ describe('StopPointWorkflowDetailComponent', () => {
       organisation: 'SBB',
       id: 1,
       judgementIcon: "",
-      judgement: JudgementType.Yes
+      judgement: JudgementType.Yes,
+      decisionType: DecisionType.Voted,
     }]);
 
     stopPointWorkflowService.editStopPointWorkflow.and.returnValue(of({ id: 1 }));
@@ -230,7 +231,6 @@ describe('StopPointWorkflowDetailComponent', () => {
       designationOfficial: 'Official Designation',
       workflowComment: 'Some comment',
       examinants: [{
-
         firstName: 'DIDOK',
         lastName: 'MASTER',
         personFunction: 'Chef',
@@ -238,7 +238,8 @@ describe('StopPointWorkflowDetailComponent', () => {
         organisation: 'SBB',
         id: 1,
         judgementIcon: "",
-        judgement: JudgementType.Yes
+        judgement: JudgementType.Yes,
+        decisionType: DecisionType.Voted,
       }]
     });
     expect(notificationServiceSpy.success).toHaveBeenCalledWith('WORKFLOW.NOTIFICATION.EDIT.SUCCESS');
