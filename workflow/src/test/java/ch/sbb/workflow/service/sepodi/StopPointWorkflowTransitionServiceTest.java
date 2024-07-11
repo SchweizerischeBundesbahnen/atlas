@@ -15,6 +15,7 @@ import ch.sbb.workflow.kafka.StopPointWorkflowNotificationService;
 import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,7 +66,7 @@ class StopPointWorkflowTransitionServiceTest {
         .designationOfficial("Biel/Bienne Bözingenfeld/Champ")
         .localityName("Biel/Bienne")
         .workflowComment("WF comment")
-        .examinants(Set.of(marek, judith))
+        .examinants(new HashSet<>(Set.of(marek, judith)))
         .startDate(LocalDate.of(2000, 1, 1))
         .endDate(LocalDate.of(2000, 12, 31))
         .versionId(123456L)

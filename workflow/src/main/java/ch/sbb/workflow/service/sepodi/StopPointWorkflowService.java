@@ -132,7 +132,6 @@ public class StopPointWorkflowService {
     }
   }
 
-//  @MethodLogged(workflowType = LoggingAspect.workflowTypeVoteWorkflow, critical = true)
   public StopPointWorkflow save(StopPointWorkflow stopPointWorkflow) {
     return workflowRepository.saveAndFlush(stopPointWorkflow);
   }
