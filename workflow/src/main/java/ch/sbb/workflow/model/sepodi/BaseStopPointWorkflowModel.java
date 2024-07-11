@@ -35,6 +35,7 @@ public abstract class BaseStopPointWorkflowModel {
   @NotNull
   private String sloid;
 
+  @Size(max = AtlasFieldLengths.LENGTH_10)
   @Schema(description = "List of cc emails for status of hearing")
   private List<String> ccEmails;
 
