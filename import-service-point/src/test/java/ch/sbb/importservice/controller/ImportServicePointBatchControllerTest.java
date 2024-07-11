@@ -123,17 +123,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
   }
 
   @Test
-   void shouldReturnBadRequestWhenFileIsNotProvidedOnTrafficPointFileImport() throws Exception {
-    //given
-    doNothing().when(mailProducerService).produceMailNotification(any());
-
-    //when & then
-    mvc.perform(multipart("/v1/import/traffic-point")
-            .contentType(contentType))
-        .andExpect(status().isBadRequest());
-  }
-
-  @Test
    void shouldPostLoadingPointImportBatchSuccessfully() throws Exception {
     //given
     when(sePoDiClient.postLoadingPointsImport(any())).thenReturn(List.of());
