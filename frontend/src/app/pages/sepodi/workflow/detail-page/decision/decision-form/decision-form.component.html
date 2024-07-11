@@ -49,16 +49,18 @@
     </atlas-text-field>
   </div>
 
-  <div class="mb-2">{{ 'WORKFLOW.DECISION.DECISION_INFO' | translate }}</div>
-  <mat-radio-group formControlName="judgement" class="d-grid mb-3">
-    <mat-radio-button [value]="JudgementType.Yes">
-      {{ 'WORKFLOW.DECISION.ACCEPT' | translate }}
-    </mat-radio-button>
-    <mat-radio-button [value]="JudgementType.No">
-      {{ 'WORKFLOW.DECISION.DECLINE' | translate }}
-    </mat-radio-button>
-    <app-atlas-field-error [form]="form" controlName="judgement"></app-atlas-field-error>
-  </mat-radio-group>
+  @if (showJudgement) {
+    <div class="mb-2">{{ 'WORKFLOW.DECISION.DECISION_INFO' | translate }}</div>
+    <mat-radio-group formControlName="judgement" class="d-grid mb-3">
+      <mat-radio-button [value]="JudgementType.Yes">
+        {{ 'WORKFLOW.DECISION.ACCEPT' | translate }}
+      </mat-radio-button>
+      <mat-radio-button [value]="JudgementType.No">
+        {{ 'WORKFLOW.DECISION.DECLINE' | translate }}
+      </mat-radio-button>
+      <app-atlas-field-error [form]="form" controlName="judgement"></app-atlas-field-error>
+    </mat-radio-group>
+  }
 
   <form-comment
     [formGroup]="form"

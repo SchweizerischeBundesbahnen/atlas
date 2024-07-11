@@ -46,6 +46,20 @@
         <div class="font-bold-base">{{ 'WORKFLOW.STATUS_DETAIL' | translate }}</div>
         <div>{{ 'WORKFLOW.STATUS.' + currentWorkflow.status | translate }}</div>
       </div>
+      @if (specialDecision) {
+        <atlas-button
+          (buttonClicked)="openStatusDecision()"
+          buttonType="icon"
+          wrapperStyleClass="pt-1"
+          buttonStyleClass="bordered-btn px-2 py-1"
+        >
+          <ng-template #rightIcon>
+            <i
+              class="bi bi-x-lg"
+            ></i>
+          </ng-template>
+        </atlas-button>
+      }
     </div>
   }
 
@@ -117,9 +131,11 @@
         infoTitle="{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.EXAMINANTS_INFO' | translate }}"
       ></form-info-icon>
     </div>
-    <div class="translated-paragraph">
-      {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.EXAMINANTS_SUBTITLE' | translate }}
-    </div>
+    @if (form.enabled) {
+      <div class="translated-paragraph">
+        {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.EXAMINANTS_SUBTITLE' | translate }}
+      </div>
+    }
   </div>
 
   <div class="examinant-table">
@@ -201,7 +217,7 @@
 
   @if (form.enabled) {
     <atlas-button
-      (click)="addExaminant()"
+      (buttonClicked)="addExaminant()"
       buttonDataCy="add-examinant"
       buttonText="SEPODI.SERVICE_POINTS.WORKFLOW.ADD_EXAMINANT"
       buttonType="defaultPrimary"

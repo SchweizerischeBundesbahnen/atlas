@@ -839,7 +839,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldOverrideVoteWihtoutDecisionToWorkflow() throws Exception {
+  void shouldOverrideVoteWithoutDecisionToWorkflow() throws Exception {
     //when
     Person person = Person.builder()
         .firstName("Marek")
@@ -891,7 +891,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   }
 
   @Test
-  void shouldOverrideVoteWitDecisionToWorkflow() throws Exception {
+  void shouldOverrideVoteWithDecisionToWorkflow() throws Exception {
     //when
     Person person = Person.builder()
         .firstName("Marek")
