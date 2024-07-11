@@ -163,22 +163,22 @@
     >
       <ng-container [formGroupName]="i">
         <div class="examinant row">
-          <div class="col pe-2">
+          <div class="col pe-2" [title]="examinant.controls.firstName.value ?? ''">
             <atlas-text-field [formGroup]="examinant" controlName="firstName"></atlas-text-field>
           </div>
-          <div class="col pe-2">
+          <div class="col pe-2" [title]="examinant.controls.lastName.value ?? ''">
             <atlas-text-field [formGroup]="examinant" controlName="lastName"></atlas-text-field>
           </div>
-          <div class="col pe-2">
+          <div class="col pe-2" [title]="examinant.controls.organisation.value ?? ''">
             <atlas-text-field [formGroup]="examinant" controlName="organisation"></atlas-text-field>
           </div>
-          <div class="col pe-2">
+          <div class="col pe-2" [title]="examinant.controls.personFunction.value ?? ''">
             <atlas-text-field
               [formGroup]="examinant"
               controlName="personFunction"
             ></atlas-text-field>
           </div>
-          <div class="col">
+          <div class="col" [title]="examinant.controls.mail.value ?? ''">
             <atlas-text-field [formGroup]="examinant" controlName="mail"></atlas-text-field>
           </div>
           @if (currentWorkflow?.status !== WorkflowStatus.Added && form.disabled) {
