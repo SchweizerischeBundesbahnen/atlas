@@ -32,7 +32,6 @@ public class StopPointWorkflowService {
   private final DecisionRepository decisionRepository;
   private final SePoDiClientService sePoDiClientService;
 
-
   @Redacted(redactedClassType = StopPointWorkflow.class)
   public StopPointWorkflow getWorkflow(Long id) {
     return workflowRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
@@ -50,22 +49,23 @@ public class StopPointWorkflowService {
       throw new StopPointWorkflowStatusMustBeAddedException();
     }
 
-    if(!stopPointWorkflow.getDesignationOfficial().equals(workflowModel.getDesignationOfficial())){
+    if (!stopPointWorkflow.getDesignationOfficial().equals(workflowModel.getDesignationOfficial())) {
       stopPointWorkflow.setDesignationOfficial(workflowModel.getDesignationOfficial());
       sePoDiClientService.updateDesignationOfficialServicePoint(stopPointWorkflow);
     }
 
     stopPointWorkflow.setWorkflowComment(workflowModel.getWorkflowComment());
+    stopPointWorkflow.setCcEmails(workflowModel.getCcEmails());
 
-    if(workflowModel.getExaminants() != null){
+    if (workflowModel.getExaminants() != null) {
       stopPointWorkflow.getExaminants().clear();
       workflowModel.getExaminants()
-              .stream()
-              .map(StopPointClientPersonMapper::toEntity)
-              .forEach(examinant -> {
-                examinant.setStopPointWorkflow(stopPointWorkflow);
-                stopPointWorkflow.getExaminants().add(examinant);
-              });
+          .stream()
+          .map(StopPointClientPersonMapper::toEntity)
+          .forEach(examinant -> {
+            examinant.setStopPointWorkflow(stopPointWorkflow);
+            stopPointWorkflow.getExaminants().add(examinant);
+          });
     }
     return save(stopPointWorkflow);
   }

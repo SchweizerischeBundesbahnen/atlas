@@ -16,6 +16,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { PermissionService } from './core/auth/permission/permission.service';
 import { PageService } from './core/pages/page.service';
 import { Pages } from './pages/pages';
+import { FieldExample } from './core/form-components/text-field/field-example';
 
 @Component({
   selector: 'app-switch-version',
@@ -139,6 +140,18 @@ export class MockAtlasFieldErrorComponent {
   @Input() form: FormGroup = new FormGroup({});
   @Input() control!: FormControl;
   @Input() customError!: AtlasFieldCustomError;
+}
+
+@Component({
+  selector: 'app-atlas-label-field',
+  template: '',
+})
+export class MockAtlasLabelFieldComponent {
+  @Input() required!: boolean;
+  @Input() fieldLabel!: string;
+  @Input() infoIconTitle!: string;
+  @Input() infoIconLink!: string;
+  @Input() fieldExamples!: Array<FieldExample>;
 }
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
