@@ -215,7 +215,7 @@ public class StopPointWorkflowLoggingAspectTest extends BaseControllerApiTest {
 
     boolean logFound = listAppender.list.stream()
         .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
-            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + LoggingAspect.workflowTypeVoteWorkflow + "\"") &&
+            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + LoggingAspect.WORKFLOW_TYPE_VOTE_WORKFLOW + "\"") &&
             event.getFormattedMessage().contains("\"isCritical\":true"));
     assertThat(logFound).isTrue();
   }
