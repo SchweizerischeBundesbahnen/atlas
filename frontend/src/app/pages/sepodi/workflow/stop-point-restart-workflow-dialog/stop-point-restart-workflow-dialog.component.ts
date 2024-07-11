@@ -1,11 +1,19 @@
 import {Component, OnInit} from '@angular/core';
 import {FormGroup} from "@angular/forms";
-import {StopPointRestartWorkflowFormGroup} from "./stop-point-restart-workflow-form-group";
+import {
+  StopPointRestartWorkflowFormGroup,
+  StopPointRestartWorkflowFormGroupBuilder
+} from "./stop-point-restart-workflow-form-group";
 import {
   StopPointRejectWorkflowFormGroupBuilder
 } from "../stop-point-reject-workflow-dialog/stop-point-reject-workflow-form-group";
 import {DetailHelperService} from "../../../../core/detail/detail-helper.service";
 import {MatDialogRef} from "@angular/material/dialog";
+import {ValidationService} from "../../../../core/validation/validation.service";
+import {StopPointRejectWorkflow, StopPointRestartWorkflow, StopPointWorkflowService} from "../../../../api";
+import {Pages} from "../../../pages";
+import {Router} from "@angular/router";
+import {NotificationService} from "../../../../core/notification/notification.service";
 
 @Component({
   selector: 'app-stop-point-restart-workflow-dialog',
@@ -19,10 +27,15 @@ export class StopPointRestartWorkflowDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<StopPointRestartWorkflowDialogComponent>,
     private detailHelperService: DetailHelperService,
+    private router: Router,
+    private notificationService: NotificationService,
+    private stopPointWorkflowService: StopPointWorkflowService
+
   ) {
   }
 
   ngOnInit(): void {
+    this.formGroup = StopPointRestartWorkflowFormGroupBuilder.initFormGroup()
   }
 
   closeDialog() {
@@ -32,4 +45,30 @@ export class StopPointRestartWorkflowDialogComponent implements OnInit {
       }
     });
   }
+
+  restartWorkflow() {
+    ValidationService.validateForm(this.formGroup);
+    if (this.formGroup.valid) {
+      const stopPointRestartWorkflow =
+        StopPointRestartWorkflowFormGroupBuilder.buildStopPointRestartWorkflow(this.formGroup);
+      this.formGroup.disable();
+      //this.doRestart(stopPointRestartWorkflow)
+    }
+  }
+
+  // private doRestart(stopPointRejectWorkflow: StopPointRestartWorkflow) {
+  //   this.stopPointWorkflowService.restartStopPointWorkflow(this.data.workflowId, stopPointRejectWorkflow)
+  //     .subscribe(() => {
+  //       this.notificationService.success('WORKFLOW.NOTIFICATION.CHECK.REJECTED');
+  //       this.dialogRef.close();
+  //       this.navigateToWorkflow();
+  //     })
+  // }
+  //
+  // private navigateToWorkflow() {
+  //   this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+  //     this.router.navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, this.data.workflowId]).then(() => {
+  //     });
+  //   })
+  // }
 }
