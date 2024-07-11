@@ -15,6 +15,7 @@ import ch.sbb.workflow.model.sepodi.StopPointWorkflowRequestParams;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -131,9 +132,6 @@ class StopPointWorkflowServiceTest {
             .function("Centrocampista")
             .mail("test@test.com").build();
 
-    List<Person> examinant = new ArrayList<>();
-    examinant.add(person);
-
     StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
             .sloid("ch:1:sloid:8000")
             .sboid("ch:1:sboid:10")
@@ -141,15 +139,25 @@ class StopPointWorkflowServiceTest {
             .designationOfficial("Heimsiswil Zentrum")
             .versionId(1L)
             .localityName("Heimiswil")
+            .examinants(Set.of(person))
             .build();
 
     StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
+
     Long id = saved.getId();
+    Long examinantId = saved.getExaminants().stream().findFirst().get().getId();
+
+    Person personEdited = Person.builder()
+            .id(examinantId)
+            .firstName("Neue Person")
+            .lastName("Person")
+            .function("SchönesWetterHeute")
+            .mail("test@test.com").build();
 
     EditStopPointWorkflowModel workflowModel = EditStopPointWorkflowModel.builder()
             .workflowComment("New Comment")
             .designationOfficial("Heimsiswil Zentrum")
-            .examinants(examinant.stream().map(StopPointClientPersonMapper::toModel).toList())
+            .examinants(List.of(personEdited).stream().map(StopPointClientPersonMapper::toModel).toList())
             .build();
 
     workflowService.editWorkflow(id, workflowModel);
@@ -159,6 +167,7 @@ class StopPointWorkflowServiceTest {
 
     assertFalse(stopPointWorkflowInDb.getExaminants().isEmpty());
     assertThat(stopPointWorkflowInDb.getExaminants()).hasSize(1);
+    assertThat(stopPointWorkflowInDb.getExaminants()).extracting(examinant -> examinant.getId()).contains(examinantId);
   }
 
   @Test

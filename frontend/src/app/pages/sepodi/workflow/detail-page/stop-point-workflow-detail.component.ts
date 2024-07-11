@@ -245,6 +245,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
 
         this.workflow = workflow;
         this.initWorkflow = workflow;
+        this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(this.workflow);
 
         this.notificationService.success('WORKFLOW.NOTIFICATION.EDIT.SUCCESS');
         this.disableForm();
