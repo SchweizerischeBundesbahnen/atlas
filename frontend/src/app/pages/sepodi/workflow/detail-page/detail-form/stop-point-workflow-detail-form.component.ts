@@ -64,6 +64,7 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
 
   removeExaminant(index: number) {
     this.form.controls.examinants.removeAt(index);
+    this.form.markAsDirty();
   }
 
   goToSwissTopo() {
