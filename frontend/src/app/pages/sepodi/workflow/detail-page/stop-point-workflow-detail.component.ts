@@ -152,7 +152,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
   }
 
   private enableForm(): void {
-    this.form?.enable({ emitEvent: false });
+    this.form?.enable();
     this.isFormEnabled$.next(true);
   }
 
@@ -170,6 +170,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
     ValidationService.validateForm(this.form!);
     if (this.form?.valid) {
       const updatedVersion: EditStopPointWorkflow = {
+        ccEmails: this.form.controls.ccEmails.value ?? undefined,
         designationOfficial: this.form.controls.designationOfficial.value!,
         workflowComment: this.form.controls.workflowComment.value!,
         examinants: this.form.controls.examinants.value.map(
@@ -188,7 +189,6 @@ export class StopPointWorkflowDetailComponent implements OnInit {
         this.workflow = workflow;
         this.initWorkflow = workflow;
         this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(this.workflow);
-
         this.notificationService.success('WORKFLOW.NOTIFICATION.EDIT.SUCCESS');
         this.disableForm();
       });
