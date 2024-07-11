@@ -14,6 +14,7 @@ import {
 } from '../../../../../api';
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../core/detail/detail-helper.service";
 import {ValidityService} from "../../../../sepodi/validity/validity.service";
+import {catchError, EMPTY} from "rxjs";
 
 @Component({
   selector: 'app-reference-point',
@@ -132,6 +133,10 @@ export class ReferencePointDetailComponent implements OnInit, DetailFormComponen
   update(referencePointVersion: ReferencePointVersion) {
     this.personWithReducedMobilityService
       .updateReferencePoint(this.selectedVersion.id!, referencePointVersion)
+      .pipe(catchError(() => {
+        this.ngOnInit();
+        return EMPTY;
+      }))
       .subscribe(() => {
         this.notificationService.success('PRM.REFERENCE_POINTS.NOTIFICATION.EDIT_SUCCESS');
         this.router
