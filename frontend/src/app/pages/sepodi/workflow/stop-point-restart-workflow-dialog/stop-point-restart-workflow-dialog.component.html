@@ -10,7 +10,7 @@
           [formGroup]="formGroup"
           [required]="true"
           controlName="firstName"
-          data-cy="stopPointRejectWorkflowPersonFirstName"
+          data-cy="stopPointRestartWorkflowPersonFirstName"
           fieldLabel="WORKFLOW.PERSON.FIRSTNAME"
           class="col-5"
         >
@@ -19,7 +19,7 @@
           [formGroup]="formGroup"
           [required]="true"
           controlName="lastName"
-          data-cy="stopPointRejectWorkflowPersonLastName"
+          data-cy="stopPointRestartWorkflowPersonLastName"
           fieldLabel="WORKFLOW.PERSON.LASTNAME"
           class="col-5"
         >
@@ -30,7 +30,7 @@
           [formGroup]="formGroup"
           [required]="true"
           controlName="organisation"
-          data-cy="stopPointRejectWorkflowPersonOrganisation"
+          data-cy="stopPointRestartWorkflowPersonOrganisation"
           fieldLabel="WORKFLOW.PERSON.ORGANISATION"
           class="col-5"
         >
@@ -39,9 +39,20 @@
           [formGroup]="formGroup"
           [required]="true"
           controlName="mail"
-          data-cy="stopPointRejectWorkflowPersonMail"
+          data-cy="stopPointRestartWorkflowPersonMail"
           fieldLabel="WORKFLOW.PERSON.MAIL"
           class="col-5"
+        >
+        </atlas-text-field>
+      </div>
+      <div class="d-flex justify-content-between mt-2">
+        <atlas-text-field
+          [formGroup]="formGroup"
+          [required]="true"
+          controlName="designationOfficial"
+          data-cy="stopPointRestartWorkflowDesignationOfficial"
+          fieldLabel="SEPODI.SERVICE_POINTS.DESIGNATION_OFFICIAL"
+          class="col-6"
         >
         </atlas-text-field>
       </div>
@@ -60,11 +71,11 @@
   <button (click)="closeDialog()" class="atlas-primary-btn me-3" data-cy="dialog-cancel-button">
 <!--    {{ data.cancelText ?? 'DIALOG.CANCEL' | translate }}-->
   </button>
-<!--  <button-->
-<!--    (click)="rejectWorkflow()"-->
-<!--    class="atlas-primary-btn primary-color-btn"-->
-<!--    data-cy="dialog-confirm-button"-->
-<!--  >-->
-<!--&lt;!&ndash;    {{ data.confirmText ?? 'DIALOG.OK' | translate }}&ndash;&gt;-->
-<!--  </button>-->
+  <button
+    (click)="restartWorkflow()"
+    class="atlas-primary-btn primary-color-btn"
+    data-cy="dialog-confirm-button"
+  >
+<!--    {{ data.confirmText ?? 'DIALOG.OK' | translate }}-->
+  </button>
 </atlas-dialog-footer>
