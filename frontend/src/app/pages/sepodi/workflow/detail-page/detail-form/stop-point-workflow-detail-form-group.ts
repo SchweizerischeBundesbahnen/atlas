@@ -2,7 +2,7 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import {DecisionType, JudgementType, ReadStopPointWorkflow, StopPointPerson} from 'src/app/api';
 import { AtlasCharsetsValidator } from 'src/app/core/validation/charsets/atlas-charsets-validator';
 import { AtlasFieldLengthValidator } from 'src/app/core/validation/field-lengths/atlas-field-length-validator';
-import {WhitespaceValidator} from "../../../../../core/validation/whitespace/whitespace-validator";
+import { WhitespaceValidator } from '../../../../../core/validation/whitespace/whitespace-validator';
 
 export interface StopPointWorkflowDetailFormGroup {
   ccEmails: FormControl<Array<string> | null | undefined>;
@@ -30,17 +30,19 @@ export class StopPointWorkflowDetailFormGroupBuilder {
     workflow?: ReadStopPointWorkflow,
   ): FormGroup<StopPointWorkflowDetailFormGroup> {
     return new FormGroup<StopPointWorkflowDetailFormGroup>({
-      ccEmails: new FormControl(workflow?.ccEmails, [Validators.maxLength(10)]),
+      ccEmails: new FormControl(workflow?.ccEmails ?? []),
       workflowComment: new FormControl(workflow?.workflowComment, [
         Validators.required,
         Validators.minLength(2),
         AtlasFieldLengthValidator.comments,
         AtlasCharsetsValidator.iso88591,
       ]),
-      designationOfficial: new FormControl(workflow?.designationOfficial, [Validators.required,
+      designationOfficial: new FormControl(workflow?.designationOfficial, [
+        Validators.required,
         Validators.minLength(2),
         Validators.maxLength(30),
-        AtlasCharsetsValidator.iso88591]),
+        AtlasCharsetsValidator.iso88591,
+      ]),
       examinants: new FormArray<FormGroup<ExaminantFormGroup>>(
         workflow?.examinants?.
         filter(examinant => !SPECIAL_DECISION_TYPES.includes(examinant.decisionType!)).
@@ -56,7 +58,10 @@ export class StopPointWorkflowDetailFormGroupBuilder {
       id: new FormControl(examinant?.id),
       firstName: new FormControl(examinant?.firstName),
       lastName: new FormControl(examinant?.lastName),
-      organisation: new FormControl(examinant?.organisation, [Validators.required, WhitespaceValidator.blankOrEmptySpaceSurrounding]),
+      organisation: new FormControl(examinant?.organisation, [
+        Validators.required,
+        WhitespaceValidator.blankOrEmptySpaceSurrounding,
+      ]),
       personFunction: new FormControl(examinant?.personFunction),
       mail: new FormControl(examinant?.mail, [Validators.required, AtlasCharsetsValidator.email]),
       judgementIcon: new FormControl(this.buildJudgementIcon(examinant?.judgement)),

@@ -719,7 +719,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     //given
     mvc.perform(post("/v1/stop-point/workflows/obtain-otp/" + stopPointWorkflow.getId())
             .contentType(contentType)
-        .content(mapper.writeValueAsString(otpRequest)))
+            .content(mapper.writeValueAsString(otpRequest)))
         .andExpect(status().isAccepted());
 
     Otp otpResult = otpRepository.findAll().stream().filter(otp -> otp.getPerson().getId().equals(person.getId())).findFirst()
