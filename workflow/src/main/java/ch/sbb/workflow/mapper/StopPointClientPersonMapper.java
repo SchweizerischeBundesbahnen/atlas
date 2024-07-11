@@ -22,6 +22,7 @@ public class StopPointClientPersonMapper {
 
   public static Person toEntity(StopPointClientPersonModel model) {
     return Person.builder()
+        .id(model.getId())
         .firstName(model.getFirstName())
         .lastName(model.getLastName())
         .function(model.getPersonFunction())
