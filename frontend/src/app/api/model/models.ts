@@ -47,6 +47,7 @@ export * from './createLoadingPointVersion';
 export * from './createServicePointVersion';
 export * from './createTrafficPointElementVersion';
 export * from './decision';
+export * from './decisionType';
 export * from './displayInfo';
 export * from './district';
 export * from './editStopPointWorkflow';

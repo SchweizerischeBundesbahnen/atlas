@@ -1,5 +1,5 @@
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { JudgementType, ReadStopPointWorkflow, StopPointPerson } from 'src/app/api';
+import {DecisionType, JudgementType, ReadStopPointWorkflow, StopPointPerson} from 'src/app/api';
 import { AtlasCharsetsValidator } from 'src/app/core/validation/charsets/atlas-charsets-validator';
 import { AtlasFieldLengthValidator } from 'src/app/core/validation/field-lengths/atlas-field-length-validator';
 import {WhitespaceValidator} from "../../../../../core/validation/whitespace/whitespace-validator";
@@ -20,7 +20,10 @@ export interface ExaminantFormGroup {
   judgementIcon: FormControl<string | null | undefined>;
   judgement: FormControl<JudgementType | null | undefined>;
   id: FormControl<number | null | undefined>;
+  decisionType: FormControl<DecisionType | null | undefined>;
 }
+
+export const SPECIAL_DECISION_TYPES = [DecisionType.Canceled, DecisionType.Rejected, DecisionType.Restarted];
 
 export class StopPointWorkflowDetailFormGroupBuilder {
   static buildFormGroup(
@@ -39,7 +42,9 @@ export class StopPointWorkflowDetailFormGroupBuilder {
         Validators.maxLength(30),
         AtlasCharsetsValidator.iso88591]),
       examinants: new FormArray<FormGroup<ExaminantFormGroup>>(
-        workflow?.examinants?.map((examinant) => this.buildExaminantFormGroup(examinant)) ?? [
+        workflow?.examinants?.
+        filter(examinant => !SPECIAL_DECISION_TYPES.includes(examinant.decisionType!)).
+        map((examinant) => this.buildExaminantFormGroup(examinant)) ?? [
           this.buildExaminantFormGroup(),
         ],
       ),
@@ -56,6 +61,7 @@ export class StopPointWorkflowDetailFormGroupBuilder {
       mail: new FormControl(examinant?.mail, [Validators.required, AtlasCharsetsValidator.email]),
       judgementIcon: new FormControl(this.buildJudgementIcon(examinant?.judgement)),
       judgement: new FormControl(examinant?.judgement),
+      decisionType: new FormControl(examinant?.decisionType),
     });
   }
 

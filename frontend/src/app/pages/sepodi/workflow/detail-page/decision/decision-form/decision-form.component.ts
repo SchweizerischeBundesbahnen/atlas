@@ -13,4 +13,5 @@ export class DecisionFormComponent {
 
   @Input() form!: FormGroup<DecisionFormGroup>;
   @Input() hasOverride = false;
+  @Input() showJudgement = true;
 }

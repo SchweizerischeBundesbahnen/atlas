@@ -545,7 +545,7 @@
       "OPEN": "Anhörung einsehen",
       "START": "Anhörung starten",
       "ACCEPT": "Genehmigen",
-      "REJECT": "Anhörung Zurückweisen",
+      "REJECT": "Anhörung zurückweisen",
       "CANCEL": "Anhörung abbrechen",
       "SKIP": "Anhörung überspringen",
       "RESTART": "Anhörung neustarten",
@@ -608,7 +608,8 @@
       "EXAMINANT_MAIL_NOT_FOUND": "Die eingetragene E-Mail Adresse wurde unter den Empfängern nicht gefunden.",
       "PIN_CODE_INVALID": "Der eingetragene PIN-Code ist nicht korrekt.",
       "WRONG_CHANGING_STATUS": "Die angezeigten Daten wurden inzwischen bearbeitet. Bitte laden Sie ihren Browser neu (F5).",
-      "WORKFLOW_STATUS_MUST_BE_ADDED": "Workflow Status muss 'Erfasst' sein."
+      "WORKFLOW_STATUS_MUST_BE_ADDED": "Workflow Status muss 'Erfasst' sein.",
+      "NOT_IN_HEARING": "Die aktuelle Anhörung ist nicht mehr im Status 'In Anhörung'"
     },
     "DECISION": {
       "DIALOG_TITLE": "Antrag beantworten",
@@ -625,8 +626,8 @@
       "SEND": "Absenden",
       "ACCEPT": "Ja, ich stimme zu.",
       "DECLINE": "Nein, ich lehne ab. Die Eingabe der Begründung ist notwendig.",
-      "OVERRIDE_ACCEPT": "Ja. Dieser Entscheid wird mit \"ja\" angenommen.",
-      "OVERRIDE_DECLINE": "Nein. Dieser Entscheid wird als \"nein\" gewertet. Die Eingabe der Begründung ist notwendig."
+      "OVERRIDE_ACCEPT": "Dieser Entscheid wird als \"ja\" gewertet.",
+      "OVERRIDE_DECLINE": "Dieser Entscheid wird als \"nein\" gewertet."
     }
   },
   "TTH": {
