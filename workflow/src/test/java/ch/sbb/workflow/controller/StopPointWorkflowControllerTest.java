@@ -51,6 +51,7 @@ import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.OtpRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import ch.sbb.workflow.service.sepodi.SePoDiClientService;
+import ch.sbb.workflow.service.sepodi.StopPointWorkflowTransitionService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -374,7 +375,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
 
     boolean logFound = listAppender.list.stream()
         .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
-            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + StopPointWorkflowController.addWorkflow + "\"") &&
+            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + StopPointWorkflowTransitionService.addWorkflow + "\"") &&
             event.getFormattedMessage().contains("\"isCritical\":true"));
     assertThat(logFound).isFalse();
   }
@@ -653,7 +654,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
 
     boolean logFound = listAppender.list.stream()
         .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
-            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + StopPointWorkflowController.rejectWorkflow + "\"") &&
+            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + StopPointWorkflowTransitionService.rejectWorkflow + "\"") &&
             event.getFormattedMessage().contains("\"isCritical\":true"));
     assertThat(logFound).isFalse();
   }
@@ -717,7 +718,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
 
     boolean logFound = listAppender.list.stream()
         .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
-            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + StopPointWorkflowController.cancelWorkflow + "\"") &&
+            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + StopPointWorkflowTransitionService.cancelWorkflow + "\"") &&
             event.getFormattedMessage().contains("\"isCritical\":true"));
     assertThat(logFound).isFalse();
   }
