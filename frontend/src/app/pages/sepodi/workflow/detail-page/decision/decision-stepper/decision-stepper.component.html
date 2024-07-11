@@ -8,7 +8,7 @@
       <i class="bi bi-check2-circle"></i>
     </ng-template>
     <mat-step
-      [completed]="false"
+      [completed]="isStepOneCompl$ | async"
       [editable]="false"
       [label]="'WORKFLOW.DECISION.IDENTIFICATION' | translate"
     >
@@ -33,7 +33,7 @@
     </mat-step>
 
     <mat-step
-      [completed]="false"
+      [completed]="isStepTwoCompl$ | async"
       [editable]="false"
       [label]="'WORKFLOW.DECISION.PIN_CODE' | translate"
     >
@@ -52,7 +52,7 @@
           <li>
             {{ 'WORKFLOW.DECISION.CLICK_TO_RESEND_MAIL' | translate }}
             <button
-              class="color-primary-500"
+              [class]="resendMailActive ? 'color-primary-500' : ''"
               mat-button
               [disabled]="!resendMailActive"
               (click)="resendMail()"
@@ -72,7 +72,10 @@
       </form>
     </mat-step>
 
-    <mat-step [label]="'WORKFLOW.DECISION.DECISION' | translate">
+    <mat-step
+      [completed]="isStepThreeCompl$ | async"
+      [label]="'WORKFLOW.DECISION.DECISION' | translate"
+    >
       <decision-form [form]="decision"></decision-form>
 
       <div class="d-flex justify-content-center mt-4">
