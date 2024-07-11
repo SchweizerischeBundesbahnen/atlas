@@ -1,11 +1,12 @@
-import { ComponentFixture, fakeAsync,TestBed , tick} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { StopPointWorkflowDetailComponent } from './stop-point-workflow-detail.component';
 import { AppTestingModule } from '../../../../app.testing.module';
 import { FormModule } from '../../../../core/module/form.module';
 import { ActivatedRoute } from '@angular/router';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 import {
-  Country, DecisionType,
+  Country,
+  DecisionType,
   JudgementType,
   MeanOfTransport,
   ReadServicePointVersion,
@@ -240,8 +241,8 @@ describe('StopPointWorkflowDetailComponent', () => {
         id: 1,
         judgementIcon: '',
         judgement: JudgementType.Yes,
-      decisionType: DecisionType.Voted,
-    },
+        decisionType: DecisionType.Voted,
+      },
     ]);
     component.form.controls['ccEmails'].setValue(['test@atlas.ch']);
 
@@ -253,17 +254,19 @@ describe('StopPointWorkflowDetailComponent', () => {
       ccEmails: ['test@atlas.ch'],
       designationOfficial: 'Official Designation',
       workflowComment: 'Some comment',
-      examinants: [{
-        firstName: 'DIDOK',
-        lastName: 'MASTER',
-        personFunction: 'Chef',
-        mail: 'didok@chef.com',
-        organisation: 'SBB',
-        id: 1,
-        judgementIcon: "",
-        judgement: JudgementType.Yes,
-        decisionType: DecisionType.Voted,
-      }]
+      examinants: [
+        {
+          firstName: 'DIDOK',
+          lastName: 'MASTER',
+          personFunction: 'Chef',
+          mail: 'didok@chef.com',
+          organisation: 'SBB',
+          id: 1,
+          judgementIcon: '',
+          judgement: JudgementType.Yes,
+          decisionType: DecisionType.Voted,
+        },
+      ],
     });
     expect(notificationServiceSpy.success).toHaveBeenCalledWith(
       'WORKFLOW.NOTIFICATION.EDIT.SUCCESS',
