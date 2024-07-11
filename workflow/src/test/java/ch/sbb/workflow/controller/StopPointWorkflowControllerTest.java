@@ -990,7 +990,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(decisionByExaminantId.getFotJudgement()).isEqualTo(overrideDecisionModel.getFotJudgement());
   }
 
-  static ReadServicePointVersionModel getUpdateServicePointVersionModel(Status status) {
+  private static ReadServicePointVersionModel getUpdateServicePointVersionModel(Status status) {
     long versionId = 123456L;
     String sloid = "ch:1:sloid:1234";
     ServicePointGeolocationReadModel geolocationReadModel = ServicePointGeolocationReadModel.builder()

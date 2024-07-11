@@ -182,7 +182,6 @@ class StopPointWorkflowControllerVotingTest {
     assertThat(stopPointWorkflow.getExaminants().stream().filter(i -> i.getMail().equals(MAIL_ADDRESS)).findFirst().orElseThrow()
         .getJudgement()).isEqualTo(JudgementType.YES);
 
-
     boolean logFound = listAppender.list.stream()
         .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
             event.getFormattedMessage().contains("\"workflowType\":" + "\"" + LoggingAspect.workflowTypeVoteWorkflow + "\"") &&
