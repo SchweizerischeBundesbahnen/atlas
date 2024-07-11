@@ -132,9 +132,6 @@ class StopPointWorkflowServiceTest {
             .function("Centrocampista")
             .mail("test@test.com").build();
 
-    Set<Person> examinantSet = new HashSet<>();
-    examinantSet.add(person);
-
     StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
             .sloid("ch:1:sloid:8000")
             .sboid("ch:1:sboid:10")
@@ -142,7 +139,7 @@ class StopPointWorkflowServiceTest {
             .designationOfficial("Heimsiswil Zentrum")
             .versionId(1L)
             .localityName("Heimiswil")
-            .examinants(examinantSet)
+            .examinants(Set.of(person))
             .build();
 
     StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
@@ -157,13 +154,10 @@ class StopPointWorkflowServiceTest {
             .function("SchönesWetterHeute")
             .mail("test@test.com").build();
 
-    List<Person> examinantsEdited = new ArrayList<>();
-    examinantsEdited.add(personEdited);
-
     EditStopPointWorkflowModel workflowModel = EditStopPointWorkflowModel.builder()
             .workflowComment("New Comment")
             .designationOfficial("Heimsiswil Zentrum")
-            .examinants(examinantsEdited.stream().map(StopPointClientPersonMapper::toModel).toList())
+            .examinants(List.of(personEdited).stream().map(StopPointClientPersonMapper::toModel).toList())
             .build();
 
     workflowService.editWorkflow(id, workflowModel);
@@ -173,7 +167,7 @@ class StopPointWorkflowServiceTest {
 
     assertFalse(stopPointWorkflowInDb.getExaminants().isEmpty());
     assertThat(stopPointWorkflowInDb.getExaminants()).hasSize(1);
-    assertThat(stopPointWorkflowInDb.getExaminants().stream().findFirst().get().getId().equals(examinantId));
+    assertThat(stopPointWorkflowInDb.getExaminants()).extracting(examinant -> examinant.getId()).contains(examinantId);
   }
 
   @Test
