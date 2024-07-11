@@ -125,7 +125,6 @@ describe('AddStopPointWorkflowComponent', () => {
     firstExaminant.controls.mail.setValue('mail@sbb.ch');
 
     component.form.controls.workflowComment.setValue('YB isch wida Meista');
-    component.form.controls.designationOfficial.setValue('Meiiiista');
 
     component.addWorkflow();
 
