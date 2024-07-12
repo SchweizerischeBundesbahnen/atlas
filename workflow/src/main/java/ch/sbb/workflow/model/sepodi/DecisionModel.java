@@ -48,7 +48,7 @@ public class DecisionModel extends OtpVerificationModel {
   @Schema(description = "Organisation", example = "ZVV Zürcher Verkehrsverbund")
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotBlank
-  @Size(min = 1, max = AtlasFieldLengths.LENGTH_50)
+  @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
   private String organisation;
 
   @Schema(description = "Person Function", example = "Officer")
