@@ -152,7 +152,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
   }
 
   private enableForm(): void {
-    this.form?.enable();
+    this.form?.enable({ emitEvent: false });
     this.isFormEnabled$.next(true);
   }
 
