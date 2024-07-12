@@ -1,27 +1,21 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 import { FieldExample } from '../text-field/field-example';
-import { concat, Observable, of, Subscription } from 'rxjs';
+import { concat, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'atlas-text-list',
   templateUrl: './string-list.component.html',
 })
-export class StringListComponent implements OnInit, OnDestroy {
-  @Input() set formGroup(form: FormGroup) {
-    this._formGroup = form;
-    if (this.controlName) this.ngOnInit();
-  }
-  get formGroup() {
-    return this._formGroup!;
-  }
-  private _formGroup?: FormGroup;
-
-  @Input() controlName!: string;
+export class StringListComponent implements OnInit, OnChanges {
+  @Input() formGroup?: FormGroup;
+  @Input() formGroupEnabled?: boolean;
+  @Input() controlName?: string;
   @Input() maxItems = 10;
-  @Input() itemValidator: ValidatorFn[] = [];
-
+  @Input() set itemValidator(validators: ValidatorFn[]) {
+    this._inputCtrl.setValidators(validators);
+  }
   @Input() fieldLabel!: string;
   @Input() infoIconTitle!: string;
   @Input() infoIconLink!: string;
@@ -30,49 +24,31 @@ export class StringListComponent implements OnInit, OnDestroy {
   @Input() placeHolderText!: string;
 
   showPlaceHolder$: Observable<boolean> = of(false);
-  inputCtrlName?: string;
-  private _inputCtrl?: AbstractControl;
-  private _sub?: Subscription;
+  readonly inputCtrlName = 'input';
+  private _inputCtrl = new FormControl('');
+  readonly strListFormGroup = new FormGroup({
+    [this.inputCtrlName]: this._inputCtrl,
+  });
 
   ngOnInit() {
     if (!this.strListCtrl.value) throw 'initial value should be present for list';
-    this.inputCtrlName =
-      this.controlName.substring(this.controlName.lastIndexOf('.') + 1) + 'Input';
-    this._inputCtrl = new FormControl(
-      { value: '', disabled: this.formGroup.disabled },
-      this.itemValidator,
-    );
-    this.formGroup.setControl(this.inputCtrlName, this._inputCtrl);
-    this._sub?.unsubscribe();
-    this._sub = this.formGroup.statusChanges.subscribe((e) => {
-      if (e === 'VALID') {
-        if (this.strListCtrl.value.length === this.maxItems) {
-          this._inputCtrl?.disable({ emitEvent: false });
-        }
-        this.showPlaceHolder$ = concat(
-          of(this.strListCtrl.value.length === this.maxItems),
-          this.strListCtrl.valueChanges.pipe(
-            map((val) => {
-              if (val.length === this.maxItems) {
-                this._inputCtrl?.disable();
-                return true;
-              } else {
-                this._inputCtrl?.enable();
-                return false;
-              }
-            }),
-          ),
-        );
-      }
-    });
   }
 
-  ngOnDestroy() {
-    this._sub?.unsubscribe();
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.controlName?.firstChange && this.formGroup) {
+      this.ngOnInit();
+      if (this.formGroup.enabled) this._handleFormStateChange();
+    } else if (changes.formGroup && this.controlName) {
+      this.ngOnInit();
+      if (changes.formGroup.currentValue.enabled) this._handleFormStateChange();
+    } else if (changes.formGroupEnabled && this.controlName && this.formGroup) {
+      if (changes.formGroupEnabled.currentValue) this._handleFormStateChange();
+    }
   }
 
   get strListCtrl(): AbstractControl {
-    const ctrl = this.formGroup.get(this.controlName);
+    if (!this.controlName) throw 'string list control is not defined';
+    const ctrl = this.formGroup?.get(this.controlName);
     if (!ctrl) throw 'string list control is not defined';
     return ctrl;
   }
@@ -82,8 +58,9 @@ export class StringListComponent implements OnInit, OnDestroy {
     if (inputValue && this._inputCtrl?.valid) {
       if (!this.strListCtrl.value.includes(inputValue)) {
         this.strListCtrl.setValue([...this.strListCtrl.value, inputValue]);
+        this.formGroup!.markAsDirty();
       }
-      this._inputCtrl.setValue(undefined);
+      this._inputCtrl.setValue('');
     }
   }
 
@@ -92,5 +69,29 @@ export class StringListComponent implements OnInit, OnDestroy {
     strings.splice(index, 1);
     this.strListCtrl.setValue(strings);
     this.strListCtrl.markAsDirty();
+  }
+
+  private _handleFormStateChange() {
+    this.strListCtrl.value.length === this.maxItems
+      ? this._inputCtrl.disable()
+      : this._inputCtrl.enable();
+    this.showPlaceHolder$ = this._getShowPlaceHolderObservable();
+  }
+
+  private _getShowPlaceHolderObservable() {
+    return concat(
+      of(this.strListCtrl.value.length === this.maxItems),
+      this.strListCtrl.valueChanges.pipe(
+        map((val) => {
+          if (val.length === this.maxItems) {
+            this._inputCtrl?.disable();
+            return true;
+          } else {
+            this._inputCtrl?.enable();
+            return false;
+          }
+        }),
+      ),
+    );
   }
 }
