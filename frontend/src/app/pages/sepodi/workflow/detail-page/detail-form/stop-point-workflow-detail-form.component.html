@@ -54,9 +54,7 @@
           buttonStyleClass="bordered-btn px-2 py-1"
         >
           <ng-template #rightIcon>
-            <i
-              class="bi bi-x-lg"
-            ></i>
+            <i class="bi bi-x-lg"></i>
           </ng-template>
         </atlas-button>
       }
@@ -65,12 +63,14 @@
 
   <div class="row mb-3">
     <div class="col" data-cy="new-designation-official">
-      <div class="font-bold-base">{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.NEW_DESIGNATION_OFFICIAL' | translate }}</div>
-      @if (!currentWorkflow){
+      <div class="font-bold-base">
+        {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.NEW_DESIGNATION_OFFICIAL' | translate }}
+      </div>
+      @if (!currentWorkflow) {
         <div>{{ stopPoint.designationOfficial }}</div>
       }
 
-      @if (currentWorkflow){
+      @if (currentWorkflow) {
         <atlas-text-field [formGroup]="form" controlName="designationOfficial"></atlas-text-field>
       }
     </div>
@@ -148,8 +148,8 @@
         </div>
         <div class="col pe-2">{{ 'WORKFLOW.PERSON.FUNCTION' | translate }}</div>
         <div class="col required-indicator">{{ 'WORKFLOW.PERSON.MAIL' | translate }}</div>
-        @if (currentWorkflow?.status !== WorkflowStatus.Added && form.disabled){
-          <div class="decision-icon-col pe-2">{{ 'WORKFLOW.PERSON.JUDGEMENT'|translate }}</div>
+        @if (currentWorkflow?.status !== WorkflowStatus.Added && form.disabled) {
+          <div class="decision-icon-col pe-2">{{ 'WORKFLOW.PERSON.JUDGEMENT' | translate }}</div>
         }
         @if (form.enabled) {
           <div class="icon-button-col"></div>
@@ -190,9 +190,7 @@
                 buttonStyleClass="bordered-btn px-2 py-1"
               >
                 <ng-template #rightIcon>
-                  <i
-                    class="bi {{ examinant.controls.judgementIcon.value }}"
-                  ></i>
+                  <i class="bi {{ examinant.controls.judgementIcon.value }}"></i>
                 </ng-template>
               </atlas-button>
             </div>
@@ -230,6 +228,7 @@
 <div class="d-flex mt-5">
   <atlas-text-list
     [formGroup]="form"
+    [formGroupEnabled]="form.enabled"
     [itemValidator]="emailValidator"
     fieldLabel="SEPODI.SERVICE_POINTS.WORKFLOW.ADDITIONAL_MAIL_RECIPIENTS"
     infoIconTitle="SEPODI.SERVICE_POINTS.WORKFLOW.ADDITIONAL_MAIL_RECIPIENTS_INFO"
