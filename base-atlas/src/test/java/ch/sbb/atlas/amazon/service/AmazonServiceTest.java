@@ -1,13 +1,17 @@
 package ch.sbb.atlas.amazon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.amazon.config.AmazonConfigProps.AmazonBucketConfig;
+import ch.sbb.atlas.model.exception.FileNotFoundOnS3Exception;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -74,7 +78,7 @@ class AmazonServiceTest {
     amazonService.putFile(AmazonBucket.EXPORT, tempFile.toFile(), "dir");
     //then
     verify(amazonS3).putObject(any(PutObjectRequest.class));
-    verify(amazonS3).getUrl(Mockito.anyString(), Mockito.anyString());
+    verify(amazonS3).getUrl(anyString(), anyString());
   }
 
   @Test
@@ -89,7 +93,7 @@ class AmazonServiceTest {
     //then
     verify(fileService).zipFile(tempFile.toFile());
     verify(amazonS3).putObject(any(PutObjectRequest.class));
-    verify(amazonS3).getUrl(Mockito.anyString(), Mockito.anyString());
+    verify(amazonS3).getUrl(anyString(), anyString());
   }
 
   @Test
@@ -134,6 +138,16 @@ class AmazonServiceTest {
     assertThat(pulledFile).isNotNull();
     verify(amazonS3).getObject("testBucket", "dir/desiredFile.zip");
     Files.delete(pulledFile.toPath());
+  }
+
+  @Test
+  void shouldThrowFileNotFoundOnS3ExceptionOnPullFile() {
+    when(amazonS3.getObject(anyString(), anyString())).thenThrow(new AmazonS3Exception("The specified key does not exist."));
+
+    assertThatExceptionOfType(FileNotFoundOnS3Exception.class)
+        .isThrownBy(() -> amazonService.pullFile(AmazonBucket.EXPORT, "dir" + "/desiredFile.zip"))
+        .extracting(i -> i.getErrorResponse().getError())
+        .isEqualTo("File dir/desiredFile.zip not found on atlas amazon s3 bucket.");
   }
 
   @Test
