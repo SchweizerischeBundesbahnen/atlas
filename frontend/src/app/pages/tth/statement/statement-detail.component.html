@@ -189,6 +189,7 @@
             <div class="d-flex flex-column col-12">
               <atlas-text-list
                 [formGroup]="form"
+                [formGroupEnabled]="form.enabled"
                 [itemValidator]="emailValidator"
                 fieldLabel="TTH.STATEMENT.E_MAIL"
                 [required]="true"
