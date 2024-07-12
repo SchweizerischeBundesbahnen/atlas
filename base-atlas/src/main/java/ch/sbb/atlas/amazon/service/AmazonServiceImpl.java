@@ -2,6 +2,7 @@ package ch.sbb.atlas.amazon.service;
 
 import ch.sbb.atlas.amazon.config.AmazonConfigProps.AmazonBucketConfig;
 import ch.sbb.atlas.amazon.exception.FileException;
+import ch.sbb.atlas.model.exception.FileNotFoundOnS3Exception;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
@@ -100,8 +101,12 @@ public class AmazonServiceImpl implements AmazonService {
 
   @Override
   public S3Object pullS3Object(AmazonBucket bucket, String filePath) {
-    log.info("Pull file " + filePath + " from Amazon S3 Bucket.");
-    return getClient(bucket).getObject(getAmazonBucketConfig(bucket).getBucketName(), filePath);
+    log.info("Pull file {} from Amazon S3 Bucket.", filePath);
+    try {
+      return getClient(bucket).getObject(getAmazonBucketConfig(bucket).getBucketName(), filePath);
+    } catch (AmazonS3Exception amazonS3Exception) {
+      throw new FileNotFoundOnS3Exception(filePath);
+    }
   }
 
   @Override
