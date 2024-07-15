@@ -3,6 +3,7 @@ package ch.sbb.workflow.kafka;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -56,4 +57,14 @@ class StopPointWorkflowNotificationServiceTest {
     verify(builderNotificationService).buildWorkflowCanceledMail(any(), eq("cancel it"));
     verify(mailProducerService).produceMailNotification(any());
   }
+
+  @Test
+  void shouldSendRestartMailViaKafka() {
+    stopPointWorkflowNotificationService.sendRestartStopPointWorkflowMail(new StopPointWorkflow());
+
+    verify(builderNotificationService).buildWorkflowRestartedMail(any());
+    verify(builderNotificationService).buildWorkflowRestartedCCMail(any());
+    verify(mailProducerService, times(2)).produceMailNotification(any());
+  }
+
 }
