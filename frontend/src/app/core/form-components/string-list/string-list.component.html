@@ -1,16 +1,16 @@
 <div class="d-flex flex-column col-12">
-  @if (formGroup.enabled) {
+  @if (formGroup?.enabled) {
     <div class="d-flex flex-row col-12">
       <div class="d-flex flex-grow-1">
         <atlas-text-field
-          controlName="input"
+          [controlName]="inputCtrlName"
+          [formGroup]="strListFormGroup"
           [fieldLabel]="fieldLabel"
           [infoIconTitle]="infoIconTitle"
           [infoIconLink]="infoIconLink"
           [required]="required"
           [fieldExamples]="fieldExamples"
-          [formGroup]="_form"
-          [placeholder]="this.showPlaceHolder ? this.placeHolderText : ''"
+          [placeholder]="(showPlaceHolder$ | async) ? placeHolderText : ''"
           (keyup.enter)="addItem()"
         >
           <i
@@ -22,7 +22,10 @@
       </div>
     </div>
     <div class="d-flex">
-      <app-atlas-field-error [form]="formGroup" [controlName]="controlName"></app-atlas-field-error>
+      <app-atlas-field-error
+        [form]="formGroup!"
+        [controlName]="controlName!"
+      ></app-atlas-field-error>
     </div>
   } @else {
     <span [ngClass]="required ? 'required-indicator' : ''" class="font-bold-lg mb-1">{{
@@ -30,17 +33,17 @@
     }}</span>
   }
   <div class="d-flex flex-row">
-    @if (_strings.length === 0 && formGroup.disabled) {
+    @if (strListCtrl.value.length === 0 && formGroup?.disabled) {
       -
     }
-    <mat-chip-set [disabled]="formGroup.disabled">
+    <mat-chip-set [disabled]="formGroup?.disabled">
       <mat-chip
-        *ngFor="let value of _strings; let i = index"
+        *ngFor="let value of strListCtrl.value; let i = index"
         (removed)="removeItem(i)"
         class="font-bold-sm"
       >
         {{ value }}
-        <button matChipRemove *ngIf="formGroup.enabled">
+        <button matChipRemove *ngIf="formGroup?.enabled">
           <i class="bi bi-x-circle-fill"></i>
         </button>
       </mat-chip>
