@@ -100,11 +100,13 @@ class StopPointWorkflowBuilderNotificationServiceTest {
     //given
     StopPointWorkflow stopPointWorkflow = getStopPointWorkflow();
     //when
-    List<Map<String, Object>> result = notificationService.buildMailProperties(stopPointWorkflow, REJECT_WORKFLOW_SUBJECT);
+    List<Map<String, Object>> result = notificationService.buildMailProperties(stopPointWorkflow, REJECT_WORKFLOW_SUBJECT, "Old"
+        + " Bern");
     //then
     assertThat(result).hasSize(1);
     Map<String, Object> properties = result.getFirst();
-    assertThat(properties).hasSize(6).containsKeys("title", "designationOfficial", "sloid", "comment", "endDate", "url");
+    assertThat(properties).hasSize(7).containsKeys("title", "oldDesignationOfficial", "designationOfficial", "sloid", "comment",
+        "endDate", "url");
   }
 
   @Test
@@ -153,9 +155,10 @@ class StopPointWorkflowBuilderNotificationServiceTest {
   @Test
   void shouldBuildWorkflowRestartedMail() {
     //given
+    String oldDesignationOfficial = "Old Bern";
     StopPointWorkflow stopPointWorkflow = getStopPointWorkflow();
     //when
-    MailNotification result = notificationService.buildWorkflowRestartedMail(stopPointWorkflow);
+    MailNotification result = notificationService.buildWorkflowRestartedMail(stopPointWorkflow, oldDesignationOfficial);
     //then
     assertThat(result).isNotNull();
     assertThat(result.getMailType()).isEqualTo(STOP_POINT_WORKFLOW_RESTART_NOTIFICATION);
@@ -167,9 +170,10 @@ class StopPointWorkflowBuilderNotificationServiceTest {
   @Test
   void shouldBuildWorkflowRestartedCCMail() {
     //given
+    String oldDesignationOfficial = "Old Bern";
     StopPointWorkflow stopPointWorkflow = getStopPointWorkflow();
     //when
-    MailNotification result = notificationService.buildWorkflowRestartedCCMail(stopPointWorkflow);
+    MailNotification result = notificationService.buildWorkflowRestartedCCMail(stopPointWorkflow, oldDesignationOfficial);
     //then
     assertThat(result).isNotNull();
     assertThat(result.getMailType()).isEqualTo(STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION);
