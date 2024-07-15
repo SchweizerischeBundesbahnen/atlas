@@ -14,7 +14,6 @@ class MailTemplateConfigTest {
     //when
     assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(
         () -> getMailTemplateConfig(null));
-
   }
 
   @Test
@@ -87,6 +86,22 @@ class MailTemplateConfigTest {
     MailTemplateConfig result = getMailTemplateConfig(MailType.STOP_POINT_WORKFLOW_PINCODE_NOTIFICATION);
     //then
     assertThat(result).isEqualTo(MailTemplateConfig.STOP_POINT_WORKFLOW_PINCODE_NOTIFICATION_TEMPLATE);
+  }
+
+  @Test
+  void shouldReturnRestartStopPointWorkflowNotification() {
+    //when
+    MailTemplateConfig result = getMailTemplateConfig(MailType.STOP_POINT_WORKFLOW_RESTART_NOTIFICATION);
+    //then
+    assertThat(result).isEqualTo(MailTemplateConfig.STOP_POINT_WORKFLOW_RESTART_NOTIFICATION_TEMPLATE);
+  }
+
+  @Test
+  void shouldReturnRestartStopPointWorkflowCCNotification() {
+    //when
+    MailTemplateConfig result = getMailTemplateConfig(MailType.STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION);
+    //then
+    assertThat(result).isEqualTo(MailTemplateConfig.STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION_TEMPLATE);
   }
 
 }
