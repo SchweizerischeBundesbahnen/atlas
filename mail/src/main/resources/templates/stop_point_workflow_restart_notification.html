@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang='en' xmlns='http://www.w3.org/1999/xhtml' xmlns:th='http://www.thymeleaf.org'>
+<head>
+    <title th:text="${properties.get(0).get('title')}"></title>
+    <meta charset='UTF-8'>
+    <style>
+        body {
+            background-color: #fafafa;
+            font-family: 'IBM Plex Sans', sans-serif;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .logo-container {
+            width: 12%;
+            float: left;
+        }
+
+        .logo {
+            margin: 35px 35px 35px 40px;
+            top: 32px;
+            left: 47px;
+            width: 45px;
+            height: 45px;
+            background-size: 23px 23px;
+        }
+
+        .logo-title {
+            color: #06348b;
+            position: absolute;
+            top: 83px;
+            left: 47px;
+            width: 45px;
+            height: 20px;
+            line-height: 20px;
+            font-size: large;
+            font-weight: bold;
+        }
+
+        .header-title {
+            font-size: large;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header-container {
+            width: 100%;
+            height: 100%;
+            float: left;
+            text-align: justify;
+        }
+
+        .ski-color {
+            color: #06348b
+        }
+
+        .content-container {
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+
+        .header-right {
+            float: left;
+            width: 79%;
+            padding-top: 132px;
+            font-weight: bold;
+            text-align: center;
+            display: inline-block;
+        }
+
+        a:link {
+            text-decoration: none;
+        }
+
+        a:visited {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        a:active {
+            text-decoration: underline;
+        }
+
+        .mb-1 {
+            margin-bottom: 48px;
+        }
+
+        .mail-container {
+            padding-bottom: 30px;
+        }
+
+        hr {
+            height: 2px;
+            border-width: 0;
+            color: gray;
+            background-color: gray;
+        }
+    </style>
+</head>
+<body>
+<div class="mail-container">
+    <div class='header-container'>
+        <div class='logo-container'>
+            <div class='logo'>
+                <img src="logo-atlas.jpeg" th:src="'cid:' + ${logo}" th:width='45'/>
+                <div class='logo-title'>
+                    atlas
+                </div>
+            </div>
+        </div>
+        <div class='header-right mb-1'>
+            <span class='header-title' th:text="${properties.get(0).get('title')}"></span>
+        </div>
+    </div>
+    <div class='content-container'>
+        <div>
+            <i>Pour la version française voir ci-dessous. / Per la versione in lingua italiana vedi sotto.</i>
+            <br><br>
+            <hr>
+            <div>
+                <br><span>Sehr geehrte Damen und Herren</span><br><br>
+                <span>Der Stationsname aus dem ursprünglichen Antrag für die Umbenennung/Neueinführung der Haltestelle
+                    <b>[[${properties.get(0).get('oldDesignationOfficial')}]] SLOID [[${properties.get(0).get('sloid')}]]</b>
+                    wurde
+                    durch das Bundesamt für Verkehr (BAV) in
+                    <b>[[${properties.get(0).get('designationOfficial')}]]</b>
+                    geändert. Die ursprüngliche Anhörung wurde beendet und mit dem neuen Stationsnamen eine neue Anhörung
+                    gestartet mit folgender Begründung:<br><br>
+                    [[${properties.get(0).get('newWorkflowComment')}]]<br><br>
+                    Bitte beantworten Sie die neue Anhörung bis zum <b>[[${properties.get(0).get('endDate')}]]</b> wie folgt:
+                </span>
+                <ol>
+                    <li>Aufrufen der Anhörung mit folgendem Link:
+                        <a th:href="${properties.get(0).get('url')}">[[${properties.get(0).get('url')}]]</a></li>
+                    <li>Entscheidung bezüglich des Namens der Haltestelle treffen</li>
+                    <li>Klicken Sie auf <b>Entscheiden</b></li>
+                    <li>Geben Sie anschliessend die Mail-Adresse an, auf welche Sie diese Einladung erhalten haben</li>
+                    <li>Sie erhalten ein neues Mail mit dem PIN-Code für die Abstimmung</li>
+                </ol>
+                <span>Bitte beantworten Sie die Anhörung in jedem Fall. Fehlende Antworten werden nach Ablauf der Frist als
+                    Einverständnis gewertet. </span><br><br>
+                <span>Weitere Informationen finden Sie unter
+                    <a href="https://www.öv-info.ch/de">https://www.öv-info.ch/de</a>
+                    in der Beschreibung oder im Benutzerhandbuch.
+                </span>
+                <div>
+                    <br>Freundliche Grüsse<br><br>
+                    Fachstelle atlas<br>
+                    <b>SKI - Systemaufgaben Kundeninformation</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>SBB AG</b><br>
+                    Infrastruktur, Fahrplan und Betrieb, Kundeninformation<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <br><span>Mesdames et Messieurs</span><br><br>
+                <span>Le nom de la station de la demande initiale pour le changement de nom/l'introduction d'une nouvelle station
+                    <b>[[${properties.get(0).get('oldDesignationOfficial')}]] SLOID [[${properties.get(0).get('sloid')}]]</b>
+                    a été modifié par l'Office fédéral des transports (OFT) en
+                    <b>[[${properties.get(0).get('designationOfficial')}]]</b>.
+                    L'audition initiale a pris fin et une nouvelle audition a été lancée avec le nouveau nom de la station,
+                    avec la justification suivante:<br><br>
+                    [[${properties.get(0).get('newWorkflowComment')}]]<br><br>
+                    Veuillez répondre à la nouvelle consultation jusqu'au <b>[[${properties.get(0).get('endDate')}]]</b> comme suit:
+                </span>
+                <ol>
+                    <li>appeler l'audition en utilisant le lien suivant:
+                        <a th:href="${properties.get(0).get('url')}">[[${properties.get(0).get('url')}]]</a></li>
+                    <li>prendre une décision concernant le nom de l'arrêt</li>
+                    <li>cliquer sur <b>Décider</b></li>
+                    <li>indiquez ensuite l'adresse e-mail sur laquelle vous avez reçu cette invitation</li>
+                    <li>vous recevez un nouveau mail avec le code PIN pour le vote</li>
+                </ol>
+                <span>Veuillez répondre à l'audition dans tous les cas.
+                    L'absence de réponse sera considérée comme un accord à l'expiration du délai.</span><br><br>
+                <span>Vous trouverez de plus amples informations sur
+                    <a href="https://www.tp-info.ch/fr">https://www.tp-info.ch/fr</a>
+                    dans la description ou dans le manuel d'utilisation.
+                </span>
+                <div>
+                    <br>Meilleures Salutations<br><br>
+                    Service spécialisé atlas<br>
+                    <b>SKI - Systemaufgaben Kundeninformation</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>CFF SA</b><br>
+                    Incrastructure – Horaire et Exploitation, Information à la clientèle<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
+
+            <hr>
+            <div>
+                <br><span>Gentile signore o signora </span><br><br>
+                <span>Il nome della stazione, che figurava nella domanda originaria di rinominazione/reintroduzione della fermata
+                    <b>[[${properties.get(0).get('oldDesignationOfficial')}]] SLOID [[${properties.get(0).get('sloid')}]]</b>,
+                    è stato modificato in
+                    <b>[[${properties.get(0).get('designationOfficial')}]]</b>
+                     dall'Ufficio federale dei trasporti (UFT). L’audizione originaria è stata chiusa e ne è stata avviata una
+                    nuova con il nuovo nome della stazione, con la seguente motivazione:<br><br>
+                    [[${properties.get(0).get('newWorkflowComment')}]]<br><br>
+                    Si prega di rispondere alla nuova audizione entro il <b>[[${properties.get(0).get('endDate')}]]</b> come segue:
+                </span>
+                <ol>
+                    <li>richiamare la consultazione con il seguente link:
+                        <a th:href="${properties.get(0).get('url')}">[[${properties.get(0).get('url')}]]</a></li>
+                    <li>prendere una decisione in merito al nome della fermata</li>
+                    <li>cliccare su <b>Decidere</b></li>
+                    <li>inserire poi l'indirizzo e-mail al quale si è ricevuto l'invito</li>
+                    <li>riceverete una nuova e-mail con il codice PIN per la votazione</li>
+                </ol>
+                <span>Si prega di rispondere alla consultazione in ogni caso. Le risposte mancanti saranno considerate come
+                    un consenso successivo alla scadenza.</span><br><br>
+                <span>Ulteriori informazioni sono disponibili sul sito
+                    <a href="https://www.tp-info.ch/it">https://www.tp-info.ch/it</a>
+                    nella descrizione o nel manuale d'uso.
+                </span>
+                <div>
+                    <br>Cordiali saluti<br><br>
+                    Servizio specializzato atlas<br>
+                    <b>SKI - Systemaufgaben Kundeninformation</b><br>
+                    <h1 class="ski-color">SKI</h1>
+                    <b>FFS SA</b><br>
+                    Infrastrutture – Orario ed Esercizio, Informazione della clientela<br>
+                    Wylerstrasse 123/125, 3000 Bern<br><br>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
