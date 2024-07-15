@@ -146,4 +146,28 @@ public class StopPointWorkflowBuilderNotificationService {
         .templateProperties(templateProperties)
         .build();
   }
+
+  public MailNotification buildWorkflowRestartedMail(StopPointWorkflow stopPointWorkflow) {
+    List<String> examinantMails = stopPointWorkflow.getExaminants().stream().map(Person::getMail).toList();
+    return MailNotification.builder()
+        .from(from)
+        .mailType(MailType.STOP_POINT_WORKFLOW_RESTART_NOTIFICATION)
+        .subject(RESTART_WORKFLOW_SUBJECT)
+        .to(examinantMails)
+        .templateProperties(buildMailProperties(stopPointWorkflow, RESTART_WORKFLOW_SUBJECT))
+        .build();
+  }
+
+  public MailNotification buildWorkflowRestartedCCMail(StopPointWorkflow stopPointWorkflow) {
+    List<String> ccMails = stopPointWorkflow.getCcEmails() != null ? stopPointWorkflow.getCcEmails() : new ArrayList<>();
+    ccMails.add(stopPointWorkflow.getApplicantMail());
+    return MailNotification.builder()
+        .from(from)
+        .mailType(MailType.STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION)
+        .subject(RESTART_WORKFLOW_SUBJECT)
+        .to(ccMails)
+        .templateProperties(buildMailProperties(stopPointWorkflow, RESTART_WORKFLOW_SUBJECT))
+        .build();
+  }
+
 }

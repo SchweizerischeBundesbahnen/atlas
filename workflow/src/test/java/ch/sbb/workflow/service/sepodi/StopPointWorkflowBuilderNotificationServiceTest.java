@@ -4,10 +4,13 @@ import static ch.sbb.atlas.kafka.model.mail.MailType.REJECT_STOP_POINT_WORKFLOW_
 import static ch.sbb.atlas.kafka.model.mail.MailType.START_STOP_POINT_WORKFLOW_CC_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.START_STOP_POINT_WORKFLOW_EXAMINANT_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_WORKFLOW_PINCODE_NOTIFICATION;
+import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION;
+import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_WORKFLOW_RESTART_NOTIFICATION;
 import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.APPROVED_WORKFLOW_SUBJECT;
 import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.CANCEL_WORKFLOW_SUBJECT;
 import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.PINCODE_SUBJECT;
 import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.REJECT_WORKFLOW_SUBJECT;
+import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.RESTART_WORKFLOW_SUBJECT;
 import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.START_WORKFLOW_SUBJECT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -145,6 +148,34 @@ class StopPointWorkflowBuilderNotificationServiceTest {
     assertThat(result.getSubject()).isEqualTo(CANCEL_WORKFLOW_SUBJECT);
     assertThat(result.getTo()).hasSize(3);
     assertThat(result.getCc()).hasSize(2);
+  }
+
+  @Test
+  void shouldBuildWorkflowRestartedMail() {
+    //given
+    StopPointWorkflow stopPointWorkflow = getStopPointWorkflow();
+    //when
+    MailNotification result = notificationService.buildWorkflowRestartedMail(stopPointWorkflow);
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getMailType()).isEqualTo(STOP_POINT_WORKFLOW_RESTART_NOTIFICATION);
+    assertThat(result.getSubject()).isEqualTo(RESTART_WORKFLOW_SUBJECT);
+    assertThat(result.getTo()).hasSize(2).contains("p@a.ch","t@a.ch");
+    assertThat(result.getCc()).isNull();
+  }
+
+  @Test
+  void shouldBuildWorkflowRestartedCCMail() {
+    //given
+    StopPointWorkflow stopPointWorkflow = getStopPointWorkflow();
+    //when
+    MailNotification result = notificationService.buildWorkflowRestartedCCMail(stopPointWorkflow);
+    //then
+    assertThat(result).isNotNull();
+    assertThat(result.getMailType()).isEqualTo(STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION);
+    assertThat(result.getSubject()).isEqualTo(RESTART_WORKFLOW_SUBJECT);
+    assertThat(result.getTo()).hasSize(3).contains("a@b.ch","b@c.dh","app@lica.ma");
+    assertThat(result.getCc()).isNull();
   }
 
   private static StopPointWorkflow getStopPointWorkflow() {
