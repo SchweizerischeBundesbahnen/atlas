@@ -52,7 +52,6 @@ class EmailServiceIntegrationTest {
     assertThat(mail.getSubject()).isEqualTo(current.getSubject());
     assertThat(mail.getTo()).contains(current.getAllRecipients()[0].toString());
     assertThat(valueOf(current.getContent()).contains(mail.getContent())).isTrue();
-
   }
 
   @Test
@@ -68,7 +67,6 @@ class EmailServiceIntegrationTest {
     //when
     assertThatExceptionOfType(MailSendException.class).isThrownBy(
         () -> mailService.sendSimpleMail(mail));
-
   }
 
   @Test
@@ -84,13 +82,11 @@ class EmailServiceIntegrationTest {
     //when
     assertThatExceptionOfType(MailSendException.class).isThrownBy(
         () -> mailService.sendSimpleMail(mail));
-
   }
 
   @Test
    void shouldSendEmailWithTUHtmlTemplate() throws MessagingException, IOException {
     //given
-
     List<Map<String, Object>> templateProperties = new ArrayList<>();
     Map<String, Object> objectMap1 = new HashMap<>();
     objectMap1.put("number", "#0001");
@@ -127,7 +123,6 @@ class EmailServiceIntegrationTest {
     assertThat(current.getAllRecipients()).hasSize(1);
     assertThat(mail.getTo()).contains(current.getAllRecipients()[0].toString());
     assertThat(valueOf(current.getContent())).doesNotContain(mail.getContent());
-
   }
 
   @Test
@@ -142,7 +137,6 @@ class EmailServiceIntegrationTest {
     //when
     assertThatExceptionOfType(MailSendException.class).isThrownBy(
         () -> mailService.sendSimpleMail(mail));
-
   }
 
   @Test
@@ -158,7 +152,6 @@ class EmailServiceIntegrationTest {
     //when
     assertThatExceptionOfType(MailSendException.class).isThrownBy(
         () -> mailService.sendSimpleMail(mail));
-
   }
 
   @Test
@@ -174,7 +167,6 @@ class EmailServiceIntegrationTest {
     //when
     assertThatExceptionOfType(MailSendException.class).isThrownBy(
         () -> mailService.sendSimpleMail(mail));
-
   }
 
   @Test
@@ -200,4 +192,5 @@ class EmailServiceIntegrationTest {
         .content("Ciao Ragazzi.")
         .build();
   }
+
 }
