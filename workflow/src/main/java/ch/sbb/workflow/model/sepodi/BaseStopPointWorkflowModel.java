@@ -35,8 +35,9 @@ public abstract class BaseStopPointWorkflowModel {
   @NotNull
   private String sloid;
 
+  @Size(max = AtlasFieldLengths.LENGTH_10)
   @Schema(description = "List of cc emails for status of hearing")
-  private List<String> ccEmails;
+  private List<@Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS) @Size(max = AtlasFieldLengths.LENGTH_100) String> ccEmails;
 
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @NotNull

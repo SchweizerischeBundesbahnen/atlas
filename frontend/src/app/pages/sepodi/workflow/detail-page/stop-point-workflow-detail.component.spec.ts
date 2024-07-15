@@ -5,7 +5,8 @@ import { FormModule } from '../../../../core/module/form.module';
 import { ActivatedRoute } from '@angular/router';
 import { BERN_WYLEREGG } from '../../../../../test/data/service-point';
 import {
-  Country, DecisionType,
+  Country,
+  DecisionType,
   JudgementType,
   MeanOfTransport,
   ReadServicePointVersion,
@@ -230,36 +231,42 @@ describe('StopPointWorkflowDetailComponent', () => {
     component.toggleEdit();
     component.form.controls['designationOfficial'].setValue('Official Designation');
     component.form.controls['workflowComment'].setValue('Some comment');
-    component.form.controls['examinants'].setValue([{
-      firstName: 'DIDOK',
-      lastName: 'MASTER',
-      personFunction: 'Chef',
-      mail: 'didok@chef.com',
-      organisation: 'SBB',
-      id: 1,
-      judgementIcon: "",
-      judgement: JudgementType.Yes,
-      decisionType: DecisionType.Voted,
-    }]);
-
-    spWfServiceSpy.editStopPointWorkflow.and.returnValue(of({ id: 1 }));
-
-    component.save();
-
-    expect(spWfServiceSpy.editStopPointWorkflow).toHaveBeenCalledWith(component.workflow.id, {
-      designationOfficial: 'Official Designation',
-      workflowComment: 'Some comment',
-      examinants: [{
+    component.form.controls['examinants'].setValue([
+      {
         firstName: 'DIDOK',
         lastName: 'MASTER',
         personFunction: 'Chef',
         mail: 'didok@chef.com',
         organisation: 'SBB',
         id: 1,
-        judgementIcon: "",
+        judgementIcon: '',
         judgement: JudgementType.Yes,
         decisionType: DecisionType.Voted,
-      }]
+      },
+    ]);
+    component.form.controls['ccEmails'].setValue(['test@atlas.ch']);
+
+    spWfServiceSpy.editStopPointWorkflow.and.returnValue(of({ id: 1 }));
+
+    component.save();
+
+    expect(spWfServiceSpy.editStopPointWorkflow).toHaveBeenCalledWith(component.workflow.id, {
+      ccEmails: ['test@atlas.ch'],
+      designationOfficial: 'Official Designation',
+      workflowComment: 'Some comment',
+      examinants: [
+        {
+          firstName: 'DIDOK',
+          lastName: 'MASTER',
+          personFunction: 'Chef',
+          mail: 'didok@chef.com',
+          organisation: 'SBB',
+          id: 1,
+          judgementIcon: '',
+          judgement: JudgementType.Yes,
+          decisionType: DecisionType.Voted,
+        },
+      ],
     });
     expect(notificationServiceSpy.success).toHaveBeenCalledWith(
       'WORKFLOW.NOTIFICATION.EDIT.SUCCESS',
