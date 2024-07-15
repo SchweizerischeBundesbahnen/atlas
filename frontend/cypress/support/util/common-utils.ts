@@ -204,7 +204,7 @@ export default class CommonUtils {
   static chooseMatOptionByText(value: string | undefined) {
     cy.get('mat-option > span')
       .should('be.visible')
-      .should(($options) => {
+      .then(($options) => {
         for (const option of $options) {
           if (value) {
             if (option.innerText === value) {

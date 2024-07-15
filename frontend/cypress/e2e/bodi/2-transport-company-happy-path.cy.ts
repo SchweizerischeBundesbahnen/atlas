@@ -29,7 +29,7 @@ describe('Transport Company', { testIsolation: false }, () => {
     CommonUtils.assertTableHeader(0, 0, 'TU-Nummer');
     CommonUtils.assertTableHeader(0, 1, 'Initialen');
     CommonUtils.assertTableHeader(0, 2, 'Handelsregistername');
-    CommonUtils.assertTableHeader(0, 3, 'Amtliche Bezeichnung');
+    CommonUtils.assertTableHeader(0, 3, 'Namenszusatz');
     CommonUtils.assertTableHeader(0, 4, 'Unternehmens-ID (UID)');
     CommonUtils.assertTableHeader(0, 5, 'Status');
   });
@@ -38,7 +38,7 @@ describe('Transport Company', { testIsolation: false }, () => {
     CommonUtils.typeSearchInput(
       '/business-organisation-directory/v1/transport-companies?**',
       DataCy.TABLE_FILTER_CHIP_INPUT,
-      'Bern'
+      'Bern',
     );
     cy.wait(500);
     cy.get('table tbody')
@@ -59,7 +59,7 @@ describe('Transport Company', { testIsolation: false }, () => {
 
     CommonUtils.typeAndSelectItemFromDropDown(
       `${DataCy.BUSINESS_ORGANISATION} input`,
-      BodiDependentUtils.BO_DESCRIPTION
+      BodiDependentUtils.BO_DESCRIPTION,
     );
     CommonUtils.getClearType(DataCy.VALID_FROM, '01.01.2020', true);
     CommonUtils.getClearType(DataCy.VALID_TO, '01.01.2021', true);
