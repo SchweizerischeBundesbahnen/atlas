@@ -60,10 +60,11 @@ class StopPointWorkflowNotificationServiceTest {
 
   @Test
   void shouldSendRestartMailViaKafka() {
-    stopPointWorkflowNotificationService.sendRestartStopPointWorkflowMail(new StopPointWorkflow());
+    String oldDesignationOfficial = "Old Bern";
+    stopPointWorkflowNotificationService.sendRestartStopPointWorkflowMail(new StopPointWorkflow(), oldDesignationOfficial);
 
-    verify(builderNotificationService).buildWorkflowRestartedMail(any());
-    verify(builderNotificationService).buildWorkflowRestartedCCMail(any());
+    verify(builderNotificationService).buildWorkflowRestartedMail(any(), anyString());
+    verify(builderNotificationService).buildWorkflowRestartedCCMail(any(), anyString());
     verify(mailProducerService, times(2)).produceMailNotification(any());
   }
 
