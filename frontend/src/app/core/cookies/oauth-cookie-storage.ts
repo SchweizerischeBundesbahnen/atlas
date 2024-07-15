@@ -18,6 +18,7 @@ export class OAuthCookieStorage extends OAuthStorage {
     this.cookieService.set(key, "", {
       sameSite: 'Strict',
       secure: true,
+      path: '/',
       expires: -1
     });
   }
@@ -25,7 +26,8 @@ export class OAuthCookieStorage extends OAuthStorage {
   setItem(key: string, data: string): void {
     this.cookieService.set(key, data, {
       sameSite: 'Strict',
-      secure: true
+      secure: true,
+      path: '/',
     });
   }
 
