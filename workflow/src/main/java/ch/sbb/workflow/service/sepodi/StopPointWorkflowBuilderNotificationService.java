@@ -149,27 +149,31 @@ public class StopPointWorkflowBuilderNotificationService {
         .build();
   }
 
-  public MailNotification buildWorkflowRestartedMail(StopPointWorkflow stopPointWorkflow, String oldDesignationOfficial) {
-    List<String> examinantMails = stopPointWorkflow.getExaminants().stream().map(Person::getMail).toList();
+  public MailNotification buildWorkflowRestartedMail(StopPointWorkflow existingStopPointWorkflow,
+      StopPointWorkflow newStopPointWorkflow) {
+    List<String> examinantMails = newStopPointWorkflow.getExaminants().stream().map(Person::getMail).toList();
     return MailNotification.builder()
         .from(from)
         .mailType(MailType.STOP_POINT_WORKFLOW_RESTART_NOTIFICATION)
         .subject(RESTART_WORKFLOW_SUBJECT)
         .to(examinantMails)
-        .templateProperties(buildMailProperties(stopPointWorkflow, RESTART_WORKFLOW_SUBJECT, oldDesignationOfficial))
+        .templateProperties(buildMailProperties(newStopPointWorkflow, RESTART_WORKFLOW_SUBJECT,
+            existingStopPointWorkflow.getDesignationOfficial()))
         .build();
   }
 
-  public MailNotification buildWorkflowRestartedCCMail(StopPointWorkflow stopPointWorkflow, String oldDesignationOfficial) {
+  public MailNotification buildWorkflowRestartedCCMail(StopPointWorkflow existingStopPointWorkflow,
+      StopPointWorkflow newStopPointWorkflow) {
     List<String> ccMails = new ArrayList<>();
-    ccMails.add(stopPointWorkflow.getApplicantMail());
-    ccMails.addAll(stopPointWorkflow.getCcEmails());
+    ccMails.add(existingStopPointWorkflow.getApplicantMail());
+    ccMails.addAll(existingStopPointWorkflow.getCcEmails());
     return MailNotification.builder()
         .from(from)
         .mailType(MailType.STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION)
         .subject(RESTART_WORKFLOW_SUBJECT)
         .to(ccMails)
-        .templateProperties(buildMailProperties(stopPointWorkflow, RESTART_WORKFLOW_SUBJECT, oldDesignationOfficial))
+        .templateProperties(buildMailProperties(newStopPointWorkflow, RESTART_WORKFLOW_SUBJECT,
+            existingStopPointWorkflow.getDesignationOfficial()))
         .build();
   }
 

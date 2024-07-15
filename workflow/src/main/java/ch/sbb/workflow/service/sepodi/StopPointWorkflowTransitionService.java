@@ -143,7 +143,7 @@ public class StopPointWorkflowTransitionService {
     stopPointWorkflow.setStatus(REJECTED);
     stopPointWorkflow.setFollowUpWorkflow(newStopPointWorkflow);
     stopPointWorkflowService.save(stopPointWorkflow);
-    notificationService.sendRestartStopPointWorkflowMail(newStopPointWorkflow, stopPointWorkflow.getDesignationOfficial());
+    notificationService.sendRestartStopPointWorkflowMail(stopPointWorkflow, newStopPointWorkflow);
     return newStopPointWorkflow;
   }
 
