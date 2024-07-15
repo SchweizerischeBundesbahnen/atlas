@@ -52,7 +52,7 @@ public class StopPointWorkflowBuilderNotificationService {
         .mailType(MailType.START_STOP_POINT_WORKFLOW_EXAMINANT_NOTIFICATION)
         .subject(START_WORKFLOW_SUBJECT)
         .to(examinantMails)
-        .templateProperties(buildMailProperties(stopPointWorkflow, START_WORKFLOW_SUBJECT))
+        .templateProperties(buildMailProperties(stopPointWorkflow, START_WORKFLOW_SUBJECT, null))
         .build();
   }
 
@@ -65,7 +65,7 @@ public class StopPointWorkflowBuilderNotificationService {
         .mailType(MailType.START_STOP_POINT_WORKFLOW_CC_NOTIFICATION)
         .subject(START_WORKFLOW_SUBJECT)
         .to(ccMails)
-        .templateProperties(buildMailProperties(stopPointWorkflow, START_WORKFLOW_SUBJECT))
+        .templateProperties(buildMailProperties(stopPointWorkflow, START_WORKFLOW_SUBJECT, null))
         .build();
   }
 
@@ -73,7 +73,7 @@ public class StopPointWorkflowBuilderNotificationService {
     List<String> ccMails = new ArrayList<>();
     ccMails.addAll(stopPointWorkflow.getCcEmails());
     ccMails.addAll(stopPointWorkflow.getExaminants().stream().map(Person::getMail).toList());
-    List<Map<String, Object>> templateProperties = buildMailProperties(stopPointWorkflow, REJECT_WORKFLOW_SUBJECT);
+    List<Map<String, Object>> templateProperties = buildMailProperties(stopPointWorkflow, REJECT_WORKFLOW_SUBJECT, null);
     templateProperties.getFirst().put("comment", rejectComment);
     return MailNotification.builder()
         .from(from)
@@ -85,10 +85,12 @@ public class StopPointWorkflowBuilderNotificationService {
         .build();
   }
 
-  List<Map<String, Object>> buildMailProperties(StopPointWorkflow stopPointWorkflow, String title) {
+  List<Map<String, Object>> buildMailProperties(StopPointWorkflow stopPointWorkflow, String title,
+      String oldDesignationOfficial) {
     List<Map<String, Object>> mailProperties = new ArrayList<>();
     Map<String, Object> mailContentProperty = new HashMap<>();
     mailContentProperty.put("title", title);
+    mailContentProperty.put("oldDesignationOfficial", oldDesignationOfficial);
     mailContentProperty.put("designationOfficial", stopPointWorkflow.getDesignationOfficial());
     mailContentProperty.put("sloid", stopPointWorkflow.getSloid());
     mailContentProperty.put("comment", stopPointWorkflow.getWorkflowComment());
@@ -105,7 +107,7 @@ public class StopPointWorkflowBuilderNotificationService {
   }
 
   public MailNotification buildPinCodeMail(StopPointWorkflow stopPointWorkflow, String examinantMail, String pinCode) {
-    List<Map<String, Object>> templateProperties = buildMailProperties(stopPointWorkflow, PINCODE_SUBJECT);
+    List<Map<String, Object>> templateProperties = buildMailProperties(stopPointWorkflow, PINCODE_SUBJECT, null);
     templateProperties.getFirst().put("pincode", pinCode);
     return MailNotification.builder()
         .from(from)
@@ -126,7 +128,7 @@ public class StopPointWorkflowBuilderNotificationService {
         .subject(APPROVED_WORKFLOW_SUBJECT)
         .to(recipients)
         .cc(stopPointWorkflow.getCcEmails())
-        .templateProperties(buildMailProperties(stopPointWorkflow, APPROVED_WORKFLOW_SUBJECT))
+        .templateProperties(buildMailProperties(stopPointWorkflow, APPROVED_WORKFLOW_SUBJECT, null))
         .build();
   }
 
@@ -135,7 +137,7 @@ public class StopPointWorkflowBuilderNotificationService {
     recipients.add(stopPointWorkflow.getApplicantMail());
     recipients.addAll(stopPointWorkflow.getExaminants().stream().map(Person::getMail).toList());
 
-    List<Map<String, Object>> templateProperties = buildMailProperties(stopPointWorkflow, CANCEL_WORKFLOW_SUBJECT);
+    List<Map<String, Object>> templateProperties = buildMailProperties(stopPointWorkflow, CANCEL_WORKFLOW_SUBJECT, null);
     templateProperties.getFirst().put("comment", cancelComment);
     return MailNotification.builder()
         .from(from)
@@ -147,18 +149,18 @@ public class StopPointWorkflowBuilderNotificationService {
         .build();
   }
 
-  public MailNotification buildWorkflowRestartedMail(StopPointWorkflow stopPointWorkflow) {
+  public MailNotification buildWorkflowRestartedMail(StopPointWorkflow stopPointWorkflow, String oldDesignationOfficial) {
     List<String> examinantMails = stopPointWorkflow.getExaminants().stream().map(Person::getMail).toList();
     return MailNotification.builder()
         .from(from)
         .mailType(MailType.STOP_POINT_WORKFLOW_RESTART_NOTIFICATION)
         .subject(RESTART_WORKFLOW_SUBJECT)
         .to(examinantMails)
-        .templateProperties(buildMailProperties(stopPointWorkflow, RESTART_WORKFLOW_SUBJECT))
+        .templateProperties(buildMailProperties(stopPointWorkflow, RESTART_WORKFLOW_SUBJECT, oldDesignationOfficial))
         .build();
   }
 
-  public MailNotification buildWorkflowRestartedCCMail(StopPointWorkflow stopPointWorkflow) {
+  public MailNotification buildWorkflowRestartedCCMail(StopPointWorkflow stopPointWorkflow, String oldDesignationOfficial) {
     List<String> ccMails = new ArrayList<>();
     ccMails.add(stopPointWorkflow.getApplicantMail());
     ccMails.addAll(stopPointWorkflow.getCcEmails());
@@ -167,7 +169,7 @@ public class StopPointWorkflowBuilderNotificationService {
         .mailType(MailType.STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION)
         .subject(RESTART_WORKFLOW_SUBJECT)
         .to(ccMails)
-        .templateProperties(buildMailProperties(stopPointWorkflow, RESTART_WORKFLOW_SUBJECT))
+        .templateProperties(buildMailProperties(stopPointWorkflow, RESTART_WORKFLOW_SUBJECT, oldDesignationOfficial))
         .build();
   }
 
