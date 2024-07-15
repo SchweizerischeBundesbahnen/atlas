@@ -14,7 +14,7 @@
     "build:ngssc": "ng run atlas-frontend:ngsscbuild:production",
     "e2e": "ng e2e",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run --config specPattern=cypress/e2e/tth/1-tth-happy-path.cy.ts",
+    "cypress:run": "cypress run",
     "cypress:open-e2e-release": "cypress open --config specPattern=cypress/release",
     "cypress:run-e2e-release": "cypress run --config specPattern=cypress/release",
     "generate-api": "openapi-generator-cli generate -g typescript-angular -i ../apim-configuration/src/main/resources/local/spec.yaml -o src/app/api --type-mappings=date=Date --additional-properties apiModulePrefix=Atlas"
