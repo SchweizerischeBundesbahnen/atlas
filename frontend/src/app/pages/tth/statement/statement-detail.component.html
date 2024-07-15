@@ -6,7 +6,11 @@
       <div class="statement-form">
         <ng-container [formGroup]="form">
           <h1 class="font-bold-4xl mt-5">
-            {{ (statement ? ('TTH.STATEMENT.STATEMENT' | translate) + ' ' + statement.id : 'TTH.STATEMENT.NEW' | translate)}}
+            {{
+              statement
+                ? ('TTH.STATEMENT.STATEMENT' | translate) + ' ' + statement.id
+                : ('TTH.STATEMENT.NEW' | translate)
+            }}
           </h1>
 
           <app-user-detail-info
@@ -15,14 +19,19 @@
             [short]="true"
           ></app-user-detail-info>
 
-          <p *ngIf="statement?.oldSwissCanton">{{ 'TTH.STATEMENT.STATEMENT_TRANSFER_COUNTRY' | translate:{ oldSwissCanton: (statement?.oldSwissCanton! | displayCanton) } }}</p>
+          <p *ngIf="statement?.oldSwissCanton">
+            {{
+              'TTH.STATEMENT.STATEMENT_TRANSFER_COUNTRY'
+                | translate: { oldSwissCanton: (statement?.oldSwissCanton! | displayCanton) }
+            }}
+          </p>
 
           <div *ngIf="statement && statement.comment" class="d-flex flex-row col-12 mb-5">
             <div class="d-flex flex-column col-12">
-              <br/>
+              <br />
               <span class="font-bold-lg">
-              {{ 'TTH.STATEMENT.COMMENT' | translate }}
-            </span>
+                {{ 'TTH.STATEMENT.COMMENT' | translate }}
+              </span>
               <span>{{ statement.comment }}</span>
             </div>
           </div>
@@ -96,15 +105,15 @@
             <div class="d-flex flex-column col-12">
               <atlas-text-field
                 [fieldExamples]="[
-                { label: 'FORM.FOR_EXAMPLE', translate: true },
-                { label: 'Wiesenbach', translate: false },
-                { label: ' |', translate: false },
-                {
-                  label: 'FORM.MAX_CHARS',
-                  translate: true,
-                  arg: { key: 'numberOfChars', value: '255' }
-                }
-              ]"
+                  { label: 'FORM.FOR_EXAMPLE', translate: true },
+                  { label: 'Wiesenbach', translate: false },
+                  { label: ' |', translate: false },
+                  {
+                    label: 'FORM.MAX_CHARS',
+                    translate: true,
+                    arg: { key: 'numberOfChars', value: '255' },
+                  },
+                ]"
                 [formGroup]="form"
                 controlName="stopPlace"
                 fieldLabel="TTH.STATEMENT.STOP_POINT"
@@ -178,19 +187,29 @@
 
           <div class="d-flex flex-row col-12 mb-4">
             <div class="d-flex flex-column col-12">
-              <atlas-text-list [formGroup]="form"
-                               [itemValidator]="emailValidator"
-                               fieldLabel="TTH.STATEMENT.E_MAIL"
-                               [required]="true"
-                               placeHolderText="TTH.STATEMENT.E_MAIL_ITEMS_LIMIT_REACHED"
-                               [fieldExamples]="[
-                                { label: 'FORM.MAX_ITEMS', translate: true, arg: { key: 'numberOfItems', value: '10' } },
-                                { label: ' | ' },
-                                { label: 'TTH.STATEMENT.E_MAIL_TEXT' }
-                              ]"
-                               controlName="statementSender.emails">
-
-                <atlas-clipboard [value]="this.emails" [showMe]="this.form.disabled" class="ps-2 pt-2"></atlas-clipboard>
+              <atlas-text-list
+                [formGroup]="form"
+                [formGroupEnabled]="form.enabled"
+                [itemValidator]="emailValidator"
+                fieldLabel="TTH.STATEMENT.E_MAIL"
+                [required]="true"
+                placeHolderText="TTH.STATEMENT.E_MAIL_ITEMS_LIMIT_REACHED"
+                [fieldExamples]="[
+                  {
+                    label: 'FORM.MAX_ITEMS',
+                    translate: true,
+                    arg: { key: 'numberOfItems', value: '10' },
+                  },
+                  { label: ' | ' },
+                  { label: 'TTH.STATEMENT.E_MAIL_TEXT' },
+                ]"
+                controlName="statementSender.emails"
+              >
+                <atlas-clipboard
+                  [value]="this.emails"
+                  [showMe]="this.form.disabled"
+                  class="ps-2 pt-2"
+                ></atlas-clipboard>
               </atlas-text-list>
             </div>
           </div>
@@ -209,7 +228,7 @@
             </div>
           </div>
 
-          <div *ngIf="form.value.documents.length > 0" class="mb-3">
+          <div *ngIf="form.value.documents && form.value.documents.length > 0" class="mb-3">
             <app-atlas-label-field fieldLabel="TTH.STATEMENT.ATTACHMENTS"></app-atlas-label-field>
             <ng-container *ngFor="let document of form.value.documents">
               <atlas-file
@@ -223,11 +242,13 @@
           </div>
 
           <ng-container *ngIf="form.enabled">
-            <div class="font-regular-sm mb-2">{{ 'TTH.STATEMENT.ATTACHMENT_INFO' | translate }}</div>
+            <div class="font-regular-sm mb-2">
+              {{ 'TTH.STATEMENT.ATTACHMENT_INFO' | translate }}
+            </div>
             <atlas-file-upload
               [(uploadedFiles)]="uploadedFiles"
               [alreadySavedFileNames]="alreadySavedDocuments"
-              [maxFileCount]="3 - form.value.documents.length"
+              [maxFileCount]="3 - (form.value.documents?.length ?? 0)"
               [maxFileSize]="20 * 1024 * 1024"
               acceptedFileExtension=".pdf"
               acceptedFileType="application/pdf"
@@ -300,9 +321,7 @@
         wrapperStyleClass="me-3"
       >
         <ng-template #rightIcon>
-          <b
-            class='bi bi-chevron-left'
-          ></b>
+          <b class="bi bi-chevron-left"></b>
         </ng-template>
       </atlas-button>
       <atlas-button
@@ -333,9 +352,7 @@
         buttonType="whiteFooterNonEdit"
       >
         <ng-template #rightIcon>
-          <b
-            class='bi bi-chevron-right'
-          ></b>
+          <b class="bi bi-chevron-right"></b>
         </ng-template>
       </atlas-button>
       <atlas-button
