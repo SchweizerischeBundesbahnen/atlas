@@ -836,7 +836,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(workflows.get(0).getStatus()).isEqualTo(WorkflowStatus.REJECTED);
     assertThat(workflows.get(0).getFollowUpWorkflow()).isNotNull();
     assertThat(workflows.get(1).getStatus()).isEqualTo(WorkflowStatus.ADDED);
-    verify(notificationService).sendRestartStopPointWorkflowMail(any(StopPointWorkflow.class));
+    verify(notificationService).sendRestartStopPointWorkflowMail(any(StopPointWorkflow.class), anyString());
   }
 
   @Test
