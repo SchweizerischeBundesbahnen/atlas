@@ -56,8 +56,9 @@ public class StopPointWorkflowBuilderNotificationService {
   }
 
   public MailNotification buildWorkflowStartedCCMail(StopPointWorkflow stopPointWorkflow) {
-    List<String> ccMails = stopPointWorkflow.getCcEmails() != null ? stopPointWorkflow.getCcEmails() : new ArrayList<>();
+    List<String> ccMails = new ArrayList<>();
     ccMails.add(stopPointWorkflow.getApplicantMail());
+    ccMails.addAll(stopPointWorkflow.getCcEmails());
     return MailNotification.builder()
         .from(from)
         .mailType(MailType.START_STOP_POINT_WORKFLOW_CC_NOTIFICATION)
@@ -102,7 +103,6 @@ public class StopPointWorkflowBuilderNotificationService {
     return AtlasFrontendBaseUrl.getUrl(activeProfile) + WORKFLOW_URL + stopPointWorkflow.getId();
   }
 
-
   public MailNotification buildPinCodeMail(StopPointWorkflow stopPointWorkflow, String examinantMail, String pinCode) {
     List<Map<String, Object>> templateProperties = buildMailProperties(stopPointWorkflow, PINCODE_SUBJECT);
     templateProperties.getFirst().put("pincode", pinCode);
@@ -116,7 +116,8 @@ public class StopPointWorkflowBuilderNotificationService {
   }
 
   public MailNotification buildWorkflowApprovedMail(StopPointWorkflow stopPointWorkflow) {
-    List<String> recipients = new ArrayList<>(List.of(stopPointWorkflow.getApplicantMail()));
+    List<String> recipients = new ArrayList<>();
+    recipients.add(stopPointWorkflow.getApplicantMail());
     recipients.addAll(stopPointWorkflow.getExaminants().stream().map(Person::getMail).toList());
     return MailNotification.builder()
         .from(from)
@@ -129,8 +130,10 @@ public class StopPointWorkflowBuilderNotificationService {
   }
 
   public MailNotification buildWorkflowCanceledMail(StopPointWorkflow stopPointWorkflow, String cancelComment) {
-    List<String> recipients = new ArrayList<>(List.of(stopPointWorkflow.getApplicantMail()));
+    List<String> recipients = new ArrayList<>();
+    recipients.add(stopPointWorkflow.getApplicantMail());
     recipients.addAll(stopPointWorkflow.getExaminants().stream().map(Person::getMail).toList());
+
     List<Map<String, Object>> templateProperties = buildMailProperties(stopPointWorkflow, CANCEL_WORKFLOW_SUBJECT);
     templateProperties.getFirst().put("comment", cancelComment);
     return MailNotification.builder()
