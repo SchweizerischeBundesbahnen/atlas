@@ -20,7 +20,8 @@ import org.springframework.stereotype.Component;
 public class Examinants {
 
   private static String PROD_PROFILE = "prod";
-  private static String NON_PROD_EMAIL = "TechSupport-ATLAS@sbb.ch";
+  private static String NON_PROD_EMAIL_CANTON = "TechSupport-ATLAS@sbb.ch";
+  private static String NON_PROD_EMAIL_ATLAS = "testuser-atlas@sbb.ch";
 
   @Value("${spring.profiles.active:local}")
   @Setter
@@ -45,7 +46,7 @@ public class Examinants {
         .personFunction(examinantByCanton.getFunction())
         .firstName(examinantByCanton.getFirstname())
         .lastName(examinantByCanton.getLastname())
-        .mail(getEmailByEnv(examinantByCanton.getEmail()))
+        .mail(PROD_PROFILE.equals(activeProfile) ? examinantByCanton.getEmail() : NON_PROD_EMAIL_CANTON)
         .organisation(examinantByCanton.getOrganisation())
         .build();
   }
@@ -56,12 +57,8 @@ public class Examinants {
         .firstName(specialistOffice.getFirstname())
         .lastName(specialistOffice.getLastname())
         .organisation(specialistOffice.getOrganisation())
-        .mail(getEmailByEnv(specialistOffice.getEmail()))
+        .mail(PROD_PROFILE.equals(activeProfile) ? specialistOffice.getEmail() : NON_PROD_EMAIL_ATLAS)
         .build();
-  }
-
-  private String getEmailByEnv(String mail) {
-    return PROD_PROFILE.equals(activeProfile) ? mail : NON_PROD_EMAIL;
   }
 
   Canton getExaminantByCanton(SwissCanton canton) {
@@ -84,6 +81,7 @@ public class Examinants {
   @Data
   @Builder
   private static class SpecialistOffice {
+
     private String lastname;
     private String firstname;
     private String organisation;
