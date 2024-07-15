@@ -155,10 +155,11 @@ class StopPointWorkflowBuilderNotificationServiceTest {
   @Test
   void shouldBuildWorkflowRestartedMail() {
     //given
-    String oldDesignationOfficial = "Old Bern";
-    StopPointWorkflow stopPointWorkflow = getStopPointWorkflow();
+    StopPointWorkflow existingStopPointWorkflow = getStopPointWorkflow();
+    StopPointWorkflow newStopPointWorkflow = getStopPointWorkflow();
+    newStopPointWorkflow.setDesignationOfficial("Bern 1");
     //when
-    MailNotification result = notificationService.buildWorkflowRestartedMail(stopPointWorkflow, oldDesignationOfficial);
+    MailNotification result = notificationService.buildWorkflowRestartedMail(existingStopPointWorkflow, newStopPointWorkflow);
     //then
     assertThat(result).isNotNull();
     assertThat(result.getMailType()).isEqualTo(STOP_POINT_WORKFLOW_RESTART_NOTIFICATION);
@@ -170,10 +171,11 @@ class StopPointWorkflowBuilderNotificationServiceTest {
   @Test
   void shouldBuildWorkflowRestartedCCMail() {
     //given
-    String oldDesignationOfficial = "Old Bern";
-    StopPointWorkflow stopPointWorkflow = getStopPointWorkflow();
+    StopPointWorkflow existingStopPointWorkflow = getStopPointWorkflow();
+    StopPointWorkflow newStopPointWorkflow = getStopPointWorkflow();
+    newStopPointWorkflow.setDesignationOfficial("Bern 1");
     //when
-    MailNotification result = notificationService.buildWorkflowRestartedCCMail(stopPointWorkflow, oldDesignationOfficial);
+    MailNotification result = notificationService.buildWorkflowRestartedCCMail(existingStopPointWorkflow, newStopPointWorkflow);
     //then
     assertThat(result).isNotNull();
     assertThat(result.getMailType()).isEqualTo(STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION);
