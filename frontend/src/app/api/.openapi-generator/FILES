@@ -92,8 +92,6 @@ model/geolocation.ts
 model/geolocationCreate.ts
 model/hearingStatus.ts
 model/infoOpportunityAttributeType.ts
-model/inlineObject.ts
-model/inlineObject1.ts
 model/inlineObject10.ts
 model/inlineObject11.ts
 model/inlineObject12.ts
@@ -186,6 +184,7 @@ model/timetableHearingStatement.ts
 model/timetableHearingStatementAlternating.ts
 model/timetableHearingStatementDocument.ts
 model/timetableHearingStatementResponsibleTransportCompany.ts
+model/timetableHearingStatementSender.ts
 model/timetableHearingStatementSenderV2.ts
 model/timetableHearingStatementV2.ts
 model/timetableHearingYear.ts
