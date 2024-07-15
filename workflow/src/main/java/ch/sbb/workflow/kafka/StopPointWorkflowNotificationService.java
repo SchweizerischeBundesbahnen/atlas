@@ -17,6 +17,7 @@ public class StopPointWorkflowNotificationService {
         MailNotification startedExaminantMailNotification =
             builderNotificationService.buildWorkflowStartedExaminantMail(stopPointWorkflow);
         mailProducerService.produceMailNotification(startedExaminantMailNotification);
+
         MailNotification buildWorkflowStartedCCMailNotification =
             builderNotificationService.buildWorkflowStartedCCMail(stopPointWorkflow);
         mailProducerService.produceMailNotification(buildWorkflowStartedCCMailNotification);
