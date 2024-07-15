@@ -50,7 +50,7 @@ class ExaminantsTest {
 
     //then
     assertThat(result).isNotNull();
-    assertThat(result.getMail()).isEqualTo("TechSupport-ATLAS@sbb.ch");
+    assertThat(result.getMail()).isEqualTo("testuser-atlas@sbb.ch");
   }
 
   @Test
@@ -73,7 +73,7 @@ class ExaminantsTest {
     assertThat(result)
         .hasSize(2)
         .map(StopPointClientPersonModel::getMail)
-        .contains("TechSupport-ATLAS@sbb.ch", "TechSupport-ATLAS@sbb.ch");
+        .containsExactlyInAnyOrder("testuser-atlas@sbb.ch", "TechSupport-ATLAS@sbb.ch");
   }
 
 }
