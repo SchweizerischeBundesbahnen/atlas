@@ -43,12 +43,12 @@ public class StopPointWorkflowNotificationService {
         mailProducerService.produceMailNotification(mailNotification);
     }
 
-    public void sendRestartStopPointWorkflowMail(StopPointWorkflow stopPointWorkflow) {
+    public void sendRestartStopPointWorkflowMail(StopPointWorkflow stopPointWorkflow, String oldDesignationOfficial) {
         MailNotification restartedMailNotification =
-            builderNotificationService.buildWorkflowRestartedMail(stopPointWorkflow);
+            builderNotificationService.buildWorkflowRestartedMail(stopPointWorkflow, oldDesignationOfficial);
         mailProducerService.produceMailNotification(restartedMailNotification);
         MailNotification restartedCCMailNotification =
-            builderNotificationService.buildWorkflowRestartedCCMail(stopPointWorkflow);
+            builderNotificationService.buildWorkflowRestartedCCMail(stopPointWorkflow, oldDesignationOfficial);
         mailProducerService.produceMailNotification(restartedCCMailNotification);
     }
 
