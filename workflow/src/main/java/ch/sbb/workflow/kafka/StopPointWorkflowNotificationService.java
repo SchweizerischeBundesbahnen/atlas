@@ -42,4 +42,14 @@ public class StopPointWorkflowNotificationService {
         MailNotification mailNotification = builderNotificationService.buildWorkflowCanceledMail(workflow, cancelComment);
         mailProducerService.produceMailNotification(mailNotification);
     }
+
+    public void sendRestartStopPointWorkflowMail(StopPointWorkflow stopPointWorkflow) {
+        MailNotification restartedMailNotification =
+            builderNotificationService.buildWorkflowRestartedMail(stopPointWorkflow);
+        mailProducerService.produceMailNotification(restartedMailNotification);
+        MailNotification restartedCCMailNotification =
+            builderNotificationService.buildWorkflowRestartedCCMail(stopPointWorkflow);
+        mailProducerService.produceMailNotification(restartedCCMailNotification);
+    }
+
 }
