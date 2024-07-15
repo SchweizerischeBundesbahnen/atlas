@@ -159,8 +159,9 @@ public class StopPointWorkflowBuilderNotificationService {
   }
 
   public MailNotification buildWorkflowRestartedCCMail(StopPointWorkflow stopPointWorkflow) {
-    List<String> ccMails = stopPointWorkflow.getCcEmails() != null ? stopPointWorkflow.getCcEmails() : new ArrayList<>();
+    List<String> ccMails = new ArrayList<>();
     ccMails.add(stopPointWorkflow.getApplicantMail());
+    ccMails.addAll(stopPointWorkflow.getCcEmails());
     return MailNotification.builder()
         .from(from)
         .mailType(MailType.STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION)
