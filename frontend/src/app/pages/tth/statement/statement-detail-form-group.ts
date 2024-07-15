@@ -1,5 +1,9 @@
-import {FormArray, FormControl, FormGroup} from '@angular/forms';
-import {StatementStatus, SwissCanton, TimetableHearingStatementResponsibleTransportCompany,} from '../../../api';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import {
+  StatementStatus,
+  SwissCanton,
+  TimetableHearingStatementResponsibleTransportCompany,
+} from '../../../api';
 
 export interface StatementDetailFormGroup {
   id: FormControl<number | null | undefined>;
@@ -28,5 +32,5 @@ export interface StatementSenderFormGroup {
   zip: FormControl<number | null | undefined>;
   city: FormControl<string | null | undefined>;
   street: FormControl<string | null | undefined>;
-  emails: FormControl<Set<string> | null | undefined>;
+  emails: FormControl<Array<string> | null | undefined>;
 }
