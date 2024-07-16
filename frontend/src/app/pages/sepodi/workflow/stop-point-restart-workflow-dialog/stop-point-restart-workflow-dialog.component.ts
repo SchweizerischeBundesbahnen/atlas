@@ -4,14 +4,10 @@ import {
   StopPointRestartWorkflowFormGroup,
   StopPointRestartWorkflowFormGroupBuilder
 } from "./stop-point-restart-workflow-form-group";
-import {
-  StopPointRejectWorkflowFormGroupBuilder
-} from "../stop-point-reject-workflow-dialog/stop-point-reject-workflow-form-group";
 import {DetailHelperService} from "../../../../core/detail/detail-helper.service";
 import {MatDialogRef} from "@angular/material/dialog";
 import {ValidationService} from "../../../../core/validation/validation.service";
-import {StopPointRejectWorkflow, StopPointRestartWorkflow, StopPointWorkflowService} from "../../../../api";
-import {Pages} from "../../../pages";
+import { StopPointWorkflowService} from "../../../../api";
 import {Router} from "@angular/router";
 import {NotificationService} from "../../../../core/notification/notification.service";
 
@@ -53,6 +49,7 @@ export class StopPointRestartWorkflowDialogComponent implements OnInit {
         StopPointRestartWorkflowFormGroupBuilder.buildStopPointRestartWorkflow(this.formGroup);
       this.formGroup.disable();
       //this.doRestart(stopPointRestartWorkflow)
+      console.log(stopPointRestartWorkflow);
     }
   }
 
