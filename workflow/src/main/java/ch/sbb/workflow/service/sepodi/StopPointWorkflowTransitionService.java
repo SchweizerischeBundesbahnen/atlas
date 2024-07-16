@@ -41,9 +41,6 @@ public class StopPointWorkflowTransitionService {
 
   private static final String EXCEPTION_HEARING_MSG = "Workflow status must be HEARING!!!(REPLACE ME WITH A CUSTOM EXCEPTION)";
   private static final int WORKFLOW_DURATION_IN_DAYS = 31;
-  public static final String cancelWorkflow = "CANCEL_WORKFLOW";
-  public static final String rejectWorkflow = "REJECT_WORKFLOW";
-  public static final String addWorkflow = "ADD_WORKFLOW";
 
   private final DecisionService decisionService;
   private final SePoDiClientService sePoDiClientService;
@@ -54,7 +51,7 @@ public class StopPointWorkflowTransitionService {
   /**
    * Authorization for this method is delegated to ServicePointService#update()
    */
-  @MethodLogged(workflowType = addWorkflow, critical = true)
+  @MethodLogged(workflowType = LoggingAspect.ADD_WORKFLOW)
   public StopPointWorkflow addWorkflow(StopPointAddWorkflowModel stopPointAddWorkflowModel) {
     stopPointWorkflowService.checkHasWorkflowAdded(stopPointAddWorkflowModel.getVersionId());
     ReadServicePointVersionModel servicePointVersionModel = sePoDiClientService.updateStopPointStatusToInReview(
@@ -76,7 +73,7 @@ public class StopPointWorkflowTransitionService {
     return workflow;
   }
 
-  @MethodLogged(workflowType = rejectWorkflow, critical = true)
+  @MethodLogged(workflowType = LoggingAspect.REJECT_WORKFLOW)
   public StopPointWorkflow rejectWorkflow(Long id, StopPointRejectWorkflowModel rejectWorkflowModel) {
     StopPointWorkflow stopPointWorkflow = stopPointWorkflowService.findStopPointWorkflow(id);
     StopPointWorkflowStatusTransitionDecider.validateWorkflowStatusTransition(stopPointWorkflow.getStatus(), REJECTED);
@@ -90,7 +87,7 @@ public class StopPointWorkflowTransitionService {
     return stopPointWorkflow;
   }
 
-  @MethodLogged(workflowType = cancelWorkflow, critical = true)
+  @MethodLogged(workflowType = LoggingAspect.CANCEL_WORKFLOW)
   public StopPointWorkflow cancelWorkflow(Long id, StopPointRejectWorkflowModel stopPointCancelWorkflowModel) {
     StopPointWorkflow stopPointWorkflow = stopPointWorkflowService.findStopPointWorkflow(id);
     if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
@@ -163,7 +160,7 @@ public class StopPointWorkflowTransitionService {
     return StopPointWorkflowMapper.addStopPointWorkflowToEntity(workflowStartModel, servicePointVersionModel, personModels);
   }
 
-  @MethodLogged(workflowType = LoggingAspect.WORKFLOW_TYPE_VOTE_WORKFLOW, critical = true)
+  @MethodLogged(workflowType = LoggingAspect.WORKFLOW_TYPE_VOTE_WORKFLOW)
   public void progressWorkflowWithNewDecision(Long workflowId) {
     StopPointWorkflow workflow = stopPointWorkflowService.findStopPointWorkflow(workflowId);
     StopPointWorkflowProgressDecider stopPointWorkflowProgressDecider = buildProgressDecider(workflow);
