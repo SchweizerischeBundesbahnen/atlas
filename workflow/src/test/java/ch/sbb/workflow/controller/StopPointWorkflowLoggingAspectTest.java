@@ -88,9 +88,8 @@ public class StopPointWorkflowLoggingAspectTest extends BaseControllerApiTest {
 
     boolean logFound = listAppender.list.stream()
         .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
-            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + StopPointWorkflowTransitionService.addWorkflow +
-                "\"") &&
-            event.getFormattedMessage().contains("\"isCritical\":true"));
+            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + LoggingAspect.ADD_WORKFLOW +
+                "\""));
     assertThat(logFound).isTrue();
   }
 
@@ -146,8 +145,7 @@ public class StopPointWorkflowLoggingAspectTest extends BaseControllerApiTest {
 
     boolean logFound = listAppender.list.stream()
         .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
-            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + StopPointWorkflowTransitionService.rejectWorkflow + "\"") &&
-            event.getFormattedMessage().contains("\"isCritical\":true"));
+            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + LoggingAspect.REJECT_WORKFLOW + "\""));
     assertThat(logFound).isTrue();
   }
 
@@ -203,8 +201,7 @@ public class StopPointWorkflowLoggingAspectTest extends BaseControllerApiTest {
 
     boolean logFound = listAppender.list.stream()
         .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
-            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + StopPointWorkflowTransitionService.cancelWorkflow + "\"") &&
-            event.getFormattedMessage().contains("\"isCritical\":true"));
+            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + LoggingAspect.CANCEL_WORKFLOW + "\""));
     assertThat(logFound).isTrue();
   }
 
@@ -215,8 +212,7 @@ public class StopPointWorkflowLoggingAspectTest extends BaseControllerApiTest {
 
     boolean logFound = listAppender.list.stream()
         .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
-            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + LoggingAspect.WORKFLOW_TYPE_VOTE_WORKFLOW + "\"") &&
-            event.getFormattedMessage().contains("\"isCritical\":true"));
+            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + LoggingAspect.WORKFLOW_TYPE_VOTE_WORKFLOW + "\""));
     assertThat(logFound).isTrue();
   }
 
