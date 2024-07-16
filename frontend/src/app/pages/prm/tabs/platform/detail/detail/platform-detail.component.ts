@@ -18,6 +18,7 @@ import {DateRange} from "../../../../../../core/versioning/date-range";
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
 import {ValidityService} from "../../../../../sepodi/validity/validity.service";
 import {PermissionService} from "../../../../../../core/auth/permission/permission.service";
+import {catchError, EMPTY} from "rxjs";
 
 @Component({
   selector: 'app-platforms',
@@ -153,15 +154,24 @@ export class PlatformDetailComponent implements OnInit, DetailFormComponent, Det
   }
 
   private create(platformVersion: PlatformVersion) {
-    this.personWithReducedMobilityService.createPlatform(platformVersion).subscribe(() => {
-      this.notificationService.success('PRM.PLATFORMS.NOTIFICATION.ADD_SUCCESS');
-      this.reloadPage();
-    });
+    this.personWithReducedMobilityService.createPlatform(platformVersion)
+      .pipe(catchError(() => {
+        this.ngOnInit();
+        return EMPTY;
+      }))
+      .subscribe(() => {
+        this.notificationService.success('PRM.PLATFORMS.NOTIFICATION.ADD_SUCCESS');
+        this.reloadPage();
+      });
   }
 
   update(platformVersion: PlatformVersion) {
     this.personWithReducedMobilityService
       .updatePlatform(this.selectedVersion.id!, platformVersion)
+      .pipe(catchError(() => {
+        this.ngOnInit();
+        return EMPTY;
+      }))
       .subscribe(() => {
         this.notificationService.success('PRM.PLATFORMS.NOTIFICATION.EDIT_SUCCESS');
         this.reloadPage();

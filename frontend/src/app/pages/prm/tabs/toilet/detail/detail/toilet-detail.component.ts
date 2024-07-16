@@ -14,6 +14,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {NotificationService} from "../../../../../../core/notification/notification.service";
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
 import {ValidityService} from "../../../../../sepodi/validity/validity.service";
+import {catchError, EMPTY} from "rxjs";
 
 @Component({
   selector: 'app-toilet-detail',
@@ -120,6 +121,10 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent, Detai
   private create(toiletVersion: ToiletVersion) {
     this.personWithReducedMobilityService
       .createToiletVersion(toiletVersion)
+      .pipe(catchError(() => {
+        this.ngOnInit();
+        return EMPTY;
+      }))
       .subscribe((createdVersion) => {
         this.notificationService.success('PRM.TOILETS.NOTIFICATION.ADD_SUCCESS');
         this.router
@@ -133,6 +138,10 @@ export class ToiletDetailComponent implements OnInit, DetailFormComponent, Detai
   update(toiletVersion: ToiletVersion) {
     this.personWithReducedMobilityService
       .updateToiletVersion(this.selectedVersion.id!, toiletVersion)
+      .pipe(catchError(() => {
+        this.ngOnInit();
+        return EMPTY;
+      }))
       .subscribe(() => {
         this.notificationService.success('PRM.TOILETS.NOTIFICATION.EDIT_SUCCESS');
         this.router

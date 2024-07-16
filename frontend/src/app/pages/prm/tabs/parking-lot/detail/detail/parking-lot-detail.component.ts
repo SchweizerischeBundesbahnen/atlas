@@ -14,6 +14,7 @@ import {ParkingLotFormGroup, ParkingLotFormGroupBuilder} from "../form/parking-l
 import {DateRange} from "../../../../../../core/versioning/date-range";
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
 import {ValidityService} from "../../../../../sepodi/validity/validity.service";
+import {catchError, EMPTY} from "rxjs";
 
 @Component({
   selector: 'app-parking-lot-detail',
@@ -119,6 +120,10 @@ export class ParkingLotDetailComponent implements OnInit, DetailFormComponent, D
   private create(parkingLotVersion: ParkingLotVersion) {
     this.personWithReducedMobilityService
       .createParkingLot(parkingLotVersion)
+      .pipe(catchError(() => {
+        this.ngOnInit();
+        return EMPTY;
+      }))
       .subscribe((createdVersion) => {
         this.notificationService.success('PRM.PARKING_LOTS.NOTIFICATION.ADD_SUCCESS');
         this.router
@@ -132,6 +137,10 @@ export class ParkingLotDetailComponent implements OnInit, DetailFormComponent, D
   update(parkingLotVersion: ParkingLotVersion) {
     this.personWithReducedMobilityService
       .updateParkingLot(this.selectedVersion.id!, parkingLotVersion)
+      .pipe(catchError(() => {
+        this.ngOnInit();
+        return EMPTY;
+      }))
       .subscribe(() => {
         this.notificationService.success('PRM.PARKING_LOTS.NOTIFICATION.EDIT_SUCCESS');
         this.router

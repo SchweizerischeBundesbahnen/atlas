@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Data, Router} from '@angular/router';
-import {BehaviorSubject, Observable, of, take} from 'rxjs';
+import {BehaviorSubject, catchError, EMPTY, Observable, of, take} from 'rxjs';
 import {FormGroup} from '@angular/forms';
 import {VersionsHandlingService} from '../../../../../core/versioning/versions-handling.service';
 import {Pages} from '../../../../pages';
@@ -196,6 +196,10 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   doUpdateStopPoint(writableStopPoint: StopPointVersion) {
     this.personWithReducedMobilityService
       .updateStopPoint(this.selectedVersion.id!, writableStopPoint)
+      .pipe(catchError(() => {
+        this.ngOnInit();
+        return EMPTY;
+      }))
       .subscribe(() => {
         this.notificationService.success('PRM.STOP_POINTS.NOTIFICATION.EDIT_SUCCESS');
         this.reloadPage();
@@ -205,6 +209,10 @@ export class StopPointDetailComponent implements OnInit, DetailFormComponent {
   private createStopPoint(writableStopPoint: StopPointVersion) {
     this.personWithReducedMobilityService
       .createStopPoint(writableStopPoint)
+      .pipe(catchError(() => {
+        this.ngOnInit();
+        return EMPTY;
+      }))
       .subscribe((stopPoint) => {
         this.notificationService.success('PRM.STOP_POINTS.NOTIFICATION.ADD_SUCCESS');
         this.prmTabsService.initTabs([stopPoint]);
