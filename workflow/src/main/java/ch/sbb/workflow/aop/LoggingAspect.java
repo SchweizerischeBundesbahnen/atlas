@@ -19,7 +19,11 @@ import org.springframework.stereotype.Component;
 public class LoggingAspect {
 
   public static final String WORKFLOW_TYPE_VOTE_WORKFLOW = "VOTE_WORKFLOW";
-  public static final String ERROR_MARKER = "CRITICAL_WORKFLOW_ERROR";
+  public static final String CANCEL_WORKFLOW = "CANCEL_WORKFLOW";
+  public static final String REJECT_WORKFLOW = "REJECT_WORKFLOW";
+  public static final String ADD_WORKFLOW = "ADD_WORKFLOW";
+  public static final String ERROR_MARKER = "CRITICAL_WORKFLOW_ERROR"; // this value should not be changed, or if so, splunk
+  // alert should be adjusted as well
 
   private final ObjectMapper objectMapper;
 
@@ -33,15 +37,13 @@ public class LoggingAspect {
     String className = signature.getDeclaringType().getSimpleName();
     String methodName = joinPoint.getSignature().getName();
     String workflowType = methodLogged.workflowType();
-    boolean isCritical = methodLogged.critical();
 
     try (MDCCloseable ignored1 = MDC.putCloseable("className", className);
         MDCCloseable ignored = MDC.putCloseable("methodName", methodName);
-        MDCCloseable ignored2 = MDC.putCloseable("workflowType", workflowType);
-        MDCCloseable ignored3 = MDC.putCloseable("isCritical", String.valueOf(isCritical))) {
+        MDCCloseable ignored2 = MDC.putCloseable("workflowType", workflowType)) {
       return joinPoint.proceed();
     } catch (Exception e) {
-      Map<String, Object> errorDetails = buildErrorDetails(className, methodName, workflowType, isCritical, joinPoint.getArgs(), e);
+      Map<String, Object> errorDetails = buildErrorDetails(className, methodName, workflowType, joinPoint.getArgs(), e);
       String jsonErrorDetails = objectMapper.writeValueAsString(errorDetails);
       log.error("{}: {}", ERROR_MARKER, jsonErrorDetails, e);
       throw e;
@@ -49,12 +51,11 @@ public class LoggingAspect {
   }
 
   private Map<String, Object> buildErrorDetails(String className, String methodName, String workflowType,
-      boolean isCritical, Object[] args, Exception e) {
+      Object[] args, Exception e) {
     Map<String, Object> details = new HashMap<>();
     details.put("className", className);
     details.put("methodName", methodName);
     details.put("workflowType", workflowType);
-    details.put("isCritical", isCritical);
     details.put("errorMessage", e.getMessage());
 
     for (Object arg : args) {
