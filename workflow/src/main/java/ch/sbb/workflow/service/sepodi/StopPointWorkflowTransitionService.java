@@ -116,15 +116,18 @@ public class StopPointWorkflowTransitionService {
     if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
       throw new IllegalStateException(EXCEPTION_HEARING_MSG);
     }
-    //TODO String newDesignationOfficial = restartWorkflowModel.getNewDesignationOfficial();
-    // sePoDiClient.update(officialDesignation)
 
-    //ClientPersonModel examinantBAVclientPersonModel = restartWorkflowModel.getExaminantBAVClient();
-    //Person examinantBAV = ClientPersonMapper.toEntity(examinantBAVclientPersonModel);
-    //examinantBAV.setStopPointWorkflow(stopPointWorkflow);
+    Person examinantBAV = Person.builder()
+            .firstName(restartWorkflowModel.getFirstName())
+            .lastName(restartWorkflowModel.getLastName())
+            .mail(restartWorkflowModel.getMail())
+            .organisation(restartWorkflowModel.getOrganisation())
+            .build();
+
+    examinantBAV.setStopPointWorkflow(stopPointWorkflow);
     Decision decision = new Decision();
     decision.setDecisionType(DecisionType.RESTARTED);
-    //decision.setExaminant(examinantBAV);
+    decision.setExaminant(examinantBAV);
     decision.setMotivation(restartWorkflowModel.getMotivationComment());
     decision.setMotivationDate(LocalDateTime.now());
     decisionService.save(decision);
@@ -144,6 +147,9 @@ public class StopPointWorkflowTransitionService {
         .endDate(stopPointWorkflow.getEndDate())
         .build();
     stopPointWorkflowService.save(newStopPointWorkflow);
+
+    sePoDiClientService.updateDesignationOfficialServicePoint(newStopPointWorkflow);
+
     //update current workflow
     stopPointWorkflow.setEndDate(LocalDate.now());
     stopPointWorkflow.setStatus(REJECTED);
