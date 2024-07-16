@@ -69,13 +69,13 @@
 </atlas-dialog-content>
 <atlas-dialog-footer>
   <button (click)="closeDialog()" class="atlas-primary-btn me-3" data-cy="dialog-cancel-button">
-<!--    {{ data.cancelText ?? 'DIALOG.CANCEL' | translate }}-->
+   {{ 'DIALOG.CANCEL' | translate }}
   </button>
   <button
     (click)="restartWorkflow()"
     class="atlas-primary-btn primary-color-btn"
     data-cy="dialog-confirm-button"
   >
-<!--    {{ data.confirmText ?? 'DIALOG.OK' | translate }}-->
+    {{ 'DIALOG.OK' | translate }}
   </button>
 </atlas-dialog-footer>
