@@ -10,6 +10,5 @@ import java.lang.annotation.Target;
 public @interface MethodLogged {
 
   String workflowType();
-  boolean critical();
 
 }
