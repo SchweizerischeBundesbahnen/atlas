@@ -1018,7 +1018,7 @@
         "DESIGNATION_OFFICIAL": "Die offizielle Bezeichnung {{designationOfficial}} ist bereits von {{validFrom}} bis {{validTo}} durch {{number}} vergeben.",
         "DESIGNATION_LONG": "Die lange Bezeichnung {{designationLong}} ist bereits von {{validFrom}} bis {{validTo}} durch {{number}} vergeben."
       },
-      "TERMINATION_FORBIDDEN": "Sie sind nicht berechtigt die Haltestelle zu terminieren. Benutzen Sie hierzu bitte das Formular auf https://www.öv-info.ch/de/aufhebung-haltestelle.",
+      "TERMINATION_FORBIDDEN": "Sie sind nicht berechtigt die Haltestelle zu terminieren. Benutzen Sie hierzu bitte das Formular auf https://www.oev-info.ch/de/aufhebung-haltestelle.",
       "TERMINATION_NOT_ALLOWED_WITH_VERSION_IN_REVIEW": "Die Terminierung ist nicht möglich, da sich eine Version in einer Anhörung befindet.",
       "ABBREVIATION_UPDATE_NOT_ALLOWED": "Die Geschäftsorganisation der Dienststelle ist nicht berechtigt Abkürzungen hinzuzufügen oder die Dienststelle verfügt bereits über eine Abkürzung, die nicht geändert oder gelöscht werden darf.",
       "ABBREVIATION_NOT_UNIQUE": "Die Abkürzung wird bereits verwendet oder die gewählte Dienststellen Version ist nicht die aktuellste.",
@@ -1265,17 +1265,17 @@
     },
     "INFO_BOX": {
       "HEADER": "Dokumente",
-      "GUIDE_LINE_URL": "https://www.öv-info.ch/sites/default/files/2023-02/Leitfaden-Erfassung-Kriterien-zur-Barrierefreiheit-im-DiDok_0.pdf",
+      "GUIDE_LINE_URL": "https://www.oev-info.ch/sites/default/files/2023-02/Leitfaden-Erfassung-Kriterien-zur-Barrierefreiheit-im-DiDok_0.pdf",
       "GUIDE_LINE_LABEL": "Leitfaden",
-      "GUIDE_LINE_ATTACHMENT_URL": "https://www.öv-info.ch/sites/default/files/2024-04/Anhang_zum_Leitfaden_Barrierefreiheit.xlsx",
+      "GUIDE_LINE_ATTACHMENT_URL": "https://www.oev-info.ch/sites/default/files/2024-04/Anhang_zum_Leitfaden_Barrierefreiheit.xlsx",
       "GUIDE_LINE_ATTACHMENT_LABEL": "Anhang zum Leitfaden",
-      "GUIDE_LINE_ATTACHMENT_TECHNICAL_URL": "https://www.öv-info.ch/sites/default/files/2023-04/Anhang_zum_Leitfaden_Barrierefreiheit_technisch_0.xlsx",
+      "GUIDE_LINE_ATTACHMENT_TECHNICAL_URL": "https://www.oev-info.ch/sites/default/files/2023-04/Anhang_zum_Leitfaden_Barrierefreiheit_technisch_0.xlsx",
       "ADDITIONAL_LINK_LABEL": "Weiterführende Links",
       "DDA_URL": "https://www.fedlex.admin.ch/eli/cc/2003/667/de",
       "DDA_LABEL": "Behindertengleichstellungsgesetz, BehiG",
       "REGULATION_URL": "https://www.fedlex.admin.ch/eli/cc/2003/669/de",
       "REGULATION_LABEL": "VböV - Verordnung über die behindertengerechte Gestaltung des öffentlichen Verkehrs",
-      "EXTERNAL_LINK": "https://www.öv-info.ch/de/datenmanagement/barrierefreier-zugang/erfassung",
+      "EXTERNAL_LINK": "https://www.oev-info.ch/de/datenmanagement/barrierefreier-zugang/erfassung",
       "EXTERNAL_LINK_LABEL": "Leitfaden BehiG"
     },
     "PLATFORMS": {
