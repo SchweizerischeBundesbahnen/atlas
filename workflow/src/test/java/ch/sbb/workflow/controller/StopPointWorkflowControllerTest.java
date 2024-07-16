@@ -12,8 +12,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.read.ListAppender;
 import ch.sbb.atlas.api.servicepoint.LocalityMunicipalityModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationReadModel;
@@ -81,8 +79,6 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
 
   @MockBean
   private StopPointWorkflowNotificationService notificationService;
-
-  private ListAppender<ILoggingEvent> listAppender;
 
   @AfterEach
   void tearDown() {
