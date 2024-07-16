@@ -26,7 +26,7 @@ export class StopPointRestartWorkflowFormGroupBuilder {
 
   static buildStopPointRestartWorkflow(formGroup: FormGroup<StopPointRestartWorkflowFormGroup>): StopPointRestartWorkflow {
     return {
-      examinantBAVClient: formGroup.controls.firstName.value!,
+      firstName: formGroup.controls.firstName.value!,
       lastName: formGroup.controls.lastName.value!,
       motivationComment: formGroup.controls.motivationComment.value!,
       mail: formGroup.controls.mail.value!,
