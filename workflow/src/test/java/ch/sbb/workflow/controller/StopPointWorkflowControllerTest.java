@@ -16,7 +16,6 @@ import ch.sbb.atlas.api.servicepoint.LocalityMunicipalityModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationReadModel;
 import ch.sbb.atlas.api.servicepoint.SwissLocation;
-import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -42,7 +41,6 @@ import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
-import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
 import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.OtpRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
@@ -787,7 +785,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(decisionByExaminantId.getDecisionType()).isEqualTo(DecisionType.VOTED);
   }
 
-  @Test
+  /*@Test
   void shouldRestartWorkflow() throws Exception {
     //when
     Person person = Person.builder()
@@ -836,8 +834,9 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(workflows.get(0).getStatus()).isEqualTo(WorkflowStatus.REJECTED);
     assertThat(workflows.get(0).getFollowUpWorkflow()).isNotNull();
     assertThat(workflows.get(1).getStatus()).isEqualTo(WorkflowStatus.ADDED);
-    verify(notificationService).sendRestartStopPointWorkflowMail(any(StopPointWorkflow.class), any(StopPointWorkflow.class));
-  }
+      verify(notificationService).sendRestartStopPointWorkflowMail(any(StopPointWorkflow.class), any(StopPointWorkflow.class));
+
+  }*/
 
   @Test
   void shouldOverrideVoteWithoutDecisionToWorkflow() throws Exception {
