@@ -39,7 +39,6 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   private final DecisionService decisionService;
   private final StopPointWorkflowTransitionService workflowTransitionService;
 
-
   @Override
   public ReadStopPointWorkflowModel getStopPointWorkflow(Long id) {
     ReadStopPointWorkflowModel stopPointWorkflowModel = StopPointWorkflowMapper.toModel(service.getWorkflow(id));
