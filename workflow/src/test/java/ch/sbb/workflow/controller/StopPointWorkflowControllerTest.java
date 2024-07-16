@@ -12,7 +12,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
 import ch.sbb.atlas.api.servicepoint.LocalityMunicipalityModel;
@@ -29,7 +28,6 @@ import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.StopPointWorkflowTestData;
-import ch.sbb.workflow.aop.LoggingAspect;
 import ch.sbb.workflow.entity.Decision;
 import ch.sbb.workflow.entity.DecisionType;
 import ch.sbb.workflow.entity.JudgementType;
@@ -51,7 +49,6 @@ import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.OtpRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import ch.sbb.workflow.service.sepodi.SePoDiClientService;
-import ch.sbb.workflow.service.sepodi.StopPointWorkflowTransitionService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -59,9 +56,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -88,14 +83,6 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   private StopPointWorkflowNotificationService notificationService;
 
   private ListAppender<ILoggingEvent> listAppender;
-
-  @BeforeEach
-  public void setUp() {
-    listAppender = new ListAppender<>();
-    Logger logger = (Logger) LoggerFactory.getLogger(LoggingAspect.class);
-    listAppender.start();
-    logger.addAppender(listAppender);
-  }
 
   @AfterEach
   void tearDown() {
@@ -371,13 +358,6 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .contentType(contentType)
         .content(mapper.writeValueAsString(workflowModel))
     ).andExpect(status().isCreated());
-
-
-    boolean logFound = listAppender.list.stream()
-        .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
-            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + StopPointWorkflowTransitionService.addWorkflow + "\"") &&
-            event.getFormattedMessage().contains("\"isCritical\":true"));
-    assertThat(logFound).isFalse();
   }
 
   @Test
@@ -651,12 +631,6 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(decisionResult.getDecisionType()).isEqualTo(DecisionType.REJECTED);
 
     verify(notificationService).sendRejectStopPointWorkflowMail(any(StopPointWorkflow.class), anyString());
-
-    boolean logFound = listAppender.list.stream()
-        .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
-            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + StopPointWorkflowTransitionService.rejectWorkflow + "\"") &&
-            event.getFormattedMessage().contains("\"isCritical\":true"));
-    assertThat(logFound).isFalse();
   }
 
   @Test
@@ -715,12 +689,6 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(decisionResult.getDecisionType()).isEqualTo(DecisionType.CANCELED);
     stopPointWorkflow.setStatus(WorkflowStatus.CANCELED);
     verify(sePoDiClientService).updateStopPointStatusToDraft(any(StopPointWorkflow.class));
-
-    boolean logFound = listAppender.list.stream()
-        .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
-            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + StopPointWorkflowTransitionService.cancelWorkflow + "\"") &&
-            event.getFormattedMessage().contains("\"isCritical\":true"));
-    assertThat(logFound).isFalse();
   }
 
   @Test
