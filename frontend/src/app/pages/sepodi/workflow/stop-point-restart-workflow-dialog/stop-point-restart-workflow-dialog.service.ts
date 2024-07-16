@@ -6,9 +6,6 @@ import {
 import {Observable} from "rxjs";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {StopPointRestartWorkflowDialogComponent} from "./stop-point-restart-workflow-dialog.component";
-import {
-  StopPointRejectWorkflowDialogComponent
-} from "../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog.component";
 import {map} from "rxjs/operators";
 
 @Injectable({
