@@ -14,6 +14,7 @@ import {ContactPointFormGroup, ContactPointFormGroupBuilder} from "../form/conta
 import {DateRange} from "../../../../../../core/versioning/date-range";
 import {DetailHelperService, DetailWithCancelEdit} from "../../../../../../core/detail/detail-helper.service";
 import {ValidityService} from "../../../../../sepodi/validity/validity.service";
+import {catchError, EMPTY} from "rxjs";
 
 @Component({
   selector: 'app-contact-point-detail',
@@ -118,6 +119,10 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent,
   private create(contactPointVersion: ContactPointVersion) {
     this.personWithReducedMobilityService
       .createContactPoint(contactPointVersion)
+      .pipe(catchError(() => {
+        this.ngOnInit();
+        return EMPTY;
+      }))
       .subscribe((createdVersion) => {
         this.notificationService.success('PRM.CONTACT_POINTS.NOTIFICATION.ADD_SUCCESS');
         this.router
@@ -131,6 +136,10 @@ export class ContactPointDetailComponent implements OnInit, DetailFormComponent,
   update(contactPointVersion: ContactPointVersion) {
     this.personWithReducedMobilityService
       .updateContactPoint(this.selectedVersion.id!, contactPointVersion)
+      .pipe(catchError(() => {
+        this.ngOnInit();
+        return EMPTY;
+      }))
       .subscribe(() => {
         this.notificationService.success('PRM.CONTACT_POINTS.NOTIFICATION.EDIT_SUCCESS');
         this.router
