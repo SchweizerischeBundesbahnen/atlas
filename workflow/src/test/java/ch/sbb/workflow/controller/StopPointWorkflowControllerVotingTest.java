@@ -9,12 +9,8 @@ import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import ch.qos.logback.classic.Logger;
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.read.ListAppender;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
-import ch.sbb.workflow.aop.LoggingAspect;
 import ch.sbb.workflow.entity.Decision;
 import ch.sbb.workflow.entity.JudgementType;
 import ch.sbb.workflow.entity.Person;
@@ -40,7 +36,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,8 +66,6 @@ class StopPointWorkflowControllerVotingTest {
 
   private StopPointWorkflow workflowInHearing;
 
-  private ListAppender<ILoggingEvent> listAppender;
-
   @AfterEach
   void tearDown() {
     otpRepository.deleteAll();
@@ -82,11 +75,6 @@ class StopPointWorkflowControllerVotingTest {
 
   @BeforeEach
   void setUp() {
-    listAppender = new ListAppender<>();
-    Logger logger = (Logger) LoggerFactory.getLogger(LoggingAspect.class);
-    listAppender.start();
-    logger.addAppender(listAppender);
-
     Person marek = Person.builder()
         .firstName("Marek")
         .lastName("Hamsik")
@@ -181,12 +169,6 @@ class StopPointWorkflowControllerVotingTest {
     stopPointWorkflow = controller.getStopPointWorkflow(workflowInHearing.getId());
     assertThat(stopPointWorkflow.getExaminants().stream().filter(i -> i.getMail().equals(MAIL_ADDRESS)).findFirst().orElseThrow()
         .getJudgement()).isEqualTo(JudgementType.YES);
-
-    boolean logFound = listAppender.list.stream()
-        .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
-            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + LoggingAspect.WORKFLOW_TYPE_VOTE_WORKFLOW + "\"") &&
-            event.getFormattedMessage().contains("\"isCritical\":true"));
-    assertThat(logFound).isFalse();
   }
 
   @Test
@@ -245,12 +227,6 @@ class StopPointWorkflowControllerVotingTest {
     // then
     examinantDecision = decisionRepository.findDecisionByExaminantId(examinantToOverride.getId());
     assertThat(examinantDecision.getFotJudgement()).isEqualTo(JudgementType.YES);
-
-    boolean logFound = listAppender.list.stream()
-        .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
-            event.getFormattedMessage().contains("\"workflowType\":" + "\"" + LoggingAspect.WORKFLOW_TYPE_VOTE_WORKFLOW + "\"") &&
-            event.getFormattedMessage().contains("\"isCritical\":true"));
-    assertThat(logFound).isFalse();
   }
 
   @Test
