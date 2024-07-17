@@ -2,6 +2,10 @@
   <atlas-link label="{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.PREVIOUS_WORKFLOW' | translate: { number: currentWorkflow!.previousWorkflowId! } }}" (linkClicked)="goToPreviousWorkflow()"> </atlas-link>
 }
 
+@if (currentWorkflow?.followUpWorkflowId) {
+  <atlas-link label="{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.FOLLOW_UP_WORKFLOW' | translate: { number: currentWorkflow!.followUpWorkflowId! } }}" (linkClicked)="goToFollowWorkflow()"> </atlas-link>
+}
+
 <h1 class="font-bold-2xl pt-5">
   {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.STOP_POINT_INFO' | translate }}
 

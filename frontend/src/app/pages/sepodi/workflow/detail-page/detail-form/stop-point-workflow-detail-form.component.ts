@@ -99,6 +99,12 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
     window.open(url, '_blank');
   }
 
+  goToFollowWorkflow() {
+    const url = this.router.serializeUrl(this.router.createUrlTree([Pages.SEPODI.path,
+      Pages.WORKFLOWS.path, this.currentWorkflow?.followUpWorkflowId]));
+    window.open(url, '_blank');
+  }
+
   openDecision(index: number) {
     const examinant = this.form.controls.examinants.at(index);
     this.decisionDetailDialogService.openDialog(this.currentWorkflow!.id!, this.currentWorkflow!.status!, examinant);
