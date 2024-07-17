@@ -68,18 +68,17 @@ export class StopPointRestartWorkflowDialogComponent implements OnInit {
   }
 
    private doRestart(stopPointRestartWorkflow: StopPointRestartWorkflow) {
-     console.log("res ", stopPointRestartWorkflow)
      this.stopPointWorkflowService.restartStopPointWorkflow(this.data.workflowId, stopPointRestartWorkflow)
-       .subscribe(() => {
+       .subscribe((workflow) => {
          this.notificationService.success('WORKFLOW.NOTIFICATION.CHECK.RESTARTED');
          this.dialogRef.close();
-         this.navigateToWorkflow();
+         this.navigateToWorkflow(workflow.id!);
        })
    }
 
-   private navigateToWorkflow() {
+   private navigateToWorkflow(id: number) {
      this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-       this.router.navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, this.data.workflowId]).then(() => {
+       this.router.navigate([Pages.SEPODI.path, Pages.WORKFLOWS.path, id]).then(() => {
        });
      })
    }

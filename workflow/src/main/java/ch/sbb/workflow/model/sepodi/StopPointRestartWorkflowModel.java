@@ -29,11 +29,11 @@ public class StopPointRestartWorkflowModel extends BasePersonModel {
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
   private String organisation;
 
-  @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
+  @Pattern(regexp = AtlasCharacterSetsRegex.EMAIL_ADDRESS)
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_255)
-  @Schema(description = "function")
+  @Schema(description = "mail", example = "mail@sbb.ch")
   @NotBlank
-  private String function;
+  private String mail;
 
   @Pattern(regexp = AtlasCharacterSetsRegex.ISO_8859_1)
   @Size(min = 1, max = AtlasFieldLengths.LENGTH_1500)
