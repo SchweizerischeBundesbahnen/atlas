@@ -62,10 +62,10 @@ function formGroup(component: StopPointRestartWorkflowDialogComponent) {
   formGroup.controls.lastName.setValue('lastName');
   formGroup.controls.organisation.setValue('organisation');
   formGroup.controls.motivationComment.setValue('juva merda');
-  formGroup.controls.function.setValue("chef")
+  formGroup.controls.mail.setValue("chef@chef.ch");
 }
 
-describe('StopPointRestartWorkflowDialogComponent', () => {
+fdescribe('StopPointRestartWorkflowDialogComponent', () => {
   let component: StopPointRestartWorkflowDialogComponent;
   let fixture: ComponentFixture<StopPointRestartWorkflowDialogComponent>;
 

@@ -48,7 +48,6 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
       stopPointWorkflowModel.setPreviousWorkflowId(previousWorklStopPointWorkflow.getId());
     }
 
-
     decisionService.addJudgementsToExaminants(stopPointWorkflowModel.getExaminants());
     return stopPointWorkflowModel;
   }
