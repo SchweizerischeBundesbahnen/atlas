@@ -120,7 +120,7 @@ public class StopPointWorkflowTransitionService {
     Person examinantBAV = Person.builder()
             .firstName(restartWorkflowModel.getFirstName())
             .lastName(restartWorkflowModel.getLastName())
-            .function(restartWorkflowModel.getFunction())
+            .mail(restartWorkflowModel.getMail())
             .organisation(restartWorkflowModel.getOrganisation())
             .build();
 
