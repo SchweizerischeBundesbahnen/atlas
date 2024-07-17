@@ -21,12 +21,12 @@ export interface ServicePointNumber {
      */
     checkDigit: number;
     /**
-     * UicCountryCode, Indicates which country allocated the service point number and is to be interpreted organisationally, not territorially.
-     */
-    uicCountryCode: number;
-    /**
      * NumberShort - 5 chars identifying number. Range: 1-99.999
      */
     numberShort: number;
+    /**
+     * UicCountryCode, Indicates which country allocated the service point number and is to be interpreted organisationally, not territorially.
+     */
+    uicCountryCode: number;
 }
 
