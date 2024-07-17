@@ -19,7 +19,7 @@ export class StopPointRestartWorkflowFormGroupBuilder {
       lastName: new FormControl('', [Validators.required, Validators.maxLength(50), AtlasCharsetsValidator.iso88591]),
       organisation: new FormControl('', [Validators.required, Validators.maxLength(255), AtlasCharsetsValidator.iso88591]),
       motivationComment: new FormControl('', [Validators.required, Validators.minLength(2), AtlasFieldLengthValidator.comments, AtlasCharsetsValidator.iso88591]),
-      mail: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(30), AtlasCharsetsValidator.iso88591]),
+      mail: new FormControl('', [Validators.required, AtlasCharsetsValidator.email]),
       designationOfficial: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(30)])
     })
   }
