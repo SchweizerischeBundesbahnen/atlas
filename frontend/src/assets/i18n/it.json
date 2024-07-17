@@ -590,7 +590,8 @@
       "CHECK": {
         "ACCEPTED": "L'audizione è stata approvata con successo.",
         "REJECTED": "L'audizione è stata respinta con successo.",
-        "CANCELED": "L'audizione è stata annullata con successo"
+        "CANCELED": "L'audizione è stata annullata con successo.",
+        "RESTARTED": "L'audizione è stata riavviata con successo."
       },
       "SKIP": {
         "SUCCESS": "L'audizione è stata saltata con successo."
