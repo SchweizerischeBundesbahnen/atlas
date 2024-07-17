@@ -590,7 +590,8 @@
       "CHECK": {
         "ACCEPTED": "Der Antrag wurde erfolgreich genehmigt.",
         "REJECTED": "Der Antrag wurde erfolgreich zurückgewiesen.",
-        "CANCELED": "Der Antrag wurde erfolgreich abgebrochen."
+        "CANCELED": "Der Antrag wurde erfolgreich abgebrochen.",
+        "RESTARTED": "Der Antrag wurde erfolgreich neugestartet."
       },
       "SKIP": {
         "SUCCESS": "Die Anhörung wurde erfolgreich übersprungen."
