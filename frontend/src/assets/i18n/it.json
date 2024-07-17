@@ -1049,7 +1049,8 @@
         "SEARCH": "SLOID - Denominazione ufficiale",
         "OVERRIDE_TITLE": "Valutazione da parte di UFT",
         "OVERRIDE_HAPPENED_INFO": "L'Ufficio federale dei trasporti (UFT) ha effettuato una valutazione. Si applica la valutazione dell'UFT (vedi sotto).",
-        "PREVIOUS_WORKFLOW": "Ersetzt vorhergehende Anhörung {{number}}"
+        "PREVIOUS_WORKFLOW": "Ersetzt vorhergehende Anhörung {{number}}",
+        "FOLLOW_UP_WORKFLOW": "Nachfolgende Anhörung {{number}}"
       }
     },
     "TRAFFIC_POINT_ELEMENTS": {
