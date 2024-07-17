@@ -60,6 +60,10 @@ export interface ReadStopPointWorkflow {
      */
     sboid?: string;
     /**
+     * Previous Workflow id
+     */
+    previousWorkflowId?: number;
+    /**
      * Workflow created at
      */
     createdAt?: string;
