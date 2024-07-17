@@ -66,9 +66,7 @@ public class LoggingAspect {
           details.put("sloid", model.getSloid());
         }
         case Long id -> {
-          if (!workflowType.equals(WORKFLOW_TYPE_VOTE_WORKFLOW)) {
-            details.put("workflowId", id);
-          }
+          details.put("workflowId", id);
         }
         default -> {
           log.warn("Unexpected value: " + arg);
