@@ -146,9 +146,9 @@ public class StopPointWorkflowTransitionService {
         .startDate(stopPointWorkflow.getStartDate())//todo
         .endDate(stopPointWorkflow.getEndDate())
         .build();
-    stopPointWorkflowService.save(newStopPointWorkflow);
 
     sePoDiClientService.updateDesignationOfficialServicePoint(newStopPointWorkflow);
+    stopPointWorkflowService.save(newStopPointWorkflow);
 
     //update current workflow
     stopPointWorkflow.setEndDate(LocalDate.now());

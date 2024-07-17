@@ -8,7 +8,7 @@ export interface StopPointRestartWorkflowFormGroup {
   lastName: FormControl<string | null | undefined>;
   organisation: FormControl<string | null | undefined>;
   motivationComment: FormControl<string | null | undefined>;
-  mail: FormControl<string | null | undefined>;
+  function: FormControl<string | null | undefined>;
   designationOfficial: FormControl<string | null | undefined>
 }
 export class StopPointRestartWorkflowFormGroupBuilder {
@@ -19,7 +19,7 @@ export class StopPointRestartWorkflowFormGroupBuilder {
       lastName: new FormControl('', [Validators.required, Validators.maxLength(50), AtlasCharsetsValidator.iso88591]),
       organisation: new FormControl('', [Validators.required, Validators.maxLength(255), AtlasCharsetsValidator.iso88591]),
       motivationComment: new FormControl('', [Validators.required, Validators.minLength(2), AtlasFieldLengthValidator.comments, AtlasCharsetsValidator.iso88591]),
-      mail: new FormControl('', [Validators.required, AtlasCharsetsValidator.email]),
+      function: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(30), AtlasCharsetsValidator.iso88591]),
       designationOfficial: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(30)])
     })
   }
@@ -29,7 +29,7 @@ export class StopPointRestartWorkflowFormGroupBuilder {
       firstName: formGroup.controls.firstName.value!,
       lastName: formGroup.controls.lastName.value!,
       motivationComment: formGroup.controls.motivationComment.value!,
-      mail: formGroup.controls.mail.value!,
+      function: formGroup.controls.function.value!,
       organisation: formGroup.controls.organisation.value!,
       designationOfficial: formGroup.controls.designationOfficial.value!,
     }
