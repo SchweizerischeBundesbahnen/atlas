@@ -99,7 +99,7 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
     window.open(url, '_blank');
   }
 
-  goToFollowWorkflow() {
+  goToFollowUpWorkflow() {
     const url = this.router.serializeUrl(this.router.createUrlTree([Pages.SEPODI.path,
       Pages.WORKFLOWS.path, this.currentWorkflow?.followUpWorkflowId]));
     window.open(url, '_blank');
