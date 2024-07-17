@@ -18,6 +18,8 @@ import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
 import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import java.time.LocalDateTime;
+import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,15 @@ public class StopPointWorkflowService {
 
   @Redacted(redactedClassType = StopPointWorkflow.class)
   public StopPointWorkflow getWorkflow(Long id) {
+    return workflowRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+  }
+
+  //@Redacted(redactedClassType = StopPointWorkflow.class)
+  public Optional<StopPointWorkflow> getWorkflowByFollowUpId(Long id) {
+    return workflowRepository.findStopPointWorkflowByFollowUpWorkflow(id);
+  }
+
+  public StopPointWorkflow getUnredactedWorkflow(Long id) {
     return workflowRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }
 
