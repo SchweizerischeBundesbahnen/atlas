@@ -815,7 +815,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .firstName("marek")
         .lastName("hamsik")
         .motivationComment("Bern is better")
-        .function("chef")
+        .mail("chef@chef.ch")
         .organisation("sbb")
         .build();
 
