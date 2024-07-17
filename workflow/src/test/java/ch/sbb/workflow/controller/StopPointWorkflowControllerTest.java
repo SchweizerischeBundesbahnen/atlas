@@ -785,7 +785,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(decisionByExaminantId.getDecisionType()).isEqualTo(DecisionType.VOTED);
   }
 
-  /*@Test
+  @Test
   void shouldRestartWorkflow() throws Exception {
     //when
     Person person = Person.builder()
@@ -810,15 +810,13 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .build();
     workflowRepository.save(stopPointWorkflow);
 
-    ClientPersonModel examinantBAV = ClientPersonModel.builder()
-        .firstName("Luca")
-        .lastName("Fix")
-        .personFunction("YB-Fun")
-        .mail(MAIL_ADDRESS).build();
     StopPointRestartWorkflowModel restartWorkflowModel = StopPointRestartWorkflowModel.builder()
-        .examinantBAVClient(examinantBAV)
-        .newDesignationOfficial("Bern")
+        .designationOfficial("Bern")
+        .firstName("marek")
+        .lastName("hamsik")
         .motivationComment("Bern is better")
+        .function("chef")
+        .organisation("sbb")
         .build();
 
     //given
@@ -834,9 +832,8 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(workflows.get(0).getStatus()).isEqualTo(WorkflowStatus.REJECTED);
     assertThat(workflows.get(0).getFollowUpWorkflow()).isNotNull();
     assertThat(workflows.get(1).getStatus()).isEqualTo(WorkflowStatus.ADDED);
-      verify(notificationService).sendRestartStopPointWorkflowMail(any(StopPointWorkflow.class), any(StopPointWorkflow.class));
-
-  }*/
+    verify(notificationService).sendRestartStopPointWorkflowMail(any(StopPointWorkflow.class), any(StopPointWorkflow.class));
+  }
 
   @Test
   void shouldOverrideVoteWithoutDecisionToWorkflow() throws Exception {
