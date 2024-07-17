@@ -1,7 +1,7 @@
 <atlas-dialog-close (clicked)="closeDialog()"></atlas-dialog-close>
 <atlas-dialog-content>
   <div class="mb-5 dialog-title">
-<!--    <span class="font-bold-4xl">{{ data.title | translate }}</span>-->
+    <span class="font-bold-4xl">{{ 'WORKFLOW.BUTTON.RESTART' | translate }}</span>
   </div>
   <form [formGroup]="formGroup">
     <div class="col-12 px-5 mt-3">
@@ -38,9 +38,9 @@
         <atlas-text-field
           [formGroup]="formGroup"
           [required]="true"
-          controlName="mail"
-          data-cy="stopPointRestartWorkflowPersonMail"
-          fieldLabel="WORKFLOW.PERSON.MAIL"
+          controlName="function"
+          data-cy="stopPointRestartWorkflowPersonFunction"
+          fieldLabel="WORKFLOW.PERSON.FUNCTION"
           class="col-5"
         >
         </atlas-text-field>
@@ -67,6 +67,7 @@
     </div>
   </form>
 </atlas-dialog-content>
+
 <atlas-dialog-footer>
   <button (click)="closeDialog()" class="atlas-primary-btn me-3" data-cy="dialog-cancel-button">
    {{ 'DIALOG.CANCEL' | translate }}
@@ -76,6 +77,6 @@
     class="atlas-primary-btn primary-color-btn"
     data-cy="dialog-confirm-button"
   >
-    {{ 'DIALOG.OK' | translate }}
+    {{ 'WORKFLOW.BUTTON.RESTART' | translate }}
   </button>
 </atlas-dialog-footer>

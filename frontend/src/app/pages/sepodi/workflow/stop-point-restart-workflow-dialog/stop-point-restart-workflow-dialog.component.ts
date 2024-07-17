@@ -7,7 +7,7 @@ import {
 import {DetailHelperService} from "../../../../core/detail/detail-helper.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {ValidationService} from "../../../../core/validation/validation.service";
-import {StopPointRestartWorkflow, StopPointWorkflowService} from "../../../../api";
+import {StopPointRestartWorkflow, StopPointWorkflowService, UserAdministrationService} from "../../../../api";
 import {Router} from "@angular/router";
 import {NotificationService} from "../../../../core/notification/notification.service";
 import {Pages} from "../../../pages";
@@ -17,7 +17,8 @@ import {
 
 @Component({
   selector: 'app-stop-point-restart-workflow-dialog',
-  templateUrl: './stop-point-restart-workflow-dialog.component.html'
+  templateUrl: './stop-point-restart-workflow-dialog.component.html',
+  styleUrls: ['./stop-point-restart-workflow-dialog.component.scss']
 })
 export class StopPointRestartWorkflowDialogComponent implements OnInit {
 
@@ -30,13 +31,14 @@ export class StopPointRestartWorkflowDialogComponent implements OnInit {
     private detailHelperService: DetailHelperService,
     private router: Router,
     private notificationService: NotificationService,
-    private stopPointWorkflowService: StopPointWorkflowService
-
+    private stopPointWorkflowService: StopPointWorkflowService,
+    private userAdministrationService: UserAdministrationService,
   ) {
   }
 
   ngOnInit(): void {
-    this.formGroup = StopPointRestartWorkflowFormGroupBuilder.initFormGroup()
+    this.formGroup = StopPointRestartWorkflowFormGroupBuilder.initFormGroup();
+    this.populateUserDataFormFromAuthenticatedUser();
   }
 
   closeDialog() {
@@ -47,6 +49,14 @@ export class StopPointRestartWorkflowDialogComponent implements OnInit {
     });
   }
 
+  private populateUserDataFormFromAuthenticatedUser() {
+    this.formGroup.reset();
+    this.userAdministrationService.getCurrentUser().subscribe((user) => {
+      this.formGroup.controls.firstName.setValue(user.firstName);
+      this.formGroup.controls.lastName.setValue(user.lastName);
+    });
+  }
+
   restartWorkflow() {
     ValidationService.validateForm(this.formGroup);
     if (this.formGroup.valid) {
@@ -54,14 +64,14 @@ export class StopPointRestartWorkflowDialogComponent implements OnInit {
         StopPointRestartWorkflowFormGroupBuilder.buildStopPointRestartWorkflow(this.formGroup);
       this.formGroup.disable();
       this.doRestart(stopPointRestartWorkflow)
-      console.log(stopPointRestartWorkflow);
     }
   }
 
    private doRestart(stopPointRestartWorkflow: StopPointRestartWorkflow) {
+     console.log("res ", stopPointRestartWorkflow)
      this.stopPointWorkflowService.restartStopPointWorkflow(this.data.workflowId, stopPointRestartWorkflow)
        .subscribe(() => {
-         this.notificationService.success('WORKFLOW.NOTIFICATION.CHECK.REJECTED');
+         this.notificationService.success('WORKFLOW.NOTIFICATION.CHECK.RESTARTED');
          this.dialogRef.close();
          this.navigateToWorkflow();
        })
