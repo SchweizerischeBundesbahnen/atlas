@@ -11,7 +11,7 @@
  */
 
 
-export interface StopPointRestartWorkflow { 
+export interface StopPointRestartWorkflow {
     /**
      * Firstname
      */
@@ -33,11 +33,11 @@ export interface StopPointRestartWorkflow {
      */
     organisation: string;
     /**
-     * mail
+     * function
      */
-    mail: string;
+    function: string;
     /**
-     * Reject motivation
+     * Restart motivation
      */
     motivationComment?: string;
     /**
