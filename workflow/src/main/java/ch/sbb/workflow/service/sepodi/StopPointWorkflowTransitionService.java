@@ -143,7 +143,7 @@ public class StopPointWorkflowTransitionService {
         .versionId(stopPointWorkflow.getVersionId())
         .sloid(stopPointWorkflow.getSloid())
         .localityName(stopPointWorkflow.getLocalityName())
-        .startDate(stopPointWorkflow.getStartDate())//todo
+        .startDate(stopPointWorkflow.getStartDate())
         .endDate(stopPointWorkflow.getEndDate())
         .build();
 
