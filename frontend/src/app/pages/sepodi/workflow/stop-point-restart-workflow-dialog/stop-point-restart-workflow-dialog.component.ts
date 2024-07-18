@@ -54,6 +54,7 @@ export class StopPointRestartWorkflowDialogComponent implements OnInit {
     this.userAdministrationService.getCurrentUser().subscribe((user) => {
       this.formGroup.controls.firstName.setValue(user.firstName);
       this.formGroup.controls.lastName.setValue(user.lastName);
+      this.formGroup.controls.mail.setValue(user.mail);
     });
   }
 
