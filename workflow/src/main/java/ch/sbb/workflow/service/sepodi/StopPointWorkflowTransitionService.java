@@ -111,6 +111,7 @@ public class StopPointWorkflowTransitionService {
     return workflow;
   }
 
+  @MethodLogged(workflowType = LoggingAspect.RESTART_WORKFLOW)
   public StopPointWorkflow restartWorkflow(Long id, StopPointRestartWorkflowModel restartWorkflowModel) {
     StopPointWorkflow stopPointWorkflow = stopPointWorkflowService.findStopPointWorkflow(id);
     if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
@@ -135,15 +136,15 @@ public class StopPointWorkflowTransitionService {
     StopPointWorkflow newStopPointWorkflow = StopPointWorkflow.builder()
         .workflowComment(restartWorkflowModel.getMotivationComment())
         .designationOfficial(restartWorkflowModel.getDesignationOfficial())
-        .status(WorkflowStatus.ADDED)
+        .status(WorkflowStatus.HEARING)
         .examinants(new HashSet<>(stopPointWorkflow.getExaminants()))
         .ccEmails(new ArrayList<>(stopPointWorkflow.getCcEmails()))
         .sboid(stopPointWorkflow.getSboid())
         .versionId(stopPointWorkflow.getVersionId())
         .sloid(stopPointWorkflow.getSloid())
         .localityName(stopPointWorkflow.getLocalityName())
-        .startDate(stopPointWorkflow.getStartDate())
-        .endDate(stopPointWorkflow.getEndDate())
+        .startDate(LocalDate.now())
+        .endDate(LocalDate.now().plusMonths(1))
         .build();
 
     sePoDiClientService.updateDesignationOfficialServicePoint(newStopPointWorkflow);
