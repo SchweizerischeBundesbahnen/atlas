@@ -1,11 +1,13 @@
 @if (currentWorkflow?.previousWorkflowId) {
+<div class="mb-2">
   <atlas-link label="{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.PREVIOUS_WORKFLOW' | translate: { number: currentWorkflow!.previousWorkflowId! } }}" (linkClicked)="goToWorkflow(currentWorkflow!.previousWorkflowId!)"> </atlas-link>
+</div>
 }
-@if (currentWorkflow?.followUpWorkflowId && currentWorkflow?.previousWorkflowId) {
-  <br>
-}
+
 @if (currentWorkflow?.followUpWorkflowId) {
-  <atlas-link label="{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.FOLLOW_UP_WORKFLOW' | translate: { number: currentWorkflow!.followUpWorkflowId! } }}" (linkClicked)="goToWorkflow(currentWorkflow!.followUpWorkflowId!)"> </atlas-link>
+  <div class="mb-2">
+    <atlas-link label="{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.FOLLOW_UP_WORKFLOW' | translate: { number: currentWorkflow!.followUpWorkflowId! } }}" (linkClicked)="goToWorkflow(currentWorkflow!.followUpWorkflowId!)"> </atlas-link>
+  </div>
 }
 
 <h1 class="font-bold-2xl pt-5">
