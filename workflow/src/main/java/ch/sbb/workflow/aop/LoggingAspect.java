@@ -21,6 +21,7 @@ public class LoggingAspect {
   public static final String WORKFLOW_TYPE_VOTE_WORKFLOW = "VOTE_WORKFLOW";
   public static final String CANCEL_WORKFLOW = "CANCEL_WORKFLOW";
   public static final String REJECT_WORKFLOW = "REJECT_WORKFLOW";
+  public static final String RESTART_WORKFLOW = "RESTART_WORKFLOW";
   public static final String ADD_WORKFLOW = "ADD_WORKFLOW";
   public static final String ERROR_MARKER = "CRITICAL_WORKFLOW_ERROR"; // this value should not be changed, or if so, splunk
   // alert should be adjusted as well
