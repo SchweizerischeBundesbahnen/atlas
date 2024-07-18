@@ -18,6 +18,7 @@ import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
+import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
 import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import ch.sbb.workflow.service.sepodi.StopPointWorkflowTransitionService;
@@ -241,19 +242,20 @@ public class StopPointWorkflowLoggingAspectTest extends BaseControllerApiTest {
             .build();
     workflowRepository.save(stopPointWorkflow);
 
-    StopPointRejectWorkflowModel stopPointRestartWorkflowModel = StopPointRejectWorkflowModel.builder()
+    StopPointRestartWorkflowModel stopPointRestartWorkflowModel = StopPointRestartWorkflowModel.builder()
             .motivationComment("No Comment1")
             .firstName("Marek1")
             .lastName("Hamsik1")
             .organisation("YB1")
             .mail(MAIL_ADDRESS)
+            .designationOfficial("NEWDESIGNATION")
             .build();
 
     // when & then
     mvc.perform(post("/v1/stop-point/workflows/restart/" + stopPointWorkflow.getId() + 5)
                     .contentType(contentType)
                     .content(mapper.writeValueAsString(stopPointRestartWorkflowModel)))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isNotFound());
 
     boolean logFound = listAppender.list.stream()
             .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
