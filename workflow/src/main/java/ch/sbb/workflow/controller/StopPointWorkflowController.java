@@ -43,10 +43,9 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   public ReadStopPointWorkflowModel getStopPointWorkflow(Long id) {
     ReadStopPointWorkflowModel stopPointWorkflowModel = StopPointWorkflowMapper.toModel(service.getWorkflow(id));
 
-    StopPointWorkflow previousWorklStopPointWorkflow = service.getWorkflowByFollowUpId(id).orElse(null);
-    if(previousWorklStopPointWorkflow != null){
-      stopPointWorkflowModel.setPreviousWorkflowId(previousWorklStopPointWorkflow.getId());
-    }
+    service.getWorkflowByFollowUpId(id).ifPresent(stopPointWorkflow ->
+            stopPointWorkflowModel.setPreviousWorkflowId(stopPointWorkflow.getId())
+    );
 
     decisionService.addJudgementsToExaminants(stopPointWorkflowModel.getExaminants());
     return stopPointWorkflowModel;
