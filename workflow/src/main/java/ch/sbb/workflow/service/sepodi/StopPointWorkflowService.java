@@ -39,7 +39,6 @@ public class StopPointWorkflowService {
     return workflowRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
   }
 
-  //@Redacted(redactedClassType = StopPointWorkflow.class)
   public Optional<StopPointWorkflow> getWorkflowByFollowUpId(Long id) {
     return workflowRepository.findStopPointWorkflowByFollowUpWorkflow(id);
   }
