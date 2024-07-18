@@ -130,7 +130,6 @@ public class StopPointWorkflowTransitionService {
     decision.setExaminant(examinantBAV);
     decision.setMotivation(restartWorkflowModel.getMotivationComment());
     decision.setMotivationDate(LocalDateTime.now());
-    decisionService.save(decision);
 
     //create new Workflow
     StopPointWorkflow newStopPointWorkflow = StopPointWorkflow.builder()
@@ -148,6 +147,7 @@ public class StopPointWorkflowTransitionService {
         .build();
 
     sePoDiClientService.updateDesignationOfficialServicePoint(newStopPointWorkflow);
+    decisionService.save(decision);
     stopPointWorkflowService.save(newStopPointWorkflow);
 
     //update current workflow

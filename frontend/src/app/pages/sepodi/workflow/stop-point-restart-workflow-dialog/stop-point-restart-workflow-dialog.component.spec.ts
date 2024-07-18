@@ -20,10 +20,13 @@ import {TranslatePipe} from "@ngx-translate/core";
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
   sloid: 'ch:1:sloid:8000',
-  workflowComment: "No comment"
+  workflowComment: "No comment",
+  designationOfficial: "test",
+  status: "HEARING",
 };
 const notificationServiceSpy = jasmine.createSpyObj(['success']);
-const stopPointWorkflowService = jasmine.createSpyObj({
+
+const stopPointWorkflowService = jasmine.createSpyObj('StopPointWorkflowService', {
   restartStopPointWorkflow: of(workflow),
 });
 
@@ -63,15 +66,17 @@ function formGroup(component: StopPointRestartWorkflowDialogComponent) {
   formGroup.controls.organisation.setValue('organisation');
   formGroup.controls.motivationComment.setValue('juva merda');
   formGroup.controls.mail.setValue("chef@chef.ch");
+  formGroup.controls.designationOfficial.setValue("NEW DESIGNATION")
 }
 
-fdescribe('StopPointRestartWorkflowDialogComponent', () => {
+describe('StopPointRestartWorkflowDialogComponent', () => {
   let component: StopPointRestartWorkflowDialogComponent;
   let fixture: ComponentFixture<StopPointRestartWorkflowDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [StopPointRestartWorkflowDialogComponent,
+      declarations: [
+        StopPointRestartWorkflowDialogComponent,
         DialogFooterComponent,
         DialogContentComponent,
         DialogCloseComponent
