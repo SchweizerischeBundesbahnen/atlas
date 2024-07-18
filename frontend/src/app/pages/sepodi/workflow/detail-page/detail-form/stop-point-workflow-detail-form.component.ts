@@ -93,15 +93,9 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
     window.open(url, '_blank');
   }
 
-  goToPreviousWorkflow() {
+  goToWorkflow(id: number) {
     const url = this.router.serializeUrl(this.router.createUrlTree([Pages.SEPODI.path,
-      Pages.WORKFLOWS.path, this.currentWorkflow?.previousWorkflowId]));
-    window.open(url, '_blank');
-  }
-
-  goToFollowUpWorkflow() {
-    const url = this.router.serializeUrl(this.router.createUrlTree([Pages.SEPODI.path,
-      Pages.WORKFLOWS.path, this.currentWorkflow?.followUpWorkflowId]));
+      Pages.WORKFLOWS.path, id]));
     window.open(url, '_blank');
   }
 
