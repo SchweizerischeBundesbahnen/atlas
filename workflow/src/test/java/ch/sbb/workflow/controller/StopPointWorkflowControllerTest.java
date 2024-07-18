@@ -825,14 +825,14 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(restartWorkflowModel)))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.status", is("ADDED")));
+        .andExpect(jsonPath("$.status", is("HEARING")));
     List<StopPointWorkflow> workflows =
         workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
             .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
     assertThat(workflows).hasSize(2);
     assertThat(workflows.get(0).getStatus()).isEqualTo(WorkflowStatus.REJECTED);
     assertThat(workflows.get(0).getFollowUpWorkflow()).isNotNull();
-    assertThat(workflows.get(1).getStatus()).isEqualTo(WorkflowStatus.ADDED);
+    assertThat(workflows.get(1).getStatus()).isEqualTo(WorkflowStatus.HEARING);
     verify(notificationService).sendRestartStopPointWorkflowMail(any(StopPointWorkflow.class), any(StopPointWorkflow.class));
   }
 
