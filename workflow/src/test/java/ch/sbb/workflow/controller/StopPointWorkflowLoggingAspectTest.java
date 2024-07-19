@@ -18,6 +18,7 @@ import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
+import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
 import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import ch.sbb.workflow.service.sepodi.StopPointWorkflowTransitionService;
@@ -216,4 +217,49 @@ public class StopPointWorkflowLoggingAspectTest extends BaseControllerApiTest {
     assertThat(logFound).isTrue();
   }
 
+  @Test
+  void shouldRestartWorkflowLoggingAspect() throws Exception {
+    // given
+    Person person = Person.builder()
+            .firstName("Marek1")
+            .lastName("Hamsik1")
+            .function("Centrocampista1")
+            .mail(MAIL_ADDRESS).build();
+
+    Long versionId = 123456L;
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+            .sloid("ch:1:sloid:1234")
+            .sboid("ch:1:sboid:666")
+            .designationOfficial("Biel/Bienne unter 30")
+            .localityName("Biel/Bienne")
+            .ccEmails(List.of(MAIL_ADDRESS))
+            .workflowComment("Yet another WF comment")
+            .status(WorkflowStatus.ADDED)
+            .examinants(Set.of(person))
+            .startDate(LocalDate.of(2001, 1, 1))
+            .endDate(LocalDate.of(2001, 12, 31))
+            .versionId(versionId)
+            .build();
+    workflowRepository.save(stopPointWorkflow);
+
+    StopPointRestartWorkflowModel stopPointRestartWorkflowModel = StopPointRestartWorkflowModel.builder()
+            .motivationComment("No Comment1")
+            .firstName("Marek1")
+            .lastName("Hamsik1")
+            .organisation("YB1")
+            .mail(MAIL_ADDRESS)
+            .designationOfficial("NEWDESIGNATION")
+            .build();
+
+    // when & then
+    mvc.perform(post("/v1/stop-point/workflows/restart/" + stopPointWorkflow.getId() + 5)
+                    .contentType(contentType)
+                    .content(mapper.writeValueAsString(stopPointRestartWorkflowModel)))
+            .andExpect(status().isNotFound());
+
+    boolean logFound = listAppender.list.stream()
+            .anyMatch(event -> event.getFormattedMessage().contains(LoggingAspect.ERROR_MARKER) &&
+                    event.getFormattedMessage().contains("\"workflowType\":" + "\"" + LoggingAspect.RESTART_WORKFLOW + "\""));
+    assertThat(logFound).isTrue();
+  }
 }

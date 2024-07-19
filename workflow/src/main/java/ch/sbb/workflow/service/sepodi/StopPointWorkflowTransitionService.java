@@ -111,39 +111,46 @@ public class StopPointWorkflowTransitionService {
     return workflow;
   }
 
+  @MethodLogged(workflowType = LoggingAspect.RESTART_WORKFLOW)
   public StopPointWorkflow restartWorkflow(Long id, StopPointRestartWorkflowModel restartWorkflowModel) {
     StopPointWorkflow stopPointWorkflow = stopPointWorkflowService.findStopPointWorkflow(id);
     if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
       throw new IllegalStateException(EXCEPTION_HEARING_MSG);
     }
-    //TODO String newDesignationOfficial = restartWorkflowModel.getNewDesignationOfficial();
-    // sePoDiClient.update(officialDesignation)
 
-    ClientPersonModel examinantBAVclientPersonModel = restartWorkflowModel.getExaminantBAVClient();
-    Person examinantBAV = ClientPersonMapper.toEntity(examinantBAVclientPersonModel);
+    Person examinantBAV = Person.builder()
+            .firstName(restartWorkflowModel.getFirstName())
+            .lastName(restartWorkflowModel.getLastName())
+            .mail(restartWorkflowModel.getMail())
+            .organisation(restartWorkflowModel.getOrganisation())
+            .build();
+
     examinantBAV.setStopPointWorkflow(stopPointWorkflow);
     Decision decision = new Decision();
     decision.setDecisionType(DecisionType.RESTARTED);
     decision.setExaminant(examinantBAV);
     decision.setMotivation(restartWorkflowModel.getMotivationComment());
     decision.setMotivationDate(LocalDateTime.now());
-    decisionService.save(decision);
 
     //create new Workflow
     StopPointWorkflow newStopPointWorkflow = StopPointWorkflow.builder()
         .workflowComment(restartWorkflowModel.getMotivationComment())
-        .designationOfficial(restartWorkflowModel.getNewDesignationOfficial())
-        .status(WorkflowStatus.ADDED)
+        .designationOfficial(restartWorkflowModel.getDesignationOfficial())
+        .status(WorkflowStatus.HEARING)
         .examinants(new HashSet<>(stopPointWorkflow.getExaminants()))
         .ccEmails(new ArrayList<>(stopPointWorkflow.getCcEmails()))
         .sboid(stopPointWorkflow.getSboid())
         .versionId(stopPointWorkflow.getVersionId())
         .sloid(stopPointWorkflow.getSloid())
         .localityName(stopPointWorkflow.getLocalityName())
-        .startDate(stopPointWorkflow.getStartDate())//todo
-        .endDate(stopPointWorkflow.getEndDate())
+        .startDate(LocalDate.now())
+        .endDate(LocalDate.now().plusMonths(1))
         .build();
+
+    sePoDiClientService.updateDesignationOfficialServicePoint(newStopPointWorkflow);
+    decisionService.save(decision);
     stopPointWorkflowService.save(newStopPointWorkflow);
+
     //update current workflow
     stopPointWorkflow.setEndDate(LocalDate.now());
     stopPointWorkflow.setStatus(REJECTED);
