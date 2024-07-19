@@ -28,6 +28,7 @@ public class StopPointWorkflowMapper {
         .status(entity.getStatus())
         .workflowComment(entity.getWorkflowComment())
         .localityName(entity.getLocalityName())
+        .followUpWorkflowId(entity.getFollowUpWorkflow() != null ? entity.getFollowUpWorkflow().getId() : null)
         .versionValidFrom(entity.getVersionValidFrom())
         .versionValidTo(entity.getVersionValidTo())
         .sboid(entity.getSboid())
