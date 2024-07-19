@@ -15,7 +15,7 @@
 
    <properties>
       <microsoft-graph-sdk-version>6.13.0</microsoft-graph-sdk-version>
-      <azure-identity-version>1.13.0</azure-identity-version>
+      <azure-identity-version>1.13.1</azure-identity-version>
    </properties>
    <dependencies>
       <dependency>
