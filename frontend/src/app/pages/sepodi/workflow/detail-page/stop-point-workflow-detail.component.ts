@@ -22,9 +22,12 @@ import {
   StopPointWorkflowDetailFormGroupBuilder,
 } from './detail-form/stop-point-workflow-detail-form-group';
 import { DecisionStepperComponent } from './decision/decision-stepper/decision-stepper.component';
-import { DialogService } from '../../../../core/components/dialog/dialog.service';
-import { ValidationService } from '../../../../core/validation/validation.service';
-import { PermissionService } from '../../../../core/auth/permission/permission.service';
+import {DialogService} from "../../../../core/components/dialog/dialog.service";
+import {ValidationService} from "../../../../core/validation/validation.service";
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
+import {
+  StopPointRestartWorkflowDialogService
+} from "../stop-point-restart-workflow-dialog/stop-point-restart-workflow-dialog.service";
 
 @Component({
   selector: 'stop-point-workflow-detail',
@@ -41,6 +44,7 @@ export class StopPointWorkflowDetailComponent implements OnInit {
     private readonly stopPointWorkflowService: StopPointWorkflowService,
     private readonly notificationService: NotificationService,
     private readonly stopPointRejectWorkflowDialogService: StopPointRejectWorkflowDialogService,
+    private readonly stopPointRestartWorkflowDialogService: StopPointRestartWorkflowDialogService,
     private dialogService: DialogService,
     private permissionService: PermissionService,
   ) {}
@@ -93,6 +97,10 @@ export class StopPointWorkflowDetailComponent implements OnInit {
 
   rejectWorkflow() {
     this.stopPointRejectWorkflowDialogService.openDialog(this.workflow.id!, 'REJECT');
+  }
+
+  restartWorkflow() {
+    this.stopPointRestartWorkflowDialogService.openDialog(this.workflow.id!, "RESTART")
   }
 
   cancelWorkflow() {

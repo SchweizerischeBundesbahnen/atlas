@@ -590,7 +590,8 @@
       "CHECK": {
         "ACCEPTED": "L'audizione è stata approvata con successo.",
         "REJECTED": "L'audizione è stata respinta con successo.",
-        "CANCELED": "L'audizione è stata annullata con successo"
+        "CANCELED": "L'audizione è stata annullata con successo.",
+        "RESTARTED": "L'audizione è stata riavviata con successo."
       },
       "SKIP": {
         "SUCCESS": "L'audizione è stata saltata con successo."
@@ -1047,7 +1048,9 @@
         "END": "Fine dell'audizione",
         "SEARCH": "SLOID - Denominazione ufficiale",
         "OVERRIDE_TITLE": "Valutazione da parte di UFT",
-        "OVERRIDE_HAPPENED_INFO": "L'Ufficio federale dei trasporti (UFT) ha effettuato una valutazione. Si applica la valutazione dell'UFT (vedi sotto)."
+        "OVERRIDE_HAPPENED_INFO": "L'Ufficio federale dei trasporti (UFT) ha effettuato una valutazione. Si applica la valutazione dell'UFT (vedi sotto).",
+        "PREVIOUS_WORKFLOW": "Ersetzt vorhergehende Anhörung {{number}}",
+        "FOLLOW_UP_WORKFLOW": "Nachfolgende Anhörung {{number}}"
       }
     },
     "TRAFFIC_POINT_ELEMENTS": {
