@@ -590,7 +590,8 @@
       "CHECK": {
         "ACCEPTED": "Der Antrag wurde erfolgreich genehmigt.",
         "REJECTED": "Der Antrag wurde erfolgreich zurückgewiesen.",
-        "CANCELED": "Der Antrag wurde erfolgreich abgebrochen."
+        "CANCELED": "Der Antrag wurde erfolgreich abgebrochen.",
+        "RESTARTED": "Der Antrag wurde erfolgreich neugestartet."
       },
       "SKIP": {
         "SUCCESS": "Die Anhörung wurde erfolgreich übersprungen."
@@ -1047,7 +1048,9 @@
         "END": "Ende Anhörung",
         "SEARCH": "SLOID - Offizielle Bezeichnung",
         "OVERRIDE_TITLE": "Beurteilung durch BAV",
-        "OVERRIDE_HAPPENED_INFO": "Das Bundesamt für Verkehr (BAV) hat eine Beurteilung vorgenommen. Es gilt die Beurteilung des BAV (siehe unten)."
+        "OVERRIDE_HAPPENED_INFO": "Das Bundesamt für Verkehr (BAV) hat eine Beurteilung vorgenommen. Es gilt die Beurteilung des BAV (siehe unten).",
+        "PREVIOUS_WORKFLOW": "Ersetzt vorhergehende Anhörung {{number}}",
+        "FOLLOW_UP_WORKFLOW": "Nachfolgende Anhörung {{number}}"
       }
     },
     "TRAFFIC_POINT_ELEMENTS": {
