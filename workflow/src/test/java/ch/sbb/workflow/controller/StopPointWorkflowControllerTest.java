@@ -16,7 +16,6 @@ import ch.sbb.atlas.api.servicepoint.LocalityMunicipalityModel;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.ServicePointGeolocationReadModel;
 import ch.sbb.atlas.api.servicepoint.SwissLocation;
-import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
@@ -812,15 +811,13 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .build();
     workflowRepository.save(stopPointWorkflow);
 
-    ClientPersonModel examinantBAV = ClientPersonModel.builder()
-        .firstName("Luca")
-        .lastName("Fix")
-        .personFunction("YB-Fun")
-        .mail(MAIL_ADDRESS).build();
     StopPointRestartWorkflowModel restartWorkflowModel = StopPointRestartWorkflowModel.builder()
-        .examinantBAVClient(examinantBAV)
-        .newDesignationOfficial("Bern")
+        .designationOfficial("Bern")
+        .firstName("marek")
+        .lastName("hamsik")
         .motivationComment("Bern is better")
+        .mail("chef@chef.ch")
+        .organisation("sbb")
         .build();
 
     //given
@@ -828,14 +825,14 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
             .contentType(contentType)
             .content(mapper.writeValueAsString(restartWorkflowModel)))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.status", is("ADDED")));
+        .andExpect(jsonPath("$.status", is("HEARING")));
     List<StopPointWorkflow> workflows =
         workflowRepository.findAll().stream().filter(spw -> spw.getVersionId().equals(versionId))
             .sorted(Comparator.comparing(StopPointWorkflow::getId)).toList();
     assertThat(workflows).hasSize(2);
     assertThat(workflows.get(0).getStatus()).isEqualTo(WorkflowStatus.REJECTED);
     assertThat(workflows.get(0).getFollowUpWorkflow()).isNotNull();
-    assertThat(workflows.get(1).getStatus()).isEqualTo(WorkflowStatus.ADDED);
+    assertThat(workflows.get(1).getStatus()).isEqualTo(WorkflowStatus.HEARING);
     verify(notificationService).sendRestartStopPointWorkflowMail(any(StopPointWorkflow.class), any(StopPointWorkflow.class));
   }
 
