@@ -45,6 +45,12 @@ public interface StopPointWorkflowApiV1 {
           StopPointWorkflow.Fields.versionValidFrom}) Pageable pageable,
       @ParameterObject StopPointWorkflowRequestParams stopPointWorkflowRequestParams);
 
+  @GetMapping("filter-no-decision")
+  @PageableAsQueryParam
+  Container<ReadStopPointWorkflowModel> filterStopPointWorkflows(
+      @Parameter(hidden = true) @PageableDefault(sort = {StopPointWorkflow.Fields.sloid,
+          StopPointWorkflow.Fields.versionValidFrom}) Pageable pageable);
+
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(value = {
