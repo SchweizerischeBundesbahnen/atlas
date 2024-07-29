@@ -1,5 +1,5 @@
 # Dockerfile for ESTA Web
-FROM cloud.docker.bin.sbb.ch/cloud/plattform-nginx:1.22.1
+FROM esta.docker.bin.sbb.ch/esta/ubi9/nginx-124:1
 
 USER root
 
@@ -7,7 +7,7 @@ ARG APP_RELEASE_VERSION=latest
 ENV APP_VERSION=$APP_RELEASE_VERSION
 
 # Download ngssc binary
-ADD https://github.com/kyubisation/angular-server-side-configuration/releases/download/v18.0.1/ngssc_64bit /usr/sbin/ngssc
+ADD https://github.com/kyubisation/angular-server-side-configuration/releases/download/v18.1.0/ngssc_amd64 /usr/sbin/ngssc
 RUN chmod +x /usr/sbin/ngssc
 
 # Add ngssc script
