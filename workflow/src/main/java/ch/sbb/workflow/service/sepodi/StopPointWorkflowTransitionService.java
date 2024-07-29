@@ -3,7 +3,6 @@ package ch.sbb.workflow.service.sepodi;
 import static ch.sbb.atlas.workflow.model.WorkflowStatus.REJECTED;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
-import ch.sbb.atlas.api.workflow.ClientPersonModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.aop.LoggingAspect;
@@ -14,7 +13,6 @@ import ch.sbb.workflow.entity.JudgementType;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.kafka.StopPointWorkflowNotificationService;
-import ch.sbb.workflow.mapper.ClientPersonMapper;
 import ch.sbb.workflow.mapper.PersonMapper;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
 import ch.sbb.workflow.model.sepodi.Examinants;
@@ -30,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -118,39 +117,33 @@ public class StopPointWorkflowTransitionService {
       throw new IllegalStateException(EXCEPTION_HEARING_MSG);
     }
 
-    Person examinantBAV = Person.builder()
-            .firstName(restartWorkflowModel.getFirstName())
-            .lastName(restartWorkflowModel.getLastName())
-            .mail(restartWorkflowModel.getMail())
-            .organisation(restartWorkflowModel.getOrganisation())
-            .build();
-
+    Person examinantBAV = Person.builder().
+        firstName(restartWorkflowModel.getFirstName())
+        .lastName(restartWorkflowModel.getLastName())
+        .mail(restartWorkflowModel.getMail())
+        .organisation(restartWorkflowModel.getOrganisation())
+        .build();
     examinantBAV.setStopPointWorkflow(stopPointWorkflow);
+
     Decision decision = new Decision();
     decision.setDecisionType(DecisionType.RESTARTED);
     decision.setExaminant(examinantBAV);
     decision.setMotivation(restartWorkflowModel.getMotivationComment());
     decision.setMotivationDate(LocalDateTime.now());
 
-    //create new Workflow
-    StopPointWorkflow newStopPointWorkflow = StopPointWorkflow.builder()
-        .workflowComment(restartWorkflowModel.getMotivationComment())
-        .designationOfficial(restartWorkflowModel.getDesignationOfficial())
-        .status(WorkflowStatus.HEARING)
-        .examinants(new HashSet<>(stopPointWorkflow.getExaminants()))
+    StopPointWorkflow newStopPointWorkflow = stopPointWorkflow.toBuilder()
+        .id(null)
         .ccEmails(new ArrayList<>(stopPointWorkflow.getCcEmails()))
-        .sboid(stopPointWorkflow.getSboid())
-        .versionId(stopPointWorkflow.getVersionId())
-        .sloid(stopPointWorkflow.getSloid())
-        .localityName(stopPointWorkflow.getLocalityName())
-        .startDate(LocalDate.now())
-        .endDate(LocalDate.now().plusMonths(1))
-        .build();
+        .designationOfficial(restartWorkflowModel.getDesignationOfficial())
+        .workflowComment(restartWorkflowModel.getMotivationComment()).startDate(LocalDate.now())
+        .endDate(LocalDate.now().plusMonths(1)).build();
+    Set<Person> examinantsCopy = new HashSet<>();
+    stopPointWorkflow.getExaminants().forEach(person -> examinantsCopy.add(person.toBuilder().id(null).build()));
+    newStopPointWorkflow.setExaminants(examinantsCopy);
+    stopPointWorkflowService.save(newStopPointWorkflow);
 
     sePoDiClientService.updateDesignationOfficialServicePoint(newStopPointWorkflow);
     decisionService.save(decision);
-    stopPointWorkflowService.save(newStopPointWorkflow);
-
     //update current workflow
     stopPointWorkflow.setEndDate(LocalDate.now());
     stopPointWorkflow.setStatus(REJECTED);
