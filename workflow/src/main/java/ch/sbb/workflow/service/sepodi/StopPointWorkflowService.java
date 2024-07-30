@@ -19,7 +19,6 @@ import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import java.time.LocalDateTime;
 import java.util.Optional;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -78,14 +77,44 @@ public class StopPointWorkflowService {
 
   public void voteWorkFlow(Long id, Long personId, DecisionModel decisionModel) {
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
-    if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
-      throw new StopPointWorkflowNotInHearingException();
-    }
+    validateIsStopPointInHearing(stopPointWorkflow);
     Person examinant = stopPointWorkflow.getExaminants().stream().filter(p -> p.getId().equals(personId)).findFirst()
         .orElseThrow(() -> new IdNotFoundException(personId));
 
     updateExaminantInformation(decisionModel, examinant);
 
+    voteDecision(decisionModel, examinant);
+  }
+
+  public void overrideVoteWorkflow(Long id, Long personId, OverrideDecisionModel decisionModel) {
+    StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
+    validateIsStopPointInHearing(stopPointWorkflow);
+    Person examinant = stopPointWorkflow.getExaminants().stream().filter(p -> p.getId().equals(personId)).findFirst()
+        .orElseThrow(() -> new IdNotFoundException(personId));
+    voteOverrideDecision(decisionModel, examinant);
+  }
+
+  public StopPointWorkflow findStopPointWorkflow(Long id) {
+    return workflowRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+  }
+
+  public void checkHasWorkflowAdded(Long versionId) {
+    if (!workflowRepository.findAllByVersionIdAndStatus(versionId, WorkflowStatus.ADDED).isEmpty()) {
+      throw new StopPointWorkflowAlreadyInAddedStatusException();
+    }
+  }
+
+  public StopPointWorkflow save(StopPointWorkflow stopPointWorkflow) {
+    return workflowRepository.saveAndFlush(stopPointWorkflow);
+  }
+
+  public void validateIsStopPointInHearing(StopPointWorkflow stopPointWorkflow) {
+    if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
+      throw new StopPointWorkflowNotInHearingException();
+    }
+  }
+
+  private void voteDecision(DecisionModel decisionModel, Person examinant) {
     Decision decision = decisionRepository.findDecisionByExaminantId(examinant.getId());
     if (decision == null) {
       decision = new Decision();
@@ -98,20 +127,7 @@ public class StopPointWorkflowService {
     decisionRepository.save(decision);
   }
 
-  private static void updateExaminantInformation(DecisionModel decisionModel, Person examinant) {
-    examinant.setFirstName(decisionModel.getFirstName());
-    examinant.setLastName(decisionModel.getLastName());
-    examinant.setOrganisation(decisionModel.getOrganisation());
-    examinant.setFunction(decisionModel.getPersonFunction());
-  }
-
-  public void overrideVoteWorkflow(Long id, Long personId, OverrideDecisionModel decisionModel) {
-    StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
-    if (stopPointWorkflow.getStatus() != WorkflowStatus.HEARING) {
-      throw new StopPointWorkflowNotInHearingException();
-    }
-    Person examinant = stopPointWorkflow.getExaminants().stream().filter(p -> p.getId().equals(personId)).findFirst()
-        .orElseThrow(() -> new IdNotFoundException(personId));
+  private void voteOverrideDecision(OverrideDecisionModel decisionModel, Person examinant) {
     Decision decision = decisionRepository.findDecisionByExaminantId(examinant.getId());
     if (decision == null) {
       decision = new Decision();
@@ -128,17 +144,11 @@ public class StopPointWorkflowService {
     decisionRepository.save(decision);
   }
 
-  public StopPointWorkflow findStopPointWorkflow(Long id) {
-    return workflowRepository.findById(id).orElseThrow(() -> new IdNotFoundException(id));
+  private void updateExaminantInformation(DecisionModel decisionModel, Person examinant) {
+    examinant.setFirstName(decisionModel.getFirstName());
+    examinant.setLastName(decisionModel.getLastName());
+    examinant.setOrganisation(decisionModel.getOrganisation());
+    examinant.setFunction(decisionModel.getPersonFunction());
   }
 
-  public void checkHasWorkflowAdded(Long versionId) {
-    if (!workflowRepository.findAllByVersionIdAndStatus(versionId, WorkflowStatus.ADDED).isEmpty()) {
-      throw new StopPointWorkflowAlreadyInAddedStatusException();
-    }
-  }
-
-  public StopPointWorkflow save(StopPointWorkflow stopPointWorkflow) {
-    return workflowRepository.saveAndFlush(stopPointWorkflow);
-  }
 }
