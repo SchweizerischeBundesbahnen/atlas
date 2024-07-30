@@ -46,11 +46,13 @@ public class SePoDiClientService {
   }
 
   public ReadServicePointVersionModel updateDesignationOfficialServicePoint(StopPointWorkflow stopPointWorkflow) {
-    UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel = UpdateDesignationOfficialServicePointModel
+    UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel =
+        UpdateDesignationOfficialServicePointModel
             .builder()
             .designationOfficial(stopPointWorkflow.getDesignationOfficial())
             .build();
 
-    return sePoDiClient.updateServicePointDesignationOfficial(stopPointWorkflow.getVersionId(), updateDesignationOfficialServicePointModel);
+    return sePoDiClient.updateServicePointDesignationOfficial(stopPointWorkflow.getVersionId(),
+        updateDesignationOfficialServicePointModel);
   }
 }

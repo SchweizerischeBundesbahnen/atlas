@@ -22,9 +22,28 @@ public class DecisionService {
 
   private final DecisionRepository decisionRepository;
 
-  public void createRejectedDecision(Person examinant, String motivation){
-    Decision decision = Decision.builder()
+  public void createRejectedDecision(Person examinant, String motivation) {
+    Decision decision = createNoDecision(examinant, motivation, DecisionType.REJECTED);
+    decisionRepository.save(decision);
+  }
+
+  public void createCanceledDecision(Person examinant, String motivation) {
+    Decision decision = createNoDecision(examinant, motivation, DecisionType.CANCELED);
+    decisionRepository.save(decision);
+  }
+
+  public Decision createNoDecision(Person examinant, String motivation, DecisionType decisionType) {
+    return Decision.builder()
         .judgement(JudgementType.NO)
+        .decisionType(decisionType)
+        .examinant(examinant)
+        .motivation(motivation)
+        .motivationDate(LocalDateTime.now())
+        .build();
+  }
+
+  public void createRestartDecision(Person examinant, String motivation) {
+    Decision decision = Decision.builder()
         .decisionType(DecisionType.REJECTED)
         .examinant(examinant)
         .motivation(motivation)
