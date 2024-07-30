@@ -11,9 +11,7 @@ import {StopPointRestartWorkflow, StopPointWorkflowService, UserAdministrationSe
 import {Router} from "@angular/router";
 import {NotificationService} from "../../../../core/notification/notification.service";
 import {Pages} from "../../../pages";
-import {
-  StopPointRejectWorkflowDialogData
-} from "../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog-data";
+import {StopPointRejectWorkflowDialogData} from "../stop-point-reject-workflow-dialog/stop-point-reject-workflow-dialog-data";
 
 @Component({
   selector: 'app-stop-point-restart-workflow-dialog',
@@ -63,7 +61,6 @@ export class StopPointRestartWorkflowDialogComponent implements OnInit {
     if (this.formGroup.valid) {
       const stopPointRestartWorkflow =
         StopPointRestartWorkflowFormGroupBuilder.buildStopPointRestartWorkflow(this.formGroup);
-      this.formGroup.disable();
       this.doRestart(stopPointRestartWorkflow)
     }
   }
@@ -72,6 +69,7 @@ export class StopPointRestartWorkflowDialogComponent implements OnInit {
      this.stopPointWorkflowService.restartStopPointWorkflow(this.data.workflowId, stopPointRestartWorkflow)
        .subscribe((workflow) => {
          this.notificationService.success('WORKFLOW.NOTIFICATION.CHECK.RESTARTED');
+         this.formGroup.disable();
          this.dialogRef.close();
          this.navigateToWorkflow(workflow.id!);
        })

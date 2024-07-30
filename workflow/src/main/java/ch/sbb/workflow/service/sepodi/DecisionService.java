@@ -32,7 +32,7 @@ public class DecisionService {
     decisionRepository.save(decision);
   }
 
-  public Decision createNoDecision(Person examinant, String motivation, DecisionType decisionType) {
+  private Decision createNoDecision(Person examinant, String motivation, DecisionType decisionType) {
     return Decision.builder()
         .judgement(JudgementType.NO)
         .decisionType(decisionType)
