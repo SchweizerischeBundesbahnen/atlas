@@ -17,17 +17,16 @@ import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
 
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
@@ -37,11 +36,16 @@ import java.util.stream.Stream;
 @FieldNameConstants
 public abstract class ServicePointVersionModel extends BaseVersionModel implements DatesValidator {
 
-  @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")
+  @Schema(description = """
+      This ID helps identify versions of a service point in the use case front end and/or update.
+      This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a service point.
+      To do this, use the sloid or number in combination with the data range (valid from/valid until).
+      """,
+      accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;
 
   @Schema(description = "Long designation of a location. Used primarily in customer information. "
-          + "Not all systems can process names of this length.", example = "Biel/Bienne Bözingenfeld/Champs-de-Boujean")
+      + "Not all systems can process names of this length.", example = "Biel/Bienne Bözingenfeld/Champs-de-Boujean")
   @Size(min = 2, max = AtlasFieldLengths.LENGTH_50)
   private String designationLong;
 

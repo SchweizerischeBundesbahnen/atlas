@@ -30,7 +30,12 @@ import lombok.experimental.SuperBuilder;
 @Schema(name = "SublineVersion")
 public class SublineVersionModel extends BaseVersionModel implements DatesValidator {
 
-  @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY)
+  @Schema(description = """
+      This ID helps identify versions of a service point in the use case front end and/or update.
+      This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a service point.
+      To do this, use the sloid or number in combination with the data range (valid from/valid until).
+      """,
+      accessMode = AccessMode.READ_ONLY)
   private Long id;
 
   @Schema(description = "SwissSublineNumber", example = "b1.L1.X")
