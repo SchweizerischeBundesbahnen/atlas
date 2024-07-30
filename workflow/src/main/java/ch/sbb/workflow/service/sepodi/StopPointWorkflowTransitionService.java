@@ -1,9 +1,6 @@
 package ch.sbb.workflow.service.sepodi;
 
-import static ch.sbb.atlas.workflow.model.WorkflowStatus.CANCELED;
-import static ch.sbb.atlas.workflow.model.WorkflowStatus.HEARING;
 import static ch.sbb.atlas.workflow.model.WorkflowStatus.REJECTED;
-import static ch.sbb.workflow.service.sepodi.StopPointWorkflowStatusTransitionDecider.validateWorkflowStatusTransition;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
@@ -61,9 +58,10 @@ public class StopPointWorkflowTransitionService {
 
   public StopPointWorkflow startWorkflow(Long id) {
     StopPointWorkflow stopPointWorkflow = stopPointWorkflowService.findStopPointWorkflow(id);
-    validateWorkflowStatusTransition(stopPointWorkflow.getStatus(), HEARING);
+    StopPointWorkflowStatusTransitionDecider.validateWorkflowStatusTransition(stopPointWorkflow.getStatus(),
+        WorkflowStatus.HEARING);
 
-    stopPointWorkflow.setStatus(HEARING);
+    stopPointWorkflow.setStatus(WorkflowStatus.HEARING);
     stopPointWorkflow.setStartDate(LocalDate.now());
     stopPointWorkflow.setEndDate(LocalDate.now().plusDays(WORKFLOW_DURATION_IN_DAYS));
     StopPointWorkflow workflow = stopPointWorkflowService.save(stopPointWorkflow);
@@ -74,7 +72,7 @@ public class StopPointWorkflowTransitionService {
   @MethodLogged(workflowType = LoggingAspect.REJECT_WORKFLOW)
   public StopPointWorkflow rejectWorkflow(Long id, StopPointRejectWorkflowModel rejectWorkflowModel) {
     StopPointWorkflow stopPointWorkflow = stopPointWorkflowService.findStopPointWorkflow(id);
-    validateWorkflowStatusTransition(stopPointWorkflow.getStatus(), REJECTED);
+    StopPointWorkflowStatusTransitionDecider.validateWorkflowStatusTransition(stopPointWorkflow.getStatus(), REJECTED);
 
     Person examinantBAV = PersonMapper.toPersonEntity(rejectWorkflowModel);
     decisionService.createRejectedDecision(examinantBAV, rejectWorkflowModel.getMotivationComment());
@@ -89,7 +87,8 @@ public class StopPointWorkflowTransitionService {
   @MethodLogged(workflowType = LoggingAspect.CANCEL_WORKFLOW)
   public StopPointWorkflow cancelWorkflow(Long id, StopPointRejectWorkflowModel stopPointCancelWorkflowModel) {
     StopPointWorkflow stopPointWorkflow = stopPointWorkflowService.findStopPointWorkflow(id);
-    validateWorkflowStatusTransition(stopPointWorkflow.getStatus(), CANCELED);
+    StopPointWorkflowStatusTransitionDecider.validateWorkflowStatusTransition(stopPointWorkflow.getStatus(),
+        WorkflowStatus.CANCELED);
 
     Person examinantBAV = PersonMapper.toPersonEntity(stopPointCancelWorkflowModel);
     examinantBAV.setStopPointWorkflow(stopPointWorkflow);
@@ -107,7 +106,7 @@ public class StopPointWorkflowTransitionService {
   @MethodLogged(workflowType = LoggingAspect.RESTART_WORKFLOW)
   public StopPointWorkflow restartWorkflow(Long id, StopPointRestartWorkflowModel restartWorkflowModel) {
     StopPointWorkflow stopPointWorkflow = stopPointWorkflowService.findStopPointWorkflow(id);
-    validateWorkflowStatusTransition(stopPointWorkflow.getStatus(), REJECTED);
+    StopPointWorkflowStatusTransitionDecider.validateWorkflowStatusTransition(stopPointWorkflow.getStatus(), REJECTED);
 
     addBavExaminantDecision(restartWorkflowModel, stopPointWorkflow);
     StopPointWorkflow newStopPointWorkflow = cloneCurrentStopPointWorkflow(restartWorkflowModel, stopPointWorkflow);
