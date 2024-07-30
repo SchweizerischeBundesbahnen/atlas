@@ -89,6 +89,7 @@ describe('Sublines: TableSettings and Routing', { testIsolation: false }, () => 
     );
 
     assertAllTableFiltersAreFilled();
+    cy.wait(2000);
   });
 
   it('Step-7: Click on add new subline Button and come back without actually creating it', () => {
@@ -96,6 +97,7 @@ describe('Sublines: TableSettings and Routing', { testIsolation: false }, () => 
     CommonUtils.clickCancelOnDetailViewBackToSublines();
 
     assertAllTableFiltersAreFilled();
+    cy.wait(2000);
   });
 
   it('Step-8: Change CHTLNR of subline from r.31.001:x_ to r.31.001:x_-changed', () => {
