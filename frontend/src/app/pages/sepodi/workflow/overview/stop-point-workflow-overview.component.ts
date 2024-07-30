@@ -58,6 +58,13 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
 
   stopPointWorkflows: ReadStopPointWorkflow[] = [];
   totalCount$ = 0;
+  asd = false;
+  pagination: TablePagination = {
+    page: 1,
+    size: 10,
+    sort: 'id,asc'
+  };
+
 
   constructor(
     private stopPointWorkflowService: StopPointWorkflowService,
@@ -98,4 +105,36 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
   edit(workflow: ReadStopPointWorkflow) {
     this.router.navigate([workflow.id], {relativeTo: this.route}).then();
   }
+
+  onToggleChange(isToggled: boolean): void {
+
+    if (isToggled) {
+      console.error('I am very much toggled, Sanje:');
+      this.filterWithPagination(this.pagination);
+    } else {
+      console.error('Not any more toggled, Sanje:');
+      this.ngOnInit();
+    }
+  }
+
+  private filterWithPagination(pagination: TablePagination): void {
+    const sortArray = pagination.sort ? pagination.sort.split(',') : [];
+    this.stopPointWorkflowService.filterStopPointWorkflows(
+      pagination.page,
+      pagination.size,
+      sortArray,
+      'body', // Default observe option
+      false,  // Default reportProgress option
+      { httpHeaderAccept: '*/*' } // Default options
+    ).subscribe(
+      (container) => {
+        this.stopPointWorkflows = container.objects!;
+        this.totalCount$ = container.totalCount!;
+      },
+      (error) => {
+        console.error('Error fetching workflows:', error);
+      }
+    );
+  }
+
 }
