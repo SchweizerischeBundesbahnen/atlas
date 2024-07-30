@@ -1,4 +1,4 @@
-import { DataCy } from '../data-cy';
+import {DataCy} from '../data-cy';
 
 export default class CommonUtils {
   static fromDetailBackToTtfnOverview() {

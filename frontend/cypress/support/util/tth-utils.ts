@@ -1,8 +1,8 @@
 import CommonUtils from './common-utils';
-import { DataCy } from '../data-cy';
+import {DataCy} from '../data-cy';
 
 export default class TthUtils {
-  private static TTH_CH_PLANNED_PATH = '/timetable-hearing/ch/';
+  public static TTH_CH_PLANNED_PATH = '/timetable-hearing/ch/';
 
   static archiveHearingIfAlreadyActive() {
     TthUtils.changeTabToTTH('ACTIVE');

@@ -93,6 +93,8 @@ export class DataCy {
   static TTH_MANAGE_TIMETABLE_HEARING = '[data-cy=manageTimetableHearing]';
   static TTH_CLOSE_TTH_YEAR = '[data-cy=closeTthYearButton]';
   static TTH_CLOSE_TTH_TIMETABLE_HEARING = '[data-cy=closeTthTimetableHearingButton]';
+  static TTH_TAB_PLANNED = '[data-cy=tth-tab-planned]';
+  static TTH_TAB_ACTIVE = '[data-cy=tth-tab-active]';
   static COLLECT_STATUS_CHANGE_ACTION_TYPE = '[data-cy=collect-status-change-action-type]';
   static TTH_SELECT_YEAR = '[data-cy=selectTthYear]';
   static TTH_DETAIL_SELECT_YEAR = '[data-cy=detailSelectTthYear]';
