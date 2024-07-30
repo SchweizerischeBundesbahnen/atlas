@@ -44,6 +44,7 @@ public class DecisionService {
 
   public void createRestartDecision(Person examinant, String motivation) {
     Decision decision = Decision.builder()
+        .judgement(JudgementType.NO)
         .decisionType(DecisionType.REJECTED)
         .examinant(examinant)
         .motivation(motivation)
