@@ -1,7 +1,6 @@
 package ch.sbb.workflow.service.sepodi;
 
-import static ch.sbb.atlas.api.AtlasApiConstants.DATE_FORMAT_PATTERN_CH;
-
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.atlas.kafka.model.mail.MailType;
 import ch.sbb.workflow.entity.Person;
@@ -29,7 +28,8 @@ public class StopPointWorkflowBuilderNotificationService {
   @Value("${mail.workflow.stop-point.from}")
   private String from;
 
-  private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN_CH);
+  private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(
+      AtlasApiConstants.DATE_FORMAT_PATTERN_CH);
 
   public MailNotification buildWorkflowStartedExaminantMail(StopPointWorkflow stopPointWorkflow) {
     List<String> examinantMails = stopPointWorkflow.getExaminants().stream().map(Person::getMail).toList();

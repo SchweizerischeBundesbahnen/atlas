@@ -8,6 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface DecisionRepository extends JpaRepository<Decision, Long> {
 
   Decision findDecisionByExaminantId(Long personId);
-  Decision findDecisionByFotOverriderId(Long personId);
 
 }
