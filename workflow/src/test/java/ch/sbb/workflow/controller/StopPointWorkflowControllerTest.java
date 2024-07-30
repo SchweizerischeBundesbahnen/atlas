@@ -804,12 +804,12 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .ccEmails(List.of(MAIL_ADDRESS))
         .workflowComment("WF comment")
         .status(WorkflowStatus.HEARING)
-        .examinants(Set.of(person))
         .startDate(LocalDate.of(2000, 1, 1))
         .endDate(LocalDate.of(2000, 12, 31))
         .versionId(versionId)
         .build();
-    workflowRepository.save(stopPointWorkflow);
+    stopPointWorkflow.setExaminants(Set.of(person));
+    workflowRepository.saveAndFlush(stopPointWorkflow);
 
     StopPointRestartWorkflowModel restartWorkflowModel = StopPointRestartWorkflowModel.builder()
         .designationOfficial("Bern")
@@ -832,7 +832,13 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(workflows).hasSize(2);
     assertThat(workflows.get(0).getStatus()).isEqualTo(WorkflowStatus.REJECTED);
     assertThat(workflows.get(0).getFollowUpWorkflow()).isNotNull();
+    assertThat(workflows.get(0).getExaminants()).hasSize(2);
+
     assertThat(workflows.get(1).getStatus()).isEqualTo(WorkflowStatus.HEARING);
+    assertThat(workflows.get(1).getApplicantMail()).isEqualTo(workflows.get(0).getApplicantMail());
+    assertThat(workflows.get(1).getCreator()).isEqualTo(workflows.get(0).getCreator());
+    assertThat(workflows.get(1).getExaminants()).hasSize(1);
+
     verify(notificationService).sendRestartStopPointWorkflowMail(any(StopPointWorkflow.class), any(StopPointWorkflow.class));
   }
 
