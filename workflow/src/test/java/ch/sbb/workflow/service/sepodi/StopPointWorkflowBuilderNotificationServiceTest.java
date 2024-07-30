@@ -6,12 +6,6 @@ import static ch.sbb.atlas.kafka.model.mail.MailType.START_STOP_POINT_WORKFLOW_E
 import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_WORKFLOW_PINCODE_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION;
 import static ch.sbb.atlas.kafka.model.mail.MailType.STOP_POINT_WORKFLOW_RESTART_NOTIFICATION;
-import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.APPROVED_WORKFLOW_SUBJECT;
-import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.CANCEL_WORKFLOW_SUBJECT;
-import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.PINCODE_SUBJECT;
-import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.REJECT_WORKFLOW_SUBJECT;
-import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.RESTART_WORKFLOW_SUBJECT;
-import static ch.sbb.workflow.service.sepodi.StopPointWorkflowBuilderNotificationService.START_WORKFLOW_SUBJECT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -62,8 +56,8 @@ class StopPointWorkflowBuilderNotificationServiceTest {
     //then
     assertThat(result).isNotNull();
     assertThat(result.getMailType()).isEqualTo(START_STOP_POINT_WORKFLOW_EXAMINANT_NOTIFICATION);
-    assertThat(result.getSubject()).isEqualTo(START_WORKFLOW_SUBJECT);
-    assertThat(result.getTo()).hasSize(2).contains("p@a.ch","t@a.ch");
+    assertThat(result.getSubject()).isEqualTo(WorkflowSubject.START_WORKFLOW_SUBJECT);
+    assertThat(result.getTo()).hasSize(2).contains("p@a.ch", "t@a.ch");
     assertThat(result.getCc()).isNull();
   }
 
@@ -76,8 +70,8 @@ class StopPointWorkflowBuilderNotificationServiceTest {
     //then
     assertThat(result).isNotNull();
     assertThat(result.getMailType()).isEqualTo(START_STOP_POINT_WORKFLOW_CC_NOTIFICATION);
-    assertThat(result.getSubject()).isEqualTo(START_WORKFLOW_SUBJECT);
-    assertThat(result.getTo()).hasSize(3).contains("a@b.ch","b@c.dh","app@lica.ma");
+    assertThat(result.getSubject()).isEqualTo(WorkflowSubject.START_WORKFLOW_SUBJECT);
+    assertThat(result.getTo()).hasSize(3).contains("a@b.ch", "b@c.dh", "app@lica.ma");
     assertThat(result.getCc()).isNull();
   }
 
@@ -90,7 +84,7 @@ class StopPointWorkflowBuilderNotificationServiceTest {
     //then
     assertThat(result).isNotNull();
     assertThat(result.getMailType()).isEqualTo(REJECT_STOP_POINT_WORKFLOW_NOTIFICATION);
-    assertThat(result.getSubject()).isEqualTo(REJECT_WORKFLOW_SUBJECT);
+    assertThat(result.getSubject()).isEqualTo(WorkflowSubject.REJECT_WORKFLOW_SUBJECT);
     assertThat(result.getTo()).hasSize(1).contains("app@lica.ma");
     assertThat(result.getCc()).hasSize(4).contains("a@b.ch", "b@c.dh", "p@a.ch", "t@a.ch");
   }
@@ -100,7 +94,8 @@ class StopPointWorkflowBuilderNotificationServiceTest {
     //given
     StopPointWorkflow stopPointWorkflow = getStopPointWorkflow();
     //when
-    List<Map<String, Object>> result = notificationService.buildMailProperties(stopPointWorkflow, REJECT_WORKFLOW_SUBJECT);
+    List<Map<String, Object>> result = notificationService.buildMailProperties(stopPointWorkflow,
+        WorkflowSubject.REJECT_WORKFLOW_SUBJECT);
     //then
     assertThat(result).hasSize(1);
     Map<String, Object> properties = result.getFirst();
@@ -117,7 +112,7 @@ class StopPointWorkflowBuilderNotificationServiceTest {
     //then
     assertThat(result).isNotNull();
     assertThat(result.getMailType()).isEqualTo(STOP_POINT_WORKFLOW_PINCODE_NOTIFICATION);
-    assertThat(result.getSubject()).isEqualTo(PINCODE_SUBJECT);
+    assertThat(result.getSubject()).isEqualTo(WorkflowSubject.PINCODE_SUBJECT);
     assertThat(result.getTo()).hasSize(1).contains("luca@bayern.munchen");
     assertThat(result.getCc()).isNull();
     assertThat(result.getTemplateProperties().getFirst()).containsKeys("pincode");
@@ -132,7 +127,7 @@ class StopPointWorkflowBuilderNotificationServiceTest {
     //then
     assertThat(result).isNotNull();
     assertThat(result.getMailType()).isEqualTo(MailType.APPROVED_STOP_POINT_WORKFLOW_NOTIFICATION);
-    assertThat(result.getSubject()).isEqualTo(APPROVED_WORKFLOW_SUBJECT);
+    assertThat(result.getSubject()).isEqualTo(WorkflowSubject.APPROVED_WORKFLOW_SUBJECT);
     assertThat(result.getTo()).hasSize(3);
     assertThat(result.getCc()).hasSize(2);
   }
@@ -146,7 +141,7 @@ class StopPointWorkflowBuilderNotificationServiceTest {
     //then
     assertThat(result).isNotNull();
     assertThat(result.getMailType()).isEqualTo(MailType.CANCEL_STOP_POINT_WORKFLOW_NOTIFICATION);
-    assertThat(result.getSubject()).isEqualTo(CANCEL_WORKFLOW_SUBJECT);
+    assertThat(result.getSubject()).isEqualTo(WorkflowSubject.CANCEL_WORKFLOW_SUBJECT);
     assertThat(result.getTo()).hasSize(3);
     assertThat(result.getCc()).hasSize(2);
   }
@@ -162,8 +157,8 @@ class StopPointWorkflowBuilderNotificationServiceTest {
     //then
     assertThat(result).isNotNull();
     assertThat(result.getMailType()).isEqualTo(STOP_POINT_WORKFLOW_RESTART_NOTIFICATION);
-    assertThat(result.getSubject()).isEqualTo(RESTART_WORKFLOW_SUBJECT);
-    assertThat(result.getTo()).hasSize(2).contains("p@a.ch","t@a.ch");
+    assertThat(result.getSubject()).isEqualTo(WorkflowSubject.RESTART_WORKFLOW_SUBJECT);
+    assertThat(result.getTo()).hasSize(2).contains("p@a.ch", "t@a.ch");
     assertThat(result.getCc()).isNull();
   }
 
@@ -178,8 +173,8 @@ class StopPointWorkflowBuilderNotificationServiceTest {
     //then
     assertThat(result).isNotNull();
     assertThat(result.getMailType()).isEqualTo(STOP_POINT_WORKFLOW_RESTART_CC_NOTIFICATION);
-    assertThat(result.getSubject()).isEqualTo(RESTART_WORKFLOW_SUBJECT);
-    assertThat(result.getTo()).hasSize(3).contains("a@b.ch","b@c.dh","app@lica.ma");
+    assertThat(result.getSubject()).isEqualTo(WorkflowSubject.RESTART_WORKFLOW_SUBJECT);
+    assertThat(result.getTo()).hasSize(3).contains("a@b.ch", "b@c.dh", "app@lica.ma");
     assertThat(result.getCc()).isNull();
   }
 

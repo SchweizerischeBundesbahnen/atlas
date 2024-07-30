@@ -34,7 +34,12 @@ public class LineVersionModel extends BaseVersionModel implements DatesValidator
   private static final String HEX_COLOR_PATTERN = "^#([a-fA-F0-9]{6})$";
   private static final String CMYK_COLOR_PATTERN = "^(([0-9][0-9]?|100),){3}([0-9][0-9]?|100)$";
 
-  @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")
+  @Schema(description = """
+      This ID helps identify versions of a service point in the use case front end and/or update.
+      This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a service point.
+      To do this, use the sloid or number in combination with the data range (valid from/valid until).
+      """,
+      accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;
 
   @Schema(description = "SwissLineNumber", example = "b1.L1")
