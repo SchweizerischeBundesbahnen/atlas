@@ -27,7 +27,12 @@ import lombok.experimental.SuperBuilder;
 @Schema(name = "LoadingPointVersion")
 public abstract class LoadingPointVersionModel extends BaseVersionModel implements DatesValidator, Versionable {
 
-  @Schema(description = "Technical identifier", accessMode = AccessMode.READ_ONLY, example = "1")
+  @Schema(description = """
+      This ID helps identify versions of a service point in the use case front end and/or update.
+      This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a service point.
+      To do this, use the sloid or number in combination with the data range (valid from/valid until).
+      """,
+      accessMode = AccessMode.READ_ONLY, example = "1")
   private Long id;
 
   @NotNull
