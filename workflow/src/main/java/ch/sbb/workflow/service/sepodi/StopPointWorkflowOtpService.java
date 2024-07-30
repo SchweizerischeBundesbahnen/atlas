@@ -7,6 +7,7 @@ import ch.sbb.workflow.exception.StopPointWorkflowExaminantNotFoundException;
 import ch.sbb.workflow.exception.StopPointWorkflowPinCodeInvalidException;
 import ch.sbb.workflow.helper.OtpHelper;
 import ch.sbb.workflow.kafka.StopPointWorkflowNotificationService;
+import ch.sbb.workflow.model.sepodi.OtpVerificationModel;
 import ch.sbb.workflow.repository.OtpRepository;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -36,13 +37,19 @@ public class StopPointWorkflowOtpService {
     notificationService.sendPinCodeMail(stopPointWorkflow, examinantMail, pinCode);
   }
 
-  public void validatePinCode(Person person, String pinCode) {
+  public Person verifyExaminantPinCode(Long id, OtpVerificationModel verificationModel) {
+    Person examinant = getExaminantByMail(id, verificationModel.getExaminantMail());
+    validatePinCode(examinant, verificationModel.getPinCode());
+    return examinant;
+  }
+
+  void validatePinCode(Person person, String pinCode) {
     if (!isPinCodeValid(person, pinCode)) {
       throw new StopPointWorkflowPinCodeInvalidException();
     }
   }
 
-  public Person getExaminantByMail(Long workflowId, String examinantMail) {
+  Person getExaminantByMail(Long workflowId, String examinantMail) {
     return workflowService.findStopPointWorkflow(workflowId)
         .getExaminants().stream()
         .filter(i -> i.getMail().equalsIgnoreCase(examinantMail))
