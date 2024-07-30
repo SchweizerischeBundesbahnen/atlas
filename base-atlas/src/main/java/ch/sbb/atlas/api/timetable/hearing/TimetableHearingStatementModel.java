@@ -33,7 +33,8 @@ import lombok.experimental.SuperBuilder;
 @FieldNameConstants
 public class TimetableHearingStatementModel extends BaseVersionModel implements CantonAssociated {
 
-  @Schema(description = "Technical identifier", example = "1", accessMode = AccessMode.READ_ONLY)
+  @Schema(description = "Technical identifier",
+      example = "1", accessMode = AccessMode.READ_ONLY)
   private Long id;
 
   @Min(TimetableHearingConstants.MIN_YEAR)
