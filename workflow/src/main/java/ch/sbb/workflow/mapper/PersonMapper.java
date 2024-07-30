@@ -3,6 +3,7 @@ package ch.sbb.workflow.mapper;
 import ch.sbb.atlas.api.workflow.PersonModel;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
+import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -32,6 +33,15 @@ public class PersonMapper {
         .lastName(rejectWorkflowModel.getLastName())
         .mail(rejectWorkflowModel.getMail())
         .organisation(rejectWorkflowModel.getOrganisation())
+        .build();
+  }
+
+  public Person toPersonEntity(StopPointRestartWorkflowModel restartWorkflowModel) {
+    return Person.builder()
+        .firstName(restartWorkflowModel.getFirstName())
+        .lastName(restartWorkflowModel.getLastName())
+        .mail(restartWorkflowModel.getMail())
+        .organisation(restartWorkflowModel.getOrganisation())
         .build();
   }
 
