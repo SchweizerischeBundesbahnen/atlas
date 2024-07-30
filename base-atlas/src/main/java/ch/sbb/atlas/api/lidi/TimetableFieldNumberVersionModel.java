@@ -25,7 +25,12 @@ import lombok.experimental.SuperBuilder;
 @Schema(name = "TimetableFieldNumberVersion")
 public class TimetableFieldNumberVersionModel extends BaseVersionModel implements DatesValidator {
 
-  @Schema(description = "Technical identifier", example = "1")
+  @Schema(description = """
+      This ID helps identify versions of a service point in the use case front end and/or update.
+      This ID can be deleted if the version is no longer present. Do not use this ID to map your object to a service point.
+      To do this, use the sloid or number in combination with the data range (valid from/valid until).
+      """,
+      example = "1")
   private Long id;
 
   @Schema(description = "Timetable field number identifier", example = "ch:1:ttfnid:100000", accessMode = AccessMode.READ_ONLY)
