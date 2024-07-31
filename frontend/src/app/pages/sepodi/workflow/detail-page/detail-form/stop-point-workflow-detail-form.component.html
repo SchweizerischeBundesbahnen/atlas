@@ -3,7 +3,6 @@
   <atlas-link label="{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.PREVIOUS_WORKFLOW' | translate: { number: currentWorkflow!.previousWorkflowId! } }}" (linkClicked)="goToWorkflow(currentWorkflow!.previousWorkflowId!)"> </atlas-link>
 </div>
 }
-
 @if (currentWorkflow?.followUpWorkflowId) {
   <div class="mb-2">
     <atlas-link label="{{ 'SEPODI.SERVICE_POINTS.WORKFLOW.FOLLOW_UP_WORKFLOW' | translate: { number: currentWorkflow!.followUpWorkflowId! } }}" (linkClicked)="goToWorkflow(currentWorkflow!.followUpWorkflowId!)"> </atlas-link>
@@ -129,6 +128,7 @@
     [formGroup]="form"
     [required]="true"
     label="SEPODI.SERVICE_POINTS.WORKFLOW.COMMENT"
+    subLabel="SEPODI.SERVICE_POINTS.WORKFLOW.COMMENT_SUB_LABEL"
     controlName="workflowComment"
     maxChars="1500"
   ></form-comment>
