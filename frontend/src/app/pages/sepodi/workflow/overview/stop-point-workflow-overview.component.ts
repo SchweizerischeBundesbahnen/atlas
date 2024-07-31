@@ -14,6 +14,7 @@ import {TablePagination} from "../../../../core/components/table/table-paginatio
 import {addElementsToArrayWhenNotUndefined} from "../../../../core/util/arrays";
 import {TableFilterSingleSearch} from "../../../../core/components/table-filter/config/table-filter-single-search";
 import {AtlasCharsetsValidator} from "../../../../core/validation/charsets/atlas-charsets-validator";
+import {TableFilterBoolean} from "../../../../core/components/table-filter/config/table-filter-boolean";
 
 @Component({
   selector: 'stop-point-workflow-overview',
@@ -23,6 +24,7 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
 
   private readonly tableFilterConfigIntern = {
     search: new TableFilterChip(0, 'col-6', 'SEPODI.SERVICE_POINTS.WORKFLOW.SEARCH'),
+    filterByNoDecision: new TableFilterBoolean(1, 'col-3', 'TTH.MANAGE_TIMETABLE_HEARING.CREATE_STATEMENT_EXTERNAL'),
     workflowIds: new TableFilterSingleSearch(1, 'SEPODI.SERVICE_POINTS.WORKFLOW.ID','col-3', AtlasCharsetsValidator.numeric),
     workflowStatus: new TableFilterMultiSelect(
       'WORKFLOW.STATUS.',
@@ -92,6 +94,7 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
       [this.tableService.filter.sboid.getActiveSearch()?.sboid],
       undefined,
       undefined,
+      this.tableService.filter.filterByNoDecision.getActiveSearch(),
       pagination.page,
       pagination.size,
       addElementsToArrayWhenNotUndefined(pagination.sort, 'id,asc')
@@ -104,37 +107,6 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
 
   edit(workflow: ReadStopPointWorkflow) {
     this.router.navigate([workflow.id], {relativeTo: this.route}).then();
-  }
-
-  onToggleChange(isToggled: boolean): void {
-
-    if (isToggled) {
-      console.error('I am very much toggled, Sanje:');
-      this.filterWithPagination(this.pagination);
-    } else {
-      console.error('Not any more toggled, Sanje:');
-      this.ngOnInit();
-    }
-  }
-
-  private filterWithPagination(pagination: TablePagination): void {
-    const sortArray = pagination.sort ? pagination.sort.split(',') : [];
-    this.stopPointWorkflowService.filterStopPointWorkflows(
-      pagination.page,
-      pagination.size,
-      sortArray,
-      'body', // Default observe option
-      false,  // Default reportProgress option
-      { httpHeaderAccept: '*/*' } // Default options
-    ).subscribe(
-      (container) => {
-        this.stopPointWorkflows = container.objects!;
-        this.totalCount$ = container.totalCount!;
-      },
-      (error) => {
-        console.error('Error fetching workflows:', error);
-      }
-    );
   }
 
 }
