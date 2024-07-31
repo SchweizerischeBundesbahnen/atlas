@@ -1,12 +1,13 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MAX_DATE, MIN_DATE } from '../../date/date.service';
-import { Moment } from 'moment/moment';
-import { TableFilterChip } from './config/table-filter-chip';
-import { TableFilterSearchSelect } from './config/table-filter-search-select';
-import { TableFilterMultiSelect } from './config/table-filter-multiselect';
-import { TableFilterDateSelect } from './config/table-filter-date-select';
-import { TableFilter } from './config/table-filter';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {MAX_DATE, MIN_DATE} from '../../date/date.service';
+import {Moment} from 'moment/moment';
+import {TableFilterChip} from './config/table-filter-chip';
+import {TableFilterSearchSelect} from './config/table-filter-search-select';
+import {TableFilterMultiSelect} from './config/table-filter-multiselect';
+import {TableFilterDateSelect} from './config/table-filter-date-select';
+import {TableFilter} from './config/table-filter';
 import {TableFilterSingleSearch} from "./config/table-filter-single-search";
+import {TableFilterBoolean} from "./config/table-filter-boolean";
 
 @Component({
   selector: 'app-table-filter',
@@ -22,6 +23,7 @@ export class TableFilterComponent<TFilterConfig> {
   public readonly TableFilterMultiSelectClass = TableFilterMultiSelect;
   public readonly TableFilterDateSelectClass = TableFilterDateSelect;
   public readonly TableFilterSingleSearchClass = TableFilterSingleSearch;
+  public readonly TableFilterBooleanClass = TableFilterBoolean;
 
   MIN_DATE = MIN_DATE;
   MAX_DATE = MAX_DATE;
