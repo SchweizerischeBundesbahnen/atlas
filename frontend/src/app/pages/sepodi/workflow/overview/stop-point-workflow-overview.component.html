@@ -4,8 +4,6 @@
       {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.WORKFLOWS' | translate }}
     </div>
 
-
-
     <app-table
       data-cy="workflow-table"
       [tableData]="stopPointWorkflows"
@@ -16,11 +14,6 @@
       (editElementEvent)="edit($event)"
       (tableChanged)="getOverview($event)"
       (tableInitialized)="getOverview($event)"
-    >
-      <div class="slide-toggle-row-wrapper pb-3">
-        <span>{{ 'TTH.MANAGE_TIMETABLE_HEARING.CREATE_STATEMENT_EXTERNAL' | translate }}</span>
-        <atlas-slide-toggle [(toggle)]="asd" (toggleChange)="onToggleChange($event)"></atlas-slide-toggle>
-      </div>
-    </app-table>
+    ></app-table>
   </div>
 </div>

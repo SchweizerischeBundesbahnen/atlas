@@ -122,12 +122,12 @@ export interface ReadServicePointVersion {
      */
     borderPoint?: boolean;
     /**
-     * ServicePoint is OperatingPointKilometer
-     */
-    operatingPointKilometer?: boolean;
-    /**
      * ServicePoint is FareStop
      */
     fareStop?: boolean;
+    /**
+     * ServicePoint is OperatingPointKilometer
+     */
+    operatingPointKilometer?: boolean;
 }
 
