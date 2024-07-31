@@ -3,14 +3,18 @@ package ch.sbb.workflow.model.sepodi;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import io.swagger.v3.oas.annotations.Parameter;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.Singular;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
@@ -57,5 +61,7 @@ public class StopPointWorkflowRequestParams {
     @DateTimeFormat(pattern = AtlasApiConstants.DATE_FORMAT_PATTERN, fallbackPatterns = { AtlasApiConstants.DATE_FORMAT_PATTERN_CH })
     private LocalDate versionValidFrom;
 
+    @Parameter(description = "Filter by NO decision")
+    private boolean filterByNoDecision;
 
 }
