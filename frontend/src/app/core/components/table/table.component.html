@@ -2,6 +2,7 @@
   <app-loading-spinner [isLoading]="isLoading"></app-loading-spinner>
 
   <app-table-filter
+    [tableFilterBooleanIsVisible]="filterIsVisible"
     (searchEvent)="searchData()"
     *ngIf="showTableFilter"
     [filterConfigurations]="tableFilterConfig"
