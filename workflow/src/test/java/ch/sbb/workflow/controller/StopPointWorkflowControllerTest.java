@@ -111,7 +111,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
 
     controller.addStopPointWorkflow(workflowModel);
 
-    mvc.perform(get("/v1/stop-point/workflows/filter-no-decision"))
+    mvc.perform(get("/v1/stop-point/workflows?filterByNoDecision=yes"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.objects", hasSize(0)));
   }
@@ -127,7 +127,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
     decisionRepository.save(decision);
 
-    mvc.perform(get("/v1/stop-point/workflows/filter-no-decision"))
+    mvc.perform(get("/v1/stop-point/workflows?filterByNoDecision=yes"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.objects", hasSize(0)));
   }
@@ -143,7 +143,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     decision.setDecisionType(DecisionType.CANCELED);
     decisionRepository.save(decision);
 
-    mvc.perform(get("/v1/stop-point/workflows/filter-no-decision"))
+    mvc.perform(get("/v1/stop-point/workflows?filterByNoDecision=yes"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.objects", hasSize(0)));
   }
@@ -158,7 +158,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
     decisionRepository.save(decision);
 
-    mvc.perform(get("/v1/stop-point/workflows/filter-no-decision"))
+    mvc.perform(get("/v1/stop-point/workflows?filterByNoDecision=yes"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.objects", hasSize(1)))
         .andExpect(jsonPath("$.objects[0].examinants", hasSize(1)));
@@ -175,7 +175,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     decision.setJudgement(JudgementType.YES);
     decisionRepository.save(decision);
 
-    mvc.perform(get("/v1/stop-point/workflows/filter-no-decision"))
+    mvc.perform(get("/v1/stop-point/workflows?filterByNoDecision=yes"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.objects", hasSize(0)));
   }
@@ -191,7 +191,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     decision.setJudgement(null);
     decisionRepository.save(decision);
 
-    mvc.perform(get("/v1/stop-point/workflows/filter-no-decision"))
+    mvc.perform(get("/v1/stop-point/workflows?filterByNoDecision=yes"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.objects", hasSize(0)));
   }
@@ -207,7 +207,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     decision.setFotJudgement(null);
     decisionRepository.save(decision);
 
-    mvc.perform(get("/v1/stop-point/workflows/filter-no-decision"))
+    mvc.perform(get("/v1/stop-point/workflows?filterByNoDecision=yes"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.objects", hasSize(1)))
         .andExpect(jsonPath("$.objects[0].examinants", hasSize(1)));
@@ -224,7 +224,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     decision.setFotJudgement(JudgementType.NO);
     decisionRepository.save(decision);
 
-    mvc.perform(get("/v1/stop-point/workflows/filter-no-decision"))
+    mvc.perform(get("/v1/stop-point/workflows?filterByNoDecision=yes"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.objects", hasSize(1))) // TODO: Check this one, maybe it should be 0
     .andExpect(jsonPath("$.objects[0].examinants", hasSize(1)));
@@ -241,7 +241,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     decision.setFotJudgement(JudgementType.YES);
     decisionRepository.save(decision);
 
-    mvc.perform(get("/v1/stop-point/workflows/filter-no-decision"))
+    mvc.perform(get("/v1/stop-point/workflows?filterByNoDecision=yes"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.objects", hasSize(0)));
   }

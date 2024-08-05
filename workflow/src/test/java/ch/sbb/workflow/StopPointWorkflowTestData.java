@@ -52,24 +52,6 @@ public class StopPointWorkflowTestData {
 
         return workflowModel;
     }
-//
-//    public static StopPointAddWorkflowModel getAddStopPointWorkflow3() {
-//        List<StopPointClientPersonModel> clientPersonModels = new ArrayList<>();
-//        clientPersonModels.add(getClientPerson());
-//
-//        long versionId = 654321L;
-//        String sloid = "ch:1:sloid:4321";
-//        StopPointAddWorkflowModel workflowModel = StopPointAddWorkflowModel.builder()
-//                .sloid(sloid)
-//                .ccEmails(List.of(MAIL_ADDRESS))
-//                .workflowComment("Commentaros")
-//                .examinants(clientPersonModels)
-//                .ccEmails(List.of("a@b.ch", "b@c.it"))
-//                .versionId(versionId)
-//                .build();
-//
-//        return workflowModel;
-//    }
 
     public static StopPointClientPersonModel getClientPerson(){
         StopPointClientPersonModel person = StopPointClientPersonModel.builder()
@@ -84,7 +66,7 @@ public class StopPointWorkflowTestData {
     public static Decision getDecisionWithExaminant(Person person) {
         return Decision.builder()
             .decisionType(DecisionType.VOTED)
-            .examinant(person) // Use the provided person
+            .examinant(person)
             .judgement(JudgementType.NO)
             .motivation("This is motivation")
             .build();
