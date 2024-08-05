@@ -1144,6 +1144,7 @@
       "BOARDING_AREA": "Haltestellenbereich"
     },
     "BACK_TO_MAP": "Schliessen",
+    "ZOOM_IN_HINT": "Zum Anzeigen von Dienststellen, zoomen Sie näher heran.",
     "AUTOMATIC_SLOID": "wird automatisch vergeben",
     "SLOID_ALREADY_USED": "{{sloid}} ist bereits vergeben.",
     "NUMBER_ALREADY_USED": "Der DiDok-Code {{number}} ist bereits vergeben."
