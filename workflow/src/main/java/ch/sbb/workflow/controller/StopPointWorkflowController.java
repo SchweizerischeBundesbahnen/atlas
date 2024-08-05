@@ -24,7 +24,6 @@ import ch.sbb.workflow.service.sepodi.DecisionService;
 import ch.sbb.workflow.service.sepodi.StopPointWorkflowOtpService;
 import ch.sbb.workflow.service.sepodi.StopPointWorkflowService;
 import ch.sbb.workflow.service.sepodi.StopPointWorkflowTransitionService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -68,16 +67,6 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   }
 
   @Override
-  public Container<ReadStopPointWorkflowModel> filterStopPointWorkflows(Pageable pageable) {
-    List<StopPointWorkflow> workflows = service.getWorkflowsByNoDecision();
-
-    return Container.<ReadStopPointWorkflowModel>builder()
-        .objects(workflows.stream().map(StopPointWorkflowMapper::toModel).toList())
-        .totalCount(workflows.size())
-        .build();
-  }
-
-  @Override
   public ReadStopPointWorkflowModel addStopPointWorkflow(StopPointAddWorkflowModel workflowModel) {
     return StopPointWorkflowMapper.toModel(workflowTransitionService.addWorkflow(workflowModel));
   }
@@ -110,7 +99,6 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   public void obtainOtp(Long id, OtpRequestModel otpRequest) {
     otpService.obtainOtp(service.findStopPointWorkflow(id), otpRequest.getExaminantMail());
   }
-
 
   @Override
   public StopPointClientPersonModel verifyOtp(Long id, OtpVerificationModel otpVerification) {
