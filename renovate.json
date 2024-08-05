@@ -5,6 +5,11 @@
   ],
   "branchPrefix": "feature/renovate/",
   "dependencyDashboard": false,
+  "enabledManagers": [
+    "npm",
+    "maven",
+    "dockerfile"
+  ],
   "packageRules": [
     {
       "groupName": "MAVEN Dependencies",
@@ -33,6 +38,16 @@
       ],
       "matchUpdateTypes": [
         "major"
+      ]
+    },
+    {
+      "groupName": "DOCKER Dependencies",
+      "matchManagers": [
+        "dockerfile"
+      ],
+      "matchUpdateTypes": [
+        "patch",
+        "minor"
       ]
     }
   ]
