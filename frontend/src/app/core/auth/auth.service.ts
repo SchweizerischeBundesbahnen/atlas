@@ -61,6 +61,8 @@ export class AuthService {
             sessionStorage.removeItem(this.REQUESTED_ROUTE_STORAGE_KEY);
           }
         });
+      } else {
+        this.userService.setToUnauthenticatedUser();
       }
     });
   }
@@ -75,7 +77,7 @@ export class AuthService {
     this.oauthService.logOut(true);
     this.removeLoginTokenFromStorage();
 
-    this.userService.resetCurrentUser();
+    this.userService.setToUnauthenticatedUser();
     this.pageService.resetPages();
 
     this.router.navigate([Pages.HOME.path]).then();
