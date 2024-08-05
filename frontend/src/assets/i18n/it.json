@@ -1144,6 +1144,7 @@
       "BOARDING_AREA": "Zona di fermata"
     },
     "BACK_TO_MAP": "Chiudere",
+    "ZOOM_IN_HINT": "Ingrandire l'immagine per visualizzare i posti di servizi.",
     "AUTOMATIC_SLOID": "viene assegnato automaticamente.",
     "SLOID_ALREADY_USED": "{{sloid}} è già stato preso.",
     "NUMBER_ALREADY_USED": "Il codice DiDok {{number}} è già stato preso."
