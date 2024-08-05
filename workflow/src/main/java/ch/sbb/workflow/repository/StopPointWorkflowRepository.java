@@ -29,16 +29,4 @@ public interface StopPointWorkflowRepository extends JpaRepository<StopPointWork
       """, nativeQuery = true)
   StopPointWorkflow findByDecisionId(Long decisionId);
 
-  @Query(value = """
-      select distinct w.*
-      from stop_point_workflow w
-               join person p on w.id = p.stop_point_workflow_id
-               join decision d on p.id = d.examinant_id
-      where w.status = 'HEARING'
-        and d.judgement = 'NO'
-        and d.decision_type = 'VOTED'
-        and (d.fot_judgement is null or d.fot_judgement <> 'YES');
-      """, nativeQuery = true)
-  List<StopPointWorkflow> filterByNoDecision();
-
 }
