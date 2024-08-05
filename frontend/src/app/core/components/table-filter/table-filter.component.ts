@@ -16,6 +16,7 @@ import {TableFilterBoolean} from "./config/table-filter-boolean";
 })
 export class TableFilterComponent<TFilterConfig> {
   @Input() filterConfigurations: TableFilter<TFilterConfig>[][] = [];
+  @Input() tableFilterBooleanIsVisible = true;
   @Output() searchEvent: EventEmitter<void> = new EventEmitter();
 
   public readonly TableFilterChipClass = TableFilterChip;

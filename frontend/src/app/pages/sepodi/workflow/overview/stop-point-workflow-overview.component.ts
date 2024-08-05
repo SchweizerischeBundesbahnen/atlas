@@ -1,7 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {TableFilterChip} from "../../../../core/components/table-filter/config/table-filter-chip";
 import {TableFilterSearchSelect} from "../../../../core/components/table-filter/config/table-filter-search-select";
-import {BusinessOrganisation, ReadStopPointWorkflow, StopPointWorkflowService, WorkflowStatus} from "../../../../api";
+import {
+  ApplicationType,
+  BusinessOrganisation,
+  ReadStopPointWorkflow,
+  StopPointWorkflowService,
+  WorkflowStatus
+} from "../../../../api";
 import {TableFilterSearchType} from "../../../../core/components/table-filter/config/table-filter-search-type";
 import {FormControl, FormGroup} from "@angular/forms";
 import {TableFilterMultiSelect} from "../../../../core/components/table-filter/config/table-filter-multiselect";
@@ -15,6 +21,7 @@ import {addElementsToArrayWhenNotUndefined} from "../../../../core/util/arrays";
 import {TableFilterSingleSearch} from "../../../../core/components/table-filter/config/table-filter-single-search";
 import {AtlasCharsetsValidator} from "../../../../core/validation/charsets/atlas-charsets-validator";
 import {TableFilterBoolean} from "../../../../core/components/table-filter/config/table-filter-boolean";
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 @Component({
   selector: 'stop-point-workflow-overview',
@@ -24,7 +31,10 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
 
   private readonly tableFilterConfigIntern = {
     search: new TableFilterChip(0, 'col-6', 'SEPODI.SERVICE_POINTS.WORKFLOW.SEARCH'),
-    filterByNoDecision: new TableFilterBoolean(1, 'col-3', 'SEPODI.SERVICE_POINTS.WORKFLOW.SLIDE'),
+    // filterByNoDecision: new TableFilterBoolean(0, 'col-3 ps-3 sanja', 'SEPODI.SERVICE_POINTS.WORKFLOW.SLIDE'),
+    // filterByNoDecision: new TableFilterBoolean(0, 'container d-flex ms-auto col-3', 'SEPODI.SERVICE_POINTS.WORKFLOW.SLIDE'),
+    // filterByNoDecision: new TableFilterBoolean(0, 'container d-flex justify-content-end col-3', 'SEPODI.SERVICE_POINTS.WORKFLOW.SLIDE'),
+    filterByNoDecision: new TableFilterBoolean(0, 'container d-flex ml-auto col-3', 'SEPODI.SERVICE_POINTS.WORKFLOW.SLIDE'),
     workflowIds: new TableFilterSingleSearch(1, 'SEPODI.SERVICE_POINTS.WORKFLOW.ID','col-3', AtlasCharsetsValidator.numeric),
     workflowStatus: new TableFilterMultiSelect(
       'WORKFLOW.STATUS.',
@@ -46,6 +56,7 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
   };
 
   tableFilterConfig!: TableFilter<unknown>[][];
+  isAtLeastSupervisor!: boolean;
 
   tableColumns: TableColumn<ReadStopPointWorkflow>[] = [
     {headerTitle: 'SEPODI.SERVICE_POINTS.WORKFLOW.ID', value: 'id'},
@@ -65,11 +76,13 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
     private stopPointWorkflowService: StopPointWorkflowService,
     private route: ActivatedRoute,
     private router: Router,
-    private tableService: TableService
+    private tableService: TableService,
+    private permissionService: PermissionService,
   ) {
   }
 
   ngOnInit() {
+    this.isAtLeastSupervisor = this.permissionService.isAtLeastSupervisor(ApplicationType.Sepodi);
     this.tableFilterConfig = this.tableService.initializeFilterConfig(
       this.tableFilterConfigIntern,
       Pages.SERVICE_POINT_WORKFLOWS
