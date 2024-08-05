@@ -40,6 +40,7 @@ const markerSpy = jasmine.createSpyObj('Marker', ['addTo', 'setLngLat', 'remove'
 
 mapSpy.getCanvas.and.returnValue(mapCanvasMock);
 mapService.clickedGeographyCoordinates = clickedGeographyCoordinatesSubject; // Weise dem Spion den BehaviorSubject zu
+mapService.servicePointsShown = new BehaviorSubject(false);
 
 mapService.initMap.and.returnValue(mapSpy);
 
