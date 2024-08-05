@@ -24,7 +24,7 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
 
   private readonly tableFilterConfigIntern = {
     search: new TableFilterChip(0, 'col-6', 'SEPODI.SERVICE_POINTS.WORKFLOW.SEARCH'),
-    filterByNoDecision: new TableFilterBoolean(1, 'col-3', 'TTH.MANAGE_TIMETABLE_HEARING.CREATE_STATEMENT_EXTERNAL'),
+    filterByNoDecision: new TableFilterBoolean(1, 'col-3', 'SEPODI.SERVICE_POINTS.WORKFLOW.SLIDE'),
     workflowIds: new TableFilterSingleSearch(1, 'SEPODI.SERVICE_POINTS.WORKFLOW.ID','col-3', AtlasCharsetsValidator.numeric),
     workflowStatus: new TableFilterMultiSelect(
       'WORKFLOW.STATUS.',
@@ -60,13 +60,6 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
 
   stopPointWorkflows: ReadStopPointWorkflow[] = [];
   totalCount$ = 0;
-  asd = false;
-  pagination: TablePagination = {
-    page: 1,
-    size: 10,
-    sort: 'id,asc'
-  };
-
 
   constructor(
     private stopPointWorkflowService: StopPointWorkflowService,
