@@ -13,9 +13,13 @@ import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Subquery;
+import java.io.Serial;
 import org.springframework.data.jpa.domain.Specification;
 
 public class NoDecisionSpecification implements Specification<StopPointWorkflow> {
+
+  @Serial
+  private static final long serialVersionUID = 1;
 
   @Override
   public Predicate toPredicate(Root<StopPointWorkflow> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
@@ -31,10 +35,7 @@ public class NoDecisionSpecification implements Specification<StopPointWorkflow>
             cb.equal(workflowJoin.get("status"), WorkflowStatus.HEARING),
             cb.equal(decisionRoot.get("judgement"), JudgementType.NO),
             cb.equal(decisionRoot.get("decisionType"), DecisionType.VOTED),
-            cb.or(
-                cb.isNull(decisionRoot.get("fotJudgement")),
-                cb.notEqual(decisionRoot.get("fotJudgement"), JudgementType.YES)
-            )
+            cb.isNull(decisionRoot.get("fotJudgement"))
         ));
 
     return cb.in(root.get("id")).value(decisionSubquery);
