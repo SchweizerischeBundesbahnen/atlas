@@ -1144,6 +1144,7 @@
       "BOARDING_AREA": "Zone d’arrêt"
     },
     "BACK_TO_MAP": "Fermer",
+    "ZOOM_IN_HINT": "Pour afficher les services, zoomez plus près.",
     "AUTOMATIC_SLOID": "Elle est indiquée automatiquement.",
     "SLOID_ALREADY_USED": "{{sloid}} est déjà pris.",
     "NUMBER_ALREADY_USED": "Le code DiDok {{number}} est déjà pris."

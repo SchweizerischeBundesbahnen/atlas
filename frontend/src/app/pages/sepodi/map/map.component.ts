@@ -21,6 +21,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() public isSidePanelOpen = false;
 
   public canCreateServicePoint = false;
+  servicePointsShown = false;
   availableMapStyles = MAP_STYLES;
   currentMapStyle!: MapStyle;
   showMapStyleSelection = false;
@@ -55,6 +56,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     this.map = this.mapService.initMap(this.mapContainer.nativeElement);
+    this.mapService.servicePointsShown.subscribe(value => this.servicePointsShown = value);
     this.currentMapStyle = this.mapService.currentMapStyle;
     MapIconsService.getLegendIconsAsImages().then((icons) => (this.legend = icons));
   }
