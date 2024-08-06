@@ -1,4 +1,4 @@
-<div class="map-wrapper d-flex">
+<div class="map-wrapper d-flex position-relative">
 
   <div class="map" #map data-cy="sepodi-map"></div>
   <div *ngIf="!isSidePanelOpen" class="container-sp-create-and-search">
@@ -7,6 +7,10 @@
       <i class="bi bi-plus"></i>
       {{ 'SEPODI.SERVICE_POINTS.NEW_SERVICE_POINT' | translate }}
     </button>
+  </div>
+  <div *ngIf="!servicePointsShown" class="zoom-hint-container font-regular-xl p-3">
+    <div class="me-2">{{ 'SEPODI.ZOOM_IN_HINT' | translate }}</div>
+    <i class="bi bi-zoom-in"></i>
   </div>
   <button mat-icon-button class="map-style-selector" (click)="toggleStyleSelection()">
     <em class="bi bi-stack"></em>

@@ -1,7 +1,7 @@
 import { StyleSpecification } from 'maplibre-gl';
 import { environment } from '../../../../environments/environment';
 
-export const MAP_ZOOM_DETAILS = 10.5;
+export const SERVICE_POINT_MIN_ZOOM = 12;
 export const MAP_SOURCE_NAME = 'geodata';
 export const MAP_LAYER_NAME = 'service-points';
 export const MAP_TRAFFIC_POINT_LAYER_NAME = 'traffic_points';
@@ -60,7 +60,7 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
     },
     geodata: {
       type: 'vector',
-      minzoom: 5,
+      minzoom: SERVICE_POINT_MIN_ZOOM,
       maxzoom: 20,
       tiles: [
         `${environment.atlasUnauthApiUrl}/service-point-directory/v1/service-points/geodata/{z}/{x}/{y}.pbf`,
