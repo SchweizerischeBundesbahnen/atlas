@@ -1,6 +1,11 @@
 import {Injectable} from '@angular/core';
 import maplibregl, {GeoJSONSource, LngLat, LngLatLike, Map, MapGeoJSONFeature, MapMouseEvent, Popup,} from 'maplibre-gl';
-import {MAP_SOURCE_NAME, MAP_STYLE_SPEC, MAP_TRAFFIC_POINT_LAYER_NAME, MAP_ZOOM_DETAILS,} from './map-style';
+import {
+  MAP_SOURCE_NAME,
+  MAP_STYLE_SPEC,
+  MAP_TRAFFIC_POINT_LAYER_NAME,
+  SERVICE_POINT_MIN_ZOOM,
+} from './map-style';
 import {GeoJsonProperties, Point} from 'geojson';
 import {MAP_STYLES, MapStyle, SWISS_BOUNDING_BOX} from './map-options';
 import {BehaviorSubject, Subject} from 'rxjs';
@@ -26,6 +31,7 @@ export class MapService {
   map!: Map;
   mapInitialized = new BehaviorSubject(false);
   selectedElement = new Subject<GeoJsonProperties>();
+  servicePointsShown = new BehaviorSubject(false);
   currentMapStyle!: MapStyle;
   marker = new maplibregl.Marker({ color: '#FF0000' });
 
@@ -160,7 +166,7 @@ export class MapService {
   }
 
   showDetails(): boolean {
-    return this.map.getZoom() >= MAP_ZOOM_DETAILS;
+    return this.map.getZoom() >= SERVICE_POINT_MIN_ZOOM;
   }
 
   onClick(e: MapMouseEvent & { features?: GeoJSON.Feature[] }) {
@@ -196,10 +202,12 @@ export class MapService {
   private initStoredMapBehaviour() {
     this.map.setZoom(Number(localStorage.getItem(mapZoomLocalStorageKey) ?? 7.2));
     this.map.on('zoomend', (e) => {
-      localStorage.setItem(mapZoomLocalStorageKey, String(e.target.getZoom()));
+      const newZoom = e.target.getZoom();
+      localStorage.setItem(mapZoomLocalStorageKey, String(newZoom));
       if (!this.showDetails()) {
         this.popup.remove();
       }
+      this.servicePointsShown.next(newZoom >= SERVICE_POINT_MIN_ZOOM);
     });
 
     const storedLocation = localStorage.getItem(mapLocationLocalStorageKey);
