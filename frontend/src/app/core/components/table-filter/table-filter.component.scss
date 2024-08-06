@@ -110,3 +110,13 @@
     }
   }
 }
+
+.container-right-position {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: unset !important;
+
+  &.slide-toggle-row-wrapper {
+    padding: unset !important;
+  }
+}

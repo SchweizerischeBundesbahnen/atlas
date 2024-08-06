@@ -31,11 +31,8 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
 
   private readonly tableFilterConfigIntern = {
     search: new TableFilterChip(0, 'col-6', 'SEPODI.SERVICE_POINTS.WORKFLOW.SEARCH'),
-    // filterByNoDecision: new TableFilterBoolean(0, 'col-3 ps-3 sanja', 'SEPODI.SERVICE_POINTS.WORKFLOW.SLIDE'),
-    // filterByNoDecision: new TableFilterBoolean(0, 'container d-flex ms-auto col-3', 'SEPODI.SERVICE_POINTS.WORKFLOW.SLIDE'),
-    // filterByNoDecision: new TableFilterBoolean(0, 'container d-flex justify-content-end col-3', 'SEPODI.SERVICE_POINTS.WORKFLOW.SLIDE'),
-    filterByNoDecision: new TableFilterBoolean(0, 'container d-flex ml-auto col-3', 'SEPODI.SERVICE_POINTS.WORKFLOW.SLIDE'),
-    workflowIds: new TableFilterSingleSearch(1, 'SEPODI.SERVICE_POINTS.WORKFLOW.ID','col-3', AtlasCharsetsValidator.numeric),
+    filterByNoDecision: new TableFilterBoolean(0, 'col-6 container-right-position', 'SEPODI.SERVICE_POINTS.WORKFLOW.SLIDE'),
+    workflowIds: new TableFilterSingleSearch(1, 'SEPODI.SERVICE_POINTS.WORKFLOW.ID','col-3 pe-2', AtlasCharsetsValidator.numeric),
     workflowStatus: new TableFilterMultiSelect(
       'WORKFLOW.STATUS.',
       'WORKFLOW.STATUS_DETAIL',
