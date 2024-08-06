@@ -127,9 +127,11 @@ export class TableComponent<DATATYPE> implements OnInit {
   }
 
   toggleAll() {
-    this.isAllSelected()
-      ? this.checkBoxSelection.clear()
-      : this.tableData.forEach((row) => this.checkBoxSelection.select(row));
+    if (this.isAllSelected()) {
+      this.checkBoxSelection.clear();
+    } else {
+      this.tableData.forEach((row) => this.checkBoxSelection.select(row));
+    }
     this.checkedBoxEvent.emit(this.checkBoxSelection);
   }
 
