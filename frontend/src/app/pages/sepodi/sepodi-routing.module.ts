@@ -22,11 +22,13 @@ import {canCreateServicePoint} from "./service-point-creation-guard";
 import {StopPointWorkflowDetailComponent} from "./workflow/detail-page/stop-point-workflow-detail.component";
 import {stopPointWorkflowDetailResolver} from "./workflow/detail-page/stop-point-workflow-detail-resolver.service";
 import {StopPointWorkflowOverviewComponent} from "./workflow/overview/stop-point-workflow-overview.component";
+import {permissionsLoaded} from "../../core/auth/guards/permissions-loaded-guard";
 
 const routes: Routes = [
   {
     path: Pages.SERVICE_POINT_WORKFLOWS.path + '/:id',
     component: StopPointWorkflowDetailComponent,
+    canActivate: [permissionsLoaded],
     resolve: {workflow: stopPointWorkflowDetailResolver},
     runGuardsAndResolvers: 'always',
   },
