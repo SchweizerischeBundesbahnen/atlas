@@ -61,7 +61,7 @@ describe('UserService', () => {
 
     expect(userService.loggedIn).toBeTrue();
 
-    userService.resetCurrentUser();
+    userService.setToUnauthenticatedUser();
     expect(apiConfigService.setToUnauthenticatedUrl).toHaveBeenCalled();
     expect(userService.loggedIn).toBeFalse();
     expect(userService.isAdmin).toBeFalse();
