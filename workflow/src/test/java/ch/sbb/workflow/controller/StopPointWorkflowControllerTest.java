@@ -226,8 +226,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
 
     mvc.perform(get("/v1/stop-point/workflows?filterByNoDecision=yes"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.objects", hasSize(1))) // TODO: Check this one, maybe it should be 0
-    .andExpect(jsonPath("$.objects[0].examinants", hasSize(1)));
+        .andExpect(jsonPath("$.objects", hasSize(0)));
   }
 
   @Test
