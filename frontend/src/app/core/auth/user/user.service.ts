@@ -26,10 +26,11 @@ export class UserService {
     return this.loadPermissions();
   }
 
-  resetCurrentUser() {
+  setToUnauthenticatedUser() {
     this.currentUser = undefined;
     this.apiConfigService.setToUnauthenticatedUrl();
     this.userChanged.next();
+    this.permissionsLoaded.next(true);
   }
 
   get loggedIn() {
