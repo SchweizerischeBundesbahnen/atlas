@@ -6,7 +6,6 @@ import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-tran
 import { of } from 'rxjs';
 
 describe('UserDetailComponent', () => {
-  /*eslint-disable */
   let component: UserDetailInfoComponent;
   let fixture: ComponentFixture<UserDetailInfoComponent>;
 
@@ -30,7 +29,6 @@ describe('UserDetailComponent', () => {
   });
 
   beforeEach(() => {
-    /*eslint-disable */
     fixture = TestBed.createComponent(UserDetailInfoComponent);
     component = fixture.componentInstance;
     component.record = {
