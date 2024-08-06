@@ -9,7 +9,7 @@
   },
   "builder": {
     "java": "21",
-    "node": "18"
+    "node": "20"
   },
   "mvn": {
     "parentPom": "pom.xml",

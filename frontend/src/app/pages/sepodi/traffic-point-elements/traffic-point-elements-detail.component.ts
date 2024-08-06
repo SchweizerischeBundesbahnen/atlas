@@ -162,9 +162,11 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
   }
 
   confirmCancel() {
-    this.isTrafficPointArea
-      ? this.backToTrafficPointElements(Pages.TRAFFIC_POINT_ELEMENTS_AREA.path)
-      : this.backToTrafficPointElements(Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path);
+    if (this.isTrafficPointArea) {
+      this.backToTrafficPointElements(Pages.TRAFFIC_POINT_ELEMENTS_AREA.path);
+    } else {
+      this.backToTrafficPointElements(Pages.TRAFFIC_POINT_ELEMENTS_PLATFORM.path);
+    }
   }
 
   switchVersion(newIndex: number) {
@@ -225,10 +227,11 @@ export class TrafficPointElementsDetailComponent implements OnInit, OnDestroy, D
           this.trafficPointElementVersion = this.form
             .value as unknown as CreateTrafficPointElementVersion;
 
-          this.isTrafficPointArea
-            ? (this.trafficPointElementVersion.trafficPointElementType = TrafficPointElementType.Area)
-            : (this.trafficPointElementVersion.trafficPointElementType =
-                TrafficPointElementType.Platform);
+          if (this.isTrafficPointArea) {
+            this.trafficPointElementVersion.trafficPointElementType = TrafficPointElementType.Area;
+          } else {
+            this.trafficPointElementVersion.trafficPointElementType = TrafficPointElementType.Platform;
+          }
 
           this.trafficPointElementVersion.numberWithoutCheckDigit = this.servicePointNumber;
           if (this.isNew) {
