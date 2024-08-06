@@ -55,7 +55,7 @@ describe('AuthService', () => {
   sessionStorage.setItem('requested_route', 'mock');
 
   let authService: AuthService;
-  const userService = jasmine.createSpyObj(['setCurrentUserAndLoadPermissions', 'resetCurrentUser']);
+  const userService = jasmine.createSpyObj(['setCurrentUserAndLoadPermissions', 'setToUnauthenticatedUser']);
   userService.setCurrentUserAndLoadPermissions.and.returnValue(of({
     name: 'Test (ITC)',
     email: 'test@test.ch',
@@ -99,7 +99,7 @@ describe('AuthService', () => {
   it('logs out with oauthService', () => {
     authService.logout();
     expect(oauthService.logOut).toHaveBeenCalled();
-    expect(userService.resetCurrentUser).toHaveBeenCalled();
+    expect(userService.setToUnauthenticatedUser).toHaveBeenCalled();
     expect(pageService.resetPages).toHaveBeenCalled();
   });
 
