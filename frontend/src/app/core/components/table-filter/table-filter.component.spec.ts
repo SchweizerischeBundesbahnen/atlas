@@ -403,10 +403,12 @@ describe('TableFilterComponent', () => {
     expect(chipInputClearSpy).toHaveBeenCalledOnceWith();
   });
 
-  it('should emitSearch on boolean toggle change', () => {
-    const booleanFilter = new TableFilterBoolean(0, 'col-3', 'SEPODI.SERVICE_POINTS.WORKFLOW.SLIDE');
+  it('should set active search on boolean slide toggle change', () => {
+    const booleanFilter = new TableFilterBoolean(0, 'col-6 container-right-position', 'SEPODI.SERVICE_POINTS.WORKFLOW.SLIDE');
     component.filterConfigurations = [[booleanFilter]];
     fixture.detectChanges();
+
+    expect(booleanFilter.getActiveSearch()).toBeFalse();
 
     spyOn(component.searchEvent, 'emit');
 
