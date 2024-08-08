@@ -17,7 +17,6 @@ import {TableFilter} from '../table-filter/config/table-filter';
 })
 export class TableComponent<DATATYPE> implements OnInit {
   @Input() checkBoxSelection = new SelectionModel<DATATYPE>(true, []);
-  @Input() filterIsVisible = false;
   @Input() tableFilterConfig: TableFilter<unknown>[][] = [];
   @Input() tableColumns!: TableColumn<DATATYPE>[];
   @Input() canEdit = true;
