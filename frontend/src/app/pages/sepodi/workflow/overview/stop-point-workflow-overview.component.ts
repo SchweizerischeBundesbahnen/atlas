@@ -107,7 +107,7 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
       [this.tableService.filter.sboid.getActiveSearch()?.sboid],
       undefined,
       undefined,
-      this.tableService.filter.filterByNoDecision?.getActiveSearch()?? undefined,
+      this.tableService.filter.filterByNoDecision?.getActiveSearch() ?? undefined,
       pagination.page,
       pagination.size,
       addElementsToArrayWhenNotUndefined(pagination.sort, 'id,asc')
