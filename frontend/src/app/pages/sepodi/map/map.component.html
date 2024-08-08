@@ -8,7 +8,7 @@
       {{ 'SEPODI.SERVICE_POINTS.NEW_SERVICE_POINT' | translate }}
     </button>
   </div>
-  <div *ngIf="!servicePointsShown" class="zoom-hint-container font-regular-xl p-3">
+  <div *ngIf="!servicePointsShown" class="zoom-hint-container font-regular-xl p-3" (click)="zoomToServicePointMin()">
     <div class="me-2">{{ 'SEPODI.ZOOM_IN_HINT' | translate }}</div>
     <i class="bi bi-zoom-in"></i>
   </div>
