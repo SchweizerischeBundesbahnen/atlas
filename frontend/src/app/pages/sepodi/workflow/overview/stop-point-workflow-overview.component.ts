@@ -29,28 +29,50 @@ import {PermissionService} from "../../../../core/auth/permission/permission.ser
 })
 export class StopPointWorkflowOverviewComponent implements OnInit {
 
-  private readonly tableFilterConfigIntern = {
-    search: new TableFilterChip(0, 'col-6', 'SEPODI.SERVICE_POINTS.WORKFLOW.SEARCH'),
-    filterByNoDecision: new TableFilterBoolean(0, 'col-6 container-right-position', 'SEPODI.SERVICE_POINTS.WORKFLOW.SLIDE'),
-    workflowIds: new TableFilterSingleSearch(1, 'SEPODI.SERVICE_POINTS.WORKFLOW.ID','col-3 pe-2', AtlasCharsetsValidator.numeric),
-    workflowStatus: new TableFilterMultiSelect(
-      'WORKFLOW.STATUS.',
-      'WORKFLOW.STATUS_DETAIL',
-      [WorkflowStatus.Added, WorkflowStatus.Hearing, WorkflowStatus.Approved, WorkflowStatus.Rejected, WorkflowStatus.Canceled],
-      1,
-      'col-3',
-      [WorkflowStatus.Added, WorkflowStatus.Hearing, WorkflowStatus.Approved, WorkflowStatus.Rejected, WorkflowStatus.Canceled]
-    ),
-    sboid: new TableFilterSearchSelect<BusinessOrganisation>(
-      TableFilterSearchType.BUSINESS_ORGANISATION,
-      1,
-      'col-3',
-      new FormGroup({
-        businessOrganisation: new FormControl(),
-      })
-    ),
-    locality: new TableFilterSingleSearch(1, 'SEPODI.GEOLOCATION.DISTRICT','col-3 pb-5'),
-  };
+  // private readonly tableFilterConfigIntern = {
+  //   search: new TableFilterChip(0, 'col-6', 'SEPODI.SERVICE_POINTS.WORKFLOW.SEARCH'),
+  //   workflowIds: new TableFilterSingleSearch(1, 'SEPODI.SERVICE_POINTS.WORKFLOW.ID','col-3 pe-2', AtlasCharsetsValidator.numeric),
+  //   workflowStatus: new TableFilterMultiSelect(
+  //     'WORKFLOW.STATUS.',
+  //     'WORKFLOW.STATUS_DETAIL',
+  //     [WorkflowStatus.Added, WorkflowStatus.Hearing, WorkflowStatus.Approved, WorkflowStatus.Rejected, WorkflowStatus.Canceled],
+  //     1,
+  //     'col-3',
+  //     [WorkflowStatus.Added, WorkflowStatus.Hearing, WorkflowStatus.Approved, WorkflowStatus.Rejected, WorkflowStatus.Canceled]
+  //   ),
+  //   sboid: new TableFilterSearchSelect<BusinessOrganisation>(
+  //     TableFilterSearchType.BUSINESS_ORGANISATION,
+  //     1,
+  //     'col-3',
+  //     new FormGroup({
+  //       businessOrganisation: new FormControl(),
+  //     })
+  //   ),
+  //   locality: new TableFilterSingleSearch(1, 'SEPODI.GEOLOCATION.DISTRICT','col-3 pb-5'),
+  // };
+
+  // private readonly tableFilterConfigInternWithBoolean = {
+  //   search: new TableFilterChip(0, 'col-6', 'SEPODI.SERVICE_POINTS.WORKFLOW.SEARCH'),
+  //   filterByNoDecision: new TableFilterBoolean(0, 'col-6 container-right-position', 'SEPODI.SERVICE_POINTS.WORKFLOW.SLIDE'),
+  //   workflowIds: new TableFilterSingleSearch(1, 'SEPODI.SERVICE_POINTS.WORKFLOW.ID','col-3 pe-2', AtlasCharsetsValidator.numeric),
+  //   workflowStatus: new TableFilterMultiSelect(
+  //     'WORKFLOW.STATUS.',
+  //     'WORKFLOW.STATUS_DETAIL',
+  //     [WorkflowStatus.Added, WorkflowStatus.Hearing, WorkflowStatus.Approved, WorkflowStatus.Rejected, WorkflowStatus.Canceled],
+  //     1,
+  //     'col-3',
+  //     [WorkflowStatus.Added, WorkflowStatus.Hearing, WorkflowStatus.Approved, WorkflowStatus.Rejected, WorkflowStatus.Canceled]
+  //   ),
+  //   sboid: new TableFilterSearchSelect<BusinessOrganisation>(
+  //     TableFilterSearchType.BUSINESS_ORGANISATION,
+  //     1,
+  //     'col-3',
+  //     new FormGroup({
+  //       businessOrganisation: new FormControl(),
+  //     })
+  //   ),
+  //   locality: new TableFilterSingleSearch(1, 'SEPODI.GEOLOCATION.DISTRICT','col-3 pb-5'),
+  // };
 
   tableFilterConfig!: TableFilter<unknown>[][];
   isAtLeastSupervisor!: boolean;
@@ -79,11 +101,60 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isAtLeastSupervisor = this.permissionService.isAtLeastSupervisor(ApplicationType.Sepodi);
-    this.tableFilterConfig = this.tableService.initializeFilterConfig(
-      this.tableFilterConfigIntern,
-      Pages.SERVICE_POINT_WORKFLOWS
-    );
+    if (this.permissionService.isAtLeastSupervisor(ApplicationType.Sepodi)) {
+      this.tableFilterConfig = this.tableService.initializeFilterConfig(
+        {
+          search: new TableFilterChip(0, 'col-6', 'SEPODI.SERVICE_POINTS.WORKFLOW.SEARCH'),
+          filterByNoDecision: new TableFilterBoolean(0, 'col-6 container-right-position', 'SEPODI.SERVICE_POINTS.WORKFLOW.SLIDE'),
+          workflowIds: new TableFilterSingleSearch(1, 'SEPODI.SERVICE_POINTS.WORKFLOW.ID','col-3 pe-2', AtlasCharsetsValidator.numeric),
+          workflowStatus: new TableFilterMultiSelect(
+            'WORKFLOW.STATUS.',
+            'WORKFLOW.STATUS_DETAIL',
+            [WorkflowStatus.Added, WorkflowStatus.Hearing, WorkflowStatus.Approved, WorkflowStatus.Rejected, WorkflowStatus.Canceled],
+            1,
+            'col-3',
+            [WorkflowStatus.Added, WorkflowStatus.Hearing, WorkflowStatus.Approved, WorkflowStatus.Rejected, WorkflowStatus.Canceled]
+          ),
+          sboid: new TableFilterSearchSelect<BusinessOrganisation>(
+            TableFilterSearchType.BUSINESS_ORGANISATION,
+            1,
+            'col-3',
+            new FormGroup({
+              businessOrganisation: new FormControl(),
+            })
+          ),
+          locality: new TableFilterSingleSearch(1, 'SEPODI.GEOLOCATION.DISTRICT','col-3 pb-5'),
+        },
+        Pages.SERVICE_POINT_WORKFLOWS
+      );
+    } else {
+      this.tableFilterConfig = [];
+      this.tableFilterConfig = this.tableService.initializeFilterConfig(
+        {
+        search: new TableFilterChip(0, 'col-6', 'SEPODI.SERVICE_POINTS.WORKFLOW.SEARCH'),
+        workflowIds: new TableFilterSingleSearch(1, 'SEPODI.SERVICE_POINTS.WORKFLOW.ID','col-3 pe-2', AtlasCharsetsValidator.numeric),
+        workflowStatus: new TableFilterMultiSelect(
+          'WORKFLOW.STATUS.',
+          'WORKFLOW.STATUS_DETAIL',
+          [WorkflowStatus.Added, WorkflowStatus.Hearing, WorkflowStatus.Approved, WorkflowStatus.Rejected, WorkflowStatus.Canceled],
+          1,
+          'col-3',
+          [WorkflowStatus.Added, WorkflowStatus.Hearing, WorkflowStatus.Approved, WorkflowStatus.Rejected, WorkflowStatus.Canceled]
+        ),
+        sboid: new TableFilterSearchSelect<BusinessOrganisation>(
+          TableFilterSearchType.BUSINESS_ORGANISATION,
+          1,
+          'col-3',
+          new FormGroup({
+            businessOrganisation: new FormControl(),
+          })
+        ),
+        locality: new TableFilterSingleSearch(1, 'SEPODI.GEOLOCATION.DISTRICT','col-3 pb-5'),
+      },
+        Pages.SERVICE_POINT_WORKFLOWS
+      );
+      console.log(this.tableFilterConfig);
+    }
   }
 
   getOverview(pagination: TablePagination) {
@@ -97,7 +168,7 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
       [this.tableService.filter.sboid.getActiveSearch()?.sboid],
       undefined,
       undefined,
-      this.tableService.filter.filterByNoDecision.getActiveSearch(),
+      this.tableService.filter.filterByNoDecision?.getActiveSearch()?? undefined,
       pagination.page,
       pagination.size,
       addElementsToArrayWhenNotUndefined(pagination.sort, 'id,asc')
