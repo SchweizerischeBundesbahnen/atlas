@@ -16,9 +16,9 @@ export class TableService {
   }
 
   set filterConfig(tableFilterConfig: TableFilterConfig) {
-    if (this._filterConfig != undefined) {
-      const result : string[] =  this.deleteOrphanFilters(tableFilterConfig, this._filterConfig);
-      result.forEach(key => {
+    if (this._filterConfig) {
+      const orphanFilters : string[] =  this.getOrphanFilters(tableFilterConfig, this._filterConfig);
+      orphanFilters.forEach(key => {
         delete this._filterConfig.filters[key];
       });
     }
@@ -28,11 +28,10 @@ export class TableService {
     }
   }
 
-  private deleteOrphanFilters(tableFilterConfig: TableFilterConfig, oldTableFilterConfig: TableFilterConfig) : string[] {
+  private getOrphanFilters(tableFilterConfig: TableFilterConfig, oldTableFilterConfig: TableFilterConfig) : string[] {
     const keysOld = Object.keys(oldTableFilterConfig.filters);
     const keysNew = Object.keys(tableFilterConfig.filters);
-    const result: string[] = keysOld.filter(key => !keysNew.includes(key));
-    return result;
+    return  keysOld.filter(key => !keysNew.includes(key));
   }
 
   get filterConfig() {
