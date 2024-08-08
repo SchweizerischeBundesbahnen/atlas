@@ -16,11 +16,6 @@ export class TableService {
   }
 
   set filterConfig(tableFilterConfig: TableFilterConfig) {
-    console.log(this._filterConfig);
-    console.log(tableFilterConfig);
-    // Object.keys(this._filterConfig?.filters);
-    // delete this._filterConfig?.filters['filterByNoDecision']
-    // if (this._filterConfig != undefined && this._filterConfig.filters)
     if (this._filterConfig != undefined) {
       const result : string[] =  this.deleteOrphanFilters(tableFilterConfig, this._filterConfig);
       result.forEach(key => {
@@ -34,18 +29,9 @@ export class TableService {
   }
 
   private deleteOrphanFilters(tableFilterConfig: TableFilterConfig, oldTableFilterConfig: TableFilterConfig) : string[] {
-
     const keysOld = Object.keys(oldTableFilterConfig.filters);
     const keysNew = Object.keys(tableFilterConfig.filters);
-
-    console.log(keysOld);
-    console.log(keysNew);
-
-
-  // Create a new list for keys that exist in keysOld but not in keysNew
     const result: string[] = keysOld.filter(key => !keysNew.includes(key));
-
-    console.log(result);
     return result;
   }
 
