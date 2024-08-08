@@ -28,7 +28,7 @@ export class TableService {
     }
   }
 
-  private getOrphanFilters(tableFilterConfig: TableFilterConfig, oldTableFilterConfig: TableFilterConfig) : string[] {
+  getOrphanFilters(tableFilterConfig: TableFilterConfig, oldTableFilterConfig: TableFilterConfig) : string[] {
     const keysOld = Object.keys(oldTableFilterConfig.filters);
     const keysNew = Object.keys(tableFilterConfig.filters);
     return  keysOld.filter(key => !keysNew.includes(key));

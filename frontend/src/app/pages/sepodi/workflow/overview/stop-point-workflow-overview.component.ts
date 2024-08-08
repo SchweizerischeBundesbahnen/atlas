@@ -31,7 +31,7 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
 
   private readonly tableFilterConfigIntern = {
     search: new TableFilterChip(0, 'col-6', 'SEPODI.SERVICE_POINTS.WORKFLOW.SEARCH'),
-    workflowIds: new TableFilterSingleSearch(1, 'SEPODI.SERVICE_POINTS.WORKFLOW.ID','col-3 pe-2', AtlasCharsetsValidator.numeric),
+    workflowIds: new TableFilterSingleSearch(1, 'SEPODI.SERVICE_POINTS.WORKFLOW.ID','col-3', AtlasCharsetsValidator.numeric),
     workflowStatus: new TableFilterMultiSelect(
       'WORKFLOW.STATUS.',
       'WORKFLOW.STATUS_DETAIL',
@@ -57,7 +57,6 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
   };
 
   tableFilterConfig!: TableFilter<unknown>[][];
-  isAtLeastSupervisor!: boolean;
 
   tableColumns: TableColumn<ReadStopPointWorkflow>[] = [
     {headerTitle: 'SEPODI.SERVICE_POINTS.WORKFLOW.ID', value: 'id'},
