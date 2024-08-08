@@ -11,6 +11,7 @@ import {MapIcon, MapIconsService} from './map-icons.service';
 import {ServicePointSearch} from '../../../core/search-service-point/service-point-search';
 import {PermissionService} from "../../../core/auth/permission/permission.service";
 import {UserService} from "../../../core/auth/user/user.service";
+import {SERVICE_POINT_MIN_ZOOM} from "./map-style";
 
 @Component({
   selector: 'atlas-map',
@@ -102,6 +103,10 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     const currentZoom = this.map.getZoom();
     const newZoom = currentZoom - 0.75;
     this.map.zoomTo(newZoom, { duration: 500 });
+  }
+
+  zoomToServicePointMin() {
+    this.map.zoomTo(SERVICE_POINT_MIN_ZOOM, { duration: 500 });
   }
 
   goHome() {
