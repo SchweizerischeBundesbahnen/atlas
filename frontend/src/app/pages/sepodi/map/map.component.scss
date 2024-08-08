@@ -91,6 +91,7 @@ $map-overlay-element-shadow: 0 0 5px 1px variables.$gray-700;
     transform: translate(-50%, -50%);
     top: 90%;
     display: flex;
+    cursor: pointer;
 
     background-color: white;
     border-radius: variables.$border-radius-small;
