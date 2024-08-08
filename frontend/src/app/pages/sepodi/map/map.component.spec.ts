@@ -10,6 +10,7 @@ import {Component, Input} from '@angular/core';
 import {ServicePointSearchType} from '../../../core/search-service-point/service-point-search';
 import {PermissionService} from "../../../core/auth/permission/permission.service";
 import {adminPermissionServiceMock} from "../../../app.testing.mocks";
+import {SERVICE_POINT_MIN_ZOOM} from "./map-style";
 
 const clickedGeographyCoordinatesSubject = new BehaviorSubject<CoordinatePairWGS84>({
   lat: 0,
@@ -121,6 +122,11 @@ describe('MapComponent', () => {
     expect(component.map.zoomTo).toHaveBeenCalledWith(component.map.getZoom() - 0.75, {
       duration: 500,
     });
+  });
+
+  it('should zoom to SERVICE_POINT_MIN_ZOOM', () => {
+    component.zoomToServicePointMin();
+    expect(component.map.zoomTo).toHaveBeenCalledWith(SERVICE_POINT_MIN_ZOOM, {duration: 500});
   });
 
   it('should center into swiss country when goHome() is called', () => {
