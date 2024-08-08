@@ -6,6 +6,7 @@ import {MockTableComponent} from "../../../../app.testing.mocks";
 import {ContainerReadStopPointWorkflow, ReadStopPointWorkflow, StopPointWorkflowService} from "../../../../api";
 import {of} from "rxjs";
 import {Router} from "@angular/router";
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1000,
@@ -16,6 +17,12 @@ const container: ContainerReadStopPointWorkflow = {
   objects: [workflow],
   totalCount: 1,
 }
+let isAtLeastSupervisor = true;
+const permissionServiceMock: Partial<PermissionService> = {
+  isAtLeastSupervisor(): boolean {
+    return isAtLeastSupervisor;
+  },
+};
 
 describe('StopPointWorkflowOverviewComponent', () => {
   let component: StopPointWorkflowOverviewComponent;
@@ -34,7 +41,8 @@ describe('StopPointWorkflowOverviewComponent', () => {
       ],
       imports: [AppTestingModule, FormModule],
       providers: [
-        {provide: StopPointWorkflowService, useValue: stopPointWorkflowService},
+        { provide: PermissionService, useValue: permissionServiceMock },
+        { provide: StopPointWorkflowService, useValue: stopPointWorkflowService },
       ]
     }).compileComponents().then();
     fixture = TestBed.createComponent(StopPointWorkflowOverviewComponent);
@@ -47,7 +55,21 @@ describe('StopPointWorkflowOverviewComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should load overview', () => {
+  it('should load overview as supervisor', () => {
+    isAtLeastSupervisor = true;
+    component.getOverview({
+      page: 0,
+      size: 10
+    });
+
+    expect(stopPointWorkflowService.getStopPointWorkflows).toHaveBeenCalled();
+    expect(component.stopPointWorkflows.length).toBe(1);
+    expect(component.stopPointWorkflows[0].versionId).toBe(1000);
+    expect(component.totalCount$).toEqual(1)
+  });
+
+  it('should load overview for reader/writer', () => {
+    isAtLeastSupervisor = false;
     component.getOverview({
       page: 0,
       size: 10
