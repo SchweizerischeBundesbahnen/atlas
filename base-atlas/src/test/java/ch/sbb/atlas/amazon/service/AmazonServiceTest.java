@@ -3,22 +3,12 @@ package ch.sbb.atlas.amazon.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.amazon.config.AmazonConfigProps.AmazonBucketConfig;
 import ch.sbb.atlas.model.exception.FileNotFoundOnS3Exception;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.AmazonS3Exception;
-import com.amazonaws.services.s3.model.ListObjectsV2Result;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectResult;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import com.amazonaws.services.s3.model.S3ObjectSummary;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,24 +16,37 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.client.methods.HttpGet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.core.io.InputStreamResource;
+import software.amazon.awssdk.core.ResponseInputStream;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.S3Utilities;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
+import software.amazon.awssdk.services.s3.model.GetUrlRequest;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectResponse;
+import software.amazon.awssdk.services.s3.model.S3Exception;
+import software.amazon.awssdk.services.s3.model.S3Object;
 
 class AmazonServiceTest {
 
   @Mock
-  private AmazonS3 amazonS3;
+  private S3Client s3Client;
+  @Mock
+  private S3Utilities s3Utilities;
   @Mock
   private FileService fileService;
   @Mock
@@ -60,14 +63,14 @@ class AmazonServiceTest {
     amazonService = new AmazonServiceImpl(amazonBucketClientList, fileService);
 
     when(amazonBucketClient.getAmazonBucketConfig()).thenReturn(amazonBucketConfig);
-    when(amazonBucketClient.getClient()).thenReturn(amazonS3);
+    when(amazonBucketClient.getClient()).thenReturn(s3Client);
     when(amazonBucketClient.getBucket()).thenReturn(AmazonBucket.EXPORT);
     when(amazonBucketConfig.getBucketName()).thenReturn("testBucket");
 
-    PutObjectResult putObjectResult = new PutObjectResult();
-    putObjectResult.setMetadata(new ObjectMetadata());
-    putObjectResult.getMetadata().setContentLength(1);
-    when(amazonS3.putObject(any(PutObjectRequest.class))).thenReturn(putObjectResult);
+    PutObjectResponse putObjectResult = PutObjectResponse.builder().build();
+    when(s3Client.putObject(any(PutObjectRequest.class), any(RequestBody.class))).thenReturn(putObjectResult);
+
+    when(s3Client.utilities()).thenReturn(s3Utilities);
   }
 
   @Test
@@ -77,8 +80,8 @@ class AmazonServiceTest {
     //when
     amazonService.putFile(AmazonBucket.EXPORT, tempFile.toFile(), "dir");
     //then
-    verify(amazonS3).putObject(any(PutObjectRequest.class));
-    verify(amazonS3).getUrl(anyString(), anyString());
+    verify(s3Client).putObject(any(PutObjectRequest.class), any(RequestBody.class));
+    verify(s3Utilities).getUrl(any(GetUrlRequest.class));
   }
 
   @Test
@@ -92,8 +95,8 @@ class AmazonServiceTest {
     amazonService.putZipFile(AmazonBucket.EXPORT, tempFile.toFile(), "dir");
     //then
     verify(fileService).zipFile(tempFile.toFile());
-    verify(amazonS3).putObject(any(PutObjectRequest.class));
-    verify(amazonS3).getUrl(anyString(), anyString());
+    verify(s3Client).putObject(any(PutObjectRequest.class), any(RequestBody.class));
+    verify(s3Utilities).getUrl(any(GetUrlRequest.class));
   }
 
   @Test
@@ -105,18 +108,7 @@ class AmazonServiceTest {
   }
 
   private Path createTempFile() throws IOException {
-    Path tempFile = Files.createTempFile("tmp", ".csv");
-    try (FileInputStream fileInputStream = new FileInputStream(tempFile.toFile())) {
-      ObjectMetadata metadata = new ObjectMetadata();
-      metadata.setContentType("application/zip");
-      metadata.setContentLength(tempFile.toFile().length());
-      new PutObjectRequest("bucket",
-          tempFile.toFile().getName(),
-          fileInputStream, metadata);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-    return tempFile;
+    return Files.createTempFile("tmp", ".csv");
   }
 
   @Test
@@ -125,24 +117,24 @@ class AmazonServiceTest {
     when(fileService.getDir()).thenReturn("export");
     Path zipFile = createTempFile();
 
-    S3Object s3Object = Mockito.mock(S3Object.class);
-    when(s3Object.getObjectContent()).thenReturn(new S3ObjectInputStream(new FileInputStream(zipFile.toFile()),
-        new HttpGet()));
+    ResponseInputStream<GetObjectResponse> responseInputStream = new ResponseInputStream<>(GetObjectResponse.builder().build(),
+        new FileInputStream(zipFile.toFile()));
 
     //when
-    when(amazonS3.getObject("testBucket", "dir/desiredFile.zip")).thenReturn(s3Object);
+    when(s3Client.getObject(any(GetObjectRequest.class))).thenReturn(responseInputStream);
 
     File pulledFile = amazonService.pullFile(AmazonBucket.EXPORT, "dir/desiredFile.zip");
 
     //then
     assertThat(pulledFile).isNotNull();
-    verify(amazonS3).getObject("testBucket", "dir/desiredFile.zip");
+    verify(s3Client).getObject(any(GetObjectRequest.class));
     Files.delete(pulledFile.toPath());
   }
 
   @Test
   void shouldThrowFileNotFoundOnS3ExceptionOnPullFile() {
-    when(amazonS3.getObject(anyString(), anyString())).thenThrow(new AmazonS3Exception("The specified key does not exist."));
+    when(s3Client.getObject(any(GetObjectRequest.class))).thenThrow(
+        S3Exception.builder().message("The specified key does not exist.").build());
 
     assertThatExceptionOfType(FileNotFoundOnS3Exception.class)
         .isThrownBy(() -> amazonService.pullFile(AmazonBucket.EXPORT, "dir" + "/desiredFile.zip"))
@@ -151,15 +143,15 @@ class AmazonServiceTest {
   }
 
   @Test
-  public void shouldGetClient(){
+  public void shouldGetClient() {
     //when
-    AmazonS3 result = amazonService.getClient(AmazonBucket.EXPORT);
+    S3Client result = amazonService.getClient(AmazonBucket.EXPORT);
     //then
     assertThat(result).isNotNull();
   }
 
   @Test
-  public void shouldGetAmazonBucketConfig(){
+  public void shouldGetAmazonBucketConfig() {
     //when
     AmazonBucketConfig result = amazonService.getAmazonBucketConfig(AmazonBucket.EXPORT);
     //then
@@ -171,13 +163,14 @@ class AmazonServiceTest {
   public void shouldPullFileAsStream() throws IOException {
     //given
     String filePath = "path/file";
-    String bucketName= "testBucket";
     String testData = "Tesd data";
     byte[] dataBytes = testData.getBytes();
 
-    S3Object s3Object = new S3Object();
-    s3Object.setObjectContent(new ByteArrayInputStream(dataBytes));
-    when(amazonS3.getObject(bucketName,filePath)).thenReturn(s3Object);
+    ResponseInputStream<GetObjectResponse> responseInputStream = new ResponseInputStream<>(GetObjectResponse.builder().build(),
+        new ByteArrayInputStream(dataBytes));
+
+    //when
+    when(s3Client.getObject(any(GetObjectRequest.class))).thenReturn(responseInputStream);
 
     //when
     InputStreamResource result = amazonService.pullFileAsStream(AmazonBucket.EXPORT, filePath);
@@ -186,34 +179,35 @@ class AmazonServiceTest {
     String stringResult = IOUtils.toString(result.getInputStream(), StandardCharsets.UTF_8);
     assertThat(stringResult).isEqualTo(testData);
   }
+
   @Test
   public void shouldGetLatestJsonUploadedObject() {
     //given
     String filePath = "path/file";
     String filePrefix = "prefix";
-    String bucketName= "testBucket";
+    String bucketName = "testBucket";
     String testData = "Tesd data";
     byte[] dataBytes = testData.getBytes();
 
-    S3Object s3Object = new S3Object();
-    s3Object.setObjectContent(new ByteArrayInputStream(dataBytes));
-    when(amazonS3.getObject(bucketName,filePath)).thenReturn(s3Object);
-    ListObjectsV2Result listObjectsV2Result = mock(ListObjectsV2Result.class);
-    listObjectsV2Result.setBucketName(bucketName);
-    when(amazonS3.listObjectsV2(bucketName,filePrefix)).thenReturn(listObjectsV2Result);
-    S3ObjectSummary s3ObjectSummary1 = new S3ObjectSummary();
-    s3ObjectSummary1.setKey("path/file/file1.json");
-    s3ObjectSummary1.setKey(bucketName);
-    Date first = Date.from(LocalDate.of(2020,1,1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-    s3ObjectSummary1.setLastModified(first);
-    S3ObjectSummary s3ObjectSummary2 = new S3ObjectSummary();
-    s3ObjectSummary2.setKey("path/file/file2.json");
-    s3ObjectSummary2.setBucketName(bucketName);
-    Date second = Date.from(LocalDate.of(2020,1,2).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-    s3ObjectSummary2.setLastModified(second);
-    when(listObjectsV2Result.getObjectSummaries()).thenReturn(List.of(s3ObjectSummary1,s3ObjectSummary2));
+    ResponseInputStream<GetObjectResponse> responseInputStream = new ResponseInputStream<>(GetObjectResponse.builder().build(),
+        new ByteArrayInputStream(dataBytes));
+    when(s3Client.getObject(any(GetObjectRequest.class))).thenReturn(responseInputStream);
+
+    Instant first = LocalDate.of(2020, 1, 1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+    Instant second = LocalDate.of(2020, 1, 2).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+    ListObjectsV2Response listObjectsV2Result = mock(ListObjectsV2Response.class);
+    when(listObjectsV2Result.contents()).thenReturn(List.of(S3Object.builder()
+            .key("path/file/file1.json")
+            .lastModified(first)
+            .build(),
+        S3Object.builder()
+            .key("path/file/file2.json")
+            .lastModified(second)
+            .build()));
+    when(s3Client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(listObjectsV2Result);
+
     //when
-    String result = amazonService.getLatestJsonUploadedObject(AmazonBucket.EXPORT, filePrefix,filePath);
+    String result = amazonService.getLatestJsonUploadedObject(AmazonBucket.EXPORT, filePrefix, filePath);
     //then
     assertThat(result).isNotNull();
     assertThat(result).isEqualTo("path/file/file2.json");
