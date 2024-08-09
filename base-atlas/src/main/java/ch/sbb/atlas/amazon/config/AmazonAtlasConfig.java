@@ -3,18 +3,22 @@ package ch.sbb.atlas.amazon.config;
 import ch.sbb.atlas.amazon.config.AmazonConfigProps.AmazonBucketConfig;
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonBucketClient;
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.BucketLifecycleConfiguration;
-import com.amazonaws.services.s3.model.BucketLifecycleConfiguration.Rule;
-import com.amazonaws.services.s3.model.lifecycle.LifecycleFilter;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.AwsCredentials;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.BucketLifecycleConfiguration;
+import software.amazon.awssdk.services.s3.model.ExpirationStatus;
+import software.amazon.awssdk.services.s3.model.LifecycleExpiration;
+import software.amazon.awssdk.services.s3.model.LifecycleRule;
+import software.amazon.awssdk.services.s3.model.LifecycleRuleFilter;
+import software.amazon.awssdk.services.s3.model.PutBucketLifecycleConfigurationRequest;
 
 @Slf4j
 @UtilityClass
@@ -25,12 +29,10 @@ public class AmazonAtlasConfig {
 
         return amazonBucketConfig.entrySet().stream().map(entry -> {
             AmazonBucketConfig bucketConfig = entry.getValue();
-            AWSCredentials awsCredentials =
-                new BasicAWSCredentials(bucketConfig.getAccessKey(), bucketConfig.getSecretKey());
-            AmazonS3 s3Client = AmazonS3ClientBuilder
-                .standard()
-                .withRegion(props.getRegion())
-                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
+            AwsCredentials awsCredentials = AwsBasicCredentials.create(bucketConfig.getAccessKey(), bucketConfig.getSecretKey());
+            S3Client s3Client = S3Client.builder()
+                .region(Region.of(props.getRegion()))
+                .credentialsProvider(StaticCredentialsProvider.create(awsCredentials))
                 .build();
 
             setBucketLifecycleConfiguration(bucketConfig, s3Client);
@@ -39,29 +41,35 @@ public class AmazonAtlasConfig {
         }).toList();
     }
 
-    static void setBucketLifecycleConfiguration(AmazonBucketConfig bucketConfig, AmazonS3 s3Client) {
-        Rule lifeCycleRules = getExpirationRule(bucketConfig);
+    static void setBucketLifecycleConfiguration(AmazonBucketConfig bucketConfig, S3Client s3Client) {
+        LifecycleRule lifeCycleRules = getExpirationRule(bucketConfig);
 
-        BucketLifecycleConfiguration bucketLifecycleConfiguration = new BucketLifecycleConfiguration().withRules(lifeCycleRules);
-        BucketLifecycleConfiguration currentConfig = s3Client.getBucketLifecycleConfiguration(bucketConfig.getBucketName());
-        if (!currentConfig.getRules().stream().allMatch(rule -> ruleEquals(rule, lifeCycleRules))) {
+        List<LifecycleRule> currentConfig = s3Client.getBucketLifecycleConfiguration(r -> r.bucket(bucketConfig.getBucketName()))
+            .rules();
+        if (!currentConfig.stream().allMatch(rule -> ruleEquals(rule, lifeCycleRules))) {
             log.info("Current BucketLifecycleConfiguration is not up to date, setting lifeCycleRules");
-            s3Client.setBucketLifecycleConfiguration(bucketConfig.getBucketName(), bucketLifecycleConfiguration);
+            s3Client.putBucketLifecycleConfiguration(PutBucketLifecycleConfigurationRequest.builder()
+                .bucket(bucketConfig.getBucketName())
+                .lifecycleConfiguration(BucketLifecycleConfiguration.builder()
+                    .rules(lifeCycleRules)
+                    .build())
+                .build());
         }
     }
 
-    static Rule getExpirationRule(AmazonBucketConfig amazonBucketConfig) {
-        return new Rule()
-            .withId(amazonBucketConfig.getBucketName() + "-expiration-id")
-            .withFilter(new LifecycleFilter())
-            .withStatus(BucketLifecycleConfiguration.ENABLED)
-            .withExpirationInDays(amazonBucketConfig.getObjectExpirationDays());
+    static LifecycleRule getExpirationRule(AmazonBucketConfig amazonBucketConfig) {
+        return LifecycleRule.builder()
+            .id(amazonBucketConfig.getBucketName() + "-expiration-id")
+            .filter(LifecycleRuleFilter.builder().build())
+            .status(ExpirationStatus.ENABLED)
+            .expiration(LifecycleExpiration.builder().days(amazonBucketConfig.getObjectExpirationDays()).build())
+            .build();
     }
 
-    static boolean ruleEquals(Rule rule, Rule other) {
-        return rule.getId().equals(other.getId()) &&
-            rule.getStatus().equals(other.getStatus()) &&
-            rule.getExpirationInDays() == other.getExpirationInDays();
+    static boolean ruleEquals(LifecycleRule rule, LifecycleRule other) {
+        return rule.id().equals(other.id()) &&
+            rule.status().equals(other.status()) &&
+            Objects.equals(rule.expiration().days(), other.expiration().days());
     }
 
 }
