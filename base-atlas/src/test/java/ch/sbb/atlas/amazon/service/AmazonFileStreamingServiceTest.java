@@ -4,10 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,10 +37,8 @@ class AmazonFileStreamingServiceTest {
     String testData = "Tesd data";
     byte[] dataBytes = testData.getBytes();
 
-    S3Object s3Object = new S3Object();
-    s3Object.setObjectContent(new ByteArrayInputStream(dataBytes));
-    when(amazonService.pullS3Object(any(),any())).thenReturn(s3Object);
-    when(fileService.gzipDecompress(any(S3ObjectInputStream.class))).thenReturn(dataBytes);
+    when(amazonService.pullS3Object(any(),any())).thenReturn(new ByteArrayInputStream(dataBytes));
+    when(fileService.gzipDecompress(any(InputStream.class))).thenReturn(dataBytes);
     //when
     InputStreamResource response = amazonFileStreamingService.streamFileAndDecompress(AmazonBucket.EXPORT,
         "file.json");
