@@ -34,6 +34,17 @@
         </div>
       </div>
 
+      <div *ngIf="filterConfig | instanceOf: TableFilterBooleanClass as booleanFilter"
+           [class]="booleanFilter.elementWidthCssClass">
+        <div class="slide-toggle-row-wrapper pb-3">
+          <app-atlas-label-field [fieldLabel]="booleanFilter.fieldLabel"></app-atlas-label-field>
+          <atlas-slide-toggle
+            [toggle]="booleanFilter.getActiveSearch()"
+            (toggleChange)="booleanFilter.setActiveSearch($event); emitSearch()">
+          </atlas-slide-toggle>
+        </div>
+      </div>
+
       <div
         *ngIf="filterConfig | instanceOf: TableFilterSearchSelectClass as searchSelect"
         [class]="searchSelect.elementWidthCssClass"
@@ -142,6 +153,7 @@
         </div>
         <app-atlas-field-error [control]="singleSearch.formControl"></app-atlas-field-error>
       </div>
+
     </ng-container>
   </div>
 </div>

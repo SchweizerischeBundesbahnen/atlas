@@ -103,6 +103,149 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldFilterWorkflowsByNoDecision() throws Exception {
+    StopPointAddWorkflowModel workflowModel = StopPointWorkflowTestData.getAddStopPointWorkflow1();
+
+    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel.getSloid(), workflowModel.getVersionId()))
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
+
+    controller.addStopPointWorkflow(workflowModel);
+
+    mvc.perform(get("/v1/stop-point/workflows?filterByNoDecision=yes"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(0)));
+  }
+
+  @Test
+  void shouldFilterWorkflowsByNoDecisionWhenWorkflowStatusNotHearing() throws Exception {
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
+    stopPointWorkflow.setStatus(WorkflowStatus.ADDED);
+    StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
+
+    Person person = StopPointWorkflowTestData.getPerson();
+    person.setStopPointWorkflow(saved);
+    Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
+    decisionRepository.save(decision);
+
+    mvc.perform(get("/v1/stop-point/workflows?filterByNoDecision=yes"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(0)));
+  }
+
+  @Test
+  void shouldFilterWorkflowsByNoDecisionWhenDecisionTypeNotVoted() throws Exception {
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
+    StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
+
+    Person person = StopPointWorkflowTestData.getPerson();
+    person.setStopPointWorkflow(saved);
+    Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
+    decision.setDecisionType(DecisionType.CANCELED);
+    decisionRepository.save(decision);
+
+    mvc.perform(get("/v1/stop-point/workflows?filterByNoDecision=yes"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(0)));
+  }
+
+  @Test
+  void shouldFilterWorkflowsByNoDecisionWhenDecisionTypeVoted() throws Exception {
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
+    StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
+
+    Person person = StopPointWorkflowTestData.getPerson();
+    person.setStopPointWorkflow(saved);
+    Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
+    decisionRepository.save(decision);
+
+    mvc.perform(get("/v1/stop-point/workflows?filterByNoDecision=yes"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)))
+        .andExpect(jsonPath("$.objects[0].examinants", hasSize(1)));
+  }
+
+  @Test
+  void shouldFilterWorkflowsByNoDecisionWhenJudgementTypeYes() throws Exception {
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
+    StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
+
+    Person person = StopPointWorkflowTestData.getPerson();
+    person.setStopPointWorkflow(saved);
+    Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
+    decision.setJudgement(JudgementType.YES);
+    decisionRepository.save(decision);
+
+    mvc.perform(get("/v1/stop-point/workflows?filterByNoDecision=yes"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(0)));
+  }
+
+  @Test
+  void shouldFilterWorkflowsByNoDecisionWhenJudgementNull() throws Exception {
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
+    StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
+
+    Person person = StopPointWorkflowTestData.getPerson();
+    person.setStopPointWorkflow(saved);
+    Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
+    decision.setJudgement(null);
+    decisionRepository.save(decision);
+
+    mvc.perform(get("/v1/stop-point/workflows?filterByNoDecision=yes"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(0)));
+  }
+
+  @Test
+  void shouldFilterWorkflowsByNoDecisionWhenFotJudgementNull() throws Exception {
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
+    StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
+
+    Person person = StopPointWorkflowTestData.getPerson();
+    person.setStopPointWorkflow(saved);
+    Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
+    decision.setFotJudgement(null);
+    decisionRepository.save(decision);
+
+    mvc.perform(get("/v1/stop-point/workflows?filterByNoDecision=yes"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(1)))
+        .andExpect(jsonPath("$.objects[0].examinants", hasSize(1)));
+  }
+
+  @Test
+  void shouldFilterWorkflowsByNoDecisionWhenFotJudgementNo() throws Exception {
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
+    StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
+
+    Person person = StopPointWorkflowTestData.getPerson();
+    person.setStopPointWorkflow(saved);
+    Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
+    decision.setFotJudgement(JudgementType.NO);
+    decisionRepository.save(decision);
+
+    mvc.perform(get("/v1/stop-point/workflows?filterByNoDecision=yes"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(0)));
+  }
+
+  @Test
+  void shouldFilterWorkflowsByNoDecisionWhenFotJudgementYes() throws Exception {
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflowTestData.getStopPointWorkflow();
+    StopPointWorkflow saved = workflowRepository.save(stopPointWorkflow);
+
+    Person person = StopPointWorkflowTestData.getPerson();
+    person.setStopPointWorkflow(saved);
+    Decision decision = StopPointWorkflowTestData.getDecisionWithExaminant(person);
+    decision.setFotJudgement(JudgementType.YES);
+    decisionRepository.save(decision);
+
+    mvc.perform(get("/v1/stop-point/workflows?filterByNoDecision=yes"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.objects", hasSize(0)));
+  }
+
+  @Test
   void shouldFindWorkflowsByFilterSloid() throws Exception {
     StopPointAddWorkflowModel workflowModel1 = StopPointWorkflowTestData.getAddStopPointWorkflow1();
     StopPointAddWorkflowModel workflowModel2 = StopPointWorkflowTestData.getAddStopPointWorkflow2();

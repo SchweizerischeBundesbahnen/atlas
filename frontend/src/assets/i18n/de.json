@@ -1047,6 +1047,7 @@
         "START": "Start Anhörung",
         "END": "Ende Anhörung",
         "SEARCH": "SLOID - Offizielle Bezeichnung",
+        "SLIDE": "Anhörungen zum Bearbeiten",
         "OVERRIDE_TITLE": "Beurteilung durch BAV",
         "OVERRIDE_HAPPENED_INFO": "Das Bundesamt für Verkehr (BAV) hat eine Beurteilung vorgenommen. Es gilt die Beurteilung des BAV (siehe unten).",
         "PREVIOUS_WORKFLOW": "Ersetzt vorhergehende Anhörung {{number}}",
