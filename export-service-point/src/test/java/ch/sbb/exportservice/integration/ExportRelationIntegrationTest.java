@@ -5,6 +5,7 @@ import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_RELATION
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_TYPE_JOB_PARAMETER;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.exportservice.model.PrmExportType;
 import ch.sbb.exportservice.utils.JobDescriptionConstants;
 import java.sql.SQLException;
@@ -21,9 +22,13 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 @AutoConfigureMockMvc(addFilters = false)
 public class ExportRelationIntegrationTest extends BasePrmSqlIntegrationTest {
+
+    @MockBean
+    private AmazonService amazonService;
 
     @Autowired
     private JobLauncher jobLauncher;
