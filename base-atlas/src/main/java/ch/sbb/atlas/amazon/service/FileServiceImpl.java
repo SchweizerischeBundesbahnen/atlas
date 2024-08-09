@@ -1,7 +1,6 @@
 package ch.sbb.atlas.amazon.service;
 
 import ch.sbb.atlas.amazon.exception.FileException;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -130,7 +129,7 @@ public class FileServiceImpl implements FileService {
   }
 
   @Override
-  public byte[] gzipDecompress(S3ObjectInputStream s3ObjectInputStream) {
+  public byte[] gzipDecompress(InputStream s3ObjectInputStream) {
     try (ByteArrayOutputStream output = new ByteArrayOutputStream();
         GZIPInputStream gis = new GZIPInputStream(s3ObjectInputStream)) {
       gis.transferTo(output);
