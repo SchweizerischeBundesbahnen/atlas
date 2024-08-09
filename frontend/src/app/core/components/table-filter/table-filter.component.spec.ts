@@ -1,34 +1,27 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TableFilterComponent } from './table-filter.component';
-import {
-  TranslateFakeLoader,
-  TranslateLoader,
-  TranslateModule,
-  TranslatePipe,
-} from '@ngx-translate/core';
-import { By } from '@angular/platform-browser';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {TableFilterComponent} from './table-filter.component';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule, TranslatePipe,} from '@ngx-translate/core';
+import {By} from '@angular/platform-browser';
 import moment from 'moment';
-import { DateIconComponent } from '../../form-components/date-icon/date-icon.component';
-import { MockAtlasFieldErrorComponent } from '../../../app.testing.mocks';
-import { AtlasSpacerComponent } from '../spacer/atlas-spacer.component';
-import { InstanceOfPipe } from './instance-of.pipe';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import {
-  MatDatepickerControl,
-  MatDatepickerInputEvent,
-  MatDatepickerPanel,
-} from '@angular/material/datepicker';
-import { Moment } from 'moment/moment';
-import { FormControl, FormGroup } from '@angular/forms';
-import { TableFilterMultiSelect } from './config/table-filter-multiselect';
-import { TableFilterDateSelect } from './config/table-filter-date-select';
-import { TableFilterChip } from './config/table-filter-chip';
-import { TableFilterSearchSelect } from './config/table-filter-search-select';
-import { TableFilterSearchType } from './config/table-filter-search-type';
-import { AtlasLabelFieldComponent } from '../../form-components/atlas-label-field/atlas-label-field.component';
-import { BusinessOrganisation, TimetableFieldNumber, TransportCompany } from '../../../api';
+import {DateIconComponent} from '../../form-components/date-icon/date-icon.component';
+import {MockAtlasFieldErrorComponent} from '../../../app.testing.mocks';
+import {AtlasSpacerComponent} from '../spacer/atlas-spacer.component';
+import {InstanceOfPipe} from './instance-of.pipe';
+import {MatChipInputEvent} from '@angular/material/chips';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {MatDatepickerControl, MatDatepickerInputEvent, MatDatepickerPanel,} from '@angular/material/datepicker';
+import {Moment} from 'moment/moment';
+import {FormControl, FormGroup} from '@angular/forms';
+import {TableFilterMultiSelect} from './config/table-filter-multiselect';
+import {TableFilterDateSelect} from './config/table-filter-date-select';
+import {TableFilterChip} from './config/table-filter-chip';
+import {TableFilterSearchSelect} from './config/table-filter-search-select';
+import {TableFilterSearchType} from './config/table-filter-search-type';
+import {AtlasLabelFieldComponent} from '../../form-components/atlas-label-field/atlas-label-field.component';
+import {BusinessOrganisation, TimetableFieldNumber, TransportCompany} from '../../../api';
 import {TableFilterSingleSearch} from "./config/table-filter-single-search";
+import {AtlasSlideToggleComponent} from "../../form-components/atlas-slide-toggle/atlas-slide-toggle.component";
+import {TableFilterBoolean} from "./config/table-filter-boolean";
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
@@ -174,6 +167,7 @@ describe('TableFilterComponent', () => {
         AtlasSpacerComponent,
         AtlasLabelFieldComponent,
         InstanceOfPipe,
+        AtlasSlideToggleComponent,
       ],
       imports: [
         TranslateModule.forRoot({
@@ -408,4 +402,31 @@ describe('TableFilterComponent', () => {
     expect(component.searchEvent.emit).toHaveBeenCalledOnceWith();
     expect(chipInputClearSpy).toHaveBeenCalledOnceWith();
   });
+
+  it('should set active search on boolean slide toggle change', () => {
+    const booleanFilter = new TableFilterBoolean(0, 'col-6 container-right-position', 'SEPODI.SERVICE_POINTS.WORKFLOW.SLIDE');
+    component.filterConfigurations = [[booleanFilter]];
+    fixture.detectChanges();
+
+    expect(booleanFilter.getActiveSearch()).toBeFalse();
+
+    spyOn(component.searchEvent, 'emit');
+
+    const slideToggleComponent: AtlasSlideToggleComponent = fixture.debugElement.query(
+      By.directive(AtlasSlideToggleComponent)
+    ).componentInstance;
+
+    slideToggleComponent.toggleChange.emit(true);
+    fixture.detectChanges();
+
+    expect(booleanFilter.getActiveSearch()).toBeTrue();
+    expect(component.searchEvent.emit).toHaveBeenCalledOnceWith();
+
+    slideToggleComponent.toggleChange.emit(false);
+    fixture.detectChanges();
+
+    expect(booleanFilter.getActiveSearch()).toBeFalse();
+    expect(component.searchEvent.emit).toHaveBeenCalledTimes(2);
+  });
+
 });

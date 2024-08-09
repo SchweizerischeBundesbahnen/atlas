@@ -1,7 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {TableFilterChip} from "../../../../core/components/table-filter/config/table-filter-chip";
 import {TableFilterSearchSelect} from "../../../../core/components/table-filter/config/table-filter-search-select";
-import {BusinessOrganisation, ReadStopPointWorkflow, StopPointWorkflowService, WorkflowStatus} from "../../../../api";
+import {
+  ApplicationType,
+  BusinessOrganisation,
+  ReadStopPointWorkflow,
+  StopPointWorkflowService,
+  WorkflowStatus
+} from "../../../../api";
 import {TableFilterSearchType} from "../../../../core/components/table-filter/config/table-filter-search-type";
 import {FormControl, FormGroup} from "@angular/forms";
 import {TableFilterMultiSelect} from "../../../../core/components/table-filter/config/table-filter-multiselect";
@@ -14,6 +20,8 @@ import {TablePagination} from "../../../../core/components/table/table-paginatio
 import {addElementsToArrayWhenNotUndefined} from "../../../../core/util/arrays";
 import {TableFilterSingleSearch} from "../../../../core/components/table-filter/config/table-filter-single-search";
 import {AtlasCharsetsValidator} from "../../../../core/validation/charsets/atlas-charsets-validator";
+import {TableFilterBoolean} from "../../../../core/components/table-filter/config/table-filter-boolean";
+import {PermissionService} from "../../../../core/auth/permission/permission.service";
 
 @Component({
   selector: 'stop-point-workflow-overview',
@@ -43,6 +51,11 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
     locality: new TableFilterSingleSearch(1, 'SEPODI.GEOLOCATION.DISTRICT','col-3 pb-5'),
   };
 
+  private readonly tableFilterConfigInternWithBoolean = {
+    ...this.tableFilterConfigIntern,
+    filterByNoDecision: new TableFilterBoolean(0, 'col-6 container-right-position', 'SEPODI.SERVICE_POINTS.WORKFLOW.SLIDE')
+  };
+
   tableFilterConfig!: TableFilter<unknown>[][];
 
   tableColumns: TableColumn<ReadStopPointWorkflow>[] = [
@@ -63,15 +76,23 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
     private stopPointWorkflowService: StopPointWorkflowService,
     private route: ActivatedRoute,
     private router: Router,
-    private tableService: TableService
+    private tableService: TableService,
+    private permissionService: PermissionService,
   ) {
   }
 
   ngOnInit() {
-    this.tableFilterConfig = this.tableService.initializeFilterConfig(
-      this.tableFilterConfigIntern,
-      Pages.SERVICE_POINT_WORKFLOWS
-    );
+    if (this.permissionService.isAtLeastSupervisor(ApplicationType.Sepodi)) {
+      this.tableFilterConfig = this.tableService.initializeFilterConfig(
+        this.tableFilterConfigInternWithBoolean,
+        Pages.SERVICE_POINT_WORKFLOWS
+      );
+    } else {
+      this.tableFilterConfig = this.tableService.initializeFilterConfig(
+        this.tableFilterConfigIntern,
+        Pages.SERVICE_POINT_WORKFLOWS
+      );
+    }
   }
 
   getOverview(pagination: TablePagination) {
@@ -85,6 +106,7 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
       [this.tableService.filter.sboid.getActiveSearch()?.sboid],
       undefined,
       undefined,
+      this.tableService.filter.filterByNoDecision?.getActiveSearch() ?? undefined,
       pagination.page,
       pagination.size,
       addElementsToArrayWhenNotUndefined(pagination.sort, 'id,asc')
@@ -98,4 +120,5 @@ export class StopPointWorkflowOverviewComponent implements OnInit {
   edit(workflow: ReadStopPointWorkflow) {
     this.router.navigate([workflow.id], {relativeTo: this.route}).then();
   }
+
 }
