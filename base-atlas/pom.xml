@@ -102,6 +102,11 @@
          <artifactId>s3</artifactId>
       </dependency>
       <dependency>
+         <artifactId>jaxb-api</artifactId>
+         <groupId>javax.xml.bind</groupId>
+         <version>2.4.0-b180830.0359</version>
+      </dependency>
+      <dependency>
          <artifactId>lombok</artifactId>
          <groupId>org.projectlombok</groupId>
       </dependency>
