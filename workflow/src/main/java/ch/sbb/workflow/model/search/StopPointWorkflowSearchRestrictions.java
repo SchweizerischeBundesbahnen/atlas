@@ -21,7 +21,8 @@ public class StopPointWorkflowSearchRestrictions {
   private final StopPointWorkflowRequestParams stopPointWorkflowRequestParams;
 
   public Specification<StopPointWorkflow> getSpecification() {
-    return specificationBuilder().searchCriteriaSpecification(stopPointWorkflowRequestParams.getSearchCriterias())
+    Specification<StopPointWorkflow> specification =
+        specificationBuilder().searchCriteriaSpecification(stopPointWorkflowRequestParams.getSearchCriterias())
         .and(specificationBuilder().inSpecification(stopPointWorkflowRequestParams.getSloids(), StopPointWorkflow.Fields.sloid))
         .and(specificationBuilder().inSpecification(stopPointWorkflowRequestParams.getWorkflowIds(), StopPointWorkflow.Fields.id))
         .and(specificationBuilder().inSpecification(stopPointWorkflowRequestParams.getStatus(), StopPointWorkflow.Fields.status))
@@ -34,6 +35,10 @@ public class StopPointWorkflowSearchRestrictions {
             stopPointWorkflowRequestParams.getVersionValidFrom(),
             stopPointWorkflowRequestParams.getCreatedAt()
         ));
+    if (stopPointWorkflowRequestParams.isFilterByNoDecision()) {
+      specification = specification.and(new NoDecisionSpecification());
+    }
+    return specification;
   }
 
   protected SpecificationBuilder<StopPointWorkflow> specificationBuilder() {
@@ -43,4 +48,5 @@ public class StopPointWorkflowSearchRestrictions {
                 StopPointWorkflow.Fields.designationOfficial))
         .build();
   }
+
 }
