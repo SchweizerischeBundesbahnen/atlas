@@ -4,7 +4,7 @@ import static ch.sbb.importservice.service.csv.CsvFileNameModel.SERVICEPOINT_DID
 import static ch.sbb.importservice.service.csv.StopPointCsvService.PRM_STOP_PLACES_FILE_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.joda.time.LocalDate;
+import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 
 class CsvFileNameModelTest {
