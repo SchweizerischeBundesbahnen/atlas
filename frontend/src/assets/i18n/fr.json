@@ -1047,6 +1047,7 @@
         "START": "Début de l'audition",
         "END": "Fin de l'audition",
         "SEARCH": "SLOID - Désignation officielle",
+        "SLIDE": "Auditions à traiter",
         "OVERRIDE_TITLE": "Évaluation par l'OFT",
         "OVERRIDE_HAPPENED_INFO": "L'Office fédéral des transports (OFT) a procédé à une évaluation. L'évaluation de l'OFT s'applique (voir ci-dessous).",
         "PREVIOUS_WORKFLOW": "Ersetzt vorhergehende Anhörung {{number}}",

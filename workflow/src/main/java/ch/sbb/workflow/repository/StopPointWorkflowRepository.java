@@ -4,7 +4,6 @@ import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +28,5 @@ public interface StopPointWorkflowRepository extends JpaRepository<StopPointWork
       where d.id = :decisionId
       """, nativeQuery = true)
   StopPointWorkflow findByDecisionId(Long decisionId);
+
 }
