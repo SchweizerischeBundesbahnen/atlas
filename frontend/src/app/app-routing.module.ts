@@ -1,16 +1,21 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
-import { Pages } from './pages/pages';
-import { adminUsers } from './core/auth/guards/admin.guard';
-import { canActivateTimetableHearing } from './core/auth/guards/timetable-hearing-guard.service';
-import { loggedInUsers } from './core/auth/guards/auth-guard';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {HomeComponent} from './pages/home/home.component';
+import {Pages} from './pages/pages';
+import {adminUsers} from './core/auth/guards/admin.guard';
+import {canActivateTimetableHearing} from './core/auth/guards/timetable-hearing-guard.service';
+import {loggedInUsers} from './core/auth/guards/auth-guard';
 
 const routes: Routes = [
   {
     path: Pages.TTFN.path,
     loadChildren: () => import('./pages/ttfn/ttfn.module').then((m) => m.TtfnModule),
     data: { headerTitle: Pages.TTFN.headerTitle },
+  },
+  {
+    path: Pages.MASS_IMPORT.path,
+    loadChildren: () => import('./pages/massimport/massimport.module').then((m) => m.MassimportModule),
+    data: { headerTitle: Pages.MASS_IMPORT.headerTitle },
   },
   {
     path: Pages.LIDI.path,

@@ -83,7 +83,7 @@ describe('SideNavComponent', () => {
   it('should set activePageIndex correct', () => {
     const currentUrl = '/service-point-directory';
     component.getActivePageIndex(currentUrl);
-    expect(component.activePageIndex).toBe(3);
+    expect(component.activePageIndex).toBe(4);
   });
 
   it('should set activeSubPageIndex correct', () => {
