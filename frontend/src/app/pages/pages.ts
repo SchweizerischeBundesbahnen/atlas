@@ -22,6 +22,15 @@ export class Pages {
     path: ':id',
   };
 
+  public static MASS_IMPORT: Page = {
+    title: 'PAGES.MASS_IMPORT.TITLE',
+    titleMenu: 'PAGES.MASS_IMPORT.TITLE_MENU',
+    headerTitle: 'PAGES.MASS_IMPORT.TITLE_MENU',
+    path: 'mass-import',
+    pathText: 'PAGES.MASS_IMPORT.PATH_TEXT',
+    description: 'PAGES.MASS_IMPORT.DESCRIPTION',
+  };
+
   public static LIDI: Page = {
     title: 'PAGES.LIDI.TITLE',
     titleMenu: 'PAGES.LIDI.TITLE_MENU',
@@ -250,6 +259,7 @@ export class Pages {
 
   public static pages: Page[] = [
     Pages.HOME,
+    Pages.MASS_IMPORT,
     Pages.LIDI,
     Pages.BODI,
     Pages.SEPODI,
