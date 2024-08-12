@@ -98,10 +98,9 @@
          <groupId>com.fasterxml.jackson.dataformat</groupId>
       </dependency>
       <dependency>
-         <artifactId>aws-java-sdk-s3</artifactId>
-         <groupId>com.amazonaws</groupId>
+         <groupId>software.amazon.awssdk</groupId>
+         <artifactId>s3</artifactId>
       </dependency>
-      <!-- Needed for AWS -->
       <dependency>
          <artifactId>jaxb-api</artifactId>
          <groupId>javax.xml.bind</groupId>
