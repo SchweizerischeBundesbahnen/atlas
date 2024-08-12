@@ -13,6 +13,8 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,6 +33,7 @@ import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3Utilities;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.GetUrlRequest;
@@ -143,7 +146,7 @@ class AmazonServiceTest {
   }
 
   @Test
-  public void shouldGetClient() {
+  void shouldGetClient() {
     //when
     S3Client result = amazonService.getClient(AmazonBucket.EXPORT);
     //then
@@ -151,7 +154,7 @@ class AmazonServiceTest {
   }
 
   @Test
-  public void shouldGetAmazonBucketConfig() {
+  void shouldGetAmazonBucketConfig() {
     //when
     AmazonBucketConfig result = amazonService.getAmazonBucketConfig(AmazonBucket.EXPORT);
     //then
@@ -160,7 +163,7 @@ class AmazonServiceTest {
   }
 
   @Test
-  public void shouldPullFileAsStream() throws IOException {
+  void shouldPullFileAsStream() throws IOException {
     //given
     String filePath = "path/file";
     String testData = "Tesd data";
@@ -181,11 +184,10 @@ class AmazonServiceTest {
   }
 
   @Test
-  public void shouldGetLatestJsonUploadedObject() {
+  void shouldGetLatestJsonUploadedObject() {
     //given
     String filePath = "path/file";
     String filePrefix = "prefix";
-    String bucketName = "testBucket";
     String testData = "Tesd data";
     byte[] dataBytes = testData.getBytes();
 
@@ -213,4 +215,43 @@ class AmazonServiceTest {
     assertThat(result).isEqualTo("path/file/file2.json");
   }
 
+  @Test
+  void shouldDeleteFile() {
+    //when
+    amazonService.deleteFile(AmazonBucket.EXPORT, "service_points/full/full-swiss-only-service_point-2024-07-13.csv.zip");
+    //then
+    verify(s3Client).deleteObject(any(DeleteObjectRequest.class));
+  }
+
+  @Test
+  void shouldGetObjectKeysByPrefix() {
+    when(s3Client.listObjectsV2(any(ListObjectsV2Request.class))).thenReturn(
+        ListObjectsV2Response.builder().contents(S3Object.builder()
+            .key("full-swiss-only-service_point-2024-07-13.csv.zip")
+            .build()).build());
+    //when
+    amazonService.getS3ObjectKeysFromPrefix(AmazonBucket.EXPORT, "service_points/full", "full-swiss-only-service_point-");
+    //then
+    verify(s3Client).listObjectsV2(any(ListObjectsV2Request.class));
+  }
+
+  @Test
+  void shouldPutGzipFileToBucket() throws IOException {
+    // Fake compress
+    when(fileService.gzipCompress(any())).thenAnswer(i -> i.getArgument(0));
+    when(s3Utilities.getUrl(any(GetUrlRequest.class))).thenAnswer(i -> URI.create(
+            "https://atlas-data-export-dev-dev.s3.eu-central-1.amazonaws.com/" + i.getArgument(0, GetUrlRequest.class).key())
+        .toURL());
+
+    //when
+    File file = createTempFile().toFile();
+    URL url = amazonService.putGzipFile(AmazonBucket.EXPORT, file, "service_points/full");
+
+    verify(fileService).gzipCompress(any());
+    verify(s3Client).putObject(any(PutObjectRequest.class), any(RequestBody.class));
+    verify(s3Utilities).getUrl(any(GetUrlRequest.class));
+
+    assertThat(url.toString()).isNotNull().isEqualTo("https://atlas-data-export-dev-dev.s3.eu-central-1.amazonaws"
+        + ".com/service_points/full/" + file.getName() + ".gz");
+  }
 }
