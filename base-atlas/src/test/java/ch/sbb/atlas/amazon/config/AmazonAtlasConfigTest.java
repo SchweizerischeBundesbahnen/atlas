@@ -1,35 +1,59 @@
 package ch.sbb.atlas.amazon.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import ch.sbb.atlas.amazon.config.AmazonConfigProps.AmazonBucketConfig;
-import ch.sbb.atlas.amazon.service.AmazonBucketClient;
-import ch.sbb.atlas.model.controller.IntegrationTest;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Value;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.ExpirationStatus;
+import software.amazon.awssdk.services.s3.model.GetBucketLifecycleConfigurationRequest;
+import software.amazon.awssdk.services.s3.model.GetBucketLifecycleConfigurationResponse;
+import software.amazon.awssdk.services.s3.model.LifecycleRule;
+import software.amazon.awssdk.services.s3.model.PutBucketLifecycleConfigurationRequest;
 
-@IntegrationTest
 class AmazonAtlasConfigTest {
 
-  @Value("${AMAZON_S3_ACCESS_KEY}")
-  private String accessKey;
+  @Mock
+  private S3Client s3Client;
 
-  @Value("${AMAZON_S3_SECRET_KEY}")
-  private String secretKey;
+  @Captor
+  ArgumentCaptor<PutBucketLifecycleConfigurationRequest> putBucketLifecycleConfigurationRequestCaptor;
+
+  @BeforeEach
+  void setUp() {
+    MockitoAnnotations.initMocks(this);
+  }
 
   @Test
-  void shouldConfigureS3Client() {
-    Map<String, AmazonBucketConfig> bucketConfigs = new HashMap<>();
-    bucketConfigs.put("export-files",
-        AmazonBucketConfig.builder().accessKey(accessKey).secretKey(secretKey).bucketName("atlas-data-export-dev-dev")
-            .objectExpirationDays(30).build());
+  void shouldSetBucketLifecycleConfiguration() {
+    AmazonBucketConfig amazonBucketConfig = AmazonBucketConfig.builder()
+        .bucketName("bucket")
+        .objectExpirationDays(30)
+        .build();
 
-    List<AmazonBucketClient> amazonBucketClients = AmazonAtlasConfig.configureAmazonS3Client(
-        AmazonConfigProps.builder().region("eu-central-1").bucketConfigs(bucketConfigs).build());
+    when(s3Client.getBucketLifecycleConfiguration(any(GetBucketLifecycleConfigurationRequest.class))).thenReturn(
+        GetBucketLifecycleConfigurationResponse.builder().rules(LifecycleRule.builder().id("id1").build()).build());
 
-    assertThat(amazonBucketClients).hasSize(1);
+    // when
+    AmazonAtlasConfig.setBucketLifecycleConfiguration(amazonBucketConfig, s3Client);
+
+    // then
+    verify(s3Client).putBucketLifecycleConfiguration(putBucketLifecycleConfigurationRequestCaptor.capture());
+
+    List<LifecycleRule> rules = putBucketLifecycleConfigurationRequestCaptor.getValue().lifecycleConfiguration().rules();
+    assertThat(rules).hasSize(1);
+    LifecycleRule rule = rules.getFirst();
+    assertThat(rule.id()).isEqualTo("bucket-expiration-id");
+    assertThat(rule.status()).isEqualTo(ExpirationStatus.ENABLED);
+    assertThat(rule.expiration().days()).isEqualTo(30);
   }
 }
