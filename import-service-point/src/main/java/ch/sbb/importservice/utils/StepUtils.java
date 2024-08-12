@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.conn.ConnectTimeoutException;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 
@@ -29,7 +28,6 @@ public class StepUtils {
     int maxAttempts = MAX_ATTEMPTS;
     Map<Class<? extends Throwable>, Boolean> exceptionsToRetry = new HashMap<>();
     exceptionsToRetry.put(FeignException.InternalServerError.class, true);
-    exceptionsToRetry.put(ConnectTimeoutException.class, true);
     exceptionsToRetry.put(RetryableException.class, true);
     log.info("Configuring Retry policy for step [{}] ", stepName);
     log.info("Set max attemps to retry: {}", maxAttempts);
