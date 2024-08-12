@@ -104,6 +104,11 @@
          <scope>test</scope>
       </dependency>
       <dependency>
+         <artifactId>spring-security-test</artifactId>
+         <groupId>org.springframework.security</groupId>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
          <groupId>org.springframework.kafka</groupId>
          <artifactId>spring-kafka-test</artifactId>
          <scope>test</scope>
