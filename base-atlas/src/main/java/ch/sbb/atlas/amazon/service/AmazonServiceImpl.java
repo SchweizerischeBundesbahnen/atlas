@@ -69,11 +69,6 @@ public class AmazonServiceImpl implements AmazonService {
   }
 
   @Override
-  public URL putGzipFile(AmazonBucket bucket, File file, String dir) throws IOException {
-    return putGzipFileToBucket(bucket, file, dir);
-  }
-
-  @Override
   public File pullFile(AmazonBucket bucket, String filePath) {
     try (InputStream s3Object = pullS3Object(bucket, filePath)) {
       return getFile(filePath, s3Object, fileService.getDir());
@@ -156,13 +151,14 @@ public class AmazonServiceImpl implements AmazonService {
     return executePutObjectRequest(putObjectRequest, bucket, filePathName, RequestBody.fromFile(file));
   }
 
-  private URL putGzipFileToBucket(AmazonBucket bucket, File file, String dir) throws IOException {
+  @Override
+  public URL putGzipFile(AmazonBucket bucket, File file, String dir) throws IOException {
     String filePathName = getFilePathName(file, dir) + GZ_EXTENSION;
     try (FileInputStream inputStream = new FileInputStream(file)) {
       byte[] zippedBytes = fileService.gzipCompress(inputStream.readAllBytes());
       PutObjectRequest putObjectRequest = PutObjectRequest.builder()
           .contentType(CONTENT_TYPE_GZIP)
-          .contentLength(Integer.valueOf(zippedBytes.length).longValue())
+          .contentLength((long) zippedBytes.length)
           .bucket(getAmazonBucketConfig(bucket).getBucketName())
           .key(filePathName)
           .build();
