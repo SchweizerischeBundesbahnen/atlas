@@ -31,22 +31,22 @@ describe('PageService', () => {
 
   it('should provide default pages', () => {
     const enabledPages = pageService.enabledPages;
-    expect(enabledPages).toHaveSize(5);
+    expect(enabledPages).toHaveSize(6);
   });
 
   it('should add all pages if allowed', () => {
     pageService.addPagesBasedOnPermissions();
 
     const enabledPages = pageService.enabledPages;
-    expect(enabledPages).toHaveSize(8);
+    expect(enabledPages).toHaveSize(9);
   });
 
   it('should reset pages', () => {
     pageService.addPagesBasedOnPermissions();
-    expect(pageService.enabledPages).toHaveSize(8);
+    expect(pageService.enabledPages).toHaveSize(9);
 
     pageService.resetPages();
-    expect(pageService.enabledPages).toHaveSize(5);
+    expect(pageService.enabledPages).toHaveSize(6);
   });
 
   it('should return submenu when', () => {
