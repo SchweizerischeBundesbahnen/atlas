@@ -1,7 +1,5 @@
 package ch.sbb.atlas.amazon.service;
 
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,9 +14,8 @@ public class AmazonFileStreamingServiceImpl implements AmazonFileStreamingServic
 
   @Override
   public InputStreamResource streamFileAndDecompress(AmazonBucket amazonBucket, String fileToStream) {
-    try(S3Object s3Object = amazonService.pullS3Object(amazonBucket, fileToStream);
-        S3ObjectInputStream s3ObjectInputStream = s3Object.getObjectContent();
-        InputStream inputStream = new ByteArrayInputStream(fileService.gzipDecompress(s3ObjectInputStream))){
+    try(InputStream s3Object = amazonService.pullS3Object(amazonBucket, fileToStream);
+        InputStream inputStream = new ByteArrayInputStream(fileService.gzipDecompress(s3Object))){
       return new InputStreamResource(inputStream);
 
     } catch (IOException e) {
