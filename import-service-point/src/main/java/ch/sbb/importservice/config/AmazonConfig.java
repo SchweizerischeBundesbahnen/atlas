@@ -12,11 +12,13 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AmazonConfig {
+
   @Bean
   @ConfigurationProperties(prefix = "amazon")
   public AmazonConfigProps amazonConfigProps() {
     return new AmazonConfigProps();
   }
+
   @Bean
   public AmazonService amazonService(FileService fileService) {
     return new AmazonServiceImpl(configureAmazonS3Client(amazonConfigProps()), fileService);
