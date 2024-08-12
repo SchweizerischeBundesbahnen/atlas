@@ -1,5 +1,6 @@
 package ch.sbb.importservice.controller;
 
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.service.UserService;
 import ch.sbb.importservice.entity.BulkImport;
@@ -29,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class BulkImportController {
 
   private final BulkImportService bulkImportService;
+  private final FileService fileService;
 
   @PostMapping("{application}/{objectType}/{importType}")
   @ResponseStatus(HttpStatus.ACCEPTED)
@@ -47,12 +49,13 @@ public class BulkImportController {
         file.getOriginalFilename(),
         file.getContentType());
 
-    bulkImportService.startBulkImport(BulkImport.builder()
+    BulkImport bulkImport = BulkImport.builder()
         .application(application)
         .objectType(objectType)
         .importType(importType)
         .creator(UserService.getUserIdentifier())
-        .build());
+        .build();
+    bulkImportService.startBulkImport(bulkImport, fileService.getFileFromMultipart(file));
   }
 
 }
