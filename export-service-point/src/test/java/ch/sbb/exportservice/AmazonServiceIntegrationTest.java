@@ -16,7 +16,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -74,8 +73,7 @@ class AmazonServiceIntegrationTest {
     assertThat(latestJsonKey).isEqualTo("service_point/full/full-swiss-only-service_point-" + date + ".json.gz");
   }
 
-  @Disabled("Remove uploaded files if necessary")
-  @Test
+  @AfterEach
   void shouldDelete() {
     amazonService.deleteFile(AmazonBucket.EXPORT, INTEGRATION_TEST_DIR + "/" + CSV_FILE);
     amazonService.deleteFile(AmazonBucket.EXPORT, INTEGRATION_TEST_DIR + "/" + CSV_FILE + ".zip");
