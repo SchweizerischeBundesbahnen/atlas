@@ -73,13 +73,6 @@ class AmazonServiceIntegrationTest {
     assertThat(latestJsonKey).isEqualTo("service_point/full/full-swiss-only-service_point-" + date + ".json.gz");
   }
 
-  @AfterEach
-  void shouldDelete() {
-    amazonService.deleteFile(AmazonBucket.EXPORT, INTEGRATION_TEST_DIR + "/" + CSV_FILE);
-    amazonService.deleteFile(AmazonBucket.EXPORT, INTEGRATION_TEST_DIR + "/" + CSV_FILE + ".zip");
-    amazonService.deleteFile(AmazonBucket.EXPORT, INTEGRATION_TEST_DIR + "/" + JSON_FILE + ".gz");
-  }
-
   private File getMinimalServicePointCsvFile() throws IOException {
     return getMinimalFileAsCopy(CSV_FILE);
   }
@@ -101,6 +94,10 @@ class AmazonServiceIntegrationTest {
 
   @AfterEach
   void tearDown() throws IOException {
+    amazonService.deleteFile(AmazonBucket.EXPORT, INTEGRATION_TEST_DIR + "/" + CSV_FILE);
+    amazonService.deleteFile(AmazonBucket.EXPORT, INTEGRATION_TEST_DIR + "/" + CSV_FILE + ".zip");
+    amazonService.deleteFile(AmazonBucket.EXPORT, INTEGRATION_TEST_DIR + "/" + JSON_FILE + ".gz");
+
     Files.deleteIfExists(Paths.get(INTEGRATION_TEST_DIR, CSV_FILE));
     Files.deleteIfExists(Paths.get(INTEGRATION_TEST_DIR, JSON_FILE));
   }
