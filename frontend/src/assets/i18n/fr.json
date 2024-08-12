@@ -175,6 +175,12 @@
       "DESCRIPTION": "Saisier, modifier et consulter les numéros de tableaux-horaires.",
       "PATH_TEXT": "Tableaux-horaires"
     },
+    "MASS_IMPORT": {
+      "TITLE": "Importation de données par fichier",
+      "TITLE_MENU": "Importation en masse",
+      "DESCRIPTION": "Traiter les données en masse par fileupload (*.csv ou Excel).",
+      "PATH_TEXT": "Importation en masse"
+    },
     "LIDI": {
       "TITLE": "Gérer des lignes et lignes partielles",
       "TITLE_MENU": "Lignes et lignes partielles",
