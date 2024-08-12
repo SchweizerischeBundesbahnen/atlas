@@ -102,6 +102,10 @@
          <version>2.189.0</version>
       </dependency>
       <dependency>
+         <groupId>software.amazon.awssdk</groupId>
+         <artifactId>s3</artifactId>
+      </dependency>
+      <dependency>
          <artifactId>postgresql</artifactId>
          <groupId>org.postgresql</groupId>
          <scope>runtime</scope>
