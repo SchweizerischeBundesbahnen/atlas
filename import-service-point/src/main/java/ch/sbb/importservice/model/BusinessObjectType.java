@@ -20,8 +20,8 @@ public enum BusinessObjectType {
 
   ;
 
-  public static Set<BusinessObjectType> SEPODI_BUSINESS_OBJECTS = Set.of(SERVICE_POINT, TRAFFIC_POINT, LOADING_POINT);
-  public static Set<BusinessObjectType> PRM_BUSINESS_OBJECTS = Set.of(STOP_POINT, PLATFORM, REFERENCE_POINT, PARKING_LOT,
+  public static final Set<BusinessObjectType> SEPODI_BUSINESS_OBJECTS = Set.of(SERVICE_POINT, TRAFFIC_POINT, LOADING_POINT);
+  public static final Set<BusinessObjectType> PRM_BUSINESS_OBJECTS = Set.of(STOP_POINT, PLATFORM, REFERENCE_POINT, PARKING_LOT,
       CONTACT_POINT, TOILET, RELATION);
 
 }
