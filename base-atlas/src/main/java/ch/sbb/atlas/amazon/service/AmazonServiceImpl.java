@@ -4,18 +4,12 @@ import ch.sbb.atlas.amazon.config.AmazonConfigProps.AmazonBucketConfig;
 import ch.sbb.atlas.amazon.exception.FileException;
 import ch.sbb.atlas.model.exception.FileNotFoundOnS3Exception;
 import ch.sbb.atlas.model.exception.NotFoundException.FileNotFoundException;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.AmazonS3Exception;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import com.amazonaws.services.s3.model.S3ObjectSummary;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.Comparator;
@@ -23,6 +17,15 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetUrlRequest;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.S3Exception;
+import software.amazon.awssdk.services.s3.model.S3Object;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,18 +33,16 @@ public class AmazonServiceImpl implements AmazonService {
 
   public static final String JSON_FILE_EXTENSION = "json";
   public static final String GZ_EXTENSION = ".gz";
-  public static final String CONTENT_TYPE = "application/gzip";
+  public static final String CONTENT_TYPE_GZIP = "application/gzip";
   private final List<AmazonBucketClient> amazonBucketClients;
   private final FileService fileService;
 
   @Override
-  public URL putFile(AmazonBucket bucket, File file, String dir) throws IOException {
-    ObjectMetadata metadata = new ObjectMetadata();
-    metadata.setContentLength(file.length());
-    return putFileToBucket(bucket, file, dir, metadata);
+  public URL putFile(AmazonBucket bucket, File file, String dir) {
+    return putFileToBucket(bucket, file, dir);
   }
 
-  AmazonS3 getClient(AmazonBucket bucket) {
+  S3Client getClient(AmazonBucket bucket) {
     return amazonBucketClients.stream().filter(i -> i.getBucket() == bucket).findFirst().orElseThrow().getClient();
   }
 
@@ -52,47 +53,45 @@ public class AmazonServiceImpl implements AmazonService {
   @Override
   public URL putZipFile(AmazonBucket bucket, File file, String dir) throws IOException {
     File zipFile = fileService.zipFile(file);
-    ObjectMetadata metadata = new ObjectMetadata();
-    metadata.setContentType(CONTENT_TYPE);
-    metadata.setContentLength(zipFile.length());
-    URL url = putFileToBucket(bucket, zipFile, dir, metadata);
+
+    String filePathName = getFilePathName(zipFile, dir);
+    PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+        .bucket(getAmazonBucketConfig(bucket).getBucketName())
+        .key(filePathName)
+        .contentType(CONTENT_TYPE_GZIP)
+        .contentLength(zipFile.length())
+        .build();
+    URL url = executePutObjectRequest(putObjectRequest, bucket, filePathName, RequestBody.fromFile(file));
+
     Files.deleteIfExists(file.toPath());
     Files.deleteIfExists(zipFile.toPath());
     return url;
   }
 
   @Override
-  public URL putGzipFile(AmazonBucket bucket, File file, String dir) throws IOException {
-    return putGzipFileToBucket(bucket, file, dir);
-  }
-
-  @Override
   public File pullFile(AmazonBucket bucket, String filePath) {
-    try (S3Object s3Object = pullS3Object(bucket, filePath)) {
+    try (InputStream s3Object = pullS3Object(bucket, filePath)) {
       return getFile(filePath, s3Object, fileService.getDir());
-    } catch (AmazonS3Exception | IOException e) {
-      log.error("AmazonS3Exception occurred! filePath={}, bucket={}", filePath, bucket, e);
+    } catch (S3Exception | IOException e) {
+      log.error("S3Exception occurred! filePath={}, bucket={}", filePath, bucket, e);
       throw new FileNotFoundException(filePath);
     }
   }
 
   @Override
   public InputStreamResource pullFileAsStream(AmazonBucket bucket, String filePath) {
-    try (S3Object s3Object = pullS3Object(bucket, filePath);
-        S3ObjectInputStream s3ObjectObjectContent = s3Object.getObjectContent()) {
-      byte[] bytes = s3ObjectObjectContent.readAllBytes();
-      return new InputStreamResource(new ByteArrayInputStream(bytes));
+    try (InputStream s3Object = pullS3Object(bucket, filePath)) {
+      return new InputStreamResource(s3Object);
     } catch (IOException e) {
       log.error("AmazonS3Exception occurred! filePath={}, bucket={}", filePath, bucket, e);
       throw new FileException("There was a problem with downloading filePath=" + filePath, e);
     }
   }
 
-  private static File getFile(String filePath, S3Object s3Object, String dir) {
+  private static File getFile(String filePath, InputStream s3Content, String dir) {
     File downloadedFile = new File(dir + filePath.replace("/", "_"));
-    try (FileOutputStream fileOutputStream = new FileOutputStream(downloadedFile);
-        S3ObjectInputStream s3InputStream = s3Object.getObjectContent()) {
-      fileOutputStream.write(s3InputStream.readAllBytes());
+    try (FileOutputStream fileOutputStream = new FileOutputStream(downloadedFile)) {
+      fileOutputStream.write(s3Content.readAllBytes());
       return downloadedFile;
     } catch (IOException e) {
       throw new FileException("There was a problem with downloading filePath=" + filePath + " to dir=" + dir, e);
@@ -100,75 +99,85 @@ public class AmazonServiceImpl implements AmazonService {
   }
 
   @Override
-  public S3Object pullS3Object(AmazonBucket bucket, String filePath) {
+  public InputStream pullS3Object(AmazonBucket bucket, String filePath) {
     log.info("Pull file {} from Amazon S3 Bucket.", filePath);
     try {
-      return getClient(bucket).getObject(getAmazonBucketConfig(bucket).getBucketName(), filePath);
-    } catch (AmazonS3Exception amazonS3Exception) {
+      return getClient(bucket).getObject(GetObjectRequest.builder()
+          .bucket(getAmazonBucketConfig(bucket).getBucketName())
+          .key(filePath).build());
+    } catch (S3Exception amazonS3Exception) {
       throw new FileNotFoundOnS3Exception(filePath);
     }
   }
 
   @Override
   public void deleteFile(AmazonBucket bucket, String filePath) {
-    getClient(bucket).deleteObject(getAmazonBucketConfig(bucket).getBucketName(), filePath);
+    getClient(bucket).deleteObject(DeleteObjectRequest.builder()
+        .bucket(getAmazonBucketConfig(bucket).getBucketName())
+        .key(filePath).build());
   }
 
   @Override
   public List<String> getS3ObjectKeysFromPrefix(AmazonBucket bucket, String dirPath, String prefix) {
-    List<S3ObjectSummary> result = getClient(bucket).listObjectsV2(getAmazonBucketConfig(bucket).getBucketName(),
-        getFilePathName(dirPath, prefix)).getObjectSummaries();
-    return result.stream().map(S3ObjectSummary::getKey).toList();
+    List<S3Object> result = getClient(bucket).listObjectsV2(ListObjectsV2Request.builder()
+        .bucket(getAmazonBucketConfig(bucket).getBucketName())
+        .prefix(getFilePathName(dirPath, prefix)).build()).contents();
+    return result.stream().map(S3Object::key).toList();
   }
 
   @Override
   public String getLatestJsonUploadedObject(AmazonBucket bucket, String pathPrefix, String fileTypePrefix) {
-    List<S3ObjectSummary> objectSummaries = getClient(bucket).listObjectsV2(getAmazonBucketConfig(bucket).getBucketName(),
-        pathPrefix).getObjectSummaries();
-    List<String> fileNameList = objectSummaries.stream()
-        .filter(s3ObjectSummary ->
-            s3ObjectSummary.getKey().contains(fileTypePrefix) && s3ObjectSummary.getKey().contains(JSON_FILE_EXTENSION))
-        .sorted(Comparator.comparing(S3ObjectSummary::getLastModified).reversed())
-        .map(S3ObjectSummary::getKey)
+    List<S3Object> s3Objects = getClient(bucket).listObjectsV2(ListObjectsV2Request.builder()
+        .bucket(getAmazonBucketConfig(bucket).getBucketName())
+        .prefix(pathPrefix).build()).contents();
+    List<String> fileNameList = s3Objects.stream()
+        .filter(s3Object -> s3Object.key().contains(fileTypePrefix) && s3Object.key().contains(JSON_FILE_EXTENSION))
+        .sorted(Comparator.comparing(S3Object::lastModified).reversed())
+        .map(S3Object::key)
         .toList();
-    if (!fileNameList.isEmpty() && fileNameList.get(0) != null) {
-      return fileNameList.get(0);
+    if (!fileNameList.isEmpty() && fileNameList.getFirst() != null) {
+      return fileNameList.getFirst();
     }
     throw new FileNotFoundException(
         "File with path prefix [{" + pathPrefix + "}] does not found on bucket [{" + bucket.getProperty() + "}]");
   }
 
-  private URL putFileToBucket(AmazonBucket bucket, File file, String dir, ObjectMetadata metadata) throws IOException {
-    PutObjectRequest putObjectRequest;
-    try (FileInputStream inputStream = new FileInputStream(file)) {
-      String filePathName = getFilePathName(file, dir);
-      putObjectRequest = new PutObjectRequest(getAmazonBucketConfig(bucket).getBucketName(), filePathName, inputStream,
-          metadata);
-      return executePutObjectRequest(putObjectRequest, bucket, filePathName);
-    }
+  private URL putFileToBucket(AmazonBucket bucket, File file, String dir) {
+    String filePathName = getFilePathName(file, dir);
+    PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+        .bucket(getAmazonBucketConfig(bucket).getBucketName())
+        .key(filePathName)
+        .build();
+    return executePutObjectRequest(putObjectRequest, bucket, filePathName, RequestBody.fromFile(file));
   }
 
-  private URL putGzipFileToBucket(AmazonBucket bucket, File file, String dir) throws IOException {
-    PutObjectRequest putObjectRequest;
+  @Override
+  public URL putGzipFile(AmazonBucket bucket, File file, String dir) throws IOException {
+    String filePathName = getFilePathName(file, dir) + GZ_EXTENSION;
     try (FileInputStream inputStream = new FileInputStream(file)) {
-      String filePathName = getFilePathName(file, dir) + GZ_EXTENSION;
       byte[] zippedBytes = fileService.gzipCompress(inputStream.readAllBytes());
-      ObjectMetadata metadata = new ObjectMetadata();
-      metadata.setContentType(CONTENT_TYPE);
-      metadata.setContentLength(zippedBytes.length);
-      putObjectRequest = new PutObjectRequest(getAmazonBucketConfig(bucket).getBucketName(), filePathName,
-          new ByteArrayInputStream(zippedBytes),
-          metadata);
-      return executePutObjectRequest(putObjectRequest, bucket, filePathName);
+      PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+          .contentType(CONTENT_TYPE_GZIP)
+          .contentLength((long) zippedBytes.length)
+          .bucket(getAmazonBucketConfig(bucket).getBucketName())
+          .key(filePathName)
+          .build();
+      return executePutObjectRequest(putObjectRequest, bucket, filePathName,
+          RequestBody.fromInputStream(new ByteArrayInputStream(zippedBytes), zippedBytes.length));
     }
   }
 
-  private URL executePutObjectRequest(PutObjectRequest putObjectRequest, AmazonBucket bucket, String filePathName) {
-    getClient(bucket).putObject(putObjectRequest);
-    URL url = getClient(bucket).getUrl(getAmazonBucketConfig(bucket).getBucketName(), filePathName);
+  private URL executePutObjectRequest(PutObjectRequest putObjectRequest, AmazonBucket bucket, String filePathName,
+      RequestBody requestBody) {
+    getClient(bucket).putObject(putObjectRequest, requestBody);
+    URL url = getClient(bucket)
+        .utilities()
+        .getUrl(GetUrlRequest.builder()
+            .bucket(getAmazonBucketConfig(bucket).getBucketName())
+            .key(filePathName).build());
 
     // Used for splunk dashboard to display exported files.
-    log.info("Upload to S3 completed. file={}, size={}", filePathName, putObjectRequest.getMetadata().getContentLength());
+    log.info("Upload to S3 completed. file={}, size={}", filePathName, putObjectRequest.contentLength());
     return url;
   }
 
