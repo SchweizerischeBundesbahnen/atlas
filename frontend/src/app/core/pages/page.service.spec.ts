@@ -6,6 +6,7 @@ import {Pages} from "../../pages/pages";
 import {PermissionService} from "../auth/permission/permission.service";
 
 const permissionServiceMock: Partial<PermissionService> = {
+  mayAccessMassImport: () => true,
   mayAccessTimetableHearing: () => true,
   mayAccessTtfn: () => true,
   isAdmin: true
@@ -31,7 +32,7 @@ describe('PageService', () => {
 
   it('should provide default pages', () => {
     const enabledPages = pageService.enabledPages;
-    expect(enabledPages).toHaveSize(6);
+    expect(enabledPages).toHaveSize(5);
   });
 
   it('should add all pages if allowed', () => {
@@ -46,7 +47,7 @@ describe('PageService', () => {
     expect(pageService.enabledPages).toHaveSize(9);
 
     pageService.resetPages();
-    expect(pageService.enabledPages).toHaveSize(6);
+    expect(pageService.enabledPages).toHaveSize(5);
   });
 
   it('should return submenu when', () => {
