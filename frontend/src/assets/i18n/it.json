@@ -177,9 +177,9 @@
     },
     "MASS_IMPORT": {
       "TITLE": "Importazione dei dati per file",
-      "TITLE_MENU": "Importazione in blocco",
+      "TITLE_MENU": "Importazione di massa",
       "DESCRIPTION": "Elaborazione di dati di massa con l'upload di file (*.csv o Excel).",
-      "PATH_TEXT": "Importazione in blocco"
+      "PATH_TEXT": "Importazione di massa"
     },
     "LIDI": {
       "TITLE": "Gestione dei numeri dell'elenco delle linee",
