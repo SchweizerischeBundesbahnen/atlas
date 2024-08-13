@@ -11,7 +11,7 @@
  */
 
 
-export type ApplicationType = 'TTFN' | 'LIDI' | 'BODI' | 'TIMETABLE_HEARING' | 'SEPODI' | 'PRM';
+export type ApplicationType = 'TTFN' | 'LIDI' | 'BODI' | 'TIMETABLE_HEARING' | 'SEPODI' | 'PRM' | 'MASS_IMPORT';
 
 export const ApplicationType = {
     Ttfn: 'TTFN' as ApplicationType,
@@ -19,6 +19,7 @@ export const ApplicationType = {
     Bodi: 'BODI' as ApplicationType,
     TimetableHearing: 'TIMETABLE_HEARING' as ApplicationType,
     Sepodi: 'SEPODI' as ApplicationType,
-    Prm: 'PRM' as ApplicationType
+    Prm: 'PRM' as ApplicationType,
+    MassImport: 'MASS_IMPORT' as ApplicationType
 };
 

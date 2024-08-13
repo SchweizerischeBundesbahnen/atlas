@@ -20,6 +20,9 @@ export class PageService {
     if (this.permissionService.mayAccessTtfn()) {
       this.viewablePages.push(Pages.TTFN);
     }
+    if (this.permissionService.mayAccessMassImport()) {
+      this.viewablePages.push(Pages.MASS_IMPORT);
+    }
     if (this.permissionService.isAdmin) {
       this.viewablePages.push(...Pages.adminPages);
     }
