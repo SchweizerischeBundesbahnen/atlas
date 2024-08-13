@@ -11,10 +11,11 @@
  */
 
 
-export interface UpdateDesignationOfficialServicePoint { 
-    /**
-     * Official designation of a location that must be used by all recipients
-     */
-    designationOfficial: string;
-}
+export type ImportType = 'CREATE' | 'UPDATE' | 'TERMINATE';
+
+export const ImportType = {
+    Create: 'CREATE' as ImportType,
+    Update: 'UPDATE' as ImportType,
+    Terminate: 'TERMINATE' as ImportType
+};
 
