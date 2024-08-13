@@ -11,6 +11,7 @@ import ch.sbb.workflow.repository.DecisionRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,5 +79,9 @@ public class DecisionService {
 
   public Optional<Decision> findDecisionByExaminantId(Long examinantId) {
     return Optional.ofNullable(decisionRepository.findDecisionByExaminantId(examinantId));
+  }
+
+  public Set<Decision> findDecisionByWorkflowId(Long workflowId) {
+    return decisionRepository.findDecisionByWorkflowId(workflowId);
   }
 }
