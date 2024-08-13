@@ -17,7 +17,11 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
+import { ApplicationType } from '../model/models';
+import { BusinessObjectType } from '../model/models';
 import { ErrorResponse } from '../model/models';
+import { ImportType } from '../model/models';
+import { InlineObject9 } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -27,7 +31,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class TimetableYearChangeService {
+export class BulkImportService {
 
     protected basePath = 'http://localhost';
     public defaultHeaders = new HttpHeaders();
@@ -85,17 +89,25 @@ export class TimetableYearChangeService {
     }
 
     /**
-     * Returns a list of the next Timetable years change
-     * @param count 
+     * @param application 
+     * @param objectType 
+     * @param importType 
+     * @param inlineObject9 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getNextTimetablesYearChange(count: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Array<Date>>;
-    public getNextTimetablesYearChange(count: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Array<Date>>>;
-    public getNextTimetablesYearChange(count: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Array<Date>>>;
-    public getNextTimetablesYearChange(count: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (count === null || count === undefined) {
-            throw new Error('Required parameter count was null or undefined when calling getNextTimetablesYearChange.');
+    public startServicePointImportBatch1(application: ApplicationType, objectType: BusinessObjectType, importType: ImportType, inlineObject9?: InlineObject9, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<any>;
+    public startServicePointImportBatch1(application: ApplicationType, objectType: BusinessObjectType, importType: ImportType, inlineObject9?: InlineObject9, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<any>>;
+    public startServicePointImportBatch1(application: ApplicationType, objectType: BusinessObjectType, importType: ImportType, inlineObject9?: InlineObject9, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<any>>;
+    public startServicePointImportBatch1(application: ApplicationType, objectType: BusinessObjectType, importType: ImportType, inlineObject9?: InlineObject9, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
+        if (application === null || application === undefined) {
+            throw new Error('Required parameter application was null or undefined when calling startServicePointImportBatch1.');
+        }
+        if (objectType === null || objectType === undefined) {
+            throw new Error('Required parameter objectType was null or undefined when calling startServicePointImportBatch1.');
+        }
+        if (importType === null || importType === undefined) {
+            throw new Error('Required parameter importType was null or undefined when calling startServicePointImportBatch1.');
         }
 
         let headers = this.defaultHeaders;
@@ -113,57 +125,22 @@ export class TimetableYearChangeService {
         }
 
 
-        let responseType_: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType_ = 'text';
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-
-        return this.httpClient.get<Array<Date>>(`${this.configuration.basePath}/line-directory/v1/timetable-year-change/next-years/${encodeURIComponent(String(count))}`,
-            {
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Returns the Timetable year change for the given year
-     * @param year 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getTimetableYearChange(year: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Date>;
-    public getTimetableYearChange(year: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Date>>;
-    public getTimetableYearChange(year: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Date>>;
-    public getTimetableYearChange(year: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (year === null || year === undefined) {
-            throw new Error('Required parameter year was null or undefined when calling getTimetableYearChange.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
 
         let responseType_: 'text' | 'json' = 'json';
         if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
             responseType_ = 'text';
         }
 
-        return this.httpClient.get<Date>(`${this.configuration.basePath}/line-directory/v1/timetable-year-change/${encodeURIComponent(String(year))}`,
+        return this.httpClient.post<any>(`${this.configuration.basePath}/import-service-point/v1/import/bulk/${encodeURIComponent(String(application))}/${encodeURIComponent(String(objectType))}/${encodeURIComponent(String(importType))}`,
+            inlineObject9,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
