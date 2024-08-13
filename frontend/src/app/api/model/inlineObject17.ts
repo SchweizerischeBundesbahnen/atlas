@@ -11,10 +11,7 @@
  */
 
 
-export interface UpdateDesignationOfficialServicePoint { 
-    /**
-     * Official designation of a location that must be used by all recipients
-     */
-    designationOfficial: string;
+export interface InlineObject17 { 
+    file: Blob;
 }
 
