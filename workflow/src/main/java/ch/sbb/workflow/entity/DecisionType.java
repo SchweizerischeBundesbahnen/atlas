@@ -8,4 +8,5 @@ public enum DecisionType {
   REJECTED,
   RESTARTED,
   CANCELED,
+  VOTED_EXPIRATION
 }

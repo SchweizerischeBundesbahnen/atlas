@@ -1,5 +1,6 @@
 package ch.sbb.workflow.service.sepodi;
 
+import static ch.sbb.workflow.service.sepodi.StopPointWorkflowService.WORKFLOW_DURATION_IN_DAYS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -146,4 +147,179 @@ class StopPointWorkflowTransitionServiceTest {
     workflowInHearing = workflowRepository.findById(workflowInHearing.getId()).orElseThrow();
     assertThat(workflowInHearing.getStatus()).isEqualTo(WorkflowStatus.REJECTED);
   }
+
+  @Test
+  void shouldEndWorkflowWithNoVotes() {
+    //given
+    workflowInHearing.setEndDate(LocalDate.now().minusDays(WORKFLOW_DURATION_IN_DAYS));
+    workflowRepository.save(workflowInHearing);
+
+    //when
+    stopPointWorkflowTransitionService.endExpiredWorkflows();
+
+    //then
+    verify(sePoDiClientService).updateStopPointStatusToValidatedAsAdmin(workflowInHearing);
+    verify(notificationService).sendApprovedStopPointWorkflowMail(workflowInHearing);
+    StopPointWorkflow result = workflowRepository.getReferenceById(workflowInHearing.getId());
+    assertThat(result).isNotNull();
+    assertThat(result.getStatus()).isEqualTo(WorkflowStatus.APPROVED);
+    workflowInHearing.getExaminants().forEach(person -> {
+      Decision decision = decisionRepository.findDecisionByExaminantId(person.getId());
+      assertThat(decision.getDecisionType()).isEqualTo(DecisionType.VOTED_EXPIRATION);
+      assertThat(decision.getJudgement()).isEqualTo(JudgementType.YES);
+    });
+  }
+
+  @Test
+  void shouldEndWorkflowWithOneExaminantVotedYes() {
+    //given
+    Decision mareksDecision = Decision.builder()
+        .judgement(JudgementType.YES)
+        .decisionType(DecisionType.VOTED)
+        .examinant(marek)
+        .build();
+    decisionRepository.save(mareksDecision);
+
+    workflowInHearing.setEndDate(LocalDate.now().minusDays(WORKFLOW_DURATION_IN_DAYS));
+    workflowRepository.save(workflowInHearing);
+
+    //when
+    stopPointWorkflowTransitionService.endExpiredWorkflows();
+
+    //then
+    verify(sePoDiClientService).updateStopPointStatusToValidatedAsAdmin(workflowInHearing);
+    verify(notificationService).sendApprovedStopPointWorkflowMail(workflowInHearing);
+    StopPointWorkflow result = workflowRepository.getReferenceById(workflowInHearing.getId());
+    assertThat(result).isNotNull();
+    assertThat(result.getStatus()).isEqualTo(WorkflowStatus.APPROVED);
+    workflowInHearing.getExaminants().forEach(person -> {
+      Decision decision = decisionRepository.findDecisionByExaminantId(person.getId());
+      if (person.getId().equals(marek.getId())) {
+        assertThat(decision.getDecisionType()).isEqualTo(DecisionType.VOTED);
+      } else {
+        assertThat(decision.getDecisionType()).isEqualTo(DecisionType.VOTED_EXPIRATION);
+      }
+      assertThat(decision.getJudgement()).isEqualTo(JudgementType.YES);
+    });
+  }
+
+  @Test
+  void shouldEndWorkflowWithOneBavExaminantVotedYes() {
+    //given
+    Decision mareksDecision = Decision.builder()
+        .decisionType(DecisionType.VOTED)
+        .fotJudgement(JudgementType.YES)
+        .fotOverrider(marek)
+        .build();
+    decisionRepository.save(mareksDecision);
+
+    workflowInHearing.setEndDate(LocalDate.now().minusDays(WORKFLOW_DURATION_IN_DAYS));
+    workflowRepository.save(workflowInHearing);
+
+    //when
+    stopPointWorkflowTransitionService.endExpiredWorkflows();
+
+    //then
+    verify(sePoDiClientService).updateStopPointStatusToValidatedAsAdmin(workflowInHearing);
+    verify(notificationService).sendApprovedStopPointWorkflowMail(workflowInHearing);
+    StopPointWorkflow result = workflowRepository.getReferenceById(workflowInHearing.getId());
+    assertThat(result).isNotNull();
+    assertThat(result.getStatus()).isEqualTo(WorkflowStatus.APPROVED);
+    Set<Decision> decisionResults = decisionRepository.findDecisionByWorkflowId(workflowInHearing.getId());
+    assertThat(decisionResults).hasSize(2);
+
+    Decision judithDecision =
+        decisionResults.stream().filter(decision -> judith.equals(decision.getExaminant())).toList()
+            .getFirst();
+    assertThat(judithDecision).isNotNull();
+    assertThat(judithDecision.getDecisionType()).isEqualTo(DecisionType.VOTED_EXPIRATION);
+    assertThat(judithDecision.getJudgement()).isEqualTo(JudgementType.YES);
+    Decision marekDecision =
+        decisionResults.stream().filter(decision -> marek.equals(decision.getFotOverrider())).toList().getFirst();
+    assertThat(marekDecision).isNotNull();
+    assertThat(marekDecision.getDecisionType()).isEqualTo(DecisionType.VOTED);
+    assertThat(marekDecision.getFotJudgement()).isEqualTo(JudgementType.YES);
+  }
+
+  @Test
+  void shouldEndWorkflowWithExaminantAndBavVotedYes() {
+    //given
+    Decision mareksDecision = Decision.builder()
+        .judgement(JudgementType.YES)
+        .decisionType(DecisionType.VOTED)
+        .fotJudgement(JudgementType.YES)
+        .examinant(marek)
+        .fotOverrider(judith)
+        .build();
+    decisionRepository.save(mareksDecision);
+
+    workflowInHearing.setEndDate(LocalDate.now().minusDays(WORKFLOW_DURATION_IN_DAYS));
+    workflowRepository.save(workflowInHearing);
+
+    //when
+    stopPointWorkflowTransitionService.endExpiredWorkflows();
+
+    //then
+    verify(sePoDiClientService).updateStopPointStatusToValidatedAsAdmin(workflowInHearing);
+    verify(notificationService).sendApprovedStopPointWorkflowMail(workflowInHearing);
+    StopPointWorkflow result = workflowRepository.getReferenceById(workflowInHearing.getId());
+    assertThat(result).isNotNull();
+    assertThat(result.getStatus()).isEqualTo(WorkflowStatus.APPROVED);
+
+    Set<Decision> decisionResults = new HashSet<>(decisionRepository.findDecisionByWorkflowId(workflowInHearing.getId()));
+    assertThat(decisionResults).hasSize(1);
+    Decision firstDecision = decisionResults.stream().toList().getFirst();
+    assertThat(firstDecision.getDecisionType()).isEqualTo(DecisionType.VOTED);
+    assertThat(firstDecision.getJudgement()).isEqualTo(JudgementType.YES);
+    assertThat(firstDecision.getFotJudgement()).isEqualTo(JudgementType.YES);
+  }
+
+  @Test
+  void shouldEndWorkflowWithTwoExaminantsAndBavVotedYes() {
+    //given
+    Decision mareksDecision = Decision.builder()
+        .judgement(JudgementType.YES)
+        .decisionType(DecisionType.VOTED)
+        .fotJudgement(JudgementType.YES)
+        .examinant(marek)
+        .fotOverrider(judith)
+        .build();
+    decisionRepository.save(mareksDecision);
+
+    Person cianni = Person.builder()
+        .firstName("Cianni")
+        .lastName("Quattro Staccioni")
+        .function("Pizza")
+        .mail("cianni@staccioni.com").build();
+    cianni.setStopPointWorkflow(workflowInHearing);
+    workflowInHearing.getExaminants().add(cianni);
+    workflowInHearing.setEndDate(LocalDate.now().minusDays(WORKFLOW_DURATION_IN_DAYS));
+    workflowRepository.save(workflowInHearing);
+
+    //when
+    stopPointWorkflowTransitionService.endExpiredWorkflows();
+
+    //then
+    verify(sePoDiClientService).updateStopPointStatusToValidatedAsAdmin(workflowInHearing);
+    verify(notificationService).sendApprovedStopPointWorkflowMail(workflowInHearing);
+    StopPointWorkflow result = workflowRepository.getReferenceById(workflowInHearing.getId());
+    assertThat(result).isNotNull();
+    assertThat(result.getStatus()).isEqualTo(WorkflowStatus.APPROVED);
+
+    Set<Decision> decisionResults = new HashSet<>(decisionRepository.findDecisionByWorkflowId(workflowInHearing.getId()));
+    assertThat(decisionResults).hasSize(2);
+    Decision marekDecision = decisionResults.stream().filter(decision -> decision.getExaminant().equals(marek)).findFirst()
+        .orElseThrow();
+    assertThat(marekDecision.getDecisionType()).isEqualTo(DecisionType.VOTED);
+    assertThat(marekDecision.getJudgement()).isEqualTo(JudgementType.YES);
+    assertThat(marekDecision.getFotJudgement()).isEqualTo(JudgementType.YES);
+
+    Decision cianniDecision =
+        decisionResults.stream().filter(decision -> decision.getExaminant().getFirstName().equals(cianni.getFirstName()))
+            .findFirst().orElseThrow();
+    assertThat(cianniDecision.getDecisionType()).isEqualTo(DecisionType.VOTED_EXPIRATION);
+    assertThat(cianniDecision.getJudgement()).isEqualTo(JudgementType.YES);
+    assertThat(cianniDecision.getFotJudgement()).isNull();
+  }
+
 }

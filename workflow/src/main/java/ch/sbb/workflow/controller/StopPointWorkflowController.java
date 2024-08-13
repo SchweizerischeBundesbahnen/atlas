@@ -144,4 +144,9 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
     return StopPointWorkflowMapper.toModel(workflowTransitionService.cancelWorkflow(id, stopPointCancelWorkflowModel));
   }
 
+  @Override
+  public void endExpiredWorkflows() {
+    workflowTransitionService.endExpiredWorkflows();
+  }
+
 }

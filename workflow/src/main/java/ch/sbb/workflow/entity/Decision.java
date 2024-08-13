@@ -76,4 +76,17 @@ public class Decision extends BaseWorkflowEntity {
     }
   }
 
+  public boolean hasWeightedJudgementTypeNo() {
+    if (fotJudgement != null && judgement != null) {
+      return JudgementType.NO.equals(fotJudgement);
+    }
+    if (fotJudgement == null && judgement != null) {
+      return JudgementType.NO.equals(judgement);
+    }
+    if (fotJudgement != null) {
+      return JudgementType.NO.equals(fotJudgement);
+    }
+    return false;
+  }
+
 }
