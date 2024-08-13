@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Pages} from "../../pages/pages";
 import {Page} from "../model/page";
 import {PermissionService} from "../auth/permission/permission.service";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,7 @@ export class PageService {
     if (this.permissionService.mayAccessTtfn()) {
       this.viewablePages.push(Pages.TTFN);
     }
-    if (this.permissionService.mayAccessMassImport()) {
+    if (this.permissionService.mayAccessMassImport() && environment.massImportEnabled) {
       this.viewablePages.push(Pages.MASS_IMPORT);
     }
     if (this.permissionService.isAdmin) {
@@ -35,4 +36,5 @@ export class PageService {
   get enabledPages() {
     return this.viewablePages;
   }
+
 }
