@@ -20,7 +20,7 @@ import {map} from 'rxjs/operators';
 import {Cantons} from '../../../../core/cantons/Cantons';
 import {MatSelectChange} from '@angular/material/select';
 import {Countries} from '../../../../core/country/Countries';
-import {BULK_IMPORT_APPLICATIONS} from "../../bulk-import-util";
+import {BULK_IMPORT_APPLICATIONS} from "../../../../core/auth/permission/bulk-import-permission";
 
 @Component({
   selector: 'app-user-administration-application-config',
