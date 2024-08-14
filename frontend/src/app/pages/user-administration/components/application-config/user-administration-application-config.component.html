@@ -21,7 +21,7 @@
       </atlas-select>
       @if (bulkImportApplications.includes(application) && (role === 'WRITER' || role === 'SUPER_USER')) {
         <div class="bulk-import-toggle my-3">
-          <app-atlas-label-field [fieldLabel]="'Massenimport'"></app-atlas-label-field>
+          <app-atlas-label-field fieldLabel="PAGES.BULK_IMPORT.TITLE_MENU"></app-atlas-label-field>
           <atlas-slide-toggle [(toggle)]="bulkImportPermission" [disabled]="readOnly"></atlas-slide-toggle>
         </div>
       }
