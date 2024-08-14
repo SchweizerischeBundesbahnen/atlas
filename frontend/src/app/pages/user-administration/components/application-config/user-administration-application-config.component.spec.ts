@@ -39,7 +39,7 @@ describe('UserAdministrationApplicationConfigComponent', () => {
           TIMETABLE_HEARING: [],
           SEPODI: [],
           PRM: [],
-          MASS_IMPORT: [],
+          BULK_IMPORT: [],
         }),
         boFormResetEvent$: of(),
       },
