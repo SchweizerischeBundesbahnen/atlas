@@ -340,6 +340,28 @@ describe('PermissionService', () => {
       expect(mayAccessTtfn).toBeFalse();
     });
 
+    it('should show Bulk Import if supervisor', () => {
+      userServiceMock.permissions = [{
+        application: ApplicationType.BulkImport,
+        role: ApplicationRole.Supervisor,
+        permissionRestrictions: []
+      }];
+
+      const mayAccessTtfn = permissionService.mayAccessBulkImport();
+      expect(mayAccessTtfn).toBeTrue();
+    });
+
+    it('should not show Bulk Import if reader', () => {
+      userServiceMock.permissions = [{
+        application: ApplicationType.BulkImport,
+        role: ApplicationRole.Reader,
+        permissionRestrictions: []
+      }];
+
+      const mayAccessTtfn = permissionService.mayAccessBulkImport();
+      expect(mayAccessTtfn).toBeFalse();
+    });
+
     it('should show TTH if explicit reader', () => {
       userServiceMock.permissions = [{
         application: ApplicationType.TimetableHearing,

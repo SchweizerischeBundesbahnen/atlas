@@ -1,3 +1,5 @@
+export * from './bulkImport.service';
+import { BulkImportService } from './bulkImport.service';
 export * from './businessOrganisations.service';
 import { BusinessOrganisationsService } from './businessOrganisations.service';
 export * from './clientCredentialAdministration.service';
@@ -48,4 +50,4 @@ export * from './userInformation.service';
 import { UserInformationService } from './userInformation.service';
 export * from './workflow.service';
 import { WorkflowService } from './workflow.service';
-export const APIS = [BusinessOrganisationsService, ClientCredentialAdministrationService, CompaniesService, ExportServicePointBatchService, GeoDataService, ImportDidokUserBatchService, ImportPrmBatchService, ImportServicePointBatchService, LinesService, LoadingPointsService, PersonWithReducedMobilityService, PersonWithReducedMobilityExportService, ServicePointsService, StopPointWorkflowService, SublinesService, TimetableFieldNumbersService, TimetableHearingStatementsService, TimetableHearingYearsService, TimetableYearChangeService, TrafficPointElementsService, TransportCompaniesService, TransportCompanyRelationsService, UserAdministrationService, UserInformationService, WorkflowService];
+export const APIS = [BulkImportService, BusinessOrganisationsService, ClientCredentialAdministrationService, CompaniesService, ExportServicePointBatchService, GeoDataService, ImportDidokUserBatchService, ImportPrmBatchService, ImportServicePointBatchService, LinesService, LoadingPointsService, PersonWithReducedMobilityService, PersonWithReducedMobilityExportService, ServicePointsService, StopPointWorkflowService, SublinesService, TimetableFieldNumbersService, TimetableHearingStatementsService, TimetableHearingYearsService, TimetableYearChangeService, TrafficPointElementsService, TransportCompaniesService, TransportCompanyRelationsService, UserAdministrationService, UserInformationService, WorkflowService];
