@@ -47,12 +47,13 @@ public class BulkImportController {
         file.getOriginalFilename(),
         file.getContentType());
 
-    bulkImportService.startBulkImport(BulkImport.builder()
+    BulkImport bulkImport = BulkImport.builder()
         .application(application)
         .objectType(objectType)
         .importType(importType)
         .creator(UserService.getUserIdentifier())
-        .build());
+        .build();
+    bulkImportService.startBulkImport(bulkImport, file);
   }
 
 }
