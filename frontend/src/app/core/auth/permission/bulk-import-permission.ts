@@ -1,8 +1,8 @@
-import {ApplicationRole, ApplicationType, Permission, PermissionRestrictionObject, PermissionRestrictionType} from "../../api";
+import {ApplicationRole, ApplicationType, Permission, PermissionRestrictionObject, PermissionRestrictionType} from "../../../api";
 
 export const BULK_IMPORT_APPLICATIONS = [ApplicationType.Sepodi, ApplicationType.Prm];
 
-export class BulkImportUtil {
+export class BulkImportPermission {
 
   static hasAnyBulkImportPermission(permissions: Permission[]): boolean {
     return permissions.filter(i => BULK_IMPORT_APPLICATIONS.includes(i.application))
