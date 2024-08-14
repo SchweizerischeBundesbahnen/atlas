@@ -2,6 +2,7 @@
 README.md
 api.module.ts
 api/api.ts
+api/bulkImport.service.ts
 api/businessOrganisations.service.ts
 api/clientCredentialAdministration.service.ts
 api/companies.service.ts
@@ -36,6 +37,7 @@ model/applicationType.ts
 model/basicAttributeType.ts
 model/boardingDeviceAttributeType.ts
 model/booleanOptionalAttributeType.ts
+model/businessObjectType.ts
 model/businessOrganisation.ts
 model/businessOrganisationVersion.ts
 model/businessType.ts
@@ -91,6 +93,7 @@ model/geoReference.ts
 model/geolocation.ts
 model/geolocationCreate.ts
 model/hearingStatus.ts
+model/importType.ts
 model/infoOpportunityAttributeType.ts
 model/inlineObject10.ts
 model/inlineObject11.ts
@@ -99,6 +102,7 @@ model/inlineObject13.ts
 model/inlineObject14.ts
 model/inlineObject15.ts
 model/inlineObject16.ts
+model/inlineObject17.ts
 model/inlineObject2.ts
 model/inlineObject3.ts
 model/inlineObject4.ts
