@@ -1,6 +1,8 @@
 package ch.sbb.importservice.service.bulk;
 
 import ch.sbb.importservice.entity.BulkImport;
+import ch.sbb.importservice.model.BusinessObjectType;
+import ch.sbb.importservice.model.ImportType;
 import ch.sbb.importservice.repository.BulkImportRepository;
 import jakarta.transaction.Transactional;
 import java.io.File;
@@ -20,6 +22,8 @@ public class BulkImportService {
   private final BulkImportS3BucketService bulkImportS3BucketService;
   private final BulkImportJobService bulkImportJobService;
 
+  private static final String ROOT_TEMPLATES_BUCKET_FOLDER = "templates";
+
   @Async
   public void startBulkImport(BulkImport bulkImport, File file) {
     String s3ObjectKey = uploadImportFile(file, bulkImport);
@@ -30,12 +34,18 @@ public class BulkImportService {
     bulkImportJobService.startBulkImportJob(bulkImport, file);
   }
 
+  public File downloadTemplate(BusinessObjectType objectType, ImportType importType) {
+    String filePath = ROOT_TEMPLATES_BUCKET_FOLDER + "/" + objectType.toString().toLowerCase() + "/"
+       + importType.toString().toLowerCase() + "_" + objectType.toString().toLowerCase() + ".xlsx";
+    return bulkImportS3BucketService.downloadImportFile(filePath);
+  }
+
   private String uploadImportFile(File file, BulkImport bulkImport) {
     URL uploadedImportFileUrl = bulkImportS3BucketService.uploadImportFile(file, bulkImport);
     return uploadedImportFileUrl.getPath().substring(1);
   }
 
-  public void saveBulkImportMetaData(BulkImport bulkImport) {
+  private void saveBulkImportMetaData(BulkImport bulkImport) {
     bulkImportRepository.saveAndFlush(bulkImport);
   }
 }
