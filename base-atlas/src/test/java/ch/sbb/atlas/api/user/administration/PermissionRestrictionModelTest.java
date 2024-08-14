@@ -50,4 +50,16 @@ class PermissionRestrictionModelTest {
     assertThat(permissionRestrictionModel.getType()).isEqualTo(PermissionRestrictionType.COUNTRY);
     assertThat(permissionRestrictionModel).isInstanceOf(CountryPermissionRestrictionModel.class);
   }
+
+  @Test
+  void shouldDeserializeBulkImportPermissionRestriction() throws JsonProcessingException {
+    String jsonValue = """
+        {"valueAsString":"true","type":"BULK_IMPORT"}
+        """;
+    PermissionRestrictionModel<?> permissionRestrictionModel = objectMapper.readValue(jsonValue,
+        PermissionRestrictionModel.class);
+
+    assertThat(permissionRestrictionModel.getType()).isEqualTo(PermissionRestrictionType.BULK_IMPORT);
+    assertThat(permissionRestrictionModel).isInstanceOf(BulkImportPermissionRestrictionModel.class);
+  }
 }
