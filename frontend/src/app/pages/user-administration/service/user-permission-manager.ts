@@ -7,8 +7,8 @@ import {
   PermissionRestrictionType,
   UserPermissionCreate,
 } from '../../../api';
-import { BehaviorSubject, firstValueFrom, Subject } from 'rxjs';
-import { Injectable } from '@angular/core';
+import {BehaviorSubject, firstValueFrom, Subject} from 'rxjs';
+import {Injectable} from '@angular/core';
 
 @Injectable()
 export class UserPermissionManager {
@@ -57,6 +57,7 @@ export class UserPermissionManager {
     TIMETABLE_HEARING: [],
     SEPODI: [],
     PRM: [],
+    BULK_IMPORT: [],
   };
 
   readonly boOfApplicationsSubject$: BehaviorSubject<{
@@ -94,6 +95,12 @@ export class UserPermissionManager {
       ApplicationRole.Supervisor,
     ],
     PRM: [
+      ApplicationRole.Reader,
+      ApplicationRole.Writer,
+      ApplicationRole.SuperUser,
+      ApplicationRole.Supervisor,
+    ],
+    BULK_IMPORT: [
       ApplicationRole.Reader,
       ApplicationRole.Writer,
       ApplicationRole.SuperUser,
