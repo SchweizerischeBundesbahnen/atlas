@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,8 @@ public class BulkImportController {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "202"),
   })
+  @PreAuthorize("""
+      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(#application)""")
   public void startServicePointImportBatch(
       @PathVariable ApplicationType application,
       @PathVariable BusinessObjectType objectType,
