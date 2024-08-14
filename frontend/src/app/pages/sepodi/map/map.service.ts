@@ -200,7 +200,10 @@ export class MapService {
   }
 
   private initStoredMapBehaviour() {
-    this.map.setZoom(Number(localStorage.getItem(mapZoomLocalStorageKey) ?? 7.2));
+    const initialZoom = Number(localStorage.getItem(mapZoomLocalStorageKey) ?? 7.2);
+    this.map.setZoom(initialZoom);
+    this.servicePointsShown.next(initialZoom >= SERVICE_POINT_MIN_ZOOM);
+
     this.map.on('zoomend', (e) => {
       const newZoom = e.target.getZoom();
       localStorage.setItem(mapZoomLocalStorageKey, String(newZoom));
