@@ -1,5 +1,6 @@
 package ch.sbb.atlas.user.administration.mapper;
 
+import ch.sbb.atlas.api.user.administration.BulkImportPermissionRestrictionModel;
 import ch.sbb.atlas.api.user.administration.CantonPermissionRestrictionModel;
 import ch.sbb.atlas.api.user.administration.CountryPermissionRestrictionModel;
 import ch.sbb.atlas.api.user.administration.PermissionRestrictionModel;
@@ -17,6 +18,7 @@ public class PermissionRestrictionMapper {
       case CANTON -> new CantonPermissionRestrictionModel();
       case BUSINESS_ORGANISATION -> new SboidPermissionRestrictionModel();
       case COUNTRY -> new CountryPermissionRestrictionModel();
+      case BULK_IMPORT -> new BulkImportPermissionRestrictionModel();
     };
     restrictionModel.setValueAsString(permissionRestriction.getRestriction());
     return restrictionModel;
