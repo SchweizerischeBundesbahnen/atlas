@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {UserService} from "../user/user.service";
 import {ApplicationRole, ApplicationType, Permission} from "../../../api";
 import {Cantons} from "../../cantons/Cantons";
+import {BulkImportUtil} from "../../../pages/user-administration/bulk-import-util";
 
 @Injectable({
   providedIn: 'root',
@@ -74,11 +75,7 @@ export class PermissionService {
   }
 
   mayAccessBulkImport() {
-    const applicationUserPermission = this.getApplicationUserPermission(ApplicationType.BulkImport);
-    return (
-      this.isAdmin ||
-      [ApplicationRole.Supervisor].includes(applicationUserPermission.role)
-    );
+    return this.isAdmin || BulkImportUtil.hasAnyBulkImportPermission(this.permissions);
   }
 
   get permissions() {
