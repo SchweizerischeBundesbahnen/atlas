@@ -3,7 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {DecisionDetailDialogData} from './decision-detail-dialog.service';
 import {DecisionOverrideComponent} from './override/decision-override.component';
 import {DecisionFormGroupBuilder} from '../decision-form/decision-form-group';
-import {ReadDecision, StopPointWorkflowService, WorkflowStatus} from 'src/app/api';
+import {DecisionType, ReadDecision, StopPointWorkflowService, WorkflowStatus} from 'src/app/api';
 import {SPECIAL_DECISION_TYPES} from "../../detail-form/stop-point-workflow-detail-form-group";
 
 @Component({
@@ -47,6 +47,10 @@ export class DecisionDetailDialogComponent implements OnInit {
 
   get hasOverride() {
     return !!this.existingDecision?.fotJudgement;
+  }
+
+  get hasDecisionTypeVotedExpired() {
+    return this.existingDecision?.decisionType === DecisionType.VotedExpiration;
   }
 
   close() {
