@@ -6,7 +6,7 @@ import {Pages} from "../../pages/pages";
 import {PermissionService} from "../auth/permission/permission.service";
 
 const permissionServiceMock: Partial<PermissionService> = {
-  mayAccessMassImport: () => true,
+  mayAccessBulkImport: () => true,
   mayAccessTimetableHearing: () => true,
   mayAccessTtfn: () => true,
   isAdmin: true

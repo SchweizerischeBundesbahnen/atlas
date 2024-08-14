@@ -57,7 +57,7 @@ export class UserPermissionManager {
     TIMETABLE_HEARING: [],
     SEPODI: [],
     PRM: [],
-    MASS_IMPORT: [],
+    BULK_IMPORT: [],
   };
 
   readonly boOfApplicationsSubject$: BehaviorSubject<{
@@ -100,7 +100,7 @@ export class UserPermissionManager {
       ApplicationRole.SuperUser,
       ApplicationRole.Supervisor,
     ],
-    MASS_IMPORT: [
+    BULK_IMPORT: [
       ApplicationRole.Reader,
       ApplicationRole.Writer,
       ApplicationRole.SuperUser,

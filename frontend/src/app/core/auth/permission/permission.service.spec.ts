@@ -340,25 +340,25 @@ describe('PermissionService', () => {
       expect(mayAccessTtfn).toBeFalse();
     });
 
-    it('should show Mass Import if supervisor', () => {
+    it('should show Bulk Import if supervisor', () => {
       userServiceMock.permissions = [{
-        application: ApplicationType.MassImport,
+        application: ApplicationType.BulkImport,
         role: ApplicationRole.Supervisor,
         permissionRestrictions: []
       }];
 
-      const mayAccessTtfn = permissionService.mayAccessMassImport();
+      const mayAccessTtfn = permissionService.mayAccessBulkImport();
       expect(mayAccessTtfn).toBeTrue();
     });
 
-    it('should not show Mass Import if reader', () => {
+    it('should not show Bulk Import if reader', () => {
       userServiceMock.permissions = [{
-        application: ApplicationType.MassImport,
+        application: ApplicationType.BulkImport,
         role: ApplicationRole.Reader,
         permissionRestrictions: []
       }];
 
-      const mayAccessTtfn = permissionService.mayAccessMassImport();
+      const mayAccessTtfn = permissionService.mayAccessBulkImport();
       expect(mayAccessTtfn).toBeFalse();
     });
 

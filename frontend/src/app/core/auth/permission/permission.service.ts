@@ -73,8 +73,8 @@ export class PermissionService {
     );
   }
 
-  mayAccessMassImport() {
-    const applicationUserPermission = this.getApplicationUserPermission(ApplicationType.MassImport);
+  mayAccessBulkImport() {
+    const applicationUserPermission = this.getApplicationUserPermission(ApplicationType.BulkImport);
     return (
       this.isAdmin ||
       [ApplicationRole.Supervisor].includes(applicationUserPermission.role)

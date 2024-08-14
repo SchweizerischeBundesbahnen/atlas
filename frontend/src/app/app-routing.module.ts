@@ -13,9 +13,9 @@ const routes: Routes = [
     data: { headerTitle: Pages.TTFN.headerTitle },
   },
   {
-    path: Pages.MASS_IMPORT.path,
-    loadChildren: () => import('./pages/massimport/massimport.module').then((m) => m.MassimportModule),
-    data: { headerTitle: Pages.MASS_IMPORT.headerTitle },
+    path: Pages.BULK_IMPORT.path,
+    loadChildren: () => import('./pages/bulk-import/bulk-import.module').then((m) => m.BulkImportModule),
+    data: { headerTitle: Pages.BULK_IMPORT.headerTitle },
   },
   {
     path: Pages.LIDI.path,

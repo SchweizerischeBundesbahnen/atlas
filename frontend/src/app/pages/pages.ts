@@ -22,13 +22,13 @@ export class Pages {
     path: ':id',
   };
 
-  public static MASS_IMPORT: Page = {
-    title: 'PAGES.MASS_IMPORT.TITLE',
-    titleMenu: 'PAGES.MASS_IMPORT.TITLE_MENU',
-    headerTitle: 'PAGES.MASS_IMPORT.TITLE_MENU',
-    path: 'mass-import',
-    pathText: 'PAGES.MASS_IMPORT.PATH_TEXT',
-    description: 'PAGES.MASS_IMPORT.DESCRIPTION',
+  public static BULK_IMPORT: Page = {
+    title: 'PAGES.BULK_IMPORT.TITLE',
+    titleMenu: 'PAGES.BULK_IMPORT.TITLE_MENU',
+    headerTitle: 'PAGES.BULK_IMPORT.TITLE_MENU',
+    path: 'bulk-import',
+    pathText: 'PAGES.BULK_IMPORT.PATH_TEXT',
+    description: 'PAGES.BULK_IMPORT.DESCRIPTION',
   };
 
   public static LIDI: Page = {
