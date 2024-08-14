@@ -9,24 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PermissionRestrictionObject } from './permissionRestrictionObject';
+import { PermissionRestrictionType } from './permissionRestrictionType';
 
 
-/**
- * Means of transport. Indicates for which means of transport a stop is intended/equipped. Mandatory for StopPoints
- */
-export type MeanOfTransport = 'TRAIN' | 'BUS' | 'TRAM' | 'BOAT' | 'CABLE_CAR' | 'CHAIRLIFT' | 'CABLE_RAILWAY' | 'RACK_RAILWAY' | 'METRO' | 'ELEVATOR' | 'UNKNOWN';
-
-export const MeanOfTransport = {
-    Train: 'TRAIN' as MeanOfTransport,
-    Bus: 'BUS' as MeanOfTransport,
-    Tram: 'TRAM' as MeanOfTransport,
-    Boat: 'BOAT' as MeanOfTransport,
-    CableCar: 'CABLE_CAR' as MeanOfTransport,
-    Chairlift: 'CHAIRLIFT' as MeanOfTransport,
-    CableRailway: 'CABLE_RAILWAY' as MeanOfTransport,
-    RackRailway: 'RACK_RAILWAY' as MeanOfTransport,
-    Metro: 'METRO' as MeanOfTransport,
-    Elevator: 'ELEVATOR' as MeanOfTransport,
-    Unknown: 'UNKNOWN' as MeanOfTransport
-};
+export interface BulkImportPermissionRestrictionModel extends PermissionRestrictionObject { 
+}
 
