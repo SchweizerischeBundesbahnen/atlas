@@ -1,6 +1,6 @@
 package ch.sbb.workflow.service.sepodi;
 
-import static ch.sbb.workflow.service.sepodi.StopPointWorkflowService.WORKFLOW_DURATION_IN_DAYS;
+import static ch.sbb.workflow.service.sepodi.StopPointWorkflowService.WORKFLOW_EXPIRATION_IN_DAYS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
@@ -152,7 +152,7 @@ class StopPointWorkflowTransitionServiceTest {
   @Test
   void shouldEndWorkflowWithNoVotes() {
     //given
-    workflowInHearing.setEndDate(LocalDate.now().minusDays(WORKFLOW_DURATION_IN_DAYS));
+    workflowInHearing.setEndDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS));
     workflowRepository.save(workflowInHearing);
 
     //when
@@ -198,7 +198,7 @@ class StopPointWorkflowTransitionServiceTest {
         .build();
     decisionRepository.save(mareksDecision);
 
-    workflowInHearing.setEndDate(LocalDate.now().minusDays(WORKFLOW_DURATION_IN_DAYS));
+    workflowInHearing.setEndDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS));
     workflowRepository.save(workflowInHearing);
 
     //when
@@ -231,7 +231,7 @@ class StopPointWorkflowTransitionServiceTest {
         .build();
     decisionRepository.save(mareksDecision);
 
-    workflowInHearing.setEndDate(LocalDate.now().minusDays(WORKFLOW_DURATION_IN_DAYS));
+    workflowInHearing.setEndDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS));
     workflowRepository.save(workflowInHearing);
 
     //when
@@ -271,7 +271,7 @@ class StopPointWorkflowTransitionServiceTest {
         .build();
     decisionRepository.save(mareksDecision);
 
-    workflowInHearing.setEndDate(LocalDate.now().minusDays(WORKFLOW_DURATION_IN_DAYS));
+    workflowInHearing.setEndDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS));
     workflowRepository.save(workflowInHearing);
 
     //when
@@ -311,7 +311,7 @@ class StopPointWorkflowTransitionServiceTest {
         .mail("cianni@staccioni.com").build();
     cianni.setStopPointWorkflow(workflowInHearing);
     workflowInHearing.getExaminants().add(cianni);
-    workflowInHearing.setEndDate(LocalDate.now().minusDays(WORKFLOW_DURATION_IN_DAYS));
+    workflowInHearing.setEndDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS));
     workflowRepository.save(workflowInHearing);
 
     //when
