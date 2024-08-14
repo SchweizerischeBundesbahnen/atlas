@@ -18,6 +18,7 @@ import { map } from 'rxjs/operators';
 import { Cantons } from '../../../../core/cantons/Cantons';
 import { MatSelectChange } from '@angular/material/select';
 import { Countries } from '../../../../core/country/Countries';
+import {BULK_IMPORT_APPLICATIONS} from "../../bulk-import-util";
 
 @Component({
   selector: 'app-user-administration-application-config',
@@ -34,7 +35,7 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
   availableOptions: ApplicationRole[] = [];
   selectedIndex = -1;
 
-  bulkImportApplications = [ApplicationType.Sepodi, ApplicationType.Prm];
+  bulkImportApplications = BULK_IMPORT_APPLICATIONS;
   _bulkImportPermission = false;
 
   get bulkImportPermission(){
