@@ -1,5 +1,5 @@
-import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, WritableSignal} from '@angular/core';
-import { TableColumn } from '../../../../core/components/table/table-column';
+import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {TableColumn} from '../../../../core/components/table/table-column';
 import {
   ApplicationRole,
   ApplicationType,
@@ -10,14 +10,16 @@ import {
   SboidPermissionRestrictionModel,
   SwissCanton,
 } from '../../../../api';
-import { FormControl, FormGroup } from '@angular/forms';
-import { UserPermissionManager } from '../../service/user-permission-manager';
-import { BusinessOrganisationLanguageService } from '../../../../core/form-components/bo-select/business-organisation-language.service';
-import { Observable, of, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Cantons } from '../../../../core/cantons/Cantons';
-import { MatSelectChange } from '@angular/material/select';
-import { Countries } from '../../../../core/country/Countries';
+import {FormControl, FormGroup} from '@angular/forms';
+import {UserPermissionManager} from '../../service/user-permission-manager';
+import {
+  BusinessOrganisationLanguageService
+} from '../../../../core/form-components/bo-select/business-organisation-language.service';
+import {Observable, of, Subscription} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {Cantons} from '../../../../core/cantons/Cantons';
+import {MatSelectChange} from '@angular/material/select';
+import {Countries} from '../../../../core/country/Countries';
 import {BULK_IMPORT_APPLICATIONS} from "../../bulk-import-util";
 
 @Component({

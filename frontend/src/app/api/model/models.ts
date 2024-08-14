@@ -3,6 +3,7 @@ export * from './applicationType';
 export * from './basicAttributeType';
 export * from './boardingDeviceAttributeType';
 export * from './booleanOptionalAttributeType';
+export * from './bulkImportPermissionRestrictionModel';
 export * from './businessObjectType';
 export * from './businessOrganisation';
 export * from './businessOrganisationVersion';
