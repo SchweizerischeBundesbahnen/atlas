@@ -11,11 +11,12 @@
  */
 
 
-export type PermissionRestrictionType = 'BUSINESS_ORGANISATION' | 'CANTON' | 'COUNTRY';
+export type PermissionRestrictionType = 'BUSINESS_ORGANISATION' | 'CANTON' | 'COUNTRY'| 'BULK_IMPORT';
 
 export const PermissionRestrictionType = {
     BusinessOrganisation: 'BUSINESS_ORGANISATION' as PermissionRestrictionType,
     Canton: 'CANTON' as PermissionRestrictionType,
-    Country: 'COUNTRY' as PermissionRestrictionType
+    Country: 'COUNTRY' as PermissionRestrictionType,
+    BulkImport: 'BULK_IMPORT' as PermissionRestrictionType
 };
 

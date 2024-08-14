@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, WritableSignal} from '@angular/core';
 import { TableColumn } from '../../../../core/components/table/table-column';
 import {
   ApplicationRole,
@@ -33,6 +33,31 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
   boListener$: Observable<BusinessOrganisation[]> = of([]);
   availableOptions: ApplicationRole[] = [];
   selectedIndex = -1;
+
+  bulkImportApplications = [ApplicationType.Sepodi, ApplicationType.Prm];
+  _bulkImportPermission = false;
+
+  get bulkImportPermission(){
+    return this._bulkImportPermission;
+  }
+
+  set bulkImportPermission(value: boolean) {
+    const bulkImportPermission =
+      this.userPermissionManager.getPermissionByApplication(this.application)
+        .permissionRestrictions
+        .find(i => i.type === PermissionRestrictionType.BulkImport);
+    if (bulkImportPermission) {
+      bulkImportPermission.valueAsString = String(value);
+    } else {
+      this.userPermissionManager.getPermissionByApplication(this.application)
+        .permissionRestrictions.push({
+        type: PermissionRestrictionType.BulkImport,
+        valueAsString: String(value)
+      });
+    }
+
+    this._bulkImportPermission = value;
+  }
 
   public readonly getCountryEnum = Countries.getCountryEnum;
   readonly boFormCtrlName = 'businessOrganisation';
@@ -104,6 +129,9 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
     this.availableOptions = this.userPermissionManager.getAvailableApplicationRolesOfApplication(
       this.application,
     );
+    this.bulkImportPermission = this.userPermissionManager.getPermissionByApplication(this.application)
+      .permissionRestrictions.find(i => i.type === PermissionRestrictionType.BulkImport)?.valueAsString === "true";
+
     this.boListener$ = this.userPermissionManager.boOfApplicationsSubject$.pipe(
       map((bosOfApplications) => bosOfApplications[this.application]),
     );
