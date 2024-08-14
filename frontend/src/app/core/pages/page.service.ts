@@ -21,8 +21,8 @@ export class PageService {
     if (this.permissionService.mayAccessTtfn()) {
       this.viewablePages.push(Pages.TTFN);
     }
-    if (this.permissionService.mayAccessMassImport() && environment.massImportEnabled) {
-      this.viewablePages.push(Pages.MASS_IMPORT);
+    if (this.permissionService.mayAccessBulkImport() && environment.bulkImportEnabled) {
+      this.viewablePages.push(Pages.BULK_IMPORT);
     }
     if (this.permissionService.isAdmin) {
       this.viewablePages.push(...Pages.adminPages);

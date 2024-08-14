@@ -34,7 +34,7 @@ const authConfig: AuthConfig = {
 export const environment: Environment = {
   production: process.env.PRODUCTION !== 'false',
   sepodiWorkflowBavActionEnabled: process.env.SEPODI_WORKFLOW_BAV_ACTION_ENABLED !== 'false',
-  massImportEnabled: process.env.MASS_IMPORT_ENABLED !== 'false',
+  bulkImportEnabled: process.env.BULK_IMPORT_ENABLED !== 'false',
   label: process.env.ENVIRONMENT_LABEL!,
   appVersion: process.env.APP_VERSION!,
   atlasApiUrl: process.env.ATLAS_API_URL!,
