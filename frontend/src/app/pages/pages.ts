@@ -22,6 +22,15 @@ export class Pages {
     path: ':id',
   };
 
+  public static BULK_IMPORT: Page = {
+    title: 'PAGES.BULK_IMPORT.TITLE',
+    titleMenu: 'PAGES.BULK_IMPORT.TITLE_MENU',
+    headerTitle: 'PAGES.BULK_IMPORT.TITLE_MENU',
+    path: 'bulk-import',
+    pathText: 'PAGES.BULK_IMPORT.PATH_TEXT',
+    description: 'PAGES.BULK_IMPORT.DESCRIPTION',
+  };
+
   public static LIDI: Page = {
     title: 'PAGES.LIDI.TITLE',
     titleMenu: 'PAGES.LIDI.TITLE_MENU',

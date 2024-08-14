@@ -2,6 +2,7 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
+import { BulkImportService } from './api/bulkImport.service';
 import { BusinessOrganisationsService } from './api/businessOrganisations.service';
 import { ClientCredentialAdministrationService } from './api/clientCredentialAdministration.service';
 import { CompaniesService } from './api/companies.service';

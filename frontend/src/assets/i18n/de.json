@@ -175,6 +175,12 @@
       "DESCRIPTION": "Erfassen, Bearbeiten und Einsehen der Fahrplanfeldnummern.",
       "PATH_TEXT": "Fahrplanfelder"
     },
+    "BULK_IMPORT": {
+      "TITLE": "Datenimport mittels Datei",
+      "TITLE_MENU": "Massenimport",
+      "DESCRIPTION": "Massenverarbeitung von Daten mittels Fileupload (*.csv oder Excel).",
+      "PATH_TEXT": "Massenimport"
+    },
     "LIDI": {
       "TITLE": "Linien und Teillinien verwalten",
       "TITLE_MENU": "Linien und Teillinien",

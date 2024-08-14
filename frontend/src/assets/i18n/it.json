@@ -175,6 +175,12 @@
       "DESCRIPTION": "Registrare, gestire e visualizzare i numeri del quadro d'orario.",
       "PATH_TEXT": "Dai quadri d’orario"
     },
+    "BULK_IMPORT": {
+      "TITLE": "Importazione dei dati per file",
+      "TITLE_MENU": "Importazione di massa",
+      "DESCRIPTION": "Elaborazione di dati di massa con l'upload di file (*.csv o Excel).",
+      "PATH_TEXT": "Importazione di massa"
+    },
     "LIDI": {
       "TITLE": "Gestione dei numeri dell'elenco delle linee",
       "TITLE_MENU": "Elenco delle linee",
