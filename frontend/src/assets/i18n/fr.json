@@ -1056,6 +1056,7 @@
         "SLIDE": "Auditions à traiter",
         "OVERRIDE_TITLE": "Évaluation par l'OFT",
         "OVERRIDE_HAPPENED_INFO": "L'Office fédéral des transports (OFT) a procédé à une évaluation. L'évaluation de l'OFT s'applique (voir ci-dessous).",
+        "VOTED_EXPIRATION": "Cette personne n'a pas voté dans le délai légal, l'absence de vote est considérée comme une approbation",
         "PREVIOUS_WORKFLOW": "Ersetzt vorhergehende Anhörung {{number}}",
         "FOLLOW_UP_WORKFLOW": "Nachfolgende Anhörung {{number}}",
         "COMMENT_SUB_LABEL": "Il faut justifier de façon compréhensible POURQUOI l'arrêt doit être nommé comme demandé. S'agit-il par ex. d'un nom de rue ou de lieu-dit?"

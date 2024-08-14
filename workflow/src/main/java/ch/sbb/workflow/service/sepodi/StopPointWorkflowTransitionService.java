@@ -35,8 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class StopPointWorkflowTransitionService {
 
-  private static final int WORKFLOW_DURATION_IN_DAYS = 31;
-
   private final DecisionService decisionService;
   private final SePoDiClientService sePoDiClientService;
   private final Examinants examinants;
@@ -63,7 +61,7 @@ public class StopPointWorkflowTransitionService {
 
     stopPointWorkflow.setStatus(WorkflowStatus.HEARING);
     stopPointWorkflow.setStartDate(LocalDate.now());
-    stopPointWorkflow.setEndDate(LocalDate.now().plusDays(WORKFLOW_DURATION_IN_DAYS));
+    stopPointWorkflow.setEndDate(LocalDate.now().plusDays(StopPointWorkflowService.WORKFLOW_DURATION_IN_DAYS));
     StopPointWorkflow workflow = stopPointWorkflowService.save(stopPointWorkflow);
     notificationService.sendStartStopPointWorkflowMail(workflow);
     return workflow;
