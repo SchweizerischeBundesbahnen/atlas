@@ -8,7 +8,7 @@ public class ApplicationTypeTest {
 
     @Test
     void shouldTestAllApplicationTypeEnums() {
-        assertThat(ApplicationType.values()).hasSize(7);
+        assertThat(ApplicationType.values()).hasSize(6);
         assertThat(ApplicationType.TTFN.name()).isEqualTo("TTFN");
         assertThat(ApplicationType.LIDI.name()).isEqualTo("LIDI");
         assertThat(ApplicationType.BODI.name()).isEqualTo("BODI");
