@@ -342,7 +342,7 @@ describe('PermissionService', () => {
 
     it('should show Bulk Import if supervisor', () => {
       userServiceMock.permissions = [{
-        application: ApplicationType.BulkImport,
+        application: ApplicationType.Sepodi,
         role: ApplicationRole.Supervisor,
         permissionRestrictions: []
       }];
@@ -353,7 +353,7 @@ describe('PermissionService', () => {
 
     it('should not show Bulk Import if reader', () => {
       userServiceMock.permissions = [{
-        application: ApplicationType.BulkImport,
+        application: ApplicationType.Sepodi,
         role: ApplicationRole.Reader,
         permissionRestrictions: []
       }];
