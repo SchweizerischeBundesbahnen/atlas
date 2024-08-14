@@ -3,6 +3,7 @@ package ch.sbb.workflow.service.sepodi;
 import static ch.sbb.workflow.service.sepodi.StopPointWorkflowService.WORKFLOW_DURATION_IN_DAYS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
@@ -168,6 +169,23 @@ class StopPointWorkflowTransitionServiceTest {
       assertThat(decision.getDecisionType()).isEqualTo(DecisionType.VOTED_EXPIRATION);
       assertThat(decision.getJudgement()).isEqualTo(JudgementType.YES);
     });
+  }
+
+  @Test
+  void shouldNotEndWorkflowWhenEndDateIsLessThan31Days() {
+    //given
+    workflowInHearing.setEndDate(LocalDate.now().minusDays(30));
+    workflowRepository.save(workflowInHearing);
+
+    //when
+    stopPointWorkflowTransitionService.endExpiredWorkflows();
+
+    //then
+    verify(sePoDiClientService, never()).updateStopPointStatusToValidatedAsAdmin(workflowInHearing);
+    verify(notificationService, never()).sendApprovedStopPointWorkflowMail(workflowInHearing);
+    StopPointWorkflow result = workflowRepository.getReferenceById(workflowInHearing.getId());
+    assertThat(result).isNotNull();
+    assertThat(result.getStatus()).isEqualTo(WorkflowStatus.HEARING);
   }
 
   @Test
