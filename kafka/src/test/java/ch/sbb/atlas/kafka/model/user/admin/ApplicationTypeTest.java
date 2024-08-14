@@ -15,7 +15,7 @@ public class ApplicationTypeTest {
         assertThat(ApplicationType.TIMETABLE_HEARING.name()).isEqualTo("TIMETABLE_HEARING");
         assertThat(ApplicationType.SEPODI.name()).isEqualTo("SEPODI");
         assertThat(ApplicationType.PRM.name()).isEqualTo("PRM");
-        assertThat(ApplicationType.MASS_IMPORT.name()).isEqualTo("MASS_IMPORT");
+        assertThat(ApplicationType.BULK_IMPORT.name()).isEqualTo("BULK_IMPORT");
     }
 
 }
