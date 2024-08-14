@@ -73,6 +73,14 @@ export class PermissionService {
     );
   }
 
+  mayAccessBulkImport() {
+    const applicationUserPermission = this.getApplicationUserPermission(ApplicationType.BulkImport);
+    return (
+      this.isAdmin ||
+      [ApplicationRole.Supervisor].includes(applicationUserPermission.role)
+    );
+  }
+
   get permissions() {
     return this.userService.permissions;
   }
