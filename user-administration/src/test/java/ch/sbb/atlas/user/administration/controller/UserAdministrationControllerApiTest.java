@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.user.administration.BulkImportPermissionRestrictionModel;
 import ch.sbb.atlas.api.user.administration.PermissionModel;
 import ch.sbb.atlas.api.user.administration.SboidPermissionRestrictionModel;
 import ch.sbb.atlas.api.user.administration.UserModel.Fields;
@@ -328,6 +329,34 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
     mvc.perform(get("/v1/users/client-id/displayname"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.displayName").value("ALIAS"));
+  }
+
+  @Test
+  void shouldCreateUserWithBulkImportPermission() throws Exception {
+    PermissionModel sepodiWriterAndBulkImporter = PermissionModel.builder()
+        .role(ApplicationRole.WRITER)
+        .application(ApplicationType.SEPODI)
+        .permissionRestrictions(List.of(new SboidPermissionRestrictionModel("ch:1:sboid:100011"),
+            new BulkImportPermissionRestrictionModel(true)))
+        .build();
+    UserPermissionCreateModel model = UserPermissionCreateModel
+        .builder()
+        .sbbUserId("u236171")
+        .permissions(List.of(sepodiWriterAndBulkImporter))
+        .build();
+
+    mvc.perform(post("/v1/users")
+            .content(mapper.writeValueAsString(model)).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$." + Fields.sbbUserId).value("u236171"))
+        .andExpect(jsonPath("$." + Fields.mail).value("luca.ammann2@sbb.ch"))
+        .andExpect(jsonPath("$." + Fields.permissions).value(hasSize(1)));
+
+    List<UserPermission> savedPermissions = userPermissionRepository.findBySbbUserIdIgnoreCase("U236171");
+    assertThat(savedPermissions).hasSize(1);
+    PermissionRestriction bulkImportRestriction = savedPermissions.getFirst().getPermissionRestrictions().stream()
+        .filter(i -> i.getType() == PermissionRestrictionType.BULK_IMPORT).findFirst().orElseThrow();
+    assertThat(bulkImportRestriction.getRestriction()).isEqualTo("true");
   }
 
 }

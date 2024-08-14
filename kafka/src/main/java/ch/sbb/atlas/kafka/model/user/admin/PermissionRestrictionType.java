@@ -9,6 +9,7 @@ public enum PermissionRestrictionType {
 
   BUSINESS_ORGANISATION,
   CANTON,
-  COUNTRY
+  COUNTRY,
+  BULK_IMPORT
 
 }

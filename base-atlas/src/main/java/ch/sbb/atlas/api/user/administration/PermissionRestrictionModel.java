@@ -23,7 +23,8 @@ import lombok.experimental.SuperBuilder;
 @JsonSubTypes({
     @Type(value = SboidPermissionRestrictionModel.class, name = "BUSINESS_ORGANISATION"),
     @Type(value = CantonPermissionRestrictionModel.class, name = "CANTON"),
-    @Type(value = CountryPermissionRestrictionModel.class, name = "COUNTRY")
+    @Type(value = CountryPermissionRestrictionModel.class, name = "COUNTRY"),
+    @Type(value = BulkImportPermissionRestrictionModel.class, name = "BULK_IMPORT")
 })
 public abstract class PermissionRestrictionModel<T> {
 
