@@ -32,7 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class StopPointWorkflowService {
 
-  public static final int WORKFLOW_DURATION_IN_DAYS = 31;
+  static final int WORKFLOW_DURATION_IN_DAYS = 31;
+  static final int WORKFLOW_EXPIRATION_IN_DAYS = WORKFLOW_DURATION_IN_DAYS + 1;
 
   private final StopPointWorkflowRepository workflowRepository;
   private final DecisionRepository decisionRepository;
@@ -120,7 +121,7 @@ public class StopPointWorkflowService {
   }
 
   public List<StopPointWorkflow> findExpiredWorkflow() {
-    LocalDate expirationDate = LocalDate.now().minusDays(WORKFLOW_DURATION_IN_DAYS);
+    LocalDate expirationDate = LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS);
     return workflowRepository.findExpired(WorkflowStatus.HEARING, expirationDate);
   }
 
