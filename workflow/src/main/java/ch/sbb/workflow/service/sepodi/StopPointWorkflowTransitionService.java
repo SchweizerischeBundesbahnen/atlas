@@ -144,22 +144,23 @@ public class StopPointWorkflowTransitionService {
     expiredWorkflow.forEach(stopPointWorkflow -> {
       Set<Decision> decisions = new HashSet<>(decisionService.findDecisionByWorkflowId(stopPointWorkflow.getId()));
       if (decisions.stream().noneMatch(Decision::hasWeightedJudgementTypeNo)) {
-
-        List<Person> examiants = new ArrayList<>(stopPointWorkflow.getExaminants().stream().toList());
-
-        List<Person> examinantVotedPersonIds = new ArrayList<>(decisions.stream().map(Decision::getExaminant).toList());
-        List<Person> overriderVotedPersonIds = new ArrayList<>(decisions.stream().map(Decision::getFotOverrider).toList());
-
-        examiants.removeIf(examinantVotedPersonIds::contains);
-        examiants.removeIf(overriderVotedPersonIds::contains);
+        List<Person> examiants = getExamiantsToVote(stopPointWorkflow, decisions);
         examiants.forEach(stopPointWorkflowService::voteExpiredWorkflowDecision);
-
         sePoDiClientService.updateStopPointStatusToValidatedAsAdmin(stopPointWorkflow);
         notificationService.sendApprovedStopPointWorkflowMail(stopPointWorkflow);
         stopPointWorkflow.setStatus(WorkflowStatus.APPROVED);
         stopPointWorkflowService.save(stopPointWorkflow);
       }
     });
+  }
+
+  private List<Person> getExamiantsToVote(StopPointWorkflow stopPointWorkflow, Set<Decision> decisions) {
+    List<Person> examiants = new ArrayList<>(stopPointWorkflow.getExaminants().stream().toList());
+    List<Person> examinantVotedPersonIds = new ArrayList<>(decisions.stream().map(Decision::getExaminant).toList());
+    List<Person> overriderVotedPersonIds = new ArrayList<>(decisions.stream().map(Decision::getFotOverrider).toList());
+    examiants.removeIf(examinantVotedPersonIds::contains);
+    examiants.removeIf(overriderVotedPersonIds::contains);
+    return examiants;
   }
 
   private StopPointWorkflowProgressDecider buildProgressDecider(StopPointWorkflow workflow) {
