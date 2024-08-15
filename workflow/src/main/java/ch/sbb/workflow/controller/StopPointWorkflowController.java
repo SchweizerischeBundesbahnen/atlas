@@ -21,6 +21,7 @@ import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointWorkflowRequestParams;
 import ch.sbb.workflow.service.sepodi.DecisionService;
+import ch.sbb.workflow.service.sepodi.StopPointWorkflowEndExpiredService;
 import ch.sbb.workflow.service.sepodi.StopPointWorkflowOtpService;
 import ch.sbb.workflow.service.sepodi.StopPointWorkflowService;
 import ch.sbb.workflow.service.sepodi.StopPointWorkflowTransitionService;
@@ -38,6 +39,7 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
   private final StopPointWorkflowOtpService otpService;
   private final DecisionService decisionService;
   private final StopPointWorkflowTransitionService workflowTransitionService;
+  private final StopPointWorkflowEndExpiredService endExpiredWorkflowsService;
 
   @Override
   public ReadStopPointWorkflowModel getStopPointWorkflow(Long id) {
@@ -146,7 +148,7 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
 
   @Override
   public void endExpiredWorkflows() {
-    workflowTransitionService.endExpiredWorkflows();
+    endExpiredWorkflowsService.endExpiredWorkflows();
   }
 
 }
