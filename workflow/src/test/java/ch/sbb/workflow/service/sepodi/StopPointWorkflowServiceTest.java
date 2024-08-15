@@ -214,17 +214,17 @@ class StopPointWorkflowServiceTest {
     StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
         .sloid("ch:1:sloid:8000")
         .sboid("ch:1:sboid:10")
-        .status(WorkflowStatus.HEARING)
+        .status(WorkflowStatus.APPROVED)
         .designationOfficial("Heimsiswil Zentrum")
         .versionId(1L)
-        .startDate(LocalDate.now().minusDays(61))
+        .startDate(LocalDate.now().minusDays(3))
         .endDate(LocalDate.now().minusDays(31))
         .localityName("Heimiswil")
         .build();
     workflowRepository.saveAndFlush(stopPointWorkflow);
 
     //when
-    List<StopPointWorkflow> result = workflowService.findExpiredWorkflow();
+    List<StopPointWorkflow> result = workflowService.findWorkflowsInHearing();
 
     //then
     assertThat(result).isEmpty();
@@ -247,7 +247,7 @@ class StopPointWorkflowServiceTest {
     workflowRepository.saveAndFlush(stopPointWorkflow);
 
     //when
-    List<StopPointWorkflow> result = workflowService.findExpiredWorkflow();
+    List<StopPointWorkflow> result = workflowService.findWorkflowsInHearing();
 
     //then
     assertThat(result).hasSize(1);
