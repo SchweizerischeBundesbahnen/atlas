@@ -1,6 +1,6 @@
 package ch.sbb.workflow.service.sepodi;
 
-import static ch.sbb.workflow.service.sepodi.StopPointWorkflowService.WORKFLOW_EXPIRATION_IN_DAYS;
+import static ch.sbb.workflow.service.sepodi.StopPointWorkflowTransitionService.WORKFLOW_EXPIRATION_IN_DAYS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
@@ -152,7 +152,8 @@ class StopPointWorkflowTransitionServiceTest {
   @Test
   void shouldEndWorkflowWithNoVotes() {
     //given
-    workflowInHearing.setEndDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS));
+    workflowInHearing.setEndDate(LocalDate.now());
+    workflowInHearing.setStartDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS));
     workflowRepository.save(workflowInHearing);
 
     //when
@@ -174,7 +175,8 @@ class StopPointWorkflowTransitionServiceTest {
   @Test
   void shouldNotEndWorkflowWhenEndDateIsLessThan31Days() {
     //given
-    workflowInHearing.setEndDate(LocalDate.now().minusDays(30));
+    workflowInHearing.setStartDate(LocalDate.now().minusDays(30));
+    workflowInHearing.setEndDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS));
     workflowRepository.save(workflowInHearing);
 
     //when
@@ -197,7 +199,7 @@ class StopPointWorkflowTransitionServiceTest {
         .examinant(marek)
         .build();
     decisionRepository.save(mareksDecision);
-
+    workflowInHearing.setStartDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS));
     workflowInHearing.setEndDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS));
     workflowRepository.save(workflowInHearing);
 
@@ -231,7 +233,8 @@ class StopPointWorkflowTransitionServiceTest {
         .build();
     decisionRepository.save(mareksDecision);
 
-    workflowInHearing.setEndDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS));
+    workflowInHearing.setEndDate(LocalDate.now());
+    workflowInHearing.setStartDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS));
     workflowRepository.save(workflowInHearing);
 
     //when
@@ -271,7 +274,8 @@ class StopPointWorkflowTransitionServiceTest {
         .build();
     decisionRepository.save(mareksDecision);
 
-    workflowInHearing.setEndDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS));
+    workflowInHearing.setStartDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS));
+    workflowInHearing.setEndDate(LocalDate.now());
     workflowRepository.save(workflowInHearing);
 
     //when
@@ -311,7 +315,8 @@ class StopPointWorkflowTransitionServiceTest {
         .mail("cianni@staccioni.com").build();
     cianni.setStopPointWorkflow(workflowInHearing);
     workflowInHearing.getExaminants().add(cianni);
-    workflowInHearing.setEndDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS));
+    workflowInHearing.setStartDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS));
+    workflowInHearing.setEndDate(LocalDate.now());
     workflowRepository.save(workflowInHearing);
 
     //when
