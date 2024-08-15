@@ -31,8 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class StopPointWorkflowService {
 
-  static final int WORKFLOW_DURATION_IN_DAYS = 31;
-
   private final StopPointWorkflowRepository workflowRepository;
   private final DecisionRepository decisionRepository;
   private final SePoDiClientService sePoDiClientService;
