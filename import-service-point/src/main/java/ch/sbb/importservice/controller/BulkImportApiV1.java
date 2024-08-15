@@ -3,11 +3,13 @@ package ch.sbb.importservice.controller;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.importservice.model.BusinessObjectType;
 import ch.sbb.importservice.model.ImportType;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.io.File;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +36,13 @@ public interface BulkImportApiV1 {
 
 
   @GetMapping("template/{objectType}/{importType}")
-  File downloadTemplate(@PathVariable BusinessObjectType objectType, @PathVariable ImportType importType);
+  @Operation(summary = "Download bulk import template",
+      description = "Downloads a template file for the specified business object type and import type")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Template file successfully downloaded"),
+      @ApiResponse(responseCode = "404", description = "Template not found"),
+      @ApiResponse(responseCode = "500", description = "Internal server error")
+  })
+  ResponseEntity<Resource> downloadTemplate(@PathVariable BusinessObjectType objectType, @PathVariable ImportType importType);
 
 }
