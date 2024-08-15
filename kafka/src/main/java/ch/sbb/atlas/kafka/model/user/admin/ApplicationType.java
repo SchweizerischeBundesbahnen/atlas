@@ -13,7 +13,6 @@ public enum ApplicationType {
   BODI,
   TIMETABLE_HEARING,
   SEPODI,
-  PRM,
-  BULK_IMPORT,
+  PRM
 
 }

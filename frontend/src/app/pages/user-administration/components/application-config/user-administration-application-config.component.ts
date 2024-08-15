@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { TableColumn } from '../../../../core/components/table/table-column';
+import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {TableColumn} from '../../../../core/components/table/table-column';
 import {
   ApplicationRole,
   ApplicationType,
@@ -10,14 +10,17 @@ import {
   SboidPermissionRestrictionModel,
   SwissCanton,
 } from '../../../../api';
-import { FormControl, FormGroup } from '@angular/forms';
-import { UserPermissionManager } from '../../service/user-permission-manager';
-import { BusinessOrganisationLanguageService } from '../../../../core/form-components/bo-select/business-organisation-language.service';
-import { Observable, of, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Cantons } from '../../../../core/cantons/Cantons';
-import { MatSelectChange } from '@angular/material/select';
-import { Countries } from '../../../../core/country/Countries';
+import {FormControl, FormGroup} from '@angular/forms';
+import {UserPermissionManager} from '../../service/user-permission-manager';
+import {
+  BusinessOrganisationLanguageService
+} from '../../../../core/form-components/bo-select/business-organisation-language.service';
+import {Observable, of, Subscription} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {Cantons} from '../../../../core/cantons/Cantons';
+import {MatSelectChange} from '@angular/material/select';
+import {Countries} from '../../../../core/country/Countries';
+import {BULK_IMPORT_APPLICATIONS} from "../../../../core/auth/permission/bulk-import-permission";
 
 @Component({
   selector: 'app-user-administration-application-config',
@@ -33,6 +36,31 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
   boListener$: Observable<BusinessOrganisation[]> = of([]);
   availableOptions: ApplicationRole[] = [];
   selectedIndex = -1;
+
+  bulkImportApplications = BULK_IMPORT_APPLICATIONS;
+  _bulkImportPermission = false;
+
+  get bulkImportPermission(){
+    return this._bulkImportPermission;
+  }
+
+  set bulkImportPermission(value: boolean) {
+    const bulkImportPermission =
+      this.userPermissionManager.getPermissionByApplication(this.application)
+        .permissionRestrictions
+        .find(i => i.type === PermissionRestrictionType.BulkImport);
+    if (bulkImportPermission) {
+      bulkImportPermission.valueAsString = String(value);
+    } else {
+      this.userPermissionManager.getPermissionByApplication(this.application)
+        .permissionRestrictions.push({
+        type: PermissionRestrictionType.BulkImport,
+        valueAsString: String(value)
+      });
+    }
+
+    this._bulkImportPermission = value;
+  }
 
   public readonly getCountryEnum = Countries.getCountryEnum;
   readonly boFormCtrlName = 'businessOrganisation';
@@ -104,6 +132,9 @@ export class UserAdministrationApplicationConfigComponent implements OnInit, OnD
     this.availableOptions = this.userPermissionManager.getAvailableApplicationRolesOfApplication(
       this.application,
     );
+    this.bulkImportPermission = this.userPermissionManager.getPermissionByApplication(this.application)
+      .permissionRestrictions.find(i => i.type === PermissionRestrictionType.BulkImport)?.valueAsString === "true";
+
     this.boListener$ = this.userPermissionManager.boOfApplicationsSubject$.pipe(
       map((bosOfApplications) => bosOfApplications[this.application]),
     );
