@@ -2,6 +2,14 @@ include::../../../../auto-rest-doc/src/test/resources/layout/common/ATLAS-HEAD.a
 
 = Import Service
 
-== Trigger Bulk Import with input file
+== Trigger Bulk Import with input file - Successfully
 
 include::{snippets}/bulk-import-controller-test/should-accept-generic-bulk-import-with-file/atlas-doc.adoc[]
+
+== Trigger Bulk Import Download Template - Successfully
+
+include::{snippets}/bulk-import-controller-test/should-download-template-successfully/atlas-doc.adoc[]
+
+== Trigger Bulk Import Download Template With Wrong Path Variables- Unsuccessfully
+
+include::{snippets}/bulk-import-controller-test/should-download-template-with-incorrect-path-variables-unsuccessfully/atlas-doc.adoc[]

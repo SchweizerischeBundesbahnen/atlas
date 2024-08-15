@@ -23,6 +23,7 @@ public class BulkImportService {
   private final BulkImportJobService bulkImportJobService;
 
   private static final String ROOT_TEMPLATES_BUCKET_FOLDER = "templates";
+  private static final String FILE_EXTENSION = ".xlsx";
 
   @Async
   public void startBulkImport(BulkImport bulkImport, File file) {
@@ -36,7 +37,7 @@ public class BulkImportService {
 
   public File downloadTemplate(BusinessObjectType objectType, ImportType importType) {
     String filePath = ROOT_TEMPLATES_BUCKET_FOLDER + "/" + objectType.toString().toLowerCase() + "/"
-       + importType.toString().toLowerCase() + "_" + objectType.toString().toLowerCase() + ".xlsx";
+       + importType.toString().toLowerCase() + "_" + objectType.toString().toLowerCase() + FILE_EXTENSION;
     return bulkImportS3BucketService.downloadImportFile(filePath);
   }
 
@@ -48,4 +49,5 @@ public class BulkImportService {
   private void saveBulkImportMetaData(BulkImport bulkImport) {
     bulkImportRepository.saveAndFlush(bulkImport);
   }
+
 }
