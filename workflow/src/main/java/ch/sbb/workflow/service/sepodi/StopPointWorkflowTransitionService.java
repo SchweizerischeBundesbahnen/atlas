@@ -1,7 +1,6 @@
 package ch.sbb.workflow.service.sepodi;
 
 import static ch.sbb.atlas.workflow.model.WorkflowStatus.REJECTED;
-import static ch.sbb.workflow.service.sepodi.StopPointWorkflowService.WORKFLOW_DURATION_IN_DAYS;
 
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.kafka.model.SwissCanton;
@@ -44,6 +43,7 @@ public class StopPointWorkflowTransitionService {
   private final StopPointWorkflowNotificationService notificationService;
   private final StopPointWorkflowService stopPointWorkflowService;
 
+  static final int WORKFLOW_DURATION_IN_DAYS = 31;
   static final int WORKFLOW_EXPIRATION_IN_DAYS = WORKFLOW_DURATION_IN_DAYS + 1;
 
   /**
@@ -140,52 +140,6 @@ public class StopPointWorkflowTransitionService {
       workflow.setStatus(newStatus);
       stopPointWorkflowService.save(workflow);
     });
-  }
-
-  public void endExpiredWorkflows() {
-    log.info("###### Start close expired workflows in Hearing ######");
-    List<StopPointWorkflow> expiredWorkflows = getExpiredWorkflows();
-    expiredWorkflows.forEach(stopPointWorkflow -> {
-      Set<Decision> decisions = new HashSet<>(decisionService.findDecisionByWorkflowId(stopPointWorkflow.getId()));
-      if (decisions.stream().noneMatch(Decision::hasWeightedJudgementTypeNo)) {
-        log.info("#### Found Expired workflow without JudgmentType.NO to close: [id:{},startDate:{},endDate:{},status:{}]",
-            stopPointWorkflow.getId(), stopPointWorkflow.getStartDate(), stopPointWorkflow.getEndDate(),
-            stopPointWorkflow.getStatus());
-        List<Person> examiants = getExamiantsToVote(stopPointWorkflow, decisions);
-        examiants.forEach(stopPointWorkflowService::voteExpiredWorkflowDecision);
-
-        sePoDiClientService.updateStopPointStatusToValidatedAsAdmin(stopPointWorkflow);
-        notificationService.sendApprovedStopPointWorkflowMail(stopPointWorkflow);
-        stopPointWorkflow.setEndDate(LocalDate.now());
-        stopPointWorkflow.setStatus(WorkflowStatus.APPROVED);
-        stopPointWorkflowService.save(stopPointWorkflow);
-        log.info("#### Expired workflow without JudgmentType.NO successfully closed: [id:{},startDate:{},endDate:{},status:{}]",
-            stopPointWorkflow.getId(), stopPointWorkflow.getStartDate(), stopPointWorkflow.getEndDate(),
-            stopPointWorkflow.getStatus());
-      }
-    });
-    log.info("###### End close expired workflows in Hearing! ######");
-  }
-
-  private List<StopPointWorkflow> getExpiredWorkflows() {
-    List<StopPointWorkflow> workflowsInHearing = stopPointWorkflowService.findWorkflowsInHearing();
-    log.info("## Found {} in Hearing...", workflowsInHearing.size());
-    List<StopPointWorkflow> expiredWorkflows = workflowsInHearing.stream()
-        .filter(stopPointWorkflow -> stopPointWorkflow.getStartDate().plusDays(WORKFLOW_EXPIRATION_IN_DAYS).equals(
-            LocalDate.now())).toList();
-    log.info("## Found {} workflow(s) expired ...", expiredWorkflows.size());
-    return expiredWorkflows;
-  }
-
-  private List<Person> getExamiantsToVote(StopPointWorkflow stopPointWorkflow, Set<Decision> decisions) {
-    List<Person> examiants = new ArrayList<>(stopPointWorkflow.getExaminants().stream().toList());
-    List<Person> examinantVotedPersonIds = new ArrayList<>(decisions.stream().map(Decision::getExaminant).toList());
-    List<Person> overriderVotedPersonIds = new ArrayList<>(decisions.stream().map(Decision::getFotOverrider).toList());
-    examiants.removeIf(examinantVotedPersonIds::contains);
-    examiants.removeIf(overriderVotedPersonIds::contains);
-    examiants.forEach(person ->
-        log.info("### Found following examinant without vote: id:{}, mail:{}", person.getId(), person.getMail()));
-    return examiants;
   }
 
   private StopPointWorkflowProgressDecider buildProgressDecider(StopPointWorkflow workflow) {
