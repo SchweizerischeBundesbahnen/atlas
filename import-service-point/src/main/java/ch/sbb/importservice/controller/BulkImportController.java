@@ -1,5 +1,6 @@
 package ch.sbb.importservice.controller;
 
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.service.UserService;
 import ch.sbb.importservice.entity.BulkImport;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,12 +31,15 @@ import org.springframework.web.multipart.MultipartFile;
 public class BulkImportController {
 
   private final BulkImportService bulkImportService;
+  private final FileService fileService;
 
   @PostMapping("{application}/{objectType}/{importType}")
   @ResponseStatus(HttpStatus.ACCEPTED)
   @ApiResponses(value = {
       @ApiResponse(responseCode = "202"),
   })
+  @PreAuthorize("""
+      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(#application)""")
   public void startServicePointImportBatch(
       @PathVariable ApplicationType application,
       @PathVariable BusinessObjectType objectType,
@@ -53,7 +58,8 @@ public class BulkImportController {
         .importType(importType)
         .creator(UserService.getUserIdentifier())
         .build();
-    bulkImportService.startBulkImport(bulkImport, file);
+
+    bulkImportService.startBulkImport(bulkImport, fileService.getFileFromMultipart(file));
   }
 
 }

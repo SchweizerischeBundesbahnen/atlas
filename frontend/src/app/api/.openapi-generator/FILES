@@ -37,6 +37,7 @@ model/applicationType.ts
 model/basicAttributeType.ts
 model/boardingDeviceAttributeType.ts
 model/booleanOptionalAttributeType.ts
+model/bulkImportPermissionRestrictionModel.ts
 model/businessObjectType.ts
 model/businessOrganisation.ts
 model/businessOrganisationVersion.ts

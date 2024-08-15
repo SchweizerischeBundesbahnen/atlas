@@ -19,6 +19,12 @@
         [disabled]="readOnly"
       >
       </atlas-select>
+      @if (bulkImportApplications.includes(application) && (role === 'WRITER' || role === 'SUPER_USER')) {
+        <div class="bulk-import-toggle my-3">
+          <app-atlas-label-field fieldLabel="PAGES.BULK_IMPORT.TITLE_MENU"></app-atlas-label-field>
+          <atlas-slide-toggle [(toggle)]="bulkImportPermission" [disabled]="readOnly"></atlas-slide-toggle>
+        </div>
+      }
     </div>
 
     <div class="d-flex flex-column col-9 pe-3">
