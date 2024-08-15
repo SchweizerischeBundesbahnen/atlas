@@ -44,7 +44,6 @@ public class StopPointWorkflowTransitionService {
   private final StopPointWorkflowService stopPointWorkflowService;
 
   static final int WORKFLOW_DURATION_IN_DAYS = 31;
-  static final int WORKFLOW_EXPIRATION_IN_DAYS = WORKFLOW_DURATION_IN_DAYS + 1;
 
   /**
    * Authorization for this method is delegated to ServicePointService#update()
