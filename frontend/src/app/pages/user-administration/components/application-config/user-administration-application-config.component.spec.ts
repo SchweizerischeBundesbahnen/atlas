@@ -6,7 +6,7 @@ import {UserPermissionManager} from '../../service/user-permission-manager';
 import {MaterialModule} from '../../../../core/module/material.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BehaviorSubject, of} from 'rxjs';
-import {ApplicationType} from '../../../../api';
+import {ApplicationRole, ApplicationType, PermissionRestrictionType} from '../../../../api';
 import {SelectComponent} from '../../../../core/form-components/select/select.component';
 import {AtlasSpacerComponent} from '../../../../core/components/spacer/atlas-spacer.component';
 import {MockAtlasFieldErrorComponent} from '../../../../app.testing.mocks';
@@ -39,11 +39,17 @@ describe('UserAdministrationApplicationConfigComponent', () => {
           TIMETABLE_HEARING: [],
           SEPODI: [],
           PRM: [],
-          BULK_IMPORT: [],
         }),
         boFormResetEvent$: of(),
       },
     );
+
+    userPermissionManagerSpy.getPermissionByApplication.and.returnValue({
+      role: ApplicationRole.Writer,
+      application: ApplicationType.Sepodi,
+      permissionRestrictions: [{type: PermissionRestrictionType.BulkImport, valueAsString: "true"}]
+    });
+
     await TestBed.configureTestingModule({
       declarations: [
         UserAdministrationApplicationConfigComponent,
