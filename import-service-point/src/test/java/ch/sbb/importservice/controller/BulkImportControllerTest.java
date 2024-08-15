@@ -8,6 +8,7 @@ import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.sbb.atlas.amazon.service.AmazonBucket;
@@ -18,16 +19,30 @@ import ch.sbb.importservice.client.ServicePointBulkImportClient;
 import ch.sbb.importservice.entity.BulkImport;
 import ch.sbb.importservice.repository.BulkImportRepository;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.stream.Stream;
+import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
 
 class BulkImportControllerTest extends BaseControllerApiTest {
 
@@ -71,4 +86,65 @@ class BulkImportControllerTest extends BaseControllerApiTest {
     assertThat(bulkImport.getId()).isNotNull();
     assertThat(bulkImport.getImportFileUrl()).isEqualTo(todaysDirectory + "/service-point-update.csv");
   }
+
+  @ParameterizedTest
+  @MethodSource("getArgumentsForDifferentTemplates")
+  void shouldDownloadTemplateSuccessfully(String classPathResource, String amazonServicePath, String requestPath) throws Exception {
+    // Given
+    ClassPathResource resource = new ClassPathResource(classPathResource);
+    File file = resource.getFile();
+
+    when(amazonService.pullFile(eq(AmazonBucket.BULK_IMPORT), eq(amazonServicePath)))
+        .thenReturn(file);
+
+    // When
+    MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(requestPath))
+        .andExpect(status().isOk())
+        .andExpect(header().string(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\""))
+        .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE))
+        .andReturn();
+
+    // Then
+    MockHttpServletResponse response = mvcResult.getResponse();
+    byte[] responseContent = response.getContentAsByteArray();
+
+    try (InputStream fileInputStream = new FileInputStream(file)) {
+      byte[] fileContent = IOUtils.toByteArray(fileInputStream);
+      assertThat(responseContent)
+          .as("The downloaded file should match the original file")
+          .isEqualTo(fileContent);
+    }
+  }
+
+  @Test
+  void shouldDownloadTemplateWithIncorrectPathVariablesUnsuccessfully() throws Exception {
+    mvc.perform(MockMvcRequestBuilders.get("/v1/import/bulk/template/WRONG_VALUE/INCORRECT_VALUE"))
+        .andExpect(status().isBadRequest())
+        .andReturn();
+  }
+
+  @Test
+  void shouldReturnBadRequestWhenAmazonDoesNotFindTemplate() throws Exception {
+    // Given
+    when(amazonService.pullFile(eq(AmazonBucket.BULK_IMPORT), eq("templates/service_point/create_service_point.xlsx")))
+        .thenReturn(null);
+
+    // When & Then
+    mvc.perform(MockMvcRequestBuilders.get("/v1/import/bulk/template/SERVICE_POINT/CREATE"))
+        .andExpect(status().isNotFound())
+        .andReturn();
+  }
+
+  static Stream<Arguments> getArgumentsForDifferentTemplates() {
+    return Stream.of(
+        Arguments.of("templates/create_service_point.xlsx", "templates/service_point/create_service_point.xlsx",
+            "/v1/import/bulk/template/SERVICE_POINT/CREATE"),
+        Arguments.of("templates/create_traffic_point.xlsx", "templates/traffic_point/create_traffic_point.xlsx",
+            "/v1/import/bulk/template/TRAFFIC_POINT/CREATE"),
+        Arguments.of("templates/update_traffic_point.xlsx", "templates/traffic_point/update_traffic_point.xlsx",
+            "/v1/import/bulk/template/TRAFFIC_POINT/UPDATE"),
+        Arguments.of("templates/update_service_point.xlsx", "templates/service_point/update_service_point.xlsx",
+            "/v1/import/bulk/template/SERVICE_POINT/UPDATE"));
+  }
+
 }

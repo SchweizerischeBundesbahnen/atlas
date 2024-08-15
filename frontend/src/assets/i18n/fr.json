@@ -1437,5 +1437,10 @@
         "EDIT_SUCCESS": "Le relation a été enregistré avec succès."
       }
     }
+  },
+  "BULK": {
+    "BUTTON": {
+      "DOWNLOAD": "Modèle d'import"
+    }
   }
 }

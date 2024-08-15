@@ -15,6 +15,11 @@ import java.io.File;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,8 +52,22 @@ public class BulkImportController implements BulkImportApiV1 {
   }
 
   @Override
-  public File downloadTemplate(BusinessObjectType objectType, ImportType importType) {
-    return bulkImportService.downloadTemplate(objectType, importType);
+  public ResponseEntity<Resource> downloadTemplate(BusinessObjectType objectType, ImportType importType) {
+    log.info("BusinessObject={}, ImportType={}", objectType, importType);
+
+    File file = bulkImportService.downloadTemplate(objectType, importType);
+
+    if (file == null || !file.exists()) {
+      log.warn("Template file not found for objectType={}, importType={}", objectType, importType);
+      return ResponseEntity.notFound().build();
+    }
+
+    Resource resource = new FileSystemResource(file);
+
+    return ResponseEntity.ok()
+        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
+        .contentType(MediaType.APPLICATION_OCTET_STREAM)
+        .body(resource);
   }
 
 }
