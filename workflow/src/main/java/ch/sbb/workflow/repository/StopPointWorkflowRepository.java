@@ -2,7 +2,6 @@ package ch.sbb.workflow.repository;
 
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.StopPointWorkflow;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,8 +33,7 @@ public interface StopPointWorkflowRepository extends JpaRepository<StopPointWork
   @Query(value = """
       select spw.* from stop_point_workflow spw
       where spw.status =:#{#status.toString()}
-      and spw.end_date <=:expiredDate
       """, nativeQuery = true)
-  List<StopPointWorkflow> findExpired(@Param("status") WorkflowStatus status, @Param("expiredDate") LocalDate expiredDate);
+  List<StopPointWorkflow> findWorkflowsByStatus(@Param("status") WorkflowStatus status);
 
 }
