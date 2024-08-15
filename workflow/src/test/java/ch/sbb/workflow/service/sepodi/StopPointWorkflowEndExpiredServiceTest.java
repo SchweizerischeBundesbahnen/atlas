@@ -1,6 +1,6 @@
 package ch.sbb.workflow.service.sepodi;
 
-import static ch.sbb.workflow.service.sepodi.StopPointWorkflowTransitionService.WORKFLOW_EXPIRATION_IN_DAYS;
+import static ch.sbb.workflow.service.sepodi.StopPointWorkflowEndExpiredService.WORKFLOW_EXPIRATION_IN_DAYS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
