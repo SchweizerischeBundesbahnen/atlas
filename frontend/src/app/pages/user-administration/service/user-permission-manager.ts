@@ -57,7 +57,6 @@ export class UserPermissionManager {
     TIMETABLE_HEARING: [],
     SEPODI: [],
     PRM: [],
-    BULK_IMPORT: [],
   };
 
   readonly boOfApplicationsSubject$: BehaviorSubject<{
@@ -100,12 +99,6 @@ export class UserPermissionManager {
       ApplicationRole.SuperUser,
       ApplicationRole.Supervisor,
     ],
-    BULK_IMPORT: [
-      ApplicationRole.Reader,
-      ApplicationRole.Writer,
-      ApplicationRole.SuperUser,
-      ApplicationRole.Supervisor,
-    ],
   };
 
   constructor(private readonly boService: BusinessOrganisationsService) {}
@@ -124,12 +117,12 @@ export class UserPermissionManager {
   clearPermisRestrIfNotWriterAndRemoveBOPermisRestrIfSepodiAndSuperUser(): void {
     this.userPermission.permissions.forEach((permission) => {
       const permissionIndex = this.getPermissionIndexFromApplication(ApplicationType.Sepodi);
-      if (permission.role === 'SUPER_USER' && permission.application === 'SEPODI') {
+      if (permission.role === ApplicationRole.SuperUser && permission.application === ApplicationType.Sepodi) {
         this.userPermission.permissions[permissionIndex].permissionRestrictions =
           this.userPermission.permissions[permissionIndex].permissionRestrictions.filter(
-            (restriction) => restriction.type === PermissionRestrictionType.Country,
+            (restriction) => restriction.type === PermissionRestrictionType.Country || restriction.type === PermissionRestrictionType.BulkImport,
           );
-      } else if (permission.role !== 'WRITER') {
+      } else if (permission.role !== ApplicationRole.Writer) {
         permission.permissionRestrictions = [];
       }
     });
@@ -177,6 +170,14 @@ export class UserPermissionManager {
           this.userPermission.permissions[permissionIndex].permissionRestrictions.push({
             valueAsString: country.valueAsString,
             type: PermissionRestrictionType.Country,
+          });
+        });
+      permission.permissionRestrictions
+        .filter((restriction) => restriction.type === PermissionRestrictionType.BulkImport)
+        .forEach((bulkImport) => {
+          this.userPermission.permissions[permissionIndex].permissionRestrictions.push({
+            valueAsString: bulkImport.valueAsString,
+            type: PermissionRestrictionType.BulkImport,
           });
         });
     });
