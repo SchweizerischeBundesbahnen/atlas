@@ -4,7 +4,6 @@ import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.atlas.kafka.model.user.admin.PermissionRestrictionType;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionModel;
 import ch.sbb.atlas.kafka.model.user.admin.UserAdministrationPermissionRestrictionModel;
-import ch.sbb.atlas.service.UserService;
 import ch.sbb.atlas.user.administration.security.UserPermissionHolder;
 import ch.sbb.atlas.user.administration.security.service.BusinessOrganisationBasedUserAdministrationService;
 import java.util.Optional;
@@ -33,7 +32,7 @@ public class BulkImportUserAdministrationService extends BusinessOrganisationBas
     }
 
     boolean hasPermissionsForBulkImport = hasExplicitBulkImportPermission || isAtLeastSupervisor(applicationType);
-    log.info("User {} hasPermissionsForBulkImport={}", UserService.getUserIdentifier(), hasPermissionsForBulkImport);
+    log.info("User {} hasPermissionsForBulkImport={}", getCurrentUserSbbUid(), hasPermissionsForBulkImport);
     return hasPermissionsForBulkImport;
   }
 
