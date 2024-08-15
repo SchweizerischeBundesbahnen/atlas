@@ -45,7 +45,6 @@ public class StopPointWorkflowEndExpiredService {
 
         sePoDiClientService.updateStopPointStatusToValidatedAsAdmin(stopPointWorkflow);
         notificationService.sendApprovedStopPointWorkflowMail(stopPointWorkflow);
-        stopPointWorkflow.setEndDate(LocalDate.now());
         stopPointWorkflow.setStatus(WorkflowStatus.APPROVED);
         stopPointWorkflowService.save(stopPointWorkflow);
         log.info("#### Expired workflow without JudgmentType.NO successfully closed: [id:{},startDate:{},endDate:{},status:{}]",
