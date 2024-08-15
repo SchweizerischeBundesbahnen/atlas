@@ -18,7 +18,6 @@ import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
 import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +32,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class StopPointWorkflowService {
 
   static final int WORKFLOW_DURATION_IN_DAYS = 31;
-  static final int WORKFLOW_EXPIRATION_IN_DAYS = WORKFLOW_DURATION_IN_DAYS + 1;
 
   private final StopPointWorkflowRepository workflowRepository;
   private final DecisionRepository decisionRepository;
@@ -120,9 +118,8 @@ public class StopPointWorkflowService {
     }
   }
 
-  public List<StopPointWorkflow> findExpiredWorkflow() {
-    LocalDate expirationDate = LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS);
-    return workflowRepository.findExpired(WorkflowStatus.HEARING, expirationDate);
+  public List<StopPointWorkflow> findWorkflowsInHearing() {
+    return workflowRepository.findWorkflowsByStatus(WorkflowStatus.HEARING);
   }
 
   private void voteDecision(DecisionModel decisionModel, Person examinant) {
