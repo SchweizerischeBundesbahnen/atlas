@@ -14,6 +14,7 @@ public class StopPointWorkflowDecisionMapper {
         .examinant(StopPointClientPersonMapper.toModel(entity.getExaminant()))
         .fotJudgement(entity.getFotJudgement())
         .fotMotivation(entity.getFotMotivation())
+        .decisionType(entity.getDecisionType())
         .build();
     if (entity.getFotOverrider() != null) {
       readDecisionModel.setFotOverrider(StopPointClientPersonMapper.toModel(entity.getFotOverrider()));

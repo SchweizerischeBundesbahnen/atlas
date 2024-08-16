@@ -1056,6 +1056,7 @@
         "SLIDE": "Audizioni da elaborare",
         "OVERRIDE_TITLE": "Valutazione da parte di UFT",
         "OVERRIDE_HAPPENED_INFO": "L'Ufficio federale dei trasporti (UFT) ha effettuato una valutazione. Si applica la valutazione dell'UFT (vedi sotto).",
+        "VOTED_EXPIRATION": "La persona non ha espresso un voto entro il termine legale definito. L'assenza di voto è considerata un consenso.",
         "PREVIOUS_WORKFLOW": "Sostituisce l'audizione precedente {{number}}",
         "FOLLOW_UP_WORKFLOW": "Audizione successiva {{number}}",
         "COMMENT_SUB_LABEL": "Deve essere spiegato chiaramente PERCHE' la fermata deve essere nominata come richiesto. Si tratta, ad esempio, del nome di una strada o una località?"

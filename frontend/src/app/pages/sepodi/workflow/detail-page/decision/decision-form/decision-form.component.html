@@ -1,11 +1,11 @@
 <form [formGroup]="form">
-  @if (hasOverride) {
+  @if (warningChipMessage) {
     <mat-chip-listbox>
       <mat-chip>
         <div class="bav-override-info mb-1">
           <i class="bi bi-exclamation-triangle-fill warn"></i>
           <span class="font-base">
-        {{ 'SEPODI.SERVICE_POINTS.WORKFLOW.OVERRIDE_HAPPENED_INFO' | translate }}
+        {{ warningChipMessage | translate }}
       </span>
         </div>
       </mat-chip>

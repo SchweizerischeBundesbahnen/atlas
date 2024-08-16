@@ -1,7 +1,9 @@
 package ch.sbb.workflow.service.sepodi;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
@@ -13,12 +15,10 @@ import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointWorkflowRequestParams;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
-
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -196,14 +196,61 @@ class StopPointWorkflowServiceTest {
     examinant.add(person);
 
     EditStopPointWorkflowModel workflowModel = EditStopPointWorkflowModel.builder()
-            .workflowComment("test")
-            .designationOfficial("Heimsiswil Zentrum")
-            .examinants(examinant.stream().map(StopPointClientPersonMapper::toModel).toList())
-            .build();
+        .workflowComment("test")
+        .designationOfficial("Heimsiswil Zentrum")
+        .examinants(examinant.stream().map(StopPointClientPersonMapper::toModel).toList())
+        .build();
 
     workflowService.editWorkflow(id, workflowModel);
     StopPointWorkflow stopPointWorkflow1 = workflowRepository.findById(id).get();
     assertFalse(stopPointWorkflow1.getExaminants().isEmpty());
     assertThat(stopPointWorkflow1.getExaminants()).extracting("mail").contains("neueMail@mail.neu");
   }
+
+  @Test
+  void shouldNotFindExpiredWorkflowWhenWorkflowEndsIn31Days() {
+    //given
+    workflowRepository.deleteAll();
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:8000")
+        .sboid("ch:1:sboid:10")
+        .status(WorkflowStatus.APPROVED)
+        .designationOfficial("Heimsiswil Zentrum")
+        .versionId(1L)
+        .startDate(LocalDate.now().minusDays(3))
+        .endDate(LocalDate.now().minusDays(31))
+        .localityName("Heimiswil")
+        .build();
+    workflowRepository.saveAndFlush(stopPointWorkflow);
+
+    //when
+    List<StopPointWorkflow> result = workflowService.findWorkflowsInHearing();
+
+    //then
+    assertThat(result).isEmpty();
+  }
+
+  @Test
+  void shouldFindExpiredWorkflowWhenWorkflowEndsAfter31Days() {
+    //given
+    workflowRepository.deleteAll();
+    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+        .sloid("ch:1:sloid:8000")
+        .sboid("ch:1:sboid:10")
+        .status(WorkflowStatus.HEARING)
+        .designationOfficial("Heimsiswil Zentrum")
+        .versionId(1L)
+        .startDate(LocalDate.now().minusDays(61))
+        .endDate(LocalDate.now().minusDays(32))
+        .localityName("Heimiswil")
+        .build();
+    workflowRepository.saveAndFlush(stopPointWorkflow);
+
+    //when
+    List<StopPointWorkflow> result = workflowService.findWorkflowsInHearing();
+
+    //then
+    assertThat(result).hasSize(1);
+  }
+
 }
