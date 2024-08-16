@@ -2,7 +2,8 @@
 
 <atlas-dialog-content>
   <div class="font-bold-4xl mb-1">{{ title | translate }}</div>
-  <decision-form [form]="decisionForm" [hasOverride]="hasOverride" [showJudgement]="!specialDecision"></decision-form>
+  <decision-form [form]="decisionForm" [hasOverride]="hasOverride" [hasDecisionTypeVotedExpired] = "hasDecisionTypeVotedExpired"
+                 [showJudgement]="!specialDecision"></decision-form>
   @if (!specialDecision) {
     <decision-override
       [workflowId]="decisionDetailDialogData.workflowId"

@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -28,5 +29,11 @@ public interface StopPointWorkflowRepository extends JpaRepository<StopPointWork
       where d.id = :decisionId
       """, nativeQuery = true)
   StopPointWorkflow findByDecisionId(Long decisionId);
+
+  @Query(value = """
+      select spw.* from stop_point_workflow spw
+      where spw.status =:#{#status.toString()}
+      """, nativeQuery = true)
+  List<StopPointWorkflow> findWorkflowsByStatus(@Param("status") WorkflowStatus status);
 
 }

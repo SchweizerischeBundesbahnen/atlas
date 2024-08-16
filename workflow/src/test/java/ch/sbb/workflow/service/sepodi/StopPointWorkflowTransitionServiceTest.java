@@ -146,4 +146,5 @@ class StopPointWorkflowTransitionServiceTest {
     workflowInHearing = workflowRepository.findById(workflowInHearing.getId()).orElseThrow();
     assertThat(workflowInHearing.getStatus()).isEqualTo(WorkflowStatus.REJECTED);
   }
+
 }

@@ -13,5 +13,16 @@ export class DecisionFormComponent {
 
   @Input() form!: FormGroup<DecisionFormGroup>;
   @Input() hasOverride = false;
+  @Input() hasDecisionTypeVotedExpired = false;
   @Input() showJudgement = true;
+
+  get warningChipMessage(): string | undefined {
+    if (this.hasOverride) {
+      return 'SEPODI.SERVICE_POINTS.WORKFLOW.OVERRIDE_HAPPENED_INFO'
+    }
+    if (this.hasDecisionTypeVotedExpired) {
+      return 'SEPODI.SERVICE_POINTS.WORKFLOW.VOTED_EXPIRATION'
+    }
+    return undefined;
+  }
 }
