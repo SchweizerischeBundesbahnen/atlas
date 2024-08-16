@@ -5,7 +5,7 @@ import static ch.sbb.importservice.service.JobHelperService.MIN_LOCAL_DATE;
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.exception.CsvException;
-import ch.sbb.atlas.imports.DidokCsvMapper;
+import ch.sbb.atlas.imports.AtlasCsvReader;
 import ch.sbb.atlas.imports.ImportDataModifier;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
@@ -80,8 +80,8 @@ public abstract class CsvService<T extends ImportDataModifier> {
       List<String> csvLinesToProcess = new ArrayList<>();
       csvLinesToProcess.add(headerLine);
       csvLinesToProcess.addAll(mismatchedLines);
-      MappingIterator<T> mappingIterator = DidokCsvMapper.CSV_MAPPER.readerFor(getType())
-          .with(DidokCsvMapper.CSV_SCHEMA)
+      MappingIterator<T> mappingIterator = AtlasCsvReader.CSV_MAPPER.readerFor(getType())
+          .with(AtlasCsvReader.CSV_SCHEMA)
           .readValues(String.join("\n", csvLinesToProcess));
       List<T> mappedCsvModels = mapObjects(mappingIterator);
       return mappedCsvModels;

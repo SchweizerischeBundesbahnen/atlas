@@ -1,11 +1,8 @@
 package ch.sbb.importservice.writer;
 
 import ch.sbb.atlas.imports.servicepoint.enumeration.ItemImportResponseStatus;
-import ch.sbb.importservice.client.PrmClient;
-import ch.sbb.importservice.client.UserClient;
 import ch.sbb.importservice.entity.ImportProcessItem;
 import ch.sbb.importservice.repository.ImportProcessedItemRepository;
-import ch.sbb.importservice.service.SePoDiClientService;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class BaseApiWriter {
 
   protected StepExecution stepExecution;
-
-  @Autowired
-  protected SePoDiClientService sePoDiClientService;
-
-  @Autowired
-  protected PrmClient prmClient;
-
-  @Autowired
-  protected UserClient userClient;
 
   @Autowired
   private ImportProcessedItemRepository importProcessedItemRepository;
