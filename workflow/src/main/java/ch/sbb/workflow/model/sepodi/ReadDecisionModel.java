@@ -1,5 +1,6 @@
 package ch.sbb.workflow.model.sepodi;
 
+import ch.sbb.workflow.entity.DecisionType;
 import ch.sbb.workflow.entity.JudgementType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -30,5 +31,6 @@ public class ReadDecisionModel {
 
   private StopPointClientPersonModel fotOverrider;
 
+  private DecisionType decisionType;
 
 }

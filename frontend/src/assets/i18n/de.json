@@ -1056,6 +1056,7 @@
         "SLIDE": "Anhörungen zum Bearbeiten",
         "OVERRIDE_TITLE": "Beurteilung durch BAV",
         "OVERRIDE_HAPPENED_INFO": "Das Bundesamt für Verkehr (BAV) hat eine Beurteilung vorgenommen. Es gilt die Beurteilung des BAV (siehe unten).",
+        "VOTED_EXPIRATION": "Die Person hat innerhalb der gesetzlichen Frist keine Stimme abgegeben, das ausbleiben einer Stimme wird als Zustimmung gewertet.",
         "PREVIOUS_WORKFLOW": "Ersetzt vorhergehende Anhörung {{number}}",
         "FOLLOW_UP_WORKFLOW": "Nachfolgende Anhörung {{number}}",
         "COMMENT_SUB_LABEL": "Es ist nachvollziehbar zu begründen, WARUM die Haltestelle wie beantragt benannt werden soll. Handelt es sich z.B. um eine Strassen- oder Flurnamen?"
