@@ -15,6 +15,7 @@ public class ServicePointUpdateReader extends ServicePointUpdate implements Bulk
 
   @Override
   public List<BulkImportContainer> apply(File file) {
+    //How to make sure template corresponds with this reader?
     List<ServicePointUpdateCsvModel> servicePointUpdateCsvModels = AtlasCsvReader.readLinesFromFile(file,
         ServicePointUpdateCsvModel.class);
 
