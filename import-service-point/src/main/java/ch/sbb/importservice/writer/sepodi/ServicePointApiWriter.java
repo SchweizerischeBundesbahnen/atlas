@@ -1,6 +1,5 @@
 package ch.sbb.importservice.writer.sepodi;
 
-import ch.sbb.atlas.imports.ItemImportResult;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointCsvModelContainer;
 import ch.sbb.atlas.imports.servicepoint.servicepoint.ServicePointImportRequestModel;
 import ch.sbb.importservice.writer.BaseApiWriter;
@@ -23,11 +22,13 @@ public class ServicePointApiWriter extends BaseApiWriter implements ItemWriter<S
     ServicePointImportRequestModel servicePointImportRequestModel = new ServicePointImportRequestModel();
     servicePointImportRequestModel.setServicePointCsvModelContainers(servicePointCsvModels);
     Long stepExecutionId = stepExecution.getId();
-    List<ItemImportResult> servicePointsResult = sePoDiClientService.postServicePoints(
-        servicePointImportRequestModel);
 
-    for (ItemImportResult response : servicePointsResult) {
-      saveItemProcessed(stepExecutionId, response.getItemNumber().toString(), response.getStatus(), response.getMessage());
-    }
+//
+//    List<ItemImportResult> servicePointsResult = sePoDiClientService.postServicePoints(
+//        servicePointImportRequestModel);
+//
+//    for (ItemImportResult response : servicePointsResult) {
+//      saveItemProcessed(stepExecutionId, response.getItemNumber().toString(), response.getStatus(), response.getMessage());
+//    }
   }
 }
