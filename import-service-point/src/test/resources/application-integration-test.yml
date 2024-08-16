@@ -44,6 +44,14 @@ spring:
               - api://87e6e634-6ba1-4e7a-869d-3348b4c3eafc/.default
   kafka:
     bootstrap-servers: .bootstrap-servers=${spring.embedded.kafka.brokers}
+    producer:
+      properties:
+        max:
+          request:
+            size: 3000000
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      retries: 1
 
 auth:
   audience:
@@ -51,7 +59,7 @@ auth:
 
 logging:
   level:
-    root: ERROR
+    root: INFO
     org:
       hibernate: ERROR
       jboss: ERROR
