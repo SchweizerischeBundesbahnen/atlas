@@ -1,6 +1,7 @@
 <div class="search-form" data-cy="search-sepodi-form">
   <div class="d-flex flex-column">
     <mat-label class="font-bold-sm pb-2">
+      {{ 'SLOID' }} -
       {{ 'SEPODI.SERVICE_POINTS.DIDOK_CODE_SEARCH' | translate }} -
       {{ 'SEPODI.SERVICE_POINTS.DESIGNATION_OFFICIAL' | translate }}
     </mat-label>
@@ -21,6 +22,10 @@
     loadingText="{{ 'COMMON.LOADING' | translate }}"
   >
     <ng-template let-item="item" ng-option-tmp>
+      <span [ngClass]="isSearchBySloid ? 'bold' : ''"
+            [innerHTML]="item.sloid"
+      ></span>
+      <span>&nbsp;&nbsp;&nbsp;</span>
       <span
         [innerHTML]="
           item.number.toString() | searchResultHighlight: searchValue | splitServicePointNumber
