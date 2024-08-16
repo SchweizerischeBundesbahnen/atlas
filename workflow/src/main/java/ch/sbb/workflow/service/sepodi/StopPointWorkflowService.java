@@ -5,6 +5,7 @@ import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.aop.Redacted;
 import ch.sbb.workflow.entity.Decision;
 import ch.sbb.workflow.entity.DecisionType;
+import ch.sbb.workflow.entity.JudgementType;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.exception.StopPointWorkflowAlreadyInAddedStatusException;
@@ -18,6 +19,7 @@ import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
 import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -114,6 +116,10 @@ public class StopPointWorkflowService {
     }
   }
 
+  public List<StopPointWorkflow> findWorkflowsInHearing() {
+    return workflowRepository.findWorkflowsByStatus(WorkflowStatus.HEARING);
+  }
+
   private void voteDecision(DecisionModel decisionModel, Person examinant) {
     Decision decision = decisionRepository.findDecisionByExaminantId(examinant.getId());
     if (decision == null) {
@@ -123,6 +129,15 @@ public class StopPointWorkflowService {
     decision.setJudgement(decisionModel.getJudgement());
     decision.setExaminant(examinant);
     decision.setMotivation(decisionModel.getMotivation());
+    decision.setMotivationDate(LocalDateTime.now());
+    decisionRepository.save(decision);
+  }
+
+  public void voteExpiredWorkflowDecision(Person examinant) {
+    Decision decision = new Decision();
+    decision.setDecisionType(DecisionType.VOTED_EXPIRATION);
+    decision.setJudgement(JudgementType.YES);
+    decision.setExaminant(examinant);
     decision.setMotivationDate(LocalDateTime.now());
     decisionRepository.save(decision);
   }
