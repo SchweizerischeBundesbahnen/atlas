@@ -19,6 +19,8 @@ public class JobDescriptionConstants {
   public static final String IMPORT_RELATION_CSV_JOB_NAME = "importRelationCsvJob";
   public static final String IMPORT_DIDOK_USER_CSV_JOB_NAME = "importDidokUserCsvJob";
 
+  public static final String BULK_IMPORT_JOB_NAME = "bulkImportJob";
+
   public static final String FULL_PATH_FILENAME_JOB_PARAMETER = "fullPathFileName";
   public static final String START_AT_JOB_PARAMETER = "startAt";
   public static final String EXECUTION_TYPE_PARAMETER = "EXECUTION";

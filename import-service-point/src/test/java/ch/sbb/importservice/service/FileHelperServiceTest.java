@@ -12,7 +12,6 @@ import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.importservice.service.csv.CsvFileNameModel;
-import ch.sbb.importservice.service.csv.TrafficPointCsvService;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +36,7 @@ class FileHelperServiceTest {
   }
 
   private final CsvFileNameModel csvFileNameModel = CsvFileNameModel.builder()
-      .fileName(TrafficPointCsvService.TRAFFIC_POINT_FILE_PREFIX)
+      .fileName("TrafficPointCsvService.TRAFFIC_POINT_FILE_PREFIX")
       .s3BucketDir(SERVICEPOINT_DIDOK_DIR_NAME)
       .addDateToPostfix(false)
       .build();
