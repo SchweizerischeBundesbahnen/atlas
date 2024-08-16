@@ -98,6 +98,8 @@ public class BulkImportBatchJobConfig {
       items.addAll(readerFunction.apply(file));
     }
 
+    // Should we download the file here instead of passing it via job param?
+
     log.info("Bulk import configured with chunkSize: {}", CHUNK_SIZE);
     return new ThreadSafeListItemReader<>(items);
   }
