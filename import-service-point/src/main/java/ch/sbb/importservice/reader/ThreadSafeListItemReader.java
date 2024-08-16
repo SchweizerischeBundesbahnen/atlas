@@ -18,7 +18,7 @@ public class ThreadSafeListItemReader<T> implements ItemReader<T> {
   public T read() {
     synchronized (list) {
       if (!list.isEmpty()) {
-        return list.remove(0);
+        return list.removeFirst();
       }
       return null;
     }
