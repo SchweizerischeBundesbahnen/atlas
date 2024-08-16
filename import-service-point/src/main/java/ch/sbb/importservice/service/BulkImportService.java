@@ -18,6 +18,7 @@ public class BulkImportService {
 
   private final BulkImportRepository bulkImportRepository;
   private final BulkImportS3BucketService bulkImportS3BucketService;
+  private final BulkImportJobService bulkImportJobService;
 
   @Async
   public void startBulkImport(BulkImport bulkImport, File file) {
@@ -25,6 +26,8 @@ public class BulkImportService {
     bulkImport.setImportFileUrl(s3ObjectKey);
 
     saveBulkImportMetaData(bulkImport);
+
+    bulkImportJobService.startBulkImportJob(bulkImport, file);
   }
 
   private String uploadImportFile(File file, BulkImport bulkImport) {
