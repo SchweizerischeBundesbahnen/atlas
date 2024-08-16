@@ -27,21 +27,23 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 @Transactional
 public class StopPointWorkflowTransitionService {
-
-  private static final int WORKFLOW_DURATION_IN_DAYS = 31;
 
   private final DecisionService decisionService;
   private final SePoDiClientService sePoDiClientService;
   private final Examinants examinants;
   private final StopPointWorkflowNotificationService notificationService;
   private final StopPointWorkflowService stopPointWorkflowService;
+
+  static final int WORKFLOW_DURATION_IN_DAYS = 31;
 
   /**
    * Authorization for this method is delegated to ServicePointService#update()
