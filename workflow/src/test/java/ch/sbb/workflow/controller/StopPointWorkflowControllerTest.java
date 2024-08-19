@@ -87,6 +87,23 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
   }
 
   @Test
+  void shouldGetExaminants() throws Exception {
+    StopPointAddWorkflowModel workflowModel = StopPointWorkflowTestData.getAddStopPointWorkflow1();
+    when(sePoDiClientService.updateStopPointStatusToInReview(workflowModel.getSloid(), workflowModel.getVersionId()))
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
+    controller.addStopPointWorkflow(workflowModel);
+
+    ReadServicePointVersionModel servicePointVersionModel = getUpdateServicePointVersionModel(Status.IN_REVIEW);
+
+    when(sePoDiClientService.getServicePointById(servicePointVersionModel.getId()))
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
+
+    mvc.perform(get("/v1/stop-point/workflows/123456/examinants"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(2)));
+  }
+
+  @Test
   void shouldGetWorkflows() throws Exception {
 
     StopPointAddWorkflowModel workflowModel = StopPointWorkflowTestData.getAddStopPointWorkflow1();
