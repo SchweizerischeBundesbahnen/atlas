@@ -1,8 +1,9 @@
 package ch.sbb.importservice.service.sepodi.service.point.update;
 
-import ch.sbb.atlas.imports.AtlasCsvReader;
-import ch.sbb.atlas.imports.BulkImportContainer;
-import ch.sbb.atlas.imports.BulkImportUpdateContainer;
+import ch.sbb.atlas.imports.bulk.AtlasCsvReader;
+import ch.sbb.atlas.imports.bulk.BulkImportContainer;
+import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
+import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
 import ch.sbb.importservice.service.BulkImportItemReader;
 import java.io.File;
 import java.util.List;

@@ -1,4 +1,4 @@
-package ch.sbb.atlas.imports;
+package ch.sbb.atlas.imports.bulk;
 
 import java.util.List;
 import lombok.Builder;
