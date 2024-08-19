@@ -31,6 +31,15 @@ public class SePoDiClientService {
     return updateServicePointVersionModel;
   }
 
+  public ReadServicePointVersionModel getServicePointById(Long id) {
+    ReadServicePointVersionModel updateServicePointVersionModel = sePoDiClient.getServicePointById(
+        id);
+//    if (updateServicePointVersionModel != null && Status.IN_REVIEW != updateServicePointVersionModel.getStatus()) {
+//      throw new SePoDiClientWrongStatusReturnedException(Status.IN_REVIEW, updateServicePointVersionModel.getStatus());
+//    }
+    return updateServicePointVersionModel;
+  }
+
   public ReadServicePointVersionModel updateStopPointStatusToDraft(StopPointWorkflow stopPointWorkflow) {
     ReadServicePointVersionModel updateServicePointVersionModel = sePoDiClient.postServicePointsStatusUpdate(
         stopPointWorkflow.getSloid(), stopPointWorkflow.getVersionId(), Status.DRAFT);
