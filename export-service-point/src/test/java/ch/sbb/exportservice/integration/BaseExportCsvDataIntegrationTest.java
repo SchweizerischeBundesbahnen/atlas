@@ -3,7 +3,7 @@ package ch.sbb.exportservice.integration;
 import static ch.sbb.exportservice.utils.JobDescriptionConstants.EXPORT_SERVICE_POINT_CSV_JOB_NAME;
 
 import ch.sbb.atlas.amazon.service.AmazonService;
-import ch.sbb.atlas.imports.AtlasCsvReader;
+import ch.sbb.atlas.imports.bulk.AtlasCsvReader;
 import ch.sbb.exportservice.model.ServicePointVersionCsvModel;
 import ch.sbb.exportservice.tasklet.FileCsvDeletingTasklet;
 import com.fasterxml.jackson.databind.MappingIterator;
