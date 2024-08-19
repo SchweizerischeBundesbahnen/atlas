@@ -1,4 +1,4 @@
-package ch.sbb.importservice.model;
+package ch.sbb.atlas.imports.bulk;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

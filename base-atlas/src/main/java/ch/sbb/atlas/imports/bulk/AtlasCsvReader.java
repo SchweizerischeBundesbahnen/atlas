@@ -1,4 +1,4 @@
-package ch.sbb.atlas.imports;
+package ch.sbb.atlas.imports.bulk;
 
 import ch.sbb.atlas.exception.CsvException;
 import com.fasterxml.jackson.databind.MappingIterator;
