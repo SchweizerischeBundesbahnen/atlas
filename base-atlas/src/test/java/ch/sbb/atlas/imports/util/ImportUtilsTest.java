@@ -6,9 +6,11 @@ import ch.sbb.atlas.imports.ImportDataModifier;
 import ch.sbb.atlas.versioning.model.Versionable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Builder;
 import lombok.Data;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 
 class ImportUtilsTest {
@@ -137,6 +139,177 @@ class ImportUtilsTest {
     assertThat(csvModels.get(0).editionDate).isEqualToIgnoringSeconds(LocalDateTime.now());
     assertThat(csvModels.get(1).validTo).isEqualTo(LocalDate.of(2024,12,31));
     assertThat(csvModels.get(1).editionDate).isEqualTo(LocalDateTime.of(2020, 12, 15, 10, 15));
+  }
+
+  @Test
+  void shouldGetCurrentObjVersionsWhenValidFromPerfectMatch() {
+    //given
+    ObjVersions version = ObjVersions.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .build();
+    ObjVersions edited = ObjVersions.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 30))
+        .build();
+    List<ObjVersions> versions = new ArrayList<>();
+    versions.add(version);
+    //when
+    ObjVersions result = ImportUtils.getCurrentVersion(versions, edited.getValidFrom(), edited.getValidTo());
+    //then
+    AssertionsForClassTypes.assertThat(result).isNotNull();
+  }
+
+  @Test
+  void shouldGetCurrentObjVersionsWhenValidToPerfectMatch() {
+    //given
+    ObjVersions version = ObjVersions.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .build();
+    ObjVersions edited = ObjVersions.builder()
+        .validFrom(LocalDate.of(2000, 1, 2))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .build();
+    List<ObjVersions> versions = new ArrayList<>();
+    versions.add(version);
+    //when
+    ObjVersions result = ImportUtils.getCurrentVersion(versions, edited.getValidFrom(), edited.getValidTo());
+    //then
+    AssertionsForClassTypes.assertThat(result).isNotNull();
+  }
+
+  @Test
+  void shouldGetCurrentObjVersionsWhenEditedVersionIsBetweenDbVersion() {
+    //given
+    ObjVersions version = ObjVersions.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .build();
+    ObjVersions edited = ObjVersions.builder()
+        .validFrom(LocalDate.of(2000, 1, 2))
+        .validTo(LocalDate.of(2000, 12, 30))
+        .build();
+    List<ObjVersions> versions = new ArrayList<>();
+    versions.add(version);
+    //when
+    ObjVersions result = ImportUtils.getCurrentVersion(versions, edited.getValidFrom(), edited.getValidTo());
+    //then
+    AssertionsForClassTypes.assertThat(result).isNotNull();
+  }
+
+  @Test
+  void shouldGetCurrentObjVersionsWhenFoundMultipleVersionWhenEditedVersionIsBetweenDbVersion() {
+    //given
+    ObjVersions version1 = ObjVersions.builder()
+        .validFrom(LocalDate.of(2000, 1, 2))
+        .validTo(LocalDate.of(2000, 6, 1))
+        .build();
+    ObjVersions version2 = ObjVersions.builder()
+        .validFrom(LocalDate.of(2000, 6, 2))
+        .validTo(LocalDate.of(2000, 12, 30))
+        .build();
+    ObjVersions edited = ObjVersions.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .build();
+    List<ObjVersions> versions = new ArrayList<>();
+    versions.add(version1);
+    versions.add(version2);
+    //when
+    ObjVersions result = ImportUtils.getCurrentVersion(versions, edited.getValidFrom(), edited.getValidTo());
+    //then
+    AssertionsForClassTypes.assertThat(result).isNotNull();
+  }
+
+  /**
+   * given |------------|-----------|
+   * edit                             |-----------|
+   * return             |-----------|
+   */
+  @Test
+  void shouldGetCurrentObjVersionsWhenNoCurrentVersionMatchedAndReturnTheLastVersion() {
+    //given
+    ObjVersions version1 = ObjVersions.builder()
+        .validFrom(LocalDate.of(2000, 1, 2))
+        .validTo(LocalDate.of(2000, 6, 1))
+        .build();
+    ObjVersions version2 = ObjVersions.builder()
+        .validFrom(LocalDate.of(2000, 6, 2))
+        .validTo(LocalDate.of(2000, 12, 30))
+        .build();
+    ObjVersions edited = ObjVersions.builder()
+        .validFrom(LocalDate.of(2000, 12, 31))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .build();
+    List<ObjVersions> versions = new ArrayList<>();
+    versions.add(version1);
+    versions.add(version2);
+    //when
+    ObjVersions result = ImportUtils.getCurrentVersion(versions, edited.getValidFrom(), edited.getValidTo());
+    //then
+    AssertionsForClassTypes.assertThat(result).isNotNull();
+    AssertionsForClassTypes.assertThat(result.getValidFrom()).isEqualTo(LocalDate.of(2000, 6, 2));
+    AssertionsForClassTypes.assertThat(result.getValidTo()).isEqualTo(LocalDate.of(2000, 12, 30));
+  }
+
+  /**
+   * given               |------------|-----------|
+   * edit  |-----------|
+   * return             |------------|
+   */
+  @Test
+  void shouldGetCurrentObjVersionsWhenNoCurrentVersionMatchedAndReturnTheFirstVersion() {
+    //given
+    ObjVersions version1 = ObjVersions.builder()
+        .validFrom(LocalDate.of(2000, 1, 2))
+        .validTo(LocalDate.of(2000, 6, 1))
+        .build();
+    ObjVersions version2 = ObjVersions.builder()
+        .validFrom(LocalDate.of(2000, 6, 2))
+        .validTo(LocalDate.of(2000, 12, 30))
+        .build();
+    ObjVersions edited = ObjVersions.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 1, 1))
+        .build();
+    List<ObjVersions> versions = new ArrayList<>();
+    versions.add(version1);
+    versions.add(version2);
+    //when
+    ObjVersions result = ImportUtils.getCurrentVersion(versions, edited.getValidFrom(), edited.getValidTo());
+    //then
+    AssertionsForClassTypes.assertThat(result).isNotNull();
+    AssertionsForClassTypes.assertThat(result.getValidFrom()).isEqualTo(LocalDate.of(2000, 1, 2));
+    AssertionsForClassTypes.assertThat(result.getValidTo()).isEqualTo(LocalDate.of(2000, 6, 1));
+  }
+
+  /**
+   * given  |------------|-----------|
+   * edit   |------------------------|
+   * return |------------|-----------|
+   */
+  @Test
+  void shouldReturnTheFirstVersionWhenTheEditVersionMatchExactlyMoreThenOneVersion() {
+    //given
+    ObjVersions version1 = ObjVersions.builder()
+        .validFrom(LocalDate.of(2000, 1, 1))
+        .validTo(LocalDate.of(2000, 6, 1))
+        .build();
+    ObjVersions version2 = ObjVersions.builder()
+        .validFrom(LocalDate.of(2000, 6, 2))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .build();
+    ObjVersions edited = ObjVersions.builder()
+        .validFrom(LocalDate.of(2000, 1, 2))
+        .validTo(LocalDate.of(2000, 12, 31))
+        .build();
+    List<ObjVersions> versions = new ArrayList<>();
+    versions.add(version1);
+    versions.add(version2);
+    //when
+    ObjVersions result = ImportUtils.getCurrentVersion(versions, edited.getValidFrom(), edited.getValidTo());
+    AssertionsForClassTypes.assertThat(result).isNotNull();
   }
 
   @Builder
