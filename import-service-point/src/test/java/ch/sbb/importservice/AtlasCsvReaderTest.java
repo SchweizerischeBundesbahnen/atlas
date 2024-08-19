@@ -2,10 +2,10 @@ package ch.sbb.importservice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.imports.AtlasCsvReader;
-import ch.sbb.atlas.imports.BulkImportUpdateContainer;
+import ch.sbb.atlas.imports.bulk.AtlasCsvReader;
+import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.model.controller.IntegrationTest;
-import ch.sbb.importservice.service.sepodi.service.point.update.ServicePointUpdateCsvModel;
+import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
