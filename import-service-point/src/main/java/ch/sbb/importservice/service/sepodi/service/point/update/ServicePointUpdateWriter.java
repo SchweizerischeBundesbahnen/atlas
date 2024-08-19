@@ -23,8 +23,8 @@ public class ServicePointUpdateWriter extends ServicePointUpdate implements Bulk
   @Override
   public void accept(Chunk<? extends BulkImportContainer> items) {
     List<BulkImportContainer> containers = new ArrayList<>(items.getItems());
-    List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> updateContainers = containers.stream().map(i -> (BulkImportUpdateContainer<ServicePointUpdateCsvModel>)i).toList();
     log.info("writing {} containers={}", containers.size(), containers);
+    List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> updateContainers = containers.stream().map(i -> (BulkImportUpdateContainer<ServicePointUpdateCsvModel>)i).toList();
     List<ItemImportResult> importResult = servicePointBulkImportClient.bulkImportUpdate(updateContainers);
 
     // itemResult to log file
