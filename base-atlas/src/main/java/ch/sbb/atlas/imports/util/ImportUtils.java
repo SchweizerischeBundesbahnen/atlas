@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-@Deprecated(since = "2.0.0")
 public class ImportUtils {
 
   private static final String EDITION_DATE_FIELD_NAME = "editionDate";
@@ -62,44 +61,45 @@ public class ImportUtils {
   }
 
 
-  public <T extends Versionable> T getCurrentPointVersion(List<T> dbVersions, T edited) {
+  public <T extends Versionable> T getCurrentVersion(List<T> dbVersions, LocalDate editedValidFrom,
+      LocalDate editedValidTo) {
     dbVersions.sort(Comparator.comparing(Versionable::getValidFrom));
 
     Optional<T> currentVersionMatch = dbVersions.stream()
         .filter(dbVersion -> {
               // match validFrom
-              if (edited.getValidFrom().isEqual(dbVersion.getValidFrom())) {
+              if (editedValidFrom.isEqual(dbVersion.getValidFrom())) {
                 return true;
               }
               // match validTo
-              if (edited.getValidTo().isEqual(dbVersion.getValidTo())) {
+              if (editedValidTo.isEqual(dbVersion.getValidTo())) {
                 return true;
               }
               // match edited version between dbVersion
-              if (edited.getValidFrom().isAfter(dbVersion.getValidFrom()) && edited.getValidTo().isBefore(dbVersion.getValidTo())) {
+              if (editedValidFrom.isAfter(dbVersion.getValidFrom()) && editedValidTo.isBefore(dbVersion.getValidTo())) {
                 return true;
               }
-              if (edited.getValidFrom().isAfter(dbVersion.getValidFrom()) && edited.getValidFrom().isBefore(dbVersion.getValidTo())) {
+              if (editedValidFrom.isAfter(dbVersion.getValidFrom()) && editedValidFrom.isBefore(dbVersion.getValidTo())) {
                 return true;
               }
-              if (edited.getValidTo().isAfter(dbVersion.getValidFrom()) && edited.getValidTo().isBefore(dbVersion.getValidTo())) {
+              if (editedValidTo.isAfter(dbVersion.getValidFrom()) && editedValidTo.isBefore(dbVersion.getValidTo())) {
                 return true;
               }
               // match 1 or more dbVersion/s between edited version
-              return dbVersion.getValidFrom().isAfter(edited.getValidFrom()) && dbVersion.getValidTo()
-                  .isBefore(edited.getValidTo());
+              return dbVersion.getValidFrom().isAfter(editedValidFrom) && dbVersion.getValidTo()
+                  .isBefore(editedValidTo);
             }
         )
         .findFirst();
 
     if (currentVersionMatch.isEmpty()) {
       // match edited version after last dbVersion
-      if (edited.getValidFrom().isAfter(dbVersions.get(dbVersions.size() - 1).getValidTo())) {
-        return dbVersions.get(dbVersions.size() - 1);
+      if (editedValidFrom.isAfter(dbVersions.getLast().getValidTo())) {
+        return dbVersions.getLast();
       }
       // match edited version before first dbVersion
-      if (edited.getValidTo().isBefore(dbVersions.get(0).getValidFrom())) {
-        return dbVersions.get(0);
+      if (editedValidTo.isBefore(dbVersions.getFirst().getValidFrom())) {
+        return dbVersions.getFirst();
       }
     }
 
