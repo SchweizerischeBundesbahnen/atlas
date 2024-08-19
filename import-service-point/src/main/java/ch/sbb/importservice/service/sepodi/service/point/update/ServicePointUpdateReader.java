@@ -2,6 +2,7 @@ package ch.sbb.importservice.service.sepodi.service.point.update;
 
 import ch.sbb.atlas.imports.AtlasCsvReader;
 import ch.sbb.atlas.imports.BulkImportContainer;
+import ch.sbb.atlas.imports.BulkImportUpdateContainer;
 import ch.sbb.importservice.service.BulkImportItemReader;
 import java.io.File;
 import java.util.List;
@@ -16,8 +17,7 @@ public class ServicePointUpdateReader extends ServicePointUpdate implements Bulk
   @Override
   public List<BulkImportContainer> apply(File file) {
     //How to make sure template corresponds with this reader?
-    List<ServicePointUpdateCsvModel> servicePointUpdateCsvModels = AtlasCsvReader.readLinesFromFile(file,
-        ServicePointUpdateCsvModel.class);
+    List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> servicePointUpdateCsvModels = AtlasCsvReader.readLinesFromFileWithNullingValue(file, ServicePointUpdateCsvModel.class);
 
     log.info("Read {} lines", servicePointUpdateCsvModels.size());
     return servicePointUpdateCsvModels.stream().collect(Collectors.toUnmodifiableList());
