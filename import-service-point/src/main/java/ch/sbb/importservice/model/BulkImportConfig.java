@@ -1,5 +1,6 @@
 package ch.sbb.importservice.model;
 
+import ch.sbb.atlas.imports.bulk.ImportType;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import lombok.Builder;
 import lombok.Data;
