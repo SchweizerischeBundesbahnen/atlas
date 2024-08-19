@@ -94,7 +94,7 @@ class BulkImportControllerTest extends BaseControllerApiTest {
     ClassPathResource resource = new ClassPathResource(classPathResource);
     File file = resource.getFile();
 
-    when(amazonService.pullFile(eq(AmazonBucket.BULK_IMPORT), eq(amazonServicePath)))
+    when(amazonService.pullFile(AmazonBucket.BULK_IMPORT, amazonServicePath))
         .thenReturn(file);
 
     // When
@@ -126,7 +126,7 @@ class BulkImportControllerTest extends BaseControllerApiTest {
   @Test
   void shouldReturnBadRequestWhenAmazonDoesNotFindTemplate() throws Exception {
     // Given
-    when(amazonService.pullFile(eq(AmazonBucket.BULK_IMPORT), eq("templates/service_point/create_service_point.xlsx")))
+    when(amazonService.pullFile(AmazonBucket.BULK_IMPORT, "templates/service_point/create_service_point.xlsx"))
         .thenReturn(null);
 
     // When & Then
