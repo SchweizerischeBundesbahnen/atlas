@@ -50,19 +50,19 @@ public class BulkImportBatchJobConfig {
   private final BulkImportWriters bulkImportWriters;
   private final BulkImportReaders bulkImportReaders;
 
-
   @Bean
-  public Job bulkImportJob(ThreadSafeListItemReader<BulkImportContainer> itemReader,      ItemWriter<BulkImportContainer> itemWriter) {
+  public Job bulkImportJob(ThreadSafeListItemReader<BulkImportContainer> itemReader, ItemWriter<BulkImportContainer> itemWriter) {
     return new JobBuilder(BULK_IMPORT_JOB_NAME, jobRepository)
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
-        .flow(bulkImportFromCsv(itemReader,itemWriter))
+        .flow(bulkImportFromCsv(itemReader, itemWriter))
         .end()
         .build();
   }
 
   @Bean
-  public Step bulkImportFromCsv(ThreadSafeListItemReader<BulkImportContainer> itemReader,      ItemWriter<BulkImportContainer> itemWriter) {
+  public Step bulkImportFromCsv(ThreadSafeListItemReader<BulkImportContainer> itemReader,
+      ItemWriter<BulkImportContainer> itemWriter) {
     String stepName = "bulkImportFromCsv";
     return new StepBuilder(stepName, jobRepository)
         .<BulkImportContainer, BulkImportContainer>chunk(CHUNK_SIZE, transactionManager)
@@ -83,7 +83,7 @@ public class BulkImportBatchJobConfig {
       @Value("#{jobParameters[application]}") String application,
       @Value("#{jobParameters[objectType]}") String objectType,
       @Value("#{jobParameters[importType]}") String importType
-      ) {
+  ) {
 
     BulkImportConfig config = BulkImportConfig.builder()
         .application(ApplicationType.valueOf(application))
@@ -119,7 +119,6 @@ public class BulkImportBatchJobConfig {
         .build();
     return items -> bulkImportWriters.getWriter(config).accept(items);
   }
-
 
   @StepScope
   @Bean
