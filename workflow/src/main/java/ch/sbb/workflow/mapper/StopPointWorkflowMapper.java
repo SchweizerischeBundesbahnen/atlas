@@ -6,6 +6,7 @@ import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.model.sepodi.ReadStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,9 +41,31 @@ public class StopPointWorkflowMapper {
         .build();
   }
 
+//  public static StopPointWorkflow addStopPointWorkflowToEntity(StopPointAddWorkflowModel model,
+//      ReadServicePointVersionModel servicePointVersionModel,
+//      List<StopPointClientPersonModel> examinants) {
+//    StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
+//        .sloid(model.getSloid())
+//        .versionId(model.getVersionId())
+//        .ccEmails(model.getCcEmails())
+//        .applicantMail(model.getApplicantMail())
+//        .workflowComment(model.getWorkflowComment())
+//        .sboid(servicePointVersionModel.getBusinessOrganisation())
+//        .localityName(
+//            servicePointVersionModel.getServicePointGeolocation().getSwissLocation().getLocalityMunicipality().getLocalityName())
+//        .designationOfficial(servicePointVersionModel.getDesignationOfficial())
+//        .versionValidFrom(servicePointVersionModel.getValidFrom())
+//        .versionValidTo(servicePointVersionModel.getValidTo())
+//        .build();
+//    examinants.addAll(model.getExaminants());
+//    stopPointWorkflow.setExaminants(
+//        examinants.stream().map(StopPointClientPersonMapper::toEntity)
+//            .collect(Collectors.toSet()));
+//    return stopPointWorkflow;
+//  }
+
   public static StopPointWorkflow addStopPointWorkflowToEntity(StopPointAddWorkflowModel model,
-      ReadServicePointVersionModel servicePointVersionModel,
-      List<StopPointClientPersonModel> examinants) {
+      ReadServicePointVersionModel servicePointVersionModel) {
     StopPointWorkflow stopPointWorkflow = StopPointWorkflow.builder()
         .sloid(model.getSloid())
         .versionId(model.getVersionId())
@@ -56,10 +79,10 @@ public class StopPointWorkflowMapper {
         .versionValidFrom(servicePointVersionModel.getValidFrom())
         .versionValidTo(servicePointVersionModel.getValidTo())
         .build();
-    examinants.addAll(model.getExaminants());
-    stopPointWorkflow.setExaminants(
-        examinants.stream().map(StopPointClientPersonMapper::toEntity)
-            .collect(Collectors.toSet()));
+    List<StopPointClientPersonModel> examinants = new ArrayList<>(model.getExaminants());
+    stopPointWorkflow.setExaminants(examinants.stream()
+        .map(StopPointClientPersonMapper::toEntity)
+        .collect(Collectors.toSet()));
     return stopPointWorkflow;
   }
 
