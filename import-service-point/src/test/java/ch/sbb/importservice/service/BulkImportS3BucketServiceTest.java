@@ -10,7 +10,7 @@ import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.importservice.entity.BulkImport;
 import ch.sbb.importservice.model.BusinessObjectType;
-import ch.sbb.importservice.model.ImportType;
+import ch.sbb.atlas.imports.bulk.ImportType;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;

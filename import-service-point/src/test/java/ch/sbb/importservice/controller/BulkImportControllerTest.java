@@ -14,7 +14,7 @@ import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
-import ch.sbb.importservice.client.SePoDiClient;
+import ch.sbb.importservice.client.ServicePointBulkImportClient;
 import ch.sbb.importservice.entity.BulkImport;
 import ch.sbb.importservice.repository.BulkImportRepository;
 import java.io.File;
@@ -35,7 +35,7 @@ class BulkImportControllerTest extends BaseControllerApiTest {
   private BulkImportRepository bulkImportRepository;
 
   @MockBean
-  private SePoDiClient sePoDiClient;
+  private ServicePointBulkImportClient servicePointBulkImportClient;
 
   @MockBean
   private AmazonService amazonService;
@@ -64,7 +64,7 @@ class BulkImportControllerTest extends BaseControllerApiTest {
         .andExpect(status().isAccepted());
 
     verify(amazonService, timeout(100)).putFile(eq(AmazonBucket.BULK_IMPORT), any(File.class), eq(todaysDirectory));
-    verify(sePoDiClient, timeout(1000).atLeastOnce()).bulkImportServicePoints(any(), any());
+    verify(servicePointBulkImportClient, timeout(1000).atLeastOnce()).bulkImportUpdate(any());
 
     assertThat(bulkImportRepository.count()).isEqualTo(1);
     BulkImport bulkImport = bulkImportRepository.findAll().getFirst();
