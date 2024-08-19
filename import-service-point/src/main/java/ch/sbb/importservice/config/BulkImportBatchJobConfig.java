@@ -2,13 +2,13 @@ package ch.sbb.importservice.config;
 
 import static ch.sbb.importservice.utils.JobDescriptionConstants.BULK_IMPORT_JOB_NAME;
 
-import ch.sbb.atlas.imports.BulkImportContainer;
+import ch.sbb.atlas.imports.bulk.BulkImportContainer;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.importservice.listener.JobCompletionListener;
 import ch.sbb.importservice.listener.StepTracerListener;
 import ch.sbb.importservice.model.BulkImportConfig;
 import ch.sbb.importservice.model.BusinessObjectType;
-import ch.sbb.importservice.model.ImportType;
+import ch.sbb.atlas.imports.bulk.ImportType;
 import ch.sbb.importservice.reader.ThreadSafeListItemReader;
 import ch.sbb.importservice.service.BulkImportReaders;
 import ch.sbb.importservice.utils.StepUtils;

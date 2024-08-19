@@ -5,7 +5,7 @@ import static ch.sbb.importservice.service.JobHelperService.MIN_LOCAL_DATE;
 import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.exception.CsvException;
-import ch.sbb.atlas.imports.AtlasCsvReader;
+import ch.sbb.atlas.imports.bulk.AtlasCsvReader;
 import ch.sbb.atlas.imports.ImportDataModifier;
 import ch.sbb.importservice.service.FileHelperService;
 import ch.sbb.importservice.service.JobHelperService;
