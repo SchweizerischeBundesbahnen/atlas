@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ControlContainer, FormGroup, NgForm} from '@angular/forms';
+import {ControlContainer, FormArray, FormBuilder, FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
 import {
+  ExaminantFormGroup,
   SPECIAL_DECISION_TYPES,
   StopPointWorkflowDetailFormGroup,
   StopPointWorkflowDetailFormGroupBuilder,
@@ -24,6 +25,7 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   readonly WorkflowStatus = WorkflowStatus;
   readonly emailValidator = [AtlasCharsetsValidator.email, AtlasFieldLengthValidator.length_100];
 
+  @Input() listOfExaminants!: StopPointPerson[];
   @Input() stopPoint!: ReadServicePointVersion;
   @Input() oldDesignation?: string;
   @Input() form!: FormGroup<StopPointWorkflowDetailFormGroup>;
@@ -34,10 +36,15 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   constructor(
     private router: Router,
     private decisionDetailDialogService: DecisionDetailDialogService,
+    private fb: FormBuilder
   ) {
   }
 
   ngOnInit() {
+    console.log("I am in stopPointWorkflowDetailFormComponentTs")
+    console.log("And here are examinants")
+    console.log(this.listOfExaminants)
+    console.log("that is it for this time")
     if (!this.stopPoint && this.currentWorkflow) {
       this.stopPoint = {
         sloid: this.currentWorkflow.sloid,
@@ -55,9 +62,30 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
         },
       }
     }
+    if(this.listOfExaminants) {
+      console.log("I have also entered if statement")
+      this.form.setControl('examinants', this.createExaminantsFormArray(this.listOfExaminants));
+      console.log("end of if statement")
+    }
     if(this.currentWorkflow){
       this.specialDecision = this.currentWorkflow!.examinants?.find(examinant => SPECIAL_DECISION_TYPES.includes(examinant.decisionType!));
     }
+  }
+
+  private createExaminantsFormArray(listOfExaminants: StopPointPerson[]): FormArray<FormGroup<ExaminantFormGroup>> {
+    const formGroups = listOfExaminants.map(person => this.fb.group<ExaminantFormGroup>({
+      id: new FormControl(person.id ?? null),
+      firstName: new FormControl(person.firstName ?? null),
+      lastName: new FormControl(person.lastName ?? null),
+      organisation: new FormControl(person.organisation ?? '', Validators.required),
+      personFunction: new FormControl(person.personFunction ?? null),
+      mail: new FormControl(person.mail ?? '', [Validators.required, AtlasCharsetsValidator.email]),
+      judgementIcon: new FormControl(null),
+      judgement: new FormControl(person.judgement ?? null),
+      decisionType: new FormControl(person.decisionType ?? null),
+    }));
+
+    return new FormArray<FormGroup<ExaminantFormGroup>>(formGroups);
   }
 
   addExaminant() {
