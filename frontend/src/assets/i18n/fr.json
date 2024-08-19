@@ -1042,7 +1042,7 @@
         "COMMENT": "Justification",
         "EXAMINANTS": "Destinataires",
         "EXAMINANTS_INFO": "Au moins une commune doit être inscrite. Dans certains cas, comme lors d'une clarification préalable en dehors d'atlas, cette partie peut rester vide. Le canton et le service spécialisé sont automatiquement ajoutés.",
-        "EXAMINANTS_SUBTITLE": "Important : les informations de contact pour l'audition doivent être complétées ici (commune obligatoire, autres destinataires si nécessaire).\nLes destinataires cantonaux et les services spécialisés sont automatiquement complétés par atlas.",
+        "EXAMINANTS_SUBTITLE": "Important : les informations de contact pour l'audition doivent être complétées ici (commune obligatoire, autres destinataires si nécessaire).\nL'entreprise de transport requérante ne participe pas à l'audition.",
         "OLD_DESIGNATION_OFFICIAL": "Ancienne dénomination officielle",
         "APPLICANT": "Commanditaire",
         "STOP_POINT_INFO": "Informations de base sur l'arrêt",
