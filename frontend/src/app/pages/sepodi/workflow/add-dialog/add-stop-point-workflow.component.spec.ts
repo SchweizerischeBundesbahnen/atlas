@@ -21,7 +21,7 @@ import {DetailPageContainerComponent} from "../../../../core/components/detail-p
 import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
 import {DetailHelperService} from "../../../../core/detail/detail-helper.service";
 import {of} from "rxjs";
-import {ReadStopPointWorkflow, StopPointWorkflowService} from "../../../../api";
+import {DecisionType, JudgementType, ReadStopPointWorkflow, StopPointWorkflowService} from "../../../../api";
 import {Router} from "@angular/router";
 import {AtlasSpacerComponent} from "../../../../core/components/spacer/atlas-spacer.component";
 import {UserService} from "../../../../core/auth/user/user.service";
@@ -52,6 +52,27 @@ const workflowDialogData: AddStopPointWorkflowDialogData = {
   title: '',
   message: '',
   stopPoint: BERN_WYLEREGG,
+  examinants: [
+    {
+      firstName: 'Thomas',
+      lastName: 'Thomas',
+      organisation: 'sbb',
+      personFunction: 'PO',
+      mail: 'thomas.thomas@fake.com',
+      judgement: JudgementType.Yes,
+      decisionType: DecisionType.Voted,
+      id: 1,
+    },
+    {
+      firstName: 'Judith',
+      lastName: 'Judith',
+      organisation: 'sbb',
+      personFunction: 'PO',
+      mail: 'judith.judith@fake.com',
+      judgement: JudgementType.No,
+      decisionType: DecisionType.Voted,
+      id: 2,
+    }]
 }
 
 describe('AddStopPointWorkflowComponent', () => {
