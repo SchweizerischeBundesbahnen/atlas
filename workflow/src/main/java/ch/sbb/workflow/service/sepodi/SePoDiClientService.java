@@ -3,17 +3,20 @@ package ch.sbb.workflow.service.sepodi;
 import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.model.Status;
+import ch.sbb.atlas.model.exception.AtlasException;
 import ch.sbb.workflow.client.SePoDiAdminClient;
 import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.exception.SePoDiClientWrongStatusReturnedException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
 @Transactional
+@Slf4j
 public class SePoDiClientService {
 
   private final SePoDiClient sePoDiClient;
@@ -37,12 +40,22 @@ public class SePoDiClientService {
     return updateServicePointVersionModel;
   }
 
-  public void updateStopPointStatusToValidatedAsAdmin(StopPointWorkflow stopPointWorkflow) {
+  public ReadServicePointVersionModel updateStopPointStatusToValidatedAsAdmin(StopPointWorkflow stopPointWorkflow) {
     ReadServicePointVersionModel updateServicePointVersionModel = sePoDiAdminClient.postServicePointsStatusUpdate(
         stopPointWorkflow.getSloid(), stopPointWorkflow.getVersionId(), Status.VALIDATED);
     if (updateServicePointVersionModel != null && Status.VALIDATED != updateServicePointVersionModel.getStatus()) {
       throw new SePoDiClientWrongStatusReturnedException(Status.VALIDATED, updateServicePointVersionModel.getStatus());
     }
+    return updateServicePointVersionModel;
+  }
+
+  public ReadServicePointVersionModel updateStopPointStatusToValidatedAsAdminForJob(StopPointWorkflow stopPointWorkflow) {
+    try {
+      return updateStopPointStatusToValidatedAsAdmin(stopPointWorkflow);
+    } catch (AtlasException e) {
+      log.error("!!!! Something went wrong: \n{}", e.getErrorResponse());
+    }
+    return null;
   }
 
   public ReadServicePointVersionModel updateDesignationOfficialServicePoint(StopPointWorkflow stopPointWorkflow) {
