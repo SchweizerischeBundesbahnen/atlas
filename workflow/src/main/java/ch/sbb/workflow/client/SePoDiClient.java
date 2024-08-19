@@ -6,6 +6,7 @@ import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.model.Status;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,5 +24,10 @@ public interface SePoDiClient {
   ReadServicePointVersionModel updateServicePointDesignationOfficial(
           @PathVariable("id") Long id,
           @RequestBody @Valid UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel
+  );
+
+  @GetMapping(value = BASEPATH + "/versions/{id}")
+  ReadServicePointVersionModel getServicePointById(
+          @PathVariable("id") Long id
   );
 }
