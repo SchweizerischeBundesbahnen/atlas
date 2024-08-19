@@ -1,9 +1,10 @@
 package ch.sbb.importservice.service.sepodi.service.point.update;
 
-import ch.sbb.atlas.imports.BulkImportContainer;
 import ch.sbb.atlas.imports.ItemImportResult;
-import ch.sbb.importservice.client.SePoDiClient;
-import ch.sbb.importservice.model.ImportType;
+import ch.sbb.atlas.imports.bulk.BulkImportContainer;
+import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
+import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
+import ch.sbb.importservice.client.ServicePointBulkImportClient;
 import ch.sbb.importservice.writer.BulkImportItemWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +18,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ServicePointUpdateWriter extends ServicePointUpdate implements BulkImportItemWriter {
 
-  private final SePoDiClient sePoDiClient;
+  private final ServicePointBulkImportClient servicePointBulkImportClient;
 
   @Override
   public void accept(Chunk<? extends BulkImportContainer> items) {
     List<BulkImportContainer> containers = new ArrayList<>(items.getItems());
+    List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> updateContainers = containers.stream().map(i -> (BulkImportUpdateContainer<ServicePointUpdateCsvModel>)i).toList();
     log.info("writing {} containers={}", containers.size(), containers);
-    List<ItemImportResult> importResult = sePoDiClient.bulkImportServicePoints(ImportType.UPDATE, containers);
+    List<ItemImportResult> importResult = servicePointBulkImportClient.bulkImportUpdate(updateContainers);
 
     // itemResult to log file
   }

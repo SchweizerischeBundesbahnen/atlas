@@ -1,11 +1,10 @@
-package ch.sbb.importservice.service.sepodi.service.point.update;
+package ch.sbb.atlas.imports.bulk;
 
-import ch.sbb.atlas.imports.BulkImportContainer;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
-import ch.sbb.importservice.service.sepodi.service.point.update.ServicePointUpdateCsvModel.Fields;
+import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel.Fields;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
