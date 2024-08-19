@@ -3,6 +3,7 @@ package ch.sbb.atlas.servicepointdirectory.repository;
 import ch.sbb.atlas.servicepoint.Country;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepointdirectory.service.servicepoint.ServicePointSearchResult;
+import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -21,9 +22,12 @@ public class ServicePointSearchVersionRepository {
   private static final int FETCH_SIZE = 10;
   private static final int MIN_DIGIT_SEARCH = 2;
 
+  private static final String SLOID_CH_PREFIX = "ch:";
+
   private static final List<String> SWISS_ONLY_COUNTRIES = Stream.of(Country.SWITZERLAND).map(Enum::name).toList();
-  public static final String JOIN_MEANS_OF_TRANSPORT = "join service_point_version_means_of_transport as spvmt "
-      + "on spv.id = spvmt.service_point_version_id";
+  private static final String JOIN_MEANS_OF_TRANSPORT = """
+      join service_point_version_means_of_transport as spvmt on spv.id = spvmt.service_point_version_id
+      """;
 
   private final NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -43,6 +47,10 @@ public class ServicePointSearchVersionRepository {
       boolean isSwissOnlyStopPointServicePoint) {
 
     validateInput(value);
+    if (value.startsWith(SLOID_CH_PREFIX)) {
+      return getServicePointBySloidSearchResults(value, isSwissOnlyStopPointServicePoint);
+    }
+
     String sanitizeValue = sanitizeValue(value);
     MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
     mapSqlParameterSource.addValue("perfect_match", sanitizeValue);
@@ -60,7 +68,38 @@ public class ServicePointSearchVersionRepository {
 
     String query = getSqlQuery(value, isOperationPointRouteNetworkTrue, isSwissOnlyStopPointServicePoint);
 
-    List<ServicePointSearchResult> servicePointSearchResults = jdbcTemplate.query(
+    return getServicePointSearchResults(mapSqlParameterSource, query);
+  }
+
+  private List<ServicePointSearchResult> getServicePointBySloidSearchResults(String value,
+      boolean isSwissOnlyStopPointServicePoint) {
+    MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+    mapSqlParameterSource.addValue("value", value);
+
+    if (isSwissOnlyStopPointServicePoint) {
+      mapSqlParameterSource.addValue("countries", SWISS_ONLY_COUNTRIES);
+      mapSqlParameterSource.addValue("not_unknown_means_of_transport", MeanOfTransport.UNKNOWN.name());
+    }
+
+    String query = """
+        select number, designation_official, sloid
+        from service_point_version as spv
+        $MEANS_OF_TRANSPORT_JOIN_CLAUSE
+        where sloid = :value
+        $MEANS_OF_TRANSPORT_NOT_UNKNOWN_CLAUSE
+        $SWISS_ONLY_COUNTRY_CLAUSE
+        """
+        .replace("$SWISS_ONLY_COUNTRY_CLAUSE", addIsSwissOnlyClause(isSwissOnlyStopPointServicePoint))
+        .replace("$MEANS_OF_TRANSPORT_NOT_UNKNOWN_CLAUSE",
+            addIsMeansOfTransportNotUnknownClause(isSwissOnlyStopPointServicePoint))
+        .replace("$MEANS_OF_TRANSPORT_JOIN_CLAUSE", addMeansOfTransportJoinClause(isSwissOnlyStopPointServicePoint));
+
+    return getServicePointSearchResults(mapSqlParameterSource, query);
+  }
+
+  @NotNull
+  private List<ServicePointSearchResult> getServicePointSearchResults(MapSqlParameterSource mapSqlParameterSource, String query) {
+    List<ServicePointSearchResult> servicePointSearchBySloidResults = jdbcTemplate.query(
         query,
         mapSqlParameterSource,
         (rs, rowNum) -> {
@@ -72,8 +111,7 @@ public class ServicePointSearchVersionRepository {
           );
         }
     );
-
-    return new ArrayList<>(new LinkedHashSet<>(servicePointSearchResults));
+    return new ArrayList<>(new LinkedHashSet<>(servicePointSearchBySloidResults));
   }
 
   private String getSqlQuery(String value, boolean isOperationPointRouteNetworkTrue, boolean isSwissOnlyStopPointServicePoint) {
@@ -109,7 +147,8 @@ public class ServicePointSearchVersionRepository {
         """
         .replace("$DYNAMIC_CASES_CLAUSE", getDynamicCases(value))
         .replace("$SWISS_ONLY_COUNTRY_CLAUSE", addIsSwissOnlyClause(isSwissOnlyStopPointServicePoint))
-        .replace("$MEANS_OF_TRANSPORT_NOT_UNKNOWN_CLAUSE", addIsMeansOfTransportNotUnknownClause(isSwissOnlyStopPointServicePoint))
+        .replace("$MEANS_OF_TRANSPORT_NOT_UNKNOWN_CLAUSE",
+            addIsMeansOfTransportNotUnknownClause(isSwissOnlyStopPointServicePoint))
         .replace("$MEANS_OF_TRANSPORT_JOIN_CLAUSE", addMeansOfTransportJoinClause(isSwissOnlyStopPointServicePoint))
         .replace("$OPERATING_POINT_ROUTE_NETWORK_CLAUSE",
             addIsOperationPointRouteNetworkTrueClause(isOperationPointRouteNetworkTrue));
