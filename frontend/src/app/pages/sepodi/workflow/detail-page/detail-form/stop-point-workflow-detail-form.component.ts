@@ -60,6 +60,13 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
       }
     }
     if(this.listOfExaminants) {
+      const emptyExaminant: StopPointPerson = {
+        firstName: '',
+        lastName: '',
+        organisation: '',
+        mail: ''
+      };
+      this.listOfExaminants.push(emptyExaminant);
       this.form.setControl('examinants', this.createExaminantsFormArray(this.listOfExaminants));
       this.form.controls.examinants.setValidators(UniqueEmailsValidator.uniqueEmails()); // this is the one which validates correctly
     }
