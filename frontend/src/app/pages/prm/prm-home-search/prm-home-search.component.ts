@@ -23,8 +23,6 @@ export class PrmHomeSearchComponent {
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
       this._isPrmHome = event.url === '/' + Pages.PRM.path;
-      console.log(event.url);
-      console.log(this._isPrmHome);
     });
   }
 
