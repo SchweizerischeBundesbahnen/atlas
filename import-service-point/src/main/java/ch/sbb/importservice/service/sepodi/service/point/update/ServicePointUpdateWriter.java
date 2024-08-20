@@ -5,7 +5,7 @@ import ch.sbb.atlas.imports.bulk.BulkImportContainer;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
 import ch.sbb.importservice.client.ServicePointBulkImportClient;
-import ch.sbb.importservice.writer.BulkImportItemWriter;
+import ch.sbb.importservice.service.bulk.writer.BulkImportItemWriter;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,8 @@ public class ServicePointUpdateWriter extends ServicePointUpdate implements Bulk
   @Override
   public void accept(Chunk<? extends BulkImportContainer> items) {
     List<BulkImportContainer> containers = new ArrayList<>(items.getItems());
-    log.info("writing {} containers={}", containers.size(), containers);
+    log.info("Writing {} containers to service-point-directory", containers.size());
+
     List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> updateContainers = containers.stream().map(i -> (BulkImportUpdateContainer<ServicePointUpdateCsvModel>)i).toList();
     List<ItemImportResult> importResult = servicePointBulkImportClient.bulkImportUpdate(updateContainers);
 
