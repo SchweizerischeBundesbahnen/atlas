@@ -163,9 +163,7 @@
         @if (currentWorkflow?.status !== WorkflowStatus.Added && form.disabled) {
           <div class="decision-icon-col pe-2">{{ 'WORKFLOW.PERSON.JUDGEMENT' | translate }}</div>
         }
-        @if (form.enabled) {
-          <div class="icon-button-col"></div>
-        }
+        <div class="icon-button-col"></div>
       </div>
     }
 
@@ -236,19 +234,22 @@
               </atlas-button>
             </div>
           }
+          <div class="icon-button-col text-align-center">
           @if (form.enabled && i >= 2) {
-            <div class="icon-button-col text-align-center">
+
               <atlas-button
                 (buttonClicked)="removeExaminant(i)"
                 [disabled]="form.disabled"
                 buttonType="icon"
+                class="delete-button"
               >
                 <ng-template #rightIcon>
                   <i class="bi bi-trash"></i>
                 </ng-template>
               </atlas-button>
-            </div>
+
           }
+          </div>
         </div>
       </ng-container>
     </div>
