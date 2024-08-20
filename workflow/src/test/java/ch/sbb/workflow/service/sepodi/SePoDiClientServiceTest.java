@@ -1,5 +1,6 @@
 package ch.sbb.workflow.service.sepodi;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -84,7 +85,7 @@ class SePoDiClientServiceTest {
         Status.DRAFT);
     //when && then
     assertDoesNotThrow(
-        () -> service.updateStopPointStatusToInReview(stopPointWorkflow.getSloid(), stopPointWorkflow.getVersionId()));
+        () -> service.updateStopPointStatusToDraft(stopPointWorkflow));
   }
 
   @ParameterizedTest
@@ -132,20 +133,53 @@ class SePoDiClientServiceTest {
     String sloid = "ch:1:sloid:8000";
     long versionId = 1L;
 
-    UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel = UpdateDesignationOfficialServicePointModel.builder()
+    UpdateDesignationOfficialServicePointModel updateDesignationOfficialServicePointModel =
+        UpdateDesignationOfficialServicePointModel.builder()
             .designationOfficial("test")
             .build();
 
     ReadServicePointVersionModel updateServicePointVersionModel = ReadServicePointVersionModel.builder()
-            .sloid(sloid)
-            .id(versionId)
-            .status(Status.IN_REVIEW)
-            .designationOfficial("Designerica")
-            .build();
-    doReturn(updateServicePointVersionModel).when(sePoDiClient).updateServicePointDesignationOfficial(versionId, updateDesignationOfficialServicePointModel);
+        .sloid(sloid)
+        .id(versionId)
+        .status(Status.IN_REVIEW)
+        .designationOfficial("Designerica")
+        .build();
+    doReturn(updateServicePointVersionModel).when(sePoDiClient)
+        .updateServicePointDesignationOfficial(versionId, updateDesignationOfficialServicePointModel);
 
     //when && then
     assertDoesNotThrow(
-            () -> service.updateDesignationOfficialServicePoint(stopPointWorkflow));
+        () -> service.updateDesignationOfficialServicePoint(stopPointWorkflow));
   }
+
+  @Test
+  void shouldReturnVersionModelByUpdateStopPointStatusToValidatedAsAdminForJob() {
+    //given
+    ReadServicePointVersionModel updateServicePointVersionModel = ReadServicePointVersionModel.builder().status(Status.VALIDATED)
+        .build();
+    doReturn(updateServicePointVersionModel).when(sePoDiAdminClient)
+        .postServicePointsStatusUpdate("ch:1:sloid:8000", 1L, Status.VALIDATED);
+
+    //when
+    ReadServicePointVersionModel result = service.updateStopPointStatusToValidatedAsAdminForJob(
+        stopPointWorkflow);
+    //then
+    assertThat(result).isNotNull();
+  }
+
+  @Test
+  void shouldNotReturnVersionModelByUpdateStopPointStatusToValidatedAsAdminForJob() {
+    //given
+    ReadServicePointVersionModel updateServicePointVersionModel = ReadServicePointVersionModel.builder().status(Status.IN_REVIEW)
+        .build();
+    doReturn(updateServicePointVersionModel).when(sePoDiAdminClient)
+        .postServicePointsStatusUpdate(stopPointWorkflow.getSloid(), stopPointWorkflow.getId(), Status.VALIDATED);
+
+    //when
+    ReadServicePointVersionModel result = service.updateStopPointStatusToValidatedAsAdminForJob(
+        stopPointWorkflow);
+    //then
+    assertThat(result).isNull();
+  }
+
 }
