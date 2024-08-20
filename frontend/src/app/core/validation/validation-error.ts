@@ -1,4 +1,4 @@
-import { ValidationErrors } from '@angular/forms';
+import {ValidationErrors} from '@angular/forms';
 
 export interface ValidationError {
   error: string;
@@ -16,4 +16,5 @@ export interface TranslationParameter {
   max?: string;
   min?: string;
   number?: string;
+  emails?: string[];
 }

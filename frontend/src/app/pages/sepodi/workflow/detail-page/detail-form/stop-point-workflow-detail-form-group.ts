@@ -1,8 +1,9 @@
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {DecisionType, JudgementType, ReadStopPointWorkflow, StopPointPerson} from 'src/app/api';
-import { AtlasCharsetsValidator } from 'src/app/core/validation/charsets/atlas-charsets-validator';
-import { AtlasFieldLengthValidator } from 'src/app/core/validation/field-lengths/atlas-field-length-validator';
-import { WhitespaceValidator } from '../../../../../core/validation/whitespace/whitespace-validator';
+import {AtlasCharsetsValidator} from 'src/app/core/validation/charsets/atlas-charsets-validator';
+import {AtlasFieldLengthValidator} from 'src/app/core/validation/field-lengths/atlas-field-length-validator';
+import {WhitespaceValidator} from '../../../../../core/validation/whitespace/whitespace-validator';
+import {UniqueEmailsValidator} from "../../../../../core/validation/unique-emails-validator/unique-emails-validator";
 
 export interface StopPointWorkflowDetailFormGroup {
   ccEmails: FormControl<Array<string> | null | undefined>;
@@ -49,6 +50,10 @@ export class StopPointWorkflowDetailFormGroupBuilder {
         map((examinant) => this.buildExaminantFormGroup(examinant)) ?? [
           this.buildExaminantFormGroup(),
         ],
+        [
+          Validators.required,
+          UniqueEmailsValidator.uniqueEmails(),
+        ]
       ),
     });
   }

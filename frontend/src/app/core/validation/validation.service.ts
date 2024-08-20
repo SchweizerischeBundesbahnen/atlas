@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { ValidationError } from './validation-error';
+import {Injectable} from '@angular/core';
+import {ValidationError} from './validation-error';
 import {AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors} from '@angular/forms';
-import { DATE_PATTERN } from '../date/date.service';
+import {DATE_PATTERN} from '../date/date.service';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +24,7 @@ export class ValidationService {
             max: controlErrors[keyError]['max'],
             min: controlErrors[keyError]['min'],
             number: controlErrors[keyError]['number'],
+            emails: controlErrors[keyError]['emails'],
           },
         });
       });
