@@ -179,7 +179,13 @@
       "TITLE": "Datenimport mittels Datei",
       "TITLE_MENU": "Massenimport",
       "DESCRIPTION": "Massenverarbeitung von Daten mittels Fileupload (*.csv oder Excel).",
-      "PATH_TEXT": "Massenimport"
+      "PATH_TEXT": "Massenimport",
+      "APPLICATION": "Applikation",
+      "OBJECT": "Objekt",
+      "SCENARIO": "Szenario",
+      "IMPORT_EXECUTED_BY": "Import wird durchgeführt durch:",
+      "IMPORT_FOR_SOMEONE_ELSE": "Ich importiere für jemanden anders.",
+      "ADDITIONAL_IMPORT_REPORT": "Zusätzlicher Empfänger Importbericht"
     },
     "LIDI": {
       "TITLE": "Linien und Teillinien verwalten",
