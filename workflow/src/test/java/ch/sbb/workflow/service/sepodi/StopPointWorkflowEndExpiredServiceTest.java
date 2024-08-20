@@ -2,9 +2,11 @@ package ch.sbb.workflow.service.sepodi;
 
 import static ch.sbb.workflow.service.sepodi.StopPointWorkflowEndExpiredService.WORKFLOW_EXPIRATION_IN_DAYS;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.entity.Decision;
@@ -17,6 +19,7 @@ import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -78,6 +81,9 @@ class StopPointWorkflowEndExpiredServiceTest {
     workflowInHearing = workflowRepository.save(workflow);
     marek = workflowInHearing.getExaminants().stream().filter(i -> i.getFirstName().equals("Marek")).findFirst().orElseThrow();
     judith = workflowInHearing.getExaminants().stream().filter(i -> i.getFirstName().equals("Judith")).findFirst().orElseThrow();
+    ReadServicePointVersionModel readServicePointVersionModel = ReadServicePointVersionModel.builder().build();
+    doReturn(readServicePointVersionModel).when(sePoDiClientService)
+        .updateStopPointStatusToValidatedAsAdminForJob(workflowInHearing);
   }
 
   @AfterEach
@@ -90,14 +96,13 @@ class StopPointWorkflowEndExpiredServiceTest {
   void shouldEndWorkflowWithNoVotes() {
     //given
     workflowInHearing.setEndDate(LocalDate.now());
-    workflowInHearing.setStartDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS));
+    workflowInHearing.setStartDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS + 1));
     workflowRepository.save(workflowInHearing);
-
     //when
     stopPointWorkflowEndExpiredService.endExpiredWorkflows();
 
     //then
-    verify(sePoDiClientService).updateStopPointStatusToValidatedAsAdmin(workflowInHearing);
+    verify(sePoDiClientService).updateStopPointStatusToValidatedAsAdminForJob(workflowInHearing);
     verify(notificationService).sendApprovedStopPointWorkflowMail(workflowInHearing);
     StopPointWorkflow result = workflowRepository.getReferenceById(workflowInHearing.getId());
     assertThat(result).isNotNull();
@@ -120,7 +125,7 @@ class StopPointWorkflowEndExpiredServiceTest {
     stopPointWorkflowEndExpiredService.endExpiredWorkflows();
 
     //then
-    verify(sePoDiClientService, never()).updateStopPointStatusToValidatedAsAdmin(workflowInHearing);
+    verify(sePoDiClientService, never()).updateStopPointStatusToValidatedAsAdminForJob(workflowInHearing);
     verify(notificationService, never()).sendApprovedStopPointWorkflowMail(workflowInHearing);
     StopPointWorkflow result = workflowRepository.getReferenceById(workflowInHearing.getId());
     assertThat(result).isNotNull();
@@ -136,7 +141,7 @@ class StopPointWorkflowEndExpiredServiceTest {
         .examinant(marek)
         .build();
     decisionRepository.save(mareksDecision);
-    workflowInHearing.setStartDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS));
+    workflowInHearing.setStartDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS + 1));
     workflowInHearing.setEndDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS));
     workflowRepository.save(workflowInHearing);
 
@@ -144,7 +149,7 @@ class StopPointWorkflowEndExpiredServiceTest {
     stopPointWorkflowEndExpiredService.endExpiredWorkflows();
 
     //then
-    verify(sePoDiClientService).updateStopPointStatusToValidatedAsAdmin(workflowInHearing);
+    verify(sePoDiClientService).updateStopPointStatusToValidatedAsAdminForJob(workflowInHearing);
     verify(notificationService).sendApprovedStopPointWorkflowMail(workflowInHearing);
     StopPointWorkflow result = workflowRepository.getReferenceById(workflowInHearing.getId());
     assertThat(result).isNotNull();
@@ -171,14 +176,14 @@ class StopPointWorkflowEndExpiredServiceTest {
     decisionRepository.save(mareksDecision);
 
     workflowInHearing.setEndDate(LocalDate.now());
-    workflowInHearing.setStartDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS));
+    workflowInHearing.setStartDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS + 1));
     workflowRepository.save(workflowInHearing);
 
     //when
     stopPointWorkflowEndExpiredService.endExpiredWorkflows();
 
     //then
-    verify(sePoDiClientService).updateStopPointStatusToValidatedAsAdmin(workflowInHearing);
+    verify(sePoDiClientService).updateStopPointStatusToValidatedAsAdminForJob(workflowInHearing);
     verify(notificationService).sendApprovedStopPointWorkflowMail(workflowInHearing);
     StopPointWorkflow result = workflowRepository.getReferenceById(workflowInHearing.getId());
     assertThat(result).isNotNull();
@@ -211,7 +216,7 @@ class StopPointWorkflowEndExpiredServiceTest {
         .build();
     decisionRepository.save(mareksDecision);
 
-    workflowInHearing.setStartDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS));
+    workflowInHearing.setStartDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS + 1));
     workflowInHearing.setEndDate(LocalDate.now());
     workflowRepository.save(workflowInHearing);
 
@@ -219,7 +224,7 @@ class StopPointWorkflowEndExpiredServiceTest {
     stopPointWorkflowEndExpiredService.endExpiredWorkflows();
 
     //then
-    verify(sePoDiClientService).updateStopPointStatusToValidatedAsAdmin(workflowInHearing);
+    verify(sePoDiClientService).updateStopPointStatusToValidatedAsAdminForJob(workflowInHearing);
     verify(notificationService).sendApprovedStopPointWorkflowMail(workflowInHearing);
     StopPointWorkflow result = workflowRepository.getReferenceById(workflowInHearing.getId());
     assertThat(result).isNotNull();
@@ -252,7 +257,7 @@ class StopPointWorkflowEndExpiredServiceTest {
         .mail("cianni@staccioni.com").build();
     cianni.setStopPointWorkflow(workflowInHearing);
     workflowInHearing.getExaminants().add(cianni);
-    workflowInHearing.setStartDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS));
+    workflowInHearing.setStartDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS + 1));
     workflowInHearing.setEndDate(LocalDate.now());
     workflowRepository.save(workflowInHearing);
 
@@ -260,7 +265,7 @@ class StopPointWorkflowEndExpiredServiceTest {
     stopPointWorkflowEndExpiredService.endExpiredWorkflows();
 
     //then
-    verify(sePoDiClientService).updateStopPointStatusToValidatedAsAdmin(workflowInHearing);
+    verify(sePoDiClientService).updateStopPointStatusToValidatedAsAdminForJob(workflowInHearing);
     verify(notificationService).sendApprovedStopPointWorkflowMail(workflowInHearing);
     StopPointWorkflow result = workflowRepository.getReferenceById(workflowInHearing.getId());
     assertThat(result).isNotNull();
@@ -280,6 +285,50 @@ class StopPointWorkflowEndExpiredServiceTest {
     assertThat(cianniDecision.getDecisionType()).isEqualTo(DecisionType.VOTED_EXPIRATION);
     assertThat(cianniDecision.getJudgement()).isEqualTo(JudgementType.YES);
     assertThat(cianniDecision.getFotJudgement()).isNull();
+  }
+
+  @Test
+  void shouldGetExpiredWorkflowsAfterMoreThane31Days() {
+    //given
+    workflowInHearing.setStartDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS));
+    workflowInHearing.setEndDate(LocalDate.now());
+    workflowRepository.save(workflowInHearing);
+    StopPointWorkflow stopPointWorkflow32Days = StopPointWorkflow.builder().designationOfficial("De1")
+        .sloid("ch:1:sloid:1235")
+        .sboid("ch:1:sboid:665")
+        .localityName("Biel/Bienne")
+        .workflowComment("WF comment")
+        .examinants(new HashSet<>(Set.of(marek, judith)))
+        .versionId(123456L)
+        .status(WorkflowStatus.HEARING)
+        .startDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS + 1))
+        .build();
+    workflowRepository.save(stopPointWorkflow32Days);
+    StopPointWorkflow stopPointWorkflow42Days = StopPointWorkflow.builder().designationOfficial("De2").sloid("ch:1:sloid:1236")
+        .sboid("ch:1:sboid:667")
+        .localityName("Biel/Bienne")
+        .workflowComment("WF comment")
+        .examinants(new HashSet<>(Set.of(marek, judith)))
+        .versionId(123456L)
+        .status(WorkflowStatus.HEARING)
+        .startDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS + 10)).build();
+    workflowRepository.save(stopPointWorkflow42Days);
+    StopPointWorkflow stopPointWorkflow30Days = StopPointWorkflow.builder().designationOfficial("De3").sloid("ch:1:sloid:1238")
+        .sboid("ch:1:sboid:668")
+        .localityName("Biel/Bienne")
+        .workflowComment("WF comment")
+        .examinants(new HashSet<>(Set.of(marek, judith)))
+        .versionId(123456L)
+        .status(WorkflowStatus.HEARING)
+        .startDate(LocalDate.now().minusDays(WORKFLOW_EXPIRATION_IN_DAYS - 1)).build();
+    workflowRepository.save(stopPointWorkflow30Days);
+    //when
+    List<StopPointWorkflow> results = stopPointWorkflowEndExpiredService.getExpiredWorkflows();
+
+    //then
+    assertThat(results)
+        .hasSize(2)
+        .containsExactlyInAnyOrder(stopPointWorkflow42Days, stopPointWorkflow32Days);
   }
 
 }
