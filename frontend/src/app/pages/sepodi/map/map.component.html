@@ -1,13 +1,17 @@
 <div class="map-wrapper d-flex position-relative">
 
   <div class="map" #map data-cy="sepodi-map"></div>
-  <div *ngIf="!isSidePanelOpen" class="container-sp-create-and-search">
-    <app-search-service-point [searchType]="this.servicePointSearchType"></app-search-service-point>
-    <button *ngIf="canCreateServicePoint" (click)="routeToNewSP()" class="font-regular-base" data-cy="new-service-point-button">
-      <i class="bi bi-plus"></i>
-      {{ 'SEPODI.SERVICE_POINTS.NEW_SERVICE_POINT' | translate }}
-    </button>
-  </div>
+
+  <!--  <div style="background: white; min-height: 110px; min-width: 100%; position: absolute">-->
+
+  <!--    <div class="container-sp-create-and-search">-->
+  <!--      <app-search-service-point [searchType]="this.servicePointSearchType"></app-search-service-point>-->
+  <!--      <button *ngIf="canCreateServicePoint" (click)="routeToNewSP()" class="font-regular-base" data-cy="new-service-point-button">-->
+  <!--        <i class="bi bi-plus"></i>-->
+  <!--        {{ 'SEPODI.SERVICE_POINTS.NEW_SERVICE_POINT' | translate }}-->
+  <!--      </button>-->
+  <!--    </div>-->
+  <!--  </div>-->
   <div *ngIf="!servicePointsShown" class="zoom-hint-container font-regular-xl p-3" (click)="zoomToServicePointMin()">
     <div class="me-2">{{ 'SEPODI.ZOOM_IN_HINT' | translate }}</div>
     <i class="bi bi-zoom-in"></i>
