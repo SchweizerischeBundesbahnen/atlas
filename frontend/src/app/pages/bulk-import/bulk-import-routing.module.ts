@@ -6,7 +6,7 @@ import {canLeaveDirtyForm} from "../../core/leave-guard/leave-dirty-form-guard.s
 
 const routes: Routes = [
   {
-    path: Pages.BULK_IMPORT.path,
+    path: '',
     component: BulkImportOverviewComponent,
     canDeactivate: [canLeaveDirtyForm],
     runGuardsAndResolvers: 'always'
