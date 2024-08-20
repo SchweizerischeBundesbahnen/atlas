@@ -3,7 +3,6 @@ import {Map} from 'maplibre-gl';
 import {MapService} from './map.service';
 import {MAP_STYLES, MapStyle} from './map-options';
 import {Router} from '@angular/router';
-import {Pages} from '../../pages';
 import {take} from 'rxjs';
 import {ApplicationType} from '../../../api';
 import {filter} from 'rxjs/operators';
@@ -118,10 +117,4 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  routeToNewSP(): void {
-    this.router
-      .navigate([Pages.SEPODI.path, Pages.SERVICE_POINTS.path])
-      .then()
-      .catch((reason) => console.error('Navigation failed: ', reason));
-  }
 }
