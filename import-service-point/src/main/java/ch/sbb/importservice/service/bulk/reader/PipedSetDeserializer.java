@@ -1,4 +1,4 @@
-package ch.sbb.atlas.deserializer;
+package ch.sbb.importservice.service.bulk.reader;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.BeanProperty;
