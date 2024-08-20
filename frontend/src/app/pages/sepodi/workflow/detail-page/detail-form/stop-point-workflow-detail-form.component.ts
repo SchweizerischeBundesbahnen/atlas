@@ -14,6 +14,7 @@ import {DecisionDetailDialogService} from '../decision/decision-detail/decision-
 import {ValidationService} from 'src/app/core/validation/validation.service';
 import {Pages} from 'src/app/pages/pages';
 import {SloidHelper} from "../../../../../core/util/sloidHelper";
+import {UniqueEmailsValidator} from "../../../../../core/validation/unique-emails-validator/unique-emails-validator";
 
 @Component({
   selector: 'stop-point-workflow-detail-form',
@@ -41,10 +42,6 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("I am in stopPointWorkflowDetailFormComponentTs")
-    console.log("And here are examinants")
-    console.log(this.listOfExaminants)
-    console.log("that is it for this time")
     if (!this.stopPoint && this.currentWorkflow) {
       this.stopPoint = {
         sloid: this.currentWorkflow.sloid,
@@ -63,9 +60,8 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
       }
     }
     if(this.listOfExaminants) {
-      console.log("I have also entered if statement")
       this.form.setControl('examinants', this.createExaminantsFormArray(this.listOfExaminants));
-      console.log("end of if statement")
+      this.form.controls.examinants.setValidators(UniqueEmailsValidator.uniqueEmails()); // this is the one which validates correctly
     }
     if(this.currentWorkflow){
       this.specialDecision = this.currentWorkflow!.examinants?.find(examinant => SPECIAL_DECISION_TYPES.includes(examinant.decisionType!));
@@ -84,7 +80,6 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
       judgement: new FormControl(person.judgement ?? null),
       decisionType: new FormControl(person.decisionType ?? null),
     }));
-
     return new FormArray<FormGroup<ExaminantFormGroup>>(formGroups);
   }
 
