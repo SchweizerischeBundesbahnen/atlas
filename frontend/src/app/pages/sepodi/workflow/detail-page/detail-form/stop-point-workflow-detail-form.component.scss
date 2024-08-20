@@ -4,6 +4,14 @@
   width: 50px;
 }
 
+.delete-button {
+  display: block;
+}
+
+.delete-button.hidden {
+  display: none;
+}
+
 .decision-icon-col {
   width: 120px;
 }
