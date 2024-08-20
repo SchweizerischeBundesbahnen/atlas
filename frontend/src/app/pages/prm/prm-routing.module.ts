@@ -190,7 +190,7 @@ const routes: Routes = [
       },
     ]
   },
-  // { path: '**', redirectTo: Pages.PRM.path },
+  { path: '**', redirectTo: Pages.PRM.path },
 ];
 
 @NgModule({
