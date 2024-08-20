@@ -20,8 +20,6 @@
         placeholder="{{ placeholder | translate }}"
         [attr.data-cy]="controlName"
         [readonly]="readonly"
-        [style.cursor]="readonly ? 'default' : 'text'"
-        [style.user-select]="readonly ? 'none' : 'auto'"
         [style.pointer-events]="readonly ? 'none' : 'auto'"
       />
       <div class="icon-content-wrapper">
