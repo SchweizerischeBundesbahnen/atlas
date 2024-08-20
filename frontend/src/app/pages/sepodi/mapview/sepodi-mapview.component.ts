@@ -1,24 +1,33 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
-import { GeoJsonProperties } from 'geojson';
-import { Router } from '@angular/router';
-import { Pages } from '../../pages';
-import { MapService } from '../map/map.service';
-import { Subscription } from 'rxjs';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {GeoJsonProperties} from 'geojson';
+import {Router} from '@angular/router';
+import {Pages} from '../../pages';
+import {MapService} from '../map/map.service';
+import {Subscription, take} from 'rxjs';
+import {ServicePointSearch} from "../../../core/search-service-point/service-point-search";
+import {filter} from "rxjs/operators";
+import {ApplicationType} from "../../../api";
+import {UserService} from "../../../core/auth/user/user.service";
+import {PermissionService} from "../../../core/auth/permission/permission.service";
 
 @Component({
   selector: 'app-sepodi-mapview',
   templateUrl: './sepodi-mapview.component.html',
   styleUrls: ['./sepodi-mapview.component.scss'],
 })
-export class SepodiMapviewComponent implements AfterViewInit, OnDestroy {
+export class SepodiMapviewComponent implements AfterViewInit, OnDestroy, OnInit {
   @ViewChild('detailContainer') detailContainer!: ElementRef<HTMLElement>;
 
   public isSidePanelOpen = false;
+  public canCreateServicePoint = false;
   private selectedElementSubscription!: Subscription;
+  servicePointSearchType = ServicePointSearch.SePoDi;
 
   constructor(
     private router: Router,
     private mapService: MapService,
+    private readonly userService: UserService,
+    private readonly permissionService: PermissionService,
   ) {
     this.selectedElementSubscription = this.mapService.selectedElement.subscribe((selectedPoint) =>
       this.servicePointClicked(selectedPoint),
@@ -53,5 +62,25 @@ export class SepodiMapviewComponent implements AfterViewInit, OnDestroy {
         detailContainerDiv.style.width = 'unset';
       }
     }
+  }
+
+  ngOnInit(): void {
+    this.userService.permissionsLoaded
+      .pipe(
+        filter((loaded) => loaded),
+        take(1),
+      )
+      .subscribe(() => {
+        this.canCreateServicePoint = this.permissionService.hasPermissionsToCreate(
+          ApplicationType.Sepodi,
+        );
+      });
+  }
+
+  routeToNewSP(): void {
+    this.router
+      .navigate([Pages.SEPODI.path, Pages.SERVICE_POINTS.path])
+      .then()
+      .catch((reason) => console.error('Navigation failed: ', reason));
   }
 }
