@@ -132,9 +132,11 @@ export class SearchServicePointComponent implements OnInit {
             ? searchResultSelected.number
             : searchResultSelected.sloid,
         ],
-        { relativeTo: this.route },
+        {relativeTo: this.route},
       )
-      .then();
+      .then(() => (
+        this.clearResult()
+      ));
   }
 
   private getNotFoundTranslatedLabel() {

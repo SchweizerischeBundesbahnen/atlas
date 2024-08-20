@@ -6,13 +6,14 @@ import {MeanOfTransport} from '../../../../../api';
 import {DialogService} from '../../../../../core/components/dialog/dialog.service';
 import {StopPointDetailFormGroup, StopPointFormGroupBuilder,} from '../form/stop-point-detail-form-group';
 import {prmMeansOfTransport} from "../prm-variant-info-service.service";
+import {DetailFormComponent} from "../../../../../core/leave-guard/leave-dirty-form-guard.service";
 
 @Component({
   selector: 'app-create-stop-point',
   templateUrl: './create-stop-point.component.html',
   styleUrls: ['./create-stop-point.component.scss'],
 })
-export class CreateStopPointComponent {
+export class CreateStopPointComponent implements DetailFormComponent {
   @ViewChild('stepper') stepper!: MatStepper;
   @Input() form!: FormGroup<StopPointDetailFormGroup>;
   @Input() isAuthorizedToCreateStopPoint!: boolean;
