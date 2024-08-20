@@ -1,4 +1,4 @@
-package ch.sbb.importservice.model;
+package ch.sbb.importservice.service.bulk.reader;
 
 import ch.sbb.atlas.exception.CsvException;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
