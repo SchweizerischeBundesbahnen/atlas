@@ -1,14 +1,12 @@
 @use 'src/styles/variables' as variables;
 
-$logoMarginLeft: 47px;
-$logoMarginLeftLarge: 63.5px;
-$navigationDefaultSize: 139px;
+$logoMarginLeft: 96px;
 
 .logo-placeholder {
   cursor: pointer;
   background: variables.$white;
-  width: $navigationDefaultSize;
-  min-width: $navigationDefaultSize;
+  width: 239px;
+  min-width: 239px;
   height: variables.$headerHeight;
   text-align: center;
   vertical-align: middle;
@@ -32,18 +30,6 @@ $navigationDefaultSize: 139px;
     width: 45px;
     height: 20px;
     line-height: 20px;
-  }
-}
-
-@include variables.large-screen() {
-  .logo-placeholder {
-    width: variables.$navigationLargeSize;
-    min-width: variables.$navigationLargeSize;
-
-    .logo,
-    .title {
-      left: $logoMarginLeftLarge;
-    }
   }
 }
 
