@@ -29,26 +29,11 @@ public class ServicePointBulkImportService {
     List<ServicePointVersion> currentVersions = getCurrentVersions(servicePointUpdate);
     ServicePointVersion currentVersion = ImportUtils.getCurrentVersion(currentVersions,
         servicePointUpdate.getValidFrom(), servicePointUpdate.getValidTo());
-    ServicePointVersion editedVersion = applyUpdateFromCsv(currentVersion, servicePointUpdate);
+
+    ServicePointVersion editedVersion = ServicePointBulkImportUpdate.applyUpdateFromCsv(currentVersion, servicePointUpdate);
+    ServicePointBulkImportUpdate.applyNulling(bulkImportContainer.getAttributesToNull(), editedVersion);
 
     servicePointService.update(currentVersion, editedVersion, currentVersions);
-  }
-
-  private ServicePointVersion applyUpdateFromCsv(ServicePointVersion currentVersion, ServicePointUpdateCsvModel update) {
-    ServicePointVersion editedVersion = currentVersion.toBuilder().build();
-    editedVersion.setValidFrom(update.getValidFrom());
-    editedVersion.setValidTo(update.getValidTo());
-    editedVersion.setDesignationOfficial(update.getDesignationOfficial());
-    editedVersion.setDesignationLong(update.getDesignationLong());
-    editedVersion.setStopPointType(update.getStopPointType());
-    editedVersion.setFreightServicePoint(update.isFreightServicePoint());
-    // ??
-    // borderPoint => operatingPointTechnicalTimetableType
-    editedVersion.setOperatingPointType(update.getOperatingPointType());
-    editedVersion.setOperatingPointTechnicalTimetableType(update.getOperatingPointTechnicalTimetableType());
-    editedVersion.setMeansOfTransport(update.getMeansOfTransport());
-    // ...
-    return editedVersion;
   }
 
   private List<ServicePointVersion> getCurrentVersions(ServicePointUpdateCsvModel servicePointUpdate) {

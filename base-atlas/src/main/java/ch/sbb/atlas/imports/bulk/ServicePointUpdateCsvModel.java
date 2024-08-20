@@ -2,7 +2,7 @@ package ch.sbb.atlas.imports.bulk;
 
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel.Fields;
 import ch.sbb.atlas.imports.servicepoint.deserializer.LocalDateDeserializer;
-import ch.sbb.atlas.imports.servicepoint.deserializer.PipedSetDeserializer;
+import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
@@ -29,10 +29,10 @@ import lombok.experimental.FieldNameConstants;
 @FieldNameConstants
 @EqualsAndHashCode
 @JsonPropertyOrder({Fields.sloid, Fields.number, Fields.validFrom, Fields.validTo, Fields.designationOfficial,
-    Fields.designationLong, Fields.stopPointType, Fields.freightServicePoint, Fields.borderPoint, Fields.operatingPointType,
+    Fields.designationLong, Fields.stopPointType, Fields.freightServicePoint, Fields.operatingPointType,
     Fields.operatingPointTechnicalTimetableType, Fields.meansOfTransport, Fields.categories,
     Fields.operatingPointTrafficPointType, Fields.sortCodeOfDestinationStation, Fields.businessOrganisation, Fields.fotComment,
-    Fields.lv95East, Fields.lv95North, Fields.wgs84East, Fields.wgs84North, Fields.height})
+    Fields.east, Fields.north, Fields.spatialReference, Fields.height})
 public class ServicePointUpdateCsvModel implements BulkImportContainer {
 
   private String sloid;
@@ -51,16 +51,12 @@ public class ServicePointUpdateCsvModel implements BulkImportContainer {
 
   private StopPointType stopPointType;
 
-  private boolean freightServicePoint;
-
-  // todo: muss weg
-  private boolean borderPoint;
+  private Boolean freightServicePoint;
 
   private OperatingPointType operatingPointType;
 
   private OperatingPointTechnicalTimetableType operatingPointTechnicalTimetableType;
 
-  @JsonDeserialize(using = PipedSetDeserializer.class)
   private Set<MeanOfTransport> meansOfTransport;
 
   private Set<Category> categories;
@@ -73,13 +69,11 @@ public class ServicePointUpdateCsvModel implements BulkImportContainer {
 
   private String fotComment;
 
-  private Double lv95East;
+  private Double east;
 
-  private Double lv95North;
+  private Double north;
 
-  private Double wgs84East;
-
-  private Double wgs84North;
+  private SpatialReference spatialReference;
 
   private Double height;
 
