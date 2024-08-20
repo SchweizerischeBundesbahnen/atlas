@@ -1,6 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.repository;
 
-import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.servicepointdirectory.entity.geolocation.ServicePointGeoData;
 import java.time.LocalDate;
 import org.locationtech.jts.geom.Envelope;
