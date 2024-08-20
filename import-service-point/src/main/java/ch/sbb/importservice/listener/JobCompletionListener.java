@@ -1,11 +1,11 @@
 package ch.sbb.importservice.listener;
 
-import ch.sbb.atlas.imports.servicepoint.enumeration.ItemImportResponseStatus;
+import ch.sbb.atlas.imports.ItemImportResponseStatus;
 import ch.sbb.atlas.kafka.model.mail.MailNotification;
 import ch.sbb.importservice.entity.ImportProcessItem;
 import ch.sbb.importservice.repository.ImportProcessedItemRepository;
-import ch.sbb.importservice.service.MailNotificationService;
-import ch.sbb.importservice.service.MailProducerService;
+import ch.sbb.importservice.service.mail.MailNotificationService;
+import ch.sbb.importservice.service.mail.MailProducerService;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

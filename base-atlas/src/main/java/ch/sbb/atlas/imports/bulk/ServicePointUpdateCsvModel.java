@@ -1,8 +1,8 @@
 package ch.sbb.atlas.imports.bulk;
 
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel.Fields;
-import ch.sbb.atlas.imports.servicepoint.deserializer.LocalDateDeserializer;
-import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.deserializer.LocalDateDeserializer;
+import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;

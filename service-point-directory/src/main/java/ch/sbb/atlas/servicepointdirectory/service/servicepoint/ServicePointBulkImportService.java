@@ -22,8 +22,6 @@ public class ServicePointBulkImportService {
   private final ServicePointService servicePointService;
 
   public void updateServicePoint(BulkImportUpdateContainer<ServicePointUpdateCsvModel> bulkImportContainer) {
-    log.info("Updating {}", bulkImportContainer);
-
     ServicePointUpdateCsvModel servicePointUpdate = bulkImportContainer.getObject();
 
     List<ServicePointVersion> currentVersions = getCurrentVersions(servicePointUpdate);

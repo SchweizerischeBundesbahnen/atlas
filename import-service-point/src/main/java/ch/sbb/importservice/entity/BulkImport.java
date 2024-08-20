@@ -3,7 +3,7 @@ package ch.sbb.importservice.entity;
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
 import ch.sbb.importservice.model.BusinessObjectType;
-import ch.sbb.atlas.imports.bulk.ImportType;
+import ch.sbb.importservice.model.ImportType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
