@@ -326,8 +326,9 @@ class StopPointWorkflowEndExpiredServiceTest {
     List<StopPointWorkflow> results = stopPointWorkflowEndExpiredService.getExpiredWorkflows();
 
     //then
-    assertThat(results).hasSize(2);
-    assertThat(results).containsExactlyInAnyOrder(stopPointWorkflow42Days, stopPointWorkflow32Days);
+    assertThat(results)
+        .hasSize(2)
+        .containsExactlyInAnyOrder(stopPointWorkflow42Days, stopPointWorkflow32Days);
   }
 
 }
