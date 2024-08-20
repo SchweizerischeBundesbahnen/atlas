@@ -2,7 +2,6 @@ package ch.sbb.importservice.service.bulk.reader;
 
 import ch.sbb.atlas.exception.CsvException;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
-import ch.sbb.atlas.deserializer.PipedSetDeserializer;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser.Feature;
