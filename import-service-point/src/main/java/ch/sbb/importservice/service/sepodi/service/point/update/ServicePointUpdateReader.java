@@ -1,6 +1,6 @@
 package ch.sbb.importservice.service.sepodi.service.point.update;
 
-import ch.sbb.importservice.model.AtlasCsvReader;
+import ch.sbb.importservice.service.bulk.reader.AtlasCsvReader;
 import ch.sbb.atlas.imports.bulk.BulkImportContainer;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;

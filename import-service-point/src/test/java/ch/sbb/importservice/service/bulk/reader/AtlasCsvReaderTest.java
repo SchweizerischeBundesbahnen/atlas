@@ -1,8 +1,7 @@
-package ch.sbb.importservice;
+package ch.sbb.importservice.service.bulk.reader;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.importservice.model.AtlasCsvReader;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
