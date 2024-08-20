@@ -1,6 +1,7 @@
 package ch.sbb.atlas.imports.bulk;
 
 import ch.sbb.atlas.exception.CsvException;
+import ch.sbb.atlas.imports.servicepoint.deserializer.PipedSetDeserializer;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser.Feature;
@@ -17,26 +18,11 @@ import lombok.experimental.UtilityClass;
 public class AtlasCsvReader {
 
   public static final CsvMapper CSV_MAPPER = new CsvMapper().enable(Feature.EMPTY_STRING_AS_NULL);
+
   public static final CsvSchema CSV_SCHEMA = CsvSchema.emptySchema()
       .withHeader()
       .withColumnSeparator(';');
   public static final String NULLING_VALUE = "<null>";
-
-  public <T> List<T> readLinesFromFile(File file, Class<T> clazz) {
-    List<T> mappedObjects = new ArrayList<>();
-
-    try (MappingIterator<T> mappingIterator = AtlasCsvReader.CSV_MAPPER.readerFor(clazz)
-        .with(AtlasCsvReader.CSV_SCHEMA)
-        .readValues(file)) {
-      while (mappingIterator.hasNext()) {
-        mappedObjects.add(mappingIterator.next());
-      }
-    } catch (IOException e) {
-      throw new CsvException(e);
-    }
-
-    return mappedObjects;
-  }
 
   public <T> List<BulkImportUpdateContainer<T>> readLinesFromFileWithNullingValue(File file, Class<T> clazz) {
     List<BulkImportUpdateContainer<T>> mappedObjects = new ArrayList<>();
@@ -66,7 +52,9 @@ public class AtlasCsvReader {
 
     line = line.replaceAll(NULLING_VALUE, "");
 
-    try (MappingIterator<T> mappingIterator = AtlasCsvReader.CSV_MAPPER.readerFor(clazz)
+    try (MappingIterator<T> mappingIterator = AtlasCsvReader.CSV_MAPPER
+        .registerModule(PipedSetDeserializer.module())
+        .readerFor(clazz)
         .with(AtlasCsvReader.CSV_SCHEMA)
         .readValues(header + line)) {
       T object = mappingIterator.next();
