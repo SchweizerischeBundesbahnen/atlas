@@ -5,7 +5,7 @@ import static ch.sbb.atlas.servicepointdirectory.model.TestData.testServicePoint
 import static ch.sbb.atlas.servicepointdirectory.repository.ServicePointGeolocationRepository.coordinatesBetween;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepointdirectory.ServicePointTestData;
 import ch.sbb.atlas.servicepointdirectory.entity.ServicePointVersion;

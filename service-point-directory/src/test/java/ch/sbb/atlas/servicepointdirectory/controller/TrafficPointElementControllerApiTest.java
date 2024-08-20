@@ -1,6 +1,6 @@
 package ch.sbb.atlas.servicepointdirectory.controller;
 
-import static ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference.LV95;
+import static ch.sbb.atlas.api.servicepoint.SpatialReference.LV95;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
