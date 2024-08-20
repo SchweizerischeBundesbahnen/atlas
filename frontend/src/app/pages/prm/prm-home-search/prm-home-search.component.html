@@ -1,12 +1,15 @@
 <div class="prm-panel-container">
-  <div class="col-12 d-flex">
-    <div class="container-search col-6 ps-5 pt-5">
+  <div class="col-12 d-flex container-prm-search">
+    <div class="container-search">
       <app-search-service-point [searchType]="this.servicePointSearch"></app-search-service-point>
     </div>
   </div>
-  <div class="col-12 d-flex">
+  <div *ngIf="isPrmHome" class="col-12 d-flex">
     <div class="info-box-container">
       <app-prm-info-box></app-prm-info-box>
     </div>
   </div>
+</div>
+<div style="padding-top: 90px">
+  <router-outlet></router-outlet>
 </div>
