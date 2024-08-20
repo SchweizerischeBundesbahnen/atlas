@@ -1,7 +1,5 @@
 package ch.sbb.atlas.api.servicepoint;
 
-import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
-
 public interface TransformableGeolocation {
 
   SpatialReference getSpatialReference();

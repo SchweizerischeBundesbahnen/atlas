@@ -1,6 +1,6 @@
 package ch.sbb.importservice.repository;
 
-import ch.sbb.atlas.imports.servicepoint.enumeration.ItemImportResponseStatus;
+import ch.sbb.atlas.imports.ItemImportResponseStatus;
 import ch.sbb.importservice.entity.ImportProcessItem;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
