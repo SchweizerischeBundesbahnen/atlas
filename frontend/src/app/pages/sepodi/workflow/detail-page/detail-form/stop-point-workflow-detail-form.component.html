@@ -192,6 +192,18 @@
           </div>
           <div class="col" [title]="examinant.controls.mail.value ?? ''">
             <atlas-text-field [formGroup]="examinant" controlName="mail"></atlas-text-field>
+            <!-- Display duplicate email error only for the last added email field -->
+            <div
+              *ngIf="
+              i === form.controls.examinants.controls.length - 1 &&
+              form.get('examinants')?.errors?.duplicateEmail
+            "
+              class="font-regular-sm"
+            >
+              {{
+              'VALIDATION.DUPLICATEEMAIL' | translate: { emails: form.get('examinants')?.errors?.duplicateEmail.emails[i] }
+              }}
+            </div>
           </div>
           @if (currentWorkflow?.status !== WorkflowStatus.Added && form.disabled) {
             <div class="decision-icon-col pe-2">
