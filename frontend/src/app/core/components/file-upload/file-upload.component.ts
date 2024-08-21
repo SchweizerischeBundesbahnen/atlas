@@ -8,6 +8,8 @@ import { FileUploadError } from './file-upload-error';
 })
 export class FileUploadComponent {
   @Input() acceptedFileExtension!: string;
+
+  //TODO: umbauen zu liste, weil unten .
   @Input() acceptedFileType!: string;
   @Input() maxFileSize!: number;
   @Input() maxFileCount!: number;
@@ -54,6 +56,7 @@ export class FileUploadComponent {
   }
 
   private validateFile(file: File) {
+    console.log("file ", file)
     if (file.type !== this.acceptedFileType) {
       this.addFileError(file, 'COMMON.FILEUPLOAD.ERROR.TYPE');
       return false;
