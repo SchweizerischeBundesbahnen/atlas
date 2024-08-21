@@ -37,6 +37,7 @@ export class BulkImportOverviewComponent implements OnInit {
 
   form!: FormGroup<BulkImportFormGroup>;
   isUserSelectEnabled = false;
+
   uploadedFiles: File[] = [];
 
   userName: string | undefined;
