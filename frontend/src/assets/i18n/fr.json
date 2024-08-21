@@ -249,7 +249,7 @@
     "INTEGER_WITH_FRACTION": "Entrez un nombre décimal comprenant jusqu'à {{maxDecimalDigits}} chiffres et jusqu'à {{maxFractionDigits}} décimales.",
     "COLON_SEPERATED_SID4PT": "Utilisez le jeu de caractères SID4PT (-._0-9a-zA-Z) avec des deux-points séparant exactement {{numbersWithColons}}.",
     "DECISION_COMMENT_REQUIRED": "La justification est nécessaire",
-    "DUPLICATEEMAIL": "E-mail déjà existant. Veuillez vérifier si le destinataire est déjà saisi ou modifier l'adresse e-mail."
+    "DUPLICATE_EMAIL": "E-mail déjà existant. Veuillez vérifier si le destinataire est déjà saisi ou modifier l'adresse e-mail."
   },
   "USER_ADMIN": {
     "SEARCH_FOR_FILTER": "Organisations commerciales et Applications",
