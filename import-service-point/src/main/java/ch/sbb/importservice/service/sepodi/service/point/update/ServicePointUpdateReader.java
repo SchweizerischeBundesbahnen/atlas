@@ -1,6 +1,6 @@
 package ch.sbb.importservice.service.sepodi.service.point.update;
 
-import ch.sbb.importservice.service.bulk.reader.AtlasCsvReader;
+import ch.sbb.importservice.service.bulk.reader.BulkImportCsvReader;
 import ch.sbb.atlas.imports.bulk.BulkImportContainer;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
@@ -17,7 +17,7 @@ public class ServicePointUpdateReader extends ServicePointUpdate implements Bulk
 
   @Override
   public List<BulkImportContainer> apply(File file) {
-    List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> servicePointUpdateCsvModels = AtlasCsvReader.readLinesFromFileWithNullingValue(file, ServicePointUpdateCsvModel.class);
+    List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> servicePointUpdateCsvModels = BulkImportCsvReader.readLinesFromFileWithNullingValue(file, ServicePointUpdateCsvModel.class);
 
     log.info("Read {} lines to import", servicePointUpdateCsvModels.size());
     return servicePointUpdateCsvModels.stream().collect(Collectors.toUnmodifiableList());
