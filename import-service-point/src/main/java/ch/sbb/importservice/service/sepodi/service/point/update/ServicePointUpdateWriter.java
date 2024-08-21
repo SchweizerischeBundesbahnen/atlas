@@ -29,5 +29,6 @@ public class ServicePointUpdateWriter extends ServicePointUpdate implements Bulk
     List<ItemImportResult> importResult = servicePointBulkImportClient.bulkImportUpdate(updateContainers);
 
     // itemResult to log file
+    log.info("Import result: {}", importResult);
   }
 }
