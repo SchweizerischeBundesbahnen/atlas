@@ -8,27 +8,34 @@ import {
   ImportType, InlineObject9,
   UserAdministrationService
 } from "../../../api";
+import {PermissionService} from "../../../core/auth/permission/permission.service";
 
 @Component({
   templateUrl: './bulk-import-overview.component.html'
 })
 export class BulkImportOverviewComponent implements OnInit{
   form!: FormGroup<BulkImportFormGroup>;
-
+  isUserSelectEnabled = false;
   uploadedFiles: File[] = [];
   userName: string | undefined;
-  optionsApplication: string[] = [ApplicationType.Sepodi, ApplicationType.Prm];
-  optionsObject: string[] = [BusinessObjectType.StopPoint, BusinessObjectType.LoadingPoint];
-  optionsScenario: string[] = [ImportType.Create, ImportType.Terminate];
+  optionsApplication: string[] = Object.values([ApplicationType.Sepodi, ApplicationType.Prm]);
+  optionsObject: string[] = Object.values([BusinessObjectType.StopPoint, BusinessObjectType.LoadingPoint]);
+  optionsScenario: string[] = Object.values([ImportType.Create, ImportType.Terminate]);
+  isAdmin = false;
 
   constructor(private userAdministrationService: UserAdministrationService,
+              private permissionService: PermissionService,
               private bulkImportService: BulkImportService) {
   }
 
   ngOnInit(): void {
     this.form = BulkImportFormGroupBuilder.initFormGroup();
+    console.log("isAdmin before ", this.isAdmin)
+    this.isAdmin = this.permissionService.isAdmin;
+    console.log("isAdmin after ", this.isAdmin)
     this.userAdministrationService.getCurrentUser().subscribe((user) => {
       this.userName = this.removeDepartment(user.displayName);
+      console.log("user ", user)
     });
   }
 
@@ -48,8 +55,21 @@ export class BulkImportOverviewComponent implements OnInit{
       ImportType.Create,
       { file: this.uploadedFiles[0] } as InlineObject9
     );
+  }
+
+  enableUserSelect(isEnabled: boolean) {
+    this.isUserSelectEnabled = isEnabled;
+  }
+
+  back(){
 
   }
+
+  test() {
+    console.log("this.form ", this.form.controls)
+    console.log("uploaded files ", this.uploadedFiles)
+  }
+
   //TODO: Method to start workflow
 
 
