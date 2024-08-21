@@ -21,7 +21,7 @@ class BulkImportCsvReaderTest {
 
     assertThat(servicePointUpdates).hasSize(1);
     assertThat(servicePointUpdates.getFirst().getAttributesToNull()).containsExactly("height");
-    assertThat(servicePointUpdates.getFirst().getObject().getMeansOfTransport()).containsExactly(MeanOfTransport.TRAIN,
+    assertThat(servicePointUpdates.getFirst().getObject().getMeansOfTransport()).containsExactlyInAnyOrder(MeanOfTransport.TRAIN,
         MeanOfTransport.BUS);
   }
 }
