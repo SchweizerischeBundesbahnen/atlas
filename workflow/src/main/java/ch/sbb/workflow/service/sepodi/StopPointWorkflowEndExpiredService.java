@@ -27,8 +27,6 @@ public class StopPointWorkflowEndExpiredService {
   private final StopPointWorkflowNotificationService notificationService;
   private final StopPointWorkflowService stopPointWorkflowService;
 
-  static final int WORKFLOW_EXPIRATION_IN_DAYS = StopPointWorkflowTransitionService.WORKFLOW_DURATION_IN_DAYS + 1;
-
   /**
    * Authorization for this method is delegated to ServicePointService#update()
    */
@@ -56,6 +54,9 @@ public class StopPointWorkflowEndExpiredService {
     examiants.forEach(stopPointWorkflowService::voteExpiredWorkflowDecision);
     notificationService.sendApprovedStopPointWorkflowMail(stopPointWorkflow);
     stopPointWorkflow.setStatus(WorkflowStatus.APPROVED);
+    if (stopPointWorkflow.getEndDate().plusDays(1).isBefore(LocalDate.now())) {
+      stopPointWorkflow.setEndDate(LocalDate.now());
+    }
     stopPointWorkflowService.save(stopPointWorkflow);
     log.info("#### Expired workflow without JudgmentType.NO successfully closed: [id:{},startDate:{},endDate:{},status:{}]",
         stopPointWorkflow.getId(), stopPointWorkflow.getStartDate(), stopPointWorkflow.getEndDate(),
@@ -66,9 +67,7 @@ public class StopPointWorkflowEndExpiredService {
     List<StopPointWorkflow> workflowsInHearing = stopPointWorkflowService.findWorkflowsInHearing();
     log.info("## Found {} in Hearing...", workflowsInHearing.size());
     List<StopPointWorkflow> expiredWorkflows = workflowsInHearing.stream()
-        .filter(
-            stopPointWorkflow -> LocalDate.now().isAfter(stopPointWorkflow.getStartDate().plusDays(WORKFLOW_EXPIRATION_IN_DAYS)))
-        .toList();
+        .filter(stopPointWorkflow -> stopPointWorkflow.getEndDate().isBefore(LocalDate.now())).toList();
     log.info("## Found {} workflow(s) expired ...", expiredWorkflows.size());
     return expiredWorkflows;
   }
