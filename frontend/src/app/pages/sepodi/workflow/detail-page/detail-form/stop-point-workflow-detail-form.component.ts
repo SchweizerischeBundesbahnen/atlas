@@ -67,7 +67,7 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
         mail: ''
       };
       this.listOfExaminants.push(emptyExaminant);
-      this.form.setControl('examinants', this.createExaminantsFormArray(this.listOfExaminants));
+      (this.form.controls.examinants as FormArray) = this.createExaminantsFormArray(this.listOfExaminants);
       this.form.controls.examinants.setValidators(UniqueEmailsValidator.uniqueEmails()); // this is the one which validates correctly
     }
     if(this.currentWorkflow){

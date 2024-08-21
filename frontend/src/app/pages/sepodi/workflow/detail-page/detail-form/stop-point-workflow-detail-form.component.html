@@ -208,16 +208,10 @@
               [readonly]="i < 2"
             ></atlas-text-field>
 
-            <div
-              *ngIf="
-              i === form.controls.examinants.controls.length - 1 &&
-              form.get('examinants')?.errors?.duplicateEmail
-            "
-              class="font-regular-sm"
-            >
-              {{
-              'VALIDATION.DUPLICATEEMAIL' | translate: { emails: form.get('examinants')?.errors?.duplicateEmail.emails[i] }
-              }}
+            <div *ngIf="i === form.controls.examinants.controls.length - 1 &&
+              form.controls.examinants?.errors?.duplicateEmail"
+              class="font-regular-sm">
+              {{ 'VALIDATION.DUPLICATE_EMAIL' | translate }}
             </div>
           </div>
           @if (currentWorkflow?.status !== WorkflowStatus.Added && form.disabled) {
