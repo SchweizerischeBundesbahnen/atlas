@@ -26,8 +26,7 @@ public class BulkImportCsvReader {
       for (int lineNumber = 0; scanner.hasNext(); lineNumber++) {
         String line = scanner.nextLine();
         if (lineNumber == 0) {
-          header = line;
-          header += "\n";
+          header = line + "\n";
         } else {
           mappedObjects.add(readObject(clazz, header, line, lineNumber));
         }
@@ -43,7 +42,7 @@ public class BulkImportCsvReader {
       throws IOException {
     List<String> toNullAttributes = calculateAttributesToNull(header, line);
 
-    line = line.replaceAll(NULLING_VALUE, "");
+    line = line.replace(NULLING_VALUE, "");
 
     try (MappingIterator<T> mappingIterator = AtlasCsvReader.CSV_MAPPER
         .registerModule(PipedSetDeserializer.module())
