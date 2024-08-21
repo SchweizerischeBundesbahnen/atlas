@@ -1,11 +1,9 @@
 package ch.sbb.importservice.service.bulk.reader;
 
 import ch.sbb.atlas.exception.CsvException;
+import ch.sbb.atlas.imports.bulk.AtlasCsvReader;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import com.fasterxml.jackson.databind.MappingIterator;
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvParser.Feature;
-import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,13 +13,8 @@ import java.util.Scanner;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class AtlasCsvReader {
+public class BulkImportCsvReader {
 
-  public static final CsvMapper CSV_MAPPER = new CsvMapper().enable(Feature.EMPTY_STRING_AS_NULL);
-
-  public static final CsvSchema CSV_SCHEMA = CsvSchema.emptySchema()
-      .withHeader()
-      .withColumnSeparator(';');
   public static final String NULLING_VALUE = "<null>";
 
   public <T> List<BulkImportUpdateContainer<T>> readLinesFromFileWithNullingValue(File file, Class<T> clazz) {

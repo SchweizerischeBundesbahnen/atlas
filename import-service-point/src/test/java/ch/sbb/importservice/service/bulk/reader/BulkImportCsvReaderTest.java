@@ -11,12 +11,12 @@ import java.util.Objects;
 import org.junit.jupiter.api.Test;
 
 @IntegrationTest
-class AtlasCsvReaderTest {
+class BulkImportCsvReaderTest {
 
   @Test
   void shouldAcceptGenericBulkImportWithFile() {
     File file = new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource("service-point-update.csv")).getFile());
-    List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> servicePointUpdates = AtlasCsvReader.readLinesFromFileWithNullingValue(file, ServicePointUpdateCsvModel.class);
+    List<BulkImportUpdateContainer<ServicePointUpdateCsvModel>> servicePointUpdates = BulkImportCsvReader.readLinesFromFileWithNullingValue(file, ServicePointUpdateCsvModel.class);
 
     assertThat(servicePointUpdates).hasSize(1);
     assertThat(servicePointUpdates.getFirst().getAttributesToNull()).containsExactly("height");
