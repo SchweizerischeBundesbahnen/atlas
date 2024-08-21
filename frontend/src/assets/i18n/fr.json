@@ -179,7 +179,20 @@
       "TITLE": "Importation de données par fichier",
       "TITLE_MENU": "Importation en masse",
       "DESCRIPTION": "Traiter les données en masse par fileupload (*.csv ou Excel).",
-      "PATH_TEXT": "Importation en masse"
+      "PATH_TEXT": "Importation en masse",
+      "APPLICATION": "Applikation",
+      "SEPODI": "Dienststellen",
+      "PRM": "BehiG",
+      "OBJECT": "Objekt",
+      "STOP_POINT": "Haltestelle",
+      "LOADING_POINT": "Ladestelle",
+      "SCENARIO": "Szenario",
+      "CREATE": "Erfassung",
+      "TERMINATE": "Terminierung",
+      "MUTATION": "MUTATION",
+      "IMPORT_EXECUTED_BY": "Import wird durchgeführt durch:",
+      "IMPORT_FOR_SOMEONE_ELSE": "Ich importiere für jemanden anders.",
+      "ADDITIONAL_IMPORT_REPORT": "Zusätzlicher Empfänger Importbericht"
     },
     "LIDI": {
       "TITLE": "Gérer des lignes et lignes partielles",
