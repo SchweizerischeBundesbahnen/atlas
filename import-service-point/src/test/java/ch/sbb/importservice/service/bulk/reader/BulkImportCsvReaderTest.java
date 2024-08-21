@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel;
+import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
@@ -20,5 +21,7 @@ class BulkImportCsvReaderTest {
 
     assertThat(servicePointUpdates).hasSize(1);
     assertThat(servicePointUpdates.getFirst().getAttributesToNull()).containsExactly("height");
+    assertThat(servicePointUpdates.getFirst().getObject().getMeansOfTransport()).containsExactly(MeanOfTransport.TRAIN,
+        MeanOfTransport.BUS);
   }
 }
