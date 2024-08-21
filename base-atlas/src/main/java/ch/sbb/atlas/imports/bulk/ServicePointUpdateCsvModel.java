@@ -11,6 +11,7 @@ import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Set;
 import lombok.AllArgsConstructor;
@@ -31,7 +32,7 @@ import lombok.experimental.FieldNameConstants;
 @JsonPropertyOrder({Fields.sloid, Fields.number, Fields.validFrom, Fields.validTo, Fields.designationOfficial,
     Fields.designationLong, Fields.stopPointType, Fields.freightServicePoint, Fields.operatingPointType,
     Fields.operatingPointTechnicalTimetableType, Fields.meansOfTransport, Fields.categories,
-    Fields.operatingPointTrafficPointType, Fields.sortCodeOfDestinationStation, Fields.businessOrganisation, Fields.fotComment,
+    Fields.operatingPointTrafficPointType, Fields.sortCodeOfDestinationStation, Fields.businessOrganisation,
     Fields.east, Fields.north, Fields.spatialReference, Fields.height})
 public class ServicePointUpdateCsvModel implements BulkImportContainer {
 
@@ -39,9 +40,11 @@ public class ServicePointUpdateCsvModel implements BulkImportContainer {
 
   private Integer number;
 
+  @NotNull
   @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate validFrom;
 
+  @NotNull
   @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate validTo;
 
@@ -66,8 +69,6 @@ public class ServicePointUpdateCsvModel implements BulkImportContainer {
   private String sortCodeOfDestinationStation;
 
   private String businessOrganisation;
-
-  private String fotComment;
 
   private Double east;
 
