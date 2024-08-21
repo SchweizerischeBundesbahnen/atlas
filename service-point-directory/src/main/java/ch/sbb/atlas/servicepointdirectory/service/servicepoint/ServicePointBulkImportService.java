@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ServicePointBulkImportService {
 
   private final ServicePointService servicePointService;
+  private final ServicePointFotCommentService servicePointFotCommentService;
 
   public void updateServicePoint(BulkImportUpdateContainer<ServicePointUpdateCsvModel> bulkImportContainer) {
     ServicePointUpdateCsvModel servicePointUpdate = bulkImportContainer.getObject();
