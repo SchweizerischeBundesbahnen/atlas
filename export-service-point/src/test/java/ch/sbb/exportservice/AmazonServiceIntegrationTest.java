@@ -49,6 +49,21 @@ class AmazonServiceIntegrationTest {
   }
 
   @Test
+  void shouldUploadAndStreamCsvCorrectly() throws IOException {
+    // Upload
+    File file = getMinimalServicePointCsvFile();
+
+    URL url = amazonService.putFile(AmazonBucket.EXPORT, file, INTEGRATION_TEST_DIR);
+    assertThat(url.toString()).isEqualTo(
+        "https://atlas-data-export-dev-dev.s3.eu-central-1.amazonaws.com/" + INTEGRATION_TEST_DIR + "/" + CSV_FILE);
+
+    // Stream
+    InputStreamResource stream = amazonService.pullFileAsStream(AmazonBucket.EXPORT, INTEGRATION_TEST_DIR + "/" + CSV_FILE);
+
+    assertThat(stream.getInputStream().readAllBytes().length).isEqualTo(file.length());
+  }
+
+  @Test
   void shouldUploadZippedCsvCorrectly() throws IOException {
     File file = getMinimalServicePointCsvFile();
 
