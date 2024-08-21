@@ -52,7 +52,7 @@ public class ServicePointBulkImportUpdate {
 
     ServicePointGeolocation servicePointGeolocation =
         editedVersion.getServicePointGeolocation() == null ? new ServicePointGeolocation()
-            : editedVersion.getServicePointGeolocation();
+            : editedVersion.getServicePointGeolocation().toBuilder().build();
 
     applyUpdateIfValueNotNull(update.getNorth(), servicePointGeolocation::setNorth);
     applyUpdateIfValueNotNull(update.getEast(), servicePointGeolocation::setEast);

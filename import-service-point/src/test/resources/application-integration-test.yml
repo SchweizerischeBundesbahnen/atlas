@@ -59,7 +59,7 @@ auth:
 
 logging:
   level:
-    root: INFO
+    root: ERROR
     org:
       hibernate: ERROR
       jboss: ERROR
