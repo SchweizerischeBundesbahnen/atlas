@@ -11,12 +11,6 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ImportUtils {
 
-  private static final String EDITION_DATE_FIELD_NAME = "editionDate";
-  private static final String EDITOR_FIELD_NAME = "editor";
-  public static final LocalDate DIDOK_HIGEST_DATE = LocalDate.of(2099, 12, 31);
-  public static final LocalDate ATLAS_HIGHEST_DATE = LocalDate.of(9999, 12, 31);
-
-
   public <T extends Versionable> T getCurrentVersion(List<T> dbVersions, LocalDate editedValidFrom,
       LocalDate editedValidTo) {
     dbVersions.sort(Comparator.comparing(Versionable::getValidFrom));
