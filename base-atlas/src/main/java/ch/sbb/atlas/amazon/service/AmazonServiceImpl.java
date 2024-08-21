@@ -80,12 +80,8 @@ public class AmazonServiceImpl implements AmazonService {
 
   @Override
   public InputStreamResource pullFileAsStream(AmazonBucket bucket, String filePath) {
-    try (InputStream s3Object = pullS3Object(bucket, filePath)) {
-      return new InputStreamResource(s3Object);
-    } catch (IOException e) {
-      log.error("AmazonS3Exception occurred! filePath={}, bucket={}", filePath, bucket, e);
-      throw new FileException("There was a problem with downloading filePath=" + filePath, e);
-    }
+    InputStream s3Object = pullS3Object(bucket, filePath);
+    return new InputStreamResource(s3Object);
   }
 
   private static File getFile(String filePath, InputStream s3Content, String dir) {
