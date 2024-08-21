@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.api.model.ErrorResponse;
 import ch.sbb.atlas.api.servicepoint.CreateTrafficPointElementVersionModel;
 import ch.sbb.atlas.api.servicepoint.ReadTrafficPointElementVersionModel;
@@ -29,6 +30,7 @@ import ch.sbb.atlas.servicepointdirectory.repository.TrafficPointElementVersionR
 import ch.sbb.atlas.servicepointdirectory.service.CrossValidationService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -155,7 +157,8 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldGetTrafficPointElementVersionsByCreatedAfter() throws Exception {
     LocalDateTime creationTime = trafficPointElementVersion.getCreationDate().minusSeconds(1).truncatedTo(ChronoUnit.SECONDS);
-    mvc.perform(get("/v1/traffic-point-elements?createdAfter=" + creationTime)).andExpect(status().isOk())
+    mvc.perform(get("/v1/traffic-point-elements?createdAfter=" + creationTime.format(
+            DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)))).andExpect(status().isOk())
         .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
         .andExpect(jsonPath("$.totalCount", is(1)));
   }
@@ -163,7 +166,8 @@ class TrafficPointElementControllerApiTest extends BaseControllerApiTest {
   @Test
   void shouldGetTrafficPointElementVersionsByModifiedAfter() throws Exception {
     LocalDateTime modificationTime = trafficPointElementVersion.getEditionDate().minusSeconds(1).truncatedTo(ChronoUnit.SECONDS);
-    mvc.perform(get("/v1/traffic-point-elements?modifiedAfter=" + modificationTime)).andExpect(status().isOk())
+    mvc.perform(get("/v1/traffic-point-elements?modifiedAfter=" + modificationTime.format(
+            DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_TIME_FORMAT_PATTERN)))).andExpect(status().isOk())
         .andExpect(jsonPath("$.objects[0]." + Fields.id, is(trafficPointElementVersion.getId().intValue())))
         .andExpect(jsonPath("$.totalCount", is(1)));
   }
