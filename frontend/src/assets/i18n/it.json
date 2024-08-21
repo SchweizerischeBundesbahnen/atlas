@@ -179,7 +179,20 @@
       "TITLE": "Importazione dei dati per file",
       "TITLE_MENU": "Importazione di massa",
       "DESCRIPTION": "Elaborazione di dati di massa con l'upload di file (*.csv o Excel).",
-      "PATH_TEXT": "Importazione di massa"
+      "PATH_TEXT": "Importazione di massa",
+      "APPLICATION": "Applikation",
+      "SEPODI": "Dienststellen",
+      "PRM": "BehiG",
+      "OBJECT": "Objekt",
+      "STOP_POINT": "Haltestelle",
+      "LOADING_POINT": "Ladestelle",
+      "SCENARIO": "Szenario",
+      "CREATE": "Erfassung",
+      "TERMINATE": "Terminierung",
+      "MUTATION": "MUTATION",
+      "IMPORT_EXECUTED_BY": "Import wird durchgeführt durch:",
+      "IMPORT_FOR_SOMEONE_ELSE": "Ich importiere für jemanden anders.",
+      "ADDITIONAL_IMPORT_REPORT": "Zusätzlicher Empfänger Importbericht"
     },
     "LIDI": {
       "TITLE": "Gestione dei numeri dell'elenco delle linee",
