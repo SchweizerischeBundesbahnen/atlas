@@ -206,12 +206,17 @@
               [formGroup]="examinant"
               controlName="mail"
               [readonly]="i < 2"
+              [customInputNgStyle]="getCustomStyle(i)"
             ></atlas-text-field>
 
-            <div *ngIf="i === form.controls.examinants.controls.length - 1 &&
-              form.controls.examinants?.errors?.duplicateEmail"
-              class="font-regular-sm">
-              {{ 'VALIDATION.DUPLICATE_EMAIL' | translate }}
+            <div
+              *ngIf="i === form.controls.examinants.controls.length - 1 && form.controls.examinants?.errors?.duplicateEmail"
+              [ngClass]="{'red-text': form.controls.examinants.errors?.duplicateEmail}"
+            >
+              <span class="font-regular-sm">
+                  {{ 'VALIDATION.DUPLICATE_EMAIL' | translate }}
+              </span>
+
             </div>
           </div>
           @if (currentWorkflow?.status !== WorkflowStatus.Added && form.disabled) {
