@@ -61,7 +61,7 @@ public class AmazonServiceImpl implements AmazonService {
         .contentType(CONTENT_TYPE_GZIP)
         .contentLength(zipFile.length())
         .build();
-    URL url = executePutObjectRequest(putObjectRequest, bucket, filePathName, RequestBody.fromFile(file));
+    URL url = executePutObjectRequest(putObjectRequest, bucket, filePathName, RequestBody.fromFile(zipFile));
 
     Files.deleteIfExists(file.toPath());
     Files.deleteIfExists(zipFile.toPath());
