@@ -9,6 +9,7 @@ import ch.sbb.workflow.entity.JudgementType;
 import ch.sbb.workflow.entity.Person;
 import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.exception.StopPointWorkflowAlreadyInAddedStatusException;
+import ch.sbb.workflow.exception.StopPointWorkflowExaminantEmailNotUniqueException;
 import ch.sbb.workflow.exception.StopPointWorkflowNotInHearingException;
 import ch.sbb.workflow.exception.StopPointWorkflowStatusMustBeAddedException;
 import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
@@ -16,11 +17,15 @@ import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
+import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
+import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -103,6 +108,17 @@ public class StopPointWorkflowService {
   public void checkHasWorkflowAdded(Long versionId) {
     if (!workflowRepository.findAllByVersionIdAndStatus(versionId, WorkflowStatus.ADDED).isEmpty()) {
       throw new StopPointWorkflowAlreadyInAddedStatusException();
+    }
+  }
+
+  public void checkIfAllExaminantEmailsAreUnique(StopPointAddWorkflowModel stopPointAddWorkflowModel) {
+    List<StopPointClientPersonModel> examinants = stopPointAddWorkflowModel.getExaminants();
+    Set<String> emailSet = new HashSet<>();
+    for (StopPointClientPersonModel examinant : examinants) {
+      String email = examinant.getMail().toLowerCase();
+      if (!emailSet.add(email)) {
+          throw new StopPointWorkflowExaminantEmailNotUniqueException();
+      }
     }
   }
 

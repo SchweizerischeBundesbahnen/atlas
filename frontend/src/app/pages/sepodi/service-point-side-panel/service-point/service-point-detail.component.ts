@@ -344,6 +344,5 @@ export class ServicePointDetailComponent implements OnDestroy, DetailFormCompone
     this.stopPointWorkflowService.getExaminants(this.selectedVersion!.id!).subscribe(response => {
       this.addStopPointWorkflowDialogService.openDialog(this.selectedVersion!, response);
     });
-    // this.addStopPointWorkflowDialogService.openDialog(this.selectedVersion!);
   }
 }
