@@ -7,9 +7,6 @@ export class UniqueEmailsValidator {
       if (!(formArray instanceof FormArray)) {
         throw new Error('UniqueEmailsValidator must be used with a FormArray');
       }
-      console.log("Here is unique Emails validator aufgerufen.")
-      console.log(formArray);
-      console.log("End from form Array")
 
       const emailSet = new Set<string>();
 
@@ -18,12 +15,14 @@ export class UniqueEmailsValidator {
         const email = emailControl?.value;
         if (email) {
           const lowerCaseEmail = email.toLowerCase();
-          if (lowerCaseEmail) {
-            if (emailSet.has(lowerCaseEmail)) {
-              return { duplicateEmail: { emails: [lowerCaseEmail] } };
-            }
-            emailSet.add(lowerCaseEmail);
+
+          if (emailSet.has(lowerCaseEmail)) {
+            const error: ValidationErrors = {
+              duplicateEmail: lowerCaseEmail
+            };
+            return error;
           }
+          emailSet.add(lowerCaseEmail);
         }
       }
 

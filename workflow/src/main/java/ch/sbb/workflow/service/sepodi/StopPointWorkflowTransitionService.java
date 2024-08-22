@@ -50,6 +50,7 @@ public class StopPointWorkflowTransitionService {
   @MethodLogged(workflowType = LoggingAspect.ADD_WORKFLOW)
   public StopPointWorkflow addWorkflow(StopPointAddWorkflowModel stopPointAddWorkflowModel) {
     stopPointWorkflowService.checkHasWorkflowAdded(stopPointAddWorkflowModel.getVersionId());
+    stopPointWorkflowService.checkIfAllExaminantEmailsAreUnique(stopPointAddWorkflowModel);
     ReadServicePointVersionModel servicePointVersionModel = sePoDiClientService.updateStopPointStatusToInReview(
         stopPointAddWorkflowModel.getSloid(), stopPointAddWorkflowModel.getVersionId());
     StopPointWorkflow stopPointWorkflow = createStopPointAddWorkflow(stopPointAddWorkflowModel, servicePointVersionModel);
@@ -170,9 +171,6 @@ public class StopPointWorkflowTransitionService {
 
   private StopPointWorkflow createStopPointAddWorkflow(StopPointAddWorkflowModel workflowStartModel,
       ReadServicePointVersionModel servicePointVersionModel) {
-//    SwissCanton swissCanton = servicePointVersionModel.getServicePointGeolocation().getSwissLocation().getCanton();
-//    List<StopPointClientPersonModel> personModels = examinants.getExaminants(swissCanton);
-//    return StopPointWorkflowMapper.addStopPointWorkflowToEntity(workflowStartModel, servicePointVersionModel, personModels);
     return StopPointWorkflowMapper.addStopPointWorkflowToEntity(workflowStartModel, servicePointVersionModel);
   }
 

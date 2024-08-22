@@ -4,6 +4,7 @@ import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.api.servicepoint.UpdateDesignationOfficialServicePointModel;
 import ch.sbb.atlas.model.Status;
 import ch.sbb.atlas.model.exception.AtlasException;
+import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.workflow.client.SePoDiAdminClient;
 import ch.sbb.workflow.client.SePoDiClient;
 import ch.sbb.workflow.entity.StopPointWorkflow;
@@ -32,12 +33,12 @@ public class SePoDiClientService {
   }
 
   public ReadServicePointVersionModel getServicePointById(Long id) {
-    ReadServicePointVersionModel updateServicePointVersionModel = sePoDiClient.getServicePointById(
-        id);
-//    if (updateServicePointVersionModel != null && Status.IN_REVIEW != updateServicePointVersionModel.getStatus()) {
-//      throw new SePoDiClientWrongStatusReturnedException(Status.IN_REVIEW, updateServicePointVersionModel.getStatus());
-//    }
-    return updateServicePointVersionModel;
+    try {
+      return sePoDiClient.getServicePointById(id);
+    } catch (IdNotFoundException e) {
+      log.error("!!!! Something went wrong when calling SePoDi API: \n{}", e.getErrorResponse());
+      return null;
+    }
   }
 
   public ReadServicePointVersionModel updateStopPointStatusToDraft(StopPointWorkflow stopPointWorkflow) {
