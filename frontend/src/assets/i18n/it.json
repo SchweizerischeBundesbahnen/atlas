@@ -618,6 +618,7 @@
       "PIN_CODE_INVALID": "Il codice PIN inserito non è corretto o non è più valido.",
       "WRONG_CHANGING_STATUS": "I dati visualizzati sono stati modificati nel frattempo. Ricarichi il browser (F5).",
       "WORKFLOW_STATUS_MUST_BE_ADDED": "Lo stato dell'audizione deve essere 'Inizializzato'.",
+      "EMAIL_MUST_BE_UNIQUE": "L'email deve essere univoca per tutti gli esaminatori.",
       "NOT_IN_HEARING": "L'audizione in corso non ha più lo stato \"In audizione\"."
     },
     "DECISION": {

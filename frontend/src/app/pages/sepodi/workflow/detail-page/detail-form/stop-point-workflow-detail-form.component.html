@@ -213,7 +213,7 @@
               *ngIf="i === form.controls.examinants.controls.length - 1 && form.controls.examinants?.errors?.duplicateEmail"
               [ngClass]="{'red-text': form.controls.examinants.errors?.duplicateEmail}"
             >
-              <span class="font-regular-sm">
+              <span class="font-regular-sm" style="font-size: 0.75em !important;">
                   {{ 'VALIDATION.DUPLICATE_EMAIL' | translate }}
               </span>
 
