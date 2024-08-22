@@ -2,7 +2,7 @@ package ch.sbb.atlas.servicepoint.transformer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.model.DoubleAssertion;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import org.junit.jupiter.api.Test;
