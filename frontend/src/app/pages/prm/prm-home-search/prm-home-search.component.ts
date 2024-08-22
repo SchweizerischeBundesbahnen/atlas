@@ -19,11 +19,14 @@ export class PrmHomeSearchComponent {
   }
 
   constructor(private router: Router) {
-    router.events.pipe(
+    this.navigationEvent();
+  }
+
+  navigationEvent() {
+    this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
       this._isPrmHome = event.url === '/' + Pages.PRM.path;
     });
   }
-
 }
