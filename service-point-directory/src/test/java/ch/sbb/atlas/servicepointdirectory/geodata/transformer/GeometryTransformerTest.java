@@ -2,7 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.geodata.transformer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import java.util.Map;
 import org.assertj.core.data.Offset;

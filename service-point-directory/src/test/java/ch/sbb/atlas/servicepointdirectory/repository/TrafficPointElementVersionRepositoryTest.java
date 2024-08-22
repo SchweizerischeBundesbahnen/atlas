@@ -2,7 +2,7 @@ package ch.sbb.atlas.servicepointdirectory.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.model.controller.IntegrationTest;
 import ch.sbb.atlas.servicepoint.ServicePointNumber;
 import ch.sbb.atlas.servicepoint.enumeration.TrafficPointElementType;

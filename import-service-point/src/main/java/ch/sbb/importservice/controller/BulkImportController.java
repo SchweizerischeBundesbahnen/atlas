@@ -6,7 +6,7 @@ import ch.sbb.atlas.service.UserService;
 import ch.sbb.importservice.entity.BulkImport;
 import ch.sbb.importservice.model.BusinessObjectType;
 import ch.sbb.importservice.model.ImportType;
-import ch.sbb.importservice.service.BulkImportService;
+import ch.sbb.importservice.service.bulk.BulkImportService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
