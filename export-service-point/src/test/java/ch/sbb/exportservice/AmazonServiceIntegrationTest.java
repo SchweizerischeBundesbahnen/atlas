@@ -15,9 +15,12 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.ZipInputStream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 
 @IntegrationTest
 class AmazonServiceIntegrationTest {
@@ -50,6 +53,11 @@ class AmazonServiceIntegrationTest {
     File file = getMinimalServicePointCsvFile();
 
     URL url = amazonService.putZipFile(AmazonBucket.EXPORT, file, INTEGRATION_TEST_DIR);
+    InputStreamResource inputStreamResource = amazonService.pullFileAsStream(AmazonBucket.EXPORT,
+        INTEGRATION_TEST_DIR + "/" + CSV_FILE + ".zip");
+    //check is a zip file
+    assertThat(new ZipInputStream(inputStreamResource.getInputStream()).getNextEntry()).isNotNull();
+
     assertThat(url.toString()).isEqualTo(
         "https://atlas-data-export-dev-dev.s3.eu-central-1.amazonaws.com/" + INTEGRATION_TEST_DIR + "/" + CSV_FILE +
             ".zip");
@@ -57,9 +65,17 @@ class AmazonServiceIntegrationTest {
 
   @Test
   void shouldUploadGzipJsonCorrectly() throws IOException {
+    //given
     File file = getMinimalServicePointJsonFile();
 
+    //when
     URL url = amazonService.putGzipFile(AmazonBucket.EXPORT, file, INTEGRATION_TEST_DIR);
+
+    //then
+    //check is a gz file
+    InputStreamResource inputStreamResource = amazonService.pullFileAsStream(AmazonBucket.EXPORT,
+        INTEGRATION_TEST_DIR + "/" + JSON_FILE + ".gz");
+    assertThat(new GZIPInputStream(inputStreamResource.getInputStream()).readAllBytes()).isNotNull();
     assertThat(url.toString()).isEqualTo(
         "https://atlas-data-export-dev-dev.s3.eu-central-1.amazonaws.com/" + INTEGRATION_TEST_DIR + "/" + JSON_FILE + ".gz");
   }
