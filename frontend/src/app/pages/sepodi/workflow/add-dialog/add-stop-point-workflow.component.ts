@@ -69,7 +69,6 @@ export class AddStopPointWorkflowComponent implements OnInit {
   addWorkflow() {
     this.form.controls.examinants.setValidators(UniqueEmailsValidator.uniqueEmails());
     ValidationService.validateForm(this.form);
-    // this.form.updateValueAndValidity();
     if (this.form.valid) {
       const workflow: StopPointAddWorkflow = {
         applicantMail: this.userService.currentUser!.email,

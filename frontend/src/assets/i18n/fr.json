@@ -618,6 +618,7 @@
       "PIN_CODE_INVALID": "Le code PIN saisi est incorrect ou n'est plus valable.",
       "WRONG_CHANGING_STATUS": "Les données affichées ont été traitées entre-temps. Veuillez recharger votre browser (F5).",
       "WORKFLOW_STATUS_MUST_BE_ADDED": "Le statut de l'audition doit être 'Saisi'.",
+      "EMAIL_MUST_BE_UNIQUE": "L'e-mail doit être unique parmi les examinateurs.",
       "NOT_IN_HEARING": "L'audition en cours n'a plus le statut 'En audition'."
     },
     "DECISION": {

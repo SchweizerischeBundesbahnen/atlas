@@ -618,6 +618,7 @@
       "PIN_CODE_INVALID": "Der eingetragene PIN-Code ist nicht korrekt oder nicht mehr gültig.",
       "WRONG_CHANGING_STATUS": "Die angezeigten Daten wurden inzwischen bearbeitet. Bitte laden Sie ihren Browser neu (F5).",
       "WORKFLOW_STATUS_MUST_BE_ADDED": "Workflow Status muss 'Erfasst' sein.",
+      "EMAIL_MUST_BE_UNIQUE": "Die E-Mail-Adresse muss unter allen Prüfern eindeutig sein.",
       "NOT_IN_HEARING": "Die aktuelle Anhörung ist nicht mehr im Status 'In Anhörung'"
     },
     "DECISION": {
