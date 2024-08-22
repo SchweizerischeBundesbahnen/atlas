@@ -28,7 +28,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @ToString(exclude = "servicePointVersion")
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @FieldNameConstants
 @AtlasVersionable
 @Entity(name = "service_point_version_geolocation")
