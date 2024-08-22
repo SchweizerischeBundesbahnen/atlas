@@ -1,6 +1,6 @@
 package ch.sbb.exportservice.entity.sepodi.geolocation;
 
-import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.exportservice.entity.BaseEntity;
 import jakarta.persistence.MappedSuperclass;

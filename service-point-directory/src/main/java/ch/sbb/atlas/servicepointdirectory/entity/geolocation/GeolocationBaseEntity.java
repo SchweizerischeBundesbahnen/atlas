@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepointdirectory.entity.geolocation;
 
 import ch.sbb.atlas.api.servicepoint.TransformableGeolocation;
-import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.model.entity.BaseEntity;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import ch.sbb.atlas.versioning.annotation.AtlasVersionable;
@@ -23,7 +23,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @ToString
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @FieldNameConstants
 @MappedSuperclass
 @AtlasVersionable

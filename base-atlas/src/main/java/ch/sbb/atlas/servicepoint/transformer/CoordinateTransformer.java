@@ -1,7 +1,7 @@
 package ch.sbb.atlas.servicepoint.transformer;
 
 import ch.sbb.atlas.api.AtlasApiConstants;
-import ch.sbb.atlas.imports.servicepoint.enumeration.SpatialReference;
+import ch.sbb.atlas.api.servicepoint.SpatialReference;
 import ch.sbb.atlas.math.DoubleOperations;
 import ch.sbb.atlas.servicepoint.CoordinatePair;
 import jakarta.validation.Valid;
