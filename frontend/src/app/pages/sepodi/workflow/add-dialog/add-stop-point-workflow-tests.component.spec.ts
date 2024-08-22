@@ -21,7 +21,7 @@ import {DetailPageContainerComponent} from "../../../../core/components/detail-p
 import {DetailFooterComponent} from "../../../../core/components/detail-footer/detail-footer.component";
 import {DetailHelperService} from "../../../../core/detail/detail-helper.service";
 import {of} from "rxjs";
-import {ReadStopPointWorkflow, StopPointWorkflowService} from "../../../../api";
+import {DecisionType, JudgementType, ReadStopPointWorkflow, StopPointWorkflowService} from "../../../../api";
 import {Router} from "@angular/router";
 import {AtlasSpacerComponent} from "../../../../core/components/spacer/atlas-spacer.component";
 import {UserService} from "../../../../core/auth/user/user.service";
@@ -29,10 +29,11 @@ import {DialogFooterComponent} from "../../../../core/components/dialog/footer/d
 import {DialogContentComponent} from "../../../../core/components/dialog/content/dialog-content.component";
 import {DialogCloseComponent} from "../../../../core/components/dialog/close/dialog-close.component";
 import {StopPointWorkflowDetailFormComponent} from "../detail-page/detail-form/stop-point-workflow-detail-form.component";
+import {ValidationService} from "../../../../core/validation/validation.service";
 
 const workflow: ReadStopPointWorkflow = {
   versionId: 1,
-  sloid: 'ch:1:sloid:8000',
+  sloid: 'ch:1:sloid:8001',
   workflowComment: "No comment"
 };
 const dialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
@@ -51,10 +52,30 @@ const workflowDialogData: AddStopPointWorkflowDialogData = {
   title: '',
   message: '',
   stopPoint: BERN_WYLEREGG,
-  examinants: []
+  examinants: [
+    {
+      firstName: 'Thomas',
+      lastName: 'Thomas',
+      organisation: 'sbb',
+      personFunction: 'PO',
+      mail: 'thomas.thomas@fake.com',
+      judgement: JudgementType.Yes,
+      decisionType: DecisionType.Voted,
+      id: 1,
+    },
+    {
+      firstName: 'Judith',
+      lastName: 'Judith',
+      organisation: 'sbb',
+      personFunction: 'PO',
+      mail: 'judith.judith@fake.com',
+      judgement: JudgementType.No,
+      decisionType: DecisionType.Voted,
+      id: 2,
+    }]
 }
 
-describe('AddStopPointWorkflowComponent', () => {
+describe('AddStopPointWorkflowTestComponent', () => {
   let component: AddStopPointWorkflowComponent;
   let fixture: ComponentFixture<AddStopPointWorkflowComponent>;
 
@@ -100,17 +121,28 @@ describe('AddStopPointWorkflowComponent', () => {
 
     fixture = TestBed.createComponent(AddStopPointWorkflowComponent);
     component = fixture.componentInstance;
+
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  it('should add workflow via service',  () => {
+    spyOn(ValidationService, 'validateForm').and.callThrough();
 
-  it('should cancel workflow creation', () => {
-    component.cancel();
+    const examinant = component.form.controls.examinants.at(2);
+    examinant.controls.firstName.setValue('firstName');
+    examinant.controls.lastName.setValue('lastName');
+    examinant.controls.personFunction.setValue('personFunction');
+    examinant.controls.organisation.setValue('organisation');
+    examinant.controls.mail.setValue('mail2@sbb.ch');
 
-    expect(detailHelperService.confirmLeaveDirtyForm).toHaveBeenCalled();
+    component.form.controls.workflowComment.setValue('YB isch wida Meista');
+
+    expect(component.form.valid).toBeTrue();
+
+    component.addWorkflow();
+
+    expect(stopPointWorkflowService.addStopPointWorkflow).toHaveBeenCalled();
+    expect(notificationServiceSpy.success).toHaveBeenCalled();
     expect(dialogRefSpy.close).toHaveBeenCalled();
   });
 
