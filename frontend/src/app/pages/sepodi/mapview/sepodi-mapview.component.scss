@@ -2,17 +2,7 @@
 
 $map-overlay-element-shadow: 0 0 5px 1px variables.$gray-700;
 
-.search-container {
-  background: white;
-  min-height: 90px;
-  min-width: 100%;
-  position: absolute;
-  border-bottom: solid 0.2rem;
-  border-bottom-color: variables.$gray-100;
-}
-
-.page-with-map {
-  padding-top: 90px;
+%base-page-with-map {
   height: 100%;
   display: flex;
 
@@ -33,9 +23,14 @@ $map-overlay-element-shadow: 0 0 5px 1px variables.$gray-700;
   }
 }
 
-.container-sp-create-and-search {
-  position: absolute;
-  left: 1rem;
-  top: 0.5rem;
-  display: flex;
+.page-with-map {
+  @extend %base-page-with-map;
+  padding-top: 90px;
+
 }
+
+.page-with-map-close {
+  @extend %base-page-with-map;
+  padding-top: 30px;
+}
+

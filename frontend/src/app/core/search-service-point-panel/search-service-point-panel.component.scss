@@ -1,0 +1,33 @@
+@use 'src/styles/variables' as variables;
+
+$map-overlay-element-shadow: 0 0 5px 1px variables.$gray-700;
+
+%base-search-container {
+  z-index: 3000;
+  background: white;
+  min-width: 100%;
+  position: absolute;
+  border-bottom: solid 0.2rem;
+  border-bottom-color: variables.$gray-100;
+}
+
+.search-container {
+  @extend %base-search-container;
+  min-height: 90px;
+}
+
+.search-container-closed {
+  @extend %base-search-container;
+  min-height: 30px;
+}
+
+.container-sp-create-and-search {
+  position: absolute;
+  left: 1rem;
+  top: 0.5rem;
+  display: flex;
+}
+
+.search-plaintext {
+  position: inherit;
+}
