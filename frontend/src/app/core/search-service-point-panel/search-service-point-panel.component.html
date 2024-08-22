@@ -1,0 +1,18 @@
+<div [ngClass]="showSearchPanel? 'search-container' : 'search-container-closed'">
+  <span *ngIf="!showSearchPanel" class="ps-4 pt-2 search-plaintext">{{"COMMON.SEARCH.SEARCH_CRITERIA" | translate}}...</span>
+  <div class="container-sp-create-and-search" *ngIf="showSearchPanel">
+    <app-search-service-point [searchType]="this.searchType"></app-search-service-point>
+    <ng-content></ng-content>
+  </div>
+  <div style="float:right;">
+    <atlas-button
+      (buttonClicked)="toggle()"
+      buttonType="icon"
+      wrapperStyleClass="pt-2 pe-3 pb-1"
+    >
+      <ng-template #rightIcon>
+        <i [ngClass]="showSearchPanel ? 'bi bi-arrow-up-circle' : 'bi bi-arrow-down-circle'"></i>
+      </ng-template>
+    </atlas-button>
+  </div>
+</div>

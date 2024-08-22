@@ -11,11 +11,19 @@ import {Pages} from "../../pages";
 })
 export class PrmHomeSearchComponent {
   servicePointSearch = ServicePointSearch.PRM;
-
+  private _showSearchPanel = true;
   private _isPrmHome = true;
 
   get isPrmHome(): boolean {
     return this._isPrmHome;
+  }
+
+  get showSearchPanel(): boolean {
+    return this._showSearchPanel;
+  }
+
+  showPanel(value: boolean) {
+    this._showSearchPanel = !this._showSearchPanel;
   }
 
   constructor(private router: Router) {
