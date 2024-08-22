@@ -12,8 +12,8 @@ describe('Authorized usage', () => {
       // Username is displayed
       cy.get(DataCy.USER_NAME).should('contain.text', 'ATLAS / LIDI / FPFN Admin User');
 
-      // Pages for admin should be 7
-      cy.get('.card').should('have.length', 7);
+      // Pages for admin should be 8
+      cy.get('.card').should('have.length', 8);
     });
   });
 
