@@ -23,6 +23,17 @@ export class SepodiMapviewComponent implements AfterViewInit, OnDestroy, OnInit 
   private selectedElementSubscription!: Subscription;
   servicePointSearchType = ServicePointSearch.SePoDi;
 
+  private _showSearchPanel = true;
+
+  get showSearchPanel(): boolean {
+    return this._showSearchPanel;
+  }
+
+  showPanel(value: boolean) {
+    this._showSearchPanel = !this._showSearchPanel;
+  }
+
+
   constructor(
     private router: Router,
     private mapService: MapService,
