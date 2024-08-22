@@ -69,9 +69,13 @@ export class ValidationService {
       } else if (control instanceof FormGroup) {
         ValidationService.validateForm(control);
       } else if (control instanceof FormArray) {
-        control.controls.forEach(element => element.markAllAsTouched());
+        control.controls.forEach(element => {
+          ValidationService.validateForm(element as FormGroup);
+          element.markAllAsTouched();
+        });
       }
     });
+    formGroup.updateValueAndValidity();
   }
 
   public static checkWhitespaceErrors(controls: AbstractControl[]): void {

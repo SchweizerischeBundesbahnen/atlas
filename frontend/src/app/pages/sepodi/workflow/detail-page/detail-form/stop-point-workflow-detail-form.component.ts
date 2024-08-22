@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ControlContainer, FormArray, FormBuilder, FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
+import {ControlContainer, FormBuilder, FormGroup, NgForm} from '@angular/forms';
 import {
-  ExaminantFormGroup,
   SPECIAL_DECISION_TYPES,
   StopPointWorkflowDetailFormGroup,
   StopPointWorkflowDetailFormGroupBuilder,
@@ -26,7 +25,7 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   readonly WorkflowStatus = WorkflowStatus;
   readonly emailValidator = [AtlasCharsetsValidator.email, AtlasFieldLengthValidator.length_100];
 
-  @Input() listOfExaminants!: StopPointPerson[];
+  // @Input() listOfExaminants!: StopPointPerson[];
   @Input() stopPoint!: ReadServicePointVersion;
   @Input() oldDesignation?: string;
   @Input() form!: FormGroup<StopPointWorkflowDetailFormGroup>;
@@ -59,36 +58,55 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
         },
       }
     }
-    if(this.listOfExaminants) {
-      const emptyExaminant: StopPointPerson = {
-        firstName: '',
-        lastName: '',
-        organisation: '',
-        mail: ''
-      };
-      this.listOfExaminants.push(emptyExaminant);
-      (this.form.controls.examinants as FormArray) = this.createExaminantsFormArray(this.listOfExaminants);
+    // if(this.listOfExaminants) {
+    //   const emptyExaminant: StopPointPerson = {
+    //     firstName: '',
+    //     lastName: '',
+    //     organisation: '',
+    //     mail: ''
+    //   };
+    //   this.listOfExaminants.push(emptyExaminant);
+      // this.form.setControl('examinants', this.createExaminantsFormArray(this.listOfExaminants));
+      // (this.form.controls.examinants as FormArray) = this.createExaminantsFormArray(this.listOfExaminants);
+
       this.form.controls.examinants.setValidators(UniqueEmailsValidator.uniqueEmails()); // this is the one which validates correctly
-    }
+    // }
     if(this.currentWorkflow){
       this.specialDecision = this.currentWorkflow!.examinants?.find(examinant => SPECIAL_DECISION_TYPES.includes(examinant.decisionType!));
     }
   }
 
-  private createExaminantsFormArray(listOfExaminants: StopPointPerson[]): FormArray<FormGroup<ExaminantFormGroup>> {
-    const formGroups = listOfExaminants.map(person => this.fb.group<ExaminantFormGroup>({
-      id: new FormControl(person.id ?? null),
-      firstName: new FormControl(person.firstName ?? null),
-      lastName: new FormControl(person.lastName ?? null),
-      organisation: new FormControl(person.organisation ?? '', Validators.required),
-      personFunction: new FormControl(person.personFunction ?? null),
-      mail: new FormControl(person.mail ?? '', [Validators.required, AtlasCharsetsValidator.email]),
-      judgementIcon: new FormControl(null),
-      judgement: new FormControl(person.judgement ?? null),
-      decisionType: new FormControl(person.decisionType ?? null),
-    }));
-    return new FormArray<FormGroup<ExaminantFormGroup>>(formGroups);
+  getCustomStyle(i: number) {
+    const isLastControl = i === this.form.controls.examinants.controls.length - 1;
+    const hasDuplicateEmailError = this.form.controls.examinants?.errors?.duplicateEmail;
+
+    return isLastControl && hasDuplicateEmailError
+      ? {
+        borderLeft: '3px solid red',
+        borderRight: '3px solid red',
+        borderBottom: '3px solid red',
+        borderTop: '3px solid transparent'
+      }
+      : {};
   }
+
+
+
+
+  // private createExaminantsFormArray(listOfExaminants: StopPointPerson[]): FormArray<FormGroup<ExaminantFormGroup>> {
+  //   const formGroups = listOfExaminants.map(person => this.fb.group<ExaminantFormGroup>({
+  //     id: new FormControl(person.id ?? null),
+  //     firstName: new FormControl(person.firstName ?? null),
+  //     lastName: new FormControl(person.lastName ?? null),
+  //     organisation: new FormControl(person.organisation ?? '', Validators.required),
+  //     personFunction: new FormControl(person.personFunction ?? null),
+  //     mail: new FormControl(person.mail ?? '', [Validators.required, AtlasCharsetsValidator.email]),
+  //     judgementIcon: new FormControl(null),
+  //     judgement: new FormControl(person.judgement ?? null),
+  //     decisionType: new FormControl(person.decisionType ?? null),
+  //   }));
+  //   return new FormArray<FormGroup<ExaminantFormGroup>>(formGroups);
+  // }
 
   addExaminant() {
     const examinantsControl = this.form.controls.examinants;
