@@ -23,9 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 public class BulkImportFileValidationService {
 
-  private static final String XLS_CONTENT_TYPE = "application/vnd.ms-excel";
-  private static final String XLSX_CONTENT_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-  private static final String CSV_CONTENT_TYPE = "text/csv";
+  static final String XLS_CONTENT_TYPE = "application/vnd.ms-excel";
+  static final String XLSX_CONTENT_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+  static final String CSV_CONTENT_TYPE = "text/csv";
 
   private static final List<String> SUPPORTED_CONTENT_TYPES = List.of(CSV_CONTENT_TYPE, XLS_CONTENT_TYPE, XLSX_CONTENT_TYPE);
   private static final List<String> SUPPORTED_EXCEL_CONTENT_TYPES = List.of(XLS_CONTENT_TYPE, XLSX_CONTENT_TYPE);

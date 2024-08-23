@@ -72,7 +72,7 @@ public class ExcelToCsvConverter {
           return cellAsDate.format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN_CH));
         }
         double numericCellValue = cell.getNumericCellValue();
-        if (numericCellValue % 1 == 0) {
+        if ((numericCellValue % 1) == 0) {
           int value = Double.valueOf(numericCellValue).intValue();
           return String.valueOf(value);
         }
