@@ -17,17 +17,6 @@ public class BulkImportCsvReader {
 
   public static final String NULLING_VALUE = "<null>";
 
-  public String readHeader(File file){
-    try (Scanner scanner = new Scanner(file)) {
-      if(scanner.hasNext()) {
-        return scanner.nextLine();
-      }
-    } catch (IOException ex) {
-      throw new CsvException(ex);
-    }
-    throw new IllegalStateException();
-  }
-
   public <T> List<BulkImportUpdateContainer<T>> readLinesFromFileWithNullingValue(File file, Class<T> clazz) {
     List<BulkImportUpdateContainer<T>> mappedObjects = new ArrayList<>();
 
