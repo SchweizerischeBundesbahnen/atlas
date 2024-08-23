@@ -1,5 +1,6 @@
 package ch.sbb.importservice.service;
 
+import ch.sbb.atlas.amazon.service.FileService;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.bulk.AtlasCsvReader;
 import ch.sbb.importservice.exception.ExcelToCsvConversionException;
@@ -11,19 +12,23 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.experimental.UtilityClass;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.springframework.stereotype.Service;
 
 @Slf4j
-@UtilityClass
+@Service
+@RequiredArgsConstructor
 public class ExcelToCsvConverter {
 
-  public static File convertToCsv(File excelFile) {
+  private final FileService fileService;
+
+  public File convertToCsv(File excelFile) {
     try (Workbook sheets = WorkbookFactory.create(excelFile)) {
       Sheet sheet = sheets.getSheetAt(0);
 
@@ -35,7 +40,7 @@ public class ExcelToCsvConverter {
     }
   }
 
-  private static String getSheetAsCsv(Sheet sheet) {
+  private String getSheetAsCsv(Sheet sheet) {
     StringBuilder csv = new StringBuilder();
 
     for (int i = 0; i < sheet.getLastRowNum() + 1; i++) {
@@ -86,8 +91,8 @@ public class ExcelToCsvConverter {
     }
   }
 
-  private static File writeStringToFile(File excelFile, String csv) throws IOException {
-    File csvFile = new File(excelFile.getName() + ".csv");
+  private File writeStringToFile(File excelFile, String csv) throws IOException {
+    File csvFile = new File(fileService.getDir() + File.separator + excelFile.getName() + ".csv");
     Files.writeString(csvFile.toPath(), csv);
     return csvFile;
   }
