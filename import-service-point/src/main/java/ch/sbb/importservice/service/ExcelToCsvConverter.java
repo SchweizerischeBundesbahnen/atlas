@@ -1,13 +1,20 @@
 package ch.sbb.importservice.service;
 
+import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.imports.bulk.AtlasCsvReader;
+import ch.sbb.importservice.exception.ExcelToCsvConversionException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
@@ -23,22 +30,60 @@ public class ExcelToCsvConverter {
       String csv = getSheetAsCsv(sheet);
 
       return writeStringToFile(excelFile, csv);
-    } catch (Exception e) {
-      throw new IllegalStateException();
+    } catch (IOException e) {
+      throw new IllegalStateException(e);
     }
   }
 
   private static String getSheetAsCsv(Sheet sheet) {
     StringBuilder csv = new StringBuilder();
-    sheet.rowIterator().forEachRemaining(row -> {
+
+    for (int i = 0; i < sheet.getLastRowNum() + 1; i++) {
+      Row row = sheet.getRow(i);
+
       List<String> rowContent = new ArrayList<>();
-      row.cellIterator().forEachRemaining(cell -> {
-        rowContent.add(cell.getStringCellValue());
-      });
+
+      for (int j = 0; j < row.getLastCellNum(); j++) {
+        Cell cell = row.getCell(j);
+        if (cell == null) {
+          rowContent.add("");
+        } else {
+          rowContent.add(getCellValue(cell));
+        }
+      }
+
       csv.append(String.join(String.valueOf(AtlasCsvReader.CSV_COLUMN_SEPARATOR), rowContent));
       csv.append(System.lineSeparator());
-    });
+    }
+
     return csv.toString();
+  }
+
+  private static String getCellValue(Cell cell) {
+    switch (cell.getCellType()) {
+      case NUMERIC -> {
+        if (cell.getCellStyle().getDataFormatString().equals("m/d/yy")) {
+          LocalDate cellAsDate = cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+          return cellAsDate.format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN_CH));
+        }
+        double numericCellValue = cell.getNumericCellValue();
+        if (numericCellValue == (int) numericCellValue) {
+          int value = Double.valueOf(numericCellValue).intValue();
+          return String.valueOf(value);
+        }
+        return String.valueOf(numericCellValue);
+      }
+      case STRING -> {
+        return cell.getStringCellValue();
+      }
+      case BLANK -> {
+        return "";
+      }
+      case BOOLEAN -> {
+        return String.valueOf(cell.getBooleanCellValue());
+      }
+      default -> throw new ExcelToCsvConversionException(cell);
+    }
   }
 
   private static File writeStringToFile(File excelFile, String csv) throws IOException {
