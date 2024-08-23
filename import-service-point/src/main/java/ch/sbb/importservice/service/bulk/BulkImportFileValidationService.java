@@ -32,6 +32,7 @@ public class BulkImportFileValidationService {
 
   private final FileService fileService;
   private final BulkImportReaders bulkImportReaders;
+  private final ExcelToCsvConverter excelToCsvConverter;
 
   public File validateFileAndPrepareFile(MultipartFile multipartFile, BulkImportConfig bulkImportConfig) {
     validateSupportedContentType(multipartFile.getContentType());
@@ -51,7 +52,7 @@ public class BulkImportFileValidationService {
   private File getMultipartAsCsvFile(MultipartFile multipartFile) {
     File file = fileService.getFileFromMultipart(multipartFile);
     if (SUPPORTED_EXCEL_CONTENT_TYPES.contains(multipartFile.getContentType())) {
-      file = ExcelToCsvConverter.convertToCsv(file);
+      file = excelToCsvConverter.convertToCsv(file);
     }
     return file;
   }
