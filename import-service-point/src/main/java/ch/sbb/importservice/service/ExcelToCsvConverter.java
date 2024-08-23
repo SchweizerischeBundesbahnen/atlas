@@ -12,6 +12,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.DoublePredicate;
+import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
@@ -25,6 +27,10 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ExcelToCsvConverter {
+
+  private static final Predicate<Cell> IS_DATE_VALUE = cell -> cell.getCellStyle().getDataFormatString().equals("m/d/yy");
+  private static final DoublePredicate IS_INT = doubleValue -> Double.isFinite(doubleValue)
+      && Double.compare(doubleValue, StrictMath.rint(doubleValue)) == 0;
 
   private final FileService fileService;
 
@@ -67,14 +73,13 @@ public class ExcelToCsvConverter {
   private static String getCellValue(Cell cell) {
     switch (cell.getCellType()) {
       case NUMERIC -> {
-        if (cell.getCellStyle().getDataFormatString().equals("m/d/yy")) {
+        if (IS_DATE_VALUE.test(cell)) {
           LocalDate cellAsDate = cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
           return cellAsDate.format(DateTimeFormatter.ofPattern(AtlasApiConstants.DATE_FORMAT_PATTERN_CH));
         }
         double numericCellValue = cell.getNumericCellValue();
-        if (Double.isFinite(numericCellValue) && Double.compare(numericCellValue, StrictMath.rint(numericCellValue)) == 0) {
-          int value = Double.valueOf(numericCellValue).intValue();
-          return String.valueOf(value);
+        if (IS_INT.test(numericCellValue)) {
+          return String.valueOf((int) numericCellValue);
         }
         return String.valueOf(numericCellValue);
       }
