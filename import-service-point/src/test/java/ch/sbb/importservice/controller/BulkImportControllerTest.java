@@ -75,7 +75,7 @@ class BulkImportControllerTest extends BaseControllerApiTest {
   void shouldAcceptGenericBulkImportWithFile() throws Exception {
     File file = new File(this.getClass().getClassLoader().getResource("service-point-update.csv").getFile());
     mvc.perform(multipart("/v1/import/bulk/SEPODI/SERVICE_POINT/UPDATE")
-            .file(new MockMultipartFile("file", "service-point-update.csv", "application/csv", Files.readAllBytes(file.toPath()))))
+            .file(new MockMultipartFile("file", "service-point-update.csv", "text/csv", Files.readAllBytes(file.toPath()))))
         .andExpect(status().isAccepted());
 
     verify(amazonService, timeout(100)).putFile(eq(AmazonBucket.BULK_IMPORT), any(File.class), eq(todaysDirectory));

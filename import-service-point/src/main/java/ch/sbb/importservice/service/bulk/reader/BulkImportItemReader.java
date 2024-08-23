@@ -9,4 +9,7 @@ import java.util.function.Function;
 public interface BulkImportItemReader extends Function<File, List<BulkImportContainer>> {
 
   BulkImportConfig getBulkImportConfig();
+
+  Class<?> getCsvModelClass();
+
 }
