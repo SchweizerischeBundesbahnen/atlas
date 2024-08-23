@@ -6,6 +6,7 @@ import ch.sbb.atlas.service.UserService;
 import ch.sbb.importservice.entity.BulkImport;
 import ch.sbb.importservice.model.BusinessObjectType;
 import ch.sbb.importservice.model.ImportType;
+import ch.sbb.importservice.service.bulk.BulkImportFileValidationService;
 import ch.sbb.importservice.service.bulk.BulkImportService;
 import java.io.File;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class BulkImportController implements BulkImportApiV1 {
 
   private final BulkImportService bulkImportService;
   private final FileService fileService;
+  private final BulkImportFileValidationService bulkImportFileValidationService;
 
   @Override
   public void startServicePointImportBatch(ApplicationType application, BusinessObjectType objectType,
@@ -44,7 +46,9 @@ public class BulkImportController implements BulkImportApiV1 {
         .creator(UserService.getUserIdentifier())
         .build();
 
-    bulkImportService.startBulkImport(bulkImport, fileService.getFileFromMultipart(file));
+    File csvFile = bulkImportFileValidationService.validateFileAndPrepareFile(file);
+
+    bulkImportService.startBulkImport(bulkImport, csvFile);
   }
 
   @Override

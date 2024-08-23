@@ -2,6 +2,7 @@ package ch.sbb.importservice.entity;
 
 import ch.sbb.atlas.api.AtlasFieldLengths;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.importservice.model.BulkImportConfig;
 import ch.sbb.importservice.model.BusinessObjectType;
 import ch.sbb.importservice.model.ImportType;
 import jakarta.persistence.Entity;
@@ -69,5 +70,13 @@ public class BulkImport {
       case PRM -> BusinessObjectType.PRM_BUSINESS_OBJECTS.contains(objectType);
       default -> throw new IllegalStateException("Unexpected value: " + application);
     };
+  }
+
+  public BulkImportConfig getBulkImportConfig() {
+    return BulkImportConfig.builder()
+        .application(application)
+        .objectType(objectType)
+        .importType(importType)
+        .build();
   }
 }
