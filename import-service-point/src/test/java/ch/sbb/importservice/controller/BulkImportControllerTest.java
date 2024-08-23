@@ -15,6 +15,7 @@ import ch.sbb.atlas.amazon.service.AmazonBucket;
 import ch.sbb.atlas.amazon.service.AmazonService;
 import ch.sbb.atlas.api.AtlasApiConstants;
 import ch.sbb.atlas.model.controller.BaseControllerApiTest;
+import ch.sbb.importservice.ImportFiles;
 import ch.sbb.importservice.client.ServicePointBulkImportClient;
 import ch.sbb.importservice.entity.BulkImport;
 import ch.sbb.importservice.repository.BulkImportRepository;
@@ -73,7 +74,7 @@ class BulkImportControllerTest extends BaseControllerApiTest {
 
   @Test
   void shouldAcceptGenericBulkImportWithFile() throws Exception {
-    File file = new File(this.getClass().getClassLoader().getResource("service-point-update.csv").getFile());
+    File file = ImportFiles.getFileByPath("import-files/valid/service-point-update.csv");
     mvc.perform(multipart("/v1/import/bulk/SEPODI/SERVICE_POINT/UPDATE")
             .file(new MockMultipartFile("file", "service-point-update.csv", "text/csv", Files.readAllBytes(file.toPath()))))
         .andExpect(status().isAccepted());
