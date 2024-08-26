@@ -1,5 +1,5 @@
-import { StyleSpecification } from 'maplibre-gl';
-import { environment } from '../../../../environments/environment';
+import {StyleSpecification} from 'maplibre-gl';
+import {environment} from '../../../../environments/environment';
 
 export const SERVICE_POINT_MIN_ZOOM = 12;
 export const MAP_SOURCE_NAME = 'geodata';
@@ -15,7 +15,6 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       ],
       tileSize: 256,
       attribution: '&copy; OpenStreetMap Contributors',
-      maxzoom: 19,
       bounds: [5.140242, 45.3981812, 11.47757, 48.230651],
     },
     swisstopograu: {
@@ -25,7 +24,6 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       ],
       tileSize: 256,
       attribution: '&copy; OpenStreetMap Contributors',
-      maxzoom: 19,
       bounds: [5.140242, 45.3981812, 11.47757, 48.230651],
     },
     osm: {
@@ -36,7 +34,6 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       tileSize: 256,
       attribution:
         '&copy; SBB/CFF/FFS &copy; geOps Tiles &copy; imagico &copy; OpenMapTiles &copy; OpenStreetMap Contributors',
-      maxzoom: 22,
     },
     satellite: {
       type: 'raster',
@@ -46,7 +43,6 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       tileSize: 256,
       attribution:
         '&copy; SBB/CFF/FFS &copy; geOps Tiles &copy; imagico &copy; OpenMapTiles &copy; OpenStreetMap Contributors',
-      maxzoom: 22,
     },
     satellite_swiss: {
       type: 'raster',
@@ -55,13 +51,11 @@ export const MAP_STYLE_SPEC: StyleSpecification = {
       ],
       tileSize: 256,
       attribution: '&copy; OpenStreetMap Contributors',
-      maxzoom: 19,
       bounds: [5.140242, 45.3981812, 11.47757, 48.230651],
     },
     geodata: {
       type: 'vector',
       minzoom: SERVICE_POINT_MIN_ZOOM,
-      maxzoom: 20,
       tiles: [
         `${environment.atlasUnauthApiUrl}/service-point-directory/v1/service-points/geodata/{z}/{x}/{y}.pbf`,
       ],
