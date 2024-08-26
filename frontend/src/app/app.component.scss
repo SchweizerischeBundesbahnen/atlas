@@ -1,6 +1,6 @@
 @use 'src/styles/variables' as variables;
 
-$navMenuBtnHeight: 79px;
+$navMenuBtnHeight: 90px;
 $navMenuBtnDefaultLeft: 32.5px;
 $navMenuBtnLargeLeft: 56.5px;
 
@@ -27,29 +27,6 @@ mat-sidenav-content {
   width: 100%;
   height: 100%;
   flex-grow: 1;
-}
-
-.sidenav-menu-btn {
-  background-color: variables.$navigationBackground;
-  position: absolute;
-  width: variables.$navigationDefaultSize;
-  height: $navMenuBtnHeight;
-  z-index: 2;
-  padding: 25px 0 0 $navMenuBtnDefaultLeft;
-  font-weight: bold;
-  text-align: left;
-  color: variables.$primary-400;
-  border-radius: initial;
-}
-
-.sidenav-menu-close-btn {
-  background-color: variables.$navigationBackground;
-  width: 100%;
-  text-align: left;
-  height: $navMenuBtnHeight;
-  padding: 25px 0 0 $navMenuBtnDefaultLeft;
-  font-weight: bold;
-  color: variables.$primary-400;
 }
 
 .bi-arrow-left,
