@@ -4,11 +4,11 @@
     <app-search-service-point [searchType]="this.searchType"></app-search-service-point>
     <ng-content></ng-content>
   </div>
-  <div style="float:right;">
+  <div class="button-container">
     <atlas-button
       (buttonClicked)="toggle()"
       buttonType="icon"
-      wrapperStyleClass="pt-2 pe-3 pb-1"
+      wrapperStyleClass="{{ showSearchPanel ?   'pt-4' : 'pt-1' }} pe-3 pb-1"
     >
       <ng-template #rightIcon>
         <i [ngClass]="showSearchPanel ? 'bi bi-arrow-up-circle' : 'bi bi-arrow-down-circle'"></i>
