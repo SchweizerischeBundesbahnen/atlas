@@ -6,8 +6,6 @@ import {MAP_STYLES} from './map-options';
 import {CoordinatePairWGS84, MapService} from './map.service';
 import maplibregl, {Map} from 'maplibre-gl';
 import {BehaviorSubject} from 'rxjs';
-import {Component, Input} from '@angular/core';
-import {ServicePointSearchType} from '../../../core/search-service-point/service-point-search';
 import {PermissionService} from "../../../core/auth/permission/permission.service";
 import {adminPermissionServiceMock} from "../../../app.testing.mocks";
 import {SERVICE_POINT_MIN_ZOOM} from "./map-style";
@@ -49,25 +47,17 @@ mapSpy.on.and.callFake(() => {
   return mapSpy;
 });
 
-@Component({
-  selector: 'app-search-service-point',
-  template: '<h1>SearchServicePointMockComponent</h1>',
-})
-class SearchServicePointMockComponent {
-  @Input() searchType!: ServicePointSearchType;
-}
-
 describe('MapComponent', () => {
   let component: MapComponent;
   let fixture: ComponentFixture<MapComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MapComponent, SearchServicePointMockComponent],
+      declarations: [MapComponent],
       imports: [AppTestingModule],
       providers: [
-        { provide: MapService, useValue: mapService },
-        { provide: PermissionService, useValue: adminPermissionServiceMock },
+        {provide: MapService, useValue: mapService},
+        {provide: PermissionService, useValue: adminPermissionServiceMock},
       ],
     }).compileComponents();
 
