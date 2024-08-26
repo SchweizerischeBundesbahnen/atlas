@@ -24,7 +24,6 @@ export class ValidationService {
             max: controlErrors[keyError]['max'],
             min: controlErrors[keyError]['min'],
             number: controlErrors[keyError]['number'],
-            emails: controlErrors[keyError]['emails'],
           },
         });
       });
