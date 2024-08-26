@@ -3,12 +3,10 @@ import {Map} from 'maplibre-gl';
 import {MapService} from './map.service';
 import {MAP_STYLES, MapStyle} from './map-options';
 import {Router} from '@angular/router';
-import {Pages} from '../../pages';
 import {take} from 'rxjs';
 import {ApplicationType} from '../../../api';
 import {filter} from 'rxjs/operators';
 import {MapIcon, MapIconsService} from './map-icons.service';
-import {ServicePointSearch} from '../../../core/search-service-point/service-point-search';
 import {PermissionService} from "../../../core/auth/permission/permission.service";
 import {UserService} from "../../../core/auth/user/user.service";
 import {SERVICE_POINT_MIN_ZOOM} from "./map-style";
@@ -28,7 +26,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   showMapStyleSelection = false;
   showMapLegend = false;
   legend!: MapIcon[];
-  servicePointSearchType = ServicePointSearch.SePoDi;
 
   map!: Map;
 
@@ -118,10 +115,4 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  routeToNewSP(): void {
-    this.router
-      .navigate([Pages.SEPODI.path, Pages.SERVICE_POINTS.path])
-      .then()
-      .catch((reason) => console.error('Navigation failed: ', reason));
-  }
 }
