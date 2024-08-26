@@ -15,7 +15,6 @@ import {
   StopPointWorkflowDetailFormGroupBuilder
 } from "../detail-page/detail-form/stop-point-workflow-detail-form-group";
 import {AtlasCharsetsValidator} from "../../../../core/validation/charsets/atlas-charsets-validator";
-import {UniqueEmailsValidator} from "../../../../core/validation/unique-emails-validator/unique-emails-validator";
 
 @Component({
   selector: 'app-workflow-dialog',
@@ -39,15 +38,15 @@ export class AddStopPointWorkflowComponent implements OnInit {
 
   ngOnInit() {
     this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup();
-    const listOfExaminants: StopPointPerson[] = this.data.examinants;
-    const emptyExaminant: StopPointPerson = {
-      firstName: '',
-      lastName: '',
-      organisation: '',
-      mail: ''
-    };
-    listOfExaminants.push(emptyExaminant);
-    this.form.setControl('examinants', this.createExaminantsFormArray(listOfExaminants));
+    // const listOfExaminants: StopPointPerson[] = this.data.examinants;
+    // const emptyExaminant: StopPointPerson = {
+    //   firstName: '',
+    //   lastName: '',
+    //   organisation: '',
+    //   mail: ''
+    // };
+    // listOfExaminants.push(emptyExaminant);
+    // this.form.setControl('examinants', this.createExaminantsFormArray(listOfExaminants));
     this.form.controls.designationOfficial.setValue(this.data.stopPoint.designationOfficial)
   }
 
@@ -67,7 +66,7 @@ export class AddStopPointWorkflowComponent implements OnInit {
   }
 
   addWorkflow() {
-    this.form.controls.examinants.setValidators(UniqueEmailsValidator.uniqueEmails());
+    // this.form.controls.examinants.setValidators(UniqueEmailsValidator.uniqueEmails());
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
       const workflow: StopPointAddWorkflow = {
@@ -76,7 +75,11 @@ export class AddStopPointWorkflowComponent implements OnInit {
         sloid: this.data.stopPoint.sloid!,
         workflowComment: this.form.controls.workflowComment.value!,
         ccEmails: this.form.controls.ccEmails.value!,
-        examinants: this.form.controls.examinants.value.map(examinant => examinant as StopPointPerson)
+        examinants: this.form.controls.examinants.value.map(examinant => {
+          if (examinant.firstName !== undefined && examinant.firstName?.trim() === '') { examinant.firstName = null; }
+          if (examinant.lastName !== undefined && examinant.lastName?.trim() === '') { examinant.lastName = null; }
+          return examinant as StopPointPerson;
+        })
       }
       this.form.disable();
       this.stopPointWorkflowService.addStopPointWorkflow(workflow).subscribe((createdWorkflow) => {
