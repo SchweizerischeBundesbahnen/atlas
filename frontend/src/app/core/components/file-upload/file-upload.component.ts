@@ -10,7 +10,9 @@ export class FileUploadComponent {
   @Input() acceptedFileExtension!: string;
 
   //TODO: umbauen zu liste, weil unten .
-  @Input() acceptedFileType!: string;
+
+  //@Input() acceptedMultipleFileTypes!: string[];
+  @Input() acceptedFileType!: string[];
   @Input() maxFileSize!: number;
   @Input() maxFileCount!: number;
 
@@ -57,10 +59,14 @@ export class FileUploadComponent {
 
   private validateFile(file: File) {
     console.log("file ", file)
-    if (file.type !== this.acceptedFileType) {
+    if(!this.acceptedFileType.includes(file.type)){
       this.addFileError(file, 'COMMON.FILEUPLOAD.ERROR.TYPE');
       return false;
     }
+    // if (file.type !== this.acceptedFileType) {
+    //   this.addFileError(file, 'COMMON.FILEUPLOAD.ERROR.TYPE');
+    //   return false;
+    // }
     if (this.combinedFileSize + file.size > this.maxFileSize) {
       this.addFileError(file, 'COMMON.FILEUPLOAD.ERROR.FILE_SIZE');
       return false;
