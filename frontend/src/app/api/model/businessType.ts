@@ -14,7 +14,7 @@
 /**
  * Business Types
  */
-export type BusinessType = 'STREET' | 'STREET_WITHOUT_TRAFFIC' | 'RAILROAD' | 'RAILROAD_UIC' | 'TRAIN_WITHOUT_TRAFFIC' | 'SHIP' | 'SHIP_WITHOUT_TRAFFIC' | 'AIR' | 'LEISURE_ACTIVITIES' | 'TARIFF_ASSOCIATION' | 'FAIR' | 'TRAVEL_AGENCY_ORGANISATION' | 'CUSTOMER_INFORMATION' | 'SUBSIDIARY' | 'INTERNAL_BILLING_PURPOSES' | 'UNKNOWN';
+export type BusinessType = 'STREET' | 'STREET_WITHOUT_TRAFFIC' | 'RAILROAD' | 'RAILROAD_UIC' | 'TRAIN_WITHOUT_TRAFFIC' | 'SHIP' | 'SHIP_WITHOUT_TRAFFIC' | 'AIR' | 'LEISURE_ACTIVITIES' | 'TARIFF_ASSOCIATION' | 'FAIR' | 'TRAVEL_AGENCY_ORGANISATION' | 'CUSTOMER_INFORMATION' | 'REPLACEMENT_SERVICE' | 'SUBSIDIARY' | 'INTERNAL_BILLING_PURPOSES' | 'UNKNOWN';
 
 export const BusinessType = {
     Street: 'STREET' as BusinessType,
@@ -30,6 +30,7 @@ export const BusinessType = {
     Fair: 'FAIR' as BusinessType,
     TravelAgencyOrganisation: 'TRAVEL_AGENCY_ORGANISATION' as BusinessType,
     CustomerInformation: 'CUSTOMER_INFORMATION' as BusinessType,
+    ReplacementService: 'REPLACEMENT_SERVICE' as BusinessType,
     Subsidiary: 'SUBSIDIARY' as BusinessType,
     InternalBillingPurposes: 'INTERNAL_BILLING_PURPOSES' as BusinessType,
     Unknown: 'UNKNOWN' as BusinessType

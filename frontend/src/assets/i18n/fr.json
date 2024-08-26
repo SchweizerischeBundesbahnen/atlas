@@ -477,6 +477,7 @@
         "FAIR": "Foire",
         "TRAVEL_AGENCY_ORGANISATION": "Organisation d'agence de voyages",
         "CUSTOMER_INFORMATION": "Information clientèle",
+        "REPLACEMENT_SERVICE": "Service de remplacement",
         "SUBSIDIARY": "Filiale (Chemin de fer)",
         "INTERNAL_BILLING_PURPOSES": "fins de facturation",
         "UNKNOWN": "inconnu"
@@ -613,7 +614,7 @@
       "NOT_IN_REVIEW": "L'audition pour cet objet n'est pas lancée pour le moment.",
       "ALREADY_IN_REVIEW": "Une consultation a déjà été lancée pour cet objet.",
       "EXAMINANT_MAIL_NOT_FOUND": "L'adresse e-mail saisie n'a pas été trouvée parmi les destinataires.",
-      "PIN_CODE_INVALID": "Le code PIN saisi n'est pas correct.",
+      "PIN_CODE_INVALID": "Le code PIN saisi est incorrect ou n'est plus valable.",
       "WRONG_CHANGING_STATUS": "Les données affichées ont été traitées entre-temps. Veuillez recharger votre browser (F5).",
       "WORKFLOW_STATUS_MUST_BE_ADDED": "Le statut de l'audition doit être 'Saisi'.",
       "NOT_IN_HEARING": "L'audition en cours n'a plus le statut 'En audition'."

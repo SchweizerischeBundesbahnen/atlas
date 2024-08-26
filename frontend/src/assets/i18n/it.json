@@ -477,6 +477,7 @@
         "FAIR": "Fiera",
         "TRAVEL_AGENCY_ORGANISATION": "Organizzazione d'agenzia di viaggi",
         "CUSTOMER_INFORMATION": "Informazione alla clientela",
+        "REPLACEMENT_SERVICE": "Servizio sostitutivo",
         "SUBSIDIARY": "Affiliata (Ferrovia)",
         "INTERNAL_BILLING_PURPOSES": "scopi di fatturazione interna",
         "UNKNOWN": "sconosciuto"
@@ -613,7 +614,7 @@
       "NOT_IN_REVIEW": "L'audizione per questa proprietà non è ancora iniziata.",
       "ALREADY_IN_REVIEW": "Per questa proprietà è già stata avviata una consultazione.",
       "EXAMINANT_MAIL_NOT_FOUND": "L'indirizzo e-mail inserito non è stato trovato tra i destinatari.",
-      "PIN_CODE_INVALID": "Il codice PIN inserito non è corretto.",
+      "PIN_CODE_INVALID": "Il codice PIN inserito non è corretto o non è più valido.",
       "WRONG_CHANGING_STATUS": "I dati visualizzati sono stati modificati nel frattempo. Ricarichi il browser (F5).",
       "WORKFLOW_STATUS_MUST_BE_ADDED": "Lo stato dell'audizione deve essere 'Inizializzato'.",
       "NOT_IN_HEARING": "L'audizione in corso non ha più lo stato \"In audizione\"."
