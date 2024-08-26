@@ -15,14 +15,16 @@
       <a href="{{ environmentReleaseNotesUrl }}" target="_blank" rel="noopener">
         <form-info-icon infoTitle="Release Notes"></form-info-icon>
       </a>
-      <span *ngIf="showLabel" [ngClass]="getEnvLabelClass()">
-        {{ environmentLabel }}
-      </span>
       <div *ngIf="isItWednesday" class="d-flex maintenance-info flex-row">
         <maintenance-icon class="d-flex"></maintenance-icon>
         <div class="d-flex ms-2 p-0">{{ 'COMMON.MAINTENANCE_WINDOW' | translate }}</div>
       </div>
     </div>
+  </div>
+  <div class="d-flex ps-5 col-4">
+  <span *ngIf="showLabel" [ngClass]="getEnvLabelClass()">
+        {{ environmentLabel }}
+      </span>
   </div>
   <span class="spacer"></span>
   <app-language-switcher></app-language-switcher>
