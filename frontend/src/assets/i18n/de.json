@@ -1437,10 +1437,5 @@
         "EDIT_SUCCESS": "Die Verbindung wurde erfolgreich gespeichert."
       }
     }
-  },
-  "BULK": {
-    "BUTTON": {
-      "DOWNLOAD": "Importvorlage"
-    }
   }
 }
