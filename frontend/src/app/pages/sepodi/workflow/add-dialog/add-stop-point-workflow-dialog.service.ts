@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {AddStopPointWorkflowDialogData} from './add-stop-point-workflow-dialog-data';
 import {AddStopPointWorkflowComponent} from "./add-stop-point-workflow.component";
-import {ReadServicePointVersion, StopPointPerson} from "../../../../api";
+import {ReadServicePointVersion} from "../../../../api";
 
 @Injectable({ providedIn: 'root' })
 export class AddStopPointWorkflowDialogService {
@@ -12,14 +12,13 @@ export class AddStopPointWorkflowDialogService {
 
   constructor(private dialog: MatDialog) {}
 
-  openDialog(stopPoint: ReadServicePointVersion,  listOfExaminants: StopPointPerson[]): Observable<boolean> {
+  openDialog(stopPoint: ReadServicePointVersion): Observable<boolean> {
     const dialogData: AddStopPointWorkflowDialogData = {
       title: 'WORKFLOW.BUTTON.ADD',
       message: '',
       cancelText: 'DIALOG.CANCEL',
       confirmText: 'WORKFLOW.BUTTON.SEND',
-      stopPoint: stopPoint,
-      examinants: listOfExaminants
+      stopPoint: stopPoint
     };
 
     return this.open(dialogData);
