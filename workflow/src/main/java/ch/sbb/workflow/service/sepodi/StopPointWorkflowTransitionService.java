@@ -12,16 +12,13 @@ import ch.sbb.workflow.entity.StopPointWorkflow;
 import ch.sbb.workflow.kafka.StopPointWorkflowNotificationService;
 import ch.sbb.workflow.mapper.PersonMapper;
 import ch.sbb.workflow.mapper.StopPointWorkflowMapper;
-import ch.sbb.workflow.model.sepodi.Examinants;
 import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
-import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.model.sepodi.StopPointRejectWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointRestartWorkflowModel;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -38,7 +35,6 @@ public class StopPointWorkflowTransitionService {
 
   private final DecisionService decisionService;
   private final SePoDiClientService sePoDiClientService;
-  private final Examinants examinants;
   private final StopPointWorkflowNotificationService notificationService;
   private final StopPointWorkflowService stopPointWorkflowService;
 
@@ -50,17 +46,14 @@ public class StopPointWorkflowTransitionService {
   @MethodLogged(workflowType = LoggingAspect.ADD_WORKFLOW)
   public StopPointWorkflow addWorkflow(StopPointAddWorkflowModel stopPointAddWorkflowModel) {
     stopPointWorkflowService.checkHasWorkflowAdded(stopPointAddWorkflowModel.getVersionId());
-    stopPointWorkflowService.checkIfAllExaminantEmailsAreUnique(stopPointAddWorkflowModel);
+    if (stopPointAddWorkflowModel.getExaminants() != null && !stopPointAddWorkflowModel.getExaminants().isEmpty()) {
+      stopPointWorkflowService.checkIfAllExaminantEmailsAreUnique(stopPointAddWorkflowModel.getExaminants());
+    }
     ReadServicePointVersionModel servicePointVersionModel = sePoDiClientService.updateStopPointStatusToInReview(
         stopPointAddWorkflowModel.getSloid(), stopPointAddWorkflowModel.getVersionId());
     StopPointWorkflow stopPointWorkflow = createStopPointAddWorkflow(stopPointAddWorkflowModel, servicePointVersionModel);
     stopPointWorkflow.setStatus(WorkflowStatus.ADDED);
     return stopPointWorkflowService.save(stopPointWorkflow);
-  }
-
-  public List<StopPointClientPersonModel> getExaminants(Long id) {
-    ReadServicePointVersionModel servicePointVersionModel = sePoDiClientService.getServicePointById(id);
-    return examinants.getExaminants(servicePointVersionModel.getServicePointGeolocation().getSwissLocation().getCanton());
   }
 
   public StopPointWorkflow startWorkflow(Long id) {

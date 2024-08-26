@@ -44,7 +44,7 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
 
   @Override
   public List<StopPointClientPersonModel> getExaminants(Long servicePointVersionId) {
-    return workflowTransitionService.getExaminants(servicePointVersionId);
+    return service.getExaminants(servicePointVersionId);
   }
 
   @Override
