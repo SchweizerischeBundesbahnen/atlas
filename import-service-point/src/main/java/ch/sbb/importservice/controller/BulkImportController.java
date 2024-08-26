@@ -7,44 +7,29 @@ import ch.sbb.importservice.entity.BulkImport;
 import ch.sbb.importservice.model.BusinessObjectType;
 import ch.sbb.importservice.model.ImportType;
 import ch.sbb.importservice.service.bulk.BulkImportService;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import java.io.File;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name = "Bulk Import")
-@RequestMapping("v1/import/bulk")
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class BulkImportController {
+public class BulkImportController implements BulkImportApiV1 {
 
   private final BulkImportService bulkImportService;
   private final FileService fileService;
 
-  @PostMapping("{application}/{objectType}/{importType}")
-  @ResponseStatus(HttpStatus.ACCEPTED)
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "202"),
-  })
-  @PreAuthorize("""
-      @bulkImportUserAdministrationService.hasPermissionsForBulkImport(#application)""")
-  public void startServicePointImportBatch(
-      @PathVariable ApplicationType application,
-      @PathVariable BusinessObjectType objectType,
-      @PathVariable ImportType importType,
-      @RequestParam MultipartFile file) {
+  @Override
+  public void startServicePointImportBatch(ApplicationType application, BusinessObjectType objectType,
+      ImportType importType, MultipartFile file) {
     log.info("Starting bulk import:");
     log.info("Application={}, BusinessObject={}, ImportType={}", application, objectType, importType);
     log.info("Uploaded file has size={}, uploadFileName={}, contentType={}",
@@ -60,6 +45,25 @@ public class BulkImportController {
         .build();
 
     bulkImportService.startBulkImport(bulkImport, fileService.getFileFromMultipart(file));
+  }
+
+  @Override
+  public ResponseEntity<Resource> downloadTemplate(BusinessObjectType objectType, ImportType importType) {
+    log.info("BusinessObject={}, ImportType={}", objectType, importType);
+
+    File file = bulkImportService.downloadTemplate(objectType, importType);
+
+    if (file == null || !file.exists()) {
+      log.warn("Template file not found for objectType={}, importType={}", objectType, importType);
+      return ResponseEntity.notFound().build();
+    }
+
+    Resource resource = new FileSystemResource(file);
+
+    return ResponseEntity.ok()
+        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
+        .contentType(MediaType.APPLICATION_OCTET_STREAM)
+        .body(resource);
   }
 
 }
