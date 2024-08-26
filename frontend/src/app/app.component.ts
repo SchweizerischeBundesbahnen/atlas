@@ -1,7 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
-import { LoadingSpinnerService } from './core/components/loading-spinner/loading-spinner.service';
-import { ServiceWorkerService } from './service-worker.service';
-import { MatSidenav } from '@angular/material/sidenav';
+import {Component, ViewChild} from '@angular/core';
+import {LoadingSpinnerService} from './core/components/loading-spinner/loading-spinner.service';
+import {ServiceWorkerService} from './service-worker.service';
+import {MatSidenav} from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-root',
@@ -18,11 +18,6 @@ export class AppComponent {
     private readonly _swService: ServiceWorkerService,
   ) {
     loadingSpinnerService.initLoadingSpinner();
-  }
-
-  toggleSideNav(): void {
-    this.sideNav?.toggle();
-    this.sideNavOpened = !!this.sideNav?.opened;
   }
 }
 

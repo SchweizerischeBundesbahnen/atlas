@@ -1,23 +1,23 @@
-  <div *ngFor="let page of enabledPages; let pageIndex = index" class="list-item-wrapper"
-       attr.data-cy="{{ page.path ? 'sidemenu-' + page.path : 'sidemenu-start' }}">
-    <a mat-list-item [routerLink]="page.path" [class.route-active]="activePageIndex === pageIndex">
-      <div class="list-item-content-wrapper" >
-        <span class="font-bold-base link-text">{{ page.titleMenu! | translate}}</span>
-        <em class="bi ms-auto" [ngClass]="{
+<div *ngFor="let page of enabledPages; let pageIndex = index" class="list-item-wrapper"
+     attr.data-cy="{{ page.path ? 'sidemenu-' + page.path : 'sidemenu-start' }}">
+  <a mat-list-item [routerLink]="page.path" [class.route-active]="activePageIndex === pageIndex">
+    <div class="list-item-content-wrapper">
+      <span class="font-bold-base link-text">{{ page.titleMenu! | translate}}</span>
+      <em class="bi ms-auto" [ngClass]="{
           'bi-arrow-right': selectedPage === page || !page.subpages,
           'bi-chevron-down': selectedPage === page && page.subpages,
           'bi-chevron-up': selectedPage !== page && page.subpages}"></em>
-      </div>
-    </a>
-    <div *ngIf="selectedPage === page && page.subpages">
-      <div *ngFor="let subPage of page.subpages; let subPageIndex = index" class="list-item-wrapper"
-           [class.route-active]="!activePageIndex && activeSubPageIndex === subPageIndex">
-        <a mat-list-item [routerLink]="page.path +'/'+subPage.path">
-          <div class="list-item-content-wrapper subpage">
-            <span class="font-bold-base link-text">{{ subPage.titleMenu! | translate }}</span>
-            <em class="bi bi-arrow-right ms-auto"></em>
-          </div>
-        </a>
-      </div>
+    </div>
+  </a>
+  <div *ngIf="selectedPage === page && page.subpages">
+    <div *ngFor="let subPage of page.subpages; let subPageIndex = index" class="list-item-wrapper"
+         [class.route-active]="!activePageIndex && activeSubPageIndex === subPageIndex">
+      <a mat-list-item [routerLink]="page.path +'/'+subPage.path">
+        <div class="list-item-content-wrapper subpage">
+          <span class="font-bold-base link-text">{{ subPage.titleMenu! | translate }}</span>
+          <em class="bi bi-arrow-right ms-auto"></em>
+        </div>
+      </a>
     </div>
   </div>
+</div>
