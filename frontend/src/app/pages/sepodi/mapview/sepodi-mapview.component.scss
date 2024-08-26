@@ -2,7 +2,7 @@
 
 $map-overlay-element-shadow: 0 0 5px 1px variables.$gray-700;
 
-%base-page-with-map {
+.page-with-map {
   height: 100%;
   display: flex;
 
@@ -23,14 +23,12 @@ $map-overlay-element-shadow: 0 0 5px 1px variables.$gray-700;
   }
 }
 
-.page-with-map {
-  @extend %base-page-with-map;
+.search-open {
   padding-top: 90px;
-
 }
 
-.page-with-map-close {
-  @extend %base-page-with-map;
+.search-close {
   padding-top: 30px;
 }
+
 
