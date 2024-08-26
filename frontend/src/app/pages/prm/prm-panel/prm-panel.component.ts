@@ -15,7 +15,6 @@ import {
 import {PRM_TABS} from './prm-tabs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {PrmTabsService} from './prm-tabs.service';
-import {ServicePointSearch} from "../../../core/search-service-point/service-point-search";
 
 @Component({
   selector: 'app-prm-panel',
@@ -32,7 +31,6 @@ export class PrmPanelComponent {
   disableTabNavigation = false;
 
   tabs = PRM_TABS;
-  servicePointSearch = ServicePointSearch.PRM;
 
   constructor(
     private route: ActivatedRoute,

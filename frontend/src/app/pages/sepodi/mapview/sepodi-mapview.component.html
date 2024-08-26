@@ -9,7 +9,7 @@
   ><i class="bi bi-plus"></i></atlas-button>
 </app-search-service-point-panel>
 
-<div [ngClass]="showSearchPanel ? 'page-with-map' : 'page-with-map-close'" class="page-with-map">
+<div [ngClass]="showSearchPanel ? 'search-open' : 'search-close'" class="page-with-map">
   <div #detailContainer class="detail-container">
     <router-outlet
       (activate)="setRouteActive(true)"
