@@ -29,7 +29,7 @@ export class SepodiMapviewComponent implements AfterViewInit, OnDestroy, OnInit 
     return this._showSearchPanel;
   }
 
-  showPanel(value: boolean) {
+  showPanel() {
     this._showSearchPanel = !this._showSearchPanel;
   }
 

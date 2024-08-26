@@ -3,10 +3,20 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {PrmHomeSearchComponent} from './prm-home-search.component';
 import {TranslatePipe} from '@ngx-translate/core';
 import {AppTestingModule} from '../../../app.testing.module';
-import {SearchServicePointComponent} from '../../../core/search-service-point/search-service-point.component';
 import {PrmInfoBoxComponent} from './prm-info-box/prm-info-box.component';
 import {RouterTestingHarness} from "@angular/router/testing";
 import {provideRouter} from "@angular/router";
+import {Component, Input} from "@angular/core";
+import {ServicePointSearchType} from "../../../core/search-service-point/service-point-search";
+
+
+@Component({
+  selector: 'app-search-service-point-panel',
+  template: '<h1>SearchServicePointMockComponent</h1>',
+})
+class SearchServicePointPanelMockComponent {
+  @Input() searchType!: ServicePointSearchType;
+}
 
 
 describe('PrmHomeSearchComponent', () => {
@@ -15,7 +25,7 @@ describe('PrmHomeSearchComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [PrmHomeSearchComponent, SearchServicePointComponent, PrmInfoBoxComponent],
+      declarations: [PrmHomeSearchComponent, SearchServicePointPanelMockComponent, PrmInfoBoxComponent],
       imports: [AppTestingModule],
       providers: [
         {provide: TranslatePipe},
