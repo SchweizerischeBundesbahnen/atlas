@@ -7,7 +7,6 @@ import {take} from 'rxjs';
 import {ApplicationType} from '../../../api';
 import {filter} from 'rxjs/operators';
 import {MapIcon, MapIconsService} from './map-icons.service';
-import {ServicePointSearch} from '../../../core/search-service-point/service-point-search';
 import {PermissionService} from "../../../core/auth/permission/permission.service";
 import {UserService} from "../../../core/auth/user/user.service";
 import {SERVICE_POINT_MIN_ZOOM} from "./map-style";
@@ -27,7 +26,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   showMapStyleSelection = false;
   showMapLegend = false;
   legend!: MapIcon[];
-  servicePointSearchType = ServicePointSearch.SePoDi;
 
   map!: Map;
 
