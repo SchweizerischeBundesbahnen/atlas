@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ControlContainer, FormBuilder, FormGroup, NgForm} from '@angular/forms';
+import {ControlContainer, FormGroup, NgForm} from '@angular/forms';
 import {
   SPECIAL_DECISION_TYPES,
   StopPointWorkflowDetailFormGroup,
@@ -34,8 +34,7 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private decisionDetailDialogService: DecisionDetailDialogService,
-    private fb: FormBuilder
+    private decisionDetailDialogService: DecisionDetailDialogService
   ) {
   }
 
