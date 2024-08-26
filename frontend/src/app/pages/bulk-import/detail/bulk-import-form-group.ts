@@ -32,7 +32,7 @@ export class BulkImportFormGroupBuilder {
       applicationType: formGroup.controls.applicationType.value!,
       objectType: formGroup.controls.objectType.value!,
       importType: formGroup.controls.importType.value!,
-      userSearch: formGroup.controls.userSearchForm.get('userSearch')?.value!,
+      //userSearch: formGroup.controls.userSearchForm.get('userSearch')?.value!,
       inNameOf: formGroup.controls.inNameOf.value!,
       emails: formGroup.controls.emails.value!,
       creator: formGroup.controls.creator.value!

@@ -33,7 +33,7 @@ describe('FileUploadComponent', () => {
     component = fixture.componentInstance;
 
     component.acceptedFileExtension = '.pdf';
-    component.acceptedFileType = 'application/pdf';
+    component.acceptedFileType = ['application/pdf'];
     component.maxFileCount = 1;
     component.maxFileSize = 10;
     component.alreadySavedFileNames = ['savedFile.pdf'];
