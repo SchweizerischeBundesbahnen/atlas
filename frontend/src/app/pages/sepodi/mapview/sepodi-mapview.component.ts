@@ -33,7 +33,6 @@ export class SepodiMapviewComponent implements AfterViewInit, OnDestroy, OnInit 
     this._showSearchPanel = !this._showSearchPanel;
   }
 
-
   constructor(
     private router: Router,
     private mapService: MapService,
