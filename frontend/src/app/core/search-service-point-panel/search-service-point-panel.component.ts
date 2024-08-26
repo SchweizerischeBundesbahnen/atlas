@@ -13,16 +13,13 @@ export class SearchServicePointPanelComponent {
 
   private _showSearchPanel = true;
 
-  get showSearchPanel(){
+  get showSearchPanel() {
     return this._showSearchPanel;
   }
 
   toggle() {
     this.toggleEvent.emit();
     this._showSearchPanel = !this.showSearchPanel;
-    console.log('asdasd')
   }
-
-
 
 }
