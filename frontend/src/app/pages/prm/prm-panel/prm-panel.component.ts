@@ -1,18 +1,20 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {
   BusinessOrganisationsService,
   BusinessOrganisationVersion,
   ReadServicePointVersion,
   ReadStopPointVersion,
 } from '../../../api';
-import { DateRange } from '../../../core/versioning/date-range';
-import { VersionsHandlingService } from '../../../core/versioning/versions-handling.service';
-import { ActivatedRoute } from '@angular/router';
-import { map, switchMap, tap } from 'rxjs/operators';
-import { BusinessOrganisationLanguageService } from '../../../core/form-components/bo-select/business-organisation-language.service';
-import { PRM_TABS } from './prm-tabs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { PrmTabsService } from './prm-tabs.service';
+import {DateRange} from '../../../core/versioning/date-range';
+import {VersionsHandlingService} from '../../../core/versioning/versions-handling.service';
+import {ActivatedRoute} from '@angular/router';
+import {map, switchMap, tap} from 'rxjs/operators';
+import {
+  BusinessOrganisationLanguageService
+} from '../../../core/form-components/bo-select/business-organisation-language.service';
+import {PRM_TABS} from './prm-tabs';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {PrmTabsService} from './prm-tabs.service';
 
 @Component({
   selector: 'app-prm-panel',
