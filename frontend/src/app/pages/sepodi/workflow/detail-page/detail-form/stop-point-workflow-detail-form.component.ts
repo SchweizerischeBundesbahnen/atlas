@@ -1,19 +1,26 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ControlContainer, FormGroup, NgForm} from '@angular/forms';
+import {ControlContainer, FormArray, FormGroup, NgForm} from '@angular/forms';
 import {
   SPECIAL_DECISION_TYPES,
   StopPointWorkflowDetailFormGroup,
   StopPointWorkflowDetailFormGroupBuilder,
 } from './stop-point-workflow-detail-form-group';
 import {Router} from '@angular/router';
-import {Country, ReadServicePointVersion, ReadStopPointWorkflow, Status, StopPointPerson, WorkflowStatus} from 'src/app/api';
+import {
+  Country,
+  ReadServicePointVersion,
+  ReadStopPointWorkflow,
+  Status,
+  StopPointPerson,
+  StopPointWorkflowService,
+  WorkflowStatus
+} from 'src/app/api';
 import {AtlasCharsetsValidator} from 'src/app/core/validation/charsets/atlas-charsets-validator';
 import {AtlasFieldLengthValidator} from 'src/app/core/validation/field-lengths/atlas-field-length-validator';
 import {DecisionDetailDialogService} from '../decision/decision-detail/decision-detail-dialog.service';
 import {ValidationService} from 'src/app/core/validation/validation.service';
 import {Pages} from 'src/app/pages/pages';
 import {SloidHelper} from "../../../../../core/util/sloidHelper";
-import {UniqueEmailsValidator} from "../../../../../core/validation/unique-emails-validator/unique-emails-validator";
 
 @Component({
   selector: 'stop-point-workflow-detail-form',
@@ -34,7 +41,8 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private decisionDetailDialogService: DecisionDetailDialogService
+    private decisionDetailDialogService: DecisionDetailDialogService,
+    private stopPointWorkflowService: StopPointWorkflowService
   ) {
   }
 
@@ -48,32 +56,37 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
         designationOfficial: this.currentWorkflow.designationOfficial!,
         country: Country.Switzerland,
         status: Status.InReview,
-        number:{
+        number: {
           number: SloidHelper.servicePointSloidToNumber(this.currentWorkflow.sloid),
           checkDigit: 1,
           numberShort: 1,
           uicCountryCode: 85
         },
-      }
+      };
     }
-    this.form.controls.examinants.setValidators(UniqueEmailsValidator.uniqueEmails()); // this is the one which validates correctly
-    if(this.currentWorkflow){
-      this.specialDecision = this.currentWorkflow!.examinants?.find(examinant => SPECIAL_DECISION_TYPES.includes(examinant.decisionType!));
+    this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(this.currentWorkflow);
+
+    if(!this.currentWorkflow){
+      this.stopPointWorkflowService.getExaminants(this.stopPoint.id!).subscribe((listOfExaminants: StopPointPerson[]) => {
+        const emptyExaminant: StopPointPerson = {
+          firstName: '',
+          lastName: '',
+          organisation: '',
+          mail: ''
+        };
+        listOfExaminants.push(emptyExaminant);
+        const examinantsFormArray = this.form.get('examinants') as FormArray;
+        examinantsFormArray.clear();
+        listOfExaminants.forEach(examinant => {
+          examinantsFormArray.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(examinant));
+        });
+      });
     }
-  }
 
-  getCustomStyle(i: number) {
-    const isLastControl = i === this.form.controls.examinants.controls.length - 1;
-    const hasDuplicateEmailError = this.form.controls.examinants?.errors?.duplicateEmail;
 
-    return isLastControl && hasDuplicateEmailError
-      ? {
-        borderLeft: '3px solid red',
-        borderRight: '3px solid red',
-        borderBottom: '3px solid red',
-        borderTop: '3px solid transparent'
-      }
-      : {};
+    if (this.currentWorkflow) {
+      this.specialDecision = this.currentWorkflow.examinants?.find(examinant => SPECIAL_DECISION_TYPES.includes(examinant.decisionType!));
+    }
   }
 
   addExaminant() {
@@ -123,4 +136,6 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
   openStatusDecision() {
     this.decisionDetailDialogService.openDialog(this.currentWorkflow!.id!, this.currentWorkflow!.status!, StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(this.specialDecision));
   }
+
+  protected readonly FormGroup = FormGroup;
 }
