@@ -22,7 +22,7 @@ export class PrmHomeSearchComponent {
     return this._showSearchPanel;
   }
 
-  showPanel(value: boolean) {
+  showPanel() {
     this._showSearchPanel = !this._showSearchPanel;
   }
 
