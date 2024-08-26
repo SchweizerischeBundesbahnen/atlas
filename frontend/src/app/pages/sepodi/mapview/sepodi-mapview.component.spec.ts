@@ -16,7 +16,7 @@ export class MockAtlasMapComponent {
 }
 
 @Component({
-  selector: 'app-search-service-point',
+  selector: 'app-search-service-point-panel',
   template: '<h1>SearchServicePointMockComponent</h1>',
 })
 class SearchServicePointMockComponent {
