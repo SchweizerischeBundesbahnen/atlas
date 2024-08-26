@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormGroup} from "@angular/forms";
 import {BulkImportFormGroup, BulkImportFormGroupBuilder} from "../detail/bulk-import-form-group";
 import {
   ApplicationType,
@@ -17,6 +17,7 @@ export class BulkImportOverviewComponent implements OnInit{
   form!: FormGroup<BulkImportFormGroup>;
   isUserSelectEnabled = false;
   uploadedFiles: File[] = [];
+  fileTypes=["text/csv", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
   userName: string | undefined;
   optionsApplication: string[] = Object.values([ApplicationType.Sepodi, ApplicationType.Prm]);
   optionsObject: string[] = Object.values([BusinessObjectType.StopPoint, BusinessObjectType.LoadingPoint]);
