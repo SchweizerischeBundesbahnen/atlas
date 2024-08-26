@@ -1,11 +1,6 @@
 import {Injectable} from '@angular/core';
 import maplibregl, {GeoJSONSource, LngLat, LngLatLike, Map, MapGeoJSONFeature, MapMouseEvent, Popup,} from 'maplibre-gl';
-import {
-  MAP_SOURCE_NAME,
-  MAP_STYLE_SPEC,
-  MAP_TRAFFIC_POINT_LAYER_NAME,
-  SERVICE_POINT_MIN_ZOOM,
-} from './map-style';
+import {MAP_SOURCE_NAME, MAP_STYLE_SPEC, MAP_TRAFFIC_POINT_LAYER_NAME, SERVICE_POINT_MIN_ZOOM,} from './map-style';
 import {GeoJsonProperties, Point} from 'geojson';
 import {MAP_STYLES, MapStyle, SWISS_BOUNDING_BOX} from './map-options';
 import {BehaviorSubject, Subject} from 'rxjs';
@@ -56,7 +51,6 @@ export class MapService {
     this.map.resize();
     this.map.dragRotate.disable();
     this.map.touchZoomRotate.disableRotation();
-    this.map.setMaxZoom(19);
     this.map.setMinZoom(5);
     this.map.scrollZoom.setWheelZoomRate(1 / 950);
     this.map.scrollZoom.setZoomRate(1 / 150);
