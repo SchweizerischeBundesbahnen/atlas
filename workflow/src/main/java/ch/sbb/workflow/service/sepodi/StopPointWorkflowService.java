@@ -1,5 +1,6 @@
 package ch.sbb.workflow.service.sepodi;
 
+import ch.sbb.atlas.api.servicepoint.ReadServicePointVersionModel;
 import ch.sbb.atlas.model.exception.NotFoundException.IdNotFoundException;
 import ch.sbb.atlas.workflow.model.WorkflowStatus;
 import ch.sbb.workflow.aop.Redacted;
@@ -16,8 +17,8 @@ import ch.sbb.workflow.mapper.StopPointClientPersonMapper;
 import ch.sbb.workflow.model.search.StopPointWorkflowSearchRestrictions;
 import ch.sbb.workflow.model.sepodi.DecisionModel;
 import ch.sbb.workflow.model.sepodi.EditStopPointWorkflowModel;
+import ch.sbb.workflow.model.sepodi.Examinants;
 import ch.sbb.workflow.model.sepodi.OverrideDecisionModel;
-import ch.sbb.workflow.model.sepodi.StopPointAddWorkflowModel;
 import ch.sbb.workflow.model.sepodi.StopPointClientPersonModel;
 import ch.sbb.workflow.repository.DecisionRepository;
 import ch.sbb.workflow.repository.StopPointWorkflowRepository;
@@ -39,6 +40,7 @@ public class StopPointWorkflowService {
   private final StopPointWorkflowRepository workflowRepository;
   private final DecisionRepository decisionRepository;
   private final SePoDiClientService sePoDiClientService;
+  private final Examinants examinants;
 
   @Redacted(redactedClassType = StopPointWorkflow.class)
   public StopPointWorkflow getWorkflow(Long id) {
@@ -55,6 +57,9 @@ public class StopPointWorkflowService {
   }
 
   public StopPointWorkflow editWorkflow(Long id, EditStopPointWorkflowModel workflowModel) {
+    if (workflowModel.getExaminants() != null && !workflowModel.getExaminants().isEmpty()) {
+      checkIfAllExaminantEmailsAreUnique(workflowModel.getExaminants());
+    }
     StopPointWorkflow stopPointWorkflow = findStopPointWorkflow(id);
 
     if (stopPointWorkflow.getStatus() != WorkflowStatus.ADDED) {
@@ -80,6 +85,11 @@ public class StopPointWorkflowService {
           });
     }
     return save(stopPointWorkflow);
+  }
+
+  public List<StopPointClientPersonModel> getExaminants(Long id) {
+    ReadServicePointVersionModel servicePointVersionModel = sePoDiClientService.getServicePointById(id);
+    return examinants.getExaminants(servicePointVersionModel.getServicePointGeolocation().getSwissLocation().getCanton());
   }
 
   public void voteWorkFlow(Long id, Long personId, DecisionModel decisionModel) {
@@ -111,8 +121,7 @@ public class StopPointWorkflowService {
     }
   }
 
-  public void checkIfAllExaminantEmailsAreUnique(StopPointAddWorkflowModel stopPointAddWorkflowModel) {
-    List<StopPointClientPersonModel> examinants = stopPointAddWorkflowModel.getExaminants();
+  public void checkIfAllExaminantEmailsAreUnique(List<StopPointClientPersonModel> examinants) {
     Set<String> emailSet = new HashSet<>();
     for (StopPointClientPersonModel examinant : examinants) {
       String email = examinant.getMail().toLowerCase();
