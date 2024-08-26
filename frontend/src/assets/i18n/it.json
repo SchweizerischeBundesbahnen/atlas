@@ -1437,10 +1437,5 @@
         "EDIT_SUCCESS": "Il collegamento è stato salvato con successo."
       }
     }
-  },
-  "BULK": {
-    "BUTTON": {
-      "DOWNLOAD": "Modello di importazione"
-    }
   }
 }
