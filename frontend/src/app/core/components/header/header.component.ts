@@ -42,7 +42,7 @@ export class HeaderComponent implements OnInit {
     return {
       badge: true,
       'text-wrap': true,
-      'ms-2': true,
+      'ms-5': true,
       'bg-primary': this.environmentLabel === Stages.DEV,
       'bg-secondary': this.environmentLabel === Stages.TEST,
       'bg-warning': this.environmentLabel === Stages.INT,
