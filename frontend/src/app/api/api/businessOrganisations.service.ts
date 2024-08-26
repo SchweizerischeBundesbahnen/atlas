@@ -89,7 +89,7 @@ export class BusinessOrganisationsService {
     }
 
     /**
-     * @param businessOrganisationVersion
+     * @param businessOrganisationVersion 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -143,7 +143,7 @@ export class BusinessOrganisationsService {
     }
 
     /**
-     * @param sboid
+     * @param sboid 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -316,10 +316,10 @@ export class BusinessOrganisationsService {
     }
 
     /**
-     * @param searchCriteria
-     * @param inSboids
-     * @param validOn
-     * @param statusChoices
+     * @param searchCriteria 
+     * @param inSboids 
+     * @param validOn 
+     * @param statusChoices 
      * @param page Zero-based page index (0..N)
      * @param size The size of the page to be returned
      * @param sort Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
@@ -508,7 +508,7 @@ export class BusinessOrganisationsService {
     }
 
     /**
-     * @param sboid
+     * @param sboid 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -552,7 +552,7 @@ export class BusinessOrganisationsService {
     }
 
     /**
-     * @param sboid
+     * @param sboid 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -597,7 +597,7 @@ export class BusinessOrganisationsService {
     }
 
     /**
-     * @param exportType
+     * @param exportType 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -636,7 +636,7 @@ export class BusinessOrganisationsService {
     }
 
     /**
-     * @param exportType
+     * @param exportType 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -717,8 +717,8 @@ export class BusinessOrganisationsService {
     }
 
     /**
-     * @param id
-     * @param businessOrganisationVersion
+     * @param id 
+     * @param businessOrganisationVersion 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

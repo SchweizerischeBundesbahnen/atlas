@@ -27,11 +27,12 @@ public enum BusinessType {
       "Organizzazione d'agenzia di viaggi"),
   CUSTOMER_INFORMATION(70, "Kundeninformation", "Information clientèle",
       "Informazione alla clientela"),
+  REPLACEMENT_SERVICE(72, "Ersatzverkehr", "Service de remplacement",
+      "Servizio sostitutivo"),
   SUBSIDIARY(80, "Tochtergesellschaft (Bahn)", "Filiale (Chemin de fer)", "Affiliata (Ferrovia)"),
   INTERNAL_BILLING_PURPOSES(95, "interne Abrechnungszwecke", "fins de facturation",
       "scopi di fatturazione interna"),
   UNKNOWN(99, "unbekannt", "inconnu", "sconosciuto");
-
 
   private static final String PIPE = "|";
   private final int id;

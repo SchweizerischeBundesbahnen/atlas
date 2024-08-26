@@ -89,53 +89,10 @@ export class BulkImportService {
     }
 
     /**
-     * @param objectType
-     * @param importType
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public downloadTemplate(objectType: BusinessObjectType, importType: ImportType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<Blob>;
-    public downloadTemplate(objectType: BusinessObjectType, importType: ImportType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpResponse<Blob>>;
-    public downloadTemplate(objectType: BusinessObjectType, importType: ImportType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*'}): Observable<HttpEvent<Blob>>;
-    public downloadTemplate(objectType: BusinessObjectType, importType: ImportType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*'}): Observable<any> {
-        if (objectType === null || objectType === undefined) {
-            throw new Error('Required parameter objectType was null or undefined when calling downloadTemplate.');
-        }
-        if (importType === null || importType === undefined) {
-            throw new Error('Required parameter importType was null or undefined when calling downloadTemplate.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                '*/*'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        return this.httpClient.get(`${this.configuration.basePath}/import-service-point/v1/import/bulk/template/${encodeURIComponent(String(objectType))}/${encodeURIComponent(String(importType))}`,
-            {
-                responseType: "blob",
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param application
-     * @param objectType
-     * @param importType
-     * @param inlineObject9
+     * @param application 
+     * @param objectType 
+     * @param importType 
+     * @param inlineObject9 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
