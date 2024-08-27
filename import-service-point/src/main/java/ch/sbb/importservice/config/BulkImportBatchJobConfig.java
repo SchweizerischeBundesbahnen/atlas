@@ -2,8 +2,9 @@ package ch.sbb.importservice.config;
 
 import static ch.sbb.importservice.utils.JobDescriptionConstants.BULK_IMPORT_JOB_NAME;
 
-import ch.sbb.atlas.imports.bulk.BulkImportContainer;
+import ch.sbb.atlas.imports.bulk.BulkImportUpdateContainer;
 import ch.sbb.atlas.kafka.model.user.admin.ApplicationType;
+import ch.sbb.importservice.listener.BulkImportDataValidationToLogFileListener;
 import ch.sbb.importservice.listener.JobCompletionListener;
 import ch.sbb.importservice.listener.StepTracerListener;
 import ch.sbb.importservice.model.BulkImportConfig;
@@ -49,9 +50,10 @@ public class BulkImportBatchJobConfig {
   private final StepTracerListener stepTracerListener;
   private final BulkImportWriters bulkImportWriters;
   private final BulkImportReaders bulkImportReaders;
+  private final BulkImportDataValidationToLogFileListener bulkImportDataValidationToLogFileListener;
 
   @Bean
-  public Job bulkImportJob(ThreadSafeListItemReader<BulkImportContainer> itemReader, ItemWriter<BulkImportContainer> itemWriter) {
+  public Job bulkImportJob(ThreadSafeListItemReader<BulkImportUpdateContainer<?>> itemReader, ItemWriter<BulkImportUpdateContainer<?>> itemWriter) {
     return new JobBuilder(BULK_IMPORT_JOB_NAME, jobRepository)
         .listener(jobCompletionListener)
         .incrementer(new RunIdIncrementer())
@@ -61,12 +63,13 @@ public class BulkImportBatchJobConfig {
   }
 
   @Bean
-  public Step bulkImportFromCsv(ThreadSafeListItemReader<BulkImportContainer> itemReader,
-      ItemWriter<BulkImportContainer> itemWriter) {
+  public Step bulkImportFromCsv(ThreadSafeListItemReader<BulkImportUpdateContainer<?>> itemReader,
+      ItemWriter<BulkImportUpdateContainer<?>> itemWriter) {
     String stepName = "bulkImportFromCsv";
     return new StepBuilder(stepName, jobRepository)
-        .<BulkImportContainer, BulkImportContainer>chunk(CHUNK_SIZE, transactionManager)
+        .<BulkImportUpdateContainer<?>, BulkImportUpdateContainer<?>>chunk(CHUNK_SIZE, transactionManager)
         .reader(itemReader)
+        .listener(bulkImportDataValidationToLogFileListener)
         .writer(itemWriter)
         .faultTolerant()
         .backOffPolicy(StepUtils.getBackOffPolicy(stepName))
@@ -78,7 +81,7 @@ public class BulkImportBatchJobConfig {
 
   @StepScope
   @Bean
-  public ThreadSafeListItemReader<BulkImportContainer> itemReader(
+  public ThreadSafeListItemReader<BulkImportUpdateContainer<?>> itemReader(
       @Value("#{jobParameters[fullPathFileName]}") String pathToFile,
       @Value("#{jobParameters[application]}") String application,
       @Value("#{jobParameters[objectType]}") String objectType,
@@ -90,9 +93,9 @@ public class BulkImportBatchJobConfig {
         .objectType(BusinessObjectType.valueOf(objectType))
         .importType(ImportType.valueOf(importType))
         .build();
-    Function<File, List<BulkImportContainer>> readerFunction = bulkImportReaders.getReaderFunction(config);
+    Function<File, List<BulkImportUpdateContainer<?>>> readerFunction = bulkImportReaders.getReaderFunction(config);
 
-    List<BulkImportContainer> items = new ArrayList<>();
+    List<BulkImportUpdateContainer<?>> items = new ArrayList<>();
     if (pathToFile != null) {
       File file = new File(pathToFile);
       items.addAll(readerFunction.apply(file));
@@ -106,7 +109,7 @@ public class BulkImportBatchJobConfig {
 
   @StepScope
   @Bean
-  public ItemWriter<BulkImportContainer> itemWriter(
+  public ItemWriter<BulkImportUpdateContainer<?>> itemWriter(
       @Value("#{jobParameters[application]}") String application,
       @Value("#{jobParameters[objectType]}") String objectType,
       @Value("#{jobParameters[importType]}") String importType
