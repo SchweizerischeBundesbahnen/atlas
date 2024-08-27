@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {StopPointAddWorkflow, StopPointPerson, StopPointWorkflowService,} from '../../../../api';
 import {AddStopPointWorkflowDialogData} from './add-stop-point-workflow-dialog-data';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormGroup} from '@angular/forms';
 import {ValidationService} from '../../../../core/validation/validation.service';
 import {DetailHelperService} from '../../../../core/detail/detail-helper.service';
 import {NotificationService} from '../../../../core/notification/notification.service';
@@ -10,11 +10,9 @@ import {Router} from '@angular/router';
 import {Pages} from '../../../pages';
 import {UserService} from "../../../../core/auth/user/user.service";
 import {
-  ExaminantFormGroup,
   StopPointWorkflowDetailFormGroup,
   StopPointWorkflowDetailFormGroupBuilder
 } from "../detail-page/detail-form/stop-point-workflow-detail-form-group";
-import {AtlasCharsetsValidator} from "../../../../core/validation/charsets/atlas-charsets-validator";
 
 @Component({
   selector: 'app-workflow-dialog',
@@ -30,43 +28,17 @@ export class AddStopPointWorkflowComponent implements OnInit {
     private stopPointWorkflowService: StopPointWorkflowService,
     private notificationService: NotificationService,
     private userService: UserService,
-    private router: Router,
-    private fb: FormBuilder
+    private router: Router
   ) {}
 
   form!: FormGroup<StopPointWorkflowDetailFormGroup>;
 
   ngOnInit() {
     this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup();
-    // const listOfExaminants: StopPointPerson[] = this.data.examinants;
-    // const emptyExaminant: StopPointPerson = {
-    //   firstName: '',
-    //   lastName: '',
-    //   organisation: '',
-    //   mail: ''
-    // };
-    // listOfExaminants.push(emptyExaminant);
-    // this.form.setControl('examinants', this.createExaminantsFormArray(listOfExaminants));
     this.form.controls.designationOfficial.setValue(this.data.stopPoint.designationOfficial)
   }
 
-  private createExaminantsFormArray(listOfExaminants: StopPointPerson[]): FormArray<FormGroup<ExaminantFormGroup>> {
-    const formGroups = listOfExaminants.map(person => this.fb.group<ExaminantFormGroup>({
-      id: new FormControl(person.id ?? null),
-      firstName: new FormControl(person.firstName ?? null),
-      lastName: new FormControl(person.lastName ?? null),
-      organisation: new FormControl(person.organisation ?? '', Validators.required),
-      personFunction: new FormControl(person.personFunction ?? null),
-      mail: new FormControl(person.mail ?? '', [Validators.required, AtlasCharsetsValidator.email]),
-      judgementIcon: new FormControl(null),
-      judgement: new FormControl(person.judgement ?? null),
-      decisionType: new FormControl(person.decisionType ?? null),
-    }));
-    return new FormArray<FormGroup<ExaminantFormGroup>>(formGroups);
-  }
-
   addWorkflow() {
-    // this.form.controls.examinants.setValidators(UniqueEmailsValidator.uniqueEmails());
     ValidationService.validateForm(this.form);
     if (this.form.valid) {
       const workflow: StopPointAddWorkflow = {
