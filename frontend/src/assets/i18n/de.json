@@ -1438,5 +1438,11 @@
         "EDIT_SUCCESS": "Die Verbindung wurde erfolgreich gespeichert."
       }
     }
+  },
+  "BULK_IMPORT": {
+    "ERROR": {
+      "EXCEL_CONVERSION": "Die verwendete Excel-Datei konnte nicht richtig gelesen werden. Bitte stellen Sie sicher, dass Sie die Datei gemäss Vorlage nutzen.\nFehlerquelle in Zeile:{{rowIndex}}, Spalte:{{columnIndex}}",
+      "FILE_HEADER": "Die verwendete Datei hat nicht die erwartete Kopfzeile. Bitte stellen Sie sicher, dass Sie die Datei gemäss Vorlage nutzen."
+    }
   }
 }
