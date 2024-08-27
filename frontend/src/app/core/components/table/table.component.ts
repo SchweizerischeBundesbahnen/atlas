@@ -5,7 +5,6 @@ import {TableColumn} from './table-column';
 import {TableService} from './table.service';
 import {TablePagination} from './table-pagination';
 import {ColumnDropDownEvent} from './column-drop-down-event';
-import {isEmpty} from '../../util/strings';
 import {SelectionModel} from '@angular/cdk/collections';
 import {MatCheckboxChange} from '@angular/material/checkbox';
 import {TableFilter} from '../table-filter/config/table-filter';
@@ -69,12 +68,6 @@ export class TableComponent<DATATYPE> implements OnInit {
   }
 
   ngOnInit() {
-    // set default sorting
-    if (this.sortingDisabled) {
-      this.tableService.sortActive = '';
-    } else if (isEmpty(this.sortActive)) {
-      this.tableService.sortActive = this.tableColumns[0].value!;
-    }
     this.tableInitialized.emit({
       page: this.pageIndex,
       size: this.pageSize,
