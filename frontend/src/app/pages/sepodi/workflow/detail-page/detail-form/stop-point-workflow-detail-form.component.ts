@@ -66,6 +66,9 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
     }
     this.form = StopPointWorkflowDetailFormGroupBuilder.buildFormGroup(this.currentWorkflow);
 
+    const examinantsFormArray = this.form.get('examinants') as FormArray;
+    this.disableFirstTwoExaminants(examinantsFormArray);
+
     if(!this.currentWorkflow){
       this.stopPointWorkflowService.getExaminants(this.stopPoint.id!).subscribe((listOfExaminants: StopPointPerson[]) => {
         const emptyExaminant: StopPointPerson = {
@@ -80,6 +83,8 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
         listOfExaminants.forEach(examinant => {
           examinantsFormArray.push(StopPointWorkflowDetailFormGroupBuilder.buildExaminantFormGroup(examinant));
         });
+
+        this.disableFirstTwoExaminants(examinantsFormArray);
       });
     }
 
@@ -88,6 +93,16 @@ export class StopPointWorkflowDetailFormComponent implements OnInit {
       this.specialDecision = this.currentWorkflow.examinants?.find(examinant => SPECIAL_DECISION_TYPES.includes(examinant.decisionType!));
     }
   }
+
+  private disableFirstTwoExaminants(examinantsFormArray: FormArray): void {
+    if (examinantsFormArray.length > 0) {
+      examinantsFormArray.at(0).disable();
+      if (examinantsFormArray.length > 1) {
+        examinantsFormArray.at(1).disable();
+      }
+    }
+  }
+
 
   addExaminant() {
     const examinantsControl = this.form.controls.examinants;
