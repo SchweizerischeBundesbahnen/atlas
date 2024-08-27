@@ -44,12 +44,14 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
 
   @Override
   public List<StopPointClientPersonModel> getExaminants(Long servicePointVersionId) {
-    return service.getExaminants(servicePointVersionId);
+    return service.getExaminantsByServicePointVersionId(servicePointVersionId);
   }
 
   @Override
   public ReadStopPointWorkflowModel getStopPointWorkflow(Long id) {
-    ReadStopPointWorkflowModel stopPointWorkflowModel = StopPointWorkflowMapper.toModel(service.getWorkflow(id));
+    List<StopPointClientPersonModel> examinants = service.getExaminantsByWorkflowId(id);
+    ReadStopPointWorkflowModel stopPointWorkflowModel = StopPointWorkflowMapper.toModel(service.getWorkflow(id), examinants);
+//    ReadStopPointWorkflowModel reordered = service.reorderExaminants(stopPointWorkflowModel);
 
     service.getWorkflowByFollowUpId(id).ifPresent(stopPointWorkflow ->
         stopPointWorkflowModel.setPreviousWorkflowId(stopPointWorkflow.getId())
@@ -69,14 +71,15 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
     Page<StopPointWorkflow> workflows = service.getWorkflows(stopPointWorkflowSearchRestrictions);
 
     return Container.<ReadStopPointWorkflowModel>builder()
-        .objects(workflows.stream().map(StopPointWorkflowMapper::toModel).toList())
+        .objects(workflows.stream().map(w -> StopPointWorkflowMapper.toModel(w, null)).toList())
         .totalCount(workflows.getTotalElements())
         .build();
   }
 
   @Override
   public ReadStopPointWorkflowModel addStopPointWorkflow(StopPointAddWorkflowModel workflowModel) {
-    return StopPointWorkflowMapper.toModel(workflowTransitionService.addWorkflow(workflowModel));
+    List<StopPointClientPersonModel> examinants = service.getExaminantsByServicePointVersionId(workflowModel.getVersionId());
+    return StopPointWorkflowMapper.toModel(workflowTransitionService.addWorkflow(workflowModel), examinants);
   }
 
   @PreAuthorize(
@@ -84,7 +87,7 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
           + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   @Override
   public ReadStopPointWorkflowModel startStopPointWorkflow(Long id) {
-    return StopPointWorkflowMapper.toModel(workflowTransitionService.startWorkflow(id));
+    return StopPointWorkflowMapper.toModel(workflowTransitionService.startWorkflow(id), null);
   }
 
   @PreAuthorize(
@@ -92,7 +95,7 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
           + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   @Override
   public ReadStopPointWorkflowModel rejectStopPointWorkflow(Long id, StopPointRejectWorkflowModel workflowModel) {
-    return StopPointWorkflowMapper.toModel(workflowTransitionService.rejectWorkflow(id, workflowModel));
+    return StopPointWorkflowMapper.toModel(workflowTransitionService.rejectWorkflow(id, workflowModel), null);
   }
 
   @PreAuthorize(
@@ -100,7 +103,7 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
           + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   @Override
   public ReadStopPointWorkflowModel editStopPointWorkflow(Long id, EditStopPointWorkflowModel workflowModel) {
-    return StopPointWorkflowMapper.toModel(service.editWorkflow(id, workflowModel));
+    return StopPointWorkflowMapper.toModel(service.editWorkflow(id, workflowModel), null);
   }
 
   @Override
@@ -141,7 +144,7 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
           + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   @Override
   public ReadStopPointWorkflowModel restartStopPointWorkflow(Long id, StopPointRestartWorkflowModel restartWorkflowModel) {
-    return StopPointWorkflowMapper.toModel(workflowTransitionService.restartWorkflow(id, restartWorkflowModel));
+    return StopPointWorkflowMapper.toModel(workflowTransitionService.restartWorkflow(id, restartWorkflowModel), null);
   }
 
   @PreAuthorize(
@@ -149,7 +152,7 @@ public class StopPointWorkflowController implements StopPointWorkflowApiV1 {
           + "isAtLeastSupervisor( T(ch.sbb.atlas.kafka.model.user.admin.ApplicationType).SEPODI)")
   @Override
   public ReadStopPointWorkflowModel cancelStopPointWorkflow(Long id, StopPointRejectWorkflowModel stopPointCancelWorkflowModel) {
-    return StopPointWorkflowMapper.toModel(workflowTransitionService.cancelWorkflow(id, stopPointCancelWorkflowModel));
+    return StopPointWorkflowMapper.toModel(workflowTransitionService.cancelWorkflow(id, stopPointCancelWorkflowModel), null);
   }
 
   @Override
