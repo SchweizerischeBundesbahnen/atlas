@@ -411,6 +411,9 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
 
     StopPointWorkflow entity = workflowRepository.save(workflow);
 
+    when(sePoDiClientService.getServicePointById(123456L))
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
+
     mvc.perform(get("/v1/stop-point/workflows/" + entity.getId()))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.sloid", is("ch:1:sloid:1234")));
@@ -757,6 +760,8 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
         .designationOfficial("Bern")
         .examinants(examinant.stream().map(StopPointClientPersonMapper::toModel).toList())
         .build();
+    when(sePoDiClientService.getServicePointById(versionId))
+        .thenReturn(getUpdateServicePointVersionModel(Status.IN_REVIEW));
 
     //given
     mvc.perform(post("/v1/stop-point/workflows/edit/" + stopPointWorkflow.getId())
@@ -1159,7 +1164,7 @@ class StopPointWorkflowControllerTest extends BaseControllerApiTest {
     assertThat(decisionByExaminantId.getFotJudgement()).isEqualTo(overrideDecisionModel.getFotJudgement());
   }
 
-  private static ReadServicePointVersionModel getUpdateServicePointVersionModel(Status status) {
+  static ReadServicePointVersionModel getUpdateServicePointVersionModel(Status status) {
     long versionId = 123456L;
     String sloid = "ch:1:sloid:1234";
     ServicePointGeolocationReadModel geolocationReadModel = ServicePointGeolocationReadModel.builder()

@@ -44,7 +44,7 @@ describe('AddStopPointWorkflowDialogService', () => {
       }];
 
     service
-      .openDialog(BERN_WYLEREGG, examinants)
+      .openDialog(BERN_WYLEREGG)
       .subscribe((result) => expect(result).toBeTrue());
 
     expect(dialogSpy.open).toHaveBeenCalled();
