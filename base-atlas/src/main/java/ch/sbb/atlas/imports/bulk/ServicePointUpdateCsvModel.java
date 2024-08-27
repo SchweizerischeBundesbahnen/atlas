@@ -1,16 +1,18 @@
 package ch.sbb.atlas.imports.bulk;
 
-import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel.Fields;
-import ch.sbb.atlas.deserializer.LocalDateDeserializer;
 import ch.sbb.atlas.api.servicepoint.SpatialReference;
+import ch.sbb.atlas.deserializer.LocalDateDeserializer;
+import ch.sbb.atlas.imports.bulk.ServicePointUpdateCsvModel.Fields;
 import ch.sbb.atlas.servicepoint.enumeration.Category;
 import ch.sbb.atlas.servicepoint.enumeration.MeanOfTransport;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTechnicalTimetableType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointTrafficPointType;
 import ch.sbb.atlas.servicepoint.enumeration.OperatingPointType;
 import ch.sbb.atlas.servicepoint.enumeration.StopPointType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Set;
@@ -77,5 +79,11 @@ public class ServicePointUpdateCsvModel implements BulkImportContainer {
   private SpatialReference spatialReference;
 
   private Double height;
+
+  @JsonIgnore
+  @AssertTrue(message = "Only one of SLOID or number is allowed")
+  boolean isOnlyNumberOrSloidGiven() {
+    return sloid == null ^ number == null;
+  }
 
 }
